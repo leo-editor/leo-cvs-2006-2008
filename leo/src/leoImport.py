@@ -984,6 +984,7 @@ class baseLeoImportCommands:
 
             # May be overridden in subclasses.
             self.lineCommentDelim = None
+            self.lineCommentDelim2 = None
             self.blockCommentDelim1 = None
             self.blockCommentDelim2 = None
 
@@ -1235,10 +1236,8 @@ class baseLeoImportCommands:
             needRef = False
             while i < len(s):
                 progress = i
-                if g.match(s,i,self.lineCommentDelim):
-                    i = g.skip_line(s,i)
-                elif g.match(s,i,self.blockCommentDelim1):
-                    i = self.skipBlockComment(s,i)
+                if self.startsComment(s,i):
+                    i = self.skipComment(s,i)
                 elif self.startsString(s,i):
                     i = self.skipString(s,i)
                 elif self.startsClass(s,i):
@@ -1392,6 +1391,14 @@ class baseLeoImportCommands:
         def skipSignature (self,s,i):
             return self.sigEnd
         #@-node:edreamleo.20070710105410:skipClass/Function/Signature
+        #@+node:ekr.20070711104014:skipComment
+        def skipComment (self,s,i):
+
+            if g.match(s,i,self.lineCommentDelim) or g.match(s,i,lineCommentDelim2):
+                return g.skip_line(s,i)
+            else:
+                return self.skipBlockComment(s,i)
+        #@-node:ekr.20070711104014:skipComment
         #@+node:ekr.20070707094858.1:skipId
         def skipId (self,s,i):
 
@@ -1403,6 +1410,14 @@ class baseLeoImportCommands:
             # Returns len(s) on unterminated string.
             return g.skip_string(s,i,verbose=False)
         #@-node:ekr.20070707073627.2:skipString
+        #@+node:ekr.20070711104014.1:startsComment
+        def startsComment (self,s,i):
+
+            return (
+                g.match(s,i,self.lineCommentDelim) or
+                g.match(s,i,lineCommentDelim2) or
+                g.match(s,i,self.blockCommentDelim1))
+        #@-node:ekr.20070711104014.1:startsComment
         #@+node:ekr.20070707094858.2:startsId
         def startsId(self,s,i):
 
@@ -1413,8 +1428,6 @@ class baseLeoImportCommands:
 
             return g.match(s,i,'"') or g.match(s,i,"'")
         #@-node:ekr.20070707172732.1:startsString
-        #@+node:ekr.20070707172732:getClass/FunctionID
-        #@-node:ekr.20070707172732:getClass/FunctionID
         #@-node:ekr.20070707075646.1:May be defined in subclasses
         #@+node:ekr.20070707073627.3:Must be defined in subclasses
         def putClass (self,s,i,end,start,parent):
@@ -1439,7 +1452,7 @@ class baseLeoImportCommands:
             self.oops()
         #@-node:ekr.20070707073627.3:Must be defined in subclasses
         #@-node:ekr.20070706084535.1:Parsing
-        #@+node:ekr.20070706084535:Semantics (must be defined in base class)
+        #@+node:ekr.20070706084535:Code generation  (must be defined in base class)
         #@+node:ekr.20070705144309:createDeclsNode
         def createDeclsNode (self,parent,s):
 
@@ -1672,7 +1685,7 @@ class baseLeoImportCommands:
 
             return ''.join(result)
         #@-node:ekr.20070709094002:indentBody
-        #@-node:ekr.20070706084535:Semantics (must be defined in base class)
+        #@-node:ekr.20070706084535:Code generation  (must be defined in base class)
         #@-others
     #@-node:ekr.20070703122141.65:class baseScannerClass
     #@+node:ekr.20070703123618.2:Python tests
@@ -1838,491 +1851,23 @@ class baseLeoImportCommands:
     #@-node:ekr.20070703123618.7:@@test scanPythonClass
     #@-node:ekr.20070703181153.1:Not ready
     #@-node:ekr.20070703123618.2:Python tests
-    #@+node:ekr.20070703123618:Unchanged scanners
-    #@+node:ekr.20031218072017.3265:scanElispText & allies
-    def scanElispText(self,s,p):
-
-        c = self.c
-        c.appendStringToBody(p,"@ignore\n@language elisp\n")
-        i = 0 ; start = 0
-        while i < len(s):
-            progress = i
-            ch = s[i] ; # g.trace(g.get_line(s,i))
-            if ch == ';':
-                i = g.skip_line(s,i)
-            elif ch == '(':
-                j = self.skipElispParens(s,i)
-                k = g.skip_ws(s,i+1)
-                if g.match_word(s,k,"defun") or g.match_word(s,k,"defconst") or g.match_word(s,k,"defvar"):
-                    data = s[start:i]
-                    if data.strip():
-                        self.createElispDataNode(p,data)
-                    self.createElispFunction(p,s[i:j+1])
-                    start = j+1
-                i = j
-            else:
-                i += 1
-            assert(progress < i)
-        data = s[start:len(s)]
-        if data.strip():
-            self.createElispDataNode(p,data)
-    #@+node:ekr.20031218072017.3266:skipElispParens
-    def skipElispParens (self,s,i):
-
-        level = 0 ; n = len(s)
-        assert(g.match(s,i,'('))
-
-        while i < n:
-            c = s[i]
-            if c == '(':
-                level += 1 ; i += 1
-            elif c == ')':
-                level -= 1
-                if level <= 0:
-                    return i
-                i += 1
-            elif c == '"': i = g.skip_string(s,i) # Single-quotes are not strings.
-            elif g.match(s,i,";"):  i = g.skip_line(s,i)
-            else: i += 1
-        return i
-    #@-node:ekr.20031218072017.3266:skipElispParens
-    #@+node:ekr.20031218072017.3267:skipElispId
-    def skipElispId (self,s,i):
-
-        n = len(s)
-        while i < n and g.isWordChar(s[i]):
-            i += 1
-        return i
-    #@-node:ekr.20031218072017.3267:skipElispId
-    #@+node:ekr.20031218072017.3268:createElispFunction
-    def createElispFunction (self,p,s):
-
-        body = s
-        i = 1 # Skip the '('
-        i = g.skip_ws(s,i)
-
-        # Set the prefix in the headline.
-        assert(g.match(s,i,"defun") or g.match_word(s,i,"defconst") or g.match_word(s,i,"defvar"))
-        if g.match_word(s,i,"defconst"):
-            prefix = "const "
-        elif g.match_word(s,i,"defvar"):
-            prefix = "var "
-        else:
-            prefix = ""
-
-        # Skip the "defun" or "defconst" or "defvar"
-        i = self.skipElispId(s,i)
-
-        # Get the following id.
-        i = g.skip_ws(s,i)
-        j = self.skipElispId(s,i)
-        theId = prefix + s[i:j]
-
-        self.createHeadline(p,body,theId)
-    #@-node:ekr.20031218072017.3268:createElispFunction
-    #@+node:ekr.20031218072017.3269:createElispDataNode
-    def createElispDataNode (self,p,s):
-
-        data = s
-        # g.trace(len(data))
-
-        # Skip blank lines and comment lines.
-        i = 0
-        while i < len(s):
-            i = g.skip_ws_and_nl(s,i)
-            if g.match(s,i,';'):
-                i = g.skip_line(s,i)
-            else: break
-
-        # Find the next id, probably prefixed by an open paren.
-        if g.match(s,i,"("):
-            i = g.skip_ws(s,i+1)
-        j = self.skipElispId(s,i)
-        theId = s[i:j]
-        if not theId:
-            theId = "unnamed data"
-
-        self.createHeadline(p,data,theId)
-    #@-node:ekr.20031218072017.3269:createElispDataNode
-    #@-node:ekr.20031218072017.3265:scanElispText & allies
-    #@+node:ekr.20041107094641:scanForthText
+    #@+node:ekr.20070711055932:Unchanged scanners
+    #@+node:ekr.20070711055932.6:scanForthText
     def scanForthText (self,s,parent):
 
         """Minimal forth scanner - leave it to user to create nodes as they see fit."""
 
         self.c.setBodyString(parent,"@ignore\n" + "@language forth\n" + self.rootLine + s)
-    #@-node:ekr.20041107094641:scanForthText
-    #@+node:ekr.20060328112327:scanLuaText
+    #@-node:ekr.20070711055932.6:scanForthText
+    #@+node:ekr.20070711055932.7:scanLuaText
     def scanLuaText (self,s,parent):
 
         """Minimal Lua scanner - leave it to user to create nodes as they see fit."""
 
         self.c.setBodyString(parent,"@ignore\n" + "@language lua\n" + self.rootLine + s)
-    #@-node:ekr.20060328112327:scanLuaText
-    #@+node:ekr.20031218072017.3281:scanPascalText
-    # Creates a child of parent for each Pascal function definition seen.
-
-    def scanPascalText (self,s,parent):
-
-        c = self.c
-        method_seen = False ; methodKind = "methods"
-        scan_start = function_start = i = 0
-        name = None
-        while i < len(s):
-            # line = g.get_line(s,i) ; g.trace(line)
-            ch = s[i]
-            if ch == '{': i = g.skip_pascal_braces(s,i)
-            elif ch == '"' or ch == '\'': i = g.skip_pascal_string(s,i)
-            elif g.match(s,i,"//"): i = g.skip_to_end_of_line(s,i)
-            elif g.match(s,i,"(*"): i = g.skip_pascal_block_comment(s,i)
-            elif g.is_c_id(s[i]):
-                #@            << handle possible Pascal function >>
-                #@+node:ekr.20031218072017.3282:<< handle possible Pascal function >>
-                if g.match_c_word(s,i,"begin"):
-                    i = g.skip_pascal_begin_end(s,i)
-                    if g.match_c_word(s,i,"end"):
-                        i = g.skip_c_id(s,i)
-                elif (g.match_c_word(s,i,"function")  or g.match_c_word(s,i,"procedure") or
-                    g.match_c_word(s,i,"constructor") or g.match_c_word(s,i,"destructor")):
-
-                    # line = g.get_line(s,i) ; g.trace(line)
-
-                    start = i
-                    i = g.skip_c_id(s,i)
-                    i = g.skip_ws_and_nl(s,i)
-                    #@    << remember the function name, or continue >>
-                    #@+node:ekr.20031218072017.3285:<< remember the function name, or continue >>
-                    if i < len(s) and g.is_c_id(s[i]):
-                        j = i ; i = g.skip_c_id(s,i)
-                        while i + 1 < len(s) and s[i] == '.' and g.is_c_id(s[i+1]):
-                            i += 1 ; j = i
-                            i = g.skip_c_id(s,i)
-                        name = s[j:i]
-                    else: continue
-                    #@-node:ekr.20031218072017.3285:<< remember the function name, or continue >>
-                    #@nl
-                    #@    << skip the function definition, or continue >>
-                    #@+node:ekr.20031218072017.3286:<< skip the function definition, or continue >>
-                    #@<< skip past the semicolon >>
-                    #@+node:ekr.20031218072017.3287:<< skip past the semicolon >>
-                    while i < len(s) and s[i] != ';':
-                        # The paremeter list may contain "inner" semicolons.
-                        if s[i] == '(':
-                            i = g.skip_parens(s,i)
-                            if g.match(s,i,')'):
-                                i += 1
-                            else: break
-                        else: i += 1
-                    if g.match(s,i,';'):
-                        i += 1
-                    i = g.skip_ws_and_nl(s,i)
-
-                    if g.match_c_word(s,i,"var"):
-                        # Skip to the next begin.
-                        i = g.skip_c_id(s,i)
-                        done = False
-                        while i < len(s) and not done:
-                            ch = s[i]
-                            if ch == '{': i = g.skip_pascal_braces(s,i)
-                            elif g.match(s,i,"//"): i = g.skip_to_end_of_line(s,i)
-                            elif g.match(s,i,"(*"): i = g.skip_pascal_block_comment(s,i)
-                            elif g.is_c_id(ch):
-                                if g.match_c_word(s,i,"begin"): done = True
-                                else: i = g.skip_c_id(s,i)
-                            elif ch == '"' or ch == '\'': i = g.skip_pascal_string(s,i)
-                            else: i += 1
-                    #@-node:ekr.20031218072017.3287:<< skip past the semicolon >>
-                    #@nl
-
-                    if not g.match_c_word(s,i,"begin"):
-                        continue
-                    # Skip to the matching end.
-                    i = g.skip_pascal_begin_end(s,i)
-                    if g.match_c_word(s,i,"end"):
-                        i = g.skip_c_id(s,i)
-                        i = g.skip_ws_and_nl(s,i)
-                        if g.match(s,i,';'):
-                            i += 1
-                        i = g.skip_ws(s,i)
-                        if g.is_nl(s,i):
-                            i = g.skip_nl(s,i)
-                    else: continue
-                    #@-node:ekr.20031218072017.3286:<< skip the function definition, or continue >>
-                    #@nl
-                    if not method_seen:
-                        method_seen = True
-                        #@        << create a child node for leading declarations >>
-                        #@+node:ekr.20031218072017.3283:<< create a child node for leading declarations >>
-                        save_ip = i
-                        i = scan_start
-                        while i < start and g.is_ws_or_nl(s,i):
-                            i += 1
-                        if i < start:
-                            c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language pascal\n")
-                            headline = g.angleBrackets(self.methodName + " declarations ")
-                            # Append the headline to the parent's body.
-                            c.appendStringToBody(parent,headline + "\n")
-                            if self.treeType == "@file":
-                                body = s[scan_start:start]
-                            else:
-                                body = "@code\n\n" + s[scan_start:start]
-                            body = self.undentBody(body)
-                            self.createHeadline(parent,body,headline)
-                        i = save_ip
-                        scan_start = i
-                        #@-node:ekr.20031218072017.3283:<< create a child node for leading declarations >>
-                        #@nl
-                        #@        << append noweb method reference to the parent node >>
-                        #@+node:ekr.20031218072017.3288:<< append noweb method reference to the parent node >>
-                        # Append the headline to the parent's body.
-                        if self.treeType == "@file":
-                            c.appendStringToBody(parent,"@others\n")
-                        else:
-                            c.appendStringToBody(parent,
-                                g.angleBrackets(" " + self.methodName + " methods ") + "\n")
-                        #@-node:ekr.20031218072017.3288:<< append noweb method reference to the parent node >>
-                        #@nl
-                        function_start = start
-                    else: function_start = scan_start
-                    #@    << create a child node for the function >>
-                    #@+node:ekr.20031218072017.3284:<< create a child node for the function >>
-                    # Point i _after_ the last character of the function.
-                    i = g.skip_ws(s,i)
-                    if g.is_nl(s,i):
-                        i = g.skip_nl(s,i)
-                    function_end = i
-                    headline = name
-                    body = s[function_start:function_end]
-                    body = self.massageBody(body,methodKind)
-                    self.createHeadline(parent,body,headline)
-                    scan_start = i
-                    #@-node:ekr.20031218072017.3284:<< create a child node for the function >>
-                    #@nl
-                else: i = g.skip_c_id(s,i)
-                #@-node:ekr.20031218072017.3282:<< handle possible Pascal function >>
-                #@nl
-            else: i += 1
-        #@    << Append any unused text to the parent's body text >>
-        #@+node:ekr.20031218072017.3264:<< append any unused text to the parent's body text >>
-        # Used by the Java and Pascal scanners.
-
-        i = g.skip_ws_and_nl(s,scan_start)
-        if i < len(s):
-            c.appendStringToBody(parent,s[scan_start:])
-        #@-node:ekr.20031218072017.3264:<< append any unused text to the parent's body text >>
-        #@nl
-    #@-node:ekr.20031218072017.3281:scanPascalText
-    #@+node:ekr.20031218072017.3242:scanPHPText (Dave Hein)
-    # 08-SEP-2002 DTHEIN: Added for PHP import support.
-    #
-    # PHP uses both # and // as line comments, and /* */ as block comments
-
-    def scanPHPText (self,s,parent):
-
-        __pychecker__ = 'maxlines=500'
-
-        """Creates a child of parent for each class and function definition seen."""
-
-        #@    << define scanPHPText vars >>
-        #@+node:ekr.20031218072017.3244:<< define scanPHPText vars >>
-        c = self.c
-        scan_start = 0
-        class_start = 0
-        function_start = 0
-        i = 0
-        class_body = ""
-        class_node = ""
-        phpClassName = re.compile("class\s+([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)")
-        phpFunctionName = re.compile("function\s+([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)")
-
-        # 14-SEP-2002 DTHEIN: added these 2 variables to allow use of @first/last
-        startOfCode = s.find("\n") + 1 # this should be the line containing the initial <?php
-        endOfCode = s.rfind("?>") # this should be the line containing the last ?>
-        #@-node:ekr.20031218072017.3244:<< define scanPHPText vars >>
-        #@nl
-        #@    << Append file if not pure PHP >>
-        #@+node:ekr.20031218072017.3243:<< Append file if not pure PHP >>
-        # If the file does not begin with <?php or end with ?> then
-        # it is simply appended like a generic import would do.
-
-        s.strip() # Remove inadvertent whitespace.
-
-        if (
-            not (
-                s.startswith("<?P") or
-                s.startswith("<?p") or
-                s.startswith("<?=") or
-                s.startswith("<?\n") or
-                s.startswith("<?\r") or
-                s.startswith("<? ") or
-                s.startswith("<?\t")
-            ) or not (
-                s.endswith("?>\n") or
-                s.endswith("?>\r") or
-                s.endswith("?>\r\n")
-            )
-        ):
-            g.es("File seems to be mixed HTML and PHP; importing as plain text file.")
-            c.setBodyString(parent,"@ignore\n" + self.rootLine + s)
-            return
-        #@-node:ekr.20031218072017.3243:<< Append file if not pure PHP >>
-        #@nl
-
-        # 14-SEP-2002 DTHEIN: Make leading <?php use the @first directive
-        c.appendStringToBody(parent,"@first ")
-        c.appendStringToBody(parent,s[:startOfCode])
-        scan_start = i = startOfCode
-        while i < endOfCode:
-            # line = g.get_line(s,i) ; g.trace(line)
-            ch = s[i]
-            # These cases skip tokens.
-            if ch == '/' or ch == '#':
-                #@            << handle possible PHP comments >>
-                #@+node:ekr.20031218072017.3246:<< handle possible PHP comments >>
-                if g.match(s,i,"//"):
-                    i = g.skip_line(s,i)
-                elif g.match(s,i,"#"):
-                    i = g.skip_line(s,i)
-                elif g.match(s,i,"/*"):
-                    i = g.skip_block_comment(s,i)
-                else:
-                    i += 1
-                #@-node:ekr.20031218072017.3246:<< handle possible PHP comments >>
-                #@nl
-            elif ch == '<':
-                #@            << handle possible heredoc string >>
-                #@+node:ekr.20031218072017.3245:<< handle possible heredoc string >>
-                if g.match(s,i,"<<<"):
-                    i = g.skip_heredoc_string(s,i)
-                else:
-                    i += 1
-                #@-node:ekr.20031218072017.3245:<< handle possible heredoc string >>
-                #@nl
-            elif ch == '"' or ch == '\'':
-                i = g.skip_string(s,i)
-            # These cases help determine where functions start.
-            # FIXME: probably want to capture 'var's as class member data
-            elif ch == 'f' or ch =='c':
-                #@            << handle possible class or function >>
-                #@+node:ekr.20031218072017.3247:<< handle possible class or function >>
-                #@+at 
-                #@nonl
-                # In PHP, all functions are typeless and start with the 
-                # keyword "function;  all classes start with the keyword 
-                # class.
-                # 
-                # Functions can be nested, but we don't handle that right now 
-                # (I don't think it is a common practice anyway).
-                #@-at
-                #@@c
-                if g.match(s,i,"function "):
-                    #we want to make the function a subnode of either the @file node or a class node
-                    # 1. get the function name
-                    # 2. make a reference in the parent
-                    # 3. create the child node, and dump the function in it.
-                    function_start = i
-                    m = phpFunctionName.match(s[i:])
-                    if (None == m): # function keyword without function name
-                        i += len("function ")
-                    else:
-                        headline = g.angleBrackets(" function " + m.group(1) + " ")
-                        # find the end of the function
-                        openingBrace = s.find('{',i)
-                        function_end = g.skip_php_braces(s,openingBrace)
-                        function_end = g.skip_to_end_of_line(s,function_end - 1) + 1 # include the line end
-                        # Insert skipped text into parent's body.
-                        if class_start:
-                            class_body += s[scan_start:function_start]
-                        else:
-                            c.appendStringToBody(parent,s[scan_start:function_start])
-                        # Append the headline to the parent's body.
-                        if class_start:
-                            class_body += (headline + "\n")
-                        else:
-                            c.appendStringToBody(parent,headline + "\n")
-                        # Backup to capture leading whitespace (for undent purposes)
-                        while (function_start > 0) and (s[function_start - 1] in [" ", "\t"]):
-                            function_start -= 1
-                        # Get the body and undent it
-                        function_body = s[function_start:function_end]
-                        function_body = self.undentBody(function_body)
-                        if self.treeType != "@file":
-                            function_body = "@code\n\n" + function_body
-                        # Create the new node
-                        if class_start:
-                            self.createHeadline(class_node,function_body,headline)
-                        else:
-                            self.createHeadline(parent,function_body,headline)
-                        i = function_end
-                        scan_start = i
-                        function_end = 0
-                        function_start = 0 #done with this function
-                        function_body = ""
-
-                elif g.match(s,i,"class "):
-                    # we want to make the class a subnode of the @file node
-                    # 1. get the class name
-                    # 2. make a reference in the parent
-                    # 3. create the child node and dump the function in it
-                    class_start = i
-                    class_body = ""
-                    m = phpClassName.match(s[i:])
-                    if (None == m): # class keyword without class name
-                        i += len("class ")
-                    else:
-                        # Insert skipped text into parent's body.
-                        c.appendStringToBody(parent,s[scan_start:class_start])
-                        # create the headline name
-                        headline = g.angleBrackets(" class " + m.group(1) + " ")
-                        # find the place to start looking for methods (functions)
-                        openingBrace = s.find('{',i)
-                        # find the end of the class
-                        class_end = g.skip_php_braces(s,openingBrace)
-                        class_end = g.skip_to_end_of_line(s,class_end - 1) + 1 # include the line end
-                        # Append the headline to the parent's body.
-                        c.appendStringToBody(parent,headline + "\n")
-                        # Backup to capture leading whitespace (for undent purposes)
-                        while (class_start > 0) and (s[class_start - 1] in [" ", "\t"]):
-                            class_start -= 1
-                        scan_start = class_start
-                        # Create the new node
-                        class_node = self.createHeadline(parent,"",headline)
-                        i = openingBrace
-
-                else:
-                    i += 1
-                #@-node:ekr.20031218072017.3247:<< handle possible class or function >>
-                #@nl
-            elif class_start and (ch == '}'):
-                #@            << handle end of class >>
-                #@+node:ekr.20031218072017.3248:<< handle end of class >>
-                # Capture the rest of the body
-                class_body += s[scan_start:class_end]
-                # insert the class node's body
-                if self.treeType != "@file":
-                    class_body = "@code\n\n" + class_body
-                class_body = self.undentBody(class_body)
-                c.appendStringToBody(class_node,class_body)
-                # reset the indices
-                i = class_end
-                scan_start = i
-                class_end = 0
-                class_start = 0 #done with this class
-                class_body=""
-                #@-node:ekr.20031218072017.3248:<< handle end of class >>
-                #@nl
-            else: i += 1
-        #@    << Append any unused text to the parent's body text >>
-        #@+node:ekr.20031218072017.3249:<< Append any unused text to the parent's body text >>
-        c.appendStringToBody(parent,s[scan_start:endOfCode])
-        #@-node:ekr.20031218072017.3249:<< Append any unused text to the parent's body text >>
-        #@nl
-        # 14-SEP-2002 DTHEIN: Make leading <?php use the @first directive
-        c.appendStringToBody(parent,"@last ")
-        c.appendStringToBody(parent,s[endOfCode:])
-    #@-node:ekr.20031218072017.3242:scanPHPText (Dave Hein)
-    #@-node:ekr.20070703123618:Unchanged scanners
-    #@+node:ekr.20070703123334.2:Python scanner & helpers
+    #@-node:ekr.20070711055932.7:scanLuaText
+    #@-node:ekr.20070711055932:Unchanged scanners
+    #@+node:ekr.20070703123334.2:Python scanner
     #@+node:ekr.20070705091716:pythonUnitTest
     def pythonUnitTest (self,p,s,fileName,atAuto=False,strict=False):
 
@@ -2384,6 +1929,7 @@ class baseLeoImportCommands:
             self.blockCommentDelim1 = None
             self.blockCommentDelim2 = None
             self.lineCommentDelim = '#'
+            self.lineCommentDelim2 = None
 
         #@-node:ekr.20070703122141.101: __init__
         #@+node:ekr.20070707073723:Overrides
@@ -2515,11 +2061,11 @@ class baseLeoImportCommands:
         #@-node:ekr.20070707073627.4:skipString
         #@+node:ekr.20070707080005:startsClass/Function
         def startsClass (self,s,i):
-            '''Return the class id if s[i:] starts a class definition.'''
+            '''Return True if s[i:] starts a class definition.'''
             return self.startsHelper(s,i,'class')
 
         def startsFunction (self,s,i):
-            '''Return the function id if s[i:] starts a function definition.'''
+            '''Return True if s[i:] starts a function definition.'''
             return self.startsHelper(s,i,'def')
 
         def startsHelper(self,s,i,tag):
@@ -2536,8 +2082,8 @@ class baseLeoImportCommands:
         #@-node:ekr.20070707073723:Overrides
         #@-others
     #@-node:ekr.20070703122141.100:class pythonScanner (baseScannerClass)
-    #@-node:ekr.20070703123334.2:Python scanner & helpers
-    #@+node:edreamleo.20070710110114:Java scanner & helpers
+    #@-node:ekr.20070703123334.2:Python scanner
+    #@+node:edreamleo.20070710110114:Java scanner
     #@+node:edreamleo.20070710110114.2:scanJavaText
     def scanJavaText (self,s,parent,atAuto=False,strict=False):
 
@@ -2565,6 +2111,7 @@ class baseLeoImportCommands:
             self.blockCommentDelim1 = '/*'
             self.blockCommentDelim2 = '*/'
             self.lineCommentDelim = '//'
+            self.lineCommentDelim2 = None
 
         #@-node:edreamleo.20070710085115.1: __init__
         #@+node:edreamleo.20070710085115.2:Overrides
@@ -2606,8 +2153,9 @@ class baseLeoImportCommands:
             # Skip the block.
             i = g.skip_ws_and_nl(s,i+1)
             if g.match(s,i,'{'):
-                sigEnd = g.skip_ws_and_nl(s,i+1)
-                i = g.skip_braces(s,i)
+                sigEnd = i = g.skip_ws_and_nl(s,i+1)
+                if not g.match(s,i,'{'): return False
+                i = self.skipBlock(s,i)
                 ok = g.match(s,i,'}')
                 if ok:
                     i = g.skip_ws_and_nl(s,i+1)
@@ -2622,8 +2170,8 @@ class baseLeoImportCommands:
         #@-node:edreamleo.20070710085115.2:Overrides
         #@-others
     #@-node:edreamleo.20070710085115:class javaScanner (baseScannerClass)
-    #@-node:edreamleo.20070710110114:Java scanner & helpers
-    #@+node:edreamleo.20070710110114.1:C scanner & helpers
+    #@-node:edreamleo.20070710110114:Java scanner
+    #@+node:edreamleo.20070710110114.1:C scanner
     #@+node:edreamleo.20070710110153:scanCText
     def scanCText (self,s,parent,atAuto=False,strict=False):
 
@@ -2635,7 +2183,7 @@ class baseLeoImportCommands:
         scanner.run(s,parent)
     #@-node:edreamleo.20070710110153:scanCText
     #@+node:edreamleo.20070710093042:class cScanner (baseScannerClass)
-    class javaScanner (baseScannerClass):
+    class cScanner (baseScannerClass):
 
         #@    @+others
         #@+node:edreamleo.20070710093042.1: __init__
@@ -2651,6 +2199,7 @@ class baseLeoImportCommands:
             self.blockCommentDelim1 = '/*'
             self.blockCommentDelim2 = '*/'
             self.lineCommentDelim = '//'
+            self.lineCommentDelim2 = None
 
         #@-node:edreamleo.20070710093042.1: __init__
         #@+node:edreamleo.20070710093042.2:Overrides
@@ -2692,8 +2241,9 @@ class baseLeoImportCommands:
                 i = g.skip_ws_and_nl(s,i+1)
 
             if g.match(s,i,'{'):
-                sigEnd = g.skip_ws_and_nl(s,i+1)
-                i = g.skip_braces(s,i)
+                sigEnd = i = g.skip_ws_and_nl(s,i+1)
+                if not g.match(s,i,'{'): return False
+                i = self.skipBlock(s,i)
                 ok = g.match(s,i,'}')
                 if ok:
                     i = g.skip_ws_and_nl(s,i+1)
@@ -2707,7 +2257,264 @@ class baseLeoImportCommands:
         #@-node:edreamleo.20070710093042.2:Overrides
         #@-others
     #@-node:edreamleo.20070710093042:class cScanner (baseScannerClass)
-    #@-node:edreamleo.20070710110114.1:C scanner & helpers
+    #@-node:edreamleo.20070710110114.1:C scanner
+    #@+node:ekr.20070711060107:Elisp scanner
+    #@+node:ekr.20070711060107.1:scanElispText
+    def scanElispText (self,s,parent,atAuto=False,strict=False):
+
+        scanner = self.elispScanner(
+            importCommands=self,
+            atAuto=atAuto,
+            strict=strict)
+
+        scanner.run(s,parent)
+    #@-node:ekr.20070711060107.1:scanElispText
+    #@+node:ekr.20070711060113:class elispScanner (baseScannerClass)
+    class elispScanner (baseScannerClass):
+
+        #@    @+others
+        #@+node:ekr.20070711060113.1: __init__
+        def __init__ (self,importCommands,atAuto,strict):
+
+            importCommands.baseScannerClass.__init__(self,importCommands,
+                atAuto=atAuto,
+                language='python',
+                strict=strict,
+            )
+
+            # Set the parser delims.
+            self.blockCommentDelim1 = None
+            self.blockCommentDelim2 = None
+            self.lineCommentDelim = ';'
+            self.lineCommentDelim2 = None
+
+        #@-node:ekr.20070711060113.1: __init__
+        #@+node:ekr.20070711060113.2:Overrides
+        # skipClass/Function/Signature are defined in the base class.
+        #@nonl
+        #@+node:ekr.20070711055932.2:skipBlock
+        def skipBlock (self,s,i):
+
+            level = 0 ; n = len(s)
+            assert(g.match(s,i,'('))
+
+            while i < n:
+                c = s[i]
+                if c == '(':
+                    level += 1 ; i += 1
+                elif c == ')':
+                    level -= 1
+                    if level <= 0:
+                        return i
+                    i += 1
+                elif c == '"': i = g.skip_string(s,i) # Single-quotes are not strings.
+                elif g.match(s,i,";"):  i = g.skip_line(s,i)
+                else: i += 1
+            return i
+        #@-node:ekr.20070711055932.2:skipBlock
+        #@+node:ekr.20070711060113.3:startsClass/Function & skipSignature
+        def startsClass (self,s,i):
+            '''Return True if s[i:] starts a class definition.
+            Sets self.end, self.sigEnd and self.sigID.'''
+            return False
+
+        def startsFunction(self,s,i):
+            '''Return True if s[i:] starts a function.
+            Sets self.end, self.sigEnd and self.sigID.'''
+
+            self.end = self.sigEnd = self.sigID = None
+            if not g.match(s,i,'('): return False
+
+            end = self.skipBlock(s,i)
+            if not g.match(s,end,')'): return False
+
+            i = g.skip_ws(s,i+1)
+            if not g.match_word(s,i,'defun'): return False
+
+            i += len(key)
+            sigEnd = i = g.skip_ws_and_nl(s,i)
+            j = g.skip_id(s,i)
+            word = s[i:j]
+            if not word: return False
+
+            self.end = end + 1
+            self.sigEnd = sigEnd
+            self.sigId = word
+            return True
+        #@-node:ekr.20070711060113.3:startsClass/Function & skipSignature
+        #@+node:ekr.20070711063339:startsString
+        def startsString(self,s,i):
+
+            # Single quotes are not strings.
+            return g.match(s,i,'"')
+        #@-node:ekr.20070711063339:startsString
+        #@-node:ekr.20070711060113.2:Overrides
+        #@-others
+    #@-node:ekr.20070711060113:class elispScanner (baseScannerClass)
+    #@-node:ekr.20070711060107:Elisp scanner
+    #@+node:ekr.20070711090052:PHP scanner
+    #@+node:ekr.20070711090122:scanPHPText
+    def scanPHPText (self,s,parent,atAuto=False,strict=False):
+
+        scanner = self.phpScanner(
+            importCommands=self,
+            atAuto=atAuto,
+            strict=strict)
+
+        if scanner.isPurePHP(s):
+            scanner.run(s,parent)
+        else:
+            fileName = scanner.fileName
+            if not atAuto:
+                g.es_print("%s seems to be mixed HTML and PHP." % fileName)
+            scanner.createHeadline(
+                parent,body=s,headline=fileName)
+    #@-node:ekr.20070711090122:scanPHPText
+    #@+node:ekr.20070711090052.1:class phpScanner (baseScannerClass)
+    class phpScanner (baseScannerClass):
+
+        #@    @+others
+        #@+node:ekr.20070711090052.2: __init__
+        def __init__ (self,importCommands,atAuto,strict):
+
+            importCommands.baseScannerClass.__init__(self,importCommands,
+                atAuto=atAuto,
+                language='python',
+                strict=strict,
+            )
+
+            # Set the parser delims.
+            self.blockCommentDelim1 = '/*'
+            self.blockCommentDelim2 = '*/'
+            self.lineCommentDelim = '//'
+            self.lineCommentDelim2 = '#'
+
+            # The valid characters in an id
+            self.chars = list(string.ascii_letters + string.digits)
+            extra = [chr(z) for z in xrange(127,256)]
+            self.chars.extend(extra)
+        #@-node:ekr.20070711090052.2: __init__
+        #@+node:ekr.20070711094850:isPurePHP
+        def isPurePHP (self,s):
+
+            '''Return True if the file begins with <?php or ends with ?>'''
+
+            s = s.strip()
+
+            return (
+                s.startswith('<?') and
+                s[2:3] in ("P","p","=","\n","\r"," ","\t") and
+                s.endswith('?>'))
+
+        #@-node:ekr.20070711094850:isPurePHP
+        #@+node:ekr.20070711090052.3:Overrides
+        # Does not create @first/@last nodes
+        #@+node:ekr.20070711090052.5:startsClass/Function
+        def startsClass (self,s,i):
+            return self.startsHelper(s,i,'class')
+
+        def startsFunction (self,s,i):
+            return self.startsFunction(s,i,'function')
+
+        def startsHelper (self,s,i,tag):
+
+            if not g.match_word(s,i,tag): return False
+            i += len(tag)
+            j = g.skip_ws_and_nl(s,i)
+            i = g.skip_id(s,j,self.chars)
+            word = s[j:i]
+            if not word: return False
+            sigId = word
+            i = g.skip_ws_and_nl(s,i)
+            sigEnd = i
+            i = g.skip_php_braces(s,openingBrace)
+            if not g.match(s,i,'}'): return False
+
+            self.end = i = g.skip_ws_and_nl(s,i+1)
+            self.sigEnd = sigEnd
+            self.sigId = sigId
+            return i
+        #@-node:ekr.20070711090052.5:startsClass/Function
+        #@+node:ekr.20070711090807:startsString skipString
+        def startsString(self,s,i):
+            return g.match(s,i,'"') or g.match(s,i,"'") or g.match(s,i,'<<<')
+
+        def skipString (self,s,i):
+            if g.match(s,i,'"') or g.match(s,i,"'"):
+                return self.skipString()
+            else:
+                return g.skip_heredoc_string(s,i)
+        #@-node:ekr.20070711090807:startsString skipString
+        #@-node:ekr.20070711090052.3:Overrides
+        #@-others
+    #@-node:ekr.20070711090052.1:class phpScanner (baseScannerClass)
+    #@-node:ekr.20070711090052:PHP scanner
+    #@+node:ekr.20070711104241:Pascal scanner
+    #@+node:ekr.20070711104241.2:scanPascalText
+    def scanPascalText (self,s,parent,atAuto=False,strict=False):
+
+        scanner = self.pascalScanner(
+            importCommands=self,
+            atAuto=atAuto,
+            strict=strict)
+
+        scanner.run(s,parent)
+    #@nonl
+    #@-node:ekr.20070711104241.2:scanPascalText
+    #@+node:ekr.20070711104241.3:class pascalScanner (baseScannerClass)
+    class pascalScanner (baseScannerClass):
+
+        #@    @+others
+        #@+node:ekr.20070711104241.4: __init__
+        def __init__ (self,importCommands,atAuto,strict):
+
+            importCommands.baseScannerClass.__init__(self,importCommands,
+                atAuto=atAuto,
+                language='python',
+                strict=strict,
+            )
+
+            # Set the parser delims.
+            self.blockCommentDelim1 = '(*'
+            self.blockCommentDelim2 = '*)'
+            self.lineCommentDelim = '//'
+            self.lineCommentDelim2 = None
+        #@-node:ekr.20070711104241.4: __init__
+        #@+node:ekr.20070711104241.6:Overrides
+        # Does not create @first/@last nodes
+        #@+node:ekr.20070711104241.7:startsClass/Function
+        def startsClass (self,s,i):
+            return False
+
+        def startsFunction (self,s,i):
+
+            '''Return True if s[i:] starts a function definition.
+            Sets self.end, self.sigEnd and self.sigID.'''
+
+            for tag in ('function','procedure','constructor','destructor'):
+                if g.match_word(s,i,tag):
+                    break
+            else: return False
+
+            i += len(tag)
+            j = g.skip_ws_and_nl(s,i)
+            i = g.skip_id(s,j,self.chars)
+            word = s[j:i]
+            if not word: return False
+            sigId = word
+            sigEnd = i = g.skip_ws_and_nl(s,i)
+            if not g.match_word(s,i,'begin'): return False
+            i = self.skipBlock(s,i,delim1='begin',delim2='end')
+            if not g.match(s,i,'end'): return False
+            self.end = i = g.skip_ws_and_nl(s,i+1)
+            self.sigEnd = sigEnd
+            self.sigId = sigId
+            return True
+        #@-node:ekr.20070711104241.7:startsClass/Function
+        #@-node:ekr.20070711104241.6:Overrides
+        #@-others
+    #@-node:ekr.20070711104241.3:class pascalScanner (baseScannerClass)
+    #@-node:ekr.20070711104241:Pascal scanner
     #@-node:ekr.20031218072017.3241:Scanners for createOutline
     #@-node:ekr.20031218072017.3209:Import
     #@+node:ekr.20031218072017.3289:Export
