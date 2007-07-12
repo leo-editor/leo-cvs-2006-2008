@@ -3130,7 +3130,7 @@ def skip_braces(s,i):
         else: i += 1
     return i
 #@-node:ekr.20031218072017.3160:skip_braces
-#@+node:ekr.20031218072017.3161:skip_php_braces (Dave Hein)
+#@+node:ekr.20031218072017.3161:skip_php_braces (no longer used)
 #@+at 
 #@nonl
 # 08-SEP-2002 DTHEIN: Added for PHP import support
@@ -3160,7 +3160,7 @@ def skip_php_braces(s,i):
         elif g.match(s,i,'/*'): i = g.skip_block_comment(s,i)
         else: i += 1
     return i
-#@-node:ekr.20031218072017.3161:skip_php_braces (Dave Hein)
+#@-node:ekr.20031218072017.3161:skip_php_braces (no longer used)
 #@+node:ekr.20031218072017.3162:skip_parens
 def skip_parens(s,i):
 
