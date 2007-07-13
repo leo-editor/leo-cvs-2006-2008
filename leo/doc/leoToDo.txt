@@ -5,19 +5,6 @@
 #@+node:ekr.20070711111933:Revise preface (upload recent changes)
 #@-node:ekr.20070711111933:Revise preface (upload recent changes)
 #@+node:ekr.20070324084040:(Rewrite import code to support @auto)
-#@+node:ekr.20070706152845:To do first
-@
-- Remove duplicate outer utils from leoImport.py.
-
-- Create defaultScanner for all unsupported file types.
-
-** Generalize pythonUnitTest:
-    - call it runUnitTest.
-    - put it in base class.
-    - call proper scanner based on file type.
-    - Call ic.runUnitTest in test.leo.
-#@nonl
-#@-node:ekr.20070706152845:To do first
 #@+node:ekr.20031218072017.3151:Scanning... (leoGlobals.py)
 #@+node:ekr.20031218072017.3152:g.scanAtFileOptions (used in 3.x read code)
 def scanAtFileOptions (h,err_flag=False):
@@ -1299,7 +1286,7 @@ def indentBody (self,s,lws=None):
     return result
 #@-node:ekr.20070709094002:indentBody
 #@+node:ekr.20070703122141.102:check & helpers
-def check (self,parent):
+def check (self,s,parent):
 
     '''
     Make sure the generated nodes are equivalent to the original file.
@@ -1310,11 +1297,14 @@ def check (self,parent):
     Return True if the nodes are equivalent to the original file.
     '''
 
-    return self.checkWhitespace(parent) and self.checkTrialWrite()
-#@+node:ekr.20070705085126:checkTab
+    result = self.checkWhitespace(s,parent) and self.checkTrialWrite()
+    g.app.unitTestDict = {'result':result}
+    return result
+#@nonl
+#@+node:ekr.20070705085126:checkTabWithTabNanny (not used)
 # Similar to c.tabNannyNode
 
-def checkTab (self,p):
+def checkTabWithTabNanny (self,p):
 
     """Check indentation using tabnanny."""
 
@@ -1351,9 +1341,9 @@ def checkTab (self,p):
         g.es_exception()
 
     return False
-#@-node:ekr.20070705085126:checkTab
+#@-node:ekr.20070705085126:checkTabWithTabNanny (not used)
 #@+node:ekr.20070703122141.103:checkWhitespace
-def checkWhitespace(self,parent):
+def checkWhitespace(self,s,parent):
 
     '''Check and normalize the leading whitespace of all nodes.
 
@@ -1370,14 +1360,22 @@ def checkWhitespace(self,parent):
     Normalizing underindented comments means shifting the comments right.
     '''
 
-    # Check that whitespace passes TabNanny.
-    # Check that whitespace is compatible with @tabwidth.
-    # Check for underindented lines.
-    ok = True
-    for p in parent.self_and_subtree_iter():
-        ok = ok and self.checkTab(p)
-    return ok
-#@nonl
+    if 1: # Do a quick check for mixed leading tabs/blanks.
+        blanks = tabs = 0
+        for line in g.splitLines(s):
+            lws = line[0:g.skip_ws(line,0)]
+            blanks += lws.count(' ')
+            tabs += lws.count('\t')
+        # g.trace('blanks',blanks,'tabs',tabs)
+        return blanks == 0 or tabs == 0
+    else:
+        # Check that whitespace passes TabNanny.
+        # Check that whitespace is compatible with @tabwidth.
+        # Check for underindented lines.
+        ok = True
+        for p in parent.self_and_subtree_iter():
+            ok = ok and self.checkTab(p)
+        return ok
 #@-node:ekr.20070703122141.103:checkWhitespace
 #@+node:ekr.20070703122141.104:checkTrialWrite
 def checkTrialWrite (self):
@@ -1385,53 +1383,78 @@ def checkTrialWrite (self):
     '''Return True if a trial write produces the original file.'''
 
     c = self.c ; at = c.atFileCommands
-
     at.write(self.root,
         nosentinels=True,thinFile=False,
         scriptWrite=False,toString=True,
         write_strips_blank_lines=False,
     )
+    strict = self.strict
     s1 = self.file_s
     s2 = at.stringOutput
     ok = s1 == s2
-    if ok:
-        g.es_print('@auto ***success***')
-    else:
-        g.es_print('@auto ***failure***')
-        lines1 = g.splitLines(s1)
-        lines2 = g.splitLines(s2)
-        if not self.strict: # ignore blank lines.
-            lines1 = [z for z in lines1 if z.strip()]
-            lines2 = [z for z in lines2 if z.strip()]
-        if len(lines1) != len(lines2):
-            g.trace('***different number of lines:',
-                'lines1',len(lines1),'lines2',len(lines2))
-        g.trace('***mismatch',
+    if ok: return ok
+
+    lines1a = g.splitLines(s1) ; n1a = len(lines1a) # original (all) lines.
+    lines2a = g.splitLines(s2) ; n2a = len(lines2a)
+
+    # Non-blank lines.
+    lines1 = [z for z in lines1a if z.strip()] ; n1 = len(lines1)
+    lines2 = [z for z in lines2a if z.strip()] ; n2 = len(lines2)
+
+    if strict:
+         g.trace('***mismatch',
             'len(s1)',len(s1),'len(s2)',len(s2))
-        n = min(len(lines1),len(lines2))
-        for i in xrange(n):
-            if lines1[i] != lines2[i]:
-                print 'first mismatch at line %d' % (i)
-                print 'original line: ', repr(lines1[i])
-                print 'generated line:', repr(lines2[i])
-                break
-        else:
-            if len(lines2) < len(lines1):
-                 print 'missing lines'
-                 i = n
-                 while i < len(lines1):
-                     print repr(lines1[i])
-                     i += 1
-            else:
-                print 'extra lines'
-                i = n
-                while i < len(lines2):
-                    print repr(lines1[2])
-                    i += 1
-        if 0:
-            print
-            for i in xrange(len(lines2)):
-                print '%3d: %s' % (i,repr(lines2[i]))
+    if n1 != n2:
+        g.trace('***different number of non-blank lines:',
+            'lines1',len(lines1),'lines2',len(lines2))
+    elif n1a != n2a:
+        g.trace('***different number of *blank* lines:',
+            'blank lines1',n1-len(lines1),'blank lines2',n2-len(lines2))
+
+    if n1 != n2: # Compare non-blank lines.
+        comp_lines1,comp_lines2 = lines1,lines2
+    else: # Compare all lines.
+        comp_lines1,comp_lines2 = lines1a,lines2a
+
+    n = min(len(comp_lines1),len(comp_lines2))
+    for i in xrange(n):
+        line1 = comp_lines1[i]
+        line2 = comp_lines2[i]
+        # if not strict:
+            # line1 = line1.strip()
+            # line2 = line2.strip()
+        if line1 != line2:
+            print 'first mismatch at line %d' % (i)
+            print 'original line: ', repr(comp_lines1[i])
+            print 'generated line:', repr(comp_lines2[i])
+            ok = False
+            break
+    else:
+        if n2a < n1a:
+            print 'missing lines' ; ok = False
+            for line in lines1a[n2a:]:
+                print repr(line)
+        elif n2a > n1a:
+            print 'extra lines' ; ok = False
+            for line in lines2a[n1a:]:
+                print repr(line)
+        elif strict: ok = False
+        else:        ok = True
+
+    if not ok and not g.app.unitTesting:
+        g.es_print('@auto ***%failure***')
+
+    if 1:
+        if not ok and n2a < 30:
+            print ; print 'original lines:'
+            i = 1
+            for line in lines1a:
+                print i,repr(line) ; i += 1
+            print ; print 'generated lines:'
+            i = 1
+            for line in lines2a:
+                print i,repr(line) ; i += 1
+
     return ok
 #@-node:ekr.20070703122141.104:checkTrialWrite
 #@-node:ekr.20070703122141.102:check & helpers

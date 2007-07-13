@@ -2317,6 +2317,50 @@ Brian Theado
 @language python
 @color
 #@nonl
+#@+node:ekr.20070713074436:Removed utils
+#@+node:ekr.20031218072017.3319:undentBody
+# We look at the first line to determine how much leading whitespace to delete.
+
+def undentBody (self,s):
+
+    """Removes extra leading indentation from all lines."""
+
+    # g.trace(s)
+    i = 0 ; result = ""
+    # Copy an @code line as is.
+    if g.match(s,i,"@code"):
+        j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
+        result += s[j:i]
+    # Calculate the amount to be removed from each line.
+    undent = self.getLeadingIndent(s,i)
+    if undent == 0: return s
+    while i < len(s):
+        j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
+        line = s[j:i]
+        # g.trace(line)
+        line = g.removeLeadingWhitespace(line,undent,self.tab_width)
+        result += line
+    return result
+#@-node:ekr.20031218072017.3319:undentBody
+#@+node:ekr.20031218072017.3308:getLeadingIndent
+def getLeadingIndent (self,s,i):
+
+    """Return the leading whitespace of a line, ignoring blank and comment lines."""
+
+    i = g.find_line_start(s,i)
+    while i < len(s):
+        # g.trace(g.get_line(s,i))
+        j = g.skip_ws(s,i) # Bug fix: 2/14/03
+        if g.is_nl(s,j) or g.match(s,j,"#"): # Bug fix: 2/14/03
+            i = g.skip_line(s,i) # ignore blank lines and comment lines.
+        else:
+            i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+            # g.trace("returns:",width)
+            return width
+    # g.trace("returns:0")
+    return 0
+#@-node:ekr.20031218072017.3308:getLeadingIndent
+#@-node:ekr.20070713074436:Removed utils
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl
