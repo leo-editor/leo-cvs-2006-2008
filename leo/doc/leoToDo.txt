@@ -1002,9 +1002,9 @@ def skipDecls (self,s,i):
     '''Skip everything until the start of the next class or function.'''
 
     # g.trace(s)
+    start = i
     while i < len(s):
         progress = i
-        # if g.match_word(s,i,'def'): g.pdb()
         if self.startsComment(s,i):
             i = self.skipComment(s,i)
         elif self.startsString(s,i):
@@ -1022,7 +1022,11 @@ def skipDecls (self,s,i):
         else: i += 1
         assert(progress < i)
 
-    return i
+    # Ignore empty decls.
+    if s[start:i].strip():
+        return i
+    else:
+        return start
 #@+node:ekr.20070709084313:adjustClassOrFunctionStart
 def adjustClassOrFunctionStart(self,s,i,tag):
 
@@ -1100,7 +1104,7 @@ def putClass (self,s,i,end,start,parent):
     c = self.c
     classStart = g.find_line_start(s,i)
     prefix = self.createClassNodePrefix()
-
+    # g.pdb()
     i = self.skipSignature(s,i)
     if 0:
         g.trace('sigEnd',self.sigEnd)
@@ -1388,7 +1392,9 @@ def checkTrialWrite (self):
         scriptWrite=False,toString=True,
         write_strips_blank_lines=False,
     )
-    strict = self.strict
+    debug = False
+    strict = self.strict or debug
+    ignoreBlankLines = True
     s1 = self.file_s
     s2 = at.stringOutput
     ok = s1 == s2
@@ -1400,31 +1406,37 @@ def checkTrialWrite (self):
     # Non-blank lines.
     lines1 = [z for z in lines1a if z.strip()] ; n1 = len(lines1)
     lines2 = [z for z in lines2a if z.strip()] ; n2 = len(lines2)
+    s1a = ''.join(lines1)
+    s2a = ''.join(lines2)
 
     if strict:
          g.trace('***mismatch',
             'len(s1)',len(s1),'len(s2)',len(s2))
+    elif ignoreBlankLines and len(s1a) != len(s2a):
+        g.trace('***mismatch in non-blank lines',
+            'len(s1)',len(s1a),'len(s2)',len(s2a))
+
     if n1 != n2:
         g.trace('***different number of non-blank lines:',
             'lines1',len(lines1),'lines2',len(lines2))
-    elif n1a != n2a:
+    elif n1a != n2a and not ignoreBlankLines:
         g.trace('***different number of *blank* lines:',
             'blank lines1',n1-len(lines1),'blank lines2',n2-len(lines2))
+    elif not strict:
+        return True
 
-    if n1 != n2: # Compare non-blank lines.
-        comp_lines1,comp_lines2 = lines1,lines2
-    else: # Compare all lines.
+    if strict or n1 != n2 or not ignoreBlankLines:
+        # Compare all lines.
         comp_lines1,comp_lines2 = lines1a,lines2a
+    else: # Compare non-blank lines.
+        comp_lines1,comp_lines2 = lines1,lines2
 
     n = min(len(comp_lines1),len(comp_lines2))
     for i in xrange(n):
         line1 = comp_lines1[i]
         line2 = comp_lines2[i]
-        # if not strict:
-            # line1 = line1.strip()
-            # line2 = line2.strip()
         if line1 != line2:
-            print 'first mismatch at line %d' % (i)
+            print 'first mismatch at line %d' % (i+1)
             print 'original line: ', repr(comp_lines1[i])
             print 'generated line:', repr(comp_lines2[i])
             ok = False
@@ -1442,7 +1454,7 @@ def checkTrialWrite (self):
         else:        ok = True
 
     if not ok and not g.app.unitTesting:
-        g.es_print('@auto ***%failure***')
+        g.es_print('%s ***failure***' % (g.choose(self.atAuto,'@auto','import')))
 
     if 1:
         if not ok and n2a < 30:
