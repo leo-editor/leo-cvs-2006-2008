@@ -1576,7 +1576,7 @@ class baseLeoImportCommands:
 
         #@    @+others
         #@+node:ekr.20070703122141.66:baseScannerClass.__init__
-        def __init__ (self,importCommands,atAuto,language,strict=False):
+        def __init__ (self,importCommands,atAuto,language):
 
             # Copy arguments.
             self.atAuto = atAuto
@@ -1588,7 +1588,6 @@ class baseLeoImportCommands:
             self.encoding = ic.encoding
             self.fileName = ic.fileName
             self.fileType = ic.fileType
-            # self._forcedGnxPositionList = []
             self.methodName = ic.methodName
             self.output_newline = ic.output_newline
             self.root = None # The top-level node of the generated tree.
@@ -1628,7 +1627,8 @@ class baseLeoImportCommands:
             self.sigTailFailTokens = []
                 # A list of strings that abort a signature when seen in a tail.
                 # For example, ';' and '=' in C.
-            self.strict = strict # True if leading whitespace is very significant.
+            self.strict = False # True if leading whitespace is very significant.
+        #@nonl
         #@-node:ekr.20070703122141.66:baseScannerClass.__init__
         #@+node:ekr.20070707072749:run
         def run (self,s,parent):
@@ -1647,7 +1647,7 @@ class baseLeoImportCommands:
 
             # Step 3: insert an @ignore directive if there are any problems.
             if not ok:
-                scanner.insertIgnoreDirectives(parent)
+                scanner.insertIgnoreDirective(parent)
         #@-node:ekr.20070707072749:run
         #@+node:ekr.20070703122141.78:error & oops
         def error (self,s):
@@ -1761,7 +1761,9 @@ class baseLeoImportCommands:
                 scriptWrite=False,toString=True,
                 write_strips_blank_lines=False,
             )
-            strict = self.strict
+            debug = False
+            strict = self.strict or debug
+            ignoreBlankLines = True
             s1 = self.file_s
             s2 = at.stringOutput
             ok = s1 == s2
@@ -1773,31 +1775,37 @@ class baseLeoImportCommands:
             # Non-blank lines.
             lines1 = [z for z in lines1a if z.strip()] ; n1 = len(lines1)
             lines2 = [z for z in lines2a if z.strip()] ; n2 = len(lines2)
+            s1a = ''.join(lines1)
+            s2a = ''.join(lines2)
 
             if strict:
                  g.trace('***mismatch',
                     'len(s1)',len(s1),'len(s2)',len(s2))
+            elif ignoreBlankLines and len(s1a) != len(s2a):
+                g.trace('***mismatch in non-blank lines',
+                    'len(s1)',len(s1a),'len(s2)',len(s2a))
+
             if n1 != n2:
                 g.trace('***different number of non-blank lines:',
                     'lines1',len(lines1),'lines2',len(lines2))
-            elif n1a != n2a:
+            elif n1a != n2a and not ignoreBlankLines:
                 g.trace('***different number of *blank* lines:',
                     'blank lines1',n1-len(lines1),'blank lines2',n2-len(lines2))
+            elif not strict:
+                return True
 
-            if n1 != n2: # Compare non-blank lines.
-                comp_lines1,comp_lines2 = lines1,lines2
-            else: # Compare all lines.
+            if strict or n1 != n2 or not ignoreBlankLines:
+                # Compare all lines.
                 comp_lines1,comp_lines2 = lines1a,lines2a
+            else: # Compare non-blank lines.
+                comp_lines1,comp_lines2 = lines1,lines2
 
             n = min(len(comp_lines1),len(comp_lines2))
             for i in xrange(n):
                 line1 = comp_lines1[i]
                 line2 = comp_lines2[i]
-                # if not strict:
-                    # line1 = line1.strip()
-                    # line2 = line2.strip()
                 if line1 != line2:
-                    print 'first mismatch at line %d' % (i)
+                    print 'first mismatch at line %d' % (i+1)
                     print 'original line: ', repr(comp_lines1[i])
                     print 'generated line:', repr(comp_lines2[i])
                     ok = False
@@ -1815,7 +1823,7 @@ class baseLeoImportCommands:
                 else:        ok = True
 
             if not ok and not g.app.unitTesting:
-                g.es_print('@auto ***%failure***')
+                g.es_print('%s ***failure***' % (g.choose(self.atAuto,'@auto','import')))
 
             if 1:
                 if not ok and n2a < 30:
@@ -1832,7 +1840,22 @@ class baseLeoImportCommands:
         #@-node:ekr.20070703122141.104:checkTrialWrite
         #@-node:ekr.20070703122141.102:check & helpers
         #@+node:ekr.20070706084535.1:Parsing
-        #@+node:ekr.20070707075646:Must be defined in base class
+        #@+at 
+        #@nonl
+        # Scan and skipDecls would typically not be overridden.
+        #@-at
+        #@+node:ekr.20070707150022:extendSignature
+        def extendSignature(self,s,i):
+
+            '''
+            Extend the signature line if appropriate.
+            The text *must* end with a newline.
+
+            For example, the Python scanner appends docstrings if they exist.
+            '''
+
+            return i
+        #@-node:ekr.20070707150022:extendSignature
         #@+node:ekr.20070706101600:scan & helper
         def scan (self,s,parent):
 
@@ -1882,66 +1905,6 @@ class baseLeoImportCommands:
                     g.angleBrackets(" " + self.methodName + " methods ") + "\n\n")
         #@-node:ekr.20070707073044.1:addRef
         #@-node:ekr.20070706101600:scan & helper
-        #@+node:ekr.20070707080042:skipDecls & helper
-        def skipDecls (self,s,i):
-
-            '''Skip everything until the start of the next class or function.'''
-
-            # g.trace(s)
-            while i < len(s):
-                progress = i
-                # if g.match_word(s,i,'def'): g.pdb()
-                if self.startsComment(s,i):
-                    i = self.skipComment(s,i)
-                elif self.startsString(s,i):
-                    i = self.skipString(s,i)
-                elif self.startsClass(s,i):
-                    # Important: do not include leading ws in the decls.
-                    i = self.adjustClassOrFunctionStart(s,i,'class')
-                    break
-                elif self.startsFunction(s,i):
-                    # Important: do not include leading ws in the decls.
-                    i = self.adjustClassOrFunctionStart(s,i,'function')
-                    break
-                elif self.startsId(s,i):
-                    i = self.skipId(s,i);
-                else: i += 1
-                assert(progress < i)
-
-            return i
-        #@+node:ekr.20070709084313:adjustClassOrFunctionStart
-        def adjustClassOrFunctionStart(self,s,i,tag):
-
-            '''
-            s[i:] starts a class or function.
-            Adjust i so it points at the start of the line.
-
-            Issue a warning if anything except whitespace appears.
-            '''
-
-            j = g.find_line_start(s,i)
-            if s[j:i].strip():
-                message = '%s definition does not start a line. Leo must insert a newline.' % tag
-                self.error(message)
-                return i
-            else:
-                return j
-        #@-node:ekr.20070709084313:adjustClassOrFunctionStart
-        #@-node:ekr.20070707080042:skipDecls & helper
-        #@-node:ekr.20070707075646:Must be defined in base class
-        #@+node:ekr.20070707075646.1:May be defined in subclasses
-        #@+node:ekr.20070707150022:extendSignature
-        def extendSignature(self,s,i,start):
-
-            '''
-            Extend the signature line if appropriate.
-            The text *must* end with a newline.
-
-            For example, the Python scanner appends docstrings if they exist.
-            '''
-
-            return i
-        #@-node:ekr.20070707150022:extendSignature
         #@+node:ekr.20070712075148:skipArgs
         def skipArgs (self,s,i,kind):
 
@@ -1964,9 +1927,9 @@ class baseLeoImportCommands:
         #@+node:ekr.20070707073859:skipBlock
         def skipBlock(self,s,i,delim1=None,delim2=None):
 
-            """Skips from the opening delim to the matching closing delim.
+            '''Skip from the opening delim to *past* the matching closing delim.
 
-            If no matching is found i is set to len(s)"""
+            If no matching is found i is set to len(s)'''
 
             # start = g.get_line(s,i)
             if delim1 is None: delim1 = self.blockDelim1
@@ -1988,16 +1951,6 @@ class baseLeoImportCommands:
                 else: i += 1
             return i
         #@-node:ekr.20070707073859:skipBlock
-        #@+node:ekr.20070712091019:skipCodeBlock
-        def skipCodeBlock (self,s,i):
-
-            '''Skip the code block in a function or class definition.'''
-
-            # Usually skipBlock suffices, but Python must distinguish between
-            # skipBlock and skipCodeBlock.
-
-            return self.skipBlock(s,i,delim1=None,delim2=None)
-        #@-node:ekr.20070712091019:skipCodeBlock
         #@+node:edreamleo.20070710105410:skipClass/Function/Signature
         # startsClass and startsFunction must do all the work anyway,
         # so they set the ending points and we just return it.
@@ -2011,6 +1964,16 @@ class baseLeoImportCommands:
         def skipSignature (self,s,i):
             return self.sigEnd
         #@-node:edreamleo.20070710105410:skipClass/Function/Signature
+        #@+node:ekr.20070712091019:skipCodeBlock
+        def skipCodeBlock (self,s,i):
+
+            '''Skip the code block in a function or class definition.'''
+
+            # Usually skipBlock suffices, but Python must distinguish between
+            # skipBlock and skipCodeBlock.
+
+            return self.skipBlock(s,i,delim1=None,delim2=None)
+        #@-node:ekr.20070712091019:skipCodeBlock
         #@+node:ekr.20070711104014:skipComment & helper
         def skipComment (self,s,i):
 
@@ -2036,6 +1999,56 @@ class baseLeoImportCommands:
                 return k + len(self.blockCommentDelim2)
         #@-node:ekr.20070707074541:skipBlockComment
         #@-node:ekr.20070711104014:skipComment & helper
+        #@+node:ekr.20070707080042:skipDecls & helper
+        def skipDecls (self,s,i):
+
+            '''Skip everything until the start of the next class or function.'''
+
+            # g.trace(s)
+            start = i
+            while i < len(s):
+                progress = i
+                if self.startsComment(s,i):
+                    i = self.skipComment(s,i)
+                elif self.startsString(s,i):
+                    i = self.skipString(s,i)
+                elif self.startsClass(s,i):
+                    # Important: do not include leading ws in the decls.
+                    i = self.adjustClassOrFunctionStart(s,i,'class')
+                    break
+                elif self.startsFunction(s,i):
+                    # Important: do not include leading ws in the decls.
+                    i = self.adjustClassOrFunctionStart(s,i,'function')
+                    break
+                elif self.startsId(s,i):
+                    i = self.skipId(s,i);
+                else: i += 1
+                assert(progress < i)
+
+            # Ignore empty decls.
+            if s[start:i].strip():
+                return i
+            else:
+                return start
+        #@+node:ekr.20070709084313:adjustClassOrFunctionStart
+        def adjustClassOrFunctionStart(self,s,i,tag):
+
+            '''
+            s[i:] starts a class or function.
+            Adjust i so it points at the start of the line.
+
+            Issue a warning if anything except whitespace appears.
+            '''
+
+            j = g.find_line_start(s,i)
+            if s[j:i].strip():
+                message = '%s definition does not start a line. Leo must insert a newline.' % tag
+                self.error(message)
+                return i
+            else:
+                return j
+        #@-node:ekr.20070709084313:adjustClassOrFunctionStart
+        #@-node:ekr.20070707080042:skipDecls & helper
         #@+node:ekr.20070707094858.1:skipId
         def skipId (self,s,i):
 
@@ -2054,14 +2067,6 @@ class baseLeoImportCommands:
             # Returns len(s) on unterminated string.
             return g.skip_string(s,i,verbose=False)
         #@-node:ekr.20070707073627.2:skipString
-        #@+node:ekr.20070711104014.1:startsComment
-        def startsComment (self,s,i):
-
-            return (
-                g.match(s,i,self.lineCommentDelim) or
-                g.match(s,i,self.lineCommentDelim2) or
-                g.match(s,i,self.blockCommentDelim1))
-        #@-node:ekr.20070711104014.1:startsComment
         #@+node:ekr.20070711132314:startsClass/Function (baseClass) & helpers
         # We don't expect to override this code, but subclasses may override the helpers.
 
@@ -2079,7 +2084,7 @@ class baseLeoImportCommands:
             '''return True if s[i:] starts a class or function.
             Sets self.end, self.sigEnd and self.sigID.'''
 
-            start = i
+            start = i ; trace = False
             self.end = self.sigEnd = self.sigID = None
 
             # Get the tag that starts the class or function.
@@ -2091,37 +2096,50 @@ class baseLeoImportCommands:
                         break
                 else: return False
 
-            # g.trace(g.get_line(s,i))
+            if trace: g.trace('kind',kind)
 
             # Get the class/function id
             i, sigId = self.skipSigId(s,i,ids)
-            if not sigId: return False
+            if not sigId:
+                if trace: g.trace('no sigId',g.get_line(s,i))
+                return False
 
             # Skip the argument list.
             i, ok = self.skipArgs(s,i,kind)
-            if not ok: return False
+            if not ok:
+                if trace: g.trace('no args',g.get_line(s,i))
+                return False
             i = g.skip_ws_and_nl(s,i)
 
             # Skip the tail of the signature
             i, ok = self.skipSigTail(s,i)
-            if not ok: return False
+            if not ok:
+                if trace: g.trace('no tail',g.get_line(s,i))
+                return False
             sigEnd = i
+
+            # A trick: make sure the signature ends in a newline,
+            # even if it overlaps the start of the block.
+            if not g.match(s,sigEnd,'\n') and not g.match(s,sigEnd-1,'\n'):
+                if trace: g.trace('extending sigEnd')
+                sigEnd = g.skip_line(s,sigEnd)
 
             # Skip the block.
             i = g.skip_ws_and_nl(s,i)
             if self.blockDelim1 and not g.match(s,i,self.blockDelim1):
+                if trace: g.trace('no block',g.get_line(s,i))
                 return False
+
             i = self.skipCodeBlock(s,i)
-            if self.blockDelim2 and not g.match(s,i,self.blockDelim2):
-                return False
+            # skipCodeBlock skips the trailing delim.
 
             # Success: set the ivars.
             self.end = g.skip_ws_and_nl(s,i+1)
             self.sigEnd = sigEnd
             self.sigID = sigId
-            if 0: # A good trace.
-                g.trace(g.callers())
-                print s[start:i]
+            if trace:
+                # g.trace(g.callers())
+                g.trace('kind',kind,'\n',s[start:i])
             return True
         #@-node:ekr.20070712112008:startsHelper
         #@+node:ekr.20070711140703:skipSigStart
@@ -2142,6 +2160,8 @@ class baseLeoImportCommands:
                 id = s[j:i]
                 if id: ids.append(id)
                 else: break
+
+            # g.trace(ids)
 
             return i, ids
         #@-node:ekr.20070711140703:skipSigStart
@@ -2176,6 +2196,14 @@ class baseLeoImportCommands:
             return i,True
         #@-node:ekr.20070712082913:skipSigTail
         #@-node:ekr.20070711132314:startsClass/Function (baseClass) & helpers
+        #@+node:ekr.20070711104014.1:startsComment
+        def startsComment (self,s,i):
+
+            return (
+                g.match(s,i,self.lineCommentDelim) or
+                g.match(s,i,self.lineCommentDelim2) or
+                g.match(s,i,self.blockCommentDelim1))
+        #@-node:ekr.20070711104014.1:startsComment
         #@+node:ekr.20070707094858.2:startsId
         def startsId(self,s,i):
 
@@ -2186,7 +2214,6 @@ class baseLeoImportCommands:
 
             return g.match(s,i,'"') or g.match(s,i,"'")
         #@-node:ekr.20070707172732.1:startsString
-        #@-node:ekr.20070707075646.1:May be defined in subclasses
         #@-node:ekr.20070706084535.1:Parsing
         #@+node:ekr.20070706084535:Code generation 
         # None of these methods should ever need to be overridden in subclasses.
@@ -2220,7 +2247,7 @@ class baseLeoImportCommands:
 
             # g.trace("parent,headline:",parent,headline)
 
-            # Create the vnode.
+            # Create the node.
             p = parent.insertAsLastChild()
             p.initHeadString(headline,self.encoding)
 
@@ -2247,11 +2274,11 @@ class baseLeoImportCommands:
             # g.trace("returns:",width)
             return width
         #@-node:ekr.20070703122141.79:getLeadingIndent
-        #@+node:ekr.20070705085335:insertIgnoreDirectives
-        def insertIgnoreDirectives (self,parent):
+        #@+node:ekr.20070705085335:insertIgnoreDirective
+        def insertIgnoreDirective (self,parent):
 
-            g.trace(parent)
-        #@-node:ekr.20070705085335:insertIgnoreDirectives
+            self.c.appendStringToBody(parent,'@ignore')
+        #@-node:ekr.20070705085335:insertIgnoreDirective
         #@+node:ekr.20070703122141.81:massageComment
         def massageComment (self,s):
 
@@ -2276,7 +2303,7 @@ class baseLeoImportCommands:
             c = self.c
             classStart = g.find_line_start(s,i)
             prefix = self.createClassNodePrefix()
-
+            # g.pdb()
             i = self.skipSignature(s,i)
             if 0:
                 g.trace('sigEnd',self.sigEnd)
@@ -2455,7 +2482,7 @@ class baseLeoImportCommands:
     #@-node:ekr.20070703122141.65: class baseScannerClass
     #@+node:edreamleo.20070710110114.1:C scanner
     #@+node:edreamleo.20070710110153:scanCText
-    def scanCText (self,s,parent,atAuto=False,strict=False):
+    def scanCText (self,s,parent,atAuto=False):
 
         scanner = self.cScanner(importCommands=self,atAuto=atAuto)
 
@@ -2484,7 +2511,7 @@ class baseLeoImportCommands:
     #@-node:edreamleo.20070710110114.1:C scanner
     #@+node:ekr.20070711060107:Elisp scanner
     #@+node:ekr.20070711060107.1:scanElispText
-    def scanElispText (self,s,parent,atAuto=False,strict=False):
+    def scanElispText (self,s,parent,atAuto=False):
 
         scanner = self.elispScanner(importCommands=self,atAuto=atAuto)
 
@@ -2554,7 +2581,7 @@ class baseLeoImportCommands:
     #@-node:ekr.20070711060107:Elisp scanner
     #@+node:edreamleo.20070710110114:Java scanner
     #@+node:edreamleo.20070710110114.2:scanJavaText
-    def scanJavaText (self,s,parent,atAuto=False,strict=False):
+    def scanJavaText (self,s,parent,atAuto=False):
 
         scanner = self.javaScanner(importCommands=self,atAuto=atAuto)
 
@@ -2579,7 +2606,7 @@ class baseLeoImportCommands:
     #@-node:edreamleo.20070710110114:Java scanner
     #@+node:ekr.20070711104241:Pascal scanner
     #@+node:ekr.20070711104241.2:scanPascalText
-    def scanPascalText (self,s,parent,atAuto=False,strict=False):
+    def scanPascalText (self,s,parent,atAuto=False):
 
         scanner = self.pascalScanner(importCommands=self,atAuto=atAuto)
 
@@ -2607,7 +2634,7 @@ class baseLeoImportCommands:
     #@-node:ekr.20070711104241:Pascal scanner
     #@+node:ekr.20070711090052:PHP scanner
     #@+node:ekr.20070711090122:scanPHPText
-    def scanPHPText (self,s,parent,atAuto=False,strict=False):
+    def scanPHPText (self,s,parent,atAuto=False):
 
         scanner = self.phpScanner(importCommands=self,atAuto=atAuto)
 
@@ -2672,40 +2699,6 @@ class baseLeoImportCommands:
     #@-node:ekr.20070711090052.1:class phpScanner (baseScannerClass)
     #@-node:ekr.20070711090052:PHP scanner
     #@+node:ekr.20070703123334.2:Python scanner
-    #@+node:ekr.20070705091716:pythonUnitTest
-    def pythonUnitTest (self,p,s,fileName,atAuto=False):
-
-        '''
-        Run a unit test of the Python parser,
-        i.e., create a tree from string s at location p.
-        The caller is responsible for asserting properties of the tree.
-        '''
-
-        # Duplicate processing in ic command
-        ic = self ; c = ic.c
-        if fileName.startswith('@test'):
-            fileName = fileName[5:].strip()
-        junk,ic.fileName = g.os_path_split(fileName)
-        ic.methodName,ic.fileType = g.os_path_splitext(ic.fileName)
-        ic.setEncoding()
-
-        c.beginUpdate()
-        try:
-            # Create a child
-            child = p.insertAsLastChild()
-            assert child
-            h = g.choose(atAuto,'@auto ' + fileName,fileName)
-            child.initHeadString(h)
-            ic.scanPythonText (s=s,parent=child.copy(),atAuto=atAuto)
-        finally:
-            c.endUpdate()
-        if 0:
-            g.trace('***** generated tree...')
-            for z in p.subtree_iter():
-                print '.'*z.level(),z.headString()
-
-        return child
-    #@-node:ekr.20070705091716:pythonUnitTest
     #@+node:ekr.20070703122141.99:scanPythonText
     def scanPythonText (self,s,parent,atAuto=False):
 
@@ -2722,7 +2715,7 @@ class baseLeoImportCommands:
 
             # Init the base class.
             importCommands.baseScannerClass.__init__(self,importCommands,
-                atAuto=atAuto,language='python',strict=True)
+                atAuto=atAuto,language='python')
 
             # Set the parser delims.
             self.lineCommentDelim = '#'
@@ -2732,6 +2725,7 @@ class baseLeoImportCommands:
                 # Suppress the check for the block delim.
                 # The check is done in skipSigTail.
             self.blockDelim2 = None
+            self.strict = True
 
         #@-node:ekr.20070703122141.101: __init__
         #@+node:ekr.20070707073723:Overrides
@@ -2850,34 +2844,34 @@ class baseLeoImportCommands:
     #@-node:ekr.20070713075352:Default scanner
     #@-node:ekr.20031218072017.3241:Scanners for createOutline
     #@+node:ekr.20070713075450:Unit tests
-    def cUnitTest(self,p,s,fileName,atAuto=False):
-        return self.scannerUnitTest (p,s,fileName,atAuto=atAuto,ext='.c')
+    def cUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest(p,atAuto=atAuto,fileName=None,s=s,showTree=showTree,ext='.c')
 
-    def elispUnitTest(self,p,s,fileName,atAuto=False):
-        return self.scannerUnitTest (p,s,fileName,atAuto=atAuto,ext='.el')
+    def elispUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.el')
 
-    def htmlUnitTest(self,p,s,fileName,atAuto=False):
-        return self.scannerUnitTest (p,s,fileName,atAuto=atAuto,ext='.htm')
+    def htmlUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.htm')
 
-    def javaUnitTest(self,p,s,fileName,atAuto=False):
-        return self.scannerUnitTest (p,s,fileName,atAuto=atAuto,ext='.java')
+    def javaUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.java')
 
-    def pascalUnitTest(self,p,s,fileName,atAuto=False):
-        return self.scannerUnitTest (p,s,fileName,atAuto=atAuto,ext='.pas')
+    def pascalUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.pas')
 
-    def phpUnitTest(self,p,s,fileName,atAuto=False):
-        return self.scannerUnitTest (p,s,fileName,atAuto=atAuto,ext='.php')
+    def phpUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.php')
 
-    def pythonUnitTest(self,p,s,fileName,atAuto=False):
-        return self.scannerUnitTest (p,s,fileName,atAuto=atAuto,ext='.py')
+    def pythonUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.py')
 
-    def textUnitTest(self,p,s,fileName,atAuto=False):
-        return self.scannerUnitTest (p,s,fileName,atAuto=atAuto,ext='.txt')
+    def textUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.txt')
 
-    def defaultImporterUnitTest(self,p,s,fileName,atAuto=False):
-        return self.scannerUnitTest (p,s,fileName,atAuto=atAuto,ext='.xxx')
+    def defaultImporterUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,ext='.xxx')
     #@+node:ekr.20070713082220:scannerUnitTest
-    def scannerUnitTest (self,p,s,fileName,atAuto=False,ext=None):
+    def scannerUnitTest (self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
 
         '''Run a unit test of an import scanner,
         i.e., create a tree from string s at location p.'''
@@ -2886,20 +2880,18 @@ class baseLeoImportCommands:
         c.beginUpdate()
         try:
             g.app.unitTestDict = {}
+            if not fileName: fileName = p.headString()
             if not s: s = self.removeSentinelsCommand([fileName],toString=True)
             self.createOutline(fileName,p.copy(),atAuto=False,s=s,ext=ext)
-        finally:
-            if g.app.unitTestDict.get('result'):
+            if not showTree and g.app.unitTestDict.get('result'):
                 while p.hasChildren():
                     p.firstChild().doDelete()
+        finally:
             c.endUpdate()
 
-        assert g.app.unitTestDict.get('result')
-
-        if 0:
-            g.trace('***** generated tree...')
-            for z in p.subtree_iter():
-                print '.'*z.level(),z.headString()
+        if g.app.unitTesting:
+            assert g.app.unitTestDict.get('result')
+    #@nonl
     #@-node:ekr.20070713082220:scannerUnitTest
     #@-node:ekr.20070713075450:Unit tests
     #@-node:ekr.20031218072017.3209:Import
