@@ -1822,19 +1822,29 @@ class baseLeoImportCommands:
                 elif strict: ok = False
                 else:        ok = True
 
-            if not ok and not g.app.unitTesting:
-                g.es_print('%s ***failure***' % (g.choose(self.atAuto,'@auto','import')))
-
-            if 1:
+            if not g.app.unitTesting:
+                if not ok:
+                    g.es_print('%s ***failure***' % (g.choose(self.atAuto,'@auto','import')))
                 if not ok and n2a < 30:
+                    print ; print 'generated tree:'
+                    level1 = self.root.level()
+                    i = 1
+                    for p in self.root.self_and_subtree_iter():
+                        ws = self.tab_ws * (p.level()-level1)
+                        print '%2s%s<node %s>' % (' ',ws,p.headString())
+                        body = []
+                        for z in g.splitLines(p.bodyString()):
+                            body.append('%2d %s' % (i,z))
+                            i += 1
+                        print ''.join(body)
                     print ; print 'original lines:'
                     i = 1
                     for line in lines1a:
-                        print i,repr(line) ; i += 1
+                        print '%2d' % (i),repr(line) ; i += 1
                     print ; print 'generated lines:'
                     i = 1
                     for line in lines2a:
-                        print i,repr(line) ; i += 1
+                        print '%2d' % (i),repr(line) ; i += 1
 
             return ok
         #@-node:ekr.20070703122141.104:checkTrialWrite
@@ -1888,7 +1898,7 @@ class baseLeoImportCommands:
                 elif self.startsId(s,i):
                     i = self.skipId(s,i);
                 else: i += 1
-                assert(progress < i)
+                assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
             self.addRef(parent)
         #@+node:ekr.20070707073044.1:addRef
         def addRef (self,parent):
@@ -2134,7 +2144,8 @@ class baseLeoImportCommands:
             # skipCodeBlock skips the trailing delim.
 
             # Success: set the ivars.
-            self.end = g.skip_ws_and_nl(s,i+1)
+            ### self.end = g.skip_ws_and_nl(s,i+1)
+            self.end = i
             self.sigEnd = sigEnd
             self.sigID = sigId
             if trace:
@@ -2257,19 +2268,24 @@ class baseLeoImportCommands:
             return p
         #@-node:ekr.20070703122141.77:createHeadline
         #@+node:ekr.20070703122141.79:getLeadingIndent
-        def getLeadingIndent (self,s,i):
+        def getLeadingIndent (self,s,i,ignoreComments=True):
 
-            """Return the leading whitespace of a line, ignoring blank and comment lines."""
+            '''Return the leading whitespace of a line.
+            Ignore blank and comment lines if ignoreComments is True'''
 
-            width = 0 ; i = g.find_line_start(s,i)
-            while i < len(s):
-                # g.trace(g.get_line(s,i))
-                j = g.skip_ws(s,i)
-                if g.is_nl(s,j) or g.match(s,j,self.comment_delim):
-                    i = g.skip_line(s,i) # ignore blank lines and comment lines.
-                else:
-                    i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
-                    break
+            width = 0
+            i = g.find_line_start(s,i)
+            if ignoreComments:
+                while i < len(s):
+                    # g.trace(g.get_line(s,i))
+                    j = g.skip_ws(s,i)
+                    if g.is_nl(s,j) or g.match(s,j,self.comment_delim):
+                        i = g.skip_line(s,i) # ignore blank lines and comment lines.
+                    else:
+                        i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+                        break      
+            else:
+                i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
 
             # g.trace("returns:",width)
             return width
@@ -2394,7 +2410,7 @@ class baseLeoImportCommands:
                 elif self.startsId(s,i):
                     i = self.skipId(s,i);
                 else: i += 1
-                assert(progress < i)
+                assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
 
             if putRef:
                 self.appendRefToClassNode(class_name,class_node)
@@ -2407,9 +2423,7 @@ class baseLeoImportCommands:
         #@+node:ekr.20070707082432:putFunction
         def putFunction (self,s,i,end,start,parent):
 
-            '''
-            Create a node of parent for a function defintion.
-            '''
+            '''Create a node of parent for a function defintion.'''
 
             if self.sigID:
                 headline = self.sigID
@@ -2417,10 +2431,11 @@ class baseLeoImportCommands:
                 g.trace('Can not happen: no sigID')
                 headline = 'unknown function'
 
-            body1 = self.undentBody(s[start:i])
+            body1 = self.undentBody(s[start:i],ignoreComments=False)
 
             # An emergency measure.
-            i = g.find_line_start(s,i)
+            if not g.match(s,i,'\n'):
+                i = g.find_line_start(s,i)
             body2 = self.undentBody(s[i:end])
             body = body1 + body2
 
@@ -2437,7 +2452,7 @@ class baseLeoImportCommands:
                 c.appendStringToBody(p,'@ignore\n' + self.rootLine + '@language python\n')
         #@-node:ekr.20070705094630:putRootText
         #@+node:ekr.20070703122141.88:undentBody
-        def undentBody (self,s):
+        def undentBody (self,s,ignoreComments=True):
 
             '''Remove the leading indentation of line 1 from all lines of s.'''
 
@@ -2450,7 +2465,7 @@ class baseLeoImportCommands:
                 result += s[j:i]
 
             # Calculate the amount to be removed from each line.
-            undent = self.getLeadingIndent(s,i)
+            undent = self.getLeadingIndent(s,i,ignoreComments=ignoreComments)
             if undent == 0:
                 return s
             else:
@@ -2763,7 +2778,7 @@ class baseLeoImportCommands:
             # Returns len(s) on unterminated string.
             return g.skip_python_string(s,i,verbose=False)
         #@-node:ekr.20070707073627.4:skipString
-        #@+node:ekr.20070712090019.1:skipCodeBlock
+        #@+node:ekr.20070712090019.1:skipCodeBlock (python)
         def skipCodeBlock (self,s,i):
 
             # g.trace(g.get_line(s,i))
@@ -2778,19 +2793,18 @@ class baseLeoImportCommands:
                 if g.is_nl(s,i):
                     backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
                     i = g.skip_nl(s,i)
-                    if not backslashNewline:
+                    if backslashNewline:
+                        pass
+                    else:
                         j, indent = g.skip_leading_ws_with_indent(s,i,self.tab_width)
-                        underIndented = indent <= startIndent and parenCount == 0
-                        if underIndented:
+                        if indent <= startIndent and parenCount == 0:
+                            # An underindented line: it ends the block *unless*
+                            # it is a blank or comemnt line.
                             if g.match(s,j,'#') or g.match(s,j,'\n'):
-                                # Dont stop immediately for underindented comment or blank lines.
-                                # Extend the range of underindented lines.
                                 if underIndentedStart is None:
                                     underIndentedStart = i
                                 i = j
-                            else:
-                                # The actual end of the function.
-                                return g.choose(underIndentedStart is None,i,underIndentedStart)
+                            else: break # The actual end of the block.
                         else:
                             underIndentedStart = None
                 elif ch == '#':
@@ -2806,8 +2820,9 @@ class baseLeoImportCommands:
                 else: i += 1
                 assert(progress < i)
 
-            return i
-        #@-node:ekr.20070712090019.1:skipCodeBlock
+            # The actual end of the block.
+            return g.choose(underIndentedStart is None,i,underIndentedStart)
+        #@-node:ekr.20070712090019.1:skipCodeBlock (python)
         #@+node:ekr.20070712092615:skipSigTail
         def skipSigTail(self,s,i):
 
@@ -2877,6 +2892,7 @@ class baseLeoImportCommands:
         i.e., create a tree from string s at location p.'''
 
         c = self.c
+        oldChanged = c.changed
         c.beginUpdate()
         try:
             g.app.unitTestDict = {}
@@ -2886,6 +2902,7 @@ class baseLeoImportCommands:
             if not showTree and g.app.unitTestDict.get('result'):
                 while p.hasChildren():
                     p.firstChild().doDelete()
+                c.setChanged(oldChanged)
         finally:
             c.endUpdate()
 
