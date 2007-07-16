@@ -1078,7 +1078,7 @@ def scan (self,s,parent):
         elif self.startsId(s,i):
             i = self.skipId(s,i);
         else: i += 1
-        assert(progress < i)
+        assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
     self.addRef(parent)
 #@+node:ekr.20070707073044.1:addRef
 def addRef (self,parent):
@@ -1195,7 +1195,7 @@ def putClassHelper(self,s,class_name,class_node):
         elif self.startsId(s,i):
             i = self.skipId(s,i);
         else: i += 1
-        assert(progress < i)
+        assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
 
     if putRef:
         self.appendRefToClassNode(class_name,class_node)
@@ -1206,7 +1206,7 @@ def putClassHelper(self,s,class_name,class_node):
 #@-node:ekr.20070707171329:putClassHelper
 #@-node:ekr.20070707113832.1:putClass & helpers
 #@+node:ekr.20070703122141.88:undentBody
-def undentBody (self,s):
+def undentBody (self,s,ignoreComments=True):
 
     '''Remove the leading indentation of line 1 from all lines of s.'''
 
@@ -1219,7 +1219,7 @@ def undentBody (self,s):
         result += s[j:i]
 
     # Calculate the amount to be removed from each line.
-    undent = self.getLeadingIndent(s,i)
+    undent = self.getLeadingIndent(s,i,ignoreComments=ignoreComments)
     if undent == 0:
         return s
     else:
@@ -1453,19 +1453,29 @@ def checkTrialWrite (self):
         elif strict: ok = False
         else:        ok = True
 
-    if not ok and not g.app.unitTesting:
-        g.es_print('%s ***failure***' % (g.choose(self.atAuto,'@auto','import')))
-
-    if 1:
+    if not g.app.unitTesting:
+        if not ok:
+            g.es_print('%s ***failure***' % (g.choose(self.atAuto,'@auto','import')))
         if not ok and n2a < 30:
+            print ; print 'generated tree:'
+            level1 = self.root.level()
+            i = 1
+            for p in self.root.self_and_subtree_iter():
+                ws = self.tab_ws * (p.level()-level1)
+                print '%2s%s<node %s>' % (' ',ws,p.headString())
+                body = []
+                for z in g.splitLines(p.bodyString()):
+                    body.append('%2d %s' % (i,z))
+                    i += 1
+                print ''.join(body)
             print ; print 'original lines:'
             i = 1
             for line in lines1a:
-                print i,repr(line) ; i += 1
+                print '%2d' % (i),repr(line) ; i += 1
             print ; print 'generated lines:'
             i = 1
             for line in lines2a:
-                print i,repr(line) ; i += 1
+                print '%2d' % (i),repr(line) ; i += 1
 
     return ok
 #@-node:ekr.20070703122141.104:checkTrialWrite
