@@ -2849,13 +2849,14 @@ class baseLeoImportCommands:
     #@-node:ekr.20070703122141.100:class pythonScanner (baseScannerClass)
     #@-node:ekr.20070703123334.2:Python scanner
     #@+node:ekr.20070713075352:Default scanner
-    def scanUnknownFileType (s,p,ext,atAuto=False):
+    def scanUnknownFileType (self,s,p,ext,atAuto=False):
 
         c = self.c
         body = g.choose(atAuto,'','@ignore\n')
         if ext in ('.html','.htm'): body += '@language html\n'
         if ext in ('.txt','.text'): body += '@nocolor\n'
         c.setBodyString(p,body + self.rootLine + s)
+        g.app.unitTestDict = {'result':True}
     #@-node:ekr.20070713075352:Default scanner
     #@-node:ekr.20031218072017.3241:Scanners for createOutline
     #@+node:ekr.20070713075450:Unit tests
