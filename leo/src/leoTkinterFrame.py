@@ -3038,15 +3038,17 @@ class leoTkTextWidget (Tk.Text):
     #@-node:ekr.20070213170937:bindings (not used)
     #@+node:ekr.20061113151148.2:Index conversion (leoTextWidget)
     #@+node:ekr.20061117085824:w.toGuiIndex
-    def toGuiIndex (self,i):
+    def toGuiIndex (self,i,s=None):
         '''Convert a Python index to a Tk index as needed.'''
         w = self
         if i is None:
             g.trace('can not happen: i is None',g.callers())
             return '1.0'
         elif type(i) == type(99):
-            # This *must* be 'end-1c', even if other code must change.
-            s = Tk.Text.get(w,'1.0','end-1c')
+            # The 's' arg supports the threaded colorizer.
+            if s is None:
+                # This *must* be 'end-1c', even if other code must change.
+                s = Tk.Text.get(w,'1.0','end-1c')
             row,col = g.convertPythonIndexToRowCol(s,i)
             i = '%s.%s' % (row+1,col)
             # g.trace(len(s),i,repr(s))
