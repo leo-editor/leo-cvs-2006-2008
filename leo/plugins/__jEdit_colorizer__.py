@@ -1,6 +1,6 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20060530091119.20:@thin __jEdit_colorizer__.py
-'''Replace colorizer with colorizer using jEdit language description files'''
+'''Replace the colorizer using jEdit language description files'''
 
 #@@language python
 #@@tabwidth -4
@@ -828,8 +828,6 @@ class baseColorizer:
             if not d.get(self.language):
                 d [self.language] = delims
                 # g.trace(self.language,'delims:',repr(delims))
-
-    #@nonl
     #@-node:ekr.20060727084423:updateDelimsTables
     #@-node:ekr.20060530091119.9:init_mode & helpers
     #@-node:ekr.20060530091119.35:Birth and init
@@ -1491,8 +1489,6 @@ class baseColorizer:
             self.trace_match(kind,s,i,j2)
             return j2 - i
         else: return 0
-
-    #@nonl
     #@-node:ekr.20060530091119.58:match_span_regexp
     #@-node:ekr.20060530091119.49:jEdit matchers
     #@+node:ekr.20060530091119.59:Utils
