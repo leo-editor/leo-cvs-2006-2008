@@ -6,7 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.02'
+__version__ = '0.03'
 
 trace_leo_matches = False
 
@@ -36,6 +36,7 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # 0.1 EKR: Initial version based on code in test.leo.
 # 0.2 EKR: Do not restore the selection range or insert point: it messes 
 # things up.
+# 0.3 EKR: A rewrite of the incremental coloring logic.
 #@-at
 #@nonl
 #@-node:ekr.20070718100326.1:<< version history >>
@@ -329,7 +330,8 @@ def match_blanks (self,s,i):
 
     if j > i:
         # g.trace(i,j)
-        self.colorRangeWithTag(s,i,j,'blank')
+        if self.showInvisibles:
+            self.colorRangeWithTag(s,i,j,'blank')
         return j - i
     else:
         return 0
@@ -353,6 +355,22 @@ def match_tabs (self,s,i):
         return 0
 #@nonl
 #@-node:ekr.20070718131458.19:match_tabs
+#@+node:ekr.20070720161950:match_incomplete_strings
+def match_incomplete_strings (self,s,i):
+
+    if trace_leo_matches: g.trace()
+
+    if not g.match(s,i,'"') and not g.match(s,i,"'"):
+        return 0
+    delim = s[i]
+    j = g.skip_line(s,i)
+    if s.find(delim,i+1,j) == -1:
+        # g.trace(repr(s[i:j]))
+        self.colorRangeWithTag(s,i,j,'literal1')
+        return j-i
+    else:
+        return j
+#@-node:ekr.20070720161950:match_incomplete_strings
 #@-node:ekr.20070718131458.11:Leo rule functions
 #@-node:ekr.20070718131458.5:module-level
 #@+node:ekr.20070718131458.20:class colorizer
@@ -436,7 +454,7 @@ class colorizer:
         # Incremental data.
         self.end_i = 0 # The ending index of the text that has been colored.
         self.lines = [] # The previous lines (only means something between calls to the colorizer).
-        self.marksDict = {} # Keys are indices, values are lengths of multi-line matches at that index.
+        self.marksDict = {} # Keys are indices of matches, values are lengths of the match.
         self.start_i = 0 # The starting index of the text that has been colored.
         # Threading stuff.
         self.lock = threading.Condition()
@@ -491,6 +509,8 @@ class colorizer:
             # Rules added at back are added in normal order.
             (' ',  match_blanks,      False),
             ('\t', match_tabs,        False),
+            ('"',  match_incomplete_strings, False),
+            ("'",  match_incomplete_strings, False),
         ):
             theList = theDict.get(ch,[])
             if atFront:
@@ -881,158 +901,6 @@ class colorizer:
     #@nonl
     #@-node:ekr.20070718131458.41:updateSyntaxColorer
     #@-node:ekr.20070718131458.33:Entry points
-    #@+node:ekr.20070718131458.42:finishColoring & helpers
-    def finishColoring (self,done):
-
-        w = self.w
-        if self.killFlag: return
-
-        self.lock.acquire()
-        try:
-            self.tagAll()
-        finally:
-            self.lock.release()
-
-        w.update_idletasks()
-
-        # print '%d' % self.threadCount,
-    #@+node:ekr.20070718131458.43:removeAllImages
-    def removeAllImages (self):
-
-        for photo,image,line_index,i in self.image_references:
-            try:
-                self.body.deleteCharacter(image)
-                w = self.w
-                w.delete(self.allBodyText,index)
-                self.allBodyText = w.getAllText()
-            except:
-                pass # The image may have been deleted earlier.
-
-        self.image_references = []
-    #@nonl
-    #@-node:ekr.20070718131458.43:removeAllImages
-    #@+node:ekr.20070718131458.44:removeAllTags
-    def removeAllTags (self):
-
-        w = self.w
-
-        g.trace()
-
-        names = w.tag_names()
-        for name in names:
-            if name not in ('sel','insert'):
-                w.tag_remove(name,w.toGuiIndex(0), w.toGuiIndex('end'))
-
-        # g.trace(len(self.tagList)/3)
-    #@-node:ekr.20070718131458.44:removeAllTags
-    #@+node:ekr.20070718131458.45:tagAll
-    def tagAll (self):
-
-        s = self.s ; w = self.w
-
-        g.trace('removing tags from',repr(s[self.start_i:self.end_i]))
-
-        names = [z for z in w.tag_names() if z not in ('sel','insert')]
-        for tag in names:
-            x1,x2 = w.toGuiIndex(self.start_i,s=s), w.toGuiIndex(self.end_i,s=s)
-            w.tag_remove(tag,x1,x2)
-
-        for tag,i,j in self.tagList:
-            x1,x2 = w.toGuiIndex(i,s=s), w.toGuiIndex(j,s=s)
-            w.tag_add(tag,x1,x2)
-
-        self.tagList = []
-        self.start_i = self.end_i
-    #@-node:ekr.20070718131458.45:tagAll
-    #@-node:ekr.20070718131458.42:finishColoring & helpers
-    #@+node:ekr.20070718131458.46:threadColorizer & helpers
-    thread_count = 0
-
-    def threadColorizer (self,p,incremental,interruptable):
-
-        # Kill the previous thread for this widget.
-        t = self.helperThread
-        if t and t.isAlive():
-            self.killFlag = True
-            t.join()
-            self.killFlag = False
-        self.helperThread = None
-        # Init the ivars *after* ending the previous helper thread.
-        self.init(p,incremental,interruptable) # Sets 's','w' and other ivars.
-        if self.killcolorFlag or not self.mode:
-            self.finishColoring(done=True)
-        elif self.use_threads: # Start the helper thread.
-            ###self.quickColor()
-            self.threadCount += 1
-            t = threading.Thread(target=self.target,kwargs={'s':self.s})
-            self.helperThread = t
-            t.start()
-            self.w.after_idle(self.idleHandler,self.threadCount)
-        else:
-            ###self.quickColor()
-            self.target(s=self.s)
-            self.w.after_idle(self.idleHandler,self.threadCount)
-    #@+node:ekr.20070718131458.49:init
-    def init (self,p,incremental,interruptable):
-
-        self.w = w = self.c.frame.body.bodyCtrl
-
-        self.incremental = incremental
-        self.interruptable = interruptable
-        self.insertPoint = w.getInsertPoint()  
-        self.killFlag = False
-        ### self.leading = leading
-        # self.language is set by self.updateSyntaxColorer.
-        self.p = p.copy()
-        self.redoColoring = False
-        self.redoingColoring = False
-        self.s = w.getAllText()
-        self.selection = w.getSelectionRange()
-        # g.trace('ins',self.insertPoint,'sel',self.selection)
-        self.tagList = []
-        self.tagsRemoved = False
-        ### self.trailing = trailing
-        self.waitCount = 0
-
-        self.init_mode(self.language)
-        self.configure_tags() # Must do this every time to support multiple editors.
-    #@-node:ekr.20070718131458.49:init
-    #@+node:ekr.20070718131458.50:idleHandler
-    def idleHandler (self,n):
-
-        if not self.use_threads:
-            self.finishColoring(done=False)
-        elif not self.helperThread or n < self.threadCount:
-            return
-        elif self.helperThread.isAlive():
-            # print '-%d-' % self.threadCount,
-            self.waitCount += 1
-            self.finishColoring(done=False)
-            # self.w.after_idle(self.idleHandler,n)
-            self.w.after(200,self.idleHandler,n)
-        else:
-            # if self.waitCount: g.trace('waitCount',self.waitCount)
-            # print '%d' % n,
-            self.finishColoring(done=True)
-    #@-node:ekr.20070718131458.50:idleHandler
-    #@+node:ekr.20070718131458.51:quickColor
-    def quickColor (self):
-
-        '''Give the inserted character the previous color tag by default.'''
-
-        return ### Doesn't Tk do this automatically ???
-
-        w = self.w ; i = w.getInsertPoint()
-        if i == 0: return # No previous character.
-        x = w.toGuiIndex(i)
-
-        if w.tag_names(x): return # The character already has a color.
-        x2 = w.toGuiIndex(i-1)
-        theList = w.tag_names(x2)
-        if theList:
-            w.tag_add(theList[0],x)
-    #@-node:ekr.20070718131458.51:quickColor
-    #@-node:ekr.20070718131458.46:threadColorizer & helpers
     #@+node:ekr.20070719111308:Colorers & helpers
     #@+node:ekr.20070720101942:adjustMarksDict
     def adjustMarksDict (self,d,mid_i,delta):
@@ -1075,7 +943,8 @@ class colorizer:
             bunch = self.modeStack.pop()
             self.initModeFromBunch(bunch)
         elif not exclude_match:
-            # if tag != 'blank': g.trace('***',self.rulesetName,tag,i,j,s[i:j])
+            # g.trace('***',self.rulesetName,tag,i,j,s[i:j])
+            # g.trace(tag,i,j,repr(s[i:j]))
             self.lock.acquire()
             try:
                 self.tagList.append((tag,i,j),)
@@ -1102,9 +971,8 @@ class colorizer:
 
         new_len = len(new_lines)
         old_len = len(old_lines)
-        min_len = min(new_len,old_len)
         i = 0
-        while i < min_len and old_lines[i] == new_lines[i]:
+        while i < new_len and i < old_len and old_lines[i] == new_lines[i]:
             i += 1
         head = i
 
@@ -1116,7 +984,10 @@ class colorizer:
             return 0,0,0,all
 
         i = 0
-        while old_lines[old_len-i-1] == new_lines[new_len-i-1]:
+        while (
+            old_len-i-1 >=0 and new_len-i-1 >=0 and
+            old_lines[old_len-i-1] == new_lines[new_len-i-1]
+        ):
             i += 1
         tail = i
 
@@ -1161,12 +1032,29 @@ class colorizer:
         else:
             return i
     #@-node:ekr.20070720113510:findMarkAtIndex
+    #@+node:ekr.20070718131458.42:finishColoring
+    def finishColoring (self,done):
+
+        w = self.w
+        if self.killFlag: return
+
+        self.lock.acquire()
+
+        try:
+            self.tagAll()
+        finally:
+            self.lock.release()
+
+        # w.update_idletasks()
+
+        # print '%d' % self.threadCount,
+    #@-node:ekr.20070718131458.42:finishColoring
     #@+node:ekr.20070719105813:fullColor
     def fullColor (self,s):
 
         '''Fully recolor s.'''
 
-        g.trace(self.language)
+        # g.trace(self.language)
         i = self.start_i = self.end_i = 0
         self.marksDict = {}
         while i < len(s):
@@ -1188,7 +1076,48 @@ class colorizer:
         self.lines = g.splitLines(s)
     #@nonl
     #@-node:ekr.20070719105813:fullColor
-    #@+node:ekr.20070719110029:partialColor & helpers
+    #@+node:ekr.20070718131458.50:idleHandler
+    def idleHandler (self,n):
+
+        if not self.use_threads:
+            self.finishColoring(done=False)
+        elif not self.helperThread or n < self.threadCount:
+            return
+        elif self.helperThread.isAlive():
+            # print '-%d-' % self.threadCount,
+            self.waitCount += 1
+            self.finishColoring(done=False)
+            # self.w.after_idle(self.idleHandler,n)
+            self.w.after(200,self.idleHandler,n)
+        else:
+            # if self.waitCount: g.trace('waitCount',self.waitCount)
+            # print '%d' % n,
+            self.finishColoring(done=True)
+    #@-node:ekr.20070718131458.50:idleHandler
+    #@+node:ekr.20070718131458.49:init
+    def init (self,p,incremental,interruptable):
+
+        self.w = w = self.c.frame.body.bodyCtrl
+
+        self.incremental = incremental
+        self.interruptable = interruptable
+        self.insertPoint = w.getInsertPoint()  
+        self.killFlag = False
+        # self.language is set by self.updateSyntaxColorer.
+        self.p = p.copy()
+        self.redoColoring = False
+        self.redoingColoring = False
+        self.s = w.getAllText()
+        self.selection = w.getSelectionRange()
+        # g.trace('ins',self.insertPoint,'sel',self.selection)
+        self.tagList = []
+        self.tagsRemoved = False
+        self.waitCount = 0
+
+        self.init_mode(self.language)
+        self.configure_tags() # Must do this every time to support multiple editors.
+    #@-node:ekr.20070718131458.49:init
+    #@+node:ekr.20070719110029:partialColor
     def partialColor (self,s):
 
         '''Partially recolor s'''
@@ -1199,7 +1128,7 @@ class colorizer:
         new_lines = g.splitLines(s)
         mid_i,tail_i,delta,all = self.computeIndices(old_lines,new_lines)
         if all:
-            g.trace('all lines match')
+            # g.trace('all lines match')
             return self.fullColor(s)
         else:
             d = self.marksDict = self.adjustMarksDict(self.marksDict,mid_i,delta)
@@ -1209,6 +1138,10 @@ class colorizer:
 
         self.start_i = self.self_end_i = i
         # g.trace('start_i',self.start_i)
+        # Create a list of (i,n) pairs from marksDict.
+        d = self.marksDict ; keys = d.keys() ; keys.sort()
+        endList = [(z,d.get(z)) for z in keys if z + d.get(z) >= tail_i]
+        endList_i = 0
         self.marksDict = {}
         while i < len(s):
             if self.killFlag:
@@ -1223,11 +1156,74 @@ class colorizer:
                     i += n ; break
             else:
                 i += 1
+                if i > tail_i:
+                    #@                << finish if no item in endList covers i >>
+                    #@+node:ekr.20070720141852:<< finish if no item in endList covers i >>
+                    while endList_i < len(endList):
+                        i2, n2 = endList[endList_i]
+                        if i2 + n2 < i:
+                            endList_i += 1
+                        elif i2 < i and i2 + n2 > i:
+                            done = False ; break
+                        else:
+                            done = True ; break
+                    else:
+                        done = True ; break
 
-        self.end_i = len(s)
+                    if done:
+                        # g.trace('*** found end: %s' % repr(s[i:i+20]))
+
+                        # Add all items in endList to the marksDict.
+                        for z in endList[endList_i:]:
+                            i2, n2 = z
+                            self.marksDict[i2] = n2
+                        break
+                    #@-node:ekr.20070720141852:<< finish if no item in endList covers i >>
+                    #@nl
+        self.end_i = i
         self.lines = new_lines
     #@nonl
-    #@-node:ekr.20070719110029:partialColor & helpers
+    #@-node:ekr.20070719110029:partialColor
+    #@+node:ekr.20070718131458.43:removeAllImages
+    def removeAllImages (self):
+
+        for photo,image,line_index,i in self.image_references:
+            try:
+                self.body.deleteCharacter(image)
+                w = self.w
+                w.delete(self.allBodyText,index)
+                self.allBodyText = w.getAllText()
+            except:
+                pass # The image may have been deleted earlier.
+
+        self.image_references = []
+    #@nonl
+    #@-node:ekr.20070718131458.43:removeAllImages
+    #@+node:ekr.20070718131458.44:removeAllTags
+    def removeAllTags (self):
+
+        w = self.w
+
+        g.trace()
+
+        names = w.tag_names()
+        for name in names:
+            if name not in ('sel','insert'):
+                w.tag_remove(name,w.toGuiIndex(0), w.toGuiIndex('end'))
+
+        # g.trace(len(self.tagList)/3)
+    #@-node:ekr.20070718131458.44:removeAllTags
+    #@+node:ekr.20070720165737:removeTagsFromRange
+    def removeTagsFromRange(self,i,j):
+
+        s = self.s ; w = self.w
+
+        names = [z for z in w.tag_names() if z not in ('sel','insert')]
+
+        for tag in names:
+            x1,x2 = w.toGuiIndex(self.start_i,s=s), w.toGuiIndex(self.end_i,s=s)
+            w.tag_remove(tag,x1,x2)
+    #@-node:ekr.20070720165737:removeTagsFromRange
     #@+node:ekr.20070720090349:setMarks
     def setMarks(self,lines,lineStarts,matches,startLine=None):
 
@@ -1254,6 +1250,52 @@ class colorizer:
         return d
     #@nonl
     #@-node:ekr.20070720090349:setMarks
+    #@+node:ekr.20070718131458.45:tagAll
+    def tagAll (self):
+
+        s = self.s ; w = self.w ; trace = False
+
+        if trace: g.trace('tagList',len(self.tagList),'start:end',self.start_i,self.end_i)
+
+        if self.start_i == self.end_i:
+            self.tagList = []
+            self.start_i = self.end_i
+            return
+
+        if not self.tagList:
+            self.removeTagsFromRange(self.start_i,self.end_i)
+            self.tagList = []
+            self.start_i = self.end_i
+            return
+
+        # g.trace('removing tags from',self.start_i,self.end_i) # repr(s[self.start_i:self.end_i]))
+        if len(self.tagList) < 10:
+            # Single characters typically change less than 10 tags on a line.
+            if trace: g.trace('tagList',self.tagList)
+            gaps = [] ; last_i = None ; last_j = None
+            for tag,i,j in self.tagList:
+                if last_i is None:
+                    if self.start_i != i:
+                        gaps.append((self.start_i,i),)
+                else:
+                    if i != last_j:
+                        gaps.append((last_j,i),)
+                last_i = i ; last_j = j
+            if last_j != self.end_i:
+                gaps.append((last_j,self.end_i),)
+            if trace: g.trace('***','gaps',gaps)
+            for i,j in gaps:
+                self.removeTagsFromRange(i,j)
+        else:
+            self.removeTagsFromRange(self.start_i,self.end_i)
+
+        for tag,i,j in self.tagList:
+            x1,x2 = w.toGuiIndex(i,s=s), w.toGuiIndex(j,s=s)
+            w.tag_add(tag,x1,x2)
+
+        self.tagList = []
+        self.start_i = self.end_i
+    #@-node:ekr.20070718131458.45:tagAll
     #@+node:ekr.20070718131458.52:target
     def target(self,*args,**keys):
 
@@ -1298,7 +1340,33 @@ class colorizer:
             traceback.print_exc()
             return "error" # for unit testing.
     #@-node:ekr.20070718131458.52:target
-    #@+node:ekr.20070719110029.1:twoPassRecolor
+    #@+node:ekr.20070718131458.46:threadColorizer
+    thread_count = 0
+
+    def threadColorizer (self,p,incremental,interruptable):
+
+        # Kill the previous thread for this widget.
+        t = self.helperThread
+        if t and t.isAlive():
+            self.killFlag = True
+            t.join()
+            self.killFlag = False
+        self.helperThread = None
+        # Init the ivars *after* ending the previous helper thread.
+        self.init(p,incremental,interruptable) # Sets 's','w' and other ivars.
+        if self.killcolorFlag or not self.mode:
+            self.finishColoring(done=True)
+        elif self.use_threads: # Start the helper thread.
+            self.threadCount += 1
+            t = threading.Thread(target=self.target,kwargs={'s':self.s})
+            self.helperThread = t
+            t.start()
+            self.w.after_idle(self.idleHandler,self.threadCount)
+        else:
+            self.target(s=self.s)
+            self.w.after_idle(self.idleHandler,self.threadCount)
+    #@-node:ekr.20070718131458.46:threadColorizer
+    #@+node:ekr.20070719110029.1:twoPassRecolor NOT READY YET
     def twoPassRecolor (self,s):
 
         g.trace('***not ready yet')
@@ -1346,7 +1414,7 @@ class colorizer:
             #@nl
             state = self.colorizeLine(s,state)
             self.line_index += 1
-    #@-node:ekr.20070719110029.1:twoPassRecolor
+    #@-node:ekr.20070719110029.1:twoPassRecolor NOT READY YET
     #@-node:ekr.20070719111308:Colorers & helpers
     #@+node:ekr.20070718131458.53:jEdit matchers
     #@@nocolor
@@ -1839,199 +1907,6 @@ class colorizer:
     #@nonl
     #@-node:ekr.20070718131458.74:trace_match
     #@-node:ekr.20070718131458.66:Utils
-    #@+node:ekr.20070720110634:Not used
-    if 0:
-        #@    @+others
-        #@+node:ekr.20070719114546.3:initStates
-        def initStates (self):
-
-            # Copy the leading states from the old to the new lines.
-            new_len = len(self.new_lines)
-            old_len = len(self.old_lines)
-            i = 0
-            while i < self.leading_lines and i < old_len:
-                self.new_starts.append(self.old_starts[i])
-                self.new_states.append(self.old_states[i])
-                i += 1
-
-            # We know the starting state of the first middle line!
-            if self.middle_lines > 0 and i < old_len:
-                self.new_starts.append(self.old_starts[i])
-                self.new_states.append(self.old_states[i])
-                i += 1
-
-            # Set the state of all other middle lines to "unknown".
-            # Also set the state of the first trailing line to unknown, since it's offset is unknown.
-            first_trailing_line = max(0,new_len - self.trailing_lines)
-            while i <= first_trailing_line:
-                self.new_starts.append(None)
-                self.new_states.append("unknown")
-                i += 1
-
-            # Copy the trailing states from the old to the new lines.
-            i = max(0,old_len - self.trailing_lines - 1)
-            while i < old_len:
-                self.new_starts.append(self.old_starts[i])
-                self.new_states.append(self.old_states[i])
-                i += 1
-
-            # Complete new_states by brute force.
-            while len(self.new_states) < new_len:
-                self.new_starts.append(None)
-                self.new_states.append("unknown")
-
-            # g.trace('new_states',len(self.new_states))
-        #@-node:ekr.20070719114546.3:initStates
-        #@+node:ekr.20070719120931:computeLines
-        #@+at  
-        #@nonl
-        # Each line has a starting state.  The starting state for the first 
-        # line is always "normal".
-        # 
-        # We need remember only self.lines and self.states between 
-        # colorizing.  It is not necessary to know where the text comes from, 
-        # only what the previous text was!  We must always colorize everything 
-        # when changing nodes, even if all lines match, because the context 
-        # may be different.
-        # 
-        # We compute the range of lines to be recolored by comparing leading 
-        # lines and trailing lines of old and new text.  All other lines (the 
-        # middle lines) must be colorized, as well as any trailing lines whose 
-        # states may have changed as the result of changes to the middle 
-        # lines.
-        #@-at
-        #@@c
-
-        def computeLines (self):
-
-            '''Set self.middle_lines, self.leading_lines and self.trailing_lines
-            using self.old_lines and self.new_lines'''
-
-            #@    << compute leading, middle & trailing lines >>
-            #@+node:ekr.20070719114546.1:<< compute leading, middle & trailing  lines >>
-            #@+at 
-            #@nonl
-            # The leading lines are the leading matching lines.  The trailing 
-            # lines are the trailing matching lines.  The middle lines are all 
-            # other new lines.  We will color at least all the middle lines.  
-            # There may be no middle lines if we delete lines.
-            #@-at
-            #@@c
-
-            new_len = len(self.new_lines)
-            old_len = len(self.old_lines)
-            min_len = min(new_len,old_len)
-            i = 0
-            while i < min_len:
-                if self.old_lines[i] != self.new_lines[i]:
-                    break
-                i += 1
-            self.leading_lines = i
-
-            if self.leading_lines == new_len:
-                # All lines match, and we must color _everything_.
-                # (several routine delete, then insert the text again,
-                # deleting all tags in the process).
-                # print "recolor all"
-                self.leading_lines = self.trailing_lines = 0
-            else:
-                i = 0
-                while i < min_len - self.leading_lines:
-                    if self.old_lines[old_len-i-1] != self.new_lines[new_len-i-1]:
-                        break
-                    i += 1
-                self.trailing_lines = i
-
-            self.middle_lines = new_len - self.leading_lines - self.trailing_lines
-            #@-node:ekr.20070719114546.1:<< compute leading, middle & trailing  lines >>
-            #@nl
-
-            #@    << clear leading_lines if middle lines involve @color or @recolor  >>
-            #@+node:ekr.20070719114546.2:<< clear leading_lines if middle lines involve @color or @recolor  >>
-            # Changing @color or @nocolor directives requires we recolor all leading states as well.
-
-            if self.trailing_lines == 0:
-                m1 = self.new_lines[self.leading_lines:]
-                m2 = self.old_lines[self.leading_lines:]
-            else:
-                m1 = self.new_lines[self.leading_lines:-self.trailing_lines]
-                m2 = self.old_lines[self.leading_lines:-self.trailing_lines]
-
-            m1.extend(m2) # m1 now contains all old and new middle lines.
-            if m1:
-                for s in m1:
-                    s = g.toUnicode(s,g.app.tkEncoding)
-                    i = g.skip_ws(s,0)
-                    if g.match_word(s,i,"@color") or g.match_word(s,i,"@nocolor"):
-                        self.leading_lines = 0
-                        break
-            #@-node:ekr.20070719114546.2:<< clear leading_lines if middle lines involve @color or @recolor  >>
-            #@nl
-
-            # g.trace('leading',self.leading_lines,'middle',self.middle_lines,'trailing',self.trailing_lines)
-        #@-node:ekr.20070719120931:computeLines
-        #@+node:ekr.20070719143124:computeLineStarts
-        def computeLineStarts (self,lines):
-
-            '''Compute the starting index of each line of self.lines.'''
-
-            i = 0 ; lineStarts = [0]
-            for line in lines:
-                i += len(line)
-                lineStarts.append(i)
-                # print repr(s[i-len(line):i])
-
-            # g.trace('lineStarts',lineStarts)
-
-            return lineStarts
-        #@-node:ekr.20070719143124:computeLineStarts
-        #@+node:ekr.20070719143336:computeScanData
-        # Happily, this scan is linear in the number of lines and matches.
-
-        def computeScanData(self,lines,lineStarts,matches,startLine=None):
-
-            '''Computes self.starts and self.states for each line of self.lines.'''
-
-            if startLine is None:
-                starts = [0]
-                states = [None]
-                i = 0
-            else:
-                starts = self.old_starts[:startLine]
-                states = self.old_states[:startLine]
-                i = startLine
-            j = 0 # i is the line index, j is the bunch index
-            while i < len(lines) and j < len(matches):
-                b = matches[j] ; start = lineStarts[i]
-                if b.i >= start:
-                    # The match appears at or after the start of the line.
-                    starts.append(0) # A zero offset.
-                    states.append(None)
-                    i += 1
-                elif b.i + b.n > start:
-                    # The match crosses the line's starting position.
-                    starts.append(b.i-start) # A negative offset.
-                    states.append(b.f)
-                    i += 1
-                else:
-                    # The match appears before the start of the line.
-                    j += 1
-            # No more bunches remain.
-            while i < len(self.lines):
-                starts.append(self.lineStarts[i])
-                states.append(None)
-                i += 1
-
-            if 0:
-                # print 'matches',matches
-                print 'starts',len(starts)
-                print 'states',len(states)
-
-            return starts,states
-        #@-node:ekr.20070719143336:computeScanData
-        #@-others
-    #@nonl
-    #@-node:ekr.20070720110634:Not used
     #@-others
 #@-node:ekr.20070718131458.20:class colorizer
 #@-others
