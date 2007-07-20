@@ -1325,20 +1325,6 @@ class baseColorizer:
         else:
             return "ok" # For unit testing.
 
-    # Called from incremental undo code.
-    # Colorizes the lines between the leading and trailing lines.
-
-    def recolor_range(self,p,leading,trailing):
-
-        # g.trace(g.callers())
-
-        if self.enabled:
-            # if self.trace: g.trace("leading,trailing",leading,trailing)
-            self.incremental=True
-            self.updateSyntaxColorer(p)
-            return self.colorizeAnyLanguage(p,leading=leading,trailing=trailing)
-        else:
-            return "ok" # For unit testing.
     #@-node:ekr.20031218072017.2801:colorize & recolor_range
     #@+node:ekr.20031218072017.1880:colorizeAnyLanguage & allies
     def colorizeAnyLanguage (self,p,leading=None,trailing=None):
@@ -2547,24 +2533,6 @@ class baseColorizer:
 
         return self.language # For use by external routines.
     #@-node:ekr.20031218072017.1377:scanColorDirectives
-    #@+node:ekr.20031218072017.2802:color.schedule & idle_colorize (not used)
-    def schedule(self,p,incremental=0):
-
-        __pychecker__ = '--no-argsused'
-            # p not used, but it is difficult to remove.
-
-        if self.enabled:
-            self.incremental=incremental
-            g.app.gui.setIdleTimeHook(self.idle_colorize)
-
-    def idle_colorize(self):
-
-        # New in 4.3b1: make sure the colorizer still exists!
-        if hasattr(self,'enabled') and self.enabled:
-            p = self.c.currentPosition()
-            if p:
-                self.colorize(p,self.incremental)
-    #@-node:ekr.20031218072017.2802:color.schedule & idle_colorize (not used)
     #@+node:ekr.20031218072017.2803:getCwebWord
     def getCwebWord (self,s,i):
 
@@ -2747,10 +2715,7 @@ class nullColorizer (colorizer):
 
     def disable(self):                          pass
     def enable(self):                           pass
-    # def idle_colorize(self):                  pass
-    def recolor_range(self,p,leading,trailing): pass
     def scanColorDirectives(self,p):            pass
-    def schedule(self,p,incremental=0):         pass
     def updateSyntaxColorer (self,p):           pass
     #@-node:ekr.20031218072017.2220:entry points
     #@-others

@@ -755,7 +755,6 @@ class leoBody:
         'onClick',
         'recolor',
         'recolor_now',
-        'recolor_range',
         'see',
         'seeInsertPoint',
         'selectAllText',
@@ -798,16 +797,9 @@ class leoBody:
 
         self.colorizer.colorize(p.copy(),incremental)
 
-    def recolor_range(self,p,leading,trailing):
-
-        self.colorizer.recolor_range(p.copy(),leading,trailing)
-
     def recolor(self,p,incremental=False):
 
-        if 0: # Do immediately
-            self.colorizer.colorize(p.copy(),incremental)
-        else: # Do at idle time
-            self.colorizer.schedule(p.copy(),incremental)
+        self.colorizer.colorize(p.copy(),incremental)
 
     def updateSyntaxColorer(self,p):
 
