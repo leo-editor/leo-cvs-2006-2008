@@ -2395,6 +2395,37 @@ def pythonUnitTest (self,p,s,fileName,atAuto=False):
 
     return child
 #@-node:ekr.20070705091716:pythonUnitTest
+#@+node:ekr.20031218072017.2802:color.schedule & idle_colorize (not used)
+# def schedule(self,p,incremental=0):
+
+    # __pychecker__ = '--no-argsused'
+        # # p not used, but it is difficult to remove.
+
+    # if self.enabled:
+        # self.incremental=incremental
+        # g.app.gui.setIdleTimeHook(self.idle_colorize)
+
+# def idle_colorize(self):
+
+    # # New in 4.3b1: make sure the colorizer still exists!
+    # if hasattr(self,'enabled') and self.enabled:
+        # p = self.c.currentPosition()
+        # if p:
+            # self.colorize(p,self.incremental)
+#@-node:ekr.20031218072017.2802:color.schedule & idle_colorize (not used)
+#@+node:ekr.20070719114053:recolor_range
+# def recolor_range(self,p,leading,trailing):
+
+    # # g.trace(g.callers())
+
+    # if self.enabled:
+        # # if self.trace: g.trace("leading,trailing",leading,trailing)
+        # self.incremental=True
+        # self.updateSyntaxColorer(p)
+        # return self.colorizeAnyLanguage(p,leading=leading,trailing=trailing)
+    # else:
+        # return "ok" # For unit testing.
+#@-node:ekr.20070719114053:recolor_range
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl
