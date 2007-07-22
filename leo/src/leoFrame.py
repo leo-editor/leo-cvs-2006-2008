@@ -1488,6 +1488,7 @@ class leoBody:
         w = g.app.gui.eventWidget(event) or self.bodyCtrl
         return w.selectAllText()
     def setInsertPoint (self,pos):          return self.bodyCtrl.setInsertPoint(pos) # was getInsertPoint.
+    def setFocus(self):                     return self.bodyCtrl.setFocus()
     def setSelectionRange (self,sel):       i,j = sel ; self.bodyCtrl.setSelectionRange(i,j)
     #@-node:ekr.20070228080627:Text Wrappers (base class)
     #@-node:ekr.20061109173021:leoBody: must be defined in the base class
