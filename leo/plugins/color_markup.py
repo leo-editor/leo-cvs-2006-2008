@@ -3,18 +3,23 @@
 #@<< docstring >>
 #@+node:ekr.20050912182434:<< docstring >>
 '''Handle coloring for markup in doc parts and Python triple-double-quoted strings.
-This plugin requires that the ``add_directives`` plugin is enabled.
 
-To color a text using this plugin, the text must be in the range of an ``@markup wiki`` directive.
+**Important**: 
+
+1. The add_directives.py plugin must be enabled for this plugin to work.
+2. The wiki text must be 
+    - in the range of an ``@markup wiki`` directive **and**
+    - in a Leo doc part (starting with '@') **or** a Python triple-quoted string.
+3. This plugin adds commands to the Edit:Edit Body menu.
 
 The currently supported markups are:
 
-''text''                   # write text in italics
-__text__                   # write text in bold
-~~<color>:text~~           # write text in the color specified by <color> (e.g. blue, grey, etc)
-{picture file=<filename>}  # load the picture indicated by <filename>
-http://url                 # URL support: double clicking on the url will open it in the default browser.
-https://url                # URL support: double clicking on the url will open it in the default browser.
+''text''                # write text in italics
+__text__                # write text in bold
+~~<color>:text~~        # write text in the color specified by <color> (e.g. blue, grey, etc)
+{picture file=filename} # load the picture indicated by filename.
+http://url  # Underline the url: double clicking the url will open it in the default browser.
+https://url # Underline the url: double clicking the url will open it in the default browser.
 
 -   Note 1: italics and bold markups can be nested, e.g.
 
@@ -26,7 +31,6 @@ https://url                # URL support: double clicking on the url will open i
 
 By default, once the text has been markup up, the actual tags (e.g. __ for bold) are not displayed anymore. You can choose to display them selecting "Show Invisibles" from the Edit menu.
 '''
-#@nonl
 #@-node:ekr.20050912182434:<< docstring >>
 #@nl
 
@@ -42,13 +46,18 @@ import tkFileDialog
 Tk =             g.importExtension('Tkinter',       pluginName=__name__,verbose=True)
 tkColorChooser = g.importExtension('tkColorChooser',pluginName=__name__,verbose=True)
 
+try:
+    import PIL
+except ImportError:
+    PIL = None
+
 import os
 import string  # zfill does not exist in Python 2.2.1
 #@nonl
 #@-node:ekr.20050101090207.3:<< imports >>
 #@nl
 
-__version__ = "1.6"
+__version__ = "1.7"
 #@<< version history >>
 #@+node:ekr.20050311104330:<< version history >>
 #@@nocolor
@@ -65,6 +74,10 @@ __version__ = "1.6"
 # - Used positions and p args instead of vnodes and v args.
 # - Added to docs: text to be colored must be in range of ``@markup wiki`` 
 # kdirective
+# 1.7 EKR:
+# - Improved docstring.
+# - Added support for 4.3 code base and new colorizer.
+# - Added support for PIL if it exists: this allows many more kinds of images.
 #@-at
 #@nonl
 #@-node:ekr.20050311104330:<< version history >>
@@ -246,6 +259,8 @@ def doWikiText (colorer,v,s,i,end,colortag):
 
     firsti = i ; inserted = 0
 
+    # g.trace(s[i:])
+
     while i < end:
         #@        << set first to a tuple describing the first tag to be handled >>
         #@+node:edream.110403140857.12:<< set first to a tuple describing the first tag to be handled >>
@@ -333,6 +348,7 @@ def doWikiText (colorer,v,s,i,end,colortag):
             #@nl
         else: i = end
 
+    # g.trace('tag',colortag,firsti,end+inserted)
     colorer.tag(colortag,firsti,end+inserted)
 #@-node:edream.110403140857.11:doWikiText
 #@-node:edream.110403140857.10:colorWikiMarkup & helper
@@ -342,6 +358,11 @@ def insertWikiPicture (colorer,filename,i):
     """Try to insert a picture with the give filename.
 
     Returns the number of characters actually inserted"""
+
+    g.trace(i,filename)
+
+    if not g.os_path_exists(filename):
+        return 0
 
     if colorer.color_pass == 0:
         colorer.redoColoring = True # schedule a two-pass recoloring.
@@ -355,14 +376,22 @@ def insertWikiPicture (colorer,filename,i):
 
     try:
         # Create the image
-        photo = Tk.PhotoImage(master=g.app.root, file=filename)
+        if PIL: # Allow many kinds of images.
+            from PIL import Image, ImageTk
+            image = Image.open(filename)
+            photo = ImageTk.PhotoImage(image)
+        else: # Allow only .gif or .pgm images.
+            photo = Tk.PhotoImage(master=g.app.root, file=filename)
         image = colorer.body.bodyCtrl.image_create(colorer.index(i),image=photo,padx=0)
 
         # Keep references so images stay on the canvas.
         colorer.image_references.append((photo,image,colorer.line_index,i),)
         return 1
     except:
-        g.es_exception()
+        if not PIL:
+            g.es_print('PIL not loaded: wiki images must be .gif or .pgm files.',color='blue')
+        else:
+            g.es_exception()
         return 0
 #@-node:edream.110403140857.15:insertWikiPicture
 #@-node:ekr.20060108112937:Module-level
@@ -413,18 +442,18 @@ def insertWikiMarkup(c,leftTag,rightTag):
     if not c or not c.exists: return
 
     body = c.frame.body ; w = body.bodyCtrl
-    oldSel = w.getSelectionPoint()
+    oldSel = w.getSelectionRange()
     if oldSel:
         #@        << apply markup to selection >>
         #@+node:edream.110403140857.27:<< apply markup to selection >>
         start,end = oldSel
         w.insert(start, leftTag)
         # we need to review where the selection now ends
-        start,end = w.getSelectionRange() ### body.bodyCtrl.tag_ranges("sel")
+        start,end = w.getSelectionRange()
         w.insert(end, rightTag)
         w.setSelectionRange(start-len(leftTag),end+len(rightTag))
         newSel = w.getSelectionRange()
-        c.frame.onBodyChanged("Change",oldSel=oldSel)
+        c.frame.body.onBodyChanged("Change",oldSel=oldSel)
         #@-node:edream.110403140857.27:<< apply markup to selection >>
         #@nl
     else:
@@ -445,11 +474,11 @@ def insertWikiMarkup(c,leftTag,rightTag):
             newPos = "%s+%dc" % (oldSel[0],len(leftTag))
         body.setSelectionRange(newPos, newPos)
         newSel = body.getSelectionRange()
-        c.frame.onBodyChanged("Typing",oldSel=oldSel)
+        c.frame.body.onBodyChanged("Typing",oldSel=oldSel)
         #@-node:edream.110403140857.28:<< handle no selection >>
         #@nl
 
-    body.focus_set()
+    body.setFocus()
 #@-node:edream.110403140857.26:insertWikiMarkup
 #@-node:edream.110403140857.19:Menu commands
 #@-others
