@@ -5,6 +5,9 @@
 
 """A plugin to use wxWidgets as Leo's gui."""
 
+# This plugin has multiple problems and is not recommended.
+# See comments at http://leo.zwiki.org/WxWidgetsSummary
+
 __version__ = '0.7.2'
 
 #@<< version history >>
