@@ -6,8 +6,18 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
+#@+at 
+#@nonl
+# xxx To do:
+# - Calculate minimum changed string in computeIndices.
+# - Focus leaves body pane for long body text.
+# - Finish twoPassRecolor.  This is needed for images.
+#@-at
+#@@c
+
 __version__ = '0.03'
 
+trace_all_matches = False
 trace_leo_matches = False
 
 #@<< imports >>
@@ -321,7 +331,7 @@ def match_section_ref (self,s,i):
 #@+node:ekr.20070718131458.18:match_blanks
 def match_blanks (self,s,i):
 
-    if trace_leo_matches: g.trace()
+    # if trace_leo_matches: g.trace()
 
     j = i ; n = len(s)
 
@@ -356,20 +366,25 @@ def match_tabs (self,s,i):
 #@nonl
 #@-node:ekr.20070718131458.19:match_tabs
 #@+node:ekr.20070720161950:match_incomplete_strings
-def match_incomplete_strings (self,s,i):
+# def match_incomplete_strings (self,s,i):
 
-    if trace_leo_matches: g.trace()
+    # if trace_leo_matches: g.trace()
 
-    if not g.match(s,i,'"') and not g.match(s,i,"'"):
-        return 0
-    delim = s[i]
-    j = g.skip_line(s,i)
-    if s.find(delim,i+1,j) == -1:
+    # if not g.match(s,i,'"') and not g.match(s,i,"'"):
+        # return 0
+
+    # if self.language == 'python' and (g.match(s,i-2,'"""') or g.match(s,i-2,"'''")):
+        # return 0 # Do not interfere with docstrings.
+
+    # delim = s[i]
+    # j = g.skip_line(s,i)
+
+    # if s.find(delim,i+1,j) == -1:
         # g.trace(repr(s[i:j]))
-        self.colorRangeWithTag(s,i,j,'literal1')
-        return j-i
-    else:
-        return j
+        # self.colorRangeWithTag(s,i,j,'literal1')
+        # return j-i
+    # else:
+        # return 0
 #@-node:ekr.20070720161950:match_incomplete_strings
 #@-node:ekr.20070718131458.11:Leo rule functions
 #@-node:ekr.20070718131458.5:module-level
@@ -453,8 +468,9 @@ class colorizer:
         self.tagList = []
         # Incremental data.
         self.end_i = 0 # The ending index of the text that has been colored.
-        self.lines = [] # The previous lines (only means something between calls to the colorizer).
         self.marksDict = {} # Keys are indices of matches, values are lengths of the match.
+        self.old_s = None # The previous value of self.s
+        self.s = None # The string being colorized.
         self.start_i = 0 # The starting index of the text that has been colored.
         # Threading stuff.
         self.lock = threading.Condition()
@@ -509,8 +525,9 @@ class colorizer:
             # Rules added at back are added in normal order.
             (' ',  match_blanks,      False),
             ('\t', match_tabs,        False),
-            ('"',  match_incomplete_strings, False),
-            ("'",  match_incomplete_strings, False),
+            # Python rule 3 appears to work well enough.
+            #('"',  match_incomplete_strings, False),
+            #("'",  match_incomplete_strings, False),
         ):
             theList = theDict.get(ch,[])
             if atFront:
@@ -955,34 +972,54 @@ class colorizer:
     #@nonl
     #@-node:ekr.20070718131458.48:colorRangeWithTag
     #@+node:ekr.20070720095702:computeIndices
-    #@+at
-    # The leading lines are the leading matching lines.
-    # The trailing lines are the trailing matching lines.
-    # The middle lines are all other new lines.
-    #@-at
-    #@@c
-    def computeIndices (self,old_lines,new_lines):
+    def computeIndices (self):
 
         '''Return (mid_i,tail_i,delta,all) where
-        - mid_i is the index of the start of the middle lines,
-        - tail_i is the index of the start of the **new** tail lines,
-        - delta is the change in the size of the middle lines,
+        - mid_i is the index of the start of the changed text,
+        - tail_i is the index of the start of the **new** trailing lines,
+        - delta is the change in the size of the changed text,
         - all is true if all text must be recolored.'''
 
+        old_s,new_s = self.old_s,self.s ; w = self.w
+
+        # The first optimization: recolor **everything** if all lines match.
+        # Some routines delete, then insert the text again, deleting all tags in the process.
+        if old_s == new_s:
+            all = True
+            return 0,0,0,all
+
+        # The second optimization. Check to see if only one line has changed.
+        ins = w.getInsertPoint()
+        new_i,new_j = g.getLine(new_s,ins)
+        old_i,old_j = g.getLine(old_s,new_i)
+        new_head = new_s[:new_i]
+        old_head = old_s[:old_i]
+        new_tail = new_s[new_j:]
+        old_tail = old_s[old_j:]
+        #g.trace('new_head',repr(new_head),'\n','old_head',repr(old_head))
+        #g.trace('new_tail',repr(new_tail),'\n','old_tail',repr(old_tail))
+        if new_head == old_head and new_tail == old_tail:
+            # g.trace('**one line changed')
+            mid_i = new_i
+            tail_i = new_j
+            #new_line = new_s[new_i:new_j]
+            #old_line = old_s[old_i:old_j]
+            #delta = len(new_line) - len(old_line)
+            delta = (new_j-new_i) - (old_j-old_i)
+            all = False
+            return mid_i,tail_i,delta,all
+
+        # The general case: compare line-by line to find the head and tail.
+        new_lines = g.splitLines(new_s)
+        old_lines = g.splitLines(old_s)
         new_len = len(new_lines)
         old_len = len(old_lines)
+        # Find the head lines, the leading matching lines.
         i = 0
         while i < new_len and i < old_len and old_lines[i] == new_lines[i]:
             i += 1
         head = i
-
-        all = head == new_len
-        if all:
-            # All lines match, and we must color **everything**.
-            # (several routine delete, then insert the text again,
-            # deleting all tags in the process).
-            return 0,0,0,all
-
+        # Find the tail lines, the trailing matching lines.
         i = 0
         while (
             old_len-i-1 >=0 and new_len-i-1 >=0 and
@@ -990,11 +1027,10 @@ class colorizer:
         ):
             i += 1
         tail = i
-
+        # Compute the change (middle) lines.
         new_head = ''.join(new_lines[:head])
         old_head = ''.join(old_lines[:head])
-        assert old_head == new_head
-
+        # assert old_head == new_head
         if tail:
             new_tail = ''.join(new_lines[-tail:])
             old_tail = ''.join(old_lines[-tail:])
@@ -1005,11 +1041,11 @@ class colorizer:
             new_tail = old_tail = ''
             new_middle = ''.join(new_lines[head:])
             old_middle = ''.join(old_lines[head:])
-
-        assert old_tail == new_tail
+        # assert old_tail == new_tail
         mid_i = len(new_head)
         tail_i = mid_i + len(new_middle)
         delta = len(new_middle) - len(old_middle)
+        all = False
         # g.trace('mid_i',mid_i,'tail_i',tail_i,'delta',delta,'all',all)
         return mid_i,tail_i,delta,all
     #@-node:ekr.20070720095702:computeIndices
@@ -1062,19 +1098,20 @@ class colorizer:
                 # print '*%d*' % self.threadCount
                 return
             for f in self.rulesDict.get(s[i],[]):
-                # if f.__name__ != 'match_blanks': g.trace(delegate,i,f.__name__)
                 n = f(self,s,i)
                 if n is None:
                     g.trace('Can not happen: matcher returns None')
                 elif n > 0:
+                    if 0:
+                        if trace_all_matches and f.__name__ != 'match_blanks':
+                            g.trace(f.__name__,repr(s[i:i+n]))
                     self.marksDict [i] = n
                     i += n ; break
             else:
                 i += 1
 
         self.end_i = len(s)
-        self.lines = g.splitLines(s)
-    #@nonl
+        self.old_s = self.s
     #@-node:ekr.20070719105813:fullColor
     #@+node:ekr.20070718131458.50:idleHandler
     def idleHandler (self,n):
@@ -1122,11 +1159,11 @@ class colorizer:
 
         '''Partially recolor s'''
 
+        return self.fullColor(s) ### The backtracking algorithm doesn't work.
+
         # g.trace(self.language)
 
-        old_lines = self.lines
-        new_lines = g.splitLines(s)
-        mid_i,tail_i,delta,all = self.computeIndices(old_lines,new_lines)
+        mid_i,tail_i,delta,all = self.computeIndices()
         if all:
             # g.trace('all lines match')
             return self.fullColor(s)
@@ -1148,41 +1185,42 @@ class colorizer:
                 # print '*%d*' % self.threadCount
                 return
             for f in self.rulesDict.get(s[i],[]):
-                # if f.__name__ != 'match_blanks': g.trace(delegate,i,f.__name__)
                 n = f(self,s,i)
                 if n is None: g.trace('Can not happen: matcher returns None')
                 elif n > 0:
+                    if trace_all_matches and f.__name__ != 'match_blanks':
+                        g.trace(f.__name__,repr(s[i:i+n]))
                     self.marksDict[i] = n
                     i += n ; break
             else:
                 i += 1
-                if i > tail_i:
-                    #@                << finish if no item in endList covers i >>
-                    #@+node:ekr.20070720141852:<< finish if no item in endList covers i >>
-                    while endList_i < len(endList):
-                        i2, n2 = endList[endList_i]
-                        if i2 + n2 < i:
-                            endList_i += 1
-                        elif i2 < i and i2 + n2 > i:
-                            done = False ; break
+                if 0: # This is too buggy at present.
+                    if i > tail_i:
+                        #@                    << finish if no item in endList covers i >>
+                        #@+node:ekr.20070720141852:<< finish if no item in endList covers i >>
+                        while endList_i < len(endList):
+                            i2, n2 = endList[endList_i]
+                            if i2 + n2 < i:
+                                endList_i += 1
+                            elif i2 < i and i2 + n2 > i:
+                                done = False ; break
+                            else:
+                                done = True ; break
                         else:
                             done = True ; break
-                    else:
-                        done = True ; break
 
-                    if done:
-                        # g.trace('*** found end: %s' % repr(s[i:i+20]))
+                        if done:
+                            # g.trace('*** found end: %s' % repr(s[i:i+20]))
 
-                        # Add all items in endList to the marksDict.
-                        for z in endList[endList_i:]:
-                            i2, n2 = z
-                            self.marksDict[i2] = n2
-                        break
-                    #@-node:ekr.20070720141852:<< finish if no item in endList covers i >>
-                    #@nl
+                            # Add all items in endList to the marksDict.
+                            for z in endList[endList_i:]:
+                                i2, n2 = z
+                                self.marksDict[i2] = n2
+                            break
+                        #@-node:ekr.20070720141852:<< finish if no item in endList covers i >>
+                        #@nl
         self.end_i = i
-        self.lines = new_lines
-    #@nonl
+        self.old_s = self.s
     #@-node:ekr.20070719110029:partialColor
     #@+node:ekr.20070718131458.43:removeAllImages
     def removeAllImages (self):
@@ -1224,32 +1262,6 @@ class colorizer:
             x1,x2 = w.toGuiIndex(self.start_i,s=s), w.toGuiIndex(self.end_i,s=s)
             w.tag_remove(tag,x1,x2)
     #@-node:ekr.20070720165737:removeTagsFromRange
-    #@+node:ekr.20070720090349:setMarks
-    def setMarks(self,lines,lineStarts,matches,startLine=None):
-
-        '''Return a dict whose keys are indices and whose values are
-        the length of a pattern that matches at that index.'''
-
-        i = 0 # i is the line index.
-        j = 0 # j is the bunch index.
-        d = {}
-        # Happily, this scan is linear in the number of lines and matches.
-        while i < len(lines) and j < len(matches):
-            b = matches[j] ; start = lineStarts[i]
-            if b.i >= start:
-                # The match appears at or after the start of the line.
-                d [b.i] = b.n
-                i += 1
-            elif b.i + b.n > start:
-                # The match crosses the line's starting position.
-                d [b.i] = b.n
-                i += 1
-            else:
-                # The match ends before the start of the line.
-                j += 1
-        return d
-    #@nonl
-    #@-node:ekr.20070720090349:setMarks
     #@+node:ekr.20070718131458.45:tagAll
     def tagAll (self):
 
@@ -1713,7 +1725,11 @@ class colorizer:
         while 1:
             j = s.find(pattern,i)
             if j == -1:
-                return -1
+                # 7/21/07: Match to end of text if not found and no_line_break is False
+                if no_line_break:
+                    return -1
+                else:
+                    return len(s)
             elif no_line_break and '\n' in s[i:j]:
                 return -1
             elif esc and not no_escape:
