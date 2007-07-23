@@ -8357,8 +8357,8 @@ class AspellClass:
                 assert(libname)
                 self.aspell = aspell = ctypes.CDLL(libname)
         except Exception:
-            if not sys.platform.startswith('win'):
-                g.es_exception()
+            # if not sys.platform.startswith('win'):
+                # g.es_exception()
             # g.es('Can not load %s' % (path),color='blue')
             print 'Can not load %s' % (path)
             self.aspell = None
