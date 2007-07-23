@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="344" height="844" width="897"/>
+	<global_window_position top="10" left="345" height="824" width="896"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -69,10 +69,11 @@
 <v t="ekr.20050812125502"><vh>@rst-no-head End stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20070701101808"><vh>Preface</vh>
-<v t="ekr.20070701101809"><vh>@rst html\preface.html</vh>
+<v t="ekr.20070701101808" a="E"><vh>Preface</vh>
+<v t="ekr.20070701101809" a="E"><vh>@rst html\preface.html</vh>
 <v t="ekr.20070701101809.1"><vh>@rst-no-head Links</vh></v>
-<v t="ekr.20070701090840"><vh>@rst-no-head preface</vh></v>
+<v t="ekr.20070723100037"><vh>@rst-no-head preface</vh></v>
+<v t="ekr.20070701090840" a="E"><vh>@rst-ignore  @rst-no-head preface (old)</vh></v>
 <v t="ekr.20070701101809.7"><vh>@rst-no-head End stuff</vh></v>
 </v>
 </v>
@@ -3201,7 +3202,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20070702162421" a="TV"><vh>4.4.3.1</vh>
+<v t="ekr.20070702162421"><vh>4.4.3.1</vh>
 <v t="ekr.20070703095207.1"><vh>Bugs</vh>
 <v t="ekr.20070703095207.2"><vh>Fixed improper can not open myLeoSettings message</vh></v>
 <v t="ekr.20070703095207.5"><vh>Fixed import problem in leoDynamicTest.py</vh></v>
@@ -31447,5 +31448,112 @@ never have any side effects. Running unit tests never changes the outline from
 which the tests were run.
 
 leoPy.leo, Leo's main source-code file, contains many examples of using @test and @suite nodes.</t>
+<t tx="ekr.20070723100037">Why, oh why, would anyone be interested in Leo? After all, Emacs and Vim are 
+superb text editors, and Visual Studio and Eclipse are great IDE's. How can Leo possibly compete with such strong competition? What does Leo offer that these other tools don't? 
+
+Leo does have something unique to offer--something missing from Emacs,Vim, Visual Studio and Eclipse. Leo's users often speak of an Aha! moment when they understand what this 'something' is. 
+The Aha! arises from considering programs, design and data in a new light. You might call this 'The Leo Way'. In essence, Leo shows that computer programs, designs and data are *not*, after all, mostly about text. Yes, people usually *express* programs, designs and data as text. Yes, people manipulate programs, designs and data *using* text, but *text is not the whole story*. 
+ 
+In The Leo Way, text is simply a manifestation (a shadow) of something more 
+fundamental. That 'something else' might be called 'organization' or 'structure' or 'views' or even 'architecture'. However, let us use the term **node** to represent the fundamental unit of structure in Leo. We'll see why in a moment. 
+ 
+In architectural terms, nodes are bricks that make up a building. In computer
+programming terms, nodes make up methods, classes, files and entire
+applications. So the term 'node' does *not* have a fixed meaning--it is simply a
+unit of organization. Any node can be built from other nodes, and any node can
+be used by any other node. Leo represent nodes directly, as nodes (headlines) in
+an outline. An outline node contains a headline and body text. The **outline
+pane** shows all headlines; the **body pane** shows the body text of the
+presently selected node.
+ 
+**Outline structure is real data**
+ 
+To repeat: the fundamental unit in Leo is *not* text. True, headlines and body *consist* of text, but a node is just not text, it is a true (Python) object. This means several specific things: 
+ 
+1. Because nodes are true objects, Leo commands understand what a node is, and
+   where a node fits into the entire outline. I'll say more about outline
+   organization soon, but let me give an example. Every node has exactly one
+   parent node, (except for top-level nodes that have no parents) and every node
+   has zero or more children and zero or more siblings. A node's parent,
+   children and siblings are real properties of the node, *completely
+   independent* of the node's headline or body text. Furthermore, any of Leo's
+   commands (or user-written scripts or plugins, the big sisters of user
+   scripts.) can *easily* access the all aspects of an outline *without* having
+   to parse any text whatsoever. Commands, scripts and plugins can easily do the
+   following: get the root of the outline, the presently selected node in the
+   outline, the parent, siblings, children or descendants of any node in the
+   outline, etc., etc. Commands, scripts and plugins can easily insert, delete
+   or move nodes, and can alter the headline or body text in any node. All this
+   *without* parsing text.
+ 
+2. Having nodes be true objects means that commands scripts and plugins can
+   treat the headline text as *something truly different from* body text. The
+   natural interpretation of headline text is as a description of the body text.
+   This is important! Headlines often control Leo's commands. For example,
+   headlines that start with @thin, @file, @asis, @auto, etc. serve to guide and
+   control Leo's read and write commands. Headlines that start with @test,
+   @suite and @mark-for-unit-tests guide Leo's unit testing commands. Moreover,
+   it is easy to create new conventions for headlines that control user-written
+   scripts or plugins. For example, plugins define specific meanings for
+   headlines that start with @url, @rst, @bookmark, @slideshow, etc., etc. So
+   the separation of headline and body text, **as true components of a node
+   object**, is a very big deal.
+ 
+3. One application of these ideas deserves special mention. Leo's scripting
+   plugin provides support for @button nodes. The headline is @button
+   &lt;command-name&gt;. The body text contains a script. When Leo opens a Leo
+   outline, each @button node creates a command and an icon. Clicking the icon
+   (or executing the command) applies the script in the @button node **to the
+   presently selected outline**. That is, the script is executed in a context in
+   which it is easy to get access to all aspects of the outline in which the
+   script is embedded. This is a major advance in scripting. It allows you to
+   'bring scripts to data', i.e., any part of an outline. In particular, it is
+   very easy to create **editing scripts** that automate what would otherwise be
+   boring and repetitive editing tasks.
+ 
+**Leo outlines aren't your average outline**
+ 
+Earlier I said that *any* node can be built from other nodes, and *any* node can be used by any other node. It takes a very special kind of outline for this to be possible. In a typical outline, such as Emacs outline mode, for example, nodes appear exactly once in the outline. This makes it impossible to 'reuse' nodes in multiple places. Leo removes that limitation: any outline node can be **cloned**, and clones can appear in as many places in an outline as you like. 
+ 
+Cloned nodes are distinct: they must be distinct so they can be moved throughout the outline, but **cloned nodes share all their information**. That is, changing the headline or body text in a node instantly changes the headline and body text in all the other nodes cloned to it. Furthermore, similar remarks apply to the children and descendants of any node--changing any child (or other descendant) of a node, say node A, instantly makes corresponding changes to all nodes cloned to node A. 
+ 
+Earlier I said that you can think of nodes as representing 'organization' or 
+'structure' or 'views' or even 'architecture'. Clones are the crucial feature that allows this point of view. For example, we can build up multiple 'views' of data in an outline using clones as follows: 
+ 
+- Create a 'view node' that will represent a *user-specified* view. 
+ 
+- Clone all nodes that are to be part of the view, and move them so that each clone is a child of the view node. 
+ 
+That's about all there is to it. The view node, and its children *is* a new view of the outline. This notion of 'view' is so important that Leo supports it directly. Leo's **chapters** are simply views created as I have just described. When you select one chapter, you only see the nodes of that chapter in Leo's outline pane. 
+ 
+**Conclusions &amp; encouragements**
+ 
+So Leo offers a new way to understand, organize and manipulate *any* kind of
+complex data, including computer programs, *designs* of computer programs, web
+sites, personal data, whatever. The Aha that I invite you to experience is this:
+Outlines are more than mere eye candy. Having organization be real data creates
+an entirely new dimension, literally and figuratively, in computer programming,
+computer design and data organization, including web-site design, database
+design, etc. Leo's commands use headline and body text in many creative ways. So
+can you and your scripts. It's easy, it's fun, and it's revolutionary.
+
+That's about it, except for some words of caution and advice: 
+ 
+1. Leo has been under active development for over 10 years. The new world
+   created by nodes is rich and varied. You won't learn it all in a day or so.
+   Please be patient. Start by learning Leo's basic features as explained in the
+   tutorial. You can learn more advanced features later.
+ 
+2. Those of you who are comfortable with Emacs should feel pretty much at home
+   with Leo. Leo has shamelessly stolen the best features of Emacs, including
+   the minibuffer and many Emacs-like commands.
+ 
+3. For those of you who are *not* comfortable with Emacs, please understand that
+   you do *not* need to understand all of Leo's commands in order to use Leo.
+   Start by ignoring the minibuffer. Later, the minibuffer can become your
+   friend, but you can get the Aha! without it.
+ 
+Edward K. Ream
+July, 2007</t>
 </tnodes>
 </leo_file>
