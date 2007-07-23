@@ -7,6 +7,29 @@
 import leoGlobals as g
 import leoTest # Support for unit tests.
 
+#@<< to do >>
+#@+node:ekr.20070723082454:<< to do >>
+#@@nocolor
+#@+at
+# 
+# - BUG: "\n" appears to get converted to a real newline sometimes.
+# 
+# * Add @auto code to file read logic:
+#     - Call importers on read.
+#     - Do *not* write @auto nodes on write. (no change needed).
+# 
+# * Update docs re @enabled-plugins.
+# 
+# * Some (python only?) classes & functions are being scanned twice.
+# 
+#     - Maybe the code should switch to 'official' ivars.
+# 
+#@@color
+#@-at
+#@nonl
+#@-node:ekr.20070723082454:<< to do >>
+#@nl
+
 import parser
 import re
 import string
