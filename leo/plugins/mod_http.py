@@ -19,7 +19,6 @@ You can use the browser's refresh button to update the top-level view in the bro
 To enable this plugin:
     put this into your file
     @settings
-        @page http plugin
         @bool http_active = True
         @int  port = 8080
         @string rst_http_attributename = 'rst_http_attribute'
@@ -34,7 +33,7 @@ To enable this plugin:
 # Adapted and extended from the Python Cookbook:
 # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/259148
 
-__version__ = "0.96"
+__version__ = "0.97"
 
 __pychecker__ = '--no-errors' # Suppress all pychecker errors.
 
@@ -80,6 +79,9 @@ import urlparse
 # 0.95 EKR: Changed headline from applyConfiguration to getConfiguration to 
 # match name of method.
 # 0.96 EKR: suppress all pychecker warnings.
+# 0.97 EKR:
+# - Call g.signon in init so users can see that the plugin is enabled.
+# - Removed the old @page line from the docstring.
 #@-at
 #@nonl
 #@-node:ekr.20050328104558:<< version history >>
@@ -101,6 +103,7 @@ class config:
 def init ():
 
     leoPlugins.registerHandler("open2", onFileOpen)
+    g.plugin_signon(__name__)
 
     return True
 #@nonl
@@ -108,6 +111,8 @@ def init ():
 #@+node:bwmulder.20050326191345.1:onFileOpen
 def onFileOpen(tag, keywords):
     c = keywords.get("new_c")
+
+    g.trace('c',c)
 
     wasactive = config.http_active
     getConfiguration(c)
@@ -259,8 +264,6 @@ class escaped_StringIO(StringIO):
         s = s.replace('\n', '<br>')
         s = s.replace(chr(9), '&nbsp;&nbsp;&nbsp;&nbsp;')
         StringIO.write(self, s)
-
-    #@nonl
     #@-node:EKR.20040517080250.12:write_escaped
     #@-others
 #@nonl
