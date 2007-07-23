@@ -1671,7 +1671,15 @@ http://www.turbogears.org/ultimate.html
 
 Leo is different enough that it warrants a 
 demonstration of it's advantages.
-#@nonl
+
+-------------------
+
+https://sourceforge.net/forum/message.php?msg_id=4396251
+By: ktenney
+
+2 good screencasts on making screencasts;
+
+http://murl.se/26296
 #@-node:ekr.20060531134434.1:Screencasts
 #@+node:ekr.20060829103523:Render Leo slideshows
 @nocolor
@@ -2969,7 +2977,39 @@ to build and install your module.
 #@-node:ekr.20070613193516:Maybe
 #@-node:ekr.20070703111455.3:Other
 #@-node:ekr.20070703111455:To do: 4.4.5 (@menu, vim bindings, translation, etc)
-#@+node:ekr.20070105135713:To do: 4.5 (new positions)
+#@+node:ekr.20070703111913:To do: 4.4.6: (Swing gui)
+#@+node:ekr.20060629154112:Merge Leo & jyLeo
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3799470
+By: leouser
+
+I guess its hard to say what pieces must merge and what can stay different.
+Id like it if the blasted nodes were the same.  I guess there is progress again
+on a jython 2.2 being complete and work starting on 2.3.  So there is hope that
+the nodes will be the same code, at least it will be possible.
+
+At the top of my head the big differences outside of the position changes are:
+1. Some modifications to the read/write code so that Chapters can work and also
+Serialized positions.
+2. Commander has some things different, it looks to the Chapters instance to
+determine what is the curentPosition, top Position etc... instead of keeping
+track of it itself.
+3. GUI layers are very different.  Interesting tidbit here: the work I did to
+get the JTree to use positions to determine if a node is expanded or not looks
+like it has provided the outline for enhancing the JTree for Java itself to
+be able to do this.  We will have to see, but maybe in Java 7 you can say: "Positions
+lead to user controled tree expansion models".
+
+There is a tremendous amount that is the same. Im sure you could make an interesting
+evening out of comparing the codebases to see where things change.
+
+
+#@+node:ekr.20070307082814:Create g.startupController class
+#@-node:ekr.20070307082814:Create g.startupController class
+#@-node:ekr.20060629154112:Merge Leo & jyLeo
+#@-node:ekr.20070703111913:To do: 4.4.6: (Swing gui)
+#@+node:ekr.20070105135713:To do: 5.0 (The graph world)
 #@+node:ekr.20061028070132:New positions
 # None of this code is part of Leo's core yet: it is all highly experimental.
 
@@ -4780,39 +4820,7 @@ def unlink (self):
 #@-node:ekr.20061028070057.51:p.Link/Unlink methods (all new)
 #@-node:ekr.20061028211424.1:position class
 #@-node:ekr.20061028070132:New positions
-#@-node:ekr.20070105135713:To do: 4.5 (new positions)
-#@+node:ekr.20070703111913:To do: 4.6: (Swing gui)
-#@+node:ekr.20060629154112:Merge Leo & jyLeo
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3799470
-By: leouser
-
-I guess its hard to say what pieces must merge and what can stay different.
-Id like it if the blasted nodes were the same.  I guess there is progress again
-on a jython 2.2 being complete and work starting on 2.3.  So there is hope that
-the nodes will be the same code, at least it will be possible.
-
-At the top of my head the big differences outside of the position changes are:
-1. Some modifications to the read/write code so that Chapters can work and also
-Serialized positions.
-2. Commander has some things different, it looks to the Chapters instance to
-determine what is the curentPosition, top Position etc... instead of keeping
-track of it itself.
-3. GUI layers are very different.  Interesting tidbit here: the work I did to
-get the JTree to use positions to determine if a node is expanded or not looks
-like it has provided the outline for enhancing the JTree for Java itself to
-be able to do this.  We will have to see, but maybe in Java 7 you can say: "Positions
-lead to user controled tree expansion models".
-
-There is a tremendous amount that is the same. Im sure you could make an interesting
-evening out of comparing the codebases to see where things change.
-
-
-#@+node:ekr.20070307082814:Create g.startupController class
-#@-node:ekr.20070307082814:Create g.startupController class
-#@-node:ekr.20060629154112:Merge Leo & jyLeo
-#@-node:ekr.20070703111913:To do: 4.6: (Swing gui)
+#@-node:ekr.20070105135713:To do: 5.0 (The graph world)
 #@-all
 #@nonl
 #@-node:ekr.20040117181936:@thin ../doc/leoToDo.txt
