@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="345" height="824" width="896"/>
+	<global_window_position top="10" left="345" height="804" width="896"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -69,11 +69,11 @@
 <v t="ekr.20050812125502"><vh>@rst-no-head End stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20070701101808" a="E"><vh>Preface</vh>
-<v t="ekr.20070701101809" a="E"><vh>@rst html\preface.html</vh>
+<v t="ekr.20070701101808"><vh>Preface</vh>
+<v t="ekr.20070701101809"><vh>@rst html\preface.html</vh>
 <v t="ekr.20070701101809.1"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20070723100037"><vh>@rst-no-head preface</vh></v>
-<v t="ekr.20070701090840" a="E"><vh>@rst-ignore  @rst-no-head preface (old)</vh></v>
+<v t="ekr.20070701090840"><vh>@rst-ignore  @rst-no-head preface (old)</vh></v>
 <v t="ekr.20070701101809.7"><vh>@rst-no-head End stuff</vh></v>
 </v>
 </v>
@@ -674,14 +674,8 @@
 <v t="ekr.20060502122950.47"><vh>match_span_regexp</vh></v>
 <v t="ekr.20060502122950.48"><vh>match_terminate</vh></v>
 </v>
-<v t="ekr.20060509104553"><vh>Code design notes</vh>
-<v t="ekr.20060509104553.1"><vh>Aha 1:  Suppress redraws until the end of coloring</vh></v>
-<v t="ekr.20060509104553.2"><vh>Aha 2:  Always recolor at the beginning</vh></v>
-<v t="ekr.20060509104553.3"><vh>Aha 3: Use quick coloring to eliminate flash</vh></v>
-<v t="ekr.20060509104553.4"><vh>Aha 4: Use character-specific rules lists to speed coloring</vh></v>
-<v t="ekr.20060509104553.5"><vh>Conclusion</vh></v>
-</v>
 <v t="ekr.20060830142929"><vh>Syntax coloring settings</vh></v>
+<v t="ekr.20070724081553"><vh>The threading_colorizer plugin</vh></v>
 <v t="ekr.20060430223116"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -731,7 +725,7 @@
 </v>
 </v>
 <v t="ekr.20070628083442"><vh>Chapter 20: Unit testing with Leo</vh>
-<v t="ekr.20070628083442.1" a="E"><vh>@rst html\unitTesting.html</vh>
+<v t="ekr.20070628083442.1"><vh>@rst html\unitTesting.html</vh>
 <v t="ekr.20070628083442.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070704074747"><vh>Overview</vh></v>
 <v t="ekr.20070628084351"><vh>Using @test nodes</vh></v>
@@ -768,7 +762,7 @@
 </v>
 </v>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
-<v t="ekr.20070513113903" a="E"><vh>What's New in Leo 4.4.3</vh>
+<v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
 <v t="ekr.20070513113931.1"><vh>@rst-no-head links</vh>
 <v t="ekr.20070513115832.2"><vh>Important new features</vh></v>
@@ -1060,9 +1054,9 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
-<v t="ekr.20070513113903" a="E"><vh>What's New in Leo 4.4.3</vh>
+<v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
 <v t="ekr.20070513113931.1"><vh>@rst-no-head links</vh>
 <v t="ekr.20070513115832.2"><vh>Important new features</vh></v>
@@ -3201,7 +3195,7 @@
 <v t="ekr.20070626082732"><vh>4.4.3 final</vh></v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
 <v t="ekr.20070702162421"><vh>4.4.3.1</vh>
 <v t="ekr.20070703095207.1"><vh>Bugs</vh>
 <v t="ekr.20070703095207.2"><vh>Fixed improper can not open myLeoSettings message</vh></v>
@@ -23960,7 +23954,7 @@ write_intermediate_file = False
 verbose=True
 @c
 
-.. May 2, 2006
+.. July, 2006
 
 |back| |leo| |next|
 
@@ -23968,7 +23962,18 @@ verbose=True
 Chapter 15: Controlling Syntax Coloring
 #########################################
 
-This chapter discusses how to control Leo's new syntax colorer using Python files derived from jEdit_'s xml language description files.  It also discusses settings related to syntax coloring.
+This chapter discusses how to control Leo's new syntax colorer using Python
+files derived from jEdit_'s xml language description files. It also discusses
+settings related to syntax coloring.
+
+**Important**: this material is for those who want to support Leo's colorizing
+code. You do *not* need to understand this chapter in order to use Leo's
+colorizers.
+
+The __jEdit_colorizer__.py plugin was an early prototype of the new colorizer.
+This code has been retired. The threading_colorizer.py plugin uses a separate
+helper thread to do the colorizing. Coding details for this plugin are discussed
+in this chapter.
 
 .. contents::
 </t>
@@ -24174,7 +24179,7 @@ The colorer can get the rules list for character ch as follows::
 
     self.rulesDict = x.rulesDictDict.get(rulesetName) # When a mode is inited.
     ...
-    rules = sellf.rulesDict.get(ch,[]) # In the main loop.
+    rules = self.rulesDict.get(ch,[]) # In the main loop.
 
 For example, here is the rules dictionary for php.py::
 
@@ -24463,68 +24468,6 @@ In short:
 
 - **Imported** ruleset names appear as the values of items in ``x.importDict``;
   **delegated** ruleset names appear as ``delegate`` arguments to rule methods.</t>
-<t tx="ekr.20060509104553">This rest of this chapter tells how the new colorizer works in detail.
-It is organized around several design principles.
-I call them aha's because that was what they were at the time.</t>
-<t tx="ekr.20060509104553.1">This was the big breakthrough because it provided a clear, direct, predictable way of controlling the colorizing process.
-
-Tk doesn't provide a high-level way of discovering whether events are pending, so to provide good key-handling response the colorizer must pause regularly.  The colorizer pauses by queuing itself as an idle-time event. **Drawing must not happen during this idle time**.  In that case, idle time will happen 'quickly' and the colorizer will resume without perceptible delay. Tests show that colorizing can be interrupted hundreds of times without noticeable delay *provided* that nothing major happens during idle time.
-
-Suppressing redraws is easy.  Rather than calling Tk's tag_remove and tag_add methods directly during coloring, the colorizer simply adds the range of text to be colored to a list.  When colorizing is complete, the colorizer simply removes all tags en masse and then calls tag_add.
-
-We can now begin to see now why using separate threads would just confuse matters.  Pausing regularly is a simple, explicit way of giving up control.  Threads can not do better.  You might want to consider how the following discussions would be complicated if multiple threads were involved.</t>
-<t tx="ekr.20060509104553.2">Leo's old colorizer was a marvel of effort designed to reduce the number of time spent in the colorizer.  Alas, this code was complex and error prone.  Worse, bugs caused text to be incorrectly colored.  It turns out that this effort was not needed.
-
-Aha 1 tells us that the main colorizer loop will be very fast *until* another event happens.  Whenever the text to be colored changes (for whatever reason) a request to recolor the text will be issued.  When that happens the new colorizer always **aborts** any previous colorizing and restarts colorizing at the beginning.
-
-The aha is, in effect, that 'throwing away' the previous colorizing work is *not* a wasteful strategy.  Indeed, because of Aha 1, restarting at the beginning has no effect on response time.  The colorizer pauses regularly regardless of how much colorizing happens. So any 'wasted' effort could only effect the *total* time to colorize the text, not the response time.  But in the typical, most important case, the only character that actually has to be colored is the characters just typed, and in that case *it doesn't matter* how long it takes to recolor the other characters because (usually) their colors won't change!
-
-Ok you say, but what about the characters just typed?  Won't restarting the colorizing at the beginning slow down the colorizing of the characters being typed?  Yes, it would, without the next Aha.</t>
-<t tx="ekr.20060509104553.3">Restarting coloring at the beginning is an optimal strategy, *provided* that the character just typed (call it **ch**) can be colored quickly.  And make no mistake, colorizing ch is important, otherwise it flashes: first ch is colored black, and a few tenths of a second later ch turns to its final color.  Such flash is most annoying, and we want to eliminate it as much as possible.
-
-The Aha is that flash doesn't matter if it happens infrequently.  That is, the colorizer does *not* have to do a perfect job of colorizing the character just typed.  Instead, the colorizer can 'guess' what the proper color for ch should be, and if that guess turns out to be incorrect the main colorizer loop will color ch correctly later.  If, once in a great while, the colorizer guesses wrong the flash will be largely unnoticed.
-
-Quick coloring is a prepass, independent of the colorizer's main loop.  Quick coloring makes its best guess about what the color ch should be.  This guess could be wrong, but to repeat, mistakes will be corrected later by the main colorizing loop.
-
-Quick coloring uses heuristics to make guesses.  The simplest heuristic is to give ch the color of the previous character.  This guess will be correct except at the boundaries of tokens, for example, if ch follows the end of a string or comment.  Note that we can ignore mistakes caused by large-scale text changes, such as cutting and pasting text, because such operations happen infrequently and because so much else is changing that temporarily incorrect colors don't matter.
-
-So we need better heuristics only for changes to a single character, ch. In that case, mistakes can happen only at the boundaries of tokens.  Here is the plan: the main coloring loop will create a dict whose keys are locations in the (previous) text and whose values are the starting location of the token that caused each location to be colored.  Quick coloring will then do a 'trial' coloring starting at the start of the token that *previously* caused ch to be colored.  The correct color for ch will be known for certain if the trial coloring includes ch.  I have not implemented this heuristic yet, but I am reasonably confident that it will eliminate all (or almost all) mistakes when typing single characters.
-
-Quick coloring is sweet.  It gives almost all the advantages of incremental coloring with no significant impact on the rest of the colorizer.  Quick coloring does not have to be perfect to be supremely useful because the main colorizing loop will always (eventually, in its brute-force way) color every single character correctly.</t>
-<t tx="ekr.20060509104553.4">The first draft of the main colorizer loop tried every rule for every character.
-We can do much better than that because the jEdit rules require that each rule can only match patterns that start with a single character.
-Using Python mode as an example, rather than searching through a list of 23 rules,
-the character-specific rules lists have one or two items, and many rule lists are empty.
-
-jEdit2Py now creates x.rulesDictDict in every x.py file.
-Keys are rulesets.  Values are ruleset dictionaries.
-Ruleset dictionaries have keys that are single characters and whose values are the list of rules that can start with that character. So the colorizer's inner loop is now::
-
-    for f in self.rulesDict.get(s[i],[]):
-        n = f(self,s,i)
-        if n &gt; 0:
-            i += n ; break
-        else: i += 1
-
-This is as good as it gets.
-It is significantly, noticeably, faster than using a single rules list for each ruleset.</t>
-<t tx="ekr.20060509104553.5">The new colorizer is a great success:
-
-- It is simple where it must be perfect, and complex only where mistakes are harmless.
-
-- It guarantees excellent response time without using threads.
-
-- It colors text essentially as fast as possible.
-
-- It eliminates flash almost all the time.
-
-- It is self contained and is almost completely independent of Leo.
-
-- It is largely independent of Tk, and might be even simpler in other environments.
-
-- The distinction between incremental and non-incremental coloring no longer exists.
-
-- Client code need do nothing special to support the colorizer, a major simplification.</t>
 <t tx="ekr.20060510085547">``x.py`` contains a **attribute dictionary** for each ruleset in ``x.xml``.
 Keys are attribute names, values strings representing the values of the attributes.
 This dictionary is empty if a ruleset contains no attributes.
@@ -27614,7 +27557,7 @@ All, that takes forever (1-2 minutes :-) running 100% CPU all the while.</t>
 <t tx="ekr.20060830142929">This section discusses only those settings that affect syntax coloring.
 See `Chapter 8`_ for a general discussion of Leo's settings.
 
-Both the old colorizer (in Leo's core) and the new colorizer (the __jEdit_colorizer plugin)
+Both the old colorizer (in Leo's core) and the new colorizer (the threading_colorizer plugin)
 now support @font settings for colorizing options.
 The settings for the old colorizer are::
 
@@ -31555,5 +31498,59 @@ That's about it, except for some words of caution and advice:
  
 Edward K. Ream
 July, 2007</t>
+<t tx="ekr.20070724081553">This section contains code-level notes for the threading colorizer. You do not
+need to understand this material in order to use the threading colorizer.
+
+The threading_colorizer plugin uses a separate **helper thread** to compute the
+ranges of text that should be colored. The helper thread **must not contain any
+calls to Tk**. Tk is not thread safe--calling Tk in the helper thread will cause
+hard crashes in the Tk dll. In fact, however, the code in the helper thread is
+gui independent. The **main thread** is all of Leo's code except for a helper
+thread. The main thread contains all calls to Tk, all entry points to the
+colorizer, and an idle-time handler for the colorizer called idleHandler.
+
+Only one helper thread is ever active at any one time. If a keystroke occurs
+while the helper thread is active, the colorizer code in the main thread sets
+the killFlag ivar and calls join to wait for the helper thread to terminate. The
+helper thread will terminate promptly because it looks at killFlag each time
+through its main loop. The *only* reason for using threading is so that main
+thread can continue working while the helper thread computes. This allows Tk (in
+the main thread) to respond to events. This in turn allows the colorizer code in
+the main thread to kill the helper thread if it is still working.
+
+The main and helper threads are in a general producer-consumer relationship. The
+helper thread is the producer, the idleHandler method is the consumer. The
+helper thread adds elements to the tagList. idleHandler removes items from the
+tagList and colorizes those items. All accesses to the tagList must be protected
+with calls to lock and release.
+
+Entries in the tag list have the form: tagName,i,j, where i and j are Python
+(integer) indices. Using integer indices is an important optimization.
+Converting to Tk (gui) indices is quite expensive, and the colorizer won't have
+to do that unless the results of the helper thread are actually used. When the
+user is typing rapidly, the colorizer will ignore the results of all helper
+threads except the last.
+
+For long text strings, idleHandler will be called many times before the coloring
+is finished. This naturally breaks up the coloring work load: idleHandler
+colorizes only the new items in tagList. The idleHandler will re-queue itself
+only if the associated helper thread has not terminated.
+
+Every node must be completely colorized when the user selects the node. The
+fullColor method colors the entire text non-incrementally. For key-pressed
+events the colorizer computes the minimum range of text that must be colored.
+The partialColor method colors text from a **starting point** to an **ending
+point**. The **marksDict** ivar (used only by the main thread) remembers the
+list of previous matches. The partialColor method uses the marksDict to
+determine the starting and ending points. The new colorizer is character
+oriented rather than line oriented. The computeIndices method computes the range
+of changed text. The adjustMarksDict method adjust entries in the marksDict so
+they correspond to the present changed text.
+
+The limiting factor for responsiveness with very large text appears to be in Tk
+itself. This starts to be true for body text of about 100K.
+
+At present the 'interruptible' argument to the colorizer entry points is not
+used. This might be a problem when multiple body editors are present.</t>
 </tnodes>
 </leo_file>
