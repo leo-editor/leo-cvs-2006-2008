@@ -186,8 +186,6 @@ class slideshowController:
                 p = p.threadNext()
         self.select(self.slideShowRoot)
         g.es('At start of last slide show')
-
-    #@nonl
     #@-node:ekr.20060901142848:nextSlideShow
     #@+node:ekr.20060831171016.4:prevSlide
     def prevSlide (self,event=None):

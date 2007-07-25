@@ -234,8 +234,6 @@ def onHeadKey(tag,keywords):
                 #@-node:timo.20050215232157:<< write template >>
                 #@nl
 
-
-#@nonl
 #@-node:timo.20050215222802:onHeadKey
 #@+node:timo.20050213160555.7:writeTreeAsBibTex
 def writeTreeAsBibTex(bibFile, vnode, c):

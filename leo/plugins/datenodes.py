@@ -91,8 +91,6 @@ class DateNodes:
             settings[setting[10:]] = value  # Omit datenodes_ prefix
 
         self.settings = settings
-
-    #@nonl
     #@-node:gfunch.20041209073652:_get_settings
     #@+node:gfunch.20041208095742:_format_node_label
     def _format_node_label(self, date, fmt):

@@ -107,8 +107,6 @@ class myPrettyPrinter(leoCommands.Commands.prettyPrinter):
         def doIndent (self):
 
             self.array.append(self.val)
-
-    #@nonl
     #@-node:ekr.20041021123018.4:doIndent & doDedent
     #@+node:ekr.20041021123018.5:doMultiLine
     if 0: # The orignal code...
@@ -182,8 +180,6 @@ class myPrettyPrinter(leoCommands.Commands.prettyPrinter):
         def doNumber (self):
 
             self.array.append(self.val)
-
-    #@nonl
     #@-node:ekr.20041021123018.8:doNumber
     #@+node:ekr.20041021123018.9:doOp
     if 0: # The orignal code...

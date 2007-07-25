@@ -279,8 +279,6 @@ class View:
         for file in path.dirs():
            child = node.insertAsLastChild()
            c.setHeadString(child,'@view %s' % file.name)
-
-    #@nonl
     #@-node:ktenney.20041211072654.14:processDirectory
     #@-others
 #@nonl

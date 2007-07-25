@@ -169,8 +169,6 @@ def export_rtf( c ):
     # Close file
     f.close()
     g.es(" Leo -> RTF completed.",color="turquoise4")
-
-#@nonl
 #@-node:danr7.20060902083957.3:export_rtf
 #@-others
 

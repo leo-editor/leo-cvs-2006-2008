@@ -368,8 +368,6 @@ class UIHelperClass:
     #@-node:pap.20051010172432:_getSizer
     #@-others
 
-
-#@nonl
 #@-node:pap.20051010171746.2:class UIHelper
 #@+node:pap.20051011154233:class HelperForm
 class HelperForm:
@@ -400,8 +398,6 @@ class HelperForm:
             result = None
         self.dialog.destroy() 
         self.callback(result)
-
-    #@nonl
     #@-node:pap.20051011154642:formCommit
     #@-others
 #@nonl

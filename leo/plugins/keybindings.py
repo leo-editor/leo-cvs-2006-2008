@@ -87,8 +87,6 @@ def onCreate (tag, keys):
     global thePluginController
     thePluginController = pluginController(c)
 
-
-#@nonl
 #@-node:pap.20060703102546.5:onCreate
 #@+node:pap.20060703102832:topLevelMenu
 # This is called from plugins_menu plugin.
@@ -274,8 +272,6 @@ class KeyHandlerDialog:
         self.filter_pane = filter
         self.populateKeys()
         self.box.setlist(self.bindings)
-
-    #@nonl
     #@-node:pap.20060703105742.1:filterPane
     #@+node:pap.20060703111744:filterKey
     def filterKey(self):
@@ -283,8 +279,6 @@ class KeyHandlerDialog:
         self.filter_keys = "*%s*" % self.keys.getvalue()
         self.populateKeys()
         self.box.setlist(self.bindings)
-
-    #@nonl
     #@-node:pap.20060703111744:filterKey
     #@+node:pap.20060703112417:filterCommands
     def filterCommands(self):
@@ -292,8 +286,6 @@ class KeyHandlerDialog:
         self.filter_commands = "*%s*" % self.commands.getvalue()
         self.populateKeys()
         self.box.setlist(self.bindings)
-
-    #@nonl
     #@-node:pap.20060703112417:filterCommands
     #@+node:pap.20060703113646:sortItems
     def sortItems(self, sort="By key"):
@@ -330,8 +322,6 @@ class KeyHandlerDialog:
         f.close()
 
         webbrowser.open(fname)
-
-    #@nonl
     #@-node:pap.20060703123659:printKeys
     #@+node:pap.20060703131850:getAllCommands
     def getAllCommands(self):

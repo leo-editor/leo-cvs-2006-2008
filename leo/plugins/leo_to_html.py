@@ -152,8 +152,6 @@ def export_html( c ):
     # Close file
     f.close()
     g.es(" Leo -> HTML completed.",color="turquoise4")
-
-#@nonl
 #@-node:danr7.20060902215215.6:export_html
 #@-others
 #@nonl
