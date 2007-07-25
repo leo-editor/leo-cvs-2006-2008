@@ -9,9 +9,9 @@
 #@+at 
 #@nonl
 # xxx To do:
-# - Fix Python string escape bug (see test.leo)
-# - Calculate minimum changed string in computeIndices.
+# 
 # - Focus leaves body pane for long body text.
+# - Calculate minimum changed string in computeIndices.
 #@-at
 #@@c
 
@@ -180,7 +180,7 @@ def onStart1 (tag, keywords):
     leoColor.colorizer = colorizer
     leoColor.nullColorizer = nullColorizer
 #@-node:ekr.20070718131458.10:onStart1
-#@+node:ekr.20070718131458.11:Leo rule functions
+#@+node:ekr.20070718131458.11:Leo rule functions (in helper thread)
 #@+at
 # These rule functions recognize noweb syntactic constructions. These are 
 # treated
@@ -386,7 +386,7 @@ def match_tabs (self,s,i):
     # else:
         # return 0
 #@-node:ekr.20070720161950:match_incomplete_strings
-#@-node:ekr.20070718131458.11:Leo rule functions
+#@-node:ekr.20070718131458.11:Leo rule functions (in helper thread)
 #@-node:ekr.20070718131458.5:module-level
 #@+node:ekr.20070718131458.20:class colorizer
 class colorizer:
@@ -1679,7 +1679,8 @@ class colorizer:
                     escapes += 1 ; k += 1
                 if (escapes % 2) == 1:
                     # Continue searching past the escaped pattern string.
-                    i = j + len(pattern) + 1
+                    i = j + len(pattern) # Bug fix: 7/25/07.
+                    # g.trace('escapes',escapes,repr(s[i:]))
                 else:
                     return j
             else:
