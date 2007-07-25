@@ -10,6 +10,7 @@ import leoTest # Support for unit tests.
 #@<< to do >>
 #@+node:ekr.20070723082454:<< to do >>
 #@@nocolor
+#@@color
 #@+at
 # 
 # - BUG: "\n" appears to get converted to a real newline sometimes.
@@ -23,10 +24,7 @@ import leoTest # Support for unit tests.
 # * Some (python only?) classes & functions are being scanned twice.
 # 
 #     - Maybe the code should switch to 'official' ivars.
-# 
-#@@color
 #@-at
-#@nonl
 #@-node:ekr.20070723082454:<< to do >>
 #@nl
 
