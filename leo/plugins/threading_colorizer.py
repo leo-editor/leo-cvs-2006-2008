@@ -9,9 +9,9 @@
 #@+at 
 #@nonl
 # xxx To do:
+# - Fix Python string escape bug (see test.leo)
 # - Calculate minimum changed string in computeIndices.
 # - Focus leaves body pane for long body text.
-# - Finish twoPassRecolor.  This is needed for images.
 #@-at
 #@@c
 
@@ -419,8 +419,8 @@ class colorizer:
         self.trace_match_flag = False
         self.use_threads = True
         # For use of external markup routines.
-        self.last_markup = "unknown" 
-        self.markup_string = "unknown"
+        ###self.last_markup = "unknown" 
+        ###self.markup_string = "unknown"
         # State ivars...
         self.colored_ranges = {} # Keys are indices, values are tags.
         self.color_pass = 0
@@ -434,8 +434,6 @@ class colorizer:
         self.language = 'python' # set by scanColorDirectives.
         self.prev = None # The previous token.
         self.ranges = 0
-        self.redoColoring = False # May be set by plugins.
-        self.redoingColoring = False
         # Data...
         self.fonts = {} # Keys are config names.  Values are actual fonts.
         self.insertPoint = None
@@ -639,6 +637,8 @@ class colorizer:
 
         c = self.c
 
+        # g.trace()
+
         for name,option_name,default_color in (
             ("blank","show_invisibles_space_background_color","Gray90"),
             ("tab",  "show_invisibles_tab_background_color",  "Gray80"),
@@ -657,7 +657,6 @@ class colorizer:
         # Special case:
         if not self.showInvisibles:
             self.body.tag_configure("elide",elide="1")
-    #@nonl
     #@-node:ekr.20070718131458.26:configure_variable_tags
     #@+node:ekr.20070718131458.27:init_mode & helpers
     def init_mode (self,name):
@@ -1081,11 +1080,11 @@ class colorizer:
         finally:
             self.lock.release()
 
-        # w.update_idletasks()
+        w.update_idletasks()
 
         # print '%d' % self.threadCount,
     #@-node:ekr.20070718131458.42:finishColoring
-    #@+node:ekr.20070719105813:fullColor
+    #@+node:ekr.20070719105813:fullColor (in helper thread)
     def fullColor (self,s):
 
         '''Fully recolor s.'''
@@ -1112,7 +1111,7 @@ class colorizer:
 
         self.end_i = len(s)
         self.old_s = self.s
-    #@-node:ekr.20070719105813:fullColor
+    #@-node:ekr.20070719105813:fullColor (in helper thread)
     #@+node:ekr.20070718131458.50:idleHandler
     def idleHandler (self,n):
 
@@ -1142,8 +1141,6 @@ class colorizer:
         self.killFlag = False
         # self.language is set by self.updateSyntaxColorer.
         self.p = p.copy()
-        self.redoColoring = False
-        self.redoingColoring = False
         self.s = w.getAllText()
         self.selection = w.getSelectionRange()
         # g.trace('ins',self.insertPoint,'sel',self.selection)
@@ -1154,12 +1151,10 @@ class colorizer:
         self.init_mode(self.language)
         self.configure_tags() # Must do this every time to support multiple editors.
     #@-node:ekr.20070718131458.49:init
-    #@+node:ekr.20070719110029:partialColor
+    #@+node:ekr.20070719110029:partialColor (in headlper thread)
     def partialColor (self,s):
 
         '''Partially recolor s'''
-
-        return self.fullColor(s) ### The backtracking algorithm doesn't work.
 
         # g.trace(self.language)
 
@@ -1168,6 +1163,7 @@ class colorizer:
             # g.trace('all lines match')
             return self.fullColor(s)
         else:
+            g.doHook("init-color-markup",colorer=self,p=self.p,v=self.p)
             d = self.marksDict = self.adjustMarksDict(self.marksDict,mid_i,delta)
             assert(mid_i == 0 or s[mid_i-1] == '\n')
             i = self.findMarkAtIndex(d,max(0,mid_i-1))
@@ -1221,28 +1217,30 @@ class colorizer:
                         #@nl
         self.end_i = i
         self.old_s = self.s
-    #@-node:ekr.20070719110029:partialColor
+    #@-node:ekr.20070719110029:partialColor (in headlper thread)
     #@+node:ekr.20070718131458.43:removeAllImages
     def removeAllImages (self):
 
-        for photo,image,line_index,i in self.image_references:
-            try:
-                self.body.deleteCharacter(image)
-                w = self.w
-                w.delete(self.allBodyText,index)
-                self.allBodyText = w.getAllText()
-            except:
-                pass # The image may have been deleted earlier.
+        # for photo,image,i in self.image_references:
+            # try:
+                # w = self.w
+                # w.setAllText(w.getAllText())
+
+                # # i = self.index(i)
+                # # self.body.deleteCharacter(image)
+                # # s = self.allBodyText ; w = self.w
+                # # w.delete(s,i)
+                # # self.allBodyText = w.getAllText()
+            # except:
+                # g.es_exception()
+                # pass # The image may have been deleted earlier.
 
         self.image_references = []
-    #@nonl
     #@-node:ekr.20070718131458.43:removeAllImages
     #@+node:ekr.20070718131458.44:removeAllTags
     def removeAllTags (self):
 
         w = self.w
-
-        g.trace()
 
         names = w.tag_names()
         for name in names:
@@ -1262,6 +1260,21 @@ class colorizer:
             x1,x2 = w.toGuiIndex(self.start_i,s=s), w.toGuiIndex(self.end_i,s=s)
             w.tag_remove(tag,x1,x2)
     #@-node:ekr.20070720165737:removeTagsFromRange
+    #@+node:ekr.20070724120821:tag & index (threadingColorizer)
+    def index (self,i):
+
+        w = self.w
+        x1 = w.toGuiIndex(i)
+        # g.trace(i,x1)
+        return x1
+
+    def tag (self,name,i,j):
+
+        s = self.s ; w = self.w
+        # g.trace(name,i,j,repr(s[i:j]))
+        x1,x2 = w.toGuiIndex(i,s=s), w.toGuiIndex(j,s=s)
+        self.body.tag_add(name,x1,x2)
+    #@-node:ekr.20070724120821:tag & index (threadingColorizer)
     #@+node:ekr.20070718131458.45:tagAll
     def tagAll (self):
 
@@ -1303,55 +1316,30 @@ class colorizer:
 
         for tag,i,j in self.tagList:
             x1,x2 = w.toGuiIndex(i,s=s), w.toGuiIndex(j,s=s)
-            w.tag_add(tag,x1,x2)
+            if not g.doHook("color-optional-markup",
+                colorer=self,p=self.p,v=self.p,s=s,i=i,j=j,colortag=tag):
+                w.tag_add(tag,x1,x2)
 
         self.tagList = []
         self.start_i = self.end_i
     #@-node:ekr.20070718131458.45:tagAll
-    #@+node:ekr.20070718131458.52:target
+    #@+node:ekr.20070718131458.52:target (in helper thread)
     def target(self,*args,**keys):
 
         s = keys.get('s')
 
         try:
-            g.doHook("init-color-markup",colorer=self,p=self.p,v=self.p)
             self.color_pass = 0
-            if self.incremental and (
-                #@            << all state ivars match >>
-                #@+node:ekr.20070719105837:<< all state ivars match >>
-                self.flag == self.last_flag and
-                self.last_language == self.language and
-                self.comment_string == self.last_comment and
-                self.markup_string == self.last_markup
-                #@-node:ekr.20070719105837:<< all state ivars match >>
-                #@afterref
- ):
+            if self.incremental:
                 self.partialColor(s)
             else:
                 self.fullColor(s)
-            if self.redoColoring:
-                self.twoPassRecolor(s)
-            #@        << update state ivars >>
-            #@+node:ekr.20070719105813.1:<< update state ivars >>
-            self.last_flag = self.flag
-            self.last_language = self.language
-            self.last_comment = self.comment_string
-            self.last_markup = self.markup_string
-            #@-node:ekr.20070719105813.1:<< update state ivars >>
-            #@nl
             return "ok" # for testing.
         except:
-            #@        << set state ivars to "unknown" >>
-            #@+node:ekr.20070719110029.2:<< set state ivars to "unknown" >>
-            self.last_flag = "unknown"
-            self.last_language = "unknown"
-            self.last_comment = "unknown"
-            #@-node:ekr.20070719110029.2:<< set state ivars to "unknown" >>
-            #@nl
             # We can not use g.es_exception: it calls Tk methods.
             traceback.print_exc()
             return "error" # for unit testing.
-    #@-node:ekr.20070718131458.52:target
+    #@-node:ekr.20070718131458.52:target (in helper thread)
     #@+node:ekr.20070718131458.46:threadColorizer
     thread_count = 0
 
@@ -1366,6 +1354,7 @@ class colorizer:
         self.helperThread = None
         # Init the ivars *after* ending the previous helper thread.
         self.init(p,incremental,interruptable) # Sets 's','w' and other ivars.
+        g.doHook("init-color-markup",colorer=self,p=self.p,v=self.p)
         if self.killcolorFlag or not self.mode:
             self.finishColoring(done=True)
         elif self.use_threads: # Start the helper thread.
@@ -1378,55 +1367,6 @@ class colorizer:
             self.target(s=self.s)
             self.w.after_idle(self.idleHandler,self.threadCount)
     #@-node:ekr.20070718131458.46:threadColorizer
-    #@+node:ekr.20070719110029.1:twoPassRecolor NOT READY YET
-    def twoPassRecolor (self,s):
-
-        g.trace('***not ready yet')
-        return ###
-
-        # This code is executed only if graphics characters will be inserted by user markup code.
-
-        # Pass 1:  Insert all graphics characters.
-        self.removeAllImages()
-        s = self.body.getAllText()
-        lines = s.split('\n')
-
-        self.color_pass = 1
-        self.line_index = 1
-        state = self.setFirstLineState()
-        for s in lines:
-            state = self.colorizeLine(s,state)
-            self.line_index += 1
-
-        # Pass 2: Insert one blank for each previously inserted graphic.
-        self.color_pass = 2
-        self.line_index = 1
-        state = self.setFirstLineState()
-        for s in lines:
-            #@        << kludge: insert a blank in s for every image in the line >>
-            #@+node:ekr.20070718131458.38:<< kludge: insert a blank in s for every image in the line >>
-            #@+at 
-            #@nonl
-            # A spectacular kludge.
-            # 
-            # Images take up a real index, yet the get routine does not return 
-            # any character for them!
-            # In order to keep the colorer in synch, we must insert dummy 
-            # blanks in s at the positions corresponding to each image.
-            #@-at
-            #@@c
-
-            inserted = 0
-
-            for photo,image,line_index,i in self.image_references:
-                if self.line_index == line_index:
-                    n = i+inserted ; 	inserted += 1
-                    s = s[:n] + ' ' + s[n:]
-            #@-node:ekr.20070718131458.38:<< kludge: insert a blank in s for every image in the line >>
-            #@nl
-            state = self.colorizeLine(s,state)
-            self.line_index += 1
-    #@-node:ekr.20070719110029.1:twoPassRecolor NOT READY YET
     #@-node:ekr.20070719111308:Colorers & helpers
     #@+node:ekr.20070718131458.53:jEdit matchers
     #@@nocolor
@@ -1804,14 +1744,6 @@ class colorizer:
             return '\n' + s + '\n'
     #@nonl
     #@-node:ekr.20070718131458.67:dump
-    #@+node:ekr.20070718131458.68:index
-    def index (self,i):
-
-        index = self.body.convertRowColumnToIndex(self.line_index,i)
-        # g.trace(self.line_index,i,index)
-        return index
-
-    #@-node:ekr.20070718131458.68:index
     #@+node:ekr.20070718131458.69:munge
     def munge(self,s):
 
