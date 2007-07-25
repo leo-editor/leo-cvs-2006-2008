@@ -2361,71 +2361,48 @@ def getLeadingIndent (self,s,i):
     return 0
 #@-node:ekr.20031218072017.3308:getLeadingIndent
 #@-node:ekr.20070713074436:Removed utils
-#@+node:ekr.20070705091716:pythonUnitTest
-def pythonUnitTest (self,p,s,fileName,atAuto=False):
+#@+node:ekr.20031218072017.1890:<< completely recolor in two passes >>
+# This code is executed only if graphics characters will be inserted by user markup code.
 
-    '''
-    Run a unit test of the Python parser,
-    i.e., create a tree from string s at location p.
-    The caller is responsible for asserting properties of the tree.
-    '''
+# Pass 1:  Insert all graphics characters.
 
-    # Duplicate processing in ic command
-    ic = self ; c = ic.c
-    if fileName.startswith('@test'):
-        fileName = fileName[5:].strip()
-    junk,ic.fileName = g.os_path_split(fileName)
-    ic.methodName,ic.fileType = g.os_path_splitext(ic.fileName)
-    ic.setEncoding()
+self.removeAllImages()
+lines = self.allBodyText.split('\n')
 
-    c.beginUpdate()
-    try:
-        # Create a child
-        child = p.insertAsLastChild()
-        assert child
-        h = g.choose(atAuto,'@auto ' + fileName,fileName)
-        child.initHeadString(h)
-        ic.scanPythonText (s=s,parent=child.copy(),atAuto=atAuto)
-    finally:
-        c.endUpdate()
-    if 0:
-        g.trace('***** generated tree...')
-        for z in p.subtree_iter():
-            print '.'*z.level(),z.headString()
+self.color_pass = 1
+self.line_index = 1
+state = self.setFirstLineState()
+for s in lines:
+    state = self.colorizeLine(s,state)
+    self.line_index += 1
 
-    return child
-#@-node:ekr.20070705091716:pythonUnitTest
-#@+node:ekr.20031218072017.2802:color.schedule & idle_colorize (not used)
-# def schedule(self,p,incremental=0):
+# Pass 2: Insert one blank for each previously inserted graphic.
 
-    # __pychecker__ = '--no-argsused'
-        # # p not used, but it is difficult to remove.
+self.color_pass = 2
+self.line_index = 1
+state = self.setFirstLineState()
+for s in lines:
+    << kludge: insert a blank in s for every image in the line >>
+    state = self.colorizeLine(s,state)
+    self.line_index += 1
+#@+node:ekr.20031218072017.1891:<< kludge: insert a blank in s for every image in the line >>
+@ A spectacular kludge.
 
-    # if self.enabled:
-        # self.incremental=incremental
-        # g.app.gui.setIdleTimeHook(self.idle_colorize)
+Images take up a real index, yet the get routine does not return any character for them!
+In order to keep the colorer in synch, we must insert dummy blanks in s at the positions corresponding to each image.
+@c
 
-# def idle_colorize(self):
+inserted = 0
 
-    # # New in 4.3b1: make sure the colorizer still exists!
-    # if hasattr(self,'enabled') and self.enabled:
-        # p = self.c.currentPosition()
-        # if p:
-            # self.colorize(p,self.incremental)
-#@-node:ekr.20031218072017.2802:color.schedule & idle_colorize (not used)
-#@+node:ekr.20070719114053:recolor_range
-# def recolor_range(self,p,leading,trailing):
+for photo,image,line_index,i in self.image_references:
+    if self.line_index == line_index:
+        n = i+inserted ; inserted += 1
+        s = s[:n] + ' ' + s[n:]
+        g.trace('***kludge',repr(s))
 
-    # # g.trace(g.callers())
-
-    # if self.enabled:
-        # # if self.trace: g.trace("leading,trailing",leading,trailing)
-        # self.incremental=True
-        # self.updateSyntaxColorer(p)
-        # return self.colorizeAnyLanguage(p,leading=leading,trailing=trailing)
-    # else:
-        # return "ok" # For unit testing.
-#@-node:ekr.20070719114053:recolor_range
+# g.trace(s)
+#@-node:ekr.20031218072017.1891:<< kludge: insert a blank in s for every image in the line >>
+#@-node:ekr.20031218072017.1890:<< completely recolor in two passes >>
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

@@ -378,6 +378,7 @@ Zope
 Zvi
 __class__
 __init__
+__jEdit_colorizer__
 a1
 a2
 a3
@@ -627,6 +628,7 @@ colorizer
 colorizer's
 colorizerTests
 colorizerThread
+colorizers
 colortag
 colour
 coloured
@@ -647,6 +649,7 @@ compareHeadlines
 compareOutlines
 computeHomeDir
 computeIcon
+computeIndices
 computeWidth
 cond
 config
@@ -929,6 +932,7 @@ fromMenu
 fromString
 frontMatter
 ftok
+fullColor
 func
 funcDict
 funcReturn
@@ -1092,6 +1096,7 @@ iconrclick
 iconrclick1
 iconrclick2
 idDict
+idleHandler
 idleTimeDelay
 idle_arg
 idle_body_key
@@ -1122,6 +1127,7 @@ indices
 initMarked
 initWriteIvars
 init_zodb
+inited
 initing
 inits
 inline
@@ -1207,6 +1213,7 @@ keyword4_font
 keyword_font
 keyword_font_size
 keywordsDict
+killFlag
 killcolor
 kk
 knuth
@@ -1370,6 +1377,7 @@ makeSuite
 makeTestCase
 makeTestSuite
 markHeadline
+marksDict
 markup_font
 marshallresearch
 massageBody
@@ -1609,6 +1617,7 @@ parseTree
 parseTreeToString
 parseable
 part2
+partialColor
 pasteOutline
 path2
 pathToIcon
@@ -1624,7 +1633,9 @@ php's
 php_main
 php_php
 php_phpdoc
+php_rule0
 php_tags
+phpdoc
 picklable
 pickleable
 piemenus
@@ -1810,7 +1821,12 @@ rst_prefix
 rstplugin
 rstplugin3
 rstrip
+rule1
+rule64
+rule70
+ruleN
 rulesDict
+rulesDict8
 ruleset's
 rulesetName
 rulesets
@@ -2035,6 +2051,8 @@ tab_width
 tabify
 tabnanny
 tabwidth
+tagList
+tagName
 tag_add
 tag_remove
 tangleCommands
@@ -2096,6 +2114,7 @@ thisNode
 threadBack
 threadNext
 thread_id
+threading_colorizer
 tigris
 time1
 time2
