@@ -861,7 +861,7 @@ if docutils:
             elif isTitle: style = 'title'
             else:         style = "h%s" % self.sectionlevel
 
-            ## The old code was equivalent to: if style != 'title'.
+            # The old code was equivalent to: if style != 'title'.
             if 0:
                 self.dumpNode(node.parent,tag='node.parent')
                 self.dumpNode(node,tag='node')
@@ -943,7 +943,7 @@ if docutils:
             if type(text) in (types.ListType,types.TupleType):
                 text = ''.join([self.encode(t) for t in text])
 
-            if not style.strip(): ### EKR
+            if not style.strip():
                 style = 'Normal'
 
             if 0:

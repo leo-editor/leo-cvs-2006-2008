@@ -351,7 +351,7 @@ class scriptingController:
             elif self.debuggerKind == 'idle':
                 # import idlelib.Debugger.py as Debugger
                 # debugging = Debugger.interacting
-                debugging = True #######
+                debugging = True
             else:
                 debugging = False
             #@nonl

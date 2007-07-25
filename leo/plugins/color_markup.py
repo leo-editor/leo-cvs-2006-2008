@@ -33,6 +33,31 @@ By default, once the text has been markup up, the actual tags (e.g. __ for bold)
 '''
 #@-node:ekr.20050912182434:<< docstring >>
 #@nl
+#@<< example >>
+#@+node:edream.110403140857.5:<< example >>
+#@@color
+#@@markup wiki
+#@+doc 
+#@nonl
+# (this turns on a doc section; a '@ ' would do too)
+# 
+# This should be ''italic'' text
+# This should be __bold__ text
+# This text should be ~~pink:colored in pink~~, ~~blue:this one in blue~~.
+# This text should be ''__both bold and italic__''.
+# Leo's homepage is at http://webpages.charter.net/edreamleo/front.html
+# 
+# You can also have wiki markups in python triple-double-quoted strings:
+# 
+#@-doc
+#@@c
+
+if 0:
+    def __dummy():
+        """This is a __very important__ function."""
+        return None
+#@-node:edream.110403140857.5:<< example >>
+#@nl
 
 #@@language python
 #@@tabwidth -4
@@ -64,8 +89,14 @@ __version__ = "1.8"
 #@+at
 # 
 # Initial version DS: 10/29/03.
-# EKR: 11/4/03: mods for 4.1.
-# 
+# - Added documentation.
+# - Added menu entries to tag selected text and to start/end wiki tagging.
+# 1.3, October 29, 2003:
+# - Fixed bug in the creation of the wiki menu.
+# - Added support for clickable http tags.
+# 1.4, November 4, 2003:
+# - Put import tkinter in a try/except block.
+# - Made changes for 4.1 g.app.gui architecture. (More work needed).
 # 1.5 EKR:
 # - Use only 'new' and 'open2' hooks.
 # - imported tkColorChooser.
@@ -166,6 +197,7 @@ def onBodydclick1(tag,keywords):
 
     c = keywords.get("c")
     url = getUrl(c, "http", "https")
+    # g.trace(c,'url',url)
     if url:
         try:
             import webbrowser
@@ -279,9 +311,6 @@ def doWikiText (colorer,s,i,end,colortag):
             ("italic","''","''"),
             ("picture","{picture file=","}"),
             ("color","~~","~~"),
-            # Not correct: the url ends at a space *or* a newline.
-            #("http","http://"," "),
-            #("https","https://"," "),
         ):
             n1 = s.find(delim1,i,end)
             if n1 > -1:
@@ -289,6 +318,20 @@ def doWikiText (colorer,s,i,end,colortag):
                 if n2 > -1:
                     if not first or (first and n1 < first[1]):
                         first = tag,n1,n2,delim1,delim2
+
+        for tag,delim1 in (
+            ("http","http://"),
+            ("https","https://"),
+        ):
+            k = s.find(delim1,i,end)
+            if k > -1:
+                k2 = k + len(delim1)
+                while k2 < len(s) and s[k2] not in (' ','\t','\n'):
+                    k2 += 1
+                delim2 = s[k2]
+                if s[k:k2] and not first or (first and k < first[1]):
+                    # g.trace('delim1',k,k2,s[k:k2])
+                    first = tag,k,k2,delim1,delim2
         #@-node:edream.110403140857.12:<< set first to a tuple describing the first tag to be handled >>
         #@nl
         if first:

@@ -5752,7 +5752,7 @@ if wx:
                 #selImage=image,
                 data=data)
 
-            ### tree.SetItemFont(id,self.defaultFont)
+            # tree.SetItemFont(id,self.defaultFont)
 
             self.setEditWidget(p,node_id)
             assert (p == tree.GetItemData(node_id).GetData())
@@ -5911,7 +5911,7 @@ if wx:
                 #selImage=image,
                 data=data)
 
-            ### tree.SetItemFont(id,self.defaultFont)
+            # tree.SetItemFont(id,self.defaultFont)
 
             self.setEditWidget(p,node_id)
             assert (p == tree.GetItemData(node_id).GetData())

@@ -15,7 +15,7 @@
 #@-at
 #@@c
 
-__version__ = '0.03'
+__version__ = '0.04'
 
 trace_all_matches = False
 trace_leo_matches = False
@@ -47,35 +47,19 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # 0.2 EKR: Do not restore the selection range or insert point: it messes 
 # things up.
 # 0.3 EKR: A rewrite of the incremental coloring logic.
+# 0.4 EKR: Minor changes.
 #@-at
 #@nonl
 #@-node:ekr.20070718100326.1:<< version history >>
 #@nl
-#@<< define leoKeywords >>
-#@+middle:ekr.20070718131458.5:module-level
-#@+node:ekr.20070718131458.6:<< define leoKeywords >>
-# leoKeywords is used by directivesKind, so it should be a module-level symbol.
-
-# leoKeywords must be a list so that plugins may alter it.
-
-leoKeywords = [
-    "@","@all","@c","@code","@color","@comment",
-    "@delims","@doc","@encoding","@end_raw",
-    "@first","@header","@ignore",
-    "@killcolor",
-    "@language","@last","@lineending",
-    "@nocolor","@noheader","@nowrap","@others",
-    "@pagewidth","@path","@quiet","@raw","@root","@root-code","@root-doc",
-    "@silent","@tabwidth","@terse",
-    "@unit","@verbose","@wrap",
-]
-
+#@<< define leoKeywordsDict >>
+#@+node:ekr.20070725161027:<< define leoKeywordsDict >>
 leoKeywordsDict = {}
-for key in leoKeywords:
+
+for key in g.globalDirectiveList:
     leoKeywordsDict [key] = 'leoKeyword'
 #@nonl
-#@-node:ekr.20070718131458.6:<< define leoKeywords >>
-#@-middle:ekr.20070718131458.5:module-level
+#@-node:ekr.20070725161027:<< define leoKeywordsDict >>
 #@nl
 #@<< define default_colors_dict >>
 #@+middle:ekr.20070718131458.5:module-level
@@ -418,9 +402,6 @@ class colorizer:
         self.trace = True or c.config.getBool('trace_colorizer') # Not used at present.
         self.trace_match_flag = False
         self.use_threads = True
-        # For use of external markup routines.
-        ###self.last_markup = "unknown" 
-        ###self.markup_string = "unknown"
         # State ivars...
         self.colored_ranges = {} # Keys are indices, values are tags.
         self.color_pass = 0
@@ -741,9 +722,8 @@ class colorizer:
          Set self.word_chars ivar to string.letters + string.digits
          plus any other character appearing in any keyword.'''
 
+        # Add any new user keywords to leoKeywordsDict.
         d = self.keywordsDict
-
-        # Add any new user keywords to leoKeywords.
         keys = d.keys()
         for s in g.globalDirectiveList:
             key = '@' + s
@@ -1316,10 +1296,14 @@ class colorizer:
 
         for tag,i,j in self.tagList:
             x1,x2 = w.toGuiIndex(i,s=s), w.toGuiIndex(j,s=s)
-            if not g.doHook("color-optional-markup",
-                colorer=self,p=self.p,v=self.p,s=s,i=i,j=j,colortag=tag):
+            # A crucial optimization for large body text.
+            # Even so, the color_markup plugin slows down coloring considerably.
+            if tag == 'docPart' or tag.startswith('comment'):
+                if not g.doHook("color-optional-markup",
+                    colorer=self,p=self.p,v=self.p,s=s,i=i,j=j,colortag=tag):
+                    w.tag_add(tag,x1,x2)
+            else:
                 w.tag_add(tag,x1,x2)
-
         self.tagList = []
         self.start_i = self.end_i
     #@-node:ekr.20070718131458.45:tagAll

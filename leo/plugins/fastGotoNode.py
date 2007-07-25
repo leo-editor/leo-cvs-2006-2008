@@ -79,6 +79,7 @@ __version__ = ".107"
 # .107 EKR: Define smenu in init, **not** at the top level.
 # This was the plugin that caused a Tk window to appear, regardless of the 
 # gui.
+# .108 EKR: Replaced leoColor.leoKeywords by g.globalDirectiveList.
 #@-at
 #@nonl
 #@-node:ekr.20050226120947.1:<< version history >>
@@ -501,8 +502,8 @@ def getDirectiveInsert (pm,c,directives=[],directives2=[]):
     m = Tkinter.Menu(pm,tearoff=0)
     sb = shouldBreak()
     if len(directives) == 0:
-        import leoColor
-        for z in leoColor.leoKeywords:
+        for z in g.globalDirectiveList:
+            if not z.startswith('@'): z = '@' + z
             directives.append(z)
         directives.sort()
     for z in directives:

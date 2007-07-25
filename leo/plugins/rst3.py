@@ -52,7 +52,6 @@ __version__ = '1.21'
 #@<< imports >>
 #@+node:ekr.20050805162550.2:<< imports >>
 import leoGlobals as g
-import leoColor # for leoKeywords
 import leoPlugins
 
 import os
@@ -644,7 +643,7 @@ class rstClass:
 
         # For writing.
         self.defaultEncoding = 'utf-8'
-        self.leoDirectivesList = leoColor.leoKeywords
+        self.leoDirectivesList = g.globalDirectiveList
         self.encoding = self.defaultEncoding
         self.ext = None # The file extension.
         self.outputFileName = None # The name of the file being written.

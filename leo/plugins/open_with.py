@@ -132,7 +132,7 @@ def on_idle (tag,keywords):
                     #@-node:EKR.20040517075715.6:<< update p's body text >>
                     #@nl
             except Exception:
-                g.es_exception() ## testing
+                # g.es_exception()
                 pass
 #@nonl
 #@-node:EKR.20040517075715.5:on_idle

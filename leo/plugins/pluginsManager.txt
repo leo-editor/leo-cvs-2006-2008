@@ -17,11 +17,7 @@
 #@-at
 #@@c
 
-##### Experimental.  Use with caution.
-#__wx_gui.py
-#cursesGui.py
-
-##### Standard plugins enabled in official distributions.
+# Standard plugins enabled in official distributions.
 
 # Plugin_manager.py needs plugins_menu.py
 plugins_menu.py
@@ -31,13 +27,8 @@ mod_scripting.py
 rst3.py
 UNL.py
 
-##### Recent work by EKR
-
-#leoOPML.py
-#__jEdit_colorizer__.py
-
-##### All other plugins.
-##### Order is important for enabled plugins that add items to the icon area.
+# All other plugins.
+# Order is important for enabled plugins that add items to the icon area.
 
 #ConceptualSort.py
 #EditAttributes.py

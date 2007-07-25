@@ -77,9 +77,9 @@ def init ():
 
     if ok: # Ok for unit testing: adds menu and new directive.
 
-        leoPlugins.registerHandler( ('new','open2') , addMenu )
-        g.globalDirectiveList.append( 'produce' ) 
-        g.plugin_signon( __name__ )
+        leoPlugins.registerHandler(('new','open2'),addMenu)
+        g.globalDirectiveList.append('produce')
+        g.plugin_signon(__name__)
 
     return ok
 #@nonl

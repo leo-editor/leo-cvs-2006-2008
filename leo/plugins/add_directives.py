@@ -33,15 +33,11 @@ def addPluginDirectives (tag,keywords):
 
     global directives
 
-    if 0:
-        s = ""
-        for d in directives:
-            s += '@' + d + ' '
-        g.es(s,color="blue")
-
-    for d in directives:
-        if d not in g.globalDirectiveList:
-            g.globalDirectiveList.append(d)
+    for s in directives:
+        if s.startswith('@'): s = s[1:]
+        if s not in g.globalDirectiveList:
+            # g.trace(s)
+            g.globalDirectiveList.append(s)
 #@nonl
 #@-node:edream.110203113231.742:addPluginDirectives
 #@+node:edream.110203113231.743:scanPluginDirectives

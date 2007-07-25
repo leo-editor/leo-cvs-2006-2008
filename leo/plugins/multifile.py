@@ -58,7 +58,6 @@ beginning of the line and by themselves.
 import leoGlobals as g 
 
 import leoAtFile
-import leoColor
 import leoPlugins
 
 import os.path
@@ -95,7 +94,7 @@ __version__ = ".9"
 # 0.8 EKR:
 # * The path separator in @multipath directives is ';', not ':' as previously.
 # - Fixed several bugs in scanForMultiPath.
-# 0.9 EKR: add entries to leoColor.leoKeywords so that this plugin will work 
+# 0.9 EKR: add entries to g.globalDirectiveList so that this plugin will work 
 # with the new colorizer.
 #@-at
 #@nonl
@@ -120,11 +119,6 @@ def init ():
             #import leoGlobals # Append to the module list, not to the g.copy.
             g.globalDirectiveList.append('multipath')
             g.globalDirectiveList.append('multiprefix')
-
-            # Workaround a bug in at.directiveKind4: add entries in leoColor.leoKeywords.
-            # This allows the code to work with the new colorizer.
-            leoColor.leoKeywords.append('@multipath')
-            leoColor.leoKeywords.append('@multiprefix')
 
             # Override all instances of leoAtFile.atFile.
             at = leoAtFile.atFile
