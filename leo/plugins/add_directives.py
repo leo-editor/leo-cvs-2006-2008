@@ -5,15 +5,27 @@
 #@@language python
 #@@tabwidth -4
 
+__version__ = "1.2"
+
 import leoGlobals as g
 import leoPlugins
 
-if 1:
-    directives = "markup", # A tuple with one string.
-else:
-    directives = ("markup","markup2")
+directives = "markup", # A tuple with one string.
 
 #@+others
+#@+node:ekr.20070725103420:init
+def init ():
+
+    ok = True # not  g.app.unitTesting:
+
+    # Register the handlers...
+    leoPlugins.registerHandler("start1",addPluginDirectives)
+    leoPlugins.registerHandler("scan-directives",scanPluginDirectives)
+    g.plugin_signon(__name__)
+
+    return ok
+#@nonl
+#@-node:ekr.20070725103420:init
 #@+node:edream.110203113231.742:addPluginDirectives
 def addPluginDirectives (tag,keywords):
 
@@ -52,15 +64,5 @@ def scanPluginDirectives (tag, keywords):
             pluginsList.append((d,v,s,k),)
 #@-node:edream.110203113231.743:scanPluginDirectives
 #@-others
-
-if not g.app.unitTesting:
-
-    # Register the handlers...
-    leoPlugins.registerHandler("start1",addPluginDirectives)
-    leoPlugins.registerHandler("scan-directives",scanPluginDirectives)
-
-    __version__ = "1.1"
-    g.plugin_signon(__name__)
-#@nonl
 #@-node:edream.110203113231.741:@thin add_directives.py
 #@-leo
