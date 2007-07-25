@@ -2403,6 +2403,22 @@ for photo,image,line_index,i in self.image_references:
 # g.trace(s)
 #@-node:ekr.20031218072017.1891:<< kludge: insert a blank in s for every image in the line >>
 #@-node:ekr.20031218072017.1890:<< completely recolor in two passes >>
+#@+node:ekr.20031218072017.1595:<< define leo keywords >>
+# leoKeywords is used by directivesKind, so it should be a module-level symbol.
+
+# leoKeywords must be a list so that plugins may alter it.
+
+leoKeywords = [
+    "@","@all","@c","@code","@color","@comment",
+    "@delims","@doc","@encoding","@end_raw",
+    "@first","@header","@ignore",
+    "@killcolor",
+    "@language","@last","@lineending",
+    "@nocolor","@noheader","@nowrap","@others",
+    "@pagewidth","@path","@quiet","@raw","@root","@root-code","@root-doc",
+    "@silent","@tabwidth","@terse",
+    "@unit","@verbose","@wrap" ]
+#@-node:ekr.20031218072017.1595:<< define leo keywords >>
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

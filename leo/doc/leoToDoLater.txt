@@ -12,22 +12,6 @@ Forth is going to be a problem, because keywords can be extensible.
 Perhaps the user should be responsible for updating forth.xml.
 #@nonl
 #@-node:ekr.20060824103837:Notes
-#@+node:ekr.20031218072017.1595:<< define leo keywords >>
-# leoKeywords is used by directivesKind, so it should be a module-level symbol.
-
-# leoKeywords must be a list so that plugins may alter it.
-
-leoKeywords = [
-    "@","@all","@c","@code","@color","@comment",
-    "@delims","@doc","@encoding","@end_raw",
-    "@first","@header","@ignore",
-    "@killcolor",
-    "@language","@last","@lineending",
-    "@nocolor","@noheader","@nowrap","@others",
-    "@pagewidth","@path","@quiet","@raw","@root","@root-code","@root-doc",
-    "@silent","@tabwidth","@terse",
-    "@unit","@verbose","@wrap" ]
-#@-node:ekr.20031218072017.1595:<< define leo keywords >>
 #@+node:ekr.20041107093834:forth keywords
 # Default forth keywords: extended by leo-forthwords.txt.
 forth_keywords = [

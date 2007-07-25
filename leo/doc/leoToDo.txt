@@ -80,10 +80,6 @@ Cheers -Terry
 
 
 #@-node:ekr.20070724072423:Fix UNL bug2
-#@+node:ekr.20070725110233.1:Fix Python string escape bug in new colorizer
-# python.py/.xml must be changed.
-#@nonl
-#@-node:ekr.20070725110233.1:Fix Python string escape bug in new colorizer
 #@-node:ekr.20070725110233:Fix bugs
 #@+node:ekr.20070324084040:(Rewrite import code to support @auto)
 #@+node:ekr.20031218072017.3151:Scanning... (leoGlobals.py)
