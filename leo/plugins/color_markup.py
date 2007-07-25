@@ -57,7 +57,7 @@ import string  # zfill does not exist in Python 2.2.1
 #@-node:ekr.20050101090207.3:<< imports >>
 #@nl
 
-__version__ = "1.7"
+__version__ = "1.8"
 #@<< version history >>
 #@+node:ekr.20050311104330:<< version history >>
 #@@nocolor
@@ -78,6 +78,7 @@ __version__ = "1.7"
 # - Improved docstring.
 # - Added support for 4.3 code base and new colorizer.
 # - Added support for PIL if it exists: this allows many more kinds of images.
+# 1.8 EKR: fixed crasher in getUrl.
 #@-at
 #@nonl
 #@-node:ekr.20050311104330:<< version history >>
@@ -176,16 +177,18 @@ def onBodydclick1(tag,keywords):
 def getUrl(c, *tags):
     """See if the current text belongs to a hyperlink tag and, if so, return the url."""
 
-    body = c.frame.body
-    selStart,selEnd = body.getSelectionRange() # EKR: 11/4/03
+    w = c.frame.body.bodyCtrl ; s = w.getAllText()
+    selStart,selEnd = w.getSelectionRange()
+    selStart = w.toGuiIndex(selStart,s)
+    selEnd = w.toGuiIndex(selEnd,s)
     for tag in tags:
-        hyperlink = body.bodyCtrl.tag_prevrange(tag,selEnd) # EKR: 11/4/03
+        hyperlink = w.tag_prevrange(tag,selEnd)
         if hyperlink:
             hyperStart,hyperEnd = hyperlink
             if selStart==selEnd: 
                 # kludge: only react on single chars, not on selections
-                if body.bodyCtrl.compare(hyperStart,"<=",selStart) and body.bodyCtrl.compare(selStart,"<=",hyperEnd):
-                    url = body.bodyCtrl.get(hyperStart,hyperEnd)
+                if w.compare(hyperStart,"<=",selStart) and w.compare(selStart,"<=",hyperEnd):
+                    url = w.get(hyperStart,hyperEnd)
                     return url
     return None
 #@-node:edream.110403140857.18:getUrl
