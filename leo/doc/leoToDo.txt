@@ -2,6 +2,7 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
+#@+node:ekr.20070725110233:Fix bugs
 #@+node:ekr.20070724072345:Fix UNL bug1
 @nocolor
 
@@ -79,24 +80,11 @@ Cheers -Terry
 
 
 #@-node:ekr.20070724072423:Fix UNL bug2
-#@+node:ekr.20070724082519:Fix colorizer crash
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 2555, in doHook
-    return f(tag,keywords)
-  File "c:\prog\tigris-cvs\leo\src\leoPlugins.py", line 92, in doPlugins
-    return doHandlersForTag(tag,keywords)
-  File "c:\prog\tigris-cvs\leo\src\leoPlugins.py", line 71, in doHandlersForTag
-    val = callTagHandler(bunch,tag,keywords)
-  File "c:\prog\tigris-cvs\leo\src\leoPlugins.py", line 50, in callTagHandler
-    result = handler(tag,keywords)
-  File "C:\prog\tigris-cvs\leo\plugins\color_markup.py", line 166, in onBodydclick1
-    url = getUrl(c, "http", "https")
-  File "C:\prog\tigris-cvs\leo\plugins\color_markup.py", line 181, in getUrl
-    hyperlink = body.bodyCtrl.tag_prevrange(tag,selEnd) # EKR: 11/4/03
-  File "C:\Python25\lib\lib-tk\Tkinter.py", line 3090, in tag_prevrange
-    self._w, 'tag', 'prevrange', tagName, index1, index2))
-TclError: bad text index "2457"
-#@-node:ekr.20070724082519:Fix colorizer crash
+#@+node:ekr.20070725110233.1:Fix Python string escape bug in new colorizer
+# python.py/.xml must be changed.
+#@nonl
+#@-node:ekr.20070725110233.1:Fix Python string escape bug in new colorizer
+#@-node:ekr.20070725110233:Fix bugs
 #@+node:ekr.20070324084040:(Rewrite import code to support @auto)
 #@+node:ekr.20031218072017.3151:Scanning... (leoGlobals.py)
 #@+node:ekr.20031218072017.3152:g.scanAtFileOptions (used in 3.x read code)
@@ -2852,7 +2840,7 @@ def startsString(self,s,i):
     return g.match(s,i,'"') or g.match(s,i,"'")
 #@-node:ekr.20070707172732.1:startsString
 #@-node:ekr.20070706084535.1:Parsing
-#@+node:ekr.20070706084535:Code generation 
+#@+node:ekr.20070706084535:Code generation
 # None of these methods should ever need to be overridden in subclasses.
 #@nonl
 #@+node:ekr.20070705144309:createDeclsNode
@@ -3118,7 +3106,7 @@ def indentBody (self,s,lws=None):
     result = ''.join(result)
     return result
 #@-node:ekr.20070709094002:indentBody
-#@-node:ekr.20070706084535:Code generation 
+#@-node:ekr.20070706084535:Code generation
 #@-node:ekr.20070703122141.65: class baseScannerClass
 #@+node:ekr.20070703123334.2:Python scanner
 #@+node:ekr.20070703122141.99:scanPythonText
