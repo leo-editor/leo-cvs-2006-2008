@@ -1107,9 +1107,7 @@ class baseColorizer:
         self.c = c
         self.frame = c.frame
         self.body = c.frame.body
-
         self.trace = c.config.getBool('trace_colorizer')
-
         self.count = 0 # how many times this has been called.
         self.use_hyperlinks = False # True: use hyperlinks and underline "live" links.
         self.enabled = True # True: syntax coloring enabled
@@ -1123,19 +1121,12 @@ class baseColorizer:
             "latexBackground","latexKeyword",
             "link","name","nameBrackets","pp","string","tab",
             "elide","bold","bolditalic","italic") # new for wiki styling.
-        self.color_pass = 0
         self.incremental = False
-        self.redoColoring = False
-        self.redoingColoring = False
         self.sel = None
         self.lines = []
         self.states = []
         self.last_flag = "unknown"
         self.last_language = "unknown"
-        self.last_comment = "unknown"
-        # For use of external markup routines.
-        self.last_markup = "unknown" 
-        self.markup_string = "unknown"
         #@    << ivars for communication between colorizeAnyLanguage and its allies >>
         #@+node:ekr.20031218072017.1606:<< ivars for communication between colorizeAnyLanguage and its allies >>
         # Copies of arguments.
@@ -1347,6 +1338,7 @@ class baseColorizer:
             self.removeAllTags()
             return
         try:
+            # g.trace('incremental',self.incremental)
             #@        << initialize ivars & tags >>
             #@+node:ekr.20031218072017.1602:<< initialize ivars & tags >> colorizeAnyLanguage
             # Add any newly-added user keywords.
@@ -1371,10 +1363,7 @@ class baseColorizer:
 
             if not self.incremental:
                 self.removeAllTags()
-                self.removeAllImages()
-
-            self.redoColoring = False
-            self.redoingColoring = False
+                ### self.removeAllImages()
 
             #@<< configure fonts >>
             #@+node:ekr.20060829084924:<< configure fonts >> (revise,maybe)
@@ -1558,14 +1547,11 @@ class baseColorizer:
             #@-node:ekr.20031218072017.1602:<< initialize ivars & tags >> colorizeAnyLanguage
             #@nl
             g.doHook("init-color-markup",colorer=self,p=self.p,v=self.p)
-            self.color_pass = 0
             if self.incremental and (
                 #@            << all state ivars match >>
                 #@+node:ekr.20031218072017.1881:<< all state ivars match >>
                 self.flag == self.last_flag and
-                self.last_language == self.language and
-                self.comment_string == self.last_comment and
-                self.markup_string == self.last_markup
+                self.last_language == self.language
                 #@-node:ekr.20031218072017.1881:<< all state ivars match >>
                 #@afterref
  ):
@@ -1757,61 +1743,11 @@ class baseColorizer:
                     self.line_index += 1
                 #@-node:ekr.20031218072017.1887:<< non-incrementally color the text >>
                 #@nl
-            if self.redoColoring:
-                #@            << completely recolor in two passes >>
-                #@+node:ekr.20031218072017.1890:<< completely recolor in two passes >>
-                # This code is executed only if graphics characters will be inserted by user markup code.
-
-                # Pass 1:  Insert all graphics characters.
-
-                self.removeAllImages()
-                lines = self.allBodyText.split('\n')
-
-                self.color_pass = 1
-                self.line_index = 1
-                state = self.setFirstLineState()
-                for s in lines:
-                    state = self.colorizeLine(s,state)
-                    self.line_index += 1
-
-                # Pass 2: Insert one blank for each previously inserted graphic.
-
-                self.color_pass = 2
-                self.line_index = 1
-                state = self.setFirstLineState()
-                for s in lines:
-                    #@    << kludge: insert a blank in s for every image in the line >>
-                    #@+node:ekr.20031218072017.1891:<< kludge: insert a blank in s for every image in the line >>
-                    #@+at 
-                    #@nonl
-                    # A spectacular kludge.
-                    # 
-                    # Images take up a real index, yet the get routine does 
-                    # not return any character for them!
-                    # In order to keep the colorer in synch, we must insert 
-                    # dummy blanks in s at the positions corresponding to each 
-                    # image.
-                    #@-at
-                    #@@c
-
-                    inserted = 0
-
-                    for photo,image,line_index,i in self.image_references:
-                        if self.line_index == line_index:
-                            n = i+inserted ; inserted += 1
-                            s = s[:n] + ' ' + s[n:]
-                    #@-node:ekr.20031218072017.1891:<< kludge: insert a blank in s for every image in the line >>
-                    #@nl
-                    state = self.colorizeLine(s,state)
-                    self.line_index += 1
-                #@-node:ekr.20031218072017.1890:<< completely recolor in two passes >>
-                #@nl
             #@        << update state ivars >>
             #@+node:ekr.20031218072017.1888:<< update state ivars >>
             self.last_flag = self.flag
             self.last_language = self.language
-            self.last_comment = self.comment_string
-            self.last_markup = self.markup_string
+            #@nonl
             #@-node:ekr.20031218072017.1888:<< update state ivars >>
             #@nl
             return "ok" # for testing.
@@ -1820,7 +1756,6 @@ class baseColorizer:
             #@+node:ekr.20031218072017.1889:<< set state ivars to "unknown" >>
             self.last_flag = "unknown"
             self.last_language = "unknown"
-            self.last_comment = "unknown"
             #@-node:ekr.20031218072017.1889:<< set state ivars to "unknown" >>
             #@nl
             if self.c:
@@ -2563,16 +2498,18 @@ class baseColorizer:
     #@+node:ekr.20031218072017.1944:removeAllImages (leoColor)
     def removeAllImages (self):
 
-        for photo,image,line_index,i in self.image_references:
-            try:
-                ### self.body.deleteCharacter(image)
-                s = self.allBodyText
-                w = self.body.bodyCtrl
-                index = g.convertRowColToPythonIndex(s,line_index,i)
-                w.delete(index)
-                self.allBodyText = w.getAllText()
-            except:
-                pass # The image may have been deleted earlier.
+        '''Remove all references to previous images.
+        In Tk, this will cause all images to disappear.'''
+
+        # for photo,image,line_index,i in self.image_references:
+            # try:
+                # s = self.allBodyText
+                # w = self.body.bodyCtrl
+                # index = g.convertRowColToPythonIndex(s,line_index,i)
+                # w.delete(index)
+                # self.allBodyText = w.getAllText()
+            # except:
+                # pass # The image may have been deleted earlier.
 
         self.image_references = []
     #@-node:ekr.20031218072017.1944:removeAllImages (leoColor)
@@ -2628,6 +2565,11 @@ class baseColorizer:
 
     def tag (self,name,i,j):
 
+        # if 0:
+            # w = self.body.bodyCtrl ; s = self.allBodyText
+            # i2 = w.toPythonIndex(self.index(i))
+            # j2 = w.toPythonIndex(self.index(j))
+            # g.trace(name,i,j,repr(s[i2:j2]))
         self.body.tag_add(name,self.index(i),self.index(j))
     #@nonl
     #@-node:ekr.20031218072017.1609:index & tag (leoColor)
