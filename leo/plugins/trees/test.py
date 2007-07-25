@@ -64,7 +64,5 @@ class Test3(Test):
         """Override the default deleting of child nodes"""
         pass
 
-
-#@nonl
 #@-node:ekr.20050329082101.147:@thin trees\test.py
 #@-leo

@@ -2,21 +2,21 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.552109181141">
-	<global_window_position top="0" left="0" height="711" width="1270"/>
+<globals body_outline_ratio="0.586206896552">
+	<global_window_position top="116" left="364" height="790" width="841"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20041211035618"><vh>Scripts, buttons &amp; settings</vh>
+<v t="ekr.20041211035618"><vh>Startup</vh>
+<v t="ekr.20070718131416"><vh>@chapters</vh></v>
 <v t="ekr.20050217093214"><vh>@settings</vh>
 <v t="ekr.20050328101812"><vh>@page http plugin</vh>
 <v t="ekr.20050328101812.1"><vh>@bool http_active = False</vh></v>
 <v t="ekr.20050328101812.2"><vh>@int  port = 8080</vh></v>
 <v t="ekr.20050328101812.3"><vh>@string rst_http_attributename = rst_http_attribute</vh></v>
 </v>
-<v t="ekr.20070326080254"><vh>@bool use_chapters = False</vh></v>
 </v>
 <v t="EKR.20040517075110"><vh>replaceLeoGlobals</vh>
 <v t="EKR.20040517075110.1"><vh>&lt;&lt; set nameList to the list of functions in leoGlobals.py &gt;&gt;</vh></v>
@@ -44,7 +44,7 @@
 <v t="ekr.20050819055746"><vh>@@button Save</vh></v>
 </v>
 </v>
-<v t="edream.110203113231.618" a="E"><vh>Plugins</vh>
+<v t="edream.110203113231.618" a="TV"><vh>Plugins</vh>
 <v t="EKR.20040517090508"><vh>  Enable plugins by changing pluginsManager.txt or using plugin_manager plugin</vh>
 <v t="edream.120603093808"><vh>@thin pluginsManager.txt</vh></v>
 </v>
@@ -79,19 +79,7 @@
 <v t="edream.110203113231.753"><vh>@thin image.py</vh></v>
 <v t="ekr.20040422072343"><vh>@thin rClick.py</vh></v>
 <v t="edream.110203113231.925"><vh>@thin script_io_to_body.py</vh></v>
-<v t="edream.110403140857"><vh>color_markup.py (requires add-directives plugin)</vh>
-<v t="edream.110403140857.1"><vh>Plugin documentation</vh>
-<v t="edream.110403140857.2"><vh>Installation</vh></v>
-<v t="edream.110403140857.3"><vh>Use</vh>
-<v t="edream.110403140857.4"><vh>Supported markups</vh></v>
-<v t="edream.110403140857.5"><vh>Example</vh>
-<v t="edream.110403140857.6"><vh>a subnode</vh></v>
-</v>
-</v>
-<v t="edream.110403140857.7"><vh>Release notes</vh></v>
-</v>
 <v t="edream.110403140857.8"><vh>@thin color_markup.py</vh></v>
-</v>
 </v>
 <v t="edream.110203113231.667"><vh>Commands &amp; directives</vh>
 <v t="edream.110203113231.668"><vh> Importing Cisco configuration files</vh>
@@ -174,7 +162,7 @@
 <v t="ekr.20060514125256"><vh>Recent</vh>
 <v t="ekr.20060513122450.295"><vh>Selected Node Funcs</vh>
 <v t="ekr.20060513122450.296" a="M"><vh>sGatherInfo NOT CALLED</vh>
-<v t="ekr.20060513122450.297" a="M"><vh>Head</vh></v>
+<v t="ekr.20060513122450.297"><vh>Head</vh></v>
 <v t="ekr.20060513122450.298"><vh>Dicts</vh></v>
 <v t="ekr.20060513122450.299" a="M"><vh>File Creation</vh></v>
 <v t="ekr.20060513122450.300"><vh>Compilation</vh></v>
@@ -184,21 +172,21 @@
 <v t="ekr.20060513122450.303" a="M"><vh>sExtractHeadInfo</vh></v>
 <v t="ekr.20060513122450.304"><vh>sGetBrowseInfo</vh></v>
 <v t="ekr.20060513122450.305" a="M"><vh>sGetWriteInfo</vh></v>
-<v t="ekr.20060513122450.306" a="M"><vh>sGetCompileInfo</vh></v>
+<v t="ekr.20060513122450.306"><vh>sGetCompileInfo</vh></v>
 <v t="ekr.20060513122450.307" a="M"><vh>sGetDebugInfo</vh></v>
 <v t="ekr.20060513122450.308" a="M"><vh>sGetExecInfo</vh></v>
 <v t="ekr.20060513122450.309" a="M"><vh>sGoToError</vh></v>
 <v t="ekr.20060513122450.310" a="M"><vh>sGo</vh></v>
-<v t="ekr.20060513122450.311" a="M"><vh>sSet</vh></v>
+<v t="ekr.20060513122450.311"><vh>sSet</vh></v>
 <v t="ekr.20060513122450.312" a="M"><vh>sGet</vh></v>
 <v t="ekr.20060513122450.313" a="M"><vh>sIsDict</vh></v>
 <v t="ekr.20060513122450.314" a="M"><vh>sGetDict</vh></v>
-<v t="ekr.20060513122450.315" a="M"><vh>sInitDict</vh></v>
+<v t="ekr.20060513122450.315"><vh>sInitDict</vh></v>
 <v t="ekr.20060513122450.316" a="M"><vh>sSelect</vh></v>
 <v t="ekr.20060513122450.317" a="M"><vh>sSync</vh></v>
 <v t="ekr.20060513122450.318" a="M"><vh>sShow</vh></v>
 <v t="ekr.20060513122450.319" a="M"><vh>sHide</vh></v>
-<v t="ekr.20060513122450.320" a="M"><vh>sSetText</vh></v>
+<v t="ekr.20060513122450.320"><vh>sSetText</vh></v>
 <v t="ekr.20060513122450.321" a="M"><vh>sAddText</vh></v>
 </v>
 <v t="ekr.20060513122450.53"><vh>class ConfigClass</vh>
@@ -210,12 +198,12 @@
 <v t="ekr.20060513122450.58"><vh>Set</vh></v>
 </v>
 <v t="ekr.20060513122450.59"><vh>class ENTRY</vh>
-<v t="ekr.20060513122450.60" a="M"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.60"><vh>__init__</vh></v>
 <v t="ekr.20060513122450.61"><vh>Get</vh></v>
 <v t="ekr.20060513122450.62"><vh>Set</vh></v>
 </v>
 <v t="ekr.20060513122450.63"><vh>class TEXT</vh>
-<v t="ekr.20060513122450.64" a="M"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.64"><vh>__init__</vh></v>
 <v t="ekr.20060513122450.65"><vh>Get</vh></v>
 <v t="ekr.20060513122450.66"><vh>Set</vh></v>
 </v>
@@ -231,7 +219,7 @@
 <v t="ekr.20060513122450.74"><vh>BBox</vh></v>
 <v t="ekr.20060513122450.75"><vh>AddSep</vh></v>
 <v t="ekr.20060513122450.76"><vh>CreateObjects</vh></v>
-<v t="ekr.20060513122450.77" a="M"><vh>SaveObjects</vh></v>
+<v t="ekr.20060513122450.77"><vh>SaveObjects</vh></v>
 <v t="ekr.20060513122450.78" a="M"><vh>LoadObjects</vh></v>
 <v t="ekr.20060513122450.79"><vh>ClearObjects</vh></v>
 <v t="ekr.20060513122450.80" a="M"><vh>Hide</vh></v>
@@ -256,10 +244,10 @@
 </v>
 </v>
 <v t="ekr.20060513122450.109"><vh> class DbgPageClass</vh>
-<v t="ekr.20060513122450.110" a="M"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.110"><vh>__init__</vh></v>
 <v t="ekr.20060513122450.111" a="M"><vh>Browse</vh></v>
 <v t="ekr.20060513122450.112"><vh>CreateObjects</vh>
-<v t="ekr.20060513122450.113" a="M"><vh>Executable</vh></v>
+<v t="ekr.20060513122450.113"><vh>Executable</vh></v>
 <v t="ekr.20060513122450.114"><vh>Arguments</vh></v>
 <v t="ekr.20060513122450.115"><vh>Piping</vh></v>
 <v t="ekr.20060513122450.116" a="M"><vh>Symbols</vh></v>
@@ -270,14 +258,14 @@
 </v>
 </v>
 <v t="ekr.20060513122450.121"><vh> class ExePageClass</vh>
-<v t="ekr.20060513122450.122" a="M"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.122"><vh>__init__</vh></v>
 <v t="ekr.20060513122450.123"><vh>CreateObjects</vh>
 <v t="ekr.20060513122450.124"><vh>Args</vh></v>
 <v t="ekr.20060513122450.125"><vh>Dll Caller</vh></v>
 </v>
 </v>
 <v t="ekr.20060513122450.94"><vh> class OptPageClass</vh>
-<v t="ekr.20060513122450.95" a="M"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.95"><vh>__init__</vh></v>
 <v t="ekr.20060513122450.96"><vh>CreateObjects</vh>
 <v t="ekr.20060513122450.97"><vh>Actions Switches</vh></v>
 <v t="ekr.20060513122450.98"><vh>Import</vh></v>
@@ -289,15 +277,15 @@
 <v t="ekr.20060513122450.84"><vh>GetButton</vh></v>
 <v t="ekr.20060513122450.83" a="M"><vh>GetPage</vh></v>
 <v t="ekr.20060513122450.85" a="M"><vh>Hide</vh></v>
-<v t="ekr.20060513122450.90" a="M"><vh>LoadFromFile</vh></v>
+<v t="ekr.20060513122450.90"><vh>LoadFromFile</vh></v>
 <v t="ekr.20060513122450.88" a="M"><vh>LoadFromNode</vh></v>
-<v t="ekr.20060513122450.91" a="M"><vh>SaveToFile</vh></v>
+<v t="ekr.20060513122450.91"><vh>SaveToFile</vh></v>
 <v t="ekr.20060513122450.89" a="M"><vh>SaveToNode</vh></v>
 <v t="ekr.20060513122450.86" a="M"><vh>Show</vh></v>
 </v>
 </v>
 <v t="ekr.20060513122450"
-marks="ekr.20060513122450.296,ekr.20060513122450.297,ekr.20060513122450.299,ekr.20060513122450.302,ekr.20060513122450.303,ekr.20060513122450.305,ekr.20060513122450.306,ekr.20060513122450.307,ekr.20060513122450.308,ekr.20060513122450.309,ekr.20060513122450.310,ekr.20060513122450.311,ekr.20060513122450.312,ekr.20060513122450.313,ekr.20060513122450.314,ekr.20060513122450.315,ekr.20060513122450.316,ekr.20060513122450.317,ekr.20060513122450.318,ekr.20060513122450.319,ekr.20060513122450.320,ekr.20060513122450.321,ekr.20060513122450.82,ekr.20060513122450.60,ekr.20060513122450.64,ekr.20060513122450.68,ekr.20060513122450.70,ekr.20060513122450.72,ekr.20060513122450.77,ekr.20060513122450.78,ekr.20060513122450.80,ekr.20060513122450.81,ekr.20060513122450.100,ekr.20060513122450.102,ekr.20060513122450.110,ekr.20060513122450.111,ekr.20060513122450.113,ekr.20060513122450.116,ekr.20060513122450.122,ekr.20060513122450.95,ekr.20060513122450.93,ekr.20060513122450.83,ekr.20060513122450.85,ekr.20060513122450.90,ekr.20060513122450.88,ekr.20060513122450.91,ekr.20060513122450.89,ekr.20060513122450.86,"><vh>@thin xcc_nodes.py</vh></v>
+marks="ekr.20060513122450.296,ekr.20060513122450.299,ekr.20060513122450.302,ekr.20060513122450.303,ekr.20060513122450.305,ekr.20060513122450.307,ekr.20060513122450.308,ekr.20060513122450.309,ekr.20060513122450.310,ekr.20060513122450.312,ekr.20060513122450.313,ekr.20060513122450.314,ekr.20060513122450.316,ekr.20060513122450.317,ekr.20060513122450.318,ekr.20060513122450.319,ekr.20060513122450.321,ekr.20060513122450.82,ekr.20060513122450.68,ekr.20060513122450.70,ekr.20060513122450.72,ekr.20060513122450.78,ekr.20060513122450.80,ekr.20060513122450.81,ekr.20060513122450.100,ekr.20060513122450.102,ekr.20060513122450.111,ekr.20060513122450.116,ekr.20060513122450.93,ekr.20060513122450.83,ekr.20060513122450.85,ekr.20060513122450.88,ekr.20060513122450.89,ekr.20060513122450.86,"><vh>@thin xcc_nodes.py</vh></v>
 </v>
 </v>
 <v t="ekr.20060703162826"><vh>Dialogs</vh>
@@ -339,67 +327,67 @@ marks="ekr.20060513122450.296,ekr.20060513122450.297,ekr.20060513122450.299,ekr.
 <v t="ekr.20070215164948"><vh>@thin ironPythonGui.py</vh></v>
 <v t="edream.110203113231.233"><vh>wxGui plugin (Use at your own risk)</vh>
 <v t="ekr.20070123084929"><vh>Projects</vh>
-<v t="edream.110203113231.557" a="M"><vh>leoLog.createInitialTabs</vh></v>
+<v t="edream.110203113231.557"><vh>leoLog.createInitialTabs</vh></v>
 <v t="ekr.20070214103201"><vh>Colors</vh>
-<v t="ekr.20070215095042" a="M"><vh>name2color</vh></v>
+<v t="ekr.20070215095042"><vh>name2color</vh></v>
 <v t="edream.110203113231.347" a="M"><vh>OnInit  (wxLeoApp)</vh></v>
-<v t="ekr.20061118142055" a="M"><vh>wxTree.createControl</vh></v>
-<v t="edream.110203113231.557" a="M"><vh>leoLog.createInitialTabs</vh></v>
-<v t="ekr.20061211122107.2" a="M"><vh>createTab</vh></v>
-<v t="ekr.20070205140140.1" a="M"><vh>stcWidget.__init__</vh></v>
+<v t="ekr.20061118142055"><vh>wxTree.createControl</vh></v>
+<v t="edream.110203113231.557"><vh>leoLog.createInitialTabs</vh></v>
+<v t="ekr.20061211122107.2"><vh>createTab</vh></v>
+<v t="ekr.20070205140140.1"><vh>stcWidget.__init__</vh></v>
 </v>
 <v t="ekr.20061116085729"><vh>gui events</vh>
 <v t="ekr.20070309085704"><vh>event_generate</vh></v>
-<v t="ekr.20061116093228" a="M"><vh>class leoKeyEvent (wxGui)</vh></v>
+<v t="ekr.20061116093228"><vh>class leoKeyEvent (wxGui)</vh></v>
 <v t="ekr.20061117204829"><vh>wxKeyDict</vh></v>
-<v t="ekr.20061117155233" a="M"><vh>eventChar &amp; eventKeysym &amp; helper</vh>
+<v t="ekr.20061117155233"><vh>eventChar &amp; eventKeysym &amp; helper</vh>
 <v t="ekr.20070310064845" a="M"><vh>keysymHelper &amp; helpers</vh>
-<v t="ekr.20070313052040" a="M"><vh>getMods</vh></v>
-<v t="ekr.20070313055627" a="M"><vh>shift</vh></v>
+<v t="ekr.20070313052040"><vh>getMods</vh></v>
+<v t="ekr.20070313055627"><vh>shift</vh></v>
 <v t="ekr.20070313055627.1" a="M"><vh>unshift</vh></v>
 </v>
 </v>
 <v t="ekr.20061117155233.1"><vh>eventWidget</vh></v>
-<v t="ekr.20061117155233.2" a="M"><vh>eventXY</vh></v>
+<v t="ekr.20061117155233.2"><vh>eventXY</vh></v>
 </v>
 <v t="ekr.20070130165618"><vh>Editing headlines</vh>
 <v t="edream.110203113231.285"><vh>Editing labels</vh>
-<v t="edream.110203113231.286" a="M"><vh>onTreeBeginLabelEdit</vh></v>
+<v t="edream.110203113231.286"><vh>onTreeBeginLabelEdit</vh></v>
 <v t="edream.110203113231.287" a="M"><vh>onTreeEndLabelEdit</vh></v>
 </v>
-<v t="ekr.20050719121701.3" a="M"><vh>editLabel</vh></v>
-<v t="ekr.20070125091308" a="M"><vh>setEditWidget</vh></v>
-<v t="ekr.20061211072604" a="M"><vh>tree.edit_widget</vh></v>
+<v t="ekr.20050719121701.3"><vh>editLabel</vh></v>
+<v t="ekr.20070125091308"><vh>setEditWidget</vh></v>
+<v t="ekr.20061211072604"><vh>tree.edit_widget</vh></v>
 </v>
 <v t="ekr.20070306155205"><vh>Found: assignIcon</vh>
-<v t="ekr.20070222091654" a="M"><vh>insert_node</vh></v>
-<v t="ekr.20070221130134" a="M"><vh>update_node</vh></v>
-<v t="edream.110203113231.299" a="M"><vh>redraw_node</vh></v>
-<v t="ekr.20061211052926" a="M"><vh>assignIcon</vh></v>
+<v t="ekr.20070222091654"><vh>insert_node</vh></v>
+<v t="ekr.20070221130134"><vh>update_node</vh></v>
+<v t="edream.110203113231.299"><vh>redraw_node</vh></v>
+<v t="ekr.20061211052926"><vh>assignIcon</vh></v>
 </v>
 <v t="ekr.20070312081330"><vh>Initing headline widgets</vh>
-<v t="ekr.20070125074101" a="M"><vh>headlineWidget class (baseTextWidget)</vh>
+<v t="ekr.20070125074101"><vh>headlineWidget class (baseTextWidget)</vh>
 <v t="ekr.20070125074101.2" a="M"><vh>Birth &amp; special methods</vh></v>
 <v t="ekr.20070209111155"><vh>wx widget bindings</vh></v>
 </v>
 <v t="edream.110203113231.298" a="M"><vh>redraw &amp; redraw_now &amp; helpers</vh>
 <v t="ekr.20070221122411" a="M"><vh>cleverRedraw &amp; helpers</vh>
 <v t="ekr.20070222092336"><vh>insertTreeAfter</vh></v>
-<v t="ekr.20070222091654" a="M"><vh>insert_node</vh></v>
-<v t="ekr.20070221130134" a="M"><vh>update_node</vh></v>
-<v t="ekr.20070221122544.2" a="M"><vh>update_siblings</vh></v>
-<v t="ekr.20070222083341" a="M"><vh>expandAndSelect</vh></v>
+<v t="ekr.20070222091654"><vh>insert_node</vh></v>
+<v t="ekr.20070221130134"><vh>update_node</vh></v>
+<v t="ekr.20070221122544.2"><vh>update_siblings</vh></v>
+<v t="ekr.20070222083341"><vh>expandAndSelect</vh></v>
 <v t="ekr.20070312095016" a="M"><vh>redraw_subtree</vh></v>
 </v>
-<v t="edream.110203113231.299" a="M"><vh>redraw_node</vh></v>
+<v t="edream.110203113231.299"><vh>redraw_node</vh></v>
 <v t="ekr.20070308110121" a="M"><vh>partialRedraw &amp; helpers</vh>
 <v t="ekr.20070310083955" a="M"><vh>redraw_partial_subtree</vh></v>
 </v>
 </v>
 <v t="ekr.20050719121701"><vh>Selection (leoTree)</vh>
-<v t="ekr.20050719121701.3" a="M"><vh>editLabel</vh></v>
-<v t="ekr.20070125091308" a="M"><vh>setEditWidget</vh></v>
-<v t="ekr.20070312083143" a="M"><vh>get/setIdDict</vh></v>
+<v t="ekr.20050719121701.3"><vh>editLabel</vh></v>
+<v t="ekr.20070125091308"><vh>setEditWidget</vh></v>
+<v t="ekr.20070312083143"><vh>get/setIdDict</vh></v>
 </v>
 </v>
 <v t="ekr.20061117203128"><vh>keysymHelper &amp; helpers(no longer used)</vh>
@@ -413,21 +401,21 @@ marks="ekr.20060513122450.296,ekr.20060513122450.297,ekr.20060513122450.299,ekr.
 <v t="ekr.20070311064633"><vh>&lt;&lt; bug list &amp; to-do &gt;&gt;</vh></v>
 <v t="ekr.20061116085729"><vh>gui events</vh>
 <v t="ekr.20070309085704"><vh>event_generate</vh></v>
-<v t="ekr.20061116093228" a="M"><vh>class leoKeyEvent (wxGui)</vh></v>
+<v t="ekr.20061116093228"><vh>class leoKeyEvent (wxGui)</vh></v>
 <v t="ekr.20061117204829"><vh>wxKeyDict</vh></v>
-<v t="ekr.20061117155233" a="M"><vh>eventChar &amp; eventKeysym &amp; helper</vh>
+<v t="ekr.20061117155233"><vh>eventChar &amp; eventKeysym &amp; helper</vh>
 <v t="ekr.20070310064845" a="M"><vh>keysymHelper &amp; helpers</vh>
-<v t="ekr.20070313052040" a="M"><vh>getMods</vh></v>
-<v t="ekr.20070313055627" a="M"><vh>shift</vh></v>
+<v t="ekr.20070313052040"><vh>getMods</vh></v>
+<v t="ekr.20070313055627"><vh>shift</vh></v>
 <v t="ekr.20070313055627.1" a="M"><vh>unshift</vh></v>
 </v>
 </v>
 <v t="ekr.20061117155233.1"><vh>eventWidget</vh></v>
-<v t="ekr.20061117155233.2" a="M"><vh>eventXY</vh></v>
+<v t="ekr.20061117155233.2"><vh>eventXY</vh></v>
 </v>
 <v t="ekr.20070310064845" a="M"><vh>keysymHelper &amp; helpers</vh>
-<v t="ekr.20070313052040" a="M"><vh>getMods</vh></v>
-<v t="ekr.20070313055627" a="M"><vh>shift</vh></v>
+<v t="ekr.20070313052040"><vh>getMods</vh></v>
+<v t="ekr.20070313055627"><vh>shift</vh></v>
 <v t="ekr.20070313055627.1" a="M"><vh>unshift</vh></v>
 </v>
 <v t="ekr.20061116091006" a="M"><vh>isTextWidget</vh></v>
@@ -441,7 +429,7 @@ marks="ekr.20060513122450.296,ekr.20060513122450.297,ekr.20060513122450.299,ekr.
 <v t="ekr.20070313052040.1"><vh>defaultKeysymHelper (not used)</vh></v>
 </v>
 <v t="edream.110203113231.302"
-marks="ekr.20070215095042,ekr.20070219134728,ekr.20070125074101,ekr.20070125074101.2,ekr.20070209095222,ekr.20070205140140.1,ekr.20070210080936,ekr.20061116093228,ekr.20061117155233,ekr.20070310064845,ekr.20070313052040,ekr.20070313055627,ekr.20070313055627.1,ekr.20061117155233.2,ekr.20061116091006,edream.110203113231.347,edream.110203113231.557,ekr.20061211122107.2,edream.111303103141,ekr.20061118142055,edream.110203113231.298,ekr.20070221122411,ekr.20070222091654,ekr.20070221130134,ekr.20070221122544.2,ekr.20070222083341,ekr.20070312095016,edream.110203113231.299,ekr.20070308110121,ekr.20070310083955,ekr.20061211052926,ekr.20061211072604,ekr.20061127075102,ekr.20061118123730.1,ekr.20061127081233,edream.110203113231.280,edream.110203113231.281,edream.110203113231.283,edream.110203113231.286,edream.110203113231.287,ekr.20050719121701.3,ekr.20070125091308,ekr.20070312083143,"><vh>@thin __wx_gui.py</vh></v>
+marks="ekr.20070219134728,ekr.20070125074101.2,ekr.20070209095222,ekr.20070210080936,ekr.20070310064845,ekr.20070313055627.1,ekr.20061116091006,edream.110203113231.347,edream.111303103141,edream.110203113231.298,ekr.20070221122411,ekr.20070312095016,ekr.20070308110121,ekr.20070310083955,ekr.20061127075102,ekr.20061118123730.1,ekr.20061127081233,edream.110203113231.280,edream.110203113231.281,edream.110203113231.283,edream.110203113231.287,"><vh>@thin __wx_gui.py</vh></v>
 </v>
 </v>
 <v t="ekr.20040722135402"><vh>Icon and status areas</vh>
@@ -488,7 +476,7 @@ marks="ekr.20070215095042,ekr.20070219134728,ekr.20070125074101,ekr.200701250741
 <v t="ekr.20070226075624"><vh>About threads</vh></v>
 <v t="ekr.20060623075925.1"><vh>To do</vh></v>
 <v t="ekr.20060530091119.2"><vh>@url http://www.jedit.org/42docs/users-guide/writing-modes-part.html</vh></v>
-<v t="ekr.20060530091119.20"><vh>@thin __jEdit_colorizer__.py</vh></v>
+<v t="ekr.20070718094819"><vh>@thin threading_colorizer.py	</vh></v>
 </v>
 <v t="edream.110203113231.872"><vh>Nodes...</vh>
 <v t="edream.110203113231.873"><vh>@thin at_folder.py</vh></v>
@@ -664,8 +652,7 @@ marks="ekr.20070215095042,ekr.20070219134728,ekr.20070125074101,ekr.200701250741
 <v t="pap.20050605183206"><vh>@thin leoupdate.py</vh></v>
 </v>
 <v t="ekr.20041001210557"><vh>Scripting</vh>
-<v t="ekr.20060328125248" a="E"
-expanded="ekr.20060328125248.6,ekr.20060328125248.8,"><vh>@thin mod_scripting.py</vh></v>
+<v t="ekr.20060328125248"><vh>@thin mod_scripting.py</vh></v>
 </v>
 <v t="ekr.20050111122605"><vh>Servers</vh>
 <v t="EKR.20040517080250.1"><vh>@thin mod_http.py</vh></v>
@@ -686,7 +673,7 @@ expanded="ekr.20060328125248.6,ekr.20060328125248.8,"><vh>@thin mod_scripting.py
 <v t="ekr.20060715100156.8"><vh>@thin mod_shadow_core.py</vh></v>
 <v t="ekr.20060715100156.52"><vh>@thin mod_shadow.py</vh></v>
 </v>
-<v t="ekr.20050306081349"><vh>Text formatting</vh>
+<v t="ekr.20050306081349" a="E"><vh>Text formatting</vh>
 <v t="mork.20041010095009"><vh>@thin xsltWithNodes.py</vh></v>
 <v t="ekr.20040331071919"><vh>Leo to AsciiDoc</vh>
 <v t="ekr.20050128070307"><vh>@url http://www.marshallresearch.com/michael-dawson/os/leo.html</vh></v>
@@ -758,11 +745,12 @@ expanded="ekr.20060328125248.6,ekr.20060328125248.8,"><vh>@thin mod_scripting.py
 <v t="ekr.20040331071919.37"><vh>&lt;&lt; Indent Leo comments &gt;&gt;</vh></v>
 </v>
 </v>
+<v t="ekr.20070627132619"><vh>NewHeadline</vh></v>
 </v>
-<v t="ekr.20050817132814"><vh>rst3</vh>
+<v t="ekr.20050817132814" a="E"><vh>rst3</vh>
 <v t="ekr.20050817120850.1" tnodeList="ekr.20050817120850.1,ekr.20050817122915,ekr.20050822123348,ekr.20050817124859,ekr.20050817165745,ekr.20050822172321,ekr.20050817124859.1,ekr.20050817165745.1,ekr.20050818033610,ekr.20050818095347,ekr.20050819055746.1,ekr.20050820112549,ekr.20050822065754,ekr.20050822125824,ekr.20050822172321.1,ekr.20050825101903,ekr.20050818103031,ekr.20050817115636.2,ekr.20050825101321,ekr.20050818103441,ekr.20070305092828,ekr.20050817115636.4,ekr.20050817115636.5,ekr.20050817115636.6,ekr.20050820092312,ekr.20050817115636.8,ekr.20050817115636.9,ekr.20050817115636.7,ekr.20050820100547,ekr.20050820101355,ekr.20050820103029,ekr.20050820101522,ekr.20050820101355.1,ekr.20050820094818,ekr.20050820092312.1,ekr.20050817120850.10,ekr.20050817120850.11,ekr.20050818094118.2,ekr.20050818090152,ekr.20050818090152.1,ekr.20050817120850.98,ekr.20050817120850.99,ekr.20050817120850.94,ekr.20050817120850.95,ekr.20050817120850.96,ekr.20050817120850.108,ekr.20050817142135.1,ekr.20050817120850.143,ekr.20050817120850.144,ekr.20050817120850.141,ekr.20050817135706.1,ekr.20050817120850.157,ekr.20050817120850.158,ekr.20050818105023,ekr.20050817120850.15,ekr.20050817120850.12,ekr.20050817120850.14,ekr.20050818081715,ekr.20050819072001,ekr.20050819072001.1,ekr.20050817120850.13,ekr.20050818083045,ekr.20050821153838,ekr.20050818022030,ekr.20050818084920,ekr.20050818130249,ekr.20050818090907,ekr.20050817120850.32,ekr.20050817120850.34,ekr.20050817120850.39,ekr.20050817120850.42,ekr.20050817120850.44,ekr.20050817120850.46,ekr.20050817120850.48,ekr.20050817120850.62,ekr.20050817120850.64,ekr.20050817120850.74,ekr.20050817120850.78,ekr.20050817120850.86,ekr.20050817120850.92,ekr.20050817120850.162,ekr.20050817120850.102,ekr.20050817120850.106,ekr.20050817120850.110,ekr.20050817120850.122,ekr.20050817120850.124,ekr.20050817120850.126,ekr.20050817120850.130,ekr.20050817120850.132,ekr.20050817120850.138,ekr.20050817120850.28,ekr.20050817120850.147,ekr.20050817120850.18,ekr.20050817120850.20,ekr.20050817120850.40,ekr.20050817120850.54,ekr.20050817120850.82,ekr.20050817120850.100,ekr.20050817120850.105,ekr.20050817120850.120,ekr.20050817120850.36,ekr.20050817120850.58,ekr.20050817120850.60,ekr.20050817120850.66,ekr.20050817120850.24,ekr.20050817120850.22,ekr.20050817120850.50,ekr.20050817120850.52,ekr.20050817120850.56,ekr.20050818094118.1,ekr.20050817120850.68,ekr.20050817120850.134,ekr.20050817120850.145,ekr.20050817120850.151,ekr.20050817120850.26,ekr.20050817120850.76,ekr.20050817120850.80,ekr.20050817120850.88,ekr.20050817120850.112,ekr.20050817120850.128,ekr.20050817142135,ekr.20050817120850.153,ekr.20050817120850.155,ekr.20050817120850.30,ekr.20050817135706,ekr.20050817120850.160,ekr.20050818094954,ekr.20050818105023.1,ekr.20050817120850.84,ekr.20050817120850.90,ekr.20050818094954.1,ekr.20050817120850.165,ekr.20050817120850.116,ekr.20050817120850.70,ekr.20050817120850.72,ekr.20050817120850.164,ekr.20050817120850.114,ekr.20050817120850.118,ekr.20050817120850.149,ekr.20050817120850.159,ekr.20050817120850.140"><vh>@file leo_pdf.py</vh>
 <v t="ekr.20050817122915"><vh>&lt;&lt; docstring &gt;&gt;</vh></v>
-<v t="ekr.20050817115636.2" a="M"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
+<v t="ekr.20050817115636.2"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
 <v t="ekr.20050822123348"><vh>&lt;&lt; about this code &gt;&gt;</vh></v>
 <v t="ekr.20050817124859"><vh>&lt;&lt; copyright &gt;&gt;</vh></v>
 <v t="ekr.20050817165745"><vh>&lt;&lt; version history &gt;&gt;</vh>
@@ -794,20 +782,20 @@ expanded="ekr.20060328125248.6,ekr.20060328125248.8,"><vh>@thin mod_scripting.py
 <v t="ekr.20050820100547"><vh>class dummyPDFTranslator (docutils.nodes.NodeVisitor)</vh>
 <v t="ekr.20050820101355" a="M"><vh>   __init__ (dummyPDFTranslator)</vh></v>
 <v t="ekr.20050820103029"><vh>as_what</vh></v>
-<v t="ekr.20050820101522" a="M"><vh>encode</vh></v>
+<v t="ekr.20050820101522"><vh>encode</vh></v>
 <v t="ekr.20050820101355.1" a="M"><vh>visit/depart_document</vh></v>
 <v t="ekr.20050820094818" a="M"><vh>buildFromIntermediateFile</vh></v>
 <v t="ekr.20050820092312.1" a="M"><vh>putParaFromIntermediateFile</vh></v>
 </v>
 <v t="ekr.20050817120850.10"><vh>class PDFTranslator (docutils.nodes.NodeVisitor)</vh>
-<v t="ekr.20050817120850.11" a="M"><vh>   __init__ (PDFTranslator)</vh></v>
+<v t="ekr.20050817120850.11"><vh>   __init__ (PDFTranslator)</vh></v>
 <v t="ekr.20050818094118.2"><vh>Complex</vh>
 <v t="ekr.20050818090152"><vh>footnotes</vh>
 <v t="ekr.20050818090152.1"><vh>footnote_reference</vh>
 <v t="ekr.20050817120850.98" a="M"><vh>visit_footnote_reference</vh></v>
 <v t="ekr.20050817120850.99" a="M"><vh>depart_footnote_reference</vh></v>
 </v>
-<v t="ekr.20050817120850.94" a="M"><vh>footnote &amp; helpers</vh>
+<v t="ekr.20050817120850.94"><vh>footnote &amp; helpers</vh>
 <v t="ekr.20050817120850.95" a="M"><vh>footnote_backrefs</vh></v>
 <v t="ekr.20050817120850.96"><vh>footnote_backrefs_depart</vh></v>
 </v>
@@ -835,7 +823,7 @@ expanded="ekr.20060328125248.6,ekr.20060328125248.8,"><vh>@thin mod_scripting.py
 <v t="ekr.20050818083045" a="M"><vh>inContext</vh></v>
 <v t="ekr.20050821153838" a="M"><vh>pdfMunge</vh></v>
 <v t="ekr.20050818022030" a="M"><vh>push, pop, peek</vh></v>
-<v t="ekr.20050818084920" a="M"><vh>putHead &amp; putTail</vh></v>
+<v t="ekr.20050818084920"><vh>putHead &amp; putTail</vh></v>
 </v>
 <v t="ekr.20050818130249"><vh>Simple...</vh>
 <v t="ekr.20050818090907"><vh> do nothings...</vh>
@@ -868,63 +856,64 @@ expanded="ekr.20060328125248.6,ekr.20060328125248.8,"><vh>@thin mod_scripting.py
 <v t="ekr.20050817120850.18"><vh>admonitions...</vh>
 <v t="ekr.20050817120850.20"><vh>attention</vh></v>
 <v t="ekr.20050817120850.40"><vh>caution</vh></v>
-<v t="ekr.20050817120850.54" a="M"><vh>danger</vh></v>
+<v t="ekr.20050817120850.54"><vh>danger</vh></v>
 <v t="ekr.20050817120850.82"><vh>error</vh></v>
 <v t="ekr.20050817120850.100"><vh>hint</vh></v>
 <v t="ekr.20050817120850.105"><vh>important</vh></v>
-<v t="ekr.20050817120850.120" a="M"><vh>note</vh></v>
+<v t="ekr.20050817120850.120"><vh>note</vh></v>
 </v>
 <v t="ekr.20050817120850.36" a="M"><vh>bullet_list</vh></v>
 <v t="ekr.20050817120850.58" a="M"><vh>definition</vh></v>
-<v t="ekr.20050817120850.60" a="M"><vh>definition_list</vh></v>
+<v t="ekr.20050817120850.60"><vh>definition_list</vh></v>
 <v t="ekr.20050817120850.66"><vh>docinfos...</vh>
 <v t="ekr.20050817120850.24"><vh>address</vh></v>
 <v t="ekr.20050817120850.22"><vh>author</vh></v>
-<v t="ekr.20050817120850.50" a="M"><vh>contact</vh></v>
-<v t="ekr.20050817120850.52" a="M"><vh>copyright</vh></v>
-<v t="ekr.20050817120850.56" a="M"><vh>date</vh></v>
+<v t="ekr.20050817120850.50"><vh>contact</vh></v>
+<v t="ekr.20050817120850.52"><vh>copyright</vh></v>
+<v t="ekr.20050817120850.56"><vh>date</vh></v>
 <v t="ekr.20050818094118.1" a="M"><vh>docinfo</vh></v>
-<v t="ekr.20050817120850.68" a="M"><vh>docinfo_item</vh></v>
-<v t="ekr.20050817120850.134" a="M"><vh>organization</vh></v>
+<v t="ekr.20050817120850.68"><vh>docinfo_item</vh></v>
+<v t="ekr.20050817120850.134"><vh>organization</vh></v>
 <v t="ekr.20050817120850.145"><vh>revision</vh></v>
-<v t="ekr.20050817120850.151" a="M"><vh>status</vh></v>
+<v t="ekr.20050817120850.151"><vh>status</vh></v>
 <v t="ekr.20050817120850.26"><vh>version</vh></v>
 </v>
-<v t="ekr.20050817120850.76" a="M"><vh>emphasis</vh></v>
+<v t="ekr.20050817120850.76"><vh>emphasis</vh></v>
 <v t="ekr.20050817120850.80" a="M"><vh>enumerated_list</vh></v>
 <v t="ekr.20050817120850.88" a="M"><vh>field_list</vh></v>
-<v t="ekr.20050817120850.112" a="M"><vh>list_item</vh></v>
+<v t="ekr.20050817120850.112"><vh>list_item</vh></v>
 <v t="ekr.20050817120850.128" a="M"><vh>option_list</vh></v>
 <v t="ekr.20050817142135" a="M"><vh>paragraph...</vh></v>
-<v t="ekr.20050817120850.153" a="M"><vh>strong</vh></v>
-<v t="ekr.20050817120850.155" a="M"><vh>subtitle</vh></v>
+<v t="ekr.20050817120850.153"><vh>strong</vh></v>
+<v t="ekr.20050817120850.155"><vh>subtitle</vh></v>
 <v t="ekr.20050817120850.30"><vh>term</vh></v>
 <v t="ekr.20050817135706"><vh>Text...</vh></v>
 <v t="ekr.20050817120850.160"><vh>topic</vh></v>
 </v>
 <v t="ekr.20050818094954"><vh>Unusual...</vh>
 <v t="ekr.20050818105023.1"><vh> Does not set context</vh>
-<v t="ekr.20050817120850.84" a="M"><vh>field</vh></v>
+<v t="ekr.20050817120850.84"><vh>field</vh></v>
 <v t="ekr.20050817120850.90"><vh>field_name</vh></v>
 </v>
 <v t="ekr.20050818094954.1"><vh> Raises SkipNode</vh>
 <v t="ekr.20050817120850.165"><vh>comment</vh></v>
 <v t="ekr.20050817120850.116" a="M"><vh> literal_blocks...</vh>
-<v t="ekr.20050817120850.70" a="M"><vh>doctest_block</vh></v>
+<v t="ekr.20050817120850.70"><vh>doctest_block</vh></v>
 <v t="ekr.20050817120850.72"><vh>line_block</vh></v>
 </v>
 </v>
 <v t="ekr.20050817120850.164" a="M"><vh>invisible_visit</vh></v>
 <v t="ekr.20050817120850.114" a="M"><vh>literal (only changes context)</vh></v>
 <v t="ekr.20050817120850.118" a="M"><vh>meta (appends to self.head)</vh></v>
-<v t="ekr.20050817120850.149" a="M"><vh>section</vh></v>
-<v t="ekr.20050817120850.159" a="M"><vh>unimplemented_visit</vh></v>
+<v t="ekr.20050817120850.149"><vh>section</vh></v>
+<v t="ekr.20050817120850.159"><vh>unimplemented_visit</vh></v>
 <v t="ekr.20050817120850.140"><vh>visit_raw</vh></v>
 </v>
 </v>
 </v>
 </v>
-<v t="ekr.20050805162550"><vh>@thin rst3.py</vh></v>
+<v t="ekr.20050805162550" a="E"
+expanded="ekr.20050805162550.8,ekr.20050805162550.9,"><vh>@thin rst3.py</vh></v>
 </v>
 <v t="ekr.20070119094733.1"><vh>@thin dtest.py</vh></v>
 </v>
@@ -935,9 +924,10 @@ expanded="ekr.20060328125248.6,ekr.20060328125248.8,"><vh>@thin mod_scripting.py
 <v t="ekr.20061023141638"><vh>@url 'file:./../doc/leoDocs.leo#Users Guide--&gt; Chapter 8: Customizing Leo'</vh></v>
 <v t="ekr.20061023141459"><vh>@url 'Plugins--&gt;UNL plugin--&gt;@thin UNL.py'</vh></v>
 </v>
-<v t="rogererens.20041013082304"><vh>@thin UNL.py</vh></v>
+<v t="rogererens.20041013082304"
+marks="ekr.20061023141204,"><vh>@thin UNL.py</vh></v>
 </v>
-<v t="ekr.20040915073259" a="E"><vh>Windows</vh>
+<v t="ekr.20040915073259"><vh>Windows</vh>
 <v t="ekr.20050227071948" annotate="5404010000376437313030323835353038373037323639366637323639373437393731303132383633363136653665366637343631373436353061353436623530363936333662366336353536363137323061373130323666373130333464306632373632353530343665366636343635373130353238363830323666373130363535303734363635363137343735373236353731303736323535303236323637373130383238363830323666373130393535303037313061363235353039363137323633363836353734373937303635373130623238363830323666373130633638306136323535303236363637373130643238363830323666373130653638306136323735326571002e"><vh> cleo</vh>
 <v t="ekr.20050227072121"><vh>Notes</vh>
 <v t="ekr.20050227071948.1" annotate="7d71002e"><vh>TODO</vh>
@@ -983,7 +973,7 @@ expanded="ekr.20060328125248.6,ekr.20060328125248.8,"><vh>@thin mod_scripting.py
 </v>
 <v t="pap.20041020001240"><vh>@thin footprints.py</vh></v>
 <v t="mork.20041018162155.1"><vh>@thin EditAttributes.py</vh></v>
-<v t="ekr.20040915073259.1" a="E"><vh>@thin maximizeNewWindows.py</vh></v>
+<v t="ekr.20040915073259.1"><vh>@thin maximizeNewWindows.py</vh></v>
 <v t="mork.20041022155742.1"><vh>@thin nodebar.py</vh></v>
 <v t="edream.110203113231.924"><vh>@thin redirect_to_log.py</vh></v>
 <v t="ekr.20040915075530"><vh>@thin UASearch.py</vh></v>
@@ -1440,7 +1430,7 @@ def redraw_now(self,scroll=True):
         #selImage=image,
         data=data)
 
-    ### tree.SetItemFont(id,self.defaultFont)
+    # tree.SetItemFont(id,self.defaultFont)
 
     self.setEditWidget(p,node_id)
     assert (p == tree.GetItemData(node_id).GetData())
@@ -1522,100 +1512,6 @@ active = Yes
 interval = 20</t>
 <t tx="edream.110203113231.729"></t>
 <t tx="edream.110203113231.872"></t>
-<t tx="edream.110403140857"></t>
-<t tx="edream.110403140857.1"></t>
-<t tx="edream.110403140857.2">@
---How to install the wiki markup plugin--
-
-1) first make sure that the "add_directives" plugin is enabled. This plugin turns on support for @markup directives, and it can be found in leoPlugins.leo under the section "Plugins &amp; scripts" -&gt; Directives. In particular:
-    a) check that the plugin code is enabled. You should have a line like (note the "if 1"):
-        if 1: # Register the handlers...
-    b) generate the plugin file. Right click with the mouse on the outline heading "@file add_directives.py" and select "Write @file nodes".
-
-2) enable the "color_markup.py" plugin:
-    a) check that the plugin code is enabled. You should have a line like:
-        if Tkinter: # Register the handlers...
-    b) generate the plugin file. Right click with the mouse on the outline heading "@file color_markup.py" and select "Write @file nodes".
-
-</t>
-<t tx="edream.110403140857.3">@
---How to use the wiki markup plugin--
-
-Make sure first that both the add_directives and color_markup plugins are installed and enabled (see the Installation node for details). Make also sure that coloring is not disabled for your outline (i.e. you should not have @nocolor in an ancestor node).
-    
-Important: coloring via wiki markups is only supported in doc parts and Python triple-double-quoted strings (not in Python triple-single-quoted strings!).
-
-To use the wiki markup, write
-
-@markup wiki # turn on the wiki markup
-@            # start a doc part
-(here goes your marked-up text, see below)
-
-To disable the wiki markup, write
-
-@markup      # turn off the wiki markup
-
-You can now use the markups either selecting the Wiki menu entries (or the corresponding keyboard shortcuts) found in the Edit-&gt;Edit Body-&gt;Wiki Tags menu, or manually inserting the tags yourself. 
-
-If you use the menus, you can either select a word and choose the appropriate menu entry to appy styling to that word, or you can just choose a menu entry (e.g. "Bold") and start writing text with the correspongin style. Select the menu entry again to return to normal text.
-
-See the "Supported markups" for the currently supported markups.
-
-See also the "Example" subnode. If you have the add_directives and color_markup plugins enabled, you should see the text in that node displayed as styled text.</t>
-<t tx="edream.110403140857.4">@
-The currently supported markups are:
-
-''text''                   # write text in italics
-__text__                   # write text in bold
-~~&lt;color&gt;:text~~           # write text in the color specified by &lt;color&gt; (e.g. blue, grey, etc)
-{picture file=&lt;filename&gt;}  # load the picture indicated by &lt;filename&gt;
-http://url                 # URL support: double clicking on the url will open it in the default browser.
-https://url                # URL support: double clicking on the url will open it in the default browser.
-
-Note 1: italics and bold markups can be nested, e.g.
-
-''__text__''               # write text in italics and bold
-
-Just remember to terminate the tags in the order they were opened.
-
-Note 2: URLs must be terminated by a space.
-
-By default, once the text has been markup up, the actual tags (e.g. __ for bold) are not displayed anymore. You can choose to display them selecting "Show Invisibles" from the Edit menu.
-</t>
-<t tx="edream.110403140857.5">@color
-@markup wiki
-@doc (this turns on a doc section; a '@ ' would do too)
-
-This should be ''italic'' text
-This should be __bold__ text
-This text should be ~~pink:colored in pink~~, ~~blue:this one in blue~~.
-This text should be ''__both bold and italic__''.
-Leo's homepage is at http://webpages.charter.net/edreamleo/front.html 
-
-You can also have wiki markups in python triple-double-quoted strings:
-
-@c
-
-def __dummy():
-    """This is a __very important__ function."""
-    return None
-</t>
-<t tx="edream.110403140857.6">@
-Wiki markups are supported ''in subnodes too''.</t>
-<t tx="edream.110403140857.7">@
-Version 1.2.1, October 29, 2003.
-
-Added documentation.
-Added menu entries to tag selected text and to start/end wiki tagging.
-
-Version 1.3, October 29, 2003.
-
-Fixed bug in the creation of the wiki menu.
-Added support for clickable http tags.
-
-Version 1.4, November 4, 2003.
-Put import tkinter in a try/except block.
-Made changes for 4.1 g.app.gui architecture. (More work needed).</t>
 <t tx="edream.111303103141">def add_command (self,menu,**keys):
 
     if not menu:
@@ -2118,7 +2014,7 @@ import leoPlugins
 import re
 import os
 
-g.es("---mod_leo2asc 0.4-------")
+# g.es("---mod_leo2asc 0.4-------")
 
 @
 Next, a class to hold our configuration data. Users can change the
@@ -4245,7 +4141,7 @@ if Tk: # Register the handlers...
                         elif conflict:
                             g.es("not updated from: " + g.shortFileName(path),color="blue")
                 except:
-                    g.es_exception() ## testing
+                    g.es_exception() # testing
                     pass
     def create_open_with_menu (tag,keywords):
     
@@ -6496,7 +6392,7 @@ Terry  J. Reedy
 </t>
 <t tx="ekr.20050329082101.108">
 
-I just read in the 'What's New in Python 2.4' document that the None
+I just ೾蓗肇　 in the 'What's New in Python 2.4' document that the None
 data type was converted to a constant:
 http://python.org/doc/2.4/whatsnew/node15.html
 
@@ -7159,7 +7055,7 @@ if docutils:
     if type(text) in (types.ListType,types.TupleType):
         text = ''.join([self.encode(t) for t in text])
 
-    if not style.strip(): ### EKR
+    if not style.strip():
         style = 'Normal'
 
     if 0:
@@ -7871,7 +7767,7 @@ def depart_subtitle(self, node):
     elif isTitle: style = 'title'
     else:         style = "h%s" % self.sectionlevel
 
-    ## The old code was equivalent to: if style != 'title'.
+    # The old code was equivalent to: if style != 'title'.
     if 0:
         self.dumpNode(node.parent,tag='node.parent')
         self.dumpNode(node,tag='node')
@@ -11671,7 +11567,7 @@ def expandAndSelect (self,node_id,p,force=False):
         #selImage=image,
         data=data)
 
-    ### tree.SetItemFont(id,self.defaultFont)
+    # tree.SetItemFont(id,self.defaultFont)
 
     self.setEditWidget(p,node_id)
     assert (p == tree.GetItemData(node_id).GetData())
@@ -12044,7 +11940,8 @@ def unshift (self,keycode,uchar):
             91:u'[',92:u'\\',93:u']',
         }
         return d.get(keycode,unichr(keycode))</t>
-<t tx="ekr.20070326080254"></t>
+<t tx="ekr.20070627132619"></t>
+<t tx="ekr.20070718131416"></t>
 <t tx="rogererens.20041014110709">@
 
 How about other plugins that create a status line? Should I test whether the status line is already created?
