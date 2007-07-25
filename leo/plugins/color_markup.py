@@ -141,21 +141,22 @@ def initAnyMarkup (tag,keywords):
     colorer.markup_string = "unknown" # default
 #@-node:edream.110403140857.9:initAnyMarkup
 #@+node:edream.110403140857.16:onBodykey1 (not ready)
-def onBodykey1(tag,keywords):
+# def onBodykey1(tag,keywords):
 
-    c = keywords.get("c")
-    body = c.frame.body
-    idx = body.bodyCtrl.index("insert")
-    line,char = map(int, idx.split('.'))
-    elideRange = body.bodyCtrl.tag_prevrange("elide", idx) # EKR: 11/4/03
-    if elideRange:
-        elideLine,elideStart = map(int, elideRange[0].split('.'))
-        elideLine,elideEnd   = map(int, elideRange[1].split('.'))
-        if line==elideLine and elideStart<char<=elideEnd:
-            pass
-            # print "XXX: tag!"
-            # body.bodyCtrl.mark_set("insert", "elide+1c")
-    return 0 # do not override
+    # c = keywords.get("c")
+    # w = c.frame.body.bodyCtrl
+    # ins = w.getInsertPoint()
+    # ins = w.toGuiIndex(ins)
+    # # line,char = map(int, idx.split('.'))
+    # elideRange = body.bodyCtrl.tag_prevrange("elide",ins)
+    # if elideRange:
+        # elideLine,elideStart = map(int, elideRange[0].split('.'))
+        # elideLine,elideEnd   = map(int, elideRange[1].split('.'))
+        # if line==elideLine and elideStart<char<=elideEnd:
+            # pass
+            # # print "XXX: tag!"
+            # # body.bodyCtrl.mark_set("insert", "elide+1c")
+    # return 0 # do not override
 #@-node:edream.110403140857.16:onBodykey1 (not ready)
 #@+node:edream.110403140857.17:onBodydclick1 & allies
 def onBodydclick1(tag,keywords):
@@ -243,6 +244,7 @@ def colorWikiMarkup (tag,keywords):
     keys = ("colorer","v","s","i","j","colortag")
     colorer,v,s,i,j,colortag = [keywords.get(key) for key in keys]
     c = colorer.c
+
     dict = g.scanDirectives(c,p=v) # v arg is essential.
     pluginsList = dict.get("pluginsList")
 
@@ -250,16 +252,19 @@ def colorWikiMarkup (tag,keywords):
         for d,v,s2,k in pluginsList:
             if d == "markup":
                 if g.match_word(s2,k,"wiki"):
-                    doWikiText(colorer,v,s,i,j,colortag)
+                    doWikiText(colorer,s,i,j,colortag)
                     return True # We have colored the text.
 
+    # g.trace('**not colored')
+    colorer.removeAllImages()
     return None # We have not colored the text.
 #@+node:edream.110403140857.11:doWikiText
-def doWikiText (colorer,v,s,i,end,colortag):
+def doWikiText (colorer,s,i,end,colortag):
 
-    firsti = i ; inserted = 0
+    firsti = i
 
-    # g.trace(s[i:])
+    # Note: for old colorizer, must use index(i) and index(j) to get proper indices.
+    # g.trace(i,end,colortag) # ,repr(s[i:end]))
 
     while i < end:
         #@        << set first to a tuple describing the first tag to be handled >>
@@ -271,8 +276,10 @@ def doWikiText (colorer,v,s,i,end,colortag):
             ("italic","''","''"),
             ("picture","{picture file=","}"),
             ("color","~~","~~"),
-            ("http","http://"," "),
-            ("https","https://"," ")):
+            # Not correct: the url ends at a space *or* a newline.
+            #("http","http://"," "),
+            #("https","https://"," "),
+        ):
             n1 = s.find(delim1,i,end)
             if n1 > -1:
                 n2 = s.find(delim2,n1+len(delim1),end)
@@ -286,12 +293,14 @@ def doWikiText (colorer,v,s,i,end,colortag):
             i = n2 + len(delim2)
             #@            << handle the tag using n1,n2,delim1,delim2 >>
             #@+node:edream.110403140857.13:<< handle the tag using n1,n2,delim1,delim2 >>
+            # g.trace(tag,i,n1,n2,s[n1:n2])
+
             if tag =="picture":
                 colorer.tag("elide",n1,n2+len(delim2)) # Elide everything.
                 filename = s[n1+len(delim1):n2]
                 filename = os.path.join(g.app.loadDir,filename)
                 filename = os.path.normpath(filename)
-                inserted += insertWikiPicture(colorer,filename,n2+len(delim2))
+                insertWikiPicture(colorer,filename,s,n2+len(delim2))
             elif tag == "color":
                 #@    << parse and handle color field >>
                 #@+node:edream.110403140857.14:<< parse and handle color field >>
@@ -348,31 +357,21 @@ def doWikiText (colorer,v,s,i,end,colortag):
             #@nl
         else: i = end
 
-    # g.trace('tag',colortag,firsti,end+inserted)
-    colorer.tag(colortag,firsti,end+inserted)
+    # g.trace('tag',colortag,firsti,end)
+    colorer.tag(colortag,firsti,end)
 #@-node:edream.110403140857.11:doWikiText
 #@-node:edream.110403140857.10:colorWikiMarkup & helper
-#@+node:edream.110403140857.15:insertWikiPicture
-def insertWikiPicture (colorer,filename,i):
+#@+node:ekr.20070724095125:insertWikiPicture
+def insertWikiPicture (colorer,filename,s,i):
 
-    """Try to insert a picture with the give filename.
+    '''Insert the picture with the given filename.'''
 
-    Returns the number of characters actually inserted"""
+    # g.trace(i,filename)
 
-    g.trace(i,filename)
+    c = colorer.c ; p = c.currentPosition() ; w = c.frame.body.bodyCtrl
 
-    if not g.os_path_exists(filename):
-        return 0
-
-    if colorer.color_pass == 0:
-        colorer.redoColoring = True # schedule a two-pass recoloring.
-        return 0
-
-    if colorer.color_pass == 2:
-        return 0 # The second redo pass.
-
-    if not os.path.exists(filename):
-        return 0
+    if not p or not g.os_path_exists(filename):
+        return
 
     try:
         # Create the image
@@ -382,18 +381,28 @@ def insertWikiPicture (colorer,filename,i):
             photo = ImageTk.PhotoImage(image)
         else: # Allow only .gif or .pgm images.
             photo = Tk.PhotoImage(master=g.app.root, file=filename)
-        image = colorer.body.bodyCtrl.image_create(colorer.index(i),image=photo,padx=0)
+            image = None
 
-        # Keep references so images stay on the canvas.
-        colorer.image_references.append((photo,image,colorer.line_index,i),)
-        return 1
+        index = colorer.index(i)
+        if filename in w.mark_names() and w.image_names():
+            # This isn't quite correct because
+            # it won't allow copies of the picture.
+            pass
+            # g.trace('**picture exists',filename)
+        else:
+            index = colorer.index(i)
+            # g.trace('**inserting picture',i,index)
+            image = colorer.body.bodyCtrl.image_create(index,image=photo,padx=0)
+            w.mark_set(filename,index)
+            # Keep references so images stay on the canvas.
+            # The reference to photo must appear, even though it is not used.
+            colorer.image_references.append((photo,image,index),)
     except:
         if not PIL:
             g.es_print('PIL not loaded: wiki images must be .gif or .pgm files.',color='blue')
         else:
             g.es_exception()
-        return 0
-#@-node:edream.110403140857.15:insertWikiPicture
+#@-node:ekr.20070724095125:insertWikiPicture
 #@-node:ekr.20060108112937:Module-level
 #@+node:edream.110403140857.19:Menu commands
 #@+node:edream.110403140857.21:doWikiBold
@@ -425,7 +434,7 @@ def doWikiChooseColor(c):
             wikiColoredText = val
             doWikiColor()
 #@-node:edream.110403140857.24:doWikiChooseColor
-#@+node:edream.110403140857.25:doWikiPicture (not ready)
+#@+node:edream.110403140857.25:doWikiPicture
 def doWikiPicture(c):
 
     if c and c.exists:
@@ -435,7 +444,7 @@ def doWikiPicture(c):
         )
         if name:
             insertWikiMarkup(c,"{picture file=%s}" % name,"")
-#@-node:edream.110403140857.25:doWikiPicture (not ready)
+#@-node:edream.110403140857.25:doWikiPicture
 #@+node:edream.110403140857.26:insertWikiMarkup
 def insertWikiMarkup(c,leftTag,rightTag):
 
@@ -448,7 +457,6 @@ def insertWikiMarkup(c,leftTag,rightTag):
         #@+node:edream.110403140857.27:<< apply markup to selection >>
         start,end = oldSel
         w.insert(start, leftTag)
-        # we need to review where the selection now ends
         start,end = w.getSelectionRange()
         w.insert(end, rightTag)
         w.setSelectionRange(start-len(leftTag),end+len(rightTag))
