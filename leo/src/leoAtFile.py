@@ -3931,9 +3931,9 @@ class atFile:
             if g.match_word(s,i,name):
                 return directive
 
-        # Return miscDirective only for real directives.
-        for name in leoColor.leoKeywords:
-            if g.match_word(s,i,name):
+        # New in Leo 4.4.3: add support for add_directives plugin.
+        for name in g.globalDirectiveList:
+            if g.match_word(s,i+1,name):
                 return at.miscDirective
 
         return at.noDirective
@@ -3959,7 +3959,7 @@ class atFile:
             ('    @others',4,at.othersDirective),
             ("@raw",0,at.rawDirective),
         ]
-        for name in leoColor.leoKeywords:
+        for name in g.globalDirectiveList:
             if name not in ('@','@all','@c','@code','@doc','@end_raw','@others','@raw',):
                 table.append((name,0,at.miscDirective),)
 

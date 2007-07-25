@@ -21,6 +21,10 @@
 #@+all
 #@+node:ekr.20070703172548:Leo 4.4.4 projects
 #@+node:ekr.20070703182412:Bugs
+#@+node:ekr.20070725155607:removed leoKeywords from colorizer
+# This was a fairly big bit of cruft.
+#@nonl
+#@-node:ekr.20070725155607:removed leoKeywords from colorizer
 #@-node:ekr.20070703182412:Bugs
 #@+node:ekr.20070703182412.1:Features
 #@+node:ekr.20070703172130:Added support for @mark-for-unit-tests node
@@ -233,6 +237,10 @@ def searchOutline (self,p):
 #@-node:ekr.20070627140344:class runTestHelperClass
 #@-node:ekr.20070627135407:runTestsExternally & helper class
 #@-node:ekr.20070703172130:Added support for @mark-for-unit-tests node
+#@+node:ekr.20070725165751:Rewrote jEdit colorizer
+# It is now called threading_colorizer.
+#@nonl
+#@-node:ekr.20070725165751:Rewrote jEdit colorizer
 #@-node:ekr.20070703182412.1:Features
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@-all

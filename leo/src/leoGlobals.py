@@ -64,6 +64,10 @@ body_ignored_newline = '\r'
 # Visible externally so plugins may add to the list of directives.
 
 globalDirectiveList = [
+    # New in Leo 4.4.4: these used to be in leoKeywords.
+    'all','c','code','delims','doc','end_raw',
+    'first','last','others','raw','root-code','root-doc',
+    # Old.
     "color", "comment", "encoding", "header", "ignore", "killcolor",
     "language", "lineending", "nocolor", "noheader", "nowrap",
     "pagewidth", "path", "quiet", "root", "silent",

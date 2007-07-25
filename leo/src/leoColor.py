@@ -13,24 +13,6 @@ import string
 # php_re = re.compile("<?(\s|=|[pP][hH][pP])")
 php_re = re.compile("<?(\s[pP][hH][pP])")
 
-#@<< define leo keywords >>
-#@+node:ekr.20031218072017.1595:<< define leo keywords >>
-# leoKeywords is used by directivesKind, so it should be a module-level symbol.
-
-# leoKeywords must be a list so that plugins may alter it.
-
-leoKeywords = [
-    "@","@all","@c","@code","@color","@comment",
-    "@delims","@doc","@encoding","@end_raw",
-    "@first","@header","@ignore",
-    "@killcolor",
-    "@language","@last","@lineending",
-    "@nocolor","@noheader","@nowrap","@others",
-    "@pagewidth","@path","@quiet","@raw","@root","@root-code","@root-doc",
-    "@silent","@tabwidth","@terse",
-    "@unit","@verbose","@wrap" ]
-#@-node:ekr.20031218072017.1595:<< define leo keywords >>
-#@nl
 #@<< define colorizer constants >>
 #@+node:ekr.20031218072017.2795:<< define colorizer constants >>
 # These defaults are sure to exist.
@@ -1341,12 +1323,6 @@ class baseColorizer:
             # g.trace('incremental',self.incremental)
             #@        << initialize ivars & tags >>
             #@+node:ekr.20031218072017.1602:<< initialize ivars & tags >> colorizeAnyLanguage
-            # Add any newly-added user keywords.
-            for d in g.globalDirectiveList:
-                name = '@' + d
-                if name not in leoKeywords:
-                    leoKeywords.append(name)
-
             # Copy the arguments.
             self.p = p
 
@@ -1989,7 +1965,7 @@ class baseColorizer:
             # Nothing on the line is colored.
             self.tag("leoKeyword",i,j)
             return j,"nocolor"
-        elif word in leoKeywords:
+        elif word in g.globalDirectiveList:
             self.tag("leoKeyword",i,j)
             return j,"normal"
         else:
