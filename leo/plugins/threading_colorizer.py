@@ -6,16 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-#@+at 
-#@nonl
-# xxx To do:
-# 
-# - Focus leaves body pane for long body text.
-# - Calculate minimum changed string in computeIndices.
-#@-at
-#@@c
-
-__version__ = '0.04'
+__version__ = '0.5'
 
 trace_all_matches = False
 trace_leo_matches = False
@@ -48,6 +39,11 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # things up.
 # 0.3 EKR: A rewrite of the incremental coloring logic.
 # 0.4 EKR: Minor changes.
+# 0.5 EKR: Several optimizations, of unknown real value:
+# - Minimize the time spent in critical sections.
+# - Process only 'limit' items in finishColoring.
+# - finishColoring now returns a 'done' indicator, and idleHandler
+#   re-queues itself if more work remains.
 #@-at
 #@nonl
 #@-node:ekr.20070718100326.1:<< version history >>
@@ -62,7 +58,6 @@ for key in g.globalDirectiveList:
 #@-node:ekr.20070725161027:<< define leoKeywordsDict >>
 #@nl
 #@<< define default_colors_dict >>
-#@+middle:ekr.20070718131458.5:module-level
 #@+node:ekr.20070718131458.7:<< define default_colors_dict >>
 # These defaults are sure to exist.
 
@@ -101,10 +96,8 @@ default_colors_dict = {
     }
 #@nonl
 #@-node:ekr.20070718131458.7:<< define default_colors_dict >>
-#@-middle:ekr.20070718131458.5:module-level
 #@nl
 #@<< define default_font_dict >>
-#@+middle:ekr.20070718131458.5:module-level
 #@+node:ekr.20070718131458.8:<< define default_font_dict >>
 default_font_dict = {
     # tag name       : option name
@@ -136,12 +129,12 @@ default_font_dict = {
     'literal3'  :'literal3_font',
     'literal4'  :'literal4_font',
     'markup'    :'markup_font',
+    # 'nocolor' This tag is used, but never generates code.
     'null'      :'null_font',
     'operator'  :'operator_font',
     }
 #@nonl
 #@-node:ekr.20070718131458.8:<< define default_font_dict >>
-#@-middle:ekr.20070718131458.5:module-level
 #@nl
 
 #@+others
@@ -197,19 +190,23 @@ def match_at_nocolor (self,s,i):
 
     if trace_leo_matches: g.trace()
 
-    seq = '@nocolor'
-
     if i != 0 and s[i-1] != '\n':
         return 0
-
-    if g.match_word(s,i,seq):
-        j = i + len(seq)
-        self.flag = False # Disable coloring.
-        self.colorRangeWithTag(s,i,j,'leoKeyword')
-        return len(seq)
-    else:
+    if not g.match_word(s,i,'@nocolor'):
         return 0
-#@nonl
+
+    j = i + len('@nocolor')
+    k = s.find('\n@color',j)
+    if k == -1:
+        # No later @color: don't color the @nocolor directive.
+        self.flag = False # Disable coloring.
+        return len(s) - j
+    else:
+        # A later @color: do color the @nocolor directive.
+        self.colorRangeWithTag(s,i,j,'leoKeyword')
+        self.flag = False # Disable coloring.
+        return k+1-j
+
 #@-node:ekr.20070718131458.13:match_at_nocolor
 #@+node:ekr.20070718131458.14:match_doc_part
 def match_doc_part (self,s,i):
@@ -444,7 +441,6 @@ class colorizer:
             'label','literal1','literal2','literal3','literal4',
             'markup','operator',
         ]
-        self.tagList = []
         # Incremental data.
         self.end_i = 0 # The ending index of the text that has been colored.
         self.marksDict = {} # Keys are indices of matches, values are lengths of the match.
@@ -452,6 +448,9 @@ class colorizer:
         self.s = None # The string being colorized.
         self.start_i = 0 # The starting index of the text that has been colored.
         # Threading stuff.
+        self.globalTagList = [] # The interface between the helper and main thread.
+            # The helper thread puts items on the list.  The main thread removes items.
+            # All accesses to this list *must* be protected by self.lock.
         self.lock = threading.Condition()
         self.threadCount = 0
         self.helperThread = None # A singleton helper thread.
@@ -829,7 +828,8 @@ class colorizer:
         c = self.c
 
         if self.enabled:
-            self.updateSyntaxColorer(p)
+            self.updateSyntaxColorer(p) # Sets self.flag.
+            # g.trace('self.flag',self.flag,'incremental',incremental)
             self.threadColorizer(p,incremental,interruptable)
         else:
             self.removeAllTags()
@@ -917,10 +917,10 @@ class colorizer:
 
         return d
     #@-node:ekr.20070720101942:adjustMarksDict
-    #@+node:ekr.20070718131458.48:colorRangeWithTag
+    #@+node:ekr.20070718131458.48:colorRangeWithTag (in helper thread)
     def colorRangeWithTag (self,s,i,j,tag,delegate='',exclude_match=False):
 
-        '''Add an item to the tagList if colorizing is enabled.'''
+        '''Add an item to the globalTagList if colorizing is enabled.'''
 
         if not self.flag: return
 
@@ -941,15 +941,14 @@ class colorizer:
         elif not exclude_match:
             # g.trace('***',self.rulesetName,tag,i,j,s[i:j])
             # g.trace(tag,i,j,repr(s[i:j]))
+            # Critical section: must be as fast as possible.
             self.lock.acquire()
-            try:
-                self.tagList.append((tag,i,j),)
-                self.end_i = j
-            finally:
-                self.lock.notifyAll()
-                self.lock.release()
+            self.globalTagList.append((tag,i,j),)
+            self.end_i = j
+            self.lock.notifyAll()
+            self.lock.release()
     #@nonl
-    #@-node:ekr.20070718131458.48:colorRangeWithTag
+    #@-node:ekr.20070718131458.48:colorRangeWithTag (in helper thread)
     #@+node:ekr.20070720095702:computeIndices
     def computeIndices (self):
 
@@ -1021,6 +1020,9 @@ class colorizer:
             new_middle = ''.join(new_lines[head:])
             old_middle = ''.join(old_lines[head:])
         # assert old_tail == new_tail
+
+        # This recolors all of all changed lines.
+        # We could optimize this a bit, but I doubt it would make much difference.
         mid_i = len(new_head)
         tail_i = mid_i + len(new_middle)
         delta = len(new_middle) - len(old_middle)
@@ -1050,19 +1052,29 @@ class colorizer:
     #@+node:ekr.20070718131458.42:finishColoring
     def finishColoring (self,done):
 
-        w = self.w
+        c = self.c ; w = self.w
         if self.killFlag: return
 
+        # print '%d' % self.threadCount,'done',done,'globalTagList',len(self.globalTagList)
+
+        # Critical section: must be as fast as possible.
+        limit = 500
         self.lock.acquire()
+        if limit:
+            tagList = self.globalTagList[:limit]
+            self.globalTagList = self.globalTagList[limit:]
+            done = len(self.globalTagList) == 0
+        else:
+            tagList = self.globalTagList[:]
+            self.globalTagList = []
+            done = True
+        self.lock.notifyAll()
+        self.lock.release()
 
-        try:
-            self.tagAll()
-        finally:
-            self.lock.release()
-
+        self.tagAll(tagList)
         w.update_idletasks()
-
-        # print '%d' % self.threadCount,
+        return done
+    #@nonl
     #@-node:ekr.20070718131458.42:finishColoring
     #@+node:ekr.20070719105813:fullColor (in helper thread)
     def fullColor (self,s):
@@ -1108,7 +1120,9 @@ class colorizer:
         else:
             # if self.waitCount: g.trace('waitCount',self.waitCount)
             # print '%d' % n,
-            self.finishColoring(done=True)
+            done = self.finishColoring(done=True)
+            if not done:
+                self.w.after(200,self.idleHandler,n)
     #@-node:ekr.20070718131458.50:idleHandler
     #@+node:ekr.20070718131458.49:init
     def init (self,p,incremental,interruptable):
@@ -1124,7 +1138,7 @@ class colorizer:
         self.s = w.getAllText()
         self.selection = w.getSelectionRange()
         # g.trace('ins',self.insertPoint,'sel',self.selection)
-        self.tagList = []
+        self.globalTagList = []
         self.tagsRemoved = False
         self.waitCount = 0
 
@@ -1226,8 +1240,6 @@ class colorizer:
         for name in names:
             if name not in ('sel','insert'):
                 w.tag_remove(name,w.toGuiIndex(0), w.toGuiIndex('end'))
-
-        # g.trace(len(self.tagList)/3)
     #@-node:ekr.20070718131458.44:removeAllTags
     #@+node:ekr.20070720165737:removeTagsFromRange
     def removeTagsFromRange(self,i,j):
@@ -1256,29 +1268,29 @@ class colorizer:
         self.body.tag_add(name,x1,x2)
     #@-node:ekr.20070724120821:tag & index (threadingColorizer)
     #@+node:ekr.20070718131458.45:tagAll
-    def tagAll (self):
+    def tagAll (self,tagList):
+
+        '''Process all items on the tagList.'''
 
         s = self.s ; w = self.w ; trace = False
 
-        if trace: g.trace('tagList',len(self.tagList),'start:end',self.start_i,self.end_i)
+        if trace: g.trace('tagList',len(tagList),'start:end',self.start_i,self.end_i)
 
         if self.start_i == self.end_i:
-            self.tagList = []
             self.start_i = self.end_i
             return
 
-        if not self.tagList:
+        if not tagList:
             self.removeTagsFromRange(self.start_i,self.end_i)
-            self.tagList = []
             self.start_i = self.end_i
             return
 
         # g.trace('removing tags from',self.start_i,self.end_i) # repr(s[self.start_i:self.end_i]))
-        if len(self.tagList) < 10:
+        if len(tagList) < 10:
             # Single characters typically change less than 10 tags on a line.
-            if trace: g.trace('tagList',self.tagList)
+            if trace: g.trace('tagList',tagList)
             gaps = [] ; last_i = None ; last_j = None
-            for tag,i,j in self.tagList:
+            for tag,i,j in tagList:
                 if last_i is None:
                     if self.start_i != i:
                         gaps.append((self.start_i,i),)
@@ -1294,7 +1306,7 @@ class colorizer:
         else:
             self.removeTagsFromRange(self.start_i,self.end_i)
 
-        for tag,i,j in self.tagList:
+        for tag,i,j in tagList:
             x1,x2 = w.toGuiIndex(i,s=s), w.toGuiIndex(j,s=s)
             # A crucial optimization for large body text.
             # Even so, the color_markup plugin slows down coloring considerably.
@@ -1304,7 +1316,6 @@ class colorizer:
                     w.tag_add(tag,x1,x2)
             else:
                 w.tag_add(tag,x1,x2)
-        self.tagList = []
         self.start_i = self.end_i
     #@-node:ekr.20070718131458.45:tagAll
     #@+node:ekr.20070718131458.52:target (in helper thread)
