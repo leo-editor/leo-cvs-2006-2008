@@ -948,7 +948,7 @@ class colorizer:
             self.lock.acquire()
             self.globalTagList.append((tag,i,j),)
             self.end_i = j
-            self.lock.notifyAll()
+            # self.lock.notifyAll()
             self.lock.release()
     #@nonl
     #@-node:ekr.20070718131458.48:colorRangeWithTag (in helper thread)
@@ -1061,7 +1061,7 @@ class colorizer:
         # print '%d' % self.threadCount,'done',done,'globalTagList',len(self.globalTagList)
 
         # Critical section: must be as fast as possible.
-        limit = 500
+        limit = 0
         self.lock.acquire()
         try:
             if limit:
@@ -1074,10 +1074,12 @@ class colorizer:
                 done = True
             # Apparently, this must be inside the lock.
             self.tagAll(tagList)
-            w.update_idletasks()
+
         finally:
-            self.lock.notifyAll()
+            # self.lock.notifyAll()
             self.lock.release()
+
+        w.update_idletasks()
 
         return done
     #@-node:ekr.20070718131458.42:finishColoring
