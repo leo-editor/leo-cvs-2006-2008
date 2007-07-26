@@ -315,10 +315,35 @@ def searchOutline (self,p):
 #@-node:ekr.20070627140344:class runTestHelperClass
 #@-node:ekr.20070627135407:runTestsExternally & helper class
 #@-node:ekr.20070703172130:Added support for @mark-for-unit-tests node
-#@+node:ekr.20070725165751:Rewrote jEdit colorizer
-# It is now called threading_colorizer.
+#@+node:ekr.20070725165751:Created threading_colorizer
+@nocolor
+
+> Can anyone point me to a discussion of what is, and is not, guanteed about how
+Python schedules threads? In particular, I want the colorizing thread to
+relinquish control to the gui thread quite often (for good response), but I
+don't want the relinquishing itself to slow down the colorizer much. It seems a
+hard problem.
+
+From what I understand, there are perhaps only a few "guarantees" with Python
+threads. One guarantee is that when Python source is executing, threads will
+swap after sys.getcheckinterval() bytecodes have been processed for that thread.
+You can set the delay with sys.setcheckinterval(count). It seems to be 100
+bytecodes in Python 2.3-2.5, but I could have sworn it was 1000. In any case,
+setting the check interval higher will result in higher speed, but lower
+responsiveness.
+
+When making certain C-level calls, Python will also allow the "active" Python
+thread to switch. Which really means that the only way you can use those all of
+those 4-core processors with Python in a single process is to do all of your
+work in C code with carefully crafted GIL acquire and release calls.
+
+If your code is crafted in such a way that there are "convenient" places to
+yield control, you can use a technique known as 'cooperative multithreading with
+generators'. It gives you the total speed, more or less, of a single thread, but
+*you* choose where the context switches occur, for the cost of a bit of extra
+complication.
 #@nonl
-#@-node:ekr.20070725165751:Rewrote jEdit colorizer
+#@-node:ekr.20070725165751:Created threading_colorizer
 #@-node:ekr.20070703182412.1:Features
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@-all

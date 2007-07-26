@@ -1,6 +1,9 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20070718094819:@thin threading_colorizer.py	
-'''A threading colorizer using jEdit language description files'''
+'''A threading colorizer using jEdit language description files.
+
+See: http://webpages.charter.net/edreamleo/coloring.html for documentation.
+'''
 
 #@@language python
 #@@tabwidth -4
@@ -396,7 +399,7 @@ class colorizer:
         self.use_hyperlinks = c.config.getBool("use_hyperlinks")
         self.enabled = c.config.getBool('use_syntax_coloring')
         # Debugging.
-        self.trace = True or c.config.getBool('trace_colorizer') # Not used at present.
+        self.trace = c.config.getBool('trace_colorizer') # Not used at present.
         self.trace_match_flag = False
         self.use_threads = True
         # State ivars...
