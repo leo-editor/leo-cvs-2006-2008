@@ -948,7 +948,7 @@ class colorizer:
             self.lock.acquire()
             self.globalTagList.append((tag,i,j),)
             self.end_i = j
-            # self.lock.notifyAll()
+            self.lock.notify()
             self.lock.release()
     #@nonl
     #@-node:ekr.20070718131458.48:colorRangeWithTag (in helper thread)
@@ -1074,9 +1074,7 @@ class colorizer:
                 done = True
             # Apparently, this must be inside the lock.
             self.tagAll(tagList)
-
         finally:
-            # self.lock.notifyAll()
             self.lock.release()
 
         w.update_idletasks()
