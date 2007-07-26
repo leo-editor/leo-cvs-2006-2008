@@ -1063,21 +1063,23 @@ class colorizer:
         # Critical section: must be as fast as possible.
         limit = 500
         self.lock.acquire()
-        if limit:
-            tagList = self.globalTagList[:limit]
-            self.globalTagList = self.globalTagList[limit:]
-            done = len(self.globalTagList) == 0
-        else:
-            tagList = self.globalTagList[:]
-            self.globalTagList = []
-            done = True
-        self.lock.notifyAll()
-        self.lock.release()
+        try:
+            if limit:
+                tagList = self.globalTagList[:limit]
+                self.globalTagList = self.globalTagList[limit:]
+                done = len(self.globalTagList) == 0
+            else:
+                tagList = self.globalTagList[:]
+                self.globalTagList = []
+                done = True
+            # Apparently, this must be inside the lock.
+            self.tagAll(tagList)
+            w.update_idletasks()
+        finally:
+            self.lock.notifyAll()
+            self.lock.release()
 
-        self.tagAll(tagList)
-        w.update_idletasks()
         return done
-    #@nonl
     #@-node:ekr.20070718131458.42:finishColoring
     #@+node:ekr.20070719105813:fullColor (in helper thread)
     def fullColor (self,s):
