@@ -58,7 +58,7 @@ navigate to the nodes 'by hand' by following the arrows in the UNL.
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.8"
+__version__ = "0.9"
 #@<< version history >>
 #@+node:rogererens.20041014104353:<< version history >>
 #@+at
@@ -73,6 +73,8 @@ __version__ = "0.8"
 # - 0.6 EKR: Made local UNL's work.
 # - 0.7 EKR: Set c.doubleClickFlag to keep focus in newly-opened window.
 # - 0.8 johnmwhite: Patch to onURl1 to handle @url file: headlines properly.
+# - 0.9 EKR: Fixed bug reported by Terry Brown:
+#     Replaced calls to findNodeInTree by findNodeInChildren.
 #@-at
 #@nonl
 #@-node:rogererens.20041014104353:<< version history >>
@@ -180,7 +182,7 @@ def onUrl1 (tag,keywords):
                         nodeList = urlTuple [4].split("-->")
                         p = g.findTopLevelNode(c2,nodeList[0])
                         for headline in nodeList [1:]:
-                            p = g.findNodeInTree(c2,p,headline)
+                            p = g.findNodeInChildren(c2,p,headline)
                         if p:
                             c2.beginUpdate()
                             try:
@@ -203,7 +205,7 @@ def onUrl1 (tag,keywords):
                     p = g.findTopLevelNode(c,nodeList[0])
                     if p:
                         for headline in nodeList [1:]:
-                            p = g.findNodeInTree(c,p,headline)
+                            p = g.findNodeInChildren(c,p,headline)
                             if not p: break
                     if p:
                         c.frame.tree.expandAllAncestors(p)
