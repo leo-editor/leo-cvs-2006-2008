@@ -3830,7 +3830,16 @@ def initScriptFind(c,findHeadline,changeHeadline=None,firstNode=None,
     c.frame.findPanel.init(c)
     c.showFindPanel()
 #@-node:ekr.20031218072017.2418:g.initScriptFind (set up dialog)
-#@+node:ekr.20040321065415:g.findNodeInTree, findNodeAnywhere, findTopLevelNode
+#@+node:ekr.20040321065415:g.findNode... &,findTopLevelNode
+def findNodeInChildren(c,p,headline):
+
+    """Search for a node in v's tree matching the given headline."""
+
+    for p in p.children_iter():
+        if p.headString().strip() == headline.strip():
+            return p.copy()
+    return c.nullPosition()
+
 def findNodeInTree(c,p,headline):
 
     """Search for a node in v's tree matching the given headline."""
@@ -3853,7 +3862,7 @@ def findTopLevelNode(c,headline):
         if p.headString().strip() == headline.strip():
             return p.copy()
     return c.nullPosition()
-#@-node:ekr.20040321065415:g.findNodeInTree, findNodeAnywhere, findTopLevelNode
+#@-node:ekr.20040321065415:g.findNode... &,findTopLevelNode
 #@+node:ekr.20060624085200:g.handleScriptException
 def handleScriptException (c,p,script,script1):
 
