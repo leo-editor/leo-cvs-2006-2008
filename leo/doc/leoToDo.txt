@@ -2,85 +2,6 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
-#@+node:ekr.20070725110233:Fix bugs
-#@+node:ekr.20070724072345:Fix UNL bug1
-@nocolor
-
-Email from Terry Brown
-
-A softish bug, but the use of findNodeInTree() in the UNL code can 
-take you to the wrong place if more than one node in the tree has 
-the same headString.  Patch below - can still go wrong if more than 
-one sibling has the same name, but the UNL system doesn't have a 
-solution for that.
-
-An observation - the UNL jumping code will drop you as far down the 
-path as it gets, i.e. you're moved to the last node that was one the 
-path, even if the path ends before the last part of the UNL is 
-reached.  This is ok, i.e. "this is as far as I could follow the 
-UNL", the alternative would be to not move at all if the whole UNL 
-can't be followed.
-
-Cheers -Terry
-
-anon_cvs> cvs diff leo/plugins/UNL.py
-Index: leo/plugins/UNL.py
-===================================================================
-RCS file: /cvs/leo/plugins/UNL.py,v
-retrieving revision 1.14
-diff -r1.14 UNL.py
-183c183,186
-<                             p = g.findNodeInTree(c2,p,headline)
----
->                             for tmpp in p.copy().children_iter():
->                                 if tmpp.headString() == headline:
->                                     p = tmpp
->                                     break
-206c209,212
-<                             p = g.findNodeInTree(c,p,headline)
----
->                             for tmpp in p.copy().children_iter():
->                                 if tmpp.headString() == headline:
->                                     p = tmpp
->                                     break
-
-
-
-#@-node:ekr.20070724072345:Fix UNL bug1
-#@+node:ekr.20070724072423:Fix UNL bug2
-@nocolor
-
-Email from Terry Brown
-
-Unrelated to my previous UNL bug email:
-
-For this outline:
-
-@url One-->Two
-One
-One
-......Two
-
-(i.e. four nodes, 'Two' a child of the second 'One')
-
-clicking the URL will move you to the *first* 'One' node. This is 
-because (a) it loses the trail on the first 'One' node, and (b) it 
-moves you to where it loses the trail.
-
-The UNL finding code could be re-written to use a recursive search 
-and correctly find the 'Two' - I'd be happy to do it... if you think 
-it's worth while.
-
-Whereas my previous email about the 'findNodeInTree' bug was 
-impacting an use case for me, the above isn't.
-
-And who knows how all this will go in graph world ;-)
-
-Cheers -Terry
-
-
-#@-node:ekr.20070724072423:Fix UNL bug2
-#@-node:ekr.20070725110233:Fix bugs
 #@+node:ekr.20070324084040:(Rewrite import code to support @auto)
 #@+node:ekr.20031218072017.3151:Scanning... (leoGlobals.py)
 #@+node:ekr.20031218072017.3152:g.scanAtFileOptions (used in 3.x read code)
@@ -3288,6 +3209,39 @@ An emergency measure could be available in a
 #@nonl
 #@-node:ekr.20061006165447:Let import commands decide what kind of import to do
 #@-node:ekr.20061206060454:Improve import code
+#@+node:ekr.20070724072423:Fix UNL bug2 (waiting for code from Terry Brown)
+@nocolor
+
+Email from Terry Brown
+
+Unrelated to my previous UNL bug email:
+
+For this outline:
+
+@url One-->Two
+One
+One
+......Two
+
+(i.e. four nodes, 'Two' a child of the second 'One')
+
+clicking the URL will move you to the *first* 'One' node. This is 
+because (a) it loses the trail on the first 'One' node, and (b) it 
+moves you to where it loses the trail.
+
+The UNL finding code could be re-written to use a recursive search 
+and correctly find the 'Two' - I'd be happy to do it... if you think 
+it's worth while.
+
+Whereas my previous email about the 'findNodeInTree' bug was 
+impacting an use case for me, the above isn't.
+
+And who knows how all this will go in graph world ;-)
+
+Cheers -Terry
+
+
+#@-node:ekr.20070724072423:Fix UNL bug2 (waiting for code from Terry Brown)
 #@-node:ekr.20070325052041:To do: 4.4.4 (@auto)
 #@+node:ekr.20070703111455:To do: 4.4.5 (@menu, vim bindings, translation, etc)
 # Leo 4.4.5 will complete several projects that are long overdue.
