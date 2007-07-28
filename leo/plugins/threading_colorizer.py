@@ -1150,7 +1150,7 @@ class colorizer:
         '''Add an item to the globalTagList if colorizing is enabled.'''
 
         if self.killFlag:
-            g.trace('*** killed',self.threadCount)
+            if self.trace: g.trace('*** killed',self.threadCount)
             return
 
         if not self.flag: return
