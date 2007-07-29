@@ -58,7 +58,7 @@ navigate to the nodes 'by hand' by following the arrows in the UNL.
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.9"
+__version__ = "0.10"
 #@<< version history >>
 #@+node:rogererens.20041014104353:<< version history >>
 #@+at
@@ -75,6 +75,7 @@ __version__ = "0.9"
 # - 0.8 johnmwhite: Patch to onURl1 to handle @url file: headlines properly.
 # - 0.9 EKR: Fixed bug reported by Terry Brown:
 #     Replaced calls to findNodeInTree by findNodeInChildren.
+# - 0.10 TB: Added recursive search so that the longest match will be found.
 #@-at
 #@nonl
 #@-node:rogererens.20041014104353:<< version history >>
@@ -125,6 +126,46 @@ def createStatusLine(tag,keywords):
     statusLine.put("...")
 #@nonl
 #@-node:rogererens.20041013082304.1:createStatusLine
+#@+node:tbrown.20070726135242:recursiveUNLSearch
+def recursiveUNLSearch(unlList, c, depth=0, p=None, maxdepth=[0], maxp=[None]):
+    """try and move to unl in the commander c"""
+
+    def moveToP(c, p):
+        c.beginUpdate()
+        try:
+            c.frame.tree.expandAllAncestors(p)
+            c.selectPosition(p)
+            c.redraw()
+        finally:
+            c.endUpdate()
+
+    if depth == 0:
+        nds = c.rootPosition().self_and_siblings_iter()
+    else:
+        nds = p.children_iter()
+
+    for i in nds:
+
+        if unlList[depth] == i.headString():
+
+            if depth+1 == len(unlList):  # found it
+                moveToP(c, i)
+                return True
+            else:
+                if maxdepth[0] < depth+1:
+                    maxdepth[0] = depth+1
+                    maxp[0] = i.copy()
+                    g.es(i.headString())
+                if recursiveUNLSearch(unlList, c, depth+1, i, maxdepth, maxp):
+                    return True
+                # else keep looking through nds
+
+    if depth == 0 and maxp[0]:  # inexact match
+        moveToP(c, maxp[0])
+        g.es('Partial UNL match')
+
+    return False
+#@-node:tbrown.20070726135242:recursiveUNLSearch
 #@+node:rogererens.20041021091837:onUrl1
 def onUrl1 (tag,keywords):
     """Redefine the @url functionality of Leo Core: allows jumping to URL _and UNLs_.
@@ -179,39 +220,17 @@ def onUrl1 (tag,keywords):
                     c2 = frame.c
 
                     if urlTuple [4]: # we have a UNL!
-                        nodeList = urlTuple [4].split("-->")
-                        p = g.findTopLevelNode(c2,nodeList[0])
-                        for headline in nodeList [1:]:
-                            p = g.findNodeInChildren(c2,p,headline)
-                        if p:
-                            c2.beginUpdate()
-                            try:
-                                c2.frame.tree.expandAllAncestors(p)
-                                c2.selectPosition(p)
-                                # c2.frame.tree.select(scroll=False)
-                            finally:
-                                c2.endUpdate()
+                        recursiveUNLSearch(urlTuple[4].split("-->"), c)
 
                     # Disable later call to c.onClick so the focus stays in c2.
                     c.doubleClickFlag = True
-                    #@nonl
                     #@-node:rogererens.20041125015212.1:<<go to the node>>
                     #@nl
             elif urlTuple[0] == "":
                 #@                << go to node in present outline >>
                 #@+node:ekr.20060908105814:<< go to node in present outline >>
                 if urlTuple [2]:
-                    nodeList = urlTuple [2].split("-->")
-                    p = g.findTopLevelNode(c,nodeList[0])
-                    if p:
-                        for headline in nodeList [1:]:
-                            p = g.findNodeInChildren(c,p,headline)
-                            if not p: break
-                    if p:
-                        c.frame.tree.expandAllAncestors(p)
-                        c.selectPosition(p)
-                        c.redraw()
-                #@nonl
+                    recursiveUNLSearch(urlTuple[2].split("-->"), c)
                 #@-node:ekr.20060908105814:<< go to node in present outline >>
                 #@nl
             else:
