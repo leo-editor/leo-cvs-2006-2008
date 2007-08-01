@@ -3379,17 +3379,17 @@ class atFile:
         at.indent -= delta
     #@-node:ekr.20041005105605.173:putAtOthersLine
     #@-node:ekr.20041005105605.170:@others
-    #@+node:ekr.20041005105605.174:putCodeLine
+    #@+node:ekr.20041005105605.174:putCodeLine (leoAtFile)
     def putCodeLine (self,s,i):
 
-        """Put a normal code line."""
+        '''Put a normal code line.'''
 
         at = self
 
         # Put @verbatim sentinel if required.
         k = g.skip_ws(s,i)
         if g.match(s,k,self.startSentinelComment + '@'):
-            self.putSentinel("@verbatim")
+            self.putSentinel('@verbatim')
 
         j = g.skip_line(s,i)
         line = s[i:j]
@@ -3402,7 +3402,7 @@ class atFile:
                 if not at.raw:
                     at.putIndent(at.indent)
 
-                if line[-1:]=="\n":
+                if line[-1:]=='\n':
                     at.os(line[:-1])
                     at.onl()
                 else:
@@ -3410,18 +3410,18 @@ class atFile:
             elif line and line[-1] == '\n':
                 at.onl()
             else:
-                g.trace("Can't happen: completely empty line")
+                g.trace('Can not happen: completely empty line')
         else:
             # Don't put leading indent if the line is empty!
             if line.strip() and not at.raw:  ### 7/9/2007: changed line to line.strip()
                 at.putIndent(at.indent)
 
-            if line[-1:]=="\n":
+            if line[-1:]=='\n':
                 at.os(line[:-1])
                 at.onl()
             else:
                 at.os(line)
-    #@-node:ekr.20041005105605.174:putCodeLine
+    #@-node:ekr.20041005105605.174:putCodeLine (leoAtFile)
     #@+node:ekr.20041005105605.175:putRefLine & allies
     #@+node:ekr.20041005105605.176:putRefLine
     def putRefLine(self,s,i,n1,n2,p):
