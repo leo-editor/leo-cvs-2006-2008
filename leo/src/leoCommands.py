@@ -1493,6 +1493,7 @@ class baseCommands:
             if script.strip():
                 sys.path.insert(0,c.frame.openDirectory)
                 script += '\n' # Make sure we end the script properly.
+                # print '*** script\n',script
                 try:
                     p = c.currentPosition()
                     d = g.choose(define_g,{'c':c,'g':g,'p':p},{})

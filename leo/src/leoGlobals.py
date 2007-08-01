@@ -3051,7 +3051,7 @@ def scanAtRootOptions (s,i,err_flag=False):
 
 def scanError(s):
 
-    """Bump the error count in the tangle command."""
+    '''Bump the error count in the tangle command.'''
 
     # New in Leo 4.4b1: just set this global.
     g.app.scanErrors +=1
@@ -3109,9 +3109,9 @@ def skip_block_comment (s,i):
 
 def skip_braces(s,i):
 
-    """Skips from the opening to the matching brace.
+    '''Skips from the opening to the matching brace.
 
-    If no matching is found i is set to len(s)"""
+    If no matching is found i is set to len(s)'''
 
     # start = g.get_line(s,i)
     assert(g.match(s,i,'{'))
@@ -3168,9 +3168,9 @@ def skip_php_braces(s,i):
 #@+node:ekr.20031218072017.3162:skip_parens
 def skip_parens(s,i):
 
-    """Skips from the opening ( to the matching ).
+    '''Skips from the opening ( to the matching ).
 
-    If no matching is found i is set to len(s)"""
+    If no matching is found i is set to len(s)'''
 
     level = 0 ; n = len(s)
     assert(g.match(s,i,'('))
@@ -3191,9 +3191,9 @@ def skip_parens(s,i):
 #@+node:ekr.20031218072017.3163:skip_pascal_begin_end
 def skip_pascal_begin_end(s,i):
 
-    """Skips from begin to matching end.
+    '''Skips from begin to matching end.
     If found, i points to the end. Otherwise, i >= len(s)
-    The end keyword matches begin, case, class, record, and try."""
+    The end keyword matches begin, case, class, record, and try.'''
 
     assert(g.match_c_word(s,i,"begin"))
     level = 1 ; i = g.skip_c_id(s,i) # Skip the opening begin.
@@ -3473,7 +3473,7 @@ def is_nl(s,i):
 
 def is_special(s,i,directive):
 
-    """Return True if the body text contains the @ directive."""
+    '''Return True if the body text contains the @ directive.'''
 
     # j = g.skip_line(s,i) ; g.trace(s[i:j],':',directive)
     assert (directive and directive [0] == '@' )
@@ -3646,9 +3646,8 @@ if g.unitTesting:
 #@+node:ekr.20031218072017.3188:skip_long
 def skip_long(s,i):
 
-    """Scan s[i:] for a valid int.
-    Return (i, val) or (i, None) if s[i] does not point at a number.
-    """
+    '''Scan s[i:] for a valid int.
+    Return (i, val) or (i, None) if s[i] does not point at a number.'''
 
     val = 0
     i = g.skip_ws(s,i)
@@ -3717,7 +3716,7 @@ def skip_matching_python_parens(s,i):
 
 def skip_nl (s,i):
 
-    """Skips a single "logical" end-of-line character."""
+    '''Skips a single "logical" end-of-line character.'''
 
     if g.match(s,i,"\r\n"): return i + 2
     elif g.match(s,i,'\n') or g.match(s,i,'\r'): return i + 1
@@ -3769,7 +3768,7 @@ def skip_ws_and_nl(s,i):
 #@+node:ekr.20031218072017.3195:splitLines & joinLines
 def splitLines (s):
 
-    """Split s into lines, preserving the number of lines and the ending of the last line."""
+    '''Split s into lines, preserving the number of lines and the ending of the last line.'''
 
     # g.stat()
 

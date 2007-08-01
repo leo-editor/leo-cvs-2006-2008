@@ -87,10 +87,6 @@ def doTests(c,all,verbosity=1):
             elif isSuiteNode(p): # @suite
                 test = makeTestSuite(c,p)
                 if test: suite.addTest(test)
-            # elif isTestCaseNode(p): # @testcase or @test-case
-                # test = makeTestClass(c,p)
-                # if test: suite.addTest(test)
-
         # Verbosity: 1: print just dots.
         unittest.TextTestRunner(verbosity=verbosity).run(suite)
     finally:
@@ -154,6 +150,7 @@ class generalTestCase(unittest.TestCase):
             d = {}
 
         # Execute the script. Let unit test handle any errors!
+
         if 0: # debug
             import pdb
             pdb.run(script+'\n',d)

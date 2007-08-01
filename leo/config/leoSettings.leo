@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.599056603774">
-	<global_window_position top="17" left="238" height="768" width="861"/>
+	<global_window_position top="17" left="238" height="748" width="861"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -237,6 +237,7 @@
 <v t="ekr.20060126075152"><vh>@bool trace_gc = False</vh></v>
 <v t="ekr.20060212103826"><vh>@bool trace_gc_calls = False</vh></v>
 <v t="ekr.20060126083715"><vh>@bool trace_gc_verbose = False</vh></v>
+<v t="ekr.20070729101310"><vh>@bool trace_import = False</vh></v>
 <v t="ekr.20060215054710"><vh>@bool trace_key_event= False</vh></v>
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 <v t="ekr.20051126062525"><vh>@bool trace_masterCommand = False</vh></v>
@@ -6485,5 +6486,6 @@ propagate-key-event = Alt-W
 # forward-word-extend-selection       ! mini = Alt-Shift-f</t>
 <t tx="ekr.20070615094204">True: goto-next-node and goto-prev-node commands contract the selected node.</t>
 <t tx="ekr.20070622214401"></t>
+<t tx="ekr.20070729101310">True: trace import commands and @auto imports.</t>
 </tnodes>
 </leo_file>

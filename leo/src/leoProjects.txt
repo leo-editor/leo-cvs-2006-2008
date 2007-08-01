@@ -344,6 +344,168 @@ generators'. It gives you the total speed, more or less, of a single thread, but
 complication.
 #@nonl
 #@-node:ekr.20070725165751:Created threading_colorizer
+#@+node:ekr.20070729093951:Added support for @auto
+#@+node:ekr.20070611173545.1:Design
+@nocolor
+
+I have just started the process of 'priming the pump' for work on @auto.
+
+Here are the key factors that drive the design:
+
+0. [Terminology] Alice uses Leo and doesn't mind having sentinels in derived files. Bob doesn't use Leo, and *does not want sentinels* (at least until Bob gets turned on to Leo), and Mike is Alice's and Bob's manager.  Mike probably doesn't care about sentinels, but would side with Bob if Bob objected to using sentinels.
+
+1. [No sentinels] There was a *lot* of discussion about this.  The initial implementation of @auto will use *absolutely no* sentinels. This might be relaxed later, but the *essential* idea is that @auto is a feature primarily for newbies who DO NOT WANT sentinels in their files.  As Kent has clearly pointed out, within @auto trees, Alice can live without clones, section references and @others, etc.
+
+2. [Perfect import] I designed an algorithm that guarantees that files imported with @auto can be rewritten from the @auto tree with *no* changes to the original file.  This is the 'round-tripping' requirement.
+
+See: Huge aha: design of the parser (perfect import)
+http://sourceforge.net/forum/message.php?msg_id=4224283
+
+3. [Resolve cvs conflicts] Leo can let the user resolve cvs conflicts.
+
+See: Huge aha: resolving conflicts
+http://sourceforge.net/forum/message.php?msg_id=4224589
+
+The following are references to extended discussions in Leo's forums:
+
+1. From the Open Forum, March, 2007:
+
+auto: a new vision
+http://sourceforge.net/forum/forum.php?thread_id=1700873&forum_id=10226
+
+Huge aha: parsing replaces sentinels
+http://sourceforge.net/forum/forum.php?thread_id=1699679&forum_id=10226
+
+@auto nodes
+http://sourceforge.net/forum/forum.php?thread_id=1699599&forum_id=10226
+
+2. The original motivation was in the 'Discurssion of wxPython issues' thread in
+the Developers Forum in March 2007:
+http://sourceforge.net/forum/forum.php?thread_id=1695549&forum_id=10228
+
+And especially:
+http://sourceforge.net/forum/message.php?msg_id=4217121
+#@nonl
+#@+node:ekr.20070703172130.1:Aha: perfect import *can* correct whitespace
+@nocolor
+
+Aha: the perfect import code *can* correct whitespace (tab, underindented lines)
+problems that exists in the original files. When such errors are found, Leo will
+issue the message:
+
+    'whitepace error: remove the @ignore statement to correct these problems.'
+
+This is the best possible solution:
+
+- It alerts the user that there are problems with the original file.
+- It does *not* change them unless the user takes specific action.
+- It *does* correct the problems if desired.
+#@-node:ekr.20070703172130.1:Aha: perfect import *can* correct whitespace
+#@+node:ekr.20070512162750:@url http://simpleparse.sourceforge.net/
+#@-node:ekr.20070512162750:@url http://simpleparse.sourceforge.net/
+#@+node:ekr.20040721094203:Probably not: Make sure Leo uses "verbatim" whitespace
+http://sourceforge.net/forum/message.php?msg_id=3578166
+
+I think these issues are not really relevant.
+#@nonl
+#@+node:ekr.20060808103849:Report
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=2674828
+By: bwmulder
+
+If I understand correctly, there are two different problems:
+
+- Trailing whitespaces
+- Left indented comments
+
+1. Before commenting on these, a question:
+
+If I write something like
+    a=b
+    if a:
+        @others
+
+[four spaces indentation]
+
+I sometimes see tab characters before the lines inserted for '@others'.
+
+It seems that Leo remembers 'two levels of indentation', and then
+fabricates this indentation using tab characters.
+
+I think it might be more robust if Leo remembered the actual
+characters in front of @others and would use them for indentation.
+
+I suspect that many indentation errors I had with Leo could have been
+avoided had not Leo had its own ideas on how to do indentation.
+
+Maybe Leo could use the exact sequence of characters in front of
+@others for all inserted lines?
+
+2. I do not care much about trailing whitespaces. Most of the time
+they are invisible, but sometimes they are very misleading (trailing in python or C).
+
+As far as I am concerned, Leo need never produce trailing whitespaces.
+
+Maybe we need special machinery if sources have trailing whitespaces
+and the sources are not under our control. 
+
+Not sure if everybody would be happy if we essentially ban all trailing
+whitespaces.
+
+3. Unindented commentlines could be dealt with by using indentation to
+indicate structure.
+
+Of course, this might break the correspondance Leo structure / Python
+structure, which is very ugly.
+
+4. One possible alternative might be a new directive which indicates outindent:
+
+@outindent <number>.
+
+This would apply to the next comment block.
+
+To me, 4. looks a little bit less ugly than 3.
+
+5. As indicated in a different post, I suspect that Leo has a problem
+if almost every node in an outline is changed. Profiling should point
+to the culprit.
+
+> 2. Have Leo strip whitespace from otherwise blank lines, and hope
+that that solves all problems in Perfect Import. This is solving the
+problem in the atFile code. The problem is that if we apply settings
+in general we will get massive changes to derived files. In most
+programming settings these changes might be welcome, but the problem
+is actually making these changes. My first few attempts met with
+abject failure.
+
+Are you saying that you could not remove trailing blanks? What kind of
+problems did you run into?
+
+Summary:
+- Use actual characters in front of @others or <<>> for indentation.
+- Don't write trailing whitespaces
+- Introduce directive for left-indendet comments.
+- Profile to find out what slows Leo down if many nodes change.
+#@nonl
+#@-node:ekr.20060808103849:Report
+#@+node:ekr.20041005105605.210:putIndent
+def putIndent(self,n):
+
+    """Put tabs and spaces corresponding to n spaces, assuming that we are at the start of a line."""
+
+    if n != 0:
+        w = self.tab_width
+        if w > 1:
+            q,r = divmod(n,w) 
+            self.otabs(q) 
+            self.oblanks(r)
+        else:
+            self.oblanks(n)
+#@-node:ekr.20041005105605.210:putIndent
+#@-node:ekr.20040721094203:Probably not: Make sure Leo uses "verbatim" whitespace
+#@-node:ekr.20070611173545.1:Design
+#@-node:ekr.20070729093951:Added support for @auto
 #@-node:ekr.20070703182412.1:Features
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@-all
