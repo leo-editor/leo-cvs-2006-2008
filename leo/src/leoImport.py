@@ -717,8 +717,8 @@ class baseLeoImportCommands:
             p = parent.copy()
             c.beginUpdate()
             p.setTnodeText('')
-            # Usually p will not have children, because putVnode doesn't write
-            # the children of @auto nodes.
+            # It is too dangerous not to write @auto trees to the .leo file,
+            # so we must delete all children here.
             try:
                 while p.hasChildren():
                     # g.trace('deleting',p.headString())
@@ -750,6 +750,8 @@ class baseLeoImportCommands:
             self.scanPHPText(s,p,atAuto=atAuto)
         else:
             self.scanUnknownFileType(s,p,ext)
+
+        if atAuto: p.contract()
         return p
     #@-node:ekr.20031218072017.3210:createOutline
     #@+node:ekr.20031218072017.1810:importDerivedFiles

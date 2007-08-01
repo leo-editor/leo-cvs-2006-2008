@@ -2696,11 +2696,13 @@ class baseFileCommands:
         """Write a <v> element corresponding to a vnode."""
 
         fc = self ; c = fc.c ; v = p.v
-        isAuto = p.isAtAutoNode() and p.atAutoNodeName().strip()
+        # Not writing @auto nodes is way too dangerous.
+        # isAuto = p.isAtAutoNode() and p.atAutoNodeName().strip()
         isThin = p.isAtThinFileNode()
         isOrphan = p.isOrphan()
         if not isIgnore: isIgnore = p.isAtIgnoreNode()
-        forceWrite = isIgnore or not (isThin or isAuto) or (isThin and isOrphan)
+        # forceWrite = isIgnore or not (isThin or isAuto) or (isThin and isOrphan)
+        forceWrite = isIgnore or not isThin or (isThin and isOrphan)
         #@    << Set gnx = tnode index >>
         #@+node:ekr.20031218072017.1864:<< Set gnx = tnode index >>
         # New in Leo 4.4.3
