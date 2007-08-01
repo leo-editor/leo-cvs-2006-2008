@@ -1576,6 +1576,7 @@ class baseLeoImportCommands:
             self.encoding = ic.encoding # g.app.tkEncoding
             self.errors = 0
             self.errorLines = []
+            self.extraIdChars = ''
             self.fileName = ic.fileName # The original filename.
             self.fileType = ic.fileType # The extension,  '.py', '.c', etc.
             self.importCommands = ic
@@ -1704,7 +1705,6 @@ class baseLeoImportCommands:
                 ok = blanks == 0 or tabs == 0
                 if not ok:
                     self.error('File contains intermixed blanks and tabs')
-                    g.app.unitTestDict['actualErrors'] = self.errors
                 return ok
             else:
                 # Check that whitespace passes TabNanny.
@@ -1979,7 +1979,7 @@ class baseLeoImportCommands:
             Parse s for inner methods and classes, and create nodes.'''
 
             # Put any leading decls in the class node.
-            trace = True
+            trace = False
             start = i
             i = self.skipDecls(s,i,end)
             decls = s[start:i]
@@ -2096,6 +2096,7 @@ class baseLeoImportCommands:
         def error (self,s):
             g.es_print(s,color='red')
             self.errors += 1
+            g.app.unitTestDict['actualErrors'] = self.errors
 
         def oops (self):
             print 'baseScannerClass oops: %s must be overridden in subclass' % g.callers()
@@ -2217,19 +2218,6 @@ class baseLeoImportCommands:
             if trace: g.trace('returns\n',s[start:i])
             return i
         #@-node:ekr.20070707073859:skipBlock
-        #@+node:edreamleo.20070710105410:skipClass/Function/Signature (no longer used)
-        # startsClass and startsFunction must do all the work anyway,
-        # so they set the ending points and we just return it.
-
-        # def skipClass (self,s,i):
-            # return self.codeEnd
-
-        # def skipFunction (self,s,i):
-            # return self.codeEnd
-
-        # def skipSignature (self,s,i):
-            # return self.sigEnd
-        #@-node:edreamleo.20070710105410:skipClass/Function/Signature (no longer used)
         #@+node:ekr.20070712091019:skipCodeBlock
         def skipCodeBlock (self,s,i,kind):
 
@@ -2243,8 +2231,10 @@ class baseLeoImportCommands:
         #@+node:ekr.20070711104014:skipComment & helper
         def skipComment (self,s,i):
 
+            '''Skip a comment and return the index of the following character.'''
+
             if g.match(s,i,self.lineCommentDelim) or g.match(s,i,self.lineCommentDelim2):
-                return g.skip_line(s,i)
+                return g.skip_to_end_of_line(s,i)
             else:
                 return self.skipBlockComment(s,i)
         #@+node:ekr.20070707074541:skipBlockComment
@@ -2318,15 +2308,20 @@ class baseLeoImportCommands:
         #@+node:ekr.20070707094858.1:skipId
         def skipId (self,s,i):
 
-            return g.skip_c_id(s,i)
+            return g.skip_id(s,i,chars=self.extraIdChars)
+        #@nonl
         #@-node:ekr.20070707094858.1:skipId
         #@+node:ekr.20070730134936:skipNewline
         def skipNewline(self,s,i,kind):
 
-            '''Skip whitespace up to a newline, then skip the newline.
+            '''Skip whitespace and comments up to a newline, then skip the newline.
             Issue an error if no newline is found.'''
 
-            i = g.skip_ws(s,i)
+            while 1:
+                i = g.skip_ws(s,i)
+                if self.startsComment(s,i):
+                    i = self.skipComment(s,i)
+                else: break
 
             if g.match(s,i,'\n'):
                 i += 1
@@ -2531,7 +2526,6 @@ class baseLeoImportCommands:
 
             # Step 2: check the generated nodes.
             # Return True if the result is equivalent to the original file.
-            g.app.unitTestDict ['actualErrors' ] = self.errors
             ok = self.errors == 0 and scanner.check(s,parent)
 
             # Step 3: insert an @ignore directive if there are any problems.
@@ -2565,13 +2559,9 @@ class baseLeoImportCommands:
             self.blockDelim1 = '{'
             self.blockDelim2 = '}'
             self.classTags = ['class',]
+            self.extraIdChars = ':'
             self.functionTags = []
             sigTailFailTokens = [';','=']
-
-        def skipId (self,s,i):
-            # C identifiers may contain colons.
-            j = g.skip_id(s,i,chars=':')
-            return j
     #@-node:edreamleo.20070710093042:class cScanner (baseScannerClass)
     #@-node:edreamleo.20070710110114.1:C scanner
     #@+node:ekr.20070711060107:Elisp scanner
@@ -2600,6 +2590,7 @@ class baseLeoImportCommands:
             self.lineCommentDelim2 = None
             self.blockDelim1 = '('
             self.blockDelim2 = ')'
+            self.extraIdChars = '-'
 
         #@-node:ekr.20070711060113.1: __init__
         #@+node:ekr.20070711060113.2:Overrides
