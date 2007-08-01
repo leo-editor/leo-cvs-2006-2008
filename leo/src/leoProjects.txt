@@ -506,6 +506,8 @@ def putIndent(self,n):
 #@-node:ekr.20040721094203:Probably not: Make sure Leo uses "verbatim" whitespace
 #@-node:ekr.20070611173545.1:Design
 #@+node:ekr.20070731070208:Recent
+# To do: don't mark @auto tree dirty if import succeeds.
+#@nonl
 #@+node:ekr.20070801134910:import code
 #@+node:ekr.20070703122141.66:baseScannerClass.__init__
 def __init__ (self,importCommands,atAuto,language):
@@ -1061,11 +1063,13 @@ def putVnode (self,p,isIgnore=False):
     """Write a <v> element corresponding to a vnode."""
 
     fc = self ; c = fc.c ; v = p.v
-    isAuto = p.isAtAutoNode() and p.atAutoNodeName().strip()
+    # Not writing @auto nodes is way too dangerous.
+    # isAuto = p.isAtAutoNode() and p.atAutoNodeName().strip()
     isThin = p.isAtThinFileNode()
     isOrphan = p.isOrphan()
     if not isIgnore: isIgnore = p.isAtIgnoreNode()
-    forceWrite = isIgnore or not (isThin or isAuto) or (isThin and isOrphan)
+    # forceWrite = isIgnore or not (isThin or isAuto) or (isThin and isOrphan)
+    forceWrite = isIgnore or not isThin or (isThin and isOrphan)
     << Set gnx = tnode index >>
     attrs = []
     << Append attribute bits to attrs >>
@@ -1330,8 +1334,8 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
         p = parent.copy()
         c.beginUpdate()
         p.setTnodeText('')
-        # Usually p will not have children, because putVnode doesn't write
-        # the children of @auto nodes.
+        # It is too dangerous not to write @auto trees to the .leo file,
+        # so we must delete all children here.
         try:
             while p.hasChildren():
                 # g.trace('deleting',p.headString())
@@ -1363,6 +1367,8 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
         self.scanPHPText(s,p,atAuto=atAuto)
     else:
         self.scanUnknownFileType(s,p,ext)
+
+    if atAuto: p.contract()
     return p
 #@+node:ekr.20031218072017.3211:<< Read file into s >>
 try:

@@ -5200,11 +5200,13 @@ def putVnode (self,p,isIgnore=False):
     """Write a <v> element corresponding to a vnode."""
 
     fc = self ; c = fc.c ; v = p.v
-    isAuto = p.isAtAutoNode() and p.atAutoNodeName().strip()
+    # Not writing @auto nodes is way too dangerous.
+    # isAuto = p.isAtAutoNode() and p.atAutoNodeName().strip()
     isThin = p.isAtThinFileNode()
     isOrphan = p.isOrphan()
     if not isIgnore: isIgnore = p.isAtIgnoreNode()
-    forceWrite = isIgnore or not (isThin or isAuto) or (isThin and isOrphan)
+    # forceWrite = isIgnore or not (isThin or isAuto) or (isThin and isOrphan)
+    forceWrite = isIgnore or not isThin or (isThin and isOrphan)
     << Set gnx = tnode index >>
     attrs = []
     << Append attribute bits to attrs >>
@@ -5672,11 +5674,13 @@ def putVnode (self,p,isIgnore=False):
     """Write a <v> element corresponding to a vnode."""
 
     fc = self ; c = fc.c ; v = p.v
-    isAuto = p.isAtAutoNode() and p.atAutoNodeName().strip()
+    # Not writing @auto nodes is way too dangerous.
+    # isAuto = p.isAtAutoNode() and p.atAutoNodeName().strip()
     isThin = p.isAtThinFileNode()
     isOrphan = p.isOrphan()
     if not isIgnore: isIgnore = p.isAtIgnoreNode()
-    forceWrite = isIgnore or not (isThin or isAuto) or (isThin and isOrphan)
+    # forceWrite = isIgnore or not (isThin or isAuto) or (isThin and isOrphan)
+    forceWrite = isIgnore or not isThin or (isThin and isOrphan)
     << Set gnx = tnode index >>
     attrs = []
     << Append attribute bits to attrs >>
