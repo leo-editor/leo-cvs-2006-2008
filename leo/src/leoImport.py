@@ -713,13 +713,26 @@ class baseLeoImportCommands:
             #@nl
 
         # Create the top-level headline.
-        undoData = u.beforeInsertNode(parent)
-        p = parent.insertAsLastChild()
-        if self.treeType == "@file" and not s1:
-            p.initHeadString("@file " + fileName)
+        if atAuto:
+            p = parent.copy()
+            c.beginUpdate()
+            p.setTnodeText('')
+            # Usually p will not have children, because putVnode doesn't write
+            # the children of @auto nodes.
+            try:
+                while p.hasChildren():
+                    # g.trace('deleting',p.headString())
+                    p.firstChild().doDelete()
+            finally:
+                c.endUpdate(False)
         else:
-            p.initHeadString(fileName)
-        u.afterInsertNode(p,'Import',undoData)
+            undoData = u.beforeInsertNode(parent)
+            p = parent.insertAsLastChild()
+            if self.treeType == "@file" and not s1:
+                p.initHeadString("@file " + fileName)
+            else:
+                p.initHeadString(fileName)
+            u.afterInsertNode(p,'Import',undoData)
 
         self.rootLine = g.choose(self.treeType=="@file","","@root-code "+self.fileName+'\n')
 

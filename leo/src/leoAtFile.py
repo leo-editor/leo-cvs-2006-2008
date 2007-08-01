@@ -509,6 +509,11 @@ class atFile:
                     at.forceGnxOnPosition(p)
                 at.read(p,thinFile=True)
                 p.moveToNodeAfterTree()
+            elif p.isAtAutoNode():
+                # g.trace('@auto',p.headString(),'name',p.atAutoNodeName())
+                fileName = p.atAutoNodeName()
+                c.importCommands.createOutline(fileName,parent=p.copy(),atAuto=True)
+                p.moveToNodeAfterTree()
             elif p.isAtFileNode() or p.isAtNorefFileNode():
                 anyRead = True
                 wasOrphan = p.isOrphan()

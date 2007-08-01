@@ -809,7 +809,7 @@ class baseFileCommands:
 
             return t
     #@-node:ekr.20031218072017.2009:newTnode
-    #@+node:ekr.20031218072017.3029:readAtFileNodes (leoAtFile)
+    #@+node:ekr.20031218072017.3029:readAtFileNodes (fileCommands)
     def readAtFileNodes (self):
 
         c = self.c ; p = c.currentPosition()
@@ -823,7 +823,7 @@ class baseFileCommands:
         # Force an update of the body pane.
         c.setBodyString(p,p.bodyString())
         c.frame.body.onBodyChanged(undoType=None)
-    #@-node:ekr.20031218072017.3029:readAtFileNodes (leoAtFile)
+    #@-node:ekr.20031218072017.3029:readAtFileNodes (fileCommands)
     #@+node:ekr.20031218072017.2297:open (leoFileCommands)
     def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
 
@@ -2696,10 +2696,11 @@ class baseFileCommands:
         """Write a <v> element corresponding to a vnode."""
 
         fc = self ; c = fc.c ; v = p.v
+        isAuto = p.isAtAutoNode() and p.atAutoNodeName().strip()
         isThin = p.isAtThinFileNode()
         isOrphan = p.isOrphan()
         if not isIgnore: isIgnore = p.isAtIgnoreNode()
-        forceWrite = isIgnore or not isThin or (isThin and isOrphan)
+        forceWrite = isIgnore or not (isThin or isAuto) or (isThin and isOrphan)
         #@    << Set gnx = tnode index >>
         #@+node:ekr.20031218072017.1864:<< Set gnx = tnode index >>
         # New in Leo 4.4.3

@@ -368,6 +368,11 @@ class vnode (baseVnode):
     # These return the filename following @xxx, in v.headString.
     # Return the the empty string if v is not an @xxx node.
 
+    def atAutoNodeName (self):
+        h = self.headString() ; tag = '@auto'
+        # Prevent conflicts with autotrees plugin: don't allow @auto-whatever to match.
+        return g.match_word(h,0,tag) and not g.match(h,0,tag+'-') and h[len(tag):].strip()
+
     def atFileNodeName (self):
         names = ("@file"),
         return self.findAtFileName(names)
@@ -391,7 +396,7 @@ class vnode (baseVnode):
     # New names, less confusing
     atNoSentFileNodeName  = atNoSentinelsFileNodeName
     atNorefFileNodeName   = atRawFileNodeName
-    atAsisFileNodeName     = atSilentFileNodeName
+    atAsisFileNodeName    = atSilentFileNodeName
     #@-node:ekr.20031218072017.3348:at...FileNodeName
     #@+node:EKR.20040430152000:isAtAllNode
     def isAtAllNode (self):
@@ -413,6 +418,9 @@ class vnode (baseVnode):
         return h and h[0] == '@' and self.anyAtFileNodeName()
     #@-node:ekr.20040326031436:isAnyAtFileNode good
     #@+node:ekr.20040325073709:isAt...FileNode (vnode)
+    def isAtAutoNode (self):
+        return g.choose(self.atAutoNodeName(),True,False)
+
     def isAtFileNode (self):
         return g.choose(self.atFileNodeName(),True,False)
 
@@ -1291,6 +1299,7 @@ class basePosition (object):
     #@+node:ekr.20040306210951: vnode proxies
     #@+node:ekr.20040306211032:p.Comparisons
     def anyAtFileNodeName         (self): return self.v.anyAtFileNodeName()
+    def atAutoNodeName            (self): return self.v.atAutoNodeName()
     def atFileNodeName            (self): return self.v.atFileNodeName()
     def atNoSentinelsFileNodeName (self): return self.v.atNoSentinelsFileNodeName()
     def atRawFileNodeName         (self): return self.v.atRawFileNodeName()
@@ -1304,6 +1313,7 @@ class basePosition (object):
 
     def isAnyAtFileNode         (self): return self.v.isAnyAtFileNode()
     def isAtAllNode             (self): return self.v.isAtAllNode()
+    def isAtAutoNode            (self): return self.v.isAtAutoNode()
     def isAtFileNode            (self): return self.v.isAtFileNode()
     def isAtIgnoreNode          (self): return self.v.isAtIgnoreNode()
     def isAtNoSentinelsFileNode (self): return self.v.isAtNoSentinelsFileNode()
