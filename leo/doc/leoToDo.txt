@@ -2,11 +2,9 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
-#@+node:ekr.20070801071851:print-docstring command
-#@-node:ekr.20070801071851:print-docstring command
 #@+node:ekr.20070729093951.1:Update docs re @enabled-plugins
 #@-node:ekr.20070729093951.1:Update docs re @enabled-plugins
-#@+node:ekr.20070729105604:Fix several bugs
+#@+node:ekr.20070729105604:Fix bugs
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=4437036
 By: plumloco
@@ -38,9 +36,7 @@ users home dir which contains myLeoSettings and also a users plugin directory.
 Obviously as a debian package it will be installed read only. All those settings
 files in Plugins will also have to be moved out.
 #@nonl
-#@-node:ekr.20070729105604:Fix several bugs
-#@+node:ekr.20070324084040:(Rewrite import code to support @auto)
-#@-node:ekr.20070324084040:(Rewrite import code to support @auto)
+#@-node:ekr.20070729105604:Fix bugs
 #@+node:ekr.20051202094427:Resolve cvs conflicts
 http://sourceforge.net/forum/message.php?msg_id=4224589
 
@@ -64,15 +60,6 @@ Edward
 #@-node:ekr.20051202094427:Resolve cvs conflicts
 #@+node:ekr.20070615063616.1:Create Debian package
 #@-node:ekr.20070615063616.1:Create Debian package
-#@+node:ekr.20061206060454:Improve import code
-@nocolor
-
-- Make the later munging unnecessary.
-	- Don't generate @file or the full file names.
-	- Don't add @ignore
-	- Put @language python and @tabwidth -4 only in the root node.
-- Put the docstring at the top.
-- Make sure only imports go in the << imports >> section.
 #@+node:ekr.20061006165447:Let import commands decide what kind of import to do
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3940843
@@ -92,40 +79,8 @@ An emergency measure could be available in a
 'File Special' menu.
 #@nonl
 #@-node:ekr.20061006165447:Let import commands decide what kind of import to do
-#@-node:ekr.20061206060454:Improve import code
-#@+node:ekr.20070724072423:Fix UNL bug2 (waiting for code from Terry Brown)
-@nocolor
-
-Email from Terry Brown
-
-Unrelated to my previous UNL bug email:
-
-For this outline:
-
-@url One-->Two
-One
-One
-......Two
-
-(i.e. four nodes, 'Two' a child of the second 'One')
-
-clicking the URL will move you to the *first* 'One' node. This is 
-because (a) it loses the trail on the first 'One' node, and (b) it 
-moves you to where it loses the trail.
-
-The UNL finding code could be re-written to use a recursive search 
-and correctly find the 'Two' - I'd be happy to do it... if you think 
-it's worth while.
-
-Whereas my previous email about the 'findNodeInTree' bug was 
-impacting an use case for me, the above isn't.
-
-And who knows how all this will go in graph world ;-)
-
-Cheers -Terry
-
-
-#@-node:ekr.20070724072423:Fix UNL bug2 (waiting for code from Terry Brown)
+#@+node:ekr.20070801071851:print-docstring command
+#@-node:ekr.20070801071851:print-docstring command
 #@-node:ekr.20070325052041:To do: 4.4.4 (@auto)
 #@+node:ekr.20070703111455:To do: 4.4.5 (@menu, vim bindings, translation, etc)
 # Leo 4.4.5 will complete several projects that are long overdue.
