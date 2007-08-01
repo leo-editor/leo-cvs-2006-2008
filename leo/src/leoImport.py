@@ -695,8 +695,8 @@ class baseLeoImportCommands:
         self.setEncoding()
         # g.trace(self.fileName,self.fileType)
         # All file types except the following just get copied to the parent node.
-        if not ext:
-            ext = self.fileType.lower()
+        if not ext: ext = self.fileType
+        ext = ext.lower()
         if not s:
             #@        << Read file into s >>
             #@+node:ekr.20031218072017.3211:<< Read file into s >>
@@ -1701,7 +1701,11 @@ class baseLeoImportCommands:
                     blanks += lws.count(' ')
                     tabs += lws.count('\t')
                 # g.trace('blanks',blanks,'tabs',tabs)
-                return blanks == 0 or tabs == 0
+                ok = blanks == 0 or tabs == 0
+                if not ok:
+                    self.error('File contains intermixed blanks and tabs')
+                    g.app.unitTestDict['actualErrors'] = self.errors
+                return ok
             else:
                 # Check that whitespace passes TabNanny.
                 # Check that whitespace is compatible with @tabwidth.
@@ -1933,7 +1937,6 @@ class baseLeoImportCommands:
             class_node = self.createHeadline(parent,prefix + body,headline)
             savedMethodName = self.methodName
             self.methodName = headline
-            # self.putClassHelper(s[i:codeEnd],class_name,class_node)
             self.putClassHelper(s,i,codeEnd,class_name,class_node)
             self.methodName = savedMethodName
         #@+node:ekr.20070703122141.106:appendRefToClassNode
@@ -1976,8 +1979,7 @@ class baseLeoImportCommands:
             Parse s for inner methods and classes, and create nodes.'''
 
             # Put any leading decls in the class node.
-            # i = self.skipDecls(s,0)
-            # decls = s[0:i]
+            trace = True
             start = i
             i = self.skipDecls(s,i,end)
             decls = s[start:i]
@@ -1989,7 +1991,7 @@ class baseLeoImportCommands:
                 # g.trace(class_name,'decls',repr(decls))
                 self.appendTextToClassNode(class_node,decls)
             start = i ; putRef = False
-            while i < end: ### len(s):
+            while i < end:
                 progress = i
                 if self.startsComment(s,i):
                     i = self.skipComment(s,i)
@@ -2012,9 +2014,9 @@ class baseLeoImportCommands:
             if putRef:
                 self.appendRefToClassNode(class_name,class_node)
 
-            if start < len(s):
-                trailing = s[start:]
-                if self.trace: g.trace('trailing\n%s' % trailing)
+            if start < end:
+                trailing = s[start:end]
+                if trace or self.trace: g.trace('trailing\n%s' % trailing)
                 self.appendTextToClassNode(class_node,trailing)
         #@-node:ekr.20070707171329:putClassHelper
         #@-node:ekr.20070707113832.1:putClass & helpers
@@ -2030,11 +2032,6 @@ class baseLeoImportCommands:
                 headline = 'unknown function'
 
             body1 = self.undentBody(s[start:sigStart],ignoreComments=False)
-
-            # An emergency measure.
-            # if not g.match(s,i,'\n'):
-                # i = g.find_line_start(s,i)
-                # g.trace('***backup\n%s' % s[i:i+20])
 
             body2 = self.undentBody(s[sigStart:codeEnd])
             body = body1 + body2
@@ -2238,13 +2235,8 @@ class baseLeoImportCommands:
 
             '''Skip the code block in a function or class definition.'''
 
-            start = i
             i = self.skipBlock(s,i,delim1=None,delim2=None)
             i = self.skipNewline(s,i,kind)
-
-            # if self.trace and s[start:i].strip():
-                # # g.trace(g.callers())
-                # g.trace('\n'+s[start:i])
 
             return i
         #@-node:ekr.20070712091019:skipCodeBlock
@@ -2575,6 +2567,11 @@ class baseLeoImportCommands:
             self.classTags = ['class',]
             self.functionTags = []
             sigTailFailTokens = [';','=']
+
+        def skipId (self,s,i):
+            # C identifiers may contain colons.
+            j = g.skip_id(s,i,chars=':')
+            return j
     #@-node:edreamleo.20070710093042:class cScanner (baseScannerClass)
     #@-node:edreamleo.20070710110114.1:C scanner
     #@+node:ekr.20070711060107:Elisp scanner
