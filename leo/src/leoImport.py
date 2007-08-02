@@ -803,7 +803,7 @@ class baseLeoImportCommands:
     #@-node:ekr.20051208100903.1:forceGnxOnPosition
     #@-node:ekr.20031218072017.1810:importDerivedFiles
     #@+node:ekr.20031218072017.3212:importFilesCommand
-    def importFilesCommand (self,files=None,treeType=None,testing=False,verbose=False):
+    def importFilesCommand (self,files=None,treeType=None):
         # Not a command.  It must *not* have an event arg.
 
         c = self.c
@@ -1412,8 +1412,6 @@ class baseLeoImportCommands:
                 self.tab_ws = '\t'
 
             # May be overridden in subclasses.
-            self.lineCommentDelim = None
-            self.lineCommentDelim2 = None
             self.blockCommentDelim1 = None
             self.blockCommentDelim2 = None
             self.blockDelim1 = '{'
@@ -1421,9 +1419,14 @@ class baseLeoImportCommands:
             self.classTags = ['class',]
                 # tags that start a tag.
             self.functionTags = []
+            self.lineCommentDelim = None
+            self.lineCommentDelim2 = None
+            self.outerBlockDelim1 = None
+            self.outerBlockDelim2 = None
             self.sigTailFailTokens = []
                 # A list of strings that abort a signature when seen in a tail.
                 # For example, ';' and '=' in C.
+
             self.strict = False # True if leading whitespace is very significant.
         #@-node:ekr.20070703122141.66:baseScannerClass.__init__
         #@+node:ekr.20070703122141.102:check & helpers
@@ -1523,7 +1526,7 @@ class baseLeoImportCommands:
             expectedMismatch = g.app.unitTesting and d.get('expectedMismatchLine')
 
             if i >= len(lines1):
-                if i != expectedMismatch:
+                if i != expectedMismatch or not g.app.unitTesting:
                     print 'extra lines'
                     for line in lines2[i:]:
                         print repr(line)
@@ -1531,7 +1534,7 @@ class baseLeoImportCommands:
                 return False
 
             if i >= len(lines2):
-                if i != expectedMismatch:
+                if i != expectedMismatch or not g.app.unitTesting:
                     print 'missing lines'
                     for line in lines2[i:]:
                         print repr(line)
@@ -1546,7 +1549,7 @@ class baseLeoImportCommands:
             elif not strict and line1.lstrip() == line2.lstrip():
                 return True # A match excluding leading whitespace.
             else:
-                if i+1 != expectedMismatch:
+                if i+1 != expectedMismatch or not g.app.unitTesting:
                     print '*** first mismatch at line %d' % (i+1)
                     print 'original line: ', repr(line1)
                     print 'generated line:', repr(line2)
@@ -1888,18 +1891,20 @@ class baseLeoImportCommands:
             i = start = self.skipDecls(s,0,len(s))
             decls = s[:i]
             if decls: self.createDeclsNode(parent,decls)
-            needRef = False
             while i < len(s):
                 progress = i
                 if self.startsComment(s,i):
                     i = self.skipComment(s,i)
                 elif self.startsString(s,i):
                     i = self.skipString(s,i)
+                elif g.match(s,i,self.outerBlockDelim1):
+                    # k = i
+                    i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+                    # g.trace('\n',s[k:i])
                 elif self.startsClass(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
                     end2 = self.codeEnd # putClass may change codeEnd ivar.
                     self.putClass(s,self.sigStart,self.sigEnd,self.codeEnd,start,parent)
                     i = start = end2
-                    needRef = True
                 elif self.startsFunction(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
                     self.putFunction(s,self.sigStart,self.codeEnd,start,parent)
                     i = start = self.codeEnd
@@ -1908,6 +1913,8 @@ class baseLeoImportCommands:
                 else: i += 1
                 assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
             self.addRef(parent)
+            if start < len(s):
+                self.c.appendStringToBody(parent,s[start:]) 
         #@-node:ekr.20070706101600:scan
         #@+node:ekr.20070712075148:skipArgs
         def skipArgs (self,s,i,kind):
@@ -2240,7 +2247,7 @@ class baseLeoImportCommands:
                 elif self.startsString(s,i):
                     i = self.skipString(s,i)
                 elif self.sigTailFailTokens:
-                    for z in self.failTokens:
+                    for z in self.sigTailFailTokens:
                         if g.match(s,i,z):
                             return i,False
                     else:
@@ -2322,14 +2329,16 @@ class baseLeoImportCommands:
             # Set the parser delims.
             self.blockCommentDelim1 = '/*'
             self.blockCommentDelim2 = '*/'
-            self.lineCommentDelim = '//'
-            self.lineCommentDelim2 = None
             self.blockDelim1 = '{'
             self.blockDelim2 = '}'
             self.classTags = ['class',]
             self.extraIdChars = ':'
             self.functionTags = []
-            sigTailFailTokens = [';','=']
+            self.lineCommentDelim = '//'
+            self.lineCommentDelim2 = '#' # A hack: treat preprocess directives as comments(!)
+            self.outerBlockDelim1 = '{'
+            self.outerBlockDelim2 = '}'
+            self.sigTailFailTokens = [';','=']
     #@-node:edreamleo.20070710093042:class cScanner (baseScannerClass)
     #@-node:edreamleo.20070710110114.1:C scanner
     #@+node:ekr.20070711060107:Elisp scanner
