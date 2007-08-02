@@ -1760,6 +1760,8 @@ class baseLeoImportCommands:
                     i = self.skipComment(s,i)
                 elif self.startsString(s,i):
                     i = self.skipString(s,i)
+                elif g.match(s,i,self.outerBlockDelim1):
+                    i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
                 elif self.startsClass(s,i):  # Sets sigStart,sigEnd & codeEnd ivars.
                     putRef = True
                     end2 = self.codeEnd # putClass may change codeEnd ivar.
@@ -2033,6 +2035,8 @@ class baseLeoImportCommands:
                     i = self.skipComment(s,i)
                 elif self.startsString(s,i):
                     i = self.skipString(s,i)
+                elif g.match(s,i,self.outerBlockDelim1):
+                    i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
                 elif self.startsClass(s,i,quick=True):
                     # Important: do not include leading ws in the decls.
                     i = self.adjustClassOrFunctionStart(s,i,'class')
@@ -2137,19 +2141,21 @@ class baseLeoImportCommands:
             # The skipBlock method of the base class checks for such lines.
             self.startSigIndent = self.getLeadingIndent(s,i)
 
+            # Run a quick check first.
             # Get the tag that starts the class or function.
-            i, ids = self.skipSigStart(s,i,tags)
             if tags:
-                for id in ids:
-                    if id in tags:
-                        break
-                else: return False
-
-            if quick: return True
+                j = g.skip_ws_and_nl(s,i)
+                i = self.skipId(s,j)
+                theId = s[j:i]
+                if theId not in tags:
+                    return False
+                if trace: g.trace('tags',tags,'theId',theId)
+                if quick: return True
 
             if trace: g.trace('kind',kind)
 
-            # Get the class/function id
+            # Get the class/function id.
+            i, ids = self.skipSigStart(s,i,tags)
             i, sigId = self.skipSigId(s,i,ids)
             if not sigId:
                 if trace: g.trace('no sigId',g.get_line(s,i))
@@ -2219,11 +2225,9 @@ class baseLeoImportCommands:
             while 1:
                 j = g.skip_ws_and_nl(s,i)
                 i = self.skipId(s,j)
-                id = s[j:i]
-                if id: ids.append(id)
+                theId = s[j:i]
+                if theId: ids.append(theId)
                 else: break
-
-            # g.trace(ids)
 
             return i, ids
         #@-node:ekr.20070711140703:skipSigStart
