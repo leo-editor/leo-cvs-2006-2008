@@ -729,7 +729,7 @@ class baseLeoImportCommands:
             undoData = u.beforeInsertNode(parent)
             p = parent.insertAsLastChild()
             if self.treeType == "@file" and not s1:
-                p.initHeadString("@file " + fileName)
+                p.initHeadString("@nosent " + fileName)
             else:
                 p.initHeadString(fileName)
             u.afterInsertNode(p,'Import',undoData)
@@ -751,7 +751,7 @@ class baseLeoImportCommands:
         else:
             self.scanUnknownFileType(s,p,ext)
 
-        if atAuto: p.contract()
+        p.contract()
         return p
     #@-node:ekr.20031218072017.3210:createOutline
     #@+node:ekr.20031218072017.1810:importDerivedFiles
@@ -803,9 +803,8 @@ class baseLeoImportCommands:
     #@-node:ekr.20051208100903.1:forceGnxOnPosition
     #@-node:ekr.20031218072017.1810:importDerivedFiles
     #@+node:ekr.20031218072017.3212:importFilesCommand
-    def importFilesCommand (self,files=None,treeType=None,
-        perfectImport=True,testing=False,verbose=False):
-            # Not a command.  It must *not* have an event arg.
+    def importFilesCommand (self,files=None,treeType=None,testing=False,verbose=False):
+        # Not a command.  It must *not* have an event arg.
 
         c = self.c
         if c == None: return
@@ -841,13 +840,8 @@ class baseLeoImportCommands:
                 g.setGlobalOpenDir(fileName)
                 v = self.createOutline(fileName,current)
                 if v: # createOutline may fail.
-                    perfectImport = False ###
-                    testing = True; verbose = True
-                    if perfectImport and treeType == "@file": # Can't correct @root trees.
-                        self.perfectImport(fileName,v,testing=testing,verbose=verbose,verify=False)
-                    else:
-                        if not g.unitTesting:
-                            g.es("imported " + fileName,color="blue")
+                    if not g.unitTesting:
+                        g.es("imported " + fileName,color="blue")
                     v.contract()
                     v.setDirty()
                     c.setChanged(True)
@@ -1366,210 +1360,6 @@ class baseLeoImportCommands:
     #@-node:ekr.20031218072017.3240:cstLookup
     #@-node:ekr.20031218072017.3236:Symbol table
     #@-node:ekr.20031218072017.3224:importWebCommand & allies
-    #@+node:EKR.20040506075328.2:perfectImport
-    def perfectImport (self,fileName,p,testing=False,verbose=False,convertBlankLines=True,verify=True):
-
-        __pychecker__ = 'maxlines=500'
-
-        #@    << about this algorithm >>
-        #@+node:ekr.20040717112739:<< about this algorithm >>
-        #@@nocolor
-        #@+at
-        # 
-        # This algorithm corrects the result of an Import To @file command so 
-        # that it is guaranteed that the result of writing the imported file 
-        # will be identical to the original file except for any sentinels that 
-        # have been inserted.
-        # 
-        # On entry, p points to the newly imported outline.
-        # 
-        # We correct the outline by applying Bernhard Mulder's algorithm.
-        # 
-        # 1.  We use the atFile.write code to write the newly imported outline 
-        # to a string s.  This string contains represents a thin derived file, 
-        # so it can be used to recreate then entire outline structure without 
-        # any other information.
-        # 
-        # Splitting s into lines creates the fat_lines argument to mu methods.
-        # 
-        # 2. We make corrections to fat_lines using Mulder's algorithm.  The 
-        # corrected fat_lines represents the corrected outline.  To do this, 
-        # we set the arguments as follows:
-        # 
-        # - i_lines: fat_lines stripped of sentinels
-        # - j_lines to the lines of the original imported file.
-        # 
-        # The algorithm updates fat_lines using diffs between i_lines and 
-        # j_lines.
-        # 
-        # 3. Mulder's algorithm doesn't specify which nodes have been 
-        # changed.  In fact, it Mulder's algorithm doesn't really understand 
-        # nodes at all.  Therefore, if we want to mark changed nodes we do so 
-        # by comparing the original version of the imported outline with the 
-        # corrected version of the outline.
-        #@-at
-        #@-node:ekr.20040717112739:<< about this algorithm >>
-        #@nl
-        c = self.c
-        root = p.copy()
-        at = c.atFileCommands
-        if testing:
-            #@        << clear all dirty bits >>
-            #@+node:ekr.20040716065356:<< clear all dirty bits >>
-            for p2 in p.self_and_subtree_iter():
-                p2.clearDirty()
-            #@-node:ekr.20040716065356:<< clear all dirty bits >>
-            #@nl
-        #@    << Assign file indices >>
-        #@+node:ekr.20040716064333:<< Assign file indices  >>
-        nodeIndices = g.app.nodeIndices
-
-        nodeIndices.setTimestamp()
-
-        for p2 in root.self_and_subtree_iter():
-            try: # Will fail for None or any pre 4.1 file index.
-                theId,time,n = p2.v.t.fileIndex
-            except TypeError:
-                p2.v.t.fileIndex = nodeIndices.getNewIndex()
-        #@-node:ekr.20040716064333:<< Assign file indices  >>
-        #@nl
-        #@    << Write root's tree to to string s >>
-        #@+node:ekr.20040716064333.1:<< Write root's tree to to string s >>
-        at.write(root,thinFile=True,toString=True)
-        s = at.stringOutput
-        if not s: return
-        #@-node:ekr.20040716064333.1:<< Write root's tree to to string s >>
-        #@nl
-
-        # Set up the data for the algorithm.
-        mu = g.mulderUpdateAlgorithm(testing=testing,verbose=verbose)
-        delims = g.comment_delims_from_extension(fileName)
-        fat_lines = g.splitLines(s) # Keep the line endings.
-        i_lines,mapping = mu.create_mapping(fat_lines,delims)
-        j_lines = file(fileName).readlines()
-
-        # Correct write_lines using the algorihm.
-        if i_lines != j_lines:
-            if verbose:
-                g.es("Running Perfect Import",color="blue")
-            write_lines = mu.propagateDiffsToSentinelsLines(i_lines,j_lines,fat_lines,mapping)
-            if 1: # For testing.
-                #@            << put the corrected fat lines in a new node >>
-                #@+node:ekr.20040717132539:<< put the corrected fat lines in a new node >>
-                write_lines_node = root.insertAfter()
-                write_lines_node.initHeadString("write_lines")
-                s = ''.join(write_lines)
-                write_lines_node.scriptSetBodyString(s,encoding=g.app.tkEncoding)
-                #@-node:ekr.20040717132539:<< put the corrected fat lines in a new node >>
-                #@nl
-            #@        << correct root's tree using write_lines >>
-            #@+node:ekr.20040717113036:<< correct root's tree using write_lines >>
-            #@+at 
-            #@nonl
-            # Notes:
-            # 1. This code must overwrite the newly-imported tree because the 
-            # gnx's in
-            # write_lines refer to those nodes.
-            # 
-            # 2. The code in readEndNode now reports when nodes change during 
-            # importing. This
-            # code also marks changed nodes.
-            #@-at
-            #@@c
-
-            try:
-                at.correctedLines = 0
-                at.targetFileName = "<perfectImport string-file>"
-                at.inputFile = fo = g.fileLikeObject()
-                at.file = fo # Strange, that this is needed.  Should be cleaned up.
-                for line in write_lines:
-                    fo.write(line)
-                firstLines,junk,junk = c.atFileCommands.scanHeader(fo,at.targetFileName)
-                # To do: pass params to readEndNode.
-                at.readOpenFile(root,fo,firstLines,perfectImportRoot=root)
-                n = at.correctedLines
-                if verbose:
-                    g.es("%d marked node%s corrected" % (n,g.choose(n==1,'','s')),color="blue")
-            except:
-                g.es("Exception in Perfect Import",color="red")
-                g.es_exception()
-                s = None
-            #@-node:ekr.20040717113036:<< correct root's tree using write_lines >>
-            #@nl
-        if verify:
-            #@        << verify that writing the tree would produce the original file >>
-            #@+node:ekr.20040718035658:<< verify that writing the tree would produce the original file >>
-            try:
-                # Read the original file into before_lines.
-                before = file(fileName)
-                before_lines = before.readlines()
-                before.close()
-
-                # Write the tree into after_lines.
-                at.write(root,thinFile=True,toString=True)
-                after_lines1 = g.splitLines(at.stringOutput)
-
-                # Strip sentinels from after_lines and compare.
-                after_lines = mu.removeSentinelsFromLines(after_lines1,delims)
-
-                # A major kludge: Leo can not represent unindented blank lines in indented nodes!
-                # We ignore the problem here by stripping whitespace from blank lines.
-                # We shall need output options to handle such lines.
-                if convertBlankLines:
-                    mu.stripWhitespaceFromBlankLines(before_lines)
-                    mu.stripWhitespaceFromBlankLines(after_lines)
-                if before_lines == after_lines:
-                    if verbose:
-                        g.es("Perfect Import verified",color="blue")
-                else:
-                    leoTest.fail()
-                    if verbose:
-                        g.es("Perfect Import failed verification test!",color="red")
-                        #@            << dump the files >>
-                        #@+node:ekr.20040718045423:<< dump the files >>
-                        print len(before_lines),len(after_lines)
-
-                        if len(before_lines)==len(after_lines):
-                            for i in xrange(len(before_lines)):
-                                extra = 3
-                                if before_lines[i] != after_lines[i]:
-                                    j = max(0,i-extra)
-                                    print '-' * 20
-                                    while j < i + extra + 1:
-                                        leader = g.choose(i == j,"* ","  ")
-                                        print "%s%3d" % (leader,j), repr(before_lines[j])
-                                        print "%s%3d" % (leader,j), repr(after_lines[j])
-                                        j += 1
-                        else:
-                            for i in xrange(min(len(before_lines),len(after_lines))):
-                                if before_lines[i] != after_lines[i]:
-                                    extra = 5
-                                    print "first mismatch at line %d" % i
-                                    print "printing %d lines after mismatch" % extra
-                                    print "before..."
-                                    for j in xrange(i+1+extra):
-                                        print "%3d" % j, repr(before_lines[j])
-                                    print
-                                    print "after..."
-                                    for k in xrange(1+extra):
-                                        print "%3d" % (i+k), repr(after_lines[i+k])
-                                    print
-                                    print "with sentinels"
-                                    j = 0 ; k = 0
-                                    while k < i + 1 + extra:
-                                        print "%3d" % k,repr(after_lines1[j])
-                                        if not g.is_sentinel(after_lines1[j],delims):
-                                            k += 1
-                                        j += 1
-                                    break
-                        #@-node:ekr.20040718045423:<< dump the files >>
-                        #@nl
-            except IOError:
-                g.es("Can not reopen %s!" % fileName,color="red")
-                leoTest.fail()
-            #@-node:ekr.20040718035658:<< verify that writing the tree would produce the original file >>
-            #@nl
-    #@-node:EKR.20040506075328.2:perfectImport
     #@+node:ekr.20031218072017.3241:Scanners for createOutline
     #@+node:ekr.20070703122141.65: class baseScannerClass
     class baseScannerClass:
@@ -1651,47 +1441,6 @@ class baseLeoImportCommands:
             g.app.unitTestDict ['result'] = result
             return result
         #@nonl
-        #@+node:ekr.20070705085126:checkTabWithTabNanny (not used)
-        # Similar to c.tabNannyNode
-
-        def checkTabWithTabNanny (self,p):
-
-            '''Check indentation using tabnanny.'''
-
-            h = p.headString() ; body = p.bodyString()
-
-            try:
-                readline = g.readLinesClass(body).next
-                tabnanny.process_tokens(tokenize.generate_tokens(readline))
-                return True
-
-            except IndentationError, err:
-                # Instances of this class have attributes filename, lineno, offset and text.
-                g.es_print('IndentationError in %s at line %d' % (h,err.lineno),color='blue')
-                # g.es_print(str(err)) # str(err.text))
-
-            except parser.ParserError, msg:
-                g.es_print('ParserError in %s' % h,color='blue')
-                g.es_print(str(msg))
-
-            except tokenize.TokenError, msg:
-                g.es_print('TokenError in %s' % h,color='blue')
-                g.es_print(str(msg))
-
-            except tabnanny.NannyNag, nag:
-                badline = nag.get_lineno()
-                line    = nag.get_line()
-                message = nag.get_msg()
-                g.es_print('Indentation error in %s, line %d' % (h, badline),color='blue')
-                g.es_print(message)
-                g.es_print('offending line:\n%s' % repr(str(line))[1:-1])
-
-            except:
-                g.trace('unexpected exception')
-                g.es_exception()
-
-            return False
-        #@-node:ekr.20070705085126:checkTabWithTabNanny (not used)
         #@+node:ekr.20070703122141.103:checkWhitespace
         def checkWhitespace(self,s,parent):
 
@@ -1710,25 +1459,17 @@ class baseLeoImportCommands:
             Normalizing underindented comments means shifting the comments right.
             '''
 
-            if 1: # Do a quick check for mixed leading tabs/blanks.
-                blanks = tabs = 0
-                for line in g.splitLines(s):
-                    lws = line[0:g.skip_ws(line,0)]
-                    blanks += lws.count(' ')
-                    tabs += lws.count('\t')
-                # g.trace('blanks',blanks,'tabs',tabs)
-                ok = blanks == 0 or tabs == 0
-                if not ok:
-                    self.error('File contains intermixed blanks and tabs')
-                return ok
-            else:
-                # Check that whitespace passes TabNanny.
-                # Check that whitespace is compatible with @tabwidth.
-                # Check for underindented lines.
-                ok = True
-                for p in parent.self_and_subtree_iter():
-                    ok = ok and self.checkTabWithTabNanny(p)
-                return ok
+            # Do a quick check for mixed leading tabs/blanks.
+            blanks = tabs = 0
+            for line in g.splitLines(s):
+                lws = line[0:g.skip_ws(line,0)]
+                blanks += lws.count(' ')
+                tabs += lws.count('\t')
+            ok = blanks == 0 or tabs == 0
+            if not ok:
+                self.error('File contains intermixed blanks and tabs')
+            return ok
+        #@nonl
         #@-node:ekr.20070703122141.103:checkWhitespace
         #@+node:ekr.20070703122141.104:checkTrialWrite & helper
         def checkTrialWrite (self):
@@ -1761,6 +1502,9 @@ class baseLeoImportCommands:
             if not ok:
                 if g.app.unitTesting:
                     g.trace('expected mismatch line',expectedMismatch,'actualMismatch',actualMismatch)
+                else:
+                    if self.atAuto:
+                        g.es_print('@auto did not import the file perfectly.',color='red')
                 if len(lines1) < 30:
                     print 'input...'
                     for i in xrange(len(lines1)):
@@ -1914,6 +1658,7 @@ class baseLeoImportCommands:
         def insertIgnoreDirective (self,parent):
 
             self.c.appendStringToBody(parent,'@ignore')
+            g.es_print('inserting @ignore',color='blue')
         #@-node:ekr.20070705085335:insertIgnoreDirective
         #@+node:ekr.20070703122141.81:massageComment
         def massageComment (self,s):
@@ -2065,10 +1810,8 @@ class baseLeoImportCommands:
 
             c = self.c
 
-            line1 = g.choose(self.atAuto,'','@ignore\n')
-
-            c.appendStringToBody(p,'%s%s@language %s\n' % (
-                line1,self.rootLine,self.language))
+            c.appendStringToBody(p,'%s@language %s\n@tabwidth %d\n' % (
+                self.rootLine,self.language,self.tab_width))
         #@-node:ekr.20070705094630:putRootText
         #@+node:ekr.20070703122141.88:undentBody
         def undentBody (self,s,ignoreComments=True):
@@ -2141,6 +1884,7 @@ class baseLeoImportCommands:
             - Outer-level classes.
             - Outer-level functions.
             '''
+            self.putRootText(parent)
             i = start = self.skipDecls(s,0,len(s))
             decls = s[:i]
             if decls: self.createDeclsNode(parent,decls)
@@ -2529,7 +2273,7 @@ class baseLeoImportCommands:
         #@+node:ekr.20070707072749:run
         def run (self,s,parent):
 
-            scanner = self
+            scanner = self ; c = self.c
             scanner.root = parent
             scanner.file_s = s
 
@@ -2537,15 +2281,24 @@ class baseLeoImportCommands:
             # including all directive and section references.
             self.errors = 0
             self.errorLines = []
+            changed = c.isChanged()
             scanner.scan(s,parent)
 
             # Step 2: check the generated nodes.
             # Return True if the result is equivalent to the original file.
             ok = self.errors == 0 and scanner.check(s,parent)
+            # g.trace('ok',ok,'parent',parent)
 
             # Step 3: insert an @ignore directive if there are any problems.
-            if not ok:
+            if ok:
+                if self.atAuto:
+                    for p in parent.self_and_subtree_iter():
+                        p.clearDirty()
+                    if not changed:
+                        c.setChanged(False)
+            else:
                 scanner.insertIgnoreDirective(parent)
+                c.setChanged(True)
         #@-node:ekr.20070707072749:run
         #@-others
     #@-node:ekr.20070703122141.65: class baseScannerClass
