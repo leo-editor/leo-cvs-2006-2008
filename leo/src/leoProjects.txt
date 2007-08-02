@@ -675,38 +675,180 @@ except IOError:
     return None
 #@-node:ekr.20031218072017.3211:<< Read file into s >>
 #@-node:ekr.20031218072017.3210:createOutline
-#@+node:edreamleo.20070710110114.1:C scanner
-#@+node:edreamleo.20070710110153:scanCText
-def scanCText (self,s,parent,atAuto=False):
+#@+node:ekr.20070703123334.2:Python scanner
+#@+node:ekr.20070703122141.99:scanPythonText
+def scanPythonText (self,s,parent,atAuto=False):
 
-    scanner = self.cScanner(importCommands=self,atAuto=atAuto)
+    scanner = self.pythonScanner(importCommands=self,atAuto=atAuto)
 
     scanner.run(s,parent)
-#@-node:edreamleo.20070710110153:scanCText
-#@+node:edreamleo.20070710093042:class cScanner (baseScannerClass)
-class cScanner (baseScannerClass):
+#@-node:ekr.20070703122141.99:scanPythonText
+#@+node:ekr.20070703122141.100:class pythonScanner (baseScannerClass)
+class pythonScanner (baseScannerClass):
 
-    def __init__ (self,importCommands,atAuto):
+    @others
+#@+node:ekr.20070703122141.101: __init__
+def __init__ (self,importCommands,atAuto):
 
-        # Init the base class.
-        importCommands.baseScannerClass.__init__(self,importCommands,
-            atAuto=atAuto,language='c')
+    # Init the base class.
+    importCommands.baseScannerClass.__init__(self,importCommands,
+        atAuto=atAuto,language='python')
 
-        # Set the parser delims.
-        self.blockCommentDelim1 = '/*'
-        self.blockCommentDelim2 = '*/'
-        self.blockDelim1 = '{'
-        self.blockDelim2 = '}'
-        self.classTags = ['class',]
-        self.extraIdChars = ':'
-        self.functionTags = []
-        self.lineCommentDelim = '//'
-        self.lineCommentDelim2 = '#' # A hack: treat preprocess directives as comments(!)
-        self.outerBlockDelim1 = '{'
-        self.outerBlockDelim2 = '}'
-        self.sigTailFailTokens = [';','=']
-#@-node:edreamleo.20070710093042:class cScanner (baseScannerClass)
-#@-node:edreamleo.20070710110114.1:C scanner
+    # Set the parser delims.
+    self.lineCommentDelim = '#'
+    self.classTags = ['class',]
+    self.functionTags = ['def',]
+    self.blockDelim1 = None
+        # Suppress the check for the block delim.
+        # The check is done in skipSigTail.
+    self.blockDelim2 = None
+    self.strict = True
+
+#@-node:ekr.20070703122141.101: __init__
+#@+node:ekr.20070707073723:Overrides
+#@+node:ekr.20070707113839:extendSignature
+def extendSignature(self,s,i):
+
+    '''Extend the text to be added to the class node following the signature.
+
+    The text *must* end with a newline.'''
+
+    # Add a docstring to the class node,
+    # And everything on the line following it
+    j = g.skip_ws_and_nl(s,i)
+    if g.match(s,j,'"""') or g.match(s,j,"'''"):
+        j = g.skip_python_string(s,j)
+        if j < len(s): # No scanning error.
+            # Return the docstring only if nothing but whitespace follows.
+            j = g.skip_ws(s,j)
+            if g.is_nl(s,j):
+                return j + 1
+
+    return i
+#@-node:ekr.20070707113839:extendSignature
+#@+node:ekr.20070707073627.4:skipString
+def skipString (self,s,i):
+
+    # Returns len(s) on unterminated string.
+    return g.skip_python_string(s,i,verbose=False)
+#@-node:ekr.20070707073627.4:skipString
+#@+node:ekr.20070712090019.1:skipCodeBlock (python) & helper
+def skipCodeBlock (self,s,i,kind):
+
+    trace = False
+    if trace: g.trace('***',g.callers())
+    startIndent = self.startSigIndent
+    assert startIndent is not None
+    i = start = g.skip_ws_and_nl(s,i)
+    parenCount = 0
+    underIndentedStart = None # The start of trailing underindented blank or comment lines.
+    while i < len(s):
+        progress = i
+        ch = s[i]
+        if g.is_nl(s,i):
+            backslashNewline = i > 0 and g.match(s,i-1,'\\\n')
+            i = g.skip_nl(s,i)
+            if trace: g.trace(g.get_line(s,i))
+            if not backslashNewline:
+                i,underIndentedStart,breakFlag = self.pythonNewlineHelper(
+                    s,i,parenCount,startIndent,underIndentedStart)
+                if breakFlag: break
+        elif ch == '#':
+            i = g.skip_to_end_of_line(s,i)
+        elif ch == '"' or ch == '\'':
+            i = g.skip_python_string(s,i)
+        elif ch in '[{(':
+            i += 1 ; parenCount += 1
+            # g.trace('ch',ch,parenCount)
+        elif ch in ']})':
+            i += 1 ; parenCount -= 1
+            # g.trace('ch',ch,parenCount)
+        else: i += 1
+        assert(progress < i)
+
+    # The actual end of the block.
+    if underIndentedStart is not None:
+        i = underIndentedStart
+        if trace: g.trace('***backtracking to underindent range')
+        if trace: g.trace(g.get_line(s,i))
+
+    if 0 < i < len(s) and not g.match(s,i-1,'\n'):
+        g.trace('Can not happen: Python block does not end in a newline.')
+        g.trace(g.get_line(s,i))
+    if (trace or self.trace) and s[start:i].strip():
+        g.trace(g.callers())
+        g.trace('\n'+s[start:i])
+    return i
+#@+node:ekr.20070801080447:pythonNewlineHelper
+def pythonNewlineHelper (self,s,i,parenCount,startIndent,underIndentedStart):
+
+    trace = False
+    breakFlag = False
+    j, indent = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+    if indent <= startIndent and parenCount == 0:
+        # An underindented line: it ends the block *unless*
+        # it is a blank or comment line.
+        if g.match(s,j,'#'):
+            if trace: g.trace('underindent: comment')
+            if underIndentedStart is None: underIndentedStart = i
+            i = j
+        elif g.match(s,j,'\n'):
+            if trace: g.trace('underindent: blank line')
+            # Blank lines never start the range of underindented lines.
+            i = j
+        else:
+            if trace: g.trace('underindent: end of block')
+            breakFlag = True # The actual end of the block.
+    else:
+        if underIndentedStart and g.match(s,j,'\n'):
+            # Add the blank line to the underindented range.
+            if trace: g.trace('properly indented blank line extends underindent range')
+        elif underIndentedStart and g.match(s,j,'#'):
+            # Add the (properly indented!) comment line to the underindented range.
+            if trace: g.trace('properly indented comment line extends underindent range')
+        elif underIndentedStart is None:
+            pass
+        else:
+            # A properly indented non-comment line.
+            # Give a message for all underindented comments in underindented range.
+            if trace: g.trace('properly indented line generates underindent errors')
+            s2 = s[underIndentedStart:i]
+            lines = g.splitlines(s2)
+            for line in lines:
+                if line.strip():
+                    junk, indent = g.skip_leading_ws_with_indent(line,0,self.tab_width)
+                    if indent <= startIndent:
+                        self.underindentedComment(line)
+            underIndentedStart = None
+    return i,underIndentedStart,breakFlag
+#@-node:ekr.20070801080447:pythonNewlineHelper
+#@-node:ekr.20070712090019.1:skipCodeBlock (python) & helper
+#@+node:ekr.20070712092615:skipSigTail
+def skipSigTail(self,s,i):
+
+    '''Skip from the end of the arg list to the start of the block.'''
+
+    # Must override so we can skip the ':' properly and issue better warnings.
+
+    start = i
+    while i < len(s):
+        if self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            break
+        elif g.match(s,i,':'):
+            i = g.skip_line(s,i+1)
+            if self.trace and s[start:i].strip(): g.trace('\n'+s[start:i])
+            return i,True
+        else:
+            i += 1
+
+    self.error('Warning: improper signature: %s' % g.get_line(s,start))
+    return start,False
+#@-node:ekr.20070712092615:skipSigTail
+#@-node:ekr.20070707073723:Overrides
+#@-node:ekr.20070703122141.100:class pythonScanner (baseScannerClass)
+#@-node:ekr.20070703123334.2:Python scanner
 #@+node:ekr.20070703122141.65: class baseScannerClass
 class baseScannerClass:
 
@@ -1102,6 +1244,8 @@ def putClassHelper(self,s,i,end,class_name,class_node):
             i = self.skipComment(s,i)
         elif self.startsString(s,i):
             i = self.skipString(s,i)
+        elif g.match(s,i,self.outerBlockDelim1):
+            i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
         elif self.startsClass(s,i):  # Sets sigStart,sigEnd & codeEnd ivars.
             putRef = True
             end2 = self.codeEnd # putClass may change codeEnd ivar.
@@ -1372,6 +1516,8 @@ def skipDecls (self,s,i,end):
             i = self.skipComment(s,i)
         elif self.startsString(s,i):
             i = self.skipString(s,i)
+        elif g.match(s,i,self.outerBlockDelim1):
+            i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
         elif self.startsClass(s,i,quick=True):
             # Important: do not include leading ws in the decls.
             i = self.adjustClassOrFunctionStart(s,i,'class')
@@ -1476,19 +1622,21 @@ def startsHelper(self,s,i,kind,quick,tags):
     # The skipBlock method of the base class checks for such lines.
     self.startSigIndent = self.getLeadingIndent(s,i)
 
+    # Run a quick check first.
     # Get the tag that starts the class or function.
-    i, ids = self.skipSigStart(s,i,tags)
     if tags:
-        for id in ids:
-            if id in tags:
-                break
-        else: return False
-
-    if quick: return True
+        j = g.skip_ws_and_nl(s,i)
+        i = self.skipId(s,j)
+        theId = s[j:i]
+        if theId not in tags:
+            return False
+        if trace: g.trace('tags',tags,'theId',theId)
+        if quick: return True
 
     if trace: g.trace('kind',kind)
 
-    # Get the class/function id
+    # Get the class/function id.
+    i, ids = self.skipSigStart(s,i,tags)
     i, sigId = self.skipSigId(s,i,ids)
     if not sigId:
         if trace: g.trace('no sigId',g.get_line(s,i))
@@ -1558,11 +1706,9 @@ def skipSigStart (self,s,i,tags):
     while 1:
         j = g.skip_ws_and_nl(s,i)
         i = self.skipId(s,j)
-        id = s[j:i]
-        if id: ids.append(id)
+        theId = s[j:i]
+        if theId: ids.append(theId)
         else: break
-
-    # g.trace(ids)
 
     return i, ids
 #@-node:ekr.20070711140703:skipSigStart
