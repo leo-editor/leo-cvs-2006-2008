@@ -1450,39 +1450,33 @@ class baseLeoImportCommands:
 
             if self.fullChecks:
                 result = self.checkWhitespace(s,parent) and self.checkTrialWrite()
-                g.app.unitTestDict ['result'] = result
-                return result
             else:
-                return True
+                result = True
+
+            return result
         #@+node:ekr.20070703122141.103:checkWhitespace
         def checkWhitespace(self,s,parent):
 
-            '''Check and normalize the leading whitespace of all nodes.
-
-            - The original sources may fail Python's tabNanny checks.  
-
-            - Leading whitespace in the original sources may be inconsistent with the
-              @tabwidth setting in effect in the @auto tree.
-
-            - The original sources may contain underindented comments. 
-
-            If an indentation problem is found, issue a warning and return False.
-            Otherwise, normalize the indentation of all pieces so that it is indeed
-            consistent with the indentation specified by the present @tabwidth setting.
-            Normalizing underindented comments means shifting the comments right.
-            '''
+            '''Check the leading whitespace of all lines of s.'''
 
             # Do a quick check for mixed leading tabs/blanks.
+            strict = self.strict ; tab_width = self.tab_width
             blanks = tabs = 0
             for line in g.splitLines(s):
                 lws = line[0:g.skip_ws(line,0)]
                 blanks += lws.count(' ')
                 tabs += lws.count('\t')
+                if strict:
+                    w = g.computeWidth(lws,tab_width)
+                    if (w % abs(tab_width)) != 0:
+                        self.error('leading whitespace not consistent with @tabwidth %d' % tab_width)
+                        g.es_print('line: %s' % (repr(line)),color='red')
+                        return False
+
             ok = blanks == 0 or tabs == 0
             if not ok:
                 self.error('File contains intermixed blanks and tabs')
             return ok
-        #@nonl
         #@-node:ekr.20070703122141.103:checkWhitespace
         #@+node:ekr.20070703122141.104:checkTrialWrite & helper
         def checkTrialWrite (self):
@@ -1511,13 +1505,10 @@ class baseLeoImportCommands:
             d = g.app.unitTestDict
             expectedMismatch =  d.get('expectedMismatchLine')
             actualMismatch = d.get('actualMismatchLine')
+            kind = g.choose(self.atAuto,'@auto','import command')
+            self.error('%s did not import the file perfectly' % kind)
             ok = ok or (g.app.unitTesting and expectedMismatch == actualMismatch)
             if not ok:
-                if g.app.unitTesting:
-                    g.trace('expected mismatch line',expectedMismatch,'actualMismatch',actualMismatch)
-                else:
-                    if self.atAuto:
-                        g.es_print('@auto did not import the file perfectly.',color='red')
                 if len(lines1) < 30:
                     print 'input...'
                     for i in xrange(len(lines1)):
@@ -1869,9 +1860,13 @@ class baseLeoImportCommands:
         #@-node:ekr.20070706084535:Code generation
         #@+node:ekr.20070703122141.78:error & oops
         def error (self,s):
-            g.es_print(s,color='red')
+
             self.errors += 1
+            if self.errors == 1:
+                g.app.unitTestDict['actualErrorMessage'] = s
             g.app.unitTestDict['actualErrors'] = self.errors
+            g.es_print(s,color='red')
+
 
         def oops (self):
             print 'baseScannerClass oops: %s must be overridden in subclass' % g.callers()
@@ -2315,6 +2310,7 @@ class baseLeoImportCommands:
             # Step 2: check the generated nodes.
             # Return True if the result is equivalent to the original file.
             ok = self.errors == 0 and scanner.check(s,parent)
+            g.app.unitTestDict ['result'] = ok
             # g.trace('ok',ok,'parent',parent)
 
             # Step 3: insert an @ignore directive if there are any problems.
@@ -2583,7 +2579,6 @@ class baseLeoImportCommands:
             self.strict = True
 
         #@-node:ekr.20070703122141.101: __init__
-        #@+node:ekr.20070707073723:Overrides
         #@+node:ekr.20070707113839:extendSignature
         def extendSignature(self,s,i):
 
@@ -2722,7 +2717,6 @@ class baseLeoImportCommands:
 
             return i,g.match(s,i,':')
         #@-node:ekr.20070803101619:skipSigTail
-        #@-node:ekr.20070707073723:Overrides
         #@-others
     #@-node:ekr.20070703122141.100:class pythonScanner (baseScannerClass)
     #@-node:ekr.20070703123334.2:Python scanner
@@ -2777,29 +2771,41 @@ class baseLeoImportCommands:
         '''Run a unit test of an import scanner,
         i.e., create a tree from string s at location p.'''
 
-        c = self.c
+        c = self.c ; h = p.headString()
         oldChanged = c.changed
         c.beginUpdate()
         try:
-            expectedErrors = g.app.unitTestDict.get('expectedErrors')
-            expectedMismatchLine = g.app.unitTestDict.get('expectedMismatchLine')
+            d = g.app.unitTestDict
+            expectedErrors = d.get('expectedErrors')
+            expectedErrorMessage = d.get('expectedErrorMessage')
+            expectedMismatchLine = d.get('expectedMismatchLine')
             g.app.unitTestDict = {
                 'expectedErrors':expectedErrors,
+                'expectedErrorMessage':expectedErrorMessage,
                 'expectedMismatchLine':expectedMismatchLine,
             }
             if not fileName: fileName = p.headString()
             if not s: s = self.removeSentinelsCommand([fileName],toString=True)
-            self.createOutline(fileName,p.copy(),atAuto=False,s=s,ext=ext)
+            title = g.choose(h.startswith('@test'),h[5:],h)
+            self.createOutline(title.strip(),p.copy(),atAuto=False,s=s,ext=ext)
             d = g.app.unitTestDict
-            ok = d.get('result') or (
-                d.get('actualErrors') == d.get('expectedErrors') and
-                d.get('actualMismatchLine') == d.get('expectedMismatchLine'))
+            ok = ((d.get('result') and expectedErrors in (None,0)) or
+                (
+                    # checkTrialWrite returns *True* if the following match.
+                    # d.get('result') == False and
+                    d.get('actualErrors') == d.get('expectedErrors') and
+                    d.get('actualMismatchLine') == d.get('expectedMismatchLine') and
+                    (expectedErrorMessage is None or d.get('actualErrorMessage') == d.get('expectedErrorMessage'))
+                ))
             if not ok:
                 g.trace('result',d.get('result'),
                     'actualErrors',d.get('actualErrors'),
                     'expectedErrors',d.get('expectedErrors'),
                     'actualMismatchLine',d.get('actualMismatchLine'),
-                    'expectedMismatchLine', d.get('expectedMismatchLine'),)
+                    'expectedMismatchLine', d.get('expectedMismatchLine'),
+                    '\nactualErrorMessage  ',d.get('actualErrorMessage'),
+                    '\nexpectedErrorMessage',d.get('expectedErrorMessage'),
+                )
             if not showTree and ok:
                 while p.hasChildren():
                     p.firstChild().doDelete()
@@ -2808,11 +2814,9 @@ class baseLeoImportCommands:
             c.endUpdate()
 
         if g.app.unitTesting:
-            d = g.app.unitTestDict
-            assert d.get('result') or (
-                d.get('actualErrors') == d.get('expectedErrors') and
-                d.get('actualMismatchLine') == d.get('expectedMismatchLine'))
-    #@nonl
+            assert ok
+
+        return ok
     #@-node:ekr.20070713082220:scannerUnitTest
     #@-node:ekr.20070713075450:Unit tests
     #@-node:ekr.20031218072017.3209:Import
