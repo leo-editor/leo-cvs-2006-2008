@@ -701,12 +701,19 @@ class baseLeoImportCommands:
             #@        << Read file into s >>
             #@+node:ekr.20031218072017.3211:<< Read file into s >>
             try:
+                # Duplicate the @file directory logic in leoAtFile.py
+                if atAuto:
+                    at = c.atFileCommands
+                    at.scanDefaultDirectory(parent,importing=True)
+                    fileName = g.os_path_join(at.default_directory,fileName)
+
+                fileName = g.os_path_normpath(fileName)
                 theFile = open(fileName)
                 s = theFile.read()
                 s = g.toUnicode(s,self.encoding)
                 theFile.close()
             except IOError:
-                g.es("can not open " + fileName)
+                g.es("can not open %s%s" % (g.choose(atAuto,'@auto ',''),fileName),color='red')
                 leoTest.fail()
                 return None
             #@-node:ekr.20031218072017.3211:<< Read file into s >>
@@ -1374,7 +1381,7 @@ class baseLeoImportCommands:
             ic = importCommands
 
             self.atAuto = atAuto
-            self.c = ic.c
+            self.c = c = ic.c
             self.codeEnd = None
                 # The character after the last character of the class, method or function.
                 # An error will be given if this is not a newline.
@@ -1384,6 +1391,7 @@ class baseLeoImportCommands:
             self.extraIdChars = ''
             self.fileName = ic.fileName # The original filename.
             self.fileType = ic.fileType # The extension,  '.py', '.c', etc.
+            self.fullChecks = c.config.getBool('full_import_checks')
             self.importCommands = ic
             self.language = language
             self.methodName = ic.methodName # x, as in < < x methods > > =
@@ -1440,10 +1448,12 @@ class baseLeoImportCommands:
             Return True if the nodes are equivalent to the original file.
             '''
 
-            result = self.checkWhitespace(s,parent) and self.checkTrialWrite()
-            g.app.unitTestDict ['result'] = result
-            return result
-        #@nonl
+            if self.fullChecks:
+                result = self.checkWhitespace(s,parent) and self.checkTrialWrite()
+                g.app.unitTestDict ['result'] = result
+                return result
+            else:
+                return True
         #@+node:ekr.20070703122141.103:checkWhitespace
         def checkWhitespace(self,s,parent):
 
