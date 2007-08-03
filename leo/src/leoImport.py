@@ -756,7 +756,7 @@ class baseLeoImportCommands:
         elif ext == ".php":
             self.scanPHPText(s,p,atAuto=atAuto)
         else:
-            self.scanUnknownFileType(s,p,ext)
+            self.scanUnknownFileType(s,p,ext,atAuto=atAuto)
 
         p.contract()
         return p
@@ -2730,10 +2730,17 @@ class baseLeoImportCommands:
     def scanUnknownFileType (self,s,p,ext,atAuto=False):
 
         c = self.c
+        changed = c.isChanged()
         body = g.choose(atAuto,'','@ignore\n')
         if ext in ('.html','.htm'): body += '@language html\n'
         if ext in ('.txt','.text'): body += '@nocolor\n'
         c.setBodyString(p,body + self.rootLine + s)
+        if atAuto:
+            for p in p.self_and_subtree_iter():
+                p.clearDirty()
+            if not changed:
+                c.setChanged(False)
+
         g.app.unitTestDict = {'result':True}
     #@-node:ekr.20070713075352:Default scanner
     #@-node:ekr.20031218072017.3241:Scanners for createOutline
