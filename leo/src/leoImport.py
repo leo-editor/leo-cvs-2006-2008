@@ -1766,7 +1766,9 @@ class baseLeoImportCommands:
             start = i ; putRef = False
             while i < end:
                 progress = i
-                if self.startsComment(s,i):
+                if s[i] in (' ','\t','\n'):
+                    i += 1 # Prevent lookahead below, and speed up the scan.
+                elif self.startsComment(s,i):
                     i = self.skipComment(s,i)
                 elif self.startsString(s,i):
                     i = self.skipString(s,i)
@@ -1905,7 +1907,9 @@ class baseLeoImportCommands:
             if decls: self.createDeclsNode(parent,decls)
             while i < len(s):
                 progress = i
-                if self.startsComment(s,i):
+                if s[i] in (' ','\t','\n'):
+                    i += 1 # Prevent lookahead below, and speed up the scan.
+                elif self.startsComment(s,i):
                     i = self.skipComment(s,i)
                 elif self.startsString(s,i):
                     i = self.skipString(s,i)
@@ -1981,6 +1985,8 @@ class baseLeoImportCommands:
                                 if j not in self.errorLines: # No error yet given.
                                     self.errorLines.append(j)
                                     self.underindentedLine(line)
+                elif s[i] in (' ','\t',):
+                    i += 1 # speed up the scan.
                 elif self.startsComment(s,i):
                     i = self.skipComment(s,i)
                 elif self.startsString(s,i):
@@ -2038,10 +2044,13 @@ class baseLeoImportCommands:
 
             '''Skip everything until the start of the next class or function.'''
 
+            trace = False
             start = i
             while i < end:
                 progress = i
-                if self.startsComment(s,i):
+                if s[i] in (' ','\t','\n'):
+                    i += 1 # Prevent lookahead below, and speed up the scan.
+                elif self.startsComment(s,i):
                     i = self.skipComment(s,i)
                 elif self.startsString(s,i):
                     i = self.skipString(s,i)
@@ -2062,7 +2071,7 @@ class baseLeoImportCommands:
 
             # Ignore empty decls.
             if s[start:i].strip():
-                if self.trace: g.trace('\n'+s[start:i])
+                if trace or self.trace: g.trace('\n'+s[start:i])
                 return i
             else:
                 return start
@@ -2191,14 +2200,14 @@ class baseLeoImportCommands:
                 if trace: g.trace('extending sigEnd')
                 sigEnd = g.skip_line(s,sigEnd)
 
-            # Skip the block.
-            i = g.skip_ws_and_nl(s,i)
-            if self.blockDelim1 and not g.match(s,i,self.blockDelim1):
-                if trace: g.trace('no block',g.get_line(s,i))
-                return False
+            if self.blockDelim1:
+                i = g.skip_ws_and_nl(s,i)
+                if not g.match(s,i,self.blockDelim1):
+                    if trace: g.trace('no block',g.get_line(s,i))
+                    return False
 
             i = self.skipCodeBlock(s,i,kind)
-            # skipCodeBlock skips the trailing delim.
+                # skipCodeBlock skips the trailing delim.
 
             # Success: set the ivars.
             self.codeEnd = i
@@ -2217,7 +2226,7 @@ class baseLeoImportCommands:
                 self.error('%s definition does not start a line' % kind)
                 g.es(g.get_line(s,k),color='blue')
 
-            if trace or self.trace: g.trace(kind,'\n'+s[self.sigStart:i])
+            if trace or self.trace: g.trace(kind,'returns\n'+s[self.sigStart:i])
             return True
         #@-node:ekr.20070712112008:startsHelper
         #@+node:ekr.20070711140703:skipSigStart
@@ -2258,8 +2267,6 @@ class baseLeoImportCommands:
             while i < len(s) and not g.match(s,i,self.blockDelim1):
                 if self.startsComment(s,i):
                     i = self.skipComment(s,i)
-                elif self.startsString(s,i):
-                    i = self.skipString(s,i)
                 elif self.sigTailFailTokens:
                     for z in self.sigTailFailTokens:
                         if g.match(s,i,z):
@@ -2647,8 +2654,7 @@ class baseLeoImportCommands:
                 g.trace('Can not happen: Python block does not end in a newline.')
                 g.trace(g.get_line(s,i))
             if (trace or self.trace) and s[start:i].strip():
-                g.trace(g.callers())
-                g.trace('\n'+s[start:i])
+                g.trace('returns\n'+s[start:i])
             return i
         #@+node:ekr.20070801080447:pythonNewlineHelper
         def pythonNewlineHelper (self,s,i,parenCount,startIndent,underIndentedStart):
@@ -2656,6 +2662,7 @@ class baseLeoImportCommands:
             trace = False
             breakFlag = False
             j, indent = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+            if trace: g.trace('startIndent',startIndent,'indent',indent,'line',repr(g.get_line(s,j)))
             if indent <= startIndent and parenCount == 0:
                 # An underindented line: it ends the block *unless*
                 # it is a blank or comment line.
@@ -2691,32 +2698,30 @@ class baseLeoImportCommands:
                             if indent <= startIndent:
                                 self.underindentedComment(line)
                     underIndentedStart = None
+            if trace: g.trace('returns',i,'underIndentedStart',underIndentedStart)
             return i,underIndentedStart,breakFlag
         #@-node:ekr.20070801080447:pythonNewlineHelper
         #@-node:ekr.20070712090019.1:skipCodeBlock (python) & helper
-        #@+node:ekr.20070712092615:skipSigTail
+        #@+node:ekr.20070803101619:skipSigTail
+        # This must be overridden in order to handle newlines properly.
+
         def skipSigTail(self,s,i):
 
             '''Skip from the end of the arg list to the start of the block.'''
 
-            # Must override so we can skip the ':' properly and issue better warnings.
-
-            start = i
             while i < len(s):
-                if self.startsComment(s,i):
-                    i = self.skipComment(s,i)
-                elif self.startsString(s,i):
+                ch = s[i]
+                if ch == '\n':
                     break
-                elif g.match(s,i,':'):
-                    i = g.skip_line(s,i+1)
-                    if self.trace and s[start:i].strip(): g.trace('\n'+s[start:i])
-                    return i,True
-                else:
+                elif ch in (' ','\t',):
                     i += 1
+                elif self.startsComment(s,i):
+                    i = self.skipComment(s,i)
+                else:
+                    break
 
-            self.error('Warning: improper signature: %s' % g.get_line(s,start))
-            return start,False
-        #@-node:ekr.20070712092615:skipSigTail
+            return i,g.match(s,i,':')
+        #@-node:ekr.20070803101619:skipSigTail
         #@-node:ekr.20070707073723:Overrides
         #@-others
     #@-node:ekr.20070703122141.100:class pythonScanner (baseScannerClass)
