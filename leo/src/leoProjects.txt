@@ -280,7 +280,7 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
     elif ext == ".php":
         self.scanPHPText(s,p,atAuto=atAuto)
     else:
-        self.scanUnknownFileType(s,p,ext)
+        self.scanUnknownFileType(s,p,ext,atAuto=atAuto)
 
     p.contract()
     return p
@@ -862,7 +862,7 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
     elif ext == ".php":
         self.scanPHPText(s,p,atAuto=atAuto)
     else:
-        self.scanUnknownFileType(s,p,ext)
+        self.scanUnknownFileType(s,p,ext,atAuto=atAuto)
 
     p.contract()
     return p

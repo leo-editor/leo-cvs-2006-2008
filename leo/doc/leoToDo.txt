@@ -2,6 +2,8 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
+#@+node:ekr.20070803115653:Support @path in headlines
+#@-node:ekr.20070803115653:Support @path in headlines
 #@+node:ekr.20070729093951.1:Update docs re @enabled-plugins
 #@-node:ekr.20070729093951.1:Update docs re @enabled-plugins
 #@+node:ekr.20070729105604:Fix bugs
