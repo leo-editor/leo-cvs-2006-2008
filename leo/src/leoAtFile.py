@@ -4754,11 +4754,11 @@ class atFile:
         at = self ; c = at.c
         at.default_directory = None
         #@    << Set path from @file node >>
-        #@+node:ekr.20041005105605.237:<< Set path from @file node >>  in df.scanDeafaultDirectory in leoAtFile.py
+        #@+node:ekr.20041005105605.237:<< Set path from @file node >>
         # An absolute path in an @file node over-rides everything else.
         # A relative path gets appended to the relative path by the open logic.
 
-        name = p.anyAtFileNodeName() # 4/28/04
+        name = p.anyAtFileNodeName() or p.atAutoNodeName()
 
         theDir = g.choose(name,g.os_path_dirname(name),None)
 
@@ -4769,7 +4769,7 @@ class atFile:
                 at.default_directory = g.makeAllNonExistentDirectories(theDir,c=c)
                 if not at.default_directory:
                     at.error("Directory \"%s\" does not exist" % theDir)
-        #@-node:ekr.20041005105605.237:<< Set path from @file node >>  in df.scanDeafaultDirectory in leoAtFile.py
+        #@-node:ekr.20041005105605.237:<< Set path from @file node >>
         #@nl
         if at.default_directory:
             return
@@ -4779,7 +4779,7 @@ class atFile:
             theDict = g.get_directives_dict(s)
             if theDict.has_key("path"):
                 #@            << handle @path >>
-                #@+node:ekr.20041005105605.238:<< handle @path >> in df.scanDeafaultDirectory in leoAtFile.py
+                #@+node:ekr.20041005105605.238:<< handle @path >>
                 # We set the current director to a path so future writes will go to that directory.
 
                 k = theDict["path"]
@@ -4820,7 +4820,7 @@ class atFile:
                         at.error("ignoring bad @path: %s" % path)
                 else:
                     at.error("ignoring empty @path")
-                #@-node:ekr.20041005105605.238:<< handle @path >> in df.scanDeafaultDirectory in leoAtFile.py
+                #@-node:ekr.20041005105605.238:<< handle @path >>
                 #@nl
                 return
 
@@ -4844,7 +4844,6 @@ class atFile:
         #@nl
         if not at.default_directory and not importing:
             # This should never happen: c.openDirectory should be a good last resort.
-            g.trace()
             at.error("No absolute directory specified anywhere.")
             at.default_directory = ""
     #@-node:ekr.20041005105605.236:atFile.scanDefaultDirectory
