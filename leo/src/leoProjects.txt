@@ -506,16 +506,18 @@ def putIndent(self,n):
 #@-node:ekr.20040721094203:Probably not: Make sure Leo uses "verbatim" whitespace
 #@-node:ekr.20070611173545.1:Design
 #@+node:ekr.20070731070208:Recent
+@nocolor
 @
 To do:
 
-- Warn if @auto file does not exist.
+- Document @auto.
+    - @bool full_import_checks = True
+    - Imported commands now create @nosent trees.
 
-** Document @auto.
-
-- Imported commands now create @nosent trees.  Can leo determine the proper kind of import to do?  Should it?
-
+- Can leo determine the proper kind of import to do?  Should it?
 - Can @auto handle files containing Leo sentinels?
+
+@color
 #@nonl
 #@+node:ekr.20031218072017.3212:importFilesCommand
 def importFilesCommand (self,files=None,treeType=None):
@@ -665,12 +667,19 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
     return p
 #@+node:ekr.20031218072017.3211:<< Read file into s >>
 try:
+    # Duplicate the @file directory logic in leoAtFile.py
+    if atAuto:
+        at = c.atFileCommands
+        at.scanDefaultDirectory(parent,importing=True)
+        fileName = g.os_path_join(at.default_directory,fileName)
+
+    fileName = g.os_path_normpath(fileName)
     theFile = open(fileName)
     s = theFile.read()
     s = g.toUnicode(s,self.encoding)
     theFile.close()
 except IOError:
-    g.es("can not open " + fileName)
+    g.es("can not open %s%s" % (g.choose(atAuto,'@auto ',''),fileName),color='red')
     leoTest.fail()
     return None
 #@-node:ekr.20031218072017.3211:<< Read file into s >>
@@ -862,7 +871,7 @@ def __init__ (self,importCommands,atAuto,language):
     ic = importCommands
 
     self.atAuto = atAuto
-    self.c = ic.c
+    self.c = c = ic.c
     self.codeEnd = None
         # The character after the last character of the class, method or function.
         # An error will be given if this is not a newline.
@@ -872,6 +881,7 @@ def __init__ (self,importCommands,atAuto,language):
     self.extraIdChars = ''
     self.fileName = ic.fileName # The original filename.
     self.fileType = ic.fileType # The extension,  '.py', '.c', etc.
+    self.fullChecks = c.config.getBool('full_import_checks')
     self.importCommands = ic
     self.language = language
     self.methodName = ic.methodName # x, as in < < x methods > > =
@@ -928,10 +938,12 @@ def check (self,s,parent):
     Return True if the nodes are equivalent to the original file.
     '''
 
-    result = self.checkWhitespace(s,parent) and self.checkTrialWrite()
-    g.app.unitTestDict ['result'] = result
-    return result
-#@nonl
+    if self.fullChecks:
+        result = self.checkWhitespace(s,parent) and self.checkTrialWrite()
+        g.app.unitTestDict ['result'] = result
+        return result
+    else:
+        return True
 #@+node:ekr.20070703122141.103:checkWhitespace
 def checkWhitespace(self,s,parent):
 

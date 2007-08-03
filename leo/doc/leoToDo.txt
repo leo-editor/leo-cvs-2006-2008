@@ -5,6 +5,7 @@
 #@+node:ekr.20070729093951.1:Update docs re @enabled-plugins
 #@-node:ekr.20070729093951.1:Update docs re @enabled-plugins
 #@+node:ekr.20070729105604:Fix bugs
+#@+node:ekr.20070803081137:bug in rst plugin
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=4437036
 By: plumloco
@@ -36,6 +37,44 @@ users home dir which contains myLeoSettings and also a users plugin directory.
 Obviously as a debian package it will be installed read only. All those settings
 files in Plugins will also have to be moved out.
 #@nonl
+#@-node:ekr.20070803081137:bug in rst plugin
+#@+node:ekr.20070803081137.1:bug in http plugin
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4437415
+By: xet7
+
+it seems that bug is in leo. It doesn't show nodes with scandinavian characters
+(ä) on node. At some point I also got this traceback:
+
+Traceback (most recent call last):
+  File "C:\Program Files\Leo\src\leoGlobals.py", line 2559, in doHook
+    return f(tag,keywords)
+  File "C:\Program Files\Leo\src\leoPlugins.py", line 92, in doPlugins
+    return doHandlersForTag(tag,keywords)
+  File "C:\Program Files\Leo\src\leoPlugins.py", line 71, in doHandlersForTag
+    val = callTagHandler(bunch,tag,keywords)
+  File "C:\Program Files\Leo\src\leoPlugins.py", line 50, in callTagHandler
+    result = handler(tag,keywords)
+  File "C:\Program Files\Leo\plugins\mod_http.py", line 856, in plugin_wrapper
+    while loop(config.http_timeout):
+  File "C:\Program Files\Leo\plugins\mod_http.py", line 847, in loop
+    return poll(timeout)
+  File "C:\Program Files\Leo\plugins\mod_http.py", line 835, in poll
+    asyncore.write(obj)
+  File "C:\Python25\lib\asyncore.py", line 80, in write
+    obj.handle_error()
+  File "C:\Python25\lib\asyncore.py", line 418, in handle_error
+    'error'
+  File "C:\Python25\lib\asyncore.py", line 376, in log_info
+    print '%s: %s' % (type, message)
+IOError: [Errno 9] Bad file descriptor
+
+The actual leo file that I'm trying to use, when I exported flatten outline,
+is 29143 lines long, and many nodes have ä/ö in them. Nodes that are just
+ascii show fine.
+#@nonl
+#@-node:ekr.20070803081137.1:bug in http plugin
 #@-node:ekr.20070729105604:Fix bugs
 #@+node:ekr.20051202094427:Resolve cvs conflicts
 http://sourceforge.net/forum/message.php?msg_id=4224589

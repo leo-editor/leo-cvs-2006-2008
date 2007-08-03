@@ -406,7 +406,7 @@ class vnode (baseVnode):
         flag, i = g.is_special(self.t.bodyString,0,"@all")
         return flag
     #@-node:EKR.20040430152000:isAtAllNode
-    #@+node:ekr.20040326031436:isAnyAtFileNode good
+    #@+node:ekr.20040326031436:isAnyAtFileNode
     def isAnyAtFileNode (self):
 
         """Return True if v is any kind of @file or related node."""
@@ -416,7 +416,7 @@ class vnode (baseVnode):
 
         h = self.headString()
         return h and h[0] == '@' and self.anyAtFileNodeName()
-    #@-node:ekr.20040326031436:isAnyAtFileNode good
+    #@-node:ekr.20040326031436:isAnyAtFileNode
     #@+node:ekr.20040325073709:isAt...FileNode (vnode)
     def isAtAutoNode (self):
         return g.choose(self.atAutoNodeName(),True,False)
