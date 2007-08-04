@@ -78,27 +78,6 @@ ascii show fine.
 #@nonl
 #@-node:ekr.20070803081137.1:bug in http plugin
 #@-node:ekr.20070729105604:Fix bugs
-#@+node:ekr.20051202094427:Resolve cvs conflicts
-http://sourceforge.net/forum/message.php?msg_id=4224589
-
-I have finally discovered a simple way of handling cvs conflict markers. It's really a cheat. If an import parser discovers cvs conflict markers, like >>>>, the parser will just put the entire raw text in a node, probably a child node that contains something like:: 
-
-@killcolor 
-@ignore 
-@ The child of this node contains the entire text of <filename> 
-This file contains cvs conflicts delimited as usual. 
-Please resolve the conflicts by hand, remove the @ignore directive above, 
-and execute the write-resolved-conflict-file command. 
-This command will writes <filename> and re-import the file. 
-
-In other words, I don't think parsers should try to resolve conflicts. Programmers are used to resolving conflicts in 'flat' editors, and doing so in a single Leo node would be natural. Moreover, because sentinels are relatively simple, it should be easy to handle any sentinels that may appear between conflict markers. Telling Leo users how to handle such sentinels is likely to be much easier, and more reliable, than trying to program the parser to handle those sentinels! 
-
-Oh yes, the write-resolved-conflicts-file command can do a thorough consistency check of sentinels, and can warn if there are problems. As usual, if problems are found, the file will not be written, but instead the @auto tree will be saved in the .leo file. 
-
-After so many years, we an easy and good way to handle cvs conflicts. 
-
-Edward
-#@-node:ekr.20051202094427:Resolve cvs conflicts
 #@+node:ekr.20070615063616.1:Create Debian package
 #@-node:ekr.20070615063616.1:Create Debian package
 #@+node:ekr.20061006165447:Let import commands decide what kind of import to do
