@@ -1431,7 +1431,8 @@ class baseLeoImportCommands:
             self.lineCommentDelim2 = None
             self.outerBlockDelim1 = None
             self.outerBlockDelim2 = None
-            self.sigTailFailTokens = []
+            self.sigHeadExtraTokens = [] # Extra tokens valid in head of signature.
+            self.sigFailTokens = []
                 # A list of strings that abort a signature when seen in a tail.
                 # For example, ';' and '=' in C.
 
@@ -1808,8 +1809,9 @@ class baseLeoImportCommands:
                 g.trace('body\n%s' % body)
 
             if not body.endswith('\n'):
-                self.error('function does not end with a newline.  A newline will be added.')
-                g.es(g.get_line(s,codeEnd),color='blue')
+                self.error('function %s does not end with a newline; one will be added.' % self.sigID)
+                g.es_print(g.get_line(s,codeEnd),color='blue')
+                g.trace(g.callers())
 
             self.createFunctionNode(headline,body,parent)
         #@-node:ekr.20070707082432:putFunction
@@ -1954,6 +1956,7 @@ class baseLeoImportCommands:
             If no matching is found i is set to len(s)'''
 
             trace = False
+            start = i
             if delim1 is None: delim1 = self.blockDelim1
             if delim2 is None: delim2 = self.blockDelim2
             match1 = g.choose(len(delim1)==1,g.match,g.match_word)
@@ -1974,7 +1977,7 @@ class baseLeoImportCommands:
                         if indent < startIndent and line.strip():
                             # An non-empty underindented line.
                             # Issue an error unless it contains just the closing bracket.
-                            if level == 0 and match2(s,j,delim2):
+                            if level == 1 and match2(s,j,delim2):
                                 pass
                             else:
                                 if j not in self.errorLines: # No error yet given.
@@ -1990,22 +1993,36 @@ class baseLeoImportCommands:
                     level += 1 ; i += len(delim1)
                 elif match2(s,i,delim2):
                     level -= 1 ; i += len(delim2)
-                    if level <= 0: break
+                    if level <= 0:
+                        if trace: g.trace('returns\n',repr(s[start:i]))
+                        return i
+
                 else: i += 1
                 assert progress < i
 
-            if trace: g.trace('returns\n',s[start:i])
-            return i
+            if trace: g.trace('** no block')
+            return start
         #@-node:ekr.20070707073859:skipBlock
         #@+node:ekr.20070712091019:skipCodeBlock
         def skipCodeBlock (self,s,i,kind):
 
             '''Skip the code block in a function or class definition.'''
 
+            trace = False
+            start = i
             i = self.skipBlock(s,i,delim1=None,delim2=None)
-            i = self.skipNewline(s,i,kind)
 
-            return i
+            if self.sigFailTokens:
+                i = g.skip_ws(s,i)
+                for z in self.sigFailTokens:
+                    if g.match(s,i,z):
+                        if trace: g.trace('failtoken',z)
+                        return start,False
+
+            if i > start:
+                i = self.skipNewline(s,i,kind)
+
+            return i,True
         #@-node:ekr.20070712091019:skipCodeBlock
         #@+node:ekr.20070711104014:skipComment & helper
         def skipComment (self,s,i):
@@ -2040,17 +2057,20 @@ class baseLeoImportCommands:
             '''Skip everything until the start of the next class or function.'''
 
             trace = False
-            start = i
+            start = i ; prefix = None
             while i < end:
                 progress = i
                 if s[i] in (' ','\t','\n'):
                     i += 1 # Prevent lookahead below, and speed up the scan.
                 elif self.startsComment(s,i):
+                    if prefix is None: prefix = i
                     i = self.skipComment(s,i)
                 elif self.startsString(s,i):
                     i = self.skipString(s,i)
+                    prefix = None
                 elif g.match(s,i,self.outerBlockDelim1):
                     i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+                    prefix = None
                 elif self.startsClass(s,i,quick=True):
                     # Important: do not include leading ws in the decls.
                     i = self.adjustClassOrFunctionStart(s,i,'class')
@@ -2060,11 +2080,14 @@ class baseLeoImportCommands:
                     i = self.adjustClassOrFunctionStart(s,i,'function')
                     break
                 elif self.startsId(s,i):
-                    i = self.skipId(s,i);
-                else: i += 1
+                    i = self.skipId(s,i)
+                    prefix = None
+                else:
+                    i += 1 ;  prefix = None
                 assert(progress < i)
 
             # Ignore empty decls.
+            if prefix is not None: i = prefix
             if s[start:i].strip():
                 if trace or self.trace: g.trace('\n'+s[start:i])
                 return i
@@ -2082,8 +2105,9 @@ class baseLeoImportCommands:
 
             j = g.find_line_start(s,i)
             if s[j:i].strip():
-                message = '%s definition does not start a line. Leo must insert a newline.' % tag
+                message = '%s %s does not start a line. Leo must insert a newline.' % (tag,self.sigID)
                 self.error(message)
+                g.es_print(g.get_line(s,j))
                 return i
             else:
                 return j
@@ -2101,17 +2125,21 @@ class baseLeoImportCommands:
             '''Skip whitespace and comments up to a newline, then skip the newline.
             Issue an error if no newline is found.'''
 
-            while 1:
+            while i < len(s):
                 i = g.skip_ws(s,i)
                 if self.startsComment(s,i):
                     i = self.skipComment(s,i)
                 else: break
 
+            if i >= len(s):
+                return len(s)
+
             if g.match(s,i,'\n'):
                 i += 1
             else:
-                self.error('%s does not end in a newline.  A newline will be added.' % kind)
-                g.es(g.get_line(s,i),color='blue')
+                self.error('%s %s does not end in a newline; one will be added.' % (kind,self.sigID))
+                g.es_print(g.get_line(s,i),color='blue')
+                # g.trace(g.callers())
 
             return i
         #@-node:ekr.20070730134936:skipNewline
@@ -2157,19 +2185,20 @@ class baseLeoImportCommands:
 
             # Run a quick check first.
             # Get the tag that starts the class or function.
+            j = g.skip_ws_and_nl(s,i)
+            i = self.skipId(s,j)
+            self.sigID = theId = s[j:i] # Set sigId ivar 'early' for error messages.
+            if not theId: return False
             if tags:
-                j = g.skip_ws_and_nl(s,i)
-                i = self.skipId(s,j)
-                theId = s[j:i]
                 if theId not in tags:
                     return False
                 if trace: g.trace('tags',tags,'theId',theId)
                 if quick: return True
 
-            if trace: g.trace('kind',kind)
+            if trace: g.trace('kind',kind,'id',theId,g.callers())
 
             # Get the class/function id.
-            i, ids = self.skipSigStart(s,i,tags)
+            i, ids = self.skipSigStart(s,j,tags) # Rescan the first id.
             i, sigId = self.skipSigId(s,i,ids)
             if not sigId:
                 if trace: g.trace('no sigId',g.get_line(s,i))
@@ -2201,7 +2230,8 @@ class baseLeoImportCommands:
                     if trace: g.trace('no block',g.get_line(s,i))
                     return False
 
-            i = self.skipCodeBlock(s,i,kind)
+            i,ok = self.skipCodeBlock(s,i,kind)
+            if not ok: return False
                 # skipCodeBlock skips the trailing delim.
 
             # Success: set the ivars.
@@ -2235,13 +2265,23 @@ class baseLeoImportCommands:
 
             __pychecker__ = '--no-argsused' # tags not used in the base class.
 
+            trace = False
             ids = []
-            while 1:
+            start = i
+            while i < len(s):
                 j = g.skip_ws_and_nl(s,i)
-                i = self.skipId(s,j)
-                theId = s[j:i]
-                if theId: ids.append(theId)
-                else: break
+                for z in self.sigFailTokens:
+                    if g.match(s,j,z):
+                        if trace: g.trace('failtoken',z,'ids',ids)
+                        return start, []
+                for z in self.sigHeadExtraTokens:
+                    if g.match(s,j,z):
+                        i += len(z) ; break
+                else:
+                    i = self.skipId(s,j)
+                    theId = s[j:i]
+                    if theId: ids.append(theId)
+                    else: break
 
             return i, ids
         #@-node:ekr.20070711140703:skipSigStart
@@ -2259,19 +2299,23 @@ class baseLeoImportCommands:
 
             '''Skip from the end of the arg list to the start of the block.'''
 
-            while i < len(s) and not g.match(s,i,self.blockDelim1):
+            trace = False
+            start = i
+            i = g.skip_ws(s,i)
+            for z in self.sigFailTokens:
+                if g.match(s,i,z):
+                    if trace: g.trace('failToken',z,'line',g.skip_line(s,i))
+                    return i,False
+            while i < len(s):
                 if self.startsComment(s,i):
                     i = self.skipComment(s,i)
-                elif self.sigTailFailTokens:
-                    for z in self.sigTailFailTokens:
-                        if g.match(s,i,z):
-                            return i,False
-                    else:
-                        i += 1
+                elif g.match(s,i,self.blockDelim1):
+                    if trace: g.trace(repr(s[start:i]))
+                    return i,True
                 else:
                     i += 1
-
-            return i,True
+            if trace: g.trace('no block delim')
+            return i,False
         #@-node:ekr.20070712082913:skipSigTail
         #@-node:ekr.20070711132314:startsClass/Function (baseClass) & helpers
         #@+node:ekr.20070711104014.1:startsComment
@@ -2355,7 +2399,8 @@ class baseLeoImportCommands:
             self.lineCommentDelim2 = '#' # A hack: treat preprocess directives as comments(!)
             self.outerBlockDelim1 = '{'
             self.outerBlockDelim2 = '}'
-            self.sigTailFailTokens = [';','=']
+            self.sigHeadExtraTokens = ['*']
+            self.sigFailTokens = [';','=']
     #@-node:edreamleo.20070710093042:class cScanner (baseScannerClass)
     #@-node:edreamleo.20070710110114.1:C scanner
     #@+node:ekr.20070711060107:Elisp scanner
@@ -2648,9 +2693,10 @@ class baseLeoImportCommands:
             if 0 < i < len(s) and not g.match(s,i-1,'\n'):
                 g.trace('Can not happen: Python block does not end in a newline.')
                 g.trace(g.get_line(s,i))
+                return i,False
             if (trace or self.trace) and s[start:i].strip():
                 g.trace('returns\n'+s[start:i])
-            return i
+            return i,True
         #@+node:ekr.20070801080447:pythonNewlineHelper
         def pythonNewlineHelper (self,s,i,parenCount,startIndent,underIndentedStart):
 
