@@ -181,8 +181,7 @@ def computeHomeDir():
 def computeLeoDir ():
 
     loadDir = g.app.loadDir
-
-    g.app.leoDir = theDir = g.os_path_dirname(loadDir)
+    theDir = g.os_path_dirname(loadDir)
 
     if theDir not in sys.path:
         sys.path.append(theDir)
@@ -191,6 +190,8 @@ def computeLeoDir ():
         theParentDir = g.os_path_dirname(theDir)
         if theParentDir not in sys.path:
             sys.path.append(theParentDir)
+
+    return theDir
 #@-node:ekr.20060416113431:computeLeoDir
 #@+node:ekr.20031218072017.1937:computeLoadDir
 def computeLoadDir():
