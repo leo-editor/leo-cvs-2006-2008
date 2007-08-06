@@ -2935,6 +2935,8 @@ def os_path_splitext(path,encoding=None):
 #@+node:ekr.20031218072017.2160:toUnicodeFileEncoding
 def toUnicodeFileEncoding(path,encoding):
 
+    if path: path = path.replace('\\', os.sep)
+
     if not encoding:
         if sys.platform == "win32":
             # encoding = "mbcs" # Leo 4.2 and previous.
