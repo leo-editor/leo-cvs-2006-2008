@@ -2868,38 +2868,7 @@ class atFile:
             else:
                 at.writeException() # Sets dirty and orphan bits.
     #@-node:ekr.20041005105605.144:write
-    #@+node:ekr.20050506084734:writeFromString
-    # This is at.write specialized for scripting.
-
-    def writeFromString(self,root,s,forcePythonSentinels=True,useSentinels=True):
-
-        """Write a 4.x derived file from a string.
-
-        This is used by the scripting logic."""
-
-        at = self ; c = at.c
-        c.endEditing() # Capture the current headline, but don't change the focus!
-
-        at.initWriteIvars(root,"<string-file>",
-            nosentinels=not useSentinels,thinFile=False,scriptWrite=True,toString=True,
-            forcePythonSentinels=forcePythonSentinels)
-
-        try:
-            at.openFileForWriting(root,at.targetFileName,toString=True)
-            # Simulate writing the entire file so error recovery works.
-            at.writeOpenFile(root,nosentinels=not useSentinels,toString=True,fromString=s)
-            at.closeWriteFile()
-            # Major bug: failure to clear this wipes out headlines!
-            # Minor bug: sometimes this causes slight problems...
-            if root:
-                root.v.t.tnodeList = []
-                root.v.t._p_changed = True
-        except:
-            at.exception("exception preprocessing script")
-
-        return at.stringOutput
-    #@-node:ekr.20050506084734:writeFromString
-    #@+node:ekr.20041005105605.147:writeAll
+    #@+node:ekr.20041005105605.147:writeAll (atFile)
     def writeAll(self,writeAtFileNodesFlag=False,writeDirtyAtFileNodesFlag=False,toString=False):
 
         """Write @file nodes in all or part of the outline"""
@@ -2933,7 +2902,7 @@ class atFile:
         #@-node:ekr.20041005105605.148:<< Clear all orphan bits >>
         #@nl
         while p and p != after:
-            if p.isAnyAtFileNode() or p.isAtIgnoreNode():
+            if p.isAnyAtFileNode() or p.isAtAutoNode() or p.isAtIgnoreNode():
                 #@            << handle v's tree >>
                 #@+node:ekr.20041005105605.149:<< handle v's tree >>
                 if p.v.isDirty() or writeAtFileNodesFlag or p.v.t in writtenFiles:
@@ -2947,6 +2916,9 @@ class atFile:
                         writtenFiles.append(p.v.t) ; autoSave = True
                     elif p.isAtIgnoreNode():
                         pass
+                    elif p.isAtAutoNode():
+                        at.writeOneAtAutoNode(p,force=False,toString=toString)
+                        writtenFiles.append(p.v.t)
                     elif p.isAtNorefFileNode():
                         at.norefWrite(p,toString=toString)
                         writtenFiles.append(p.v.t) ; autoSave = True
@@ -2980,7 +2952,108 @@ class atFile:
         #@-node:ekr.20041005105605.150:<< say the command is finished >>
         #@nl
         return mustAutoSave
-    #@-node:ekr.20041005105605.147:writeAll
+    #@-node:ekr.20041005105605.147:writeAll (atFile)
+    #@+node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
+    def writeAtAutoNodes (self,event=None):
+
+        '''Write all @auto nodes in the selected outline.'''
+
+        at = self
+        at.writeAtAutoNodesHelper(writeDirtyOnly=False)
+
+    def writeDirtyAtAutoNodes (self,event=None):
+
+        '''Write all dirty @auto nodes in the selected outline.'''
+
+        at = self
+        at.writeAtAutoNodesHelper(writeDirtyOnly=True)
+    #@nonl
+    #@+node:ekr.20070806140208:writeAtAutoNodesHelper
+    def writeAtAutoNodesHelper(self,toString=False,writeDirtyOnly=True):
+
+        """Write @auto nodes in the selected outline"""
+
+        at = self ; c = at.c
+        p = c.currentPosition() ; after = p.nodeAfterTree()
+        found = False
+        c.fileCommands.assignFileIndices()
+        while p and p != after:
+            if p.isAtAutoNode() and not p.isAtIgnoreNode() and (p.isDirty() or not writeDirtyOnly):
+                ok = self.writeOneAtAutoNode(p,force=True,toString=toString)
+                if ok:
+                    found = True
+                    p.moveToNodeAfterTree()
+                else:
+                    p.moveToThreadNext()
+            else:
+                p.moveToThreadNext()
+
+        if found:
+            g.es("finished")
+        elif writeDirtyOnly:
+            g.es("no dirty @auto nodes in the selected tree")
+        else:
+            g.es("no @auto nodes in the selected tree")
+    #@-node:ekr.20070806140208:writeAtAutoNodesHelper
+    #@+node:ekr.20070806141607:writeOneAtAutoNode
+    def writeOneAtAutoNode(self,p,force,toString):
+
+        '''Write p, and @auto node.'''
+
+        at = self ; c = at.c ; d = c.atAutoDict ; root = p.copy()
+
+        fileName = p.atAutoNodeName()
+        if not fileName: return False
+        if not force and not d.get(fileName): return False
+
+        # This code is similar to code in at.write.
+        c.endEditing() # Capture the current headline.
+        at.targetFileName = g.choose(toString,"<string-file>",fileName)
+        at.initWriteIvars(root,at.targetFileName,
+            nosentinels=True,thinFile=False,scriptWrite=False,
+            toString=toString,write_strips_blank_lines=False)
+
+        ok = at.openFileForWriting (root,fileName=fileName,toString=toString)
+        if ok:
+            g.trace(fileName)
+            at.writeOpenFile(root,nosentinels=True,toString=toString)
+            at.closeWriteFile() # Sets stringOutput if toString is True.
+            at.replaceTargetFileIfDifferent()
+
+        return ok
+    #@-node:ekr.20070806141607:writeOneAtAutoNode
+    #@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
+    #@+node:ekr.20050506084734:writeFromString
+    # This is at.write specialized for scripting.
+
+    def writeFromString(self,root,s,forcePythonSentinels=True,useSentinels=True):
+
+        """Write a 4.x derived file from a string.
+
+        This is used by the scripting logic."""
+
+        at = self ; c = at.c
+        c.endEditing() # Capture the current headline, but don't change the focus!
+
+        at.initWriteIvars(root,"<string-file>",
+            nosentinels=not useSentinels,thinFile=False,scriptWrite=True,toString=True,
+            forcePythonSentinels=forcePythonSentinels)
+
+        try:
+            at.openFileForWriting(root,at.targetFileName,toString=True)
+            # Simulate writing the entire file so error recovery works.
+            at.writeOpenFile(root,nosentinels=not useSentinels,toString=True,fromString=s)
+            at.closeWriteFile()
+            # Major bug: failure to clear this wipes out headlines!
+            # Minor bug: sometimes this causes slight problems...
+            if root:
+                root.v.t.tnodeList = []
+                root.v.t._p_changed = True
+        except:
+            at.exception("exception preprocessing script")
+
+        return at.stringOutput
+    #@-node:ekr.20050506084734:writeFromString
     #@+node:ekr.20041005105605.151:writeMissing
     def writeMissing(self,p,toString=False):
 

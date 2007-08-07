@@ -1,8 +1,12 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20031218072017.3206:@thin leoImport.py
+
 #@@language python
 #@@tabwidth -4
 #@@pagewidth 80
+
+# Minor to do: can leo determine the proper kind of import to do?  Should it?
+# Minor to do: can @auto handle files containing Leo sentinels?
 
 import leoGlobals as g
 import leoTest # Support for unit tests.
@@ -28,6 +32,7 @@ class baseLeoImportCommands:
         self.output_newline = g.getOutputNewline(c=c) # Value of @bool output_newline
         self.rootLine = "" # Empty or @root + self.fileName
         self.tabwidth = c.tab_width # The tab width in effect in the c.currentPosition.
+        self.targetAtAutoFilename = '' # The full path name used in @auto reads: becomes key for c.atAutoDict.
         self.trace = c.config.getBool('trace_import')
         self.treeType = "@file" # "@root" or "@file"
         self.webType = "@noweb" # "cweb" or "noweb"
@@ -703,10 +708,11 @@ class baseLeoImportCommands:
             try:
                 # Duplicate the @file directory logic in leoAtFile.py
                 if atAuto:
+                    # For non-auto imports, we already have a full path.
                     at = c.atFileCommands
                     at.scanDefaultDirectory(parent,importing=True)
                     fileName = g.os_path_join(at.default_directory,fileName)
-
+                    self.targetAtAutoFilename = fileName
                 fileName = g.os_path_normpath(fileName)
                 theFile = open(fileName)
                 s = theFile.read()
@@ -761,6 +767,44 @@ class baseLeoImportCommands:
         p.contract()
         return p
     #@-node:ekr.20031218072017.3210:createOutline
+    #@+node:ekr.20070806111212:readAtAutoNodes (importCommands) & helper
+    def readAtAutoNodes (self,toString=False):
+
+        c = self.c
+        p = c.currentPosition() ; after = p.nodeAfterTree()
+
+        c.beginUpdate()
+        try:
+            found = False
+            while p and p != after:
+                if p.isAtAutoNode():
+                    if p.isAtIgnoreNode():
+                        g.es_print('ignoring %s' % (p.headString()),color='blue')
+                        p.moveToThreadNext()
+                    else:
+                        self.readOneAtAutoNode(p,toString=toString)
+                        found = True
+                        p.moveToNodeAfterTree()
+                else:
+                    p.moveToThreadNext()
+            g.es(g.choose(found,'finished','no @auto nodes in the selected tree'),color='blue')
+        finally:
+            c.endUpdate()
+
+        # Force an update of the body pane.
+        c.setBodyString(p,p.bodyString())
+        c.frame.body.onBodyChanged(undoType=None)
+    #@+node:ekr.20070807084545:readOneAtAutoNode
+    def readOneAtAutoNode(self,p,toString):
+
+        '''Read the @auto node at p'''
+
+        self.createOutline(
+            fileName=p.atAutoNodeName(),
+            parent=p.copy(),
+            atAuto=True)
+    #@-node:ekr.20070807084545:readOneAtAutoNode
+    #@-node:ekr.20070806111212:readAtAutoNodes (importCommands) & helper
     #@+node:ekr.20031218072017.1810:importDerivedFiles
     def importDerivedFiles (self,parent=None,paths=None):
         # Not a command.  It must *not* have an event arg.
@@ -2337,7 +2381,7 @@ class baseLeoImportCommands:
             return g.match(s,i,'"') or g.match(s,i,"'")
         #@-node:ekr.20070707172732.1:startsString
         #@-node:ekr.20070706084535.1:Parsing
-        #@+node:ekr.20070707072749:run
+        #@+node:ekr.20070707072749:run (baseScannerClass)
         def run (self,s,parent):
 
             scanner = self ; c = self.c
@@ -2355,7 +2399,11 @@ class baseLeoImportCommands:
             # Return True if the result is equivalent to the original file.
             ok = self.errors == 0 and scanner.check(s,parent)
             g.app.unitTestDict ['result'] = ok
-            # g.trace('ok',ok,'parent',parent)
+
+            if self.atAuto:
+                target = self.importCommands.targetAtAutoFilename
+                # g.trace('setting c.atAutoDict[%s] = %s' % (target,ok))
+                c.atAutoDict [target] = ok
 
             # Step 3: insert an @ignore directive if there are any problems.
             if ok:
@@ -2367,7 +2415,7 @@ class baseLeoImportCommands:
             else:
                 scanner.insertIgnoreDirective(parent)
                 c.setChanged(True)
-        #@-node:ekr.20070707072749:run
+        #@-node:ekr.20070707072749:run (baseScannerClass)
         #@-others
     #@-node:ekr.20070703122141.65: class baseScannerClass
     #@+node:edreamleo.20070710110114.1:C scanner

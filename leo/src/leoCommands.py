@@ -75,6 +75,7 @@ class baseCommands:
 
         # Init ivars with self.x instead of c.x to keep Pychecker happy
         self.chapterController = None
+        self.atAutoDict = {} # Keys are full path names.  Values are True.
         self.frame = frame
         self.isZipped = False # May be set to True by g.openWithFileName.
         self.mFileName = fileName
@@ -1115,6 +1116,21 @@ class baseCommands:
         except:
             g.es("can not open:" + fileName)
     #@-node:ekr.20031218072017.2839:readOutlineOnly
+    #@+node:ekr.20070806105721.1:readAtAutoNodes (commands)
+    def readAtAutoNodes (self,event=None):
+
+        '''Read all @auto nodes in the presently selected outline.'''
+
+        c = self ; u = c.undoer ; p = c.currentPosition()
+
+        c.beginUpdate()
+        try:
+            undoData = u.beforeChangeTree(p)
+            c.importCommands.readAtAutoNodes()
+            u.afterChangeTree(p,'Read @auto Nodes',undoData)
+        finally:
+            c.endUpdate()
+    #@-node:ekr.20070806105721.1:readAtAutoNodes (commands)
     #@+node:ekr.20031218072017.1839:readAtFileNodes (commands)
     def readAtFileNodes (self,event=None):
 
