@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="349" height="784" width="892"/>
+	<global_window_position top="10" left="349" height="764" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -3224,8 +3224,8 @@
 <v t="ekr.20070806090235.1" a="E"><vh>4.4.4 b1</vh>
 <v t="ekr.20070806090226.1" a="E"><vh>Added support for @mark-for-unit-tests node</vh></v>
 <v t="ekr.20070806090226.14"><vh>Created threading_colorizer</vh></v>
-<v t="ekr.20070806090226.15" a="TV"><vh>Added support for @auto</vh>
-<v t="ekr.20070806095535.1"><vh>What @auto does</vh></v>
+<v t="ekr.20070806090226.15" a="E"><vh>Added support for @auto</vh>
+<v t="ekr.20070806095535.1" a="TV"><vh>What @auto does</vh></v>
 <v t="ekr.20070806101412"><vh>read-at-auto-nodes and write-at-auto-nodes commands</vh></v>
 <v t="ekr.20070806095535.2"><vh>Indentation and whitespace problems</vh></v>
 <v t="ekr.20070806095535.3"><vh>About the code</vh></v>
@@ -31602,8 +31602,9 @@ In a less strict mode, some sentinels will be allowed and nodes that do not fall
 
 ----
 
-     
-</t>
+* read/write-at-auto commands:
+- write-at-auto command forces a write.
+- saving a .leo file writes @auto nodes only if they had previously been read (atAutoDict entry exists).</t>
 <t tx="ekr.20070806095535.2">Leo checks for tab and indentation problems in the original file:
  
 - The original sources may fail Python's tabNanny checks.  

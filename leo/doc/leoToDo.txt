@@ -1,9 +1,38 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
+#@+node:ekr.20070325052041:To do: 4.4.4 (@auto & resolve-cvs-conflicts)
 #@+node:ekr.20070803115653:Support @path in headlines
 #@-node:ekr.20070803115653:Support @path in headlines
+#@+node:ekr.20051202094427:resolve-cvs-conflicts and write-resolved-conflicts commands
+@killcolor
+
+http://sourceforge.net/forum/message.php?msg_id=4224589
+
+There a simple way of handling cvs conflict markers (>>>>). If an import parser
+discovers cvs conflict markers, the parser will just put the entire raw text in
+a node that contains something like::
+
+    @ignore
+    @ The child of this node contains all text of <filename> 
+    This file contains cvs conflicts markers. 
+    Please resolve the conflicts by hand, remove the @ignore directive above, 
+    and execute the write-resolved-conflict-file command. 
+    This command will write <filename> and re-import the file. 
+
+In other words, parsers should not try to resolve conflicts. Programmers
+typically resolve conflicts in 'flat' editors--doing so in a single Leo node
+would be natural.
+
+Leo sentinels are relatively simple, so users can handle any sentinels that may
+appear between conflict markers. Telling Leo users how to handle such sentinels
+should be easier (and more reliable) than trying to resolve such conflicts
+automatically.
+
+The write-resolved-conflicts command will check sentinels for consistency. If
+problems are found, the derived file will not be written, but instead the tree
+will be saved in the .leo file.
+#@-node:ekr.20051202094427:resolve-cvs-conflicts and write-resolved-conflicts commands
 #@+node:ekr.20070729093951.1:Update docs re @enabled-plugins
 #@-node:ekr.20070729093951.1:Update docs re @enabled-plugins
 #@+node:ekr.20070729105604:Fix bugs
@@ -101,7 +130,7 @@ An emergency measure could be available in a
 #@-node:ekr.20061006165447:Let import commands decide what kind of import to do
 #@+node:ekr.20070801071851:print-docstring command
 #@-node:ekr.20070801071851:print-docstring command
-#@-node:ekr.20070325052041:To do: 4.4.4 (@auto)
+#@-node:ekr.20070325052041:To do: 4.4.4 (@auto & resolve-cvs-conflicts)
 #@+node:ekr.20070703111455:To do: 4.4.5 (@menu, vim bindings, translation, etc)
 # Leo 4.4.5 will complete several projects that are long overdue.
 
