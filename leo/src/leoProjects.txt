@@ -941,8 +941,9 @@ def putIndent(self,n):
 #@-node:ekr.20041005105605.210:putIndent
 #@-node:ekr.20040721094203:Probably not: Make sure Leo uses "verbatim" whitespace
 #@-node:ekr.20070611173545.1:Design
-#@+node:ekr.20070731070208:Recent
-# To do: If not strict, silently convert leading tabs to blanks or blanks to tabs.
+#@+node:ekr.20070731070208:Recent @auto work
+@
+To do: If not strict, silently convert leading tabs to blanks or blanks to tabs.
 #@+node:ekr.20070703123334.2:Python scanner
 #@+node:ekr.20070703122141.99:scanPythonText
 def scanPythonText (self,s,parent,atAuto=False):
@@ -2905,7 +2906,7 @@ def writeOneAtAutoNode(self,p,force,toString):
 #@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
 #@-node:ekr.20070806144024.2:Writing...
 #@-node:ekr.20070806105721:read/write-at-auto-nodes commands
-#@-node:ekr.20070731070208:Recent
+#@-node:ekr.20070731070208:Recent @auto work
 #@-node:ekr.20070729093951:Added support for @auto
 #@-node:ekr.20070703182412.1:Features
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
