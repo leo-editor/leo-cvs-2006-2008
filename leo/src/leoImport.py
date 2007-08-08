@@ -32,7 +32,6 @@ class baseLeoImportCommands:
         self.output_newline = g.getOutputNewline(c=c) # Value of @bool output_newline
         self.rootLine = "" # Empty or @root + self.fileName
         self.tabwidth = c.tab_width # The tab width in effect in the c.currentPosition.
-        self.targetAtAutoFilename = '' # The full path name used in @auto reads: becomes key for c.atAutoDict.
         self.trace = c.config.getBool('trace_import')
         self.treeType = "@file" # "@root" or "@file"
         self.webType = "@noweb" # "cweb" or "noweb"
@@ -707,12 +706,12 @@ class baseLeoImportCommands:
             #@+node:ekr.20031218072017.3211:<< Read file into s >>
             try:
                 # Duplicate the @file directory logic in leoAtFile.py
-                if atAuto:
-                    # For non-auto imports, we already have a full path.
-                    at = c.atFileCommands
-                    at.scanDefaultDirectory(parent,importing=True)
-                    fileName = g.os_path_join(at.default_directory,fileName)
-                    self.targetAtAutoFilename = fileName
+                # if atAuto: ###
+                    # # For non-auto imports, we already have a full path.
+                    # at = c.atFileCommands
+                    # at.scanDefaultDirectory(parent,importing=True)
+                    # fileName = g.os_path_join(at.default_directory,fileName)
+                    # self.targetAtAutoFilename = fileName
                 fileName = g.os_path_normpath(fileName)
                 theFile = open(fileName)
                 s = theFile.read()
@@ -791,18 +790,22 @@ class baseLeoImportCommands:
         finally:
             c.endUpdate()
 
-        # Force an update of the body pane.
-        c.setBodyString(p,p.bodyString())
-        c.frame.body.onBodyChanged(undoType=None)
     #@+node:ekr.20070807084545:readOneAtAutoNode
     def readOneAtAutoNode(self,p,toString):
 
         '''Read the @auto node at p'''
 
+        c = self.c
+
         self.createOutline(
             fileName=p.atAutoNodeName(),
             parent=p.copy(),
             atAuto=True)
+
+        # Force an update of the body pane.
+        c.setBodyString(p,p.bodyString())
+        c.frame.body.onBodyChanged(undoType=None)
+    #@nonl
     #@-node:ekr.20070807084545:readOneAtAutoNode
     #@-node:ekr.20070806111212:readAtAutoNodes (importCommands) & helper
     #@+node:ekr.20031218072017.1810:importDerivedFiles
@@ -2400,21 +2403,20 @@ class baseLeoImportCommands:
             ok = self.errors == 0 and scanner.check(s,parent)
             g.app.unitTestDict ['result'] = ok
 
-            if self.atAuto:
-                target = self.importCommands.targetAtAutoFilename
-                # g.trace('setting c.atAutoDict[%s] = %s' % (target,ok))
-                c.atAutoDict [target] = ok
+            # if self.atAuto: ###
+                # target = self.importCommands.targetAtAutoFilename
+                # g.trace('setting c.atAutoDict[%s] = True' % (target))
+                # c.atAutoDict [target] = True # Indicate that we have read the file even if there are errors.
 
             # Step 3: insert an @ignore directive if there are any problems.
-            if ok:
-                if self.atAuto:
-                    for p in parent.self_and_subtree_iter():
-                        p.clearDirty()
-                    if not changed:
-                        c.setChanged(False)
-            else:
+            if not ok:
                 scanner.insertIgnoreDirective(parent)
-                c.setChanged(True)
+                changed = True
+
+            if self.atAuto:
+                for p in parent.self_and_subtree_iter():
+                    p.clearDirty()
+                c.setChanged(changed)
         #@-node:ekr.20070707072749:run (baseScannerClass)
         #@-others
     #@-node:ekr.20070703122141.65: class baseScannerClass
