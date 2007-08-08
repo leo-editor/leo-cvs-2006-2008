@@ -705,13 +705,6 @@ class baseLeoImportCommands:
             #@        << Read file into s >>
             #@+node:ekr.20031218072017.3211:<< Read file into s >>
             try:
-                # Duplicate the @file directory logic in leoAtFile.py
-                # if atAuto: ###
-                    # # For non-auto imports, we already have a full path.
-                    # at = c.atFileCommands
-                    # at.scanDefaultDirectory(parent,importing=True)
-                    # fileName = g.os_path_join(at.default_directory,fileName)
-                    # self.targetAtAutoFilename = fileName
                 fileName = g.os_path_normpath(fileName)
                 theFile = open(fileName)
                 s = theFile.read()
@@ -805,7 +798,6 @@ class baseLeoImportCommands:
         # Force an update of the body pane.
         c.setBodyString(p,p.bodyString())
         c.frame.body.onBodyChanged(undoType=None)
-    #@nonl
     #@-node:ekr.20070807084545:readOneAtAutoNode
     #@-node:ekr.20070806111212:readAtAutoNodes (importCommands) & helper
     #@+node:ekr.20031218072017.1810:importDerivedFiles
@@ -1485,7 +1477,8 @@ class baseLeoImportCommands:
 
             self.strict = False # True if leading whitespace is very significant.
         #@-node:ekr.20070703122141.66:baseScannerClass.__init__
-        #@+node:ekr.20070703122141.102:check & helpers
+        #@+node:ekr.20070808115837:Checking
+        #@+node:ekr.20070703122141.102:check
         def check (self,s,parent):
 
             '''Make sure the generated nodes are equivalent to the original file.
@@ -1497,12 +1490,14 @@ class baseLeoImportCommands:
             '''
 
             if self.fullChecks:
-                result = self.checkWhitespace(s,parent) and self.checkTrialWrite()
+                # result = self.checkWhitespace(s,parent) and self.checkTrialWrite()
+                result = self.checkTrialWrite()
             else:
                 result = True
 
             return result
-        #@+node:ekr.20070703122141.103:checkWhitespace
+        #@-node:ekr.20070703122141.102:check
+        #@+node:ekr.20070703122141.103:checkWhitespace (no longer used)
         def checkWhitespace(self,s,parent):
 
             '''Check the leading whitespace of all lines of s.'''
@@ -1525,7 +1520,7 @@ class baseLeoImportCommands:
             if not ok:
                 self.error('File contains intermixed blanks and tabs')
             return ok
-        #@-node:ekr.20070703122141.103:checkWhitespace
+        #@-node:ekr.20070703122141.103:checkWhitespace (no longer used)
         #@+node:ekr.20070703122141.104:checkTrialWrite & helper
         def checkTrialWrite (self):
 
@@ -1606,7 +1601,58 @@ class baseLeoImportCommands:
                 return False
         #@-node:ekr.20070730093735:compareHelper
         #@-node:ekr.20070703122141.104:checkTrialWrite & helper
-        #@-node:ekr.20070703122141.102:check & helpers
+        #@+node:ekr.20070808115837.1:regularizeWhitespace
+        def regularizeWhitespace (self,s):
+
+            '''Regularize leading whitespace in s:
+            Convert tabs to blanks or vice versa depending on the @tabwidth in effect.
+            Issue errors for strict languages; warnings for non-strict languages.'''
+
+            changed = False ; lines = g.splitLines(s) ; result = [] ; tab_width = self.tab_width
+
+            # For strict languages, check that leading whitespace is a multiple of the tab_width.
+            if self.strict:
+                for line in lines:
+                    lws = line[0:g.skip_ws(line,0)]
+                    w = g.computeWidth(lws,tab_width)
+                    if (w % abs(tab_width)) != 0:
+                        self.error('leading whitespace not consistent with @tabwidth %d' % tab_width)
+                        g.es_print('line: %s' % (repr(line)),color='red')
+                        break
+
+            if tab_width < 0: # Convert tabs to blanks.
+                for line in lines:
+                    i, w = g.skip_leading_ws_with_indent(line,0,tab_width)
+                    s = g.computeLeadingWhitespace(w,-abs(tab_width)) + line [i:] # Use negative width.
+                    if s != line: changed = True
+                    result.append(s)
+            elif tab_width > 0: # Convert blanks to tabs.
+                for line in lines:
+                    s = g.optimizeLeadingWhitespace(line,abs(tab_width)) # Use positive width.
+                    if s != line: changed = True
+                    result.append(s)
+
+            if changed: self.regularizeError()
+
+            return ''.join(result)
+        #@+node:ekr.20070808121958:regularizeError
+        def regularizeError (self):
+
+            # Create the message.
+            kind = g.choose(self.strict,'error','warning')
+            s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
+            message = '%s: inconsistent leading whitespace. %s' % (kind,s)
+
+            # Issue an error or warning.
+            if self.strict:
+                self.error(message)
+            else:
+                print message
+                g.es(message,color='red')
+
+        #@-node:ekr.20070808121958:regularizeError
+        #@-node:ekr.20070808115837.1:regularizeWhitespace
+        #@-node:ekr.20070808115837:Checking
         #@+node:ekr.20070706084535:Code generation
         #@+at 
         #@nonl
@@ -2391,32 +2437,33 @@ class baseLeoImportCommands:
             scanner.root = parent
             scanner.file_s = s
 
-            # Step 1: generate the nodes,
-            # including all directive and section references.
+            # Init the error/status info.
             self.errors = 0
             self.errorLines = []
             changed = c.isChanged()
+
+            # Regularize leading whitespace.
+            # Generate errors for strict languages, warnings for non-strict languages.
+            s = scanner.regularizeWhitespace(s)
+
+            # Generate the nodes, including directive and section references.
             scanner.scan(s,parent)
 
-            # Step 2: check the generated nodes.
+            # Check the generated nodes.
             # Return True if the result is equivalent to the original file.
             ok = self.errors == 0 and scanner.check(s,parent)
             g.app.unitTestDict ['result'] = ok
 
-            # if self.atAuto: ###
-                # target = self.importCommands.targetAtAutoFilename
-                # g.trace('setting c.atAutoDict[%s] = True' % (target))
-                # c.atAutoDict [target] = True # Indicate that we have read the file even if there are errors.
+            # Insert an @ignore directive if there were any serious problems.
+            if not ok: scanner.insertIgnoreDirective(parent)
 
-            # Step 3: insert an @ignore directive if there are any problems.
-            if not ok:
-                scanner.insertIgnoreDirective(parent)
-                changed = True
-
-            if self.atAuto:
+            if self.atAuto and ok:
                 for p in parent.self_and_subtree_iter():
                     p.clearDirty()
                 c.setChanged(changed)
+            else:
+                parent.setDirty(setDescendentsDirty=False)
+                c.setChanged(True)
         #@-node:ekr.20070707072749:run (baseScannerClass)
         #@-others
     #@-node:ekr.20070703122141.65: class baseScannerClass
