@@ -286,13 +286,6 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
     return p
 #@+node:ekr.20031218072017.3211:<< Read file into s >>
 try:
-    # Duplicate the @file directory logic in leoAtFile.py
-    # if atAuto: ###
-        # # For non-auto imports, we already have a full path.
-        # at = c.atFileCommands
-        # at.scanDefaultDirectory(parent,importing=True)
-        # fileName = g.os_path_join(at.default_directory,fileName)
-        # self.targetAtAutoFilename = fileName
     fileName = g.os_path_normpath(fileName)
     theFile = open(fileName)
     s = theFile.read()
@@ -495,13 +488,6 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
     return p
 #@+node:ekr.20031218072017.3211:<< Read file into s >>
 try:
-    # Duplicate the @file directory logic in leoAtFile.py
-    # if atAuto: ###
-        # # For non-auto imports, we already have a full path.
-        # at = c.atFileCommands
-        # at.scanDefaultDirectory(parent,importing=True)
-        # fileName = g.os_path_join(at.default_directory,fileName)
-        # self.targetAtAutoFilename = fileName
     fileName = g.os_path_normpath(fileName)
     theFile = open(fileName)
     s = theFile.read()
@@ -946,231 +932,198 @@ def putIndent(self,n):
 To do:
 
 * If not strict, silently convert leading tabs to blanks or blanks to tabs.
-- Removed atAutoDict and targetAtAutoFilename. (Marked with ###).
-#@+node:ekr.20070703123334.2:Python scanner
-#@+node:ekr.20070703122141.99:scanPythonText
-def scanPythonText (self,s,parent,atAuto=False):
 
-    scanner = self.pythonScanner(importCommands=self,atAuto=atAuto)
+#@+node:ekr.20070806105721:read/write-at-auto-nodes commands
+#@+node:ekr.20070806144024:Tables...
+#@+node:ekr.20050920084036.189:<< define dictionary d of names and Leo commands >>
+c = self.c ; f = c.frame
 
-    scanner.run(s,parent)
-#@-node:ekr.20070703122141.99:scanPythonText
-#@+node:ekr.20070703122141.100:class pythonScanner (baseScannerClass)
-class pythonScanner (baseScannerClass):
+d = {
+    'abort-edit-headline':          f.abortEditLabelCommand,
+    'about-leo':                    c.about,
+    'add-comments':                 c.addComments,     
+    'beautify-all':                 c.beautifyAllPythonCode,
+    'beautify':                     c.beautifyPythonCode,
+    'cascade-windows':              f.cascade,
+    'clear-recent-files':           c.clearRecentFiles,
+    'close-window':                 c.close,
+    'contract-or-go-left':          c.contractNodeOrGoToParent,
+    'check-python-code':            c.checkPythonCode,
+    'check-all-python-code':        c.checkAllPythonCode,
+    'check-outline':                c.checkOutline,
+    'clear-recent-files':           c.clearRecentFiles,
+    'clone-node':                   c.clone,
+    'contract-node':                c.contractNode,
+    'contract-all':                 c.contractAllHeadlines,
+    'contract-parent':              c.contractParent,
+    'convert-all-blanks':           c.convertAllBlanks,
+    'convert-all-tabs':             c.convertAllTabs,
+    'convert-blanks':               c.convertBlanks,
+    'convert-tabs':                 c.convertTabs,
+    'copy-node':                    c.copyOutline,
+    'copy-text':                    f.copyText,
+    'cut-node':                     c.cutOutline,
+    'cut-text':                     f.cutText,
+    'de-hoist':                     c.dehoist,
+    'delete-comments':              c.deleteComments,
+    'delete-node':                  c.deleteOutline,
+    'demote':                       c.demote,
+    'dump-outline':                 c.dumpOutline,
+    'edit-headline':                c.editHeadline,
+    'end-edit-headline':            f.endEditLabelCommand,
+    'equal-sized-panes':            f.equalSizedPanes,
+    'execute-script':               c.executeScript,
+    'exit-leo':                     g.app.onQuit,
+    'expand-all':                   c.expandAllHeadlines,
+    'expand-next-level':            c.expandNextLevel,
+    'expand-node':                  c.expandNode,
+    'expand-and-go-right':          c.expandNodeAndGoToFirstChild,
+    'expand-ancestors-only':        c.expandOnlyAncestorsOfNode,
+    'expand-or-go-right':           c.expandNodeOrGoToFirstChild,
+    'expand-prev-level':            c.expandPrevLevel,
+    'expand-to-level-1':            c.expandLevel1,
+    'expand-to-level-2':            c.expandLevel2,
+    'expand-to-level-3':            c.expandLevel3,
+    'expand-to-level-4':            c.expandLevel4,
+    'expand-to-level-5':            c.expandLevel5,
+    'expand-to-level-6':            c.expandLevel6,
+    'expand-to-level-7':            c.expandLevel7,
+    'expand-to-level-8':            c.expandLevel8,
+    'expand-to-level-9':            c.expandLevel9,
+    'export-headlines':             c.exportHeadlines,
+    'extract':                      c.extract,
+    'extract-names':                c.extractSectionNames,
+    'extract-section':              c.extractSection,
+    'flatten-outline':              c.flattenOutline,
+    'go-back':                      c.goPrevVisitedNode,
+    'go-forward':                   c.goNextVisitedNode,
+    'goto-first-node':              c.goToFirstNode,
+    'goto-first-visible-node':      c.goToFirstVisibleNode,
+    'goto-first-sibling':           c.goToFirstSibling,
+    'goto-last-node':               c.goToLastNode,
+    'goto-last-sibling':            c.goToLastSibling,
+    'goto-last-visible-node':       c.goToLastVisibleNode,
+    'goto-line-number':             c.goToLineNumber,
+    'goto-next-changed':            c.goToNextDirtyHeadline,
+    'goto-next-clone':              c.goToNextClone,
+    'goto-next-marked':             c.goToNextMarkedHeadline,
+    'goto-next-node':               c.selectThreadNext,
+    'goto-next-sibling':            c.goToNextSibling,
+    'goto-next-visible':            c.selectVisNext,
+    'goto-parent':                  c.goToParent,
+    'goto-prev-node':               c.selectThreadBack,
+    'goto-prev-sibling':            c.goToPrevSibling,
+    'goto-prev-visible':            c.selectVisBack,
+    'hide-invisibles':              c.hideInvisibles,
+    'hoist':                        c.hoist,
+    'import-at-file':               c.importAtFile,
+    'import-at-root':               c.importAtRoot,
+    'import-cweb-files':            c.importCWEBFiles,
+    'import-derived-file':          c.importDerivedFile,
+    'import-flattened-outline':     c.importFlattenedOutline,
+    'import-noweb-files':           c.importNowebFiles,
+    'indent-region':                c.indentBody,
+    'insert-node':                  c.insertHeadline,
+    'insert-body-time':             c.insertBodyTime,
+    'insert-headline-time':         f.insertHeadlineTime,
+    'mark':                         c.markHeadline,
+    'mark-changed-items':           c.markChangedHeadlines,
+    'mark-changed-roots':           c.markChangedRoots,
+    'mark-clones':                  c.markClones,
+    'mark-subheads':                c.markSubheads,
+    'match-brackets':               c.findMatchingBracket,
+    'minimize-all':                 f.minimizeAll,
+    'move-outline-down':            c.moveOutlineDown,
+    'move-outline-left':            c.moveOutlineLeft,
+    'move-outline-right':           c.moveOutlineRight,
+    'move-outline-up':              c.moveOutlineUp,
+    'new':                          c.new,
+    'open-compare-window':          c.openCompareWindow,
+    'open-find-dialog':             c.showFindPanel, # Deprecated.
+    'open-leoDocs-leo':             c.leoDocumentation,
+    'open-leoPlugins-leo':          c.openLeoPlugins,
+    'open-leoSettings-leo':         c.openLeoSettings,
+    'open-scripts-leo':             c.openLeoScripts,
+    'open-myLeoSettings-leo':       c.openMyLeoSettings,
+    'open-online-home':             c.leoHome,
+    'open-online-tutorial':         c.leoTutorial,
+    'open-offline-tutorial':        f.leoHelp,
+    'open-outline':                 c.open,
+    'open-python-window':           c.openPythonWindow,
+    # 'open-test-leo':              c.openTest, # Doesn't work.
+    'open-users-guide':             c.leoUsersGuide,
+    'open-with':                    c.openWith,
+    'outline-to-cweb':              c.outlineToCWEB,
+    'outline-to-noweb':             c.outlineToNoweb,
+    'paste-node':                   c.pasteOutline,
+    'paste-retaining-clones':       c.pasteOutlineRetainingClones,
+    'paste-text':                   f.pasteText,
+    'pretty-print-all-python-code': c.prettyPrintAllPythonCode,
+    'pretty-print-python-code':     c.prettyPrintPythonCode,
+    'promote':                      c.promote,
+    'read-at-auto-nodes':           c.readAtAutoNodes,
+    'read-at-file-nodes':           c.readAtFileNodes,
+    'read-outline-only':            c.readOutlineOnly,
+    'redo':                         c.undoer.redo,
+    'reformat-paragraph':           c.reformatParagraph,
+    'remove-sentinels':             c.removeSentinels,
+    'resize-to-screen':             f.resizeToScreen,
+    'revert':                       c.revert,
+    'save-file':                    c.save,
+    'save-file-as':                 c.saveAs,
+    'save-file-as-unzipped':        c.saveAsUnzipped,
+    'save-file-as-zipped':          c.saveAsZipped,
+    'save-file-to':                 c.saveTo,
+    'settings':                     c.preferences,
+    'set-colors':                   c.colorPanel,
+    'set-font':                     c.fontPanel,
+    'show-invisibles':              c.showInvisibles,
+    'sort-children':                c.sortChildren,
+    'sort-siblings':                c.sortSiblings,
+    'tangle':                       c.tangle,
+    'tangle-all':                   c.tangleAll,
+    'tangle-marked':                c.tangleMarked,
+    'toggle-active-pane':           f.toggleActivePane,
+    'toggle-angle-brackets':        c.toggleAngleBrackets,
+    'toggle-invisibles':            c.toggleShowInvisibles,
+    'toggle-split-direction':       f.toggleSplitDirection,
+    'undo':                         c.undoer.undo,
+    'unindent-region':              c.dedentBody,
+    'unmark-all':                   c.unmarkAll,
+    'untangle':                     c.untangle,
+    'untangle-all':                 c.untangleAll,
+    'untangle-marked':              c.untangleMarked,
+    'weave':                        c.weave,
+    'write-at-auto-nodes':          c.atFileCommands.writeAtAutoNodes,
+    'write-at-file-nodes':          c.fileCommands.writeAtFileNodes,
+    'write-dirty-at-auto-nodes':    c.atFileCommands.writeDirtyAtAutoNodes,
+    'write-dirty-at-file-nodes':    c.fileCommands.writeDirtyAtFileNodes,
+    'write-missing-at-file-nodes':  c.fileCommands.writeMissingAtFileNodes,
+    'write-outline-only':           c.fileCommands.writeOutlineOnly,
+}
+#@-node:ekr.20050920084036.189:<< define dictionary d of names and Leo commands >>
+#@+node:ekr.20031218072017.3761:defineFileMenuReadWriteMenuTable
+def defineFileMenuReadWriteMenuTable (self):
 
-    @others
-#@+node:ekr.20070703122141.101: __init__
-def __init__ (self,importCommands,atAuto):
+    self.fileMenuReadWriteMenuTable = [
+        '*&read-outline-only',
+        '*write-&outline-only',
+        '-',
+        ('Read @&auto Nodes','read-at-auto-nodes'),
+        ('Write @a&uto Nodes','write-at-auto-nodes'),
+        ('Write D&irty @a&uto Nodes','write-dirty-at-auto-nodes'),
+        '-',
+        ('Read @file &Nodes','read-at-file-nodes'),
+        ('Write &Dirty @file Nodes','write-dirty-at-file-nodes'),
+        ('Write &Missing @file Nodes','write-missing-at-file-nodes'),
+        ('&Write @file Nodes','write-at-file-nodes'),
+    ]
 
-    # Init the base class.
-    importCommands.baseScannerClass.__init__(self,importCommands,
-        atAuto=atAuto,language='python')
-
-    # Set the parser delims.
-    self.lineCommentDelim = '#'
-    self.classTags = ['class',]
-    self.functionTags = ['def',]
-    self.blockDelim1 = None
-        # Suppress the check for the block delim.
-        # The check is done in skipSigTail.
-    self.blockDelim2 = None
-    self.strict = True
-
-#@-node:ekr.20070703122141.101: __init__
-#@+node:ekr.20070707113839:extendSignature
-def extendSignature(self,s,i):
-
-    '''Extend the text to be added to the class node following the signature.
-
-    The text *must* end with a newline.'''
-
-    # Add a docstring to the class node,
-    # And everything on the line following it
-    j = g.skip_ws_and_nl(s,i)
-    if g.match(s,j,'"""') or g.match(s,j,"'''"):
-        j = g.skip_python_string(s,j)
-        if j < len(s): # No scanning error.
-            # Return the docstring only if nothing but whitespace follows.
-            j = g.skip_ws(s,j)
-            if g.is_nl(s,j):
-                return j + 1
-
-    return i
-#@-node:ekr.20070707113839:extendSignature
-#@+node:ekr.20070707073627.4:skipString
-def skipString (self,s,i):
-
-    # Returns len(s) on unterminated string.
-    return g.skip_python_string(s,i,verbose=False)
-#@-node:ekr.20070707073627.4:skipString
-#@+node:ekr.20070712090019.1:skipCodeBlock (python) & helper
-def skipCodeBlock (self,s,i,kind):
-
-    trace = False
-    if trace: g.trace('***',g.callers())
-    startIndent = self.startSigIndent
-    assert startIndent is not None
-    i = start = g.skip_ws_and_nl(s,i)
-    parenCount = 0
-    underIndentedStart = None # The start of trailing underindented blank or comment lines.
-    while i < len(s):
-        progress = i
-        ch = s[i]
-        if g.is_nl(s,i):
-            backslashNewline = i > 0 and g.match(s,i-1,'\\\n')
-            i = g.skip_nl(s,i)
-            if trace: g.trace(g.get_line(s,i))
-            if not backslashNewline:
-                i,underIndentedStart,breakFlag = self.pythonNewlineHelper(
-                    s,i,parenCount,startIndent,underIndentedStart)
-                if breakFlag: break
-        elif ch == '#':
-            i = g.skip_to_end_of_line(s,i)
-        elif ch == '"' or ch == '\'':
-            i = g.skip_python_string(s,i)
-        elif ch in '[{(':
-            i += 1 ; parenCount += 1
-            # g.trace('ch',ch,parenCount)
-        elif ch in ']})':
-            i += 1 ; parenCount -= 1
-            # g.trace('ch',ch,parenCount)
-        else: i += 1
-        assert(progress < i)
-
-    # The actual end of the block.
-    if underIndentedStart is not None:
-        i = underIndentedStart
-        if trace: g.trace('***backtracking to underindent range')
-        if trace: g.trace(g.get_line(s,i))
-
-    if 0 < i < len(s) and not g.match(s,i-1,'\n'):
-        g.trace('Can not happen: Python block does not end in a newline.')
-        g.trace(g.get_line(s,i))
-        return i,False
-    if (trace or self.trace) and s[start:i].strip():
-        g.trace('returns\n'+s[start:i])
-    return i,True
-#@+node:ekr.20070801080447:pythonNewlineHelper
-def pythonNewlineHelper (self,s,i,parenCount,startIndent,underIndentedStart):
-
-    trace = False
-    breakFlag = False
-    j, indent = g.skip_leading_ws_with_indent(s,i,self.tab_width)
-    if trace: g.trace('startIndent',startIndent,'indent',indent,'line',repr(g.get_line(s,j)))
-    if indent <= startIndent and parenCount == 0:
-        # An underindented line: it ends the block *unless*
-        # it is a blank or comment line.
-        if g.match(s,j,'#'):
-            if trace: g.trace('underindent: comment')
-            if underIndentedStart is None: underIndentedStart = i
-            i = j
-        elif g.match(s,j,'\n'):
-            if trace: g.trace('underindent: blank line')
-            # Blank lines never start the range of underindented lines.
-            i = j
-        else:
-            if trace: g.trace('underindent: end of block')
-            breakFlag = True # The actual end of the block.
-    else:
-        if underIndentedStart and g.match(s,j,'\n'):
-            # Add the blank line to the underindented range.
-            if trace: g.trace('properly indented blank line extends underindent range')
-        elif underIndentedStart and g.match(s,j,'#'):
-            # Add the (properly indented!) comment line to the underindented range.
-            if trace: g.trace('properly indented comment line extends underindent range')
-        elif underIndentedStart is None:
-            pass
-        else:
-            # A properly indented non-comment line.
-            # Give a message for all underindented comments in underindented range.
-            if trace: g.trace('properly indented line generates underindent errors')
-            s2 = s[underIndentedStart:i]
-            lines = g.splitlines(s2)
-            for line in lines:
-                if line.strip():
-                    junk, indent = g.skip_leading_ws_with_indent(line,0,self.tab_width)
-                    if indent <= startIndent:
-                        self.underindentedComment(line)
-            underIndentedStart = None
-    if trace: g.trace('returns',i,'underIndentedStart',underIndentedStart)
-    return i,underIndentedStart,breakFlag
-#@-node:ekr.20070801080447:pythonNewlineHelper
-#@-node:ekr.20070712090019.1:skipCodeBlock (python) & helper
-#@+node:ekr.20070803101619:skipSigTail
-# This must be overridden in order to handle newlines properly.
-
-def skipSigTail(self,s,i):
-
-    '''Skip from the end of the arg list to the start of the block.'''
-
-    while i < len(s):
-        ch = s[i]
-        if ch == '\n':
-            break
-        elif ch in (' ','\t',):
-            i += 1
-        elif self.startsComment(s,i):
-            i = self.skipComment(s,i)
-        else:
-            break
-
-    return i,g.match(s,i,':')
-#@-node:ekr.20070803101619:skipSigTail
-#@-node:ekr.20070703122141.100:class pythonScanner (baseScannerClass)
-#@-node:ekr.20070703123334.2:Python scanner
-#@+node:ekr.20070713082220:scannerUnitTest
-def scannerUnitTest (self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
-
-    '''Run a unit test of an import scanner,
-    i.e., create a tree from string s at location p.'''
-
-    c = self.c ; h = p.headString()
-    oldChanged = c.changed
-    c.beginUpdate()
-    try:
-        d = g.app.unitTestDict
-        expectedErrors = d.get('expectedErrors')
-        expectedErrorMessage = d.get('expectedErrorMessage')
-        expectedMismatchLine = d.get('expectedMismatchLine')
-        g.app.unitTestDict = {
-            'expectedErrors':expectedErrors,
-            'expectedErrorMessage':expectedErrorMessage,
-            'expectedMismatchLine':expectedMismatchLine,
-        }
-        if not fileName: fileName = p.headString()
-        if not s: s = self.removeSentinelsCommand([fileName],toString=True)
-        title = g.choose(h.startswith('@test'),h[5:],h)
-        self.createOutline(title.strip(),p.copy(),atAuto=False,s=s,ext=ext)
-        d = g.app.unitTestDict
-        ok = ((d.get('result') and expectedErrors in (None,0)) or
-            (
-                # checkTrialWrite returns *True* if the following match.
-                # d.get('result') == False and
-                d.get('actualErrors') == d.get('expectedErrors') and
-                d.get('actualMismatchLine') == d.get('expectedMismatchLine') and
-                (expectedErrorMessage is None or d.get('actualErrorMessage') == d.get('expectedErrorMessage'))
-            ))
-        if not ok:
-            g.trace('result',d.get('result'),
-                'actualErrors',d.get('actualErrors'),
-                'expectedErrors',d.get('expectedErrors'),
-                'actualMismatchLine',d.get('actualMismatchLine'),
-                'expectedMismatchLine', d.get('expectedMismatchLine'),
-                '\nactualErrorMessage  ',d.get('actualErrorMessage'),
-                '\nexpectedErrorMessage',d.get('expectedErrorMessage'),
-            )
-        if not showTree and ok:
-            while p.hasChildren():
-                p.firstChild().doDelete()
-            c.setChanged(oldChanged)
-    finally:
-        c.endUpdate()
-
-    if g.app.unitTesting:
-        assert ok
-
-    return ok
-#@-node:ekr.20070713082220:scannerUnitTest
+    # a,d,i,m,n,o,r,u,w
+#@nonl
+#@-node:ekr.20031218072017.3761:defineFileMenuReadWriteMenuTable
+#@-node:ekr.20070806144024:Tables...
+#@+node:ekr.20070806144024.1:Reading...
 #@+node:ekr.20031218072017.3210:createOutline
 def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
 
@@ -1228,13 +1181,6 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
     return p
 #@+node:ekr.20031218072017.3211:<< Read file into s >>
 try:
-    # Duplicate the @file directory logic in leoAtFile.py
-    # if atAuto: ###
-        # # For non-auto imports, we already have a full path.
-        # at = c.atFileCommands
-        # at.scanDefaultDirectory(parent,importing=True)
-        # fileName = g.os_path_join(at.default_directory,fileName)
-        # self.targetAtAutoFilename = fileName
     fileName = g.os_path_normpath(fileName)
     theFile = open(fileName)
     s = theFile.read()
@@ -1246,6 +1192,461 @@ except IOError:
     return None
 #@-node:ekr.20031218072017.3211:<< Read file into s >>
 #@-node:ekr.20031218072017.3210:createOutline
+#@+node:ekr.20070707072749:run (baseScannerClass)
+def run (self,s,parent):
+
+    scanner = self ; c = self.c
+    scanner.root = parent
+    scanner.file_s = s
+
+    # Init the error/status info.
+    self.errors = 0
+    self.errorLines = []
+    changed = c.isChanged()
+
+    # Regularize leading whitespace.
+    # Generate errors for strict languages, warnings for non-strict languages.
+    s = scanner.regularizeWhitespace(s)
+
+    # Generate the nodes, including directive and section references.
+    scanner.scan(s,parent)
+
+    # Check the generated nodes.
+    # Return True if the result is equivalent to the original file.
+    ok = self.errors == 0 and scanner.check(s,parent)
+    g.app.unitTestDict ['result'] = ok
+
+    # Insert an @ignore directive if there were any serious problems.
+    if not ok: scanner.insertIgnoreDirective(parent)
+
+    if self.atAuto and ok:
+        for p in parent.self_and_subtree_iter():
+            p.clearDirty()
+        c.setChanged(changed)
+    else:
+        parent.setDirty(setDescendentsDirty=False)
+        c.setChanged(True)
+#@-node:ekr.20070707072749:run (baseScannerClass)
+#@+node:ekr.20070806105721.1:readAtAutoNodes (commands)
+def readAtAutoNodes (self,event=None):
+
+    '''Read all @auto nodes in the presently selected outline.'''
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+
+    c.beginUpdate()
+    try:
+        undoData = u.beforeChangeTree(p)
+        c.importCommands.readAtAutoNodes()
+        u.afterChangeTree(p,'Read @auto Nodes',undoData)
+    finally:
+        c.endUpdate()
+#@-node:ekr.20070806105721.1:readAtAutoNodes (commands)
+#@+node:ekr.20070806111212:readAtAutoNodes (importCommands) & helper
+def readAtAutoNodes (self,toString=False):
+
+    c = self.c
+    p = c.currentPosition() ; after = p.nodeAfterTree()
+
+    c.beginUpdate()
+    try:
+        found = False
+        while p and p != after:
+            if p.isAtAutoNode():
+                if p.isAtIgnoreNode():
+                    g.es_print('ignoring %s' % (p.headString()),color='blue')
+                    p.moveToThreadNext()
+                else:
+                    self.readOneAtAutoNode(p,toString=toString)
+                    found = True
+                    p.moveToNodeAfterTree()
+            else:
+                p.moveToThreadNext()
+        g.es(g.choose(found,'finished','no @auto nodes in the selected tree'),color='blue')
+    finally:
+        c.endUpdate()
+
+#@+node:ekr.20070807084545:readOneAtAutoNode
+def readOneAtAutoNode(self,p,toString):
+
+    '''Read the @auto node at p'''
+
+    c = self.c
+
+    self.createOutline(
+        fileName=p.atAutoNodeName(),
+        parent=p.copy(),
+        atAuto=True)
+
+    # Force an update of the body pane.
+    c.setBodyString(p,p.bodyString())
+    c.frame.body.onBodyChanged(undoType=None)
+#@-node:ekr.20070807084545:readOneAtAutoNode
+#@-node:ekr.20070806111212:readAtAutoNodes (importCommands) & helper
+#@-node:ekr.20070806144024.1:Reading...
+#@+node:ekr.20070806144024.2:Writing...
+#@+node:ekr.20041005105605.135:closeWriteFile
+# 4.0: Don't use newline-pending logic.
+
+def closeWriteFile (self):
+
+    at = self
+
+    if at.outputFile:
+        at.outputFile.flush()
+        if self.toString:
+            self.stringOutput = self.outputFile.get()
+        at.outputFile.close()
+        at.outputFile = None
+#@-node:ekr.20041005105605.135:closeWriteFile
+#@+node:ekr.20041005105605.142:openFileForWriting & openFileForWritingHelper
+def openFileForWriting (self,root,fileName,toString):
+
+    at = self ; c = at.c
+    at.outputFile = None
+
+    if toString:
+        at.shortFileName = g.shortFileName(fileName)
+        at.outputFileName = "<string: %s>" % at.shortFileName
+        at.outputFile = g.fileLikeObject()
+    else:
+        at.openFileForWritingHelper(fileName)
+
+    # New in 4.3 b2: root may be none when writing from a string.
+    if root:
+        if at.outputFile:
+            root.clearOrphan()
+        else:
+            root.setOrphan()
+            root.setDirty()
+
+    return at.outputFile is not None
+#@+node:ekr.20041005105605.143:openFileForWritingHelper
+def openFileForWritingHelper (self,fileName):
+
+    at = self ; c = at.c
+
+    try:
+        at.shortFileName = g.shortFileName(fileName)
+        fileName = g.os_path_join(at.default_directory,fileName)
+        at.targetFileName = g.os_path_normpath(fileName)
+        path = g.os_path_dirname(at.targetFileName)
+        if not path or not g.os_path_exists(path):
+            if path:
+                path = g.makeAllNonExistentDirectories(path,c=c)
+            if not path or not g.os_path_exists(path):
+                path = g.os_path_dirname(at.targetFileName)
+                at.writeError("path does not exist: " + path)
+                return
+    except Exception:
+        at.exception("exception creating path: %s" % repr(path))
+        g.es_exception()
+        return
+
+    if g.os_path_exists(at.targetFileName):
+        try:
+            if not os.access(at.targetFileName,os.W_OK):
+                at.writeError("can not create: read only: " + at.targetFileName)
+                return
+        except AttributeError: pass # os.access() may not exist on all platforms.
+
+    try:
+        at.outputFileName = at.targetFileName + ".tmp"
+        at.outputFile = self.openForWrite(at.outputFileName,'wb') # bwm
+        if not at.outputFile:
+            at.writeError("can not create " + at.outputFileName)
+    except:
+        at.exception("exception creating:" + at.outputFileName)
+#@-node:ekr.20041005105605.143:openFileForWritingHelper
+#@-node:ekr.20041005105605.142:openFileForWriting & openFileForWritingHelper
+#@+node:ekr.20041005105605.147:writeAll (atFile)
+def writeAll(self,writeAtFileNodesFlag=False,writeDirtyAtFileNodesFlag=False,toString=False):
+
+    """Write @file nodes in all or part of the outline"""
+
+    at = self ; c = at.c
+    writtenFiles = [] # Files that might be written again.
+    mustAutoSave = False
+
+    if writeAtFileNodesFlag:
+        # Write all nodes in the selected tree.
+        p = c.currentPosition()
+        after = p.nodeAfterTree()
+    else:
+        # Write dirty nodes in the entire outline.
+        p =  c.rootPosition()
+        after = c.nullPosition()
+
+    << Clear all orphan bits >>
+    while p and p != after:
+        if p.isAnyAtFileNode() or p.isAtIgnoreNode():
+            << handle v's tree >>
+            p.moveToNodeAfterTree()
+        else:
+            p.moveToThreadNext()
+
+    << say the command is finished >>
+    return mustAutoSave
+#@+node:ekr.20041005105605.148:<< Clear all orphan bits >>
+@ We must clear these bits because they may have been set on a previous write.
+Calls to atFile::write may set the orphan bits in @file nodes.
+If so, write_Leo_file will write the entire @file tree.
+@c
+
+for v2 in p.self_and_subtree_iter():
+    v2.clearOrphan()
+#@-node:ekr.20041005105605.148:<< Clear all orphan bits >>
+#@+node:ekr.20041005105605.149:<< handle v's tree >>
+if p.v.isDirty() or writeAtFileNodesFlag or p.v.t in writtenFiles:
+
+    at.fileChangedFlag = False
+    autoSave = False
+
+    # Tricky: @ignore not recognised in @silentfile nodes.
+    if p.isAtAsisFileNode():
+        at.asisWrite(p,toString=toString)
+        writtenFiles.append(p.v.t) ; autoSave = True
+    elif p.isAtIgnoreNode():
+        pass
+    elif p.isAtAutoNode():
+        at.writeOneAtAutoNode(p,force=False,toString=toString)
+        writtenFiles.append(p.v.t)
+    elif p.isAtNorefFileNode():
+        at.norefWrite(p,toString=toString)
+        writtenFiles.append(p.v.t) ; autoSave = True
+    elif p.isAtNoSentFileNode():
+        at.write(p,nosentinels=True,toString=toString)
+        writtenFiles.append(p.v.t) # No need for autosave
+    elif p.isAtThinFileNode():
+        at.write(p,thinFile=True,toString=toString)
+        writtenFiles.append(p.v.t) # No need for autosave.
+    elif p.isAtFileNode():
+        at.write(p,toString=toString)
+        writtenFiles.append(p.v.t) ; autoSave = True
+
+    if at.fileChangedFlag and autoSave: # Set by replaceTargetFileIfDifferent.
+        mustAutoSave = True
+#@-node:ekr.20041005105605.149:<< handle v's tree >>
+#@+node:ekr.20041005105605.150:<< say the command is finished >>
+if writeAtFileNodesFlag or writeDirtyAtFileNodesFlag:
+    if len(writtenFiles) > 0:
+        g.es("finished")
+    elif writeAtFileNodesFlag:
+        g.es("no @file nodes in the selected tree")
+    else:
+        g.es("no dirty @file nodes")
+#@-node:ekr.20041005105605.150:<< say the command is finished >>
+#@-node:ekr.20041005105605.147:writeAll (atFile)
+#@+node:ekr.20041005105605.144:write
+# This is the entry point to the write code.  root should be an @file vnode.
+
+def write(self,root,nosentinels=False,thinFile=False,scriptWrite=False,toString=False,write_strips_blank_lines=None):
+
+    """Write a 4.x derived file."""
+
+    at = self ; c = at.c
+    c.endEditing() # Capture the current headline.
+    << set at.targetFileName >>
+    at.initWriteIvars(root,at.targetFileName,
+        nosentinels=nosentinels,thinFile=thinFile,
+        scriptWrite=scriptWrite,toString=toString,
+        write_strips_blank_lines=write_strips_blank_lines)
+    if not at.openFileForWriting(root,at.targetFileName,toString):
+        return
+
+    try:
+        at.writeOpenFile(root,nosentinels=nosentinels,toString=toString)
+        if toString:
+            at.closeWriteFile() # sets self.stringOutput
+            # Major bug: failure to clear this wipes out headlines!
+            # Minor bug: sometimes this causes slight problems...
+            at.root.v.t.tnodeList = []
+            at.root.v.t._p_changed = True
+        else:
+            at.closeWriteFile()
+            << set dirty and orphan bits on error >>
+    except:
+        if toString:
+            at.exception("exception preprocessing script")
+            at.root.v.t.tnodeList = []
+            at.root.v.t._p_changed = True
+        else:
+            at.writeException() # Sets dirty and orphan bits.
+#@+node:ekr.20041005105605.145:<< set at.targetFileName >>
+if toString:
+    at.targetFileName = "<string-file>"
+elif nosentinels:
+    at.targetFileName = root.atNoSentFileNodeName()
+elif thinFile:
+    at.targetFileName = root.atThinFileNodeName()
+else:
+    at.targetFileName = root.atFileNodeName()
+#@-node:ekr.20041005105605.145:<< set at.targetFileName >>
+#@+node:ekr.20041005105605.146:<< set dirty and orphan bits on error >>
+# Setting the orphan and dirty flags tells Leo to write the tree..
+
+if at.errors > 0 or at.root.isOrphan():
+    root.setOrphan()
+    root.setDirty() # Make _sure_ we try to rewrite this file.
+    os.remove(at.outputFileName) # Delete the temp file.
+    g.es("Not written: " + at.outputFileName)
+else:
+    root.clearOrphan()
+    root.clearDirty()
+    at.replaceTargetFileIfDifferent()
+#@-node:ekr.20041005105605.146:<< set dirty and orphan bits on error >>
+#@-node:ekr.20041005105605.144:write
+#@+node:ekr.20041005105605.157:writeOpenFile
+# New in 4.3: must be inited before calling this method.
+# New in 4.3 b2: support for writing from a string.
+
+def writeOpenFile(self,root,nosentinels=False,toString=False,fromString=''):
+
+    """Do all writes except asis writes."""
+
+    at = self ; s = g.choose(fromString,fromString,root.v.t.bodyString)
+
+    root.clearAllVisitedInTree() # Clear both vnode and tnode bits.
+    root.clearVisitedInTree()
+
+    at.putAtFirstLines(s)
+    at.putOpenLeoSentinel("@+leo-ver=4")
+    at.putInitialComment()
+    at.putOpenNodeSentinel(root)
+    at.putBody(root,fromString=fromString)
+    at.putCloseNodeSentinel(root)
+    at.putSentinel("@-leo")
+    root.setVisited()
+    at.putAtLastLines(s)
+
+    if not toString and not nosentinels:
+        at.warnAboutOrphandAndIgnoredNodes()
+#@-node:ekr.20041005105605.157:writeOpenFile
+#@+node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
+def writeAtAutoNodes (self,event=None):
+
+    '''Write all @auto nodes in the selected outline.'''
+
+    at = self
+    at.writeAtAutoNodesHelper(writeDirtyOnly=False)
+
+def writeDirtyAtAutoNodes (self,event=None):
+
+    '''Write all dirty @auto nodes in the selected outline.'''
+
+    at = self
+    at.writeAtAutoNodesHelper(writeDirtyOnly=True)
+#@nonl
+#@+node:ekr.20070806140208:writeAtAutoNodesHelper
+def writeAtAutoNodesHelper(self,toString=False,writeDirtyOnly=True):
+
+    """Write @auto nodes in the selected outline"""
+
+    at = self ; c = at.c
+    p = c.currentPosition() ; after = p.nodeAfterTree()
+    found = False
+    c.fileCommands.assignFileIndices()
+    while p and p != after:
+        if p.isAtAutoNode() and not p.isAtIgnoreNode() and (p.isDirty() or not writeDirtyOnly):
+            ok = self.writeOneAtAutoNode(p,force=True,toString=toString)
+            if ok:
+                found = True
+                p.moveToNodeAfterTree()
+            else:
+                p.moveToThreadNext()
+        else:
+            p.moveToThreadNext()
+
+    if found:
+        g.es("finished")
+    elif writeDirtyOnly:
+        g.es("no dirty @auto nodes in the selected tree")
+    else:
+        g.es("no @auto nodes in the selected tree")
+#@-node:ekr.20070806140208:writeAtAutoNodesHelper
+#@+node:ekr.20070806141607:writeOneAtAutoNode
+def writeOneAtAutoNode(self,p,force,toString):
+
+    '''Write p, and @auto node.'''
+
+    at = self ; c = at.c ; root = p.copy()
+
+    fileName = p.atAutoNodeName()
+    fileName = g.os_path_join(at.default_directory,fileName)
+    fileName = g.os_path_normpath(fileName)
+    if not fileName: return False
+
+    # This code is similar to code in at.write.
+    c.endEditing() # Capture the current headline.
+    at.targetFileName = g.choose(toString,"<string-file>",fileName)
+    at.initWriteIvars(root,at.targetFileName,
+        nosentinels=True,thinFile=False,scriptWrite=False,
+        toString=toString,write_strips_blank_lines=False)
+
+    ok = at.openFileForWriting (root,fileName=fileName,toString=toString)
+    if ok:
+        at.writeOpenFile(root,nosentinels=True,toString=toString)
+        at.closeWriteFile() # Sets stringOutput if toString is True.
+        at.replaceTargetFileIfDifferent()
+
+    return ok
+#@-node:ekr.20070806141607:writeOneAtAutoNode
+#@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
+#@-node:ekr.20070806144024.2:Writing...
+#@-node:ekr.20070806105721:read/write-at-auto-nodes commands
+#@+node:ekr.20070713082220:scannerUnitTest
+def scannerUnitTest (self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+
+    '''Run a unit test of an import scanner,
+    i.e., create a tree from string s at location p.'''
+
+    c = self.c ; h = p.headString()
+    oldChanged = c.changed
+    c.beginUpdate()
+    try:
+        d = g.app.unitTestDict
+        expectedErrors = d.get('expectedErrors')
+        expectedErrorMessage = d.get('expectedErrorMessage')
+        expectedMismatchLine = d.get('expectedMismatchLine')
+        g.app.unitTestDict = {
+            'expectedErrors':expectedErrors,
+            'expectedErrorMessage':expectedErrorMessage,
+            'expectedMismatchLine':expectedMismatchLine,
+        }
+        if not fileName: fileName = p.headString()
+        if not s: s = self.removeSentinelsCommand([fileName],toString=True)
+        title = g.choose(h.startswith('@test'),h[5:],h)
+        self.createOutline(title.strip(),p.copy(),atAuto=False,s=s,ext=ext)
+        d = g.app.unitTestDict
+        ok = ((d.get('result') and expectedErrors in (None,0)) or
+            (
+                # checkTrialWrite returns *True* if the following match.
+                # d.get('result') == False and
+                d.get('actualErrors') == d.get('expectedErrors') and
+                d.get('actualMismatchLine') == d.get('expectedMismatchLine') and
+                (expectedErrorMessage is None or d.get('actualErrorMessage') == d.get('expectedErrorMessage'))
+            ))
+        if not ok:
+            g.trace('result',d.get('result'),
+                'actualErrors',d.get('actualErrors'),
+                'expectedErrors',d.get('expectedErrors'),
+                'actualMismatchLine',d.get('actualMismatchLine'),
+                'expectedMismatchLine', d.get('expectedMismatchLine'),
+                '\nactualErrorMessage  ',d.get('actualErrorMessage'),
+                '\nexpectedErrorMessage',d.get('expectedErrorMessage'),
+            )
+        if not showTree and ok:
+            while p.hasChildren():
+                p.firstChild().doDelete()
+            c.setChanged(oldChanged)
+    finally:
+        c.endUpdate()
+
+    if g.app.unitTesting:
+        assert ok
+
+    return ok
+#@-node:ekr.20070713082220:scannerUnitTest
 #@+node:ekr.20070703122141.65: class baseScannerClass
 class baseScannerClass:
 
@@ -1316,7 +1717,8 @@ def __init__ (self,importCommands,atAuto,language):
 
     self.strict = False # True if leading whitespace is very significant.
 #@-node:ekr.20070703122141.66:baseScannerClass.__init__
-#@+node:ekr.20070703122141.102:check & helpers
+#@+node:ekr.20070808115837:Checking
+#@+node:ekr.20070703122141.102:check
 def check (self,s,parent):
 
     '''Make sure the generated nodes are equivalent to the original file.
@@ -1328,12 +1730,14 @@ def check (self,s,parent):
     '''
 
     if self.fullChecks:
-        result = self.checkWhitespace(s,parent) and self.checkTrialWrite()
+        # result = self.checkWhitespace(s,parent) and self.checkTrialWrite()
+        result = self.checkTrialWrite()
     else:
         result = True
 
     return result
-#@+node:ekr.20070703122141.103:checkWhitespace
+#@-node:ekr.20070703122141.102:check
+#@+node:ekr.20070703122141.103:checkWhitespace (no longer used)
 def checkWhitespace(self,s,parent):
 
     '''Check the leading whitespace of all lines of s.'''
@@ -1356,7 +1760,7 @@ def checkWhitespace(self,s,parent):
     if not ok:
         self.error('File contains intermixed blanks and tabs')
     return ok
-#@-node:ekr.20070703122141.103:checkWhitespace
+#@-node:ekr.20070703122141.103:checkWhitespace (no longer used)
 #@+node:ekr.20070703122141.104:checkTrialWrite & helper
 def checkTrialWrite (self):
 
@@ -1437,7 +1841,58 @@ def compareHelper (self,lines1,lines2,i,strict):
         return False
 #@-node:ekr.20070730093735:compareHelper
 #@-node:ekr.20070703122141.104:checkTrialWrite & helper
-#@-node:ekr.20070703122141.102:check & helpers
+#@+node:ekr.20070808115837.1:regularizeWhitespace
+def regularizeWhitespace (self,s):
+
+    '''Regularize leading whitespace in s:
+    Convert tabs to blanks or vice versa depending on the @tabwidth in effect.
+    Issue errors for strict languages; warnings for non-strict languages.'''
+
+    changed = False ; lines = g.splitLines(s) ; result = [] ; tab_width = self.tab_width
+
+    # For strict languages, check that leading whitespace is a multiple of the tab_width.
+    if self.strict:
+        for line in lines:
+            lws = line[0:g.skip_ws(line,0)]
+            w = g.computeWidth(lws,tab_width)
+            if (w % abs(tab_width)) != 0:
+                self.error('leading whitespace not consistent with @tabwidth %d' % tab_width)
+                g.es_print('line: %s' % (repr(line)),color='red')
+                break
+
+    if tab_width < 0: # Convert tabs to blanks.
+        for line in lines:
+            i, w = g.skip_leading_ws_with_indent(line,0,tab_width)
+            s = g.computeLeadingWhitespace(w,-abs(tab_width)) + line [i:] # Use negative width.
+            if s != line: changed = True
+            result.append(s)
+    elif tab_width > 0: # Convert blanks to tabs.
+        for line in lines:
+            s = g.optimizeLeadingWhitespace(line,abs(tab_width)) # Use positive width.
+            if s != line: changed = True
+            result.append(s)
+
+    if changed: self.regularizeError()
+
+    return ''.join(result)
+#@+node:ekr.20070808121958:regularizeError
+def regularizeError (self):
+
+    # Create the message.
+    kind = g.choose(self.strict,'error','warning')
+    s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
+    message = '%s: inconsistent leading whitespace. %s' % (kind,s)
+
+    # Issue an error or warning.
+    if self.strict:
+        self.error(message)
+    else:
+        print message
+        g.es(message,color='red')
+
+#@-node:ekr.20070808121958:regularizeError
+#@-node:ekr.20070808115837.1:regularizeWhitespace
+#@-node:ekr.20070808115837:Checking
 #@+node:ekr.20070706084535:Code generation
 @ None of these methods should ever need to be overridden in subclasses.
 
@@ -2215,300 +2670,87 @@ def run (self,s,parent):
     scanner.root = parent
     scanner.file_s = s
 
-    # Step 1: generate the nodes,
-    # including all directive and section references.
+    # Init the error/status info.
     self.errors = 0
     self.errorLines = []
     changed = c.isChanged()
+
+    # Regularize leading whitespace.
+    # Generate errors for strict languages, warnings for non-strict languages.
+    s = scanner.regularizeWhitespace(s)
+
+    # Generate the nodes, including directive and section references.
     scanner.scan(s,parent)
 
-    # Step 2: check the generated nodes.
+    # Check the generated nodes.
     # Return True if the result is equivalent to the original file.
     ok = self.errors == 0 and scanner.check(s,parent)
     g.app.unitTestDict ['result'] = ok
 
-    # if self.atAuto: ###
-        # target = self.importCommands.targetAtAutoFilename
-        # g.trace('setting c.atAutoDict[%s] = True' % (target))
-        # c.atAutoDict [target] = True # Indicate that we have read the file even if there are errors.
+    # Insert an @ignore directive if there were any serious problems.
+    if not ok: scanner.insertIgnoreDirective(parent)
 
-    # Step 3: insert an @ignore directive if there are any problems.
-    if not ok:
-        scanner.insertIgnoreDirective(parent)
-        changed = True
-
-    if self.atAuto:
+    if self.atAuto and ok:
         for p in parent.self_and_subtree_iter():
             p.clearDirty()
         c.setChanged(changed)
+    else:
+        parent.setDirty(setDescendentsDirty=False)
+        c.setChanged(True)
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@-node:ekr.20070703122141.65: class baseScannerClass
-#@+node:ekr.20070806105721:read/write-at-auto-nodes commands
-#@+node:ekr.20070806144024:Tables...
-#@+node:ekr.20050920084036.189:<< define dictionary d of names and Leo commands >>
-c = self.c ; f = c.frame
+#@+node:ekr.20070808115837.2:Regularize whitespace
+#@+node:ekr.20031218072017.1821:convertBlanks
+def convertBlanks (self,event=None):
 
-d = {
-    'abort-edit-headline':          f.abortEditLabelCommand,
-    'about-leo':                    c.about,
-    'add-comments':                 c.addComments,     
-    'beautify-all':                 c.beautifyAllPythonCode,
-    'beautify':                     c.beautifyPythonCode,
-    'cascade-windows':              f.cascade,
-    'clear-recent-files':           c.clearRecentFiles,
-    'close-window':                 c.close,
-    'contract-or-go-left':          c.contractNodeOrGoToParent,
-    'check-python-code':            c.checkPythonCode,
-    'check-all-python-code':        c.checkAllPythonCode,
-    'check-outline':                c.checkOutline,
-    'clear-recent-files':           c.clearRecentFiles,
-    'clone-node':                   c.clone,
-    'contract-node':                c.contractNode,
-    'contract-all':                 c.contractAllHeadlines,
-    'contract-parent':              c.contractParent,
-    'convert-all-blanks':           c.convertAllBlanks,
-    'convert-all-tabs':             c.convertAllTabs,
-    'convert-blanks':               c.convertBlanks,
-    'convert-tabs':                 c.convertTabs,
-    'copy-node':                    c.copyOutline,
-    'copy-text':                    f.copyText,
-    'cut-node':                     c.cutOutline,
-    'cut-text':                     f.cutText,
-    'de-hoist':                     c.dehoist,
-    'delete-comments':              c.deleteComments,
-    'delete-node':                  c.deleteOutline,
-    'demote':                       c.demote,
-    'dump-outline':                 c.dumpOutline,
-    'edit-headline':                c.editHeadline,
-    'end-edit-headline':            f.endEditLabelCommand,
-    'equal-sized-panes':            f.equalSizedPanes,
-    'execute-script':               c.executeScript,
-    'exit-leo':                     g.app.onQuit,
-    'expand-all':                   c.expandAllHeadlines,
-    'expand-next-level':            c.expandNextLevel,
-    'expand-node':                  c.expandNode,
-    'expand-and-go-right':          c.expandNodeAndGoToFirstChild,
-    'expand-ancestors-only':        c.expandOnlyAncestorsOfNode,
-    'expand-or-go-right':           c.expandNodeOrGoToFirstChild,
-    'expand-prev-level':            c.expandPrevLevel,
-    'expand-to-level-1':            c.expandLevel1,
-    'expand-to-level-2':            c.expandLevel2,
-    'expand-to-level-3':            c.expandLevel3,
-    'expand-to-level-4':            c.expandLevel4,
-    'expand-to-level-5':            c.expandLevel5,
-    'expand-to-level-6':            c.expandLevel6,
-    'expand-to-level-7':            c.expandLevel7,
-    'expand-to-level-8':            c.expandLevel8,
-    'expand-to-level-9':            c.expandLevel9,
-    'export-headlines':             c.exportHeadlines,
-    'extract':                      c.extract,
-    'extract-names':                c.extractSectionNames,
-    'extract-section':              c.extractSection,
-    'flatten-outline':              c.flattenOutline,
-    'go-back':                      c.goPrevVisitedNode,
-    'go-forward':                   c.goNextVisitedNode,
-    'goto-first-node':              c.goToFirstNode,
-    'goto-first-visible-node':      c.goToFirstVisibleNode,
-    'goto-first-sibling':           c.goToFirstSibling,
-    'goto-last-node':               c.goToLastNode,
-    'goto-last-sibling':            c.goToLastSibling,
-    'goto-last-visible-node':       c.goToLastVisibleNode,
-    'goto-line-number':             c.goToLineNumber,
-    'goto-next-changed':            c.goToNextDirtyHeadline,
-    'goto-next-clone':              c.goToNextClone,
-    'goto-next-marked':             c.goToNextMarkedHeadline,
-    'goto-next-node':               c.selectThreadNext,
-    'goto-next-sibling':            c.goToNextSibling,
-    'goto-next-visible':            c.selectVisNext,
-    'goto-parent':                  c.goToParent,
-    'goto-prev-node':               c.selectThreadBack,
-    'goto-prev-sibling':            c.goToPrevSibling,
-    'goto-prev-visible':            c.selectVisBack,
-    'hide-invisibles':              c.hideInvisibles,
-    'hoist':                        c.hoist,
-    'import-at-file':               c.importAtFile,
-    'import-at-root':               c.importAtRoot,
-    'import-cweb-files':            c.importCWEBFiles,
-    'import-derived-file':          c.importDerivedFile,
-    'import-flattened-outline':     c.importFlattenedOutline,
-    'import-noweb-files':           c.importNowebFiles,
-    'indent-region':                c.indentBody,
-    'insert-node':                  c.insertHeadline,
-    'insert-body-time':             c.insertBodyTime,
-    'insert-headline-time':         f.insertHeadlineTime,
-    'mark':                         c.markHeadline,
-    'mark-changed-items':           c.markChangedHeadlines,
-    'mark-changed-roots':           c.markChangedRoots,
-    'mark-clones':                  c.markClones,
-    'mark-subheads':                c.markSubheads,
-    'match-brackets':               c.findMatchingBracket,
-    'minimize-all':                 f.minimizeAll,
-    'move-outline-down':            c.moveOutlineDown,
-    'move-outline-left':            c.moveOutlineLeft,
-    'move-outline-right':           c.moveOutlineRight,
-    'move-outline-up':              c.moveOutlineUp,
-    'new':                          c.new,
-    'open-compare-window':          c.openCompareWindow,
-    'open-find-dialog':             c.showFindPanel, # Deprecated.
-    'open-leoDocs-leo':             c.leoDocumentation,
-    'open-leoPlugins-leo':          c.openLeoPlugins,
-    'open-leoSettings-leo':         c.openLeoSettings,
-    'open-scripts-leo':             c.openLeoScripts,
-    'open-myLeoSettings-leo':       c.openMyLeoSettings,
-    'open-online-home':             c.leoHome,
-    'open-online-tutorial':         c.leoTutorial,
-    'open-offline-tutorial':        f.leoHelp,
-    'open-outline':                 c.open,
-    'open-python-window':           c.openPythonWindow,
-    # 'open-test-leo':              c.openTest, # Doesn't work.
-    'open-users-guide':             c.leoUsersGuide,
-    'open-with':                    c.openWith,
-    'outline-to-cweb':              c.outlineToCWEB,
-    'outline-to-noweb':             c.outlineToNoweb,
-    'paste-node':                   c.pasteOutline,
-    'paste-retaining-clones':       c.pasteOutlineRetainingClones,
-    'paste-text':                   f.pasteText,
-    'pretty-print-all-python-code': c.prettyPrintAllPythonCode,
-    'pretty-print-python-code':     c.prettyPrintPythonCode,
-    'promote':                      c.promote,
-    'read-at-auto-nodes':           c.readAtAutoNodes,
-    'read-at-file-nodes':           c.readAtFileNodes,
-    'read-outline-only':            c.readOutlineOnly,
-    'redo':                         c.undoer.redo,
-    'reformat-paragraph':           c.reformatParagraph,
-    'remove-sentinels':             c.removeSentinels,
-    'resize-to-screen':             f.resizeToScreen,
-    'revert':                       c.revert,
-    'save-file':                    c.save,
-    'save-file-as':                 c.saveAs,
-    'save-file-as-unzipped':        c.saveAsUnzipped,
-    'save-file-as-zipped':          c.saveAsZipped,
-    'save-file-to':                 c.saveTo,
-    'settings':                     c.preferences,
-    'set-colors':                   c.colorPanel,
-    'set-font':                     c.fontPanel,
-    'show-invisibles':              c.showInvisibles,
-    'sort-children':                c.sortChildren,
-    'sort-siblings':                c.sortSiblings,
-    'tangle':                       c.tangle,
-    'tangle-all':                   c.tangleAll,
-    'tangle-marked':                c.tangleMarked,
-    'toggle-active-pane':           f.toggleActivePane,
-    'toggle-angle-brackets':        c.toggleAngleBrackets,
-    'toggle-invisibles':            c.toggleShowInvisibles,
-    'toggle-split-direction':       f.toggleSplitDirection,
-    'undo':                         c.undoer.undo,
-    'unindent-region':              c.dedentBody,
-    'unmark-all':                   c.unmarkAll,
-    'untangle':                     c.untangle,
-    'untangle-all':                 c.untangleAll,
-    'untangle-marked':              c.untangleMarked,
-    'weave':                        c.weave,
-    'write-at-auto-nodes':          c.atFileCommands.writeAtAutoNodes,
-    'write-at-file-nodes':          c.fileCommands.writeAtFileNodes,
-    'write-dirty-at-auto-nodes':    c.atFileCommands.writeDirtyAtAutoNodes,
-    'write-dirty-at-file-nodes':    c.fileCommands.writeDirtyAtFileNodes,
-    'write-missing-at-file-nodes':  c.fileCommands.writeMissingAtFileNodes,
-    'write-outline-only':           c.fileCommands.writeOutlineOnly,
-}
-#@-node:ekr.20050920084036.189:<< define dictionary d of names and Leo commands >>
-#@+node:ekr.20031218072017.3761:defineFileMenuReadWriteMenuTable
-def defineFileMenuReadWriteMenuTable (self):
+    '''Convert all blanks to tabs in the selected node.'''
 
-    self.fileMenuReadWriteMenuTable = [
-        '*&read-outline-only',
-        '*write-&outline-only',
-        '-',
-        ('Read @&auto Nodes','read-at-auto-nodes'),
-        ('Write @a&uto Nodes','write-at-auto-nodes'),
-        ('Write D&irty @a&uto Nodes','write-dirty-at-auto-nodes'),
-        '-',
-        ('Read @file &Nodes','read-at-file-nodes'),
-        ('Write &Dirty @file Nodes','write-dirty-at-file-nodes'),
-        ('Write &Missing @file Nodes','write-missing-at-file-nodes'),
-        ('&Write @file Nodes','write-at-file-nodes'),
-    ]
+    c = self ; changed = False ; dirtyVnodeList = []
+    head,lines,tail,oldSel,oldYview = c.getBodyLines(expandSelection=True)
 
-    # a,d,i,m,n,o,r,u,w
-#@nonl
-#@-node:ekr.20031218072017.3761:defineFileMenuReadWriteMenuTable
-#@-node:ekr.20070806144024:Tables...
-#@+node:ekr.20070806144024.1:Reading...
-#@+node:ekr.20031218072017.3210:createOutline
-def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
+    # Use the relative @tabwidth, not the global one.
+    theDict = g.scanDirectives(c)
+    tabWidth  = theDict.get("tabwidth")
+    if tabWidth:
+        result = []
+        for line in lines:
+            s = g.optimizeLeadingWhitespace(line,abs(tabWidth)) # Use positive width.
+            if s != line: changed = True
+            result.append(s)
+        if changed:
+            undoType = 'Convert Blanks'
+            result = ''.join(result)
+            oldSel = None
+            dirtyVnodeList = c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview) # Handles undo
 
-    c = self.c ; u = c.undoer ; s1 = s
-    junk,self.fileName = g.os_path_split(fileName)
-    self.methodName,self.fileType = g.os_path_splitext(self.fileName)
-    self.setEncoding()
-    # g.trace(self.fileName,self.fileType)
-    # All file types except the following just get copied to the parent node.
-    if not ext: ext = self.fileType
-    ext = ext.lower()
-    if not s:
-        << Read file into s >>
+    return changed,dirtyVnodeList
+#@-node:ekr.20031218072017.1821:convertBlanks
+#@+node:ekr.20031218072017.1822:convertTabs
+def convertTabs (self,event=None):
 
-    # Create the top-level headline.
-    if atAuto:
-        p = parent.copy()
-        c.beginUpdate()
-        p.setTnodeText('')
-        # It is too dangerous not to write @auto trees to the .leo file,
-        # so we must delete all children here.
-        try:
-            while p.hasChildren():
-                # g.trace('deleting',p.headString())
-                p.firstChild().doDelete()
-        finally:
-            c.endUpdate(False)
-    else:
-        undoData = u.beforeInsertNode(parent)
-        p = parent.insertAsLastChild()
-        if self.treeType == "@file" and not s1:
-            p.initHeadString("@nosent " + fileName)
-        else:
-            p.initHeadString(fileName)
-        u.afterInsertNode(p,'Import',undoData)
+    '''Convert all tabs to blanks in the selected node.'''
 
-    self.rootLine = g.choose(self.treeType=="@file","","@root-code "+self.fileName+'\n')
+    c = self ; changed = False ; dirtyVnodeList = []
+    head,lines,tail,oldSel,oldYview = self.getBodyLines(expandSelection=True)
 
-    if ext in (".c", ".cpp", ".cxx"):
-        self.scanCText(s,p,atAuto=atAuto)
-    elif ext == ".el":
-        self.scanElispText(s,p,atAuto=atAuto)
-    elif ext == ".java":
-        self.scanJavaText(s,p,atAuto=atAuto)
-    elif ext == ".pas":
-        self.scanPascalText(s,p,atAuto=atAuto)
-    elif ext in (".py", ".pyw"):
-        self.scanPythonText(s,p,atAuto=atAuto)
-    elif ext == ".php":
-        self.scanPHPText(s,p,atAuto=atAuto)
-    else:
-        self.scanUnknownFileType(s,p,ext,atAuto=atAuto)
+    # Use the relative @tabwidth, not the global one.
+    theDict = g.scanDirectives(c)
+    tabWidth  = theDict.get("tabwidth")
+    if tabWidth:
+        result = []
+        for line in lines:
+            i,w = g.skip_leading_ws_with_indent(line,0,tabWidth)
+            s = g.computeLeadingWhitespace(w,-abs(tabWidth)) + line[i:] # use negative width.
+            if s != line: changed = True
+            result.append(s)
+        if changed:
+            undoType = 'Convert Tabs'
+            result = ''.join(result)
+            oldSel = None
+            dirtyVnodeList = c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview) # Handles undo
 
-    p.contract()
-    return p
-#@+node:ekr.20031218072017.3211:<< Read file into s >>
-try:
-    # Duplicate the @file directory logic in leoAtFile.py
-    # if atAuto: ###
-        # # For non-auto imports, we already have a full path.
-        # at = c.atFileCommands
-        # at.scanDefaultDirectory(parent,importing=True)
-        # fileName = g.os_path_join(at.default_directory,fileName)
-        # self.targetAtAutoFilename = fileName
-    fileName = g.os_path_normpath(fileName)
-    theFile = open(fileName)
-    s = theFile.read()
-    s = g.toUnicode(s,self.encoding)
-    theFile.close()
-except IOError:
-    g.es("can not open %s%s" % (g.choose(atAuto,'@auto ',''),fileName),color='red')
-    leoTest.fail()
-    return None
-#@-node:ekr.20031218072017.3211:<< Read file into s >>
-#@-node:ekr.20031218072017.3210:createOutline
+    return changed,dirtyVnodeList
+#@-node:ekr.20031218072017.1822:convertTabs
 #@+node:ekr.20070707072749:run (baseScannerClass)
 def run (self,s,parent):
 
@@ -2516,404 +2758,105 @@ def run (self,s,parent):
     scanner.root = parent
     scanner.file_s = s
 
-    # Step 1: generate the nodes,
-    # including all directive and section references.
+    # Init the error/status info.
     self.errors = 0
     self.errorLines = []
     changed = c.isChanged()
+
+    # Regularize leading whitespace.
+    # Generate errors for strict languages, warnings for non-strict languages.
+    s = scanner.regularizeWhitespace(s)
+
+    # Generate the nodes, including directive and section references.
     scanner.scan(s,parent)
 
-    # Step 2: check the generated nodes.
+    # Check the generated nodes.
     # Return True if the result is equivalent to the original file.
     ok = self.errors == 0 and scanner.check(s,parent)
     g.app.unitTestDict ['result'] = ok
 
-    # if self.atAuto: ###
-        # target = self.importCommands.targetAtAutoFilename
-        # g.trace('setting c.atAutoDict[%s] = True' % (target))
-        # c.atAutoDict [target] = True # Indicate that we have read the file even if there are errors.
+    # Insert an @ignore directive if there were any serious problems.
+    if not ok: scanner.insertIgnoreDirective(parent)
 
-    # Step 3: insert an @ignore directive if there are any problems.
-    if not ok:
-        scanner.insertIgnoreDirective(parent)
-        changed = True
-
-    if self.atAuto:
+    if self.atAuto and ok:
         for p in parent.self_and_subtree_iter():
             p.clearDirty()
         c.setChanged(changed)
+    else:
+        parent.setDirty(setDescendentsDirty=False)
+        c.setChanged(True)
 #@-node:ekr.20070707072749:run (baseScannerClass)
-#@+node:ekr.20070806105721.1:readAtAutoNodes (commands)
-def readAtAutoNodes (self,event=None):
+#@+node:ekr.20070703122141.102:check
+def check (self,s,parent):
 
-    '''Read all @auto nodes in the presently selected outline.'''
+    '''Make sure the generated nodes are equivalent to the original file.
 
-    c = self ; u = c.undoer ; p = c.currentPosition()
+    1. Regularize and check leading whitespace.
+    2. Check that a trial write produces the original file.
 
-    c.beginUpdate()
-    try:
-        undoData = u.beforeChangeTree(p)
-        c.importCommands.readAtAutoNodes()
-        u.afterChangeTree(p,'Read @auto Nodes',undoData)
-    finally:
-        c.endUpdate()
-#@-node:ekr.20070806105721.1:readAtAutoNodes (commands)
-#@+node:ekr.20070806111212:readAtAutoNodes (importCommands) & helper
-def readAtAutoNodes (self,toString=False):
+    Return True if the nodes are equivalent to the original file.
+    '''
 
-    c = self.c
-    p = c.currentPosition() ; after = p.nodeAfterTree()
-
-    c.beginUpdate()
-    try:
-        found = False
-        while p and p != after:
-            if p.isAtAutoNode():
-                if p.isAtIgnoreNode():
-                    g.es_print('ignoring %s' % (p.headString()),color='blue')
-                    p.moveToThreadNext()
-                else:
-                    self.readOneAtAutoNode(p,toString=toString)
-                    found = True
-                    p.moveToNodeAfterTree()
-            else:
-                p.moveToThreadNext()
-        g.es(g.choose(found,'finished','no @auto nodes in the selected tree'),color='blue')
-    finally:
-        c.endUpdate()
-
-#@+node:ekr.20070807084545:readOneAtAutoNode
-def readOneAtAutoNode(self,p,toString):
-
-    '''Read the @auto node at p'''
-
-    c = self.c
-
-    self.createOutline(
-        fileName=p.atAutoNodeName(),
-        parent=p.copy(),
-        atAuto=True)
-
-    # Force an update of the body pane.
-    c.setBodyString(p,p.bodyString())
-    c.frame.body.onBodyChanged(undoType=None)
-#@-node:ekr.20070807084545:readOneAtAutoNode
-#@-node:ekr.20070806111212:readAtAutoNodes (importCommands) & helper
-#@-node:ekr.20070806144024.1:Reading...
-#@+node:ekr.20070806144024.2:Writing...
-#@+node:ekr.20041005105605.135:closeWriteFile
-# 4.0: Don't use newline-pending logic.
-
-def closeWriteFile (self):
-
-    at = self
-
-    if at.outputFile:
-        at.outputFile.flush()
-        if self.toString:
-            self.stringOutput = self.outputFile.get()
-        at.outputFile.close()
-        at.outputFile = None
-#@-node:ekr.20041005105605.135:closeWriteFile
-#@+node:ekr.20041005105605.142:openFileForWriting & openFileForWritingHelper
-def openFileForWriting (self,root,fileName,toString):
-
-    at = self ; c = at.c
-    at.outputFile = None
-
-    if toString:
-        at.shortFileName = g.shortFileName(fileName)
-        at.outputFileName = "<string: %s>" % at.shortFileName
-        at.outputFile = g.fileLikeObject()
+    if self.fullChecks:
+        # result = self.checkWhitespace(s,parent) and self.checkTrialWrite()
+        result = self.checkTrialWrite()
     else:
-        at.openFileForWritingHelper(fileName)
+        result = True
 
-    # New in 4.3 b2: root may be none when writing from a string.
-    if root:
-        if at.outputFile:
-            root.clearOrphan()
-        else:
-            root.setOrphan()
-            root.setDirty()
+    return result
+#@-node:ekr.20070703122141.102:check
+#@+node:ekr.20070808115837.1:regularizeWhitespace
+def regularizeWhitespace (self,s):
 
-    return at.outputFile is not None
-#@+node:ekr.20041005105605.143:openFileForWritingHelper
-def openFileForWritingHelper (self,fileName):
+    '''Regularize leading whitespace in s:
+    Convert tabs to blanks or vice versa depending on the @tabwidth in effect.
+    Issue errors for strict languages; warnings for non-strict languages.'''
 
-    at = self ; c = at.c
+    changed = False ; lines = g.splitLines(s) ; result = [] ; tab_width = self.tab_width
 
-    try:
-        at.shortFileName = g.shortFileName(fileName)
-        fileName = g.os_path_join(at.default_directory,fileName)
-        at.targetFileName = g.os_path_normpath(fileName)
-        path = g.os_path_dirname(at.targetFileName)
-        if not path or not g.os_path_exists(path):
-            if path:
-                path = g.makeAllNonExistentDirectories(path,c=c)
-            if not path or not g.os_path_exists(path):
-                path = g.os_path_dirname(at.targetFileName)
-                at.writeError("path does not exist: " + path)
-                return
-    except Exception:
-        at.exception("exception creating path: %s" % repr(path))
-        g.es_exception()
-        return
+    # For strict languages, check that leading whitespace is a multiple of the tab_width.
+    if self.strict:
+        for line in lines:
+            lws = line[0:g.skip_ws(line,0)]
+            w = g.computeWidth(lws,tab_width)
+            if (w % abs(tab_width)) != 0:
+                self.error('leading whitespace not consistent with @tabwidth %d' % tab_width)
+                g.es_print('line: %s' % (repr(line)),color='red')
+                break
 
-    if g.os_path_exists(at.targetFileName):
-        try:
-            if not os.access(at.targetFileName,os.W_OK):
-                at.writeError("can not create: read only: " + at.targetFileName)
-                return
-        except AttributeError: pass # os.access() may not exist on all platforms.
+    if tab_width < 0: # Convert tabs to blanks.
+        for line in lines:
+            i, w = g.skip_leading_ws_with_indent(line,0,tab_width)
+            s = g.computeLeadingWhitespace(w,-abs(tab_width)) + line [i:] # Use negative width.
+            if s != line: changed = True
+            result.append(s)
+    elif tab_width > 0: # Convert blanks to tabs.
+        for line in lines:
+            s = g.optimizeLeadingWhitespace(line,abs(tab_width)) # Use positive width.
+            if s != line: changed = True
+            result.append(s)
 
-    try:
-        at.outputFileName = at.targetFileName + ".tmp"
-        at.outputFile = self.openForWrite(at.outputFileName,'wb') # bwm
-        if not at.outputFile:
-            at.writeError("can not create " + at.outputFileName)
-    except:
-        at.exception("exception creating:" + at.outputFileName)
-#@-node:ekr.20041005105605.143:openFileForWritingHelper
-#@-node:ekr.20041005105605.142:openFileForWriting & openFileForWritingHelper
-#@+node:ekr.20041005105605.147:writeAll (atFile)
-def writeAll(self,writeAtFileNodesFlag=False,writeDirtyAtFileNodesFlag=False,toString=False):
+    if changed: self.regularizeError()
 
-    """Write @file nodes in all or part of the outline"""
+    return ''.join(result)
+#@+node:ekr.20070808121958:regularizeError
+def regularizeError (self):
 
-    at = self ; c = at.c
-    writtenFiles = [] # Files that might be written again.
-    mustAutoSave = False
+    # Create the message.
+    kind = g.choose(self.strict,'error','warning')
+    s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
+    message = '%s: inconsistent leading whitespace. %s' % (kind,s)
 
-    if writeAtFileNodesFlag:
-        # Write all nodes in the selected tree.
-        p = c.currentPosition()
-        after = p.nodeAfterTree()
+    # Issue an error or warning.
+    if self.strict:
+        self.error(message)
     else:
-        # Write dirty nodes in the entire outline.
-        p =  c.rootPosition()
-        after = c.nullPosition()
+        print message
+        g.es(message,color='red')
 
-    << Clear all orphan bits >>
-    while p and p != after:
-        if p.isAnyAtFileNode() or p.isAtIgnoreNode():
-            << handle v's tree >>
-            p.moveToNodeAfterTree()
-        else:
-            p.moveToThreadNext()
-
-    << say the command is finished >>
-    return mustAutoSave
-#@+node:ekr.20041005105605.148:<< Clear all orphan bits >>
-@ We must clear these bits because they may have been set on a previous write.
-Calls to atFile::write may set the orphan bits in @file nodes.
-If so, write_Leo_file will write the entire @file tree.
-@c
-
-for v2 in p.self_and_subtree_iter():
-    v2.clearOrphan()
-#@-node:ekr.20041005105605.148:<< Clear all orphan bits >>
-#@+node:ekr.20041005105605.149:<< handle v's tree >>
-if p.v.isDirty() or writeAtFileNodesFlag or p.v.t in writtenFiles:
-
-    at.fileChangedFlag = False
-    autoSave = False
-
-    # Tricky: @ignore not recognised in @silentfile nodes.
-    if p.isAtAsisFileNode():
-        at.asisWrite(p,toString=toString)
-        writtenFiles.append(p.v.t) ; autoSave = True
-    elif p.isAtIgnoreNode():
-        pass
-    elif p.isAtAutoNode():
-        at.writeOneAtAutoNode(p,force=False,toString=toString)
-        writtenFiles.append(p.v.t)
-    elif p.isAtNorefFileNode():
-        at.norefWrite(p,toString=toString)
-        writtenFiles.append(p.v.t) ; autoSave = True
-    elif p.isAtNoSentFileNode():
-        at.write(p,nosentinels=True,toString=toString)
-        writtenFiles.append(p.v.t) # No need for autosave
-    elif p.isAtThinFileNode():
-        at.write(p,thinFile=True,toString=toString)
-        writtenFiles.append(p.v.t) # No need for autosave.
-    elif p.isAtFileNode():
-        at.write(p,toString=toString)
-        writtenFiles.append(p.v.t) ; autoSave = True
-
-    if at.fileChangedFlag and autoSave: # Set by replaceTargetFileIfDifferent.
-        mustAutoSave = True
-#@-node:ekr.20041005105605.149:<< handle v's tree >>
-#@+node:ekr.20041005105605.150:<< say the command is finished >>
-if writeAtFileNodesFlag or writeDirtyAtFileNodesFlag:
-    if len(writtenFiles) > 0:
-        g.es("finished")
-    elif writeAtFileNodesFlag:
-        g.es("no @file nodes in the selected tree")
-    else:
-        g.es("no dirty @file nodes")
-#@-node:ekr.20041005105605.150:<< say the command is finished >>
-#@-node:ekr.20041005105605.147:writeAll (atFile)
-#@+node:ekr.20041005105605.144:write
-# This is the entry point to the write code.  root should be an @file vnode.
-
-def write(self,root,nosentinels=False,thinFile=False,scriptWrite=False,toString=False,write_strips_blank_lines=None):
-
-    """Write a 4.x derived file."""
-
-    at = self ; c = at.c
-    c.endEditing() # Capture the current headline.
-    << set at.targetFileName >>
-    at.initWriteIvars(root,at.targetFileName,
-        nosentinels=nosentinels,thinFile=thinFile,
-        scriptWrite=scriptWrite,toString=toString,
-        write_strips_blank_lines=write_strips_blank_lines)
-    if not at.openFileForWriting(root,at.targetFileName,toString):
-        return
-
-    try:
-        at.writeOpenFile(root,nosentinels=nosentinels,toString=toString)
-        if toString:
-            at.closeWriteFile() # sets self.stringOutput
-            # Major bug: failure to clear this wipes out headlines!
-            # Minor bug: sometimes this causes slight problems...
-            at.root.v.t.tnodeList = []
-            at.root.v.t._p_changed = True
-        else:
-            at.closeWriteFile()
-            << set dirty and orphan bits on error >>
-    except:
-        if toString:
-            at.exception("exception preprocessing script")
-            at.root.v.t.tnodeList = []
-            at.root.v.t._p_changed = True
-        else:
-            at.writeException() # Sets dirty and orphan bits.
-#@+node:ekr.20041005105605.145:<< set at.targetFileName >>
-if toString:
-    at.targetFileName = "<string-file>"
-elif nosentinels:
-    at.targetFileName = root.atNoSentFileNodeName()
-elif thinFile:
-    at.targetFileName = root.atThinFileNodeName()
-else:
-    at.targetFileName = root.atFileNodeName()
-#@-node:ekr.20041005105605.145:<< set at.targetFileName >>
-#@+node:ekr.20041005105605.146:<< set dirty and orphan bits on error >>
-# Setting the orphan and dirty flags tells Leo to write the tree..
-
-if at.errors > 0 or at.root.isOrphan():
-    root.setOrphan()
-    root.setDirty() # Make _sure_ we try to rewrite this file.
-    os.remove(at.outputFileName) # Delete the temp file.
-    g.es("Not written: " + at.outputFileName)
-else:
-    root.clearOrphan()
-    root.clearDirty()
-    at.replaceTargetFileIfDifferent()
-#@-node:ekr.20041005105605.146:<< set dirty and orphan bits on error >>
-#@-node:ekr.20041005105605.144:write
-#@+node:ekr.20041005105605.157:writeOpenFile
-# New in 4.3: must be inited before calling this method.
-# New in 4.3 b2: support for writing from a string.
-
-def writeOpenFile(self,root,nosentinels=False,toString=False,fromString=''):
-
-    """Do all writes except asis writes."""
-
-    at = self ; s = g.choose(fromString,fromString,root.v.t.bodyString)
-
-    root.clearAllVisitedInTree() # Clear both vnode and tnode bits.
-    root.clearVisitedInTree()
-
-    at.putAtFirstLines(s)
-    at.putOpenLeoSentinel("@+leo-ver=4")
-    at.putInitialComment()
-    at.putOpenNodeSentinel(root)
-    at.putBody(root,fromString=fromString)
-    at.putCloseNodeSentinel(root)
-    at.putSentinel("@-leo")
-    root.setVisited()
-    at.putAtLastLines(s)
-
-    if not toString and not nosentinels:
-        at.warnAboutOrphandAndIgnoredNodes()
-#@-node:ekr.20041005105605.157:writeOpenFile
-#@+node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
-def writeAtAutoNodes (self,event=None):
-
-    '''Write all @auto nodes in the selected outline.'''
-
-    at = self
-    at.writeAtAutoNodesHelper(writeDirtyOnly=False)
-
-def writeDirtyAtAutoNodes (self,event=None):
-
-    '''Write all dirty @auto nodes in the selected outline.'''
-
-    at = self
-    at.writeAtAutoNodesHelper(writeDirtyOnly=True)
-#@nonl
-#@+node:ekr.20070806140208:writeAtAutoNodesHelper
-def writeAtAutoNodesHelper(self,toString=False,writeDirtyOnly=True):
-
-    """Write @auto nodes in the selected outline"""
-
-    at = self ; c = at.c
-    p = c.currentPosition() ; after = p.nodeAfterTree()
-    found = False
-    c.fileCommands.assignFileIndices()
-    while p and p != after:
-        if p.isAtAutoNode() and not p.isAtIgnoreNode() and (p.isDirty() or not writeDirtyOnly):
-            ok = self.writeOneAtAutoNode(p,force=True,toString=toString)
-            if ok:
-                found = True
-                p.moveToNodeAfterTree()
-            else:
-                p.moveToThreadNext()
-        else:
-            p.moveToThreadNext()
-
-    if found:
-        g.es("finished")
-    elif writeDirtyOnly:
-        g.es("no dirty @auto nodes in the selected tree")
-    else:
-        g.es("no @auto nodes in the selected tree")
-#@-node:ekr.20070806140208:writeAtAutoNodesHelper
-#@+node:ekr.20070806141607:writeOneAtAutoNode
-def writeOneAtAutoNode(self,p,force,toString):
-
-    '''Write p, and @auto node.'''
-
-    at = self ; c = at.c ; root = p.copy()
-
-    fileName = p.atAutoNodeName()
-    fileName = g.os_path_join(at.default_directory,fileName)
-    fileName = g.os_path_normpath(fileName)
-    if not fileName: return False
-
-    # if not force and not c.atAutoDict.get(fileName): ###
-        # g.es_print('%s not written' % (fileName),color='blue')
-        # return False
-
-    # This code is similar to code in at.write.
-    c.endEditing() # Capture the current headline.
-    at.targetFileName = g.choose(toString,"<string-file>",fileName)
-    at.initWriteIvars(root,at.targetFileName,
-        nosentinels=True,thinFile=False,scriptWrite=False,
-        toString=toString,write_strips_blank_lines=False)
-
-    ok = at.openFileForWriting (root,fileName=fileName,toString=toString)
-    if ok:
-        at.writeOpenFile(root,nosentinels=True,toString=toString)
-        at.closeWriteFile() # Sets stringOutput if toString is True.
-        at.replaceTargetFileIfDifferent()
-
-    return ok
-#@-node:ekr.20070806141607:writeOneAtAutoNode
-#@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
-#@-node:ekr.20070806144024.2:Writing...
-#@-node:ekr.20070806105721:read/write-at-auto-nodes commands
+#@-node:ekr.20070808121958:regularizeError
+#@-node:ekr.20070808115837.1:regularizeWhitespace
+#@-node:ekr.20070808115837.2:Regularize whitespace
 #@-node:ekr.20070731070208:Recent @auto work
 #@-node:ekr.20070729093951:Added support for @auto
 #@-node:ekr.20070703182412.1:Features

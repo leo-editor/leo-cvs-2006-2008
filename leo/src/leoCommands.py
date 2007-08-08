@@ -2195,7 +2195,7 @@ class baseCommands:
         finally:
             c.endUpdate(count > 0)
     #@-node:ekr.20031218072017.1705:convertAllTabs
-    #@+node:ekr.20031218072017.1821:convertBlanks (test)
+    #@+node:ekr.20031218072017.1821:convertBlanks
     def convertBlanks (self,event=None):
 
         '''Convert all blanks to tabs in the selected node.'''
@@ -2219,8 +2219,8 @@ class baseCommands:
                 dirtyVnodeList = c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview) # Handles undo
 
         return changed,dirtyVnodeList
-    #@-node:ekr.20031218072017.1821:convertBlanks (test)
-    #@+node:ekr.20031218072017.1822:convertTabs (test)
+    #@-node:ekr.20031218072017.1821:convertBlanks
+    #@+node:ekr.20031218072017.1822:convertTabs
     def convertTabs (self,event=None):
 
         '''Convert all tabs to blanks in the selected node.'''
@@ -2245,7 +2245,7 @@ class baseCommands:
                 dirtyVnodeList = c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview) # Handles undo
 
         return changed,dirtyVnodeList
-    #@-node:ekr.20031218072017.1822:convertTabs (test)
+    #@-node:ekr.20031218072017.1822:convertTabs
     #@+node:ekr.20031218072017.1823:createLastChildNode
     def createLastChildNode (self,parent,headline,body):
 
@@ -2265,7 +2265,7 @@ class baseCommands:
         c.validateOutline()
         return p
     #@-node:ekr.20031218072017.1823:createLastChildNode
-    #@+node:ekr.20031218072017.1824:dedentBody (test)
+    #@+node:ekr.20031218072017.1824:dedentBody
     def dedentBody (self,event=None):
 
         '''Remove one tab's worth of indentation from all presently selected lines.'''
@@ -2286,7 +2286,7 @@ class baseCommands:
         if changed:
             result = ''.join(result)
             c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
-    #@-node:ekr.20031218072017.1824:dedentBody (test)
+    #@-node:ekr.20031218072017.1824:dedentBody
     #@+node:ekr.20031218072017.1706:extract (test)
     def extract (self,event=None):
 
@@ -2324,7 +2324,7 @@ class baseCommands:
         finally:
             c.endUpdate()
     #@-node:ekr.20031218072017.1706:extract (test)
-    #@+node:ekr.20031218072017.1708:extractSection (test)
+    #@+node:ekr.20031218072017.1708:extractSection
     def extractSection (self,event=None):
 
         '''Create a section definition node from the selected body text.
@@ -2377,8 +2377,8 @@ class baseCommands:
             u.afterChangeGroup(current,undoType=undoType)
         finally:
             c.endUpdate()
-    #@-node:ekr.20031218072017.1708:extractSection (test)
-    #@+node:ekr.20031218072017.1710:extractSectionNames (test)
+    #@-node:ekr.20031218072017.1708:extractSection
+    #@+node:ekr.20031218072017.1710:extractSectionNames
     def extractSectionNames(self,event=None):
 
         '''Create child nodes for every section reference in the selected text.
@@ -2428,7 +2428,7 @@ class baseCommands:
         # Restore the selection.
         body.setSelectionRange(oldSel)
         body.setFocus()
-    #@-node:ekr.20031218072017.1710:extractSectionNames (test)
+    #@-node:ekr.20031218072017.1710:extractSectionNames
     #@+node:ekr.20031218072017.1825:c.findBoundParagraph
     def findBoundParagraph (self,event=None):
 

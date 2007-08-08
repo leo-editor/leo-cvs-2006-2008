@@ -3007,10 +3007,6 @@ class atFile:
         fileName = g.os_path_normpath(fileName)
         if not fileName: return False
 
-        # if not force and not c.atAutoDict.get(fileName): ###
-            # g.es_print('%s not written' % (fileName),color='blue')
-            # return False
-
         # This code is similar to code in at.write.
         c.endEditing() # Capture the current headline.
         at.targetFileName = g.choose(toString,"<string-file>",fileName)
@@ -3495,7 +3491,7 @@ class atFile:
                 g.trace('Can not happen: completely empty line')
         else:
             # Don't put leading indent if the line is empty!
-            if line.strip() and not at.raw:  ### 7/9/2007: changed line to line.strip()
+            if line.strip() and not at.raw: 
                 at.putIndent(at.indent)
 
             if line[-1:]=='\n':
