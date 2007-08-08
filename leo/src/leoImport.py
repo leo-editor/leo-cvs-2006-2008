@@ -1610,16 +1610,6 @@ class baseLeoImportCommands:
 
             changed = False ; lines = g.splitLines(s) ; result = [] ; tab_width = self.tab_width
 
-            # For strict languages, check that leading whitespace is a multiple of the tab_width.
-            if self.strict:
-                for line in lines:
-                    lws = line[0:g.skip_ws(line,0)]
-                    w = g.computeWidth(lws,tab_width)
-                    if (w % abs(tab_width)) != 0:
-                        self.error('leading whitespace not consistent with @tabwidth %d' % tab_width)
-                        g.es_print('line: %s' % (repr(line)),color='red')
-                        break
-
             if tab_width < 0: # Convert tabs to blanks.
                 for line in lines:
                     i, w = g.skip_leading_ws_with_indent(line,0,tab_width)
@@ -1631,6 +1621,17 @@ class baseLeoImportCommands:
                     s = g.optimizeLeadingWhitespace(line,abs(tab_width)) # Use positive width.
                     if s != line: changed = True
                     result.append(s)
+
+            # For strict languages, check that leading whitespace is a multiple of the tab_width.
+            if self.strict:
+                for line in lines:
+                    if line.strip(): # only check non-blank lines.
+                        lws = line[0:g.skip_ws(line,0)]
+                        w = g.computeWidth(lws,tab_width)
+                        if (w % abs(tab_width)) != 0:
+                            self.error('leading whitespace not consistent with @tabwidth %d' % tab_width)
+                            g.es_print('line: %s' % (repr(line)),color='red')
+                            break
 
             if changed: self.regularizeError()
 
