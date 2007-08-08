@@ -75,7 +75,6 @@ class baseCommands:
 
         # Init ivars with self.x instead of c.x to keep Pychecker happy
         self.chapterController = None
-        self.atAutoDict = {} # Keys are full path names.  Values are True.
         self.frame = frame
         self.isZipped = False # May be set to True by g.openWithFileName.
         self.mFileName = fileName
