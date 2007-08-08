@@ -2902,7 +2902,7 @@ class atFile:
         #@-node:ekr.20041005105605.148:<< Clear all orphan bits >>
         #@nl
         while p and p != after:
-            if p.isAnyAtFileNode() or p.isAtAutoNode() or p.isAtIgnoreNode():
+            if p.isAnyAtFileNode() or p.isAtIgnoreNode():
                 #@            << handle v's tree >>
                 #@+node:ekr.20041005105605.149:<< handle v's tree >>
                 if p.v.isDirty() or writeAtFileNodesFlag or p.v.t in writtenFiles:
@@ -3000,11 +3000,16 @@ class atFile:
 
         '''Write p, and @auto node.'''
 
-        at = self ; c = at.c ; d = c.atAutoDict ; root = p.copy()
+        at = self ; c = at.c ; root = p.copy()
 
         fileName = p.atAutoNodeName()
+        fileName = g.os_path_join(at.default_directory,fileName)
+        fileName = g.os_path_normpath(fileName)
         if not fileName: return False
-        if not force and not d.get(fileName): return False
+
+        # if not force and not c.atAutoDict.get(fileName): ###
+            # g.es_print('%s not written' % (fileName),color='blue')
+            # return False
 
         # This code is similar to code in at.write.
         c.endEditing() # Capture the current headline.
@@ -3015,7 +3020,6 @@ class atFile:
 
         ok = at.openFileForWriting (root,fileName=fileName,toString=toString)
         if ok:
-            g.trace(fileName)
             at.writeOpenFile(root,nosentinels=True,toString=toString)
             at.closeWriteFile() # Sets stringOutput if toString is True.
             at.replaceTargetFileIfDifferent()
@@ -4831,7 +4835,7 @@ class atFile:
         # An absolute path in an @file node over-rides everything else.
         # A relative path gets appended to the relative path by the open logic.
 
-        name = p.anyAtFileNodeName() or p.atAutoNodeName()
+        name = p.anyAtFileNodeName()
 
         theDir = g.choose(name,g.os_path_dirname(name),None)
 
