@@ -356,6 +356,7 @@ class vnode (baseVnode):
         """Return the file name following an @file node or an empty string."""
 
         names = (
+            "@auto",
             "@file",
             "@thin",   "@file-thin",   "@thinfile",
             "@asis",   "@file-asis",   "@silentfile",
@@ -369,12 +370,14 @@ class vnode (baseVnode):
     # Return the the empty string if v is not an @xxx node.
 
     def atAutoNodeName (self):
-        h = self.headString() ; tag = '@auto'
-        # Prevent conflicts with autotrees plugin: don't allow @auto-whatever to match.
-        return g.match_word(h,0,tag) and not g.match(h,0,tag+'-') and h[len(tag):].strip()
+        # h = self.headString() ; tag = '@auto'
+        # # Prevent conflicts with autotrees plugin: don't allow @auto-whatever to match.
+        # return g.match_word(h,0,tag) and not g.match(h,0,tag+'-') and h[len(tag):].strip()
+        names = ("@auto",)
+        return self.findAtFileName(names)
 
     def atFileNodeName (self):
-        names = ("@file"),
+        names = ("@file",)
         return self.findAtFileName(names)
 
     def atNoSentinelsFileNodeName (self):
