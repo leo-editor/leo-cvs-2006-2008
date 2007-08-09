@@ -1089,7 +1089,7 @@ def readAtAutoNodes (self,event=None):
         c.endUpdate()
 #@-node:ekr.20070806105721.1:readAtAutoNodes (commands)
 #@+node:ekr.20070806111212:readAtAutoNodes (importCommands) & helper
-def readAtAutoNodes (self,toString=False):
+def readAtAutoNodes (self):
 
     c = self.c
     p = c.currentPosition() ; after = p.nodeAfterTree()
@@ -1103,7 +1103,7 @@ def readAtAutoNodes (self,toString=False):
                     g.es_print('ignoring %s' % (p.headString()),color='blue')
                     p.moveToThreadNext()
                 else:
-                    self.readOneAtAutoNode(p,toString=toString)
+                    self.readOneAtAutoNode(p)
                     found = True
                     p.moveToNodeAfterTree()
             else:
@@ -1113,7 +1113,7 @@ def readAtAutoNodes (self,toString=False):
         c.endUpdate()
 
 #@+node:ekr.20070807084545:readOneAtAutoNode
-def readOneAtAutoNode(self,p,toString):
+def readOneAtAutoNode(self,p):
 
     '''Read the @auto node at p'''
 
@@ -1255,7 +1255,7 @@ if p.v.isDirty() or writeAtFileNodesFlag or p.v.t in writtenFiles:
     elif p.isAtIgnoreNode():
         pass
     elif p.isAtAutoNode():
-        at.writeOneAtAutoNode(p,force=False,toString=toString)
+        at.writeOneAtAutoNode(p,toString=toString)
         writtenFiles.append(p.v.t)
     elif p.isAtNorefFileNode():
         at.norefWrite(p,toString=toString)
@@ -1394,7 +1394,7 @@ def writeAtAutoNodesHelper(self,toString=False,writeDirtyOnly=True):
     c.fileCommands.assignFileIndices()
     while p and p != after:
         if p.isAtAutoNode() and not p.isAtIgnoreNode() and (p.isDirty() or not writeDirtyOnly):
-            ok = self.writeOneAtAutoNode(p,force=True,toString=toString)
+            ok = self.writeOneAtAutoNode(p,toString=toString)
             if ok:
                 found = True
                 p.moveToNodeAfterTree()
@@ -1411,7 +1411,7 @@ def writeAtAutoNodesHelper(self,toString=False,writeDirtyOnly=True):
         g.es("no @auto nodes in the selected tree")
 #@-node:ekr.20070806140208:writeAtAutoNodesHelper
 #@+node:ekr.20070806141607:writeOneAtAutoNode
-def writeOneAtAutoNode(self,p,force,toString):
+def writeOneAtAutoNode(self,p,toString):
 
     '''Write p, and @auto node.'''
 
@@ -1462,7 +1462,7 @@ def scannerUnitTest (self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=
         if not fileName: fileName = p.headString()
         if not s: s = self.removeSentinelsCommand([fileName],toString=True)
         title = g.choose(h.startswith('@test'),h[5:],h)
-        self.createOutline(title.strip(),p.copy(),atAuto=False,s=s,ext=ext)
+        self.createOutline(title.strip(),p.copy(),atAuto=atAuto,s=s,ext=ext)
         d = g.app.unitTestDict
         ok = ((d.get('result') and expectedErrors in (None,0)) or
             (
@@ -2708,6 +2708,35 @@ def regularizeError (self):
 #@-node:ekr.20070731070208:Added @auto
 #@-node:ekr.20070703182412.1:Features
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
+#@+node:ekr.20070809131638:Pychecker report
+# Invalid warnings...
+# leoGlobals.py:136: No module attribute (leo_config_directory) found
+# leoGlobals.py:4015: Statement appears to have no effect
+# leoGlobals.py:4015: No module attribute (CODESET) found
+# leoGlobals.py:4693: No module attribute (mtime) found
+
+# Fixed...
+# leoAtFile.py:2999: Parameter (force) not used
+# c:\prog\tigris-cvs\leo\src\leoAtFile.py:26: Imported module (leoColor) not used
+# leoImport.py:14: Imported module (parser) not used
+# leoImport.py:15: Imported module (re) not used
+# leoImport.py:17: Imported module (tabnanny) not used
+# leoImport.py:18: Imported module (tokenize) not used
+# leoImport.py:787: Parameter (toString) not used
+# leoImport.py:2913: Parameter (atAuto) not used
+# leoImport.py:2886: Parameter (ext) not used
+# leoImport.py:2886: Parameter (fileName) not used
+# leoImport.py:2889: Parameter (ext) not used
+# leoImport.py:2892: Parameter (ext) not used
+# leoImport.py:2895: Parameter (ext) not used
+# leoImport.py:2898: Parameter (ext) not used
+# leoImport.py:2901: Parameter (ext) not used
+# leoImport.py:2904: Parameter (ext) not used
+# leoImport.py:2907: Parameter (ext) not used
+# leoImport.py:2910: Parameter (ext) not used
+
+
+#@-node:ekr.20070809131638:Pychecker report
 #@-all
 #@nonl
 #@-node:EKR.20040429143933:@thin leoProjects.txt
