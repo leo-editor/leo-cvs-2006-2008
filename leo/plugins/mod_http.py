@@ -22,8 +22,11 @@ To enable this plugin:
         @bool http_active = True
         @int  port = 8080
         @string rst_http_attributename = 'rst_http_attribute'
+
+**Note**: the browser_encoding constant (defined in the top node of this file)
+must match the character encoding used in the browser. If it does not, non-ascii
+characters will look strange.
 '''
-#@nonl
 #@-node:ekr.20050111111238:<< docstring >>
 #@nl
 
@@ -33,7 +36,11 @@ To enable this plugin:
 # Adapted and extended from the Python Cookbook:
 # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/259148
 
-__version__ = "0.97"
+__version__ = "0.98"
+
+# This encoding must match the character encoding used in your browser.
+# If it does not, non-ascii characters will look very strange.
+browser_encoding = 'utf-8' # A hack.  Can we query the browser for this?
 
 __pychecker__ = '--no-errors' # Suppress all pychecker errors.
 
@@ -82,6 +89,7 @@ import urlparse
 # 0.97 EKR:
 # - Call g.signon in init so users can see that the plugin is enabled.
 # - Removed the old @page line from the docstring.
+# 0.98 EKR: Handle unicode characters properly.
 #@-at
 #@nonl
 #@-node:ekr.20050328104558:<< version history >>
@@ -111,8 +119,6 @@ def init ():
 #@+node:bwmulder.20050326191345.1:onFileOpen
 def onFileOpen(tag, keywords):
     c = keywords.get("new_c")
-
-    g.trace('c',c)
 
     wasactive = config.http_active
     getConfiguration(c)
@@ -263,8 +269,17 @@ class escaped_StringIO(StringIO):
 
         s = s.replace('\n', '<br>')
         s = s.replace(chr(9), '&nbsp;&nbsp;&nbsp;&nbsp;')
+        # 8/9/2007
+        s = g.toEncodedString(s,encoding=browser_encoding,reportErrors=False)
         StringIO.write(self, s)
     #@-node:EKR.20040517080250.12:write_escaped
+    #@+node:ekr.20070809085322:write
+    def write (self,str):
+
+        str = g.toEncodedString(str,encoding=browser_encoding,reportErrors=False)
+        # g.trace('str',str)
+        return StringIO.write(self,str)
+    #@-node:ekr.20070809085322:write
     #@-others
 #@nonl
 #@-node:EKR.20040517080250.11:class escaped_StringIO
