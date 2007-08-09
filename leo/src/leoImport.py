@@ -11,11 +11,7 @@
 import leoGlobals as g
 import leoTest # Support for unit tests.
 
-import parser
-import re
 import string
-import tabnanny
-import tokenize
 
 class baseLeoImportCommands:
     """The base class for Leo's import commands."""
@@ -760,7 +756,7 @@ class baseLeoImportCommands:
         return p
     #@-node:ekr.20031218072017.3210:createOutline
     #@+node:ekr.20070806111212:readAtAutoNodes (importCommands) & helper
-    def readAtAutoNodes (self,toString=False):
+    def readAtAutoNodes (self):
 
         c = self.c
         p = c.currentPosition() ; after = p.nodeAfterTree()
@@ -774,7 +770,7 @@ class baseLeoImportCommands:
                         g.es_print('ignoring %s' % (p.headString()),color='blue')
                         p.moveToThreadNext()
                     else:
-                        self.readOneAtAutoNode(p,toString=toString)
+                        self.readOneAtAutoNode(p)
                         found = True
                         p.moveToNodeAfterTree()
                 else:
@@ -784,7 +780,7 @@ class baseLeoImportCommands:
             c.endUpdate()
 
     #@+node:ekr.20070807084545:readOneAtAutoNode
-    def readOneAtAutoNode(self,p,toString):
+    def readOneAtAutoNode(self,p):
 
         '''Read the @auto node at p'''
 
@@ -2883,31 +2879,31 @@ class baseLeoImportCommands:
     #@-node:ekr.20070713075352:Default scanner
     #@-node:ekr.20031218072017.3241:Scanners for createOutline
     #@+node:ekr.20070713075450:Unit tests
-    def cUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
-        return self.scannerUnitTest(p,atAuto=atAuto,fileName=None,s=s,showTree=showTree,ext='.c')
+    def cUnitTest(self,p,atAuto=False,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest(p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.c')
 
-    def elispUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+    def elispUnitTest(self,p,atAuto=False,fileName=None,s=None,showTree=False):
         return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.el')
 
-    def htmlUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+    def htmlUnitTest(self,p,atAuto=False,fileName=None,s=None,showTree=False):
         return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.htm')
 
-    def javaUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+    def javaUnitTest(self,p,atAuto=False,fileName=None,s=None,showTree=False):
         return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.java')
 
-    def pascalUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+    def pascalUnitTest(self,p,atAuto=False,fileName=None,s=None,showTree=False):
         return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.pas')
 
-    def phpUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+    def phpUnitTest(self,p,atAuto=False,fileName=None,s=None,showTree=False):
         return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.php')
 
-    def pythonUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+    def pythonUnitTest(self,p,atAuto=False,fileName=None,s=None,showTree=False):
         return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.py')
 
-    def textUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+    def textUnitTest(self,p,atAuto=False,fileName=None,s=None,showTree=False):
         return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.txt')
 
-    def defaultImporterUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+    def defaultImporterUnitTest(self,p,atAuto=False,fileName=None,s=None,showTree=False):
         return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,ext='.xxx')
     #@+node:ekr.20070713082220:scannerUnitTest
     def scannerUnitTest (self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
@@ -2931,7 +2927,7 @@ class baseLeoImportCommands:
             if not fileName: fileName = p.headString()
             if not s: s = self.removeSentinelsCommand([fileName],toString=True)
             title = g.choose(h.startswith('@test'),h[5:],h)
-            self.createOutline(title.strip(),p.copy(),atAuto=False,s=s,ext=ext)
+            self.createOutline(title.strip(),p.copy(),atAuto=atAuto,s=s,ext=ext)
             d = g.app.unitTestDict
             ok = ((d.get('result') and expectedErrors in (None,0)) or
                 (

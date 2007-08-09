@@ -23,7 +23,6 @@ if g.app and g.app.use_psyco:
     try: from psyco.classes import *
     except ImportError: pass
 
-import leoColor
 import leoNodes
 import os
 import string
@@ -2917,7 +2916,7 @@ class atFile:
                     elif p.isAtIgnoreNode():
                         pass
                     elif p.isAtAutoNode():
-                        at.writeOneAtAutoNode(p,force=False,toString=toString)
+                        at.writeOneAtAutoNode(p,toString=toString)
                         writtenFiles.append(p.v.t)
                     elif p.isAtNorefFileNode():
                         at.norefWrite(p,toString=toString)
@@ -2979,7 +2978,7 @@ class atFile:
         c.fileCommands.assignFileIndices()
         while p and p != after:
             if p.isAtAutoNode() and not p.isAtIgnoreNode() and (p.isDirty() or not writeDirtyOnly):
-                ok = self.writeOneAtAutoNode(p,force=True,toString=toString)
+                ok = self.writeOneAtAutoNode(p,toString=toString)
                 if ok:
                     found = True
                     p.moveToNodeAfterTree()
@@ -2996,7 +2995,7 @@ class atFile:
             g.es("no @auto nodes in the selected tree")
     #@-node:ekr.20070806140208:writeAtAutoNodesHelper
     #@+node:ekr.20070806141607:writeOneAtAutoNode
-    def writeOneAtAutoNode(self,p,force,toString):
+    def writeOneAtAutoNode(self,p,toString):
 
         '''Write p, and @auto node.'''
 
@@ -4020,7 +4019,6 @@ class atFile:
 
         c,p = g.getTestVars()
         at=c.atFileCommands # Self is a dummy argument.
-        import leoColor
         table = [
             ('@=',0,at.noDirective),
             ('@',0,at.atDirective),

@@ -124,14 +124,11 @@ def createTopologyList (c,root=None,useHeadlines=False):
 #@+node:ekr.20041117155521:computeGlobalConfigDir
 def computeGlobalConfigDir():
 
-    # Suppresses warning about sys.leo_config_directory
-    #__pychecker__ = '--limit = 0'
-    #__pychecker__ = '--no-classattr --no-objattrs'
-
     import leoGlobals as g
 
     encoding = g.startupEncoding()
 
+    # Generates pychecker warning about leo_config_directory.
     try:
         theDir = sys.leo_config_directory
     except AttributeError:
