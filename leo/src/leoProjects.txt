@@ -525,6 +525,17 @@ I checked the old importer and it handles the ANSI style just fine.
 Brian
 #@nonl
 #@-node:ekr.20070804070844:fixed c parser so it handles non-ascii declaratsions
+#@+node:ekr.20070808090641:Fixed colorizing bug and moved calls to w.toGuiIndex out of some loops
+# The code that was removing tags was not working properly.
+#@nonl
+#@-node:ekr.20070808090641:Fixed colorizing bug and moved calls to w.toGuiIndex out of some loops
+#@+node:ekr.20070803081137.1:Fixed unicode bug in http plugin
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4437415
+
+Unicode characters were not handled properly.
+#@-node:ekr.20070803081137.1:Fixed unicode bug in http plugin
 #@-node:ekr.20070703182412:Bugs
 #@+node:ekr.20070703182412.1:Features
 #@+node:ekr.20070703172130:Added support for @mark-for-unit-tests node

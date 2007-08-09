@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.586206896552">
-	<global_window_position top="116" left="364" height="790" width="841"/>
+<globals body_outline_ratio="0.403896103896">
+	<global_window_position top="116" left="364" height="710" width="841"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -473,9 +473,6 @@ marks="ekr.20070219134728,ekr.20070125074101.2,ekr.20070209095222,ekr.2007021008
 <v t="ekr.20040828122150"><vh>@thin pie_menus.py</vh></v>
 </v>
 <v t="ekr.20060530091119"><vh>New colorizer</vh>
-<v t="ekr.20070226075624"><vh>About threads</vh></v>
-<v t="ekr.20060623075925.1"><vh>To do</vh></v>
-<v t="ekr.20060530091119.2"><vh>@url http://www.jedit.org/42docs/users-guide/writing-modes-part.html</vh></v>
 <v t="ekr.20070718094819"><vh>@thin threading_colorizer.py	</vh></v>
 </v>
 <v t="edream.110203113231.872"><vh>Nodes...</vh>
@@ -673,7 +670,7 @@ marks="ekr.20070219134728,ekr.20070125074101.2,ekr.20070209095222,ekr.2007021008
 <v t="ekr.20060715100156.8"><vh>@thin mod_shadow_core.py</vh></v>
 <v t="ekr.20060715100156.52"><vh>@thin mod_shadow.py</vh></v>
 </v>
-<v t="ekr.20050306081349" a="E"><vh>Text formatting</vh>
+<v t="ekr.20050306081349"><vh>Text formatting</vh>
 <v t="mork.20041010095009"><vh>@thin xsltWithNodes.py</vh></v>
 <v t="ekr.20040331071919"><vh>Leo to AsciiDoc</vh>
 <v t="ekr.20050128070307"><vh>@url http://www.marshallresearch.com/michael-dawson/os/leo.html</vh></v>
@@ -747,7 +744,7 @@ marks="ekr.20070219134728,ekr.20070125074101.2,ekr.20070209095222,ekr.2007021008
 </v>
 <v t="ekr.20070627132619"><vh>NewHeadline</vh></v>
 </v>
-<v t="ekr.20050817132814" a="E"><vh>rst3</vh>
+<v t="ekr.20050817132814"><vh>rst3</vh>
 <v t="ekr.20050817120850.1" tnodeList="ekr.20050817120850.1,ekr.20050817122915,ekr.20050822123348,ekr.20050817124859,ekr.20050817165745,ekr.20050822172321,ekr.20050817124859.1,ekr.20050817165745.1,ekr.20050818033610,ekr.20050818095347,ekr.20050819055746.1,ekr.20050820112549,ekr.20050822065754,ekr.20050822125824,ekr.20050822172321.1,ekr.20050825101903,ekr.20050818103031,ekr.20050817115636.2,ekr.20050825101321,ekr.20050818103441,ekr.20070305092828,ekr.20050817115636.4,ekr.20050817115636.5,ekr.20050817115636.6,ekr.20050820092312,ekr.20050817115636.8,ekr.20050817115636.9,ekr.20050817115636.7,ekr.20050820100547,ekr.20050820101355,ekr.20050820103029,ekr.20050820101522,ekr.20050820101355.1,ekr.20050820094818,ekr.20050820092312.1,ekr.20050817120850.10,ekr.20050817120850.11,ekr.20050818094118.2,ekr.20050818090152,ekr.20050818090152.1,ekr.20050817120850.98,ekr.20050817120850.99,ekr.20050817120850.94,ekr.20050817120850.95,ekr.20050817120850.96,ekr.20050817120850.108,ekr.20050817142135.1,ekr.20050817120850.143,ekr.20050817120850.144,ekr.20050817120850.141,ekr.20050817135706.1,ekr.20050817120850.157,ekr.20050817120850.158,ekr.20050818105023,ekr.20050817120850.15,ekr.20050817120850.12,ekr.20050817120850.14,ekr.20050818081715,ekr.20050819072001,ekr.20050819072001.1,ekr.20050817120850.13,ekr.20050818083045,ekr.20050821153838,ekr.20050818022030,ekr.20050818084920,ekr.20050818130249,ekr.20050818090907,ekr.20050817120850.32,ekr.20050817120850.34,ekr.20050817120850.39,ekr.20050817120850.42,ekr.20050817120850.44,ekr.20050817120850.46,ekr.20050817120850.48,ekr.20050817120850.62,ekr.20050817120850.64,ekr.20050817120850.74,ekr.20050817120850.78,ekr.20050817120850.86,ekr.20050817120850.92,ekr.20050817120850.162,ekr.20050817120850.102,ekr.20050817120850.106,ekr.20050817120850.110,ekr.20050817120850.122,ekr.20050817120850.124,ekr.20050817120850.126,ekr.20050817120850.130,ekr.20050817120850.132,ekr.20050817120850.138,ekr.20050817120850.28,ekr.20050817120850.147,ekr.20050817120850.18,ekr.20050817120850.20,ekr.20050817120850.40,ekr.20050817120850.54,ekr.20050817120850.82,ekr.20050817120850.100,ekr.20050817120850.105,ekr.20050817120850.120,ekr.20050817120850.36,ekr.20050817120850.58,ekr.20050817120850.60,ekr.20050817120850.66,ekr.20050817120850.24,ekr.20050817120850.22,ekr.20050817120850.50,ekr.20050817120850.52,ekr.20050817120850.56,ekr.20050818094118.1,ekr.20050817120850.68,ekr.20050817120850.134,ekr.20050817120850.145,ekr.20050817120850.151,ekr.20050817120850.26,ekr.20050817120850.76,ekr.20050817120850.80,ekr.20050817120850.88,ekr.20050817120850.112,ekr.20050817120850.128,ekr.20050817142135,ekr.20050817120850.153,ekr.20050817120850.155,ekr.20050817120850.30,ekr.20050817135706,ekr.20050817120850.160,ekr.20050818094954,ekr.20050818105023.1,ekr.20050817120850.84,ekr.20050817120850.90,ekr.20050818094954.1,ekr.20050817120850.165,ekr.20050817120850.116,ekr.20050817120850.70,ekr.20050817120850.72,ekr.20050817120850.164,ekr.20050817120850.114,ekr.20050817120850.118,ekr.20050817120850.149,ekr.20050817120850.159,ekr.20050817120850.140"><vh>@file leo_pdf.py</vh>
 <v t="ekr.20050817122915"><vh>&lt;&lt; docstring &gt;&gt;</vh></v>
 <v t="ekr.20050817115636.2"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
@@ -912,8 +909,7 @@ marks="ekr.20070219134728,ekr.20070125074101.2,ekr.20070209095222,ekr.2007021008
 </v>
 </v>
 </v>
-<v t="ekr.20050805162550" a="E"
-expanded="ekr.20050805162550.8,ekr.20050805162550.9,"><vh>@thin rst3.py</vh></v>
+<v t="ekr.20050805162550"><vh>@thin rst3.py</vh></v>
 </v>
 <v t="ekr.20070119094733.1"><vh>@thin dtest.py</vh></v>
 </v>
@@ -10786,10 +10782,6 @@ return(0);
 </t>
 <t tx="ekr.20060514125256"></t>
 <t tx="ekr.20060530091119"></t>
-<t tx="ekr.20060530091119.2"></t>
-<t tx="ekr.20060623075925.1">@nocolor
-
-- Rewrite recolor_all to handle images.</t>
 <t tx="ekr.20060703162826"></t>
 <t tx="ekr.20060715100156"></t>
 <t tx="ekr.20060715100156.1"></t>
@@ -11588,32 +11580,6 @@ def expandAndSelect (self,node_id,p,force=False):
         child.moveToNext()
     return ins_id
 </t>
-<t tx="ekr.20070226075624">@nocolor
-
-&gt; Can anyone point me to a discussion of what is, and is not, guanteed about how
-Python schedules threads? In particular, I want the colorizing thread to
-relinquish control to the gui thread quite often (for good response), but I
-don't want the relinquishing itself to slow down the colorizer much. It seems a
-hard problem.
-
-From what I understand, there are perhaps only a few "guarantees" with Python
-threads. One guarantee is that when Python source is executing, threads will
-swap after sys.getcheckinterval() bytecodes have been processed for that thread.
-You can set the delay with sys.setcheckinterval(count). It seems to be 100
-bytecodes in Python 2.3-2.5, but I could have sworn it was 1000. In any case,
-setting the check interval higher will result in higher speed, but lower
-responsiveness.
-
-When making certain C-level calls, Python will also allow the "active" Python
-thread to switch. Which really means that the only way you can use those all of
-those 4-core processors with Python in a single process is to do all of your
-work in C code with carefully crafted GIL acquire and release calls.
-
-If your code is crafted in such a way that there are "convenient" places to
-yield control, you can use a technique known as 'cooperative multithreading with
-generators'. It gives you the total speed, more or less, of a single thread, but
-*you* choose where the context switches occur, for the cost of a bit of extra
-complication.</t>
 <t tx="ekr.20070305092828">@others</t>
 <t tx="ekr.20070306155205"></t>
 <t tx="ekr.20070308110121">partialRedrawCount = 0
