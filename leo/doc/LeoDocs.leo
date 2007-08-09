@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="349" height="764" width="892"/>
+	<global_window_position top="10" left="349" height="744" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -762,6 +762,23 @@
 </v>
 </v>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
+<v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
+<v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
+<v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
+<v t="ekr.20070809145744.3"><vh>@rst-ignore Important new features</vh></v>
+<v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
+<v t="ekr.20070806095535.1"><vh>What @auto does</vh></v>
+<v t="ekr.20070809141529" a="M"><vh>Perfect import checks</vh></v>
+<v t="ekr.20070806101412"><vh>Commands related to @auto</vh></v>
+<v t="ekr.20070806100055"><vh>Extending the code: adding new parsers</vh></v>
+</v>
+<v t="ekr.20070809145744.4"><vh>New commands</vh></v>
+<v t="ekr.20070809145744.5"><vh>@rst-ignore New settings</vh></v>
+<v t="ekr.20070809145744.6"><vh>Plugins</vh></v>
+<v t="ekr.20070809145744.7"><vh>Minor improvements</vh></v>
+<v t="ekr.20070809145744.8"><vh>@rst-no-head end stuff</vh></v>
+</v>
+</v>
 <v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
 <v t="ekr.20070513113931.1"><vh>@rst-no-head links</vh>
@@ -1054,8 +1071,25 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
+<v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
+<v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
+<v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
+<v t="ekr.20070809145744.3"><vh>@rst-ignore Important new features</vh></v>
+<v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
+<v t="ekr.20070806095535.1"><vh>What @auto does</vh></v>
+<v t="ekr.20070809141529" a="M"><vh>Perfect import checks</vh></v>
+<v t="ekr.20070806101412"><vh>Commands related to @auto</vh></v>
+<v t="ekr.20070806100055"><vh>Extending the code: adding new parsers</vh></v>
+</v>
+<v t="ekr.20070809145744.4"><vh>New commands</vh></v>
+<v t="ekr.20070809145744.5"><vh>@rst-ignore New settings</vh></v>
+<v t="ekr.20070809145744.6"><vh>Plugins</vh></v>
+<v t="ekr.20070809145744.7"><vh>Minor improvements</vh></v>
+<v t="ekr.20070809145744.8"><vh>@rst-no-head end stuff</vh></v>
+</v>
+</v>
 <v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
 <v t="ekr.20070513113931.1"><vh>@rst-no-head links</vh>
@@ -1104,7 +1138,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.117" a="E"><vh>Previous versions...</vh>
+<v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.646"><vh>Borland PC versions...</vh>
 <v t="edream.110203163054.647"><vh>Borland 2.7 Major bug fix: please upgrade</vh></v>
@@ -3220,17 +3254,15 @@
 </v>
 <v t="ekr.20070806090235"><vh>4.4.4 @auto, threading syntax colorer</vh></v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20070806090235.1" a="E"><vh>4.4.4 b1</vh>
-<v t="ekr.20070806090226.1" a="E"><vh>Added support for @mark-for-unit-tests node</vh></v>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20070806090235.1"><vh>4.4.4 b1</vh>
+<v t="ekr.20070806090226.1"><vh>Added support for @mark-for-unit-tests node</vh></v>
 <v t="ekr.20070806090226.14"><vh>Created threading_colorizer</vh></v>
-<v t="ekr.20070806090226.15" a="E"><vh>Added support for @auto</vh>
-<v t="ekr.20070806095535.1" a="TV"><vh>What @auto does</vh></v>
-<v t="ekr.20070806101412"><vh>read-at-auto-nodes and write-at-auto-nodes commands</vh></v>
-<v t="ekr.20070806095535.2"><vh>Indentation and whitespace problems</vh></v>
-<v t="ekr.20070806095535.3"><vh>About the code</vh></v>
+<v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
+<v t="ekr.20070806095535.1"><vh>What @auto does</vh></v>
+<v t="ekr.20070809141529" a="M"><vh>Perfect import checks</vh></v>
+<v t="ekr.20070806101412"><vh>Commands related to @auto</vh></v>
 <v t="ekr.20070806100055"><vh>Extending the code: adding new parsers</vh></v>
-<v t="ekr.20070806102206"><vh>Settings</vh></v>
 </v>
 </v>
 </v>
@@ -10924,6 +10956,8 @@ Appendices_
 
 Glossary_
 
+`What's new in Leo 4.4.4`_
+
 `What's new in Leo 4.4.3`_
 
 `What's new in Leo 4.4.2`_
@@ -15386,6 +15420,7 @@ Just use ``@thin`` to create your `derived files`_.</t>
 .. _`Chapter 20\: Unit testing with Leo`:           unitTesting.html
 .. _`Appendices`:                                   appendices.html
 .. _`Glossary`:                                     glossary.html
+.. _`What's new in Leo 4.4.4`:                      new-4-4-4.html
 .. _`What's new in Leo 4.4.3`:                      new-4-4-3.html
 .. _`What's new in Leo 4.4.2`:                      new-4-4-2.html
 .. _`What's new in Leo 4.4.1`:                      new-4-4-1.html
@@ -17833,7 +17868,7 @@ Glossary
 	:target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: new-4-4-3.html
+    :target: new-4-4-4.html
 
 </t>
 <t tx="ekr.20050901071613">----------------------
@@ -30318,7 +30353,7 @@ The highlights of Leo 4.4.3:
 .. WARNING: image targets may not have upper case letters!
 
 .. |prev| image:: arrow_lt.gif
-	:target: glossary.html
+	:target: new-4-4-4.html
 
 .. |leo|  image:: leo.gif
 	:target: front.html
@@ -31568,7 +31603,7 @@ used. This might be a problem when multiple body editors are present.</t>
 <t tx="ekr.20070806090226.1">The run-unit-tests command now includes *all* @mark-for-unit-test trees.
 </t>
 <t tx="ekr.20070806090226.14">The old __jEdit_colorizer__.py plugin has been retired.</t>
-<t tx="ekr.20070806090226.15">@killcolor</t>
+<t tx="ekr.20070806090226.15"></t>
 <t tx="ekr.20070806090235"></t>
 <t tx="ekr.20070806090235.1">Leo 4.4.4 beta 1                                August 7, 2006
 
@@ -31590,189 +31625,160 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
-<t tx="ekr.20070806095535.1">@auto is (mostly) a bridge to using Leo for people who (for whatever reason) can not allow sentinels in their files. 
+<t tx="ekr.20070806095535.1">@auto trees allows people to use Leo in collaborative environments without using
+sentinels in the files Leo generates. In contrast to @nosent, @auto trees can
+change when the corresponding file changes outside of Leo.
 
-The @auto tree is used to edit a source code file. The strictest form of @auto doesn't place any sentinels in the "derived" file. In this form it is kind of like Leo's existing import functionality where the source code language constructs are converted to a Leo subtree. The source code is basically "partitioned" into nodes using language syntax as a guide. Class definitions are created as nodes with method definitions as children. Languages that don't have classes (like C) just get a flat tree with one node per function and a node at the beginning with #includes and typedefs and such. 
+Leo will automatically recreate (import) all @auto trees when reading a .leo
+file, and will write all dirty @auto trees when saving a .leo file. There is one
+exception to this rule: Leo will never read (import) or write an @auto tree if
+the root @auto tree is under the influence of an @ignore directive.
 
-The save code for @auto will be able to save the source code exactly the way it was when it was read in (assuming nothing was changed using Leo). I think this the the round-trip Edward speaks of. In the strictest mode, Leo would not have any sentinels so any new nodes created in Leo that are not along source code language boundaries will end up getting "merged" in the next time the leo file is opened and "re-imported". 
+Leo creates @auto trees by parsing the corresponding derived file. Parsers
+create descendant nodes of the @auto tree: one node for each class, method and
+function in the derived file.
 
-So @auto is kind of like performing a new import every time the Leo file is read in. 
+Parsers presently exist for C, elisp, Java, Pascal, PHP and Python. Leo
+determines the language using the file's extension. If no parser exists for a
+language, the entire body of the derived file is copied to the body of the @auto
+node.</t>
+<t tx="ekr.20070806100055">All present parsers are short overrides of a powerful base parser class. Thus,
+it would be simple to add support for other languages. See the node
 
-In a less strict mode, some sentinels will be allowed and nodes that do not fall on language construct boundaries could survive the round trip. These sentinels might support things like organizer nodes, sections, and @others. 
+@thin leoImport.py--&gt;Import--&gt;Scanners for createOutline
 
-----
-
-* read/write-at-auto commands:
-- write-at-auto command forces a write.
-- saving a .leo file writes @auto nodes only if they had previously been read (atAutoDict entry exists).</t>
-<t tx="ekr.20070806095535.2">Leo checks for tab and indentation problems in the original file:
- 
-- The original sources may fail Python's tabNanny checks.  
- 
-- Leading whitespace in the original sources may be inconsistent with the @tabwidth setting in effect for the @auto tree. 
- 
-- The original sources may contain underindented comments. 
- 
-When any such problem is found, Leo will correct the problem (if possible), issue a warning message, and insert an @ignore directive in the @auto node. The warning will tell what the problem was, what the correction will be (if any) and tell the user that Leo will correct the problem *if* the user removes the @ignore directive and saves the .leo file. 
-
-
----
-
- - The original sources may fail tabnanny checks. In most cases, such failures will be due to intermixed blanks and tabs. We need options to tell @auto how to deal with such problems. My inclination is to convert leading whitespace according to the tabwidth implied by the @tabwidth directive in effect, or the default tab width. Actually, tabnanny is fairly slow--the code may be able to dispense with tabnanny altogether if the code is allowed to make reasonable assumptions about tab widths. 
-             
-- The original sources may not use leading whitespace consistently, or not consistently enough to be compatible with the spacing implied by the @tabwidth directive. In particular, @auto must generate &lt;ws&gt;@others lines, where &lt;ws&gt; is the whitespace implied by the @tabwidth directive. 
-             
-- Recall that underindented lines can not be represented in Leo. In Python, at least, these lines are either comments lines or contain only whitespace, because other underindented lines terminate the present class, method or function. My inclination at present is to handle such lines as follows: 
-             
-1. Underindented comment lines will be changed to properly (fully) indented lines, and a warning issued. 
-             
-2. Underindented lines containing only whitespace will be converted to a single newline. We need options that control whether warnings will be given. 
-             
-In short, converting sources to an @auto tree implies extra constraints on leading whitespace. The original sources may not satisfy these constraints, so we can expect mismatches between the original sources and the output of the trail write pass. I suspect that the best approach will be to ignore (not warn) non-matching lines that contain only whitespace, and warn on all other mismatches. 
-
-----
-
-The present code does not use tabnanny, but instead just checks for mixed tabs/blanks. A further check is required: Leo has a no chance of doing perfect import if classes or methods are over-indented. Actually, Leo could do a look-ahead scan and add extra indentation to @others, but this is too heroic for now. I think it will suffice merely to complain that indentation does not match the @tabwidth directive. 
-
------
-
-The code is generally on a firmer foundation than before: the crucial constraint is that functions, methods or classes must start and end 'cleanly'. That is, only whitespace should should appear before and after definitions. 
-             
-Not all source code files will be clean in this sense: warnings will be given and extra newlines inserted for unclean source files. This can't be helped--it is similar to the underindented lines problem: there is just no good way to represent such files in a Leo outline without changing the text the the outline generates. This should not concern users greatly because the import/@auto code is careful to check for more serious problems. 
-
------
-
-All unit tests and import tests now pass, but @auto complains (rightly) that both files contain intermixed blanks and tabs. The next step is to be more forgiving for 'non-strict' languages, i.e., languages that don't care so much about leading whitespace. (At present, only Python is a strict language). 
-                   
-My plan is to silently convert tabs to blanks (or vice versa, depending on whether tab_width is positive or negative) for non-strict languages. This promises to be tricky; the comparison code is already fairly hairy and it must get even more complex. However, this has highest priority. It would be unbearable to force .c files to (in effect) pass tabNanny! 
-
------
-
-It remains to be seen whether somebody is going to complain when @auto changes intermixed tabs and blanks in leading whitespace. Recall that Leo has no real choice: @others implies whitespace equal to a single tab: if the corresponding whitespace in the original file contains a mix of blanks and tabs there is *no way* for Leo to generate an absolutely equivalent outline. This is similar to what Leo must do for underindented lines. 
-                   
-Conceivably yet another user option could disallow automatic tab/space conversion, but then all such 'innocently offending' lines would result in the importers generating errors and inserting @ignore directives. Such a user option would hardly be an improvement. At a certain point @auto is going to have to rely on some minimal amount of good will from its users. Otherwise @auto is going to be hamstrung to please compulsive users. 
+in leoPy.leo to see how easy it is to create new parsers.
 
 </t>
-<t tx="ekr.20070806095535.3">We can think of the generalization process as moving more and more code into this base class. I have used a similar process very successfully with Leo's gui code. In particular, I knew success had been achieved when the infamous tree.select method got moved from the tkinter tree class into the base tree class. 
-       
-But I digress. The general idea is to make the scan method a method of the base class. To do this, scan must call methods in language-specific subclasses to recognize the start of language elements such as comments, classes, functions and leading (outer declarations). Voila! A design that will work for me. I can easily write such methods by hand, and if they can be automated, so much the better. 
-       
-More generalization will be needed, but I think that will also be straightforward. In fact, the present code is already pretty well divided into parsing and semantics methods. Unless I am mistaken, the semantics methods are pretty much already language independent: they simply create nodes (and their contents) using the strings discovered by the parser methods. 
+<t tx="ekr.20070806101412">Three new commands in the File:Read/Write menu allow you to manually read and
+write @auto nodes from the presently selected outline. As always, an @ignore
+directive in the @auto node or its ancestors will suppress any of these
+commands:
 
-----
+- The Read @auto Nodes (read-at-auto-nodes) command reads all @auto nodes in the
+  presently selected outline. An @ignore directive will suppress this import.
 
-Although PyParsing is a most interesting tool, it will not be needed, for the following reasons: 
-       
-      1. **The task to be performed for each language is the same**. The scan method expresses that task clearly. Furthermore, the processing implied by the scan code is extremely efficient. In essence, the @auto code is a glorified tokenizer, *not* a full parser. This is good news, but it means general parsers such as PyParsing or SimpleParse would be slower. 
-       
-      2. Because each language is handled the same way, **all complex code can be moved to the baseScannerClass**. This has many happy implications: 
-       
-      A. Subclasses of baseScannerClass, that is the parsers for each separate language, will be very simple. The ctor for each subclass will specify some language specific constants, like the start-of-comment characters. Some of these constants will be used by base class methods during scanning. 
-       
-      True, each subclass will have to provide methods such as skipOuterClass and skipOuterFunction, but in fact these are not difficult to do, and base class methods might actually suffice for many languages. 
-       
-      For example, the code that skips a C function basically just skips to the '}' that matches the opening '{'. But the leoGlobals module already has functions to do that, and providing wrappers for such functions in baseScannerClass opens the door for further simplifications. A skipToMatchingFunctionDelim method (in the base class) could use start/end delims specified in the ctor of the subclass, so even the skipOuterClass and skipOuterFunction methods could be defined in the base class. 
-       
-      In short, supporting a new language might take just a few minutes--define a few constants in the ctor, and possibly write a few very simple methods, usually by calling helper methods in the base class. 
-       
-      B. Essentially *all* the semantic routines are language independent. This means that they all can be in the base class. So it almost doesn't matter how complicated they are because they won't have to be overridden in subclasses. 
-       
-      C. It may even be possible to use a *common* set of unit tests for all languages. Wouldn't that be sweet... 
-       
-      I have omitted some implementation details, but these details only reinforce the notion that creating new @auto parsers can be done in a few minutes. 
-       
-      So has the 'excursion' to PyParsing been a waste? Of course not! In fact, it was only by comparing and contrasting PyParsing with scan that the present conclusions arose. 
-       
-      The investigation has produced a much higher level of certainty and excitement about the project. The design promises to be strong in all dimensions: it is conceptually clear and simple, the parser/scanners will be lightning fast, and the parser/scanners will be easy to specify and test. Unlike more heavyweight solutions, scanners will generate O(zero) Python objects and their speed will be strictly O(N) where N is the size of the file to be parsed. 
-      
-----
+- The Write @auto Nodes (write-at-auto-nodes) command writes all @auto nodes. An
+  @ignore directive will suppress this import. Caution: the write will occur even
+  if Leo has not previously read the @auto node.
 
-The @auto project is way ahead of schedule. The import code has turned into a textbook example of the proper use of inheritance. The base class does all the hard work; subclasses specify quite small deltas from the norm.
+- The Write Dirty @auto Nodes (write-dirty-at-auto-nodes) is the same as the
+  write-at-auto-nodes command, except that only changed @auto trees are written.
 
-The main reason why I say the project is ahead of schedule is that I can justify lavishing almost any amount of work in generalizing, simplifying, verifying and testing the code in the base class, secure in the knowledge that the work will pay off when doing all other parsers. 
-
-The parsing code is essentially complete. The code generation code is well along, but more thinking is needed about the kinds of whitespace errors or inconsistencies that can occur.  
-
-In particular, indenting an @others directive creates a hidden requirement that the whitespace preceding the @others directive appears consistently in all lines generated by the @others directive. For Python program, I believe we can prove a theorem that this will be so provided that tabs and blanks are not mixed in leading indentation. For other languages the leading whitespace requirement is not so severe, but ironically this means that leading whitespace is *less* likely to be used consistently. We don't want Leo pedantically to refuse to import files where leading white may be harmless inconsistent, but we want to be very careful that @auto never alters the meaning of a Python program. 
-
-The actual coding is a most enjoyable interplay between 'design by refactoring' and 'refactoring by design' :-) I don't believe the two approaches are equivalent, and the tension between them is, to repeat, most enjoyable. 
-
-Furthermore, I am now ready to start defining expected results in terms of unit tests. This will be a convenient way of experimenting with leading whitespace, and it will also reduce the 'unit of debugging'. 
-
-Bernhard Mulder's suggestion to focus on small functions continues to be helpful. No, it's more than that--it continues to drive my day-to-day work. Indeed, I now consider that using literate programming sections is an anti-pattern. Code is almost always better off without section references, except in those cases, such as groups of Python import statements, or html groups, where functions or methods can not easily be used. 
-
----
-
-- Both the C and Java scanners override *only* the the ctor, startsClass and startsFunction methods. I invented a new pattern that makes it unnecessary, in most cases, to override the skipClass, skipFunction and skipSignature methods. 
-             
-The new pattern is this: startsClass and startsFunction, when they detect the start of a class or function, continue scanning/parsing until the end of the class or function. Along the way, these methods set the 'end' and 'endSig' ivars. The default skipClass/Function/Signature methods (now defined in the base class) methods merely return self.end or self.endSig. 
-             
-In some sense the overridden parsing code is equivalent to a regular expression or parser-generator production, but all the advantages are with the 'by hand code'. Indeed, the Python code is as simple, clear, fast and flexible as possible. For example, it is simple to set the self.end and self.endSig variables, and it is easy to do any error reporting 'in place'. 
-             
-In short, the new code is both straightforward to write and optimally clear and fast. Next, I'll convert all the old parsers in leoImport.py to use the new parsing pattern. This will eliminate considerable code duplication from the file, and will provide the opportunity to fine tune the generalized parsers and code generators. I'll then work on some basic unit tests before putting beta 1 out the door.
-
----
-
-The main reason I am comfortable with by hand code for the parsers is that the testing regime will be exactly the same regardless of parsing method used: regex, parser productions, or by-hand code. In fact, the possible errors in each case are isomorphic with the errors in the other cases. So the time taken to write the code isn't so important, because the testing time is likely to dominate. 
-                   
-As a result, by-hand code is an optimization, but it is not a 'premature' optimization. In fact, it costs essentially nothing in terms of development time, so by-hand code is all gain and no pain. Imo, it is clearly the best possible solution. 
-                   
-Others might prefer regexes or parser productions, but they will have a hard time explaining why their approach is slower than mine :-) 
-
------
-
-The big collapse in complexity has occurred. For instance, the Pascal parser is simply an overridden ctor.  
-
-Almost all the code is now in the base class, including the main parser methods skipClass and skipFunction. These now call helper methods that can be overridden in subclasses. 
-
-The aha is that all function and class declarations look something like: 
-
-- A 'intro' part, (skipSigStart) that identifies the start of a declaration. 
-- An 'id' part (skipSigId), containing the class or function name, 
-- An argument list (skipArgs), 
-- An optional post-argument-list part (skipSigTail), such as the 'throws list' in Java, 
-- A block containing the actual function or class code. This will be recursively parsed by the code generators, but the scanner doesn't need to know this. 
-
-Pascal is the simplest case. The ctor merely specifies the comment delimiters and the block delimiters, 'begin' and 'end' for Pascal. The startsString and skipString methods of the base class do not need to be overridden so we are done. 
-
-More complicated languages require overrides of the skipSigStart, skipSigId, skipArgs and skipSigTail methods, but such methods are easy to write. Crucially, parsing is now completely independent of code generation, and subclasses never need to override any code generation methods. This is the simplest possible scheme. It saves a huge amount of work when writing a new parser. 
+Most users will rarely use these explicit commands, because reading and writing
+.leo files handles @auto nodes well enough. However, you can use the
+read-at-auto-nodes command to update @auto nodes without having to reload the
+.leo file.
 </t>
-<t tx="ekr.20070806100055">&gt; Will @auto be able to support non-code files? 
- 
-Yes, provided that it is possible to deduce a reasonable way of splitting the non-code files into pieces. 
- 
-In essence, the base class already supports this: the startsClass and startsFunction methods tell the scanner when a class or function starts, and the skipClass and skipFunction report the range of the class or function. These methods could be overridden to support any kind of block or group, again assuming that the language supports it. 
- 
-For example, startsFunction could return True at the start of an rst chapter construct. 
- 
-One could even have these methods support organizer nodes, provided that some made-up (agreed-upon) syntax was embedded in the original sources. Something akin to Leo's node sentinels. But this is getting into never-land. If you want such things, it is time to commit to using @thin. 
+<t tx="ekr.20070809141529">Leo performs several checks to ensure that the result of importing an external
+file will be equivlant to the file that writing the @auto tree would produce.
 
------
+These checks can produces **errors** or **warnings**. Errors indicate a
+potentially serious problem. Leo inserts an @ignore directive in the @auto tree
+if any error is found. This @ignore directive prevents the @auto tree from
+modifying the external file. If you @ignore directive, a later write of the
+@auto tree will attempt to fix the problems that gave rise to the errors. There
+are no guarantees however.
 
-Hopefully it will be easy to teach @auto about additional file types 
-which contain blocks; 
-- ini files 
-- xorg.conf files 
-- apache.conf files  
-- mib files 
-etc. 
+Before importing a file, Leo **regularizes** the leading whitespace of all lines
+of the original source file. That is, Leo converts blanks to tabs or tabs to
+blanks depending on the value of the @tabwidth directive in effect for the @auto
+node. Leo also checks that the indentation of any non-blank line is not a
+multiple of the indentation specified by the @tabwidth dirctive in effect for
+the @auto node.
 
-As I just mentioned in another reply, this can be done providing that the language provides enough information to define the blocks. </t>
-<t tx="ekr.20070806101412">I think I've changed my mind about the read/write commands that pertain to @auto. My second thought is that having separate Read/Write @auto nodes commands may be less confusing to newbies. 
-       
-Furthermore, the use case of selecting a (large) outline and doing write-at-auto-nodes would benefit from *not* having that command also write @file and @thin nodes. In other words, the read/write-at-file commands are rarely used, and it would probably be good not to confuse those commands with the read/write-at-auto commands. 
+Leo cannot guarantee to reproduce the original source file exactly if problems
+are discovered while regularizing leading whitespace. **Strict languages** are
+languages such as Python for which leading whitespace must be preserved exactly
+as it appears in the original source file. Problems during regularizing generate
+errors for strict languages and warnings for non-strict languages.
 
-Leo's save command should write @auto files unless they contain an @ignore directive. Furthermore, the .leo files should contain only the root @auto node, not descendant nodes. I'll want to make sure the usual error recovery actions apply: the entire tree must be written to the .leo file if there were errors writing the @auto node. 
+After importing a file, Leo verifies that writing the @auto node would create
+*exactly* the same file as the original file. Such file comparison mismatches
+generate errors unless the problem involves only leading whitespace for
+non-strict languages. Whenever a mismatch occurs the first non-matching line is
+printed.
 
------
+File comparison mismatches can arise for several reasons:
+    
+1. Bugs in the import parsers. Please report any suspected bugs immediately.
 
-There is a problem with automatically writing @auto nodes when saving .leo files: how does Leo avoid erasing an existing file derived from @auto when the user first creates the @auto node?  Leo can't use a file compare algorithm: that is useful only when reading @auto trees. 
-       
-The solution is to set a flag associated with the @auto node when reading the node, and to write that @auto node automatically when saving the .leo file only if the flag has been set. Rather than using uA's, the commander will have a dict that tells which @auto files have been read properly. This is a clean solution, even though it involves some extra code. 
+2. Underindented lines in classes, methods or function. An **underindented
+   line** is a line that is indented less then the starting line of the class,
+   method or function in which it appears. Leo outlines can not represent such
+   lines exactly: every line of node implicitly has at least the indentation of
+   any unindented line of the node.
 
-The write-at-auto-nodes command will write all @auto nodes in the selected tree regardless of the whether the flag is set. This allows the command to 'force' writes of @auto nodes. This makes the command a bit dangerous, but newbies are unlikely to execute the command immediately after creating an @auto node...The natural thing would be just to save the .leo file. 
+Leo will issue a warning (not an error) for underindented Python comment lines.
+Such lines can not change the meaning of Python programs.</t>
+<t tx="ekr.20070809145744"></t>
+<t tx="ekr.20070809145744.1">@ @rst-options
+code_mode=False
+generate_rst=True
+http_server_support = False
+show_organizer_nodes=True
+show_headlines=True
+show_leo_directives=True
+stylesheet_path=..\doc
+write_intermediate_file = False
+verbose=True
+@c
+
+|prev| |leo| |next|
+
+##########################################
+What's New in Leo 4.4.4
+##########################################
+
+The highlights of Leo 4.4.4:
+    
+- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
+  This plugin features much better performance.  It's ready for prime time.
+
+- Support for @auto nodes.  Such nodes allow people to collaborate using Leo
+  without inserting Leo sentinels in the files Leo generates.
+    
+.. contents::</t>
+<t tx="ekr.20070809145744.2">.. Links used in this document.
+
+.. _`leoBridge chapter`:    leoBridge.html
+.. _`debugging with Leo`:   debuggers.html
+
+
+.. WARNING: image targets may not have upper case letters!
+
+.. |prev| image:: arrow_lt.gif
+	:target: glossary.html
+
+.. |leo|  image:: leo.gif
+	:target: front.html
+
+.. |next| image:: arrow_rt.gif
+    :target: new-4-4-3.html
 </t>
-<t tx="ekr.20070806102206">- @bool full_import_checks = True
+<t tx="ekr.20070809145744.3"></t>
+<t tx="ekr.20070809145744.4">::
+
+    read-at-auto-nodes
+    write-at-auto-nodes
+    write-dirty-at-auto-nodes
 </t>
+<t tx="ekr.20070809145744.5">::
+    @bool whatever
+    
+For details of these new settings, see leoSettings.leo
+
+
+
+</t>
+<t tx="ekr.20070809145744.6">- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
+  This plugin features much better performance.  It's ready for prime time.
+</t>
+<t tx="ekr.20070809145744.7">- See the release notes for a list of bugs fixed in Leo 4.4.4.
+
+</t>
+<t tx="ekr.20070809145744.8">-----------------------
+
+|prev| |leo| |next|</t>
 </tnodes>
 </leo_file>
