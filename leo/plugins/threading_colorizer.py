@@ -1012,9 +1012,10 @@ class colorizer:
         w = self.w
 
         names = w.tag_names()
+        i,j = w.toGuiIndex(0), w.toGuiIndex('end')
         for name in names:
             if name not in ('sel','insert'):
-                w.tag_remove(name,w.toGuiIndex(0), w.toGuiIndex('end'))
+                w.tag_remove(name,i,j)
     #@-node:ekr.20070718131458.44:removeAllTags
     #@+node:ekr.20070720165737:removeTagsFromRange
     def removeTagsFromRange(self,i,j):
@@ -1023,8 +1024,8 @@ class colorizer:
 
         names = [z for z in w.tag_names() if z not in ('sel','insert')]
 
+        x1,x2 = w.toGuiIndex(self.start_i,s=s), w.toGuiIndex(self.end_i,s=s)
         for tag in names:
-            x1,x2 = w.toGuiIndex(self.start_i,s=s), w.toGuiIndex(self.end_i,s=s)
             w.tag_remove(tag,x1,x2)
     #@-node:ekr.20070720165737:removeTagsFromRange
     #@+node:ekr.20070724120821:tag & index (threadingColorizer)
@@ -1061,26 +1062,30 @@ class colorizer:
             self.start_i = self.end_i
             return
 
-        # g.trace('removing tags from',self.start_i,self.end_i) # repr(s[self.start_i:self.end_i]))
-        if len(tagList) < 10:
-            # Single characters typically change less than 10 tags on a line.
-            if trace: g.trace('tagList',tagList)
-            gaps = [] ; last_i = None ; last_j = None
-            for tag,i,j in tagList:
-                if last_i is None:
-                    if self.start_i != i:
-                        gaps.append((self.start_i,i),)
-                else:
-                    if i != last_j:
-                        gaps.append((last_j,i),)
-                last_i = i ; last_j = j
-            if last_j != self.end_i:
-                gaps.append((last_j,self.end_i),)
-            if trace: g.trace('***','gaps',gaps)
-            for i,j in gaps:
-                self.removeTagsFromRange(i,j)
-        else:
-            self.removeTagsFromRange(self.start_i,self.end_i)
+        self.removeTagsFromRange(self.start_i,self.end_i)
+
+        # It appears that something is wrong with this.
+
+        # # g.trace('removing tags from',self.start_i,self.end_i) # repr(s[self.start_i:self.end_i]))
+        # if len(tagList) < 10:
+            # # Single characters typically change less than 10 tags on a line.
+            # if trace: g.trace('tagList',tagList)
+            # gaps = [] ; last_i = None ; last_j = None
+            # for tag,i,j in tagList:
+                # if last_i is None:
+                    # if self.start_i != i:
+                        # gaps.append((self.start_i,i),)
+                # else:
+                    # if i != last_j:
+                        # gaps.append((last_j,i),)
+                # last_i = i ; last_j = j
+            # if last_j != self.end_i:
+                # gaps.append((last_j,self.end_i),)
+            # if trace: g.trace('***','gaps',gaps)
+            # for i,j in gaps:
+                # self.removeTagsFromRange(i,j)
+        # else:
+            # self.removeTagsFromRange(self.start_i,self.end_i)
 
         for tag,i,j in tagList:
             x1,x2 = w.toGuiIndex(i,s=s), w.toGuiIndex(j,s=s)
