@@ -34,7 +34,7 @@
 <v t="ekr.20070620084858.1"><vh>@@button upload</vh></v>
 </v>
 </v>
-<v t="EKR.20040519091259"><vh>Annoucnements</vh>
+<v t="EKR.20040519091259" a="TV"><vh>Annoucnements</vh>
 <v t="EKR.20040519091259.1"><vh>Download statistics</vh></v>
 <v t="EKR.20040519091259.2"><vh>Quotes of the month</vh>
 <v t="ekr.20070425092712"><vh>April 2007</vh></v>
@@ -46,9 +46,10 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
-<v t="ekr.20070703100935"><vh>ANN: Leo 4.4.3.1</vh></v>
+<v t="ekr.20070703100935"><vh>ANN: Leo 4.4.4 beta 1</vh></v>
 <v t="EKR.20040519091259.30"><vh>Previous announcements</vh>
 <v t="ekr.20070703100935.1"><vh>4.4.3</vh>
+<v t="ekr.20070810093610"><vh>ANN: Leo 4.4.3.1</vh></v>
 <v t="ekr.20070626083110"><vh>ANN: Leo 4.4.3 final</vh></v>
 <v t="ekr.20070622091049"><vh>ANN: Leo 4.4.3 beta 3</vh></v>
 <v t="ekr.20070610174300"><vh>ANN: Leo 4.4.3 beta 2</vh></v>
@@ -162,8 +163,8 @@
 <v t="ekr.20040701160830.1"><vh>names for use in suppressions</vh></v>
 <v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
-<v t="ekr.20050118095021" a="E"><vh>Leo 4.x installer</vh>
-<v t="ekr.20050118103207" a="E"><vh>Keeping installer/uninstallers in synch</vh>
+<v t="ekr.20050118095021"><vh>Leo 4.x installer</vh>
+<v t="ekr.20050118103207"><vh>Keeping installer/uninstallers in synch</vh>
 <v t="ekr.20050118104149"><vh>config files</vh>
 <v t="ekr.20050118104149.1"><vh>&lt;&lt; install config files &gt;&gt;</vh></v>
 <v t="ekr.20050118104149.2"><vh>&lt;&lt; uninstall config files &gt;&gt;</vh></v>
@@ -196,9 +197,9 @@
 <v t="ekr.20050118104901.13"><vh>&lt;&lt; install scripts &gt;&gt;</vh></v>
 <v t="ekr.20050118104901.14"><vh>&lt;&lt; uninstall scripts &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20050118104901.9" a="E"><vh>src files</vh>
+<v t="ekr.20050118104901.9"><vh>src files</vh>
 <v t="ekr.20050118104901.10"><vh>&lt;&lt; install src files &gt;&gt;</vh></v>
-<v t="ekr.20050118104901.11" a="TV"><vh>&lt;&lt; uninstall src files &gt;&gt;</vh></v>
+<v t="ekr.20050118104901.11"><vh>&lt;&lt; uninstall src files &gt;&gt;</vh></v>
 </v>
 <v t="ekr.20050118122740.2"><vh>test files</vh>
 <v t="ekr.20050118122404.1"><vh>&lt;&lt; install test files &gt;&gt;</vh></v>
@@ -213,7 +214,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846" a="E"><vh>Distribution files</vh>
+<v t="EKR.20040519090846"><vh>Distribution files</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
@@ -687,7 +688,7 @@ c:\python22\python &lt;leopath&gt;leo.py %1
 </t>
 <t tx="EKR.20040519090846.8">Metadata-Version: 1.0
 Name: leo
-Version: 4.4.3.1
+Version: 4.4.4-beta-1
 Summary: Leo: Literate Editor with Outlines
 Home-page: http://webpages.charter.net/edreamleo/front.html
 Author: Edward K. Ream
@@ -706,18 +707,22 @@ Description: Leo is an outline-oriented editor written in 100% pure Python.
 		Download tkIcon from http://www.effbot.org/downloads/#tkIcon
 Platform: Windows, Linux, Macintosh
 </t>
-<t tx="EKR.20040519090846.9">Leo 4.4.3.1                                 July 3, 2006
+<t tx="EKR.20040519090846.9">Leo 4.4.4 beta 1                                August 10, 2007
 
-Leo 4.4.3.1 is available at:
+Leo 4.4.4 beta is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
 
-The highlights of Leo 4.4.3.1:
+The highlights of Leo 4.4.4:
 ----------------------------
-- Fixed a few minor bugs reported since Leo 4.4.3 was released.
-- Added better support for unit testing in Leo.
+
+- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
+  This plugin features much better performance.
+
+- Support for @auto nodes.  Such nodes allow people to collaborate using Leo
+  without inserting Leo sentinels in the files Leo generates.
 
 Links:
 ------
@@ -3100,7 +3105,7 @@ Delete "$INSTDIR\test\test.leo"
 Delete "$INSTDIR\test\unitTest.leo"
 Delete "$INSTDIR\test\leoBridgeTest.py"
 Delete "$INSTDIR\test\leoDynamicTest.py"</t>
-<t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4.3.1"</t>
+<t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4.4-beta-1"</t>
 <t tx="ekr.20050124083006">Leo 4.3 alpha 1 is now available at http://sourceforge.net/projects/leo/
 
 Leo 4.3 is the culmination of more than four months of work. In spite
@@ -5350,7 +5355,7 @@ import setuptools
 
 setuptools.setup (
     name='leo',
-    version='4.4.3b3', # No spaces!
+    version='4.4.4-b1', # No spaces!
         # pre-release tags: 4.4.3b1 or 4.4.3rc1 or 4.4.3preview1
         # Do not use post-release-tags: 4.4.3-whatever.
         # final release: 4.4.3final or just 4.4.3.
@@ -5376,7 +5381,7 @@ print ; print '='*30,'setup.py complete','='*30 ; print
 </t>
 <t tx="ekr.20070622081640"># These can't be used at present.</t>
 <t tx="ekr.20070622084133"></t>
-<t tx="ekr.20070622084634">version='4.4.3.1' # No spaces and no trailing comma.</t>
+<t tx="ekr.20070622084634">version='4.4.4-beta-1' # No spaces and no trailing comma.</t>
 <t tx="ekr.20070622091049">Leo 4.4.3 beta 3                                June 23, 2006
 
 Leo 4.4.3 beta 3 is available at:
@@ -5442,7 +5447,32 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
-<t tx="ekr.20070703100935">Leo 4.4.3.1                                 July 3, 2006
+<t tx="ekr.20070703100935">Leo 4.4.4 beta 1                                August 10, 2007
+
+Leo 4.4.4 beta is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.4:
+----------------------------
+
+- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
+  This plugin features much better performance.
+
+- Support for @auto nodes.  Such nodes allow people to collaborate using Leo
+  without inserting Leo sentinels in the files Leo generates.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20070703100935.1"></t>
+<t tx="ekr.20070810093610">Leo 4.4.3.1                                 July 3, 2006
 
 Leo 4.4.3.1 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
@@ -5462,6 +5492,5 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
-<t tx="ekr.20070703100935.1"></t>
 </tnodes>
 </leo_file>

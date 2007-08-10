@@ -1,15 +1,19 @@
-Leo 4.4.3.1                                 July 3, 2006
+Leo 4.4.4 beta 1                                August 10, 2007
 
-Leo 4.4.3.1 is available at:
+Leo 4.4.4 beta is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
 
-The highlights of Leo 4.4.3.1:
+The highlights of Leo 4.4.4:
 ----------------------------
-- Fixed a few minor bugs reported since Leo 4.4.3 was released.
-- Added better support for unit testing in Leo.
+
+- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
+  This plugin features much better performance.
+
+- Support for @auto nodes.  Such nodes allow people to collaborate using Leo
+  without inserting Leo sentinels in the files Leo generates.
 
 Links:
 ------

@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="349" height="744" width="892"/>
+	<global_window_position top="10" left="349" height="724" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -1071,7 +1071,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
 <v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
@@ -3254,8 +3254,8 @@
 </v>
 <v t="ekr.20070806090235"><vh>4.4.4 @auto, threading syntax colorer</vh></v>
 </v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
-<v t="ekr.20070806090235.1"><vh>4.4.4 b1</vh>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20070806090235.1" a="TV"><vh>4.4.4 b1</vh>
 <v t="ekr.20070806090226.1"><vh>Added support for @mark-for-unit-tests node</vh></v>
 <v t="ekr.20070806090226.14"><vh>Created threading_colorizer</vh></v>
 <v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
@@ -31605,7 +31605,7 @@ used. This might be a problem when multiple body editors are present.</t>
 <t tx="ekr.20070806090226.14">The old __jEdit_colorizer__.py plugin has been retired.</t>
 <t tx="ekr.20070806090226.15"></t>
 <t tx="ekr.20070806090235"></t>
-<t tx="ekr.20070806090235.1">Leo 4.4.4 beta 1                                August 7, 2006
+<t tx="ekr.20070806090235.1">Leo 4.4.4 beta 1                                August 10, 2007
 
 Leo 4.4.4 beta is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
