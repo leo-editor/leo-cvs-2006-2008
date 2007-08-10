@@ -114,6 +114,7 @@ doc\html\leo_rst.css
 doc\html\new-4-4-1.html
 doc\html\new-4-4-2.html
 doc\html\new-4-4-3.html
+doc\html\new-4-4-4.html
 doc\html\new-4-4.html
 doc\html\outlines.html
 doc\html\plugins.html
@@ -780,6 +781,7 @@ plugins\temacs.py
 plugins\templates.py
 plugins\testRegisterCommand.py
 plugins\textnode.py
+plugins\threading_colorizer.py
 plugins\trace_gc_plugin.py
 plugins\trace_keys.py
 plugins\trace_tags.py
