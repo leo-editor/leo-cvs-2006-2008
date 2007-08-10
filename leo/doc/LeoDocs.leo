@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="349" height="724" width="892"/>
+	<global_window_position top="10" left="349" height="704" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -31607,7 +31607,7 @@ used. This might be a problem when multiple body editors are present.</t>
 <t tx="ekr.20070806090235"></t>
 <t tx="ekr.20070806090235.1">Leo 4.4.4 beta 1                                August 10, 2007
 
-Leo 4.4.4 beta is available at:
+Leo 4.4.4 beta 1 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 Leo is a text editor, data organizer, project manager and much more. See:
@@ -31615,8 +31615,12 @@ http://webpages.charter.net/edreamleo/intro.html
 
 The highlights of Leo 4.4.4:
 ----------------------------
-- Fixed a few minor bugs reported since Leo 4.4.3 was released.
-- Added better support for unit testing in Leo.
+
+- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
+  This plugin features much better performance.
+
+- Support for @auto nodes.  Such nodes allow people to collaborate using Leo
+  without inserting Leo sentinels in the files Leo generates.
 
 Links:
 ------
