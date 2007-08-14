@@ -36,7 +36,7 @@ characters will look strange.
 # Adapted and extended from the Python Cookbook:
 # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/259148
 
-__version__ = "0.98"
+__version__ = "0.99"
 
 # This encoding must match the character encoding used in your browser.
 # If it does not, non-ascii characters will look very strange.
@@ -90,6 +90,8 @@ import urlparse
 # - Call g.signon in init so users can see that the plugin is enabled.
 # - Removed the old @page line from the docstring.
 # 0.98 EKR: Handle unicode characters properly.
+# 0.99 Lauri Ojansivu <lauri.ojansivu@gmail.com>: Many change for better html 
+# generation.
 #@-at
 #@nonl
 #@-node:ekr.20050328104558:<< version history >>
@@ -267,7 +269,7 @@ class escaped_StringIO(StringIO):
                 result.append(line)
         s = '\n'.join(result)
 
-        s = s.replace('\n', '<br>')
+        s = s.replace('\n', '<br />')
         s = s.replace(chr(9), '&nbsp;&nbsp;&nbsp;&nbsp;')
         # 8/9/2007
         s = g.toEncodedString(s,encoding=browser_encoding,reportErrors=False)
@@ -303,6 +305,7 @@ class leo_interface(object):
             sibling = node.next()
             parent = node.parent()
 
+            f.write("<p>\n")
             children = []
             firstChild = node.firstChild()
             if firstChild:
@@ -313,15 +316,17 @@ class leo_interface(object):
 
             if threadNext is not None:
                 self.create_leo_reference(window, threadNext,  "next", f)
-            f.write("<br>")
+            f.write("<br />")
             if sibling is not None:
                 self.create_leo_reference(window, sibling, "next Sibling", f)
-            f.write("<br>")
+            f.write("<br />")
             if parent is None:
                 self.create_href("/", "Top level", f)
             else:
                 self.create_leo_reference(window, parent, "Up", f)
-            f.write("<br>")
+            f.write("<br />")
+            f.write("\n</p>\n")
+
         else:
             # top level
             child = window.c.rootVnode()
@@ -333,7 +338,7 @@ class leo_interface(object):
                 next = child.next()
             nodename = window.shortFileName()
         if children:
-            f.write("<h2>")
+            f.write("\n<h2>")
             f.write("Children of ")
             f.write_escaped(nodename)
             f.write("</h2>\n")
@@ -341,6 +346,7 @@ class leo_interface(object):
             for child in children:
                 f.write("<li>\n")
                 self.create_leo_reference(window, child, child.headString(), f)
+                f.write("</li>\n")
             f.write("</ol>\n")
     #@nonl
     #@-node:EKR.20040517080250.21:add_leo_links
@@ -382,22 +388,34 @@ class leo_interface(object):
             format_info = None
         f = escaped_StringIO()
         write, write_escaped = f.write, f.write_escaped
-        write("<title>")
+        write("""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+    <html> 
+    <head> 
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+    <title>""")
         write_escaped(window.shortFileName() + ":" + headString)
-        write("</title>\n")
+        write("</title>\n</head>\n<body>\n")
         # write navigation
         self.add_leo_links(window, node, f)
         # write path
         self.write_path(node, f)
-        write("<hr>\n") # horizontal rule
+        write("<hr />\n") # horizontal rule
         # f.write('<span style="font-family: monospace;">')
         if format_info:
+            write("<p>\n")
             html_lines = reconstruct_html_from_attrs(format_info, 3)
             for line in html_lines:
-                write(line) 
+                write(line)
+            write("\n</p>\n")
         else:
+            if (bodyString):
+                write("<p>\n")
             write_escaped(bodyString)
+            if (bodyString):
+               write("\n</p>\n")
         # f.write("</span>\n")
+        write("\n</body>\n</html>\n")
         return f
     #@nonl
     #@-node:EKR.20040517080250.24:format_leo_node
@@ -478,7 +496,7 @@ class leo_interface(object):
         write, write_escaped = f.write, f.write_escaped
         write("<title>ROOT for LEO HTTP plugin</title>\n")
         write("<h2>Windowlist</h2>\n")
-        write("<hr>\n") # horizontal rule
+        write("<hr />\n") # horizontal rule
         write("<ul>\n")
         a = g.app # get the singleton application instance.
         windows = a.windowList # get the list of all open frames.
@@ -488,8 +506,9 @@ class leo_interface(object):
             write('<a href="%s">' % shortfilename)
             write("file name: %s" % shortfilename)
             write("</a>\n")
+            write("</li>")
         write("</ul>\n")
-        write("<hr>\n")
+        write("<hr />\n")
         return f
     #@-node:EKR.20040517080250.27:get_leo_windowlist
     #@+node:bwmulder.20050319135316:node_reference
@@ -582,9 +601,11 @@ class leo_interface(object):
             result2 = result[:-1]
             if result2:
                 result2 = ' / '.join(result2)
-                f.write("<br>\n")
+                f.write("<p>\n")
+                f.write("<br />\n")
                 f.write_escaped(result2)
-                f.write("<br>\n")
+                f.write("<br />\n")
+                f.write("</p>\n")
             f.write("<h2>")
             f.write_escaped(result[-1])
             f.write("</h2>\n")
