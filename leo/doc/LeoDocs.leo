@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="349" height="684" width="892"/>
+	<global_window_position top="10" left="349" height="788" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -494,6 +494,7 @@
 <v t="ekr.20050912125144"><vh>Chapter 12: Plugins</vh>
 <v t="ekr.20050912125144.1"><vh>@rst html\plugins.html</vh>
 <v t="ekr.20050912125735"><vh>@rst-no-head links</vh></v>
+<v t="ekr.20070814104719"><vh>Enabling plugins</vh></v>
 <v t="ekr.20050912125735.868"><vh>Body pane</vh>
 <v t="ekr.20050912125735.869"><vh>arrows.py</vh></v>
 <v t="ekr.20050912125735.874"><vh>image.py</vh></v>
@@ -766,7 +767,7 @@
 <v t="ekr.20050901083017"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060620094033"><vh>What's New...</vh>
+<v t="ekr.20060620094033" a="E"><vh>What's New...</vh>
 <v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
 <v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
 <v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
@@ -784,7 +785,7 @@
 <v t="ekr.20070809145744.8"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
+<v t="ekr.20070513113903" a="E"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
 <v t="ekr.20070513113931.1"><vh>@rst-no-head links</vh>
 <v t="ekr.20070513115832.2"><vh>Important new features</vh></v>
@@ -1076,7 +1077,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
 <v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
@@ -1095,7 +1096,7 @@
 <v t="ekr.20070809145744.8"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
+<v t="ekr.20070513113903" a="E"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
 <v t="ekr.20070513113931.1"><vh>@rst-no-head links</vh>
 <v t="ekr.20070513115832.2"><vh>Important new features</vh></v>
@@ -3259,8 +3260,8 @@
 </v>
 <v t="ekr.20070806090235"><vh>4.4.4 @auto, threading syntax colorer</vh></v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20070806090235.1" a="TV"><vh>4.4.4 b1</vh>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20070806090235.1"><vh>4.4.4 b1</vh>
 <v t="ekr.20070806090226.1"><vh>Added support for @mark-for-unit-tests node</vh></v>
 <v t="ekr.20070806090226.14"><vh>Created threading_colorizer</vh></v>
 <v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
@@ -3271,6 +3272,10 @@
 </v>
 </v>
 </v>
+</v>
+<v t="ekr.20070814104015" a="E"><vh>Found: enabled-plugins</vh>
+<v t="ekr.20070317043727.3" a="TV"><vh>Complex settings nodes</vh></v>
+<v t="ekr.20070814104719"><vh>Enabling plugins</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -19702,7 +19707,8 @@ instantly hooked.
 
 .. Relative links...
 
-.. _`Chapter 8\: Customizing Leo`:     customizing.html
+.. _`Specifying settings`:              customizer.html#specifying-settings
+.. _`Chapter 8\: Customizing Leo`:      customizing.html
 .. _`Chapter 13\: Writing Plugins`:     writingPlugins.html
 .. _`Creating script buttons`:          scripting.html#creating-script-buttons
 
@@ -30180,8 +30186,8 @@ The actual settings are specified in the body text.  At present, there are five 
     
 - ``@enabled-plugins``
 
-  **New in Leo 4.4.3**: The body text of the contains a list of enabled plugins,
-  and this body text is treated exactly as the contents of the pluginsManager.txt file.
+  **New in Leo 4.4.3**: The body text of the @enabled plugins node contains a list of enabled plugins.
+  This body text is treated exactly as the contents of the pluginsManager.txt file.
   Notes:
 
     A) Leo attempts to load all plugins every time an @enabled-plugins node is seen.
@@ -31890,6 +31896,24 @@ Most users will rarely use these explicit commands, because reading and writing
 .leo files handles @auto nodes well enough. However, you can use the
 read-at-auto-nodes command to update @auto nodes without having to reload the
 .leo file.
+</t>
+<t tx="ekr.20070814104015">@nocolor
+</t>
+<t tx="ekr.20070814104719">You enable or disable plugins using @enabled-plugins nodes in leoSettings files (leoSettings.leo, myLeoSettings.leo or the .leo file being loaded).  See `Specifying settings`_ for full details of settings files.
+    
+The body text of the @enabled-plugins node contains a list of enabled plugins.
+Notes:
+    
+- Leo attempts to load all plugins every time an @enabled-plugins node is seen.
+   If the plugin has already been loaded, Leo silently ignores the request to
+   re-enable the plugin. Leo never attempts to disable a plugin while processing
+   enabled plugin strings. Thus, plugins enabled in an @enabled-plugins node in
+   leoSettings.leo *will* be enabled regardless of the contents of any other
+   @enabled-plugins node.
+   
+- g.app.gui.getEnabledPlugins contains the last value last processed
+   @enabled-plugins node, or the contents of the first pluginsManager.txt file
+   encountered.
 </t>
 </tnodes>
 </leo_file>
