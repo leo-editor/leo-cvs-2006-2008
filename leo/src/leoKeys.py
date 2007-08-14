@@ -836,13 +836,17 @@ class autoCompleterClass:
                 doc = f and f.__doc__
 
         if not doc:
-            if not self.hasAttr(obj,word): return
+            if not self.hasAttr(obj,word):
+                g.es('No docstring for %s' % (word),color='blue')
+                return
             obj = self.getAttr(obj,word)
             doc = inspect.getdoc(obj)
 
         if doc:
             c.frame.log.clearTab('Info',wrap='word')
             g.es(doc,tabName='Info')
+        else:
+            g.es('No docstring for %s' % (word),color='blue')
     #@-node:ekr.20061031131434.38:info
     #@+node:ekr.20061031131434.39:insertNormalChar
     def insertNormalChar (self,ch,keysym):
