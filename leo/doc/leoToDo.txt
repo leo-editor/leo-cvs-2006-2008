@@ -174,31 +174,6 @@ straightforward, and the user can easily resolve conflicts by modifying one or
 more nodes in the outline.
 #@nonl
 #@-node:ekr.20051202094427:resolve-cvs-conflicts and write-resolved-conflicts commands
-#@+node:ekr.20070814083649:New @path problem
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4462693
-By: ktenney
-
-in file c:/tmp/test.leo
-
-<head>node
-<body>@path 'c:\tmp'
-
---<head>@file test.txt
-
-=========================
-<ctrl-s>
-
-log pane:
-
-invalid @path: C:/tmp\'c:/tmp'
-Not written: C:\tmp\test.txt.tmp
-saved: test.leo
-#@nonl
-#@-node:ekr.20070814083649:New @path problem
-#@+node:ekr.20070814092006:Install http patch
-#@-node:ekr.20070814092006:Install http patch
 #@+node:ekr.20070729093951.1:Update docs re @enabled-plugins
 #@-node:ekr.20070729093951.1:Update docs re @enabled-plugins
 #@-node:ekr.20070325052041:To do: 4.4.4 (@auto & resolve-cvs-conflicts)

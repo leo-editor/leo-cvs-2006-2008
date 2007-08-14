@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -186,9 +186,9 @@
 <v t="ekr.20050906105335"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.3" a="E"><vh>Chapter 2: A Tutorial Introduction to Leo</vh>
-<v t="ekr.20050816073412" a="E"><vh>@rst html\intro.html</vh>
-<v t="ekr.20050816073814" a="TV"><vh>@rst-no-head links</vh></v>
+<v t="ekr.20050831195331.3"><vh>Chapter 2: A Tutorial Introduction to Leo</vh>
+<v t="ekr.20050816073412"><vh>@rst html\intro.html</vh>
+<v t="ekr.20050816073814"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050816073412.1"><vh>Introduction</vh>
 <v t="ekr.20050822173420"><vh>Leo's main window</vh></v>
 <v t="ekr.20050823082517"><vh>Using Leo as an outliner</vh></v>
@@ -199,9 +199,9 @@
 <v t="ekr.20050827055403"><vh>Outline structure is significant everywhere</vh></v>
 <v t="ekr.20050822173420.3"><vh>Leo directives</vh></v>
 </v>
-<v t="ekr.20050827102655" a="E"><vh>Leo for Programmers</vh>
+<v t="ekr.20050827102655"><vh>Leo for Programmers</vh>
 <v t="ekr.20050827090532"><vh>Quick start for programmers</vh></v>
-<v t="ekr.20050829081318" a="E"><vh>Beginner`s reference guide</vh>
+<v t="ekr.20050829081318"><vh>Beginner`s reference guide</vh>
 <v t="ekr.20050827155902"><vh>Syntax of section names</vh></v>
 <v t="ekr.20050827061847"><vh>Code and doc parts</vh></v>
 <v t="ekr.20050828205054"><vh>Directives for programming</vh></v>
@@ -239,8 +239,8 @@
 <v t="ekr.20050901102400"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831184021.5" a="E"><vh>Chapter 4: Programming with Leo</vh>
-<v t="ekr.20050828061213" a="E"><vh>@rst html\directives.html</vh>
+<v t="ekr.20050831184021.5"><vh>Chapter 4: Programming with Leo</vh>
+<v t="ekr.20050828061213"><vh>@rst html\directives.html</vh>
 <v t="ekr.20050828160132"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050828160132"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050828065955"><vh>@rst-ignore To do</vh></v>
@@ -759,19 +759,19 @@
 <v t="ekr.20050901071613"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="EKR.20040524104904.380" a="E"><vh>Glossary</vh>
-<v t="ekr.20050901071041" a="E"><vh>@rst html\glossary.html</vh>
+<v t="EKR.20040524104904.380"><vh>Glossary</vh>
+<v t="ekr.20050901071041"><vh>@rst html\glossary.html</vh>
 <v t="ekr.20050901071300"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050901073048"><vh>@rst-no-head glossary</vh></v>
 <v t="ekr.20050901083017"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060620094033" a="E"><vh>What's New...</vh>
-<v t="ekr.20070809145744" a="E"><vh>What's New in Leo 4.4.4</vh>
-<v t="ekr.20070809145744.1" a="E"><vh>@rst html\new-4-4-4.html</vh>
+<v t="ekr.20060620094033"><vh>What's New...</vh>
+<v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
+<v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
 <v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070809145744.3"><vh>@rst-ignore Important new features</vh></v>
-<v t="ekr.20070806090226.15" a="E"><vh>Added support for @auto</vh>
+<v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
 <v t="ekr.20070806095535.1"><vh>What @auto does</vh></v>
 <v t="ekr.20070809141529" a="M"><vh>Perfect import checks</vh></v>
 <v t="ekr.20070806101412"><vh>Commands related to @auto</vh></v>
@@ -1076,13 +1076,13 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
-<v t="ekr.20070809145744" a="E"><vh>What's New in Leo 4.4.4</vh>
-<v t="ekr.20070809145744.1" a="E"><vh>@rst html\new-4-4-4.html</vh>
+<v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
+<v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
 <v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070809145744.3"><vh>@rst-ignore Important new features</vh></v>
-<v t="ekr.20070806090226.15" a="E"><vh>Added support for @auto</vh>
+<v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
 <v t="ekr.20070806095535.1"><vh>What @auto does</vh></v>
 <v t="ekr.20070809141529" a="M"><vh>Perfect import checks</vh></v>
 <v t="ekr.20070806101412"><vh>Commands related to @auto</vh></v>
@@ -3259,8 +3259,8 @@
 </v>
 <v t="ekr.20070806090235"><vh>4.4.4 @auto, threading syntax colorer</vh></v>
 </v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
-<v t="ekr.20070806090235.1"><vh>4.4.4 b1</vh>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20070806090235.1" a="TV"><vh>4.4.4 b1</vh>
 <v t="ekr.20070806090226.1"><vh>Added support for @mark-for-unit-tests node</vh></v>
 <v t="ekr.20070806090226.14"><vh>Created threading_colorizer</vh></v>
 <v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
