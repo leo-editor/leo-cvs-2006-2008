@@ -4666,14 +4666,15 @@ class atFile:
                 #@+node:ekr.20041005105605.226:<< compute relative path from s[k:] >>
                 j = i = k + len("@path")
                 i = g.skip_to_end_of_line(s,i)
-                path = string.strip(s[j:i])
+                path = s[j:i].strip()
 
                 # Remove leading and trailing delims if they exist.
                 if len(path) > 2 and (
                     (path[0]=='<' and path[-1] == '>') or
-                    (path[0]=='"' and path[-1] == '"') ):
-                    path = path[1:-1]
-                path = path.strip()
+                    (path[0]=='"' and path[-1] == '"') or
+                    (path[0]=="'" and path[-1] == "'")
+                ):
+                    path = path[1:-1].strip()
 
                 if 0: # 11/14/02: we want a _relative_ path, not an absolute path.
                     path = g.os_path_join(g.app.loadDir,path)
@@ -4833,6 +4834,9 @@ class atFile:
 
         theDir = g.choose(name,g.os_path_dirname(name),None)
 
+        # g.trace('at.default_directory',at.default_directory)
+        # g.trace('theDir',theDir)
+
         if theDir and g.os_path_isabs(theDir):
             if g.os_path_exists(theDir):
                 at.default_directory = theDir
@@ -4858,19 +4862,20 @@ class atFile:
                 #@+node:ekr.20041005105605.239:<< compute relative path from s[k:] >>
                 j = i = k + len("@path")
                 i = g.skip_to_end_of_line(s,i)
-                path = string.strip(s[j:i])
+                path = s[j:i].strip()
 
                 # Remove leading and trailing delims if they exist.
                 if len(path) > 2 and (
                     (path[0]=='<' and path[-1] == '>') or
-                    (path[0]=='"' and path[-1] == '"') ):
-                    path = path[1:-1]
-
-                path = path.strip()
+                    (path[0]=='"' and path[-1] == '"') or
+                    (path[0]=="'" and path[-1] == "'")
+                ):
+                    path = path[1:-1].strip()
+                #@nonl
                 #@-node:ekr.20041005105605.239:<< compute relative path from s[k:] >>
                 #@nl
 
-                if path and len(path) > 0:
+                if path:
                     base = g.getBaseDirectory(c) # returns "" on error.
                     path = g.os_path_join(base,path)
 
