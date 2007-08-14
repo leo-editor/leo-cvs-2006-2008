@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="349" height="704" width="892"/>
+	<global_window_position top="10" left="349" height="684" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -186,22 +186,22 @@
 <v t="ekr.20050906105335"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.3"><vh>Chapter 2: A Tutorial Introduction to Leo</vh>
-<v t="ekr.20050816073412"><vh>@rst html\intro.html</vh>
-<v t="ekr.20050816073814"><vh>@rst-no-head links</vh></v>
+<v t="ekr.20050831195331.3" a="E"><vh>Chapter 2: A Tutorial Introduction to Leo</vh>
+<v t="ekr.20050816073412" a="E"><vh>@rst html\intro.html</vh>
+<v t="ekr.20050816073814" a="TV"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050816073412.1"><vh>Introduction</vh>
 <v t="ekr.20050822173420"><vh>Leo's main window</vh></v>
 <v t="ekr.20050823082517"><vh>Using Leo as an outliner</vh></v>
 </v>
-<v t="ekr.20050824151926"><vh>Key features of Leo</vh>
+<v t="ekr.20050824151926"><vh>Unique features of Leo</vh>
 <v t="ekr.20050822173420.1"><vh>Derived files</vh></v>
 <v t="ekr.20050822173420.2"><vh>Clones &amp; views</vh></v>
 <v t="ekr.20050827055403"><vh>Outline structure is significant everywhere</vh></v>
 <v t="ekr.20050822173420.3"><vh>Leo directives</vh></v>
 </v>
-<v t="ekr.20050827102655"><vh>Leo for Programmers</vh>
+<v t="ekr.20050827102655" a="E"><vh>Leo for Programmers</vh>
 <v t="ekr.20050827090532"><vh>Quick start for programmers</vh></v>
-<v t="ekr.20050829081318"><vh>Beginner`s reference guide</vh>
+<v t="ekr.20050829081318" a="E"><vh>Beginner`s reference guide</vh>
 <v t="ekr.20050827155902"><vh>Syntax of section names</vh></v>
 <v t="ekr.20050827061847"><vh>Code and doc parts</vh></v>
 <v t="ekr.20050828205054"><vh>Directives for programming</vh></v>
@@ -239,12 +239,17 @@
 <v t="ekr.20050901102400"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831184021.5"><vh>Chapter 4: Programming with Leo</vh>
-<v t="ekr.20050828061213"><vh>@rst html\directives.html</vh>
+<v t="ekr.20050831184021.5" a="E"><vh>Chapter 4: Programming with Leo</vh>
+<v t="ekr.20050828061213" a="E"><vh>@rst html\directives.html</vh>
+<v t="ekr.20050828160132"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050828160132"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050828065955"><vh>@rst-ignore To do</vh></v>
 <v t="ekr.20050828061501.1"><vh>@rst-no-head Intro.</vh></v>
-<v t="ekr.20050828163557"><vh>Overview: the six ways of creating derived files</vh></v>
+<v t="ekr.20050828163557"><vh>Overview: the seven ways of creating derived files</vh></v>
+<v t="ekr.20070814090306"><vh>@auto trees</vh>
+<v t="ekr.20070814090306.2" a="M"><vh>Perfect import checks</vh></v>
+<v t="ekr.20070814090306.3"><vh>Commands related to @auto</vh></v>
+</v>
 <v t="ekr.20050828211507"><vh>Overview: summary of directives</vh>
 <v t="ekr.20050829083129"><vh>@rst-ignore alternate representation</vh></v>
 </v>
@@ -754,19 +759,19 @@
 <v t="ekr.20050901071613"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="EKR.20040524104904.380"><vh>Glossary</vh>
-<v t="ekr.20050901071041"><vh>@rst html\glossary.html</vh>
+<v t="EKR.20040524104904.380" a="E"><vh>Glossary</vh>
+<v t="ekr.20050901071041" a="E"><vh>@rst html\glossary.html</vh>
 <v t="ekr.20050901071300"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050901073048"><vh>@rst-no-head glossary</vh></v>
 <v t="ekr.20050901083017"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060620094033"><vh>What's New...</vh>
-<v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
-<v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
+<v t="ekr.20060620094033" a="E"><vh>What's New...</vh>
+<v t="ekr.20070809145744" a="E"><vh>What's New in Leo 4.4.4</vh>
+<v t="ekr.20070809145744.1" a="E"><vh>@rst html\new-4-4-4.html</vh>
 <v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070809145744.3"><vh>@rst-ignore Important new features</vh></v>
-<v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
+<v t="ekr.20070806090226.15" a="E"><vh>Added support for @auto</vh>
 <v t="ekr.20070806095535.1"><vh>What @auto does</vh></v>
 <v t="ekr.20070809141529" a="M"><vh>Perfect import checks</vh></v>
 <v t="ekr.20070806101412"><vh>Commands related to @auto</vh></v>
@@ -1071,13 +1076,13 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
-<v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
-<v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
+<v t="ekr.20070809145744" a="E"><vh>What's New in Leo 4.4.4</vh>
+<v t="ekr.20070809145744.1" a="E"><vh>@rst html\new-4-4-4.html</vh>
 <v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070809145744.3"><vh>@rst-ignore Important new features</vh></v>
-<v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
+<v t="ekr.20070806090226.15" a="E"><vh>Added support for @auto</vh>
 <v t="ekr.20070806095535.1"><vh>What @auto does</vh></v>
 <v t="ekr.20070809141529" a="M"><vh>Perfect import checks</vh></v>
 <v t="ekr.20070806101412"><vh>Commands related to @auto</vh></v>
@@ -3254,8 +3259,8 @@
 </v>
 <v t="ekr.20070806090235"><vh>4.4.4 @auto, threading syntax colorer</vh></v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20070806090235.1" a="TV"><vh>4.4.4 b1</vh>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20070806090235.1"><vh>4.4.4 b1</vh>
 <v t="ekr.20070806090226.1"><vh>Added support for @mark-for-unit-tests node</vh></v>
 <v t="ekr.20070806090226.14"><vh>Created threading_colorizer</vh></v>
 <v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
@@ -13754,6 +13759,7 @@ You should see Leo's main window, something like this:
 
 .. ----- References to other chapters.
 
+.. _`@auto trees`:                                  directives.html#auto-trees
 .. _command:                                        commands.html
 .. _commands:                                       commands.html
 .. _`editing commands`:                             commands.html#the-edit-menu
@@ -13768,6 +13774,7 @@ You should see Leo's main window, something like this:
 
 .. ----- References to the glossary
 
+.. _`@auto`:                    glossary.html#auto
 .. _`@file`:                    glossary.html#file
 .. _`@nosent`:                  glossary.html#nosent
 .. _`@others`:                  glossary.html#others
@@ -14589,7 +14596,8 @@ Whitespace separate the identifiers; everything else is taken to be the
 identifiers. This construct is a convention of the noweb_ language, and will be
 of use *only* for those who want to create .nw output files for use with the
 official noweb_ system.</t>
-<t tx="ekr.20050827090532">`@thin trees`_ create `derived files`_ containing your program.
+<t tx="ekr.20050827090532">`@thin trees`_ (parts of the outline whose *headline* starts with @thin)
+create `derived files`_ containing your program.
 Within ``@thin trees`` you can write *functional pseudo-code*, like this::
 
     &lt;&lt; imports &gt;&gt;  (in body text)
@@ -14646,7 +14654,12 @@ they don't have to be complete functions or methods.
 *You now know enough to understand Leo's source code*.  Hurray!
 The following sections discuss some relatively minor details.
 However, I recommend reading `Good style and bad`_;
-you might save yourself some extra work.</t>
+you might save yourself some extra work.
+
+**New in Leo 4.4.4**:
+`@auto trees`_ allow you to edit derived files that do not contain sentinels.
+Leo imports such derived files every time Leo reads the .leo file.
+</t>
 <t tx="ekr.20050827090802">``LeoPy.leo`` (in the src subdirectory of the leo folder) contains almost all of Leo's source code.
 It provides hundreds of examples of everything discussed here.
 This file will repay close study.
@@ -15470,9 +15483,9 @@ lost; Leo will load the `@thin`_ tree from the .leo file the next time Leo
 opens the .leo file.
 
 </t>
-<t tx="ekr.20050828163557">You can create derived files using six kinds of directives.
+<t tx="ekr.20050828163557">You can create derived files using seven kinds of directives.
 The first five,
-``@file-thin``, ``@file``, ``@file-nosent``, ``@file-noref``, ``@file-asis``,
+``@auto``, ``@file-thin``, ``@file``, ``@file-nosent``, ``@file-noref``, ``@file-asis``,
 are collectively known as ``@file`` trees.
 The abbreviated forms are most common:
 ``@thin``, ``@file``, ``@nosent``, ``@noref`` and ``@asis``.
@@ -15485,6 +15498,10 @@ The term 'directive' usually refers to a construct in Leo's body text.
 In this chapter *I'll stretch the term* to include all 10 ``@file`` forms,
 as well as the true ``@root`` directive.
 Here are the six ways of creating derived files:
+    
+\@auto
+  Import the derived file when Leo reads an outline.
+  See `@auto trees`_ for full details.
 
 \@thin
   Use this unless you have a good reason not to.
@@ -15646,6 +15663,11 @@ Negative values cause Leo to convert tabs to blanks.</t>
 - **\@all**
   Copies *all* descendant nodes to the derived file.
   Not valid in ``@root`` trees.
+  
+- **\@auto**
+  Imports the derived file every time Leo reads the outline.
+  The read-at-auto-nodes and write-at-auto-nodes commands can
+  be used to read and write and @auto nodes.
 
 - **\@c**
   Starts a code part. ``@code`` is a deprecated synonym.
@@ -17878,6 +17900,7 @@ Glossary
 For example, an `@root node`_ is a node containing an @root directive_, etc.
 **Exception**: An `@file node`_ is a node whose *headline* starts with ``@file``.
 
+.. _`@auto node`:
 .. _`@file node`:
 .. _`@thin node`:
 .. _`@root node`:
@@ -17890,6 +17913,7 @@ For example, an `@root node`_ is a node containing an @root directive_, etc.
     **Important**: Headlines_ that start with ``@file-asis``, ``@file-noref``, ``@file-nosent``
     (and their abbreviations ``@asis``, ``@noref``, ``@nosent``) are collectively called ``@file`` nodes.
 
+.. _`@auto tree`:
 .. _`@file tree`:
 .. _`@thin tree`:
 .. _`@root tree`:
@@ -17900,7 +17924,7 @@ For example, an `@root node`_ is a node containing an @root directive_, etc.
 ``@file tree, @others tree, @root tree, etc.``
     An @file tree_ is a tree whose root_ is an @file node, etc.
 
-``@asis, @file, @noref, @nosent, @thin``
+``@asis, @auto, @file, @noref, @nosent, @thin``
     Headlines_ that start with one of these create (correspond to) `derived files`_.
     The following synonyms exist::
 
@@ -17908,8 +17932,13 @@ For example, an `@root node`_ is a node containing an @root directive_, etc.
         @noref, @file-noref
         @nosent, @file-nosent
 
-    For more information, see the documentation for `@asis`_, `@file`_, `@noref`_, `@nosent`_ and `@thin`_
+    For more information, see the documentation for `@asis`_, `@auto`_, `@file`_, `@noref`_, `@nosent`_ and `@thin`_
     in Leo's `programming reference`_ chapter.
+    
+    **New in Leo 4.4.4**: @auto trees allow you to edit derived files that contain no sentinels.
+    Leo will import the @auto files when reading .leo files.  Be careful when first creating the @auto node.
+    *Before* saving the .leo file containing the new @auto node,
+    use the read-at-auto-nodes command to do the initial import.
 
 .. _`@all`:
 .. _`@all directive`:
@@ -31784,5 +31813,83 @@ For details of these new settings, see leoSettings.leo
 <t tx="ekr.20070809145744.8">-----------------------
 
 |prev| |leo| |next|</t>
+<t tx="ekr.20070814090306">@auto trees allow people to use Leo in collaborative environments without using
+sentinels in the files Leo generates. In contrast to @nosent, @auto trees can
+change when the corresponding file changes outside of Leo.
+
+Leo will automatically recreate (import) all @auto trees when reading a .leo
+file, and will write all dirty @auto trees when saving a .leo file. There is one
+exception to this rule: Leo will never read (import) or write an @auto tree if
+the root @auto tree is under the influence of an @ignore directive.
+
+Leo creates @auto trees by parsing the corresponding derived file. Parsers
+create descendant nodes of the @auto tree: one node for each class, method and
+function in the derived file.
+
+Parsers presently exist for C, elisp, Java, Pascal, PHP and Python. Leo
+determines the language using the file's extension. If no parser exists for a
+language, the entire body of the derived file is copied to the body of the @auto
+node.</t>
+<t tx="ekr.20070814090306.2">Leo performs several checks to ensure that the result of importing an external
+file will be equivlant to the file that writing the @auto tree would produce.
+
+These checks can produces **errors** or **warnings**. Errors indicate a
+potentially serious problem. Leo inserts an @ignore directive in the @auto tree
+if any error is found. This @ignore directive prevents the @auto tree from
+modifying the external file. If you @ignore directive, a later write of the
+@auto tree will attempt to fix the problems that gave rise to the errors. There
+are no guarantees however.
+
+Before importing a file, Leo **regularizes** the leading whitespace of all lines
+of the original source file. That is, Leo converts blanks to tabs or tabs to
+blanks depending on the value of the @tabwidth directive in effect for the @auto
+node. Leo also checks that the indentation of any non-blank line is not a
+multiple of the indentation specified by the @tabwidth dirctive in effect for
+the @auto node.
+
+Leo cannot guarantee to reproduce the original source file exactly if problems
+are discovered while regularizing leading whitespace. **Strict languages** are
+languages such as Python for which leading whitespace must be preserved exactly
+as it appears in the original source file. Problems during regularizing generate
+errors for strict languages and warnings for non-strict languages.
+
+After importing a file, Leo verifies that writing the @auto node would create
+*exactly* the same file as the original file. Such file comparison mismatches
+generate errors unless the problem involves only leading whitespace for
+non-strict languages. Whenever a mismatch occurs the first non-matching line is
+printed.
+
+File comparison mismatches can arise for several reasons:
+    
+1. Bugs in the import parsers. Please report any suspected bugs immediately.
+
+2. Underindented lines in classes, methods or function. An **underindented
+   line** is a line that is indented less then the starting line of the class,
+   method or function in which it appears. Leo outlines can not represent such
+   lines exactly: every line of node implicitly has at least the indentation of
+   any unindented line of the node.
+
+Leo will issue a warning (not an error) for underindented Python comment lines.
+Such lines can not change the meaning of Python programs.</t>
+<t tx="ekr.20070814090306.3">Three commands in the File:Read/Write menu allow you to manually read and
+write @auto nodes from the presently selected outline. As always, an @ignore
+directive in the @auto node or its ancestors will suppress any of these
+commands:
+
+- The Read @auto Nodes (read-at-auto-nodes) command reads all @auto nodes in the
+  presently selected outline. An @ignore directive will suppress this import.
+
+- The Write @auto Nodes (write-at-auto-nodes) command writes all @auto nodes. An
+  @ignore directive will suppress this import. Caution: the write will occur even
+  if Leo has not previously read the @auto node.
+
+- The Write Dirty @auto Nodes (write-dirty-at-auto-nodes) is the same as the
+  write-at-auto-nodes command, except that only changed @auto trees are written.
+
+Most users will rarely use these explicit commands, because reading and writing
+.leo files handles @auto nodes well enough. However, you can use the
+read-at-auto-nodes command to update @auto nodes without having to reload the
+.leo file.
+</t>
 </tnodes>
 </leo_file>
