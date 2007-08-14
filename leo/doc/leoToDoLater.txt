@@ -1534,52 +1534,6 @@ It is possible to do pretty much anything you want but you will have to provide 
 #@-node:ekr.20041228074125:(Make drawing more flexible)
 #@-node:ekr.20060227142119:Drawing, printing and rendering
 #@+node:ekr.20041228091154:Commands
-#@+node:ekr.20070306103213:activate-menu-bar command
-top = c.frame.top
-topx,topy = top.winfo_rootx(),top.winfo_rooty()
-
-topMenu = c.frame.menu.getMenu('top')
-topMenu.post(topx,topy)
-#@+node:ekr.20060211101811:Activate menu commands
-#@+node:ekr.20060211100905.1:tkMenu.activateMenu
-def activateMenu (self,menuName):
-
-    c = self.c ;  top = c.frame.top
-    topx,topy = top.winfo_rootx(),top.winfo_rooty()
-    menu = c.frame.menu.getMenu(menuName)
-
-    if menu:
-        d = self.computeMenuPositions()
-        x = d.get(menuName)
-        if x is None:
-             x = 0 ; g.trace('oops, no menu offset: %s' % menuName)
-
-        menu.tk_popup(topx+d.get(menuName,0),topy) # Fix by caugm.  Thanks!
-    else:
-        g.trace('oops, no menu: %s' % menuName)
-#@-node:ekr.20060211100905.1:tkMenu.activateMenu
-#@+node:ekr.20060210133835.1:tkMenu.computeMenuPositions
-def computeMenuPositions (self):
-
-    # A hack.  It would be better to set this when creating the menus.
-    menus = ('File','Edit','Outline','Plugins','Cmds','Window','Help')
-
-    # Compute the *approximate* x offsets of each menu.
-    d = {}
-    n = 0
-    for z in menus:
-        menu = self.getMenu(z)
-        fontName = menu.cget('font')
-        font = tkFont.Font(font=fontName)
-        # print '%8s' % (z),menu.winfo_reqwidth(),menu.master,menu.winfo_x()
-        d [z] = n
-        # A total hack: sorta works on windows.
-        n += font.measure(z+' '*4)+1
-
-    return d
-#@-node:ekr.20060210133835.1:tkMenu.computeMenuPositions
-#@-node:ekr.20060211101811:Activate menu commands
-#@-node:ekr.20070306103213:activate-menu-bar command
 #@+node:ekr.20061021131443:Emacs support
 #@+node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
 #@-node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
@@ -2768,6 +2722,25 @@ def updateDictionary(self):
 #@-node:ekr.20051025071455.6:class AspellClass
 #@-node:ekr.20051025071455:Spell classes
 #@-node:ekr.20051110155735.1:Improve Spell tab
+#@+node:ekr.20061006165447:Let import commands decide what kind of import to do
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3940843
+By: ktenney
+
+>the distiction between importing 'foreign' text files and importing derived
+files created by Leo.
+
+Couldn't Leo make this distinction by looking at
+the file being imported? If so, I think it should.
+
+This could eliminate a lot of confusion IMO, if
+I want to bring a file into a node, just
+'import' it, and the right thing happens.
+
+An emergency measure could be available in a 
+'File Special' menu.
+#@nonl
+#@-node:ekr.20061006165447:Let import commands decide what kind of import to do
 #@+node:ekr.20041022083833.1:Easy
 #@+node:ekr.20040315060557:Declone command
 By: nobody ( Nobody/Anonymous ) 
@@ -3740,6 +3713,95 @@ I'll try using .leo_xresources file and see if that works as well.
 #@-node:ekr.20050713105353.1:Email from Martin Moncrieffe <mcm35@cam.ac.uk>
 #@-node:ekr.20050713105353:Add configuration setting to set menu fonts
 #@-node:ekr.20041228085245:Options & settings
+#@+node:ekr.20070814070357:Performance
+#@+node:ekr.20061207073104:Convert bottlenecks to pyrex code
+# To do:  actually generate Leo's bottlenecks.
+#@nonl
+#@+node:ekr.20061207073104.1:gcc build docs
+@nocolor
+
+To build your module using GCC is a three step process on Unix. (I have know
+idea how many steps it is on Windows™.)
+
+Start by running the Pyrex compiler over your code as follows, where
+mymodule.pyx is the name of the Pyrex module you are writing. python2.2 pyrexc
+mymodule.pyx Next, compile the resulting C file into a .o file. The call to gcc
+looks like this:
+
+gcc -c -fPIC -I/usr/include/python2.2/ mymodule.c
+The arguments to gcc are explained below.
+
+-c 
+Produces a .o file instead of an executable. 
+-fPIC 
+Produces position independent code, so we can dynamically link against it later. 
+-I/usr/include/python2.2/ 
+is the location of the Python 2.2 include file. The location of your Python include file may differ from /usr/include/python2.2/. 
+mymodule.c 
+is the name of the C file produced by Pyrex. 
+Finally, link the .o into a .so: gcc -shared mymodule.o -lxosd -o mymodule.so
+-shared 
+produces a shared-object file, instead of an executable. 
+mymodule.o 
+is the name of the module you wish to compile. 
+-lxosd 
+links against a C-library, with the name of the library given as the argument. 
+-o mymodule.so 
+causes gcc to put the output into a file called mymodule.so 
+The C library that you are wrapping will probably differ from mymodule. 
+#@-node:ekr.20061207073104.1:gcc build docs
+#@+node:ekr.20061207073104.2:pyrexc command-line options
+@nocolor
+
+The pyrexc command supports the following options:
+
+  Short Long              Argument    Description
+  -----------------------------------------------------------------------------
+  -v    --version                     Display version number of pyrex compiler
+  -l    --create-listing              Write error messages to a .lis file
+  -I    --include-dir     <directory> Search for include files in named 
+                                       directory (may be repeated)
+  -o    --output-file     <filename>  Specify name of generated C file (only
+                                       one source file allowed if this is used)
+
+Anything else is taken as the name of a Pyrex source file and compiled
+to a C source file. Multiple Pyrex source files can be specified
+(unless -o is used), in which case each source file is treated as the
+source of a distinct extension module and compiled separately to
+produce its own C file.
+#@-node:ekr.20061207073104.2:pyrexc command-line options
+#@+node:ekr.20061207073104.3:@file myModule.pyx
+def spam(int i, char *s):
+    if 1:
+        print i,s
+#@nonl
+#@-node:ekr.20061207073104.3:@file myModule.pyx
+#@+node:ekr.20061207073104.4:Make myModule.c
+# Use pyrexc to create myModule.c from myModule.pyx.
+import os,sys
+python = sys.executable
+theFile = r'C:\prog\tigris-cvs\leo\test\myModule.pyx'
+pyrexc = r'c:\prog\Pyrex-0.9.4.1\pyrexc.py'
+os.system(r'%s %s %s' % (python,pyrexc,theFile))
+
+if 0: # Build myModule library using distutils.
+    from distutils.core import setup, Extension
+
+    # Make the extension module ("mymodule") link against xosd
+    xosdExtn = Extension("mymodule", ["mymodule.c"], libraries=["xosd"])
+
+    # Compile the extension module
+    setup(name="mymodule", ext_modules=[xosdExtn])
+
+@ Save the above code in a file called setup.py and run the following code
+to build and install your module.
+
+    python setup.py build
+    python setup.py install
+#@nonl
+#@-node:ekr.20061207073104.4:Make myModule.c
+#@-node:ekr.20061207073104:Convert bottlenecks to pyrex code
+#@-node:ekr.20070814070357:Performance
 #@+node:ekr.20041228090855.2:Plugins
 #@+node:ekr.20041022083005.3:@path and other directives accept python expressions
 #@-node:ekr.20041022083005.3:@path and other directives accept python expressions

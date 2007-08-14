@@ -1,71 +1,9 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20070325052041:To do: 4.4.4 (@auto & resolve-cvs-conflicts)
-#@+node:ekr.20070809151653:To do: document @auto in tutorial and reference
-#@-node:ekr.20070809151653:To do: document @auto in tutorial and reference
-#@+node:ekr.20070803115653:Support @path and other directives in headlines
-#@-node:ekr.20070803115653:Support @path and other directives in headlines
-#@+node:ekr.20051202094427:resolve-cvs-conflicts and write-resolved-conflicts commands
-@killcolor
-
-http://sourceforge.net/forum/message.php?msg_id=4224589
-
-There a simple way of handling cvs conflict markers (>>>>). If an import parser
-discovers cvs conflict markers, the parser will just put the entire raw text in
-a node that contains something like::
-
-    @ignore
-    @ The child of this node contains all text of <filename> 
-    This file contains cvs conflicts markers. 
-    Please resolve the conflicts by hand, remove the @ignore directive above, 
-    and execute the write-resolved-conflict-file command. 
-    This command will write <filename> and re-import the file. 
-
-In other words, parsers should not try to resolve conflicts. Programmers
-typically resolve conflicts in 'flat' editors--doing so in a single Leo node
-would be natural.
-
-Leo sentinels are relatively simple, so users can handle any sentinels that may
-appear between conflict markers. Telling Leo users how to handle such sentinels
-should be easier (and more reliable) than trying to resolve such conflicts
-automatically.
-
-The write-resolved-conflicts command will check sentinels for consistency. If
-problems are found, the derived file will not be written, but instead the tree
-will be saved in the .leo file.
-#@-node:ekr.20051202094427:resolve-cvs-conflicts and write-resolved-conflicts commands
-#@+node:ekr.20070729093951.1:Update docs re @enabled-plugins
-#@-node:ekr.20070729093951.1:Update docs re @enabled-plugins
-#@+node:ekr.20070615063616.1:Create Debian package
-#@-node:ekr.20070615063616.1:Create Debian package
-#@+node:ekr.20061006165447:Let import commands decide what kind of import to do
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3940843
-By: ktenney
-
->the distiction between importing 'foreign' text files and importing derived
-files created by Leo.
-
-Couldn't Leo make this distinction by looking at
-the file being imported? If so, I think it should.
-
-This could eliminate a lot of confusion IMO, if
-I want to bring a file into a node, just
-'import' it, and the right thing happens.
-
-An emergency measure could be available in a 
-'File Special' menu.
-#@nonl
-#@-node:ekr.20061006165447:Let import commands decide what kind of import to do
-#@+node:ekr.20070801071851:print-docstring command
-#@-node:ekr.20070801071851:print-docstring command
-#@-node:ekr.20070325052041:To do: 4.4.4 (@auto & resolve-cvs-conflicts)
-#@+node:ekr.20070703111455:To do: 4.4.5 (@menu, vim bindings, translation, etc)
-# Leo 4.4.5 will complete several projects that are long overdue.
-
-#@+node:ekr.20070703111455.1:Most important
-#@+node:ekr.20060306194040:**ASAP** Video and more screen shots on Leo's web site
+#@+node:ekr.20070615063616.1:ASAP: Create Debian package
+#@-node:ekr.20070615063616.1:ASAP: Create Debian package
+#@+node:ekr.20060306194040:ASAP: Video and more screen shots on Leo's web site
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3615177
 By: ktenney
@@ -160,7 +98,197 @@ S5: http://meyerweb.com/eric/tools/s5/
   Similar to Slidy I think, haven't looked at it
 #@nonl
 #@-node:ekr.20060829103523:Render Leo slideshows
-#@-node:ekr.20060306194040:**ASAP** Video and more screen shots on Leo's web site
+#@-node:ekr.20060306194040:ASAP: Video and more screen shots on Leo's web site
+#@+node:ekr.20070325052041:To do: 4.4.4 (@auto & resolve-cvs-conflicts)
+#@+node:ekr.20051202094427:resolve-cvs-conflicts and write-resolved-conflicts commands
+@killcolor
+
+http://sourceforge.net/forum/forum.php?thread_id=1800071&forum_id=10226
+
+Here are my present thoughts re resolving cvs conflicts:
+
+There are really two separate and distinct problems:
+
+1. resolving cvs conflicts in derived files, and
+2. resolving cvs conflicts involving .leo files.
+
+This distinction became clear only this morning.
+
+1. Conflicts involving derived files.
+
+Cvs issues warnings when there are cvs conflicts, so *discovering* cvs conflicts
+is not an issues. Let us use the term **conflict file** to denote a derived file
+that contains cvs conflict markers (>>>>). Cvs conflict markers can corrupt
+sentinels by duplicating or deleting sentinels, so Leo should not try to read or
+import files containing conflicts. That is, the only way to 'import' a conflict
+file is to read the entire into a single node. This is equivalent to resolving
+conflicts in any other editor, so it should not be an undo hardship.
+
+The user, and only the user, is qualified to resolve the conflicts. The user
+will have to be careful about handling sentinels, but telling the user the
+issues involved seems simpler than creating an algorithm that will restore
+sentinels automatically.
+
+Naturally, the user could make mistakes when restoring sentinels 'by hand'--Leo
+should check user's work. This can easily be done by doing a 'trial read' of the
+proposed changes. If the read goes well, Leo will be able to read the modified
+conflict file without problem. Otherwise, the trial read can show the user where
+there are problems. The write-resolved-conflicts command will do this trial
+read. If problems are found, the derived file will not be written and the tree
+will be saved in the .leo file. This is the standard way that Leo handles write
+errors.
+
+2. Conflicts involving .leo files.
+
+Resolving conflictgs in .leo files is conceptually completely different from
+resolving conflicts in derived files.
+
+Cvs will insert conflict markers in a .leo.txt file when cvs reports conflicts
+involving .leo files. It will be easiest to ignore the .leo.txt file: in general
+the conflict markers will make it impossible to read the file without 'heroic'
+measures. Instead of using conflict inforamtion in the .leo.txt file, Leo will
+simply compare the two 'unadulterated' .leo files.
+
+It is easy to compare .leo files. Indeed, gnx's uniquely identify individual
+nodes, so a simple pass over both files suffices to show which nodes appear in
+both files, and which nodes appear in only one file. If we consider one file to
+be the 'original' .leo file, and the other file to be the 'modified' .leo file,
+we can then immediately see which nodes have been inserted (appear only in the
+modified file), deleted (appear only in the original file) or changed (appear in
+both files but with different headline or body text).
+
+To resolve conflicts in .leo files, the user will do the following:
+
+1. Open one of the *unadulterated* .leo files: this is the 'original' file.
+
+2. Invoke the compare-leo-files command.  This will prompt for the 'modified' file.
+
+This command will create a **comparison tree*, similar to the tree created by
+the clone-find-all commands. This tree will have clones for all inserted,
+deleted and changed nodes. The user modifies original outline as needed, then
+saves the outline as usual. The comparison tree can then be deleted. That's all.
+
+In conclusion, conflicts involving derived files are handled differently from
+conflicts involving .leo. In each case, the programming involved is
+straightforward, and the user can easily resolve conflicts by modifying one or
+more nodes in the outline.
+#@nonl
+#@-node:ekr.20051202094427:resolve-cvs-conflicts and write-resolved-conflicts commands
+#@+node:ekr.20070814083649:New @path problem
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4462693
+By: ktenney
+
+in file c:/tmp/test.leo
+
+<head>node
+<body>@path 'c:\tmp'
+
+--<head>@file test.txt
+
+=========================
+<ctrl-s>
+
+log pane:
+
+invalid @path: C:/tmp\'c:/tmp'
+Not written: C:\tmp\test.txt.tmp
+saved: test.leo
+#@nonl
+#@-node:ekr.20070814083649:New @path problem
+#@+node:ekr.20070814092006:Install http patch
+#@-node:ekr.20070814092006:Install http patch
+#@+node:ekr.20070729093951.1:Update docs re @enabled-plugins
+#@-node:ekr.20070729093951.1:Update docs re @enabled-plugins
+#@-node:ekr.20070325052041:To do: 4.4.4 (@auto & resolve-cvs-conflicts)
+#@+node:ekr.20070703111455:To do: 4.4.5 (@menu, vim bindings, translation, etc)
+# Leo 4.4.5 will complete several projects that are long overdue.
+
+#@+node:ekr.20070814070312:First
+#@+node:ekr.20070803115653:Support @path and other directives in headlines
+#@-node:ekr.20070803115653:Support @path and other directives in headlines
+#@+node:ekr.20060116173818:Fix vampire nodes
+@nocolor
+
+Vampire nodes from cvs
+
+I've just discovered a major problem with cvs updates.  It is a subtle consequence of how Leo writes outlines and reads derived files.  This is a big bug in Leo, not cvs.  The effect of the bug is that nodes can appear in derived files that were never written to them!
+
+The discovery of this 'big bug' came about as the result of the following Aha:
+
+**@thin files that contain @all directives should be a cvs binary (-kb) files.**
+
+The reason is straightforward:  cvs doesn't know enough to merge such files.  Maybe all @thin derived files should be -kb files, but Leo's users will never agree to that!
+
+Anyway, leoProjects.txt is now a binary file as far as cvs is concerned.  Other .txt files, like leoScripts.txt, should also be binary files.  As we shall see, the fact that leoProjects.txt is now a -kb file means that we can not possibly blame the cvs merge algorithm for what is about to happen.
+
+Ok, back to the 'big bug'.  Here is how I got bitten:
+
+- I changed leoProjects.txt in two sandboxes 1 and 2.  In sandbox 1 I added a node called 'changed in the main line'.  In sandbox 2 I added a node called 'changed2'.
+
+- I changed LeoPyRef.leo in sandbox 2, but *not* in sandbox 1.
+
+- I did a update in sandbox 2.
+
+As expected (now that leoProjects.txt is a binary file) I got the following from cvs:
+
+M src/LeoPyRef.leo
+...
+cvs update: nonmergeable file needs merge
+cvs update: revision 1.448 from repository is now in src/leoProjects.txt
+cvs update: file from working directory is now in .#leoProjects.txt.1.447
+
+To summarize the update:
+
+- LeoPyRef.leo has been marked as modified (M), but it has **not** been changed by cvs.
+
+- As expected, leoProjects.txt contains the version from sandbox **1**.
+
+So far, so good.  But when I opened LeoPyRef.leo I got a huge surprise: the outline contains **both** the node 'changed in main-line' and the node 'changed2'.  Whoa Nellie!
+
+How did this happen?  Well, obviously the 'changed in main-line' node came from the cvs update.  I expected that.  The 'changed2' line must have come from the local copy of LeoPyRef.leo.
+
+Once I knew what to look for it wasn't too hard to discover what had happened.  The 'changed2' is a descendent of a cloned node called '4.4 projects'.
+
+- One clone of '4.4 projects' node is a descendent of the @thin leoProjects.txt node.
+
+- Another clone of the '4.4 project' is in the LeoPyRef.leo file but outside of any @thin node.
+
+So the 'resurrection' of the 'changed2' node happened while Leo was reading leoProjects.txt into LeoPyRef.leo.  The '4.4 projects' node **already existed in the outline** before Leo read leoProjects.txt, and the present atFile read logic only **adds** nodes, it never deletes nodes.  Thus, the 'changed2' node 'survived' the atFile read logic.  The 'changed2' node became a 'vampire' node that couldn't be killed.
+
+The problem is far from benign.  Because of clones, the vampire node became an orphan node in **another** file, namely leoKeys.py.  I tried two or three times to remove the vampire/orphan node before realizing what had happened.
+
+The fix (there is *always* a fix) will require some care.  The present atFile.read logic is robust because it *doesn't* delete nodes.  It is essential that the read logic remain robust.  I suspect the solutions will be as follows:
+
+A. The atFile.read code can not delete the subtree of @thin nodes initially, because it doesn't know whether there will be read errors later.  If there are read errors absolutely nothing must change.  This ensures that read errors never destroy information.
+
+B. A new post-pass will look for vampire nodes: nodes that were not actually read from the derived file.  I think (but haven't proven) that all descendents of vampire nodes are also vampire nodes.  If that is so the post-pass will simply delete vampire nodes without worrying about whether they have descendents.
+
+Warning: the new scheme will mean that cvs update can destroy information that previously existed in the outline.  I believe this is correct: we assume that derived files are the 'truly meaningful' files.  Hey, if we are wrong we can always get the old info from cvs :-)
+
+Edward
+#@-node:ekr.20060116173818:Fix vampire nodes
+#@+node:ekr.20060609070148:Fix hung windows
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3768494
+By: ktenney
+
+I'm using current CVS, W2k
+
+1 open a Leo file (I'm using a batch file / console)
+
+2 click Edit->Open   <-- Having this dialog open is the problem.
+
+3 return focus to the Leo window
+
+4 click Help->Open leoDocs.leo
+
+Zombie!
+#@-node:ekr.20060609070148:Fix hung windows
+#@-node:ekr.20070814070312:First
+#@+node:ekr.20070703111455.1:Most important
 #@+node:ekr.20070625091423:Add translation services
 @nocolor
 
@@ -188,8 +316,1072 @@ g.esx and g.es_printx allow a mix on translated and untranslated arguments::
     g.esx(tr('abc'),fileName)
 #@-node:ekr.20070625091423:Add translation services
 #@+node:ekr.20070626092228:@menu nodes for leoSettings.leo
+#@+node:ekr.20070814083528:Design posting
+@nocolor
+
+http://sourceforge.net/forum/forum.php?thread_id=1799047&forum_id=10228
+
+Very little work of substance remains in Leo 4.4.4, so just for fun I have started work on some items in Leo 4.4.5. 
+
+One such item is support for @menus trees in settings files. If present, Leo will create menus from such trees rather than from hard-coded tables in leoMenu.py. 
+
+To get the ball rolling I had to create an @menus tree that represents Leo's present menus. At present, Leo creates menus using a combination of tables and code, so there is no totally easy way to create the @menus tree. However, the following script does the job. In essence, it incorporates all the data & code in leoMenus.py. This script, and the @menus tree it creates, are in test.leo on cvs. 
+
+# Convert standard tables to list of @item nodes 
+m = c.frame.menu 
+# A representation of code/data in defineMenuTables and createMenusFromTables. 
+data = ( 
+....('File',[ 
+........(None,m.fileMenuTopTable), 
+........('Open &With...',[]), ### 
+........(None,m.fileMenuTop2Table), 
+........('&Read/Write...',m.fileMenuReadWriteMenuTable), 
+........('Tan&gle...',m.fileMenuTangleMenuTable), 
+........('&Untangle...',m.fileMenuUntangleMenuTable), 
+........('&Import...',m.fileMenuImportMenuTable), 
+........('&Export...',m.fileMenuExportMenuTable), 
+........(None,m.fileMenuTop3MenuTable), 
+........]), 
+....('Edit',[ 
+........(None,m.editMenuTopTable), 
+........('Edit &Body...',m.editMenuEditBodyTable), 
+........('Edit &Headline...',m.editMenuEditHeadlineTable), 
+........('&Find...',m.editMenuFindMenuTable), 
+........(None,m.editMenuTop2Table), 
+........]), 
+....('Outline',[ 
+........(None,c.frame.menu.outlineMenuTopMenuTable), 
+........('Chec&k...',m.outlineMenuCheckOutlineMenuTable), 
+........('E&xpand/Contract...',m.outlineMenuExpandContractMenuTable), 
+........('&Move...',m.outlineMenuMoveMenuTable), 
+........('M&ark...',m.outlineMenuMarkMenuTable), 
+........('&Go To...',m.outlineMenuGoToMenuTable), 
+........]), 
+....('Plugins',[ 
+........]), # A placeholder. 
+....('Cmds',[ 
+........('&Abbrev...',m.cmdsMenuAbbrevTable), 
+........('Body E&ditors...',m.cmdsMenuBodyEditorsTable), 
+........('&Buffers...',m.cmdsMenuBuffersTable), 
+........('&Chapters...',m.cmdsMenuChaptersTable), 
+........('C&ursor/Selection',[]), 
+............### Has several submenus...Must be placed by hand. 
+............('Cursor &Back',m.cursorMenuBackTable), 
+............('Cursor Back &Extend Selection',m.cursorMeuuBackExtendTable), 
+............('Cursor Back Extend &to',m.cursorMenuExtendTable), 
+............('Cursor &Forward',m.cursorMenuForwardTable), 
+............('Cursor Forward E&xtend Selection',m.cursorMenuForwardExtendTable), 
+........('&Focus...',m.cmdsMenuFocusTable), 
+........('&Macro...',m.cmdsMenuMacroTable), 
+........('M&inibuffer...',m.cmdsMenuMinibufferTable), 
+........('&Pickers...',m.cmdsMenuPickersTable), 
+........('&Rectangles...',m.cmdsMenuRectanglesTable), 
+........('Re&gisters...',m.cmdsMenuRegistersTable), 
+........('R&un Script/Tests',m.cmdsMenuRunTable), 
+........('Scr&olling...',m.cmdsMenuScrollTable), 
+........('Spell C&heck...',m.cmdsMenuSpellCheckTable), 
+........('&Text Commands...',m.cmdsMenuTextTable), 
+........('Toggle Setti&ngs...',m.cmdsMenuToggleTable), 
+........]), 
+....('Window',[ 
+........(None,m.windowMenuTopTable), 
+........]), 
+....('Help',[ 
+........(None,m.helpMenuTable), 
+........]), 
+) 
+
+c.beginUpdate() 
+try: 
+....for menuName,tables in data: 
+........# print menuName,tables 
+........p2 = p.insertAsLastChild() 
+........p2.initHeadString('@menu '+menuName) 
+........for aTuple in tables: 
+............subMenuName,aList = aTuple 
+............if subMenuName: 
+................p3 = p2.insertAsLastChild() 
+................p3.initHeadString('@menu '+subMenuName) 
+............else: 
+................p3 = p2 
+............for z in aList: 
+................p4 = p3.insertAsLastChild() 
+................p4.initHeadString('@item '+str(z)) 
+
+finally: 
+....c.endUpdate() 
+
+
+The 'data' data structure represents the tree; a relatively short piece of code creates the outline from the data. 
+
+The script doesn't need to be perfect to be useful. In particular, some sub-sub menus in the Cmds menu must be properly indented by hand after running the script. But so what. 
+
+Now that we have created the @menus tree, the only remaining task is to allow Leo to create menus from such trees. This should not be terribly difficult, though I suspect a few complications will emerge. In particular, some special cases may required for the Open With and Plugins menus. 
+#@nonl
+#@-node:ekr.20070814083528:Design posting
+#@+node:ekr.20031218072017.3785:createMenusFromTables & helpers
+def createMenusFromTables (self):
+
+    c = self.c
+
+    self.defineMenuTables()
+
+    self.createFileMenuFromTable()
+    self.createEditMenuFromTable()
+    self.createOutlineMenuFromTable()
+
+    g.doHook("create-optional-menus",c=c)
+
+    if self.useCmdMenu:
+        self.createCmndsMenuFromTable()
+
+    self.createWindowMenuFromTable()
+    self.createHelpMenuFromTable()
+#@+node:ekr.20031218072017.3790:createFileMenuFromTable
+def createFileMenuFromTable (self):
+
+    c = self.c
+    fileMenu = self.createNewMenu("&File")
+    self.createMenuEntries(fileMenu,self.fileMenuTopTable)
+    self.createNewMenu("Open &With...","File")
+    self.createMenuEntries(fileMenu,self.fileMenuTop2Table)
+    << create the recent files submenu >>
+    self.add_separator(fileMenu)
+    << create the read/write submenu >>
+    << create the tangle submenu >>
+    << create the untangle submenu >>
+    << create the import submenu >>
+    << create the export submenu >>
+    self.add_separator(fileMenu)
+    self.createMenuEntries(fileMenu,self.fileMenuTop3MenuTable)
+#@+node:ekr.20031218072017.3791:<< create the recent files submenu >>
+self.createNewMenu("Recent &Files...","File")
+c.recentFiles = c.config.getRecentFiles()
+
+if 0: # Not needed, and causes problems in wxWindows...
+    self.createRecentFilesMenuItems()
+#@-node:ekr.20031218072017.3791:<< create the recent files submenu >>
+#@+node:ekr.20031218072017.3792:<< create the read/write submenu >>
+readWriteMenu = self.createNewMenu("&Read/Write...","File")
+
+self.createMenuEntries(readWriteMenu,self.fileMenuReadWriteMenuTable)
+#@-node:ekr.20031218072017.3792:<< create the read/write submenu >>
+#@+node:ekr.20031218072017.3793:<< create the tangle submenu >>
+tangleMenu = self.createNewMenu("Tan&gle...","File")
+
+self.createMenuEntries(tangleMenu,self.fileMenuTangleMenuTable)
+#@-node:ekr.20031218072017.3793:<< create the tangle submenu >>
+#@+node:ekr.20031218072017.3794:<< create the untangle submenu >>
+untangleMenu = self.createNewMenu("&Untangle...","File")
+
+self.createMenuEntries(untangleMenu,self.fileMenuUntangleMenuTable)
+#@-node:ekr.20031218072017.3794:<< create the untangle submenu >>
+#@+node:ekr.20031218072017.3795:<< create the import submenu >>
+importMenu = self.createNewMenu("&Import...","File")
+
+self.createMenuEntries(importMenu,self.fileMenuImportMenuTable)
+#@-node:ekr.20031218072017.3795:<< create the import submenu >>
+#@+node:ekr.20031218072017.3796:<< create the export submenu >>
+exportMenu = self.createNewMenu("&Export...","File")
+
+self.createMenuEntries(exportMenu,self.fileMenuExportMenuTable)
+#@-node:ekr.20031218072017.3796:<< create the export submenu >>
+#@-node:ekr.20031218072017.3790:createFileMenuFromTable
+#@+node:ekr.20031218072017.3786:createEditMenuFromTable
+def createEditMenuFromTable (self):
+
+    editMenu = self.createNewMenu("&Edit")
+    self.createMenuEntries(editMenu,self.editMenuTopTable)
+
+    << create the edit body submenu >>
+    << create the edit headline submenu >>
+    << create the find submenu >>
+
+    self.createMenuEntries(editMenu,self.editMenuTop2Table)
+#@+node:ekr.20031218072017.3787:<< create the edit body submenu >>
+editBodyMenu = self.createNewMenu("Edit &Body...","Edit")
+
+self.createMenuEntries(editBodyMenu,self.editMenuEditBodyTable)
+#@-node:ekr.20031218072017.3787:<< create the edit body submenu >>
+#@+node:ekr.20031218072017.3788:<< create the edit headline submenu >>
+editHeadlineMenu = self.createNewMenu("Edit &Headline...","Edit")
+
+self.createMenuEntries(editHeadlineMenu,self.editMenuEditHeadlineTable)
+#@-node:ekr.20031218072017.3788:<< create the edit headline submenu >>
+#@+node:ekr.20031218072017.3789:<< create the find submenu >>
+findMenu = self.createNewMenu("&Find...","Edit")
+
+self.createMenuEntries(findMenu,self.editMenuFindMenuTable)
+#@-node:ekr.20031218072017.3789:<< create the find submenu >>
+#@-node:ekr.20031218072017.3786:createEditMenuFromTable
+#@+node:ekr.20031218072017.3797:createOutlineMenuFromTable
+def createOutlineMenuFromTable (self):
+
+    outlineMenu = self.createNewMenu("&Outline")
+
+    self.createMenuEntries(outlineMenu,self.outlineMenuTopMenuTable)
+
+    << create check submenu >>
+    << create expand/contract submenu >>
+    << create move submenu >>
+    << create mark submenu >>
+    << create goto submenu >>
+#@+node:ekr.20040711140738.1:<< create check submenu >>
+checkOutlineMenu = self.createNewMenu("Chec&k...","Outline")
+
+self.createMenuEntries(checkOutlineMenu,self.outlineMenuCheckOutlineMenuTable)
+#@-node:ekr.20040711140738.1:<< create check submenu >>
+#@+node:ekr.20031218072017.3798:<< create expand/contract submenu >>
+expandMenu = self.createNewMenu("E&xpand/Contract...","Outline")
+
+self.createMenuEntries(expandMenu,self.outlineMenuExpandContractMenuTable)
+#@-node:ekr.20031218072017.3798:<< create expand/contract submenu >>
+#@+node:ekr.20031218072017.3799:<< create move submenu >>
+moveSelectMenu = self.createNewMenu("&Move...","Outline")
+
+self.createMenuEntries(moveSelectMenu,self.outlineMenuMoveMenuTable)
+#@-node:ekr.20031218072017.3799:<< create move submenu >>
+#@+node:ekr.20031218072017.3800:<< create mark submenu >>
+markMenu = self.createNewMenu("M&ark/Unmark...","Outline")
+
+self.createMenuEntries(markMenu,self.outlineMenuMarkMenuTable)
+#@-node:ekr.20031218072017.3800:<< create mark submenu >>
+#@+node:ekr.20031218072017.3801:<< create goto submenu >>
+gotoMenu = self.createNewMenu("&Go To...","Outline")
+
+self.createMenuEntries(gotoMenu,self.outlineMenuGoToMenuTable)
+#@-node:ekr.20031218072017.3801:<< create goto submenu >>
+#@-node:ekr.20031218072017.3797:createOutlineMenuFromTable
+#@+node:ekr.20050921103736:createCmndsMenuFromTable
+def createCmndsMenuFromTable (self):
+
+    cmdsMenu = self.createNewMenu('&Cmds')
+
+    if 0: # Now in the minibuffer table.
+        # Used in top table: q,u,x
+        self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
+
+    for name,table in (
+        # &: a,b,c,d,f,g,h,i,m,n,o,p,r,s,t,u
+        ('&Abbrev...',          self.cmdsMenuAbbrevTable),
+        ('Body E&ditors',       self.cmdsMenuBodyEditorsTable),
+        ('&Buffers...',         self.cmdsMenuBuffersTable),
+        ('&Chapters...',        self.cmdsMenuChaptersTable),
+        ('C&ursor/Selection...',[]),
+        ('&Focus...',           self.cmdsMenuFocusTable),
+        ('&Macro...',           self.cmdsMenuMacroTable),
+        ('M&inibuffer',         self.cmdsMenuMinibufferTable),
+        #('&Panes...',           self.cmdsMenuPanesTable),
+        ('&Pickers...',         self.cmdsMenuPickersTable),
+        ('&Rectangles...',      self.cmdsMenuRectanglesTable),
+        ('Re&gisters...',       self.cmdsMenuRegistersTable),
+        ('R&un Script/Tests',   self.cmdsMenuRunTable),
+        ('Scr&olling...',       self.cmdsMenuScrollTable),
+        ('Spell C&heck...',     self.cmdsMenuSpellCheckTable),
+        ('&Text Commands',      self.cmdsMenuTextTable),
+        ('Toggle Setti&ngs',    self.cmdsMenuToggleTable),
+    ):
+        if table == self.cmdsMenuChaptersTable and not self.c.chapterController:
+            continue
+        menu = self.createNewMenu(name,'&Cmds')
+        self.createMenuEntries(menu,table)
+
+    for name,table in (
+        # &: b,e,f,s,t,x
+        ('Cursor &Back...',                     self.cursorMenuBackTable),
+        ('Cursor Back &Extend Selection...',    self.cursorMeuuBackExtendTable),
+        ('Cursor Extend &To...',                self.cursorMenuExtendTable),
+        ('Cursor &Forward...',                  self.cursorMenuForwardTable),
+        ('Cursor Forward E&xtend Selection...', self.cursorMenuForwardExtendTable),
+    ):
+        menu = self.createNewMenu(name,'C&ursor/Selection...')
+        self.createMenuEntries(menu,table)
+#@nonl
+#@-node:ekr.20050921103736:createCmndsMenuFromTable
+#@+node:ekr.20031218072017.3802:createWindowMenuFromTable
+def createWindowMenuFromTable (self):
+
+    windowMenu = self.createNewMenu("&Window")
+
+    self.createMenuEntries(windowMenu,self.windowMenuTopTable)
+#@-node:ekr.20031218072017.3802:createWindowMenuFromTable
+#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
+def createHelpMenuFromTable (self):
+
+    if sys.platform == 'darwin':
+        self.getMacHelpMenu()
+    else:
+        helpMenu = self.createNewMenu("&Help")
+        self.createMenuEntries(helpMenu,self.helpMenuTable)
+#@nonl
+#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
+#@-node:ekr.20031218072017.3785:createMenusFromTables & helpers
+#@+node:ekr.20031218072017.3752:defineMenuTables & helpers
+def defineMenuTables (self):
+
+    self.defineEditMenuTables()
+    self.defineFileMenuTables()
+    self.defineOutlineMenuTables()
+    self.defineWindowMenuTables()
+
+    if self.useCmdMenu:
+        self.defineCmdsMenuTables()
+
+    self.defineHelpMenuTables()
+
+#@+node:ekr.20031218072017.3753:defineEditMenuTables & helpers
+def defineEditMenuTables (self):
+
+    self.defineEditMenuTopTable()
+    self.defineEditMenuEditBodyTable()
+    self.defineEditMenuEditHeadlineTable()
+    self.defineEditMenuFindMenuTable()
+    self.defineEditMenuTop2Table()
+#@+node:ekr.20031218072017.839:defineEditMenuTopTable
+def defineEditMenuTopTable (self):
+
+    self.editMenuTopTable = [
+        # &: u,r reserved for undo/redo: a,d,p,t,y.
+        # & (later): e,g,n,v.
+        ("Can't Undo",'undo'),
+        ("Can't Redo",'redo'), 
+        '-',
+        ('Cu&t','cut-text'),
+        ('Cop&y','copy-text'),
+        ('&Paste','paste-text'),
+        ('&Delete','backward-delete-char'),
+        ('Select &All','select-all'),
+        '-',
+    ]
+#@-node:ekr.20031218072017.839:defineEditMenuTopTable
+#@+node:ekr.20031218072017.3754:defineEditMenuEditBodyTable
+def defineEditMenuEditBodyTable (self):
+
+    self.editMenuEditBodyTable = [
+        # Shortcuts a,b,d,e,i,l,m,n,r,s,t,u
+        '*extract-&section',
+        '*extract-&names',
+        '*&extract',
+        '-',
+        '*convert-all-b&lanks',
+        '*convert-all-t&abs',
+        '*convert-&blanks',
+        '*convert-&tabs',
+        '*insert-body-&time',
+        '*&reformat-paragraph',
+        '-',
+        '*&indent-region',
+        '*&unindent-region',
+        '*&match-brackets',
+        '*add-comments',
+        '*delete-comments',
+    ]
+#@-node:ekr.20031218072017.3754:defineEditMenuEditBodyTable
+#@+node:ekr.20031218072017.3755:defineEditMenuEditHeadlineTable
+def defineEditMenuEditHeadlineTable (self):
+
+    self.editMenuEditHeadlineTable = [
+        '*edit-&headline',
+        '*&end-edit-headline',
+        '*&abort-edit-headline',
+        '*insert-headline-&time',
+        '*toggle-&angle-brackets',
+    ]
+#@-node:ekr.20031218072017.3755:defineEditMenuEditHeadlineTable
+#@+node:ekr.20031218072017.3756:defineEditMenuFindMenuTable
+def defineEditMenuFindMenuTable (self):
+
+    self.editMenuFindMenuTable = [
+        # &: a,b,c,d,e,f,h,i,l,n,o,p,q,r,s,u,w,x
+        '*&open-find-tab',
+        '*&hide-find-tab',
+        '*search-&with-present-options',
+        '-',
+        '*find-&next',
+        '*find-&prev',
+        '*&change',
+        '*find-&all',
+        '*clone-fi&nd-all',
+        '*change-a&ll',
+        '-',
+        '*&find-character',
+        '*find-character-extend-&selection',
+        '*&backward-find-character',
+        '*backward-find-character-&extend-selection',
+        '-',
+        '*&isearch-forward',
+        '*isea&rch-backward',
+        '*isearch-forward-rege&xp',
+        '*isearch-backward-regex&p',
+        '-',
+        '*&query-replace',
+        '*q&uery-replace-regex',
+    ]
+#@-node:ekr.20031218072017.3756:defineEditMenuFindMenuTable
+#@+node:ekr.20031218072017.3757:defineEditMenuTop2Table
+def defineEditMenuTop2Table (self):
+
+    c = self.c
+
+    try:        show = c.frame.body.getColorizer().showInvisibles
+    except:     show = False
+    label = g.choose(show,"Hide In&visibles","Show In&visibles")
+
+    self.editMenuTop2Table = [
+        '*&goto-global-line',
+        '*&execute-script',
+        (label,'toggle-invisibles'),
+        ("Setti&ngs",'open-leoSettings-leo'),
+    ]
+
+    # Top-level shortcuts earlier: a,d,p,t,u,y,z
+    # Top-level shortcuts here: e,g,n,v
+#@-node:ekr.20031218072017.3757:defineEditMenuTop2Table
+#@-node:ekr.20031218072017.3753:defineEditMenuTables & helpers
+#@+node:ekr.20031218072017.3758:defineFileMenuTables & helpers
+def defineFileMenuTables (self):
+
+    self.defineFileMenuTopTable()
+    self.defineFileMenuTop2Table()
+    self.defineFileMenuReadWriteMenuTable()
+    self.defineFileMenuTangleMenuTable()
+    self.defineFileMenuUntangleMenuTable()
+    self.defineFileMenuImportMenuTable()
+    self.defineFileMenuExportMenuTable()
+    self.defineFileMenuTop3MenuTable()
+#@+node:ekr.20031218072017.3759:defineFileMenuTopTable
+def defineFileMenuTopTable (self):
+
+    self.fileMenuTopTable = [
+        '*&new',
+        ('&Open...','open-outline'),
+    ]
+#@-node:ekr.20031218072017.3759:defineFileMenuTopTable
+#@+node:ekr.20031218072017.3760:defineFileMenuTop2Table
+def defineFileMenuTop2Table (self):
+
+    self.fileMenuTop2Table = [
+        '-',
+        ('&Close','close-window'),
+        ('&Save','save-file'),
+        ('Save &As','save-file-as'),
+        ('Save As &Unzipped','save-file-as-unzipped'),
+        ('Save As &Zipped','save-file-as-zipped'),
+        ('Save &To','save-file-to'),
+        ('Re&vert To Saved','revert'),
+    ]
+#@-node:ekr.20031218072017.3760:defineFileMenuTop2Table
+#@+node:ekr.20031218072017.3761:defineFileMenuReadWriteMenuTable
+def defineFileMenuReadWriteMenuTable (self):
+
+    self.fileMenuReadWriteMenuTable = [
+        '*&read-outline-only',
+        '*write-&outline-only',
+        '-',
+        ('Read @&auto Nodes','read-at-auto-nodes'),
+        ('Write @a&uto Nodes','write-at-auto-nodes'),
+        ('Write D&irty @a&uto Nodes','write-dirty-at-auto-nodes'),
+        '-',
+        ('Read @file &Nodes','read-at-file-nodes'),
+        ('Write &Dirty @file Nodes','write-dirty-at-file-nodes'),
+        ('Write &Missing @file Nodes','write-missing-at-file-nodes'),
+        ('&Write @file Nodes','write-at-file-nodes'),
+    ]
+
+    # a,d,i,m,n,o,r,u,w
+#@nonl
+#@-node:ekr.20031218072017.3761:defineFileMenuReadWriteMenuTable
+#@+node:ekr.20031218072017.3762:defineFileMenuTangleMenuTable
+def defineFileMenuTangleMenuTable (self):
+
+    self.fileMenuTangleMenuTable = [
+        '*tangle-&all',
+        '*tangle-&marked',
+        '*&tangle',
+    ]
+#@-node:ekr.20031218072017.3762:defineFileMenuTangleMenuTable
+#@+node:ekr.20031218072017.3763:defineFileMenuUntangleMenuTable
+def defineFileMenuUntangleMenuTable (self):
+
+    self.fileMenuUntangleMenuTable = [
+        '*untangle-&all',
+        '*untangle-&marked',
+        '*&untangle',
+    ]
+#@-node:ekr.20031218072017.3763:defineFileMenuUntangleMenuTable
+#@+node:ekr.20031218072017.3764:defineFileMenuImportMenuTable
+def defineFileMenuImportMenuTable (self):
+
+    self.fileMenuImportMenuTable = [
+        #&: c,d,f,n,o,r,
+        '*import-&derived-file',
+        ('Import To @&file','import-at-file'),
+        ('Import To @&root','import-at-root'),
+        '*import-&cweb-files',
+        '*import-&noweb-files',
+        '*import-flattened-&outline',
+    ]
+#@-node:ekr.20031218072017.3764:defineFileMenuImportMenuTable
+#@+node:ekr.20031218072017.3765:defineFileMenuExportMenuTable
+def defineFileMenuExportMenuTable (self):
+
+    self.fileMenuExportMenuTable = [
+        '*export-&headlines',
+        '*outline-to-&cweb',
+        '*outline-to-&noweb',
+        '*&flatten-outline',
+        '*&remove-sentinels',
+        '*&weave',
+    ]
+#@-node:ekr.20031218072017.3765:defineFileMenuExportMenuTable
+#@+node:ekr.20031218072017.3766:defineFileMenuTop3MenuTable
+def defineFileMenuTop3MenuTable (self):
+
+    self.fileMenuTop3MenuTable = [
+        ('E&xit','exit-leo'),
+    ]
+#@-node:ekr.20031218072017.3766:defineFileMenuTop3MenuTable
+#@-node:ekr.20031218072017.3758:defineFileMenuTables & helpers
+#@+node:ekr.20031218072017.3767:defineOutlineMenuTables & helpers
+def defineOutlineMenuTables (self):
+
+    self.defineOutlineMenuTopMenuTable()
+    self.defineOutlineMenuCheckOutlineMenuTable()
+    self.defineOutlineMenuExpandContractMenuTable()
+    self.defineOutlineMenuMoveMenuTable()
+    self.defineOutlineMenuMarkMenuTable()
+    self.defineOutlineMenuGoToMenuTable()
+#@+node:ekr.20031218072017.3768:defineOutlineMenuTopMenuTable
+def defineOutlineMenuTopMenuTable (self):
+
+    self.outlineMenuTopMenuTable = [
+        '*c&ut-node',
+        '*c&opy-node',
+        '*&paste-node',
+        ('Pas&te Node As Clone','paste-retaining-clones'),
+        '*&delete-node',
+        '-',
+        '*&insert-node',
+        '*&clone-node',
+        '*sort-childre&n',
+        '*&sort-siblings',
+        '-',
+        '*&hoist',
+        ('D&e-Hoist','de-hoist'), # To preserve the '-' in De-Hoist.
+        '-',
+    ]
+    # Ampersand bindings:  a,b,c,d,e,h,i,n,o,p,t,s,y
+    # Bindings for entries that go to submenus: a,g,k,m,x
+#@-node:ekr.20031218072017.3768:defineOutlineMenuTopMenuTable
+#@+node:ekr.20040711140738:defineOutlineMenuCheckOutlineMenuTable
+def defineOutlineMenuCheckOutlineMenuTable (self):
+
+    self.outlineMenuCheckOutlineMenuTable = [
+        # &: a,c,d,o
+        '*check-&outline',
+        '*&dump-outline',
+        '-',
+        '*check-&all-python-code',
+        '*&check-python-code',
+    ]
+#@-node:ekr.20040711140738:defineOutlineMenuCheckOutlineMenuTable
+#@+node:ekr.20031218072017.3769:defineOutlineMenuExpandContractMenuTable
+def defineOutlineMenuExpandContractMenuTable (self):
+
+    self.outlineMenuExpandContractMenuTable = [
+        '*&contract-all',
+        '*contract-&node',
+        '*contract-&parent',
+        '*contract-or-go-&left',
+        '-',
+        '*expand-p&rev-level',
+        '*expand-n&ext-level',
+        '*expand-and-go-right',
+        '*expand-or-go-right',
+        '-',
+        '*expand-to-level-&1',
+        '*expand-to-level-&2',
+        '*expand-to-level-&3',
+        '*expand-to-level-&4',
+        '*expand-to-level-&5',
+        '*expand-to-level-&6',
+        '*expand-to-level-&7',
+        '*expand-to-level-&8',
+        '-',
+        '*expand-&all',
+        '*expand-n&ode',
+    ]
+#@-node:ekr.20031218072017.3769:defineOutlineMenuExpandContractMenuTable
+#@+node:ekr.20031218072017.3770:defineOutlineMenuMoveMenuTable
+def defineOutlineMenuMoveMenuTable (self):
+
+    self.outlineMenuMoveMenuTable = [
+        ('Move &Down','move-outline-down'),
+        ('Move &Left','move-outline-left'),
+        ('Move &Right','move-outline-right'),
+        ('Move &Up','move-outline-up'),
+        '-',
+        '*&promote',
+        '*&demote',
+    ]
+#@-node:ekr.20031218072017.3770:defineOutlineMenuMoveMenuTable
+#@+node:ekr.20031218072017.3771:defineOutlineMenuMarkMenuTable
+def defineOutlineMenuMarkMenuTable (self):
+
+    self.outlineMenuMarkMenuTable = [
+        '*&mark',
+        '*mark-&subheads',
+        '*mark-changed-&items',
+        '*mark-changed-&roots',
+        '*mark-&clones',
+        '*&unmark-all',
+    ]
+#@-node:ekr.20031218072017.3771:defineOutlineMenuMarkMenuTable
+#@+node:ekr.20031218072017.3772:defineOutlineMenuGoToMenuTable
+def defineOutlineMenuGoToMenuTable (self):
+
+    self.outlineMenuGoToMenuTable = [
+        # &: a,b,c,d,e,f,g,h,i,l,m,n,o,p,r,s,t,v,
+        ('Go To &First Node','goto-first-node'),
+        ('Go To First V&isible','goto-first-visible-node'),
+        ('Go To First Si&bling','goto-first-sibling'),
+        '-',
+        ('Go To Next C&hanged','goto-next-changed'),
+        ('Go To Next &Clone','goto-next-clone'),
+        ('Go To Next &Marked','goto-next-marked'),
+        ('Go To Next N&ode','goto-next-node'),
+        ('Go To Next &Sibling','goto-next-sibling'),
+        ('Go To Next Visibl&e','goto-next-visible'),
+        ('Go To Next Visite&d','go-forward'),
+        '-',
+        ('Go To P&arent','goto-parent'),
+        '-',
+        ('Go To &Prev Node','goto-prev-node'),
+        ('Go To P&rev Sibling','goto-prev-sibling'),
+        ('Go To Pre&v Visible','goto-prev-visible'),
+        ('Go To Prev Visi&ted','go-back'),
+        '-',
+        ('Go To Last Node','goto-last-node'),
+        ('Go To Last Siblin&g','goto-last-sibling'),
+        ('Go To &Last Visible','goto-last-visible-node'),
+    ]
+#@-node:ekr.20031218072017.3772:defineOutlineMenuGoToMenuTable
+#@-node:ekr.20031218072017.3767:defineOutlineMenuTables & helpers
+#@+node:ekr.20050921103230:defineCmdsMenuTables & helpers
+def defineCmdsMenuTables (self):
+
+    if 0: # Replaced by minibuffer submenu.
+        self.defineCmdsMenuTopTable()
+
+    self.defineCmdsMenuAbbrevTable()
+    self.defineCmdsMenuBodyEditorsTable()
+    self.defineCmdsMenuBuffersTable()
+    self.defineCmdsMenuChaptersTable()
+    self.defineCmdsMenuCursorTable()
+    self.defineCmdsMenuFocusTable()
+    self.defineCmdsMenuMacroTable()
+    self.defineCmdsMenuMinibufferTable()
+    self.defineCmdsMenuPickersTable()
+    self.defineCmdsMenuRectanglesTable()
+    self.defineCmdsMenuRegistersTable()
+    self.defineCmdsMenuRunTable()
+    self.defineCmdsMenuScrollTable()
+    self.defineCmdsMenuSpellCheckTable()
+    self.defineCmdsMenuTextTable()
+    self.defineCmdsMenuToggleTable()
+#@nonl
+#@+node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
+def defineCmdsMenuAbbrevTable (self):
+
+    self.cmdsMenuAbbrevTable = [
+        # &: a,e,i,k,l,r,w,v
+        'abbre&v-mode',
+        '-',
+        '&list-abbrevs',
+        '&read-abbrev-file',
+        '&write-abbrev-file',
+        '-',
+        '&add-global-abbrev',
+        '&inverse-add-global-abbrev',
+        '&kill-all-abbrevs',
+        '-',
+        # 'expand-abbrev', # Not a command
+        '&expand-region-abbrevs',
+    ]
+#@-node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
+#@+node:ekr.20060912093104:defineCmdsMenuBodyEditorsTable
+def defineCmdsMenuBodyEditorsTable (self):
+
+    self.cmdsMenuBodyEditorsTable = [
+        # &: a,c,d
+        '&add-editor',
+        '&cycle-editor-focus',
+        '&delete-editor',
+    ]
+#@nonl
+#@-node:ekr.20060912093104:defineCmdsMenuBodyEditorsTable
+#@+node:ekr.20060117095212:defineCmdsMenuBufferTable
+def defineCmdsMenuBuffersTable (self):
+
+    self.cmdsMenuBuffersTable = [
+        '&append-to-buffer',
+        '&kill-buffer',
+        'list-&buffers',
+        '&list-buffers-alphabetically',
+        '&prepend-to-buffer',
+        '&rename-buffer',
+        '&switch-to-buffer',
+    ]
+#@-node:ekr.20060117095212:defineCmdsMenuBufferTable
+#@+node:ekr.20070604205927:defineCmdsMenuChaptersTable
+def defineCmdsMenuChaptersTable (self):
+
+    self.cmdsMenuChaptersTable = [
+        '&clone-node-to-chapter',
+        'c&opy-node-to-chapter',
+        'c&reate-chapter',
+        '&move-node-to-chapter',
+        '&remove-chapter',
+        '&select-chapter',
+    ]
+#@-node:ekr.20070604205927:defineCmdsMenuChaptersTable
+#@+node:ekr.20060924124119:defineCmdsMenuCursorTable
+def defineCmdsMenuCursorTable (self):
+
+    self.cursorMenuBackTable = [
+        # &: b,c,l,p,s,v,w
+        'back-&char',
+        'back-&paragraph',
+        'back-&sentence',
+        'back-&word',
+        '-',
+        'beginning-of-&buffer',
+        'beginning-of-&line',
+        '-',
+        'pre&vious-line',
+    ]
+
+    self.cursorMeuuBackExtendTable = [
+        # &: b,c,l,p,s,v,w
+        'back-&char-extend-selection',
+        'back-&paragraph-extend-selection',
+        'back-&sentence-extend-selection',
+        'back-&word-extend-selection',
+        '-',
+        'beginning-of-&buffer-extend-selection',
+        'beginning-of-&line-extend-selection',
+        '-',
+        'pre&vious-line-extend-selection',
+    ]
+
+    self.cursorMenuExtendTable = [
+        # &: l,p,s,w
+        'extend-to-&line',
+        'extend-to-&paragraph',
+        'extend-to-&sentence',
+        'extend-to-&word',
+    ]
+
+    self.cursorMenuForwardTable = [
+        # &: b,c,e,l,n,p,s,w
+        'end-of-&buffer',
+        'end-of-&line',
+        '-',
+        'forward-&char',
+        'forward-&paragraph',
+        'forward-&sentence',
+        'forward-&end-word',
+        'forward-&word',
+        '-',
+        '&next-line',
+    ]
+
+    self.cursorMenuForwardExtendTable = [
+        # &: b,c,e,l,n,p,s,w
+        'end-of-&buffer-extend-selection',
+        'end-of-&line-extend-selection',
+        '-',
+        'forward-&char-extend-selection',
+        'forward-&paragraph-extend-selection',
+        'forward-&sentence-extend-selection',
+        'forward-&end-word-extend-selection',
+        'forward-&word-extend-selection',#
+        '-',
+        '&next-line-extend-selection',    
+    ]
+#@nonl
+#@-node:ekr.20060924124119:defineCmdsMenuCursorTable
+#@+node:ekr.20060923060822:defineCmdsMenuFocusTable
+def defineCmdsMenuFocusTable (self):
+
+    self.cmdsMenuFocusTable = [
+        '&cycle-all-focus',
+        'focus-to-&body',          
+        'focus-to-&log',             
+        'focus-to-&minibuffer',     
+        'focus-to-&tree',             
+    ]
+#@-node:ekr.20060923060822:defineCmdsMenuFocusTable
+#@+node:ekr.20060117114315:defineCmdsMenuMacroTable
+def defineCmdsMenuMacroTable (self):
+
+    self.cmdsMenuMacroTable = [
+        '&load-file',
+        '-',
+        '&start-kbd-macro',
+        '&end-kbd-macro',
+        '&name-last-kbd-macro',
+        '-',
+        '&call-last-keyboard-macro',
+        '&insert-keyboard-macro',
+    ]
+#@-node:ekr.20060117114315:defineCmdsMenuMacroTable
+#@+node:ekr.20061011084101.1:defineCmdsMenuMinibufferTable
+def defineCmdsMenuMinibufferTable (self):
+
+    self.cmdsMenuMinibufferTable = [
+        # &: f,h,i,q,r,s,v
+        '&full-command',
+        'keyboard-&quit',
+        '&repeat-complex-command',
+        '&view-lossage',
+        '-',
+        '&show-mini-buffer',
+        'h&ide-mini-buffer',
+        '-',
+        '&help-for-minibuffer',
+    ]
+#@-node:ekr.20061011084101.1:defineCmdsMenuMinibufferTable
+#@+node:ekr.20061011085641:defineCmdsMenuPickersTable
+def defineCmdsMenuPickersTable (self):
+
+    self. cmdsMenuPickersTable = [
+        'show-&colors',
+        'show-find-&options',
+        'show-&fonts',
+    ]
+#@nonl
+#@-node:ekr.20061011085641:defineCmdsMenuPickersTable
+#@+node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable
+def defineCmdsMenuRectanglesTable (self):
+
+    self.cmdsMenuRectanglesTable = [
+        '&clear-rectangle',
+        'c&lose-rectangle',
+        '&delete-rectangle',
+        '&kill-rectangle',
+        '&open-rectangle',
+        '&string-rectangle',
+        '&yank-rectangle',
+    ]
+#@-node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable
+#@+node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
+def defineCmdsMenuRegistersTable (self):
+
+    self.cmdsMenuRegistersTable = [
+        # &: a,c,e,i,j,n,p,r,v
+        '&append-to-register',
+        'copy-r&ectangle-to-register',
+        '&copy-to-register',
+        'i&ncrement-register',
+        '&insert-register',
+        '&jump-to-register',
+        # 'number-to-register',
+        '&point-to-register',
+        'p&repend-to-register',
+        '&view-register',
+    ]
+#@-node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
+#@+node:ekr.20061119061958:defineCmdsMenuRunTable
+def defineCmdsMenuRunTable (self):
+
+    self.cmdsMenuRunTable = [
+    # &: e,r
+    '&execute-script',
+    '&run-unit-tests',
+    ]
+#@-node:ekr.20061119061958:defineCmdsMenuRunTable
+#@+node:ekr.20060923060822.1:defineCmdsMenuScrollTable
+def defineCmdsMenuScrollTable (self):
+
+    self.cmdsMenuScrollTable = [
+        # &: c,d,e,f,l,o,p,r,v,x
+        'scroll-outline-down-&line',
+        'scroll-outline-down-&page',
+        'scroll-outline-le&ft',
+        'scroll-outline-&right',
+        's&croll-outline-up-line',
+        'scr&oll-outline-up-page',
+        '-',
+        'scroll-&down',
+        'scroll-&up',
+        '-',
+        'scroll-down-&extend-selection',
+        'scroll-up-e&xtend-selection',
+    ]
+#@nonl
+#@-node:ekr.20060923060822.1:defineCmdsMenuScrollTable
+#@+node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable
+def defineCmdsMenuSpellCheckTable (self):
+
+    self.cmdsMenuSpellCheckTable = [
+        '&open-spell-tab',
+        'spell-&change',
+        'spell-change-&then-find',
+        'spell-&find',
+        'spell-&ignore',
+    ]
+#@-node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable
+#@+node:ekr.20060924161901:defineCmdsMenuTextTable
+def defineCmdsMenuTextTable (self):
+
+    self.cmdsMenuTextTable = [
+        # &: a,b,c,d,e,f,g,i,l,m,n,o,p,r,s,u
+        '&beautify',
+        'beautify-&all',
+        '-',
+        'center-&line',
+        'center-&region',
+        '-',
+        '&capitalize-word',
+        '&downcase-word',
+        '&upcase-word',
+        '-',
+        'd&owncase-region',
+        'u&pcase-region',
+        '-',
+        '&indent-region',
+        'indent-r&elative',
+        'indent-ri&gidly',
+        'u&nindent-region',
+        '-',
+        'sort-colu&mns',
+        'sort-&fields',
+        '&sort-lines',
+    ]
+#@nonl
+#@-node:ekr.20060924161901:defineCmdsMenuTextTable
+#@+node:ekr.20060926161940:defineCmdsMenuToggleTable
+def defineCmdsMenuToggleTable (self):
+
+    self.cmdsMenuToggleTable = [
+        # &: d,e,m,s,t,u,v
+        'toggle-a&utocompleter',
+        'toggle-call&tips',
+        'toggle-&extend-mode',
+        'toggle-input-&state',
+        'toggle-in&visibles',
+        'toggle-&mini-buffer',
+        'toggle-split-&direction',
+        '-',
+        # &: a,b,c,f,h,i,r,w,x
+        'toggle-find-&ignore-case-option',
+        'toggle-find-in-&body-option',
+        'toggle-find-in-&headline-option',
+        'toggle-find-mark-&changes-option',
+        'toggle-find-mark-&finds-option',
+        'toggle-find-rege&x-option',
+        'toggle-find-&reverse-option',
+        'toggle-find-&word-option',
+        'toggle-find-wrap-&around-option',
+    ]
+#@-node:ekr.20060926161940:defineCmdsMenuToggleTable
+#@-node:ekr.20050921103230:defineCmdsMenuTables & helpers
+#@+node:ekr.20031218072017.3773:defineWindowMenuTables
+def defineWindowMenuTables (self):
+
+    self.windowMenuTopTable = [
+        # &: a,b,c,d,e,f,l,m,n,o,p,r,s,t,u,w,x,y
+        '*&equal-sized-panes',
+        '*&toggle-active-pane',
+        '*toggle-&split-direction',
+        '-',
+        '*contract-&body-pane',
+        '*contract-&log-pane',
+        '*contract-&outline-pane',
+        '*contract-&pane',
+        '-',
+        '*expand-bo&dy-pane',
+        '*expand-lo&g-pane',
+        '*expand-o&utline-pane',
+        '*expand-pa&ne',
+        '-',
+        '*&fully-expand-body-pane',
+        '*full&y-expand-log-pane',
+        '*fully-e&xpand-outline-pane',
+        '*fully-exp&and-pane',
+        '-',
+        '*&resize-to-screen',
+        '*&cascade-windows',
+        '*&minimize-all',
+        '-',
+        '*open-compare-window',
+        '*open-python-&window',
+    ]
+#@-node:ekr.20031218072017.3773:defineWindowMenuTables
+#@+node:ekr.20031218072017.3774:defineHelpMenuTables
+def defineHelpMenuTables (self):
+
+    self.helpMenuTable = [
+        # &: a,b,c,d,e,f,h,l,m,n,o,p,r,s,t,u
+        ('&About Leo...',           'about-leo'),
+        ('Online &Home Page',       'open-online-home'),
+        '*open-online-&tutorial',
+        '*open-&users-guide',
+        '-',
+        ('Open Leo&Docs.leo',       'open-leoDocs-leo'),
+        ('Open Leo&Plugins.leo',    'open-leoPlugins-leo'),
+        ('Open Leo&Settings.leo',   'open-leoSettings-leo'),
+        ('Open &myLeoSettings.leo', 'open-myLeoSettings-leo'),
+        ('Open scr&ipts.leo',       'open-scripts-leo'),
+        '-',
+        '*he&lp-for-minibuffer',
+        '*help-for-&command',
+        '-',
+        '*&apropos-autocompletion',
+        '*apropos-&bindings',
+        '*apropos-&debugging-commands',
+        '*apropos-&find-commands',
+        '-',
+        '*pri&nt-bindings',
+        '*print-c&ommands',
+    ]
+#@-node:ekr.20031218072017.3774:defineHelpMenuTables
+#@-node:ekr.20031218072017.3752:defineMenuTables & helpers
 #@-node:ekr.20070626092228:@menu nodes for leoSettings.leo
 #@+node:ekr.20070623144302:vim-like bindings
+#@+node:ekr.20070814083528.1:Design post
+@nocolor
+
+http://sourceforge.net/forum/forum.php?thread_id=1800079&forum_id=10226
+
+Recent posts have discussed @menu trees and resolving cvs conflicts. The third of my recent ruminations concerns adding support for vim-like key bindings. 
+
+Earlier work involving input modes (@mode nodes in settings file) probably is not completely sufficient to implement plain-key key bindings in a way that would truly be vim-like. 
+
+Most of the issues are implementation issues: Leo's key-handling code is very complicated. The trick is to handle both vim and emacs styles compatibly. 
+
+The user must be able to specify vim-like key bindings without using @mode nodes. That is, top-level vim key bindings must always be available. Vim has an enormous number of key bindings: the user must be able to specify which are in effect. 
+
+My strategy will be as follows: 
+
+1. Create enter-vim-mode and exit-vim-mode commands, and create the setting: 
+
+@bool vim-mode-by-default = False 
+
+This will allow the user to specify vim mode as the default mode if desired. 
+
+2. Create **vim-edit** commands as needed in order to handler user interaction. For example, dd deletes the present line while d5 deletes 5 lines. Rather than trying to simulate this effect using the present mechanisms, the vim-delete command will prompt for the number of characters or lines to delete. 
+
+Give the complex nature of vims c and d commands (and others) it will probably be necessary to create a vim-edit class in leoEditCommands.py. This class will handle all the ways of specifying a range of characters to which the various commands will apply. It's not clear exactly how much work will be needed, but my guess is that it will, in fact, be easiest to handle vim-like interactions with new code. 
+
+3. Vim's ':' command will simply invoke Leo's minibuffer. This isn't precisely the same as Vim's status line: it is significantly better. Otoh, we will want a way to simulate the actual spelling of vim's ':' commands. Possible @abbreviation nodes can be pressed into service. 
+
+4. Internally, it will be quite a trick to allow top-level vim-like plain-key bindings in all text widgets. I'm not sure how to do this, but it is essential. 
+
+I am quite eager to get something truly vim-like working. It promises to increase my editing speed substantially. It also should appeal strongly to present vim users. 
+#@nonl
+#@-node:ekr.20070814083528.1:Design post
 #@-node:ekr.20070623144302:vim-like bindings
 #@+node:ekr.20070307082503:Make Leo an IPython notebook
 #@+node:ekr.20060603090445.7:Ipython stuff
@@ -252,6 +1444,8 @@ Edward
 #@+node:ekr.20070629081309:Support common buttons
 # Any @button or @command nodes defined in myLeoSettings.leo should appear in all .leo files.
 #@-node:ekr.20070629081309:Support common buttons
+#@+node:ekr.20070220082124:Make sure Leo can generate Latex
+#@-node:ekr.20070220082124:Make sure Leo can generate Latex
 #@-node:ekr.20070703111455.1:Most important
 #@+node:ekr.20070630143345:Easy and useful
 #@+node:ekr.20070521105645:Improve api docs with epidoc?
@@ -280,545 +1474,6 @@ g.es_print('collapse_nodes_during_finds',c.config.getBool('collapse_nodes_during
 @ --runCommand "leo-command-name" runs the command at idle-time after loading the file.
 #@nonl
 #@-node:ekr.20070627151457:--runCommand option
-#@-node:ekr.20070630143345:Easy and useful
-#@+node:ekr.20070703111455.2:Bugs
-#@+node:ekr.20070627211815:Fix problems with 'permanent updates' in clones
-@
-
-One clone is in a derived file: it's trailing whitespace gets deleted.
-
-@bool write_strips_blank_lines = True
-
-@string trailing_body_newlines = one
-
-At present, I can not duplicate the problem.  I'll fix it when I can.
-#@nonl
-#@+node:ekr.20070529083836:cleanLines
-def cleanLines (self,p,s):
-
-    '''Return a copy of s, with all trailing whitespace removed.
-    If a change was made, update p's body text and set c dirty.'''
-
-    c = self.c ; cleanLines = [] ; changed = False
-    lines = g.splitLines(s)
-    for line in lines:
-        if line.strip():
-            cleanLines.append(line)
-        elif line.endswith('\n'):
-            cleanLines.append('\n')
-            if line != '\n': changed = True
-        else:
-            cleanLines.append('')
-            if line != '': changed = True
-    s = g.joinLines(cleanLines)
-
-    if changed and not g.app.unitTesting:
-        p.setTnodeText(s)
-        c.setBodyString(p,s)
-        c.setChanged(True)
-
-    return s
-#@nonl
-#@-node:ekr.20070529083836:cleanLines
-#@+node:ekr.20070627211053.1:(done, but keep the clone) Post: @testcase not needed
-#@+node:ekr.20070627204038.1:@@suite example of using plain unittest.TestCase
-if g.unitTesting:
-
-    @others
-
-    g.app.scriptDict['suite'] = exampleTestCase(c)
-#@+node:ekr.20070627204038.2:class exampleTestCase
-import unittest
-
-class exampleTestCase(unittest.TestCase):
-
-    '''A test case to print a message at the end of plugin tests.'''
-
-    def __init__ (self,c):
-        unittest.TestCase.__init__(self)
-        self.c = c
-
-    def runTest(self):
-        assert self.c
-        print 'exampleTestCase'
-#@nonl
-#@-node:ekr.20070627204038.2:class exampleTestCase
-#@-node:ekr.20070627204038.1:@@suite example of using plain unittest.TestCase
-#@-node:ekr.20070627211053.1:(done, but keep the clone) Post: @testcase not needed
-#@-node:ekr.20070627211815:Fix problems with 'permanent updates' in clones
-#@+node:ekr.20060609070148:Fix hung windows
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=3768494
-By: ktenney
-
-I'm using current CVS, W2k
-
-1 open a Leo file (I'm using a batch file / console)
-
-2 click Edit->Open   <-- Having this dialog open is the problem.
-
-3 return focus to the Leo window
-
-4 click Help->Open leoDocs.leo
-
-Zombie!
-#@-node:ekr.20060609070148:Fix hung windows
-#@+node:ekr.20060116173818:Fix vampire nodes
-@nocolor
-
-Vampire nodes from cvs
-
-I've just discovered a major problem with cvs updates.  It is a subtle consequence of how Leo writes outlines and reads derived files.  This is a big bug in Leo, not cvs.  The effect of the bug is that nodes can appear in derived files that were never written to them!
-
-The discovery of this 'big bug' came about as the result of the following Aha:
-
-**@thin files that contain @all directives should be a cvs binary (-kb) files.**
-
-The reason is straightforward:  cvs doesn't know enough to merge such files.  Maybe all @thin derived files should be -kb files, but Leo's users will never agree to that!
-
-Anyway, leoProjects.txt is now a binary file as far as cvs is concerned.  Other .txt files, like leoScripts.txt, should also be binary files.  As we shall see, the fact that leoProjects.txt is now a -kb file means that we can not possibly blame the cvs merge algorithm for what is about to happen.
-
-Ok, back to the 'big bug'.  Here is how I got bitten:
-
-- I changed leoProjects.txt in two sandboxes 1 and 2.  In sandbox 1 I added a node called 'changed in the main line'.  In sandbox 2 I added a node called 'changed2'.
-
-- I changed LeoPyRef.leo in sandbox 2, but *not* in sandbox 1.
-
-- I did a update in sandbox 2.
-
-As expected (now that leoProjects.txt is a binary file) I got the following from cvs:
-
-M src/LeoPyRef.leo
-...
-cvs update: nonmergeable file needs merge
-cvs update: revision 1.448 from repository is now in src/leoProjects.txt
-cvs update: file from working directory is now in .#leoProjects.txt.1.447
-
-To summarize the update:
-
-- LeoPyRef.leo has been marked as modified (M), but it has **not** been changed by cvs.
-
-- As expected, leoProjects.txt contains the version from sandbox **1**.
-
-So far, so good.  But when I opened LeoPyRef.leo I got a huge surprise: the outline contains **both** the node 'changed in main-line' and the node 'changed2'.  Whoa Nellie!
-
-How did this happen?  Well, obviously the 'changed in main-line' node came from the cvs update.  I expected that.  The 'changed2' line must have come from the local copy of LeoPyRef.leo.
-
-Once I knew what to look for it wasn't too hard to discover what had happened.  The 'changed2' is a descendent of a cloned node called '4.4 projects'.
-
-- One clone of '4.4 projects' node is a descendent of the @thin leoProjects.txt node.
-
-- Another clone of the '4.4 project' is in the LeoPyRef.leo file but outside of any @thin node.
-
-So the 'resurrection' of the 'changed2' node happened while Leo was reading leoProjects.txt into LeoPyRef.leo.  The '4.4 projects' node **already existed in the outline** before Leo read leoProjects.txt, and the present atFile read logic only **adds** nodes, it never deletes nodes.  Thus, the 'changed2' node 'survived' the atFile read logic.  The 'changed2' node became a 'vampire' node that couldn't be killed.
-
-The problem is far from benign.  Because of clones, the vampire node became an orphan node in **another** file, namely leoKeys.py.  I tried two or three times to remove the vampire/orphan node before realizing what had happened.
-
-The fix (there is *always* a fix) will require some care.  The present atFile.read logic is robust because it *doesn't* delete nodes.  It is essential that the read logic remain robust.  I suspect the solutions will be as follows:
-
-A. The atFile.read code can not delete the subtree of @thin nodes initially, because it doesn't know whether there will be read errors later.  If there are read errors absolutely nothing must change.  This ensures that read errors never destroy information.
-
-B. A new post-pass will look for vampire nodes: nodes that were not actually read from the derived file.  I think (but haven't proven) that all descendents of vampire nodes are also vampire nodes.  If that is so the post-pass will simply delete vampire nodes without worrying about whether they have descendents.
-
-Warning: the new scheme will mean that cvs update can destroy information that previously existed in the outline.  I believe this is correct: we assume that derived files are the 'truly meaningful' files.  Hey, if we are wrong we can always get the old info from cvs :-)
-
-Edward
-#@-node:ekr.20060116173818:Fix vampire nodes
-#@-node:ekr.20070703111455.2:Bugs
-#@+node:ekr.20070703111455.3:Other
-# some of these can wait till much later.
-#@nonl
-#@+node:ekr.20070220082124:Make sure Leo can generate Latex
-#@-node:ekr.20070220082124:Make sure Leo can generate Latex
-#@+node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
-#@-node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
-#@+node:ekr.20070626092228.1:minor
-#@+node:ekr.20060530085844:Improve autocompletion
-#@+node:ekr.20060927173836.1:Make calltips and autocompleter 'stateless'
-@nocolor
-
-Disabled these binding:
-
-auto-complete-force         = None # This command needs work before it is useful. Ctrl-period
-show-calltips-force         = None # This command needs work before it is useful. Alt-parenleft
-
-The problem is that autocompletion depends on state: self.leadinWord,
-prevObjects, etc. Thus, it's not presently possible to start the proces
-anywhere. Similar remarks apply to calltips, which relies on autocompleter
-state.
-
-This is a complex problem, and not very serious now that there is an easy way of
-toggling autocompleter and calltips on and off.
-
-@color
-#@nonl
-#@-node:ekr.20060927173836.1:Make calltips and autocompleter 'stateless'
-#@-node:ekr.20060530085844:Improve autocompletion
-#@+node:ekr.20070619161413:Finish support for hidden windows
-@
-
-*** Important ***
-
-The new code is just barely enough to open a window with a nullGui for @button dynamic-tests.
-**However**, it is just the start of what would be required to open a window and execute most operations on it.
-In particular, throughout leoEditCommands.py we should substitute c.frame.gui (or self.gui) for g.app.gui.
-But it's way too late in the Leo 4.4.3 release cycle to do that.
-#@nonl
-#@+node:ekr.20031218072017.3679:  leoFrame.__init__
-def __init__ (self,gui):
-
-    self.c = None # Must be created by subclasses.
-    self.title = None # Must be created by subclasses.
-    self.gui = gui
-
-    # Objects attached to this frame.
-    self.colorPanel = None 
-    self.comparePanel = None
-    self.findPanel = None
-    self.fontPanel = None
-    self.iconBar = None
-    self.isNullFrame = False
-    self.keys = None
-    self.menu = None
-    self.miniBufferWidget = None # New in 4.4.
-    self.prefsPanel = None
-    self.statusLine = None
-    self.useMiniBufferWidget = False # New in 4.4
-
-    # Gui-independent data
-    self.componentsDict = {} # Keys are names, values are componentClass instances.
-    self.es_newlines = 0 # newline count for this log stream
-    self.openDirectory = ""
-    self.requestRecolorFlag = False
-    self.saved=False # True if ever saved
-    self.splitVerticalFlag,self.ratio, self.secondary_ratio = True,0.5,0.5 # Set by initialRatios later.
-    self.startupWindow=False # True if initially opened window
-    self.stylesheet = None # The contents of <?xml-stylesheet...?> line.
-    self.tab_width = 0 # The tab width in effect in this pane.
-
-#@+node:ekr.20061109120726:leoFrame.mustBeDefinedOnlyInBaseClass
-mustBeDefinedOnlyInBaseClass = (
-
-    'initialRatios',
-    'longFileName',
-    'oops',
-    'promptForSave',
-    'scanForTabWidth',
-    'shortFileName',
-
-    # Headline editing.
-    'abortEditLabelCommand',
-    'endEditLabelCommand',
-    'insertHeadlineTime',
-
-    # Cut/Copy/Paste.
-    'OnPaste',
-    'OnPasteFromMenu',
-    'copyText',
-    'cutText',
-    'pasteText',
-
-    # Icon bar convenience methods.    
-    'addIconButton',
-    'clearIconBar',
-    'createIconBar',
-    'getIconBar',
-    'getIconBarObject',
-    'hideIconBar',
-
-    # Status line convenience methods.
-    'createStatusLine',
-    'clearStatusLine',
-    'disableStatusLine',
-    'enableStatusLine',
-    'getStatusLine',
-    'getStatusObject',
-    'putStatusLine',
-    'setFocusStatusLine',
-    'statusLineIsEnabled',
-    'updateStatusLine',
-)
-#@nonl
-#@-node:ekr.20061109120726:leoFrame.mustBeDefinedOnlyInBaseClass
-#@+node:ekr.20061109120704:leoFrame.mustBeDefinedInSubclasses
-mustBeDefinedInSubclasses = (
-    #Gui-dependent commands.
-    'cascade',
-    'contractBodyPane',
-    'contractLogPane',
-    'contractOutlinePane',
-    'contractPane',
-    'equalSizedPanes',
-    'expandLogPane',
-    'expandPane',
-    'fullyExpandBodyPane',
-    'fullyExpandLogPane',
-    'fullyExpandOutlinePane',
-    'fullyExpandPane',
-    'hideBodyPane',
-    'hideLogPane',
-    'hideLogWindow',
-    'hideOutlinePane',
-    'hidePane',
-    'leoHelp',
-    'minimizeAll',
-    'resizeToScreen',
-    'toggleActivePane',
-    'toggleSplitDirection',
-    # Windowutilities...
-    'bringToFront',
-    'deiconify',
-    'get_window_info',
-    'lift',
-    'update',
-    # Config...
-    'resizePanesToRatio',
-    'setInitialWindowGeometry',
-    'setTopGeometry',
-)
-#@nonl
-#@-node:ekr.20061109120704:leoFrame.mustBeDefinedInSubclasses
-#@-node:ekr.20031218072017.3679:  leoFrame.__init__
-#@+node:ekr.20031218072017.2052:g.openWithFileName
-def openWithFileName(fileName,old_c,
-    enableLog=True,gui=None,readAtFileNodesFlag=True):
-
-    """Create a Leo Frame for the indicated fileName if the file exists."""
-
-    if not fileName or len(fileName) == 0:
-        return False, None
-
-    def munge(name):
-        return g.os_path_normpath(name or '').lower()
-
-    # Create a full, normalized, Unicode path name, preserving case.
-    fileName = g.os_path_normpath(g.os_path_abspath(fileName))
-
-    # If the file is already open just bring its window to the front.
-    theList = app.windowList
-    for frame in theList:
-        if munge(fileName) == munge(frame.c.mFileName):
-            frame.bringToFront()
-            frame.c.setLog()
-            return True, frame
-    if old_c:
-        # New in 4.4: We must read the file *twice*.
-        # The first time sets settings for the later call to c.finishCreate.
-        # g.trace('***** prereading',fileName)
-        c2 = g.app.config.openSettingsFile(fileName)
-        if c2: g.app.config.updateSettings(c2,localFlag=True)
-        g.doHook('open0')
-
-    # Open the file in binary mode to allow 0x1a in bodies & headlines.
-    theFile,isZipped = g.openLeoOrZipFile(fileName)
-    if not theFile: return False, None
-    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
-    c.isZipped = isZipped
-    frame.log.enable(enableLog)
-    g.app.writeWaitingLog() # New in 4.3: write queued log first.
-    c.beginUpdate()
-    try:
-        if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
-            c.setLog()
-            app.lockLog()
-            frame.c.fileCommands.open(
-                theFile,fileName,
-                readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
-            app.unlockLog()
-            for frame in g.app.windowList:
-                # The recent files list has been updated by menu.updateRecentFiles.
-                frame.c.config.setRecentFiles(g.app.config.recentFiles)
-        # Bug fix in 4.4.
-        frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
-        g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
-    finally:
-        c.endUpdate()
-        # chapterController.finishCreate must be called after the first real redraw
-        # because it requires a valid value for c.rootPosition().
-        if frame.c.chapterController:
-            frame.c.chapterController.finishCreate()
-        k = c.k
-        k and k.setInputState(k.unboundKeyAction)
-        if c.config.getBool('outline_pane_has_initial_focus'):
-            c.treeWantsFocusNow()
-        else:
-            c.bodyWantsFocusNow()
-    return True, frame
-#@nonl
-#@-node:ekr.20031218072017.2052:g.openWithFileName
-#@+node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
-def newLeoCommanderAndFrame(self,fileName=None,gui=None,initEditCommanders=True,updateRecentFiles=True):
-
-    """Create a commander and its view frame for the Leo main window."""
-
-    app = self
-
-    import leoCommands
-
-    if not fileName: fileName = ""
-    if not gui: gui = g.app.gui
-    << compute the window title >>
-
-    # Create an unfinished frame to pass to the commanders.
-    frame = gui.createLeoFrame(title)
-
-    # Create the commander and its subcommanders.
-    c = leoCommands.Commands(frame,fileName)
-
-    if not app.initing:
-        g.doHook("before-create-leo-frame",c=c) # Was 'onCreate': too confusing.
-
-    frame.finishCreate(c)
-    c.finishCreate(initEditCommanders)
-
-    # Finish initing the subcommanders.
-    c.undoer.clearUndoState() # Menus must exist at this point.
-
-    if updateRecentFiles:
-        c.updateRecentFiles(fileName)
-
-    if not g.app.initing:
-        g.doHook("after-create-leo-frame",c=c)
-
-    return c,frame
-#@+node:ekr.20031218072017.2189:<< compute the window title >>
-# Set the window title and fileName
-if fileName:
-    title = g.computeWindowTitle(fileName)
-else:
-    s = "untitled"
-    n = g.app.numberOfWindows
-    if n > 0:
-        s += str(n)
-    title = g.computeWindowTitle(s)
-    g.app.numberOfWindows = n+1
-#@-node:ekr.20031218072017.2189:<< compute the window title >>
-#@-node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
-#@+node:ekr.20031218072017.1623:new
-def new (self,event=None,gui=None):
-
-    '''Create a new Leo window.'''
-
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=None,gui=gui)
-
-    # Needed for plugins.
-    g.doHook("new",old_c=self,c=c,new_c=c)
-    # Use the config params to set the size and location of the window.
-    c.beginUpdate()
-    try:
-        frame.setInitialWindowGeometry()
-        frame.deiconify()
-        frame.lift()
-        frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio) # Resize the _new_ frame.
-        t = leoNodes.tnode()
-        v = leoNodes.vnode(t)
-        p = leoNodes.position(v,[])
-        v.initHeadString("NewHeadline")
-        v.moveToRoot(oldRoot=None)
-        c.setRootVnode(v) # New in Leo 4.4.2.
-        c.editPosition(p)
-    finally:
-        c.endUpdate()
-        # chapterController.finishCreate must be called after the first real redraw
-        # because it requires a valid value for c.rootPosition().
-        if c.config.getBool('use_chapters') and c.chapterController:
-            c.chapterController.finishCreate()
-            frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
-        if c.config.getBool('outline_pane_has_initial_focus'):
-            c.treeWantsFocusNow()
-        else:
-            c.bodyWantsFocusNow()
-    return c # For unit test.
-#@-node:ekr.20031218072017.1623:new
-#@+node:ekr.20070302095121:createTextWidget
-def createTextWidget (self,parentFrame=None):
-
-    self.logNumber += 1
-
-    c = self.c
-
-    gui = c and c.frame and c.frame.gui or g.app.gui
-
-    log = gui.plainTextWidget( ### was g.app.gui.
-        c = self.c,
-        name="log-%d" % self.logNumber,
-    )
-
-    return log
-#@-node:ekr.20070302095121:createTextWidget
-#@+node:ekr.20070302171509.2: nullStatusLineClass.ctor
-def __init__ (self,c,parentFrame):
-
-    self.c = c
-    self.enabled = False
-    self.parentFrame = parentFrame
-
-    gui = c and c.frame and c.frame.gui or g.app.gui
-
-    self.textWidget = w = gui.plainTextWidget(c,name='status-line')
-
-    # Set the official ivars.
-    c.frame.statusFrame = None
-    c.frame.statusLabel = None
-    c.frame.statusText  = self.textWidget
-#@-node:ekr.20070302171509.2: nullStatusLineClass.ctor
-#@-node:ekr.20070619161413:Finish support for hidden windows
-#@+node:ekr.20070627110422:create leoStartup.py
-# This will have common startup code.
-#@nonl
-#@-node:ekr.20070627110422:create leoStartup.py
-#@+node:ekr.20070613103409:Improve marks/recent buttons
-- Arrow keys must move up/down.
-- Should be commands to show the marks/recent dialogs.
-#@nonl
-#@-node:ekr.20070613103409:Improve marks/recent buttons
-#@+node:ekr.20061028065955.2:Fix binding nits
-#@+node:ekr.20061014050154.2:Binding to None clears all bindings
-#@-node:ekr.20061014050154.2:Binding to None clears all bindings
-#@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
-#@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
-#@+node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
-#@-node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
-#@-node:ekr.20061028065955.2:Fix binding nits
-#@+node:ekr.20070605114358:Improve how recent files works??
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4347116
-By: terry_n_brown
-
-This is just a nit I guess, but I move between two machines all the time, and
-Leo keeps changing the paths I open from /home/tbrown/project/project.leo to
-/media/hda8/project/project.leo, so that when I switch to the other machine,
-where /home/tbrown/project/project.leo is actually /media/hdb2/project/project.leo,
-the recent files link is wrong.
-
-If it would be trivial for Leo to not do this, I'd like that feature.  If it's
-a big deal, then not to worry, I can always navigate to the file of course.
-#@-node:ekr.20070605114358:Improve how recent files works??
-#@+node:ekr.20070613181147:(maybe) Improve key handling
-# The idea is to use a single <Key binding> and
-# use w.event_generate(key) to create a table
-# that associates Tk key numbers with bindings:
-
-    if event.char:
-        if 0:
-            import Tkinter as Tk
-            w = Tk.Text()
-            def foo (event):
-                g.trace(event)
-            w.bind('<Key>',foo)
-            for prefix in ('Alt-Key-','Shift-Key-'):
-                key = '<%s%s>' % (prefix,event.char.strip())
-                g.trace(key)
-                w.event_generate('a')
-        if 0:
-            for z in ('char','keysym','keycode','keysym_num','state',):
-                a = getattr(event,z)
-                print z,repr(a)
-#@-node:ekr.20070613181147:(maybe) Improve key handling
-#@+node:ekr.20070624135822:Templates for common code fragments
-#@-node:ekr.20070624135822:Templates for common code fragments
 #@+node:ekr.20061002093442:Add opml support to new,open, save commands
 #@+node:ekr.20031218072017.2820:top level (file menu)
 #@+node:ekr.20031218072017.1623:new
@@ -1319,18 +1974,397 @@ def revert (self,event=None):
 #@-node:ekr.20031218072017.2837:revert
 #@-node:ekr.20031218072017.2820:top level (file menu)
 #@-node:ekr.20061002093442:Add opml support to new,open, save commands
-#@+node:ekr.20061024093525:Create settings menu
+#@-node:ekr.20070630143345:Easy and useful
+#@+node:ekr.20070703111455.3:Other/Maybe
+# some of these can wait till much later.
+#@nonl
+#@+node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
+#@-node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
+#@+node:ekr.20061028065955.2:Fix binding nits
+#@+node:ekr.20061014050154.2:Binding to None clears all bindings
+#@-node:ekr.20061014050154.2:Binding to None clears all bindings
+#@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
+#@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
+#@+node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
+#@-node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
+#@-node:ekr.20061028065955.2:Fix binding nits
+#@+node:ekr.20070605114358:Improve how recent files works?
 @nocolor
 
-http://sourceforge.net/forum/message.php?msg_id=3977681
+http://sourceforge.net/forum/message.php?msg_id=4347116
+By: terry_n_brown
 
-How about having a menu Edit -> Settings with the submenu-items 'LeoSettings.leo',
-'myLeoSettings.leo', 'this file's settings'?
+This is just a nit I guess, but I move between two machines all the time, and
+Leo keeps changing the paths I open from /home/tbrown/project/project.leo to
+/media/hda8/project/project.leo, so that when I switch to the other machine,
+where /home/tbrown/project/project.leo is actually /media/hdb2/project/project.leo,
+the recent files link is wrong.
 
-The menu-items 'Open myLeoSettings.leo' and 'Open LeoSettings.leo' under the
-Help-menu seem out-of-place.
+If it would be trivial for Leo to not do this, I'd like that feature.  If it's
+a big deal, then not to worry, I can always navigate to the file of course.
+#@-node:ekr.20070605114358:Improve how recent files works?
+#@+node:ekr.20060530085844:Improve autocompletion
+#@+node:ekr.20060927173836.1:Make calltips and autocompleter 'stateless'
+@nocolor
 
-#@-node:ekr.20061024093525:Create settings menu
+Disabled these binding:
+
+auto-complete-force         = None # This command needs work before it is useful. Ctrl-period
+show-calltips-force         = None # This command needs work before it is useful. Alt-parenleft
+
+The problem is that autocompletion depends on state: self.leadinWord,
+prevObjects, etc. Thus, it's not presently possible to start the proces
+anywhere. Similar remarks apply to calltips, which relies on autocompleter
+state.
+
+This is a complex problem, and not very serious now that there is an easy way of
+toggling autocompleter and calltips on and off.
+
+@color
+#@nonl
+#@-node:ekr.20060927173836.1:Make calltips and autocompleter 'stateless'
+#@-node:ekr.20060530085844:Improve autocompletion
+#@+node:ekr.20070619161413:Finish support for hidden windows
+@
+
+*** Important ***
+
+The new code is just barely enough to open a window with a nullGui for @button dynamic-tests.
+**However**, it is just the start of what would be required to open a window and execute most operations on it.
+In particular, throughout leoEditCommands.py we should substitute c.frame.gui (or self.gui) for g.app.gui.
+But it's way too late in the Leo 4.4.3 release cycle to do that.
+#@nonl
+#@+node:ekr.20031218072017.3679:  leoFrame.__init__
+def __init__ (self,gui):
+
+    self.c = None # Must be created by subclasses.
+    self.title = None # Must be created by subclasses.
+    self.gui = gui
+
+    # Objects attached to this frame.
+    self.colorPanel = None 
+    self.comparePanel = None
+    self.findPanel = None
+    self.fontPanel = None
+    self.iconBar = None
+    self.isNullFrame = False
+    self.keys = None
+    self.menu = None
+    self.miniBufferWidget = None # New in 4.4.
+    self.prefsPanel = None
+    self.statusLine = None
+    self.useMiniBufferWidget = False # New in 4.4
+
+    # Gui-independent data
+    self.componentsDict = {} # Keys are names, values are componentClass instances.
+    self.es_newlines = 0 # newline count for this log stream
+    self.openDirectory = ""
+    self.requestRecolorFlag = False
+    self.saved=False # True if ever saved
+    self.splitVerticalFlag,self.ratio, self.secondary_ratio = True,0.5,0.5 # Set by initialRatios later.
+    self.startupWindow=False # True if initially opened window
+    self.stylesheet = None # The contents of <?xml-stylesheet...?> line.
+    self.tab_width = 0 # The tab width in effect in this pane.
+
+#@+node:ekr.20061109120726:leoFrame.mustBeDefinedOnlyInBaseClass
+mustBeDefinedOnlyInBaseClass = (
+
+    'initialRatios',
+    'longFileName',
+    'oops',
+    'promptForSave',
+    'scanForTabWidth',
+    'shortFileName',
+
+    # Headline editing.
+    'abortEditLabelCommand',
+    'endEditLabelCommand',
+    'insertHeadlineTime',
+
+    # Cut/Copy/Paste.
+    'OnPaste',
+    'OnPasteFromMenu',
+    'copyText',
+    'cutText',
+    'pasteText',
+
+    # Icon bar convenience methods.    
+    'addIconButton',
+    'clearIconBar',
+    'createIconBar',
+    'getIconBar',
+    'getIconBarObject',
+    'hideIconBar',
+
+    # Status line convenience methods.
+    'createStatusLine',
+    'clearStatusLine',
+    'disableStatusLine',
+    'enableStatusLine',
+    'getStatusLine',
+    'getStatusObject',
+    'putStatusLine',
+    'setFocusStatusLine',
+    'statusLineIsEnabled',
+    'updateStatusLine',
+)
+#@nonl
+#@-node:ekr.20061109120726:leoFrame.mustBeDefinedOnlyInBaseClass
+#@+node:ekr.20061109120704:leoFrame.mustBeDefinedInSubclasses
+mustBeDefinedInSubclasses = (
+    #Gui-dependent commands.
+    'cascade',
+    'contractBodyPane',
+    'contractLogPane',
+    'contractOutlinePane',
+    'contractPane',
+    'equalSizedPanes',
+    'expandLogPane',
+    'expandPane',
+    'fullyExpandBodyPane',
+    'fullyExpandLogPane',
+    'fullyExpandOutlinePane',
+    'fullyExpandPane',
+    'hideBodyPane',
+    'hideLogPane',
+    'hideLogWindow',
+    'hideOutlinePane',
+    'hidePane',
+    'leoHelp',
+    'minimizeAll',
+    'resizeToScreen',
+    'toggleActivePane',
+    'toggleSplitDirection',
+    # Windowutilities...
+    'bringToFront',
+    'deiconify',
+    'get_window_info',
+    'lift',
+    'update',
+    # Config...
+    'resizePanesToRatio',
+    'setInitialWindowGeometry',
+    'setTopGeometry',
+)
+#@nonl
+#@-node:ekr.20061109120704:leoFrame.mustBeDefinedInSubclasses
+#@-node:ekr.20031218072017.3679:  leoFrame.__init__
+#@+node:ekr.20031218072017.2052:g.openWithFileName
+def openWithFileName(fileName,old_c,
+    enableLog=True,gui=None,readAtFileNodesFlag=True):
+
+    """Create a Leo Frame for the indicated fileName if the file exists."""
+
+    if not fileName or len(fileName) == 0:
+        return False, None
+
+    def munge(name):
+        return g.os_path_normpath(name or '').lower()
+
+    # Create a full, normalized, Unicode path name, preserving case.
+    fileName = g.os_path_normpath(g.os_path_abspath(fileName))
+
+    # If the file is already open just bring its window to the front.
+    theList = app.windowList
+    for frame in theList:
+        if munge(fileName) == munge(frame.c.mFileName):
+            frame.bringToFront()
+            frame.c.setLog()
+            return True, frame
+    if old_c:
+        # New in 4.4: We must read the file *twice*.
+        # The first time sets settings for the later call to c.finishCreate.
+        # g.trace('***** prereading',fileName)
+        c2 = g.app.config.openSettingsFile(fileName)
+        if c2: g.app.config.updateSettings(c2,localFlag=True)
+        g.doHook('open0')
+
+    # Open the file in binary mode to allow 0x1a in bodies & headlines.
+    theFile,isZipped = g.openLeoOrZipFile(fileName)
+    if not theFile: return False, None
+    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
+    c.isZipped = isZipped
+    frame.log.enable(enableLog)
+    g.app.writeWaitingLog() # New in 4.3: write queued log first.
+    c.beginUpdate()
+    try:
+        if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
+            c.setLog()
+            app.lockLog()
+            frame.c.fileCommands.open(
+                theFile,fileName,
+                readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
+            app.unlockLog()
+            for frame in g.app.windowList:
+                # The recent files list has been updated by menu.updateRecentFiles.
+                frame.c.config.setRecentFiles(g.app.config.recentFiles)
+        # Bug fix in 4.4.
+        frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
+        g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
+    finally:
+        c.endUpdate()
+        # chapterController.finishCreate must be called after the first real redraw
+        # because it requires a valid value for c.rootPosition().
+        if frame.c.chapterController:
+            frame.c.chapterController.finishCreate()
+        k = c.k
+        k and k.setInputState(k.unboundKeyAction)
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+    return True, frame
+#@nonl
+#@-node:ekr.20031218072017.2052:g.openWithFileName
+#@+node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
+def newLeoCommanderAndFrame(self,fileName=None,gui=None,initEditCommanders=True,updateRecentFiles=True):
+
+    """Create a commander and its view frame for the Leo main window."""
+
+    app = self
+
+    import leoCommands
+
+    if not fileName: fileName = ""
+    if not gui: gui = g.app.gui
+    << compute the window title >>
+
+    # Create an unfinished frame to pass to the commanders.
+    frame = gui.createLeoFrame(title)
+
+    # Create the commander and its subcommanders.
+    c = leoCommands.Commands(frame,fileName)
+
+    if not app.initing:
+        g.doHook("before-create-leo-frame",c=c) # Was 'onCreate': too confusing.
+
+    frame.finishCreate(c)
+    c.finishCreate(initEditCommanders)
+
+    # Finish initing the subcommanders.
+    c.undoer.clearUndoState() # Menus must exist at this point.
+
+    if updateRecentFiles:
+        c.updateRecentFiles(fileName)
+
+    if not g.app.initing:
+        g.doHook("after-create-leo-frame",c=c)
+
+    return c,frame
+#@+node:ekr.20031218072017.2189:<< compute the window title >>
+# Set the window title and fileName
+if fileName:
+    title = g.computeWindowTitle(fileName)
+else:
+    s = "untitled"
+    n = g.app.numberOfWindows
+    if n > 0:
+        s += str(n)
+    title = g.computeWindowTitle(s)
+    g.app.numberOfWindows = n+1
+#@-node:ekr.20031218072017.2189:<< compute the window title >>
+#@-node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
+#@+node:ekr.20031218072017.1623:new
+def new (self,event=None,gui=None):
+
+    '''Create a new Leo window.'''
+
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=None,gui=gui)
+
+    # Needed for plugins.
+    g.doHook("new",old_c=self,c=c,new_c=c)
+    # Use the config params to set the size and location of the window.
+    c.beginUpdate()
+    try:
+        frame.setInitialWindowGeometry()
+        frame.deiconify()
+        frame.lift()
+        frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio) # Resize the _new_ frame.
+        t = leoNodes.tnode()
+        v = leoNodes.vnode(t)
+        p = leoNodes.position(v,[])
+        v.initHeadString("NewHeadline")
+        v.moveToRoot(oldRoot=None)
+        c.setRootVnode(v) # New in Leo 4.4.2.
+        c.editPosition(p)
+    finally:
+        c.endUpdate()
+        # chapterController.finishCreate must be called after the first real redraw
+        # because it requires a valid value for c.rootPosition().
+        if c.config.getBool('use_chapters') and c.chapterController:
+            c.chapterController.finishCreate()
+            frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+    return c # For unit test.
+#@-node:ekr.20031218072017.1623:new
+#@+node:ekr.20070302095121:createTextWidget
+def createTextWidget (self,parentFrame=None):
+
+    self.logNumber += 1
+
+    c = self.c
+
+    gui = c and c.frame and c.frame.gui or g.app.gui
+
+    log = gui.plainTextWidget( ### was g.app.gui.
+        c = self.c,
+        name="log-%d" % self.logNumber,
+    )
+
+    return log
+#@-node:ekr.20070302095121:createTextWidget
+#@+node:ekr.20070302171509.2: nullStatusLineClass.ctor
+def __init__ (self,c,parentFrame):
+
+    self.c = c
+    self.enabled = False
+    self.parentFrame = parentFrame
+
+    gui = c and c.frame and c.frame.gui or g.app.gui
+
+    self.textWidget = w = gui.plainTextWidget(c,name='status-line')
+
+    # Set the official ivars.
+    c.frame.statusFrame = None
+    c.frame.statusLabel = None
+    c.frame.statusText  = self.textWidget
+#@-node:ekr.20070302171509.2: nullStatusLineClass.ctor
+#@-node:ekr.20070619161413:Finish support for hidden windows
+#@+node:ekr.20070627110422:create leoStartup.py
+# This will have common startup code.
+#@nonl
+#@-node:ekr.20070627110422:create leoStartup.py
+#@+node:ekr.20070613103409:Improve marks/recent buttons
+- Arrow keys must move up/down.
+- Should be commands to show the marks/recent dialogs.
+#@nonl
+#@-node:ekr.20070613103409:Improve marks/recent buttons
+#@+node:ekr.20070613181147:(maybe) Improve key handling
+# The idea is to use a single <Key binding> and
+# use w.event_generate(key) to create a table
+# that associates Tk key numbers with bindings:
+
+    if event.char:
+        if 0:
+            import Tkinter as Tk
+            w = Tk.Text()
+            def foo (event):
+                g.trace(event)
+            w.bind('<Key>',foo)
+            for prefix in ('Alt-Key-','Shift-Key-'):
+                key = '<%s%s>' % (prefix,event.char.strip())
+                g.trace(key)
+                w.event_generate('a')
+        if 0:
+            for z in ('char','keysym','keycode','keysym_num','state',):
+                a = getattr(event,z)
+                print z,repr(a)
+#@-node:ekr.20070613181147:(maybe) Improve key handling
+#@+node:ekr.20070624135822:Templates for common code fragments
+#@-node:ekr.20070624135822:Templates for common code fragments
 #@+node:ekr.20061127170002.1:Allow multiple lines on the button bar
 @nocolor
 
@@ -1343,97 +2377,7 @@ their own section, like the NodeBar plugin did/does?
 add-new-icon-row command?
 #@nonl
 #@-node:ekr.20061127170002.1:Allow multiple lines on the button bar
-#@-node:ekr.20070626092228.1:minor
-#@+node:ekr.20070613193516:Maybe
-#@+node:ekr.20061207073104:Convert bottlenecks to pyrex code
-# To do:  actually generate Leo's bottlenecks.
-#@nonl
-#@+node:ekr.20061207073104.1:gcc build docs
-@nocolor
-
-To build your module using GCC is a three step process on Unix. (I have know
-idea how many steps it is on Windows™.)
-
-Start by running the Pyrex compiler over your code as follows, where
-mymodule.pyx is the name of the Pyrex module you are writing. python2.2 pyrexc
-mymodule.pyx Next, compile the resulting C file into a .o file. The call to gcc
-looks like this:
-
-gcc -c -fPIC -I/usr/include/python2.2/ mymodule.c
-The arguments to gcc are explained below.
-
--c 
-Produces a .o file instead of an executable. 
--fPIC 
-Produces position independent code, so we can dynamically link against it later. 
--I/usr/include/python2.2/ 
-is the location of the Python 2.2 include file. The location of your Python include file may differ from /usr/include/python2.2/. 
-mymodule.c 
-is the name of the C file produced by Pyrex. 
-Finally, link the .o into a .so: gcc -shared mymodule.o -lxosd -o mymodule.so
--shared 
-produces a shared-object file, instead of an executable. 
-mymodule.o 
-is the name of the module you wish to compile. 
--lxosd 
-links against a C-library, with the name of the library given as the argument. 
--o mymodule.so 
-causes gcc to put the output into a file called mymodule.so 
-The C library that you are wrapping will probably differ from mymodule. 
-#@-node:ekr.20061207073104.1:gcc build docs
-#@+node:ekr.20061207073104.2:pyrexc command-line options
-@nocolor
-
-The pyrexc command supports the following options:
-
-  Short Long              Argument    Description
-  -----------------------------------------------------------------------------
-  -v    --version                     Display version number of pyrex compiler
-  -l    --create-listing              Write error messages to a .lis file
-  -I    --include-dir     <directory> Search for include files in named 
-                                       directory (may be repeated)
-  -o    --output-file     <filename>  Specify name of generated C file (only
-                                       one source file allowed if this is used)
-
-Anything else is taken as the name of a Pyrex source file and compiled
-to a C source file. Multiple Pyrex source files can be specified
-(unless -o is used), in which case each source file is treated as the
-source of a distinct extension module and compiled separately to
-produce its own C file.
-#@-node:ekr.20061207073104.2:pyrexc command-line options
-#@+node:ekr.20061207073104.3:@file myModule.pyx
-def spam(int i, char *s):
-    if 1:
-        print i,s
-#@nonl
-#@-node:ekr.20061207073104.3:@file myModule.pyx
-#@+node:ekr.20061207073104.4:Make myModule.c
-# Use pyrexc to create myModule.c from myModule.pyx.
-import os,sys
-python = sys.executable
-theFile = r'C:\prog\tigris-cvs\leo\test\myModule.pyx'
-pyrexc = r'c:\prog\Pyrex-0.9.4.1\pyrexc.py'
-os.system(r'%s %s %s' % (python,pyrexc,theFile))
-
-if 0: # Build myModule library using distutils.
-    from distutils.core import setup, Extension
-
-    # Make the extension module ("mymodule") link against xosd
-    xosdExtn = Extension("mymodule", ["mymodule.c"], libraries=["xosd"])
-
-    # Compile the extension module
-    setup(name="mymodule", ext_modules=[xosdExtn])
-
-@ Save the above code in a file called setup.py and run the following code
-to build and install your module.
-
-    python setup.py build
-    python setup.py install
-#@nonl
-#@-node:ekr.20061207073104.4:Make myModule.c
-#@-node:ekr.20061207073104:Convert bottlenecks to pyrex code
-#@-node:ekr.20070613193516:Maybe
-#@-node:ekr.20070703111455.3:Other
+#@-node:ekr.20070703111455.3:Other/Maybe
 #@-node:ekr.20070703111455:To do: 4.4.5 (@menu, vim bindings, translation, etc)
 #@+node:ekr.20070703111913:To do: 4.4.6: (Swing gui)
 #@+node:ekr.20060629154112:Merge Leo & jyLeo

@@ -798,7 +798,7 @@ def runTestsExternally (c,all):
             path = g.os_path_abspath(g.os_path_join(
                 g.app.loadDir, '..', 'test', 'leoDynamicTest.py'))
 
-            args = [sys.executable, path, '--silent']
+            args = [sys.executable, '"' + path + '"', '--silent']  
 
             srcDir = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','src'))
             os.chdir(srcDir)
