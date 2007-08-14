@@ -174,8 +174,6 @@ straightforward, and the user can easily resolve conflicts by modifying one or
 more nodes in the outline.
 #@nonl
 #@-node:ekr.20051202094427:resolve-cvs-conflicts and write-resolved-conflicts commands
-#@+node:ekr.20070729093951.1:Update docs re @enabled-plugins
-#@-node:ekr.20070729093951.1:Update docs re @enabled-plugins
 #@-node:ekr.20070325052041:To do: 4.4.4 (@auto & resolve-cvs-conflicts)
 #@+node:ekr.20070703111455:To do: 4.4.5 (@menu, vim bindings, translation, etc)
 # Leo 4.4.5 will complete several projects that are long overdue.
