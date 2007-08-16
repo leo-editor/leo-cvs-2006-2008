@@ -3002,8 +3002,6 @@ class atFile:
         at = self ; c = at.c ; root = p.copy()
 
         fileName = p.atAutoNodeName()
-        fileName = g.os_path_join(at.default_directory,fileName)
-        fileName = g.os_path_normpath(fileName)
         if not fileName: return False
 
         # This code is similar to code in at.write.
