@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="349" height="788" width="892"/>
+	<global_window_position top="10" left="349" height="748" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -164,6 +164,7 @@
 <v t="ekr.20050830115714.9"><vh>Some characters in derived files look funny. What can I do?</vh></v>
 <v t="ekr.20050830115714.117"><vh>The new Python decorator syntax causes problems.  What can I do?</vh></v>
 <v t="ekr.20070623145346.1"><vh>Running Python setup.py install from the leo directory doesn't work.  Why not?</vh></v>
+<v t="ekr.20070816092449"><vh>I can't run the LeoBridge module outside of leo/src.  What should I do?</vh></v>
 </v>
 <v t="ekr.20050906105946"><vh>@rst-no-head end stuff</vh></v>
 </v>
@@ -767,7 +768,7 @@
 <v t="ekr.20050901083017"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060620094033" a="E"><vh>What's New...</vh>
+<v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
 <v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
 <v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
@@ -785,7 +786,7 @@
 <v t="ekr.20070809145744.8"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20070513113903" a="E"><vh>What's New in Leo 4.4.3</vh>
+<v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
 <v t="ekr.20070513113931.1"><vh>@rst-no-head links</vh>
 <v t="ekr.20070513115832.2"><vh>Important new features</vh></v>
@@ -1096,7 +1097,7 @@
 <v t="ekr.20070809145744.8"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20070513113903" a="E"><vh>What's New in Leo 4.4.3</vh>
+<v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
 <v t="ekr.20070513113931.1"><vh>@rst-no-head links</vh>
 <v t="ekr.20070513115832.2"><vh>Important new features</vh></v>
@@ -3272,10 +3273,6 @@
 </v>
 </v>
 </v>
-</v>
-<v t="ekr.20070814104015" a="E"><vh>Found: enabled-plugins</vh>
-<v t="ekr.20070317043727.3" a="TV"><vh>Complex settings nodes</vh></v>
-<v t="ekr.20070814104719"><vh>Enabling plugins</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -31897,8 +31894,6 @@ Most users will rarely use these explicit commands, because reading and writing
 read-at-auto-nodes command to update @auto nodes without having to reload the
 .leo file.
 </t>
-<t tx="ekr.20070814104015">@nocolor
-</t>
 <t tx="ekr.20070814104719">You enable or disable plugins using @enabled-plugins nodes in leoSettings files (leoSettings.leo, myLeoSettings.leo or the .leo file being loaded).  See `Specifying settings`_ for full details of settings files.
     
 The body text of the @enabled-plugins node contains a list of enabled plugins.
@@ -31915,5 +31910,41 @@ Notes:
    @enabled-plugins node, or the contents of the first pluginsManager.txt file
    encountered.
 </t>
+<t tx="ekr.20070816092449">Question and answer from plumloco.
+
+Add the equivelent of::
+ 
+    import sys 
+    leosrc = "path/to/leo/src" 
+    if leosrc not in sys.path: sys.path.append(leosrc) 
+    import leoBridge 
+ 
+at the head of each file that uses leoBridge.
+
+The problem is not importing leoBridge itself but (if I use 'from leo.src') the
+importing of plugins, who get a different leoGlobals from leoBridge, without
+g.app etc, and so do not work if they rely on dynamic values in g.etc.
+
+&gt; Why can't you simply add leo/src to sys.path in sitecustomize.py?  
+ 
+Putting leo\src on the python path as you suggest would put forty python modules
+in the global module namespace for all python programs when I want just one.
+Also, I have a safe working copy of leo and a cvs/testing version. I would wish
+to test any programs against the testing version while using the working
+version, but both /src dirs can't be exposed at the same time.
+
+&gt; Do you need plugins while running from the leoBridge? 
+ 
+'Fraid so, at least the rst3 plugin. The solution I am using now is to place::
+ 
+    sys.modules['leoGlobals'] = leoGlobals  
+ 
+in leoBridge after import leoGlobals.
+
+This, together with placing an empty __init__.py in leo/src, allows my scripts
+to be portable over the several computers/platforms I need to use them on, and
+makes testing scripts against multiple leo versions easy. It does mean that my
+scripts are not portable to other leo users but that is not likely to be a
+problem.</t>
 </tnodes>
 </leo_file>

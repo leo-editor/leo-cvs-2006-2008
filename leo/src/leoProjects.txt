@@ -983,6 +983,99 @@ else: # Emergency!
 #@-node:ekr.20041005105605.235:<< Set comment strings from delims >>
 #@-node:ekr.20041005105605.222:atFile.scanAllDirectives
 #@-node:ekr.20070814083649:Fixed new @path problem
+#@+node:ekr.20070814143748.1:Fixed @auto path bug
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4464980
+By: terry_n_brown
+
+When I delete the @ignore in my evil example above, when I try and write the
+@auto I get the traceback below.  Perhaps just a msg. saying "Unwritable @auto
+node, try re-importing, or save and load" or something?
+
+exception writing derived files
+Traceback (most recent call last):
+  File "/media/hda8/home/tbrown/.gnome-desktop/Package/leo/anon_cvs/leo/src/leoF
+ileCommands.py", line 3060, in write_Leo_file
+    c.atFileCommands.writeAll()
+  File "/media/hda8/home/tbrown/.gnome-desktop/Package/leo/anon_cvs/leo/src/leoA
+tFile.py", line 2919, in writeAll
+    at.writeOneAtAutoNode(p,toString=toString)
+  File "/media/hda8/home/tbrown/.gnome-desktop/Package/leo/anon_cvs/leo/src/leoA
+tFile.py", line 3005, in writeOneAtAutoNode
+    fileName = g.os_path_join(at.default_directory,fileName)
+AttributeError: atFile instance has no attribute 'default_directory'
+
+@color
+#@nonl
+#@+node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
+def writeAtAutoNodes (self,event=None):
+
+    '''Write all @auto nodes in the selected outline.'''
+
+    at = self
+    at.writeAtAutoNodesHelper(writeDirtyOnly=False)
+
+def writeDirtyAtAutoNodes (self,event=None):
+
+    '''Write all dirty @auto nodes in the selected outline.'''
+
+    at = self
+    at.writeAtAutoNodesHelper(writeDirtyOnly=True)
+#@nonl
+#@+node:ekr.20070806140208:writeAtAutoNodesHelper
+def writeAtAutoNodesHelper(self,toString=False,writeDirtyOnly=True):
+
+    """Write @auto nodes in the selected outline"""
+
+    at = self ; c = at.c
+    p = c.currentPosition() ; after = p.nodeAfterTree()
+    found = False
+    c.fileCommands.assignFileIndices()
+    while p and p != after:
+        if p.isAtAutoNode() and not p.isAtIgnoreNode() and (p.isDirty() or not writeDirtyOnly):
+            ok = self.writeOneAtAutoNode(p,toString=toString)
+            if ok:
+                found = True
+                p.moveToNodeAfterTree()
+            else:
+                p.moveToThreadNext()
+        else:
+            p.moveToThreadNext()
+
+    if found:
+        g.es("finished")
+    elif writeDirtyOnly:
+        g.es("no dirty @auto nodes in the selected tree")
+    else:
+        g.es("no @auto nodes in the selected tree")
+#@-node:ekr.20070806140208:writeAtAutoNodesHelper
+#@+node:ekr.20070806141607:writeOneAtAutoNode
+def writeOneAtAutoNode(self,p,toString):
+
+    '''Write p, and @auto node.'''
+
+    at = self ; c = at.c ; root = p.copy()
+
+    fileName = p.atAutoNodeName()
+    if not fileName: return False
+
+    # This code is similar to code in at.write.
+    c.endEditing() # Capture the current headline.
+    at.targetFileName = g.choose(toString,"<string-file>",fileName)
+    at.initWriteIvars(root,at.targetFileName,
+        nosentinels=True,thinFile=False,scriptWrite=False,
+        toString=toString,write_strips_blank_lines=False)
+
+    ok = at.openFileForWriting (root,fileName=fileName,toString=toString)
+    if ok:
+        at.writeOpenFile(root,nosentinels=True,toString=toString)
+        at.closeWriteFile() # Sets stringOutput if toString is True.
+        at.replaceTargetFileIfDifferent()
+
+    return ok
+#@-node:ekr.20070806141607:writeOneAtAutoNode
+#@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
+#@-node:ekr.20070814143748.1:Fixed @auto path bug
 #@-node:ekr.20070703182412:Bugs
 #@+node:ekr.20070703182412.1:Features
 #@+node:ekr.20070703172130:Added support for @mark-for-unit-tests node
@@ -1865,8 +1958,6 @@ def writeOneAtAutoNode(self,p,toString):
     at = self ; c = at.c ; root = p.copy()
 
     fileName = p.atAutoNodeName()
-    fileName = g.os_path_join(at.default_directory,fileName)
-    fileName = g.os_path_normpath(fileName)
     if not fileName: return False
 
     # This code is similar to code in at.write.
@@ -2055,43 +2146,55 @@ def checkWhitespace(self,s,parent):
     return ok
 #@-node:ekr.20070703122141.103:checkWhitespace (no longer used)
 #@+node:ekr.20070703122141.104:checkTrialWrite & helper
-def checkTrialWrite (self):
+def checkTrialWrite (self,s1=None,s2=None):
 
     '''Return True if a trial write produces the original file.'''
 
-    c = self.c ; at = c.atFileCommands
-    at.write(self.root,
-        nosentinels=True,thinFile=False,
-        scriptWrite=False,toString=True,
-        write_strips_blank_lines=False,
-    )
+    def pr(*args,**keys):
+        g.es_print(color='blue',*args,**keys)
 
-    ignoreBlankLines = True
-    s1,s2 = self.file_s, at.stringOutput
-    if s1 == s2: return True
+    c = self.c ; at = c.atFileCommands
+
+    if s1 and s2:
+        if s1 == s2: return True # For unit testing.
+    else:
+        at.write(self.root,
+            nosentinels=True,thinFile=False,
+            scriptWrite=False,toString=True,
+            write_strips_blank_lines=False,
+        )
+
+        ignoreBlankLines = True
+        s1,s2 = self.file_s, at.stringOutput
+        if s1 == s2: return True
 
     lines1 = g.splitLines(s1) ; n1 = len(lines1)
     lines2 = g.splitLines(s2) ; n2 = len(lines2)
 
-    ok = True
+    ok = True ; bad_i = 0
     for i in xrange(max(n1,n2)):
         ok = self.compareHelper(lines1,lines2,i,self.strict)
-        if not ok: break
+        if not ok:
+            bad_i = i + 1
+            break
 
     d = g.app.unitTestDict
     expectedMismatch =  d.get('expectedMismatchLine')
     actualMismatch = d.get('actualMismatchLine')
     kind = g.choose(self.atAuto,'@auto','import command')
     self.error('%s did not import the file perfectly' % kind)
+    pr('first mismatched line: %d\n%s' % (bad_i,repr(lines2[bad_i-1])))
+    pr('Inserting @ignore directive')
     ok = ok or (g.app.unitTesting and expectedMismatch == actualMismatch)
     if not ok:
         if len(lines1) < 30:
-            print 'input...'
+            pr('input...')
             for i in xrange(len(lines1)):
-                print '%3d' % (i),lines1[i],
-            print 'output...'
+                pr('%3d %s' % (i,lines1[i]),newline=False)
+            pr('output...')
             for i in xrange(len(lines2)):
-                print '%3d' % (i),lines2[i],
+                pr('%3d %s' % (i,lines2[i]),newline=False)
+
     return ok
 #@+node:ekr.20070730093735:compareHelper
 def compareHelper (self,lines1,lines2,i,strict):
@@ -2099,22 +2202,25 @@ def compareHelper (self,lines1,lines2,i,strict):
     '''Compare lines1[i] and lines2[i].
     strict is True if leading whitespace is very significant.'''
 
+    def pr(*args,**keys):
+        g.es_print(color='blue',*args,**keys)
+
     d = g.app.unitTestDict
     expectedMismatch = g.app.unitTesting and d.get('expectedMismatchLine')
 
     if i >= len(lines1):
         if i != expectedMismatch or not g.app.unitTesting:
-            print 'extra lines'
+            pr('extra lines')
             for line in lines2[i:]:
-                print repr(line)
+                pr(repr(line))
         d ['actualMismatchLine'] = i
         return False
 
     if i >= len(lines2):
         if i != expectedMismatch or not g.app.unitTesting:
-            print 'missing lines'
+            g.es_print('missing lines')
             for line in lines2[i:]:
-                print repr(line)
+                g.es_print(repr(line))
         d ['actualMismatchLine'] = i
         return False
 
@@ -2127,12 +2233,32 @@ def compareHelper (self,lines1,lines2,i,strict):
         return True # A match excluding leading whitespace.
     else:
         if i+1 != expectedMismatch or not g.app.unitTesting:
-            print '*** first mismatch at line %d' % (i+1)
-            print 'original line: ', repr(line1)
-            print 'generated line:', repr(line2)
+            g.es_print('*** first mismatch at line %d' % (i+1))
+            g.es_print('original line: ', repr(line1))
+            g.es_print('generated line:', repr(line2))
         d ['actualMismatchLine'] = i+1
         return False
 #@-node:ekr.20070730093735:compareHelper
+#@+node:ekr.20070816101019:@test compareHelper
+if g.unitTesting:
+
+    ic = c.importCommands
+    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+    i = 0
+    lines1 = ['abc',]
+    lines2 = ['xyz',]
+    runner.compareHelper(lines1,lines2,i,strict=True)
+#@-node:ekr.20070816101019:@test compareHelper
+#@+node:ekr.20070816103348:@test checkTriailWrite
+if g.unitTesting:
+
+    ic = c.importCommands
+    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+
+    s1 = 'line1\nline2\n'
+    s2 = 'line1\nline2a\n'
+    runner.checkTrialWrite(s1=s1,s2=s2)
+#@-node:ekr.20070816103348:@test checkTriailWrite
 #@-node:ekr.20070703122141.104:checkTrialWrite & helper
 #@+node:ekr.20070808115837.1:regularizeWhitespace
 def regularizeWhitespace (self,s):

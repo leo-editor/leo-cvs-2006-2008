@@ -179,6 +179,27 @@ more nodes in the outline.
 # Leo 4.4.5 will complete several projects that are long overdue.
 
 #@+node:ekr.20070814070312:First
+#@+node:ekr.20070814144804:Incorrect conversion of paths to absolute paths (for Leo 4.4.5)
+@nocolor
+https://sourceforge.net/forum/message.php?msg_id=4464649
+By: terry_n_brown
+
+Maybe it's not related to these other path issues, but an argument I'm always
+having with leo has to do with its conversion of file paths to 'absolute' forms.
+In the file browser I select '/home/tbrown/misc/foo.leo'.  Leo reinterprets
+this as '/media/hda2/usr1/home/tbrown/misc/foo.leo'  Then I switch machines,
+and while '/home/tbrown/misc/foo.leo' would still be valid,
+'/media/hda2/usr1/home/tbrown/misc/foo.leo' isn't - on the other machine it
+would be '/media/hdb1/home/tbrown/misc/foo.leo'.  I end up with the two entries
+in recent files, having to identify the right one.
+
+I haven't tested it, but if the Tk dialog is returning '/home/tbrown/misc/foo.leo',
+which I assume it is because that's what it's displaying, I wish leo would use
+and store that.
+
+@color
+#@nonl
+#@-node:ekr.20070814144804:Incorrect conversion of paths to absolute paths (for Leo 4.4.5)
 #@+node:ekr.20070803115653:Support @path and other directives in headlines
 #@-node:ekr.20070803115653:Support @path and other directives in headlines
 #@+node:ekr.20060116173818:Fix vampire nodes

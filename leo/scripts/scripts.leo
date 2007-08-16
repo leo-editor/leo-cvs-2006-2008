@@ -3,14 +3,14 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.562972292191">
-	<global_window_position top="88" left="197" height="948" width="1280"/>
+	<global_window_position top="115" left="226" height="732" width="923"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20070615131954" a="TV"><vh>Startup</vh>
-<v t="ekr.20070427110751" a="E"><vh>@chapters</vh></v>
+<v t="ekr.20070615131954"><vh>Startup</vh>
+<v t="ekr.20070427110751"><vh>@chapters</vh></v>
 <v t="ekr.20041001211817"><vh>Buttons</vh>
 <v t="ekr.20051020124457"><vh>Disabled buttons</vh>
 <v t="ekr.20041230121429"><vh>@@ button pydoc</vh></v>
@@ -652,7 +652,7 @@
 <v t="ekr.20060928193919.4"><vh>@@button zodb-put-node</vh></v>
 </v>
 </v>
-<v t="ekr.20060824111500"><vh>jEdit2Py</vh>
+<v t="ekr.20060824111500" a="TV"><vh>jEdit2Py</vh>
 <v t="ekr.20060824111500.1"><vh>Colorizing test scripts</vh>
 <v t="ekr.20060824111500.2"><vh>@@button colorize</vh></v>
 <v t="ekr.20060824111500.3"><vh>@@button red:f1</vh></v>
@@ -17976,8 +17976,8 @@ fixed = ['antlr','applescript','apacheconf','bibtex','cil','pl1','shell','shells
 errors = [] # 'cil',] # End keyword not matched by start.
 errors = [r'%s\%s.xml' % (theDir,s) for s in errors]
 # for s in errors: print s
-if 0: # A a list of files.
-    files = [r'%s\%s.xml' % (theDir,s) for s in ('python',)]
+if 1: # A a list of files.
+    files = [r'%s\%s.xml' % (theDir,s) for s in ('fortran',)]
 elif 1: # translate all files.
     files = glob.glob(g.os_path_abspath(g.os_path_join(theDir,'*.xml')))
 elif 1: # error files
