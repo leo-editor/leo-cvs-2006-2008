@@ -1518,43 +1518,55 @@ class baseLeoImportCommands:
             return ok
         #@-node:ekr.20070703122141.103:checkWhitespace (no longer used)
         #@+node:ekr.20070703122141.104:checkTrialWrite & helper
-        def checkTrialWrite (self):
+        def checkTrialWrite (self,s1=None,s2=None):
 
             '''Return True if a trial write produces the original file.'''
 
-            c = self.c ; at = c.atFileCommands
-            at.write(self.root,
-                nosentinels=True,thinFile=False,
-                scriptWrite=False,toString=True,
-                write_strips_blank_lines=False,
-            )
+            def pr(*args,**keys):
+                g.es_print(color='blue',*args,**keys)
 
-            ignoreBlankLines = True
-            s1,s2 = self.file_s, at.stringOutput
-            if s1 == s2: return True
+            c = self.c ; at = c.atFileCommands
+
+            if s1 and s2:
+                if s1 == s2: return True # For unit testing.
+            else:
+                at.write(self.root,
+                    nosentinels=True,thinFile=False,
+                    scriptWrite=False,toString=True,
+                    write_strips_blank_lines=False,
+                )
+
+                ignoreBlankLines = True
+                s1,s2 = self.file_s, at.stringOutput
+                if s1 == s2: return True
 
             lines1 = g.splitLines(s1) ; n1 = len(lines1)
             lines2 = g.splitLines(s2) ; n2 = len(lines2)
 
-            ok = True
+            ok = True ; bad_i = 0
             for i in xrange(max(n1,n2)):
                 ok = self.compareHelper(lines1,lines2,i,self.strict)
-                if not ok: break
+                if not ok:
+                    bad_i = i + 1
+                    break
 
             d = g.app.unitTestDict
             expectedMismatch =  d.get('expectedMismatchLine')
             actualMismatch = d.get('actualMismatchLine')
             kind = g.choose(self.atAuto,'@auto','import command')
             self.error('%s did not import the file perfectly' % kind)
+            pr('first mismatched line: %d\n%s' % (bad_i,repr(lines2[bad_i-1])))
+            pr('Inserting @ignore directive')
             ok = ok or (g.app.unitTesting and expectedMismatch == actualMismatch)
             if not ok:
                 if len(lines1) < 30:
-                    print 'input...'
+                    pr('input...')
                     for i in xrange(len(lines1)):
-                        print '%3d' % (i),lines1[i],
-                    print 'output...'
+                        pr('%3d %s' % (i,lines1[i]),newline=False)
+                    pr('output...')
                     for i in xrange(len(lines2)):
-                        print '%3d' % (i),lines2[i],
+                        pr('%3d %s' % (i,lines2[i]),newline=False)
+
             return ok
         #@+node:ekr.20070730093735:compareHelper
         def compareHelper (self,lines1,lines2,i,strict):
@@ -1562,22 +1574,25 @@ class baseLeoImportCommands:
             '''Compare lines1[i] and lines2[i].
             strict is True if leading whitespace is very significant.'''
 
+            def pr(*args,**keys):
+                g.es_print(color='blue',*args,**keys)
+
             d = g.app.unitTestDict
             expectedMismatch = g.app.unitTesting and d.get('expectedMismatchLine')
 
             if i >= len(lines1):
                 if i != expectedMismatch or not g.app.unitTesting:
-                    print 'extra lines'
+                    pr('extra lines')
                     for line in lines2[i:]:
-                        print repr(line)
+                        pr(repr(line))
                 d ['actualMismatchLine'] = i
                 return False
 
             if i >= len(lines2):
                 if i != expectedMismatch or not g.app.unitTesting:
-                    print 'missing lines'
+                    g.es_print('missing lines')
                     for line in lines2[i:]:
-                        print repr(line)
+                        g.es_print(repr(line))
                 d ['actualMismatchLine'] = i
                 return False
 
@@ -1590,12 +1605,32 @@ class baseLeoImportCommands:
                 return True # A match excluding leading whitespace.
             else:
                 if i+1 != expectedMismatch or not g.app.unitTesting:
-                    print '*** first mismatch at line %d' % (i+1)
-                    print 'original line: ', repr(line1)
-                    print 'generated line:', repr(line2)
+                    g.es_print('*** first mismatch at line %d' % (i+1))
+                    g.es_print('original line: ', repr(line1))
+                    g.es_print('generated line:', repr(line2))
                 d ['actualMismatchLine'] = i+1
                 return False
         #@-node:ekr.20070730093735:compareHelper
+        #@+node:ekr.20070816101019:@test compareHelper
+        if g.unitTesting:
+
+            ic = c.importCommands
+            runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+            i = 0
+            lines1 = ['abc',]
+            lines2 = ['xyz',]
+            runner.compareHelper(lines1,lines2,i,strict=True)
+        #@-node:ekr.20070816101019:@test compareHelper
+        #@+node:ekr.20070816103348:@test checkTriailWrite
+        if g.unitTesting:
+
+            ic = c.importCommands
+            runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+
+            s1 = 'line1\nline2\n'
+            s2 = 'line1\nline2a\n'
+            runner.checkTrialWrite(s1=s1,s2=s2)
+        #@-node:ekr.20070816103348:@test checkTriailWrite
         #@-node:ekr.20070703122141.104:checkTrialWrite & helper
         #@+node:ekr.20070808115837.1:regularizeWhitespace
         def regularizeWhitespace (self,s):
