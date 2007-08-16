@@ -16,9 +16,10 @@ platform or vendor specific keywords (in paticular COMPAQ(Digital) FORTRAN).
  -->
 <MODE>
     <PROPS>
+         <PROPERTY NAME="blockComment" VALUE="c" />
          <PROPERTY NAME="blockComment" VALUE="C" />
          <PROPERTY NAME="wordBreakChars" VALUE=",+-=&lt;&gt;/?^&amp;*" />
-	 <PROPERTY NAME="indentNextLine"
+	<PROPERTY NAME="indentNextLine"
 			VALUE="\s*((if\s*\(.*\)\s*then|else\s*|do\s*)*)" />
     </PROPS>
 
@@ -29,6 +30,7 @@ platform or vendor specific keywords (in paticular COMPAQ(Digital) FORTRAN).
 
 <!-- comment either !, C, or * can be used as a comment in the first column
 in either free or fixed form FORTRAN-->
+<EOL_SPAN TYPE="COMMENT1" AT_LINE_START="TRUE">c</EOL_SPAN>
 <EOL_SPAN TYPE="COMMENT1" AT_LINE_START="TRUE">C</EOL_SPAN>
 <EOL_SPAN TYPE="COMMENT1" AT_LINE_START="TRUE">!</EOL_SPAN>
 <EOL_SPAN TYPE="COMMENT1" AT_LINE_START="TRUE">*</EOL_SPAN>
