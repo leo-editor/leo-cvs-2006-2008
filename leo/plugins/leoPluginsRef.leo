@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.403896103896">
-	<global_window_position top="116" left="364" height="710" width="841"/>
+	<global_window_position top="116" left="364" height="630" width="841"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -45,9 +45,7 @@
 </v>
 </v>
 <v t="edream.110203113231.618" a="TV"><vh>Plugins</vh>
-<v t="EKR.20040517090508"><vh>  Enable plugins by changing pluginsManager.txt or using plugin_manager plugin</vh>
-<v t="edream.120603093808"><vh>@thin pluginsManager.txt</vh></v>
-</v>
+<v t="EKR.20040517090508"><vh>  Enable plugins using @enabled-plugins nodes</vh></v>
 <v t="ekr.20050303051035"><vh> Templates: these show recommended ways of defining plugins.</vh>
 <v t="ekr.20041114102139"><vh>Notes</vh>
 <v t="ekr.20041114103913"><vh>About comments in the style guide</vh></v>
@@ -1346,14 +1344,13 @@ Ok, here's what it does
 </t>
 <t tx="EKR.20040517090508">@nocolor
 
-Leo enables those plugins whose filenames appear anywhere in this file without comments.
+Enable plugins by creating @enabled-plugins nodes in leoSettings files, typically myLeoSettings.leo.  See the node
 
-Warning: make sure plugins appear at most once without comments. Otherwise,
-disabling a plugin in the Plugins Manageger plugin will have no effect.
+Users Guide--&gt;Chapter 8: Customizing Leo--&gt;@rst html\customizing.html--&gt;Specifying settings--&gt;Complex settings nodes
 
-Leo loads plugins in the order they appear in this file.
+in LeoDocs.leo for full details.
 
-File names may be indented as desired.
+**Important**: Leo no longer uses pluginsManager.txt to enable or disable plugins.
 
 @color</t>
 <t tx="edream.110203113231.233">@color</t>
