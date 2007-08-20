@@ -1076,6 +1076,141 @@ def writeOneAtAutoNode(self,p,toString):
 #@-node:ekr.20070806141607:writeOneAtAutoNode
 #@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
 #@-node:ekr.20070814143748.1:Fixed @auto path bug
+#@+node:ekr.20070815100946:Improved messages on @import failure
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4465132
+By: terry_n_brown
+
+So I changed all my indentation to multiples of four, having decided I like
+the extra line space this buys over aligning with the opening (.
+
+leo said this when it read the file:
+
+@auto did not import the file perfectly
+
+but never mentioned @ignore or anything.  I made a trivial change and saved
+and diff could find no difference except my trivial change... which seems perfect
+to me...?
+
+@color
+#@nonl
+#@+node:ekr.20070703122141.104:checkTrialWrite & helper
+def checkTrialWrite (self,s1=None,s2=None):
+
+    '''Return True if a trial write produces the original file.'''
+
+    def pr(*args,**keys):
+        g.es_print(color='blue',*args,**keys)
+
+    c = self.c ; at = c.atFileCommands
+
+    if s1 and s2:
+        if s1 == s2: return True # For unit testing.
+    else:
+        at.write(self.root,
+            nosentinels=True,thinFile=False,
+            scriptWrite=False,toString=True,
+            write_strips_blank_lines=False,
+        )
+
+        ignoreBlankLines = True
+        s1,s2 = self.file_s, at.stringOutput
+        if s1 == s2: return True
+
+    lines1 = g.splitLines(s1) ; n1 = len(lines1)
+    lines2 = g.splitLines(s2) ; n2 = len(lines2)
+
+    ok = True ; bad_i = 0
+    for i in xrange(max(n1,n2)):
+        ok = self.compareHelper(lines1,lines2,i,self.strict)
+        if not ok:
+            bad_i = i + 1
+            break
+
+    d = g.app.unitTestDict
+    expectedMismatch =  d.get('expectedMismatchLine')
+    actualMismatch = d.get('actualMismatchLine')
+    kind = g.choose(self.atAuto,'@auto','import command')
+    self.error('%s did not import the file perfectly' % kind)
+    pr('first mismatched line: %d\n%s' % (bad_i,repr(lines2[bad_i-1])))
+    pr('Inserting @ignore directive')
+    ok = ok or (g.app.unitTesting and expectedMismatch == actualMismatch)
+    if not ok:
+        if len(lines1) < 30:
+            pr('input...')
+            for i in xrange(len(lines1)):
+                pr('%3d %s' % (i,lines1[i]),newline=False)
+            pr('output...')
+            for i in xrange(len(lines2)):
+                pr('%3d %s' % (i,lines2[i]),newline=False)
+
+    return ok
+#@+node:ekr.20070730093735:compareHelper
+def compareHelper (self,lines1,lines2,i,strict):
+
+    '''Compare lines1[i] and lines2[i].
+    strict is True if leading whitespace is very significant.'''
+
+    def pr(*args,**keys):
+        g.es_print(color='blue',*args,**keys)
+
+    d = g.app.unitTestDict
+    expectedMismatch = g.app.unitTesting and d.get('expectedMismatchLine')
+
+    if i >= len(lines1):
+        if i != expectedMismatch or not g.app.unitTesting:
+            pr('extra lines')
+            for line in lines2[i:]:
+                pr(repr(line))
+        d ['actualMismatchLine'] = i
+        return False
+
+    if i >= len(lines2):
+        if i != expectedMismatch or not g.app.unitTesting:
+            g.es_print('missing lines')
+            for line in lines2[i:]:
+                g.es_print(repr(line))
+        d ['actualMismatchLine'] = i
+        return False
+
+    line1,line2 = lines1[i],lines2[i]
+    if line1 == line2:
+        return True # An exact match.
+    elif not line1.strip() and not line2.strip():
+        return True # All blank lines compare equal.
+    elif not strict and line1.lstrip() == line2.lstrip():
+        return True # A match excluding leading whitespace.
+    else:
+        if i+1 != expectedMismatch or not g.app.unitTesting:
+            g.es_print('*** first mismatch at line %d' % (i+1))
+            g.es_print('original line: ', repr(line1))
+            g.es_print('generated line:', repr(line2))
+        d ['actualMismatchLine'] = i+1
+        return False
+#@-node:ekr.20070730093735:compareHelper
+#@+node:ekr.20070816101019:@test compareHelper
+if g.unitTesting:
+
+    ic = c.importCommands
+    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+    i = 0
+    lines1 = ['abc',]
+    lines2 = ['xyz',]
+    runner.compareHelper(lines1,lines2,i,strict=True)
+#@-node:ekr.20070816101019:@test compareHelper
+#@+node:ekr.20070816103348:@test checkTriailWrite
+if g.unitTesting:
+
+    ic = c.importCommands
+    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+
+    s1 = 'line1\nline2\n'
+    s2 = 'line1\nline2a\n'
+    runner.checkTrialWrite(s1=s1,s2=s2)
+#@-node:ekr.20070816103348:@test checkTriailWrite
+#@-node:ekr.20070703122141.104:checkTrialWrite & helper
+#@-node:ekr.20070815100946:Improved messages on @import failure
 #@-node:ekr.20070703182412:Bugs
 #@+node:ekr.20070703182412.1:Features
 #@+node:ekr.20070703172130:Added support for @mark-for-unit-tests node
