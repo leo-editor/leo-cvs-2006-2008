@@ -1344,6 +1344,16 @@ def defineHelpMenuTables (self):
 #@-node:ekr.20031218072017.3752:defineMenuTables & helpers
 #@-node:ekr.20070626092228:@menu nodes for leoSettings.leo
 #@+node:ekr.20070623144302:vim-like bindings
+#@+node:ekr.20070824094005:Requests
+@nocolor
+
+> Some of the features I've grown to like with VIM are search-and-replace within the current selection, easy keyboard navigation, and to some extent macro recording and running.
+
+Thanks for these comments.  I'll keep them in mind as I design the vim-like code.
+
+Edward
+#@nonl
+#@-node:ekr.20070824094005:Requests
 #@+node:ekr.20070814083528.1:Design post
 @nocolor
 
@@ -2405,6 +2415,46 @@ evening out of comparing the codebases to see where things change.
 #@-node:ekr.20070307082814:Create g.startupController class
 #@-node:ekr.20060629154112:Merge Leo & jyLeo
 #@-node:ekr.20070703111913:To do: 4.4.6: (Swing gui)
+#@+node:ekr.20070824093611:Improve wxGui plugin
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4480477
+By: plumloco
+
+Sorry to here about your injury, Edward. Hope its not RSI from working too hard
+on Leo.  Get well soon.
+
+When your fit and well again you might like to have a look at this.
+
+I have been playing with custom tree widgets for leo, first with pyGTK then
+with wxPython.  I had thought about doing a  pyGTK plugin until I realized how
+much work was involved :)
+
+I have adapted the __wx_gui.py plugin to work with my custom widget and called
+it __wx_alt_gui.py. You, or anyone else who is interested, can download the
+plugin from http://plumloco.co.uk/scratch/__wx_alt_gui.py.gz.
+
+The great benefit of using this custom widget is that it has no secondary data
+structures to keep in synch, this makes it faster and more efficient in terms
+of resources. It also eliminates the problem of complicated glue code.
+
+All that is needed is to call update whenever a change is made and the widget
+will get all its data directly from the leo outline itself.  A good test for
+the widget is to load a large outline and do an expand-all-nodes on it (try
+the same with __wx_gui and tkLeo).
+
+The widget still needs a lot of work but it works well enough for its usefulness
+and viability to be tested.
+
+I would be interested to know your intentions towards wxLeo.  My impression
+is that you do not plan on being very active in its development, seeing as how
+you are talking about doing a java swing version.
+
+If you have no objections, I would like to do some work on wxLeo myself, partly
+for its own sake and partly to gain experience for a possible pyGTK port.  Obviously
+I do not want to be treading on your toes, so please tell me if I am intruding.
+
+
+#@-node:ekr.20070824093611:Improve wxGui plugin
 #@+node:ekr.20070105135713:To do: 5.0 (The graph world)
 #@+node:ekr.20061028070132:New positions
 # None of this code is part of Leo's core yet: it is all highly experimental.

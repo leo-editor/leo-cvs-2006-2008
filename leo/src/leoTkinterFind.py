@@ -430,63 +430,6 @@ class tkFindTab (leoFind.findTab):
             leoFind.findTab.__init__(self,c,parentFrame)
                 # Init the base class.
                 # Calls initGui, createFrame, createBindings & init(c), in that order.
-    #@+node:ekr.20070212091209:tkFindTab.init
-    def init (self,c):
-
-        # g.trace('tkFindTab',g.callers())
-
-        # N.B.: separate c.ivars are much more convenient than a dict.
-        for key in self.intKeys:
-            # New in 4.3: get ivars from @settings.
-            val = c.config.getBool(key)
-            setattr(self,key,val)
-            val = g.choose(val,1,0) # Work around major Tk problem.
-            self.svarDict[key].set(val)
-            # g.trace(key,val)
-
-        #@    << set find/change widgets >>
-        #@+node:ekr.20070212091209.1:<< set find/change widgets >>
-        self.find_ctrl.delete(0,"end")
-        self.change_ctrl.delete(0,"end")
-
-        # New in 4.3: Get setting from @settings.
-        for w,setting,defaultText in (
-            (self.find_ctrl,"find_text",'<find pattern here>'),
-            (self.change_ctrl,"change_text",''),
-        ):
-            s = c.config.getString(setting)
-            if not s: s = defaultText
-            w.insert("end",s)
-        #@-node:ekr.20070212091209.1:<< set find/change widgets >>
-        #@nl
-        #@    << set radio buttons from ivars >>
-        #@+node:ekr.20070212091209.2:<< set radio buttons from ivars >>
-        found = False
-        for var,setting in (
-            ("pattern_match","pattern-search"),
-            ("script_search","script-search")):
-            val = self.svarDict[var].get()
-            if val:
-                self.svarDict["radio-find-type"].set(setting)
-                found = True ; break
-        if not found:
-            self.svarDict["radio-find-type"].set("plain-search")
-
-        found = False
-        for var,setting in (
-            ("suboutline_only","suboutline-only"),
-            ("node_only","node-only"),
-            # ("selection_only","selection-only"),
-        ):
-            val = self.svarDict[var].get()
-            if val:
-                self.svarDict["radio-search-scope"].set(setting)
-                found = True ; break
-        if not found:
-            self.svarDict["radio-search-scope"].set("entire-outline")
-        #@-node:ekr.20070212091209.2:<< set radio buttons from ivars >>
-        #@nl
-    #@-node:ekr.20070212091209:tkFindTab.init
     #@+node:ekr.20051020120306.12:initGui
     def initGui (self):
 
@@ -725,6 +668,63 @@ class tkFindTab (leoFind.findTab):
             for event, callback in table:
                 w.bind(event,callback)
     #@-node:ekr.20051023181449:createBindings (tkFindTab)
+    #@+node:ekr.20070212091209:tkFindTab.init
+    def init (self,c):
+
+        # g.trace('tkFindTab',g.callers())
+
+        # N.B.: separate c.ivars are much more convenient than a dict.
+        for key in self.intKeys:
+            # New in 4.3: get ivars from @settings.
+            val = c.config.getBool(key)
+            setattr(self,key,val)
+            val = g.choose(val,1,0) # Work around major Tk problem.
+            self.svarDict[key].set(val)
+            # g.trace(key,val)
+
+        #@    << set find/change widgets >>
+        #@+node:ekr.20070212091209.1:<< set find/change widgets >>
+        self.find_ctrl.delete(0,"end")
+        self.change_ctrl.delete(0,"end")
+
+        # New in 4.3: Get setting from @settings.
+        for w,setting,defaultText in (
+            (self.find_ctrl,"find_text",'<find pattern here>'),
+            (self.change_ctrl,"change_text",''),
+        ):
+            s = c.config.getString(setting)
+            if not s: s = defaultText
+            w.insert("end",s)
+        #@-node:ekr.20070212091209.1:<< set find/change widgets >>
+        #@nl
+        #@    << set radio buttons from ivars >>
+        #@+node:ekr.20070212091209.2:<< set radio buttons from ivars >>
+        found = False
+        for var,setting in (
+            ("pattern_match","pattern-search"),
+            ("script_search","script-search")):
+            val = self.svarDict[var].get()
+            if val:
+                self.svarDict["radio-find-type"].set(setting)
+                found = True ; break
+        if not found:
+            self.svarDict["radio-find-type"].set("plain-search")
+
+        found = False
+        for var,setting in (
+            ("suboutline_only","suboutline-only"),
+            ("node_only","node-only"),
+            # ("selection_only","selection-only"),
+        ):
+            val = self.svarDict[var].get()
+            if val:
+                self.svarDict["radio-search-scope"].set(setting)
+                found = True ; break
+        if not found:
+            self.svarDict["radio-search-scope"].set("entire-outline")
+        #@-node:ekr.20070212091209.2:<< set radio buttons from ivars >>
+        #@nl
+    #@-node:ekr.20070212091209:tkFindTab.init
     #@-node:ekr.20061212085958.1: Birth
     #@+node:ekr.20070212092458:Support for minibufferFind class (tkFindTab)
     #@+node:ekr.20070212093026:getOption

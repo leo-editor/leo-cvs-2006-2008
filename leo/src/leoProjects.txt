@@ -1211,6 +1211,28 @@ if g.unitTesting:
 #@-node:ekr.20070816103348:@test checkTriailWrite
 #@-node:ekr.20070703122141.104:checkTrialWrite & helper
 #@-node:ekr.20070815100946:Improved messages on @import failure
+#@+node:ekr.20070824094935:Fixed problem with space in path names in runLeoDynamicTest
+# https://sourceforge.net/forum/message.php?msg_id=4459798
+#@nonl
+#@+node:ekr.20070627135336.11:runLeoDynamicTest
+def runLeoDynamicTest (self):
+
+    '''Run test/leoDynamicTest.py in a pristine environment.'''
+
+    path = g.os_path_abspath(g.os_path_join(
+        g.app.loadDir, '..', 'test', 'leoDynamicTest.py'))
+
+    if ' ' in path and sys.platform.startswith('win'): 
+        path = '"' + path + '"' 
+
+    args = [sys.executable, path, '--silent']  
+
+    srcDir = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','src'))
+    os.chdir(srcDir)
+
+    os.spawnve(os.P_NOWAIT,sys.executable,args,os.environ)
+#@-node:ekr.20070627135336.11:runLeoDynamicTest
+#@-node:ekr.20070824094935:Fixed problem with space in path names in runLeoDynamicTest
 #@-node:ekr.20070703182412:Bugs
 #@+node:ekr.20070703182412.1:Features
 #@+node:ekr.20070703172130:Added support for @mark-for-unit-tests node
@@ -1382,7 +1404,10 @@ def runLeoDynamicTest (self):
     path = g.os_path_abspath(g.os_path_join(
         g.app.loadDir, '..', 'test', 'leoDynamicTest.py'))
 
-    args = [sys.executable, '"' + path + '"', '--silent']  
+    if ' ' in path and sys.platform.startswith('win'): 
+        path = '"' + path + '"' 
+
+    args = [sys.executable, path, '--silent']  
 
     srcDir = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','src'))
     os.chdir(srcDir)

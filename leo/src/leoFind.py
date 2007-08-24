@@ -1347,7 +1347,8 @@ class findTab (leoFind):
     '''An adapter class that implements Leo's Find tab.'''
 
     #@    @+others
-    #@+node:ekr.20051020120306.11:findTab.__init__
+    #@+node:ekr.20051020120306.10:Birth & death
+    #@+node:ekr.20051020120306.11:__init__ & initGui
     def __init__(self,c,parentFrame):
 
         # g.trace('findTab',c)
@@ -1370,8 +1371,8 @@ class findTab (leoFind):
         self.createFrame(parentFrame)
         self.createBindings()
         self.init(c) # New in 4.3: init only once.
-    #@-node:ekr.20051020120306.11:findTab.__init__
-    #@+node:ekr.20061212092124:Must be defined in subclasses
+    #@-node:ekr.20051020120306.11:__init__ & initGui
+    #@+node:ekr.20061212092124:Defined in subclasses
     def createBindings (self):
         self.oops()
 
@@ -1396,7 +1397,8 @@ class findTab (leoFind):
         self.oops()
 
     # self.oops is defined in the leoFind class.
-    #@-node:ekr.20061212092124:Must be defined in subclasses
+    #@-node:ekr.20061212092124:Defined in subclasses
+    #@-node:ekr.20051020120306.10:Birth & death
     #@+node:ekr.20060221074900:Callbacks
     #@+node:ekr.20060221074900.1:findButtonCallback
     def findButtonCallback(self,event=None):
@@ -1470,6 +1472,56 @@ class findTab (leoFind):
         self.reverse = not self.reverse
     #@-node:ekr.20051024192642.2:findNext/PrefCommand
     #@-node:ekr.20051024192602: Top level
+    #@+node:ekr.20051020120306.11:__init__ & initGui
+    def __init__(self,c,parentFrame):
+
+        # g.trace('findTab',c)
+
+        # Init the base class...
+        leoFind.__init__(self,c,title='Find Tab')
+
+        self.c = c
+        self.parentFrame = parentFrame
+        self.frame = self.outerFrame = self.top = None
+
+        self.optionsOnly = c.config.getBool('show_only_find_tab_options')
+
+        # These are created later.
+        self.find_ctrl = None
+        self.change_ctrl = None 
+        self.outerScrolledFrame = None
+
+        self.initGui()
+        self.createFrame(parentFrame)
+        self.createBindings()
+        self.init(c) # New in 4.3: init only once.
+    #@-node:ekr.20051020120306.11:__init__ & initGui
+    #@+node:ekr.20061212092124:Defined in subclasses
+    def createBindings (self):
+        self.oops()
+
+    def createFrame (self,parent):
+        __pychecker__ = '--no-argsused'
+        self.oops()
+
+    def getOption (self,ivar):
+        self.oops()
+
+    def init (self,c):
+        self.oops()
+
+    def initGui (self):
+        pass # Optional method.
+
+    def setOption (self,ivar,val):
+        __pychecker__ = '--no-argsused'
+        self.oops()
+
+    def toggleOption (self,ivar):
+        self.oops()
+
+    # self.oops is defined in the leoFind class.
+    #@-node:ekr.20061212092124:Defined in subclasses
     #@-others
 #@-node:ekr.20051020120306.6:class findTab (leoFind)
 #@+node:ekr.20070302090616:class nullFindTab class (findTab)
