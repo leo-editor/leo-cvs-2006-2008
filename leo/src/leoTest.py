@@ -798,7 +798,10 @@ def runTestsExternally (c,all):
             path = g.os_path_abspath(g.os_path_join(
                 g.app.loadDir, '..', 'test', 'leoDynamicTest.py'))
 
-            args = [sys.executable, '"' + path + '"', '--silent']  
+            if ' ' in path and sys.platform.startswith('win'): 
+                path = '"' + path + '"' 
+
+            args = [sys.executable, path, '--silent']  
 
             srcDir = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','src'))
             os.chdir(srcDir)
