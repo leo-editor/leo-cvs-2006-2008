@@ -100,6 +100,198 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@-node:ekr.20060829103523:Render Leo slideshows
 #@-node:ekr.20060306194040:ASAP: Video and more screen shots on Leo's web site
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto & resolve-cvs-conflicts)
+#@+node:ekr.20070814143748:Fix new bugs
+#@+node:ekr.20070814144454:strangely indented lines
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4465020
+By: terry_n_brown
+
+Thinking about it, I still think it would be good for auto to handle things
+like this:
+
+....spp = DWEtree.DWEtree(os.path.join(directory, views[view]['src']),
+..........................provider)
+
+because they're valid python.  But, seeing the point of such things is to make
+them fit across the page, this is ok too:
+
+....spp = DWEtree.DWEtree(os.path.join(directory, views[view]['src']),
+........provider)
+
+which actually frees up more space than the top approach.
+
+To change all those cases I ran grep in Emacs like this:
+
+grep -n -e '^ \{4\}* \{1,3\}[^ ]' myfile.py
+
+that finds all the not-a-mutiple-of-4 indents.
+
+Cheers -Terry
+#@nonl
+#@-node:ekr.20070814144454:strangely indented lines
+#@+node:ekr.20070816084029:Retain dirty bit after write fails?
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4468174
+By: rich_ries
+
+>> I find that if I change an @auto node and the save of the @auto file fails
+because it's locked by another app and I stop the other app, releasing the lock
+then I save the file again::
+
+>> The .leo file is saved, but not the @auto file.
+
+This is not only in @auto, but in "regular" Leo, also.
+#@nonl
+#@-node:ekr.20070816084029:Retain dirty bit after write fails?
+#@+node:ekr.20070905072809:Fedora crash
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=4495880
+By: thyrsus
+
+I'd like to submit a bug report concerning Fedora 7's tkinter problem (python:
+./Modules/_tkinter.c:941: AsObj: Assertion `size < size * sizeof(Tcl_UniChar)'
+failed.), but I'm having trouble provoking the problem outside of Leo.  The
+following code does *not* provoke the bug:
+
+# -*- coding: utf-8 -*-
+import sys, Tkinter
+reload(sys)                              # restore module sys from disk
+sys.setdefaultencoding('utf-8')          # or whatever codec you need
+del sys.setdefaultencoding               # ensure against later accidents
+Tkinter.Label(text=u"Welcome!").pack( )
+Tkinter.Button(text=u"Qùit", command=sys.exit).pack( )
+Tkinter.mainloop( )
+
+(the u in u"Qùit" has an accent grave above it).
+
+I'm handicapped by my extremely shallow understanding of how Unicode interacts
+with Tkinter.  I hope you understand that "tkinter breaks leo" won't get the
+level of attention I'm hoping for.
+
+    - Stephen
+#@-node:ekr.20070905072809:Fedora crash
+#@+node:ekr.20070905072809.1:Mulder post re svn
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4484641
+By: bwmulder
+
+Actually we are talking about two plugins here: a bazaar plugin, and a
+Leo plugin.
+
+The bazaar plugin would do special things for Leo files during checkout, status
+and checkin. After checkout, for example, it would delete the sentinels in the
+user visible files.
+
+The Leo plugin would know to go to the repository for reading (and writing?).
+
+One open question is to where to store new sentinels: can they be hidden away
+in the Source Control System (SCS) directories?
+
+Another open question: Could Leo sentinels be used as an identity marker, which
+unambiguously identifies a piece of text? With that, the SCS system might have
+enough information to make statements like:
+
+Lines 10-100 where in file x where moved from file y, in other words: the SCS
+could track code at the function level.
+
+The whole process could then work like this:
+
+1. You check out your sources.
+2. After checkout, the bazaar plugin would delete all sentinels from the checked-out
+files.
+3. If you start Leo, Leo would read the (full) file from the SCS.
+4. If you make modifications, the full file would be hidden in SCS directories,
+and the disk file would (again) show no sentinels.
+5. I don't know how the bazaar status command works. We must make sure that
+status works correctly for Leo files as it does for any other files.
+6. For checkin, the SCS system would have to use the information hidden in step
+4.
+
+Open questions:
+
+1. Can the Leo sentinels be used as a permanent identity markers for text? If
+they can't be right now, would Edward be willing to modify them so that they
+can?
+2. Can / should we make the full files available somehow (probably)
+2. How would conflict resolution work? Can / should we hide the sentinels even
+then? (probably not)
+
+So the answer to your question is: yes, I am thinking about such plugins, though
+I am not (yet) thinking of writing such plugins myself.
+
+______________________________________________________________________
+You are receiving this email because you elected to monitor this forum.
+To stop monitoring this forum, login to SourceForge.net and visit:
+https://sourceforge.net/forum/unmonitor.php?forum_id=10226
+#@-node:ekr.20070905072809.1:Mulder post re svn
+#@+node:ekr.20070905072809.2:What to do about initial @auto nodes?
+@nocolor
+
+> - create a node; 
+@auto /tmp/test.txt 
+
+(/tmp/test.txt is an existing file) 
+
+- save the Leo file 
+log pane: 
+wrote: test.txt 
+saved: test.leo 
+
+/tmp/test.txt is now empty
+
+I can see that this is going to cause problems for people.  At
+
+http://sourceforge.net/forum/message.php?msg_id=4453784
+
+I say
+
+[quote]
+> Leo will not automatically save a dirty @auto tree if Leo has not already read this tree. This allows you to create an empty @auto node without having to worry about Leo destroying the corresponding file. 
+
+Experience shows that this is not a good idea. It produces confusing and counter-intuitive behavior. I am about to remove this 'feature'. 
+[end quote]
+
+Thus, what you report is the expected behavior. That is, the first time you create any @auto node for an existing file you must use the read-at-auto-node command to populate the @auto node.
+
+But what is the solution to your confusion?  As indicated above, the 'obvious' solution (not writing 'unread' @auto trees) does not work particularly well.  (I forget exactly why not, but trust me, it doesn't.)  Documentation is essential, but probably won't prevent endless bug reports such as yours.
+
+This isn't a fatal flaw in @auto, but it's going to be annoying unless I can come up with a better plan.
+
+Edward
+#@nonl
+#@-node:ekr.20070905072809.2:What to do about initial @auto nodes?
+#@+node:ekr.20070905073007:@auto indentation issues
+
+http://sourceforge.net/forum/message.php?msg_id=4468559
+By: terry_n_brown
+
+Ooops, I just realized I had tkdiff configured to ignore whitespace changes,
+doh.  So actually Leo is stripping a bunch of trailing whitespace out of the
+file.
+
+So claiming to insert an @ignore directive is still wrong, but the import
+is 'imperfect' in that the export isn't the same file.
+
+Of course the trailing
+whitespace probably shouldn't be there, I think that violates a PEP?  Anyway,
+I was wrong about Leo not changing the file, but the messages need tweaking.
+
+----- response
+
+> So claiming to insert an @ignore directive is still wrong, but the import is 'imperfect' in that the export isn't the same file. 
+
+Thanks for this further report.  As I said earlier, the logic is surprisingly difficult.  Perhaps yet another refactoring is needed.
+
+> Of course the trailing whitespace probably shouldn't be there, I think that violates a PEP?
+
+The proper question is simply whether @auto will change a file in *any* way.  The style PEP is irrelevant.  True, there are some input files that can not be represented exactly in a Leo outline (underindented comments, for example), but trailing whitespace should be preserved unless the a user option tells Leo to strip trailing whitespace.
+
+As I write this I see that trailing whitespace is yet another complicating detail that must be handled intelligently by @auto.  Iirc, the @auto code does in fact try to deal with this intelligently, but likely fails :-) 
+
+#@-node:ekr.20070905073007:@auto indentation issues
+#@-node:ekr.20070814143748:Fix new bugs
 #@+node:ekr.20051202094427:resolve-cvs-conflicts and write-resolved-conflicts commands
 @killcolor
 
