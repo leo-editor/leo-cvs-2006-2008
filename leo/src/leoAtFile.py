@@ -485,7 +485,7 @@ class atFile:
         #@nl
         return at.errors == 0
     #@-node:ekr.20041005105605.21:read
-    #@+node:ekr.20041005105605.26:readAll
+    #@+node:ekr.20041005105605.26:readAll (atFile)
     def readAll(self,root,partialFlag=False,forceGnx=False):
 
         """Scan vnodes, looking for @file nodes to read."""
@@ -511,7 +511,7 @@ class atFile:
             elif p.isAtAutoNode():
                 # g.trace('@auto',p.headString(),'name',p.atAutoNodeName())
                 fileName = p.atAutoNodeName()
-                c.importCommands.createOutline(fileName,parent=p.copy(),atAuto=True)
+                at.readOneAtAutoNode (fileName,p)
                 p.moveToNodeAfterTree()
             elif p.isAtFileNode() or p.isAtNorefFileNode():
                 anyRead = True
@@ -529,7 +529,32 @@ class atFile:
 
         if partialFlag and not anyRead:
             g.es("no @file nodes in the selected tree")
-    #@-node:ekr.20041005105605.26:readAll
+    #@-node:ekr.20041005105605.26:readAll (atFile)
+    #@+node:ekr.20070909100252:readOneAtAutoNode (atFile)
+    def readOneAtAutoNode (self,fileName,p):
+
+        at = self ; c = at.c ; ic = c.importCommands
+
+        at.scanDefaultDirectory(p,importing=True) # Set default_directory
+        fileName = g.os_path_join(at.default_directory,fileName)
+        g.trace(fileName)
+
+        # Delete all children.
+        c.beginUpdate()
+        try:
+            while p.hasChildren():
+                p.firstChild().doDelete()
+        finally:
+            c.endUpdate(False)
+
+        ic.createOutline(fileName,parent=p.copy(),atAuto=True)
+
+        if g.os_path_exists(fileName):
+            if ic.errors:
+                g.es_print('Errors inhibited read @auto %s' % (fileName),color='red')
+            else:
+                c.atAutoDict [fileName] = True
+    #@-node:ekr.20070909100252:readOneAtAutoNode (atFile)
     #@+node:ekr.20041005105605.27:readOpenFile
     def readOpenFile(self,root,theFile,fileName):
 
@@ -2994,7 +3019,7 @@ class atFile:
         else:
             g.es("no @auto nodes in the selected tree")
     #@-node:ekr.20070806140208:writeAtAutoNodesHelper
-    #@+node:ekr.20070806141607:writeOneAtAutoNode
+    #@+node:ekr.20070806141607:writeOneAtAutoNode & helper
     def writeOneAtAutoNode(self,p,toString):
 
         '''Write p, and @auto node.'''
@@ -3003,6 +3028,21 @@ class atFile:
 
         fileName = p.atAutoNodeName()
         if not fileName: return False
+
+        at.scanDefaultDirectory(p,importing=True) # Set default_directory
+        fileName = g.os_path_join(at.default_directory,fileName)
+
+        if not c.atAutoDict.get(fileName) and g.os_path_exists(fileName):
+            # Read the file if it would not wipe out significant info.
+            # Otherwise, do nothing (the @auto tree will be written to the outline).
+            if at.isSignificantAtAutoTree(p):
+                g.es('not written: @auto %s\nmay conflict with existing derived file.' % (
+                    fileName),color='red')
+                return False
+            else:
+                g.es_print('reading new @auto %s' % (fileName),color='blue')
+                at.readOneAtAutoNode(fileName,p)
+                return True
 
         # This code is similar to code in at.write.
         c.endEditing() # Capture the current headline.
@@ -3018,7 +3058,20 @@ class atFile:
             at.replaceTargetFileIfDifferent()
 
         return ok
-    #@-node:ekr.20070806141607:writeOneAtAutoNode
+    #@+node:ekr.20070909103844:isSignificantAtAutoTree
+    def isSignificantAtAutoTree (self,p):
+
+        '''Return True if p's tree has a significant amount of information.'''
+
+        at = self ; s = p.bodyString()
+
+        return (
+            p.hasChildren() or
+            len(s) > 100 or
+            len(g.splitLines(s)) > 10
+        )
+    #@-node:ekr.20070909103844:isSignificantAtAutoTree
+    #@-node:ekr.20070806141607:writeOneAtAutoNode & helper
     #@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
     #@+node:ekr.20050506084734:writeFromString
     # This is at.write specialized for scripting.
