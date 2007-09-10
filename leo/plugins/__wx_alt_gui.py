@@ -148,24 +148,6 @@ except ImportError:
 #@-node:bob.20070813163332.62:<< imports >>
 #@nl
 
-#@<< over rides >>
-#@+middle:bob.20070813163332.63:<< define module level functions >>
-#@+middle:bob.20070813163332.64: init
-#@+node:bob.20070831090830:<< over rides >>
-if wx:
-    import leoAtFile
-
-    old = leoAtFile.atFile.openFileForReading
-
-    def myOpenFileForReading(self,fileName,*args, **kw):
-        g.trace( fileName)
-        old(self, fileName, *args, **kw)
-
-    leoAtFile.atFile.openFileForReading = myOpenFileForReading
-#@-node:bob.20070831090830:<< over rides >>
-#@-middle:bob.20070813163332.64: init
-#@-middle:bob.20070813163332.63:<< define module level functions >>
-#@nl
 #@<< define module level functions >>
 #@+node:bob.20070813163332.63:<< define module level functions >>
 #@+others
