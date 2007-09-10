@@ -251,13 +251,8 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
     if atAuto:
         p = parent.copy()
         c.beginUpdate()
-        p.setTnodeText('')
-        # It is too dangerous not to write @auto trees to the .leo file,
-        # so we must delete all children here.
         try:
-            while p.hasChildren():
-                # g.trace('deleting',p.headString())
-                p.firstChild().doDelete()
+            p.setTnodeText('')
         finally:
             c.endUpdate(False)
     else:
@@ -457,13 +452,8 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
     if atAuto:
         p = parent.copy()
         c.beginUpdate()
-        p.setTnodeText('')
-        # It is too dangerous not to write @auto trees to the .leo file,
-        # so we must delete all children here.
         try:
-            while p.hasChildren():
-                # g.trace('deleting',p.headString())
-                p.firstChild().doDelete()
+            p.setTnodeText('')
         finally:
             c.endUpdate(False)
     else:
@@ -1049,7 +1039,7 @@ def writeAtAutoNodesHelper(self,toString=False,writeDirtyOnly=True):
     else:
         g.es("no @auto nodes in the selected tree")
 #@-node:ekr.20070806140208:writeAtAutoNodesHelper
-#@+node:ekr.20070806141607:writeOneAtAutoNode
+#@+node:ekr.20070806141607:writeOneAtAutoNode & helper
 def writeOneAtAutoNode(self,p,toString):
 
     '''Write p, and @auto node.'''
@@ -1058,6 +1048,21 @@ def writeOneAtAutoNode(self,p,toString):
 
     fileName = p.atAutoNodeName()
     if not fileName: return False
+
+    at.scanDefaultDirectory(p,importing=True) # Set default_directory
+    fileName = g.os_path_join(at.default_directory,fileName)
+
+    if not c.atAutoDict.get(fileName) and g.os_path_exists(fileName):
+        # Read the file if it would not wipe out significant info.
+        # Otherwise, do nothing (the @auto tree will be written to the outline).
+        if at.isSignificantAtAutoTree(p):
+            g.es('not written: @auto %s\nmay conflict with existing derived file.' % (
+                fileName),color='red')
+            return False
+        else:
+            g.es_print('reading new @auto %s' % (fileName),color='blue')
+            at.readOneAtAutoNode(fileName,p)
+            return True
 
     # This code is similar to code in at.write.
     c.endEditing() # Capture the current headline.
@@ -1073,7 +1078,20 @@ def writeOneAtAutoNode(self,p,toString):
         at.replaceTargetFileIfDifferent()
 
     return ok
-#@-node:ekr.20070806141607:writeOneAtAutoNode
+#@+node:ekr.20070909103844:isSignificantAtAutoTree
+def isSignificantAtAutoTree (self,p):
+
+    '''Return True if p's tree has a significant amount of information.'''
+
+    at = self ; s = p.bodyString()
+
+    return (
+        p.hasChildren() or
+        len(s) > 100 or
+        len(g.splitLines(s)) > 10
+    )
+#@-node:ekr.20070909103844:isSignificantAtAutoTree
+#@-node:ekr.20070806141607:writeOneAtAutoNode & helper
 #@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
 #@-node:ekr.20070814143748.1:Fixed @auto path bug
 #@+node:ekr.20070815100946:Improved messages on @import failure
@@ -1480,195 +1498,6 @@ complication.
 #@+node:ekr.20070731070208:Added @auto
 
 #@+node:ekr.20070806105721:read/write-at-auto-nodes commands
-#@+node:ekr.20070806144024:Tables...
-#@+node:ekr.20050920084036.189:<< define dictionary d of names and Leo commands >>
-c = self.c ; f = c.frame
-
-d = {
-    'abort-edit-headline':          f.abortEditLabelCommand,
-    'about-leo':                    c.about,
-    'add-comments':                 c.addComments,     
-    'beautify-all':                 c.beautifyAllPythonCode,
-    'beautify':                     c.beautifyPythonCode,
-    'cascade-windows':              f.cascade,
-    'clear-recent-files':           c.clearRecentFiles,
-    'close-window':                 c.close,
-    'contract-or-go-left':          c.contractNodeOrGoToParent,
-    'check-python-code':            c.checkPythonCode,
-    'check-all-python-code':        c.checkAllPythonCode,
-    'check-outline':                c.checkOutline,
-    'clear-recent-files':           c.clearRecentFiles,
-    'clone-node':                   c.clone,
-    'contract-node':                c.contractNode,
-    'contract-all':                 c.contractAllHeadlines,
-    'contract-parent':              c.contractParent,
-    'convert-all-blanks':           c.convertAllBlanks,
-    'convert-all-tabs':             c.convertAllTabs,
-    'convert-blanks':               c.convertBlanks,
-    'convert-tabs':                 c.convertTabs,
-    'copy-node':                    c.copyOutline,
-    'copy-text':                    f.copyText,
-    'cut-node':                     c.cutOutline,
-    'cut-text':                     f.cutText,
-    'de-hoist':                     c.dehoist,
-    'delete-comments':              c.deleteComments,
-    'delete-node':                  c.deleteOutline,
-    'demote':                       c.demote,
-    'dump-outline':                 c.dumpOutline,
-    'edit-headline':                c.editHeadline,
-    'end-edit-headline':            f.endEditLabelCommand,
-    'equal-sized-panes':            f.equalSizedPanes,
-    'execute-script':               c.executeScript,
-    'exit-leo':                     g.app.onQuit,
-    'expand-all':                   c.expandAllHeadlines,
-    'expand-next-level':            c.expandNextLevel,
-    'expand-node':                  c.expandNode,
-    'expand-and-go-right':          c.expandNodeAndGoToFirstChild,
-    'expand-ancestors-only':        c.expandOnlyAncestorsOfNode,
-    'expand-or-go-right':           c.expandNodeOrGoToFirstChild,
-    'expand-prev-level':            c.expandPrevLevel,
-    'expand-to-level-1':            c.expandLevel1,
-    'expand-to-level-2':            c.expandLevel2,
-    'expand-to-level-3':            c.expandLevel3,
-    'expand-to-level-4':            c.expandLevel4,
-    'expand-to-level-5':            c.expandLevel5,
-    'expand-to-level-6':            c.expandLevel6,
-    'expand-to-level-7':            c.expandLevel7,
-    'expand-to-level-8':            c.expandLevel8,
-    'expand-to-level-9':            c.expandLevel9,
-    'export-headlines':             c.exportHeadlines,
-    'extract':                      c.extract,
-    'extract-names':                c.extractSectionNames,
-    'extract-section':              c.extractSection,
-    'flatten-outline':              c.flattenOutline,
-    'go-back':                      c.goPrevVisitedNode,
-    'go-forward':                   c.goNextVisitedNode,
-    'goto-first-node':              c.goToFirstNode,
-    'goto-first-visible-node':      c.goToFirstVisibleNode,
-    'goto-first-sibling':           c.goToFirstSibling,
-    'goto-last-node':               c.goToLastNode,
-    'goto-last-sibling':            c.goToLastSibling,
-    'goto-last-visible-node':       c.goToLastVisibleNode,
-    'goto-line-number':             c.goToLineNumber,
-    'goto-next-changed':            c.goToNextDirtyHeadline,
-    'goto-next-clone':              c.goToNextClone,
-    'goto-next-marked':             c.goToNextMarkedHeadline,
-    'goto-next-node':               c.selectThreadNext,
-    'goto-next-sibling':            c.goToNextSibling,
-    'goto-next-visible':            c.selectVisNext,
-    'goto-parent':                  c.goToParent,
-    'goto-prev-node':               c.selectThreadBack,
-    'goto-prev-sibling':            c.goToPrevSibling,
-    'goto-prev-visible':            c.selectVisBack,
-    'hide-invisibles':              c.hideInvisibles,
-    'hoist':                        c.hoist,
-    'import-at-file':               c.importAtFile,
-    'import-at-root':               c.importAtRoot,
-    'import-cweb-files':            c.importCWEBFiles,
-    'import-derived-file':          c.importDerivedFile,
-    'import-flattened-outline':     c.importFlattenedOutline,
-    'import-noweb-files':           c.importNowebFiles,
-    'indent-region':                c.indentBody,
-    'insert-node':                  c.insertHeadline,
-    'insert-body-time':             c.insertBodyTime,
-    'insert-headline-time':         f.insertHeadlineTime,
-    'mark':                         c.markHeadline,
-    'mark-changed-items':           c.markChangedHeadlines,
-    'mark-changed-roots':           c.markChangedRoots,
-    'mark-clones':                  c.markClones,
-    'mark-subheads':                c.markSubheads,
-    'match-brackets':               c.findMatchingBracket,
-    'minimize-all':                 f.minimizeAll,
-    'move-outline-down':            c.moveOutlineDown,
-    'move-outline-left':            c.moveOutlineLeft,
-    'move-outline-right':           c.moveOutlineRight,
-    'move-outline-up':              c.moveOutlineUp,
-    'new':                          c.new,
-    'open-compare-window':          c.openCompareWindow,
-    'open-find-dialog':             c.showFindPanel, # Deprecated.
-    'open-leoDocs-leo':             c.leoDocumentation,
-    'open-leoPlugins-leo':          c.openLeoPlugins,
-    'open-leoSettings-leo':         c.openLeoSettings,
-    'open-scripts-leo':             c.openLeoScripts,
-    'open-myLeoSettings-leo':       c.openMyLeoSettings,
-    'open-online-home':             c.leoHome,
-    'open-online-tutorial':         c.leoTutorial,
-    'open-offline-tutorial':        f.leoHelp,
-    'open-outline':                 c.open,
-    'open-python-window':           c.openPythonWindow,
-    # 'open-test-leo':              c.openTest, # Doesn't work.
-    'open-users-guide':             c.leoUsersGuide,
-    'open-with':                    c.openWith,
-    'outline-to-cweb':              c.outlineToCWEB,
-    'outline-to-noweb':             c.outlineToNoweb,
-    'paste-node':                   c.pasteOutline,
-    'paste-retaining-clones':       c.pasteOutlineRetainingClones,
-    'paste-text':                   f.pasteText,
-    'pretty-print-all-python-code': c.prettyPrintAllPythonCode,
-    'pretty-print-python-code':     c.prettyPrintPythonCode,
-    'promote':                      c.promote,
-    'read-at-auto-nodes':           c.readAtAutoNodes,
-    'read-at-file-nodes':           c.readAtFileNodes,
-    'read-outline-only':            c.readOutlineOnly,
-    'redo':                         c.undoer.redo,
-    'reformat-paragraph':           c.reformatParagraph,
-    'remove-sentinels':             c.removeSentinels,
-    'resize-to-screen':             f.resizeToScreen,
-    'revert':                       c.revert,
-    'save-file':                    c.save,
-    'save-file-as':                 c.saveAs,
-    'save-file-as-unzipped':        c.saveAsUnzipped,
-    'save-file-as-zipped':          c.saveAsZipped,
-    'save-file-to':                 c.saveTo,
-    'settings':                     c.preferences,
-    'set-colors':                   c.colorPanel,
-    'set-font':                     c.fontPanel,
-    'show-invisibles':              c.showInvisibles,
-    'sort-children':                c.sortChildren,
-    'sort-siblings':                c.sortSiblings,
-    'tangle':                       c.tangle,
-    'tangle-all':                   c.tangleAll,
-    'tangle-marked':                c.tangleMarked,
-    'toggle-active-pane':           f.toggleActivePane,
-    'toggle-angle-brackets':        c.toggleAngleBrackets,
-    'toggle-invisibles':            c.toggleShowInvisibles,
-    'toggle-split-direction':       f.toggleSplitDirection,
-    'undo':                         c.undoer.undo,
-    'unindent-region':              c.dedentBody,
-    'unmark-all':                   c.unmarkAll,
-    'untangle':                     c.untangle,
-    'untangle-all':                 c.untangleAll,
-    'untangle-marked':              c.untangleMarked,
-    'weave':                        c.weave,
-    'write-at-auto-nodes':          c.atFileCommands.writeAtAutoNodes,
-    'write-at-file-nodes':          c.fileCommands.writeAtFileNodes,
-    'write-dirty-at-auto-nodes':    c.atFileCommands.writeDirtyAtAutoNodes,
-    'write-dirty-at-file-nodes':    c.fileCommands.writeDirtyAtFileNodes,
-    'write-missing-at-file-nodes':  c.fileCommands.writeMissingAtFileNodes,
-    'write-outline-only':           c.fileCommands.writeOutlineOnly,
-}
-#@-node:ekr.20050920084036.189:<< define dictionary d of names and Leo commands >>
-#@+node:ekr.20031218072017.3761:defineFileMenuReadWriteMenuTable
-def defineFileMenuReadWriteMenuTable (self):
-
-    self.fileMenuReadWriteMenuTable = [
-        '*&read-outline-only',
-        '*write-&outline-only',
-        '-',
-        ('Read @&auto Nodes','read-at-auto-nodes'),
-        ('Write @a&uto Nodes','write-at-auto-nodes'),
-        ('Write D&irty @a&uto Nodes','write-dirty-at-auto-nodes'),
-        '-',
-        ('Read @file &Nodes','read-at-file-nodes'),
-        ('Write &Dirty @file Nodes','write-dirty-at-file-nodes'),
-        ('Write &Missing @file Nodes','write-missing-at-file-nodes'),
-        ('&Write @file Nodes','write-at-file-nodes'),
-    ]
-
-    # a,d,i,m,n,o,r,u,w
-#@nonl
-#@-node:ekr.20031218072017.3761:defineFileMenuReadWriteMenuTable
-#@-node:ekr.20070806144024:Tables...
 #@+node:ekr.20070806144024.1:Reading...
 #@+node:ekr.20031218072017.3210:createOutline
 def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
@@ -1688,13 +1517,8 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
     if atAuto:
         p = parent.copy()
         c.beginUpdate()
-        p.setTnodeText('')
-        # It is too dangerous not to write @auto trees to the .leo file,
-        # so we must delete all children here.
         try:
-            while p.hasChildren():
-                # g.trace('deleting',p.headString())
-                p.firstChild().doDelete()
+            p.setTnodeText('')
         finally:
             c.endUpdate(False)
     else:
@@ -2110,7 +1934,7 @@ def writeAtAutoNodesHelper(self,toString=False,writeDirtyOnly=True):
     else:
         g.es("no @auto nodes in the selected tree")
 #@-node:ekr.20070806140208:writeAtAutoNodesHelper
-#@+node:ekr.20070806141607:writeOneAtAutoNode
+#@+node:ekr.20070806141607:writeOneAtAutoNode & helper
 def writeOneAtAutoNode(self,p,toString):
 
     '''Write p, and @auto node.'''
@@ -2119,6 +1943,21 @@ def writeOneAtAutoNode(self,p,toString):
 
     fileName = p.atAutoNodeName()
     if not fileName: return False
+
+    at.scanDefaultDirectory(p,importing=True) # Set default_directory
+    fileName = g.os_path_join(at.default_directory,fileName)
+
+    if not c.atAutoDict.get(fileName) and g.os_path_exists(fileName):
+        # Read the file if it would not wipe out significant info.
+        # Otherwise, do nothing (the @auto tree will be written to the outline).
+        if at.isSignificantAtAutoTree(p):
+            g.es('not written: @auto %s\nmay conflict with existing derived file.' % (
+                fileName),color='red')
+            return False
+        else:
+            g.es_print('reading new @auto %s' % (fileName),color='blue')
+            at.readOneAtAutoNode(fileName,p)
+            return True
 
     # This code is similar to code in at.write.
     c.endEditing() # Capture the current headline.
@@ -2134,7 +1973,20 @@ def writeOneAtAutoNode(self,p,toString):
         at.replaceTargetFileIfDifferent()
 
     return ok
-#@-node:ekr.20070806141607:writeOneAtAutoNode
+#@+node:ekr.20070909103844:isSignificantAtAutoTree
+def isSignificantAtAutoTree (self,p):
+
+    '''Return True if p's tree has a significant amount of information.'''
+
+    at = self ; s = p.bodyString()
+
+    return (
+        p.hasChildren() or
+        len(s) > 100 or
+        len(g.splitLines(s)) > 10
+    )
+#@-node:ekr.20070909103844:isSignificantAtAutoTree
+#@-node:ekr.20070806141607:writeOneAtAutoNode & helper
 #@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
 #@-node:ekr.20070806144024.2:Writing...
 #@-node:ekr.20070806105721:read/write-at-auto-nodes commands
@@ -2210,6 +2062,7 @@ def __init__ (self,importCommands,atAuto,language):
         # An error will be given if this is not a newline.
     self.encoding = ic.encoding # g.app.tkEncoding
     self.errors = 0
+    ic.errors = 0
     self.errorLines = []
     self.extraIdChars = ''
     self.fileName = ic.fileName # The original filename.
@@ -2773,6 +2626,7 @@ def underindentedLine (self,line):
 def error (self,s):
 
     self.errors += 1
+    self.importCommands.errors += 1
     if self.errors == 1:
         g.app.unitTestDict['actualErrorMessage'] = s
     g.app.unitTestDict['actualErrors'] = self.errors
