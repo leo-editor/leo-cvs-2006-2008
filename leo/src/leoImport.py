@@ -22,6 +22,7 @@ class baseLeoImportCommands:
         self.c = c
         self._forcedGnxPositionList = []
         self.encoding = g.app.tkEncoding # 2/25/03: was "utf-8"
+        self.errors = 0
         self.fileName = None # The original file name, say x.cpp
         self.fileType = None # ".py", ".c", etc.
         self.methodName = None # x, as in < < x methods > > =
@@ -717,13 +718,8 @@ class baseLeoImportCommands:
         if atAuto:
             p = parent.copy()
             c.beginUpdate()
-            p.setTnodeText('')
-            # It is too dangerous not to write @auto trees to the .leo file,
-            # so we must delete all children here.
             try:
-                while p.hasChildren():
-                    # g.trace('deleting',p.headString())
-                    p.firstChild().doDelete()
+                p.setTnodeText('')
             finally:
                 c.endUpdate(False)
         else:
@@ -1422,6 +1418,7 @@ class baseLeoImportCommands:
                 # An error will be given if this is not a newline.
             self.encoding = ic.encoding # g.app.tkEncoding
             self.errors = 0
+            ic.errors = 0
             self.errorLines = []
             self.extraIdChars = ''
             self.fileName = ic.fileName # The original filename.
@@ -1989,6 +1986,7 @@ class baseLeoImportCommands:
         def error (self,s):
 
             self.errors += 1
+            self.importCommands.errors += 1
             if self.errors == 1:
                 g.app.unitTestDict['actualErrorMessage'] = s
             g.app.unitTestDict['actualErrors'] = self.errors
