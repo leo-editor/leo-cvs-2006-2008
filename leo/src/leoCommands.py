@@ -69,8 +69,8 @@ class baseCommands:
         c = self
 
         # g.trace('Commands')
-
-        c.exists = True # Indicate that this class exists and has not been destroyed.
+        self.atAutoDict = {} # Keys are full path names.  Values are True.
+        self.exists = True # Indicate that this class exists and has not been destroyed.
             # Do this early in the startup process so we can call hooks.
 
         # Init ivars with self.x instead of c.x to keep Pychecker happy
@@ -3248,7 +3248,45 @@ class baseCommands:
             g.doHook('hoist-changed',c=c)
     #@-node:ekr.20031218072017.2028:Hoist & dehoist
     #@+node:ekr.20031218072017.1759:Insert, Delete & Clone (Commands)
-    #@+node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning
+    #@+node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning & c.checkDrag
+    def checkMoveWithParentWithWarning (self,root,parent,warningFlag):
+
+        """Return False if root or any of root's descedents is a clone of
+        parent or any of parents ancestors."""
+
+        message = "Can not drag a node into its descendant tree."
+
+        g.trace('root',root.headString())
+
+        for z in root.subtree_iter():
+            if z == parent:
+                if g.app.unitTesting:
+                    g.app.unitTestDict['checkMoveWithParentWithWarning']=True
+                elif warningFlag:
+                    g.alert(message)
+                return False
+
+        message = "Illegal move or drag: no clone may contain a clone of itself"
+
+        # g.trace("root",root,"parent",parent)
+        clonedTnodes = {}
+        for ancestor in parent.self_and_parents_iter():
+            if ancestor.isCloned():
+                t = ancestor.v.t
+                clonedTnodes[t] = t
+
+        if not clonedTnodes:
+            return True
+
+        for p in root.self_and_subtree_iter():
+            if p.isCloned() and clonedTnodes.get(p.v.t):
+                if g.app.unitTesting:
+                    g.app.unitTestDict['checkMoveWithParentWithWarning']=True
+                elif warningFlag:
+                    g.alert(message)
+                return False
+        return True
+    #@+node:ekr.20070910105044:checkMoveWithParentWithWarning
     def checkMoveWithParentWithWarning (self,root,parent,warningFlag):
 
         """Return False if root or any of root's descedents is a clone of
@@ -3274,7 +3312,27 @@ class baseCommands:
                     g.alert(message)
                 return False
         return True
-    #@-node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning
+    #@-node:ekr.20070910105044:checkMoveWithParentWithWarning
+    #@+node:ekr.20070910105044.1:checkDrag
+    def checkDrag (self,root,target):
+
+        """Return False if target is any descendant of root."""
+
+        message = "Can not drag a node into its descendant tree."
+
+        # g.trace('root',root.headString(),'target',target.headString())
+
+        for z in root.subtree_iter():
+            if z == target:
+                if g.app.unitTesting:
+                    g.app.unitTestDict['checkMoveWithParentWithWarning']=True
+                else:
+                    g.alert(message)
+                return False
+        return True
+    #@nonl
+    #@-node:ekr.20070910105044.1:checkDrag
+    #@-node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning & c.checkDrag
     #@+node:ekr.20031218072017.1193:c.deleteOutline
     def deleteOutline (self,event=None,op_name="Delete Node"):
 
@@ -5194,6 +5252,7 @@ class baseCommands:
             c.endEditing()
             undoData = u.beforeMoveNode(p)
             dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+            moved = False
             #@        << Move p up >>
             #@+node:ekr.20031218072017.1773:<< Move p up >>
             if 0:
@@ -5219,7 +5278,6 @@ class baseCommands:
                     assert limit
                     if limitIsVisible:
                         # canMoveOutlineUp should have caught this.
-                        moved = False
                         g.trace('can not happen. In hoist')
                     else:
                         # g.trace('chapter first child')
@@ -5767,6 +5825,7 @@ class baseCommands:
         c = self ; u = self.undoer ; undoType = 'Drag'
         current = c.currentPosition()
         inAtIgnoreRange = p.inAtIgnoreRange()
+        if not c.checkDrag(p,after): return
         if not c.checkMoveWithParentWithWarning(p,after.parent(),True): return
 
         c.beginUpdate()
@@ -5789,46 +5848,13 @@ class baseCommands:
             c.endUpdate()
         c.updateSyntaxColorer(p) # Dragging can change syntax coloring.
     #@-node:ekr.20031218072017.2353:c.dragAfter
-    #@+node:ekr.20031218072017.2946:c.dragCloneToNthChildOf
-    def dragCloneToNthChildOf (self,p,parent,n):
-
-        c = self ; u = c.undoer ; undoType = 'Clone Drag'
-        current = c.currentPosition()
-        inAtIgnoreRange = p.inAtIgnoreRange()
-
-        c.beginUpdate()
-        try: # In update...
-            # g.trace("p,parent,n:",p.headString(),parent.headString(),n)
-            clone = p.clone() # Creates clone & dependents, does not set undo.
-            if not c.checkMoveWithParentWithWarning(clone,parent,True):
-                clone.doDelete() # Destroys clone and makes p the current node.
-                c.selectPosition(p) # Also sets root position.
-                c.endUpdate(False) # Nothing has changed.
-                return
-            c.endEditing()
-            undoData = u.beforeInsertNode(current)
-            dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
-            clone.moveToNthChildOf(parent,n)
-            if inAtIgnoreRange and not p.inAtIgnoreRange():
-                # The moved nodes have just become newly unignored.
-                dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
-                dirtyVnodeList.extend(dirtyVnodeList2)
-            else: # No need to mark descendents dirty.
-               dirtyVnodeList2 =  p.setAllAncestorAtFileNodesDirty()
-               dirtyVnodeList.extend(dirtyVnodeList2)
-            c.setChanged(True)
-            u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
-        finally:
-            c.selectPosition(clone) # Also sets root position.
-            c.endUpdate()
-        c.updateSyntaxColorer(clone) # Dragging can change syntax coloring.
-    #@-node:ekr.20031218072017.2946:c.dragCloneToNthChildOf
     #@+node:ekr.20031218072017.2947:c.dragToNthChildOf
     def dragToNthChildOf(self,p,parent,n):
 
         c = self ; u = c.undoer ; undoType = 'Drag'
         current = c.currentPosition()
         inAtIgnoreRange = p.inAtIgnoreRange()
+        if not c.checkDrag(p,parent): return
         if not c.checkMoveWithParentWithWarning(p,parent,True): return
 
         c.beginUpdate()
@@ -5851,6 +5877,43 @@ class baseCommands:
             c.endUpdate()
         c.updateSyntaxColorer(p) # Dragging can change syntax coloring.
     #@-node:ekr.20031218072017.2947:c.dragToNthChildOf
+    #@+node:ekr.20031218072017.2946:c.dragCloneToNthChildOf
+    def dragCloneToNthChildOf (self,p,parent,n):
+
+        c = self ; u = c.undoer ; undoType = 'Clone Drag'
+        current = c.currentPosition()
+        inAtIgnoreRange = p.inAtIgnoreRange()
+
+        c.beginUpdate()
+        try: # In update...
+            # g.trace("p,parent,n:",p.headString(),parent.headString(),n)
+            clone = p.clone() # Creates clone & dependents, does not set undo.
+            if (
+                not c.checkDrag(p,parent) or
+                not c.checkMoveWithParentWithWarning(clone,parent,True)
+            ):
+                clone.doDelete() # Destroys clone and makes p the current node.
+                c.selectPosition(p) # Also sets root position.
+                c.endUpdate(False) # Nothing has changed.
+                return
+            c.endEditing()
+            undoData = u.beforeInsertNode(current)
+            dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
+            clone.moveToNthChildOf(parent,n)
+            if inAtIgnoreRange and not p.inAtIgnoreRange():
+                # The moved nodes have just become newly unignored.
+                dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
+                dirtyVnodeList.extend(dirtyVnodeList2)
+            else: # No need to mark descendents dirty.
+               dirtyVnodeList2 =  p.setAllAncestorAtFileNodesDirty()
+               dirtyVnodeList.extend(dirtyVnodeList2)
+            c.setChanged(True)
+            u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
+        finally:
+            c.selectPosition(clone) # Also sets root position.
+            c.endUpdate()
+        c.updateSyntaxColorer(clone) # Dragging can change syntax coloring.
+    #@-node:ekr.20031218072017.2946:c.dragCloneToNthChildOf
     #@+node:ekr.20031218072017.2948:c.dragCloneAfter
     def dragCloneAfter (self,p,after):
 
@@ -5860,7 +5923,7 @@ class baseCommands:
         c.beginUpdate()
         try: # In update...
             clone = p.clone() # Creates clone.  Does not set undo.
-            if c.checkMoveWithParentWithWarning(clone,after.parent(),True):
+            if c.checkDrag(p,after) and c.checkMoveWithParentWithWarning(clone,after.parent(),True):
                 inAtIgnoreRange = clone.inAtIgnoreRange()
                 c.endEditing()
                 undoData = u.beforeInsertNode(current)
