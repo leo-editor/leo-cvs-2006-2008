@@ -1,6 +1,6 @@
 
 #@+leo-ver=4-thin
-#@+node:bob.20070905144835.1:@thin __wx_alt_gui.py
+#@+node:bob.20070910154126.2:@thin __wx_alt_gui.py
 #@@first
 
 """A plugin to use wxWidgets as Leo's gui.
@@ -17,14 +17,13 @@ possible, with care,  to use it for real work.
 
 This version of wxLeo is being developed by plumloco@hcoop.net
 
-Please quote the __revision__ number in posts to the leo forums.
 """
 
 import re
 
-__revision__ = re.sub(r'^\D+(\d+)\D+$', r'\1', "$Revision$")
+__revision__ = re.sub(r'^\D+([\d\.]+)\D+$', r'\1', "$Revision$")
 
-__version__ = '0.1.%s'% __revision__
+__version__ = '0.2.%s'% __revision__
 
 print '__wx__alt_gui.py version:', __version__
 
@@ -43,6 +42,10 @@ print '__wx__alt_gui.py version:', __version__
 # 
 # 0.1 plumloco: replaced wx.Tree widget with custom tree widget
 # 
+# 0.2 plumloco: transferred to leo cvs and started using new version 
+# numbering.
+# 
+# 
 #@-at
 #@-node:bob.20070813163858.2:<< version history >>
 #@nl
@@ -50,6 +53,10 @@ print '__wx__alt_gui.py version:', __version__
 #@+node:bob.20070813163332.52:<< bug list & to-do >>
 #@@nocolor
 #@+at
+# 
+# - Headline widget, fix focusing for search
+# 
+# 
 # 
 # First:
 # 
@@ -229,6 +236,34 @@ def _(s):
 def _split(i, s):
     return '[%s] [%s]' % (s[:i], s[i:])
 #@-node:bob.20070902053906:test subs
+#@+node:bob.20070910165627:onGlobalChar
+def onGlobalChar(self, event):
+    """All key chars come here wherever they originate."""
+
+    c = self.c
+
+    keycode = event.GetKeyCode()
+
+    event.leoWidget = self
+    keysym = g.app.gui.eventKeysym(event)
+
+    if keysym:
+        # g.trace(
+            # '\n\treciever:', myclass(self),
+            # '\n\tbase text: keysym:', repr(keysym),
+            # '\n\tkeycode:',keycode
+        # )
+        result = c.k.masterKeyHandler(event,stroke=keysym)
+        if not result:
+            g.trace('Skip()')
+            event.Skip()
+#@-node:bob.20070910165627:onGlobalChar
+#@+node:bob.20070910192953:onRogueChar
+def onRogueChar(event, type):
+    g.trace(type, event, '\n\n', g.callers())
+    event.Skip()
+#@nonl
+#@-node:bob.20070910192953:onRogueChar
 #@-others
 #@nonl
 #@-node:bob.20070813163332.63:<< define module level functions >>
@@ -241,7 +276,7 @@ if wx:
     #@<< baseTextWidget class >>
     #@+node:bob.20070813163332.137:<< baseTextWidget class >>
 
-    class baseTextWidget (leoFrame.baseTextWidget, object):
+    class baseTextWidget (leoFrame.baseTextWidget):
 
         """The base class for all text wrapper classes."""
 
@@ -279,9 +314,17 @@ if wx:
 
             bind = self.widget.Bind
 
-            bind(wx.EVT_CHAR, lambda event: self.onGlobalChar(event))
-            bind(wx.EVT_SET_FOCUS, lambda event: self.onGlobalGainFocus(event))
-            bind(wx.EVT_KILL_FOCUS, lambda event: self.onGlobalLoseFocus(event))
+            bind(wx.EVT_CHAR,
+                lambda event, self=self: onGlobalChar( self, event)
+            )
+
+            bind(wx.EVT_SET_FOCUS,
+                lambda event: self.onGlobalGainFocus(event)
+            )
+
+            bind(wx.EVT_KILL_FOCUS,
+                lambda event: self.onGlobalLoseFocus(event)
+            )
 
 
         #@-node:bob.20070813163332.138:__init__
@@ -291,7 +334,8 @@ if wx:
 
         def GetName(self):
             return self.name
-        #@nonl
+
+        getName = GetName
         #@-node:bob.20070823072419:GetName
         #@+node:bob.20070901042726:== Focus ==
         #@+node:bob.20070826134115:onGlobalGainFocus
@@ -324,62 +368,6 @@ if wx:
         #@nonl
         #@-node:bob.20070901042726.3:onLoseFocus
         #@-node:bob.20070901042726:== Focus ==
-        #@+node:bob.20070813163332.51:onGlobalChar
-
-        def onGlobalChar (self, event):
-            """Handle key events from text widgets.
-
-            This is designed to handle all keys to text widgets.  Although
-            it can, but should not, be overidden in derrived classes.
-
-            The prefered method for intercepting keys before they go to
-            the global key handler is to overide the onChar method.
-
-            """
-
-            c = self.c
-
-            keycode = event.GetKeyCode()
-
-            event.leoWidget = self
-            keysym = g.app.gui.eventKeysym(event)
-
-            if self.onChar(event, keycode, keysym ):
-                print 'abort global key handling'
-                return
-
-            if keysym:
-                # g.trace(
-                    # '\n\treciever:', myclass(self),
-                    # '\n\tbase text: keysym:', repr(keysym),
-                    # '\n\tkeycode:',keycode
-                # )
-                result = c.k.masterKeyHandler(event,stroke=keysym)
-                if not result:
-                    event.Skip()
-
-        #@-node:bob.20070813163332.51:onGlobalChar
-        #@+node:bob.20070901042726.4:onChar
-
-        def onChar(self, event, keycode, keysym):
-            """Intercept key events.
-
-            This method recieves key events from texts widgets and allows derived
-            classes to intercept keys before they are passed to global key handlers.
-
-            If the derived method handles the key it may return True to tell the global
-            event handlers to ignore the key or False to allow further proccessing.
-
-            If this method calls event.Skip() and returns True then the event will
-            be passed directly to the underlying gui widget.
-
-            If event.Skip is called and False returned then the key will be handled
-            by the global key handlers and then also passed directly to the widget,
-            which is probalbly not a good idea, don't do it.
-
-            """
-            pass
-        #@-node:bob.20070901042726.4:onChar
         #@+node:bob.20070831045021:clear
 
         def clear(self):
@@ -464,36 +452,9 @@ if wx:
         #@-others
     #@nonl
     #@-node:bob.20070818175928.3:plainTextWidget (baseTextWidget)
-    #@+node:bob.20070826191425:wxLeoSTC (styled text control)
-    class wxLeoSTC(stc.StyledTextCtrl):
-
-       #@   @+others
-       #@+node:bob.20070826191425.1:__init__
-       def __init__(self, parent):
-
-           stc.StyledTextCtrl.__init__(self, parent, -1)
-
-           self.CmdKeyClearAll()
-           self.SetUndoCollection(False)
-           self.EmptyUndoBuffer()
-
-           self.SetViewWhiteSpace(False)
-           #self.SetWrapMode(stc.STC_WRAP_WORD)
-
-           self.SetEOLMode(stc.STC_EOL_LF)
-           self.SetViewEOL(False)
-
-
-
-       #@-node:bob.20070826191425.1:__init__
-       #@-others
-
-
-
-    #@-node:bob.20070826191425:wxLeoSTC (styled text control)
     #@+node:bob.20070813163332.146:stcTextWidget (baseTextWidget)
 
-    class stcTextWidget (baseTextWidget):
+    class stcTextWidget (stc.StyledTextCtrl, baseTextWidget):
 
         '''A wrapper for wx.StyledTextCtrl.'''
 
@@ -510,17 +471,27 @@ if wx:
             *args, **keys
         ):
 
-            if not widget:
-                widget = wxLeoSTC(parent, *args, **keys)
+            stc.StyledTextCtrl.__init__(self, parent, -1)
+            baseTextWidget.__init__(self, leoParent, name, self )
 
-            baseTextWidget.__init__(self, leoParent, name, widget )
+            self.CmdKeyClearAll()
+            self.SetUndoCollection(False)
+            self.EmptyUndoBuffer()
+
+            self.SetViewWhiteSpace(False)
+            #self.SetWrapMode(stc.STC_WRAP_WORD)
+
+            self.SetEOLMode(stc.STC_EOL_LF)
+            self.SetViewEOL(False)
+
+            self.UsePopUp(False)
+
 
             self.initStc()
 
-        #@-node:bob.20070813163332.8:__init__
-        #@+node:bob.20070901100435:onChar
 
-        #@-node:bob.20070901100435:onChar
+
+        #@-node:bob.20070813163332.8:__init__
         #@+node:bob.20070827204727:initStc
         # Code copied from wxPython demo.
 
@@ -632,7 +603,7 @@ if wx:
             result = self.widget.GetTextRange(ii, jj)
             #print '\n\t', type(result), 'len:', len(result)
             #print _(result)
-            #return result
+            return result
 
         def _getAllText(self):
             text = self.widget.Text
@@ -1433,6 +1404,9 @@ if wx:
             )
         #@-node:bob.20070821163516.1:__init__
         #@+node:bob.20070901073324:def onChar
+
+        ## fix me
+
         def onChar(self, event, keycode, keysym):
             """Intercept return and tab chars."""
 
@@ -1596,7 +1570,7 @@ if wx:
             return self.widget.SetValue(s)
 
         def _setBackgroundColor(self,color): 
-            g.trace('richtext',color)
+            #g.trace('richtext',color)
             return self.widget.SetBackgroundColour(color)
 
         def _setFocus(self):  
@@ -3037,7 +3011,7 @@ if wx:
             message = "%s\n\n%s\n\n%s\n\n%s" % (
                 version.strip(),copyright.strip(),url.strip(),email.strip())
 
-            message += '\n\nwxLeo Revision: %s'%__revision__
+            message += '\n\nwxLeo version: %s'%__version__
 
             wx.MessageBox(message,"About Leo",wx.Center,self.root)
         #@-node:bob.20070813163332.192:runAboutLeoDialog
@@ -3591,12 +3565,16 @@ if wx:
         #@+node:bob.20070813163332.212:gui utils (must add several)
         #@+node:bob.20070813163332.213:Clipboard
         def replaceClipboardWith (self,s):
+            g.trace(s)
 
             cb = wx.TheClipboard
             if cb.Open():
+                g.trace('is open')
                 cb.Clear()
                 cb.SetData(wx.TextDataObject(s))
                 cb.Close()
+            else:
+                g.trace('is CLOSED')
 
         def getTextFromClipboard (self):
 
@@ -3786,23 +3764,24 @@ if wx:
         #@+node:bob.20070813163332.53:isTextWidget
         def isTextWidget (self,w):
 
-            return w and hasattr(w,'__class__') and issubclass(w.__class__,baseTextWidget)
+            return isinstance(w, baseTextWidget)
 
-            # or
-                # stc and issubclass(w.__class__,stc.StyledTextCtrl) or
-                # richtext and issubclass(w.__class__.richtext.RichTextCtrl)))
-        #@nonl
         #@-node:bob.20070813163332.53:isTextWidget
         #@+node:bob.20070813163332.229:widget_name
         def widget_name (self,w):
 
-            # First try the wxWindow.GetName method.
-            # All wx Text widgets, including stc.StyledControl, have this method.
-            if hasattr(w,'GetName'):
-                name = w.GetName()
-            else:
-                name = repr(w)
-            return name
+            # all text widgets are instances of baseTextWidget
+            #  and will have a getName method
+
+            # all widgets whose name is important should also
+            #  have a getName method, possibley put this in
+            #  in wxLeoObject or even leoObject?
+
+            # anyway it should be an error if there is no getName
+
+            return w.getName()
+
+
         #@-node:bob.20070813163332.229:widget_name
         #@-node:bob.20070813163332.212:gui utils (must add several)
         #@-others
@@ -3897,23 +3876,43 @@ if wx:
                # g.trace('no event!')
                # pass
 
-            #if event:
-                #g.trace('focus:', wx.Window.FindFocus())
+
+            fw = wx.Window.FindFocus()
+
+            #g.trace('focus:', fw)
+
+            if event:
+                w = event.widget
+            else:
+                w = fw
+
+            #print '\ttarget:', w
+
+
+
+            # NO widgets need not be text widgets eg the tree!
+            #if not isinstance(w, baseTextWidget):
+                # FIXME raise an error if we arrive here without a
+                #  a valid text window?
+            #    g.trace('Not a valid text window:', w)
+            #    return    
 
             k = self ; c = k.c
-            w = event and event.widget
 
+            # all widgets that collect keys must have getName
+            name = w.getName()
 
-            name = c.widget_name(w)
             #g.trace('NAME', name)
 
-
             if name.startswith('body'):
+
                 #g.trace('body')
                 action = k.unboundKeyAction
                 if action in ('insert','overwrite'):
                     c.editCommands.selfInsertCommand(event,action=action)
-                else: pass # Ignore the key.
+                else:
+                    pass # Ignore the key.
+
                 return 'break'
 
             elif name.startswith('head'):
@@ -3928,13 +3927,34 @@ if wx:
                 return 'break'
 
             elif name.startswith('log'):
-                #g.trace('log')
+                #FIXME
+                # c.onLogKey(event)
+                g.trace('log')
                 pass
 
+            elif name.startswith('find'):
+                #FIXME
+                # c.onFindKey
+
+                # Intercept return and tab chars.
+
+                keysym = g.app.gui.eventKeysym(event)
+
+                if keysym == 'Return':
+                    w.leoParent.findNextCommand()
+                    return 'break'
+
+                if keysym == 'Tab':
+                    w.leoParent.toggleTextWidgetFocus(self)
+                    return 'break'
+
+                #g.trace('find')
+                return None
+
             else:
-                # Let tkinter handle the event.
-                # ch = event and event.char ; g.trace('to tk:',name,repr(ch))
-                #g.trace('no default key handler')
+                # Allow wx to handle the event.
+                # ch = event and event.char ; g.trace('to wx:',name,repr(ch))
+                g.trace('no default key handler')
                 return None
         #@-node:bob.20070901065753:handleDefaultChar
         #@+node:bob.20070830134722:setLabel
@@ -3951,7 +3971,7 @@ if wx:
 
             trace = True or self.trace_minibuffer and not g.app.unitTesting
 
-            trace and g.trace(repr(s),g.callers())
+            trace and g.trace(repr(s),g.callers(30))
 
             w.setAllText(s)
             n = len(s)
@@ -4074,7 +4094,7 @@ if wx:
         #@-node:bob.20070901193129.5:setFocus
         #@+node:bob.20070901193129.6:chooseBodyOfOutline
         def chooseBodyOrOutline(self):
-            g.trace()
+            #g.trace()
             frame = self.c.frame
             self.c.set_focus(g.choose(
                 self.outline_pane_has_initial_focus,
@@ -4106,6 +4126,8 @@ if wx:
 
             #globals icons, plusBoxIcon, minusBoxIcon, appIcon
             self.loadIcons()
+
+            self.Bind(wx.EVT_CHAR, lambda event, type='app':onRogueChar(event, type))
 
 
 
@@ -4202,6 +4224,8 @@ if wx:
                 name='body' # Must be body for k.masterKeyHandler.
             )
             #w.widget.Bind(wx.EVT_LEFT_DOWN, self.onClick)
+
+
             return w
         #@-node:bob.20070813163332.239:wxBody.createControl
         #@+node:bob.20070813163332.240:wxBody.createBindings NOT USED AT PRESENT
@@ -4735,6 +4759,7 @@ if wx:
 
             self.nb = wx.Notebook.__init__(self, parent)
 
+
         #@-node:bob.20070908081747.10:__init__
         #@+node:bob.20070908104659.1:tabToRawIndex
         def tabToRawIndex(self, tab):
@@ -4756,7 +4781,7 @@ if wx:
             #g.trace(text, tab, self)
 
             idx = self.tabToRawIndex(tab)
-            g.trace(idx, self)
+            #g.trace(idx, self)
             if idx is not None:
                 self.SetPageText(idx, text)
         #@-node:bob.20070908103701.1:setPageText
@@ -4875,7 +4900,7 @@ if wx:
         def setNotebook(self, nb):
 
             assert nb is None or isinstance(nb, wxLeoNotebook)
-            g.trace('\n\t', self )
+            #g.trace('\n\t', self )
 
             super(wxLeoTab, self).setNotebook(nb)
 
@@ -4884,12 +4909,12 @@ if wx:
 
         def setPage(self, page, init=False):
 
-            g.trace(page)
+            #g.trace(page)
             assert page is None or isinstance(page, wx.Window)
 
             super(wxLeoTab, self).setPage(page)
 
-            g.trace(page, '\n\t', self)
+            #g.trace(page, '\n\t', self)
 
 
 
@@ -4947,6 +4972,8 @@ if wx:
             sizer.Add(self.nb, 1, wx.EXPAND)
 
             self.SetSizerAndFit(sizer)
+
+            self.Bind(wx.EVT_CHAR, lambda event, type='leonotebookpanel':onRogueChar(event, type))
         #@-node:bob.20070908081747.13:__init__
         #@-others
 
@@ -5040,6 +5067,9 @@ if wx:
                 pos = (100,50),size = (750, 520),
                 style = wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE
             )
+
+            top.Bind(wx.EVT_CHAR, lambda event, type='leoframe':onRogueChar(event, type))
+
 
             self.hiddenWindow = hw = wx.Window(top)
             hw.Hide()
@@ -5245,7 +5275,7 @@ if wx:
             g.es("Leo Log Window...",color=color)
             g.es(signon)
             g.es("Python %d.%d.%d wxWindows %s" % (n1,n2,n3,wx.VERSION_STRING))
-            g.es('\nwxLeo Revision: %s\n\n'%__revision__)
+            g.es('\nwxLeo version: %s\n\n'%__version__)
 
 
         #@-node:bob.20070813163332.266:signOnWithVersion
@@ -5285,7 +5315,10 @@ if wx:
             #bind(wx.EVT_MENU_OPEN, self.updateAllMenus)#self.updateAllMenus)
             #bind(wx.EVT_MENU_OPEN, self.xupdateAllMenus)#self.updateAllMenus)
 
-            #bind(wx.EVT_CHAR, self.onChar)
+            bind(wx.EVT_CHAR, 
+                lambda event, self=self: onGlobalChar(self, event)
+            )
+
             #bind(wx.EVT_KEY_UP, lambda event :self.tree.onKeyUp(event))
             #bind(wx.EVT_KEY_DOWN, lambda event: self.tree.onKeyDown(event))
 
@@ -5729,6 +5762,24 @@ if wx:
         #@-others
     #@nonl
     #@-node:bob.20070813163332.257:wxLeoFrame class (leoFrame)
+    #@+node:bob.20070910194850:wxMenu
+    class wxMenu(wx.Menu, wxLeoObject, leoObject):
+
+        def __init__(self, c ):
+
+            leoObject.__init__(self, c)
+            wxLeoObject.__init__(self)
+            wx.Menu.__init__(self)
+
+            self.Bind(wx.EVT_CHAR, self.onChar)
+
+
+        def onChar(self):
+            print ('menu caught a key!')
+            onGlobalChar(self, event)
+
+
+    #@-node:bob.20070910194850:wxMenu
     #@+node:bob.20070813163332.333:wxLeoMenu class (leoMenu)
     class wxLeoMenu (leoMenu.leoMenu):
 
@@ -5849,13 +5900,16 @@ if wx:
             ch,label = self.createAccelLabel(keys)
 
             def wxMenuCallback (event,callback=callback):
-                #g.trace('event',event)
+                g.trace('\nevent',event)
+                print
                 callback() # All args were bound when the callback was created.
                 event.Skip()
 
             id = wx.NewId()
 
-            menu.Append(id,label,label)
+            item = menu.Append(id,label,label)
+
+            id = item.GetId()
 
             key = (menu,label),
 
@@ -5881,31 +5935,55 @@ if wx:
 
         def delete_range (self,menu,n1,n2):
 
+            """Delete a range of items ina menu.
+
+            n1, n2 must be integers indicating the 
+            inclusive range of items to be deleted.
+
+            if min(n1,n2) is les than 0 0 will be assumed.
+
+            max(n2,n2) may be greater than the number of items
+                in the menu.
+
+            n1 may be less than, grater than or equal to n2.    
+            """
+
+            g.es('delete_range: Not yet Implemented', color='red')
+
             if not menu:
                 # g.trace("no menu")
                 return
 
             # g.trace(n1,n2,menu.GetTitle())
 
-            items = menu.GetMenuItems()
+            count = menu.GetMenuItemCount()
 
-            if 0: # debugging
+            if n2 > n1:
+                n2, n1 = n1, n2
+
+            if n2 > count:
+                n2 = count
+
+            if n1 < 0:
+                n1 = 0
+
+            if  1:# debugging
+                items = menu.GetMenuItems()
                 for item in items:
                     id = item.GetId()
                     item = menu.FindItemById(id)
-                    g.trace(item.GetText())
+                    print '\t', item.GetText()
 
             ## Doesn't work:  a problem with wxPython.
 
-            if len(items) > n1 and len(items) > n2:
-                i = n1
-                while i <= n2:
-                    id = items[i].GetId()
-                    item = menu.FindItemById(id)
-                    g.trace("deleting:",item.GetText())
-                    menu.Delete(id)
-                    i += 1
-        #@nonl
+            i = n2
+            while i >= n1:
+                item = menu.FindItemByPosition(i)
+                menu.DestroyItem(item)
+                g.trace("deleting:",item.GetText())
+
+                i-=1
+
         #@-node:bob.20070813163332.343:delete_range (wxMenu) (does not work)
         #@+node:bob.20070813163332.344:index & invoke
         # It appears wxWidgets can't invoke a menu programmatically.
@@ -5937,8 +6015,7 @@ if wx:
         #@-node:bob.20070813163332.346:insert_cascade
         #@+node:bob.20070813163332.347:new_menu
         def new_menu(self,parent,tearoff=0):
-            return wx.Menu()
-        #@nonl
+            return wxMenu(self.c)
         #@-node:bob.20070813163332.347:new_menu
         #@-node:bob.20070813163332.339:Menu methods (Tk names)
         #@+node:bob.20070813163332.348:Menu methods (non-Tk names)
@@ -6031,7 +6108,6 @@ if wx:
                 except: print traceback.print_exc()
 
             return wxOpenWithMenuCallback
-        #@nonl
         #@-node:bob.20070813163332.352:defineOpenWithMenuCallback
         #@+node:bob.20070813163332.353:disableMenu
         def disableMenu (self,menu,name):
@@ -6120,9 +6196,13 @@ if wx:
     #@nonl
     #@-node:bob.20070813163332.333:wxLeoMenu class (leoMenu)
     #@+node:bob.20070907191759:wxLeoLogMenu class
-    class wxLeoLogMenu(wx.Menu):
+    class wxLeoLogMenu(wx.Menu, wxLeoObject, leoObject):
 
         def __init__(self, log, tabName, itemList):
+
+
+            leoObject.__init__(self, log.c)
+            wxLeoObject.__init__(self)
 
             self.log = log
             self.tabName = tabName
@@ -7373,40 +7453,11 @@ if wx:
         #@-node:bob.20070823192054:scrollTo
         #@-node:bob.20070813163332.376:Drawing
         #@+node:bob.20070813163332.382:== Event handlers ==
-        #@+node:bob.20070813163332.50:onChar (leoTree)
-
-        standardTreeKeys = []
-        if sys.platform.startswith('win'):
-            for mod in ('Alt+','Alt+Ctrl+','Ctrl+','',):
-                for base in ('Right','Left','Up','Down'):
-                    standardTreeKeys.append(mod+base)
-            for key in string.ascii_letters + string.digits + string.punctuation:
-                standardTreeKeys.append(key)
-
-
-        def onChar (self, event, lrud=False):
-
-            if g.app.killed or self.c.frame.killed:
-                return
-
-            c = self.c
-
-
-            keyEvent = event
-
-            keyEvent.leoWidget = self
-            keysym = g.app.gui.eventKeysym(keyEvent)
-
-            c.k.masterKeyHandler(keyEvent,stroke=keysym)
-
-            #c.beginUpdate()
-            #c.endUpdate()
-
-            event.Skip()   
-
-
-
-        #@-node:bob.20070813163332.50:onChar (leoTree)
+        #@+node:bob.20070910164249.1:def onChar
+        def onChar(self, event, keycode, keysym):
+            pass
+        #@nonl
+        #@-node:bob.20070910164249.1:def onChar
         #@+node:bob.20070813163332.385:onHeadlineKey
 
         # k.handleDefaultChar calls onHeadlineKey.
@@ -8075,7 +8126,8 @@ if wx:
         #@+node:bob.20070901120931:GetName
         def GetName(self):
             return 'canvas'
-        #@nonl
+
+        getName = GetName
         #@-node:bob.20070901120931:GetName
         #@+node:bob.20070908231221:Font Property
         def getFont(self):
@@ -8143,7 +8195,9 @@ if wx:
 
             self.SetBackgroundColour('leo yellow')
 
-            self.Bind(wx.EVT_CHAR, self._leoTree.onChar)
+            self.Bind(wx.EVT_CHAR,
+                lambda event, self=self._leoTree: onGlobalChar(self, event)
+            )
 
             self.onScroll(wx.HORIZONTAL, 0)
 
@@ -8182,8 +8236,11 @@ if wx:
             entry.SetSize((width + 4, -1))
 
             tw = self._leoTree.headlineTextWidget
+
+            range = tw.getSelectionRange()
             tw.setInsertPoint(0)
-            tw.setInsertPoint(len(sp.headString()))
+            #tw.setInsertPoint(len(sp.headString()))
+            tw.setSelectionRange(*range)
             entry.Show()
         #@-node:bob.20070819054707.1:showEntry
         #@+node:bob.20070819054707:hideEntry
@@ -8336,6 +8393,8 @@ if wx:
         #@+node:bob.20070901152316:GetName
         def GetName(self):
             return 'canvas'
+
+        getName = GetName
         #@nonl
         #@-node:bob.20070901152316:GetName
         #@-others
@@ -8410,8 +8469,8 @@ if wx:
             self.Bind(wx.EVT_PAINT, self.onPaint)
 
             for o in (self, parent):
-                #@        << create mouse bindings >>
-                #@+node:bob.20070906162528:<< create mouse bindings >>
+                #@        << create  bindings >>
+                #@+node:bob.20070906162528:<< create bindings >>
                 onmouse = self._leoTree.onMouse
 
                 o.Bind(wx.EVT_LEFT_DOWN,
@@ -8436,7 +8495,12 @@ if wx:
                 o.Bind(wx.EVT_MOTION,
                     lambda event, type='Motion': onmouse(event, type)
                 )
-                #@-node:bob.20070906162528:<< create mouse bindings >>
+
+                self.Bind(wx.EVT_CHAR,
+                    lambda event, self=self._leoTree: onGlobalChar(self, event)
+                )
+                #@nonl
+                #@-node:bob.20070906162528:<< create bindings >>
                 #@nl
 
 
@@ -8927,9 +8991,12 @@ if wx:
                 # print 'result is False'
 
             if hasattr(self._leoTree, 'drawTreeHook'):
-                result = self._leoTree.drawTreeHook(self)
+                try:
+                    result = self._leoTree.drawTreeHook(self)
+                except:
+                    result = False
             else:
-                print 'drawTreeHook not known'
+                #print 'drawTreeHook not known'
                 result = None
 
             if not result:
@@ -8997,5 +9064,5 @@ if wx:
     #@-node:bob.20070813173446.12:class OutlineCanvas
     #@-node:bob.20070902164500.1:== TREE WIDGETS ==
     #@-others
-#@-node:bob.20070905144835.1:@thin __wx_alt_gui.py
+#@-node:bob.20070910154126.2:@thin __wx_alt_gui.py
 #@-leo
