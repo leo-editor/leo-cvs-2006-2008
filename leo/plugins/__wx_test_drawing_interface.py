@@ -1,5 +1,5 @@
 #@+leo-ver=4-thin
-#@+node:bob.20070909152756:@thin __wx_test_drawing_interface.py
+#@+node:bob.20070910154126.1:@thin __wx_test_drawing_interface.py
 #@<< docstring >>
 #@+node:bob.20070909152633.1:<< docstring >>
 '''This is a test plugin to show how to use the prototype
@@ -230,5 +230,5 @@ def onMouseMyIconLeftDown(self, sp, event, area, type):
 #@-node:bob.20070909163711:onMouseMyIconLeftDown
 #@-others
 #@nonl
-#@-node:bob.20070909152756:@thin __wx_test_drawing_interface.py
+#@-node:bob.20070910154126.1:@thin __wx_test_drawing_interface.py
 #@-leo
