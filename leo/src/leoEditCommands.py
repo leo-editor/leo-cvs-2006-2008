@@ -2761,6 +2761,8 @@ class editCommandsClass (baseEditCommandsClass):
         keysym = gui.eventKeysym(event)
         if keysym == 'Return':
             ch = '\n' # This fixes the MacOS return bug.
+        if keysym == 'Tab': # Support for wx_alt_gui plugin.
+            ch = '\t'
         name = c.widget_name(w)
         oldSel =  name.startswith('body') and w.getSelectionRange() or (None,None)
         oldText = name.startswith('body') and p.bodyString() or ''
