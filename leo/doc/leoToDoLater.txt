@@ -3155,6 +3155,7 @@ def __init__(self):
     self.searchDict = {} # For communication between find/change scripts.
     self.scanErrors = 0 # The number of errors seen by g.scanError.
     self.scriptDict = {} # For communication between Execute Script command and scripts.
+    self.silentMode = False # True if signon is more silent.
     self.statsDict = {} # Statistics dict used by g.stat, g.clear_stats, g.print_stats.
     self.trace = False # True: enable debugging traces.
     self.trace_gc = False # defined in run()

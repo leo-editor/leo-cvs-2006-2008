@@ -2317,6 +2317,21 @@ Brian Theado
 @language python
 @color
 #@nonl
+#@+node:ekr.20070912085132:From regularizeWhitespace
+# For strict languages, check that leading whitespace is a multiple of the tab_width.
+if self.strict:
+    for line in lines:
+        if line.strip(): # only check non-blank lines.
+            lws = line[0:g.skip_ws(line,0)]
+            w = g.computeWidth(lws,tab_width)
+            if (w % abs(tab_width)) != 0:
+            ### if 0 < w < abs(tab_width):
+                self.error(
+                    'leading whitespace not consistent with @tabwidth %d\nline: %s' % (
+                        tab_width,repr(line)))
+                break
+#@nonl
+#@-node:ekr.20070912085132:From regularizeWhitespace
 #@+node:ekr.20070705085126:checkTabWithTabNanny (not used)
 # Similar to c.tabNannyNode
 

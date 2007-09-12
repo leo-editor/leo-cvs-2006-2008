@@ -144,89 +144,6 @@ then I save the file again::
 This is not only in @auto, but in "regular" Leo, also.
 #@nonl
 #@-node:ekr.20070816084029:Retain dirty bit after write fails?
-#@+node:ekr.20070905072809.1:Mulder post re svn
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=4484641
-By: bwmulder
-
-Actually we are talking about two plugins here: a bazaar plugin, and a
-Leo plugin.
-
-The bazaar plugin would do special things for Leo files during checkout, status
-and checkin. After checkout, for example, it would delete the sentinels in the
-user visible files.
-
-The Leo plugin would know to go to the repository for reading (and writing?).
-
-One open question is to where to store new sentinels: can they be hidden away
-in the Source Control System (SCS) directories?
-
-Another open question: Could Leo sentinels be used as an identity marker, which
-unambiguously identifies a piece of text? With that, the SCS system might have
-enough information to make statements like:
-
-Lines 10-100 where in file x where moved from file y, in other words: the SCS
-could track code at the function level.
-
-The whole process could then work like this:
-
-1. You check out your sources.
-2. After checkout, the bazaar plugin would delete all sentinels from the checked-out
-files.
-3. If you start Leo, Leo would read the (full) file from the SCS.
-4. If you make modifications, the full file would be hidden in SCS directories,
-and the disk file would (again) show no sentinels.
-5. I don't know how the bazaar status command works. We must make sure that
-status works correctly for Leo files as it does for any other files.
-6. For checkin, the SCS system would have to use the information hidden in step
-4.
-
-Open questions:
-
-1. Can the Leo sentinels be used as a permanent identity markers for text? If
-they can't be right now, would Edward be willing to modify them so that they
-can?
-2. Can / should we make the full files available somehow (probably)
-2. How would conflict resolution work? Can / should we hide the sentinels even
-then? (probably not)
-
-So the answer to your question is: yes, I am thinking about such plugins, though
-I am not (yet) thinking of writing such plugins myself.
-
-______________________________________________________________________
-You are receiving this email because you elected to monitor this forum.
-To stop monitoring this forum, login to SourceForge.net and visit:
-https://sourceforge.net/forum/unmonitor.php?forum_id=10226
-#@-node:ekr.20070905072809.1:Mulder post re svn
-#@+node:ekr.20070905073007:@auto indentation issues
-
-http://sourceforge.net/forum/message.php?msg_id=4468559
-By: terry_n_brown
-
-Ooops, I just realized I had tkdiff configured to ignore whitespace changes,
-doh.  So actually Leo is stripping a bunch of trailing whitespace out of the
-file.
-
-So claiming to insert an @ignore directive is still wrong, but the import
-is 'imperfect' in that the export isn't the same file.
-
-Of course the trailing
-whitespace probably shouldn't be there, I think that violates a PEP?  Anyway,
-I was wrong about Leo not changing the file, but the messages need tweaking.
-
------ response
-
-> So claiming to insert an @ignore directive is still wrong, but the import is 'imperfect' in that the export isn't the same file. 
-
-Thanks for this further report.  As I said earlier, the logic is surprisingly difficult.  Perhaps yet another refactoring is needed.
-
-> Of course the trailing whitespace probably shouldn't be there, I think that violates a PEP?
-
-The proper question is simply whether @auto will change a file in *any* way.  The style PEP is irrelevant.  True, there are some input files that can not be represented exactly in a Leo outline (underindented comments, for example), but trailing whitespace should be preserved unless the a user option tells Leo to strip trailing whitespace.
-
-As I write this I see that trailing whitespace is yet another complicating detail that must be handled intelligently by @auto.  Iirc, the @auto code does in fact try to deal with this intelligently, but likely fails :-) 
-
-#@-node:ekr.20070905073007:@auto indentation issues
 #@-node:ekr.20070814143748:Fix new bugs
 #@+node:ekr.20051202094427:resolve-cvs-conflicts and write-resolved-conflicts commands
 @killcolor
@@ -2110,6 +2027,60 @@ def revert (self,event=None):
 #@+node:ekr.20070703111455.3:Other/Maybe
 # some of these can wait till much later.
 #@nonl
+#@+node:ekr.20070905072809.1:Mulder post re svn
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4484641
+By: bwmulder
+
+Actually we are talking about two plugins here: a bazaar plugin, and a
+Leo plugin.
+
+The bazaar plugin would do special things for Leo files during checkout, status
+and checkin. After checkout, for example, it would delete the sentinels in the
+user visible files.
+
+The Leo plugin would know to go to the repository for reading (and writing?).
+
+One open question is to where to store new sentinels: can they be hidden away
+in the Source Control System (SCS) directories?
+
+Another open question: Could Leo sentinels be used as an identity marker, which
+unambiguously identifies a piece of text? With that, the SCS system might have
+enough information to make statements like:
+
+Lines 10-100 where in file x where moved from file y, in other words: the SCS
+could track code at the function level.
+
+The whole process could then work like this:
+
+1. You check out your sources.
+2. After checkout, the bazaar plugin would delete all sentinels from the checked-out
+files.
+3. If you start Leo, Leo would read the (full) file from the SCS.
+4. If you make modifications, the full file would be hidden in SCS directories,
+and the disk file would (again) show no sentinels.
+5. I don't know how the bazaar status command works. We must make sure that
+status works correctly for Leo files as it does for any other files.
+6. For checkin, the SCS system would have to use the information hidden in step
+4.
+
+Open questions:
+
+1. Can the Leo sentinels be used as a permanent identity markers for text? If
+they can't be right now, would Edward be willing to modify them so that they
+can?
+2. Can / should we make the full files available somehow (probably)
+2. How would conflict resolution work? Can / should we hide the sentinels even
+then? (probably not)
+
+So the answer to your question is: yes, I am thinking about such plugins, though
+I am not (yet) thinking of writing such plugins myself.
+
+______________________________________________________________________
+You are receiving this email because you elected to monitor this forum.
+To stop monitoring this forum, login to SourceForge.net and visit:
+https://sourceforge.net/forum/unmonitor.php?forum_id=10226
+#@-node:ekr.20070905072809.1:Mulder post re svn
 #@+node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
 #@-node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
 #@+node:ekr.20061028065955.2:Fix binding nits
