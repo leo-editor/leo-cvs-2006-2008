@@ -84,10 +84,10 @@ def testForZenity():
 def init ():
 	
     if g.unitTesting:
-	    return False
+        return False
 
     if ok:
-	ok = ok and testForZenity()
+        ok = ok and testForZenity()
         # trace and g.trace('imported ok')
         trace and g.trace('zenity ok')
         leoPlugins.registerHandler('start2', onStart2)
