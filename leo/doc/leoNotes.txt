@@ -2535,6 +2535,30 @@ else:
 #@-node:ekr.20040718045423:<< dump the files >>
 #@-node:ekr.20040718035658:<< verify that writing the tree would produce the original file >>
 #@-node:EKR.20040506075328.2:perfectImport
+#@+node:ekr.20070703122141.103:checkWhitespace (no longer used)
+def checkWhitespace(self,s,parent):
+
+    '''Check the leading whitespace of all lines of s.'''
+
+    # Do a quick check for mixed leading tabs/blanks.
+    strict = self.strict ; tab_width = self.tab_width
+    blanks = tabs = 0
+    for line in g.splitLines(s):
+        lws = line[0:g.skip_ws(line,0)]
+        blanks += lws.count(' ')
+        tabs += lws.count('\t')
+        if strict:
+            w = g.computeWidth(lws,tab_width)
+            if (w % abs(tab_width)) != 0:
+                self.error('leading whitespace not consistent with @tabwidth %d' % tab_width)
+                g.es_print('line: %s' % (repr(line)),color='red')
+                return False
+
+    ok = blanks == 0 or tabs == 0
+    if not ok:
+        self.error('File contains intermixed blanks and tabs')
+    return ok
+#@-node:ekr.20070703122141.103:checkWhitespace (no longer used)
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

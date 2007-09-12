@@ -1113,28 +1113,24 @@ to me...?
 
 @color
 #@nonl
-#@+node:ekr.20070703122141.104:checkTrialWrite & helper
+#@+node:ekr.20070703122141.104:checkTrialWrite & tests
 def checkTrialWrite (self,s1=None,s2=None):
 
     '''Return True if a trial write produces the original file.'''
 
-    def pr(*args,**keys):
-        g.es_print(color='blue',*args,**keys)
-
     c = self.c ; at = c.atFileCommands
 
     if s1 and s2:
-        if s1 == s2: return True # For unit testing.
-    else:
-        at.write(self.root,
-            nosentinels=True,thinFile=False,
-            scriptWrite=False,toString=True,
-            write_strips_blank_lines=False,
-        )
-
-        ignoreBlankLines = True
-        s1,s2 = self.file_s, at.stringOutput
         if s1 == s2: return True
+
+    at.write(self.root,
+        nosentinels=True,thinFile=False,
+        scriptWrite=False,toString=True,
+        write_strips_blank_lines=False,
+    )
+
+    s1,s2 = self.file_s, at.stringOutput
+    if s1 == s2: return True
 
     lines1 = g.splitLines(s1) ; n1 = len(lines1)
     lines2 = g.splitLines(s2) ; n2 = len(lines2)
@@ -1146,77 +1142,14 @@ def checkTrialWrite (self,s1=None,s2=None):
             bad_i = i + 1
             break
 
-    d = g.app.unitTestDict
-    expectedMismatch =  d.get('expectedMismatchLine')
-    actualMismatch = d.get('actualMismatchLine')
-    kind = g.choose(self.atAuto,'@auto','import command')
-    self.error('%s did not import the file perfectly' % kind)
-    pr('first mismatched line: %d\n%s' % (bad_i,repr(lines2[bad_i-1])))
-    pr('Inserting @ignore directive')
-    ok = ok or (g.app.unitTesting and expectedMismatch == actualMismatch)
+    if g.app.unitTesting:
+        d = g.app.unitTestDict
+        ok = d.get('expectedMismatchLine') == d.get('actualMismatchLine')
+
     if not ok:
-        if len(lines1) < 30:
-            pr('input...')
-            for i in xrange(len(lines1)):
-                pr('%3d %s' % (i,lines1[i]),newline=False)
-            pr('output...')
-            for i in xrange(len(lines2)):
-                pr('%3d %s' % (i,lines2[i]),newline=False)
+        self.reportMismatch(lines1,lines2,bad_i)
 
     return ok
-#@+node:ekr.20070730093735:compareHelper
-def compareHelper (self,lines1,lines2,i,strict):
-
-    '''Compare lines1[i] and lines2[i].
-    strict is True if leading whitespace is very significant.'''
-
-    def pr(*args,**keys):
-        g.es_print(color='blue',*args,**keys)
-
-    d = g.app.unitTestDict
-    expectedMismatch = g.app.unitTesting and d.get('expectedMismatchLine')
-
-    if i >= len(lines1):
-        if i != expectedMismatch or not g.app.unitTesting:
-            pr('extra lines')
-            for line in lines2[i:]:
-                pr(repr(line))
-        d ['actualMismatchLine'] = i
-        return False
-
-    if i >= len(lines2):
-        if i != expectedMismatch or not g.app.unitTesting:
-            g.es_print('missing lines')
-            for line in lines2[i:]:
-                g.es_print(repr(line))
-        d ['actualMismatchLine'] = i
-        return False
-
-    line1,line2 = lines1[i],lines2[i]
-    if line1 == line2:
-        return True # An exact match.
-    elif not line1.strip() and not line2.strip():
-        return True # All blank lines compare equal.
-    elif not strict and line1.lstrip() == line2.lstrip():
-        return True # A match excluding leading whitespace.
-    else:
-        if i+1 != expectedMismatch or not g.app.unitTesting:
-            g.es_print('*** first mismatch at line %d' % (i+1))
-            g.es_print('original line: ', repr(line1))
-            g.es_print('generated line:', repr(line2))
-        d ['actualMismatchLine'] = i+1
-        return False
-#@-node:ekr.20070730093735:compareHelper
-#@+node:ekr.20070816101019:@test compareHelper
-if g.unitTesting:
-
-    ic = c.importCommands
-    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
-    i = 0
-    lines1 = ['abc',]
-    lines2 = ['xyz',]
-    runner.compareHelper(lines1,lines2,i,strict=True)
-#@-node:ekr.20070816101019:@test compareHelper
 #@+node:ekr.20070816103348:@test checkTriailWrite
 if g.unitTesting:
 
@@ -1227,7 +1160,7 @@ if g.unitTesting:
     s2 = 'line1\nline2a\n'
     runner.checkTrialWrite(s1=s1,s2=s2)
 #@-node:ekr.20070816103348:@test checkTriailWrite
-#@-node:ekr.20070703122141.104:checkTrialWrite & helper
+#@-node:ekr.20070703122141.104:checkTrialWrite & tests
 #@-node:ekr.20070815100946:Improved messages on @import failure
 #@+node:ekr.20070824094935:Fixed problem with space in path names in runLeoDynamicTest
 # https://sourceforge.net/forum/message.php?msg_id=4459798
@@ -1251,6 +1184,624 @@ def runLeoDynamicTest (self):
     os.spawnve(os.P_NOWAIT,sys.executable,args,os.environ)
 #@-node:ekr.20070627135336.11:runLeoDynamicTest
 #@-node:ekr.20070824094935:Fixed problem with space in path names in runLeoDynamicTest
+#@+node:ekr.20070910102447:Fixed bad drag & drop bug
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4509897
+By: plumloco
+
+If you drag a parent node onto one of its children then leo crashes.
+
+@color
+#@nonl
+#@+node:ekr.20040803072955.99:Dragging (tkTree)
+#@+node:ekr.20041111115908:endDrag
+def endDrag (self,event):
+
+    """The official helper of the onEndDrag event handler."""
+
+    c = self.c ; p = self.drag_p
+    c.setLog()
+    canvas = self.canvas
+    if not event: return
+
+    c.beginUpdate()
+    try:
+        << set vdrag, childFlag >>
+        if self.allow_clone_drags:
+            if not self.look_for_control_drag_on_mouse_down:
+                self.controlDrag = c.frame.controlKeyIsDown
+
+        redrawFlag = vdrag and vdrag.v.t != p.v.t
+        if redrawFlag: # Disallow drag to joined node.
+            << drag p to vdrag >>
+        elif self.trace and self.verbose:
+            g.trace("Cancel drag")
+
+        # Reset the old cursor by brute force.
+        self.canvas['cursor'] = "arrow"
+        self.dragging = False
+        self.drag_p = None
+    finally:
+        # Must set self.drag_p = None first.
+        c.endUpdate(redrawFlag)
+        c.recolor_now() # Dragging can affect coloring.
+#@+node:ekr.20040803072955.104:<< set vdrag, childFlag >>
+x,y = event.x,event.y
+canvas_x = canvas.canvasx(x)
+canvas_y = canvas.canvasy(y)
+
+theId = self.canvas.find_closest(canvas_x,canvas_y)
+# theId = self.canvas.find_overlapping(canvas_x,canvas_y,canvas_x,canvas_y)
+
+vdrag = self.findPositionWithIconId(theId)
+childFlag = vdrag and vdrag.hasChildren() and vdrag.isExpanded()
+#@-node:ekr.20040803072955.104:<< set vdrag, childFlag >>
+#@+node:ekr.20041111114148:<< drag p to vdrag >>
+# g.trace("*** end drag   ***",theId,x,y,p.headString(),vdrag.headString())
+
+if self.controlDrag: # Clone p and move the clone.
+    if childFlag:
+        c.dragCloneToNthChildOf(p,vdrag,0)
+    else:
+        c.dragCloneAfter(p,vdrag)
+else: # Just drag p.
+    if childFlag:
+        c.dragToNthChildOf(p,vdrag,0)
+    else:
+        c.dragAfter(p,vdrag)
+#@-node:ekr.20041111114148:<< drag p to vdrag >>
+#@-node:ekr.20041111115908:endDrag
+#@+node:ekr.20041111114944:startDrag
+# This precomputes numberOfVisibleNodes(), a significant optimization.
+# We also indicate where findPositionWithIconId() should start looking for tree id's.
+
+def startDrag (self,event,p=None):
+
+    """The official helper of the onDrag event handler."""
+
+    c = self.c ; canvas = self.canvas
+
+    if not p:
+        assert(not self.drag_p)
+        x = canvas.canvasx(event.x)
+        y = canvas.canvasy(event.y)
+        theId = canvas.find_closest(x,y)
+        # theId = canvas.find_overlapping(canvas_x,canvas_y,canvas_x,canvas_y)
+        if theId is None: return
+        try: theId = theId[0]
+        except: pass
+        p = self.ids.get(theId)
+    if not p: return
+    c.setLog()
+    self.drag_p = p.copy() # defensive programming: not needed.
+    self.dragging = True
+    # g.trace("*** start drag ***",theId,self.drag_p.headString())
+    # Only do this once: greatly speeds drags.
+    self.savedNumberOfVisibleNodes = self.numberOfVisibleNodes()
+    # g.trace('self.controlDrag',self.controlDrag)
+    if self.allow_clone_drags:
+        self.controlDrag = c.frame.controlKeyIsDown
+        if self.look_for_control_drag_on_mouse_down:
+            if self.enable_drag_messages:
+                if self.controlDrag:
+                    g.es("dragged node will be cloned")
+                else:
+                    g.es("dragged node will be moved")
+    else: self.controlDrag = False
+    self.canvas['cursor'] = "hand2" # "center_ptr"
+#@-node:ekr.20041111114944:startDrag
+#@+node:ekr.20040803072955.100:onContinueDrag
+def onContinueDrag(self,event):
+
+    p = self.drag_p
+    if not p: return
+
+    try:
+        canvas = self.canvas ; frame = self.c.frame
+        if event:
+            x,y = event.x,event.y
+        else:
+            x,y = frame.top.winfo_pointerx(),frame.top.winfo_pointery()
+            # Stop the scrolling if we go outside the entire window.
+            if x == -1 or y == -1: return 
+        if self.dragging: # This gets cleared by onEndDrag()
+            << scroll the canvas as needed >>
+    except:
+        g.es_event_exception("continue drag")
+#@+node:ekr.20040803072955.101:<< scroll the canvas as needed >>
+# Scroll the screen up or down one line if the cursor (y) is outside the canvas.
+h = canvas.winfo_height()
+
+if y < 0 or y > h:
+    lo, hi = frame.canvas.leo_treeBar.get()
+    n = self.savedNumberOfVisibleNodes
+    line_frac = 1.0 / float(n)
+    frac = g.choose(y < 0, lo - line_frac, lo + line_frac)
+    frac = min(frac,1.0)
+    frac = max(frac,0.0)
+    # g.es("lo,hi,frac:",lo,hi,frac)
+    canvas.yview("moveto", frac)
+
+    # Queue up another event to keep scrolling while the cursor is outside the canvas.
+    lo, hi = frame.canvas.leo_treeBar.get()
+    if (y < 0 and lo > 0.1) or (y > h and hi < 0.9):
+        canvas.after_idle(self.onContinueDrag,None) # Don't propagate the event.
+#@-node:ekr.20040803072955.101:<< scroll the canvas as needed >>
+#@-node:ekr.20040803072955.100:onContinueDrag
+#@+node:ekr.20040803072955.102:onDrag
+def onDrag(self,event):
+
+    c = self.c ; p = self.drag_p
+    if not event: return
+
+    c.setLog()
+
+    if not self.dragging:
+        if not g.doHook("drag1",c=c,p=p,v=p,event=event):
+            self.startDrag(event)
+        g.doHook("drag2",c=c,p=p,v=p,event=event)
+
+    if not g.doHook("dragging1",c=c,p=p,v=p,event=event):
+        self.onContinueDrag(event)
+    g.doHook("dragging2",c=c,p=p,v=p,event=event)
+#@-node:ekr.20040803072955.102:onDrag
+#@+node:ekr.20040803072955.103:onEndDrag
+def onEndDrag(self,event):
+
+    """Tree end-of-drag handler called from vnode event handler."""
+
+    c = self.c ; p = self.drag_p
+    if not p: return
+
+    c.setLog()
+
+    if not g.doHook("enddrag1",c=c,p=p,v=p,event=event):
+        self.endDrag(event)
+    g.doHook("enddrag2",c=c,p=p,v=p,event=event)
+#@-node:ekr.20040803072955.103:onEndDrag
+#@-node:ekr.20040803072955.99:Dragging (tkTree)
+#@+node:ekr.20031218072017.2945:Dragging (commands)
+#@+node:ekr.20031218072017.2353:c.dragAfter
+def dragAfter(self,p,after):
+
+    c = self ; u = self.undoer ; undoType = 'Drag'
+    current = c.currentPosition()
+    inAtIgnoreRange = p.inAtIgnoreRange()
+    if not c.checkDrag(p,after): return
+    if not c.checkMoveWithParentWithWarning(p,after.parent(),True): return
+
+    c.beginUpdate()
+    try: # In update...
+        c.endEditing()
+        undoData = u.beforeMoveNode(current)
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        p.moveAfter(after)
+        if inAtIgnoreRange and not p.inAtIgnoreRange():
+            # The moved nodes have just become newly unignored.
+            dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
+            dirtyVnodeList.extend(dirtyVnodeList2)
+        else: # No need to mark descendents dirty.
+            dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+            dirtyVnodeList.extend(dirtyVnodeList2)
+        c.setChanged(True)
+        u.afterMoveNode(p,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.selectPosition(p) # Also sets root position.
+        c.endUpdate()
+    c.updateSyntaxColorer(p) # Dragging can change syntax coloring.
+#@-node:ekr.20031218072017.2353:c.dragAfter
+#@+node:ekr.20031218072017.2947:c.dragToNthChildOf
+def dragToNthChildOf(self,p,parent,n):
+
+    c = self ; u = c.undoer ; undoType = 'Drag'
+    current = c.currentPosition()
+    inAtIgnoreRange = p.inAtIgnoreRange()
+    if not c.checkDrag(p,parent): return
+    if not c.checkMoveWithParentWithWarning(p,parent,True): return
+
+    c.beginUpdate()
+    try: # In update...
+        c.endEditing()
+        undoData = u.beforeMoveNode(current)
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        p.moveToNthChildOf(parent,n)
+        if inAtIgnoreRange and not p.inAtIgnoreRange():
+            # The moved nodes have just become newly unignored.
+            dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
+            dirtyVnodeList.extend(dirtyVnodeList2)
+        else: # No need to mark descendents dirty.
+            dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+            dirtyVnodeList.extend(dirtyVnodeList2)
+        c.setChanged(True)
+        u.afterMoveNode(p,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.selectPosition(p) # Also sets root position.
+        c.endUpdate()
+    c.updateSyntaxColorer(p) # Dragging can change syntax coloring.
+#@-node:ekr.20031218072017.2947:c.dragToNthChildOf
+#@+node:ekr.20031218072017.2946:c.dragCloneToNthChildOf
+def dragCloneToNthChildOf (self,p,parent,n):
+
+    c = self ; u = c.undoer ; undoType = 'Clone Drag'
+    current = c.currentPosition()
+    inAtIgnoreRange = p.inAtIgnoreRange()
+
+    c.beginUpdate()
+    try: # In update...
+        # g.trace("p,parent,n:",p.headString(),parent.headString(),n)
+        clone = p.clone() # Creates clone & dependents, does not set undo.
+        if (
+            not c.checkDrag(p,parent) or
+            not c.checkMoveWithParentWithWarning(clone,parent,True)
+        ):
+            clone.doDelete() # Destroys clone and makes p the current node.
+            c.selectPosition(p) # Also sets root position.
+            c.endUpdate(False) # Nothing has changed.
+            return
+        c.endEditing()
+        undoData = u.beforeInsertNode(current)
+        dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
+        clone.moveToNthChildOf(parent,n)
+        if inAtIgnoreRange and not p.inAtIgnoreRange():
+            # The moved nodes have just become newly unignored.
+            dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
+            dirtyVnodeList.extend(dirtyVnodeList2)
+        else: # No need to mark descendents dirty.
+           dirtyVnodeList2 =  p.setAllAncestorAtFileNodesDirty()
+           dirtyVnodeList.extend(dirtyVnodeList2)
+        c.setChanged(True)
+        u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.selectPosition(clone) # Also sets root position.
+        c.endUpdate()
+    c.updateSyntaxColorer(clone) # Dragging can change syntax coloring.
+#@-node:ekr.20031218072017.2946:c.dragCloneToNthChildOf
+#@+node:ekr.20031218072017.2948:c.dragCloneAfter
+def dragCloneAfter (self,p,after):
+
+    c = self ; u = c.undoer ; undoType = 'Clone Drag'
+    current = c.currentPosition()
+
+    c.beginUpdate()
+    try: # In update...
+        clone = p.clone() # Creates clone.  Does not set undo.
+        if c.checkDrag(p,after) and c.checkMoveWithParentWithWarning(clone,after.parent(),True):
+            inAtIgnoreRange = clone.inAtIgnoreRange()
+            c.endEditing()
+            undoData = u.beforeInsertNode(current)
+            dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
+            clone.moveAfter(after)
+            if inAtIgnoreRange and not clone.inAtIgnoreRange():
+                # The moved node have just become newly unignored.
+                dirtyVnodeList2 = clone.setDirty() # Mark descendent @thin nodes dirty.
+                dirtyVnodeList.extend(dirtyVnodeList2)
+            else: # No need to mark descendents dirty.
+                dirtyVnodeList2 = clone.setAllAncestorAtFileNodesDirty()
+                dirtyVnodeList.extend(dirtyVnodeList2)
+            c.setChanged(True)
+            u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
+            p = clone
+        else:
+            # g.trace("invalid clone drag")
+            clone.doDelete()
+    finally:
+        c.selectPosition(p) # Also sets root position.
+        c.endUpdate()
+    c.updateSyntaxColorer(clone) # Dragging can change syntax coloring.
+#@nonl
+#@-node:ekr.20031218072017.2948:c.dragCloneAfter
+#@-node:ekr.20031218072017.2945:Dragging (commands)
+#@+node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning & c.checkDrag
+def checkMoveWithParentWithWarning (self,root,parent,warningFlag):
+
+    """Return False if root or any of root's descedents is a clone of
+    parent or any of parents ancestors."""
+
+    message = "Can not drag a node into its descendant tree."
+
+    g.trace('root',root.headString())
+
+    for z in root.subtree_iter():
+        if z == parent:
+            if g.app.unitTesting:
+                g.app.unitTestDict['checkMoveWithParentWithWarning']=True
+            elif warningFlag:
+                g.alert(message)
+            return False
+
+    message = "Illegal move or drag: no clone may contain a clone of itself"
+
+    # g.trace("root",root,"parent",parent)
+    clonedTnodes = {}
+    for ancestor in parent.self_and_parents_iter():
+        if ancestor.isCloned():
+            t = ancestor.v.t
+            clonedTnodes[t] = t
+
+    if not clonedTnodes:
+        return True
+
+    for p in root.self_and_subtree_iter():
+        if p.isCloned() and clonedTnodes.get(p.v.t):
+            if g.app.unitTesting:
+                g.app.unitTestDict['checkMoveWithParentWithWarning']=True
+            elif warningFlag:
+                g.alert(message)
+            return False
+    return True
+#@+node:ekr.20070910105044:checkMoveWithParentWithWarning
+def checkMoveWithParentWithWarning (self,root,parent,warningFlag):
+
+    """Return False if root or any of root's descedents is a clone of
+    parent or any of parents ancestors."""
+
+    message = "Illegal move or drag: no clone may contain a clone of itself"
+
+    # g.trace("root",root,"parent",parent)
+    clonedTnodes = {}
+    for ancestor in parent.self_and_parents_iter():
+        if ancestor.isCloned():
+            t = ancestor.v.t
+            clonedTnodes[t] = t
+
+    if not clonedTnodes:
+        return True
+
+    for p in root.self_and_subtree_iter():
+        if p.isCloned() and clonedTnodes.get(p.v.t):
+            if g.app.unitTesting:
+                g.app.unitTestDict['checkMoveWithParentWithWarning']=True
+            elif warningFlag:
+                g.alert(message)
+            return False
+    return True
+#@-node:ekr.20070910105044:checkMoveWithParentWithWarning
+#@+node:ekr.20070910105044.1:checkDrag
+def checkDrag (self,root,target):
+
+    """Return False if target is any descendant of root."""
+
+    message = "Can not drag a node into its descendant tree."
+
+    # g.trace('root',root.headString(),'target',target.headString())
+
+    for z in root.subtree_iter():
+        if z == target:
+            if g.app.unitTesting:
+                g.app.unitTestDict['checkMoveWithParentWithWarning']=True
+            else:
+                g.alert(message)
+            return False
+    return True
+#@nonl
+#@-node:ekr.20070910105044.1:checkDrag
+#@-node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning & c.checkDrag
+#@+node:ekr.20031218072017.1772:moveOutlineUp
+def moveOutlineUp (self,event=None):
+
+    '''Move the selected node up if possible.'''
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+    if not c.canMoveOutlineUp(): # Support for hoist.
+        if c.hoistStack: self.cantMoveMessage()
+        c.treeFocusHelper()
+        return
+    back = p.visBack(c)
+    if not back: return
+    inAtIgnoreRange = p.inAtIgnoreRange()
+    back2 = back.visBack(c)
+
+    sparseMove = c.config.getBool('sparse_move_outline_left')
+    c.beginUpdate()
+    try: # update...
+        c.endEditing()
+        undoData = u.beforeMoveNode(p)
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        moved = False
+        << Move p up >>
+        if moved:
+            if inAtIgnoreRange and not p.inAtIgnoreRange():
+                # The moved nodes have just become newly unignored.
+                dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
+            else: # No need to mark descendents dirty.
+                dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+            dirtyVnodeList.extend(dirtyVnodeList2)
+            c.setChanged(True)
+            u.afterMoveNode(p,'Move Right',undoData,dirtyVnodeList)
+
+    finally:
+        c.selectPosition(p) # Also sets root position.
+        c.endUpdate()
+        c.treeFocusHelper()
+    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
+#@+node:ekr.20031218072017.1773:<< Move p up >>
+if 0:
+    g.trace("visBack",back)
+    g.trace("visBack2",back2)
+    g.trace("oldParent",oldParent)
+    g.trace("back2.hasChildren",back2.hasChildren())
+    g.trace("back2.isExpanded",back2.isExpanded())
+
+parent = p.parent()
+
+# For this special case we move p after back2.
+specialCase = back2 and p.v in back2.v.t.vnodeList
+
+if specialCase:
+    # The move must be legal.
+    moved = True
+    back2.contract()
+    p.moveAfter(back2)
+elif not back2:
+    if c.hoistStack: # hoist or chapter.
+        limit,limitIsVisible = c.visLimit()
+        assert limit
+        if limitIsVisible:
+            # canMoveOutlineUp should have caught this.
+            g.trace('can not happen. In hoist')
+        else:
+            # g.trace('chapter first child')
+            moved = True
+            p.moveToFirstChildOf(limit)
+    else:
+        # p will be the new root node
+        # g.trace('move to root')
+        p.moveToRoot(oldRoot=c.rootPosition())
+        moved = True
+elif back2.hasChildren() and back2.isExpanded():
+    if c.checkMoveWithParentWithWarning(p,back2,True):
+        moved = True
+        p.moveToNthChildOf(back2,0)
+else:
+    if c.checkMoveWithParentWithWarning(p,back2.parent(),True):
+        moved = True
+        p.moveAfter(back2)
+if moved and sparseMove and parent and not parent.isAncestorOf(p):
+    # New in Leo 4.4.2: contract the old parent if it is no longer the parent of p.
+    parent.contract()
+#@-node:ekr.20031218072017.1773:<< Move p up >>
+#@-node:ekr.20031218072017.1772:moveOutlineUp
+#@-node:ekr.20070910102447:Fixed bad drag & drop bug
+#@+node:ekr.20070912052929:Fixed bug 'node note selected' bug
+@nocolor
+https://sourceforge.net/forum/message.php?msg_id=4514130
+By: plumloco
+
+Some commands (such as expand-all) leave no nodes selected. The result of this
+is that if you click on the body pane without first having selected a node,
+an error dialog pops up.
+
+
+AttributeError Exception in Tk callback
+  Function: <function bodyClickCallback at 0x01981A70> (type: <type 'function'>)
+  Args: (<Tkinter.Event instance at 0x02505580>,)
+  Event type: ButtonPress (type num: 4)
+Traceback (innermost last):
+  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
+    return apply(self.func, args)
+  File "c:\prog\tigris-cvs\leo\src\leoTkinterFrame.py", line 80, in bodyClickCallback
+    return handler(event,func)
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 3187, in masterClickHandler
+    c.frame.body.onClick(event) # New in Leo 4.4.2.
+  File "C:\prog\tigris-cvs\leo\src\leoFrame.py", line 1297, in onClick
+    c.editCommands.setMoveCol(w,i)
+  File "C:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 3539, in setMoveCol
+    self.moveSpotNode = p.v.t
+AttributeError: 'NoneType' object has no attribute 't'
+
+================================================
+  Event contents:
+    char: ??
+    delta: 0
+    height: ??
+    keycode: ??
+    keysym: ??
+    keysym_num: ??
+    num: 1
+    send_event: False
+    serial: 1525
+    state: 0
+    time: 4692125
+    type: 4
+    widget: .26496576.26526264.26526584.26526664.26719976.26720296.body-pane
+    width: ??
+    x: 438
+    x_root: 744
+    y: 87
+    y_root: 651
+
+
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.2903:expandAllHeadlines
+def expandAllHeadlines (self,event=None):
+
+    '''Expand all headlines.
+    Warning: this can take a long time for large outlines.'''
+
+    c = self
+
+    c.beginUpdate()
+    try:
+        p = c.rootPosition()
+        while p:
+            c.expandSubtree(p)
+            p.moveToNext()
+        c.selectVnode(c.rootPosition())
+    finally:
+        c.endUpdate()
+        c.treeFocusHelper()
+
+    c.expansionLevel = 0 # Reset expansion level.
+#@-node:ekr.20031218072017.2903:expandAllHeadlines
+#@+node:ekr.20060209095101:setMoveCol & test
+def setMoveCol (self,w,spot):
+
+    '''Set the column to which an up or down arrow will attempt to move.'''
+
+    c = self.c ; p = c.currentPosition()
+    s = w.getAllText()
+    i = w.toPythonIndex(spot)
+    junk,col = g.convertPythonIndexToRowCol(s,i)
+    # g.trace('spot,i,col',spot,i,col)
+
+    self.moveSpot = i
+    self.moveCol = col
+    self.moveSpotNode = p.v.t
+#@nonl
+#@+node:ekr.20070627082044.276:@test setMoveCol
+if g.unitTesting:
+    c.beginUpdate()
+    try:
+        w = c.frame.body.bodyCtrl
+        ec = c.editCommands
+
+        for spot,result in (('1.0',0),(5,5)):
+            ec.setMoveCol(w,spot)
+            assert ec.moveSpot == result
+            assert ec.moveCol == result
+    finally:
+        c.endUpdate(False)
+#@-node:ekr.20070627082044.276:@test setMoveCol
+#@-node:ekr.20060209095101:setMoveCol & test
+#@+node:ekr.20061109095450.8:onClick
+def onClick (self,event):
+
+    c = self.c ; k = c.k ; w = event and event.widget
+    wname = c.widget_name(w)
+
+    if not c.currentPosition(): return
+
+    if wname.startswith('body'):
+        # A hack to support middle-button pastes: remember the previous selection.
+        k.previousSelection = w.getSelectionRange()
+        x,y = g.app.gui.eventXY(event)
+        i = w.xyToPythonIndex(x,y)
+        # g.trace(x,y,repr(i))
+        w.setSelectionRange(i,i,insert=i)
+        c.editCommands.setMoveCol(w,i)
+        c.frame.updateStatusLine()
+        self.selectEditor(w)
+    else:
+        g.trace('can not happen')
+#@+node:ekr.20070627082044.857:@test onClick
+if g.unitTesting:
+    c.beginUpdate()
+    try:
+        w = c.frame.body.bodyCtrl
+        y = 10
+        for x in xrange(0,100,10):
+            event = g.Bunch(c=c,x=x,y=y,widget=w)
+            c.frame.body.onClick(event)
+    finally:
+        c.endUpdate(False)
+#@nonl
+#@-node:ekr.20070627082044.857:@test onClick
+#@-node:ekr.20061109095450.8:onClick
+#@-node:ekr.20070912052929:Fixed bug 'node note selected' bug
 #@-node:ekr.20070703182412:Bugs
 #@+node:ekr.20070703182412.1:Features
 #@+node:ekr.20070703172130:Added support for @mark-for-unit-tests node
@@ -1574,9 +2125,9 @@ def run (self,s,parent):
     self.errorLines = []
     changed = c.isChanged()
 
-    # Regularize leading whitespace.
-    # Generate errors for strict languages, warnings for non-strict languages.
-    s = scanner.regularizeWhitespace(s)
+    # Regularize leading whitespace for strict languages only.
+    if self.strict:
+        s = scanner.regularizeWhitespace(s)
 
     # Generate the nodes, including directive and section references.
     scanner.scan(s,parent)
@@ -1596,6 +2147,60 @@ def run (self,s,parent):
     else:
         parent.setDirty(setDescendentsDirty=False)
         c.setChanged(True)
+#@+node:ekr.20070808115837.1:regularizeWhitespace
+def regularizeWhitespace (self,s):
+
+    '''Regularize leading whitespace in s:
+    Convert tabs to blanks or vice versa depending on the @tabwidth in effect.
+    Issue errors for strict languages; warnings for non-strict languages.'''
+
+    changed = False ; lines = g.splitLines(s) ; result = [] ; tab_width = self.tab_width
+
+    if tab_width < 0: # Convert tabs to blanks.
+        for line in lines:
+            i, w = g.skip_leading_ws_with_indent(line,0,tab_width)
+            s = g.computeLeadingWhitespace(w,-abs(tab_width)) + line [i:] # Use negative width.
+            if s != line: changed = True
+            result.append(s)
+    elif tab_width > 0: # Convert blanks to tabs.
+        for line in lines:
+            s = g.optimizeLeadingWhitespace(line,abs(tab_width)) # Use positive width.
+            if s != line: changed = True
+            result.append(s)
+
+    # For strict languages, check that leading whitespace is a multiple of the tab_width.
+    if self.strict:
+        for line in lines:
+            if line.strip(): # only check non-blank lines.
+                lws = line[0:g.skip_ws(line,0)]
+                w = g.computeWidth(lws,tab_width)
+                if (w % abs(tab_width)) != 0:
+                ### if 0 < w < abs(tab_width):
+                    self.error(
+                        'leading whitespace not consistent with @tabwidth %d\nline: %s' % (
+                            tab_width,repr(line)))
+                    break
+
+    if self.strict and changed: self.regularizeError()
+
+    return ''.join(result)
+#@+node:ekr.20070808121958:regularizeError
+def regularizeError (self):
+
+    # Create the message.
+    kind = g.choose(self.strict,'error','warning')
+    s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
+    message = '%s: inconsistent leading whitespace. %s' % (kind,s)
+
+    # Issue an error or warning.
+    if self.strict:
+        self.error(message)
+    else:
+        print message
+        g.es(message,color='red')
+
+#@-node:ekr.20070808121958:regularizeError
+#@-node:ekr.20070808115837.1:regularizeWhitespace
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@+node:ekr.20070806105721.1:readAtAutoNodes (commands)
 def readAtAutoNodes (self,event=None):
@@ -2127,59 +2732,28 @@ def check (self,s,parent):
     '''
 
     if self.fullChecks:
-        # result = self.checkWhitespace(s,parent) and self.checkTrialWrite()
-        result = self.checkTrialWrite()
+        return self.checkTrialWrite()
     else:
-        result = True
-
-    return result
+        return True
 #@-node:ekr.20070703122141.102:check
-#@+node:ekr.20070703122141.103:checkWhitespace (no longer used)
-def checkWhitespace(self,s,parent):
-
-    '''Check the leading whitespace of all lines of s.'''
-
-    # Do a quick check for mixed leading tabs/blanks.
-    strict = self.strict ; tab_width = self.tab_width
-    blanks = tabs = 0
-    for line in g.splitLines(s):
-        lws = line[0:g.skip_ws(line,0)]
-        blanks += lws.count(' ')
-        tabs += lws.count('\t')
-        if strict:
-            w = g.computeWidth(lws,tab_width)
-            if (w % abs(tab_width)) != 0:
-                self.error('leading whitespace not consistent with @tabwidth %d' % tab_width)
-                g.es_print('line: %s' % (repr(line)),color='red')
-                return False
-
-    ok = blanks == 0 or tabs == 0
-    if not ok:
-        self.error('File contains intermixed blanks and tabs')
-    return ok
-#@-node:ekr.20070703122141.103:checkWhitespace (no longer used)
-#@+node:ekr.20070703122141.104:checkTrialWrite & helper
+#@+node:ekr.20070703122141.104:checkTrialWrite & tests
 def checkTrialWrite (self,s1=None,s2=None):
 
     '''Return True if a trial write produces the original file.'''
 
-    def pr(*args,**keys):
-        g.es_print(color='blue',*args,**keys)
-
     c = self.c ; at = c.atFileCommands
 
     if s1 and s2:
-        if s1 == s2: return True # For unit testing.
-    else:
-        at.write(self.root,
-            nosentinels=True,thinFile=False,
-            scriptWrite=False,toString=True,
-            write_strips_blank_lines=False,
-        )
-
-        ignoreBlankLines = True
-        s1,s2 = self.file_s, at.stringOutput
         if s1 == s2: return True
+
+    at.write(self.root,
+        nosentinels=True,thinFile=False,
+        scriptWrite=False,toString=True,
+        write_strips_blank_lines=False,
+    )
+
+    s1,s2 = self.file_s, at.stringOutput
+    if s1 == s2: return True
 
     lines1 = g.splitLines(s1) ; n1 = len(lines1)
     lines2 = g.splitLines(s2) ; n2 = len(lines2)
@@ -2191,25 +2765,26 @@ def checkTrialWrite (self,s1=None,s2=None):
             bad_i = i + 1
             break
 
-    d = g.app.unitTestDict
-    expectedMismatch =  d.get('expectedMismatchLine')
-    actualMismatch = d.get('actualMismatchLine')
-    kind = g.choose(self.atAuto,'@auto','import command')
-    self.error('%s did not import the file perfectly' % kind)
-    pr('first mismatched line: %d\n%s' % (bad_i,repr(lines2[bad_i-1])))
-    pr('Inserting @ignore directive')
-    ok = ok or (g.app.unitTesting and expectedMismatch == actualMismatch)
+    if g.app.unitTesting:
+        d = g.app.unitTestDict
+        ok = d.get('expectedMismatchLine') == d.get('actualMismatchLine')
+
     if not ok:
-        if len(lines1) < 30:
-            pr('input...')
-            for i in xrange(len(lines1)):
-                pr('%3d %s' % (i,lines1[i]),newline=False)
-            pr('output...')
-            for i in xrange(len(lines2)):
-                pr('%3d %s' % (i,lines2[i]),newline=False)
+        self.reportMismatch(lines1,lines2,bad_i)
 
     return ok
-#@+node:ekr.20070730093735:compareHelper
+#@+node:ekr.20070816103348:@test checkTriailWrite
+if g.unitTesting:
+
+    ic = c.importCommands
+    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+
+    s1 = 'line1\nline2\n'
+    s2 = 'line1\nline2a\n'
+    runner.checkTrialWrite(s1=s1,s2=s2)
+#@-node:ekr.20070816103348:@test checkTriailWrite
+#@-node:ekr.20070703122141.104:checkTrialWrite & tests
+#@+node:ekr.20070730093735:compareHelper & tests
 def compareHelper (self,lines1,lines2,i,strict):
 
     '''Compare lines1[i] and lines2[i].
@@ -2250,8 +2825,8 @@ def compareHelper (self,lines1,lines2,i,strict):
             g.es_print('original line: ', repr(line1))
             g.es_print('generated line:', repr(line2))
         d ['actualMismatchLine'] = i+1
+        g.trace('lines 1...\n',repr(lines1),'\nlines2...\n',repr(lines2))
         return False
-#@-node:ekr.20070730093735:compareHelper
 #@+node:ekr.20070816101019:@test compareHelper
 if g.unitTesting:
 
@@ -2262,69 +2837,28 @@ if g.unitTesting:
     lines2 = ['xyz',]
     runner.compareHelper(lines1,lines2,i,strict=True)
 #@-node:ekr.20070816101019:@test compareHelper
-#@+node:ekr.20070816103348:@test checkTriailWrite
-if g.unitTesting:
+#@-node:ekr.20070730093735:compareHelper & tests
+#@+node:ekr.20070911110507:reportMismatch
+def reportMismatch (self,lines1,lines2,bad_i):
 
-    ic = c.importCommands
-    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+    def pr(*args,**keys):
+        g.es_print(color='blue',newline=False,*args,**keys)
 
-    s1 = 'line1\nline2\n'
-    s2 = 'line1\nline2a\n'
-    runner.checkTrialWrite(s1=s1,s2=s2)
-#@-node:ekr.20070816103348:@test checkTriailWrite
-#@-node:ekr.20070703122141.104:checkTrialWrite & helper
-#@+node:ekr.20070808115837.1:regularizeWhitespace
-def regularizeWhitespace (self,s):
+    kind = g.choose(self.atAuto,'@auto','import command')
+    self.error(
+        '%s did not import the file perfectly\nfirst mismatched line: %d\n%s' % (
+            kind,bad_i,repr(lines2[bad_i-1])))
 
-    '''Regularize leading whitespace in s:
-    Convert tabs to blanks or vice versa depending on the @tabwidth in effect.
-    Issue errors for strict languages; warnings for non-strict languages.'''
+    if len(lines1) < 30:
+        pr('input...')
+        for i in xrange(len(lines1)):
+            pr('%3d %s' % (i,lines1[i]),newline=False)
+        pr('output...')
+        for i in xrange(len(lines2)):
+            pr('%3d %s' % (i,lines2[i]),newline=False)
 
-    changed = False ; lines = g.splitLines(s) ; result = [] ; tab_width = self.tab_width
-
-    if tab_width < 0: # Convert tabs to blanks.
-        for line in lines:
-            i, w = g.skip_leading_ws_with_indent(line,0,tab_width)
-            s = g.computeLeadingWhitespace(w,-abs(tab_width)) + line [i:] # Use negative width.
-            if s != line: changed = True
-            result.append(s)
-    elif tab_width > 0: # Convert blanks to tabs.
-        for line in lines:
-            s = g.optimizeLeadingWhitespace(line,abs(tab_width)) # Use positive width.
-            if s != line: changed = True
-            result.append(s)
-
-    # For strict languages, check that leading whitespace is a multiple of the tab_width.
-    if self.strict:
-        for line in lines:
-            if line.strip(): # only check non-blank lines.
-                lws = line[0:g.skip_ws(line,0)]
-                w = g.computeWidth(lws,tab_width)
-                if (w % abs(tab_width)) != 0:
-                    self.error('leading whitespace not consistent with @tabwidth %d' % tab_width)
-                    g.es_print('line: %s' % (repr(line)),color='red')
-                    break
-
-    if changed: self.regularizeError()
-
-    return ''.join(result)
-#@+node:ekr.20070808121958:regularizeError
-def regularizeError (self):
-
-    # Create the message.
-    kind = g.choose(self.strict,'error','warning')
-    s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
-    message = '%s: inconsistent leading whitespace. %s' % (kind,s)
-
-    # Issue an error or warning.
-    if self.strict:
-        self.error(message)
-    else:
-        print message
-        g.es(message,color='red')
-
-#@-node:ekr.20070808121958:regularizeError
-#@-node:ekr.20070808115837.1:regularizeWhitespace
+    return False
+#@-node:ekr.20070911110507:reportMismatch
 #@-node:ekr.20070808115837:Checking
 #@+node:ekr.20070706084535:Code generation
 @ None of these methods should ever need to be overridden in subclasses.
@@ -2425,7 +2959,9 @@ def indentBody (self,s,lws=None):
 def insertIgnoreDirective (self,parent):
 
     self.c.appendStringToBody(parent,'@ignore')
-    g.es_print('inserting @ignore',color='blue')
+
+    if not g.unitTesting:
+        g.es_print('inserting @ignore',color='blue')
 #@-node:ekr.20070705085335:insertIgnoreDirective
 #@+node:ekr.20070703122141.81:massageComment
 def massageComment (self,s):
@@ -2571,8 +3107,9 @@ def putFunction (self,s,sigStart,codeEnd,start,parent):
         g.trace('body\n%s' % body)
 
     if not body.endswith('\n'):
-        self.error('function %s does not end with a newline; one will be added.' % self.sigID)
-        g.es_print(g.get_line(s,codeEnd),color='blue')
+        self.error(
+            'function %s does not end with a newline; one will be added\n%s' % (
+                self.sigID,g.get_line(s,codeEnd)))
         g.trace(g.callers())
 
     self.createFunctionNode(headline,body,parent)
@@ -2612,14 +3149,13 @@ def undentBody (self,s,ignoreComments=True):
 #@+node:ekr.20070801074524:underindentedComment & underindentedLine
 def underindentedComment (self,line):
 
-    self.error('underindented python comments.\nExtra leading whitespace will be added')
-    g.es(line,color='blue')
+    self.error(
+        'underindented python comments.\nExtra leading whitespace will be added\n' + line)
 
 def underindentedLine (self,line):
 
-    self.error('underindented line.\nExtra leading whitespace will be added')
-    g.es(line,color='blue')
-
+    self.error(
+        'underindented line.\nExtra leading whitespace will be added\n' + line)
 #@-node:ekr.20070801074524:underindentedComment & underindentedLine
 #@-node:ekr.20070706084535:Code generation
 #@+node:ekr.20070703122141.78:error & oops
@@ -2627,11 +3163,14 @@ def error (self,s):
 
     self.errors += 1
     self.importCommands.errors += 1
-    if self.errors == 1:
-        g.app.unitTestDict['actualErrorMessage'] = s
-    g.app.unitTestDict['actualErrors'] = self.errors
-    g.es_print(s,color='red')
-
+    if g.app.unitTesting:
+        if self.errors == 1:
+            g.app.unitTestDict['actualErrorMessage'] = s
+        g.app.unitTestDict['actualErrors'] = self.errors
+        if 1: # For debugging unit tests.
+            g.es_print(s,color='red')
+    else:
+        g.es_print(s,color='red')
 
 def oops (self):
     print 'baseScannerClass oops: %s must be overridden in subclass' % g.callers()
@@ -2865,9 +3404,9 @@ def adjustClassOrFunctionStart(self,s,i,tag):
 
     j = g.find_line_start(s,i)
     if s[j:i].strip():
-        message = '%s %s does not start a line. Leo must insert a newline.' % (tag,self.sigID)
-        self.error(message)
-        g.es_print(g.get_line(s,j))
+        self.error(
+            '%s %s does not start a line. Leo must insert a newline\n%s' % (
+                tag,self.sigID,g.get_line(s,j)))
         return i
     else:
         return j
@@ -2897,8 +3436,9 @@ def skipNewline(self,s,i,kind):
     if g.match(s,i,'\n'):
         i += 1
     else:
-        self.error('%s %s does not end in a newline; one will be added.' % (kind,self.sigID))
-        g.es_print(g.get_line(s,i),color='blue')
+        self.error(
+            '%s %s does not end in a newline; one will be added\n%s' % (
+                kind,self.sigID,g.get_line(s,i)))
         # g.trace(g.callers())
 
     return i
@@ -3008,8 +3548,8 @@ def startsHelper(self,s,i,kind,quick,tags):
 
     # Isue this warning only if we have a real class or function.
     if s[self.sigStart:k].strip():
-        self.error('%s definition does not start a line' % kind)
-        g.es(g.get_line(s,k),color='blue')
+        self.error('%s definition does not start a line\n%s' % (
+            kind,g.get_line(s,k)))
 
     if trace or self.trace: g.trace(kind,'returns\n'+s[self.sigStart:i])
     return True
@@ -3109,9 +3649,9 @@ def run (self,s,parent):
     self.errorLines = []
     changed = c.isChanged()
 
-    # Regularize leading whitespace.
-    # Generate errors for strict languages, warnings for non-strict languages.
-    s = scanner.regularizeWhitespace(s)
+    # Regularize leading whitespace for strict languages only.
+    if self.strict:
+        s = scanner.regularizeWhitespace(s)
 
     # Generate the nodes, including directive and section references.
     scanner.scan(s,parent)
@@ -3131,6 +3671,60 @@ def run (self,s,parent):
     else:
         parent.setDirty(setDescendentsDirty=False)
         c.setChanged(True)
+#@+node:ekr.20070808115837.1:regularizeWhitespace
+def regularizeWhitespace (self,s):
+
+    '''Regularize leading whitespace in s:
+    Convert tabs to blanks or vice versa depending on the @tabwidth in effect.
+    Issue errors for strict languages; warnings for non-strict languages.'''
+
+    changed = False ; lines = g.splitLines(s) ; result = [] ; tab_width = self.tab_width
+
+    if tab_width < 0: # Convert tabs to blanks.
+        for line in lines:
+            i, w = g.skip_leading_ws_with_indent(line,0,tab_width)
+            s = g.computeLeadingWhitespace(w,-abs(tab_width)) + line [i:] # Use negative width.
+            if s != line: changed = True
+            result.append(s)
+    elif tab_width > 0: # Convert blanks to tabs.
+        for line in lines:
+            s = g.optimizeLeadingWhitespace(line,abs(tab_width)) # Use positive width.
+            if s != line: changed = True
+            result.append(s)
+
+    # For strict languages, check that leading whitespace is a multiple of the tab_width.
+    if self.strict:
+        for line in lines:
+            if line.strip(): # only check non-blank lines.
+                lws = line[0:g.skip_ws(line,0)]
+                w = g.computeWidth(lws,tab_width)
+                if (w % abs(tab_width)) != 0:
+                ### if 0 < w < abs(tab_width):
+                    self.error(
+                        'leading whitespace not consistent with @tabwidth %d\nline: %s' % (
+                            tab_width,repr(line)))
+                    break
+
+    if self.strict and changed: self.regularizeError()
+
+    return ''.join(result)
+#@+node:ekr.20070808121958:regularizeError
+def regularizeError (self):
+
+    # Create the message.
+    kind = g.choose(self.strict,'error','warning')
+    s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
+    message = '%s: inconsistent leading whitespace. %s' % (kind,s)
+
+    # Issue an error or warning.
+    if self.strict:
+        self.error(message)
+    else:
+        print message
+        g.es(message,color='red')
+
+#@-node:ekr.20070808121958:regularizeError
+#@-node:ekr.20070808115837.1:regularizeWhitespace
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@-node:ekr.20070703122141.65: class baseScannerClass
 #@+node:ekr.20070808115837.2:Regularize whitespace
@@ -3197,9 +3791,9 @@ def run (self,s,parent):
     self.errorLines = []
     changed = c.isChanged()
 
-    # Regularize leading whitespace.
-    # Generate errors for strict languages, warnings for non-strict languages.
-    s = scanner.regularizeWhitespace(s)
+    # Regularize leading whitespace for strict languages only.
+    if self.strict:
+        s = scanner.regularizeWhitespace(s)
 
     # Generate the nodes, including directive and section references.
     scanner.scan(s,parent)
@@ -3219,6 +3813,60 @@ def run (self,s,parent):
     else:
         parent.setDirty(setDescendentsDirty=False)
         c.setChanged(True)
+#@+node:ekr.20070808115837.1:regularizeWhitespace
+def regularizeWhitespace (self,s):
+
+    '''Regularize leading whitespace in s:
+    Convert tabs to blanks or vice versa depending on the @tabwidth in effect.
+    Issue errors for strict languages; warnings for non-strict languages.'''
+
+    changed = False ; lines = g.splitLines(s) ; result = [] ; tab_width = self.tab_width
+
+    if tab_width < 0: # Convert tabs to blanks.
+        for line in lines:
+            i, w = g.skip_leading_ws_with_indent(line,0,tab_width)
+            s = g.computeLeadingWhitespace(w,-abs(tab_width)) + line [i:] # Use negative width.
+            if s != line: changed = True
+            result.append(s)
+    elif tab_width > 0: # Convert blanks to tabs.
+        for line in lines:
+            s = g.optimizeLeadingWhitespace(line,abs(tab_width)) # Use positive width.
+            if s != line: changed = True
+            result.append(s)
+
+    # For strict languages, check that leading whitespace is a multiple of the tab_width.
+    if self.strict:
+        for line in lines:
+            if line.strip(): # only check non-blank lines.
+                lws = line[0:g.skip_ws(line,0)]
+                w = g.computeWidth(lws,tab_width)
+                if (w % abs(tab_width)) != 0:
+                ### if 0 < w < abs(tab_width):
+                    self.error(
+                        'leading whitespace not consistent with @tabwidth %d\nline: %s' % (
+                            tab_width,repr(line)))
+                    break
+
+    if self.strict and changed: self.regularizeError()
+
+    return ''.join(result)
+#@+node:ekr.20070808121958:regularizeError
+def regularizeError (self):
+
+    # Create the message.
+    kind = g.choose(self.strict,'error','warning')
+    s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
+    message = '%s: inconsistent leading whitespace. %s' % (kind,s)
+
+    # Issue an error or warning.
+    if self.strict:
+        self.error(message)
+    else:
+        print message
+        g.es(message,color='red')
+
+#@-node:ekr.20070808121958:regularizeError
+#@-node:ekr.20070808115837.1:regularizeWhitespace
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@+node:ekr.20070703122141.102:check
 def check (self,s,parent):
@@ -3232,12 +3880,9 @@ def check (self,s,parent):
     '''
 
     if self.fullChecks:
-        # result = self.checkWhitespace(s,parent) and self.checkTrialWrite()
-        result = self.checkTrialWrite()
+        return self.checkTrialWrite()
     else:
-        result = True
-
-    return result
+        return True
 #@-node:ekr.20070703122141.102:check
 #@+node:ekr.20070808115837.1:regularizeWhitespace
 def regularizeWhitespace (self,s):
@@ -3267,11 +3912,13 @@ def regularizeWhitespace (self,s):
                 lws = line[0:g.skip_ws(line,0)]
                 w = g.computeWidth(lws,tab_width)
                 if (w % abs(tab_width)) != 0:
-                    self.error('leading whitespace not consistent with @tabwidth %d' % tab_width)
-                    g.es_print('line: %s' % (repr(line)),color='red')
+                ### if 0 < w < abs(tab_width):
+                    self.error(
+                        'leading whitespace not consistent with @tabwidth %d\nline: %s' % (
+                            tab_width,repr(line)))
                     break
 
-    if changed: self.regularizeError()
+    if self.strict and changed: self.regularizeError()
 
     return ''.join(result)
 #@+node:ekr.20070808121958:regularizeError
