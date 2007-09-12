@@ -75,6 +75,8 @@ def run(fileName=None,pymacs=None,*args,**keywords):
     else:
         script, windowFlag = getBatchScript() # Do early so we can compute verbose next.
     verbose = script is None
+    g.app.batchMode = script is not None
+    g.app.silentMode = '-silent' in sys.argv or '--silent' in sys.argv
     g.app.setLeoID(verbose=verbose) # Force the user to set g.app.leoID.
     #@    << import leoNodes and leoConfig >>
     #@+node:ekr.20041219072416.1:<< import leoNodes and leoConfig >>
