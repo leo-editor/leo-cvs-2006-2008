@@ -100,10 +100,6 @@ __version__ = '0.2.%s'% __revision__
 #@-at
 #@-node:bob.20070813163332.52:<< bug list & to-do >>
 #@nl
-#@<< constants >>
-#@+node:bob.20070907223746:<< constants >>
-#@-node:bob.20070907223746:<< constants >>
-#@nl
 
 #@<< imports >>
 #@+node:bob.20070813163332.62:<< imports >>
@@ -159,9 +155,6 @@ except ImportError:
 #@+node:bob.20070813163332.64: init
 def init():
 
-    print('@@@@@@@@@@@@@@@@@@@@@@@@ __wx__alt_gui @@@@@@@@@@@@@@@@@@')
-    print('g.app.unitTesting', g.app.unitTesting)
-
     if g.app.unitTesting: # Not Ok for unit testing!
         return False
 
@@ -175,7 +168,6 @@ def init():
     ok = wx and not g.app.gui 
 
     if ok:
-        print '__wx__alt_gui.py version:', __version__
         g.app.gui = wxGui()
         g.app.root = g.app.gui.createRootWindow()
         g.app.gui.finishCreate()
@@ -258,10 +250,10 @@ def onGlobalChar(self, event):
             event.Skip()
 #@-node:bob.20070910165627:onGlobalChar
 #@+node:bob.20070910192953:onRogueChar
-def onRogueChar(event, type):
-    g.trace(type, event, '\n\n', g.callers())
-    event.Skip()
-#@nonl
+def onRogueChar(self, event, type):
+    g.trace(type, g.callers())
+
+    onGlobalChar(self, event)
 #@-node:bob.20070910192953:onRogueChar
 #@-others
 #@nonl
@@ -269,6 +261,15 @@ def onRogueChar(event, type):
 #@nl
 
 if wx:
+
+    #@    << constants >>
+    #@+node:bob.20070907223746:<< constants >>
+    if wx:
+        HORIZONTAL = wx.HORIZONTAL
+        VERTICAL = wx.VERTICAL
+
+    #@-node:bob.20070907223746:<< constants >>
+    #@nl
 
     #@    @+others
     #@+node:bob.20070813163332.136:=== TEXT WIDGETS ===
@@ -290,6 +291,8 @@ if wx:
             bindchar=True, 
             **keys
         ):
+
+            self.name = name
 
             self.leoParent = leoParent
             self.ctrl = widget
@@ -325,17 +328,20 @@ if wx:
                 lambda event: self.onGlobalLoseFocus(event)
             )
 
+            self.__repr__ = self.__str__ = lambda : myclass(self) + str(id(self))
+
+
 
         #@-node:bob.20070813163332.138:__init__
         #@+node:bob.20070902072600:setWidget
         #@-node:bob.20070902072600:setWidget
-        #@+node:bob.20070823072419:GetName
+        #@+node:bob.20070823072419:getName
 
-        def GetName(self):
-            return self.name
+        def getName(self):
+            return self.name or self.widget.GetName()
 
-        getName = GetName
-        #@-node:bob.20070823072419:GetName
+        GetName = getName
+        #@-node:bob.20070823072419:getName
         #@+node:bob.20070901042726:== Focus ==
         #@+node:bob.20070826134115:onGlobalGainFocus
 
@@ -491,6 +497,13 @@ if wx:
 
 
         #@-node:bob.20070813163332.8:__init__
+        #@+node:bob.20070911142138:__str__
+        def __str__(self):
+            return myclass(self) + str(id(self))
+
+
+        __repr__ = __str__
+        #@-node:bob.20070911142138:__str__
         #@+node:bob.20070827204727:initStc
         # Code copied from wxPython demo.
 
@@ -1402,20 +1415,6 @@ if wx:
                 *args, **keys
             )
         #@-node:bob.20070821163516.1:__init__
-        #@+node:bob.20070901073324:def onChar
-
-        ## fix me
-
-        def onChar(self, event, keycode, keysym):
-            """Intercept return and tab chars."""
-
-            if keysym == 'Return':
-                self.leoParent.findNextCommand()
-                return True
-
-            if keysym == 'Tab':
-                self.leoParent.toggleTextWidgetFocus(self)
-        #@-node:bob.20070901073324:def onChar
         #@-others
     #@nonl
     #@-node:bob.20070821163516:findTextWidget (plainTextWidget)
@@ -1499,10 +1498,13 @@ if wx:
             multiline=True,
             widget=None,
             name='text <unknown richTextWidget>',
+            **kw
         ):
 
+
+
             if not widget:
-                widget = richtext.RichTextCtrl(parent, style=wx.WANTS_CHARS)
+                widget = richtext.RichTextCtrl(parent, style=wx.WANTS_CHARS, **kw)
 
             baseTextWidget.__init__(self, leoParent, 
                 name=name, widget=widget,
@@ -2095,9 +2097,15 @@ if wx:
         #@+node:bob.20070901083131:toggleTextWidgetFocus
 
         def toggleTextWidgetFocus(self, widget):
-            if widget is self.find_ctrl:
+
+            c = self.c
+
+            g.trace(c.widget_name(widget), widget)
+            if c.widget_name(widget) == 'find-text':
+                print 'chang', self.change_ctrl
                 self.change_ctrl.setFocus()
             else:
+                print 'find', self.find_ctrl
                 self.find_ctrl.setFocus()
 
         #@-node:bob.20070901083131:toggleTextWidgetFocus
@@ -2887,11 +2895,14 @@ if wx:
             #@    @+others
             #@+node:bob.20070830070902:alert
 
-            def alert(msg):
+            def alert(msg, caption='Alert'):
 
                 g.es('\n' + msg, color='cyan')
-                g.app.gui.runAskOkDialog(None, 'Alert', msg)
-                g.alert = alert
+                dlg = wx.MessageDialog(None,msg,'Alert')
+                dlg.ShowModal()
+                dlg.Destroy()
+
+            g.alert = alert
             #@-node:bob.20070830070902:alert
             #@+node:bob.20070830080924:Tabs
 
@@ -3564,16 +3575,17 @@ if wx:
         #@+node:bob.20070813163332.212:gui utils (must add several)
         #@+node:bob.20070813163332.213:Clipboard
         def replaceClipboardWith (self,s):
-            g.trace(s)
+            #g.trace(s)
 
             cb = wx.TheClipboard
             if cb.Open():
-                g.trace('is open')
+                #g.trace('is open')
                 cb.Clear()
                 cb.SetData(wx.TextDataObject(s))
                 cb.Close()
             else:
-                g.trace('is CLOSED')
+                #g.trace('is CLOSED')
+                pass
 
         def getTextFromClipboard (self):
 
@@ -3768,19 +3780,27 @@ if wx:
         #@-node:bob.20070813163332.53:isTextWidget
         #@+node:bob.20070813163332.229:widget_name
         def widget_name (self,w):
+            """Returns the name of widget w.
 
-            # all text widgets are instances of baseTextWidget
-            #  and will have a getName method
+            First try the (gui)LeoObject getName method.
+            Second try wx widgets GetName method.
+            Third use repr(w) 
+            """
 
-            # all widgets whose name is important should also
-            #  have a getName method, possibley put this in
-            #  in wxLeoObject or even leoObject?
+            #g.trace(w)
 
-            # anyway it should be an error if there is no getName
+            if hasattr(w, 'getName'):
+                #print '\t ', w.getName()
+                return w.getName()
 
-            return w.getName()
+            if hasattr(w, 'GetName'):
+                #print '\t', w.GetName()
+                return w.GetName()
 
 
+            #g.trace('Object Has no name:\n\t', w)
+            #print '\trepr(w) = ', repr(w)
+            return repr(w)
         #@-node:bob.20070813163332.229:widget_name
         #@-node:bob.20070813163332.212:gui utils (must add several)
         #@-others
@@ -3866,89 +3886,122 @@ if wx:
         #@-node:bob.20070830065423:universalDispatcher
         #@+node:bob.20070901065753:handleDefaultChar
         def handleDefaultChar(self,event,stroke):
+            """Handle default actions for keystrokes not defined elsewhere.
 
-            # try:
-                # g.trace('=== eventwidget ===',event.widget)
-                # g.trace('===   stroke    ===', stroke)
-                # #g.trace('callers:', g.callers())
-            # except:
-               # g.trace('no event!')
-               # pass
+            If event is not none then it will be used to find the window
+            the wich caused the event otherwise the currently focused
+            window will be used.
+
+            If none is returned then the caller should call event.Skip()
+            to allow the gui to handle the keystroke itself.
+
+            """
+
+            k = self ; c = k.c
 
 
-            fw = wx.Window.FindFocus()
+            try:
+                g.trace('=== eventwidget ===',event.widget)
+                g.trace('===   stroke    ===', stroke)
+                #g.trace('callers:', g.callers())
+            except:
+               g.trace('no event!')
+               pass
 
-            #g.trace('focus:', fw)
+
+
+            g.trace('focus:', self.c.get_focus())
 
             if event:
                 w = event.widget
             else:
-                w = fw
+                w = c.get_focus()
 
-            #print '\ttarget:', w
+            print '\ttarget:', w
+
+            name = c.widget_name(w)
+
+            g.trace('NAME', name)
 
 
-
-            # NO widgets need not be text widgets eg the tree!
-            #if not isinstance(w, baseTextWidget):
-                # FIXME raise an error if we arrive here without a
-                #  a valid text window?
-            #    g.trace('Not a valid text window:', w)
-            #    return    
-
-            k = self ; c = k.c
-
-            # all widgets that collect keys must have getName
-            name = w.getName()
-
-            #g.trace('NAME', name)
 
             if name.startswith('body'):
 
-                #g.trace('body')
+                #<< handle char for body
+
+                g.trace('body')
                 action = k.unboundKeyAction
                 if action in ('insert','overwrite'):
                     c.editCommands.selfInsertCommand(event,action=action)
-                else:
-                    pass # Ignore the key.
+                    return 'break'
 
-                return 'break'
+                return None
+
+                #>>
 
             elif name.startswith('head'):
+
+                #<< handle chars for headlines
+
                 #g.trace('head')
                 c.frame.tree.onHeadlineKey(event)
                 return 'break'
 
+                #>>
+
             elif name.startswith('canvas'):
+
+                #<< handle chars for tree canvas
+
                 #g.trace('canvas')
                 if not stroke: # Not exactly right, but it seems to be good enough.
                     c.onCanvasKey(event) # New in Leo 4.4.2
                 return 'break'
 
+                #>>
+
             elif name.startswith('log'):
+
+                #<< handle chars for log panes
+
                 #FIXME
+
+
                 # c.onLogKey(event)
                 g.trace('log')
                 pass
 
-            elif name.startswith('find'):
+                #>>
+
+            elif name.startswith('find') or name.startswith('change'):
+
+                #<< handle chars for find\change entry
+
                 #FIXME
                 # c.onFindKey
 
                 # Intercept return and tab chars.
 
+
                 keysym = g.app.gui.eventKeysym(event)
 
+                g.trace('\tfind KEYSYM', keysym)
+
                 if keysym == 'Return':
+                    g.trace('\tFOUND RETURN')
                     w.leoParent.findNextCommand()
                     return 'break'
 
                 if keysym == 'Tab':
-                    w.leoParent.toggleTextWidgetFocus(self)
+                    g.trace('\tFOUND TAB')
+                    w.leoParent.toggleTextWidgetFocus(w)
                     return 'break'
 
-                #g.trace('find')
+
+                g.trace('NO SPECIAL CHARS FOUND FOR FIND')
                 return None
+
+                #>>
 
             else:
                 # Allow wx to handle the event.
@@ -4126,7 +4179,7 @@ if wx:
             #globals icons, plusBoxIcon, minusBoxIcon, appIcon
             self.loadIcons()
 
-            self.Bind(wx.EVT_CHAR, lambda event, type='app':onRogueChar(event, type))
+            #self.Bind(wx.EVT_CHAR, lambda event, type='app':onRogueChar(event, type))
 
 
 
@@ -4201,7 +4254,10 @@ if wx:
         #@    @+others
         #@+node:bob.20070813163332.237:Birth & death (wxLeoBody)
         #@+node:bob.20070813163332.238:wxBody.__init__
-        def __init__ (self,frame,parentFrame):
+        def __init__ (self, c, parentFrame):
+
+            self.c = c
+            frame = c.frame
 
             # Init the base class: calls createControl.
             leoFrame.leoBody.__init__(self,frame,parentFrame)
@@ -4212,7 +4268,6 @@ if wx:
 
             self.keyDownModifiers = None
             self.forceFullRecolorFlag = False
-        #@nonl
         #@-node:bob.20070813163332.238:wxBody.__init__
         #@+node:bob.20070813163332.239:wxBody.createControl
         def createControl (self,frame,parentFrame):
@@ -4756,7 +4811,24 @@ if wx:
             leoNotebook.__init__(self, c)
             wxLeoObject.__init__(self)
 
-            self.nb = wx.Notebook.__init__(self, parent)
+            wx.Notebook.__init__(self, parent)
+
+            self.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.onPageChanged)
+
+        def onPageChanged(self, event):
+            g.trace()
+            sel = event.GetSelection()
+            if sel < 0:
+                event.Skip()
+                return
+
+            page = self.GetPage(sel)
+            page.SetSize(self.GetClientSize())
+
+
+
+
+
 
 
         #@-node:bob.20070908081747.10:__init__
@@ -4884,6 +4956,8 @@ if wx:
         def __init__(self, c, tabName=None, page=None, nb=None):
 
             leoTab.__init__(self, c, tabName, page, nb)
+
+            page.leoParent = self
         #@-node:bob.20070908102321.7:__init__
         #@+node:bob.20070908102321.8:TabName property
         def setTabName(self, tabName):
@@ -4970,9 +5044,16 @@ if wx:
 
             sizer.Add(self.nb, 1, wx.EXPAND)
 
-            self.SetSizerAndFit(sizer)
+            self.SetSizer(sizer)
 
-            self.Bind(wx.EVT_CHAR, lambda event, type='leonotebookpanel':onRogueChar(event, type))
+            #self.Bind(wx.EVT_SIZE, self.onSize)
+
+            #self.Bind(wx.EVT_CHAR, lambda event, type='leonotebookpanel':onRogueChar(event, type)) 
+
+
+        def onSize(self, event):
+            g.trace('notebook panel')
+            event.Skip()
         #@-node:bob.20070908081747.13:__init__
         #@-others
 
@@ -4998,20 +5079,35 @@ if wx:
             self.title = title
 
 
-
             # To be set in finishCreate.
             self.c = None 
-            self.bodyCtrl = None
+            #self.bodyCtrl = None
+
+            self.logPanel = None
+            self.treePanel = None
+            self.bodyPanel = None
+            self.splitter1 = None
+            self.splitter2 = None
+
             self.minibuffer =None
             self.statusLine = None
+            self.iconBar = None
+            self.menuBar = None    
+
+            self.statusLineClass = wxLeoStatusLine
+            self.minibufferClass = wxLeoMinibuffer
+            self.iconBarClass = wxLeoIconBar
+
+            self.findTabHandler = None
+            self.spellTabHandler = None
 
 
             #g.trace("wxLeoFrame",title)
 
             self.activeFrame = None
             self.focusWidget = None
-            self.iconBar = None
-            self.iconBarClass = wxLeoIconBar
+
+
             self.killed = False
             self.lockout = 0 # Suppress further events
             self.quitting = False
@@ -5019,17 +5115,17 @@ if wx:
             self.treeIniting = False
             self.drawing = False # Lockout recursive draws.
             self.menuIdDict = {}
-            self.menuBar = None
+
             self.ratio = 0.5
             self.secondary_ratio = 0.5
             self.startupWindow=True
-            self.statusLineClass = wxLeoStatusLine
-            self.minibufferClass = wxLeoMinibuffer
+
+
 
             self.use_coloring = False # set True to enable coloring
 
-            self.findTabHandler = None
-            self.spellTabHandler = None
+            self._splitterOrientation = VERTICAL
+
         #@-node:bob.20070813163332.259:__init__ (wxLeoFrame)
         #@+node:bob.20070813163332.260:__repr__
         def __repr__ (self):
@@ -5044,6 +5140,14 @@ if wx:
         #@nonl
         #@-node:bob.20070831063515:setStatusLine
         #@+node:bob.20070813163332.261:finishCreate (wxLeoFrame)
+
+        # temp redirects
+        body = property(lambda self: self.bodyPanel)
+        bodyCtrl = property(lambda self: self.bodyPanel.bodyCtrl)
+
+        log = property(lambda self: self.logPanel.log)
+        nb = property(lambda self: self.logPanel.nb)
+
         def finishCreate (self,c):
 
             # g.trace('wxLeoFrame')
@@ -5067,7 +5171,7 @@ if wx:
                 style = wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE
             )
 
-            top.Bind(wx.EVT_CHAR, lambda event, type='leoframe':onRogueChar(event, type))
+            #top.Bind(wx.EVT_CHAR, lambda event, type='leoframe':onRogueChar(self, event, type))
 
 
             self.hiddenWindow = hw = wx.Window(top)
@@ -5083,43 +5187,50 @@ if wx:
             # Create the main sizer
             box = wx.BoxSizer(wx.VERTICAL)
 
-            # Create the splitters.
 
-            style = wx.CLIP_CHILDREN|wx.SP_LIVE_UPDATE|wx.SP_3D
+            # tree panel
 
-            # Splitter1 contains body & splitter2.
-            self.splitter1 = splitter1 = \
-                wx.SplitterWindow(top, style=style)
-
-            # Splitter2 contains tree and log.
-            self.splitter2 = splitter2 = \
-                wx.SplitterWindow(splitter1, style=style) 
-
-            splitter2.SetSashSize(5)
-
-            # Create the tree.
-            self.tree = wxLeoTree(self, parentFrame=splitter2)
+            self.treePanel = self.createTreePanel()
+            self.tree = self.treePanel
 
 
-            # Create the log pane and its wx.Noteboook.
+            # log panel
 
-            self.logPanel = lp = wxLeoNotebookPanel(c, splitter2)
-            self.nb = nb = lp.nb
-            self.log = lp.log 
+            self.logPanel = lp = self.createLogPanel()
+
+            # redirects
+            #  self.nb = nb = lp.nb
+            #  self.log = lp.log
+
+            nb = self.nb
 
             g.app.setLog(self.log) # writeWaitingLog hangs without this(!)
 
 
+            # body panel
 
-            # Create the body pane.
-            self.body = wxLeoBody(self,parentFrame=splitter1)
-            self.bodyCtrl = self.body.bodyCtrl
+            self.bodyPanel = self.createBodyPanel()
 
-            # Add the panes to the splitters.
-            splitter2.SplitVertically(self.tree.treeCtrl, self.logPanel, 0)
-            splitter1.SplitHorizontally(splitter2, self.bodyCtrl.widget, 0)
+            # redirectes
+            #   self.body = self.bodyPanel
+            #   self.bodyCtrl = self.body.bodyCtrl
 
-            box.Add(splitter1, 1, wx.EXPAND)
+
+            # splitters
+
+            s1, s2 = self.createSplitters()
+
+            self.splitter1 = s1
+            self.splitter2 = s2
+
+
+            ##FIXME when panels finished
+            #self.setupSplitters(self.treePanel, self.logPanel, self.bodyPanel, s1,s2)
+            self.setupSplitters(self.tree.treeCtrl, self.logPanel, self.body.bodyCtrl, s1, s2)
+
+            s1.Reparent(self.top)
+
+            box.Add(s1, 1, wx.EXPAND)
 
             #@    << create and add minibuffer area >>
             #@+node:bob.20070825182338:<< create and add minibuffer area >>
@@ -5140,7 +5251,6 @@ if wx:
             #@nonl
             #@-node:bob.20070825181313:<< create and add status area >>
             #@nl
-
 
 
             # Create the menus & icon.
@@ -5211,11 +5321,46 @@ if wx:
                 self.top.SetIcon(icon)
         #@-node:bob.20070813163332.262:setWindowIcon
         #@-node:bob.20070813163332.261:finishCreate (wxLeoFrame)
+        #@+node:bob.20070912144833.1:createSplitters
+        def createSplitters(self, parent=None, style=wx.CLIP_CHILDREN|wx.SP_LIVE_UPDATE|wx.SP_3D):
+
+            parent = parent or self.hiddenWindow
+
+            return wx.SplitterWindow(parent, style), wx.SplitterWindow(parent, style)
+
+        #@-node:bob.20070912144833.1:createSplitters
+        #@+node:bob.20070912144833.2:setupSplitters
+        def setupSplitters(self, tree, log, body, s1, s2):
+            """Initial setup of splitters.
+
+
+            This must be called with newly created splitters.
+            """
+
+            s2.Reparent(s1)
+            body.Reparent(s1)
+            tree.Reparent(s2)
+            log.Reparent(s2)
+
+
+            if self._splitterOrientation == HORIZONTAL:
+
+                s2.SplitVertically(tree, log, 0)
+                s1.SplitHorizontally(s2, body, 0)
+
+            else:
+
+                s2.SplitHorizontally(tree, log, 0)
+                s1.SplitVertically(s2, body, 0)
+
+            return s1
+        #@-node:bob.20070912144833.2:setupSplitters
         #@+node:bob.20070813163332.264:initialRatios
         def initialRatios (self):
 
             config = g.app.config
             s = config.getWindowPref("initial_splitter_orientation")
+
             verticalFlag = s == None or (s != "h" and s != "horizontal")
 
             # Tweaked for tk.  Other tweaks may be best for wx.
@@ -5240,7 +5385,6 @@ if wx:
                     r2 = 0.8
 
             return verticalFlag,r,r2
-        #@nonl
         #@-node:bob.20070813163332.264:initialRatios
         #@+node:bob.20070813163332.265:injectCallbacks
         # ??? whats the point of this?
@@ -5294,6 +5438,29 @@ if wx:
         #@nonl
         #@-node:bob.20070813163332.268:destroySelf
         #@-node:bob.20070813163332.258:Birth & death (wxLeoFrame)
+        #@+node:bob.20070912144833.3:-- Panel Creation Factories --
+        #@+node:bob.20070912132540:createTreePanel
+        def createTreePanel(self, parent=None):
+
+            parent = parent or self.hiddenWindow
+
+            return wxLeoTree(self.c, parent)
+        #@-node:bob.20070912132540:createTreePanel
+        #@+node:bob.20070912144833.4:createBodyPanel
+        def createBodyPanel(self, parent=None):
+
+            parent = parent or self.hiddenWindow
+
+            return wxLeoBody(self.c, parent)
+        #@-node:bob.20070912144833.4:createBodyPanel
+        #@+node:bob.20070912144833.5:createLogPanel
+        def createLogPanel(self, parent=None):
+
+            parent = parent or self.hiddenWindow
+
+            return wxLeoNotebookPanel(self.c, parent)
+        #@-node:bob.20070912144833.5:createLogPanel
+        #@-node:bob.20070912144833.3:-- Panel Creation Factories --
         #@+node:bob.20070813163332.269:event handlers
         #@+node:bob.20070813163332.263:setEventHandlers
         def setEventHandlers (self):
@@ -5658,14 +5825,54 @@ if wx:
         # The key invariant: self.splitVerticalFlag tells the alignment of the main splitter.
         def toggleSplitDirection(self,event=None):
 
-            g.es("toggleSplitDirection not ready yet")
-            return
+            def po(o):
+               g.trace(g.choose(o==VERTICAL, 'vertical', 'horizontal')) 
+
+
+            orient = self._splitterOrientation
+
+            g.trace(po(orient))
+
+            s1 = self.splitter1
+            s2 = self.splitter2
+
+
+            self._splitterOrientation = orient = g.choose(orient == VERTICAL, HORIZONTAL, VERTICAL)
+            g.trace(po(orient))
+
+
+            tree = s2.Window1
+            log = s2.Window2
+            body = s1.Window2
+
+            s1.Unsplit()
+            s2.Unsplit()
+
+            if self._splitterOrientation == HORIZONTAL:
+
+                s2.SplitVertically(tree, log, 0)
+                s1.SplitHorizontally(s2, body, 0)
+
+            else:
+
+                s2.SplitHorizontally(tree, log, 0)
+                s1.SplitVertically(s2, body, 0)
+
+            return s1
+
+
+
+
+
 
             # Abbreviations.
             frame = self
             bar1 = self.bar1 ; bar2 = self.bar2
             split1Pane1,split1Pane2 = self.split1Pane1,self.split1Pane2
             split2Pane1,split2Pane2 = self.split2Pane1,self.split2Pane2
+
+
+
             # Switch directions.
             verticalFlag = self.splitVerticalFlag = not self.splitVerticalFlag
             orientation = g.choose(verticalFlag,"vertical","horizontal")
@@ -5683,7 +5890,6 @@ if wx:
             # Redraw with an appropriate ratio.
             vflag,ratio,secondary_ratio = frame.initialRatios()
             self.resizePanesToRatio(ratio,secondary_ratio)
-        #@nonl
         #@-node:bob.20070813163332.293:toggleSplitDirection
         #@-node:bob.20070813163332.287:Window Menu
         #@+node:bob.20070813163332.294:Help Menu...
@@ -6318,32 +6524,37 @@ if wx:
         def put(self, s, tabName='Log',  **keys):
 
 
-
             self.selectTab(tabName)
 
             w = self.logCtrl.widget
 
             if not w:
                 g.alert('log.put, no widget!')
+                print 's'
+                print
+                return
 
             colour  = keys.get('colour', '') or keys.get('color', '')
+            g.trace('colour')
 
+            if not colour:
+                colour='black'
 
             if w:
-                if colour:
-                    w.BeginTextColour(colour)
-
-                w.AppendText(s)
-
-                if colour:
+                w.BeginTextColour(colour)
+                try:
+                    w.AppendText(s)
+                finally:
                     w.EndTextColour()
 
                 w.MoveEnd()
                 w.ShowPosition(w.GetLastPosition())
+                w.PageDown()
+
 
         def putnl (self, tabName=None):
 
-            self.put ('\n', tabName)
+            self.put ('\n', tabName='Log')
 
 
         #@-node:bob.20070813163332.315:wxLog.put & putnl
@@ -6459,33 +6670,24 @@ if wx:
             nb = self.nb
             # g.trace(tabName)
 
-
             if createText:
-                win = logFrame = wx.Panel(nb, style=wx.NO_BORDER)
 
-                tab = wxLeoTab(self.c, tabName, win, nb)
+                w = logTextWidget(self, nb)
+                w.widget.BeginTextColour('black')
+
+                tab = wxLeoTab(self.c, tabName, w.widget, nb)
 
                 nb.appendTab(tab)
 
-                w = logTextWidget(self, win)
-
                 w.setBackgroundColor(name2color('leo blue'))
 
-                sizer = wx.BoxSizer(wx.HORIZONTAL)
-                sizer.Add(w.widget,1,wx.EXPAND)
-                win.SetSizer(sizer)
-                sizer.Fit(win)
-
                 self.textDict [tabName] = w
-                self.frameDict [tabName] = win
+                self.frameDict [tabName] = w.widget
 
-
-                # c.k doesn't exist when the log pane is created.
-                # if tabName != 'Log':
-                    # # k.makeAllBindings will call setTabBindings('Log')
-                    # self.setTabBindings(tabName)
                 return w
+
             else:
+
                 win = wx.Panel(nb,name='tab:%s' % tabName)
                 self.textDict [tabName] = None
                 self.frameDict [tabName] = win
@@ -6543,12 +6745,14 @@ if wx:
 
             nb = self.nb 
 
-            self.tabFrame.SetSize(nb.GetClientSize())   
 
             i = self.indexFromName(tabName)
             if i is not None:
                 nb.SetSelection(i)
                 assert nb.GetPage(i) == self.tabFrame
+
+            #g.trace(self.nb.GetClientSize())
+            self.tabFrame.SetSize(nb.GetClientSize())       
 
             return self.tabFrame
         #@-node:bob.20070813163332.317:selectTab
@@ -7100,10 +7304,14 @@ if wx:
 
         #@    @+others
         #@+node:bob.20070813163332.372:__init__
-        def __init__ (self,frame,parentFrame):
+        def __init__ (self, c, parentFrame):
+
+
+            self.c = c
+            self.frame = c.frame
 
             # Init the base class.
-            leoFrame.leoTree.__init__(self, frame)
+            leoFrame.leoTree.__init__(self, self.frame)
 
 
             #@    << init config >>
@@ -8128,6 +8336,12 @@ if wx:
 
         getName = GetName
         #@-node:bob.20070901120931:GetName
+        #@+node:bob.20070912132828:Reparent
+        def reparent(self, parent):
+            self.treeCtrl.Reparent(parent)
+
+        Reparent = reparent
+        #@-node:bob.20070912132828:Reparent
         #@+node:bob.20070908231221:Font Property
         def getFont(self):
             g.trace('not ready')
@@ -8332,6 +8546,7 @@ if wx:
                 self._canvas.resize(self.GetClientSize().height)
             finally:
                 c.endUpdate(False)
+                event.Skip()
         #@-node:bob.20070813173446.9:onSize
         #@+node:bob.20070813173446.10:vscrollUpdate
 
