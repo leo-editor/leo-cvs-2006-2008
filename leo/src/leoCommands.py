@@ -4444,14 +4444,15 @@ class baseCommands:
         '''Expand all headlines.
         Warning: this can take a long time for large outlines.'''
 
-        c = self ; p = root = c.rootPosition()
+        c = self
 
         c.beginUpdate()
         try:
+            p = c.rootPosition()
             while p:
                 c.expandSubtree(p)
                 p.moveToNext()
-            c.selectVnode(root)
+            c.selectVnode(c.rootPosition())
         finally:
             c.endUpdate()
             c.treeFocusHelper()
