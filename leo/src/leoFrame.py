@@ -1287,6 +1287,8 @@ class leoBody:
         c = self.c ; k = c.k ; w = event and event.widget
         wname = c.widget_name(w)
 
+        if not c.currentPosition(): return
+
         if wname.startswith('body'):
             # A hack to support middle-button pastes: remember the previous selection.
             k.previousSelection = w.getSelectionRange()
