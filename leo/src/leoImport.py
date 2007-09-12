@@ -1482,7 +1482,7 @@ class baseLeoImportCommands:
             Return True if the nodes are equivalent to the original file.
             '''
 
-            if self.fullChecks:
+            if self.fullChecks and self.treeType == '@file':
                 return self.checkTrialWrite()
             else:
                 return True
@@ -1571,12 +1571,13 @@ class baseLeoImportCommands:
             elif not strict and line1.lstrip() == line2.lstrip():
                 return True # A match excluding leading whitespace.
             else:
-                if i+1 != expectedMismatch or not g.app.unitTesting:
+                g.trace(g.callers())
+                if not g.app.unitTesting or i+1 != expectedMismatch:
                     g.es_print('*** first mismatch at line %d' % (i+1))
-                    g.es_print('original line: ', repr(line1))
-                    g.es_print('generated line:', repr(line2))
+                    g.es_print('original line:  %s' % repr(line1))
+                    g.es_print('generated line: %s' % repr(line2))
                 d ['actualMismatchLine'] = i+1
-                g.trace('lines 1...\n',repr(lines1),'\nlines2...\n',repr(lines2))
+                # g.trace('lines 1...\n',repr(lines1),'\nlines2...\n',repr(lines2))
                 return False
         #@+node:ekr.20070816101019:@test compareHelper
         if g.unitTesting:
@@ -1922,7 +1923,7 @@ class baseLeoImportCommands:
                 if self.errors == 1:
                     g.app.unitTestDict['actualErrorMessage'] = s
                 g.app.unitTestDict['actualErrors'] = self.errors
-                if 1: # For debugging unit tests.
+                if 0: # For debugging unit tests.
                     g.es_print(s,color='red')
             else:
                 g.es_print(s,color='red')
@@ -2434,7 +2435,7 @@ class baseLeoImportCommands:
 
             '''Regularize leading whitespace in s:
             Convert tabs to blanks or vice versa depending on the @tabwidth in effect.
-            Issue errors for strict languages; warnings for non-strict languages.'''
+            This is only called for strict languages.'''
 
             changed = False ; lines = g.splitLines(s) ; result = [] ; tab_width = self.tab_width
 
@@ -2450,20 +2451,7 @@ class baseLeoImportCommands:
                     if s != line: changed = True
                     result.append(s)
 
-            # For strict languages, check that leading whitespace is a multiple of the tab_width.
-            if self.strict:
-                for line in lines:
-                    if line.strip(): # only check non-blank lines.
-                        lws = line[0:g.skip_ws(line,0)]
-                        w = g.computeWidth(lws,tab_width)
-                        if (w % abs(tab_width)) != 0:
-                        ### if 0 < w < abs(tab_width):
-                            self.error(
-                                'leading whitespace not consistent with @tabwidth %d\nline: %s' % (
-                                    tab_width,repr(line)))
-                            break
-
-            if self.strict and changed: self.regularizeError()
+            if changed: self.regularizeError()
 
             return ''.join(result)
         #@+node:ekr.20070808121958:regularizeError
