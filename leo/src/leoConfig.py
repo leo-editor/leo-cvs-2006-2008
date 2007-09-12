@@ -857,7 +857,8 @@ class configClass:
         self.myHomeConfigFile = None
         self.recentFilesFiles = [] # List of g.Bunches describing .leoRecentFiles.txt files.
         self.write_recent_files_as_needed = False # Will be set later.
-        self.silent = '--silent' in sys.argv
+        self.silent = g.app.silentMode
+        # g.trace('c.config.silent',self.silent)
 
         # Inited later...
         self.panes = None
@@ -1417,7 +1418,7 @@ class configClass:
         ):
             if path and path.lower() not in seen:
                 seen.append(path.lower())
-                if verbose and not g.app.unitTesting and not self.silent:
+                if verbose and not g.app.unitTesting and not self.silent and not g.app.batchMode:
                     s = 'reading settings in %s' % path
                     # This occurs early in startup, so use the following instead of g.es_print()
                     print s

@@ -143,7 +143,7 @@ def loadHandlers(tag):
     theConfigFile = g.app.config.enabledPluginsFileName
     # g.trace('len(s)',s and len(s) or 0)
     if s:
-        if '--silent' not in sys.argv:
+        if not g.app.silentMode:
             pr('@enabled-plugins found in %s' % (theConfigFile),color='blue')
         enabled_files = getEnabledFiles(s,plugins_path)
     else:
