@@ -82,8 +82,13 @@ def testForZenity():
 #@-node:testForZenity
 #@+node:init
 def init ():
+	
+    if g.unitTesting:
+	    return False
 
     if ok:
+	ok = ok and testForZenity()
+        # trace and g.trace('imported ok')
         trace and g.trace('zenity ok')
         leoPlugins.registerHandler('start2', onStart2)
         g.plugin_signon(__name__)
@@ -164,7 +169,5 @@ def runSaveFileDialog(initialfile=None,title=None,filetypes=None,defaultextensio
 #@-node:runSaveFileDialog
 #@-others
 
-ok = ok and testForZenity()
-trace and g.trace('imported ok')
 #@-node:@file zenity_file_dialogs.py
 #@-leo
