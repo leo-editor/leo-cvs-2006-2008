@@ -8226,7 +8226,7 @@ class spellTabHandler (leoFind.leoFind):
             g.es_exception()
         return alts, word
     #@-node:ekr.20051025071455.45:findNextMisspelledWord
-    #@+node:ekr.20051025071455.47:findNextWord
+    #@+node:ekr.20051025071455.47:findNextWord (tkSpell)
     def findNextWord(self,p):
         """Scan for the next word, leaving the result in the work widget"""
 
@@ -8260,7 +8260,7 @@ class spellTabHandler (leoFind.leoFind):
                     w.setSelectionRange(0,0,insert=0)
         return None,None
     #@nonl
-    #@-node:ekr.20051025071455.47:findNextWord
+    #@-node:ekr.20051025071455.47:findNextWord (tkSpell)
     #@-node:ekr.20051025071455.40:find & helpers
     #@+node:ekr.20051025121408:hide
     def hide (self,event=None):
