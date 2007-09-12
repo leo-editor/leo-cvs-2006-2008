@@ -537,7 +537,7 @@ class atFile:
 
         at.scanDefaultDirectory(p,importing=True) # Set default_directory
         fileName = g.os_path_join(at.default_directory,fileName)
-        g.trace(fileName)
+        # g.trace(fileName)
 
         # Delete all children.
         c.beginUpdate()
