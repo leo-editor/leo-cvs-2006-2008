@@ -25,8 +25,6 @@ __revision__ = re.sub(r'^\D+([\d\.]+)\D+$', r'\1', "$Revision$")
 
 __version__ = '0.2.%s'% __revision__
 
-print '__wx__alt_gui.py version:', __version__
-
 #@<< version history >>
 #@+node:bob.20070813163858.2:<< version history >>
 #@@nocolor
@@ -177,6 +175,7 @@ def init():
     ok = wx and not g.app.gui 
 
     if ok:
+        print '__wx__alt_gui.py version:', __version__
         g.app.gui = wxGui()
         g.app.root = g.app.gui.createRootWindow()
         g.app.gui.finishCreate()
