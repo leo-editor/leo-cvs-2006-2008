@@ -3889,6 +3889,556 @@ def regularizeError (self):
 #@-node:ekr.20070808115837.1:regularizeWhitespace
 #@-node:ekr.20070808115837.2:Regularize whitespace
 #@-node:ekr.20070731070208:Added @auto
+#@+node:ekr.20070905072809.2:Read @auto nodes during saves if the node has not been read previously
+#@+node:ekr.20070912104341:What I did
+@nocolor
+
+For the last several days I have been trying to smooth out rough edges in @auto.  Please test the new code on cvs.  All unit tests pass, but use extreme caution if your @auto nodes refer to valuable files.
+
+The changes:
+
+1. Leo will *read* an @auto node if the derived file exists, an 'insignificant' amount of data exists in the @auto tree, and the @auto node has not been read previously.  This promises to fix some quite awkward use cases.
+
+Please report any glitches in the scheme immediately.  Problems may remain.
+
+2. The 'perfect import' code now is a bit more relaxed, especially for 'non-strict' languages (all languages except Python):
+
+- Leo leaves leading whitespace alone for non-strict languages.
+
+- Leo complains about intermixed tabs and blanks in leading whitespace only for strict languages.
+
+- Leo ignores leading whitespace in the perfect import tests for non-strict languages.
+
+The effect is that Leo will import more files without complaint.  **However**, this also means that Leo might actually changes a derived file if such a change occurs only in leading whitespace in a non-strict language.  I *think* this is a reasonable idea: the alternative would be for Leo to be excessively fussy.
+
+As I said earlier, all unit tests pass.  However, it may be that more changes (and more unit tests) will be needed.  Please give the new code a spin and report any problems asap.  I would like to release the latest code this Friday.
+
+Edward
+#@nonl
+#@-node:ekr.20070912104341:What I did
+#@+node:ekr.20070909095656:Notes
+@nocolor
+
+> - create a node; 
+@auto /tmp/test.txt 
+
+(/tmp/test.txt is an existing file) 
+
+- save the Leo file 
+log pane: 
+wrote: test.txt 
+saved: test.leo 
+
+/tmp/test.txt is now empty
+
+I can see that this is going to cause problems for people.  At
+
+http://sourceforge.net/forum/message.php?msg_id=4453784
+
+I say
+
+[quote] > Leo will not automatically save a dirty @auto tree if Leo has not
+already read this tree. This allows you to create an empty @auto node without
+having to worry about Leo destroying the corresponding file.
+
+Experience shows that this is not a good idea. It produces confusing and
+counter-intuitive behavior. I am about to remove this 'feature'. [end quote]
+
+Thus, what you report is the expected behavior. That is, the first time you
+create any @auto node for an existing file you must use the read-at-auto-node
+command to populate the @auto node.
+
+But what is the solution to your confusion? As indicated above, the 'obvious'
+solution (not writing 'unread' @auto trees) does not work particularly well. (I
+forget exactly why not, but trust me, it doesn't.) Documentation is essential,
+but probably won't prevent endless bug reports such as yours.
+
+This isn't a fatal flaw in @auto, but it's going to be annoying unless I can
+come up with a better plan.
+
+-----
+
+My present plan is to restore the previous way (remembering whether an @auto
+node has been previously read) with several modifications:
+
+- More traces and log messages so it is clearer why the old approach did not
+work. At the very least I have to document the failed plan thoroughly.
+
+- As Kent has just said, the bug is a "save-time" issue. Yesterday I had the
+thought that the *save* operation should do an @auto *read* operation if the
+node has not been previously read. That would be convenient (if it works): just
+create the @auto node then do a save.
+
+Some notes: 
+
+- There is never much doubt about what to do if the file does not exist: just
+create it, using whatever is in the @auto tree.
+
+- I do not plan any dialogs. Long experience has convinced me that they never
+work. Not only are they annoying, but at the point that they appear the user
+will almost never know how to make the right choice, and will be upset at having
+to make an unpleasant and unwelcome choice.
+
+- An interesting kludge may be helpful. In the "hard" case (the derived file
+exists but the @auto node has not been read) Leo will do the following:
+
+Plan A. If the @auto node has no children, and contains a 'small' amount of body
+text (say less than 100 characters and less than 10 lines), Leo will assume that
+the @auto node contain no significant info and will do a *read* of the @auto
+node when the user does a save.
+
+Plan B. If the @auto node has children, or if the @auto node contain more than a
+'small' amount of text, Leo will issues a warning (in the log pane, not in a
+dialog) and will do nothing, neither reading the @auto node nor writing the
+corresponding derived file. Thus, the @auto tree will be written to the .leo
+file.
+
+Plan B is likely to happen seldom, but if it does happen Leo can not choose
+between reading or writing. Furthermore, Leo should not immediately force the
+user to make a choice. For example, both the @auto node and the derived file
+might contain significant information, and the user won't want to discard
+either. True, there could be a cancel button in the dialog, but that will reduce
+the user's consternation only slightly. Much better, imo, to do nothing drastic
+and let the user 'recover' at her leisure.
+#@-node:ekr.20070909095656:Notes
+#@+node:ekr.20031218072017.3348:at...FileNodeName
+# These return the filename following @xxx, in v.headString.
+# Return the the empty string if v is not an @xxx node.
+
+def atAutoNodeName (self):
+    # h = self.headString() ; tag = '@auto'
+    # # Prevent conflicts with autotrees plugin: don't allow @auto-whatever to match.
+    # return g.match_word(h,0,tag) and not g.match(h,0,tag+'-') and h[len(tag):].strip()
+    names = ("@auto",)
+    return self.findAtFileName(names)
+
+def atFileNodeName (self):
+    names = ("@file",)
+    return self.findAtFileName(names)
+
+def atNoSentinelsFileNodeName (self):
+    names = ("@nosent", "@file-nosent", "@nosentinelsfile")
+    return self.findAtFileName(names)
+
+def atRawFileNodeName (self):
+    names = ("@noref", "@file-noref", "@rawfile")
+    return self.findAtFileName(names)
+
+def atSilentFileNodeName (self):
+    names = ("@asis", "@file-asis", "@silentfile")
+    return self.findAtFileName(names)
+
+def atThinFileNodeName (self):
+    names = ("@thin", "@file-thin", "@thinfile")
+    return self.findAtFileName(names)
+
+# New names, less confusing
+atNoSentFileNodeName  = atNoSentinelsFileNodeName
+atNorefFileNodeName   = atRawFileNodeName
+atAsisFileNodeName    = atSilentFileNodeName
+#@-node:ekr.20031218072017.3348:at...FileNodeName
+#@+node:ekr.20040705201018:v.findAtFileName (new in 4.2 b3)
+def findAtFileName (self,names):
+
+    """Return the name following one of the names in nameList.
+    Return an empty string."""
+
+    h = self.headString()
+
+    if not g.match(h,0,'@'):
+        return ""
+
+    i = g.skip_id(h,1,'-')
+    word = h[:i]
+    if word in names and g.match_word(h,0,word):
+        name = h[i:].strip()
+        # g.trace(word,name)
+        return name
+    else:
+        return ""
+#@-node:ekr.20040705201018:v.findAtFileName (new in 4.2 b3)
+#@+node:ekr.20031218072017.3210:createOutline
+def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
+
+    c = self.c ; u = c.undoer ; s1 = s
+    junk,self.fileName = g.os_path_split(fileName)
+    self.methodName,self.fileType = g.os_path_splitext(self.fileName)
+    self.setEncoding()
+    # g.trace(self.fileName,self.fileType)
+    # All file types except the following just get copied to the parent node.
+    if not ext: ext = self.fileType
+    ext = ext.lower()
+    if not s:
+        << Read file into s >>
+
+    # Create the top-level headline.
+    if atAuto:
+        p = parent.copy()
+        c.beginUpdate()
+        try:
+            p.setTnodeText('')
+        finally:
+            c.endUpdate(False)
+    else:
+        undoData = u.beforeInsertNode(parent)
+        p = parent.insertAsLastChild()
+        if self.treeType == "@file" and not s1:
+            p.initHeadString("@nosent " + fileName)
+        else:
+            p.initHeadString(fileName)
+        u.afterInsertNode(p,'Import',undoData)
+
+    self.rootLine = g.choose(self.treeType=="@file","","@root-code "+self.fileName+'\n')
+
+    if ext in (".c", ".cpp", ".cxx"):
+        self.scanCText(s,p,atAuto=atAuto)
+    elif ext == ".el":
+        self.scanElispText(s,p,atAuto=atAuto)
+    elif ext == ".java":
+        self.scanJavaText(s,p,atAuto=atAuto)
+    elif ext == ".pas":
+        self.scanPascalText(s,p,atAuto=atAuto)
+    elif ext in (".py", ".pyw"):
+        self.scanPythonText(s,p,atAuto=atAuto)
+    elif ext == ".php":
+        self.scanPHPText(s,p,atAuto=atAuto)
+    else:
+        self.scanUnknownFileType(s,p,ext,atAuto=atAuto)
+
+    p.contract()
+    return p
+#@+node:ekr.20031218072017.3211:<< Read file into s >>
+try:
+    fileName = g.os_path_normpath(fileName)
+    theFile = open(fileName)
+    s = theFile.read()
+    s = g.toUnicode(s,self.encoding)
+    theFile.close()
+except IOError:
+    g.es("can not open %s%s" % (g.choose(atAuto,'@auto ',''),fileName),color='red')
+    leoTest.fail()
+    return None
+#@-node:ekr.20031218072017.3211:<< Read file into s >>
+#@-node:ekr.20031218072017.3210:createOutline
+#@+node:ekr.20041005105605.26:readAll (atFile)
+def readAll(self,root,partialFlag=False,forceGnx=False):
+
+    """Scan vnodes, looking for @file nodes to read."""
+
+    at = self ; c = at.c
+    if partialFlag:
+        # Capture the current headline only if we aren't doing the initial read.
+        c.endEditing() 
+    anyRead = False
+    p = root.copy()
+    if partialFlag: after = p.nodeAfterTree()
+    else: after = c.nullPosition()
+    while p and not p.equal(after): # Don't use iterator.
+        # g.trace(p.headString())
+        if p.isAtIgnoreNode():
+            p.moveToNodeAfterTree()
+        elif p.isAtThinFileNode():
+            anyRead = True
+            if forceGnx: # New in Leo 4.4.2 b1: support for sax read.
+                at.forceGnxOnPosition(p)
+            at.read(p,thinFile=True)
+            p.moveToNodeAfterTree()
+        elif p.isAtAutoNode():
+            # g.trace('@auto',p.headString(),'name',p.atAutoNodeName())
+            fileName = p.atAutoNodeName()
+            at.readOneAtAutoNode (fileName,p)
+            p.moveToNodeAfterTree()
+        elif p.isAtFileNode() or p.isAtNorefFileNode():
+            anyRead = True
+            wasOrphan = p.isOrphan()
+            ok = at.read(p)
+            if wasOrphan and not partialFlag and not ok:
+                # Remind the user to fix the problem.
+                p.setDirty()
+                c.setChanged(True)
+            p.moveToNodeAfterTree()
+        else: p.moveToThreadNext()
+    # Clear all orphan bits.
+    for p in c.allNodes_iter():
+        p.v.clearOrphan()
+
+    if partialFlag and not anyRead:
+        g.es("no @file nodes in the selected tree")
+#@-node:ekr.20041005105605.26:readAll (atFile)
+#@+node:ekr.20041005105605.147:writeAll (atFile)
+def writeAll(self,writeAtFileNodesFlag=False,writeDirtyAtFileNodesFlag=False,toString=False):
+
+    """Write @file nodes in all or part of the outline"""
+
+    at = self ; c = at.c
+    writtenFiles = [] # Files that might be written again.
+    mustAutoSave = False
+
+    if writeAtFileNodesFlag:
+        # Write all nodes in the selected tree.
+        p = c.currentPosition()
+        after = p.nodeAfterTree()
+    else:
+        # Write dirty nodes in the entire outline.
+        p =  c.rootPosition()
+        after = c.nullPosition()
+
+    << Clear all orphan bits >>
+    while p and p != after:
+        if p.isAnyAtFileNode() or p.isAtIgnoreNode():
+            << handle v's tree >>
+            p.moveToNodeAfterTree()
+        else:
+            p.moveToThreadNext()
+
+    << say the command is finished >>
+    return mustAutoSave
+#@+node:ekr.20041005105605.148:<< Clear all orphan bits >>
+@ We must clear these bits because they may have been set on a previous write.
+Calls to atFile::write may set the orphan bits in @file nodes.
+If so, write_Leo_file will write the entire @file tree.
+@c
+
+for v2 in p.self_and_subtree_iter():
+    v2.clearOrphan()
+#@-node:ekr.20041005105605.148:<< Clear all orphan bits >>
+#@+node:ekr.20041005105605.149:<< handle v's tree >>
+if p.v.isDirty() or writeAtFileNodesFlag or p.v.t in writtenFiles:
+
+    at.fileChangedFlag = False
+    autoSave = False
+
+    # Tricky: @ignore not recognised in @silentfile nodes.
+    if p.isAtAsisFileNode():
+        at.asisWrite(p,toString=toString)
+        writtenFiles.append(p.v.t) ; autoSave = True
+    elif p.isAtIgnoreNode():
+        pass
+    elif p.isAtAutoNode():
+        at.writeOneAtAutoNode(p,toString=toString)
+        writtenFiles.append(p.v.t)
+    elif p.isAtNorefFileNode():
+        at.norefWrite(p,toString=toString)
+        writtenFiles.append(p.v.t) ; autoSave = True
+    elif p.isAtNoSentFileNode():
+        at.write(p,nosentinels=True,toString=toString)
+        writtenFiles.append(p.v.t) # No need for autosave
+    elif p.isAtThinFileNode():
+        at.write(p,thinFile=True,toString=toString)
+        writtenFiles.append(p.v.t) # No need for autosave.
+    elif p.isAtFileNode():
+        at.write(p,toString=toString)
+        writtenFiles.append(p.v.t) ; autoSave = True
+
+    if at.fileChangedFlag and autoSave: # Set by replaceTargetFileIfDifferent.
+        mustAutoSave = True
+#@-node:ekr.20041005105605.149:<< handle v's tree >>
+#@+node:ekr.20041005105605.150:<< say the command is finished >>
+if writeAtFileNodesFlag or writeDirtyAtFileNodesFlag:
+    if len(writtenFiles) > 0:
+        g.es("finished")
+    elif writeAtFileNodesFlag:
+        g.es("no @file nodes in the selected tree")
+    else:
+        g.es("no dirty @file nodes")
+#@-node:ekr.20041005105605.150:<< say the command is finished >>
+#@-node:ekr.20041005105605.147:writeAll (atFile)
+#@+node:ekr.20070909100252:readOneAtAutoNode (atFile)
+def readOneAtAutoNode (self,fileName,p):
+
+    at = self ; c = at.c ; ic = c.importCommands
+
+    at.scanDefaultDirectory(p,importing=True) # Set default_directory
+    fileName = g.os_path_join(at.default_directory,fileName)
+    # g.trace(fileName)
+
+    # Delete all children.
+    c.beginUpdate()
+    try:
+        while p.hasChildren():
+            p.firstChild().doDelete()
+    finally:
+        c.endUpdate(False)
+
+    ic.createOutline(fileName,parent=p.copy(),atAuto=True)
+
+    if g.os_path_exists(fileName):
+        if ic.errors:
+            g.es_print('Errors inhibited read @auto %s' % (fileName),color='red')
+        else:
+            c.atAutoDict [fileName] = True
+#@-node:ekr.20070909100252:readOneAtAutoNode (atFile)
+#@+node:ekr.20070806141607:writeOneAtAutoNode & helper
+def writeOneAtAutoNode(self,p,toString):
+
+    '''Write p, and @auto node.'''
+
+    at = self ; c = at.c ; root = p.copy()
+
+    fileName = p.atAutoNodeName()
+    if not fileName: return False
+
+    at.scanDefaultDirectory(p,importing=True) # Set default_directory
+    fileName = g.os_path_join(at.default_directory,fileName)
+
+    if not c.atAutoDict.get(fileName) and g.os_path_exists(fileName):
+        # Read the file if it would not wipe out significant info.
+        # Otherwise, do nothing (the @auto tree will be written to the outline).
+        if at.isSignificantAtAutoTree(p):
+            g.es('not written: @auto %s\nmay conflict with existing derived file.' % (
+                fileName),color='red')
+            return False
+        else:
+            g.es_print('reading new @auto %s' % (fileName),color='blue')
+            at.readOneAtAutoNode(fileName,p)
+            return True
+
+    # This code is similar to code in at.write.
+    c.endEditing() # Capture the current headline.
+    at.targetFileName = g.choose(toString,"<string-file>",fileName)
+    at.initWriteIvars(root,at.targetFileName,
+        nosentinels=True,thinFile=False,scriptWrite=False,
+        toString=toString,write_strips_blank_lines=False)
+
+    ok = at.openFileForWriting (root,fileName=fileName,toString=toString)
+    if ok:
+        at.writeOpenFile(root,nosentinels=True,toString=toString)
+        at.closeWriteFile() # Sets stringOutput if toString is True.
+        at.replaceTargetFileIfDifferent()
+
+    return ok
+#@+node:ekr.20070909103844:isSignificantAtAutoTree
+def isSignificantAtAutoTree (self,p):
+
+    '''Return True if p's tree has a significant amount of information.'''
+
+    at = self ; s = p.bodyString()
+
+    return (
+        p.hasChildren() or
+        len(s) > 100 or
+        len(g.splitLines(s)) > 10
+    )
+#@-node:ekr.20070909103844:isSignificantAtAutoTree
+#@-node:ekr.20070806141607:writeOneAtAutoNode & helper
+#@+node:ekr.20031218072017.1863:putVnode (3.x and 4.x)
+def putVnode (self,p,isIgnore=False):
+
+    """Write a <v> element corresponding to a vnode."""
+
+    fc = self ; c = fc.c ; v = p.v
+    # Not writing @auto nodes is way too dangerous.
+    # isAuto = p.isAtAutoNode() and p.atAutoNodeName().strip()
+    isThin = p.isAtThinFileNode()
+    isOrphan = p.isOrphan()
+    if not isIgnore: isIgnore = p.isAtIgnoreNode()
+    # forceWrite = isIgnore or not (isThin or isAuto) or (isThin and isOrphan)
+    forceWrite = isIgnore or not isThin or (isThin and isOrphan)
+    << Set gnx = tnode index >>
+    attrs = []
+    << Append attribute bits to attrs >>
+    << Append tnodeList and unKnownAttributes to attrs >>
+    attrs = ''.join(attrs)
+    v_head = '<v t="%s"%s><vh>%s</vh>' % (gnx,attrs,xml.sax.saxutils.escape(p.v.headString()or''))
+    # The string catentation is faster than repeated calls to fc.put.
+    if not self.usingClipboard:
+        << issue informational messages >>
+    # New in 4.2: don't write child nodes of @file-thin trees (except when writing to clipboard)
+    if p.hasChildren() and (forceWrite or self.usingClipboard):
+        fc.put('%s\n' % v_head)
+        # This optimization eliminates all "recursive" copies.
+        p.moveToFirstChild()
+        while 1:
+            fc.putVnode(p,isIgnore)
+            if p.hasNext(): p.moveToNext()
+            else:           break
+        p.moveToParent() # Restore p in the caller.
+        fc.put('</v>\n')
+    else:
+        fc.put('%s</v>\n' % v_head) # Call put only once.
+#@nonl
+#@+node:ekr.20031218072017.1864:<< Set gnx = tnode index >>
+# New in Leo 4.4.3
+if not v.t.fileIndex:
+    if 0: # This is not necessarily an error.
+        # c.dumpOutline() # Can be called inside pdb.
+        # Print the @chapters tree
+        g.trace('*** missing t.fileIndex','v',repr(v))
+        c.chapterController.printChaptersTree()
+    v.t.fileIndex = g.app.nodeIndices.getNewIndex()
+
+gnx = g.app.nodeIndices.toString(v.t.fileIndex)
+if forceWrite or self.usingClipboard:
+    v.t.setWriteBit() # 4.2: Indicate we wrote the body text.
+#@-node:ekr.20031218072017.1864:<< Set gnx = tnode index >>
+#@+node:ekr.20031218072017.1865:<< Append attribute bits to attrs >>
+# These string catenations are benign because they rarely happen.
+attr = ""
+if v.isExpanded(): attr += "E"
+if v.isMarked():   attr += "M"
+if v.isOrphan():   attr += "O"
+
+# No longer a bottleneck now that we use p.equal rather than p.__cmp__
+# Almost 30% of the entire writing time came from here!!!
+if not self.use_sax:
+    if p.equal(self.topPosition):     attr += "T" # was a bottleneck
+    if p.equal(self.currentPosition): attr += "V" # was a bottleneck
+
+if attr:
+    attrs.append(' a="%s"' % attr)
+
+# Put the archived *current* position in the *root* positions <v> element.
+if self.use_sax and p.equal(self.rootPosition):
+    aList = [str(z) for z in self.currentPosition.archivedPosition()]
+    d = hasattr(v,'unKnownAttributes') and v.unknownAttributes or {}
+    d['str_leo_pos'] = ','.join(aList)
+    # g.trace(aList,d)
+    v.unknownAttributes = d
+#@nonl
+#@-node:ekr.20031218072017.1865:<< Append attribute bits to attrs >>
+#@+node:ekr.20040324082713:<< Append tnodeList and unKnownAttributes to attrs>>
+# Write the tnodeList only for @file nodes.
+# New in 4.2: tnode list is in tnode.
+
+# Debugging.
+# if v.isAnyAtFileNode():
+    # if hasattr(v.t,"tnodeList"):
+        # g.trace(v.headString(),len(v.t.tnodeList))
+    # else:
+        # g.trace(v.headString(),"no tnodeList")
+
+if hasattr(v.t,"tnodeList") and len(v.t.tnodeList) > 0 and v.isAnyAtFileNode():
+    if isThin:
+        if g.app.unitTesting:
+            g.app.unitTestDict["warning"] = True
+        g.es("deleting tnode list for %s" % p.headString(),color="blue")
+        # This is safe: cloning can't change the type of this node!
+        delattr(v.t,"tnodeList")
+    else:
+        attrs.append(fc.putTnodeList(v)) # New in 4.0
+
+if hasattr(v,"unknownAttributes"): # New in 4.0
+    attrs.append(self.putUnknownAttributes(v))
+
+if p.hasChildren() and not forceWrite and not self.usingClipboard:
+    # We put the entire tree when using the clipboard, so no need for this.
+    attrs.append(self.putDescendentUnknownAttributes(p))
+    attrs.append(self.putDescendentAttributes(p))
+#@nonl
+#@-node:ekr.20040324082713:<< Append tnodeList and unKnownAttributes to attrs>>
+#@+node:ekr.20040702085529:<< issue informational messages >>
+if isOrphan and isThin:
+    g.es("Writing erroneous: %s" % p.headString(),color="blue")
+    p.clearOrphan()
+
+# For testing.
+# if p.isAtIgnoreNode():
+     # for p2 in p.self_and_subtree_iter():
+            # if p2.isAtThinFileNode():
+                # g.es("Writing @ignore'd: %s" % p2.headString(),color="blue")
+#@-node:ekr.20040702085529:<< issue informational messages >>
+#@-node:ekr.20031218072017.1863:putVnode (3.x and 4.x)
+#@-node:ekr.20070905072809.2:Read @auto nodes during saves if the node has not been read previously
 #@-node:ekr.20070703182412.1:Features
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@+node:ekr.20070809131638:Pychecker report

@@ -100,51 +100,6 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@-node:ekr.20060829103523:Render Leo slideshows
 #@-node:ekr.20060306194040:ASAP: Video and more screen shots on Leo's web site
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto & resolve-cvs-conflicts)
-#@+node:ekr.20070814143748:Fix new bugs
-#@+node:ekr.20070814144454:strangely indented lines
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=4465020
-By: terry_n_brown
-
-Thinking about it, I still think it would be good for auto to handle things
-like this:
-
-....spp = DWEtree.DWEtree(os.path.join(directory, views[view]['src']),
-..........................provider)
-
-because they're valid python.  But, seeing the point of such things is to make
-them fit across the page, this is ok too:
-
-....spp = DWEtree.DWEtree(os.path.join(directory, views[view]['src']),
-........provider)
-
-which actually frees up more space than the top approach.
-
-To change all those cases I ran grep in Emacs like this:
-
-grep -n -e '^ \{4\}* \{1,3\}[^ ]' myfile.py
-
-that finds all the not-a-mutiple-of-4 indents.
-
-Cheers -Terry
-#@nonl
-#@-node:ekr.20070814144454:strangely indented lines
-#@+node:ekr.20070816084029:Retain dirty bit after write fails?
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4468174
-By: rich_ries
-
->> I find that if I change an @auto node and the save of the @auto file fails
-because it's locked by another app and I stop the other app, releasing the lock
-then I save the file again::
-
->> The .leo file is saved, but not the @auto file.
-
-This is not only in @auto, but in "regular" Leo, also.
-#@nonl
-#@-node:ekr.20070816084029:Retain dirty bit after write fails?
-#@-node:ekr.20070814143748:Fix new bugs
 #@+node:ekr.20051202094427:resolve-cvs-conflicts and write-resolved-conflicts commands
 @killcolor
 
