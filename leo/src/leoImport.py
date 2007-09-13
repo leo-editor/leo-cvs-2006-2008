@@ -1590,11 +1590,11 @@ class baseLeoImportCommands:
             runner.compareHelper(lines1,lines2,i,strict=True)
         #@-node:ekr.20070816101019:@test compareHelper
         #@-node:ekr.20070730093735:compareHelper & tests
-        #@+node:ekr.20070911110507:reportMismatch
+        #@+node:ekr.20070911110507:reportMismatch & test
         def reportMismatch (self,lines1,lines2,bad_i):
 
             def pr(*args,**keys):
-                g.es_print(color='blue',newline=False,*args,**keys)
+                g.es_print(color='blue',*args,**keys)
 
             kind = g.choose(self.atAuto,'@auto','import command')
             self.error(
@@ -1610,7 +1610,17 @@ class baseLeoImportCommands:
                     pr('%3d %s' % (i,lines2[i]),newline=False)
 
             return False
-        #@-node:ekr.20070911110507:reportMismatch
+        #@+node:ekr.20070913084008:@test pr
+        if False or g.unitTesting:
+            def pr(*args,**keys):
+                g.es_print(color='blue',*args,**keys)
+
+            pr('input...')
+            pr('newline=False:',newline=False)
+            pr('after')
+            pr('done')
+        #@-node:ekr.20070913084008:@test pr
+        #@-node:ekr.20070911110507:reportMismatch & test
         #@-node:ekr.20070808115837:Checking
         #@+node:ekr.20070706084535:Code generation
         #@+at 
