@@ -2671,15 +2671,19 @@ def es(s,*args,**keys):
 #@+node:ekr.20050707064040:es_print & test
 def es_print(s,*args,**keys):
 
-    print g.toEncodedString(s,'ascii')
+    if keys.get('newline') == False:
+        print g.toEncodedString(s,'ascii'),
+    else:
+        print g.toEncodedString(s,'ascii')
 
     if g.app.gui and not g.app.gui.isNullGui and not g.unitTesting:
         g.es(s,*args,**keys)
-#@+node:ekr.20070621092938:@test g.es_print
+#@+node:ekr.20070621092938:@@test g.es_print
 if g.unitTesting:
-    if 0: # Not usually enabled.
-        g.es_print('\ntest of es_print: Ă',color='red')
-#@-node:ekr.20070621092938:@test g.es_print
+    g.es_print('\ntest of es_print: Ă',color='red',newline=False)
+    g.es_print('after')
+    d.es_print('done')
+#@-node:ekr.20070621092938:@@test g.es_print
 #@-node:ekr.20050707064040:es_print & test
 #@+node:ekr.20050707065530:es_trace & test
 def es_trace(s,*args,**keys):
