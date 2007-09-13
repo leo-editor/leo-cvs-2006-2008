@@ -1802,6 +1802,56 @@ if g.unitTesting:
 #@-node:ekr.20070627082044.857:@test onClick
 #@-node:ekr.20061109095450.8:onClick
 #@-node:ekr.20070912052929:Fixed bug 'node note selected' bug
+#@+node:ekr.20070913085051:Fixed recent crasher involving pr and es_print
+#@+node:ekr.20050707064040:es_print & test
+def es_print(s,*args,**keys):
+
+    if keys.get('newline') == False:
+        print g.toEncodedString(s,'ascii'),
+    else:
+        print g.toEncodedString(s,'ascii')
+
+    if g.app.gui and not g.app.gui.isNullGui and not g.unitTesting:
+        g.es(s,*args,**keys)
+#@+node:ekr.20070621092938:@@test g.es_print
+if g.unitTesting:
+    g.es_print('\ntest of es_print: Ă',color='red',newline=False)
+    g.es_print('after')
+    d.es_print('done')
+#@-node:ekr.20070621092938:@@test g.es_print
+#@-node:ekr.20050707064040:es_print & test
+#@+node:ekr.20070911110507:reportMismatch & test
+def reportMismatch (self,lines1,lines2,bad_i):
+
+    def pr(*args,**keys):
+        g.es_print(color='blue',*args,**keys)
+
+    kind = g.choose(self.atAuto,'@auto','import command')
+    self.error(
+        '%s did not import the file perfectly\nfirst mismatched line: %d\n%s' % (
+            kind,bad_i,repr(lines2[bad_i-1])))
+
+    if len(lines1) < 30:
+        pr('input...')
+        for i in xrange(len(lines1)):
+            pr('%3d %s' % (i,lines1[i]),newline=False)
+        pr('output...')
+        for i in xrange(len(lines2)):
+            pr('%3d %s' % (i,lines2[i]),newline=False)
+
+    return False
+#@+node:ekr.20070913084008:@test pr
+if False or g.unitTesting:
+    def pr(*args,**keys):
+        g.es_print(color='blue',*args,**keys)
+
+    pr('input...')
+    pr('newline=False:',newline=False)
+    pr('after')
+    pr('done')
+#@-node:ekr.20070913084008:@test pr
+#@-node:ekr.20070911110507:reportMismatch & test
+#@-node:ekr.20070913085051:Fixed recent crasher involving pr and es_print
 #@-node:ekr.20070703182412:Bugs
 #@+node:ekr.20070703182412.1:Features
 #@+node:ekr.20070703172130:Added support for @mark-for-unit-tests node
@@ -2826,11 +2876,11 @@ if g.unitTesting:
     runner.compareHelper(lines1,lines2,i,strict=True)
 #@-node:ekr.20070816101019:@test compareHelper
 #@-node:ekr.20070730093735:compareHelper & tests
-#@+node:ekr.20070911110507:reportMismatch
+#@+node:ekr.20070911110507:reportMismatch & test
 def reportMismatch (self,lines1,lines2,bad_i):
 
     def pr(*args,**keys):
-        g.es_print(color='blue',newline=False,*args,**keys)
+        g.es_print(color='blue',*args,**keys)
 
     kind = g.choose(self.atAuto,'@auto','import command')
     self.error(
@@ -2846,7 +2896,17 @@ def reportMismatch (self,lines1,lines2,bad_i):
             pr('%3d %s' % (i,lines2[i]),newline=False)
 
     return False
-#@-node:ekr.20070911110507:reportMismatch
+#@+node:ekr.20070913084008:@test pr
+if False or g.unitTesting:
+    def pr(*args,**keys):
+        g.es_print(color='blue',*args,**keys)
+
+    pr('input...')
+    pr('newline=False:',newline=False)
+    pr('after')
+    pr('done')
+#@-node:ekr.20070913084008:@test pr
+#@-node:ekr.20070911110507:reportMismatch & test
 #@-node:ekr.20070808115837:Checking
 #@+node:ekr.20070706084535:Code generation
 @ None of these methods should ever need to be overridden in subclasses.
