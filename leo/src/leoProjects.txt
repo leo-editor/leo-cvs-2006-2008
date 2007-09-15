@@ -20,6 +20,7 @@
 
 #@+all
 #@+node:ekr.20070703172548:Leo 4.4.4 projects
+#@+node:ekr.20070915101503:4.4.4 b2
 #@+node:ekr.20070703182412:Bugs
 #@+node:ekr.20070725155607:removed leoKeywords from colorizer
 # This was a fairly big bit of cruft.
@@ -1855,6 +1856,79 @@ if False or g.unitTesting:
 #@-node:ekr.20070913084008:@test pr
 #@-node:ekr.20070911110507:reportMismatch & test
 #@-node:ekr.20070913085051:Fixed recent crasher involving pr and es_print
+#@+node:ekr.20070816084029:Retain dirty bit after write @auto fails
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4468174
+By: rich_ries
+
+>> I find that if I change an @auto node and the save of the @auto file fails
+because it's locked by another app and I stop the other app, releasing the lock
+then I save the file again::
+
+>> The .leo file is saved, but not the @auto file.
+
+This is not only in @auto, but in "regular" Leo, also.
+
+@color
+#@nonl
+#@+node:ekr.20070806141607:writeOneAtAutoNode & helper
+def writeOneAtAutoNode(self,p,toString):
+
+    '''Write p, and @auto node.'''
+
+    at = self ; c = at.c ; root = p.copy()
+
+    fileName = p.atAutoNodeName()
+    if not fileName: return False
+
+    at.scanDefaultDirectory(p,importing=True) # Set default_directory
+    fileName = g.os_path_join(at.default_directory,fileName)
+
+    if not c.atAutoDict.get(fileName) and g.os_path_exists(fileName):
+        # Read the file if it would not wipe out significant info.
+        # Otherwise, do nothing (the @auto tree will be written to the outline).
+        if at.isSignificantAtAutoTree(p):
+            g.es('not written: @auto %s\nmay conflict with existing derived file.' % (
+                fileName),color='red')
+            return False
+        else:
+            g.es_print('reading new @auto %s' % (fileName),color='blue')
+            at.readOneAtAutoNode(fileName,p)
+            return True
+
+    # This code is similar to code in at.write.
+    c.endEditing() # Capture the current headline.
+    at.targetFileName = g.choose(toString,"<string-file>",fileName)
+    at.initWriteIvars(root,at.targetFileName,
+        nosentinels=True,thinFile=False,scriptWrite=False,
+        toString=toString,write_strips_blank_lines=False)
+
+    ok = at.openFileForWriting (root,fileName=fileName,toString=toString)
+    if ok:
+        at.writeOpenFile(root,nosentinels=True,toString=toString)
+        at.closeWriteFile() # Sets stringOutput if toString is True.
+        at.replaceTargetFileIfDifferent()
+    elif not toString:
+        root.setDirty() # Make _sure_ we try to rewrite this file.
+        g.es("Not written: " + at.outputFileName)
+
+    return ok
+#@+node:ekr.20070909103844:isSignificantAtAutoTree
+def isSignificantAtAutoTree (self,p):
+
+    '''Return True if p's tree has a significant amount of information.'''
+
+    at = self ; s = p.bodyString()
+
+    return (
+        p.hasChildren() or
+        len(s) > 100 or
+        len(g.splitLines(s)) > 10
+    )
+#@-node:ekr.20070909103844:isSignificantAtAutoTree
+#@-node:ekr.20070806141607:writeOneAtAutoNode & helper
+#@-node:ekr.20070816084029:Retain dirty bit after write @auto fails
 #@-node:ekr.20070703182412:Bugs
 #@+node:ekr.20070703182412.1:Features
 #@+node:ekr.20070703172130:Added support for @mark-for-unit-tests node
@@ -4509,6 +4583,7 @@ if isOrphan and isThin:
 #@-node:ekr.20031218072017.1863:putVnode (3.x and 4.x)
 #@-node:ekr.20070905072809.2:Read @auto nodes during saves if the node has not been read previously
 #@-node:ekr.20070703182412.1:Features
+#@-node:ekr.20070915101503:4.4.4 b2
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@+node:ekr.20070809131638:Pychecker report
 # Invalid warnings...

@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="349" height="748" width="892"/>
+	<global_window_position top="10" left="349" height="728" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -1078,7 +1078,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
 <v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
@@ -3261,7 +3261,7 @@
 </v>
 <v t="ekr.20070806090235"><vh>4.4.4 @auto, threading syntax colorer</vh></v>
 </v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
 <v t="ekr.20070806090235.1"><vh>4.4.4 b1</vh>
 <v t="ekr.20070806090226.1"><vh>Added support for @mark-for-unit-tests node</vh></v>
 <v t="ekr.20070806090226.14"><vh>Created threading_colorizer</vh></v>
@@ -3270,6 +3270,26 @@
 <v t="ekr.20070809141529" a="M"><vh>Perfect import checks</vh></v>
 <v t="ekr.20070806101412"><vh>Commands related to @auto</vh></v>
 <v t="ekr.20070806100055"><vh>Extending the code: adding new parsers</vh></v>
+</v>
+</v>
+<v t="ekr.20070915101216" a="TV"><vh>4.4.4 b2</vh>
+<v t="ekr.20070915101157.1"><vh>Bug fixes</vh>
+<v t="ekr.20070915101157.3"><vh>Fixed UNL bug1</vh></v>
+<v t="ekr.20070915101157.5"><vh>Fixed how @auto handles paths</vh></v>
+<v t="ekr.20070915101157.14"><vh>Fixed another path bug</vh></v>
+<v t="ekr.20070915101157.16"><vh>fixed c parser so it handles non-ascii declaratsions</vh></v>
+<v t="ekr.20070915101157.17"><vh>Fixed colorizing bug and moved calls to w.toGuiIndex out of some loops</vh></v>
+<v t="ekr.20070915101157.18"><vh>Fixed unicode bug in http plugin</vh></v>
+<v t="ekr.20070915101157.19"><vh>Fixed new @path problem</vh></v>
+<v t="ekr.20070915101157.40"><vh>Fixed @auto path bug</vh></v>
+<v t="ekr.20070915101157.45"><vh>Improved messages on @import failure</vh></v>
+<v t="ekr.20070915101157.48"><vh>Fixed problem with space in path names in runLeoDynamicTest</vh></v>
+<v t="ekr.20070915101157.50"><vh>Fixed bad drag &amp; drop bug</vh></v>
+<v t="ekr.20070915101157.70"><vh>Fixed bug 'node note selected' bug</vh></v>
+<v t="ekr.20070915101157.81"><vh>Retain dirty bit after write @auto fails</vh></v>
+</v>
+<v t="ekr.20070915101157.82"><vh>Features</vh>
+<v t="ekr.20070915101157.168"><vh>Read @auto nodes during saves if the node has not been read previously</vh></v>
 </v>
 </v>
 </v>
@@ -31670,6 +31690,14 @@ file, and will write all dirty @auto trees when saving a .leo file. There is one
 exception to this rule: Leo will never read (import) or write an @auto tree if
 the root @auto tree is under the influence of an @ignore directive.
 
+When saving a .leo file, Leo now *reads* an @auto node if
+
+1) the derived file exists,
+2) an 'insignificant' amount of data exists in the @auto tree, and
+3) the @auto node has not been read previously.
+
+This promises to fix some quite awkward use cases.
+
 Leo creates @auto trees by parsing the corresponding derived file. Parsers
 create descendant nodes of the @auto tree: one node for each class, method and
 function in the derived file.
@@ -31716,34 +31744,28 @@ modifying the external file. If you @ignore directive, a later write of the
 @auto tree will attempt to fix the problems that gave rise to the errors. There
 are no guarantees however.
 
-Before importing a file, Leo **regularizes** the leading whitespace of all lines
-of the original source file. That is, Leo converts blanks to tabs or tabs to
-blanks depending on the value of the @tabwidth directive in effect for the @auto
-node. Leo also checks that the indentation of any non-blank line is not a
-multiple of the indentation specified by the @tabwidth dirctive in effect for
-the @auto node.
-
-Leo cannot guarantee to reproduce the original source file exactly if problems
-are discovered while regularizing leading whitespace. **Strict languages** are
-languages such as Python for which leading whitespace must be preserved exactly
-as it appears in the original source file. Problems during regularizing generate
-errors for strict languages and warnings for non-strict languages.
+**Strict languages** are languages like Python for which leading whitespace is
+especially significant. Before importing a file for a strict language, Leo
+**regularizes** the leading whitespace of all lines of the original source file.
+That is, Leo converts blanks to tabs or tabs to blanks depending on the value of
+the @tabwidth directive in effect for the @auto node. Leo cannot guarantee to
+reproduce the original source file exactly if problems are discovered while
+regularizing leading whitespace.
 
 After importing a file, Leo verifies that writing the @auto node would create
-*exactly* the same file as the original file. Such file comparison mismatches
-generate errors unless the problem involves only leading whitespace for
-non-strict languages. Whenever a mismatch occurs the first non-matching line is
-printed.
+the same file as the original file. For strict languages, the comparison must be
+exact, or nearly so. For non-strict languages, leading whitespace is ignored for
+the purposes of this comparison.
 
 File comparison mismatches can arise for several reasons:
     
 1. Bugs in the import parsers. Please report any suspected bugs immediately.
 
-2. Underindented lines in classes, methods or function. An **underindented
-   line** is a line that is indented less then the starting line of the class,
-   method or function in which it appears. Leo outlines can not represent such
-   lines exactly: every line of node implicitly has at least the indentation of
-   any unindented line of the node.
+2. Underindented lines in classes, methods or functions in strict languages. An
+   **underindented line** is a line that is indented less then the starting line
+   of the class, method or function in which it appears. Leo outlines can not
+   represent such lines exactly: every line of node implicitly has at least the
+   indentation of any unindented line of the node.
 
 Leo will issue a warning (not an error) for underindented Python comment lines.
 Such lines can not change the meaning of Python programs.</t>
@@ -31946,5 +31968,127 @@ to be portable over the several computers/platforms I need to use them on, and
 makes testing scripts against multiple leo versions easy. It does mean that my
 scripts are not portable to other leo users but that is not likely to be a
 problem.</t>
+<t tx="ekr.20070915101157.1"></t>
+<t tx="ekr.20070915101157.3">Email from Terry Brown
+
+A softish bug, but the use of findNodeInTree() in the UNL code can 
+take you to the wrong place if more than one node in the tree has 
+the same headString.  Patch below - can still go wrong if more than 
+one sibling has the same name, but the UNL system doesn't have a 
+solution for that.
+
+An observation - the UNL jumping code will drop you as far down the 
+path as it gets, i.e. you're moved to the last node that was one the 
+path, even if the path ends before the last part of the UNL is 
+reached.  This is ok, i.e. "this is as far as I could follow the 
+UNL", the alternative would be to not move at all if the whole UNL 
+can't be followed.
+
+Cheers -Terry
+
+anon_cvs&gt; cvs diff leo/plugins/UNL.py
+Index: leo/plugins/UNL.py
+===================================================================
+RCS file: /cvs/leo/plugins/UNL.py,v
+retrieving revision 1.14
+diff -r1.14 UNL.py
+183c183,186
+&lt;                             p = g.findNodeInTree(c2,p,headline)
+---
+&gt;                             for tmpp in p.copy().children_iter():
+&gt;                                 if tmpp.headString() == headline:
+&gt;                                     p = tmpp
+&gt;                                     break
+206c209,212
+&lt;                             p = g.findNodeInTree(c,p,headline)
+---
+&gt;                             for tmpp in p.copy().children_iter():
+&gt;                                 if tmpp.headString() == headline:
+&gt;                                     p = tmpp
+&gt;                                     break
+
+</t>
+<t tx="ekr.20070915101157.5">http://sourceforge.net/forum/message.php?msg_id=4444579
+</t>
+<t tx="ekr.20070915101157.14">http://sourceforge.net/forum/message.php?msg_id=4445685
+</t>
+<t tx="ekr.20070915101157.16">http://sourceforge.net/forum/message.php?msg_id=4446937
+</t>
+<t tx="ekr.20070915101157.17"># The code that was removing tags was not working properly.</t>
+<t tx="ekr.20070915101157.18">http://sourceforge.net/forum/message.php?msg_id=4437415
+</t>
+<t tx="ekr.20070915101157.19">http://sourceforge.net/forum/message.php?msg_id=4462693
+</t>
+<t tx="ekr.20070915101157.40">http://sourceforge.net/forum/message.php?msg_id=4464980
+</t>
+<t tx="ekr.20070915101157.45">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4465132
+By: terry_n_brown
+
+So I changed all my indentation to multiples of four, having decided I like
+the extra line space this buys over aligning with the opening (.
+
+leo said this when it read the file:
+
+@auto did not import the file perfectly
+
+but never mentioned @ignore or anything.  I made a trivial change and saved
+and diff could find no difference except my trivial change... which seems perfect
+to me...?
+
+@color</t>
+<t tx="ekr.20070915101157.48">https://sourceforge.net/forum/message.php?msg_id=4459798</t>
+<t tx="ekr.20070915101157.50">http://sourceforge.net/forum/message.php?msg_id=4509897
+</t>
+<t tx="ekr.20070915101157.70">http://sourceforge.net/forum/message.php?msg_id=4514130
+</t>
+<t tx="ekr.20070915101157.81">http://sourceforge.net/forum/message.php?msg_id=4468174</t>
+<t tx="ekr.20070915101157.82"></t>
+<t tx="ekr.20070915101157.168">When saving a .leo file, Leo now *reads* an @auto node if
+
+1) the derived file exists,
+2) an 'insignificant' amount of data exists in the @auto tree, and
+3)the @auto node has not been read previously.
+
+This promises to fix some quite awkward use cases.
+
+The 'perfect import' code now is a bit more relaxed, especially for 'non-strict'
+languages (all languages except Python):
+
+- Leo leaves leading whitespace alone for non-strict languages.
+
+- Leo complains about intermixed tabs and blanks in leading whitespace only for
+strict languages.
+
+- Leo ignores leading whitespace in the perfect import tests for non-strict
+languages.
+
+These changes mean that Leo might change a derived file if such a change occurs
+only in leading whitespace in a non-strict language.</t>
+<t tx="ekr.20070915101216">Leo 4.4.4 beta 1                                September 17, 2007
+
+Leo 4.4.4 beta 2 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.4:
+----------------------------
+
+- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
+  This plugin features much better performance.
+
+- Support for @auto nodes.  Such nodes allow people to collaborate using Leo
+  without inserting Leo sentinels in the files Leo generates.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 </tnodes>
 </leo_file>
