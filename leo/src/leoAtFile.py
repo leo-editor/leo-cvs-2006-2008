@@ -3066,7 +3066,7 @@ class atFile:
 
         '''Return True if p's tree has a significant amount of information.'''
 
-        at = self ; s = p.bodyString()
+        s = p.bodyString()
 
         return (
             p.hasChildren() or

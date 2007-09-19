@@ -20,7 +20,6 @@ After startup:
 
 import leoGlobals as g
 import glob
-import sys
 
 handlers = {}
 loadedModules = {} # Keys are module names, values are modules.
