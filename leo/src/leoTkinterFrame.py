@@ -1118,6 +1118,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
             self.buttons = {}
             self.iconFrame = w = Tk.Frame(parentFrame,height="5m",bd=2,relief="groove")
             self.c.frame.iconFrame = self.iconFrame
+            self.font = None
             self.parentFrame = parentFrame
             self.visible = False
             self.show()
@@ -1129,7 +1130,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
 
             Pictures take precedence over text"""
 
-            f = self.iconFrame
+            c = self.c ; f = self.iconFrame
             text = keys.get('text')
             imagefile = keys.get('imagefile')
             image = keys.get('image')
@@ -1181,14 +1182,14 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 #@nl
             elif text:
                 b = Tk.Button(f,text=text,relief="groove",bd=2,command=command)
-                # if sys.platform != 'darwin':
+                if not self.font:
+                    self.font = c.config.getFontFromParams(
+                        "button_text_font_family", "button_text_font_size",
+                        "button_text_font_slant",  "button_text_font_weight",)
+                b.configure(font=self.font)
+                # elif sys.platform.startswith('win'):
                     # width = max(6,len(text))
-                    # b.configure(width=width)
-                if sys.platform.startswith('win'):
-                    width = max(6,len(text))
-                    # width = int(len(text) * 0.95)
-                    # width = max(6,width)
-                    b.configure(width=width,font=('verdana',7,'bold'))
+                    # b.configure(width=width,font=('verdana',7,'bold'))
                 if bg: b.configure(bg=bg)
                 b.pack(side="left", fill="none")
                 return b

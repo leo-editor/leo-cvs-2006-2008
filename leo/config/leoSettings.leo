@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.620922384702">
-	<global_window_position top="17" left="238" height="869" width="861"/>
+	<global_window_position top="17" left="238" height="829" width="861"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -83,7 +83,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -314,8 +314,9 @@
 <v t="ekr.20041119050105.16"><vh>@bool suboutline_only = False</vh></v>
 </v>
 <v t="ekr.20041213105007" annotate="7d71002e"><vh>Fonts</vh>
-<v t="ekr.20041213105508"><vh>@font log font</vh></v>
 <v t="ekr.20041119034357.45"><vh>@font body text font</vh></v>
+<v t="ekr.20070919125633"><vh>@font button font</vh></v>
+<v t="ekr.20041213105508"><vh>@font log font</vh></v>
 <v t="ekr.20060702100257"><vh>@font menu text font</vh></v>
 <v t="ekr.20041119051246.4"><vh>@font outline font</vh></v>
 </v>
@@ -445,11 +446,11 @@
 </v>
 </v>
 <v t="ekr.20070810180015"><vh>@keys Vim bindings</vh>
-<v t="ekr.20070810180015.1" a="E"><vh>Modes</vh>
+<v t="ekr.20070810180015.1"><vh>Modes</vh>
 <v t="ekr.20070810182514"><vh>@mode focus</vh></v>
 <v t="ekr.20070810181929"><vh>@shortcuts top-level plain keys</vh></v>
 <v t="ekr.20070810180015.2"><vh>@@mode quick-command (Alt-C)</vh></v>
-<v t="ekr.20070810181929.2" a="E"><vh>@@mode Edit (Alt-Control-space)</vh>
+<v t="ekr.20070810181929.2"><vh>@@mode Edit (Alt-Control-space)</vh>
 <v t="ekr.20070810181929.3"><vh>@@mode Edit-extend</vh></v>
 </v>
 <v t="ekr.20070810181929.4" annotate="7d71002e"><vh>@@mode File</vh></v>
@@ -463,7 +464,7 @@
 </v>
 <v t="ekr.20070810181929.11"><vh>@@mode Quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20070810180015.3" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20070810180015.3"><vh>Shortcuts</vh>
 <v t="ekr.20070810181453"><vh>@shortcuts Arrow keys</vh></v>
 <v t="ekr.20070810181453.1"><vh>@shortcuts Home/End keys</vh></v>
 <v t="ekr.20070810181453.2"><vh>old...</vh></v>
@@ -483,10 +484,10 @@
 </v>
 </v>
 <v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
-<v t="ekr.20060603215208.4" a="E"><vh>Modes</vh>
+<v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-Shift-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -656,10 +657,10 @@
 </v>
 <v t="ekr.20060117092249"><vh>About modes</vh></v>
 <v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
-<v t="ekr.20060603215208.4" a="E"><vh>Modes</vh>
+<v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-Shift-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -679,14 +680,14 @@
 <v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: F-M</vh></v>
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
-<v t="ekr.20070810181604" a="E"><vh>Vim stuff: not ready yet</vh>
+<v t="ekr.20070810181604"><vh>Vim stuff: not ready yet</vh>
 <v t="ekr.20070810181528"><vh>@@strings  [ignore,insert, overwrite] top_level_unbound_key_action = ignore</vh></v>
-<v t="ekr.20070810180015" a="E"><vh>@keys Vim bindings</vh>
-<v t="ekr.20070810180015.1" a="E"><vh>Modes</vh>
+<v t="ekr.20070810180015"><vh>@keys Vim bindings</vh>
+<v t="ekr.20070810180015.1"><vh>Modes</vh>
 <v t="ekr.20070810182514"><vh>@mode focus</vh></v>
-<v t="ekr.20070810181929" a="TV"><vh>@shortcuts top-level plain keys</vh></v>
+<v t="ekr.20070810181929"><vh>@shortcuts top-level plain keys</vh></v>
 <v t="ekr.20070810180015.2"><vh>@@mode quick-command (Alt-C)</vh></v>
-<v t="ekr.20070810181929.2" a="E"><vh>@@mode Edit (Alt-Control-space)</vh>
+<v t="ekr.20070810181929.2"><vh>@@mode Edit (Alt-Control-space)</vh>
 <v t="ekr.20070810181929.3"><vh>@@mode Edit-extend</vh></v>
 </v>
 <v t="ekr.20070810181929.4" annotate="7d71002e"><vh>@@mode File</vh></v>
@@ -700,7 +701,7 @@
 </v>
 <v t="ekr.20070810181929.11"><vh>@@mode Quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20070810180015.3" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20070810180015.3"><vh>Shortcuts</vh>
 <v t="ekr.20070810181453"><vh>@shortcuts Arrow keys</vh></v>
 <v t="ekr.20070810181453.1"><vh>@shortcuts Home/End keys</vh></v>
 <v t="ekr.20070810181453.2"><vh>old...</vh></v>
@@ -7394,5 +7395,10 @@ write-at-file-nodes     = w
 focus-to-log            = l
 focus-to-minibuffer     = m
 focus-to-tree           = o</t>
+<t tx="ekr.20070919125633">button_text_font_family = verdana
+button_text_font_size = 8
+button_text_font_slant = roman
+button_text_font_weight = bold
+</t>
 </tnodes>
 </leo_file>
