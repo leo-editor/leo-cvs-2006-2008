@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="349" height="728" width="892"/>
+	<global_window_position top="10" left="349" height="708" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -3290,6 +3290,7 @@
 </v>
 <v t="ekr.20070915101157.82"><vh>Features</vh>
 <v t="ekr.20070915101157.168"><vh>Read @auto nodes during saves if the node has not been read previously</vh></v>
+<v t="ekr.20070919083648"><vh>Added read-file-into-node and write-file-from-node commands</vh></v>
 </v>
 </v>
 </v>
@@ -32066,7 +32067,7 @@ languages.
 
 These changes mean that Leo might change a derived file if such a change occurs
 only in leading whitespace in a non-strict language.</t>
-<t tx="ekr.20070915101216">Leo 4.4.4 beta 1                                September 17, 2007
+<t tx="ekr.20070915101216">Leo 4.4.4 beta 2                                September 19, 2007
 
 Leo 4.4.4 beta 2 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
@@ -32090,5 +32091,15 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20070919083648">These commands are useful for resolving cvs conflicts in derived files.
+
+The read-file-into-node command prompts for a filename, and creates an node
+whose headline is @read-file-into-node &lt;filename&gt; and whose body text is the
+entire contents of the file.
+
+The write-file-from-node writes the body text of the selected not to a file. If
+the headline of the presently selected node starts with @read-file-into-node the
+command use the filename that follows in the headline. Otherwise, the command
+prompts for a filename.</t>
 </tnodes>
 </leo_file>

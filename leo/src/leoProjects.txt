@@ -1087,7 +1087,7 @@ def isSignificantAtAutoTree (self,p):
 
     '''Return True if p's tree has a significant amount of information.'''
 
-    at = self ; s = p.bodyString()
+    s = p.bodyString()
 
     return (
         p.hasChildren() or
@@ -1497,43 +1497,6 @@ def dragCloneAfter (self,p,after):
 #@-node:ekr.20031218072017.2948:c.dragCloneAfter
 #@-node:ekr.20031218072017.2945:Dragging (commands)
 #@+node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning & c.checkDrag
-def checkMoveWithParentWithWarning (self,root,parent,warningFlag):
-
-    """Return False if root or any of root's descedents is a clone of
-    parent or any of parents ancestors."""
-
-    message = "Can not drag a node into its descendant tree."
-
-    g.trace('root',root.headString())
-
-    for z in root.subtree_iter():
-        if z == parent:
-            if g.app.unitTesting:
-                g.app.unitTestDict['checkMoveWithParentWithWarning']=True
-            elif warningFlag:
-                g.alert(message)
-            return False
-
-    message = "Illegal move or drag: no clone may contain a clone of itself"
-
-    # g.trace("root",root,"parent",parent)
-    clonedTnodes = {}
-    for ancestor in parent.self_and_parents_iter():
-        if ancestor.isCloned():
-            t = ancestor.v.t
-            clonedTnodes[t] = t
-
-    if not clonedTnodes:
-        return True
-
-    for p in root.self_and_subtree_iter():
-        if p.isCloned() and clonedTnodes.get(p.v.t):
-            if g.app.unitTesting:
-                g.app.unitTestDict['checkMoveWithParentWithWarning']=True
-            elif warningFlag:
-                g.alert(message)
-            return False
-    return True
 #@+node:ekr.20070910105044:checkMoveWithParentWithWarning
 def checkMoveWithParentWithWarning (self,root,parent,warningFlag):
 
@@ -1810,10 +1773,10 @@ if g.unitTesting:
 #@+node:ekr.20050707064040:es_print & test
 def es_print(s,*args,**keys):
 
-    if keys.get('newline') == False:
-        print g.toEncodedString(s,'ascii'),
-    else:
+    if keys.get('newline') in (True,None):
         print g.toEncodedString(s,'ascii')
+    else:
+        print g.toEncodedString(s,'ascii'),
 
     if g.app.gui and not g.app.gui.isNullGui and not g.unitTesting:
         g.es(s,*args,**keys)
@@ -1821,7 +1784,7 @@ def es_print(s,*args,**keys):
 if g.unitTesting:
     g.es_print('\ntest of es_print: Ă',color='red',newline=False)
     g.es_print('after')
-    d.es_print('done')
+    g.es_print('done')
 #@-node:ekr.20070621092938:@@test g.es_print
 #@-node:ekr.20050707064040:es_print & test
 #@+node:ekr.20070911110507:reportMismatch & test
@@ -1919,7 +1882,7 @@ def isSignificantAtAutoTree (self,p):
 
     '''Return True if p's tree has a significant amount of information.'''
 
-    at = self ; s = p.bodyString()
+    s = p.bodyString()
 
     return (
         p.hasChildren() or
@@ -2700,7 +2663,7 @@ def isSignificantAtAutoTree (self,p):
 
     '''Return True if p's tree has a significant amount of information.'''
 
-    at = self ; s = p.bodyString()
+    s = p.bodyString()
 
     return (
         p.hasChildren() or
@@ -4455,7 +4418,7 @@ def isSignificantAtAutoTree (self,p):
 
     '''Return True if p's tree has a significant amount of information.'''
 
-    at = self ; s = p.bodyString()
+    s = p.bodyString()
 
     return (
         p.hasChildren() or
@@ -4582,6 +4545,19 @@ if isOrphan and isThin:
 #@-node:ekr.20040702085529:<< issue informational messages >>
 #@-node:ekr.20031218072017.1863:putVnode (3.x and 4.x)
 #@-node:ekr.20070905072809.2:Read @auto nodes during saves if the node has not been read previously
+#@+node:ekr.20070919083650:Added read-file-into-node and write-file-from-node commands
+These commands are useful for resolving cvs conflicts in derived files.
+
+The read-file-into-node command prompts for a filename, and creates an node
+whose headline is @read-file-into-node <filename> and whose body text is the
+entire contents of the file.
+
+The write-file-from-node writes the body text of the selected not to a file. If
+the headline of the presently selected node starts with @read-file-into-node the
+command use the filename that follows in the headline. Otherwise, the command
+prompts for a filename.
+#@nonl
+#@-node:ekr.20070919083650:Added read-file-into-node and write-file-from-node commands
 #@-node:ekr.20070703182412.1:Features
 #@-node:ekr.20070915101503:4.4.4 b2
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
