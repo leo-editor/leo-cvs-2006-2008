@@ -5779,6 +5779,7 @@ class leoCommandsClass (baseEditCommandsClass):
             'read-at-auto-nodes':           c.readAtAutoNodes,
             'read-at-file-nodes':           c.readAtFileNodes,
             'read-outline-only':            c.readOutlineOnly,
+            'read-file-into-node':          c.readFileIntoNode,
             'redo':                         c.undoer.redo,
             'reformat-paragraph':           c.reformatParagraph,
             'remove-sentinels':             c.removeSentinels,
@@ -5815,6 +5816,7 @@ class leoCommandsClass (baseEditCommandsClass):
             'write-dirty-at-file-nodes':    c.fileCommands.writeDirtyAtFileNodes,
             'write-missing-at-file-nodes':  c.fileCommands.writeMissingAtFileNodes,
             'write-outline-only':           c.fileCommands.writeOutlineOnly,
+            'write-file-from-node':         c.writeFileFromNode,
         }
         #@-node:ekr.20050920084036.189:<< define dictionary d of names and Leo commands >>
         #@nl

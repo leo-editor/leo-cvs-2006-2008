@@ -307,7 +307,7 @@ class baseCommands:
     #@+node:ekr.20040629121554.1:getSignOnLine (Contains hard-coded version info)
     def getSignOnLine (self):
         c = self
-        return "Leo 4.4.4 beta 1, build %s, August 10, 2007" % c.getBuildNumber()
+        return "Leo 4.4.4 beta 2, build %s, September 19, 2007" % c.getBuildNumber()
     #@-node:ekr.20040629121554.1:getSignOnLine (Contains hard-coded version info)
     #@+node:ekr.20040629121554.2:initVersion
     def initVersion (self):
@@ -1115,6 +1115,33 @@ class baseCommands:
         except:
             g.es("can not open:" + fileName)
     #@-node:ekr.20031218072017.2839:readOutlineOnly
+    #@+node:ekr.20070915134101:readFileIntoFile
+    def readFileIntoNode (self,event=None):
+
+        '''Read a file into a single node.'''
+
+        c = self ; undoType = 'Read File Into Node'
+        filetypes = [("All files", "*"),("Python files","*.py"),("Leo files", "*.leo"),]
+        fileName = g.app.gui.runOpenFileDialog(
+            title="Read Outline Only",filetypes=filetypes,defaultextension=None)
+
+        if fileName:    
+            try:
+                theFile = open(fileName,'r')
+                s = theFile.read()
+                s = '@nocolor\n' + s
+                c.beginUpdate()
+                try:
+                    w = c.frame.body.bodyCtrl
+                    p = c.insertHeadline(op_name=undoType)
+                    p.setHeadString('@read-file-into-node ' + fileName)
+                    p.v.setTnodeText(s)
+                    w.setAllText(s)
+                finally:
+                    c.endUpdate()
+            except:
+                g.es("can not open:" + fileName)
+    #@-node:ekr.20070915134101:readFileIntoFile
     #@+node:ekr.20070806105721.1:readAtAutoNodes (commands)
     def readAtAutoNodes (self,event=None):
 
@@ -1172,6 +1199,45 @@ class baseCommands:
         if names:
             c.importCommands.importDerivedFiles(parent=p,paths=names)
     #@-node:ekr.20031218072017.1809:importDerivedFile
+    #@+node:ekr.20070915142635:writeFileFromNode
+    def writeFileFromNode (self,event=None):
+
+        # If node starts with @read-file-into-node, use the full path name in the headline.
+        # Otherwise, prompt for a file name.
+
+        c = self ; p = c.currentPosition()
+        h = p.headString().rstrip()
+        s = p.bodyString()
+        tag = '@read-file-into-node'
+
+        if h.startswith(tag):
+            fileName = h[len(tag):].strip()
+        else:
+            fileName = None
+
+        if not fileName:
+            filetypes = [("All files", "*"),("Python files","*.py"),("Leo files", "*.leo"),]
+            fileName = g.app.gui.runSaveFileDialog(
+                initialfile=None,
+                title='Write File From Node',
+                filetypes=filetypes,
+                defaultextension=None)
+        if fileName:
+            try:
+                theFile = open(fileName,'w')
+            except IOError:
+                theFile = None
+            if theFile:
+                if s.startswith('@nocolor\n'):
+                    s = s[len('@nocolor\n'):]
+                theFile.write(s)
+                theFile.flush()
+                g.es_print('wrote: %s' % (fileName),color='blue')
+                theFile.close()
+            else:
+                g.es('can not write %s' % (fileName),color='red')
+    #@nonl
+    #@-node:ekr.20070915142635:writeFileFromNode
     #@-node:ekr.20031218072017.2838:Read/Write submenu
     #@+node:ekr.20031218072017.2841:Tangle submenu
     #@+node:ekr.20031218072017.2842:tangleAll
@@ -3249,43 +3315,6 @@ class baseCommands:
     #@-node:ekr.20031218072017.2028:Hoist & dehoist
     #@+node:ekr.20031218072017.1759:Insert, Delete & Clone (Commands)
     #@+node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning & c.checkDrag
-    def checkMoveWithParentWithWarning (self,root,parent,warningFlag):
-
-        """Return False if root or any of root's descedents is a clone of
-        parent or any of parents ancestors."""
-
-        message = "Can not drag a node into its descendant tree."
-
-        g.trace('root',root.headString())
-
-        for z in root.subtree_iter():
-            if z == parent:
-                if g.app.unitTesting:
-                    g.app.unitTestDict['checkMoveWithParentWithWarning']=True
-                elif warningFlag:
-                    g.alert(message)
-                return False
-
-        message = "Illegal move or drag: no clone may contain a clone of itself"
-
-        # g.trace("root",root,"parent",parent)
-        clonedTnodes = {}
-        for ancestor in parent.self_and_parents_iter():
-            if ancestor.isCloned():
-                t = ancestor.v.t
-                clonedTnodes[t] = t
-
-        if not clonedTnodes:
-            return True
-
-        for p in root.self_and_subtree_iter():
-            if p.isCloned() and clonedTnodes.get(p.v.t):
-                if g.app.unitTesting:
-                    g.app.unitTestDict['checkMoveWithParentWithWarning']=True
-                elif warningFlag:
-                    g.alert(message)
-                return False
-        return True
     #@+node:ekr.20070910105044:checkMoveWithParentWithWarning
     def checkMoveWithParentWithWarning (self,root,parent,warningFlag):
 

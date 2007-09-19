@@ -624,6 +624,9 @@ class leoMenu:
             '*&read-outline-only',
             '*write-&outline-only',
             '-',
+            'read-&file-into-node',
+            'writ&e-file-from-node',
+            '-',
             ('Read @&auto Nodes','read-at-auto-nodes'),
             ('Write @a&uto Nodes','write-at-auto-nodes'),
             ('Write D&irty @a&uto Nodes','write-dirty-at-auto-nodes'),
@@ -634,7 +637,7 @@ class leoMenu:
             ('&Write @file Nodes','write-at-file-nodes'),
         ]
 
-        # a,d,i,m,n,o,r,u,w
+        # a,d,e,f,i,m,n,o,r,u,w
     #@nonl
     #@-node:ekr.20031218072017.3761:defineFileMenuReadWriteMenuTable
     #@+node:ekr.20031218072017.3762:defineFileMenuTangleMenuTable
