@@ -673,7 +673,9 @@ plugins\__jEdit_colorizer__.py
 plugins\__outlineExperiments.py
 plugins\__overrideClasses.py
 plugins\__vnx__.py
+plugins\__wx_alt_gui.py
 plugins\__wx_gui.py
+plugins\__wx_test_drawing_interface.py
 plugins\add_directives.py
 plugins\at_folder.py
 plugins\at_produce.py
@@ -794,6 +796,7 @@ plugins\word_export.py
 plugins\xcc_nodes.py
 plugins\xemacs.py
 plugins\xsltWithNodes.py
+plugins\zenity_file_dialogs.py
 plugins\trees\doc.py
 plugins\trees\news.py
 plugins\trees\pluginsManager.txt

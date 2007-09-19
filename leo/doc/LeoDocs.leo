@@ -3262,7 +3262,7 @@
 <v t="ekr.20070806090235"><vh>4.4.4 @auto, threading syntax colorer</vh></v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20070806090235.1"><vh>4.4.4 b1</vh>
+<v t="ekr.20070806090235.1" a="TV"><vh>4.4.4 b1</vh>
 <v t="ekr.20070806090226.1"><vh>Added support for @mark-for-unit-tests node</vh></v>
 <v t="ekr.20070806090226.14"><vh>Created threading_colorizer</vh></v>
 <v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
@@ -3272,7 +3272,7 @@
 <v t="ekr.20070806100055"><vh>Extending the code: adding new parsers</vh></v>
 </v>
 </v>
-<v t="ekr.20070915101216" a="TV"><vh>4.4.4 b2</vh>
+<v t="ekr.20070915101216"><vh>4.4.4 b2</vh>
 <v t="ekr.20070915101157.1"><vh>Bug fixes</vh>
 <v t="ekr.20070915101157.3"><vh>Fixed UNL bug1</vh></v>
 <v t="ekr.20070915101157.5"><vh>Fixed how @auto handles paths</vh></v>
@@ -31819,9 +31819,10 @@ The highlights of Leo 4.4.4:
 <t tx="ekr.20070809145744.4">::
 
     read-at-auto-nodes
+    read-file-into-node
     write-at-auto-nodes
     write-dirty-at-auto-nodes
-</t>
+    write-file-from-node</t>
 <t tx="ekr.20070809145744.5">::
     @bool whatever
     
@@ -32083,6 +32084,8 @@ The highlights of Leo 4.4.4:
 
 - Support for @auto nodes.  Such nodes allow people to collaborate using Leo
   without inserting Leo sentinels in the files Leo generates.
+  
+- New commands for resolving cvs conflicts.
 
 Links:
 ------
