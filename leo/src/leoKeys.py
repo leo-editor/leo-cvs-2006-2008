@@ -3997,7 +3997,7 @@ class keyHandlerClass:
         __pychecker__ = '--no-reimport'
         import string
 
-        c,p = g.getTestVars()
+        c,p = g.getTestVars() # Optional: prevents pychecker warnings.
         k = c.k
 
         for ch in (string.printable):

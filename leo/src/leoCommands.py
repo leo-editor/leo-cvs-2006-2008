@@ -2770,6 +2770,7 @@ class baseCommands:
     #@-node:ekr.20031218072017.1832:getTime
     #@+node:ekr.20070627082044.843:@test c.getTime
     if g.unitTesting:
+
         assert type(c.getTime()) == type('')
     #@nonl
     #@-node:ekr.20070627082044.843:@test c.getTime

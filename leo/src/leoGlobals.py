@@ -1037,7 +1037,7 @@ def es_exception (full=True,c=None,color="red"):
 #@+node:ekr.20050220030850:@test g.es_exception
 if g.unitTesting:
 
-    c,p = g.getTestVars()
+    c,p = g.getTestVars() # Optional: prevents pychecker warnings.
 
     if c.config.redirect_execute_script_output_to_log_pane:
         pass # Test doesn't work when redirection is on.
@@ -1728,7 +1728,7 @@ if g.unitTesting:
     __pychecker__ = '--no-reimport'
     import types
 
-    c,p = g.getTestVars()
+    c,p = g.getTestVars() # Optional: prevents pychecker warnings.
 
     theFile,theFileName = g.create_temp_file()
 
@@ -2047,7 +2047,7 @@ if g.unitTesting:
     __pychecker__ = '--no-reimport'
     import os
 
-    c,p = g.getTestVars()
+    c,p = g.getTestVars() # Optional: prevents pychecker warnings.
     exists = g.os_path_exists
 
     path = g.os_path_join(g.app.testDir,'xyzzy')
@@ -2133,7 +2133,7 @@ if g.unitTesting:
     import os
     exists = g.os_path_exists
 
-    c,p = g.getTestVars()
+    c,p = g.getTestVars() # Optional: prevents pychecker warnings.
 
     path = g.os_path_join(g.app.testDir,'xyzzy')
     if exists(path):
@@ -5309,7 +5309,7 @@ def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=T
 #@+node:ekr.20050211100535:@test g.getScript strips crlf
 if g.unitTesting:
 
-    c,p = g.getTestVars()
+    c,p = g.getTestVars() # Optional: prevents pychecker warnings.
     script = g.getScript(c,p) # This will get the text of this node.
     assert script.find('\r\n') == -1, repr(script)
 #@-node:ekr.20050211100535:@test g.getScript strips crlf
@@ -5854,7 +5854,7 @@ def removeExtraLws (s,tab_width):
 #@+node:ekr.20050211120837:@test g.removeExtraLws
 if g.unitTesting:
 
-    c,p = g.getTestVars()
+    c,p = g.getTestVars() # Optional: prevents pychecker warnings.
 
     for s,expected in (
         (' a\n b\n c', 'a\nb\nc'),

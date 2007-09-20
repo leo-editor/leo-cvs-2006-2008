@@ -1246,10 +1246,7 @@ class debugCommandsClass (baseEditCommandsClass):
 
         c = self.c ; p = c.currentPosition()
         python = sys.executable
-        # pythonDir = g.os_path_dirname(python)
-
-        script = g.getScript(c,p) #,useSelectedText=True, forcePythonSentinels=True, useSentinels=True)
-        ### script = p.bodyString()
+        script = g.getScript(c,p)
         winpdb = self.findDebugger()
         if not winpdb: return
 
@@ -4881,7 +4878,7 @@ class helpCommandsClass (baseEditCommandsClass):
             g.es_print(s)
     #@+node:ekr.20060205165654:@test helpForMinibuffer
     if g.unitTesting:
-        c,p = g.getTestVars()
+        c,p = g.getTestVars() # Optional: prevents pychecker warnings.
         c.helpCommands.helpForMinibuffer()
     #@-node:ekr.20060205165654:@test helpForMinibuffer
     #@-node:ekr.20051014170754:helpForMinibuffer
@@ -4999,7 +4996,7 @@ class helpCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20060226132000:test_aproposAutocompletion
     if g.unitTesting:
 
-        c,p = g.getTestVars()
+        c,p = g.getTestVars() # Optional: prevents pychecker warnings.
         c.helpCommands.aproposAutocompletion()
     #@-node:ekr.20060226132000:test_aproposAutocompletion
     #@-node:ekr.20060226131603.1:aproposAutocompletion
@@ -5068,7 +5065,7 @@ class helpCommandsClass (baseEditCommandsClass):
             g.es_print(s)
     #@+node:ekr.20060205170435:@test apropos_bindings
     if g.unitTesting:
-        c,p = g.getTestVars()
+        c,p = g.getTestVars() # Optional: prevents pychecker warnings.
         c.helpCommands.aproposBindings()
     #@-node:ekr.20060205170435:@test apropos_bindings
     #@-node:ekr.20060205170335:aproposBindings
@@ -5220,7 +5217,7 @@ class helpCommandsClass (baseEditCommandsClass):
             g.es_print(s)
     #@+node:ekr.20060205170552:@test apropos_find_commands
     if g.unitTesting:
-        c,p = g.getTestVars()
+        c,p = g.getTestVars() # Optional: prevents pychecker warnings.
         c.helpCommands.aproposFindCommands()
     #@-node:ekr.20060205170552:@test apropos_find_commands
     #@-node:ekr.20060205170335.1:aproposFindCommands

@@ -366,6 +366,28 @@ class atFile:
     # All reading happens in the readOpenFile logic, so plugins should need to
     # override only this method.
     #@-at
+    #@+node:ekr.20070919133659:checkDerivedFile (atFile)
+    def checkDerivedFile (self, event=None):  # based on atFile.read
+
+        at = self ; c = at.c ; p = c.currentPosition() ; s = p.bodyString()
+
+        # Create a dummy vnode as the root.
+        fileName='check-derived-file'
+        root_t = leoNodes.tnode()
+        root_v = leoNodes.vnode(root_t)
+        root = leoNodes.position(root_v)
+        theFile = g.fileLikeObject(fromString=s)
+        thinFile = at.scanHeaderForThin (theFile,fileName)
+        # g.trace('thinFile',thinFile)
+        at.initReadIvars(root,fileName,thinFile=thinFile)
+        if at.errors: return
+        at.openFileForReading(fileName,fromString=s)
+        if not at.inputFile: return
+        at.readOpenFile(root,at.inputFile,fileName)
+        at.inputFile.close()
+        if at.errors == 0:
+            g.es_print('check-derived-file passed',color='blue')
+    #@-node:ekr.20070919133659:checkDerivedFile (atFile)
     #@+node:ekr.20041005105605.19:openFileForReading
     def openFileForReading(self,fileName,fromString=False):
 
@@ -395,6 +417,20 @@ class atFile:
                 at.error("can not open: '@file %s'" % (fn))
                 at.inputFile = None
     #@-node:ekr.20041005105605.19:openFileForReading
+    #@+node:bwmulder.20041231170726:openForRead
+    def openForRead(self, *args, **kw):
+        """
+        Hook for the mod_shadow plugin.
+        """
+        return open(*args, **kw)
+    #@-node:bwmulder.20041231170726:openForRead
+    #@+node:bwmulder.20050101094804:openForWrite
+    def openForWrite(self, *args, **kw):
+        """
+        Hook for the mod_shadow plugin
+        """
+        return open(*args, **kw)
+    #@-node:bwmulder.20050101094804:openForWrite
     #@+node:ekr.20041005105605.21:read
     # The caller must enclose this code in beginUpdate/endUpdate.
 
@@ -569,7 +605,8 @@ class atFile:
         else:
             lastLines = at.scanText3(theFile,root,[],at.endLeo)
 
-        root.v.t.setVisited() # Disable warning about set nodes.
+        if root:
+            root.v.t.setVisited() # Disable warning about set nodes.
 
         #@    << handle first and last lines >>
         #@+node:ekr.20041005105605.28:<< handle first and last lines >>
@@ -586,20 +623,6 @@ class atFile:
         #@-node:ekr.20041005105605.28:<< handle first and last lines >>
         #@nl
     #@-node:ekr.20041005105605.27:readOpenFile
-    #@+node:bwmulder.20041231170726:openForRead
-    def openForRead(self, *args, **kw):
-        """
-        Hook for the mod_shadow plugin.
-        """
-        return open(*args, **kw)
-    #@-node:bwmulder.20041231170726:openForRead
-    #@+node:bwmulder.20050101094804:openForWrite
-    def openForWrite(self, *args, **kw):
-        """
-        Hook for the mod_shadow plugin
-        """
-        return open(*args, **kw)
-    #@-node:bwmulder.20050101094804:openForWrite
     #@+node:ekr.20050103163224:scanHeaderForThin
     def scanHeaderForThin (self,theFile,fileName):
 
@@ -2530,7 +2553,7 @@ class atFile:
     #@+node:ekr.20050211111552:@test parseLeoSentinel
     if g.unitTesting:
 
-        c,p = g.getTestVars()
+        c,p = g.getTestVars() # Optional: prevents pychecker warnings.
 
         s1 = '#@+leo-ver=4-thin-encoding=utf-8,.'  # 4.2 format.
         s2 = '#@+leo-ver=4-thin-encoding=utf-8.' # pre-4.2 format.
@@ -2582,9 +2605,10 @@ class atFile:
 
         Sets self.encoding, and self.start/endSentinelComment.
 
-        Returns (firstLines,new_df) where:
-        firstLines contains all @first lines,
-        new_df is True if we are reading a new-format derived file."""
+        Returns (firstLines,new_df,isThinDerivedFile) where:
+        firstLines        contains all @first lines,
+        new_df            is True if we are reading a new-format derived file.
+        isThinDerivedFile is True if the file is an @thin file."""
 
         at = self
         firstLines = [] # The lines before @+leo.
@@ -4071,7 +4095,7 @@ class atFile:
     #@+node:ekr.20050608103755:@test directiveKind4
     if g.unitTesting:
 
-        c,p = g.getTestVars()
+        c,p = g.getTestVars() # Optional: prevents pychecker warnings.
         at=c.atFileCommands # Self is a dummy argument.
         table = [
             ('@=',0,at.noDirective),
@@ -4641,7 +4665,7 @@ class atFile:
 
     if g.unitTesting:
 
-        c,p = g.getTestVars()
+        c,p = g.getTestVars() # Optional: prevents pychecker warnings.
         at = c.atFileCommands
         at.errors = 0
         at.printError(
@@ -5082,7 +5106,7 @@ class atFile:
 
         __pychecker__ = '--no-reimport'
         import os
-        c,p = g.getTestVars()
+        c,p = g.getTestVars() # Optional: prevents pychecker warnings.
         at = c.atFileCommands
 
         exists = g.os_path_exists
@@ -5126,7 +5150,7 @@ class atFile:
 
         __pychecker__ = '--no-reimport'
         import os
-        c,p = g.getTestVars()
+        c,p = g.getTestVars() # Optional: prevents pychecker warnings.
         at = c.atFileCommands
         exists = g.os_path_exists
 

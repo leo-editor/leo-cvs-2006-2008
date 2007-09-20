@@ -1736,7 +1736,7 @@ class settingsTreeParser (parserBaseClass):
 #@+node:ekr.20070627082044.907:@test local settings (c.page_width)
 if g.unitTesting:
 
-    c,p = g.getTestVars()
+    c,p = g.getTestVars() # Optional: prevents pychecker warnings.
     # g.es(c.page_width)
 
     assert c.page_width == 80

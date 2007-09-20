@@ -2812,7 +2812,7 @@ class position (basePosition):
 #@+node:ekr.20070630070045.17:@test p.comparisons
 if g.unitTesting:
 
-    c,p = g.getTestVars()
+    c,p = g.getTestVars() # Optional: prevents pychecker warnings.
     assert(p == p.copy())
     assert(p != p.threadNext())
 
