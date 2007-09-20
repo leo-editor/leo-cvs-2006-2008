@@ -4560,6 +4560,292 @@ prompts for a filename.
 #@-node:ekr.20070919083650:Added read-file-into-node and write-file-from-node commands
 #@-node:ekr.20070703182412.1:Features
 #@-node:ekr.20070915101503:4.4.4 b2
+#@+node:ekr.20070919132518:4.4.4 b3
+#@+node:ekr.20070920083033:Bugs
+#@+node:ekr.20070920055354:Fixed new @auto bug
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4527231
+By: ktenney
+
+@others doesn't get stripped when creating
+scriptfile.py for use by <alt-x> <debug>, so winpdb encounters bad syntax.
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.2140:c.executeScript & helpers
+def executeScript(self,event=None,p=None,script=None,
+    useSelectedText=True,define_g=True,define_name='__main__',silent=False):
+
+    """This executes body text as a Python script.
+
+    We execute the selected text, or the entire body text if no text is selected."""
+
+    c = self ; script1 = script
+    writeScriptFile = c.config.getBool('write_script_file')
+    if not script:
+        script = g.getScript(c,p,useSelectedText=useSelectedText)
+    self.redirectScriptOutput()
+    try:
+        log = c.frame.log
+        if script.strip():
+            sys.path.insert(0,c.frame.openDirectory)
+            script += '\n' # Make sure we end the script properly.
+            # print '*** script\n',script
+            try:
+                p = c.currentPosition()
+                d = g.choose(define_g,{'c':c,'g':g,'p':p},{})
+                if define_name: d['__name__'] = define_name
+                if writeScriptFile:
+                    scriptFile = self.writeScriptFile(script)
+                    execfile(scriptFile,d)
+                else:
+                    exec script in d
+                if not script1 and not silent:
+                    # Careful: the script may have changed the log tab.
+                    tabName = log and hasattr(log,'tabName') and log.tabName or 'Log'
+                    g.es("end of script",color="purple",tabName=tabName)
+            except Exception:
+                g.handleScriptException(c,p,script,script1)
+            del sys.path[0]
+        else:
+            tabName = log and hasattr(log,'tabName') and log.tabName or 'Log'
+            g.es("no script selected",color="blue",tabName=tabName)
+    finally:
+        self.unredirectScriptOutput()
+#@+node:ekr.20031218072017.2143:redirectScriptOutput
+def redirectScriptOutput (self):
+
+    c = self
+
+    if c.config.redirect_execute_script_output_to_log_pane:
+
+        g.redirectStdout() # Redirect stdout
+        g.redirectStderr() # Redirect stderr
+#@-node:ekr.20031218072017.2143:redirectScriptOutput
+#@+node:EKR.20040627100424:unredirectScriptOutput
+def unredirectScriptOutput (self):
+
+    c = self
+
+    if c.exists and c.config.redirect_execute_script_output_to_log_pane:
+
+        g.restoreStderr()
+        g.restoreStdout()
+#@-node:EKR.20040627100424:unredirectScriptOutput
+#@+node:ekr.20070115135502:writeScriptFile
+def writeScriptFile (self,script):
+
+    # Get the path to the file.
+    c = self
+    path = c.config.getString('script_file_path')
+    if path:
+        parts = path.split('/')
+        path = g.app.loadDir
+        for part in parts:
+            path = g.os_path_abspath(g.os_path_join(path,part))
+    else:
+        path = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test','scriptFile.py'))
+
+    # Write the file.
+    try:
+        f = file(path,'w')
+        f.write(script)
+        f.close()
+    except Exception:
+        path = None
+
+    return path
+#@nonl
+#@-node:ekr.20070115135502:writeScriptFile
+#@+node:ekr.20070627082044.855:@test pre-definition of g in scripts
+if g.unitTesting:
+    # print g.listToString(dir())
+
+    for ivar in ('c','g','p'):
+        assert ivar in dir()
+
+    assert hasattr(g.app,'tkEncoding')
+#@-node:ekr.20070627082044.855:@test pre-definition of g in scripts
+#@-node:ekr.20031218072017.2140:c.executeScript & helpers
+#@+node:EKR.20040614071102.1:g.getScript & tests
+def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=True):
+
+    '''Return the expansion of the selected text of node p.
+    Return the expansion of all of node p's body text if there
+    is p is not the current node or if there is no text selection.'''
+
+    at = c.atFileCommands ; w = c.frame.body.bodyCtrl
+    if not p:
+        p = c.currentPosition()
+    try:
+        if g.app.batchMode:
+            s = p.bodyString()
+        elif p == c.currentPosition():
+            if useSelectedText and w.hasSelection():
+                s = w.getSelectedText()
+            else:
+                s = w.getAllText()
+        else:
+            s = p.bodyString()
+        # Remove extra leading whitespace so the user may execute indented code.
+        s = g.removeExtraLws(s,c.tab_width)
+        if s.strip():
+            g.app.scriptDict["script1"]=s
+            script = at.writeFromString(p.copy(),s,
+                forcePythonSentinels=forcePythonSentinels,
+                useSentinels=useSentinels)
+            script = script.replace("\r\n","\n") # Use brute force.
+            # Important, the script is an **encoded string**, not a unicode string.
+            g.app.scriptDict["script2"]=script
+        else: script = ''
+    except Exception:
+        s = "unexpected exception in g.getScript"
+        g.es_print(s)
+        g.es_exception()
+        script = ''
+
+    # g.trace(type(script),repr(script))
+    return script
+#@+node:ekr.20050211100535:@test g.getScript strips crlf
+if g.unitTesting:
+
+    c,p = g.getTestVars() # Optional: prevents pychecker warnings.
+    script = g.getScript(c,p) # This will get the text of this node.
+    assert script.find('\r\n') == -1, repr(script)
+#@-node:ekr.20050211100535:@test g.getScript strips crlf
+#@-node:EKR.20040614071102.1:g.getScript & tests
+#@+node:ekr.20060519003651:debug & helper
+def debug (self,event=None):
+
+    '''Start an external debugger in another process to debug a script.
+    The script is the presently selected text or then entire tree's script.'''
+
+    c = self.c ; p = c.currentPosition()
+    python = sys.executable
+    script = g.getScript(c,p)
+    winpdb = self.findDebugger()
+    if not winpdb: return
+
+    # Create a temp file from the presently selected node.
+    filename = c.writeScriptFile(script)
+    if not filename: return
+
+    # Invoke the debugger, retaining the present environment.
+    args = [sys.executable, winpdb, '-t', filename]
+    os.chdir(g.app.loadDir)
+    try:
+        import subprocess
+        cmdline = '%s %s -t %s' % (python,winpdb,filename)
+        subprocess.Popen(cmdline)
+    except ImportError:
+        os.chdir(g.app.loadDir)
+        os.spawnv(os.P_NOWAIT, python, args)
+#@+node:ekr.20060521140213:findDebugger
+def findDebugger (self):
+
+    '''Find the debugger using settings.'''
+
+    c = self.c
+    pythonDir = g.os_path_dirname(sys.executable)
+
+    debuggers = (
+        c.config.getString('debugger_path'),
+        g.os_path_join(pythonDir,'Lib','site-packages','winpdb.py'), # winpdb 1.1.2 or newer
+        g.os_path_join(pythonDir,'scripts','_winpdb.py'), # oder version.
+    )
+
+    for debugger in debuggers:
+        if debugger:
+            debugger = g.os_path_abspath(debugger)
+            if g.os_path_exists(debugger):
+                return debugger
+            else:
+                g.es('Debugger does not exist: %s' % (debugger),color='blue')
+    else:
+        g.es('No debugger found.')
+        return None
+#@-node:ekr.20060521140213:findDebugger
+#@-node:ekr.20060519003651:debug & helper
+#@-node:ekr.20070920055354:Fixed new @auto bug
+#@-node:ekr.20070920083033:Bugs
+#@+node:ekr.20070920083033.1:Features
+#@+node:ekr.20070919124912:Added button-font params
+#@+node:ekr.20031218072017.3958:add
+def add(self,*args,**keys):
+
+    """Add a button containing text or a picture to the icon bar.
+
+    Pictures take precedence over text"""
+
+    c = self.c ; f = self.iconFrame
+    text = keys.get('text')
+    imagefile = keys.get('imagefile')
+    image = keys.get('image')
+    command = keys.get('command')
+    bg = keys.get('bg')
+
+    if not imagefile and not image and not text: return
+
+    # First define n.
+    try:
+        g.app.iconWidgetCount += 1
+        n = g.app.iconWidgetCount
+    except:
+        n = g.app.iconWidgetCount = 1
+
+    if not command:
+        def command():
+            print "command for widget %s" % (n)
+
+    if imagefile or image:
+        << create a picture >>
+    elif text:
+        b = Tk.Button(f,text=text,relief="groove",bd=2,command=command)
+        if not self.font:
+            self.font = c.config.getFontFromParams(
+                "button_text_font_family", "button_text_font_size",
+                "button_text_font_slant",  "button_text_font_weight",)
+        b.configure(font=self.font)
+        # elif sys.platform.startswith('win'):
+            # width = max(6,len(text))
+            # b.configure(width=width,font=('verdana',7,'bold'))
+        if bg: b.configure(bg=bg)
+        b.pack(side="left", fill="none")
+        return b
+
+    return None
+#@+node:ekr.20031218072017.3959:<< create a picture >>
+try:
+    if imagefile:
+        # Create the image.  Throws an exception if file not found
+        imagefile = g.os_path_join(g.app.loadDir,imagefile)
+        imagefile = g.os_path_normpath(imagefile)
+        image = Tk.PhotoImage(master=g.app.root,file=imagefile)
+
+        # Must keep a reference to the image!
+        try:
+            refs = g.app.iconImageRefs
+        except:
+            refs = g.app.iconImageRefs = []
+
+        refs.append((imagefile,image),)
+
+    if not bg:
+        bg = f.cget("bg")
+
+    b = Tk.Button(f,image=image,relief="flat",bd=0,command=command,bg=bg)
+    b.pack(side="left",fill="y")
+    return b
+
+except:
+    g.es_exception()
+    return None
+#@-node:ekr.20031218072017.3959:<< create a picture >>
+#@-node:ekr.20031218072017.3958:add
+#@-node:ekr.20070919124912:Added button-font params
+#@-node:ekr.20070920083033.1:Features
+#@-node:ekr.20070919132518:4.4.4 b3
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@+node:ekr.20070809131638:Pychecker report
 # Invalid warnings...

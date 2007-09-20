@@ -125,6 +125,8 @@ d = {
     'beautify-all':                 c.beautifyAllPythonCode,
     'beautify':                     c.beautifyPythonCode,
     'cascade-windows':              f.cascade,
+    'check-derived-file':           c.atFileCommands.checkDerivedFile,
+    'check-leo-file':               c.fileCommands.checkLeoFile,
     'clear-recent-files':           c.clearRecentFiles,
     'close-window':                 c.close,
     'contract-or-go-left':          c.contractNodeOrGoToParent,
@@ -288,8 +290,11 @@ d = {
 def defineFileMenuReadWriteMenuTable (self):
 
     self.fileMenuReadWriteMenuTable = [
-        '*&read-outline-only',
-        '*write-&outline-only',
+        '&check-derived-file',
+        'check-leo-file',
+        '-',
+        '&read-outline-only',
+        'write-&outline-only',
         '-',
         'read-&file-into-node',
         'writ&e-file-from-node',
@@ -304,22 +309,17 @@ def defineFileMenuReadWriteMenuTable (self):
         ('&Write @file Nodes','write-at-file-nodes'),
     ]
 
-    # a,d,e,f,i,m,n,o,r,u,w
+    # a,cd,e,f,i,l,m,n,o,r,u,w
 #@nonl
 #@-node:ekr.20031218072017.3761:defineFileMenuReadWriteMenuTable
-#@+node:ekr.20070915105000:derived files: read-file-into-node & write-file-from-node
+#@+node:ekr.20070915105000:Part 1: derived files: read-file-into-node & write-file-from-node
 @nocolor
 
 Conflicts involving derived files.
 
-The **read-file-into-node** command will 'import' a conflict file by reading an
-entire into a single node.
+The **read-file-into-node** reads an entire into a single node.
 
-The user will resolve conflicts in this node, just as with any other editor.
-However, the user must be careful when handling sentinel lines. The
-**write-file-from-node** command will do a **trial read** to ensure that
-user has not made mistakes involving sentinels. This command warns the user if
-there are sentinel errors. Otherwise, the command writes the derived file.
+The **write-file-from-node** command writes a file from a single node.
 
 @color
 #@nonl
@@ -389,8 +389,59 @@ def writeFileFromNode (self,event=None):
             g.es('can not write %s' % (fileName),color='red')
 #@nonl
 #@-node:ekr.20070915142635:writeFileFromNode
-#@-node:ekr.20070915105000:derived files: read-file-into-node & write-file-from-node
-#@+node:ekr.20070915105000.1:.leo files: resolve-cvs-conflicts
+#@-node:ekr.20070915105000:Part 1: derived files: read-file-into-node & write-file-from-node
+#@+node:ekr.20070919132643:Part 2: check-derived-file and check-leo-file commands
+These commands will do a trial read of the file.
+#@nonl
+#@+node:ekr.20070919133659:checkDerivedFile (atFile)
+def checkDerivedFile (self, event=None):  # based on atFile.read
+
+    at = self ; c = at.c ; p = c.currentPosition() ; s = p.bodyString()
+
+    # Create a dummy vnode as the root.
+    fileName='check-derived-file'
+    root_t = leoNodes.tnode()
+    root_v = leoNodes.vnode(root_t)
+    root = leoNodes.position(root_v)
+    theFile = g.fileLikeObject(fromString=s)
+    thinFile = at.scanHeaderForThin (theFile,fileName)
+    # g.trace('thinFile',thinFile)
+    at.initReadIvars(root,fileName,thinFile=thinFile)
+    if at.errors: return
+    at.openFileForReading(fileName,fromString=s)
+    if not at.inputFile: return
+    at.readOpenFile(root,at.inputFile,fileName)
+    at.inputFile.close()
+    if at.errors == 0:
+        g.es_print('check-derived-file passed',color='blue')
+#@-node:ekr.20070919133659:checkDerivedFile (atFile)
+#@+node:ekr.20070919133659.1:checkLeoFile (fileCommands)
+def checkLeoFile (self,event=None):
+
+    fc = self ; c = fc.c ; p = c.currentPosition()
+
+    # Put the body (minus the @nocolor) into the file buffer.
+    s = p.bodyString() ; tag = '@nocolor\n'
+    if s.startswith(tag): s = s[len(tag):]
+    self.fileBuffer = s ; self.fileIndex = 0
+
+    # Do a trial read.
+    self.checking = True
+    self.initReadIvars()
+    c.loading = True # disable c.changed
+    try:
+        try:
+            self.getAllLeoElements(fileName='check-leo-file',silent=False)
+            g.es_print('check-leo-file passed',color='blue')
+        except BadLeoFile, message:
+            # g.es_exception()
+            g.es_print('check-leo-file failed: %s' % str(message),color='red')
+    finally:
+        self.checking = False
+        c.loading = False # reenable c.changed
+#@-node:ekr.20070919133659.1:checkLeoFile (fileCommands)
+#@-node:ekr.20070919132643:Part 2: check-derived-file and check-leo-file commands
+#@+node:ekr.20070915105000.1:Part 3: .leo files: compare-leo-files
 @nocolor
 
 Conflicts involving .leo files.
@@ -421,7 +472,7 @@ original file saved.
 
 @color
 #@nonl
-#@-node:ekr.20070915105000.1:.leo files: resolve-cvs-conflicts
+#@-node:ekr.20070915105000.1:Part 3: .leo files: compare-leo-files
 #@-node:ekr.20051202094427:resolve-cvs-conflicts and write-resolved-conflicts commands
 #@-node:ekr.20070325052041:To do: 4.4.4 (@auto & resolve-cvs-conflicts)
 #@+node:ekr.20070703111455:To do: 4.4.5 (@menu, vim bindings, translation, etc)
@@ -1018,8 +1069,11 @@ def defineFileMenuTop2Table (self):
 def defineFileMenuReadWriteMenuTable (self):
 
     self.fileMenuReadWriteMenuTable = [
-        '*&read-outline-only',
-        '*write-&outline-only',
+        '&check-derived-file',
+        'check-leo-file',
+        '-',
+        '&read-outline-only',
+        'write-&outline-only',
         '-',
         'read-&file-into-node',
         'writ&e-file-from-node',
@@ -1034,7 +1088,7 @@ def defineFileMenuReadWriteMenuTable (self):
         ('&Write @file Nodes','write-at-file-nodes'),
     ]
 
-    # a,d,e,f,i,m,n,o,r,u,w
+    # a,cd,e,f,i,l,m,n,o,r,u,w
 #@nonl
 #@-node:ekr.20031218072017.3761:defineFileMenuReadWriteMenuTable
 #@+node:ekr.20031218072017.3762:defineFileMenuTangleMenuTable
