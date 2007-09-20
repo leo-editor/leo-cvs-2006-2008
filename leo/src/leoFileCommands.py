@@ -589,6 +589,31 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.3019:leoFileCommands._init_
     #@+node:ekr.20031218072017.3020:Reading
     #@+node:ekr.20060919104836: Top-level
+    #@+node:ekr.20070919133659.1:checkLeoFile (fileCommands)
+    def checkLeoFile (self,event=None):
+
+        fc = self ; c = fc.c ; p = c.currentPosition()
+
+        # Put the body (minus the @nocolor) into the file buffer.
+        s = p.bodyString() ; tag = '@nocolor\n'
+        if s.startswith(tag): s = s[len(tag):]
+        self.fileBuffer = s ; self.fileIndex = 0
+
+        # Do a trial read.
+        self.checking = True
+        self.initReadIvars()
+        c.loading = True # disable c.changed
+        try:
+            try:
+                self.getAllLeoElements(fileName='check-leo-file',silent=False)
+                g.es_print('check-leo-file passed',color='blue')
+            except BadLeoFile, message:
+                # g.es_exception()
+                g.es_print('check-leo-file failed: %s' % str(message),color='red')
+        finally:
+            self.checking = False
+            c.loading = False # reenable c.changed
+    #@-node:ekr.20070919133659.1:checkLeoFile (fileCommands)
     #@+node:ekr.20031218072017.1559:getLeoOutlineFromClipboard & helpers
     def getLeoOutlineFromClipboard (self,s,reassignIndices=True):
 
@@ -2392,7 +2417,7 @@ class baseFileCommands:
             return False
     #@+node:ekr.20050404212949:@test fc.deleteFileWithMessage
     if g.unitTesting:
-        c,p = g.getTestVars()
+        c,p = g.getTestVars() # Optional: prevents pychecker warnings.
         fc=c.fileCommands # Self is a dummy argument.
         fc.deleteFileWithMessage('xyzzy','test')
 

@@ -621,8 +621,11 @@ class leoMenu:
     def defineFileMenuReadWriteMenuTable (self):
 
         self.fileMenuReadWriteMenuTable = [
-            '*&read-outline-only',
-            '*write-&outline-only',
+            '&check-derived-file',
+            'check-leo-file',
+            '-',
+            '&read-outline-only',
+            'write-&outline-only',
             '-',
             'read-&file-into-node',
             'writ&e-file-from-node',
@@ -637,7 +640,7 @@ class leoMenu:
             ('&Write @file Nodes','write-at-file-nodes'),
         ]
 
-        # a,d,e,f,i,m,n,o,r,u,w
+        # a,cd,e,f,i,l,m,n,o,r,u,w
     #@nonl
     #@-node:ekr.20031218072017.3761:defineFileMenuReadWriteMenuTable
     #@+node:ekr.20031218072017.3762:defineFileMenuTangleMenuTable
