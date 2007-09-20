@@ -1241,12 +1241,15 @@ class debugCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20060519003651:debug & helper
     def debug (self,event=None):
 
-        '''Start an external debugger in another process to debug the presently selected text.'''
+        '''Start an external debugger in another process to debug a script.
+        The script is the presently selected text or then entire tree's script.'''
 
         c = self.c ; p = c.currentPosition()
         python = sys.executable
         # pythonDir = g.os_path_dirname(python)
-        script = p.bodyString()
+
+        script = g.getScript(c,p) #,useSelectedText=True, forcePythonSentinels=True, useSentinels=True)
+        ### script = p.bodyString()
         winpdb = self.findDebugger()
         if not winpdb: return
 
@@ -5660,6 +5663,8 @@ class leoCommandsClass (baseEditCommandsClass):
             'beautify-all':                 c.beautifyAllPythonCode,
             'beautify':                     c.beautifyPythonCode,
             'cascade-windows':              f.cascade,
+            'check-derived-file':           c.atFileCommands.checkDerivedFile,
+            'check-leo-file':               c.fileCommands.checkLeoFile,
             'clear-recent-files':           c.clearRecentFiles,
             'close-window':                 c.close,
             'contract-or-go-left':          c.contractNodeOrGoToParent,
