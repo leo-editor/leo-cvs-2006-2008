@@ -1123,7 +1123,7 @@ class baseCommands:
         c = self ; undoType = 'Read File Into Node'
         filetypes = [("All files", "*"),("Python files","*.py"),("Leo files", "*.leo"),]
         fileName = g.app.gui.runOpenFileDialog(
-            title="Read Outline Only",filetypes=filetypes,defaultextension=None)
+            title="Read File Into Node",filetypes=filetypes,defaultextension=None)
 
         if fileName:    
             try:
@@ -2772,7 +2772,6 @@ class baseCommands:
     if g.unitTesting:
 
         assert type(c.getTime()) == type('')
-    #@nonl
     #@-node:ekr.20070627082044.843:@test c.getTime
     #@+node:ekr.20070627082044.278:@test c.insertBodyTime
     if g.unitTesting:

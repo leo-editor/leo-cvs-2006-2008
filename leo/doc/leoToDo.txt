@@ -115,189 +115,18 @@ containing conflicts.
 
 @color
 #@nonl
-#@+node:ekr.20050920084036.189:<< define dictionary d of names and Leo commands >>
-c = self.c ; f = c.frame
-
-d = {
-    'abort-edit-headline':          f.abortEditLabelCommand,
-    'about-leo':                    c.about,
-    'add-comments':                 c.addComments,     
-    'beautify-all':                 c.beautifyAllPythonCode,
-    'beautify':                     c.beautifyPythonCode,
-    'cascade-windows':              f.cascade,
-    'check-derived-file':           c.atFileCommands.checkDerivedFile,
-    'check-leo-file':               c.fileCommands.checkLeoFile,
-    'clear-recent-files':           c.clearRecentFiles,
-    'close-window':                 c.close,
-    'contract-or-go-left':          c.contractNodeOrGoToParent,
-    'check-python-code':            c.checkPythonCode,
-    'check-all-python-code':        c.checkAllPythonCode,
-    'check-outline':                c.checkOutline,
-    'clear-recent-files':           c.clearRecentFiles,
-    'clone-node':                   c.clone,
-    'contract-node':                c.contractNode,
-    'contract-all':                 c.contractAllHeadlines,
-    'contract-parent':              c.contractParent,
-    'convert-all-blanks':           c.convertAllBlanks,
-    'convert-all-tabs':             c.convertAllTabs,
-    'convert-blanks':               c.convertBlanks,
-    'convert-tabs':                 c.convertTabs,
-    'copy-node':                    c.copyOutline,
-    'copy-text':                    f.copyText,
-    'cut-node':                     c.cutOutline,
-    'cut-text':                     f.cutText,
-    'de-hoist':                     c.dehoist,
-    'delete-comments':              c.deleteComments,
-    'delete-node':                  c.deleteOutline,
-    'demote':                       c.demote,
-    'dump-outline':                 c.dumpOutline,
-    'edit-headline':                c.editHeadline,
-    'end-edit-headline':            f.endEditLabelCommand,
-    'equal-sized-panes':            f.equalSizedPanes,
-    'execute-script':               c.executeScript,
-    'exit-leo':                     g.app.onQuit,
-    'expand-all':                   c.expandAllHeadlines,
-    'expand-next-level':            c.expandNextLevel,
-    'expand-node':                  c.expandNode,
-    'expand-and-go-right':          c.expandNodeAndGoToFirstChild,
-    'expand-ancestors-only':        c.expandOnlyAncestorsOfNode,
-    'expand-or-go-right':           c.expandNodeOrGoToFirstChild,
-    'expand-prev-level':            c.expandPrevLevel,
-    'expand-to-level-1':            c.expandLevel1,
-    'expand-to-level-2':            c.expandLevel2,
-    'expand-to-level-3':            c.expandLevel3,
-    'expand-to-level-4':            c.expandLevel4,
-    'expand-to-level-5':            c.expandLevel5,
-    'expand-to-level-6':            c.expandLevel6,
-    'expand-to-level-7':            c.expandLevel7,
-    'expand-to-level-8':            c.expandLevel8,
-    'expand-to-level-9':            c.expandLevel9,
-    'export-headlines':             c.exportHeadlines,
-    'extract':                      c.extract,
-    'extract-names':                c.extractSectionNames,
-    'extract-section':              c.extractSection,
-    'flatten-outline':              c.flattenOutline,
-    'go-back':                      c.goPrevVisitedNode,
-    'go-forward':                   c.goNextVisitedNode,
-    'goto-first-node':              c.goToFirstNode,
-    'goto-first-visible-node':      c.goToFirstVisibleNode,
-    'goto-first-sibling':           c.goToFirstSibling,
-    'goto-last-node':               c.goToLastNode,
-    'goto-last-sibling':            c.goToLastSibling,
-    'goto-last-visible-node':       c.goToLastVisibleNode,
-    'goto-line-number':             c.goToLineNumber,
-    'goto-next-changed':            c.goToNextDirtyHeadline,
-    'goto-next-clone':              c.goToNextClone,
-    'goto-next-marked':             c.goToNextMarkedHeadline,
-    'goto-next-node':               c.selectThreadNext,
-    'goto-next-sibling':            c.goToNextSibling,
-    'goto-next-visible':            c.selectVisNext,
-    'goto-parent':                  c.goToParent,
-    'goto-prev-node':               c.selectThreadBack,
-    'goto-prev-sibling':            c.goToPrevSibling,
-    'goto-prev-visible':            c.selectVisBack,
-    'hide-invisibles':              c.hideInvisibles,
-    'hoist':                        c.hoist,
-    'import-at-file':               c.importAtFile,
-    'import-at-root':               c.importAtRoot,
-    'import-cweb-files':            c.importCWEBFiles,
-    'import-derived-file':          c.importDerivedFile,
-    'import-flattened-outline':     c.importFlattenedOutline,
-    'import-noweb-files':           c.importNowebFiles,
-    'indent-region':                c.indentBody,
-    'insert-node':                  c.insertHeadline,
-    'insert-body-time':             c.insertBodyTime,
-    'insert-headline-time':         f.insertHeadlineTime,
-    'mark':                         c.markHeadline,
-    'mark-changed-items':           c.markChangedHeadlines,
-    'mark-changed-roots':           c.markChangedRoots,
-    'mark-clones':                  c.markClones,
-    'mark-subheads':                c.markSubheads,
-    'match-brackets':               c.findMatchingBracket,
-    'minimize-all':                 f.minimizeAll,
-    'move-outline-down':            c.moveOutlineDown,
-    'move-outline-left':            c.moveOutlineLeft,
-    'move-outline-right':           c.moveOutlineRight,
-    'move-outline-up':              c.moveOutlineUp,
-    'new':                          c.new,
-    'open-compare-window':          c.openCompareWindow,
-    'open-find-dialog':             c.showFindPanel, # Deprecated.
-    'open-leoDocs-leo':             c.leoDocumentation,
-    'open-leoPlugins-leo':          c.openLeoPlugins,
-    'open-leoSettings-leo':         c.openLeoSettings,
-    'open-scripts-leo':             c.openLeoScripts,
-    'open-myLeoSettings-leo':       c.openMyLeoSettings,
-    'open-online-home':             c.leoHome,
-    'open-online-tutorial':         c.leoTutorial,
-    'open-offline-tutorial':        f.leoHelp,
-    'open-outline':                 c.open,
-    'open-python-window':           c.openPythonWindow,
-    # 'open-test-leo':              c.openTest, # Doesn't work.
-    'open-users-guide':             c.leoUsersGuide,
-    'open-with':                    c.openWith,
-    'outline-to-cweb':              c.outlineToCWEB,
-    'outline-to-noweb':             c.outlineToNoweb,
-    'paste-node':                   c.pasteOutline,
-    'paste-retaining-clones':       c.pasteOutlineRetainingClones,
-    'paste-text':                   f.pasteText,
-    'pretty-print-all-python-code': c.prettyPrintAllPythonCode,
-    'pretty-print-python-code':     c.prettyPrintPythonCode,
-    'promote':                      c.promote,
-    'read-at-auto-nodes':           c.readAtAutoNodes,
-    'read-at-file-nodes':           c.readAtFileNodes,
-    'read-outline-only':            c.readOutlineOnly,
-    'read-file-into-node':          c.readFileIntoNode,
-    'redo':                         c.undoer.redo,
-    'reformat-paragraph':           c.reformatParagraph,
-    'remove-sentinels':             c.removeSentinels,
-    'resize-to-screen':             f.resizeToScreen,
-    'revert':                       c.revert,
-    'save-file':                    c.save,
-    'save-file-as':                 c.saveAs,
-    'save-file-as-unzipped':        c.saveAsUnzipped,
-    'save-file-as-zipped':          c.saveAsZipped,
-    'save-file-to':                 c.saveTo,
-    'settings':                     c.preferences,
-    'set-colors':                   c.colorPanel,
-    'set-font':                     c.fontPanel,
-    'show-invisibles':              c.showInvisibles,
-    'sort-children':                c.sortChildren,
-    'sort-siblings':                c.sortSiblings,
-    'tangle':                       c.tangle,
-    'tangle-all':                   c.tangleAll,
-    'tangle-marked':                c.tangleMarked,
-    'toggle-active-pane':           f.toggleActivePane,
-    'toggle-angle-brackets':        c.toggleAngleBrackets,
-    'toggle-invisibles':            c.toggleShowInvisibles,
-    'toggle-split-direction':       f.toggleSplitDirection,
-    'undo':                         c.undoer.undo,
-    'unindent-region':              c.dedentBody,
-    'unmark-all':                   c.unmarkAll,
-    'untangle':                     c.untangle,
-    'untangle-all':                 c.untangleAll,
-    'untangle-marked':              c.untangleMarked,
-    'weave':                        c.weave,
-    'write-at-auto-nodes':          c.atFileCommands.writeAtAutoNodes,
-    'write-at-file-nodes':          c.fileCommands.writeAtFileNodes,
-    'write-dirty-at-auto-nodes':    c.atFileCommands.writeDirtyAtAutoNodes,
-    'write-dirty-at-file-nodes':    c.fileCommands.writeDirtyAtFileNodes,
-    'write-missing-at-file-nodes':  c.fileCommands.writeMissingAtFileNodes,
-    'write-outline-only':           c.fileCommands.writeOutlineOnly,
-    'write-file-from-node':         c.writeFileFromNode,
-}
-#@-node:ekr.20050920084036.189:<< define dictionary d of names and Leo commands >>
 #@+node:ekr.20031218072017.3761:defineFileMenuReadWriteMenuTable
 def defineFileMenuReadWriteMenuTable (self):
 
     self.fileMenuReadWriteMenuTable = [
-        '&check-derived-file',
-        'check-leo-file',
+        '*&check-derived-file',
+        '*check-leo-file',
         '-',
-        '&read-outline-only',
-        'write-&outline-only',
+        '*&read-outline-only',
+        '*write-&outline-only',
         '-',
-        'read-&file-into-node',
-        'writ&e-file-from-node',
+        '*read-&file-into-node',
+        '*writ&e-file-from-node',
         '-',
         ('Read @&auto Nodes','read-at-auto-nodes'),
         ('Write @a&uto Nodes','write-at-auto-nodes'),
@@ -331,7 +160,7 @@ def readFileIntoNode (self,event=None):
     c = self ; undoType = 'Read File Into Node'
     filetypes = [("All files", "*"),("Python files","*.py"),("Leo files", "*.leo"),]
     fileName = g.app.gui.runOpenFileDialog(
-        title="Read Outline Only",filetypes=filetypes,defaultextension=None)
+        title="Read File Into Node",filetypes=filetypes,defaultextension=None)
 
     if fileName:    
         try:
@@ -472,6 +301,92 @@ original file saved.
 
 @color
 #@nonl
+#@+node:ekr.20070920113644:what I did
+nullFrames now have a tree ivar, a nullTree.
+nullTrees now have a select method.
+This makes the call to c.frame.tree in c.selectPosition work.
+#@nonl
+#@-node:ekr.20070920113644:what I did
+#@+node:ekr.20070920104110:compareLeoFiles
+def compareLeoFiles (self,event):
+
+    c1 = self.c
+
+    # Prompt for the file to be compared with the present outline.
+    filetypes = [("Leo files", "*.leo"),("All files", "*"),]
+    fileName = g.app.gui.runOpenFileDialog(
+        title="Compare .leo Files",filetypes=filetypes,defaultextension='.leo')
+    if not fileName: return
+
+    c2 = self.createHiddenCommander(fileName)
+    if not c2: return
+    d1 = self.createFileDict(c1)
+    d2 = self.createFileDict(c2)  
+
+    # Compute inserted, deleted, changed dictionaries.
+    inserted = {}
+    for key in d2.keys():
+        if not d1.get(key):
+            inserted[key] = d2.get(key)
+
+    deleted = {}
+    for key in d1.keys():
+        if not d2.get(key):
+            deleted[key] = d1.get(key)
+
+    changed = {}
+    for key in d1.keys():
+        if d2.get(key):
+            p1 = d1.get(key)
+            p2 = d2.get(key)
+            if p1.headString() != p2.headString() or p1.bodyString() != p2.bodyString():
+                changed[key] = p1
+
+    if 1: # Print the nodes.
+        for d,kind in (
+            (inserted,'inserted (only in %s)' % (fileName)),
+            (deleted, 'deleted  (only in %s)' % (c1.mFileName)),
+            (changed, 'changed'),
+        ):
+            print ; print kind
+            for key in d.keys():
+                p = d.get(key)
+                print '%-32s %s' % (key,g.toEncodedString(p.headString(),'ascii'))
+#@+node:ekr.20070921070101:createHiddenCommander
+def createHiddenCommander(self,fileName):
+
+    # Read the file into a hidden commander (Similar to g.openWithFileName).
+    import leoGui
+    import leoFrame
+    import leoCommands
+
+    nullGui = leoGui.nullGui('nullGui')
+    frame = leoFrame.nullFrame('nullFrame',nullGui,useNullUndoer=True)
+    c2 = leoCommands.Commands(frame,fileName)
+    theFile,c2.isZipped = g.openLeoOrZipFile(fileName)
+    if theFile:
+        c2.fileCommands.open(theFile,fileName,readAtFileNodesFlag=True,silent=True)
+        return c2
+    else:
+        return None
+#@nonl
+#@-node:ekr.20070921070101:createHiddenCommander
+#@+node:ekr.20070921070101.1:createFileDict
+def createFileDict (self,c):
+
+    '''Create a dictionary of all relevant positions in commander c.'''
+
+    d = {}
+    for p in c.allNodes_iter():
+        try:
+            # fileIndices for pre-4.x versions of .leo files have a different format.
+            i,j,k = p.v.t.fileIndex
+            d[str(i),str(j),str(k)] = p.copy()
+        except Exception:
+            pass
+    return d
+#@-node:ekr.20070921070101.1:createFileDict
+#@-node:ekr.20070920104110:compareLeoFiles
 #@-node:ekr.20070915105000.1:Part 3: .leo files: compare-leo-files
 #@-node:ekr.20051202094427:resolve-cvs-conflicts and write-resolved-conflicts commands
 #@-node:ekr.20070325052041:To do: 4.4.4 (@auto & resolve-cvs-conflicts)
@@ -1069,14 +984,14 @@ def defineFileMenuTop2Table (self):
 def defineFileMenuReadWriteMenuTable (self):
 
     self.fileMenuReadWriteMenuTable = [
-        '&check-derived-file',
-        'check-leo-file',
+        '*&check-derived-file',
+        '*check-leo-file',
         '-',
-        '&read-outline-only',
-        'write-&outline-only',
+        '*&read-outline-only',
+        '*write-&outline-only',
         '-',
-        'read-&file-into-node',
-        'writ&e-file-from-node',
+        '*read-&file-into-node',
+        '*writ&e-file-from-node',
         '-',
         ('Read @&auto Nodes','read-at-auto-nodes'),
         ('Write @a&uto Nodes','write-at-auto-nodes'),
@@ -1177,9 +1092,11 @@ def defineOutlineMenuTopMenuTable (self):
 def defineOutlineMenuCheckOutlineMenuTable (self):
 
     self.outlineMenuCheckOutlineMenuTable = [
-        # &: a,c,d,o
+        # &: a,c,d,l,o
         '*check-&outline',
         '*&dump-outline',
+        '-',
+        '*compare-&leo-files',
         '-',
         '*check-&all-python-code',
         '*&check-python-code',

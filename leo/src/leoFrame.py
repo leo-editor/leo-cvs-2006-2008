@@ -2993,6 +2993,7 @@ class nullFrame (leoFrame):
         self.outerFrame = None
         self.statusLineClass = nullStatusLineClass
         self.title = title
+        self.tree = nullTree(frame=self) # New in Leo 4.4.4 b3.
         self.useNullUndoer = useNullUndoer
 
         # Default window position.
@@ -3315,6 +3316,8 @@ class nullTree (leoTree):
 
     #@-node:ekr.20070228173611:printWidgets
     #@+node:ekr.20031218072017.2236:Overrides
+    def select (self,*args,**keys): pass # New in Leo 4.4.4 b3.
+    #@nonl
     #@+node:ekr.20070228163350:Colors & fonts
     def getFont(self):
         return self.font
