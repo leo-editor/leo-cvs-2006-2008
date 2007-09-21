@@ -621,14 +621,14 @@ class leoMenu:
     def defineFileMenuReadWriteMenuTable (self):
 
         self.fileMenuReadWriteMenuTable = [
-            '&check-derived-file',
-            'check-leo-file',
+            '*&check-derived-file',
+            '*check-leo-file',
             '-',
-            '&read-outline-only',
-            'write-&outline-only',
+            '*&read-outline-only',
+            '*write-&outline-only',
             '-',
-            'read-&file-into-node',
-            'writ&e-file-from-node',
+            '*read-&file-into-node',
+            '*writ&e-file-from-node',
             '-',
             ('Read @&auto Nodes','read-at-auto-nodes'),
             ('Write @a&uto Nodes','write-at-auto-nodes'),
@@ -729,9 +729,11 @@ class leoMenu:
     def defineOutlineMenuCheckOutlineMenuTable (self):
 
         self.outlineMenuCheckOutlineMenuTable = [
-            # &: a,c,d,o
+            # &: a,c,d,l,o
             '*check-&outline',
             '*&dump-outline',
+            '-',
+            '*compare-&leo-files',
             '-',
             '*check-&all-python-code',
             '*&check-python-code',

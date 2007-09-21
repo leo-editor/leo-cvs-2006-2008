@@ -4653,6 +4653,7 @@ class editFileCommandsClass (baseEditCommandsClass):
         k = self.k
 
         return {
+            'compare-leo-files':    self.compareLeoFiles,
             'delete-file':          self.deleteFile,
             'diff':                 self.diff, 
             'insert-file':          self.insertFile,
@@ -4662,6 +4663,86 @@ class editFileCommandsClass (baseEditCommandsClass):
             'save-file':            self.saveFile
         }
     #@-node:ekr.20050920084036.163: getPublicCommands (editFileCommandsClass)
+    #@+node:ekr.20070920104110:compareLeoFiles
+    def compareLeoFiles (self,event):
+
+        c1 = self.c
+
+        # Prompt for the file to be compared with the present outline.
+        filetypes = [("Leo files", "*.leo"),("All files", "*"),]
+        fileName = g.app.gui.runOpenFileDialog(
+            title="Compare .leo Files",filetypes=filetypes,defaultextension='.leo')
+        if not fileName: return
+
+        c2 = self.createHiddenCommander(fileName)
+        if not c2: return
+        d1 = self.createFileDict(c1)
+        d2 = self.createFileDict(c2)  
+
+        # Compute inserted, deleted, changed dictionaries.
+        inserted = {}
+        for key in d2.keys():
+            if not d1.get(key):
+                inserted[key] = d2.get(key)
+
+        deleted = {}
+        for key in d1.keys():
+            if not d2.get(key):
+                deleted[key] = d1.get(key)
+
+        changed = {}
+        for key in d1.keys():
+            if d2.get(key):
+                p1 = d1.get(key)
+                p2 = d2.get(key)
+                if p1.headString() != p2.headString() or p1.bodyString() != p2.bodyString():
+                    changed[key] = p1
+
+        if 1: # Print the nodes.
+            for d,kind in (
+                (inserted,'inserted (only in %s)' % (fileName)),
+                (deleted, 'deleted  (only in %s)' % (c1.mFileName)),
+                (changed, 'changed'),
+            ):
+                print ; print kind
+                for key in d.keys():
+                    p = d.get(key)
+                    print '%-32s %s' % (key,g.toEncodedString(p.headString(),'ascii'))
+    #@+node:ekr.20070921070101:createHiddenCommander
+    def createHiddenCommander(self,fileName):
+
+        # Read the file into a hidden commander (Similar to g.openWithFileName).
+        import leoGui
+        import leoFrame
+        import leoCommands
+
+        nullGui = leoGui.nullGui('nullGui')
+        frame = leoFrame.nullFrame('nullFrame',nullGui,useNullUndoer=True)
+        c2 = leoCommands.Commands(frame,fileName)
+        theFile,c2.isZipped = g.openLeoOrZipFile(fileName)
+        if theFile:
+            c2.fileCommands.open(theFile,fileName,readAtFileNodesFlag=True,silent=True)
+            return c2
+        else:
+            return None
+    #@nonl
+    #@-node:ekr.20070921070101:createHiddenCommander
+    #@+node:ekr.20070921070101.1:createFileDict
+    def createFileDict (self,c):
+
+        '''Create a dictionary of all relevant positions in commander c.'''
+
+        d = {}
+        for p in c.allNodes_iter():
+            try:
+                # fileIndices for pre-4.x versions of .leo files have a different format.
+                i,j,k = p.v.t.fileIndex
+                d[str(i),str(j),str(k)] = p.copy()
+            except Exception:
+                pass
+        return d
+    #@-node:ekr.20070921070101.1:createFileDict
+    #@-node:ekr.20070920104110:compareLeoFiles
     #@+node:ekr.20050920084036.164:deleteFile
     def deleteFile (self,event):
 
