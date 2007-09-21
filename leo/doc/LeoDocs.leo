@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="349" height="688" width="892"/>
+	<global_window_position top="10" left="349" height="799" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -768,9 +768,9 @@
 <v t="ekr.20050901083017"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060620094033"><vh>What's New...</vh>
+<v t="ekr.20060620094033" a="E"><vh>What's New...</vh>
 <v t="ekr.20070809145744" a="E"><vh>What's New in Leo 4.4.4</vh>
-<v t="ekr.20070809145744.1" a="E"><vh>@rst html\new-4-4-4.html</vh>
+<v t="ekr.20070809145744.1" a="TV"><vh>@rst html\new-4-4-4.html</vh>
 <v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070809145744.3"><vh>@rst-ignore Important new features</vh></v>
 <v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
@@ -1079,10 +1079,10 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
-<v t="ekr.20060620094033" a="E"><vh>What's New...</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20070809145744" a="E"><vh>What's New in Leo 4.4.4</vh>
-<v t="ekr.20070809145744.1" a="E"><vh>@rst html\new-4-4-4.html</vh>
+<v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
 <v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070809145744.3"><vh>@rst-ignore Important new features</vh></v>
 <v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
@@ -1091,7 +1091,7 @@
 <v t="ekr.20070806101412"><vh>Commands related to @auto</vh></v>
 <v t="ekr.20070806100055"><vh>Extending the code: adding new parsers</vh></v>
 </v>
-<v t="ekr.20070920092716" a="V"><vh>Added new commands for resolving cvs conflicts</vh></v>
+<v t="ekr.20070920092716"><vh>Added new commands for resolving cvs conflicts</vh></v>
 <v t="ekr.20070809145744.4"><vh>New commands</vh></v>
 <v t="ekr.20070809145744.5"><vh>@rst-ignore New settings</vh></v>
 <v t="ekr.20070809145744.6"><vh>Plugins</vh></v>
@@ -3263,7 +3263,7 @@
 </v>
 <v t="ekr.20070806090235"><vh>4.4.4 @auto, threading syntax colorer</vh></v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
 <v t="ekr.20070806090235.1"><vh>4.4.4 b1</vh>
 <v t="ekr.20070806090226.1"><vh>Added support for @mark-for-unit-tests node</vh></v>
 <v t="ekr.20070806090226.14"><vh>Created threading_colorizer</vh></v>
@@ -3274,7 +3274,7 @@
 <v t="ekr.20070806100055"><vh>Extending the code: adding new parsers</vh></v>
 </v>
 </v>
-<v t="ekr.20070915101216" a="E"><vh>4.4.4 b2</vh>
+<v t="ekr.20070915101216"><vh>4.4.4 b2</vh>
 <v t="ekr.20070915101157.1"><vh>Bug fixes</vh>
 <v t="ekr.20070915101157.3"><vh>Fixed UNL bug1</vh></v>
 <v t="ekr.20070915101157.5"><vh>Fixed how @auto handles paths</vh></v>
@@ -3290,9 +3290,9 @@
 <v t="ekr.20070915101157.70"><vh>Fixed bug 'node note selected' bug</vh></v>
 <v t="ekr.20070915101157.81"><vh>Retain dirty bit after write @auto fails</vh></v>
 </v>
-<v t="ekr.20070915101157.82" a="E"><vh>Features</vh>
+<v t="ekr.20070915101157.82"><vh>Features</vh>
 <v t="ekr.20070915101157.168"><vh>Read @auto nodes during saves if the node has not been read previously</vh></v>
-<v t="ekr.20070919083648" a="T"><vh>Added read-file-into-node and write-file-from-node commands</vh></v>
+<v t="ekr.20070920092716"><vh>Added new commands for resolving cvs conflicts</vh></v>
 </v>
 </v>
 </v>
@@ -31822,6 +31822,7 @@ The highlights of Leo 4.4.4:
 
     check-derived-file
     check-leo-file
+    compare-leo-outlines
     read-at-auto-nodes
     read-file-into-node
     write-at-auto-nodes
@@ -32098,16 +32099,6 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
-<t tx="ekr.20070919083648">These commands are useful for resolving cvs conflicts in derived files.
-
-The read-file-into-node command prompts for a filename, and creates an node
-whose headline is @read-file-into-node &lt;filename&gt; and whose body text is the
-entire contents of the file.
-
-The write-file-from-node writes the body text of the selected not to a file. If
-the headline of the presently selected node starts with @read-file-into-node the
-command use the filename that follows in the headline. Otherwise, the command
-prompts for a filename.</t>
 <t tx="ekr.20070920092716">The so-called resolve-cvs-conflict project has resolved itself into small,
 easily understood commands.
     
@@ -32115,7 +32106,7 @@ The **read-file-into-node** command prompts for a filename, and creates an node
 whose headline is @read-file-into-node &lt;filename&gt; and whose body text is the
 entire contents of the file.
 
-The **write-file-from-node** writes the body text of the selected not to a file.
+The **write-file-from-node** command writes the body text of the selected not to a file.
 If the headline of the presently selected node starts with @read-file-into-node
 the command use the filename that follows in the headline. Otherwise, the
 command prompts for a filename.
@@ -32134,6 +32125,10 @@ commands check the contents of a node: The **check-derived-file** and
 **check-leo-file** commands tell whether a trial read of the presently selected
 node can be done successfully. The check-derived-file command assumes the body
 text is a derived file; the check-leo-file command assumes the body text is an
-entire .leo file.</t>
+entire .leo file.
+
+The **compare-leo-outlines** command prompts for another (presubably similar)
+.leo file that will be compared with the presently selected outline file (main
+window). It then creates clones of all inserted, deleted and changed nodes.</t>
 </tnodes>
 </leo_file>
