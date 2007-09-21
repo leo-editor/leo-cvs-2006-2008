@@ -4666,7 +4666,7 @@ class editFileCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20070920104110:compareLeoFiles
     def compareLeoFiles (self,event):
 
-        c1 = self.c
+        c = c1 = self.c ; w = c.frame.body.bodyCtrl
 
         # Prompt for the file to be compared with the present outline.
         filetypes = [("Leo files", "*.leo"),("All files", "*"),]
@@ -4674,12 +4674,27 @@ class editFileCommandsClass (baseEditCommandsClass):
             title="Compare .leo Files",filetypes=filetypes,defaultextension='.leo')
         if not fileName: return
 
+        # Read the file into the hidden commander.
         c2 = self.createHiddenCommander(fileName)
         if not c2: return
+
+        # Compute the inserted, deleted and changed dicts.
         d1 = self.createFileDict(c1)
         d2 = self.createFileDict(c2)  
+        inserted, deleted, changed = self.computeChangeDicts(d1,d2)
+        self.dumpCompareNodes(fileName,c1.mFileName,inserted,deleted,changed)
 
-        # Compute inserted, deleted, changed dictionaries.
+        # Create clones of all inserted, deleted and changed dicts.
+        self.createAllCompareClones(inserted,deleted,changed)
+        c2.frame.destroySelf()
+        g.app.gui.set_focus(c,w)
+
+
+    #@+node:ekr.20070921072608:computeChangeDicts
+    def computeChangeDicts (self,d1,d2):
+
+        '''Compute inserted, deleted, changed dictionaries.'''
+
         inserted = {}
         for key in d2.keys():
             if not d1.get(key):
@@ -4698,16 +4713,46 @@ class editFileCommandsClass (baseEditCommandsClass):
                 if p1.headString() != p2.headString() or p1.bodyString() != p2.bodyString():
                     changed[key] = p1
 
-        if 1: # Print the nodes.
+        return inserted, deleted, changed
+    #@-node:ekr.20070921072608:computeChangeDicts
+    #@+node:ekr.20070921072910:createAllCompareClones & helper
+    def createAllCompareClones(self,inserted,deleted,changed):
+
+        c = self.c # Always use the visible commander
+        c.beginUpdate()
+        try:
+            # Create parent node at the start of the outline.
+            u = c.undoer ; undoType = 'Compare .leo Files'
+            u.beforeChangeGroup(c.currentPosition(),undoType)
+            undoData = u.beforeInsertNode(c.currentPosition())
+            parent = c.currentPosition().insertAfter()
+            c.setHeadString(parent,undoType)
+            u.afterInsertNode(parent,undoType,undoData,dirtyVnodeList=[])
             for d,kind in (
-                (inserted,'inserted (only in %s)' % (fileName)),
-                (deleted, 'deleted  (only in %s)' % (c1.mFileName)),
-                (changed, 'changed'),
+                (deleted,'deleted'),(inserted,'inserted'),(changed,'changed')
             ):
-                print ; print kind
-                for key in d.keys():
-                    p = d.get(key)
-                    print '%-32s %s' % (key,g.toEncodedString(p.headString(),'ascii'))
+                self.createCompareClones(d,kind,parent)
+            c.selectPosition(parent)
+            u.afterChangeGroup(parent,undoType,reportFlag=True) 
+        finally:
+            c.endUpdate(False)
+        c.redraw_now()
+    #@nonl
+    #@+node:ekr.20070921074410:createCompareClones
+    def createCompareClones (self,d,kind,parent):
+
+        c = self.c # Always use the visible commander.
+
+        if d.keys():
+            parent = parent.insertAsLastChild()
+            c.setHeadString(parent,kind)
+
+            for key in d.keys():
+                p = d.get(key)
+                clone = p.clone()
+                clone.moveToLastChildOf(parent)
+    #@-node:ekr.20070921074410:createCompareClones
+    #@-node:ekr.20070921072910:createAllCompareClones & helper
     #@+node:ekr.20070921070101:createHiddenCommander
     def createHiddenCommander(self,fileName):
 
@@ -4742,6 +4787,19 @@ class editFileCommandsClass (baseEditCommandsClass):
                 pass
         return d
     #@-node:ekr.20070921070101.1:createFileDict
+    #@+node:ekr.20070921072608.1:dumpCompareNodes
+    def dumpCompareNodes (self,fileName1,fileName2,inserted,deleted,changed):
+
+        for d,kind in (
+            (inserted,'inserted (only in %s)' % (fileName1)),
+            (deleted, 'deleted  (only in %s)' % (fileName2)),
+            (changed, 'changed'),
+        ):
+            print ; print kind
+            for key in d.keys():
+                p = d.get(key)
+                print '%-32s %s' % (key,g.toEncodedString(p.headString(),'ascii'))
+    #@-node:ekr.20070921072608.1:dumpCompareNodes
     #@-node:ekr.20070920104110:compareLeoFiles
     #@+node:ekr.20050920084036.164:deleteFile
     def deleteFile (self,event):
