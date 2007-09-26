@@ -5214,16 +5214,16 @@ data = (
     '',
 ) 
 
-data = (
-    'xx24xxxxx',
-    'x41x3xxxx',
-    '8xxx6xx4x',
-    'x6xxx3xx9',
-    'x7x9x8x3x',
-    '2xx6xxx7x',
-    'x2xx4xxx1',
-    'xxxx1x72x',
-    'xxxxx64xx', # 4/27/07 5 stars (very hard)
+data = (     # 9/2107 5 stars
+    '7xx1xx6xx',
+    'xxxxx6x14',
+    '1xxx5xxx2',
+    'x3x4xx82x',
+    'xxx7x2xxx',
+    'x71xx9x3x',
+    '8xxx2xxx3',
+    '31x8xxxxx',
+    'xx7xx5xx8',
 )
 #@-node:<< define data >>
 #@+node:<< 5-star puzzles >>

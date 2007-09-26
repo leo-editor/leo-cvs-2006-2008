@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.562972292191">
-	<global_window_position top="115" left="226" height="732" width="923"/>
+	<global_window_position top="115" left="226" height="712" width="923"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -77,7 +77,7 @@
 <v t="ekr.20070124092048"><vh>Find entries in k.guiBindNamesDict</vh></v>
 <v t="ekr.20070213074001.1"><vh>find w.xxx</vh></v>
 </v>
-<v t="ekr.20040715105834"><vh>Fun...</vh>
+<v t="ekr.20040715105834" a="E"><vh>Fun...</vh>
 <v t="EKR.20040626212434"><vh>Drawing experiments</vh>
 <v t="EKR.20040626212434.1"><vh>Rectangles &amp; ovals</vh></v>
 <v t="EKR.20040626212434.2"><vh>Lines &amp; arcs</vh></v>
@@ -384,8 +384,8 @@
 </v>
 </v>
 </v>
-<v t="ekr.20050803075926"><vh>sudoku puzzle</vh>
-<v t="ekr.20050804073824"><vh>&lt;&lt; define data &gt;&gt;</vh></v>
+<v t="ekr.20050803075926" a="E"><vh>sudoku puzzle</vh>
+<v t="ekr.20050804073824" a="TV"><vh>&lt;&lt; define data &gt;&gt;</vh></v>
 <v t="ekr.20050911123109"><vh>&lt;&lt; 5-star puzzles &gt;&gt;</vh></v>
 <v t="ekr.20050911145104"><vh>&lt;&lt; 4-star puzzles &gt;&gt;</vh></v>
 <v t="ekr.20050811075608"><vh>&lt;&lt; 3-star puzzles &gt;&gt;</vh></v>
@@ -652,7 +652,7 @@
 <v t="ekr.20060928193919.4"><vh>@@button zodb-put-node</vh></v>
 </v>
 </v>
-<v t="ekr.20060824111500" a="TV"><vh>jEdit2Py</vh>
+<v t="ekr.20060824111500"><vh>jEdit2Py</vh>
 <v t="ekr.20060824111500.1"><vh>Colorizing test scripts</vh>
 <v t="ekr.20060824111500.2"><vh>@@button colorize</vh></v>
 <v t="ekr.20060824111500.3"><vh>@@button red:f1</vh></v>
@@ -8697,16 +8697,16 @@ __str__ = __repr__</t>
     '',
 ) 
 
-data = (
-    'xx24xxxxx',
-    'x41x3xxxx',
-    '8xxx6xx4x',
-    'x6xxx3xx9',
-    'x7x9x8x3x',
-    '2xx6xxx7x',
-    'x2xx4xxx1',
-    'xxxx1x72x',
-    'xxxxx64xx', # 4/27/07 5 stars (very hard)
+data = (     # 9/2107 5 stars
+    '7xx1xx6xx',
+    'xxxxx6x14',
+    '1xxx5xxx2',
+    'x3x4xx82x',
+    'xxx7x2xxx',
+    'x71xx9x3x',
+    '8xxx2xxx3',
+    '31x8xxxxx',
+    'xx7xx5xx8',
 )
 </t>
 <t tx="ekr.20050805150320">import leoPlugins

@@ -1,105 +1,7 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20070615063616.1:ASAP: Create Debian package
-#@-node:ekr.20070615063616.1:ASAP: Create Debian package
-#@+node:ekr.20060306194040:ASAP: Video and more screen shots on Leo's web site
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3615177
-By: ktenney
-
-High on my ToLearn list is vnc2swf
-http://www.unixuser.org/~euske/vnc2swf/
-
-
-http://sourceforge.net/forum/message.php?msg_id=3615278
-By: James
-
-A lot of people are now using Wink for demonstrations
-(http://www.debugmode.com/wink/), it's is free and seems to work well.
-
-Check out http://murl.se/11332
-At the bottom they talk about tools and techniques.
-http://showmedo.com seems like it would be a good
-place to host vids also.
-
-I've listened/watched a fair number of things like this;
-my recomendation is to get a good microphone and
-pre-amp to record your voice, and prepare the audio
-track carefully. It is so aggravating when
-it's hard to discern the words being spoken.
-
-Thanks,
-Kent
-#@nonl
-#@+node:ekr.20060531134434:Tutorials
-http://sourceforge.net/forum/message.php?msg_id=3758271
-
-From: Rich
-
-Tutorials would be great. I use Liberty BASIC, (http://libertybasic.conforums.com)
-and it has a very good tutorial -- leads the beginner by the hand through much
-of the language. Also the help file has working code snippets
-to cut-n-paste-n-play-with. I'd like to see something like:
-
-[Buttons]
-...[What are Buttons good for?]
-...[How do I make my own buttons?]
-......[Some commands you can use with buttons]
-......[Where to find button commands]
-#@nonl
-#@-node:ekr.20060531134434:Tutorials
-#@+node:ekr.20060531134434.1:Screencasts
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3758303
-By: ktenney
-
-My sense is that documentation/screencasts has the
-greatest potential for expanding Leo's mindshare.
-
-I really like those produced by the good folks
-at Dabo;
-http://leafe.com/screencasts/
-http://leafe.com/screencasts/populategrid.html
-
-The TurboGears people have taken this to the extreme;
-http://www.turbogears.org/ultimate.html
-
-Leo is different enough that it warrants a 
-demonstration of it's advantages.
-
--------------------
-
-https://sourceforge.net/forum/message.php?msg_id=4396251
-By: ktenney
-
-2 good screencasts on making screencasts;
-
-http://murl.se/26296
-#@-node:ekr.20060531134434.1:Screencasts
-#@+node:ekr.20060829103523:Render Leo slideshows
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3889246
-By: terry_n_brown
-
-Three packages that might be candidates for "rendering" slides authored in Leo:
-
-MagicPoint: http://member.wide.ad.jp/wg/mgp/
-
-  uses a text file format that leo could produce
-
-Slidy: http://www.w3.org/Talks/Tools/Slidy/
-
-  uses XHTML / canned Java script
-
-S5: http://meyerweb.com/eric/tools/s5/
-
-  Similar to Slidy I think, haven't looked at it
-#@nonl
-#@-node:ekr.20060829103523:Render Leo slideshows
-#@-node:ekr.20060306194040:ASAP: Video and more screen shots on Leo's web site
-#@+node:ekr.20070703111455:To do: 4.4.5 (@menu, vim bindings, translation, etc)
+#@+node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
 # Leo 4.4.5 will complete several projects that are long overdue.
 
 #@+node:ekr.20070814070312:First
@@ -207,32 +109,9 @@ Zombie!
 #@-node:ekr.20060609070148:Fix hung windows
 #@-node:ekr.20070814070312:First
 #@+node:ekr.20070703111455.1:Most important
-#@+node:ekr.20070625091423:Add translation services
-@nocolor
-
-*Many* calls to g.es and g.es_print have a mix of translated and untranslated items.
-Untranslated items should include file names, directories, gnx's, leo_id's etc.
-
-**Don't bother to do clone-find-all: there are 666 many matches!**
-
-Regardless of the chosen scheme:
-
-- g.translate will do the actual translation.
-
-- Some simple string, like tr, will be an abbreviation for g.translate.
-  The typical import will be::
-
-    import leoGlobals as g ; tr = g.translate
-
-The easiest scheme seems to be:
-
-- g.es and g.es_print translate all arguments.
-- g.esx and g.es_printx do no translation.
-
-g.esx and g.es_printx allow a mix on translated and untranslated arguments::
-
-    g.esx(tr('abc'),fileName)
-#@-node:ekr.20070625091423:Add translation services
+#@+node:ekr.20070629081309:Support common buttons
+# Any @button or @command nodes defined in myLeoSettings.leo should appear in all .leo files.
+#@-node:ekr.20070629081309:Support common buttons
 #@+node:ekr.20070626092228:@menu nodes for leoSettings.leo
 #@+node:ekr.20070814083528:Design posting
 @nocolor
@@ -341,6 +220,9 @@ Now that we have created the @menus tree, the only remaining task is to allow Le
 def createMenusFromTables (self):
 
     c = self.c
+
+    d = c.config.getMenusDict()
+    # g.trace(c,'menusDict.keys',d and g.listToString(d.keys(),sort=True))
 
     self.defineMenuTables()
 
@@ -1319,6 +1201,32 @@ I am quite eager to get something truly vim-like working. It promises to increas
 #@nonl
 #@-node:ekr.20070814083528.1:Design post
 #@-node:ekr.20070623144302:vim-like bindings
+#@+node:ekr.20070625091423:Add translation services
+@nocolor
+
+*Many* calls to g.es and g.es_print have a mix of translated and untranslated items.
+Untranslated items should include file names, directories, gnx's, leo_id's etc.
+
+**Don't bother to do clone-find-all: there are 666 many matches!**
+
+Regardless of the chosen scheme:
+
+- g.translate will do the actual translation.
+
+- Some simple string, like tr, will be an abbreviation for g.translate.
+  The typical import will be::
+
+    import leoGlobals as g ; tr = g.translate
+
+The easiest scheme seems to be:
+
+- g.es and g.es_print translate all arguments.
+- g.esx and g.es_printx do no translation.
+
+g.esx and g.es_printx allow a mix on translated and untranslated arguments::
+
+    g.esx(tr('abc'),fileName)
+#@-node:ekr.20070625091423:Add translation services
 #@+node:ekr.20070307082503:Make Leo an IPython notebook
 #@+node:ekr.20060603090445.7:Ipython stuff
 #@+node:ekr.20060603085719.1:Use IPython autocompleter?
@@ -1377,9 +1285,6 @@ Edward
 #@nonl
 #@-node:ekr.20070521100324.1:Using Leo as a notebook
 #@-node:ekr.20070307082503:Make Leo an IPython notebook
-#@+node:ekr.20070629081309:Support common buttons
-# Any @button or @command nodes defined in myLeoSettings.leo should appear in all .leo files.
-#@-node:ekr.20070629081309:Support common buttons
 #@+node:ekr.20070220082124:Make sure Leo can generate Latex
 #@-node:ekr.20070220082124:Make sure Leo can generate Latex
 #@-node:ekr.20070703111455.1:Most important
@@ -2368,85 +2273,31 @@ add-new-icon-row command?
 #@nonl
 #@-node:ekr.20061127170002.1:Allow multiple lines on the button bar
 #@-node:ekr.20070703111455.3:Other/Maybe
-#@-node:ekr.20070703111455:To do: 4.4.5 (@menu, vim bindings, translation, etc)
-#@+node:ekr.20070703111913:To do: 4.4.6: (Swing gui)
-#@+node:ekr.20060629154112:Merge Leo & jyLeo
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3799470
-By: leouser
-
-I guess its hard to say what pieces must merge and what can stay different.
-Id like it if the blasted nodes were the same.  I guess there is progress again
-on a jython 2.2 being complete and work starting on 2.3.  So there is hope that
-the nodes will be the same code, at least it will be possible.
-
-At the top of my head the big differences outside of the position changes are:
-1. Some modifications to the read/write code so that Chapters can work and also
-Serialized positions.
-2. Commander has some things different, it looks to the Chapters instance to
-determine what is the curentPosition, top Position etc... instead of keeping
-track of it itself.
-3. GUI layers are very different.  Interesting tidbit here: the work I did to
-get the JTree to use positions to determine if a node is expanded or not looks
-like it has provided the outline for enhancing the JTree for Java itself to
-be able to do this.  We will have to see, but maybe in Java 7 you can say: "Positions
-lead to user controled tree expansion models".
-
-There is a tremendous amount that is the same. Im sure you could make an interesting
-evening out of comparing the codebases to see where things change.
-
-
-#@+node:ekr.20070307082814:Create g.startupController class
-#@-node:ekr.20070307082814:Create g.startupController class
-#@-node:ekr.20060629154112:Merge Leo & jyLeo
-#@-node:ekr.20070703111913:To do: 4.4.6: (Swing gui)
-#@+node:ekr.20070824093611:Improve wxGui plugin
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=4480477
-By: plumloco
-
-Sorry to here about your injury, Edward. Hope its not RSI from working too hard
-on Leo.  Get well soon.
-
-When your fit and well again you might like to have a look at this.
-
-I have been playing with custom tree widgets for leo, first with pyGTK then
-with wxPython.  I had thought about doing a  pyGTK plugin until I realized how
-much work was involved :)
-
-I have adapted the __wx_gui.py plugin to work with my custom widget and called
-it __wx_alt_gui.py. You, or anyone else who is interested, can download the
-plugin from http://plumloco.co.uk/scratch/__wx_alt_gui.py.gz.
-
-The great benefit of using this custom widget is that it has no secondary data
-structures to keep in synch, this makes it faster and more efficient in terms
-of resources. It also eliminates the problem of complicated glue code.
-
-All that is needed is to call update whenever a change is made and the widget
-will get all its data directly from the leo outline itself.  A good test for
-the widget is to load a large outline and do an expand-all-nodes on it (try
-the same with __wx_gui and tkLeo).
-
-The widget still needs a lot of work but it works well enough for its usefulness
-and viability to be tested.
-
-I would be interested to know your intentions towards wxLeo.  My impression
-is that you do not plan on being very active in its development, seeing as how
-you are talking about doing a java swing version.
-
-If you have no objections, I would like to do some work on wxLeo myself, partly
-for its own sake and partly to gain experience for a possible pyGTK port.  Obviously
-I do not want to be treading on your toes, so please tell me if I am intruding.
-
-
-#@-node:ekr.20070824093611:Improve wxGui plugin
+#@-node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
 #@+node:ekr.20070105135713:To do: 5.0 (The graph world)
-#@+node:ekr.20061028070132:New positions
-# None of this code is part of Leo's core yet: it is all highly experimental.
+#@+node:ekr.20061028070132:Notes
+#@+node:ekr.20070923115155:New thoughts about positions & graphs (original post)
+New thoughts about positions
 
-# Important: the new vnode class implies that the read code must be rewritten to be similar to the opml read code.
-#@nonl
+@nocolor
+
+In the graph world, there are no true parents or children, there are only directed links *away* from a node (children), and directed links *to* a node (parents). Almost certainly such links will be represented as Python lists. Link n will be the n'th item of such lists. 
+
+Are multiple links from node a to node b allowed? Probably not at first. Certainly such links add nothing real to structure. But who knows. Not a big deal, but something to think about. 
+
+A position is best represented as the sequence of vnodes from 'root' to destination. The alternative is that a position could be represented a sequence of child indices. But a sequence of vnodes is much more informative. 
+
+Will Leo need a master list of all nodes, so that any node may be treated as a root?
+
+A position is really only defined with respect to: 
+
+a) a *particular* outline (graph) and 
+b) *particular* iterator.
+
+[REVISION: that is, a particular **view**.]
+
+[Comment: there followed a long discussion about eliminating positions.  This is wrong.  Positions are well defined in a view, and Leo can use all the old position-based code].
+#@-node:ekr.20070923115155:New thoughts about positions & graphs (original post)
 #@+node:ekr.20070512131018:Thoughts about positions 1
 http://sourceforge.net/forum/message.php?msg_id=4308503
 
@@ -2464,14 +2315,116 @@ Still, it is good to emphasize that *any* position, no matter how it is represen
 #@+node:ekr.20070512130855:Thoughts about positions 2
 @nocolor
 
-There will be some significant changes to the position and vnode classes for the graph world (Leo 4.5).  These changes will be common to both the graph and clone worlds:
+There will be some significant changes to the position and vnode classes for the
+graph world. These changes will be common to both the graph and clone worlds:
 
-Only vnode methods will be allowed to alter outline/graph data.  This would have been a good rule to following earlier, but up until now Leo has allowed 'confused' scripts--script that treat positions like vnodes.  This confusion will not be allowed in Leo 4.5.  The need for strict separation between vnodes and positions has become apparent in the recent chapters work.
+[WRONG] Only vnode methods will be allowed to alter outline/graph data.  This would have been a good rule to following earlier, but up until now Leo has allowed 'confused' scripts--script that treat positions like vnodes.  This confusion will not be allowed in the graph world. The need for strict separation between vnodes and positions has become apparent in the recent chapters work.
+
+[Why the above is wrong]  Given any position p, p.v is well defined, so we can defin p.whatever to be p.v.whatever, just as is done now.
 
 It would be best to think of a position as a *path* to a particular vnode.  In the present (clone) world, the path is used exclusively by the tree drawing logic.  That logic tests whether the node being drawn matches (has the same position) as c.currentPosition.  In the graph world it probably makes sense to speak only of the current *vnode*, say v, so a position p is *a* current position if p.v == v.
 
-The (renewed) focus on vnodes will be necessary.  For example, there will be no such things as p.back() or v._back in the graph world.  That is, a vnode v will have no *intrinsic* siblings.  Instead, siblings are relative to a parent: the order of vnodes in the parent.children links implicitly define sibling relationships, but a vnode v may have many 'parents', i.e. there may be many nodes that point to v.  We could speak of 'siblings with respect to a particular parent', but I suspect that will not be a particularly useful concept.  Rather, it will probably be more natural simply to define node relationships using iterators.  We shall see...
+[WRONG] The (renewed) focus on vnodes will be necessary.  For example, there will be no such things as p.back() or v._back in the graph world.  That is, a vnode v will have no *intrinsic* siblings.  Instead, siblings are relative to a parent: the order of vnodes in the parent.children links implicitly define sibling relationships, but a vnode v may have many 'parents', i.e. there may be many nodes that point to v.  We could speak of 'siblings with respect to a particular parent', but I suspect that will not be a particularly useful concept.  Rather, it will probably be more natural simply to define node relationships using iterators.  We shall see...
+
+[Why the above is wrong]
+
+1. Positions exist within views, and views define natural notion of siblings (and all our old tree relationships).
+
+2. Most positions define a unique parent (again, because positions exist with a view) so the siblings of such parents are well defined.  Top-level nodes have no 'official' parent, but a hidden parent can be used instead.  That is, top-level nodes (of a view) are naturally siblings of each other.
 #@-node:ekr.20070512130855:Thoughts about positions 2
+#@+node:ekr.20070923104822:More thoughts on the graph world
+@nocolor
+
+From the post: New directions for Leo:
+
+http://sourceforge.net/forum/message.php?msg_id=4319279
+
+I regard the present chapters code as, at best, an interim measure. Regardless of how popular it may turn out to be, it can not be the last word. Indeed, chapters are not nearly as general as outlines: they can not be organized, they can not be cloned, and chapters will start to become unwieldy when more than about 10 chapters are present.  
+
+I presently consider chapters to be a failure similar to the Leo's settings panel. Before you get indignant, consider that abandoning the settings panel led directly to leoSettings.leo files, a huge step forward for Leo. Actually, I think a generalization of chapters, which I tentatively think of as 'views', will form the foundation of the graph world. 
+
+In the middle of last night I realized that clones are indeed possible in the graph world. Indeed, a clone is simply a separate *visual* copy of *one particular* graph node. It's very similar to the present idea of a clone, except that nodes do not automatically 'include' all their descendants (their transitive closure). 
+
+For the past several days, I have been wrestling with whether the graph world is worth doing. The answer is now clear: yes and no :-) 
+
+'Yes' is one possible answer. Indeed, we can conceive of the graph world as two separate 'layers'. There is the data layer, what Brian has called the 'sea of nodes'. It is my strong opinion that this layer, by itself, is not sufficient because it provides no way of organizing nodes. Here is where views come in. A view is an outline *superimposed* upon data layer. That is, a view is a set of (graph) nodes organized via an outline. Equivalently, a view is a set of nodes with an associated set of iterators. 
+
+This two-layer representation of a graph solves all problems that I know of. 
+
+A. The union of all views must, by construction, 'cover' the entire graph. That is, every graph node must be part of at least one view. This solves the (otherwise fairly hard) problem of specifying a set of roots whose transitive closure covers the graph. The roots of user-defined views does the job. 
+
+B. Views provide a natural way of hiding detail, and otherwise organizing massive graphs. For example, consider the graph that represented the project management diagram for the Apollo moon shot. That diagram covered an entire (large!) wall in a hanger. It was widely asserted that only by viewing the whole thing could one grasp the entire project. I disagree. A set of several dozen or several hundred independent views would likely have been even more informative, *provided* that views can themselves be organized as nodes are. That is, views must be as flexible and general as Leo's present outline. 
+
+C. Cloning a node is done in a view, not in the data layer. Cloning a node does *not* automatically add the children of a node to a view, but there will be an add-children-to-view command that does that. Furthermore, the drawing code will limit expansions to that self-referential groups of nodes only get drawn once.
+#@nonl
+#@-node:ekr.20070923104822:More thoughts on the graph world
+#@+node:ekr.20070923115155.1:Latest thoughts about the graph world
+@nocolor
+
+I've been thinking a bit lately about the graph world (Leo 5.x).  I've said many times that forgetting is a useful part of inventing.  It seems to clear the air.
+
+Here is the essence of the Graph World as I presently understand it, after thinking about the problems afresh, and then refreshing my memory by reviewing old notes:
+
+1.  A graph consists of a "sea of nodes" (data model) and a set of views.  Each node appears in at least one view.
+
+2.  A view is similar to a chapter, and in the graph world the two concepts will be synonymous.  That is, a Leo outline will consists of one or more views, just as at present an outline consists of one or more chapters.
+
+3. A view is a tree (or maybe DAG???), *not* a general graph.  In particular, a view can be drawn like Leo trees are drawn. Views share almost all attributes with present outlines:
+
+- The top-level nodes of a view are well defined.
+- Positions within views are well defined.
+- The parent, siblings and descendants of any position are well defined.
+- It *might* be possible to define clones in a view.
+- The transitive closure of a view is well defined. 
+
+4. Positions exist *only* in the context of a view.  There is no such thing as a position in the entire graph.  However, given the similarity between views and present Leo outlines, essentially **everything that presently can be done with positions can be done in the graph world**.
+
+This is a supremely important point.  It means that Leo's code base will not have to change drastically.  It will still be based on positions, not vnodes.  In particular, for any position p, p.v is well defined, so that for any method v.x, a corresponding method p.x can be defined to be p.v.x, just as in the present version of Leo.
+
+Questions still remain:
+
+1. Given a view, how are we to control the expansion of nodes containing back links.  There are at least two possible answers:
+
+A: Don't show nodes that have already been drawn in the view.  This is an 'automatic' solution, but it has obvious drawbacks.
+
+B: Only show nodes that have been explicitly added to the view.  That is, the children of a node do not automatically become part of the view.
+
+Other solutions may be possible.
+
+2. Are clones a useful concept in the graph world?  This question is at least 'askable' because views have so many features in common with present Leo outlines.  I have no answer at present.  More daydreaming is required.
+
+I'll be adding to this discussion from time to time.  All comments welcome.
+
+Edward
+
+P.S. Implicit in the separation of data model (sea of nodes) from the set of views is a rejection of the visual representation of the sea of nodes as a typical graph view.  I do not like such graphs because they become unwieldy when many nodes are involved.  Yes, I know such graphs can look pretty cool, but how are we actually to use them?  I have never seen a scheme that would actually be useful.  Zooming in and out of a huge graph is a great way to waste time: it's quite like aimlessly surfing the web. 
+
+I want to be clear about this design choice because it is important: it has many side effects.  If you want me to consider a sea of nodes **view** you must explain how it can be as useful as a set of more structure views.  Good luck.  I think you will find that a difficult task.  However, if you think you have a way, the time to say so is **now**, before I have moved on to the actual coding.
+
+EKR
+
+Transitive closure
+
+The transitive closure of a node n in any graph (including strict hierarchies and DAG's) is the set of nodes reachable from node n.  The transitive closure has important practical consequences.  Within a view, it is the set of all nodes that would become visible when all nodes (of the view) are expanded.
+
+I recently realized that it is easy to compute the transitive closure of any node *in the general graph* (the sea of nodes).  In essence, the idea is to associate a **generation count** (say genCount) with each node.  Nodes are created with v.genCount = 0.  To compute the transitive closure of node n, just do the following:
+
+1. Increment a global genCount.
+
+2.  Add node n to the transitive closure.
+
+3.  For each of n's descendants (nodes c for which there is a link from n to c), add the descendant c to the transitive closure provided that c.genCount < genCount.  Adding a node c to the transitive closure means setting c.genCount = genCount.
+
+The point is that it is much faster to test c.genCount than to test whether c is in a (possibly very large) list of nodes in the transitive closure.
+
+In other words, starting from a set of top-level nodes of a view we can can quickly determine whether a node has already appeared in the view.  This is important because it provides a way of terminating what would otherwise be endless node expansions when the sea of nodes contains loops.
+#@-node:ekr.20070923115155.1:Latest thoughts about the graph world
+#@-node:ekr.20061028070132:Notes
+#@+node:ekr.20070924102527:Code
+# None of this code is part of Leo's core yet: it is all highly experimental.
+
+# Important: the new vnode class implies that the read code must be rewritten to be similar to the opml read code.
+#@nonl
 #@+node:ekr.20031218072017.3019:leoFileCommands._init_
 def __init__(self,c):
 
@@ -4251,8 +4204,180 @@ def unlink (self):
 #@-node:ekr.20061028070057.55:p.unlink
 #@-node:ekr.20061028070057.51:p.Link/Unlink methods (all new)
 #@-node:ekr.20061028211424.1:position class
-#@-node:ekr.20061028070132:New positions
+#@-node:ekr.20070924102527:Code
 #@-node:ekr.20070105135713:To do: 5.0 (The graph world)
+#@+node:ekr.20070923103337:Not associated with any release
+#@+node:ekr.20070615063616.1:Create Debian package
+#@-node:ekr.20070615063616.1:Create Debian package
+#@+node:ekr.20060306194040:Video and more screen shots on Leo's web site
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3615177
+By: ktenney
+
+High on my ToLearn list is vnc2swf
+http://www.unixuser.org/~euske/vnc2swf/
+
+
+http://sourceforge.net/forum/message.php?msg_id=3615278
+By: James
+
+A lot of people are now using Wink for demonstrations
+(http://www.debugmode.com/wink/), it's is free and seems to work well.
+
+Check out http://murl.se/11332
+At the bottom they talk about tools and techniques.
+http://showmedo.com seems like it would be a good
+place to host vids also.
+
+I've listened/watched a fair number of things like this;
+my recomendation is to get a good microphone and
+pre-amp to record your voice, and prepare the audio
+track carefully. It is so aggravating when
+it's hard to discern the words being spoken.
+
+Thanks,
+Kent
+#@nonl
+#@+node:ekr.20060531134434:Tutorials
+http://sourceforge.net/forum/message.php?msg_id=3758271
+
+From: Rich
+
+Tutorials would be great. I use Liberty BASIC, (http://libertybasic.conforums.com)
+and it has a very good tutorial -- leads the beginner by the hand through much
+of the language. Also the help file has working code snippets
+to cut-n-paste-n-play-with. I'd like to see something like:
+
+[Buttons]
+...[What are Buttons good for?]
+...[How do I make my own buttons?]
+......[Some commands you can use with buttons]
+......[Where to find button commands]
+#@nonl
+#@-node:ekr.20060531134434:Tutorials
+#@+node:ekr.20060531134434.1:Screencasts
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3758303
+By: ktenney
+
+My sense is that documentation/screencasts has the
+greatest potential for expanding Leo's mindshare.
+
+I really like those produced by the good folks
+at Dabo;
+http://leafe.com/screencasts/
+http://leafe.com/screencasts/populategrid.html
+
+The TurboGears people have taken this to the extreme;
+http://www.turbogears.org/ultimate.html
+
+Leo is different enough that it warrants a 
+demonstration of it's advantages.
+
+-------------------
+
+https://sourceforge.net/forum/message.php?msg_id=4396251
+By: ktenney
+
+2 good screencasts on making screencasts;
+
+http://murl.se/26296
+#@-node:ekr.20060531134434.1:Screencasts
+#@+node:ekr.20060829103523:Render Leo slideshows
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3889246
+By: terry_n_brown
+
+Three packages that might be candidates for "rendering" slides authored in Leo:
+
+MagicPoint: http://member.wide.ad.jp/wg/mgp/
+
+  uses a text file format that leo could produce
+
+Slidy: http://www.w3.org/Talks/Tools/Slidy/
+
+  uses XHTML / canned Java script
+
+S5: http://meyerweb.com/eric/tools/s5/
+
+  Similar to Slidy I think, haven't looked at it
+#@nonl
+#@-node:ekr.20060829103523:Render Leo slideshows
+#@-node:ekr.20060306194040:Video and more screen shots on Leo's web site
+#@+node:ekr.20070824093611:Improve wxGui plugin
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4480477
+By: plumloco
+
+Sorry to here about your injury, Edward. Hope its not RSI from working too hard
+on Leo.  Get well soon.
+
+When your fit and well again you might like to have a look at this.
+
+I have been playing with custom tree widgets for leo, first with pyGTK then
+with wxPython.  I had thought about doing a  pyGTK plugin until I realized how
+much work was involved :)
+
+I have adapted the __wx_gui.py plugin to work with my custom widget and called
+it __wx_alt_gui.py. You, or anyone else who is interested, can download the
+plugin from http://plumloco.co.uk/scratch/__wx_alt_gui.py.gz.
+
+The great benefit of using this custom widget is that it has no secondary data
+structures to keep in synch, this makes it faster and more efficient in terms
+of resources. It also eliminates the problem of complicated glue code.
+
+All that is needed is to call update whenever a change is made and the widget
+will get all its data directly from the leo outline itself.  A good test for
+the widget is to load a large outline and do an expand-all-nodes on it (try
+the same with __wx_gui and tkLeo).
+
+The widget still needs a lot of work but it works well enough for its usefulness
+and viability to be tested.
+
+I would be interested to know your intentions towards wxLeo.  My impression
+is that you do not plan on being very active in its development, seeing as how
+you are talking about doing a java swing version.
+
+If you have no objections, I would like to do some work on wxLeo myself, partly
+for its own sake and partly to gain experience for a possible pyGTK port.  Obviously
+I do not want to be treading on your toes, so please tell me if I am intruding.
+
+
+#@-node:ekr.20070824093611:Improve wxGui plugin
+#@+node:ekr.20070703111913:Swing gui
+#@+node:ekr.20060629154112:Merge Leo & jyLeo
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3799470
+By: leouser
+
+I guess its hard to say what pieces must merge and what can stay different.
+Id like it if the blasted nodes were the same.  I guess there is progress again
+on a jython 2.2 being complete and work starting on 2.3.  So there is hope that
+the nodes will be the same code, at least it will be possible.
+
+At the top of my head the big differences outside of the position changes are:
+1. Some modifications to the read/write code so that Chapters can work and also
+Serialized positions.
+2. Commander has some things different, it looks to the Chapters instance to
+determine what is the curentPosition, top Position etc... instead of keeping
+track of it itself.
+3. GUI layers are very different.  Interesting tidbit here: the work I did to
+get the JTree to use positions to determine if a node is expanded or not looks
+like it has provided the outline for enhancing the JTree for Java itself to
+be able to do this.  We will have to see, but maybe in Java 7 you can say: "Positions
+lead to user controled tree expansion models".
+
+There is a tremendous amount that is the same. Im sure you could make an interesting
+evening out of comparing the codebases to see where things change.
+
+
+#@+node:ekr.20070307082814:Create g.startupController class
+#@-node:ekr.20070307082814:Create g.startupController class
+#@-node:ekr.20060629154112:Merge Leo & jyLeo
+#@-node:ekr.20070703111913:Swing gui
+#@-node:ekr.20070923103337:Not associated with any release
 #@-all
 #@nonl
 #@-node:ekr.20040117181936:@thin ../doc/leoToDo.txt
