@@ -29,6 +29,13 @@ For every @button node, this plugin creates two new minibuffer commands: x and
 delete-x-button, where x is the 'cleaned' name of the button. The 'x' command is
 equivalent to pushing the script button.
 
+**New in Leo 4.4.4**: You can specify **global buttons** in leoSettings.leo or
+myLeoSettings.leo by putting @button nodes as children of an @buttons node in an
+@settings trees. Such buttons are included in all open .leo (in a slightly
+different color). Actually, you can specify global buttons in any .leo file, but
+@buttons nodes affect all later opened .leo files so usually you would define
+global buttons in leoSettings.leo or myLeoSettings.leo.
+
 The cleaned name of an @button node is the headline text of the button with:
 
 - Leading @button or @command removed,
