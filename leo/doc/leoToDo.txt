@@ -221,22 +221,23 @@ def createMenusFromTables (self):
 
     c = self.c
 
-    d = c.config.getMenusDict()
-    # g.trace(c,'menusDict.keys',d and g.listToString(d.keys(),sort=True))
+    aList = c.config.getMenusList()
+    if False and aList:
+        self.createMenusFromConfigList(aList)
+    else:
+        self.defineMenuTables()
 
-    self.defineMenuTables()
+        self.createFileMenuFromTable()
+        self.createEditMenuFromTable()
+        self.createOutlineMenuFromTable()
 
-    self.createFileMenuFromTable()
-    self.createEditMenuFromTable()
-    self.createOutlineMenuFromTable()
+        g.doHook("create-optional-menus",c=c)
 
-    g.doHook("create-optional-menus",c=c)
+        if self.useCmdMenu:
+            self.createCmndsMenuFromTable()
 
-    if self.useCmdMenu:
-        self.createCmndsMenuFromTable()
-
-    self.createWindowMenuFromTable()
-    self.createHelpMenuFromTable()
+        self.createWindowMenuFromTable()
+        self.createHelpMenuFromTable()
 #@+node:ekr.20031218072017.3790:createFileMenuFromTable
 def createFileMenuFromTable (self):
 
@@ -415,6 +416,19 @@ def createHelpMenuFromTable (self):
         self.createMenuEntries(helpMenu,self.helpMenuTable)
 #@nonl
 #@-node:ekr.20031218072017.3803:createHelpMenuFromTable
+#@+node:ekr.20070926135612:createMenusFromConfigList
+def createMenusFromConfigList (self,aList):
+
+    '''Create menus from dictionary d instead of 'hard coded' menus.'''
+
+    for z in aList:
+        self.createMenuFromConfigList(z)
+
+def createMenuFromConfigList (self,aList):
+
+    # g.trace(g.listToString(aList))
+    pass
+#@-node:ekr.20070926135612:createMenusFromConfigList
 #@-node:ekr.20031218072017.3785:createMenusFromTables & helpers
 #@+node:ekr.20031218072017.3752:defineMenuTables & helpers
 def defineMenuTables (self):
