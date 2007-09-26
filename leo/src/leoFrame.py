@@ -2282,6 +2282,7 @@ class leoTree:
         # "public" ivars: correspond to setters & getters.
         self._editPosition = None
         self.redrawCount = 0 # For traces
+        self.revertHeadline = None
         self.use_chapters = False # May be overridden in subclasses.
     #@+node:ekr.20061109164512:leoTree.mustBeDefinedOnlyInBaseClass
     mustBeDefinedOnlyInBaseClass = (
