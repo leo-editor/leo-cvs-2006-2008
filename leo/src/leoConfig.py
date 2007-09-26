@@ -30,7 +30,9 @@ class parserBaseClass:
 
     control_types = [
         'abbrev','enabledplugins','font','if','ifgui','ifplatform','ignore','mode',
-        'openwith','page','settings','shortcuts']
+        'openwith','page','settings','shortcuts',
+        'buttons','menus', # New in Leo 4.4.4.
+        ]
 
     # Keys are settings names, values are (type,value) tuples.
     settingsDict = {}
@@ -52,6 +54,7 @@ class parserBaseClass:
         self.dispatchDict = {
             'abbrev':       self.doAbbrev, # New in 4.4.1 b2.
             'bool':         self.doBool,
+            'buttons':      self.doButtons, # New in 4.4.4
             'color':        self.doColor,
             'directory':    self.doDirectory,
             'enabledplugins': self.doEnabledPlugins,
@@ -63,6 +66,7 @@ class parserBaseClass:
             'int':          self.doInt,
             'ints':         self.doInts,
             'float':        self.doFloat,
+            'menus':        self.doMenus, # New in 4.4.4
             'mode':         self.doMode, # New in 4.4b1.
             'openwith':     self.doOpenWith, # New in 4.4.3 b1.
             'path':         self.doPath,
@@ -121,6 +125,27 @@ class parserBaseClass:
         else:
             self.valueError(p,kind,name,val)
     #@-node:ekr.20041120094940.1:doBool
+    #@+node:ekr.20070925144337:doButtons
+    def doButtons (self,p,kind,name,val):
+
+        __pychecker__ = '--no-argsused' # kind,name,val not used.
+
+        aList = [] ; c = self.c ; tag = '@button'
+        for p in p.subtree_iter():
+            h = p.headString()
+            if g.match_word(h,0,tag):
+                # We can not assume that p will be valid when it is used.
+                script = g.getScript(c,p,useSelectedText=False,forcePythonSentinels=True,useSentinels=True)
+                aList.append((p.headString(),script),)
+
+        # g.trace(g.listToString([h for h,script in aList]))
+
+        # This setting is handled differently from most other settings,
+        # because the last setting must be retrieved before any commander exists.
+        g.app.config.buttonsList = aList
+        g.app.config.buttonsFileName = c and c.shortFileName() or '<no settings file>'
+
+    #@-node:ekr.20070925144337:doButtons
     #@+node:ekr.20041120094940.2:doColor
     def doColor (self,p,kind,name,val):
 
@@ -279,6 +304,58 @@ class parserBaseClass:
             # At present no checking is done.
             self.set(p,kind,name,val)
     #@-node:ekr.20041217132253:doInts
+    #@+node:ekr.20070925144337.2:doMenus & helper
+    def doMenus (self,p,kind,name,val):
+
+        __pychecker__ = '--no-argsused' # kind,name,val not used.
+
+        c = self.c ; d = {} ; tag = '@menu'
+        p = p.copy() ; after = p.nodeAfterTree()
+        while p and p != after:
+            h = p.headString()
+            if g.match_word(h,0,tag):
+                name = h[len(tag):].strip()
+                if name:
+                    oldName = d.get(name)
+                    if oldName:
+                        self.error('Replacing previous @menu %s' % (name))
+                    self.doMenu(p,d,name)
+                    p.moveToNodeAfterTree()
+                else:
+                    p.moveToThreadNext()
+            else:
+                p.moveToThreadNext()
+
+        # This setting is handled differently from most other settings,
+        # because the last setting must be retrieved before any commander exists.
+        g.app.config.menusDict = d
+        g.app.config.menusFileName = c and c.shortFileName() or '<no settings file>'
+    #@+node:ekr.20070926065308:doMenu
+    def doMenu (self,p,d,name):
+
+        aList = [] ; tag = '@item'
+
+        for p in p.subtree_iter():
+            h = p.headString()
+            for tag in ('@menu','@item'):
+                if g.match_word(h,0,tag):
+                    itemName = h[len(tag):].strip()
+                    if itemName:
+                        kind = tag
+                        head = itemName
+                        body = p.bodyString()
+                        aList.append((kind,head,body),)
+
+        d[name] = aList
+
+        if 0:
+            print
+            g.trace('@menu %s = \n%s' % (name,g.listToString(aList)))
+
+
+
+    #@-node:ekr.20070926065308:doMenu
+    #@-node:ekr.20070925144337.2:doMenus & helper
     #@+node:ekr.20060102103625.1:doMode (ParserBaseClass)
     def doMode(self,p,kind,name,val):
 
@@ -710,6 +787,113 @@ class parserBaseClass:
 #@nl
 
 #@+others
+#@+node:ekr.20041118104831.1:class configSettings (leoCommands)
+class configSettings:
+
+    """A class to hold config settings for commanders."""
+
+    #@    @+others
+    #@+node:ekr.20041118104831.2:configSettings.__init__
+    def __init__ (self,c):
+
+        self.c = c
+
+        self.defaultBodyFontSize = g.app.config.defaultBodyFontSize
+        self.defaultLogFontSize  = g.app.config.defaultLogFontSize
+        self.defaultMenuFontSize = g.app.config.defaultMenuFontSize
+        self.defaultTreeFontSize = g.app.config.defaultTreeFontSize
+
+        for key in g.app.config.encodingIvarsDict.keys():
+            if key != '_hash':
+                self.initEncoding(key)
+
+        for key in g.app.config.ivarsDict.keys():
+            if key != '_hash':
+                self.initIvar(key)
+    #@+node:ekr.20041118104240:initIvar
+    def initIvar(self,key):
+
+        c = self.c
+
+        # N.B. The key is munged.
+        bunch = g.app.config.ivarsDict.get(key)
+        ivarName = bunch.ivar
+        val = g.app.config.get(c,ivarName,kind=None) # kind is ignored anyway.
+
+        if val or not hasattr(self,ivarName):
+            # g.trace('c.configSettings',c.shortFileName(),ivarName,val)
+            setattr(self,ivarName,val)
+    #@-node:ekr.20041118104240:initIvar
+    #@+node:ekr.20041118104414:initEncoding
+    def initEncoding (self,key):
+
+        c = self.c
+
+        # N.B. The key is munged.
+        bunch = g.app.config.encodingIvarsDict.get(key)
+        encodingName = bunch.ivar
+        encoding = g.app.config.get(c,encodingName,kind='string')
+
+        # New in 4.4b3: use the global setting as a last resort.
+        if encoding:
+            # g.trace('c.configSettings',c.shortFileName(),encodingName,encoding)
+            setattr(self,encodingName,encoding)
+        else:
+            encoding = getattr(g.app.config,encodingName)
+            # g.trace('g.app.config',c.shortFileName(),encodingName,encoding)
+            setattr(self,encodingName,encoding)
+
+        if encoding and not g.isValidEncoding(encoding):
+            g.es("bad %s: %s" % (encodingName,encoding))
+    #@-node:ekr.20041118104414:initEncoding
+    #@-node:ekr.20041118104831.2:configSettings.__init__
+    #@+node:ekr.20041118053731:Getters (c.configSettings)
+    def getFontFromParams(self,family,size,slant,weight,defaultSize=12):
+        return g.app.config.getFontFromParams(self.c,
+            family,size,slant,weight,defaultSize=defaultSize)
+
+    def getRecentFiles (self):
+        return g.app.config.getRecentFiles()
+
+    def get(self,setting,theType):
+        return g.app.config.get(self.c,setting,theType)
+
+    def getAbbrevDict(self):         return g.app.config.getAbbrevDict(self.c)
+    def getBool      (self,setting): return g.app.config.getBool     (self.c,setting)
+    def getButtons   (self):         return g.app.config.buttonsList # unusual.
+    def getColor     (self,setting): return g.app.config.getColor    (self.c,setting)
+    def getDirectory (self,setting): return g.app.config.getDirectory(self.c,setting)
+    def getInt       (self,setting): return g.app.config.getInt      (self.c,setting)
+    def getFloat     (self,setting): return g.app.config.getFloat    (self.c,setting)
+    def getFontDict  (self,setting): return g.app.config.getFontDict (self.c,setting)
+    def getMenusDict (self):         return g.app.config.menusDict # unusual.
+    def getLanguage  (self,setting): return g.app.config.getLanguage (self.c,setting)
+    def getOpenWith  (self):         return g.app.config.getOpenWith (self.c)
+    def getRatio     (self,setting): return g.app.config.getRatio    (self.c,setting)
+    def getShortcut  (self,setting,):return g.app.config.getShortcut (self.c,setting)
+    def getString    (self,setting): return g.app.config.getString   (self.c,setting)
+    #@-node:ekr.20041118053731:Getters (c.configSettings)
+    #@+node:ekr.20041118195812:Setters... (c.configSettings)
+    #@+node:ekr.20041118195812.3:setRecentFiles (c.configSettings)
+    def setRecentFiles (self,files):
+
+        '''Update the recent files list.'''
+
+        # Append the files to the global list.
+        g.app.config.appendToRecentFiles(files)
+    #@-node:ekr.20041118195812.3:setRecentFiles (c.configSettings)
+    #@+node:ekr.20041118195812.2:set & setString
+    def set (self,p,setting,val):
+
+        __pychecker__ = '--no-argsused' # p not used.
+
+        return g.app.config.setString(self.c,setting,val)
+
+    setString = set
+    #@-node:ekr.20041118195812.2:set & setString
+    #@-node:ekr.20041118195812:Setters... (c.configSettings)
+    #@-others
+#@-node:ekr.20041118104831.1:class configSettings (leoCommands)
 #@+node:ekr.20041119203941:class configClass
 class configClass:
     """A class to manage configuration settings."""
@@ -844,6 +1028,8 @@ class configClass:
     #@+node:ekr.20041117062717.2:ctor (configClass)
     def __init__ (self):
 
+        self.buttonsList = []
+        self.buttonsFileName = ''
         self.configsExist = False # True when we successfully open a setting file.
         self.defaultFont = None # Set in gui.getDefaultConfigFont.
         self.defaultFontFamily = None # Set in gui.getDefaultConfigFont.
@@ -852,6 +1038,8 @@ class configClass:
         self.globalConfigFile = None # Set in initSettingsFiles
         self.homeFile = None # Set in initSettingsFiles
         self.inited = False
+        self.menusDict = {}
+        self.menusFileName = ''
         self.modeCommandsDict = {} # For use by @mode logic. Keys are command names, values are g.Bunches.
         self.myGlobalConfigFile = None
         self.myHomeConfigFile = None
@@ -1124,6 +1312,11 @@ class configClass:
         else:
             return default
     #@-node:ekr.20041117081009.3:getBool
+    #@+node:ekr.20070926082018:getButtons
+    def getButtons (self):
+
+        return g.app.config.buttonsList
+    #@-node:ekr.20070926082018:getButtons
     #@+node:ekr.20041122070339:getColor
     def getColor (self,c,setting):
 
@@ -1145,8 +1338,6 @@ class configClass:
     #@-node:ekr.20041117093009.1:getDirectory
     #@+node:ekr.20070224075914.1:getEnabledPlugins
     def getEnabledPlugins (self):
-
-        """Search all dictionaries for the setting & check it's type"""
 
         return g.app.config.enabledPluginsString
     #@-node:ekr.20070224075914.1:getEnabledPlugins
@@ -1211,6 +1402,11 @@ class configClass:
 
         return language
     #@-node:ekr.20041117093009.2:getLanguage
+    #@+node:ekr.20070926070412:getMenusDict
+    def getMenusDict (self):
+
+        return g.app.config.menusDict
+    #@-node:ekr.20070926070412:getMenusDict
     #@+node:ekr.20070411101643:getOpenWith
     def getOpenWith (self,c):
 
@@ -1711,10 +1907,12 @@ class settingsTreeParser (parserBaseClass):
         kind,name,val = self.parseHeadline(p.headString())
         kind = munge(kind)
 
+        if kind is None: # Not an @x node. (New in Leo 4.4.4)
+            pass
         if kind == "settings":
             pass
-        elif kind not in self.control_types and val in (u'None',u'none','None','none','',None):
-            # None is valid for all data types.
+        elif kind in self.basic_types and val in (u'None',u'none','None','none','',None):
+            # None is valid for all basic types.
             self.set(p,kind,name,None)
         elif kind in self.control_types or kind in self.basic_types:
             f = self.dispatchDict.get(kind)
@@ -1723,10 +1921,6 @@ class settingsTreeParser (parserBaseClass):
             except TypeError:
                 g.es_exception()
                 print "*** no handler",kind
-        elif name:
-            # self.error("unknown type %s for setting %s" % (kind,name))
-            # Just assume the type is a string.
-            self.set(p,kind,name,val)
 
         return None
     #@-node:ekr.20041119204714:visitNode (settingsTreeParser)

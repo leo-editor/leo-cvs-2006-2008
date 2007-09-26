@@ -7223,7 +7223,7 @@ class Commands (baseCommands):
     """A class that implements most of Leo's commands."""
     pass
 #@-node:ekr.20041118104831:class commands
-#@+node:ekr.20041118104831.1:class configSettings
+#@+node:ekr.20041118104831.1:class configSettings (leoCommands)
 class configSettings:
 
     """A class to hold config settings for commanders."""
@@ -7283,7 +7283,7 @@ class configSettings:
             g.es("bad %s: %s" % (encodingName,encoding))
     #@-node:ekr.20041118104414:initEncoding
     #@-node:ekr.20041118104831.2:configSettings.__init__
-    #@+node:ekr.20041118053731:Getters
+    #@+node:ekr.20041118053731:Getters (c.configSettings)
     def getFontFromParams(self,family,size,slant,weight,defaultSize=12):
         return g.app.config.getFontFromParams(self.c,
             family,size,slant,weight,defaultSize=defaultSize)
@@ -7296,17 +7296,19 @@ class configSettings:
 
     def getAbbrevDict(self):         return g.app.config.getAbbrevDict(self.c)
     def getBool      (self,setting): return g.app.config.getBool     (self.c,setting)
+    def getButtons   (self):         return g.app.config.buttonsList # unusual.
     def getColor     (self,setting): return g.app.config.getColor    (self.c,setting)
     def getDirectory (self,setting): return g.app.config.getDirectory(self.c,setting)
     def getInt       (self,setting): return g.app.config.getInt      (self.c,setting)
     def getFloat     (self,setting): return g.app.config.getFloat    (self.c,setting)
     def getFontDict  (self,setting): return g.app.config.getFontDict (self.c,setting)
+    def getMenusDict (self):         return g.app.config.menusDict # unusual.
     def getLanguage  (self,setting): return g.app.config.getLanguage (self.c,setting)
     def getOpenWith  (self):         return g.app.config.getOpenWith (self.c)
     def getRatio     (self,setting): return g.app.config.getRatio    (self.c,setting)
     def getShortcut  (self,setting,):return g.app.config.getShortcut (self.c,setting)
     def getString    (self,setting): return g.app.config.getString   (self.c,setting)
-    #@-node:ekr.20041118053731:Getters
+    #@-node:ekr.20041118053731:Getters (c.configSettings)
     #@+node:ekr.20041118195812:Setters... (c.configSettings)
     #@+node:ekr.20041118195812.3:setRecentFiles (c.configSettings)
     def setRecentFiles (self,files):
@@ -7327,7 +7329,7 @@ class configSettings:
     #@-node:ekr.20041118195812.2:set & setString
     #@-node:ekr.20041118195812:Setters... (c.configSettings)
     #@-others
-#@-node:ekr.20041118104831.1:class configSettings
+#@-node:ekr.20041118104831.1:class configSettings (leoCommands)
 #@+node:ekr.20070615131604:class nodeHistory
 class nodeHistory:
 

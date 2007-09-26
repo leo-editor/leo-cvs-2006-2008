@@ -256,6 +256,9 @@ class leoMenu:
 
         c = self.c
 
+        d = c.config.getMenusDict()
+        # g.trace(c,'menusDict.keys',d and g.listToString(d.keys(),sort=True))
+
         self.defineMenuTables()
 
         self.createFileMenuFromTable()
