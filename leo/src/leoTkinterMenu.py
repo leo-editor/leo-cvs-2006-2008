@@ -95,21 +95,24 @@ class leoTkinterMenu (leoMenu.leoMenu):
 
         """Wrapper for the Tkinter add_cascade menu method."""
 
-        return parent.add_cascade(label=label,menu=menu,underline=underline)
+        if parent:
+            return parent.add_cascade(label=label,menu=menu,underline=underline)
     #@-node:ekr.20031218072017.4105:add_cascade
     #@+node:ekr.20031218072017.4106:add_command
     def add_command (self,menu,**keys):
 
         """Wrapper for the Tkinter add_command menu method."""
 
-        return menu.add_command(**keys)
+        if menu:
+            return menu.add_command(**keys)
     #@-node:ekr.20031218072017.4106:add_command
     #@+node:ekr.20031218072017.4107:add_separator
     def add_separator(self,menu):
 
         """Wrapper for the Tkinter add_separator menu method."""
 
-        menu.add_separator()
+        if menu:
+            menu.add_separator()
     #@-node:ekr.20031218072017.4107:add_separator
     #@+node:ekr.20031218072017.4108:bind (not called)
     def bind (self,bind_shortcut,callback):
@@ -125,40 +128,44 @@ class leoTkinterMenu (leoMenu.leoMenu):
 
         """Wrapper for the Tkinter delete menu method."""
 
-        return menu.delete(realItemName)
+        if menu:
+            return menu.delete(realItemName)
     #@-node:ekr.20031218072017.4109:delete
     #@+node:ekr.20031218072017.4110:delete_range
     def delete_range (self,menu,n1,n2):
 
         """Wrapper for the Tkinter delete menu method."""
 
-        return menu.delete(n1,n2)
+        if menu:
+            return menu.delete(n1,n2)
     #@-node:ekr.20031218072017.4110:delete_range
     #@+node:ekr.20031218072017.4111:destroy
     def destroy (self,menu):
 
         """Wrapper for the Tkinter destroy menu method."""
 
-        return menu.destroy()
+        if menu:
+            return menu.destroy()
     #@-node:ekr.20031218072017.4111:destroy
     #@+node:ekr.20070124150514:insert
     def insert (self,menuName,position,label,command,underline=None):
 
         menu = self.getMenu(menuName)
-
-        if underline is None:
-            menu.insert(position,'command',label=label,command=command)
-        else:
-            menu.insert(position,'command',label=label,command=command,underline=underline)
+        if menu:
+            if underline is None:
+                menu.insert(position,'command',label=label,command=command)
+            else:
+                menu.insert(position,'command',label=label,command=command,underline=underline)
     #@-node:ekr.20070124150514:insert
     #@+node:ekr.20031218072017.4112:insert_cascade
     def insert_cascade (self,parent,index,label,menu,underline):
 
         """Wrapper for the Tkinter insert_cascade menu method."""
 
-        return parent.insert_cascade(
-            index=index,label=label,
-            menu=menu,underline=underline)
+        if parent:
+            return parent.insert_cascade(
+                index=index,label=label,
+                menu=menu,underline=underline)
     #@-node:ekr.20031218072017.4112:insert_cascade
     #@+node:ekr.20031218072017.4113:new_menu
     def new_menu(self,parent,tearoff=False):

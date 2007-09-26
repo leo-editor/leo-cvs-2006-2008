@@ -7302,7 +7302,7 @@ class configSettings:
     def getInt       (self,setting): return g.app.config.getInt      (self.c,setting)
     def getFloat     (self,setting): return g.app.config.getFloat    (self.c,setting)
     def getFontDict  (self,setting): return g.app.config.getFontDict (self.c,setting)
-    def getMenusDict (self):         return g.app.config.menusDict # unusual.
+    def getMenusList (self):         return g.app.config.menusList # unusual.
     def getLanguage  (self,setting): return g.app.config.getLanguage (self.c,setting)
     def getOpenWith  (self):         return g.app.config.getOpenWith (self.c)
     def getRatio     (self,setting): return g.app.config.getRatio    (self.c,setting)

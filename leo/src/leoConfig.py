@@ -309,17 +309,22 @@ class parserBaseClass:
 
         __pychecker__ = '--no-argsused' # kind,name,val not used.
 
-        c = self.c ; d = {} ; tag = '@menu'
+        c = self.c ; aList = [] ; tag = '@menu'
         p = p.copy() ; after = p.nodeAfterTree()
         while p and p != after:
             h = p.headString()
             if g.match_word(h,0,tag):
                 name = h[len(tag):].strip()
                 if name:
-                    oldName = d.get(name)
-                    if oldName:
-                        self.error('Replacing previous @menu %s' % (name))
-                    self.doMenu(p,d,name)
+                    for z in aList:
+                        name2,junk,junk = z
+                        if name2 == name:
+                            self.error('Replacing previous @menu %s' % (name))
+                            break
+                    aList2 = []
+                    kind = '%s %s' % (tag,name)
+                    self.doItems(p,aList2)
+                    aList.append((kind,aList2,None),)
                     p.moveToNodeAfterTree()
                 else:
                     p.moveToThreadNext()
@@ -328,33 +333,51 @@ class parserBaseClass:
 
         # This setting is handled differently from most other settings,
         # because the last setting must be retrieved before any commander exists.
-        g.app.config.menusDict = d
+        # self.dumpMenuList(aList)
+        g.app.config.menusList = aList
         g.app.config.menusFileName = c and c.shortFileName() or '<no settings file>'
-    #@+node:ekr.20070926065308:doMenu
-    def doMenu (self,p,d,name):
+    #@+node:ekr.20070926141716:doItems
+    def doItems (self,p,aList):
 
-        aList = [] ; tag = '@item'
-
-        for p in p.subtree_iter():
+        p = p.copy() ; after = p.nodeAfterTree()
+        p.moveToThreadNext()
+        while p and p != after:
             h = p.headString()
             for tag in ('@menu','@item'):
                 if g.match_word(h,0,tag):
                     itemName = h[len(tag):].strip()
                     if itemName:
-                        kind = tag
-                        head = itemName
-                        body = p.bodyString()
-                        aList.append((kind,head,body),)
+                        if tag == '@menu':
+                            aList2 = []
+                            kind = '%s %s' % (tag,itemName)
+                            self.doItems(p,aList2)
+                            aList.append((kind,aList2,None),)
+                            p.moveToNodeAfterTree()
+                            break
+                        else:
+                            kind = tag
+                            head = itemName
+                            body = p.bodyString()
+                            aList.append((kind,head,body),)
+                            p.moveToThreadNext()
+                            break
+            else:
+                p.moveToThreadNext()
+    #@nonl
+    #@-node:ekr.20070926141716:doItems
+    #@+node:ekr.20070926142312:dumpMenuList
+    def dumpMenuList (self,aList,level=0):
 
-        d[name] = aList
-
-        if 0:
-            print
-            g.trace('@menu %s = \n%s' % (name,g.listToString(aList)))
-
-
-
-    #@-node:ekr.20070926065308:doMenu
+        for z in aList:
+            kind,val,val2 = z
+            if kind == '@item':
+                g.trace(level,kind,val,val2)
+            else:
+                print
+                g.trace(level,kind,'...')
+                self.dumpMenuList(val,level+1)
+    #@nonl
+    #@-node:ekr.20070926142312:dumpMenuList
     #@-node:ekr.20070925144337.2:doMenus & helper
     #@+node:ekr.20060102103625.1:doMode (ParserBaseClass)
     def doMode(self,p,kind,name,val):
@@ -866,7 +889,7 @@ class configSettings:
     def getInt       (self,setting): return g.app.config.getInt      (self.c,setting)
     def getFloat     (self,setting): return g.app.config.getFloat    (self.c,setting)
     def getFontDict  (self,setting): return g.app.config.getFontDict (self.c,setting)
-    def getMenusDict (self):         return g.app.config.menusDict # unusual.
+    def getMenusList (self):         return g.app.config.menusList # unusual.
     def getLanguage  (self,setting): return g.app.config.getLanguage (self.c,setting)
     def getOpenWith  (self):         return g.app.config.getOpenWith (self.c)
     def getRatio     (self,setting): return g.app.config.getRatio    (self.c,setting)
@@ -1038,7 +1061,7 @@ class configClass:
         self.globalConfigFile = None # Set in initSettingsFiles
         self.homeFile = None # Set in initSettingsFiles
         self.inited = False
-        self.menusDict = {}
+        self.menusList = []
         self.menusFileName = ''
         self.modeCommandsDict = {} # For use by @mode logic. Keys are command names, values are g.Bunches.
         self.myGlobalConfigFile = None
@@ -1403,9 +1426,10 @@ class configClass:
         return language
     #@-node:ekr.20041117093009.2:getLanguage
     #@+node:ekr.20070926070412:getMenusDict
-    def getMenusDict (self):
+    def getMenusList (self):
 
-        return g.app.config.menusDict
+        return g.app.config.menusList
+    #@nonl
     #@-node:ekr.20070926070412:getMenusDict
     #@+node:ekr.20070411101643:getOpenWith
     def getOpenWith (self,c):
