@@ -5239,7 +5239,7 @@ def dumpCompareNodes (self,fileName1,fileName2,inserted,deleted,changed):
 #@-node:ekr.20070920104110:compareLeoFiles
 #@-node:ekr.20070915105000.1:Part 3: .leo files: compare-leo-files
 #@-node:ekr.20051202094427:Added resolve-cvs-conflicts and write-resolved-conflicts commands
-#@+node:ekr.20070927044711:@buttons in @settings trees
+#@+node:ekr.20070927044711:@buttons trees in @settings trees
 #@+node:ekr.20041118104831.2:configSettings.__init__
 def __init__ (self,c):
 
@@ -6159,7 +6159,1266 @@ def visitNode (self,p):
     self.oops()
 #@-node:ekr.20041119204700.3:visitNode (must be overwritten in subclasses)
 #@-node:ekr.20041119203941.2:<< class parserBaseClass >>
-#@-node:ekr.20070927044711:@buttons in @settings trees
+#@-node:ekr.20070927044711:@buttons trees in @settings trees
+#@+node:ekr.20070925144337.1:@menus trees in @settings trees
+#@+node:ekr.20031218072017.3751: leoMenu.__init__
+def __init__ (self,frame):
+
+    # g.trace('leoMenu',g.callers())
+
+    self.c = c = frame.c
+    self.frame = frame
+    self.menus = {} # Menu dictionary.
+    self.menuShortcuts = {}
+
+    # To aid transition to emacs-style key handling.
+    self.useCmdMenu = c.config.getBool('useCmdMenu')
+
+    self.newBinding = True
+        # True if using new binding scheme.
+        # You can set this to False in an emergency to revert to the old way.
+
+    if 0: # Must be done much later.
+        self.defineMenuTables()
+#@-node:ekr.20031218072017.3751: leoMenu.__init__
+#@+node:ekr.20031218072017.1723:createMenuEntries
+def createMenuEntries (self,menu,table,dynamicMenu=False):
+
+    '''Create a menu entry from the table.
+    New in 4.4: this method shows the shortcut in the menu,
+    but this method **never** binds any shortcuts.'''
+
+    # g.trace('c',self.c)
+
+    c = self.c ; f = c.frame ; k = c.k
+    if g.app.unitTesting: return
+    for data in table:
+        << get label & command or continue >>
+        << compute commandName & accel from label & command >>
+        accelerator = stroke = k.shortcutFromSetting(accel) or ''
+        accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
+        def masterMenuCallback (k=k,stroke=stroke,command=command,commandName=commandName):
+            return k.masterMenuHandler(stroke,command,commandName)
+        realLabel = self.getRealMenuName(label)
+        amp_index = realLabel.find("&")
+        realLabel = realLabel.replace("&","")
+        if sys.platform == 'darwin':
+            << clear accelerator if it is a plain key >>
+        self.add_command(menu,label=realLabel,
+            accelerator=accelerator,
+            command=masterMenuCallback,
+            underline=amp_index)
+#@+node:ekr.20051021091958:<< get label & command or continue >>
+if type(data) == type(''):
+    # New in Leo 4.4.2: Can use the same string for both the label and the command string.
+    ok = True
+    s = data
+    removeHyphens = s and s[0]=='*'
+    if removeHyphens: s = s[1:]
+    label = self.capitalizeMinibufferMenuName(s,removeHyphens)
+    command = s.replace('&','').lower()
+    if label == '-':
+        self.add_separator(menu)
+        continue # That's all.
+else:
+    ok = type(data) in (type(()), type([])) and len(data) in (2,3)
+    if ok:
+        if len(data) == 2:
+            # New in 4.4b2: command can be a minibuffer-command name (a string)
+            label,command = data
+        else:
+            # New in 4.4: we ignore shortcuts bound in menu tables.
+            label,junk,command = data
+
+        if label in (None,'-'):
+            self.add_separator(menu)
+            continue # That's all.
+    else:
+        g.trace('bad data in menu table: %s' % repr(data))
+        continue # Ignore bad data
+#@nonl
+#@-node:ekr.20051021091958:<< get label & command or continue >>
+#@+node:ekr.20031218072017.1725:<< compute commandName & accel from label & command >>
+# New in 4.4b2: command can be a minibuffer-command name (a string)
+minibufferCommand = type(command) == type('')
+accel = None
+if minibufferCommand:
+    commandName = command 
+    command = c.commandsDict.get(commandName)
+    if command:
+        rawKey,bunchList = c.config.getShortcut(commandName)
+        # Pick the first entry that is not a mode.
+        for bunch in bunchList:
+            if not bunch.pane.endswith('-mode'):
+                # g.trace('1',bunch)
+                accel = bunch and bunch.val
+                if bunch.pane  == 'text': break # New in Leo 4.4.2: prefer text bindings.
+    else:
+        if not g.app.unitTesting and not dynamicMenu:
+            # Don't warn during unit testing.
+            # This may come from a plugin that normally isn't enabled.
+            g.trace('No inverse for %s' % commandName)
+        continue # There is no way to make this menu entry.
+else:
+    # First, get the old-style name.
+    commandName = self.computeOldStyleShortcutKey(label)
+    rawKey,bunchList = c.config.getShortcut(commandName)
+    for bunch in bunchList:
+        if not bunch.pane.endswith('-mode'):
+            # g.trace('2',bunch)
+            accel = bunch and bunch.val ; break
+    # Second, get new-style name.
+    if not accel:
+        << compute emacs_name >>
+            # Contains the not-so-horrible kludge.
+        if emacs_name:
+            commandName = emacs_name
+            rawKey,bunchList = c.config.getShortcut(emacs_name)
+            # Pick the first entry that is not a mode.
+            for bunch in bunchList:
+                if not bunch.pane.endswith('-mode'):
+                    accel = bunch.val ; break
+                    # g.trace('2',bunch)
+        elif not dynamicMenu:
+            g.trace('No inverse for %s' % commandName)
+#@+node:ekr.20051021100806.1:<< compute emacs_name >>
+@ One not-so-horrible kludge remains.
+
+The cut/copy/paste commands in the menu tables are not the same as the methods
+actually bound to cut/copy/paste-text minibuffer commands, so we must do a bit
+of extra translation to discover whether the user has overridden their
+bindings.
+@c
+
+if command in (f.OnCutFromMenu,f.OnCopyFromMenu,f.OnPasteFromMenu):
+    emacs_name = '%s-text' % commandName
+else:
+    try: # User errors in the table can cause this.
+        emacs_name = k.inverseCommandsDict.get(command.__name__)
+    except Exception:
+        emacs_name = None
+#@-node:ekr.20051021100806.1:<< compute emacs_name >>
+#@-node:ekr.20031218072017.1725:<< compute commandName & accel from label & command >>
+#@+node:ekr.20060216110502:<< clear accelerator if it is a plain key >>
+for z in ('Alt','Ctrl','Command'):
+    if accelerator.find(z) != -1:
+        break # Found.
+else:
+    accelerator = ''
+#@-node:ekr.20060216110502:<< clear accelerator if it is a plain key >>
+#@-node:ekr.20031218072017.1723:createMenuEntries
+#@+node:ekr.20070925144337.2:doMenus & helper
+def doMenus (self,p,kind,name,val):
+
+    __pychecker__ = '--no-argsused' # kind,name,val not used.
+
+    c = self.c ; aList = [] ; tag = '@menu'
+    p = p.copy() ; after = p.nodeAfterTree()
+    while p and p != after:
+        h = p.headString()
+        if g.match_word(h,0,tag):
+            name = h[len(tag):].strip()
+            if name:
+                for z in aList:
+                    name2,junk,junk = z
+                    if name2 == name:
+                        self.error('Replacing previous @menu %s' % (name))
+                        break
+                aList2 = []
+                kind = '%s %s' % (tag,name)
+                self.doItems(p,aList2)
+                aList.append((kind,aList2,None),)
+                p.moveToNodeAfterTree()
+            else:
+                p.moveToThreadNext()
+        else:
+            p.moveToThreadNext()
+
+    # This setting is handled differently from most other settings,
+    # because the last setting must be retrieved before any commander exists.
+    # self.dumpMenuList(aList)
+    # g.trace(g.listToString(aList))
+    g.es_print('creating menu from %s' % (c.shortFileName()),color='blue')
+    g.app.config.menusList = aList
+    g.app.config.menusFileName = c and c.shortFileName() or '<no settings file>'
+#@+node:ekr.20070926141716:doItems
+def doItems (self,p,aList):
+
+    p = p.copy() ; after = p.nodeAfterTree()
+    p.moveToThreadNext()
+    while p and p != after:
+        h = p.headString()
+        for tag in ('@menu','@item'):
+            if g.match_word(h,0,tag):
+                itemName = h[len(tag):].strip()
+                if itemName:
+                    if tag == '@menu':
+                        aList2 = []
+                        kind = '%s %s' % (tag,itemName)
+                        self.doItems(p,aList2)
+                        aList.append((kind,aList2,None),)
+                        p.moveToNodeAfterTree()
+                        break
+                    else:
+                        kind = tag
+                        head = itemName
+                        body = p.bodyString()
+                        aList.append((kind,head,body),)
+                        p.moveToThreadNext()
+                        break
+        else:
+            g.trace('***skipping***',p.headString())
+            p.moveToThreadNext()
+#@nonl
+#@-node:ekr.20070926141716:doItems
+#@+node:ekr.20070926142312:dumpMenuList
+def dumpMenuList (self,aList,level=0):
+
+    for z in aList:
+        kind,val,val2 = z
+        if kind == '@item':
+            g.trace(level,kind,val,val2)
+        else:
+            print
+            g.trace(level,kind,'...')
+            self.dumpMenuList(val,level+1)
+#@nonl
+#@-node:ekr.20070926142312:dumpMenuList
+#@-node:ekr.20070925144337.2:doMenus & helper
+#@+node:ekr.20031218072017.3752:defineMenuTables & helpers
+def defineMenuTables (self):
+
+    self.defineEditMenuTables()
+    self.defineFileMenuTables()
+    self.defineOutlineMenuTables()
+    self.defineWindowMenuTables()
+
+    if self.useCmdMenu:
+        self.defineCmdsMenuTables()
+
+    self.defineHelpMenuTables()
+
+#@+node:ekr.20031218072017.3753:defineEditMenuTables & helpers
+def defineEditMenuTables (self):
+
+    self.defineEditMenuTopTable()
+    self.defineEditMenuEditBodyTable()
+    self.defineEditMenuEditHeadlineTable()
+    self.defineEditMenuFindMenuTable()
+    self.defineEditMenuTop2Table()
+#@+node:ekr.20031218072017.839:defineEditMenuTopTable
+def defineEditMenuTopTable (self):
+
+    self.editMenuTopTable = [
+        # &: u,r reserved for undo/redo: a,d,p,t,y.
+        # & (later): e,g,n,v.
+        ("Can't Undo",'undo'),
+        ("Can't Redo",'redo'), 
+        '-',
+        ('Cu&t','cut-text'),
+        ('Cop&y','copy-text'),
+        ('&Paste','paste-text'),
+        ('&Delete','backward-delete-char'),
+        ('Select &All','select-all'),
+        '-',
+    ]
+#@-node:ekr.20031218072017.839:defineEditMenuTopTable
+#@+node:ekr.20031218072017.3754:defineEditMenuEditBodyTable
+def defineEditMenuEditBodyTable (self):
+
+    self.editMenuEditBodyTable = [
+        # Shortcuts a,b,d,e,i,l,m,n,r,s,t,u
+        '*extract-&section',
+        '*extract-&names',
+        '*&extract',
+        '-',
+        '*convert-all-b&lanks',
+        '*convert-all-t&abs',
+        '*convert-&blanks',
+        '*convert-&tabs',
+        '*insert-body-&time',
+        '*&reformat-paragraph',
+        '-',
+        '*&indent-region',
+        '*&unindent-region',
+        '*&match-brackets',
+        '*add-comments',
+        '*delete-comments',
+    ]
+#@-node:ekr.20031218072017.3754:defineEditMenuEditBodyTable
+#@+node:ekr.20031218072017.3755:defineEditMenuEditHeadlineTable
+def defineEditMenuEditHeadlineTable (self):
+
+    self.editMenuEditHeadlineTable = [
+        '*edit-&headline',
+        '*&end-edit-headline',
+        '*&abort-edit-headline',
+        '*insert-headline-&time',
+        '*toggle-&angle-brackets',
+    ]
+#@-node:ekr.20031218072017.3755:defineEditMenuEditHeadlineTable
+#@+node:ekr.20031218072017.3756:defineEditMenuFindMenuTable
+def defineEditMenuFindMenuTable (self):
+
+    self.editMenuFindMenuTable = [
+        # &: a,b,c,d,e,f,h,i,l,n,o,p,q,r,s,u,w,x
+        '*&open-find-tab',
+        '*&hide-find-tab',
+        '*search-&with-present-options',
+        '-',
+        '*find-&next',
+        '*find-&prev',
+        '*&change',
+        '*find-&all',
+        '*clone-fi&nd-all',
+        '*change-a&ll',
+        '-',
+        '*&find-character',
+        '*find-character-extend-&selection',
+        '*&backward-find-character',
+        '*backward-find-character-&extend-selection',
+        '-',
+        '*&isearch-forward',
+        '*isea&rch-backward',
+        '*isearch-forward-rege&xp',
+        '*isearch-backward-regex&p',
+        '-',
+        '*&query-replace',
+        '*q&uery-replace-regex',
+    ]
+#@-node:ekr.20031218072017.3756:defineEditMenuFindMenuTable
+#@+node:ekr.20031218072017.3757:defineEditMenuTop2Table
+def defineEditMenuTop2Table (self):
+
+    c = self.c
+
+    try:        show = c.frame.body.getColorizer().showInvisibles
+    except:     show = False
+    label = g.choose(show,"Hide In&visibles","Show In&visibles")
+
+    self.editMenuTop2Table = [
+        '*&goto-global-line',
+        '*&execute-script',
+        (label,'toggle-invisibles'),
+        ("Setti&ngs",'open-leoSettings-leo'),
+    ]
+
+    # Top-level shortcuts earlier: a,d,p,t,u,y,z
+    # Top-level shortcuts here: e,g,n,v
+#@-node:ekr.20031218072017.3757:defineEditMenuTop2Table
+#@-node:ekr.20031218072017.3753:defineEditMenuTables & helpers
+#@+node:ekr.20031218072017.3758:defineFileMenuTables & helpers
+def defineFileMenuTables (self):
+
+    self.defineFileMenuTopTable()
+    self.defineFileMenuTop2Table()
+    self.defineFileMenuReadWriteMenuTable()
+    self.defineFileMenuTangleMenuTable()
+    self.defineFileMenuUntangleMenuTable()
+    self.defineFileMenuImportMenuTable()
+    self.defineFileMenuExportMenuTable()
+    self.defineFileMenuTop3MenuTable()
+#@+node:ekr.20031218072017.3759:defineFileMenuTopTable
+def defineFileMenuTopTable (self):
+
+    self.fileMenuTopTable = [
+        '*&new',
+        ('&Open...','open-outline'),
+    ]
+#@-node:ekr.20031218072017.3759:defineFileMenuTopTable
+#@+node:ekr.20031218072017.3760:defineFileMenuTop2Table
+def defineFileMenuTop2Table (self):
+
+    self.fileMenuTop2Table = [
+        '-',
+        ('&Close','close-window'),
+        ('&Save','save-file'),
+        ('Save &As','save-file-as'),
+        ('Save As &Unzipped','save-file-as-unzipped'),
+        ('Save As &Zipped','save-file-as-zipped'),
+        ('Save &To','save-file-to'),
+        ('Re&vert To Saved','revert'),
+    ]
+#@-node:ekr.20031218072017.3760:defineFileMenuTop2Table
+#@+node:ekr.20031218072017.3761:defineFileMenuReadWriteMenuTable
+def defineFileMenuReadWriteMenuTable (self):
+
+    self.fileMenuReadWriteMenuTable = [
+        '*&check-derived-file',
+        '*check-leo-file',
+        '-',
+        '*&read-outline-only',
+        '*write-&outline-only',
+        '-',
+        '*read-&file-into-node',
+        '*writ&e-file-from-node',
+        '-',
+        ('Read @&auto Nodes','read-at-auto-nodes'),
+        ('Write @a&uto Nodes','write-at-auto-nodes'),
+        ('Write D&irty @a&uto Nodes','write-dirty-at-auto-nodes'),
+        '-',
+        ('Read @file &Nodes','read-at-file-nodes'),
+        ('Write &Dirty @file Nodes','write-dirty-at-file-nodes'),
+        ('Write &Missing @file Nodes','write-missing-at-file-nodes'),
+        ('&Write @file Nodes','write-at-file-nodes'),
+    ]
+
+    # a,cd,e,f,i,l,m,n,o,r,u,w
+#@nonl
+#@-node:ekr.20031218072017.3761:defineFileMenuReadWriteMenuTable
+#@+node:ekr.20031218072017.3762:defineFileMenuTangleMenuTable
+def defineFileMenuTangleMenuTable (self):
+
+    self.fileMenuTangleMenuTable = [
+        '*tangle-&all',
+        '*tangle-&marked',
+        '*&tangle',
+    ]
+#@-node:ekr.20031218072017.3762:defineFileMenuTangleMenuTable
+#@+node:ekr.20031218072017.3763:defineFileMenuUntangleMenuTable
+def defineFileMenuUntangleMenuTable (self):
+
+    self.fileMenuUntangleMenuTable = [
+        '*untangle-&all',
+        '*untangle-&marked',
+        '*&untangle',
+    ]
+#@-node:ekr.20031218072017.3763:defineFileMenuUntangleMenuTable
+#@+node:ekr.20031218072017.3764:defineFileMenuImportMenuTable
+def defineFileMenuImportMenuTable (self):
+
+    self.fileMenuImportMenuTable = [
+        #&: c,d,f,n,o,r,
+        '*import-&derived-file',
+        ('Import To @&file','import-at-file'),
+        ('Import To @&root','import-at-root'),
+        '*import-&cweb-files',
+        '*import-&noweb-files',
+        '*import-flattened-&outline',
+    ]
+#@-node:ekr.20031218072017.3764:defineFileMenuImportMenuTable
+#@+node:ekr.20031218072017.3765:defineFileMenuExportMenuTable
+def defineFileMenuExportMenuTable (self):
+
+    self.fileMenuExportMenuTable = [
+        '*export-&headlines',
+        '*outline-to-&cweb',
+        '*outline-to-&noweb',
+        '*&flatten-outline',
+        '*&remove-sentinels',
+        '*&weave',
+    ]
+#@-node:ekr.20031218072017.3765:defineFileMenuExportMenuTable
+#@+node:ekr.20031218072017.3766:defineFileMenuTop3MenuTable
+def defineFileMenuTop3MenuTable (self):
+
+    self.fileMenuTop3MenuTable = [
+        ('E&xit','exit-leo'),
+    ]
+#@-node:ekr.20031218072017.3766:defineFileMenuTop3MenuTable
+#@-node:ekr.20031218072017.3758:defineFileMenuTables & helpers
+#@+node:ekr.20031218072017.3767:defineOutlineMenuTables & helpers
+def defineOutlineMenuTables (self):
+
+    self.defineOutlineMenuTopMenuTable()
+    self.defineOutlineMenuCheckOutlineMenuTable()
+    self.defineOutlineMenuExpandContractMenuTable()
+    self.defineOutlineMenuMoveMenuTable()
+    self.defineOutlineMenuMarkMenuTable()
+    self.defineOutlineMenuGoToMenuTable()
+#@+node:ekr.20031218072017.3768:defineOutlineMenuTopMenuTable
+def defineOutlineMenuTopMenuTable (self):
+
+    self.outlineMenuTopMenuTable = [
+        '*c&ut-node',
+        '*c&opy-node',
+        '*&paste-node',
+        ('Pas&te Node As Clone','paste-retaining-clones'),
+        '*&delete-node',
+        '-',
+        '*&insert-node',
+        '*&clone-node',
+        '*sort-childre&n',
+        '*&sort-siblings',
+        '-',
+        '*&hoist',
+        ('D&e-Hoist','de-hoist'), # To preserve the '-' in De-Hoist.
+        '-',
+    ]
+    # Ampersand bindings:  a,b,c,d,e,h,i,n,o,p,t,s,y
+    # Bindings for entries that go to submenus: a,g,k,m,x
+#@-node:ekr.20031218072017.3768:defineOutlineMenuTopMenuTable
+#@+node:ekr.20040711140738:defineOutlineMenuCheckOutlineMenuTable
+def defineOutlineMenuCheckOutlineMenuTable (self):
+
+    self.outlineMenuCheckOutlineMenuTable = [
+        # &: a,c,d,l,o
+        '*check-&outline',
+        '*&dump-outline',
+        '-',
+        '*compare-&leo-files',
+        '-',
+        '*check-&all-python-code',
+        '*&check-python-code',
+    ]
+#@-node:ekr.20040711140738:defineOutlineMenuCheckOutlineMenuTable
+#@+node:ekr.20031218072017.3769:defineOutlineMenuExpandContractMenuTable
+def defineOutlineMenuExpandContractMenuTable (self):
+
+    self.outlineMenuExpandContractMenuTable = [
+        '*&contract-all',
+        '*contract-&node',
+        '*contract-&parent',
+        '*contract-or-go-&left',
+        '-',
+        '*expand-p&rev-level',
+        '*expand-n&ext-level',
+        '*expand-and-go-right',
+        '*expand-or-go-right',
+        '-',
+        '*expand-to-level-&1',
+        '*expand-to-level-&2',
+        '*expand-to-level-&3',
+        '*expand-to-level-&4',
+        '*expand-to-level-&5',
+        '*expand-to-level-&6',
+        '*expand-to-level-&7',
+        '*expand-to-level-&8',
+        '-',
+        '*expand-&all',
+        '*expand-n&ode',
+    ]
+#@-node:ekr.20031218072017.3769:defineOutlineMenuExpandContractMenuTable
+#@+node:ekr.20031218072017.3770:defineOutlineMenuMoveMenuTable
+def defineOutlineMenuMoveMenuTable (self):
+
+    self.outlineMenuMoveMenuTable = [
+        ('Move &Down','move-outline-down'),
+        ('Move &Left','move-outline-left'),
+        ('Move &Right','move-outline-right'),
+        ('Move &Up','move-outline-up'),
+        '-',
+        '*&promote',
+        '*&demote',
+    ]
+#@-node:ekr.20031218072017.3770:defineOutlineMenuMoveMenuTable
+#@+node:ekr.20031218072017.3771:defineOutlineMenuMarkMenuTable
+def defineOutlineMenuMarkMenuTable (self):
+
+    self.outlineMenuMarkMenuTable = [
+        '*&mark',
+        '*mark-&subheads',
+        '*mark-changed-&items',
+        '*mark-changed-&roots',
+        '*mark-&clones',
+        '*&unmark-all',
+    ]
+#@-node:ekr.20031218072017.3771:defineOutlineMenuMarkMenuTable
+#@+node:ekr.20031218072017.3772:defineOutlineMenuGoToMenuTable
+def defineOutlineMenuGoToMenuTable (self):
+
+    self.outlineMenuGoToMenuTable = [
+        # &: a,b,c,d,e,f,g,h,i,l,m,n,o,p,r,s,t,v,
+        ('Go To &First Node','goto-first-node'),
+        ('Go To First V&isible','goto-first-visible-node'),
+        ('Go To First Si&bling','goto-first-sibling'),
+        '-',
+        ('Go To Next C&hanged','goto-next-changed'),
+        ('Go To Next &Clone','goto-next-clone'),
+        ('Go To Next &Marked','goto-next-marked'),
+        ('Go To Next N&ode','goto-next-node'),
+        ('Go To Next &Sibling','goto-next-sibling'),
+        ('Go To Next Visibl&e','goto-next-visible'),
+        ('Go To Next Visite&d','go-forward'),
+        '-',
+        ('Go To P&arent','goto-parent'),
+        '-',
+        ('Go To &Prev Node','goto-prev-node'),
+        ('Go To P&rev Sibling','goto-prev-sibling'),
+        ('Go To Pre&v Visible','goto-prev-visible'),
+        ('Go To Prev Visi&ted','go-back'),
+        '-',
+        ('Go To Last Node','goto-last-node'),
+        ('Go To Last Siblin&g','goto-last-sibling'),
+        ('Go To &Last Visible','goto-last-visible-node'),
+    ]
+#@-node:ekr.20031218072017.3772:defineOutlineMenuGoToMenuTable
+#@-node:ekr.20031218072017.3767:defineOutlineMenuTables & helpers
+#@+node:ekr.20050921103230:defineCmdsMenuTables & helpers
+def defineCmdsMenuTables (self):
+
+    if 0: # Replaced by minibuffer submenu.
+        self.defineCmdsMenuTopTable()
+
+    self.defineCmdsMenuAbbrevTable()
+    self.defineCmdsMenuBodyEditorsTable()
+    self.defineCmdsMenuBuffersTable()
+    self.defineCmdsMenuChaptersTable()
+    self.defineCmdsMenuCursorTable()
+    self.defineCmdsMenuFocusTable()
+    self.defineCmdsMenuMacroTable()
+    self.defineCmdsMenuMinibufferTable()
+    self.defineCmdsMenuPickersTable()
+    self.defineCmdsMenuRectanglesTable()
+    self.defineCmdsMenuRegistersTable()
+    self.defineCmdsMenuRunTable()
+    self.defineCmdsMenuScrollTable()
+    self.defineCmdsMenuSpellCheckTable()
+    self.defineCmdsMenuTextTable()
+    self.defineCmdsMenuToggleTable()
+#@nonl
+#@+node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
+def defineCmdsMenuAbbrevTable (self):
+
+    self.cmdsMenuAbbrevTable = [
+        # &: a,e,i,k,l,r,w,v
+        'abbre&v-mode',
+        '-',
+        '&list-abbrevs',
+        '&read-abbrev-file',
+        '&write-abbrev-file',
+        '-',
+        '&add-global-abbrev',
+        '&inverse-add-global-abbrev',
+        '&kill-all-abbrevs',
+        '-',
+        # 'expand-abbrev', # Not a command
+        '&expand-region-abbrevs',
+    ]
+#@-node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
+#@+node:ekr.20060912093104:defineCmdsMenuBodyEditorsTable
+def defineCmdsMenuBodyEditorsTable (self):
+
+    self.cmdsMenuBodyEditorsTable = [
+        # &: a,c,d
+        '&add-editor',
+        '&cycle-editor-focus',
+        '&delete-editor',
+    ]
+#@nonl
+#@-node:ekr.20060912093104:defineCmdsMenuBodyEditorsTable
+#@+node:ekr.20060117095212:defineCmdsMenuBufferTable
+def defineCmdsMenuBuffersTable (self):
+
+    self.cmdsMenuBuffersTable = [
+        '&append-to-buffer',
+        '&kill-buffer',
+        'list-&buffers',
+        '&list-buffers-alphabetically',
+        '&prepend-to-buffer',
+        '&rename-buffer',
+        '&switch-to-buffer',
+    ]
+#@-node:ekr.20060117095212:defineCmdsMenuBufferTable
+#@+node:ekr.20070604205927:defineCmdsMenuChaptersTable
+def defineCmdsMenuChaptersTable (self):
+
+    self.cmdsMenuChaptersTable = [
+        '&clone-node-to-chapter',
+        'c&opy-node-to-chapter',
+        'c&reate-chapter',
+        '&move-node-to-chapter',
+        '&remove-chapter',
+        '&select-chapter',
+    ]
+#@-node:ekr.20070604205927:defineCmdsMenuChaptersTable
+#@+node:ekr.20060924124119:defineCmdsMenuCursorTable
+def defineCmdsMenuCursorTable (self):
+
+    self.cursorMenuBackTable = [
+        # &: b,c,l,p,s,v,w
+        'back-&char',
+        'back-&paragraph',
+        'back-&sentence',
+        'back-&word',
+        '-',
+        'beginning-of-&buffer',
+        'beginning-of-&line',
+        '-',
+        'pre&vious-line',
+    ]
+
+    self.cursorMeuuBackExtendTable = [
+        # &: b,c,l,p,s,v,w
+        'back-&char-extend-selection',
+        'back-&paragraph-extend-selection',
+        'back-&sentence-extend-selection',
+        'back-&word-extend-selection',
+        '-',
+        'beginning-of-&buffer-extend-selection',
+        'beginning-of-&line-extend-selection',
+        '-',
+        'pre&vious-line-extend-selection',
+    ]
+
+    self.cursorMenuExtendTable = [
+        # &: l,p,s,w
+        'extend-to-&line',
+        'extend-to-&paragraph',
+        'extend-to-&sentence',
+        'extend-to-&word',
+    ]
+
+    self.cursorMenuForwardTable = [
+        # &: b,c,e,l,n,p,s,w
+        'end-of-&buffer',
+        'end-of-&line',
+        '-',
+        'forward-&char',
+        'forward-&paragraph',
+        'forward-&sentence',
+        'forward-&end-word',
+        'forward-&word',
+        '-',
+        '&next-line',
+    ]
+
+    self.cursorMenuForwardExtendTable = [
+        # &: b,c,e,l,n,p,s,w
+        'end-of-&buffer-extend-selection',
+        'end-of-&line-extend-selection',
+        '-',
+        'forward-&char-extend-selection',
+        'forward-&paragraph-extend-selection',
+        'forward-&sentence-extend-selection',
+        'forward-&end-word-extend-selection',
+        'forward-&word-extend-selection',#
+        '-',
+        '&next-line-extend-selection',    
+    ]
+#@nonl
+#@-node:ekr.20060924124119:defineCmdsMenuCursorTable
+#@+node:ekr.20060923060822:defineCmdsMenuFocusTable
+def defineCmdsMenuFocusTable (self):
+
+    self.cmdsMenuFocusTable = [
+        '&cycle-all-focus',
+        'focus-to-&body',          
+        'focus-to-&log',             
+        'focus-to-&minibuffer',     
+        'focus-to-&tree',             
+    ]
+#@-node:ekr.20060923060822:defineCmdsMenuFocusTable
+#@+node:ekr.20060117114315:defineCmdsMenuMacroTable
+def defineCmdsMenuMacroTable (self):
+
+    self.cmdsMenuMacroTable = [
+        '&load-file',
+        '-',
+        '&start-kbd-macro',
+        '&end-kbd-macro',
+        '&name-last-kbd-macro',
+        '-',
+        '&call-last-keyboard-macro',
+        '&insert-keyboard-macro',
+    ]
+#@-node:ekr.20060117114315:defineCmdsMenuMacroTable
+#@+node:ekr.20061011084101.1:defineCmdsMenuMinibufferTable
+def defineCmdsMenuMinibufferTable (self):
+
+    self.cmdsMenuMinibufferTable = [
+        # &: f,h,i,q,r,s,v
+        '&full-command',
+        'keyboard-&quit',
+        '&repeat-complex-command',
+        '&view-lossage',
+        '-',
+        '&show-mini-buffer',
+        'h&ide-mini-buffer',
+        '-',
+        '&help-for-minibuffer',
+    ]
+#@-node:ekr.20061011084101.1:defineCmdsMenuMinibufferTable
+#@+node:ekr.20061011085641:defineCmdsMenuPickersTable
+def defineCmdsMenuPickersTable (self):
+
+    self. cmdsMenuPickersTable = [
+        'show-&colors',
+        'show-find-&options',
+        'show-&fonts',
+    ]
+#@nonl
+#@-node:ekr.20061011085641:defineCmdsMenuPickersTable
+#@+node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable
+def defineCmdsMenuRectanglesTable (self):
+
+    self.cmdsMenuRectanglesTable = [
+        '&clear-rectangle',
+        'c&lose-rectangle',
+        '&delete-rectangle',
+        '&kill-rectangle',
+        '&open-rectangle',
+        '&string-rectangle',
+        '&yank-rectangle',
+    ]
+#@-node:ekr.20060117095212.2:defineCmdsMenuRectanglesTable
+#@+node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
+def defineCmdsMenuRegistersTable (self):
+
+    self.cmdsMenuRegistersTable = [
+        # &: a,c,e,i,j,n,p,r,v
+        '&append-to-register',
+        'copy-r&ectangle-to-register',
+        '&copy-to-register',
+        'i&ncrement-register',
+        '&insert-register',
+        '&jump-to-register',
+        # 'number-to-register',
+        '&point-to-register',
+        'p&repend-to-register',
+        '&view-register',
+    ]
+#@-node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
+#@+node:ekr.20061119061958:defineCmdsMenuRunTable
+def defineCmdsMenuRunTable (self):
+
+    self.cmdsMenuRunTable = [
+    # &: e,r
+    '&execute-script',
+    '&run-unit-tests',
+    ]
+#@-node:ekr.20061119061958:defineCmdsMenuRunTable
+#@+node:ekr.20060923060822.1:defineCmdsMenuScrollTable
+def defineCmdsMenuScrollTable (self):
+
+    self.cmdsMenuScrollTable = [
+        # &: c,d,e,f,l,o,p,r,v,x
+        'scroll-outline-down-&line',
+        'scroll-outline-down-&page',
+        'scroll-outline-le&ft',
+        'scroll-outline-&right',
+        's&croll-outline-up-line',
+        'scr&oll-outline-up-page',
+        '-',
+        'scroll-&down',
+        'scroll-&up',
+        '-',
+        'scroll-down-&extend-selection',
+        'scroll-up-e&xtend-selection',
+    ]
+#@nonl
+#@-node:ekr.20060923060822.1:defineCmdsMenuScrollTable
+#@+node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable
+def defineCmdsMenuSpellCheckTable (self):
+
+    self.cmdsMenuSpellCheckTable = [
+        '&open-spell-tab',
+        'spell-&change',
+        'spell-change-&then-find',
+        'spell-&find',
+        'spell-&ignore',
+    ]
+#@-node:ekr.20060117095212.7:defineCmdsMenuSpellCheckTable
+#@+node:ekr.20060924161901:defineCmdsMenuTextTable
+def defineCmdsMenuTextTable (self):
+
+    self.cmdsMenuTextTable = [
+        # &: a,b,c,d,e,f,g,i,l,m,n,o,p,r,s,u
+        '&beautify',
+        'beautify-&all',
+        '-',
+        'center-&line',
+        'center-&region',
+        '-',
+        '&capitalize-word',
+        '&downcase-word',
+        '&upcase-word',
+        '-',
+        'd&owncase-region',
+        'u&pcase-region',
+        '-',
+        '&indent-region',
+        'indent-r&elative',
+        'indent-ri&gidly',
+        'u&nindent-region',
+        '-',
+        'sort-colu&mns',
+        'sort-&fields',
+        '&sort-lines',
+    ]
+#@nonl
+#@-node:ekr.20060924161901:defineCmdsMenuTextTable
+#@+node:ekr.20060926161940:defineCmdsMenuToggleTable
+def defineCmdsMenuToggleTable (self):
+
+    self.cmdsMenuToggleTable = [
+        # &: d,e,m,s,t,u,v
+        'toggle-a&utocompleter',
+        'toggle-call&tips',
+        'toggle-&extend-mode',
+        'toggle-input-&state',
+        'toggle-in&visibles',
+        'toggle-&mini-buffer',
+        'toggle-split-&direction',
+        '-',
+        # &: a,b,c,f,h,i,r,w,x
+        'toggle-find-&ignore-case-option',
+        'toggle-find-in-&body-option',
+        'toggle-find-in-&headline-option',
+        'toggle-find-mark-&changes-option',
+        'toggle-find-mark-&finds-option',
+        'toggle-find-rege&x-option',
+        'toggle-find-&reverse-option',
+        'toggle-find-&word-option',
+        'toggle-find-wrap-&around-option',
+    ]
+#@-node:ekr.20060926161940:defineCmdsMenuToggleTable
+#@-node:ekr.20050921103230:defineCmdsMenuTables & helpers
+#@+node:ekr.20031218072017.3773:defineWindowMenuTables
+def defineWindowMenuTables (self):
+
+    self.windowMenuTopTable = [
+        # &: a,b,c,d,e,f,l,m,n,o,p,r,s,t,u,w,x,y
+        '*&equal-sized-panes',
+        '*&toggle-active-pane',
+        '*toggle-&split-direction',
+        '-',
+        '*contract-&body-pane',
+        '*contract-&log-pane',
+        '*contract-&outline-pane',
+        '*contract-&pane',
+        '-',
+        '*expand-bo&dy-pane',
+        '*expand-lo&g-pane',
+        '*expand-o&utline-pane',
+        '*expand-pa&ne',
+        '-',
+        '*&fully-expand-body-pane',
+        '*full&y-expand-log-pane',
+        '*fully-e&xpand-outline-pane',
+        '*fully-exp&and-pane',
+        '-',
+        '*&resize-to-screen',
+        '*&cascade-windows',
+        '*&minimize-all',
+        '-',
+        '*open-compare-window',
+        '*open-python-&window',
+    ]
+#@-node:ekr.20031218072017.3773:defineWindowMenuTables
+#@+node:ekr.20031218072017.3774:defineHelpMenuTables
+def defineHelpMenuTables (self):
+
+    self.helpMenuTable = [
+        # &: a,b,c,d,e,f,h,l,m,n,o,p,r,s,t,u
+        ('&About Leo...',           'about-leo'),
+        ('Online &Home Page',       'open-online-home'),
+        '*open-online-&tutorial',
+        '*open-&users-guide',
+        '-',
+        ('Open Leo&Docs.leo',       'open-leoDocs-leo'),
+        ('Open Leo&Plugins.leo',    'open-leoPlugins-leo'),
+        ('Open Leo&Settings.leo',   'open-leoSettings-leo'),
+        ('Open &myLeoSettings.leo', 'open-myLeoSettings-leo'),
+        ('Open scr&ipts.leo',       'open-scripts-leo'),
+        '-',
+        '*he&lp-for-minibuffer',
+        '*help-for-&command',
+        '-',
+        '*&apropos-autocompletion',
+        '*apropos-&bindings',
+        '*apropos-&debugging-commands',
+        '*apropos-&find-commands',
+        '-',
+        '*pri&nt-bindings',
+        '*print-c&ommands',
+    ]
+#@-node:ekr.20031218072017.3774:defineHelpMenuTables
+#@-node:ekr.20031218072017.3752:defineMenuTables & helpers
+#@+node:ekr.20031218072017.3785:createMenusFromTables & helpers
+def createMenusFromTables (self):
+
+    c = self.c
+
+    aList = c.config.getMenusList()
+    if aList:
+        self.createMenusFromConfigList(aList)
+    else:
+        self.defineMenuTables()
+
+        self.createFileMenuFromTable()
+        self.createEditMenuFromTable()
+        self.createOutlineMenuFromTable()
+
+        g.doHook("create-optional-menus",c=c)
+
+        if self.useCmdMenu:
+            self.createCmndsMenuFromTable()
+
+        self.createWindowMenuFromTable()
+        self.createHelpMenuFromTable()
+#@+node:ekr.20031218072017.3790:createFileMenuFromTable
+def createFileMenuFromTable (self):
+
+    c = self.c
+    fileMenu = self.createNewMenu("&File")
+    self.createMenuEntries(fileMenu,self.fileMenuTopTable)
+    self.createNewMenu("Open &With...","File")
+    self.createMenuEntries(fileMenu,self.fileMenuTop2Table)
+    << create the recent files submenu >>
+    self.add_separator(fileMenu)
+    << create the read/write submenu >>
+    << create the tangle submenu >>
+    << create the untangle submenu >>
+    << create the import submenu >>
+    << create the export submenu >>
+    self.add_separator(fileMenu)
+    self.createMenuEntries(fileMenu,self.fileMenuTop3MenuTable)
+#@+node:ekr.20031218072017.3791:<< create the recent files submenu >>
+self.createNewMenu("Recent &Files...","File")
+c.recentFiles = c.config.getRecentFiles()
+
+if 0: # Not needed, and causes problems in wxWindows...
+    self.createRecentFilesMenuItems()
+#@-node:ekr.20031218072017.3791:<< create the recent files submenu >>
+#@+node:ekr.20031218072017.3792:<< create the read/write submenu >>
+readWriteMenu = self.createNewMenu("&Read/Write...","File")
+
+self.createMenuEntries(readWriteMenu,self.fileMenuReadWriteMenuTable)
+#@-node:ekr.20031218072017.3792:<< create the read/write submenu >>
+#@+node:ekr.20031218072017.3793:<< create the tangle submenu >>
+tangleMenu = self.createNewMenu("Tan&gle...","File")
+
+self.createMenuEntries(tangleMenu,self.fileMenuTangleMenuTable)
+#@-node:ekr.20031218072017.3793:<< create the tangle submenu >>
+#@+node:ekr.20031218072017.3794:<< create the untangle submenu >>
+untangleMenu = self.createNewMenu("&Untangle...","File")
+
+self.createMenuEntries(untangleMenu,self.fileMenuUntangleMenuTable)
+#@-node:ekr.20031218072017.3794:<< create the untangle submenu >>
+#@+node:ekr.20031218072017.3795:<< create the import submenu >>
+importMenu = self.createNewMenu("&Import...","File")
+
+self.createMenuEntries(importMenu,self.fileMenuImportMenuTable)
+#@-node:ekr.20031218072017.3795:<< create the import submenu >>
+#@+node:ekr.20031218072017.3796:<< create the export submenu >>
+exportMenu = self.createNewMenu("&Export...","File")
+
+self.createMenuEntries(exportMenu,self.fileMenuExportMenuTable)
+#@-node:ekr.20031218072017.3796:<< create the export submenu >>
+#@-node:ekr.20031218072017.3790:createFileMenuFromTable
+#@+node:ekr.20031218072017.3786:createEditMenuFromTable
+def createEditMenuFromTable (self):
+
+    editMenu = self.createNewMenu("&Edit")
+    self.createMenuEntries(editMenu,self.editMenuTopTable)
+
+    << create the edit body submenu >>
+    << create the edit headline submenu >>
+    << create the find submenu >>
+
+    self.createMenuEntries(editMenu,self.editMenuTop2Table)
+#@+node:ekr.20031218072017.3787:<< create the edit body submenu >>
+editBodyMenu = self.createNewMenu("Edit &Body...","Edit")
+
+self.createMenuEntries(editBodyMenu,self.editMenuEditBodyTable)
+#@-node:ekr.20031218072017.3787:<< create the edit body submenu >>
+#@+node:ekr.20031218072017.3788:<< create the edit headline submenu >>
+editHeadlineMenu = self.createNewMenu("Edit &Headline...","Edit")
+
+self.createMenuEntries(editHeadlineMenu,self.editMenuEditHeadlineTable)
+#@-node:ekr.20031218072017.3788:<< create the edit headline submenu >>
+#@+node:ekr.20031218072017.3789:<< create the find submenu >>
+findMenu = self.createNewMenu("&Find...","Edit")
+
+self.createMenuEntries(findMenu,self.editMenuFindMenuTable)
+#@-node:ekr.20031218072017.3789:<< create the find submenu >>
+#@-node:ekr.20031218072017.3786:createEditMenuFromTable
+#@+node:ekr.20031218072017.3797:createOutlineMenuFromTable
+def createOutlineMenuFromTable (self):
+
+    outlineMenu = self.createNewMenu("&Outline")
+
+    self.createMenuEntries(outlineMenu,self.outlineMenuTopMenuTable)
+
+    << create check submenu >>
+    << create expand/contract submenu >>
+    << create move submenu >>
+    << create mark submenu >>
+    << create goto submenu >>
+#@+node:ekr.20040711140738.1:<< create check submenu >>
+checkOutlineMenu = self.createNewMenu("Chec&k...","Outline")
+
+self.createMenuEntries(checkOutlineMenu,self.outlineMenuCheckOutlineMenuTable)
+#@-node:ekr.20040711140738.1:<< create check submenu >>
+#@+node:ekr.20031218072017.3798:<< create expand/contract submenu >>
+expandMenu = self.createNewMenu("E&xpand/Contract...","Outline")
+
+self.createMenuEntries(expandMenu,self.outlineMenuExpandContractMenuTable)
+#@-node:ekr.20031218072017.3798:<< create expand/contract submenu >>
+#@+node:ekr.20031218072017.3799:<< create move submenu >>
+moveSelectMenu = self.createNewMenu("&Move...","Outline")
+
+self.createMenuEntries(moveSelectMenu,self.outlineMenuMoveMenuTable)
+#@-node:ekr.20031218072017.3799:<< create move submenu >>
+#@+node:ekr.20031218072017.3800:<< create mark submenu >>
+markMenu = self.createNewMenu("M&ark/Unmark...","Outline")
+
+self.createMenuEntries(markMenu,self.outlineMenuMarkMenuTable)
+#@-node:ekr.20031218072017.3800:<< create mark submenu >>
+#@+node:ekr.20031218072017.3801:<< create goto submenu >>
+gotoMenu = self.createNewMenu("&Go To...","Outline")
+
+self.createMenuEntries(gotoMenu,self.outlineMenuGoToMenuTable)
+#@-node:ekr.20031218072017.3801:<< create goto submenu >>
+#@-node:ekr.20031218072017.3797:createOutlineMenuFromTable
+#@+node:ekr.20050921103736:createCmndsMenuFromTable
+def createCmndsMenuFromTable (self):
+
+    cmdsMenu = self.createNewMenu('&Cmds')
+
+    if 0: # Now in the minibuffer table.
+        # Used in top table: q,u,x
+        self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
+
+    for name,table in (
+        # &: a,b,c,d,f,g,h,i,m,n,o,p,r,s,t,u
+        ('&Abbrev...',          self.cmdsMenuAbbrevTable),
+        ('Body E&ditors',       self.cmdsMenuBodyEditorsTable),
+        ('&Buffers...',         self.cmdsMenuBuffersTable),
+        ('&Chapters...',        self.cmdsMenuChaptersTable),
+        ('C&ursor/Selection...',[]),
+        ('&Focus...',           self.cmdsMenuFocusTable),
+        ('&Macro...',           self.cmdsMenuMacroTable),
+        ('M&inibuffer',         self.cmdsMenuMinibufferTable),
+        #('&Panes...',           self.cmdsMenuPanesTable),
+        ('&Pickers...',         self.cmdsMenuPickersTable),
+        ('&Rectangles...',      self.cmdsMenuRectanglesTable),
+        ('Re&gisters...',       self.cmdsMenuRegistersTable),
+        ('R&un Script/Tests',   self.cmdsMenuRunTable),
+        ('Scr&olling...',       self.cmdsMenuScrollTable),
+        ('Spell C&heck...',     self.cmdsMenuSpellCheckTable),
+        ('&Text Commands',      self.cmdsMenuTextTable),
+        ('Toggle Setti&ngs',    self.cmdsMenuToggleTable),
+    ):
+        if table == self.cmdsMenuChaptersTable and not self.c.chapterController:
+            continue
+        menu = self.createNewMenu(name,'&Cmds')
+        self.createMenuEntries(menu,table)
+
+    for name,table in (
+        # &: b,e,f,s,t,x
+        ('Cursor &Back...',                     self.cursorMenuBackTable),
+        ('Cursor Back &Extend Selection...',    self.cursorMeuuBackExtendTable),
+        ('Cursor Extend &To...',                self.cursorMenuExtendTable),
+        ('Cursor &Forward...',                  self.cursorMenuForwardTable),
+        ('Cursor Forward E&xtend Selection...', self.cursorMenuForwardExtendTable),
+    ):
+        menu = self.createNewMenu(name,'C&ursor/Selection...')
+        self.createMenuEntries(menu,table)
+#@nonl
+#@-node:ekr.20050921103736:createCmndsMenuFromTable
+#@+node:ekr.20031218072017.3802:createWindowMenuFromTable
+def createWindowMenuFromTable (self):
+
+    windowMenu = self.createNewMenu("&Window")
+
+    self.createMenuEntries(windowMenu,self.windowMenuTopTable)
+#@-node:ekr.20031218072017.3802:createWindowMenuFromTable
+#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
+def createHelpMenuFromTable (self):
+
+    if sys.platform == 'darwin':
+        self.getMacHelpMenu()
+    else:
+        helpMenu = self.createNewMenu("&Help")
+        self.createMenuEntries(helpMenu,self.helpMenuTable)
+#@nonl
+#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
+#@+node:ekr.20070926135612:createMenusFromConfigList & helper
+def createMenusFromConfigList (self,aList):
+
+    '''Create menus from dictionary d instead of 'hard coded' menus.
+    The 'top' menu has already been created.'''
+
+    tag = '@menu'
+    for z in aList:
+        kind,val,val2 = z
+        if kind.startswith(tag):
+            name = kind[len(tag):].strip()
+            name2 = name.replace('&','').replace(' ','').lower()
+            if name2 == 'plugins':
+                # Create the plugins menu using a hook.
+                g.doHook("create-optional-menus",c=self.c)
+            else:
+                self.createNewMenu(name) # Create top-level menu.
+                self.createMenuFromConfigList(name,val,level=0)
+        else:
+            self.error('%s %s not valid outside @menu tree' % (kind,val))
+#@+node:ekr.20070927082205:createMenuFromConfigList
+def createMenuFromConfigList (self,parentName,aList,level=0):
+
+    table = [] ; parentMenu = self.getMenu(parentName)
+
+    for z in aList:
+        kind,val,val2 = z
+        if kind.startswith('@menu'):
+            name = kind[5:].strip()
+            if table:
+                self.createMenuEntries(parentMenu,table)
+                table = []
+            self.createNewMenu(name,parentName) # Create submenu of parent menu.
+            self.createMenuFromConfigList(name,val,level+1)
+        elif kind == '@item':
+            # The menu methods require non-unicode strings.
+            name = str(val) 
+            if val2: table.append((str(val2),name),)
+            else: table.append(name)
+        else:
+            g.trace('can not happen: bad kind:',kind)
+
+    if table:
+        self.createMenuEntries(parentMenu,table)
+#@-node:ekr.20070927082205:createMenuFromConfigList
+#@-node:ekr.20070926135612:createMenusFromConfigList & helper
+#@-node:ekr.20031218072017.3785:createMenusFromTables & helpers
+#@+node:ekr.20070926135612:createMenusFromConfigList & helper
+def createMenusFromConfigList (self,aList):
+
+    '''Create menus from dictionary d instead of 'hard coded' menus.
+    The 'top' menu has already been created.'''
+
+    tag = '@menu'
+    for z in aList:
+        kind,val,val2 = z
+        if kind.startswith(tag):
+            name = kind[len(tag):].strip()
+            name2 = name.replace('&','').replace(' ','').lower()
+            if name2 == 'plugins':
+                # Create the plugins menu using a hook.
+                g.doHook("create-optional-menus",c=self.c)
+            else:
+                self.createNewMenu(name) # Create top-level menu.
+                self.createMenuFromConfigList(name,val,level=0)
+        else:
+            self.error('%s %s not valid outside @menu tree' % (kind,val))
+#@+node:ekr.20070927082205:createMenuFromConfigList
+def createMenuFromConfigList (self,parentName,aList,level=0):
+
+    table = [] ; parentMenu = self.getMenu(parentName)
+
+    for z in aList:
+        kind,val,val2 = z
+        if kind.startswith('@menu'):
+            name = kind[5:].strip()
+            if table:
+                self.createMenuEntries(parentMenu,table)
+                table = []
+            self.createNewMenu(name,parentName) # Create submenu of parent menu.
+            self.createMenuFromConfigList(name,val,level+1)
+        elif kind == '@item':
+            # The menu methods require non-unicode strings.
+            name = str(val) 
+            if val2: table.append((str(val2),name),)
+            else: table.append(name)
+        else:
+            g.trace('can not happen: bad kind:',kind)
+
+    if table:
+        self.createMenuEntries(parentMenu,table)
+#@-node:ekr.20070927082205:createMenuFromConfigList
+#@-node:ekr.20070926135612:createMenusFromConfigList & helper
+#@-node:ekr.20070925144337.1:@menus trees in @settings trees
 #@-node:ekr.20070920083033.1:Features
 #@-node:ekr.20070919132518:4.4.4 b3
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
