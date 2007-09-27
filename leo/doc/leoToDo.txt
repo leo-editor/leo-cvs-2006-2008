@@ -416,53 +416,52 @@ def createHelpMenuFromTable (self):
         self.createMenuEntries(helpMenu,self.helpMenuTable)
 #@nonl
 #@-node:ekr.20031218072017.3803:createHelpMenuFromTable
-#@+node:ekr.20070926135612:createMenusFromConfigList
+#@+node:ekr.20070926135612:createMenusFromConfigList & helper
 def createMenusFromConfigList (self,aList):
 
-    '''Create menus from dictionary d instead of 'hard coded' menus.'''
+    '''Create menus from dictionary d instead of 'hard coded' menus.
+    The 'top' menu has already been created.'''
 
-    # g.trace(g.listToString(aList))
-
-    # The 'top' menu has already been created.
-    tag = '@menu' ; n = len(tag)
+    tag = '@menu'
     for z in aList:
         kind,val,val2 = z
         if kind.startswith(tag):
-            name = kind[n:].strip()
-            self.createNewMenu(name) # Create top-level menu.
-            self.createMenuFromConfigList(name,val,level=0)
+            name = kind[len(tag):].strip()
+            name2 = name.replace('&','').replace(' ','').lower()
+            if name2 == 'plugins':
+                # Create the plugins menu using a hook.
+                g.doHook("create-optional-menus",c=self.c)
+            else:
+                self.createNewMenu(name) # Create top-level menu.
+                self.createMenuFromConfigList(name,val,level=0)
         else:
             self.error('%s %s not valid outside @menu tree' % (kind,val))
-
+#@+node:ekr.20070927082205:createMenuFromConfigList
 def createMenuFromConfigList (self,parentName,aList,level=0):
 
-    # g.trace('level',level,'parentName',parentName,'alist',g.listToString(aList))
     table = [] ; parentMenu = self.getMenu(parentName)
+
     for z in aList:
         kind,val,val2 = z
         if kind.startswith('@menu'):
             name = kind[5:].strip()
-            if table: # Create previously seen menu entries at this level.
-                # g.trace('table',g.listToString(table))
+            if table:
                 self.createMenuEntries(parentMenu,table)
                 table = []
-            # g.trace('@menu',name,g.listToString(val))
             self.createNewMenu(name,parentName) # Create submenu of parent menu.
             self.createMenuFromConfigList(name,val,level+1)
         elif kind == '@item':
-            name = str(val) # The menu methods require non-unicode strings.
-            if val2:
-                # g.trace('@item',val2,name)
-                table.append((str(val2),name),)
-            else:
-                # g.trace('@item',name)
-                table.append(name)
+            # The menu methods require non-unicode strings.
+            name = str(val) 
+            if val2: table.append((str(val2),name),)
+            else: table.append(name)
         else:
             g.trace('can not happen: bad kind:',kind)
-    if table: # Create previously seen menu entries at this level.
-        # g.trace('end table',g.listToString(table))
+
+    if table:
         self.createMenuEntries(parentMenu,table)
-#@-node:ekr.20070926135612:createMenusFromConfigList
+#@-node:ekr.20070927082205:createMenuFromConfigList
+#@-node:ekr.20070926135612:createMenusFromConfigList & helper
 #@-node:ekr.20031218072017.3785:createMenusFromTables & helpers
 #@+node:ekr.20031218072017.3752:defineMenuTables & helpers
 def defineMenuTables (self):
