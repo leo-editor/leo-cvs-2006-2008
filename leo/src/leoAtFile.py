@@ -3080,6 +3080,7 @@ class atFile:
             at.writeOpenFile(root,nosentinels=True,toString=toString)
             at.closeWriteFile() # Sets stringOutput if toString is True.
             at.replaceTargetFileIfDifferent()
+            c.atAutoDict [fileName] = True # Bug fix: 9/27/07
         elif not toString:
             root.setDirty() # Make _sure_ we try to rewrite this file.
             g.es("Not written: " + at.outputFileName)
