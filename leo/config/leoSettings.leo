@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.620922384702">
-	<global_window_position top="17" left="238" height="689" width="861"/>
+	<global_window_position top="17" left="238" height="669" width="861"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -514,8 +514,8 @@
 </v>
 </v>
 <v t="ekr.20070925144552" a="E"><vh>Menus</vh>
-<v t="ekr.20070925144534" a="E"><vh>@menus</vh>
-<v t="ekr.20070925144534.1" a="E"><vh>@menu File</vh>
+<v t="ekr.20070925144534" a="ETV"><vh>@menus</vh>
+<v t="ekr.20070925144534.1"><vh>@menu File</vh>
 <v t="ekr.20070925144534.2"><vh>@item *&amp;new</vh></v>
 <v t="ekr.20070925144534.3"><vh>@item open-outline</vh></v>
 <v t="ekr.20070925144534.4"><vh>@menu Open &amp;With...</vh></v>
@@ -567,7 +567,7 @@
 <v t="ekr.20070925144534.45"><vh>@item *&amp;remove-sentinels</vh></v>
 <v t="ekr.20070925144534.46"><vh>@item *&amp;weave</vh></v>
 </v>
-<v t="ekr.20070927051856" a="V"><vh>@item -</vh></v>
+<v t="ekr.20070927051856"><vh>@item -</vh></v>
 <v t="ekr.20070925144534.47"><vh>@item exit-leo</vh></v>
 </v>
 <v t="ekr.20070925144534.48"><vh>@menu Edit</vh>
@@ -7878,8 +7878,27 @@ button_text_font_size = 7
 button_text_font_slant = roman
 button_text_font_weight = bold
 </t>
-<t tx="ekr.20070925144534">* Means remove hyphens when creating Lable.
-A lone - creates a menu separator.</t>
+<t tx="ekr.20070925144534">New in Leo 4.4.4. Leo creates its menus using @menus trees. Within @menus trees,
+@menu nodes create menus and @item nodes create menu items.
+
+Notes:
+
+- The menu name always follows @menu. If the menu name is 'Plugins', Leo will
+create the Plugins menu and populate the menu by calling the
+'create-optional-menus' hook. This creates the Plugins menu as usual.
+
+- Nested @menu nodes contain submenus.
+
+- The command name follows @item. If the body text of an @item node exists, this
+body text is the menu name. Otherwise, the menu name is the command name.
+However, if the command name starts with a '*', hyphens are removed from the
+menu name.
+
+- Menu names and command names may contain a single ampersand (&amp;). If present,
+the following character is underlined in the name.
+
+- If the command name in an @item node is just a hyphen (-), the item represents
+a menu separator.</t>
 <t tx="ekr.20070925144534.1"></t>
 <t tx="ekr.20070925144534.2"></t>
 <t tx="ekr.20070925144534.3">&amp;Open...</t>
