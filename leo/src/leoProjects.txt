@@ -19,6 +19,35 @@
 #@@tabwidth -4
 
 #@+all
+#@+node:ekr.20070809131638:Pychecker report
+# Invalid warnings...
+# leoGlobals.py:136: No module attribute (leo_config_directory) found
+# leoGlobals.py:4015: Statement appears to have no effect
+# leoGlobals.py:4015: No module attribute (CODESET) found
+# leoGlobals.py:4693: No module attribute (mtime) found
+
+# Fixed...
+# leoAtFile.py:2999: Parameter (force) not used
+# c:\prog\tigris-cvs\leo\src\leoAtFile.py:26: Imported module (leoColor) not used
+# leoImport.py:14: Imported module (parser) not used
+# leoImport.py:15: Imported module (re) not used
+# leoImport.py:17: Imported module (tabnanny) not used
+# leoImport.py:18: Imported module (tokenize) not used
+# leoImport.py:787: Parameter (toString) not used
+# leoImport.py:2913: Parameter (atAuto) not used
+# leoImport.py:2886: Parameter (ext) not used
+# leoImport.py:2886: Parameter (fileName) not used
+# leoImport.py:2889: Parameter (ext) not used
+# leoImport.py:2892: Parameter (ext) not used
+# leoImport.py:2895: Parameter (ext) not used
+# leoImport.py:2898: Parameter (ext) not used
+# leoImport.py:2901: Parameter (ext) not used
+# leoImport.py:2904: Parameter (ext) not used
+# leoImport.py:2907: Parameter (ext) not used
+# leoImport.py:2910: Parameter (ext) not used
+
+
+#@-node:ekr.20070809131638:Pychecker report
 #@+node:ekr.20070703172548:Leo 4.4.4 projects
 #@+node:ekr.20070915101503:4.4.4 b2
 #@+node:ekr.20070703182412:Bugs
@@ -4772,6 +4801,165 @@ def findDebugger (self):
 #@-node:ekr.20060521140213:findDebugger
 #@-node:ekr.20060519003651:debug & helper
 #@-node:ekr.20070920055354:Fixed new @auto bug
+#@+node:ekr.20070927081004:Fixed yet another new @auto bug
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=4539759
+By: ktenney
+
+<ctrl-n> new Leo file
+
+rename ``NewHeadline`` to
+@auto /tmp/test
+
+type a line in the @auto node
+
+<ctrl-s>
+
+log pane reports
+
+- created:   \tmp\test
+- saved: test.leo
+
+type another line in the @auto node
+
+<ctrl-s>
+
+log pane reports
+
+- reading new @auto /tmp/test2
+- saved: test.leo
+
+the second line typed has disappeared.
+
+@color
+#@nonl
+#@+node:ekr.20070909100252:readOneAtAutoNode (atFile)
+def readOneAtAutoNode (self,fileName,p):
+
+    at = self ; c = at.c ; ic = c.importCommands
+
+    at.scanDefaultDirectory(p,importing=True) # Set default_directory
+    fileName = g.os_path_join(at.default_directory,fileName)
+    # g.trace(fileName)
+
+    # Delete all children.
+    c.beginUpdate()
+    try:
+        while p.hasChildren():
+            p.firstChild().doDelete()
+    finally:
+        c.endUpdate(False)
+
+    ic.createOutline(fileName,parent=p.copy(),atAuto=True)
+
+    if g.os_path_exists(fileName):
+        if ic.errors:
+            g.es_print('Errors inhibited read @auto %s' % (fileName),color='red')
+        else:
+            c.atAutoDict [fileName] = True
+#@-node:ekr.20070909100252:readOneAtAutoNode (atFile)
+#@+node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
+def writeAtAutoNodes (self,event=None):
+
+    '''Write all @auto nodes in the selected outline.'''
+
+    at = self
+    at.writeAtAutoNodesHelper(writeDirtyOnly=False)
+
+def writeDirtyAtAutoNodes (self,event=None):
+
+    '''Write all dirty @auto nodes in the selected outline.'''
+
+    at = self
+    at.writeAtAutoNodesHelper(writeDirtyOnly=True)
+#@nonl
+#@+node:ekr.20070806140208:writeAtAutoNodesHelper
+def writeAtAutoNodesHelper(self,toString=False,writeDirtyOnly=True):
+
+    """Write @auto nodes in the selected outline"""
+
+    at = self ; c = at.c
+    p = c.currentPosition() ; after = p.nodeAfterTree()
+    found = False
+    c.fileCommands.assignFileIndices()
+    while p and p != after:
+        if p.isAtAutoNode() and not p.isAtIgnoreNode() and (p.isDirty() or not writeDirtyOnly):
+            ok = self.writeOneAtAutoNode(p,toString=toString)
+            if ok:
+                found = True
+                p.moveToNodeAfterTree()
+            else:
+                p.moveToThreadNext()
+        else:
+            p.moveToThreadNext()
+
+    if found:
+        g.es("finished")
+    elif writeDirtyOnly:
+        g.es("no dirty @auto nodes in the selected tree")
+    else:
+        g.es("no @auto nodes in the selected tree")
+#@-node:ekr.20070806140208:writeAtAutoNodesHelper
+#@+node:ekr.20070806141607:writeOneAtAutoNode & helper
+def writeOneAtAutoNode(self,p,toString):
+
+    '''Write p, and @auto node.'''
+
+    at = self ; c = at.c ; root = p.copy()
+
+    fileName = p.atAutoNodeName()
+    if not fileName: return False
+
+    at.scanDefaultDirectory(p,importing=True) # Set default_directory
+    fileName = g.os_path_join(at.default_directory,fileName)
+
+    if not c.atAutoDict.get(fileName) and g.os_path_exists(fileName):
+        # Read the file if it would not wipe out significant info.
+        # Otherwise, do nothing (the @auto tree will be written to the outline).
+        if at.isSignificantAtAutoTree(p):
+            g.es('not written: @auto %s\nmay conflict with existing derived file.' % (
+                fileName),color='red')
+            return False
+        else:
+            g.es_print('reading new @auto %s' % (fileName),color='blue')
+            at.readOneAtAutoNode(fileName,p)
+            return True
+
+    # This code is similar to code in at.write.
+    c.endEditing() # Capture the current headline.
+    at.targetFileName = g.choose(toString,"<string-file>",fileName)
+    at.initWriteIvars(root,at.targetFileName,
+        nosentinels=True,thinFile=False,scriptWrite=False,
+        toString=toString,write_strips_blank_lines=False)
+
+    ok = at.openFileForWriting (root,fileName=fileName,toString=toString)
+    if ok:
+        at.writeOpenFile(root,nosentinels=True,toString=toString)
+        at.closeWriteFile() # Sets stringOutput if toString is True.
+        at.replaceTargetFileIfDifferent()
+        c.atAutoDict [fileName] = True # Bug fix: 9/27/07
+    elif not toString:
+        root.setDirty() # Make _sure_ we try to rewrite this file.
+        g.es("Not written: " + at.outputFileName)
+
+    return ok
+#@+node:ekr.20070909103844:isSignificantAtAutoTree
+def isSignificantAtAutoTree (self,p):
+
+    '''Return True if p's tree has a significant amount of information.'''
+
+    s = p.bodyString()
+
+    return (
+        p.hasChildren() or
+        len(s) > 100 or
+        len(g.splitLines(s)) > 10
+    )
+#@-node:ekr.20070909103844:isSignificantAtAutoTree
+#@-node:ekr.20070806141607:writeOneAtAutoNode & helper
+#@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
+#@-node:ekr.20070927081004:Fixed yet another new @auto bug
 #@-node:ekr.20070920083033:Bugs
 #@+node:ekr.20070920083033.1:Features
 #@+node:ekr.20070919124912:Added button-font params
@@ -5690,7 +5878,7 @@ def doMenus (self,p,kind,name,val):
     # because the last setting must be retrieved before any commander exists.
     # self.dumpMenuList(aList)
     # g.trace(g.listToString(aList))
-    g.es_print('creating menu from %s' % (c.shortFileName()),color='blue')
+    # g.es_print('creating menu from %s' % (c.shortFileName()),color='blue')
     g.app.config.menusList = aList
     g.app.config.menusFileName = c and c.shortFileName() or '<no settings file>'
 #@+node:ekr.20070926141716:doItems
@@ -6342,7 +6530,7 @@ def doMenus (self,p,kind,name,val):
     # because the last setting must be retrieved before any commander exists.
     # self.dumpMenuList(aList)
     # g.trace(g.listToString(aList))
-    g.es_print('creating menu from %s' % (c.shortFileName()),color='blue')
+    # g.es_print('creating menu from %s' % (c.shortFileName()),color='blue')
     g.app.config.menusList = aList
     g.app.config.menusFileName = c and c.shortFileName() or '<no settings file>'
 #@+node:ekr.20070926141716:doItems
@@ -7329,7 +7517,7 @@ def createHelpMenuFromTable (self):
         self.createMenuEntries(helpMenu,self.helpMenuTable)
 #@nonl
 #@-node:ekr.20031218072017.3803:createHelpMenuFromTable
-#@+node:ekr.20070926135612:createMenusFromConfigList & helper
+#@+node:ekr.20070926135612:createMenusFromConfigList & helpers
 def createMenusFromConfigList (self,aList):
 
     '''Create menus from dictionary d instead of 'hard coded' menus.
@@ -7340,11 +7528,7 @@ def createMenusFromConfigList (self,aList):
         kind,val,val2 = z
         if kind.startswith(tag):
             name = kind[len(tag):].strip()
-            name2 = name.replace('&','').replace(' ','').lower()
-            if name2 == 'plugins':
-                # Create the plugins menu using a hook.
-                g.doHook("create-optional-menus",c=self.c)
-            else:
+            if not self.handleSpecialMenus(name,parentName=None):
                 self.createNewMenu(name) # Create top-level menu.
                 self.createMenuFromConfigList(name,val,level=0)
         else:
@@ -7361,8 +7545,9 @@ def createMenuFromConfigList (self,parentName,aList,level=0):
             if table:
                 self.createMenuEntries(parentMenu,table)
                 table = []
-            self.createNewMenu(name,parentName) # Create submenu of parent menu.
-            self.createMenuFromConfigList(name,val,level+1)
+            if not self.handleSpecialMenus(name,parentName):
+                self.createNewMenu(name,parentName) # Create submenu of parent menu.
+                self.createMenuFromConfigList(name,val,level+1)
         elif kind == '@item':
             # The menu methods require non-unicode strings.
             name = str(val) 
@@ -7374,9 +7559,30 @@ def createMenuFromConfigList (self,parentName,aList,level=0):
     if table:
         self.createMenuEntries(parentMenu,table)
 #@-node:ekr.20070927082205:createMenuFromConfigList
-#@-node:ekr.20070926135612:createMenusFromConfigList & helper
+#@+node:ekr.20070927172712:handleSpecialMenus
+def handleSpecialMenus (self,name,parentName):
+
+    '''Handle a special menu if name is the name of a special menu.
+    return True if this method handles the menu.'''
+
+    c = self.c
+    name2 = name.replace('&','').replace(' ','').lower()
+
+    if name2 == 'plugins':
+        # Create the plugins menu using a hook.
+        g.doHook("create-optional-menus",c=c)
+        return True
+    elif name2.startswith('recentfiles'):
+        # Just create the menu.  createRecentFilesMenuItems will be called later.
+        self.createNewMenu(name,parentName)
+        c.recentFiles = c.config.getRecentFiles()
+        return True
+    else:
+        return False
+#@-node:ekr.20070927172712:handleSpecialMenus
+#@-node:ekr.20070926135612:createMenusFromConfigList & helpers
 #@-node:ekr.20031218072017.3785:createMenusFromTables & helpers
-#@+node:ekr.20070926135612:createMenusFromConfigList & helper
+#@+node:ekr.20070926135612:createMenusFromConfigList & helpers
 def createMenusFromConfigList (self,aList):
 
     '''Create menus from dictionary d instead of 'hard coded' menus.
@@ -7387,11 +7593,7 @@ def createMenusFromConfigList (self,aList):
         kind,val,val2 = z
         if kind.startswith(tag):
             name = kind[len(tag):].strip()
-            name2 = name.replace('&','').replace(' ','').lower()
-            if name2 == 'plugins':
-                # Create the plugins menu using a hook.
-                g.doHook("create-optional-menus",c=self.c)
-            else:
+            if not self.handleSpecialMenus(name,parentName=None):
                 self.createNewMenu(name) # Create top-level menu.
                 self.createMenuFromConfigList(name,val,level=0)
         else:
@@ -7408,8 +7610,9 @@ def createMenuFromConfigList (self,parentName,aList,level=0):
             if table:
                 self.createMenuEntries(parentMenu,table)
                 table = []
-            self.createNewMenu(name,parentName) # Create submenu of parent menu.
-            self.createMenuFromConfigList(name,val,level+1)
+            if not self.handleSpecialMenus(name,parentName):
+                self.createNewMenu(name,parentName) # Create submenu of parent menu.
+                self.createMenuFromConfigList(name,val,level+1)
         elif kind == '@item':
             # The menu methods require non-unicode strings.
             name = str(val) 
@@ -7421,40 +7624,61 @@ def createMenuFromConfigList (self,parentName,aList,level=0):
     if table:
         self.createMenuEntries(parentMenu,table)
 #@-node:ekr.20070927082205:createMenuFromConfigList
-#@-node:ekr.20070926135612:createMenusFromConfigList & helper
+#@+node:ekr.20070927172712:handleSpecialMenus
+def handleSpecialMenus (self,name,parentName):
+
+    '''Handle a special menu if name is the name of a special menu.
+    return True if this method handles the menu.'''
+
+    c = self.c
+    name2 = name.replace('&','').replace(' ','').lower()
+
+    if name2 == 'plugins':
+        # Create the plugins menu using a hook.
+        g.doHook("create-optional-menus",c=c)
+        return True
+    elif name2.startswith('recentfiles'):
+        # Just create the menu.  createRecentFilesMenuItems will be called later.
+        self.createNewMenu(name,parentName)
+        c.recentFiles = c.config.getRecentFiles()
+        return True
+    else:
+        return False
+#@-node:ekr.20070927172712:handleSpecialMenus
+#@-node:ekr.20070926135612:createMenusFromConfigList & helpers
+#@+node:ekr.20031218072017.2078:createRecentFilesMenuItems (leoMenu)
+def createRecentFilesMenuItems (self):
+
+    c = self.c
+    recentFilesMenu = self.getMenu("Recent Files...")
+    if not recentFilesMenu:
+        g.trace('Recent Files Menu does not exist')
+        return
+
+    # Delete all previous entries.
+    self.delete_range(recentFilesMenu,0,len(c.recentFiles)+2)
+
+    # Create the first two entries.
+    table = (
+        ("Clear Recent Files",None,c.clearRecentFiles),
+        ("-",None,None))
+    self.createMenuEntries(recentFilesMenu,table)
+
+    # Create all the other entries (a maximum of 36).
+    accel_ch = string.digits + string.ascii_uppercase # Not a unicode problem.
+    i = 0 ; n = len(accel_ch)
+    for name in c.recentFiles[:n]:
+        def recentFilesCallback (event=None,c=c,name=name):
+            __pychecker__ = '--no-argsused' # event not used, but must be present.
+            c.openRecentFile(name)
+        label = "%s %s" % (accel_ch[i],g.computeWindowTitle(name))
+        self.add_command(recentFilesMenu,label=label,command=recentFilesCallback,underline=0)
+        i += 1
+#@-node:ekr.20031218072017.2078:createRecentFilesMenuItems (leoMenu)
 #@-node:ekr.20070925144337.1:@menus trees in @settings trees
 #@-node:ekr.20070920083033.1:Features
 #@-node:ekr.20070919132518:4.4.4 b3
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
-#@+node:ekr.20070809131638:Pychecker report
-# Invalid warnings...
-# leoGlobals.py:136: No module attribute (leo_config_directory) found
-# leoGlobals.py:4015: Statement appears to have no effect
-# leoGlobals.py:4015: No module attribute (CODESET) found
-# leoGlobals.py:4693: No module attribute (mtime) found
-
-# Fixed...
-# leoAtFile.py:2999: Parameter (force) not used
-# c:\prog\tigris-cvs\leo\src\leoAtFile.py:26: Imported module (leoColor) not used
-# leoImport.py:14: Imported module (parser) not used
-# leoImport.py:15: Imported module (re) not used
-# leoImport.py:17: Imported module (tabnanny) not used
-# leoImport.py:18: Imported module (tokenize) not used
-# leoImport.py:787: Parameter (toString) not used
-# leoImport.py:2913: Parameter (atAuto) not used
-# leoImport.py:2886: Parameter (ext) not used
-# leoImport.py:2886: Parameter (fileName) not used
-# leoImport.py:2889: Parameter (ext) not used
-# leoImport.py:2892: Parameter (ext) not used
-# leoImport.py:2895: Parameter (ext) not used
-# leoImport.py:2898: Parameter (ext) not used
-# leoImport.py:2901: Parameter (ext) not used
-# leoImport.py:2904: Parameter (ext) not used
-# leoImport.py:2907: Parameter (ext) not used
-# leoImport.py:2910: Parameter (ext) not used
-
-
-#@-node:ekr.20070809131638:Pychecker report
 #@-all
 #@nonl
 #@-node:EKR.20040429143933:@thin leoProjects.txt
