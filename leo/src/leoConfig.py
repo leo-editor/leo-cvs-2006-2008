@@ -335,7 +335,7 @@ class parserBaseClass:
         # because the last setting must be retrieved before any commander exists.
         # self.dumpMenuList(aList)
         # g.trace(g.listToString(aList))
-        g.es_print('creating menu from %s' % (c.shortFileName()),color='blue')
+        # g.es_print('creating menu from %s' % (c.shortFileName()),color='blue')
         g.app.config.menusList = aList
         g.app.config.menusFileName = c and c.shortFileName() or '<no settings file>'
     #@+node:ekr.20070926141716:doItems
