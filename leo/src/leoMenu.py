@@ -471,7 +471,7 @@ class leoMenu:
             self.createMenuEntries(helpMenu,self.helpMenuTable)
     #@nonl
     #@-node:ekr.20031218072017.3803:createHelpMenuFromTable
-    #@+node:ekr.20070926135612:createMenusFromConfigList & helper
+    #@+node:ekr.20070926135612:createMenusFromConfigList & helpers
     def createMenusFromConfigList (self,aList):
 
         '''Create menus from dictionary d instead of 'hard coded' menus.
@@ -482,11 +482,7 @@ class leoMenu:
             kind,val,val2 = z
             if kind.startswith(tag):
                 name = kind[len(tag):].strip()
-                name2 = name.replace('&','').replace(' ','').lower()
-                if name2 == 'plugins':
-                    # Create the plugins menu using a hook.
-                    g.doHook("create-optional-menus",c=self.c)
-                else:
+                if not self.handleSpecialMenus(name,parentName=None):
                     self.createNewMenu(name) # Create top-level menu.
                     self.createMenuFromConfigList(name,val,level=0)
             else:
@@ -503,8 +499,9 @@ class leoMenu:
                 if table:
                     self.createMenuEntries(parentMenu,table)
                     table = []
-                self.createNewMenu(name,parentName) # Create submenu of parent menu.
-                self.createMenuFromConfigList(name,val,level+1)
+                if not self.handleSpecialMenus(name,parentName):
+                    self.createNewMenu(name,parentName) # Create submenu of parent menu.
+                    self.createMenuFromConfigList(name,val,level+1)
             elif kind == '@item':
                 # The menu methods require non-unicode strings.
                 name = str(val) 
@@ -516,7 +513,28 @@ class leoMenu:
         if table:
             self.createMenuEntries(parentMenu,table)
     #@-node:ekr.20070927082205:createMenuFromConfigList
-    #@-node:ekr.20070926135612:createMenusFromConfigList & helper
+    #@+node:ekr.20070927172712:handleSpecialMenus
+    def handleSpecialMenus (self,name,parentName):
+
+        '''Handle a special menu if name is the name of a special menu.
+        return True if this method handles the menu.'''
+
+        c = self.c
+        name2 = name.replace('&','').replace(' ','').lower()
+
+        if name2 == 'plugins':
+            # Create the plugins menu using a hook.
+            g.doHook("create-optional-menus",c=c)
+            return True
+        elif name2.startswith('recentfiles'):
+            # Just create the menu.  createRecentFilesMenuItems will be called later.
+            self.createNewMenu(name,parentName)
+            c.recentFiles = c.config.getRecentFiles()
+            return True
+        else:
+            return False
+    #@-node:ekr.20070927172712:handleSpecialMenus
+    #@-node:ekr.20070926135612:createMenusFromConfigList & helpers
     #@-node:ekr.20031218072017.3785:createMenusFromTables & helpers
     #@+node:ekr.20031218072017.3752:defineMenuTables & helpers
     def defineMenuTables (self):
@@ -1547,6 +1565,9 @@ class leoMenu:
 
         c = self.c
         recentFilesMenu = self.getMenu("Recent Files...")
+        if not recentFilesMenu:
+            g.trace('Recent Files Menu does not exist')
+            return
 
         # Delete all previous entries.
         self.delete_range(recentFilesMenu,0,len(c.recentFiles)+2)
