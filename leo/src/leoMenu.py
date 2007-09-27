@@ -63,7 +63,6 @@ class leoMenu:
                 self.updateFileMenu()
                 self.updateEditMenu()
                 self.updateOutlineMenu()
-    #@nonl
     #@-node:ekr.20031218072017.3777:updateAllMenus
     #@+node:ekr.20031218072017.3778:updateFileMenu
     def updateFileMenu (self):
@@ -74,8 +73,9 @@ class leoMenu:
         try:
             enable = frame.menu.enableMenu
             menu = frame.menu.getMenu("File")
-            enable(menu,"Revert To Saved", c.canRevert())
-            enable(menu,"Open With...", g.app.hasOpenWithMenu)
+            if menu:
+                enable(menu,"Revert To Saved", c.canRevert())
+                enable(menu,"Open With...", g.app.hasOpenWithMenu)
         except:
             g.es("exception updating File menu")
             g.es_exception()
@@ -116,10 +116,11 @@ class leoMenu:
                 enable(menu,"Replace, Then Find",flag)
             # Edit Body submenu...
             menu = frame.menu.getMenu("Edit Body...")
-            enable(menu,"Extract Section",c.canExtractSection())
-            enable(menu,"Extract Names",c.canExtractSectionNames())
-            enable(menu,"Extract",c.canExtract())
-            enable(menu,"Match Brackets",c.canFindMatchingBracket())
+            if menu:
+                enable(menu,"Extract Section",c.canExtractSection())
+                enable(menu,"Extract Names",c.canExtractSectionNames())
+                enable(menu,"Extract",c.canExtract())
+                enable(menu,"Match Brackets",c.canFindMatchingBracket())
         except:
             g.es("exception updating Edit menu")
             g.es_exception()
@@ -144,70 +145,75 @@ class leoMenu:
             #@        << enable top level outline menu >>
             #@+node:ekr.20040131171020:<< enable top level outline menu >>
             menu = frame.menu.getMenu("Outline")
-            enable(menu,"Cut Node",c.canCutOutline())
-            enable(menu,"Delete Node",c.canDeleteHeadline())
-            enable(menu,"Paste Node",c.canPasteOutline())
-            enable(menu,"Paste Node As Clone",c.canPasteOutline())
-            enable(menu,"Clone Node",c.canClone()) # 1/31/04
-            enable(menu,"Sort Siblings",c.canSortSiblings())
-            enable(menu,"Hoist",c.canHoist())
-            enable(menu,"De-Hoist",c.canDehoist())
+            if menu:
+                enable(menu,"Cut Node",c.canCutOutline())
+                enable(menu,"Delete Node",c.canDeleteHeadline())
+                enable(menu,"Paste Node",c.canPasteOutline())
+                enable(menu,"Paste Node As Clone",c.canPasteOutline())
+                enable(menu,"Clone Node",c.canClone()) # 1/31/04
+                enable(menu,"Sort Siblings",c.canSortSiblings())
+                enable(menu,"Hoist",c.canHoist())
+                enable(menu,"De-Hoist",c.canDehoist())
             #@-node:ekr.20040131171020:<< enable top level outline menu >>
             #@nl
             #@        << enable expand/contract submenu >>
             #@+node:ekr.20040131171020.1:<< enable expand/Contract submenu >>
             menu = frame.menu.getMenu("Expand/Contract...")
-            enable(menu,"Contract Parent",c.canContractParent())
-            enable(menu,"Contract Node",hasChildren and isExpanded)
-            enable(menu,"Contract Or Go Left",(hasChildren and isExpanded) or hasParent)
-            enable(menu,"Expand Node",hasChildren and not isExpanded)
-            enable(menu,"Expand Prev Level",hasChildren and isExpanded)
-            enable(menu,"Expand Next Level",hasChildren)
-            enable(menu,"Expand To Level 1",hasChildren and isExpanded)
-            enable(menu,"Expand Or Go Right",hasChildren)
-            for i in xrange(2,9):
-                frame.menu.enableMenu(menu,"Expand To Level " + str(i), hasChildren)
+            if menu:
+                enable(menu,"Contract Parent",c.canContractParent())
+                enable(menu,"Contract Node",hasChildren and isExpanded)
+                enable(menu,"Contract Or Go Left",(hasChildren and isExpanded) or hasParent)
+                enable(menu,"Expand Node",hasChildren and not isExpanded)
+                enable(menu,"Expand Prev Level",hasChildren and isExpanded)
+                enable(menu,"Expand Next Level",hasChildren)
+                enable(menu,"Expand To Level 1",hasChildren and isExpanded)
+                enable(menu,"Expand Or Go Right",hasChildren)
+                for i in xrange(2,9):
+                    frame.menu.enableMenu(menu,"Expand To Level " + str(i), hasChildren)
             #@-node:ekr.20040131171020.1:<< enable expand/Contract submenu >>
             #@nl
             #@        << enable move submenu >>
             #@+node:ekr.20040131171020.2:<< enable move submenu >>
             menu = frame.menu.getMenu("Move...")
-            enable(menu,"Move Down",c.canMoveOutlineDown())
-            enable(menu,"Move Left",c.canMoveOutlineLeft())
-            enable(menu,"Move Right",c.canMoveOutlineRight())
-            enable(menu,"Move Up",c.canMoveOutlineUp())
-            enable(menu,"Promote",c.canPromote())
-            enable(menu,"Demote",c.canDemote())
+            if menu:
+                enable(menu,"Move Down",c.canMoveOutlineDown())
+                enable(menu,"Move Left",c.canMoveOutlineLeft())
+                enable(menu,"Move Right",c.canMoveOutlineRight())
+                enable(menu,"Move Up",c.canMoveOutlineUp())
+                enable(menu,"Promote",c.canPromote())
+                enable(menu,"Demote",c.canDemote())
             #@-node:ekr.20040131171020.2:<< enable move submenu >>
             #@nl
             #@        << enable go to submenu >>
             #@+node:ekr.20040131171020.3:<< enable go to submenu >>
             menu = frame.menu.getMenu("Go To...")
-            enable(menu,"Go To Prev Visited",c.nodeHistory.canGoToPrevVisited())
-            enable(menu,"Go To Next Visited",c.nodeHistory.canGoToNextVisited())
-            enable(menu,"Go To Prev Visible",c.canSelectVisBack())
-            enable(menu,"Go To Next Visible",c.canSelectVisNext())
-            if 0: # These are too slow.
-                enable(menu,"Go To Next Marked",c.canGoToNextMarkedHeadline())
-                enable(menu,"Go To Next Changed",c.canGoToNextDirtyHeadline())
-            enable(menu,"Go To Next Clone",isCloned)
-            enable(menu,"Go To Prev Node",c.canSelectThreadBack())
-            enable(menu,"Go To Next Node",c.canSelectThreadNext())
-            enable(menu,"Go To Parent",hasParent)
-            enable(menu,"Go To Prev Sibling",hasBack)
-            enable(menu,"Go To Next Sibling",hasNext)
+            if menu:
+                enable(menu,"Go To Prev Visited",c.nodeHistory.canGoToPrevVisited())
+                enable(menu,"Go To Next Visited",c.nodeHistory.canGoToNextVisited())
+                enable(menu,"Go To Prev Visible",c.canSelectVisBack())
+                enable(menu,"Go To Next Visible",c.canSelectVisNext())
+                if 0: # These are too slow.
+                    enable(menu,"Go To Next Marked",c.canGoToNextMarkedHeadline())
+                    enable(menu,"Go To Next Changed",c.canGoToNextDirtyHeadline())
+                enable(menu,"Go To Next Clone",isCloned)
+                enable(menu,"Go To Prev Node",c.canSelectThreadBack())
+                enable(menu,"Go To Next Node",c.canSelectThreadNext())
+                enable(menu,"Go To Parent",hasParent)
+                enable(menu,"Go To Prev Sibling",hasBack)
+                enable(menu,"Go To Next Sibling",hasNext)
             #@-node:ekr.20040131171020.3:<< enable go to submenu >>
             #@nl
             #@        << enable mark submenu >>
             #@+node:ekr.20040131171020.4:<< enable mark submenu >>
             menu = frame.menu.getMenu("Mark/Unmark...")
-            label = g.choose(isMarked,"Unmark","Mark")
-            frame.menu.setMenuLabel(menu,0,label)
-            enable(menu,"Mark Subheads",hasChildren)
-            if 0: # These are too slow.
-                enable(menu,"Mark Changed Items",c.canMarkChangedHeadlines())
-                enable(menu,"Mark Changed Roots",c.canMarkChangedRoots())
-            enable(menu,"Mark Clones",isCloned)
+            if menu:
+                label = g.choose(isMarked,"Unmark","Mark")
+                frame.menu.setMenuLabel(menu,0,label)
+                enable(menu,"Mark Subheads",hasChildren)
+                if 0: # These are too slow.
+                    enable(menu,"Mark Changed Items",c.canMarkChangedHeadlines())
+                    enable(menu,"Mark Changed Roots",c.canMarkChangedRoots())
+                enable(menu,"Mark Clones",isCloned)
             #@-node:ekr.20040131171020.4:<< enable mark submenu >>
             #@nl
         except:
@@ -257,7 +263,7 @@ class leoMenu:
         c = self.c
 
         aList = c.config.getMenusList()
-        if False and aList:
+        if aList:
             self.createMenusFromConfigList(aList)
         else:
             self.defineMenuTables()
@@ -470,13 +476,47 @@ class leoMenu:
 
         '''Create menus from dictionary d instead of 'hard coded' menus.'''
 
-        for z in aList:
-            self.createMenuFromConfigList(z)
-
-    def createMenuFromConfigList (self,aList):
-
         # g.trace(g.listToString(aList))
-        pass
+
+        # The 'top' menu has already been created.
+        tag = '@menu' ; n = len(tag)
+        for z in aList:
+            kind,val,val2 = z
+            if kind.startswith(tag):
+                name = kind[n:].strip()
+                self.createNewMenu(name) # Create top-level menu.
+                self.createMenuFromConfigList(name,val,level=0)
+            else:
+                self.error('%s %s not valid outside @menu tree' % (kind,val))
+
+    def createMenuFromConfigList (self,parentName,aList,level=0):
+
+        # g.trace('level',level,'parentName',parentName,'alist',g.listToString(aList))
+        table = [] ; parentMenu = self.getMenu(parentName)
+        for z in aList:
+            kind,val,val2 = z
+            if kind.startswith('@menu'):
+                name = kind[5:].strip()
+                if table: # Create previously seen menu entries at this level.
+                    # g.trace('table',g.listToString(table))
+                    self.createMenuEntries(parentMenu,table)
+                    table = []
+                # g.trace('@menu',name,g.listToString(val))
+                self.createNewMenu(name,parentName) # Create submenu of parent menu.
+                self.createMenuFromConfigList(name,val,level+1)
+            elif kind == '@item':
+                name = str(val) # The menu methods require non-unicode strings.
+                if val2:
+                    # g.trace('@item',val2,name)
+                    table.append((str(val2),name),)
+                else:
+                    # g.trace('@item',name)
+                    table.append(name)
+            else:
+                g.trace('can not happen: bad kind:',kind)
+        if table: # Create previously seen menu entries at this level.
+            # g.trace('end table',g.listToString(table))
+            self.createMenuEntries(parentMenu,table)
     #@-node:ekr.20070926135612:createMenusFromConfigList
     #@-node:ekr.20031218072017.3785:createMenusFromTables & helpers
     #@+node:ekr.20031218072017.3752:defineMenuTables & helpers
