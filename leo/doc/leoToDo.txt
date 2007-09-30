@@ -4,6 +4,28 @@
 #@+node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
 # Leo 4.4.5 will complete several projects that are long overdue.
 
+#@+node:ekr.20070929125944:*** Emulate Orange's download philosophy
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4543089
+By: billp9619
+
+from the download page:
+
+If it's the first time you hear about Python, this is the installation for you.
+The packages includes complete Orange, Python, Windows Extensions for Python
+(PythonWin), Numeric Python, Qt 2.2 non-commercial, PyQt, PyQwt and GraphViz.
+
+Leo should copy this download philosophy.
+
+
+
+#@-node:ekr.20070929125944:*** Emulate Orange's download philosophy
+#@+node:ekr.20070930102053:*** Fix problems with new colorizer
+# Sometimes not enough text is colorized.
+# For example, after changing docstrings.
+#@nonl
+#@-node:ekr.20070930102053:*** Fix problems with new colorizer
 #@+node:ekr.20070814070312:First
 #@+node:ekr.20070814144804:Incorrect conversion of paths to absolute paths (for Leo 4.4.5)
 @nocolor
@@ -179,68 +201,10 @@ g.esx and g.es_printx allow a mix on translated and untranslated arguments::
 
     g.esx(tr('abc'),fileName)
 #@-node:ekr.20070625091423:Add translation services
-#@+node:ekr.20070307082503:Make Leo an IPython notebook
-#@+node:ekr.20060603090445.7:Ipython stuff
-#@+node:ekr.20060603085719.1:Use IPython autocompleter?
-#@-node:ekr.20060603085719.1:Use IPython autocompleter?
-#@+node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
-#@-node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
-#@+node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
-#@-node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
-#@+node:ekr.20060603090445.9:Script button that saves environment between runs
-This would allow IPython-like operation.
-#@nonl
-#@-node:ekr.20060603090445.9:Script button that saves environment between runs
-#@-node:ekr.20060603090445.7:Ipython stuff
-#@+node:ekr.20070521100324.1:Using Leo as a notebook
-@nocolor
-https://sourceforge.net/forum/message.php?msg_id=4314394
-By: duanekaufman
-
-I am starting a kinda 'stream-of-thought' document, one in which I can put down
-a paragraph of thought (perhaps in a pretty fashion, using ReST markup), develop
-some code, to do some calculations, run the code and display the results...rinse,
-repeat.
-
-The document, in pseudo-form, would look like:
-
-<Development of thought #1>
-<Code to calculate something>
-<Results from code execution>
-<Discussion of results>
-
-Each of the above would probably be a node, and I have already put together
-things that look like the above, all except for the <results> part. I can run
-the code, but how can I get the output automatically in my node? I can cut-and-paste
-from the underlying command window (I run under Linux and Windows XP), but I
-would like o automate it as much as possible.
-
-Does anyone have any ideas on how to accomodate this workflow?
-
------- Reply
-
-A most interesting and important question--with such a capability one could make Leo into a full-fledged engineering notebook, e.g., as envisaged by the IPython Notebook project: 
-
-http://projects.scipy.org/ipython/ipython/wiki/NbshellManual 
-
-I can think of several possible approaches: 
-
-1. Create a custom version of the execute script command that would put script output in a particular node. Perhaps the headline of the node could be an argument to the enhanced command. 
-
-2. Have your script write to some 'standard place', and create a command to put that script in the presently selected node. Something like insert-script-output. 
-
-3. Create a script button that executes the script in the presently selected node and puts the result in the node *following* the selected node. You can then either move the node by hand, or use another script button to move the node to a 'standard place', say the last child of the <<results>> node. 
-
-As I write this I think the script-button approach is likely to be the simplest, most flexible and most powerful. I'll look into this myself soon... 
-
-Edward
-#@nonl
-#@-node:ekr.20070521100324.1:Using Leo as a notebook
-#@-node:ekr.20070307082503:Make Leo an IPython notebook
-#@+node:ekr.20070220082124:Make sure Leo can generate Latex
-#@-node:ekr.20070220082124:Make sure Leo can generate Latex
 #@-node:ekr.20070703111455.1:Most important
 #@+node:ekr.20070630143345:Easy and useful
+#@+node:ekr.20070220082124:Make sure Leo can generate Latex
+#@-node:ekr.20070220082124:Make sure Leo can generate Latex
 #@+node:ekr.20070521105645:Improve api docs with epidoc?
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=4319363
@@ -1156,7 +1120,7 @@ def createTextWidget (self,parentFrame=None):
 
     gui = c and c.frame and c.frame.gui or g.app.gui
 
-    log = gui.plainTextWidget( ### was g.app.gui.
+    log = gui.plainTextWidget(
         c = self.c,
         name="log-%d" % self.logNumber,
     )
@@ -1180,10 +1144,6 @@ def __init__ (self,c,parentFrame):
     c.frame.statusText  = self.textWidget
 #@-node:ekr.20070302171509.2: nullStatusLineClass.ctor
 #@-node:ekr.20070619161413:Finish support for hidden windows
-#@+node:ekr.20070627110422:create leoStartup.py
-# This will have common startup code.
-#@nonl
-#@-node:ekr.20070627110422:create leoStartup.py
 #@+node:ekr.20070613103409:Improve marks/recent buttons
 - Arrow keys must move up/down.
 - Should be commands to show the marks/recent dialogs.
@@ -1397,6 +1357,64 @@ evening out of comparing the codebases to see where things change.
 #@-node:ekr.20070307082814:Create g.startupController class
 #@-node:ekr.20060629154112:Merge Leo & jyLeo
 #@-node:ekr.20070703111913:Swing gui
+#@+node:ekr.20070307082503:Make Leo an IPython notebook
+#@+node:ekr.20060603090445.7:Ipython stuff
+#@+node:ekr.20060603085719.1:Use IPython autocompleter?
+#@-node:ekr.20060603085719.1:Use IPython autocompleter?
+#@+node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
+#@-node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
+#@+node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
+#@-node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
+#@+node:ekr.20060603090445.9:Script button that saves environment between runs
+This would allow IPython-like operation.
+#@nonl
+#@-node:ekr.20060603090445.9:Script button that saves environment between runs
+#@-node:ekr.20060603090445.7:Ipython stuff
+#@+node:ekr.20070521100324.1:Using Leo as a notebook
+@nocolor
+https://sourceforge.net/forum/message.php?msg_id=4314394
+By: duanekaufman
+
+I am starting a kinda 'stream-of-thought' document, one in which I can put down
+a paragraph of thought (perhaps in a pretty fashion, using ReST markup), develop
+some code, to do some calculations, run the code and display the results...rinse,
+repeat.
+
+The document, in pseudo-form, would look like:
+
+<Development of thought #1>
+<Code to calculate something>
+<Results from code execution>
+<Discussion of results>
+
+Each of the above would probably be a node, and I have already put together
+things that look like the above, all except for the <results> part. I can run
+the code, but how can I get the output automatically in my node? I can cut-and-paste
+from the underlying command window (I run under Linux and Windows XP), but I
+would like o automate it as much as possible.
+
+Does anyone have any ideas on how to accomodate this workflow?
+
+------ Reply
+
+A most interesting and important question--with such a capability one could make Leo into a full-fledged engineering notebook, e.g., as envisaged by the IPython Notebook project: 
+
+http://projects.scipy.org/ipython/ipython/wiki/NbshellManual 
+
+I can think of several possible approaches: 
+
+1. Create a custom version of the execute script command that would put script output in a particular node. Perhaps the headline of the node could be an argument to the enhanced command. 
+
+2. Have your script write to some 'standard place', and create a command to put that script in the presently selected node. Something like insert-script-output. 
+
+3. Create a script button that executes the script in the presently selected node and puts the result in the node *following* the selected node. You can then either move the node by hand, or use another script button to move the node to a 'standard place', say the last child of the <<results>> node. 
+
+As I write this I think the script-button approach is likely to be the simplest, most flexible and most powerful. I'll look into this myself soon... 
+
+Edward
+#@nonl
+#@-node:ekr.20070521100324.1:Using Leo as a notebook
+#@-node:ekr.20070307082503:Make Leo an IPython notebook
 #@-node:ekr.20070923103337:Not associated with any release
 #@-all
 #@nonl

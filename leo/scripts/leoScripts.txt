@@ -7782,6 +7782,109 @@ def findFunctionCalls (names,p,showEmptyArgs=False):
 #@nonl
 #@-node:findFunctionCalls
 #@-node:Check Changes
+#@+node:Create @menus tree from Leo's internal menu tables
+# Convert standard tables to list of @item nodes
+m = c.frame.menu
+# A representation of code/data in defineMenuTables and createMenusFromTables.
+@others
+data = (
+    ('File',[
+        (None,m.fileMenuTopTable),
+        ('Open &With...',[]), ###
+        (None,m.fileMenuTop2Table),
+        ('&Read/Write...',m.fileMenuReadWriteMenuTable),
+        ('Tan&gle...',m.fileMenuTangleMenuTable),
+        ('&Untangle...',m.fileMenuUntangleMenuTable),
+        ('&Import...',m.fileMenuImportMenuTable),
+        ('&Export...',m.fileMenuExportMenuTable),
+        (None,m.fileMenuTop3MenuTable),
+        ]),
+    ('Edit',[
+        (None,m.editMenuTopTable),
+        ('Edit &Body...',m.editMenuEditBodyTable),
+        ('Edit &Headline...',m.editMenuEditHeadlineTable),
+        ('&Find...',m.editMenuFindMenuTable),
+        (None,m.editMenuTop2Table),
+        ]),
+    ('Outline',[
+        (None,c.frame.menu.outlineMenuTopMenuTable),
+        ('Chec&k...',m.outlineMenuCheckOutlineMenuTable),
+        ('E&xpand/Contract...',m.outlineMenuExpandContractMenuTable),
+        ('&Move...',m.outlineMenuMoveMenuTable),
+        ('M&ark...',m.outlineMenuMarkMenuTable),
+        ('&Go To...',m.outlineMenuGoToMenuTable),
+        ]),
+    ('Plugins',[
+        ]), # A placeholder.
+    ('Cmds',[
+        ('&Abbrev...',m.cmdsMenuAbbrevTable),
+        ('Body E&ditors...',m.cmdsMenuBodyEditorsTable),
+        ('&Buffers...',m.cmdsMenuBuffersTable),
+        ('&Chapters...',m.cmdsMenuChaptersTable),
+        ('C&ursor/Selection...',[]), ### Has several submenus...Must be placed by hand.
+            ('Cursor &Back...',m.cursorMenuBackTable),
+            ('Cursor Back &Extend Selection...',m.cursorMeuuBackExtendTable),
+            ('Cursor Back Extend &to...',m.cursorMenuExtendTable),
+            ('Cursor &Forward...',m.cursorMenuForwardTable),
+            ('Cursor Forward E&xtend Selection...',m.cursorMenuForwardExtendTable),
+        ('&Focus...',m.cmdsMenuFocusTable),
+        ('&Macro...',m.cmdsMenuMacroTable),
+        ('M&inibuffer...',m.cmdsMenuMinibufferTable),
+        ('&Pickers...',m.cmdsMenuPickersTable),
+        ('&Rectangles...',m.cmdsMenuRectanglesTable),
+        ('Re&gisters...',m.cmdsMenuRegistersTable),
+        ('R&un Script/Tests...',m.cmdsMenuRunTable),
+        ('Scr&olling...',m.cmdsMenuScrollTable),
+        ('Spell C&heck...',m.cmdsMenuSpellCheckTable),
+        ('&Text Commands...',m.cmdsMenuTextTable),
+        ('Toggle Setti&ngs...',m.cmdsMenuToggleTable),
+        ]),
+    ('Window',[
+        (None,m.windowMenuTopTable),
+        ]),
+    ('Help',[
+        (None,m.helpMenuTable),
+        ]),
+)
+
+c.beginUpdate()
+try:
+    for menuName,tables in data:
+        # print menuName,tables
+        p2 = p.insertAsLastChild()
+        p2.initHeadString('@menu '+menuName)
+        for aTuple in tables:
+            subMenuName,aList = aTuple
+            if subMenuName:
+                p3 = p2.insertAsLastChild()
+                p3.initHeadString('@menu '+subMenuName)
+            else:
+                p3 = p2
+            for z in aList:
+                p4 = p3.insertAsLastChild()
+                setNode(p4,z)
+
+finally:
+    c.endUpdate()
+#@+node:setNode
+def setNode (p,data):
+
+    head = body = None
+
+    if type(data) == type('abc'):
+        head = data
+    elif type(data) in (type(()),type([])):
+        if   len(data) == 1: head = data[0]
+        elif len(data) == 2: body, head = data
+        else: g.trace('bad tuple: ',repr(data))
+    else: g.trace('bad data: ',repr(data))
+
+    if head and head.strip():
+        p.initHeadString('@item ' + head.strip())
+    if body and body.strip():
+        p.setTnodeText(body.strip())
+#@-node:setNode
+#@-node:Create @menus tree from Leo's internal menu tables
 #@+node:Export to treepad
 # simple script to export current node and children as a treepad document
 # the file format for treepad 2.x is simple.
@@ -8370,39 +8473,6 @@ _colors = {
 #@-node:NewHeadline
 #@-node:Code from Bill P
 #@-node:HTMLize scripts
-#@+node:jython script
-# The first script in Jython Essentials, by Pedroni & Rappin.
-import javax.swing as swing
-import java.awt as awt
-import java.lang as lang
-
-def exit(event):
-    lang.System.exit(0)
-
-def onButtonPressed(event):
-    field.text=quotes[event.source.text]
-
-def createButton(name):
-    return swing.JButton(name,preferredSize=(100,20),
-        actionPerformed=onButtonPressed)
-
-names = [ 'Groucho','Chico','Harpo']
-quotes = {'Groucho':'Say the secret word','Chico':'Viaduct?','Harpo':'Honk!'}
-
-w = swing.JFrame('Welcome to jython!',size=(200,200),windowClosing=exit)
-w.contentPane.layout = awt.FlowLayout()
-
-field = swing.JTextField(preferredSize=(200,20))
-w.contentPane.add(field)
-
-buttons = [createButton(name) for name in names]
-for button in buttons:
-    w.contentPane.add(button)
-
-w.pack()
-w.show()
-#@nonl
-#@-node:jython script
 #@+node:Print missing docstrings
 # Print all commands that do not have a docstring.
 d = c.commandsDict
@@ -9225,62 +9295,6 @@ line 3
 #@-node:after sel=2.0,2.0
 #@-node:@test kill-line
 #@-node:Scripts that make unit tests
-#@+node:Set trailing ws script
-'''This script quickly ends all nodes in the selected tree with exactly one
-newline and marks all @thin/@file nodes dirty if any of their descendents have
-been changed.'''
-
-@others
-
-c.beginUpdate()
-try:
-    p = c.currentPosition()
-    pass1(p) # Make the changes and do p.v.t.setDirty for all changed nodes p.
-    pass2() # Quickly set all @thin/@file nodes dirty if any of their descendents are dirty.
-    g.es_print('done')
-finally:
-    c.endUpdate()
-#@nonl
-#@+node:pass1
-def pass1(root):
-
-    '''Remove trailing newlines from all nodes.'''
-
-    count = 0 ; seen = {}
-    for p in root.self_and_subtree_iter():
-        if seen.get(p.v.t): continue
-        s = p.bodyString()
-        if s:
-            s2 = s.rstrip() + '\n'
-            if s2 != s:
-                s2 = g.toUnicode(s2,g.app.tkEncoding,reportErrors=True)
-                p.v.t.bodyString = s2
-                seen [p.v.t] = True
-                p.v.t.setDirty() # Just set the bit: do **not** redraw!
-                count += 1
-
-    g.es_print("pass 1: %d nodes converted" % count)
-#@-node:pass1
-#@+node:pass2
-def pass2():
-
-    '''Quickly mark all changed @file nodes dirty.'''
-
-    count = 0
-
-    # Important: we must look at **all** nodes because of clones.
-    for p in c.allNodes_iter():
-        if p.isAnyAtFileNode():
-            root = p.copy()
-            for p2 in root.self_and_subtree_iter():
-                if p2.v.t.isDirty():
-                    root.setDirty()
-                    count += 1
-                    break
-
-    g.es_print("pass 2: %d @file/@thin nodes set dirty" % count)
-#@-node:pass2
-#@-node:Set trailing ws script
 #@+node:zodb get/put scripts
 #@+node:@@button zodb-get-tree
 name = c.config.getString('zodb_storage_file')
@@ -19222,105 +19236,6 @@ def __init__ (self,c,p):
 #@-node:__init__
 #@-node:class dumper (pythonParser)
 #@-node:Python parser (abandoned)
-#@+node:Resolve CVS Conflicts command
-@ignore
-#@nonl
-#@+node:Cvs markers & file names
-@nocolor
-
-** The orginal file is .#localFileName.1.nnn
-** The file modified by CVS is localFileName
-
-'<' * 7 localFileName
-...
-'=' * 7
-...
-'>' * 7 1.nnn
-
-<<<<<<< cvsConflict.py
-def spam-cvs1():
-    pass # changed 1
-=======
-def spam2():
-    pass
->>>>>>> 1.2
-#@nonl
-#@-node:Cvs markers & file names
-#@+node:Conflicts not involving sentinels
-@ These do not affect outline structure.  
-
-<<<<<<< cvsConflict.py
-def spam-cvs1():
-    pass # changed 1
-=======
-def spam2():
-    pass
->>>>>>> 1.2
-#@nonl
-#@-node:Conflicts not involving sentinels
-#@+node:Conflicts involving sentinels
-# ------- These do affect outline structure. ------
-# Leo does pretty well reading these, all things considered.
-
-<<<<<<< cvsConflict.py
-#@verbatim
-#@+node:ekr.20041220170413.1:spam-1b
-def spam():
-=======
-#@verbatim
-#@+node:ekr.20041220170413.1:spam-2b
-def spam2():
->>>>>>> 1.3 # ------------------------------ duplicate sentinels above and below.
-    pass
-#@verbatim
-#@nonl
-<<<<<<< cvsConflict.py
-#@verbatim
-#@-node:ekr.20041220170413.1:spam-1b
-#@verbatim
-#@+node:ekr.20041220170413.2:eggs-1b
-=======
-#@verbatim
-#@-node:ekr.20041220170413.1:spam-2b
-#@verbatim
-#@+node:ekr.20041220170413.2:eggs-2b
->>>>>>> 1.3
-def eggs():
-    pass
-#@verbatim
-#@nonl
-<<<<<<< cvsConflict.py
-#@verbatim
-#@-node:ekr.20041220170413.2:eggs-1b
-=======
-#@verbatim
-#@-node:ekr.20041220170413.2:eggs-2b
->>>>>>> 1.3
-#@nonl
-#@-node:Conflicts involving sentinels
-#@+node:Design notes
-@killcolor
-
-- There are no real problems unless sentinels are involved.
-
-- cvs does _not_ show a clean version of the new file on cvs.
-
-- A script could create the new version from the old and "conflict" versions.
-    - This might be a useful starting point.
-        - old:  fileName.1.nnn
-        - conflict: fileName
-        - new: created by script
-
-- How can Leo know that a conflict exists???
-    - Look for '<' * 7 and '>' * 7.  What if these exist in an unconflicted file?
-    - No.  Look for fileName.1.nnn files.
-
-- Maybe the atFile read logic could detect a conflict?
-    - Only after detecting a fileName.1.nnn file.
-    - Only if 'repair_cvs_conflict' option is set.
-#@nonl
-#@-node:Design notes
-#@-node:Resolve CVS Conflicts command
 #@+node:Setting Tk config values safely
 import Tkinter as Tk
 
@@ -21226,6 +21141,62 @@ for p in p.self_and_subtree_iter():
         g.es(p.headString())
 #@nonl
 #@-node:Remove blank trailing lines
+#@+node:Set trailing ws script
+'''This script quickly ends all nodes in the selected tree with exactly one
+newline and marks all @thin/@file nodes dirty if any of their descendents have
+been changed.'''
+
+@others
+
+c.beginUpdate()
+try:
+    p = c.currentPosition()
+    pass1(p) # Make the changes and do p.v.t.setDirty for all changed nodes p.
+    pass2() # Quickly set all @thin/@file nodes dirty if any of their descendents are dirty.
+    g.es_print('done')
+finally:
+    c.endUpdate()
+#@nonl
+#@+node:pass1
+def pass1(root):
+
+    '''Remove trailing newlines from all nodes.'''
+
+    count = 0 ; seen = {}
+    for p in root.self_and_subtree_iter():
+        if seen.get(p.v.t): continue
+        s = p.bodyString()
+        if s:
+            s2 = s.rstrip() + '\n'
+            if s2 != s:
+                s2 = g.toUnicode(s2,g.app.tkEncoding,reportErrors=True)
+                p.v.t.bodyString = s2
+                seen [p.v.t] = True
+                p.v.t.setDirty() # Just set the bit: do **not** redraw!
+                count += 1
+
+    g.es_print("pass 1: %d nodes converted" % count)
+#@-node:pass1
+#@+node:pass2
+def pass2():
+
+    '''Quickly mark all changed @file nodes dirty.'''
+
+    count = 0
+
+    # Important: we must look at **all** nodes because of clones.
+    for p in c.allNodes_iter():
+        if p.isAnyAtFileNode():
+            root = p.copy()
+            for p2 in root.self_and_subtree_iter():
+                if p2.v.t.isDirty():
+                    root.setDirty()
+                    count += 1
+                    break
+
+    g.es_print("pass 2: %d @file/@thin nodes set dirty" % count)
+#@-node:pass2
+#@-node:Set trailing ws script
 #@-node:Text editing scripts
 #@-all
 #@nonl
