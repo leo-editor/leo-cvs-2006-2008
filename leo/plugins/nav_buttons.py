@@ -65,18 +65,19 @@ def init ():
 
     ok = g.app.gui.guiName() == "tkinter"
 
+    # print 'navButtons:init','ok',ok,g.app.gui.guiName()
+
     if ok:
         leoPlugins.registerHandler('after-create-leo-frame',onCreate)
         g.plugin_signon(__name__)
 
     return ok
-#@nonl
 #@-node:ekr.20050219114353.2:init
 #@+node:ekr.20050219115116:onCreate
 def onCreate (tag,keywords):
 
     # Not ok for unit testing: can't use unitTestGui.
-    if g.app.unitTesting:
+    if g.app.unitTesting or g.app.gui.guiName() != 'tkinter':
         return
 
     c = keywords.get("c")
@@ -91,7 +92,6 @@ def onCreate (tag,keywords):
     # Create the recent nodes dialog.
     recent = recentSectionsDialog(c,images)
     r(('open2','new2','select2'),recent.updateRecent)
-#@nonl
 #@-node:ekr.20050219115116:onCreate
 #@+node:ekr.20050219115859:class imageClass
 class imageClass:

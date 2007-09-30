@@ -20,7 +20,7 @@ import leoGlobals as g
 import leoPlugins
 
 Tk =            g.importExtension('Tkinter',   pluginName=__name__,verbose=True)
-subprocess =    g.importExtension('subprocess',pluginName=__name__,verbose=True)
+subprocess =    g.importExtension('subprocess',pluginName=__name__,verbose=False)
 #@nonl
 #@-node:ekr.20050101090207.8:<< imports >>
 #@nl
