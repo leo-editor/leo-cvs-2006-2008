@@ -7679,6 +7679,229 @@ def createRecentFilesMenuItems (self):
 #@-node:ekr.20070920083033.1:Features
 #@-node:ekr.20070919132518:4.4.4 b3
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
+#@+node:ekr.20070930102228:( jyLeo )
+#@+node:ekr.20070930150331:Changes I made to support jython
+@nocolor
+
+- The following modules do not exist in Jython.  The imports must be protected in try/except blocks:
+
+    filecmp
+    gettext
+    tabnanny
+
+- Python does not support generators.  Several seldom-used iterators will be written to avoid the 'yield' statement.
+
+- Added the jyLeo keyword argument to the run function in leo.py.
+
+- g.cantImport now does not warn when the gui is not tkinter and the moduleName is either tkinter or Pmw.
+  This suppresses unnecessary import warnings from several plugins.
+
+- Hacked the navButtons plugin to suppress a weird call to onCreate when the gui is swing.  It is a mystery why this is being called.
+#@-node:ekr.20070930150331:Changes I made to support jython
+#@+node:ekr.20070930102228.1:Rewrite iterators that use yield
+# They are not valid in jython.
+# At present, Leo's core does not use them.
+#@nonl
+#@+node:ekr.20070930064858:Found: yield
+#@+node:EKR.20040529091232.1:c.all_tnodes_iter
+# def all_tnodes_iter(self):
+
+    # c = self
+    # for p in c.all_positions_iter():
+        # yield p.v.t
+
+    # # return c.rootPosition().all_tnodes_iter(all=True)
+#@-node:EKR.20040529091232.1:c.all_tnodes_iter
+#@+node:EKR.20040529091232.2:c.all_unique_tnodes_iter
+# def all_unique_tnodes_iter(self):
+
+    # c = self ; marks = {}
+
+    # for p in c.all_positions_iter():
+        # if not p.v.t in marks:
+            # marks[p.v.t] = p.v.t
+            # yield p.v.t
+#@-node:EKR.20040529091232.2:c.all_unique_tnodes_iter
+#@+node:EKR.20040529091232.3:c.all_vnodes_iter
+# def all_vnodes_iter(self):
+
+    # c = self
+    # for p in c.all_positions_iter():
+        # yield p.v
+#@-node:EKR.20040529091232.3:c.all_vnodes_iter
+#@+node:EKR.20040529091232.4:c.all_unique_vnodes_iter
+# def all_unique_vnodes_iter(self):
+
+    # c = self ; marks = {}
+    # for p in c.all_positions_iter():
+        # if not p.v in marks:
+            # marks[p.v] = p.v
+            # yield p.v
+#@-node:EKR.20040529091232.4:c.all_unique_vnodes_iter
+#@+node:ekr.20050920084036.184:iterateKillBuffer
+# def iterateKillBuffer (self):
+
+    # while 1:
+        # if self.killBuffer:
+            # self.last_clipboard = None
+            # for z in self.killBuffer:
+                # if self.reset:
+                    # self.reset = False
+                    # break
+                # yield z
+#@-node:ekr.20050920084036.184:iterateKillBuffer
+#@+node:EKR.20040529103843:p.tnodes_iter & unique_tnodes_iter
+# def tnodes_iter(self):
+
+    # """Return all tnode's in a positions subtree."""
+
+    # p = self
+    # for p in p.self_and_subtree_iter():
+        # yield p.v.t
+
+# def unique_tnodes_iter(self):
+
+    # """Return all unique tnode's in a positions subtree."""
+
+    # p = self
+    # marks = {}
+    # for p in p.self_and_subtree_iter():
+        # if p.v.t not in marks:
+            # marks[p.v.t] = p.v.t
+            # yield p.v.t
+#@-node:EKR.20040529103843:p.tnodes_iter & unique_tnodes_iter
+#@+node:EKR.20040529103945:p.vnodes_iter & unique_vnodes_iter
+# def vnodes_iter(self):
+
+    # """Return all vnode's in a positions subtree."""
+
+    # p = self
+    # for p in p.self_and_subtree_iter():
+        # yield p.v
+
+# def unique_vnodes_iter(self):
+
+    # """Return all unique vnode's in a positions subtree."""
+
+    # p = self
+    # marks = {}
+    # for p in p.self_and_subtree_iter():
+        # if p.v not in marks:
+            # marks[p.v] = p.v
+            # yield p.v
+#@-node:EKR.20040529103945:p.vnodes_iter & unique_vnodes_iter
+#@+node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
+# @ This is a generator (it contains a yield).
+# To make this work we must define a new generator for each call to regionalExpandAbbrev.
+# @c
+# def searchXR (i1,i2,ins,event):
+    # k = self.k
+    # w = self.editWidget(event)
+    # if not w: return
+
+    # w.tag_add('sXR',i1,i2)
+    # while i1:
+        # tr = w.tag_ranges('sXR')
+        # if not tr: break
+        # i1 = w.search(r'\w',i1,stopindex=tr[1],regexp=True)
+        # if i1:
+            # word = w.get('%s wordstart' % i1,'%s wordend' % i1)
+            # w.tag_delete('found')
+            # w.tag_add('found','%s wordstart' % i1,'%s wordend' % i1)
+            # w.tag_config('found',background='yellow')
+            # if self.abbrevs.has_key(word):
+                # k.setLabel('Replace %s with %s? y/n' % (word,self.abbrevs[word]))
+                # yield None
+                # if k.regXKey == 'y':
+                    # ind = w.index('%s wordstart' % i1)
+                    # w.delete('%s wordstart' % i1,'%s wordend' % i1)
+                    # w.insert(ind,self.abbrevs[word])
+            # i1 = '%s wordend' % i1
+    # w.setInsertPoint(ins,ins,insert=ins)
+    # w.tag_delete('sXR')
+    # w.tag_delete('found')
+    # k.setLabelGrey('')
+    # self.k.regx = g.bunch(iter=None,key=None)
+#@-node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
+#@+node:ekr.20050920085536.84:class Tracker (an iterator)
+class Tracker:
+
+    '''An iterator class to allow the user to cycle through and change a list.'''
+
+    @others
+#@+node:ekr.20050920085536.85:init
+def __init__ (self):
+
+    self.tablist = []
+    self.prefix = None 
+    self.ng = self._next()
+#@-node:ekr.20050920085536.85:init
+#@+node:ekr.20050920085536.86:setTabList
+def setTabList (self,prefix,tlist):
+
+    self.prefix = prefix 
+    self.tablist = tlist
+#@-node:ekr.20050920085536.86:setTabList
+#@+node:ekr.20050920085536.87:_next
+# def _next (self):
+
+    # while 1:
+        # tlist = self.tablist 
+        # if not tlist:yield ''
+        # for z in self.tablist:
+            # if tlist!=self.tablist:
+                # break 
+            # yield z
+#@-node:ekr.20050920085536.87:_next
+#@+node:ekr.20050920085536.88:next
+def next (self):
+
+    return self.ng.next()
+#@-node:ekr.20050920085536.88:next
+#@+node:ekr.20050920085536.89:clear
+def clear (self):
+
+    self.tablist = []
+    self.prefix = None
+#@-node:ekr.20050920085536.89:clear
+#@-node:ekr.20050920085536.84:class Tracker (an iterator)
+#@-node:ekr.20070930064858:Found: yield
+#@-node:ekr.20070930102228.1:Rewrite iterators that use yield
+#@+node:ekr.20070930103155:Plugins that try to import Tkinter without checking g.app.gui
+
+Can not import Tkinter from plugin plugins_menu
+Can not import Tkinter from plugin open_with
+Can not import subprocess from plugin open_with
+Can not import Tkinter from plugin mod_scripting
+Can not import Tkinter from plugin UNL
+Can not import Tkinter from plugin image
+#@+node:ekr.20040917061619:g.cantImport & test
+def cantImport (moduleName,pluginName=None,verbose=True):
+
+    """Print a "Can't Import" message and return None."""
+
+    # g.trace(verbose,moduleName,repr(pluginName))
+    # if not pluginName: g.printStack()
+
+    if verbose and not (app and g.app.unitTesting):
+        # g.trace('guiName',g.app.gui.guiName())
+        if g.app.gui.guiName() != 'tkinter' and moduleName in ('Tkinter','Pmw'):
+            pass
+            # g.trace('ignore import',moduleName)
+        else:
+            s = "Can not import %s" % moduleName
+            if pluginName: s += " from plugin %s" % pluginName
+            g.es_print(s,color="blue")
+
+    return None
+#@+node:ekr.20070627082044.850:@test g.cantImport returns None
+if g.unitTesting:
+    assert(g.cantImport("xyzzy","during unit testing") is None)
+#@nonl
+#@-node:ekr.20070627082044.850:@test g.cantImport returns None
+#@-node:ekr.20040917061619:g.cantImport & test
+#@-node:ekr.20070930103155:Plugins that try to import Tkinter without checking g.app.gui
+#@-node:ekr.20070930102228:( jyLeo )
 #@-all
 #@nonl
 #@-node:EKR.20040429143933:@thin leoProjects.txt
