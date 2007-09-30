@@ -40,30 +40,37 @@ import string
 import sys
 
 #@+others
-#@+node:ekr.20031218072017.1934:run & allies
-def run(fileName=None,pymacs=None,*args,**keywords):
+#@+node:ekr.20031218072017.1934:run
+def run(fileName=None,pymacs=None,jyLeo=False,*args,**keywords):
 
     """Initialize and run Leo"""
 
     __pychecker__ = '--no-argsused' # keywords not used.
 
-    if not isValidPython(): return
+    if not jyLeo and not isValidPython(): return
     #@    << import leoGlobals and leoApp >>
     #@+node:ekr.20041219072112:<< import leoGlobals and leoApp >>
+    if jyLeo:
+        print '*** starting jyLeo'
+        ### This is a hack.
+        ### The jyleo script in test.leo sets the cwd to g.app.loadDir
+        ### Eventually, we will have to compute the equivalent here.
+        path = os.path.join(os.getcwd()) ### ,'..','src')
+        if path not in sys.path:
+            print 'appending %s to sys.path' % path
+            sys.path.append(path)
+        if 0:
+            print 'sys.path...'
+            for s in sys.path: print s
+
     # Import leoGlobals, but do NOT set g.
-    try:
-        import leoGlobals
-    except ImportError:
-        print "Error importing leoGlobals.py"
+    import leoGlobals
+    import leoApp
 
-    # Create the application object.
-    try:
-        import leoApp
-        leoGlobals.app = leoApp.LeoApp()
-    except ImportError:
-        print "Error importing leoApp.py"
+    # Create the app.
+    leoGlobals.app = leoApp.LeoApp()
 
-    # NOW we can set g.
+    # **now** we can set g.
     g = leoGlobals
     assert(g.app)
     #@-node:ekr.20041219072112:<< import leoGlobals and leoApp >>
@@ -80,17 +87,20 @@ def run(fileName=None,pymacs=None,*args,**keywords):
     g.app.setLeoID(verbose=verbose) # Force the user to set g.app.leoID.
     #@    << import leoNodes and leoConfig >>
     #@+node:ekr.20041219072416.1:<< import leoNodes and leoConfig >>
-    try:
-        import leoNodes
-    except ImportError:
-        print "Error importing leoNodes.py"
-        import traceback ; traceback.print_exc()
+    import leoNodes
+    import leoConfig
 
-    try:
-        import leoConfig
-    except ImportError:
-        print "Error importing leoConfig.py"
-        import traceback ; traceback.print_exc()
+    # try:
+        # import leoNodes
+    # except ImportError:
+        # print "Error importing leoNodes.py"
+        # import traceback ; traceback.print_exc()
+
+    # try:
+        # import leoConfig
+    # except ImportError:
+        # print "Error importing leoConfig.py"
+        # import traceback ; traceback.print_exc()
     #@-node:ekr.20041219072416.1:<< import leoNodes and leoConfig >>
     #@nl
     g.app.nodeIndices = leoNodes.nodeIndices(g.app.leoID)
@@ -103,6 +113,9 @@ def run(fileName=None,pymacs=None,*args,**keywords):
     g.app.setEncoding()
     if pymacs:
         createNullGuiWithScript(None)
+    elif jyLeo:
+        import leoSwingGui
+        g.app.gui = leoSwingGui.swingGui()
     elif script:
         if windowFlag:
             g.app.createTkGui() # Creates global windows.
@@ -138,6 +151,8 @@ def run(fileName=None,pymacs=None,*args,**keywords):
         c.redraw_now()
     c.bodyWantsFocus()
     g.app.gui.runMainLoop()
+#@-node:ekr.20031218072017.1934:run
+#@+node:ekr.20070930060755:utils
 #@+node:ekr.20070306085724:adjustSysPath
 def adjustSysPath (g):
 
@@ -285,6 +300,34 @@ You may download Python from http://python.org/download/
         return 0
 #@nonl
 #@-node:ekr.20031218072017.1936:isValidPython
+#@+node:ekr.20031218072017.2607:profile
+#@+at 
+#@nonl
+# To gather statistics, do the following in a Python window, not idle:
+# 
+#     import leo
+#     leo.profile()  (this runs leo)
+#     load leoDocs.leo (it is very slow)
+#     quit Leo.
+#@-at
+#@@c
+
+def profile ():
+
+    """Gather and print statistics about Leo"""
+
+    import profile, pstats
+
+    # name = "c:/prog/test/leoProfile.txt"
+    name = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test','leoProfile.txt'))
+
+    profile.run('leo.run()',name)
+
+    p = pstats.Stats(name)
+    p.strip_dirs()
+    p.sort_stats('cum','file','name')
+    p.print_stats()
+#@-node:ekr.20031218072017.2607:profile
 #@+node:ekr.20041130093254:reportDirectories
 def reportDirectories(verbose):
 
@@ -318,35 +361,7 @@ def startPsyco ():
         g.es_exception()
         g.app.use_psyco = False
 #@-node:ekr.20040411081633:startPsyco
-#@-node:ekr.20031218072017.1934:run & allies
-#@+node:ekr.20031218072017.2607:profile
-#@+at 
-#@nonl
-# To gather statistics, do the following in a Python window, not idle:
-# 
-#     import leo
-#     leo.profile()  (this runs leo)
-#     load leoDocs.leo (it is very slow)
-#     quit Leo.
-#@-at
-#@@c
-
-def profile ():
-
-    """Gather and print statistics about Leo"""
-
-    import profile, pstats
-
-    # name = "c:/prog/test/leoProfile.txt"
-    name = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test','leoProfile.txt'))
-
-    profile.run('leo.run()',name)
-
-    p = pstats.Stats(name)
-    p.strip_dirs()
-    p.sort_stats('cum','file','name')
-    p.print_stats()
-#@-node:ekr.20031218072017.2607:profile
+#@-node:ekr.20070930060755:utils
 #@-others
 
 if __name__ == "__main__":

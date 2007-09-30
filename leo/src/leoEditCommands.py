@@ -289,15 +289,15 @@ class Tracker:
         self.tablist = tlist
     #@-node:ekr.20050920085536.86:setTabList
     #@+node:ekr.20050920085536.87:_next
-    def _next (self):
+    # def _next (self):
 
-        while 1:
-            tlist = self.tablist 
-            if not tlist:yield ''
-            for z in self.tablist:
-                if tlist!=self.tablist:
-                    break 
-                yield z
+        # while 1:
+            # tlist = self.tablist 
+            # if not tlist:yield ''
+            # for z in self.tablist:
+                # if tlist!=self.tablist:
+                    # break 
+                # yield z
     #@-node:ekr.20050920085536.87:_next
     #@+node:ekr.20050920085536.88:next
     def next (self):
@@ -621,41 +621,37 @@ class abbrevCommandsClass (baseEditCommandsClass):
         ins = w.getInsertPoint()
         #@    << define a new generator searchXR >>
         #@+node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
-        #@+at 
-        #@nonl
-        # This is a generator (it contains a yield).
-        # To make this work we must define a new generator for each call to 
-        # regionalExpandAbbrev.
-        #@-at
-        #@@c
-        def searchXR (i1,i2,ins,event):
-            k = self.k
-            w = self.editWidget(event)
-            if not w: return
+        # @ This is a generator (it contains a yield).
+        # To make this work we must define a new generator for each call to regionalExpandAbbrev.
+        # @c
+        # def searchXR (i1,i2,ins,event):
+            # k = self.k
+            # w = self.editWidget(event)
+            # if not w: return
 
-            w.tag_add('sXR',i1,i2)
-            while i1:
-                tr = w.tag_ranges('sXR')
-                if not tr: break
-                i1 = w.search(r'\w',i1,stopindex=tr[1],regexp=True)
-                if i1:
-                    word = w.get('%s wordstart' % i1,'%s wordend' % i1)
-                    w.tag_delete('found')
-                    w.tag_add('found','%s wordstart' % i1,'%s wordend' % i1)
-                    w.tag_config('found',background='yellow')
-                    if self.abbrevs.has_key(word):
-                        k.setLabel('Replace %s with %s? y/n' % (word,self.abbrevs[word]))
-                        yield None
-                        if k.regXKey == 'y':
-                            ind = w.index('%s wordstart' % i1)
-                            w.delete('%s wordstart' % i1,'%s wordend' % i1)
-                            w.insert(ind,self.abbrevs[word])
-                    i1 = '%s wordend' % i1
-            w.setInsertPoint(ins,ins,insert=ins)
-            w.tag_delete('sXR')
-            w.tag_delete('found')
-            k.setLabelGrey('')
-            self.k.regx = g.bunch(iter=None,key=None)
+            # w.tag_add('sXR',i1,i2)
+            # while i1:
+                # tr = w.tag_ranges('sXR')
+                # if not tr: break
+                # i1 = w.search(r'\w',i1,stopindex=tr[1],regexp=True)
+                # if i1:
+                    # word = w.get('%s wordstart' % i1,'%s wordend' % i1)
+                    # w.tag_delete('found')
+                    # w.tag_add('found','%s wordstart' % i1,'%s wordend' % i1)
+                    # w.tag_config('found',background='yellow')
+                    # if self.abbrevs.has_key(word):
+                        # k.setLabel('Replace %s with %s? y/n' % (word,self.abbrevs[word]))
+                        # yield None
+                        # if k.regXKey == 'y':
+                            # ind = w.index('%s wordstart' % i1)
+                            # w.delete('%s wordstart' % i1,'%s wordend' % i1)
+                            # w.insert(ind,self.abbrevs[word])
+                    # i1 = '%s wordend' % i1
+            # w.setInsertPoint(ins,ins,insert=ins)
+            # w.tag_delete('sXR')
+            # w.tag_delete('found')
+            # k.setLabelGrey('')
+            # self.k.regx = g.bunch(iter=None,key=None)
         #@-node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
         #@nl
 
@@ -5462,7 +5458,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
         baseEditCommandsClass.__init__(self,c) # init the base class.
 
         self.killBuffer = [] # May be changed in finishCreate.
-        self.kbiterator = self.iterateKillBuffer()
+        ### self.kbiterator = self.iterateKillBuffer()
         self.last_clipboard = None # For interacting with system clipboard.
         self.reset = False
 
@@ -5579,16 +5575,16 @@ class killBufferCommandsClass (baseEditCommandsClass):
         return None
     #@-node:ekr.20050920084036.185:getClipboard
     #@+node:ekr.20050920084036.184:iterateKillBuffer
-    def iterateKillBuffer (self):
+    # def iterateKillBuffer (self):
 
-        while 1:
-            if self.killBuffer:
-                self.last_clipboard = None
-                for z in self.killBuffer:
-                    if self.reset:
-                        self.reset = False
-                        break
-                    yield z
+        # while 1:
+            # if self.killBuffer:
+                # self.last_clipboard = None
+                # for z in self.killBuffer:
+                    # if self.reset:
+                        # self.reset = False
+                        # break
+                    # yield z
     #@-node:ekr.20050920084036.184:iterateKillBuffer
     #@+node:ekr.20050920084036.178:kill, killLine
     def kill (self,event,frm,to,undoType=None):

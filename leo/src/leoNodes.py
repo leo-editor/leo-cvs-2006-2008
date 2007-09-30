@@ -1821,44 +1821,44 @@ class basePosition (object):
 
     #@+others
     #@+node:EKR.20040529103843:p.tnodes_iter & unique_tnodes_iter
-    def tnodes_iter(self):
+    # def tnodes_iter(self):
 
-        """Return all tnode's in a positions subtree."""
+        # """Return all tnode's in a positions subtree."""
 
-        p = self
-        for p in p.self_and_subtree_iter():
-            yield p.v.t
+        # p = self
+        # for p in p.self_and_subtree_iter():
+            # yield p.v.t
 
-    def unique_tnodes_iter(self):
+    # def unique_tnodes_iter(self):
 
-        """Return all unique tnode's in a positions subtree."""
+        # """Return all unique tnode's in a positions subtree."""
 
-        p = self
-        marks = {}
-        for p in p.self_and_subtree_iter():
-            if p.v.t not in marks:
-                marks[p.v.t] = p.v.t
-                yield p.v.t
+        # p = self
+        # marks = {}
+        # for p in p.self_and_subtree_iter():
+            # if p.v.t not in marks:
+                # marks[p.v.t] = p.v.t
+                # yield p.v.t
     #@-node:EKR.20040529103843:p.tnodes_iter & unique_tnodes_iter
     #@+node:EKR.20040529103945:p.vnodes_iter & unique_vnodes_iter
-    def vnodes_iter(self):
+    # def vnodes_iter(self):
 
-        """Return all vnode's in a positions subtree."""
+        # """Return all vnode's in a positions subtree."""
 
-        p = self
-        for p in p.self_and_subtree_iter():
-            yield p.v
+        # p = self
+        # for p in p.self_and_subtree_iter():
+            # yield p.v
 
-    def unique_vnodes_iter(self):
+    # def unique_vnodes_iter(self):
 
-        """Return all unique vnode's in a positions subtree."""
+        # """Return all unique vnode's in a positions subtree."""
 
-        p = self
-        marks = {}
-        for p in p.self_and_subtree_iter():
-            if p.v not in marks:
-                marks[p.v] = p.v
-                yield p.v
+        # p = self
+        # marks = {}
+        # for p in p.self_and_subtree_iter():
+            # if p.v not in marks:
+                # marks[p.v] = p.v
+                # yield p.v
     #@-node:EKR.20040529103945:p.vnodes_iter & unique_vnodes_iter
     #@+node:ekr.20040305173559:p.subtree_iter
     class subtree_iter_class:

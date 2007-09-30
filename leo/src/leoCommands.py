@@ -37,9 +37,13 @@ import os
 import string
 import sys
 import tempfile
-import tabnanny # for Check Python command
 import time
 import tokenize # for Check Python command
+
+try:
+    import tabnanny # for Check Python command # Does not exist in jython
+except ImportError:
+    tabnanny = None
 
 try:
     # IronPython has troubles with these.
@@ -388,39 +392,39 @@ class baseCommands:
     #@nonl
     #@-node:EKR.20040529091232:c.all_positions_iter == allNodes_iter
     #@+node:EKR.20040529091232.1:c.all_tnodes_iter
-    def all_tnodes_iter(self):
+    # def all_tnodes_iter(self):
 
-        c = self
-        for p in c.all_positions_iter():
-            yield p.v.t
+        # c = self
+        # for p in c.all_positions_iter():
+            # yield p.v.t
 
-        # return c.rootPosition().all_tnodes_iter(all=True)
+        # # return c.rootPosition().all_tnodes_iter(all=True)
     #@-node:EKR.20040529091232.1:c.all_tnodes_iter
     #@+node:EKR.20040529091232.2:c.all_unique_tnodes_iter
-    def all_unique_tnodes_iter(self):
+    # def all_unique_tnodes_iter(self):
 
-        c = self ; marks = {}
+        # c = self ; marks = {}
 
-        for p in c.all_positions_iter():
-            if not p.v.t in marks:
-                marks[p.v.t] = p.v.t
-                yield p.v.t
+        # for p in c.all_positions_iter():
+            # if not p.v.t in marks:
+                # marks[p.v.t] = p.v.t
+                # yield p.v.t
     #@-node:EKR.20040529091232.2:c.all_unique_tnodes_iter
     #@+node:EKR.20040529091232.3:c.all_vnodes_iter
-    def all_vnodes_iter(self):
+    # def all_vnodes_iter(self):
 
-        c = self
-        for p in c.all_positions_iter():
-            yield p.v
+        # c = self
+        # for p in c.all_positions_iter():
+            # yield p.v
     #@-node:EKR.20040529091232.3:c.all_vnodes_iter
     #@+node:EKR.20040529091232.4:c.all_unique_vnodes_iter
-    def all_unique_vnodes_iter(self):
+    # def all_unique_vnodes_iter(self):
 
-        c = self ; marks = {}
-        for p in c.all_positions_iter():
-            if not p.v in marks:
-                marks[p.v] = p.v
-                yield p.v
+        # c = self ; marks = {}
+        # for p in c.all_positions_iter():
+            # if not p.v in marks:
+                # marks[p.v] = p.v
+                # yield p.v
     #@-node:EKR.20040529091232.4:c.all_unique_vnodes_iter
     #@+node:ekr.20070627082044.866:@test c iters
     if g.unitTesting:
@@ -4090,7 +4094,10 @@ class baseCommands:
             s = p.bodyString()
             if not s: return
 
-            readlines = g.readLinesGenerator(s).next
+            g.trace(p)
+
+            ### readlines = g.readLinesGenerator(s).next # not valid in jyleo.
+            readlines = g.readLinesClass(s).next
 
             try:
                 self.clear()

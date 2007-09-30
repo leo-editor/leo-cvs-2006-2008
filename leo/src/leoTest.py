@@ -26,9 +26,13 @@ import glob
 import os
 
 import sys
-import tabnanny
 import tokenize
 import unittest
+
+try:
+    import tabnanny # Does not exist in jython.
+except ImportError:
+    tabnanny = None
 
 try:
     import compiler

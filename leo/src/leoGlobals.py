@@ -27,6 +27,16 @@ try:
 except ImportError:
     gc = None
 
+try:
+    import filecmp
+except ImportError: # does not exist in jython.
+    filecmp = None
+
+try:
+    import gettext
+except ImportError: # does not exist in jython.
+    gettext = None
+
 if 0: # Do NOT import pdb here!  We shall define pdb as a _function_ below.
     import pdb
 
@@ -40,8 +50,7 @@ import zipfile
 # These do not exist in IronPython.
 # However, it *is* valid for IronPython to use the Python 2.4 libs!
 import difflib
-import filecmp
-import gettext
+
 import os
 import shutil
 import string
@@ -5463,9 +5472,14 @@ def cantImport (moduleName,pluginName=None,verbose=True):
     # if not pluginName: g.printStack()
 
     if verbose and not (app and g.app.unitTesting):
-        s = "Can not import %s" % moduleName
-        if pluginName: s += " from plugin %s" % pluginName
-        g.es_print(s,color="blue")
+        # g.trace('guiName',g.app.gui.guiName())
+        if g.app.gui.guiName() != 'tkinter' and moduleName in ('Tkinter','Pmw'):
+            pass
+            # g.trace('ignore import',moduleName)
+        else:
+            s = "Can not import %s" % moduleName
+            if pluginName: s += " from plugin %s" % pluginName
+            g.es_print(s,color="blue")
 
     return None
 #@+node:ekr.20070627082044.850:@test g.cantImport returns None
@@ -5686,12 +5700,15 @@ def importFromPath (name,path,pluginName=None,verbose=False):
 #@-node:ekr.20041219095213:import wrappers
 #@+node:ekr.20040629162023:readLines class and generator
 #@+node:EKR.20040612114220.3:g.readLinesGenerator
-def readLinesGenerator(s):
+# This has been replaced by readLinesClass because
+# yield is not valid in jython.
 
-    for line in g.splitLines(s):
-        # g.trace(repr(line))
-        yield line
-    yield ''
+# def readLinesGenerator(s):
+
+    # for line in g.splitLines(s):
+        # # g.trace(repr(line))
+        # yield line
+    # yield ''
 #@-node:EKR.20040612114220.3:g.readLinesGenerator
 #@+node:EKR.20040612114220.4:class readLinesClass
 class readLinesClass:

@@ -3195,7 +3195,7 @@ class nullLog (leoLog):
 
         gui = c and c.frame and c.frame.gui or g.app.gui
 
-        log = gui.plainTextWidget( ### was g.app.gui.
+        log = gui.plainTextWidget(
             c = self.c,
             name="log-%d" % self.logNumber,
         )
