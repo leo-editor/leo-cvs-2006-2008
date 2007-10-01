@@ -31,11 +31,11 @@ import leoSwingFrame
 
 class swingGui(leoGui.leoGui):
 
-    """A class encapulating all calls to tkinter."""
+    """A class encapulating all calls to swing."""
 
     #@    @+others
     #@+node:ekr.20070930102228.4:swingGui birth & death
-    #@+node:ekr.20070930102228.5: tkGui.__init__
+    #@+node:ekr.20070930102228.5: swingGui.__init__
     def __init__ (self):
 
         # Initialize the base class.
@@ -54,7 +54,7 @@ class swingGui(leoGui.leoGui):
 
         # self.win32clipboard = None 
     #@nonl
-    #@-node:ekr.20070930102228.5: tkGui.__init__
+    #@-node:ekr.20070930102228.5: swingGui.__init__
     #@+node:ekr.20070930102228.6:createKeyHandlerClass (swingGui)
     def createKeyHandlerClass (self,c,useGlobalKillbuffer=True,useGlobalRegisters=True):
 
@@ -74,7 +74,7 @@ class swingGui(leoGui.leoGui):
                 log.c.executeScript(script=self.script)
                 print 'End of batch script'
             else:
-                print 'no log, no commander for executeScript in tkInterGui.runMainLoop'
+                print 'no log, no commander for executeScript in swingGui.runMainLoop'
         else:
             pass # no need to invoke a swing main loop.
     #@-node:ekr.20070930102228.14:runMainLoop (swingGui)
@@ -133,7 +133,7 @@ class swingGui(leoGui.leoGui):
                 # WARNING: retain NO references to widgets or fonts here!
                 w = g.app.gui.plainTextWidget()
                 fn = w.cget("font")
-                font = tkFont.Font(font=fn) 
+                font = swingFont.Font(font=fn) 
                 family = font.cget("family")
                 self.defaultFontFamily = family[:]
                 # print '***** getDefaultConfigFont',repr(family)
@@ -146,39 +146,39 @@ class swingGui(leoGui.leoGui):
     #@-node:ekr.20070930102228.4:swingGui birth & death
     #@+node:ekr.20070930102228.15:swingGui dialogs & panels
     def runAboutLeoDialog(self,c,version,theCopyright,url,email):
-        """Create and run a Tkinter About Leo dialog."""
-        d = leoSwingDialog.tkinterAboutLeo(c,version,theCopyright,url,email)
+        """Create and run a swing About Leo dialog."""
+        d = leoSwingDialog.swingAboutLeo(c,version,theCopyright,url,email)
         return d.run(modal=False)
 
     def runAskLeoIDDialog(self):
         """Create and run a dialog to get g.app.LeoID."""
-        d = leoSwingDialog.tkinterAskLeoID()
+        d = leoSwingDialog.swingAskLeoID()
         return d.run(modal=True)
 
     def runAskOkDialog(self,c,title,message=None,text="Ok"):
-        """Create and run a Tkinter an askOK dialog ."""
-        d = leoSwingDialog.tkinterAskOk(c,title,message,text)
+        """Create and run a swing an askOK dialog ."""
+        d = leoSwingDialog.swingAskOk(c,title,message,text)
         return d.run(modal=True)
 
     def runAskOkCancelNumberDialog(self,c,title,message):
         """Create and run askOkCancelNumber dialog ."""
-        d = leoSwingDialog.tkinterAskOkCancelNumber(c,title,message)
+        d = leoSwingDialog.swingAskOkCancelNumber(c,title,message)
         return d.run(modal=True)
 
     def runAskOkCancelStringDialog(self,c,title,message):
         """Create and run askOkCancelString dialog ."""
-        d = leoSwingDialog.tkinterAskOkCancelString(c,title,message)
+        d = leoSwingDialog.swingAskOkCancelString(c,title,message)
         return d.run(modal=True)
 
     def runAskYesNoDialog(self,c,title,message=None):
         """Create and run an askYesNo dialog."""
-        d = leoSwingDialog.tkinterAskYesNo(c,title,message)
+        d = leoSwingDialog.swingAskYesNo(c,title,message)
         return d.run(modal=True)
 
     def runAskYesNoCancelDialog(self,c,title,
         message=None,yesMessage="Yes",noMessage="No",defaultButton="Yes"):
         """Create and run an askYesNoCancel dialog ."""
-        d = leoSwingDialog.tkinterAskYesNoCancel(
+        d = leoSwingDialog.swingAskYesNoCancel(
             c,title,message,yesMessage,noMessage,defaultButton)
         return d.run(modal=True)
 
@@ -187,18 +187,18 @@ class swingGui(leoGui.leoGui):
     # def runCompareDialog(self,c):
         # """Create and run an askYesNo dialog."""
         # if not g.app.unitTesting:
-            # leoTkinterCompareDialog(c)
-    #@+node:ekr.20070930102228.16:tkGui.createSpellTab
+            # leoSwingCompareDialog(c)
+    #@+node:ekr.20070930102228.16:swingGui.createSpellTab
     def createSpellTab(self,c,spellHandler,tabName):
 
-        return leoTkinterFind.tkSpellTab(c,spellHandler,tabName)
-    #@-node:ekr.20070930102228.16:tkGui.createSpellTab
-    #@+node:ekr.20070930102228.17:tkGui file dialogs
+        return leoSwingFind.swingSpellTab(c,spellHandler,tabName)
+    #@-node:ekr.20070930102228.16:swingGui.createSpellTab
+    #@+node:ekr.20070930102228.17:swingGui file dialogs
     # We no longer specify default extensions so that we can open and save files without extensions.
     #@+node:ekr.20070930102228.18:runOpenFileDialog
     def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
 
-        """Create and run an Tkinter open file dialog ."""
+        """Create and run an swing open file dialog ."""
 
         __pychecker__ = '--no-argsused' # defaultextension not used.
 
@@ -211,54 +211,54 @@ class swingGui(leoGui.leoGui):
                 g.CheckVersion(version,"2.3") and
                 g.CheckVersion(self.root.getvar("tk_patchLevel"),"8.4")
             ):
-                files = tkFileDialog.askopenfilenames(
+                files = swingFileDialog.askopenfilenames(
                     title=title,filetypes=filetypes,initialdir=initialdir)
                 # g.trace(files)
                 return list(files)
             else:
                 # Get one file and return it as a list.
-                theFile = tkFileDialog.askopenfilename(
+                theFile = swingFileDialog.askopenfilename(
                     title=title,filetypes=filetypes,initialdir=initialdir)
                 return [theFile]
         else:
             # Return a single file name as a string.
-            return tkFileDialog.askopenfilename(
+            return swingFileDialog.askopenfilename(
                 title=title,filetypes=filetypes,initialdir=initialdir)
     #@-node:ekr.20070930102228.18:runOpenFileDialog
     #@+node:ekr.20070930102228.19:runSaveFileDialog
     def runSaveFileDialog(self,initialfile,title,filetypes,defaultextension):
 
-        """Create and run an Tkinter save file dialog ."""
+        """Create and run an swing save file dialog ."""
 
         __pychecker__ = '--no-argsused' # defaultextension not used.
 
         initialdir=g.app.globalOpenDir or g.os_path_abspath(os.getcwd()),
 
-        return tkFileDialog.asksaveasfilename(
+        return swingFileDialog.asksaveasfilename(
             initialdir=initialdir,initialfile=initialfile,
             title=title,filetypes=filetypes)
     #@-node:ekr.20070930102228.19:runSaveFileDialog
-    #@-node:ekr.20070930102228.17:tkGui file dialogs
-    #@+node:ekr.20070930102228.20:tkGui panels
+    #@-node:ekr.20070930102228.17:swingGui file dialogs
+    #@+node:ekr.20070930102228.20:swingGui panels
     def createComparePanel(self,c):
-        """Create a Tkinter color picker panel."""
+        """Create a swing color picker panel."""
         return leoSwingComparePanel.leoSwingComparePanel(c)
 
     def createFindPanel(self,c):
-        """Create a hidden Tkinter find panel."""
+        """Create a hidden swing find panel."""
         panel = leoSwingFind.leoSwingFind(c)
         panel.top.withdraw()
         return panel
 
     def createFindTab (self,c,parentFrame):
-        """Create a Tkinter find tab in the indicated frame."""
+        """Create a swing find tab in the indicated frame."""
         return leoSwingFind.swingFindTab(c,parentFrame)
 
     def createLeoFrame(self,title):
         """Create a new Leo frame."""
         gui = self
         return leoSwingFrame.leoSwingFrame(title,gui)
-    #@-node:ekr.20070930102228.20:tkGui panels
+    #@-node:ekr.20070930102228.20:swingGui panels
     #@-node:ekr.20070930102228.15:swingGui dialogs & panels
     #@+node:ekr.20070930102228.21:swingGui utils (TO DO)
     #@+node:ekr.20070930102228.22:Clipboard (swingGui)
@@ -388,7 +388,7 @@ class swingGui(leoGui.leoGui):
         # Add the caption.
         if caption and len(caption) > 0:
             caption = Tk.Label(parent,text=caption,highlightthickness=0,bd=0)
-            caption.tkraise(w)
+            # caption.tkraise(w)
             caption.grid(in_=w,row=0,column=2,rowspan=2,columnspan=3,padx=4,sticky="w")
 
         return w,f
@@ -419,14 +419,14 @@ class swingGui(leoGui.leoGui):
     #@nonl
     #@-node:ekr.20070930102228.30:Events (swingGui)
     #@+node:ekr.20070930102228.31:Focus
-    #@+node:ekr.20070930102228.32:tkGui.get_focus
+    #@+node:ekr.20070930102228.32:swingGui.get_focus
     def get_focus(self,c):
 
         """Returns the widget that has focus, or body if None."""
 
         return c.frame.top.focus_displayof()
-    #@-node:ekr.20070930102228.32:tkGui.get_focus
-    #@+node:ekr.20070930102228.33:tk.Gui.set_focus
+    #@-node:ekr.20070930102228.32:swingGui.get_focus
+    #@+node:ekr.20070930102228.33:swing.Gui.set_focus
     set_focus_count = 0
 
     def set_focus(self,c,w):
@@ -455,7 +455,7 @@ class swingGui(leoGui.leoGui):
             except Exception:
                 # g.es_exception()
                 return False
-    #@-node:ekr.20070930102228.33:tk.Gui.set_focus
+    #@-node:ekr.20070930102228.33:swing.Gui.set_focus
     #@-node:ekr.20070930102228.31:Focus
     #@+node:ekr.20070930102228.34:Font
     #@+node:ekr.20070930102228.35:swingGui.getFontFromParams
@@ -466,7 +466,7 @@ class swingGui(leoGui.leoGui):
         family_name = family
 
         try:
-            font = tkFont.Font(family=family,size=size,slant=slant,weight=weight)
+            font = swingFont.Font(family=family,size=size,slant=slant,weight=weight)
             # if g.app.trace: g.trace(font)
             return font
         except:
@@ -479,9 +479,9 @@ class swingGui(leoGui.leoGui):
     #@+node:ekr.20070930102228.36:getFullVersion
     def getFullVersion (self,c):
 
-        tkLevel = c.frame.top.getvar("tk_patchLevel")
+        swingLevel = c.frame.top.getvar("tk_patchLevel")
 
-        return 'Tk %s, Pmw %s' % (tkLevel,Pmw.version())
+        return 'swing %s' % (swingLevel)
     #@-node:ekr.20070930102228.36:getFullVersion
     #@+node:ekr.20070930102228.37:Icons
     #@+node:ekr.20070930102228.38:attachLeoIcon & createLeoIcon
@@ -574,12 +574,12 @@ class swingGui(leoGui.leoGui):
     #@-node:ekr.20070930102228.38:attachLeoIcon & createLeoIcon
     #@-node:ekr.20070930102228.37:Icons
     #@+node:ekr.20070930102228.41:Idle Time
-    #@+node:ekr.20070930102228.42:tkinterGui.setIdleTimeHook
+    #@+node:ekr.20070930102228.42:swingGui.setIdleTimeHook
     def setIdleTimeHook (self,idleTimeHookHandler):
 
         if self.root:
             self.root.after_idle(idleTimeHookHandler)
-    #@-node:ekr.20070930102228.42:tkinterGui.setIdleTimeHook
+    #@-node:ekr.20070930102228.42:swingGui.setIdleTimeHook
     #@+node:ekr.20070930102228.43:setIdleTimeHookAfterDelay
     def setIdleTimeHookAfterDelay (self,idleTimeHookHandler):
 
@@ -615,15 +615,15 @@ class swingGui(leoGui.leoGui):
         iconBar = c.frame.getIconBarObject()
         b = iconBar.add(text=buttonText)
 
-        if balloonText and balloonText != buttonText:
-            Pmw = g.importExtension('Pmw',pluginName='gui.makeScriptButton',verbose=False)
-            if Pmw:
-                balloon = Pmw.Balloon(b,initwait=100)
-                balloon.bind(b,balloonText)
+        # if balloonText and balloonText != buttonText:
+            # Pmw = g.importExtension('Pmw',pluginName='gui.makeScriptButton',verbose=False)
+            # if Pmw:
+                # balloon = Pmw.Balloon(b,initwait=100)
+                # balloon.bind(b,balloonText)
 
-        if sys.platform == "win32":
-            width = int(len(buttonText) * 0.9)
-            b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
+        # if sys.platform == "win32":
+            # width = int(len(buttonText) * 0.9)
+            # b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
         #@-node:ekr.20070930102228.46:<< create the button b >>
         #@nl
         #@    << define the callbacks for b >>

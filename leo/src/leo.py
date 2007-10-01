@@ -350,12 +350,16 @@ def reportDirectories(verbose):
 def startJyleo (g):
 
     import leoSwingFrame
+    import leoSwingUtils
     import java.awt as awt
 
-    g.app.splash = splash = leoSwingFrame.leoSplash()
-    awt.EventQueue.invokeAndWait(splash)
+    if 1:
+        g.app.splash = None
+    else:
+        g.app.splash = splash = leoSwingFrame.leoSplash()
+        awt.EventQueue.invokeAndWait(splash)
 
-    gct = leoSwingFrame.GCEveryOneMinute()
+    gct = leoSwingUtils.GCEveryOneMinute()
     gct.start()
 
     tk = awt.Toolkit.getDefaultToolkit()
