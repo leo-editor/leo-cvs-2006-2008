@@ -1820,7 +1820,7 @@ class basePosition (object):
     #@@c
 
     #@+others
-    #@+node:EKR.20040529103843:p.tnodes_iter & unique_tnodes_iter
+    #@+node:EKR.20040529103843:p.tnodes_iter
     # def tnodes_iter(self):
 
         # """Return all tnode's in a positions subtree."""
@@ -1829,6 +1829,45 @@ class basePosition (object):
         # for p in p.self_and_subtree_iter():
             # yield p.v.t
 
+    class tnodes_iter_class:
+
+        """Returns a list of positions in a subtree, possibly including the root of the subtree."""
+
+        #@    @+others
+        #@+node:ekr.20070930191649.1:__init__ & __iter__ (p.tnodes_iter)
+        def __init__(self,p):
+
+            # g.trace('p.tnodes_iter.__init','p',p)
+
+            self.first = p.copy()
+            self.p = None
+
+        def __iter__(self):
+
+            return self
+        #@-node:ekr.20070930191649.1:__init__ & __iter__ (p.tnodes_iter)
+        #@+node:ekr.20070930191649.2:next
+        def next(self):
+
+            if self.first:
+                self.p = self.first
+                self.first = None
+            elif self.p:
+                self.p.moveToThreadNext()
+
+            if self.p:
+                return self.p.v.t
+
+            else: raise StopIteration
+        #@-node:ekr.20070930191649.2:next
+        #@-others
+
+    def tnodes_iter (self):
+
+        p = self
+        return self.tnodes_iter_class(p)
+    #@-node:EKR.20040529103843:p.tnodes_iter
+    #@+node:ekr.20070930191632:p.unique_tnodes_iter
     # def unique_tnodes_iter(self):
 
         # """Return all unique tnode's in a positions subtree."""
@@ -1839,8 +1878,50 @@ class basePosition (object):
             # if p.v.t not in marks:
                 # marks[p.v.t] = p.v.t
                 # yield p.v.t
-    #@-node:EKR.20040529103843:p.tnodes_iter & unique_tnodes_iter
-    #@+node:EKR.20040529103945:p.vnodes_iter & unique_vnodes_iter
+
+    class unique_tnodes_iter_class:
+
+        """Returns a list of positions in a subtree, possibly including the root of the subtree."""
+
+        #@    @+others
+        #@+node:ekr.20070930192032.1:__init__ & __iter__ (p.unique_tnodes_iter)
+        def __init__(self,p):
+
+            # g.trace('p.unique_tnodes_iter.__init','p',p,)
+
+            self.d = {}
+            self.first = p.copy()
+            self.p = None
+
+        def __iter__(self):
+
+            return self
+        #@-node:ekr.20070930192032.1:__init__ & __iter__ (p.unique_tnodes_iter)
+        #@+node:ekr.20070930192032.2:next
+        def next(self):
+
+            if self.first:
+                self.p = self.first
+                self.first = None
+
+            while self.p:
+                self.p.moveToThreadNext()
+                if not self.p:
+                    break
+                elif not self.d.get(self.p.v.t):
+                    self.d [self.p.v.t] = True
+                    return self.p.v.t
+
+            else: raise StopIteration
+        #@-node:ekr.20070930192032.2:next
+        #@-others
+
+    def unique_tnodes_iter (self):
+
+        p = self
+        return self.unique_tnodes_iter_class(p)
+    #@-node:ekr.20070930191632:p.unique_tnodes_iter
+    #@+node:EKR.20040529103945:p.vnodes_iter
     # def vnodes_iter(self):
 
         # """Return all vnode's in a positions subtree."""
@@ -1849,6 +1930,47 @@ class basePosition (object):
         # for p in p.self_and_subtree_iter():
             # yield p.v
 
+    class vnodes_iter_class:
+
+        """Returns a list of positions in a subtree, possibly including the root of the subtree."""
+
+        #@    @+others
+        #@+node:ekr.20070930192339.1:__init__ & __iter__ (p.tnodes_iter)
+        def __init__(self,p):
+
+            # g.trace('p.tnodes_iter.__init','p',p)
+
+            self.first = p.copy()
+            self.p = None
+
+        def __iter__(self):
+
+            return self
+        #@-node:ekr.20070930192339.1:__init__ & __iter__ (p.tnodes_iter)
+        #@+node:ekr.20070930192339.2:next
+        def next(self):
+
+            if self.first:
+                self.p = self.first
+                self.first = None
+            elif self.p:
+                self.p.moveToThreadNext()
+
+            if self.p:
+                return self.p.v
+
+            else: raise StopIteration
+        #@-node:ekr.20070930192339.2:next
+        #@-others
+
+    def vnodes_iter (self):
+
+        p = self
+        return self.vnodes_iter_class(p)
+
+
+    #@-node:EKR.20040529103945:p.vnodes_iter
+    #@+node:ekr.20070930191632.1:p.unique_vnodes_iter
     # def unique_vnodes_iter(self):
 
         # """Return all unique vnode's in a positions subtree."""
@@ -1859,7 +1981,49 @@ class basePosition (object):
             # if p.v not in marks:
                 # marks[p.v] = p.v
                 # yield p.v
-    #@-node:EKR.20040529103945:p.vnodes_iter & unique_vnodes_iter
+
+    class unique_vnodes_iter_class:
+
+        """Returns a list of positions in a subtree, possibly including the root of the subtree."""
+
+        #@    @+others
+        #@+node:ekr.20070930192441.1:__init__ & __iter__ (p.unique_vnodes_iter)
+        def __init__(self,p):
+
+            # g.trace('p.unique_tnodes_iter.__init','p',p,)
+
+            self.d = {}
+            self.first = p.copy()
+            self.p = None
+
+        def __iter__(self):
+
+            return self
+        #@-node:ekr.20070930192441.1:__init__ & __iter__ (p.unique_vnodes_iter)
+        #@+node:ekr.20070930192441.2:next
+        def next(self):
+
+            if self.first:
+                self.p = self.first
+                self.first = None
+
+            while self.p:
+                self.p.moveToThreadNext()
+                if not self.p:
+                    break
+                elif not self.d.get(self.p.v.t):
+                    self.d [self.p.v.t] = True
+                    return self.p.v
+
+            else: raise StopIteration
+        #@-node:ekr.20070930192441.2:next
+        #@-others
+
+    def unique_vnodes_iter (self):
+
+        p = self
+        return self.unique_vnodes_iter_class(p)
+    #@-node:ekr.20070930191632.1:p.unique_vnodes_iter
     #@+node:ekr.20040305173559:p.subtree_iter
     class subtree_iter_class:
 

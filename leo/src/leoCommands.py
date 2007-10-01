@@ -345,14 +345,12 @@ class baseCommands:
     #@-node:ekr.20031218072017.2582: version & signon stuff
     #@+node:ekr.20040312090934:c.iterators
     #@+node:EKR.20040529091232:c.all_positions_iter == allNodes_iter
-    # New in Leo 4.4.2 (It used to be defined in terms of p.allNodes_iter.)
-
     class allNodes_iter_class:
 
         """Returns a list of positions in the entire outline."""
 
         #@    @+others
-        #@+node:ekr.20060907085906.1:__init__ & __iter__ (p.allNodesIter)
+        #@+node:ekr.20060907085906.1:__init__ & __iter__ (c.all_positions_iter)
         def __init__(self,c,copy):
 
             # g.trace('c.allNodes_iter.__init','p',p,'c',c)
@@ -365,7 +363,7 @@ class baseCommands:
         def __iter__(self):
 
             return self
-        #@-node:ekr.20060907085906.1:__init__ & __iter__ (p.allNodesIter)
+        #@-node:ekr.20060907085906.1:__init__ & __iter__ (c.all_positions_iter)
         #@+node:ekr.20060907085906.2:next
         def next(self):
 
@@ -379,6 +377,7 @@ class baseCommands:
             if self.p:
                 if self.copy: return self.p.copy()
                 else:         return self.p
+
             else: raise StopIteration
         #@-node:ekr.20060907085906.2:next
         #@-others
@@ -399,6 +398,46 @@ class baseCommands:
             # yield p.v.t
 
         # # return c.rootPosition().all_tnodes_iter(all=True)
+
+    class all_tnodes_iter_class:
+
+        """Returns a list of all tnodes in the entire outline."""
+
+        #@    @+others
+        #@+node:ekr.20070930185552:__init__ & __iter__ (c.all_tnodes_iter)
+        def __init__(self,c):
+
+            # g.trace('c.all_tnodes_iter.__init','p',p,'c',c)
+
+            self.c = c
+            self.first = c.rootPosition()
+            self.p = None
+
+        def __iter__(self):
+
+            return self
+        #@-node:ekr.20070930185552:__init__ & __iter__ (c.all_tnodes_iter)
+        #@+node:ekr.20070930185603:next
+        def next(self):
+
+            if self.first:
+                self.p = self.first
+                self.first = None
+
+            elif self.p:
+                self.p.moveToThreadNext()
+
+            if self.p:
+                return self.p.v.t
+
+            else: raise StopIteration
+        #@-node:ekr.20070930185603:next
+        #@-others
+
+    def all_tnodes_iter (self):
+
+        c = self
+        return self.all_tnodes_iter_class(c)
     #@-node:EKR.20040529091232.1:c.all_tnodes_iter
     #@+node:EKR.20040529091232.2:c.all_unique_tnodes_iter
     # def all_unique_tnodes_iter(self):
@@ -409,6 +448,49 @@ class baseCommands:
             # if not p.v.t in marks:
                 # marks[p.v.t] = p.v.t
                 # yield p.v.t
+
+    class all_unique_tnodes_iter_class:
+
+        """Returns a list of all tnodes in the entire outline."""
+
+        #@    @+others
+        #@+node:ekr.20070930190218:__init__ & __iter__ (c.all_unique_tnodes_iter)
+        def __init__(self,c):
+
+            # g.trace('c.all_uniquetnodes_iter.__init','p',p,'c',c)
+
+            self.c = c
+            self.d = {}
+            self.first = c.rootPosition()
+            self.p = None
+
+        def __iter__(self):
+
+            return self
+        #@-node:ekr.20070930190218:__init__ & __iter__ (c.all_unique_tnodes_iter)
+        #@+node:ekr.20070930190229:next
+        def next(self):
+
+            if self.first:
+                self.p = self.first
+                self.first = None
+
+            while self.p:
+                self.p.moveToThreadNext()
+                if not self.p:
+                    break
+                elif not self.d.get(self.p.v.t):
+                    self.d [self.p.v.t] = True
+                    return self.p.v.t
+
+            else: raise StopIteration
+        #@-node:ekr.20070930190229:next
+        #@-others
+
+    def all_unique_tnodes_iter (self):
+
+        c = self
+        return self.all_unique_tnodes_iter_class(c)
     #@-node:EKR.20040529091232.2:c.all_unique_tnodes_iter
     #@+node:EKR.20040529091232.3:c.all_vnodes_iter
     # def all_vnodes_iter(self):
@@ -416,6 +498,46 @@ class baseCommands:
         # c = self
         # for p in c.all_positions_iter():
             # yield p.v
+
+    class all_vnodes_iter_class:
+
+        """Returns a list of all tnodes in the entire outline."""
+
+        #@    @+others
+        #@+node:ekr.20070930190711:__init__ & __iter__ (c.all_vnodes_iter)
+        def __init__(self,c):
+
+            # g.trace('c.all_tnodes_iter.__init','p',p,'c',c)
+
+            self.c = c
+            self.first = c.rootPosition()
+            self.p = None
+
+        def __iter__(self):
+
+            return self
+        #@-node:ekr.20070930190711:__init__ & __iter__ (c.all_vnodes_iter)
+        #@+node:ekr.20070930190729:next
+        def next(self):
+
+            if self.first:
+                self.p = self.first
+                self.first = None
+
+            elif self.p:
+                self.p.moveToThreadNext()
+
+            if self.p:
+                return self.p.v
+
+            else: raise StopIteration
+        #@-node:ekr.20070930190729:next
+        #@-others
+
+    def all_vnodes_iter (self):
+
+        c = self
+        return self.all_vnodes_iter_class(c)
     #@-node:EKR.20040529091232.3:c.all_vnodes_iter
     #@+node:EKR.20040529091232.4:c.all_unique_vnodes_iter
     # def all_unique_vnodes_iter(self):
@@ -425,6 +547,49 @@ class baseCommands:
             # if not p.v in marks:
                 # marks[p.v] = p.v
                 # yield p.v
+
+    class all_unique_vnodes_iter_class:
+
+        """Returns a list of all tnodes in the entire outline."""
+
+        #@    @+others
+        #@+node:ekr.20070930190755:__init__ & __iter__ (c.all_unique_nodes_iter)
+        def __init__(self,c):
+
+            # g.trace('c.all_uniquetnodes_iter.__init','p',p,'c',c)
+
+            self.c = c
+            self.d = {}
+            self.first = c.rootPosition()
+            self.p = None
+
+        def __iter__(self):
+
+            return self
+        #@-node:ekr.20070930190755:__init__ & __iter__ (c.all_unique_nodes_iter)
+        #@+node:ekr.20070930190835:next
+        def next(self):
+
+            if self.first:
+                self.p = self.first
+                self.first = None
+
+            while self.p:
+                self.p.moveToThreadNext()
+                if not self.p:
+                    break
+                elif not self.d.get(self.p.v.t):
+                    self.d [self.p.v.t] = True
+                    return self.p.v
+
+            else: raise StopIteration
+        #@-node:ekr.20070930190835:next
+        #@-others
+
+    def all_unique_vnodes_iter (self):
+
+        c = self
+        return self.all_unique_vnodes_iter_class(c)
     #@-node:EKR.20040529091232.4:c.all_unique_vnodes_iter
     #@+node:ekr.20070627082044.866:@test c iters
     if g.unitTesting:
