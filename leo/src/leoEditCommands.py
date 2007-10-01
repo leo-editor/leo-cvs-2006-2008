@@ -5793,6 +5793,7 @@ class leoCommandsClass (baseEditCommandsClass):
             'about-leo':                    c.about,
             'add-comments':                 c.addComments,     
             'beautify-all':                 c.beautifyAllPythonCode,
+            'beautify-tree':                c.beautifyPythonTree,
             'beautify':                     c.beautifyPythonCode,
             'cascade-windows':              f.cascade,
             'check-derived-file':           c.atFileCommands.checkDerivedFile,

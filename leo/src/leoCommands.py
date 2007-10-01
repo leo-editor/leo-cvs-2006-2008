@@ -4148,6 +4148,27 @@ class baseCommands:
 
         pp.endUndo()
     #@-node:ekr.20050729211526:prettyPrintPythonNode
+    #@+node:ekr.20071001075704:prettyPrintPythonTree
+    def prettyPrintPythonTree (self,event=None,dump=False):
+
+        '''Reformat all Python code in the outline to make it look more beautiful.'''
+
+        c = self ; p = c.currentPosition() ; pp = c.prettyPrinter(c)
+
+        for p in p.self_and_subtree_iter():
+
+            # Unlike scanDirectives, scanForAtLanguage ignores @comment.
+            if g.scanForAtLanguage(c,p) == "python":
+
+                pp.prettyPrintNode(p,dump=dump)
+
+        pp.endUndo()
+
+    # For unit test of inverse commands dict.
+    def beautifyPythonTree (self,event=None,dump=False):
+        return self.prettyPrintPythonTree (event,dump)
+    #@nonl
+    #@-node:ekr.20071001075704:prettyPrintPythonTree
     #@+node:ekr.20040711135244.5:class prettyPrinter
     class prettyPrinter:
 
@@ -4258,8 +4279,6 @@ class baseCommands:
             h = p.headString()
             s = p.bodyString()
             if not s: return
-
-            g.trace(p)
 
             ### readlines = g.readLinesGenerator(s).next # not valid in jyleo.
             readlines = g.readLinesClass(s).next
@@ -5167,11 +5186,14 @@ class baseCommands:
             for p in c.allNodes_iter():
                 if p.isMarked():
                     bunch = u.beforeMark(p,undoType)
-                    c.clearMarked(p)
+                    # c.clearMarked(p) # Very slow: calls a hook.
+                    p.v.clearMarked()
                     p.v.t.setDirty()
                     u.afterMark(p,undoType,bunch)
             dirtyVnodeList = [p.v for p in c.allNodes_iter() if p.v.isDirty()]
-            if changed: c.setChanged(True)
+            if changed:
+                g.doHook("clear-all-marks",c=c,p=p,v=p)
+                c.setChanged(True)
         finally:
             u.afterChangeGroup(current,undoType,dirtyVnodeList=dirtyVnodeList)
             c.endUpdate()
