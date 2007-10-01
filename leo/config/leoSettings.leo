@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.620922384702">
-	<global_window_position top="17" left="238" height="649" width="861"/>
+<globals body_outline_ratio="0.665511265165">
+	<global_window_position top="17" left="238" height="577" width="861"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -515,7 +515,7 @@
 </v>
 <v t="ekr.20070925144552" a="E"><vh>Menus</vh>
 <v t="ekr.20070925144534" a="E"><vh>@menus</vh>
-<v t="ekr.20070925144534.1" a="E"><vh>@menu File</vh>
+<v t="ekr.20070925144534.1" a="TV"><vh>@menu File</vh>
 <v t="ekr.20070925144534.2"><vh>@item *&amp;new</vh></v>
 <v t="ekr.20070925144534.3"><vh>@item open-outline</vh></v>
 <v t="ekr.20070925144534.4"><vh>@menu Open &amp;With...</vh></v>
@@ -527,11 +527,17 @@
 <v t="ekr.20070925144534.10"><vh>@item save-file-as-zipped</vh></v>
 <v t="ekr.20070925144534.11"><vh>@item save-file-to</vh></v>
 <v t="ekr.20070925144534.12"><vh>@item revert</vh></v>
-<v t="ekr.20070927173324" a="TV"><vh>@menu Recent &amp;Files</vh></v>
+<v t="ekr.20070927173324"><vh>@menu Recent &amp;Files</vh></v>
 <v t="ekr.20070927051742"><vh>@item -</vh></v>
 <v t="ekr.20070925144534.13"><vh>@menu &amp;Read/Write...</vh>
+<v t="ekr.20071001120755"><vh>@item *&amp;check-derived-file</vh></v>
+<v t="ekr.20071001120755.1"><vh>@item *check-le&amp;o-file</vh></v>
+<v t="ekr.20071001121059"><vh>@item *compare-leo-file&amp;s</vh></v>
+<v t="ekr.20071001120755.2"><vh>@item -</vh></v>
 <v t="ekr.20070925144534.14"><vh>@item *&amp;read-outline-only</vh></v>
 <v t="ekr.20070925144534.15"><vh>@item *write-&amp;outline-only</vh></v>
+<v t="ekr.20071001120755.3"><vh>@item *read-&amp;file-into-node</vh></v>
+<v t="ekr.20071001120755.4"><vh>@item *writ&amp;e-file-from-node</vh></v>
 <v t="ekr.20070925144534.16"><vh>@item -</vh></v>
 <v t="ekr.20070925144534.17"><vh>@item read-at-auto-nodes</vh></v>
 <v t="ekr.20070925144534.18"><vh>@item write-at-auto-nodes</vh></v>
@@ -8335,5 +8341,11 @@ a menu separator.</t>
 <t tx="ekr.20070927051856"></t>
 <t tx="ekr.20070927173324">A placeholder for the actual menu.
 Leo's init code populates this menu as a special case.</t>
+<t tx="ekr.20071001120755"></t>
+<t tx="ekr.20071001120755.1"></t>
+<t tx="ekr.20071001120755.2"></t>
+<t tx="ekr.20071001120755.3"></t>
+<t tx="ekr.20071001120755.4"></t>
+<t tx="ekr.20071001121059"></t>
 </tnodes>
 </leo_file>
