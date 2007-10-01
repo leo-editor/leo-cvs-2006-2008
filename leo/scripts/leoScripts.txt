@@ -20973,6 +20973,42 @@ def checkTopologiesOfLinkedNodes(c=c):
 #@-node:@path xyz
 #@-node:Tests
 #@+node:Text editing scripts
+#@+node:split defs in body text to child nodes
+# script to split node containing multiple def's into child nodes
+
+def createChild (parent,body,line):
+    p = parent.insertAsLastChild()
+    h = line [3:].strip()
+    i = h.find('(')
+    if i > -1:
+        func = h [: i].strip()
+    h2 = g.choose(func,func,h)
+    p.setHeadString(h2)
+    p.setTnodeText(''.join(body))
+
+s = p.bodyString()
+if s.strip():
+    b = c.undoer.beforeChangeTree(p)
+    c.beginUpdate()
+    try:
+        lines = g.splitLines(s) ; body = [] ; changed = False ; lastDefLine = ''
+        for line in lines:
+            if g.match_word(line,0,'def'):
+                if body and lastDefLine:
+                    createChild(p,body,lastDefLine)
+                    body = [] ; changed = True
+                lastDefLine = line
+            body.append(line)
+        if body and lastDefLine:
+            createChild(p,body,lastDefLine)
+            changed = True
+        if changed:
+            c.setChanged(True) ; c.setBodyString(p,'')
+    finally:
+        c.undoer.afterChangeTree(p,'split-defs',b)
+        c.endUpdate()
+#@nonl
+#@-node:split defs in body text to child nodes
 #@+node:delete from ':' to end (script)
 @color
 

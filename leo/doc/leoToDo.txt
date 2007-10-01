@@ -1,6 +1,51 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
+#@+node:ekr.20071001045205:To do: 4.4.4
+#@+node:ekr.20070930102053:*** Fix problems with new colorizer
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=4544813
+By: terry_n_brown
+
+http://beaver.nrri.umn.edu/~tbrown/redgreen.png
+
+When the 'r' in 'str(' is deleted, the closing bracket on the next line changes
+color.  There are lots of variations, for example putting the 'r' back causes
+the opening bracket on the next line to change color.
+#@nonl
+#@-node:ekr.20070930102053:*** Fix problems with new colorizer
+#@+node:ekr.20071001052611:Make sure dirty bits get updated in xemacs plugin
+@nocolor
+https://sourceforge.net/forum/message.php?msg_id=4543844
+By: terry_n_brown
+
+Using the xemacs plug-in for node editing it seems the tree's node-has-contents
+and node-is-modified indications are no longer being updated.  The log file
+says "updated from: LeoTemp_158688460_test.py" correctly, and the update occurs,
+by the indications of change don't.
+
+Also I was creating an @auto node, misspelled it's target file name the first
+time, but when I corrected it and tried reading it again it still said it couldn't
+find it.  The when I Save As'ed the leo file over itself it immediately read
+the @auto file.
+#@nonl
+#@-node:ekr.20071001052611:Make sure dirty bits get updated in xemacs plugin
+#@+node:ekr.20071001052336:Make sure new commands appear in the @menus tree
+check-derived-file
+check-leo-file
+compare-leo-outlines
+read-file-into-node
+write-file-from-node
+
+These do exist:
+
+read-at-auto-nodes
+write-at-auto-nodes
+write-dirty-at-auto-nodes
+#@nonl
+#@-node:ekr.20071001052336:Make sure new commands appear in the @menus tree
+#@-node:ekr.20071001045205:To do: 4.4.4
 #@+node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
 # Leo 4.4.5 will complete several projects that are long overdue.
 
@@ -21,11 +66,6 @@ Leo should copy this download philosophy.
 
 
 #@-node:ekr.20070929125944:*** Emulate Orange's download philosophy
-#@+node:ekr.20070930102053:*** Fix problems with new colorizer
-# Sometimes not enough text is colorized.
-# For example, after changing docstrings.
-#@nonl
-#@-node:ekr.20070930102053:*** Fix problems with new colorizer
 #@+node:ekr.20070814070312:First
 #@+node:ekr.20070814144804:Incorrect conversion of paths to absolute paths (for Leo 4.4.5)
 @nocolor
@@ -201,6 +241,18 @@ g.esx and g.es_printx allow a mix on translated and untranslated arguments::
 
     g.esx(tr('abc'),fileName)
 #@-node:ekr.20070625091423:Add translation services
+#@+node:ekr.20071001052501:Versioning for nodes
+@nocolor
+
+One feature I have not seen in SCS system is something which might be called
+"history compression": I might be interested in having both version 5 and 6
+in my source tree, when the current version is 7, but I am not really interested
+in the 2000 steps which transformed 5 into 6 (just suggested this feature to
+the bazaar people). This happens actually quite often to me, since I use the
+SCS as a back-up system, saving many (uninteresting) intermediate steps while
+implementing a new feature.
+#@nonl
+#@-node:ekr.20071001052501:Versioning for nodes
 #@-node:ekr.20070703111455.1:Most important
 #@+node:ekr.20070630143345:Easy and useful
 #@+node:ekr.20070220082124:Make sure Leo can generate Latex
