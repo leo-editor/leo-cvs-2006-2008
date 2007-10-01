@@ -34,6 +34,7 @@ class LeoApp:
             # 1: full traces in g.es_exception.
             # 2: call pdb.set_trace in g.es_exception, etc.
         self.disableSave = False
+        self.extensionsDir = None
         self.globalConfigDir = None # The directory that is assumed to contain the global configuration files.
         self.globalOpenDir = None # The directory last used to open a file.
         self.gui = None # The gui class.

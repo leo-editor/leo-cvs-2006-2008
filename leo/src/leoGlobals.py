@@ -875,7 +875,7 @@ def alert(message):
     import tkMessageBox
     tkMessageBox.showwarning("Alert", message)
 #@-node:ekr.20031218072017.3105:alert
-#@+node:ekr.20051023083258:callers
+#@+node:ekr.20051023083258:callers & _callerName
 def callers (n=8,excludeCaller=True,files=False):
 
     '''Return a list containing the callers of the function that called g.callerList.
@@ -898,7 +898,6 @@ def callers (n=8,excludeCaller=True,files=False):
 
     sep = g.choose(files,'\n',',')
     return sep.join(result)
-#@-node:ekr.20051023083258:callers
 #@+node:ekr.20031218072017.3107:_callerName
 def _callerName (n=1,files=False):
 
@@ -915,6 +914,7 @@ def _callerName (n=1,files=False):
         g.es_exception()
         return '' # "<no caller name>"
 #@-node:ekr.20031218072017.3107:_callerName
+#@-node:ekr.20051023083258:callers & _callerName
 #@+node:ekr.20041105091148:g.pdb & test
 def pdb ():
 
@@ -2948,7 +2948,7 @@ def toUnicodeFileEncoding(path,encoding):
     if path: path = path.replace('\\', os.sep)
 
     if not encoding:
-        if sys.platform == "win32":
+        if sys.platform == "win32" or sys.platform.lower().startswith('java'):
             # encoding = "mbcs" # Leo 4.2 and previous.
             encoding = 'utf-8' # New in Leo 4.3
         else:

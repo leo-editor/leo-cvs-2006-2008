@@ -7680,6 +7680,7 @@ def createRecentFilesMenuItems (self):
 #@-node:ekr.20070919132518:4.4.4 b3
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@+node:ekr.20070930102228:( jyLeo )
+#@+node:ekr.20070930202214:What I did
 #@+node:ekr.20070930150331:Changes to support jython
 @nocolor
 
@@ -7697,6 +7698,9 @@ def createRecentFilesMenuItems (self):
   This suppresses unnecessary import warnings from several plugins.
 
 - Hacked the navButtons plugin to suppress a weird call to onCreate when the gui is swing.  It is a mystery why this is being called.
+
+- changed toUnicodeFileEncoding to test for 'java' platform.
+#@nonl
 #@-node:ekr.20070930150331:Changes to support jython
 #@+node:ekr.20070930102228.1:Rewrote iterators that use yield
 # They are not valid in jython.
@@ -8481,6 +8485,26 @@ def clear (self):
 #@-node:ekr.20050920085536.84:class Tracker (an iterator)
 #@-node:ekr.20070930194035:Not converted yet
 #@-node:ekr.20070930102228.1:Rewrote iterators that use yield
+#@+node:ekr.20031218072017.2160:toUnicodeFileEncoding
+def toUnicodeFileEncoding(path,encoding):
+
+    if path: path = path.replace('\\', os.sep)
+
+    if not encoding:
+        if sys.platform == "win32" or sys.platform.lower().startswith('java'):
+            # encoding = "mbcs" # Leo 4.2 and previous.
+            encoding = 'utf-8' # New in Leo 4.3
+        else:
+            encoding = app.tkEncoding
+
+    # Yes, this is correct.  All os_path_x functions return Unicode strings.
+    return g.toUnicode(path,encoding)
+#@-node:ekr.20031218072017.2160:toUnicodeFileEncoding
+#@-node:ekr.20070930202214:What I did
+#@+node:ekr.20070930204122:Notes
+import swing.border as sborder
+#@nonl
+#@-node:ekr.20070930204122:Notes
 #@+node:ekr.20070930184746:from original swingGui plugin
 @first # -*- coding: utf-8 -*-
 
@@ -8757,78 +8781,6 @@ def init ():
     return True
 #@nonl
 #@-node:ekr.20070930184746.7: init
-#@+node:ekr.20070930184746.8:class leoSplash (java.lang.Runnable)
-class LeoSplash ( java.lang.Runnable ):
-
-    @others
-#@+node:ekr.20070930185331:run
-def run( self ):
-
-    self.splash = splash = swing.JWindow()
-    splash.setAlwaysOnTop( 1 )
-    cpane = splash.getContentPane()
-    rp = splash.getRootPane()
-    tb = sborder.TitledBorder( "Leo" )
-    tb.setTitleJustification( tb.CENTER )
-    rp.setBorder( tb )
-    splash.setBackground( awt.Color.ORANGE )
-    dimension = awt.Dimension( 400, 400 )
-    splash.setPreferredSize( dimension )
-    splash.setSize( 400, 400 )
-
-    sicon = g.os_path_join( g.app.loadDir ,"..","Icons","Leosplash.GIF")
-    ii = swing.ImageIcon( sicon )
-    image = swing.JLabel( ii )
-    image.setBackground( awt.Color.ORANGE )
-    cpane.add( image )
-    self.splashlabel = splashlabel = swing.JLabel( "Leo Starting...." )
-    splashlabel.setBackground( awt.Color.ORANGE )
-    splashlabel.setForeground( awt.Color.BLUE )
-    cpane.add( splashlabel, awt.BorderLayout.SOUTH )
-    w, h = self._calculateCenteredPosition( splash )
-    splash.setLocation( w, h )
-    splash.visible = True
-#@nonl
-#@-node:ekr.20070930185331:run
-#@+node:ekr.20070930185331.1:utils
-def _calculateCenteredPosition( self, widget ):
-
-    size = widget.getPreferredSize()
-    height = size.height/2
-    width = size.width/2
-    h,w = self._getScreenPositionForDialog()
-    height = h - height
-    width = w - width
-    return width, height
-
-def _getScreenPositionForDialog( self ):
-
-    #tk = self.c.frame.top.getToolkit()
-    tk = awt.Toolkit.getDefaultToolkit()
-    dim = tk.getScreenSize()
-    h = dim.height/2
-    w = dim.width/2
-    return h, w   
-
-def setText( self, text ):  
-    self.splashlabel.setText( text )
-
-def hide( self ):
-    self.splash.visible = 0
-
-def toBack( self ):
-    if self.splash.visible:
-        self.splash.toBack()
-
-def toFront( self ):
-    if self.splash.visible:
-        self.splash.setAlwaysOnTop( 1 )
-        self.splash.toFront()
-
-def isVisible( self ):
-    return self.splash.visible
-#@-node:ekr.20070930185331.1:utils
-#@-node:ekr.20070930184746.8:class leoSplash (java.lang.Runnable)
 #@+node:ekr.20070930184746.9:class leoSwingBody
 class leoSwingBody (sevent.DocumentListener,aevent.KeyAdapter,sevent.UndoableEditListener):
 
@@ -22489,799 +22441,6 @@ def setBackgroundColor (self, notification = None, handback = None ):
 #@nonl
 #@-node:ekr.20070930184746.341:setBackgroundColor
 #@-node:ekr.20070930184746.294:class leoSwingTree
-#@+node:ekr.20070930184746.342:from DomConvertedMethods
-if 0:
-    @others
-#@nonl
-#@+node:ekr.20070930184746.343:from leoFileCommands
-@others
-#@+node:ekr.20070930184746.344:reading with dom...
-@others
-#@+node:ekr.20070930184746.345:getLeoFile2
-def getLeoFile( self,fileName,readAtFileNodesFlag=True ):
-
-    c = self.c
-    self.mFileName = c.mFileName
-    self.tnodesDict = {}
-    self.descendentExpandedList = []
-    self.descendentMarksList = []
-    self.descendentUnknownAttributesDictList = []
-    leoNodes.vid_vnode = {}
-    import javax.xml.parsers as jparse
-    import java.io as io
-    import java
-    start = java.lang.System.currentTimeMillis()
-    c.loading = True
-    try:
-        dbf = jparse.DocumentBuilderFactory.newInstance()
-        db = dbf.newDocumentBuilder()
-        fis = io.FileInputStream( fileName )
-        doc = db.parse( fis )
-        fis.close()
-        doc.normalizeDocument()
-        leo_file = doc.getDocumentElement()
-        #print leo_file.getTextContent()
-        cnodes = leo_file.getChildNodes()
-        elements = {}
-        for z in xrange( cnodes.length ):
-            element = cnodes.item( z )
-            elements[ element.getNodeName() ] = element
-
-        #c.beginUpdate() 
-        << read leo header >>
-        << read globals >>
-        << read prefs >>
-        << read find panel settings >>
-        << build tnodes >>
-        << build vnodes >>
-
-        current = self.convertStackToPosition(self.currentVnodeStack)
-        if current:
-            c.setCurrentPosition(current)
-        else:
-            # g.trace(self.currentVnodeStack)
-            c.setCurrentPosition(c.rootPosition())
-
-        # At present this is useless: the drawing code doesn't set the top position properly.
-        top = self.convertStackToPosition(self.topVnodeStack)
-        if top:
-            c.setTopPosition(top)
-
-        #if elements.has_key( "data" ):
-        #    g.doHook( "read-leo-file-data", c=c, delement = elements[ 'data' ], doc = doc )
-        ok = 1
-        self.ratio = 1.5
-    except java.lang.Exception, x:
-        print x
-        print "WHATDA!!!"
-        ok = 0
-        self.ratio = 1.5
-        pass
-
-
-    if ok and readAtFileNodesFlag:
-        c.atFileCommands.readAll(c.rootVnode(),partialFlag=False)
-
-    if not c.currentPosition():
-        print c.rootPosition()
-        c.setCurrentPosition(c.rootPosition())
-
-    if elements.has_key( "data" ):
-        g.doHook( "read-leo-file-data", c=c, delement = elements[ 'data' ], doc = doc )
-
-    c.selectVnode(c.currentPosition()) # load body pane
-    c.loading = False # reenable c.changed
-    c.setChanged(c.changed) # Refresh the changed marker.
-    self.descendentUnknownAttributesDictList = []
-    self.descendentExpandedList = []
-    self.descendentMarksList = []
-    self.tnodesDict = {}
-    << expand nodes >>
-    end = java.lang.System.currentTimeMillis()
-    print "TOTAL TIME %s" % ( end - start )
-    print "READ FOR %s" % fileName
-    return ok, self.ratio
-
-#@+node:ekr.20070930184746.346:<< read leo header >>
-self.maxTnodeIndex = 0
-self.numberOfTnodes = 0
-leo_header = elements[ 'leo_header' ]
-if leo_header.hasAttribute( "file_format" ): self.fileFormatNumber = int( leo_header.getAttribute( "file_format" ) )
-if leo_header.hasAttribute( "tnodes" ): self.numberOfTnodes = int( leo_header.getAttribute( "tnodes" ) )
-if leo_header.hasAttribute( "max_tnode_index" ): self.maxTnodeIndex = int( leo_header.getAttribute( "max_tnode_index" ) )
-#if leo_header.hasAttribute( "clone_windows" ): pass
-
-#@-node:ekr.20070930184746.346:<< read leo header >>
-#@+node:ekr.20070930184746.347:<< read globals >>
-globals = elements[ 'globals' ]
-self.ratio = None
-y,x,h,w = None, None, None, None
-if globals.hasAttribute( "body_outline_ratio" ):
-    self.ratio = float( globals.getAttribute( "body_outline_ratio" ) )
-
-gwp = globals.getElementsByTagName( "global_window_position" )
-if gwp.length:
-    gwp = gwp.item( 0 )
-    w = int( gwp.getAttribute( "width" ) )
-    h = int( gwp.getAttribute( "height" ) )
-    x = int( gwp.getAttribute( "left" ) )
-    y = int( gwp.getAttribute( "top" ) )
-
-
-
-if self.ratio == None: self.ratio = 0.5
-if y == None: y,x,h,w = 50,50,500,700
-self.frame.setTopGeometry(w,h,x,y)
-self.frame.deiconify()
-self.frame.lift()
-self.frame.update()
-
-#@-node:ekr.20070930184746.347:<< read globals >>
-#@+node:ekr.20070930184746.348:<< read prefs >>
-#@-node:ekr.20070930184746.348:<< read prefs >>
-#@+node:ekr.20070930184746.349:<< read find panel settings >>
-fp_element = elements[ 'find_panel_settings' ]
-
-
-
-@
-    if self.getOpenTag("<find_panel_settings"):
-        return # <find_panel_settings/> seen.
-    # New in 4.3: ignore all pre-4.3 find settings.
-    while 1:
-        if   self.matchTag("batch="):           self.getDqBool()
-        elif self.matchTag("ignore_case="):     self.getDqBool()
-        elif self.matchTag("mark_changes="):    self.getDqBool()
-        elif self.matchTag("mark_finds="):      self.getDqBool()
-        elif self.matchTag("node_only="):       self.getDqBool()
-        elif self.matchTag("pattern_match="):   self.getDqBool()
-        elif self.matchTag("reverse="):         self.getDqBool()
-        elif self.matchTag("script_change="):   self.getDqBool()
-        elif self.matchTag("script_search="):   self.getDqBool()
-        elif self.matchTag("search_headline="): self.getDqBool()
-        elif self.matchTag("search_body="):     self.getDqBool()
-        elif self.matchTag("selection_only="):  self.getDqBool()
-        elif self.matchTag("suboutline_only="): self.getDqBool()
-        elif self.matchTag("whole_word="):      self.getDqBool()
-        elif self.matchTag("wrap="):            self.getDqBool()
-        elif self.matchTag(">"): break
-        else: self.getUnknownTag() # Ignore all other tags.
-    # Allow only <find_string> or <find_string/>
-    if self.getOpenTag("<find_string>"):
-        pass
-    else:
-        self.getEscapedString() ; self.getTag("</find_string>")
-    # Allow only <change_string> or <change_string/>
-    if self.getOpenTag("<change_string>"):
-        pass
-    else:
-        self.getEscapedString() ; self.getTag("</change_string>")
-    self.getTag("</find_panel_settings>")
-#@nonl
-#@-node:ekr.20070930184746.349:<< read find panel settings >>
-#@+node:ekr.20070930184746.350:<< build tnodes >>
-tnodes_element = elements[ 'tnodes' ]
-tchildren = tnodes_element.getElementsByTagName( "t" )
-tnodes = {}
-for z in xrange( tchildren.length ):
-    tnode_element = tchildren.item( z )
-    tx = tnode_element.getAttribute( "tx" )
-    atnode = self.newTnode( tx )
-    atnode.bodyString = tnode_element.getTextContent()
-    tatts = tnode_element.getAttributes()
-    tatts.removeNamedItem( "tx" )
-    if tatts.length:
-        atnode.unknownAttributes = {}
-        for z2 in xrange( tatts.length ):
-            tatt = tatts.item( z2 )
-            tname = tatt.getNodeName()
-            val = tatt.getNodeValue()
-            try:
-                binString = binascii.unhexlify(val)
-                val2 = pickle.loads(binString)
-                atnode.unknownAttributes[ tname ] = val2
-            except:
-                atnode.unknownAttributes[ tname ] = val
-
-
-#@-node:ekr.20070930184746.350:<< build tnodes >>
-#@+node:ekr.20070930184746.351:<< build vnodes >>
-vnodes_elements = elements[ 'vnodes' ]
-cnodes = vnodes_elements.getChildNodes()
-vnodes = []
-for z in xrange( cnodes.length ):
-    item = cnodes.item( z )
-    if item.getNodeName() == "v":
-        vnodes.append( item )
-
-back = parent = None # This routine _must_ work on vnodes!
-self.currentVnodeStack = []
-self.topVnodeStack = []
-
-for _vnode in vnodes:
-    vh = _vnode.getElementsByTagName( "vh" )
-    append1 = len(self.currentVnodeStack) == 0
-    append2 = len(self.topVnodeStack) == 0
-    back = self.getVnode2(parent,back,skip=False,
-            appendToCurrentStack=append1,appendToTopStack=append2, node = _vnode)
-#@-node:ekr.20070930184746.351:<< build vnodes >>
-#@+node:ekr.20070930184746.352:<< expand nodes >>
-marks = {} ; expanded = {}
-for gnx in self.descendentExpandedList:
-    #print gnx
-    t = self.tnodesDict.get(gnx)
-    if t: 
-        expanded[t]=t
-
-expandset = java.util.HashSet()
-#print "EXPANDING!!!"
-for p in c.all_positions_iter():
-    #if marks.get(p.v.t):
-    #    p.v.initMarkedBit()
-    #    #expandset.add( p.copy() )
-    #    # This was the problem: was p.setMark.
-    #    # There was a big performance bug in the mark hook in the Node Navigator plugin.
-    if p.isExpanded(): #CHANGED: added since there are 2 mechanisms in place
-        expandset.add( p.copy() )
-        #print "ADD1 %s" % p
-        #    #apparently there are 2 mechanisms in place to expand a position-vnode-tnode
-        #    #One happens in the getVnode method, actually both happen, one is done via a method
-        #    #call the other is done by inclusion in a list.  Quite maddening! :D
-        #    tree = self.c.frame.tree
-        #    if hasattr( tree, 'tree_reloader' ):
-        #        tree.tree_reloader.expand( p.copy() )
-    if expanded.get(p.v.t):
-        #tree = self.c.frame.tree
-        #if hasattr( tree, 'tree_reloader' ):
-        #    tree.tree_reloader.expand( p.copy() ) #CHANGED: so the tree will register outlines already open
-        p.expand()
-        #print "ADD2 %s" % p
-        expandset.add( p.copy() )
-if hasattr( c.frame.tree, "tree_reloader" ):
-    c.frame.tree.tree_reloader.addExpandedSet( expandset )
-
-#@nonl
-#@-node:ekr.20070930184746.352:<< expand nodes >>
-#@-node:ekr.20070930184746.345:getLeoFile2
-#@+node:ekr.20070930184746.353:getVnode2
-def getVnode2( self,parent,back,skip,appendToCurrentStack,appendToTopStack, node ): #node is the <v> element.
-
-    c = self.c ; v = None
-    setCurrent = setExpanded = setMarked = setOrphan = setTop = False
-    tref = -1 ; headline = "" ; tnodeList = None ; attrDict = {} 
-
-    #if node.hasAttribute( "C" ): pass
-    #if node.hasAttribute( "D" ): pass
-    if node.hasAttribute( "E" ): setExpanded = True
-    if node.hasAttribute( "M" ): setMarked = True
-    if node.hasAttribute( "O" ): setOrphan = True
-    if node.hasAttribute( "T" ): setTop = True
-    if node.hasAttribute( "V" ): setCurrent = True
-
-
-    nl = node.getElementsByTagName( "vh" )
-    vh = nl.item( 0 )
-    headline = vh.getTextContent()    
-    tref = node.getAttribute( "t" )
-    vid = tref
-    #if node.hasAttribute( "vid" ):
-    #    vid = node.getAttribute( "vid" )
-
-    if skip:
-        v = self.getExistingVnode(tref,headline)
-        if vid:
-            v.vid = vid
-            leoNodes.vid_vnode[ vid ] = v
-    if v is None:
-        v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
-        if vid:
-            v.vid = vid
-            leoNodes.vid_vnode[ vid ] = v
-        skip = skip or skip2
-        if tnodeList:
-            v.t.tnodeList = tnodeList # New for 4.0, 4.2: now in tnode.
-
-    if v:
-        atts = node.getAttributes()
-        v.unknownAttributes = {}
-        for x in xrange( atts.length ):
-            item = atts.item( x )
-            name = item.getNodeName()
-            if name == 'vid' or name == 't': continue
-            value = item.getNodeValue()
-            try:
-                binString = binascii.unhexlify(value)
-                val2 = pickle.loads(binString)
-                v.unknownAttributes[ name ] = val2
-            except:
-                v.unknownAttributes[ name ] = value
-
-
-
-    if setCurrent:
-        self.currentVnodeStack = [v]
-
-    if setTop:
-        self.topVnodeStack = [v]
-
-    if setExpanded:
-        v.initExpandedBit()
-
-    if setMarked:
-        v.initMarkedBit() # 3/25/03: Do not call setMarkedBit here!
-
-    if setOrphan:
-        v.setOrphan()       
-
-    parent = v ; back = None
-    nchildren = node.getChildNodes()
-    for z in xrange( nchildren.length ):
-        #while self.matchTag("<v"):
-        child = nchildren.item( z )
-        if child.getNodeName() == "v":
-            append1 = appendToCurrentStack and len(self.currentVnodeStack) == 0
-            append2 = appendToTopStack and len(self.topVnodeStack) == 0
-            back = self.getVnode2(parent,back,skip,
-                appendToCurrentStack=append1,appendToTopStack=append2, node = child)
-
-    if not setCurrent and len(self.currentVnodeStack) > 0 and appendToCurrentStack:
-        #g.trace("append current",v)
-        self.currentVnodeStack.append(v)
-
-    if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
-        #g.trace("append top",v)
-        self.topVnodeStack.append(v)
-
-    return v
-
-
-#@-node:ekr.20070930184746.353:getVnode2
-#@-node:ekr.20070930184746.344:reading with dom...
-#@+node:ekr.20070930184746.354:writing with dom...
-@
-In write_Leo_file, I believe the main change is in the 'put the .lef file' node.  Its really one long section that was a series of calls to methods in leoFileCommands.
-
-putVnode2... a converted putVnode
-@c
-
-
-
-@others
-#@+node:ekr.20070930184746.355:write_Leo_file
-def write_Leo_file(self,fileName,outlineOnlyFlag):
-
-    c = self.c
-    self.assignFileIndices()
-    if not outlineOnlyFlag:
-        # Update .leoRecentFiles.txt if possible.
-        g.app.config.writeRecentFilesFile(c)  
-        << write all @file nodes >>
-    << return if the .leo file is read-only >>
-    try:
-        theActualFile = None
-        << create backup file >>
-        self.mFileName = fileName
-        self.outputFile = cStringIO.StringIO() # or g.fileLikeObject()
-        theActualFile = open(fileName, 'wb')
-        << put the .leo file >>
-        #theActualFile.write(self.outputFile.getvalue())
-        theActualFile.write( data )
-        theActualFile.close()
-        self.outputFile = None
-        << delete backup file >>
-        return True
-    except Exception:
-        g.es("exception writing: " + fileName)
-        g.es_exception(full=False)
-        if theActualFile: theActualFile.close()
-        self.outputFile = None
-        << delete fileName >>
-        << rename backupName to fileName >>
-        return False
-
-write_LEO_file = write_Leo_file # For compatibility with old plugins.
-#@nonl
-#@+node:ekr.20070930184746.356:<< write all @file nodes >>
-try:
-    # Write all @file nodes and set orphan bits.
-    c.atFileCommands.writeAll()
-except Exception:
-    g.es_error("exception writing derived files")
-    g.es_exception()
-    return False
-#@nonl
-#@-node:ekr.20070930184746.356:<< write all @file nodes >>
-#@+node:ekr.20070930184746.357:<< return if the .leo file is read-only >>
-# self.read_only is not valid for Save As and Save To commands.
-
-if g.os_path_exists(fileName):
-    try:
-        if not os.access(fileName,os.W_OK):
-            g.es("can not create: read only: " + fileName,color="red")
-            return False
-    except:
-        pass # os.access() may not exist on all platforms.
-#@nonl
-#@-node:ekr.20070930184746.357:<< return if the .leo file is read-only >>
-#@+node:ekr.20070930184746.358:<< create backup file >>
-# rename fileName to fileName.bak if fileName exists.
-if g.os_path_exists(fileName):
-    backupName = g.os_path_join(g.app.loadDir,fileName)
-    backupName = fileName + ".bak"
-    if g.os_path_exists(backupName):
-        g.utils_remove(backupName)
-    ok = g.utils_rename(fileName,backupName)
-    if not ok:
-        if self.read_only:
-            g.es("read only",color="red")
-        return False
-else:
-    backupName = None
-#@nonl
-#@-node:ekr.20070930184746.358:<< create backup file >>
-#@+node:ekr.20070930184746.359:<< put the .leo file >>
-import javax.xml.parsers as jparse
-
-dbf = jparse.DocumentBuilderFactory.newInstance()
-db = dbf.newDocumentBuilder()
-doc = db.newDocument()
-def nl( element, doc = doc, indent = 0 ):
-    if indent:
-        wsi = " " * indent
-    else:
-        wsi = ""
-    tn = doc.createTextNode( "\n%s" % wsi  )
-    element.appendChild( tn )
-
-#de = doc.getDocumentElement()
-#nl( de )
-leo_file = doc.createElement( "leo_file" )
-#nl( doc )
-doc.appendChild( leo_file )
-nl( leo_file, indent = 4 )
-
-tnodes = 0 ; clone_windows = 0 
-header = doc.createElement( "leo_header" )
-leo_file.appendChild( header )
-nl( leo_file )
-header.setAttribute( "file_format", "2" )
-header.setAttribute( "tnodes", str( tnodes ) )
-header.setAttribute( "max_tnode_index", str( self.maxTnodeIndex ) )
-header.setAttribute( "clone_windows", str( clone_windows ) )
-
-
-globals = doc.createElement( "globals" )
-nl( globals )
-nl( leo_file, indent = 4 )
-leo_file.appendChild( globals )
-globals.setAttribute( "body_outline_ratio", str( c.frame.ratio ) )
-
-global_window_position = doc.createElement( "global_window_position" )
-globals.appendChild( global_window_position )
-width,height,left,top = c.frame.get_window_info()
-global_window_position.setAttribute( "top", str( top ) )
-global_window_position.setAttribute( "left", str( left ) )
-global_window_position.setAttribute( "height", str( height ) )
-global_window_position.setAttribute( "width", str( width ) )
-
-nl( globals )
-top = left = height = width = 0 # no longer used
-global_log_window_position = doc.createElement( "global_log_window_position" )
-globals.appendChild( global_log_window_position )
-global_log_window_position.setAttribute( "top", str( top ) )
-global_log_window_position.setAttribute( "left", str( left ) )
-global_log_window_position.setAttribute( "height", str( height ) )
-global_log_window_position.setAttribute( "width", str( width ) )
-
-preferences = doc.createElement( "preferences" )
-nl( leo_file )
-leo_file.appendChild( preferences )
-
-find_panel_settings = doc.createElement( "find_panel_settings" )
-nl( leo_file )
-leo_file.appendChild( find_panel_settings )
-data = doc.createElement( "data" ) #here the general data area where Im putting the pickled undo manager is created
-nl( leo_file )
-leo_file.appendChild( data )
-
-
-c.clearAllVisited()
-vnodes = doc.createElement( "vnodes" )
-nl( leo_file )
-leo_file.appendChild( vnodes )
-nl( leo_file )
-self.currentPosition = c.currentPosition() 
-self.topPosition     = c.topPosition()
-for p in c.rootPosition().self_and_siblings_iter():
-    self.putVnode2( p, ignored = False, doc = doc, vnode = vnodes )
-
-
-
-tnodes_element = doc.createElement( "tnodes" )
-nl( leo_file )
-leo_file.appendChild( tnodes_element )
-nl( leo_file )
-if self.usingClipboard: # write the current tree.
-    theIter = c.currentPosition().self_and_subtree_iter()
-else: # write everything
-    theIter = c.allNodes_iter()
-
-tnodes = {}
-
-for p in theIter:
-    index = p.v.t.fileIndex
-    assert(index)
-    tnodes[index] = p.v.t
-
-# Put all tnodes in index order.
-keys = tnodes.keys() ; keys.sort()
-for index in keys:
-    # g.trace(index)
-    t = tnodes.get(index)
-    assert(t)
-    # Write only those tnodes whose vnodes were written.
-    if t.isWriteBit(): # 5/3/04
-        #self.putTnode(t)
-        t_element = doc.createElement( "t" )
-        nl( tnodes_element )
-        tnodes_element.appendChild( t_element )
-        gnx = g.app.nodeIndices.toString(t.fileIndex)
-        t_element.setAttribute( "tx", gnx )
-        if t.bodyString:
-            t_element.setTextContent( self.xmlEscape( t.bodyString ) )
-        if hasattr( t, 'unknownAttributes' ):
-            uAs = t.unknownAttributes
-            for key in uAs.keys():
-                val = uAs[ key ]
-                try:
-                    if hasattr( val, 'getPickleProxy' ):
-                        val = val.getPickleProxy()
-                    try:
-                        # Protocol argument is new in Python 2.3
-                        # Use protocol 1 for compatibility with bin.
-                        s = pickle.dumps(val,protocol=1)
-                    except TypeError:
-                        s = pickle.dumps(val,bin=True)
-                    #key,binascii.hexlify(s)
-                    t_element.setAttribute( key, binascii.hexlify( s ) )
-                except:
-                    g.es("ignoring non-pickleable attribute %s in %s" % (key, t ),color="blue")
-
-nl( tnodes_element )
-
-g.doHook( "write-leo-file-data", c = c, delement = data, doc = doc ) #I notify listeners so they can add data to the <data> element... should it be hidden behind a class?
-
-import javax.xml.transform as transform
-import javax.xml.transform.dom as tdom
-import java.io as io
-import javax.xml.transform.stream as sresult
-tf = transform.TransformerFactory.newInstance()
-trans = tf.newTransformer()
-tsource = tdom.DOMSource( doc )
-sw = io.StringWriter()
-sr = sresult.StreamResult( sw )
-trans.transform( tsource, sr )
-data = sw.toString()
-
-
-
-@
-if self.usingClipboard: # write the current tree.
-    theIter = c.currentPosition().self_and_subtree_iter()
-else: # write everything
-    theIter = c.allNodes_iter()
-
-# Populate tnodes
-tnodes = {}
-
-for p in theIter:
-    index = p.v.t.fileIndex
-    assert(index)
-    tnodes[index] = p.v.t
-
-# Put all tnodes in index order.
-keys = tnodes.keys() ; keys.sort()
-for index in keys:
-    # g.trace(index)
-    t = tnodes.get(index)
-    assert(t)
-    # Write only those tnodes whose vnodes were written.
-    if t.isWriteBit(): # 5/3/04
-        self.putTnode(t)
-
-
-
-
-@
-self.putProlog()
-self.putHeader()
-self.putGlobals()
-self.putPrefs()
-self.putFindSettings()
-#start = g.getTime()
-self.putVnodes()
-#start = g.printDiffTime("vnodes ",start)
-self.putTnodes()
-#start = g.printDiffTime("tnodes ",start)
-self.putPostlog()
-
-
-#@-node:ekr.20070930184746.359:<< put the .leo file >>
-#@+node:ekr.20070930184746.360:<< delete backup file >>
-if backupName and g.os_path_exists(backupName):
-
-    self.deleteFileWithMessage(backupName,'backup')
-#@nonl
-#@-node:ekr.20070930184746.360:<< delete backup file >>
-#@+node:ekr.20070930184746.361:<< delete fileName >>
-if fileName and g.os_path_exists(fileName):
-    self.deleteFileWithMessage(fileName,'')
-#@-node:ekr.20070930184746.361:<< delete fileName >>
-#@+node:ekr.20070930184746.362:<< rename backupName to fileName >>
-if backupName:
-    g.es("restoring " + fileName + " from " + backupName)
-    g.utils_rename(backupName,fileName)
-#@nonl
-#@-node:ekr.20070930184746.362:<< rename backupName to fileName >>
-#@-node:ekr.20070930184746.355:write_Leo_file
-#@+node:ekr.20070930184746.363:putVnode2 (3.x and 4.x)
-def putVnode2 (self,p,ignored, doc, vnode ): #doc is the document from which we create elements for the doc.  'doc' probably should be just an attribute of the leoFileCommands instance.  vnode is the 'v' element, its passed so we can append to it.
-
-    """Write a <v> element corresponding to a vnode."""
-
-    fc = self ; c = fc.c ; v = p.v
-    isThin = p.isAtThinFileNode()
-    isIgnore = False
-    if 0: # Wrong: must check all parents.
-        ignored = ignored or p.isAtIgnoreNode()
-    else:
-        for p2 in p.self_and_parents_iter():
-            if p2.isAtIgnoreNode():
-                isIgnore = True ; break
-    isOrphan = p.isOrphan()
-    forceWrite = isIgnore or not isThin or (isThin and isOrphan)
-
-
-    v_element = doc.createElement( "v" )
-    v_element.setAttribute( "vid", v.vid )
-    indent = " " * p.level()
-    if p.isRoot():
-        ws = doc.createTextNode( "\n" )
-    elif p.level() == 0:
-        ws = None
-    else:
-        ws = doc.createTextNode( "\n%s" % indent )
-    if ws:
-        vnode.appendChild( ws )
-    vnode.appendChild( v_element )
-    ws = vnode.getPreviousSibling()
-    ws = ws.cloneNode( 0 )
-    vnode.appendChild( ws )
-    #ws = doc.createTextNode( "\n%s" % indent )
-    #vnode.appendChild( ws )
-    #fc.put("<v")
-    << Put tnode index >>
-    << Put attribute bits >>
-    << Put tnodeList and unKnownAttributes >>
-    #fc.put(">")
-    << Write the head text >>
-
-    if not self.usingClipboard:
-        << issue informational messages >>
-
-   # New in 4.2: don't write child nodes of @file-thin trees (except when writing to clipboard)
-    if p.hasChildren():
-        if forceWrite or self.usingClipboard:
-            #fc.put_nl()
-            # This optimization eliminates all "recursive" copies.
-            p.moveToFirstChild()
-            while 1:
-                fc.putVnode2(p,ignored, doc, v_element )
-                if p.hasNext(): p.moveToNext()
-                else:           break
-            p.moveToParent()
-
-
-    #fc.put("</v>") ; fc.put_nl()
-#@nonl
-#@+node:ekr.20070930184746.364:<< Put tnode index >>
-if v.t.fileIndex:
-    gnx = g.app.nodeIndices.toString(v.t.fileIndex)
-    #fc.put(" t=") ; fc.put_in_dquotes(gnx)
-    v_element.setAttribute( "t", gnx )
-    v.vid = gnx
-    leoNodes.vid_vnode[ gnx ] = v #we set the vid for the node in the vid_node dic, this may not need to happen here, but has to happen in the read
-    # g.trace(v.t)
-    if forceWrite or self.usingClipboard:
-        v.t.setWriteBit() # 4.2: Indicate we wrote the body text.
-else:
-    g.trace(v.t.fileIndex,v)
-    g.es("error writing file(bad v.t.fileIndex)!")
-    g.es("try using the Save To command")
-#@nonl
-#@-node:ekr.20070930184746.364:<< Put tnode index >>
-#@+node:ekr.20070930184746.365:<< Put attribute bits >>
-attr = ""
-if p.v.isExpanded(): attr += "E"
-if p.v.isMarked():   attr += "M"
-if p.v.isOrphan():   attr += "O"
-
-if 1: # No longer a bottleneck now that we use p.equal rather than p.__cmp__
-    # Almost 30% of the entire writing time came from here!!!
-    if p.equal(self.topPosition):   attr += "T" # was a bottleneck
-    if c.isCurrentPosition(p):      attr += "V" # was a bottleneck
-
-#if attr: fc.put(' a="%s"' % attr)
-if attr:
-    v_element.setAttribute( "a", attr )
-#@nonl
-#@-node:ekr.20070930184746.365:<< Put attribute bits >>
-#@+node:ekr.20070930184746.366:<< Put tnodeList and unKnownAttributes >>
-# I haven't converted this part... shouldn't be too tough
-
-@
-# Write the tnodeList only for @file nodes.
-# New in 4.2: tnode list is in tnode.
-
-if 0: # Debugging.
-    if v.isAnyAtFileNode():
-        if hasattr(v.t,"tnodeList"):
-            g.trace(v.headString(),len(v.t.tnodeList))
-        else:
-            g.trace(v.headString(),"no tnodeList")
-
-if hasattr(v.t,"tnodeList") and len(v.t.tnodeList) > 0 and v.isAnyAtFileNode():
-    if isThin:
-        if g.app.unitTesting:
-            g.app.unitTestDict["warning"] = True
-        g.es("deleting tnode list for %s" % p.headString(),color="blue")
-        # This is safe: cloning can't change the type of this node!
-        delattr(v.t,"tnodeList")
-    else:
-        fc.putTnodeList(v) # New in 4.0
-
-if hasattr(v,"unknownAttributes"): # New in 4.0
-    self.putUnknownAttributes(v)
-if p.hasChildren() and not forceWrite and not self.usingClipboard:
-    # We put the entire tree when using the clipboard, so no need for this.
-    self.putDescendentUnknownAttributes(p)
-    self.putDescendentAttributes(p)
-#@nonl
-#@-node:ekr.20070930184746.366:<< Put tnodeList and unKnownAttributes >>
-#@+node:ekr.20070930184746.367:<< Write the head text >>
-headString = p.v.headString()
-
-if headString:
-    vh = doc.createElement( "vh" )
-    indent = " " * ( p.level() + 1 )
-    ws = doc.createTextNode( "\n%s" % indent )
-    v_element.appendChild( ws )
-    v_element.appendChild( vh )
-    vh.setTextContent( headString )
-    if p.numberOfChildren() == 0:
-        ws = doc.createTextNode( "\n%s" % indent[ : -1 ] )
-        v_element.appendChild( ws )
-
-    #fc.put("<vh>")
-    #fc.putEscapedString(headString)
-    #fc.put("</vh>")
-#@-node:ekr.20070930184746.367:<< Write the head text >>
-#@+node:ekr.20070930184746.368:<< issue informational messages >>
-if p.isAtThinFileNode and p.isOrphan():
-    g.es("Writing erroneous: %s" % p.headString(),color="blue")
-    p.clearOrphan()
-
-if 0: # For testing.
-    if p.isAtIgnoreNode():
-         for p2 in p.self_and_subtree_iter():
-                if p2.isAtThinFileNode():
-                    g.es("Writing @ignore'd: %s" % p2.headString(),color="blue")
-#@nonl
-#@-node:ekr.20070930184746.368:<< issue informational messages >>
-#@-node:ekr.20070930184746.363:putVnode2 (3.x and 4.x)
-#@-node:ekr.20070930184746.354:writing with dom...
-#@-node:ekr.20070930184746.343:from leoFileCommands
-#@-node:ekr.20070930184746.342:from DomConvertedMethods
 #@+node:ekr.20070930184746.369:Utils
 #@+node:ekr.20070930184746.370:getColorInstance
 def getColorInstance( val, OnNone=None ):
@@ -23379,21 +22538,7 @@ class VisibleInformer( sevent.ChangeListener ):
 
 #@nonl
 #@-node:ekr.20070930184746.372:class VisibleInformer
-#@+node:ekr.20070930184746.373:class GCEveryOneMinute
-class GCEveryOneMinute( java.lang.Thread ):
-
-    def __init__( self ):
-        java.lang.Thread.__init__( self )
-
-    def run( self ):
-
-        while 1:
-            java.lang.System.gc()
-            self.sleep( 60000 )
-#@nonl
-#@-node:ekr.20070930184746.373:class GCEveryOneMinute
 #@-node:ekr.20070930184746.369:Utils
-#@+node:ekr.20070930184746.374:From LeoJy.leo
 #@+node:ekr.20070930184746.375:from leoSwingFind.py
 import leoGlobals as g 
 import leoFind  
@@ -25478,8 +24623,372 @@ class _dftcr( stable.DefaultTableCellRenderer, aevent.ComponentListener ):
 #@-node:ekr.20070930184746.435:showMismatchTable
 #@-node:ekr.20070930184746.433:utils
 #@-node:ekr.20070930184746.407:from leoSwingComparePanel
-#@-node:ekr.20070930184746.374:From LeoJy.leo
 #@-node:ekr.20070930184746:from original swingGui plugin
+#@+node:ekr.20070930205659:debugging
+#@+node:ekr.20031218072017.3108:Dumps
+#@+node:ekr.20031218072017.3109:dump
+def dump(s):
+
+    out = ""
+    for i in s:
+        out += str(ord(i)) + ","
+    return out
+
+def oldDump(s):
+
+    out = ""
+    for i in s:
+        if i=='\n':
+            out += "[" ; out += "n" ; out += "]"
+        if i=='\t':
+            out += "[" ; out += "t" ; out += "]"
+        elif i==' ':
+            out += "[" ; out += " " ; out += "]"
+        else: out += i
+    return out
+#@-node:ekr.20031218072017.3109:dump
+#@+node:ekr.20060917120951:es_dump
+def es_dump (s,n = 30,title=None):
+
+    if title:
+        g.es_print(title)
+
+    i = 0
+    while i < len(s):
+        g.es_print(''.join(['%2x ' % (ord(ch)) for ch in s[i:i+n]]))
+        i += n
+#@nonl
+#@-node:ekr.20060917120951:es_dump
+#@+node:ekr.20031218072017.3110:es_error
+def es_error (s,color=None):
+
+    if color is None and g.app.config: # May not exist during initialization.
+        color = g.app.config.getColor(None,"log_error_color")
+
+    g.es(s,color=color)
+#@-node:ekr.20031218072017.3110:es_error
+#@+node:ekr.20031218072017.3111:es_event_exception
+def es_event_exception (eventName,full=False):
+
+    g.es("exception handling ", eventName, " event")
+    typ,val,tb = sys.exc_info()
+
+    if full:
+        errList = traceback.format_exception(typ,val,tb)
+    else:
+        errList = traceback.format_exception_only(typ,val)
+
+    for i in errList:
+        g.es(i)
+
+    if not g.stdErrIsRedirected(): # 2/16/04
+        traceback.print_exc()
+#@-node:ekr.20031218072017.3111:es_event_exception
+#@+node:ekr.20031218072017.3112:es_exception & test
+def es_exception (full=True,c=None,color="red"):
+
+    __pychecker__ = '--no-argsused' # c not used. retained for compatibility.
+
+    typ,val,tb = sys.exc_info()
+
+    # g.trace(full,typ,tb)
+
+    fileName,n = g.getLastTracebackFileAndLineNumber()
+
+    if full or g.app.debugSwitch > 0:
+        lines = traceback.format_exception(typ,val,tb)
+    else:
+        lines = traceback.format_exception_only(typ,val)
+        if 0: # We might as well print the entire SyntaxError message.
+            lines = lines[-1:] # Usually only one line, but more for Syntax errors!
+
+    for line in lines:
+        g.es_error(line,color=color)
+        if not g.stdErrIsRedirected():
+            print line
+
+    if g.app.debugSwitch > 1:
+        import pdb # Be careful: g.pdb may or may not have been defined.
+        pdb.set_trace()
+
+    return fileName,n
+#@+node:ekr.20050220030850:@test g.es_exception
+if g.unitTesting:
+
+    c,p = g.getTestVars() # Optional: prevents pychecker warnings.
+
+    if c.config.redirect_execute_script_output_to_log_pane:
+        pass # Test doesn't work when redirection is on.
+    else:
+        try:
+            import sys
+            # Catch the output of g.es_exception.
+            # We catch the AssertionError, so nothing gets written to stderr.
+            sys.stdout = fo = g.fileLikeObject()
+            try: # Create an exception to catch.
+                assert False, 'Assert False in test_g_es_exception'
+            except AssertionError:
+                g.es_exception(color='suppress')
+                result = fo.get()
+                s1 = 'Traceback (most recent call last):'
+                s2 = 'AssertionError: Assert False in test_g_es_exception'
+                assert result.find(s1) > -1, 'No traceback line: %s' % repr(result)
+                assert result.find(s2) > -1, 'No AssertionError line: %s' % repr(result)
+        finally:
+            # Not needed unless we execute this script as selected text.
+            sys.stdout = sys.__stdout__
+#@-node:ekr.20050220030850:@test g.es_exception
+#@-node:ekr.20031218072017.3112:es_exception & test
+#@+node:ekr.20061015090538:es_exception_type
+def es_exception_type (c=None,color="red"):
+
+    # exctype is a Exception class object; value is the error message.
+    exctype, value = sys.exc_info()[:2]
+
+    g.es_print('%s, %s' % (exctype.__name__, value),color=color)
+#@-node:ekr.20061015090538:es_exception_type
+#@+node:ekr.20040731204831:getLastTracebackFileAndLineNumber
+def getLastTracebackFileAndLineNumber():
+
+    typ,val,tb = sys.exc_info()
+
+    if typ in (exceptions.SyntaxError,exceptions.IndentationError):
+        # Syntax and indentation errors are a special case.
+        # extract_tb does _not_ return the proper line number!
+        # This code is similar to the code in format_exception_only(!!)
+        try:
+            # g.es_print(repr(val))
+            msg,(filename, lineno, offset, line) = val
+            return filename,lineno
+        except:
+            g.trace("bad line number")
+            return None,0
+
+    else:
+        # The proper line number is the second element in the last tuple.
+        data = traceback.extract_tb(tb)
+        if data:
+            # g.es_print(repr(data))
+            item = data[-1]
+            filename = item[0]
+            n = item[1]
+            return filename,n
+        else:
+            return None,0
+#@-node:ekr.20040731204831:getLastTracebackFileAndLineNumber
+#@+node:ekr.20031218072017.3113:printBindings
+def print_bindings (name,window):
+
+    bindings = window.bind()
+    print
+    print "Bindings for", name
+    for b in bindings:
+        print b
+#@-node:ekr.20031218072017.3113:printBindings
+#@+node:ekr.20031218072017.3114:printGlobals
+def printGlobals(message=None):
+
+    # Get the list of globals.
+    globs = list(globals())
+    globs.sort()
+
+    # Print the list.
+    if message:
+        leader = "-" * 10
+        print leader, ' ', message, ' ', leader
+    for glob in globs:
+        print glob
+#@-node:ekr.20031218072017.3114:printGlobals
+#@+node:ekr.20070510074941:g.printEntireTree
+def printEntireTree(c,tag=''):
+
+    print 'printEntireTree','=' * 50
+    print 'printEntireTree',tag,'root',c.rootPosition()
+    for p in c.allNodes_iter():
+        print '..'*p.level(),p.v
+#@nonl
+#@-node:ekr.20070510074941:g.printEntireTree
+#@+node:ekr.20031218072017.3115:printLeoModules
+def printLeoModules(message=None):
+
+    # Create the list.
+    mods = []
+    for name in sys.modules.keys():
+        if name and name[0:3] == "leo":
+            mods.append(name)
+
+    # Print the list.
+    if message:
+        leader = "-" * 10
+        print leader, ' ', message, ' ', leader
+    mods.sort()
+    for m in mods:
+        print m,
+    print
+#@-node:ekr.20031218072017.3115:printLeoModules
+#@-node:ekr.20031218072017.3108:Dumps
+#@+node:ekr.20051023083258:callers & _callerName
+def callers (n=8,excludeCaller=True,files=False):
+
+    '''Return a list containing the callers of the function that called g.callerList.
+
+    By default, the function that called g.callerList is not on the list,
+    which is what is wanted when using g.trace.'''
+
+    result = [] ; first = True
+    while n > 0:
+        s = g._callerName(n,files=files)
+        if s.endswith('callers'):
+            if excludeCaller and result:
+                del result [-1]
+            break
+        elif s:
+            if first and files:
+                first = False ; s = '\n' + s
+            result.append(s)
+        n -= 1
+
+    sep = g.choose(files,'\n',',')
+    return sep.join(result)
+#@+node:ekr.20031218072017.3107:_callerName
+def _callerName (n=1,files=False):
+
+    try: # get the function name from the call stack.
+        f1 = sys._getframe(n) # The stack frame, n levels up.
+        code1 = f1.f_code # The code object
+        if files:
+            return '%s:%s' % (g.shortFilename(code1.co_filename),code1.co_name)
+        else:
+            return code1.co_name # The code name
+    except ValueError:
+        return '' # The stack is not deep enough.
+    except:
+        g.es_exception()
+        return '' # "<no caller name>"
+#@-node:ekr.20031218072017.3107:_callerName
+#@-node:ekr.20051023083258:callers & _callerName
+#@-node:ekr.20070930205659:debugging
+#@+node:ekr.20070930202214.1:startup code
+#@+node:ekr.20041219072112:<< import leoGlobals and leoApp >>
+if jyLeo:
+
+    print '*** starting jyLeo',sys.platform # will be something like java1.6.0_02
+
+    ### This is a hack.
+    ### The jyleo script in test.leo sets the cwd to g.app.loadDir
+    ### Eventually, we will have to compute the equivalent here.
+
+    path = os.path.join(os.getcwd()) ### ,'..','src')
+    if path not in sys.path:
+        print 'appending %s to sys.path' % path
+        sys.path.append(path)
+    if 0:
+        print 'sys.path...'
+        for s in sys.path: print s
+
+# Import leoGlobals, but do NOT set g.
+import leoGlobals
+import leoApp
+
+# Create the app.
+leoGlobals.app = leoApp.LeoApp()
+
+# **now** we can set g.
+g = leoGlobals
+assert(g.app)
+
+if jyLeo:
+    startJyleo(g)
+#@-node:ekr.20041219072112:<< import leoGlobals and leoApp >>
+#@+node:ekr.20070930194949:startJyleo (leo.py)
+def startJyleo (g):
+
+    import leoSwingFrame
+    import java.awt as awt
+
+    g.app.splash = splash = leoSwingFrame.leoSplash()
+    awt.EventQueue.invokeAndWait(splash)
+
+    gct = leoSwingFrame.GCEveryOneMinute()
+    gct.start()
+
+    tk = awt.Toolkit.getDefaultToolkit()
+    tk.setDynamicLayout(True)
+#@-node:ekr.20070930194949:startJyleo (leo.py)
+#@+node:ekr.20070930184746.8:class leoSplash (java.lang.Runnable)
+class leoSplash ( java.lang.Runnable ):
+
+    @others
+#@+node:ekr.20070930185331:run (leoSplash)
+def run (self):
+
+    g.trace(g.callers())
+
+    self.splash = splash = swing.JWindow()
+    splash.setAlwaysOnTop(1)
+    cpane = splash.getContentPane()
+    rp = splash.getRootPane()
+    tb = swing.border.TitledBorder('Leo')
+    tb.setTitleJustification(tb.CENTER)
+    rp.setBorder(tb)
+    splash.setBackground(awt.Color.ORANGE)
+    dimension = awt.Dimension(400,400)
+    splash.setPreferredSize(dimension)
+    splash.setSize(400,400)
+
+    sicon = g.os_path_join(g.app.loadDir,"..","Icons","Leosplash.GIF")
+    ii = swing.ImageIcon(sicon)
+    image = swing.JLabel(ii)
+    image.setBackground(awt.Color.ORANGE)
+    cpane.add(image)
+    self.splashlabel = splashlabel = swing.JLabel("Leo is starting....")
+    splashlabel.setBackground(awt.Color.ORANGE)
+    splashlabel.setForeground(awt.Color.BLUE)
+    cpane.add(splashlabel,awt.BorderLayout.SOUTH)
+    w, h = self._calculateCenteredPosition(splash)
+    splash.setLocation(w,h)
+    splash.visible = True
+#@-node:ekr.20070930185331:run (leoSplash)
+#@+node:ekr.20070930185331.1:utils
+def _calculateCenteredPosition( self, widget ):
+
+    size = widget.getPreferredSize()
+    height = size.height/2
+    width = size.width/2
+    h,w = self._getScreenPositionForDialog()
+    height = h - height
+    width = w - width
+    return width, height
+
+def _getScreenPositionForDialog( self ):
+
+    #tk = self.c.frame.top.getToolkit()
+    tk = awt.Toolkit.getDefaultToolkit()
+    dim = tk.getScreenSize()
+    h = dim.height/2
+    w = dim.width/2
+    return h, w   
+
+def setText( self, text ):  
+    self.splashlabel.setText( text )
+
+def hide( self ):
+    self.splash.visible = 0
+
+def toBack( self ):
+    if self.splash.visible:
+        self.splash.toBack()
+
+def toFront( self ):
+    if self.splash.visible:
+        self.splash.setAlwaysOnTop( 1 )
+        self.splash.toFront()
+
+def isVisible( self ):
+    return self.splash.visible
+#@-node:ekr.20070930185331.1:utils
+#@-node:ekr.20070930184746.8:class leoSplash (java.lang.Runnable)
+#@-node:ekr.20070930202214.1:startup code
 #@-node:ekr.20070930102228:( jyLeo )
 #@-all
 #@nonl

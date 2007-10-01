@@ -1,26 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet ekr_test?>
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet ekr_stylesheet?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.491463414634">
-	<global_window_position top="54" left="283" height="820" width="942"/>
+<globals body_outline_ratio="0.379273504274">
+	<global_window_position top="10" left="105" height="936" width="942"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
 <v t="ekr.20051031040240" str_leo_pos="9"><vh>Startup</vh>
-<v t="ekr.20070619130151"><vh>Buttons</vh>
-<v t="ekr.20070201082722"><vh>@button Beautify</vh></v>
-<v t="ekr.20070627144218"><vh>@button unit-tests @key=Alt+4</vh></v>
-<v t="ekr.20070627144218.1"><vh>@button all-unit-tests @key=Alt+5</vh></v>
 <v t="ekr.20070629073827"><vh>Disabled buttons</vh>
 <v t="ekr.20060910141935"><vh>ZODB plugin buttons</vh>
 <v t="ekr.20060910141935.1"><vh>@@button zodb-read</vh></v>
 <v t="ekr.20060910141935.2"><vh>@@button zodb-write</vh></v>
 </v>
 <v t="ekr.20070628175250"><vh>@@button Add if g.unitTesting @key=f6</vh></v>
-</v>
 </v>
 <v t="ekr.20060531093331"><vh>@command clones-tab</vh>
 <v t="ekr.20060531093331.1"><vh>class cloneNavigator</vh>
@@ -82,6 +77,10 @@
 <v t="ekr.20061031131434"><vh>@thin leoKeys.py</vh></v>
 <v t="ekr.20031218072017.3749"><vh>@thin leoMenu.py</vh></v>
 </v>
+<v t="ekr.20070930105601"><vh>Gui Swing classes</vh>
+<v t="ekr.20070930105125"><vh>@thin leoSwingFrame.py</vh></v>
+<v t="ekr.20070930102053.1"><vh>@thin leoSwingGui.py</vh></v>
+</v>
 <v t="ekr.20031218072017.3821"><vh>Gui Tkinter classes</vh>
 <v t="ekr.20031218072017.3838"><vh>@thin leoTkinterComparePanel.py</vh></v>
 <v t="ekr.20031218072017.3858"><vh>@thin leoTkinterDialog.py</vh></v>
@@ -101,22 +100,20 @@
 <t tx="EKR.20040430162943"></t>
 <t tx="EKR.20040519090151.2">@nocolor
 @
-Summary of major items:
-    
-Leo 4.4.4:
-- (done) New colorizer.
-- (done) @auto
-- (easy) Resolve cvs conflicts command.
-- Debian package.
-Leo 4.4.5:
-- Better teaching tools.
-- @menu
+
+**Summary of to-do items**
+
+Leo 4.4.5: Useful odds and ends.
+
 - Better vim bindings
 - Translation tools.
-Leo 4.4.6:
+- Long-delayed bug fixes.
+
+Not related to any particular release: 
+  
+- Debian package.
 - Java/Swing gui
-Leo 5.0 (maybe):
-- Graph world
+- Better teaching tools.
 
 @color</t>
 <t tx="EKR.20040519090151.3"></t>
@@ -129,7 +126,7 @@ Leo's code uses the following conventions throughout:
 
 c:  a commander
 ch: a character
- d:  a dialog or a dict.
+d:  a dialog or a dict.
 g:  the leoGlobal module.
 i, j, k: indices into a string
 p:  a position.
@@ -324,19 +321,12 @@ if g.os_path_exists(path):
     c.zodbCommands.writeFile()
 else:
     g.es_print('not found: %s' % path)</t>
-<t tx="ekr.20070201082722">c.prettyPrintPythonNode()</t>
 <t tx="ekr.20070603183100"></t>
 <t tx="ekr.20070603183100.1"></t>
 <t tx="ekr.20070605104326">True:  Chapter tabs appear in the outline pane.
 False: Chapter tabs do not appear.</t>
 <t tx="ekr.20070605104410"></t>
-<t tx="ekr.20070619130151"></t>
 <t tx="ekr.20070627083814"></t>
-<t tx="ekr.20070627144218">import leoTest
-leoTest.runTestsExternally (c,all=False)</t>
-<t tx="ekr.20070627144218.1">import leoTest
-leoTest.runTestsExternally (c,all=True)
-</t>
 <t tx="ekr.20070628175250">@color
 
 u = c.undoer
@@ -351,5 +341,6 @@ c.setBodyString(p,s)
 u.afterChangeNodeContents(p,'add-if-g-unitTesting',b)
 </t>
 <t tx="ekr.20070629073827"></t>
+<t tx="ekr.20070930105601"></t>
 </tnodes>
 </leo_file>

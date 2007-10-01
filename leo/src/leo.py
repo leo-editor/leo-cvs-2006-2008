@@ -51,10 +51,13 @@ def run(fileName=None,pymacs=None,jyLeo=False,*args,**keywords):
     #@    << import leoGlobals and leoApp >>
     #@+node:ekr.20041219072112:<< import leoGlobals and leoApp >>
     if jyLeo:
-        print '*** starting jyLeo'
+
+        print '*** starting jyLeo',sys.platform # will be something like java1.6.0_02
+
         ### This is a hack.
         ### The jyleo script in test.leo sets the cwd to g.app.loadDir
         ### Eventually, we will have to compute the equivalent here.
+
         path = os.path.join(os.getcwd()) ### ,'..','src')
         if path not in sys.path:
             print 'appending %s to sys.path' % path
@@ -73,6 +76,9 @@ def run(fileName=None,pymacs=None,jyLeo=False,*args,**keywords):
     # **now** we can set g.
     g = leoGlobals
     assert(g.app)
+
+    if jyLeo:
+        startJyleo(g)
     #@-node:ekr.20041219072112:<< import leoGlobals and leoApp >>
     #@nl
     g.computeStandardDirectories()
@@ -340,6 +346,21 @@ def reportDirectories(verbose):
         ):
             g.es("%s dir: %s" % (kind,theDir),color="blue")
 #@-node:ekr.20041130093254:reportDirectories
+#@+node:ekr.20070930194949:startJyleo (leo.py)
+def startJyleo (g):
+
+    import leoSwingFrame
+    import java.awt as awt
+
+    g.app.splash = splash = leoSwingFrame.leoSplash()
+    awt.EventQueue.invokeAndWait(splash)
+
+    gct = leoSwingFrame.GCEveryOneMinute()
+    gct.start()
+
+    tk = awt.Toolkit.getDefaultToolkit()
+    tk.setDynamicLayout(True)
+#@-node:ekr.20070930194949:startJyleo (leo.py)
 #@+node:ekr.20040411081633:startPsyco
 def startPsyco ():
 
