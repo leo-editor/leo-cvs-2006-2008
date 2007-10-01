@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="349" height="779" width="892"/>
+	<global_window_position top="10" left="349" height="759" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -769,8 +769,8 @@
 </v>
 </v>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
-<v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
-<v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
+<v t="ekr.20070809145744" a="E"><vh>What's New in Leo 4.4.4</vh>
+<v t="ekr.20070809145744.1" a="E"><vh>@rst html\new-4-4-4.html</vh>
 <v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070809145744.3"><vh>@rst-ignore Important new features</vh></v>
 <v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
@@ -781,6 +781,7 @@
 </v>
 <v t="ekr.20070920092716"><vh>Added new commands for resolving cvs conflicts</vh></v>
 <v t="ekr.20070809145744.4"><vh>New commands</vh></v>
+<v t="ekr.20071001122703"><vh>New kinds of settings: @buttons and @menus trees</vh></v>
 <v t="ekr.20070809145744.5"><vh>@rst-ignore New settings</vh></v>
 <v t="ekr.20070809145744.6"><vh>Plugins</vh></v>
 <v t="ekr.20070809145744.7"><vh>Minor improvements</vh></v>
@@ -1079,10 +1080,10 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
-<v t="ekr.20060620094033"><vh>What's New...</vh>
-<v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
-<v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="ekr.20060620094033" a="E"><vh>What's New...</vh>
+<v t="ekr.20070809145744" a="E"><vh>What's New in Leo 4.4.4</vh>
+<v t="ekr.20070809145744.1" a="E"><vh>@rst html\new-4-4-4.html</vh>
 <v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070809145744.3"><vh>@rst-ignore Important new features</vh></v>
 <v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
@@ -1093,6 +1094,7 @@
 </v>
 <v t="ekr.20070920092716"><vh>Added new commands for resolving cvs conflicts</vh></v>
 <v t="ekr.20070809145744.4"><vh>New commands</vh></v>
+<v t="ekr.20071001122703" a="TV"><vh>New kinds of settings: @buttons and @menus trees</vh></v>
 <v t="ekr.20070809145744.5"><vh>@rst-ignore New settings</vh></v>
 <v t="ekr.20070809145744.6"><vh>Plugins</vh></v>
 <v t="ekr.20070809145744.7"><vh>Minor improvements</vh></v>
@@ -30203,7 +30205,13 @@ set the value of ``name`` to ``val``, with the indicated type.
 
     @&lt;type&gt; description
 
-The actual settings are specified in the body text.  At present, there are five such kinds of complex settings nodes:
+The actual settings are specified in the body text.  At present, there are seven kinds of complex settings nodes:
+    
+- ``@buttons``
+
+  **New in Leo 4.4.4**: All @buttons tree in a settings file defines global buttons that
+  are created in the icon area of all .leo files.
+  You define @button nodes in the @buttons tree as usual.
     
 - ``@enabled-plugins``
 
@@ -30236,6 +30244,24 @@ The actual settings are specified in the body text.  At present, there are five 
     body_text_font_weight = None
 
   **Important**: you can use the show-fonts minibuffer command to guide you in making these settings.
+  
+- ``@menus``
+
+  **New in Leo 4.4.4**: Leo creates its menus from the @menu and @item nodes in the @menus tree.
+  Within @menus trees, @menu nodes create menus and @item nodes create menu items. 
+ 
+  The menu name always follows @menu. If the menu name is 'Plugins', Leo will
+  create the Plugins menu and populate the menu by calling the
+  'create-optional-menus' hook. This creates the Plugins menu as usual. Nested
+  @menu nodes define submenus.
+ 
+  The command name follows @item. If the body text of an @item node exists, this
+  body text is the menu name. Otherwise, the menu name is the command name.
+  However, if the command name starts with a '*', hyphens are removed from the
+  menu name. Menu names and command names may contain a single ampersand (&amp;). If
+  present, the following character is underlined in the name. If the command
+  name in an @item node is just a hyphen (-), the item represents a menu
+  separator.
 
 - ``@mode`` *&lt;mode name&gt;*
 
@@ -32133,5 +32159,27 @@ entire .leo file.
 The **compare-leo-outlines** command prompts for another (presubably similar)
 .leo file that will be compared with the presently selected outline file (main
 window). It then creates clones of all inserted, deleted and changed nodes.</t>
+<t tx="ekr.20071001122703">``@buttons``
+
+All @buttons tree in a settings file defines global buttons that are created in
+the icon area of all .leo files. You define @button nodes in the @buttons tree
+as usual.
+
+``@menus``
+
+Leo creates its menus from the @menu and @item nodes in the @menus tree. Within
+@menus trees, @menu nodes create menus and @item nodes create menu items.
+
+The menu name always follows @menu. If the menu name is 'Plugins', Leo will
+create the Plugins menu and populate the menu by calling the
+'create-optional-menus' hook. This creates the Plugins menu as usual. Nested
+@menu nodes define submenus.
+
+The command name follows @item. If the body text of an @item node exists, this
+body text is the menu name. Otherwise, the menu name is the command name.
+However, if the command name starts with a '*', hyphens are removed from the
+menu name. Menu names and command names may contain a single ampersand (&amp;). If
+present, the following character is underlined in the name. If the command name
+in an @item node is just a hyphen (-), the item represents a menu separator.</t>
 </tnodes>
 </leo_file>
