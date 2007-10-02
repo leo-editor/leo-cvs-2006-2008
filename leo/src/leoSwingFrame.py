@@ -38,264 +38,148 @@ import sys
 class leoSwingFrame (leoFrame.leoFrame):
 
     #@    @+others
-    #@+node:ekr.20071001091647:stubs (to be removed)
-    #@+node:ekr.20071001095944:__init__ (stub)
-    def __init__ (self,title,gui):
+    #@+node:ekr.20071001091231.24: Birth & Death (swingFrame)
+    #@+node:ekr.20071001091231.25:__init__ (swingFrame)
+    def __init__(self,title,gui):
 
-        # g.trace('leoSwingFrame',title,gui)
+        g.trace('swingFrame')
+
+        # Init the base class.
+        leoFrame.leoFrame.__init__(self,gui)
+
+        self.use_chapters = False ###
+
         self.title = title
-        self.gui = gui
-        self.iconBarClass = leoFrame.nullIconBarClass ###
-        self.miniBufferWidget = None # Created below.
 
-    #@-node:ekr.20071001095944:__init__ (stub)
-    #@+node:ekr.20071001095944.1:finishCreate (stub)
+        leoSwingFrame.instances += 1
+
+        self.c = None # Set in finishCreate.
+        self.iconBarClass = self.swingIconBarClass
+        self.statusLineClass = self.swingStatusLineClass
+        self.iconBar = None
+
+        self.trace_status_line = None # Set in finishCreate.
+
+        #@    << set the leoSwingFrame ivars >>
+        #@+node:ekr.20071001091231.26:<< set the leoSwingFrame ivars >>
+        # "Official ivars created in createLeoFrame and its allies.
+        self.bar1 = None
+        self.bar2 = None
+        self.body = None
+        self.bodyBar = None
+        self.bodyCtrl = None
+        self.bodyXBar = None
+        self.f1 = self.f2 = None
+        self.findPanel = None # Inited when first opened.
+        self.iconBarComponentName = 'iconBar'
+        self.iconFrame = None 
+        self.log = None
+        self.canvas = None
+        self.outerFrame = None
+        self.statusFrame = None
+        self.statusLineComponentName = 'statusLine'
+        self.statusText = None 
+        self.statusLabel = None 
+        self.top = None
+        self.tree = None
+        # self.treeBar = None # Replaced by injected frame.canvas.leo_treeBar.
+
+        # Used by event handlers...
+        self.controlKeyIsDown = False # For control-drags
+        self.draggedItem = None
+        self.isActive = True
+        self.redrawCount = 0
+        self.wantedWidget = None
+        self.wantedCallbackScheduled = False
+        self.scrollWay = None
+        #@-node:ekr.20071001091231.26:<< set the leoSwingFrame ivars >>
+        #@nl
+    #@-node:ekr.20071001091231.25:__init__ (swingFrame)
+    #@+node:ekr.20071001091231.27:__repr__ (swingFrame)
+    def __repr__ (self):
+
+        return "<leoSwingFrame: %s>" % self.title
+    #@-node:ekr.20071001091231.27:__repr__ (swingFrame)
+    #@+node:ekr.20071001091231.28:swingFrame.finishCreate & helpers
     def finishCreate (self,c):
 
-        # g.trace('leoSwingFrame',c)
+        f = self ; f.c = c
+        g.trace('swingFrame')
 
-        # Official ivars.
-        self.c = c
-        self.ratio = 0.5
-        self.secondary_ratio = 0.5
+        self.trace_status_line = c.config.getBool('trace_status_line')
+        self.use_chapters      = False and c.config.getBool('use_chapters') ###
+        self.use_chapter_tabs  = False and c.config.getBool('use_chapter_tabs') ###
 
-        # Frame components...
-        self.body = leoSwingBody(frame=self,parentFrame=None)
+        # This must be done after creating the commander.
+        f.splitVerticalFlag,f.ratio,f.secondary_ratio = f.initialRatios()
 
-        ### Dummy components...
-        self.outerFrame = self.createOuterFrame()
-        self.iconBar = None
-        self.log  = leoFrame.nullLog(frame=self,parentFrame=None)
-        self.menu = leoMenu.nullMenu(frame=self)
-        self.miniBufferWidget = leoFrame.stringTextWidget(c,'minibuffer')
-        self.statusLine = leoFrame.nullStatusLineClass(c,parentFrame=self)
-        self.tree = leoFrame.nullTree(frame=self)
-    #@nonl
-    #@-node:ekr.20071001095944.1:finishCreate (stub)
-    #@+node:ekr.20070930122327:createOuterFrame
-    def createOuterFrame (self):
+        f.createOuterFrames()
 
-        # The first script in Jython Essentials, by Pedroni & Rappin.
+        ### f.createIconBar()
+
+        f.createSplitterComponents()
+
+        ### f.createStatusLine()
+        f.createFirstTreeNode()
+        f.menu = leoSwingMenu(f)
+            # c.finishCreate calls f.createMenuBar later.
+        c.setLog()
+        g.app.windowList.append(f)
+        c.initVersion()
+        c.signOnWithVersion()
+        f.miniBufferWidget = f.createMiniBufferWidget()
+        c.bodyWantsFocusNow()
+    #@+node:ekr.20071001091231.29:createOuterFrames
+    def createOuterFrames (self):
+
+
+        f = self ; c = f.c
+        ### f.top = top = Tk.Toplevel()
+        ### g.app.gui.attachLeoIcon(top)
+        ### top.title(f.title)
+        ### top.minsize(30,10) # In grid units.
 
         def exit(event):
             java.lang.System.exit(0)
 
-        def onButtonPressed(event):
-            field.text=quotes[event.source.text]
+        # def onButtonPressed(event):
+            # field.text=quotes[event.source.text]
 
-        def createButton(name):
-            return swing.JButton(name,preferredSize=(100,20),
-                actionPerformed=onButtonPressed)
+        # def createButton(name):
+            # return swing.JButton(name,preferredSize=(100,20),
+                # actionPerformed=onButtonPressed)
 
-        names = [ 'Groucho','Chico','Harpo']
-        quotes = {'Groucho':'Say the secret word','Chico':'Viaduct?','Harpo':'Honk!'}
-
-        w = swing.JFrame('Welcome to jyLeo!',size=(200,200),windowClosing=exit)
+        f.top = w = swing.JFrame('jyLeo!',size=(700,700),windowClosing=exit)
         w.contentPane.layout = awt.FlowLayout()
 
-        field = swing.JTextField(preferredSize=(200,20))
-        w.contentPane.add(field)
+        # if g.os_path_exists(g.app.user_xresources_path):
+            # f.top.option_readfile(g.app.user_xresources_path)
 
-        buttons = [createButton(name) for name in names]
-        for button in buttons:
-            w.contentPane.add(button)
+        # f.top.protocol("WM_DELETE_WINDOW", f.OnCloseLeoEvent)
+        # f.top.bind("<Button-1>", f.OnActivateLeoEvent)
 
-        if g.app.splash: g.app.splash.hide()
+        # f.top.bind("<Control-KeyPress>",f.OnControlKeyDown)
+        # f.top.bind("<Control-KeyRelease>",f.OnControlKeyUp)
 
-        w.pack()
-        w.show()
+        # These don't work on Windows. Because of bugs in window managers,
+        # there is NO WAY to know which window is on top!
+        # f.top.bind("<Activate>",f.OnActivateLeoEvent)
+        # f.top.bind("<Deactivate>",f.OnDeactivateLeoEvent)
 
-        return w
-    #@-node:ekr.20070930122327:createOuterFrame
-    #@+node:ekr.20070930114157:Overrides
-    #@+node:ekr.20070930114157.1:Config...
-    def resizePanesToRatio (self,ratio,secondary_ratio):    pass
-    def setInitialWindowGeometry (self):                    pass
-    def setMinibufferBindings(self):                        pass
+        # Create the outer frame, the 'hull' component.
+        # f.outerFrame = Tk.Frame(top)
+        # f.outerFrame.pack(expand=1,fill="both")
+    #@-node:ekr.20071001091231.29:createOuterFrames
+    #@+node:ekr.20071001091231.30:createSplitterComponents
+    def createSplitterComponents (self):
 
-    def setTopGeometry (self,w,h,x,y,adjustSize=True):
+        f = self ; c = f.c
 
-        __pychecker__ = '--no-argsused' # adjustSize used in derived classes.
+        g.trace()
 
-        self.w = w
-        self.h = h
-        self.x = x
-        self.y = y
+        f.createLeoSplitters(f.outerFrame)
 
-    #@-node:ekr.20070930114157.1:Config...
-    #@+node:ekr.20070930114157.3:Gui-dependent commands
-    # Expanding and contracting panes.
-    def contractPane         (self,event=None): pass
-    def expandPane           (self,event=None): pass
-    def contractBodyPane     (self,event=None): pass
-    def contractLogPane      (self,event=None): pass
-    def contractOutlinePane  (self,event=None): pass
-    def expandBodyPane       (self,event=None): pass
-    def expandLogPane        (self,event=None): pass
-    def expandOutlinePane    (self,event=None): pass
-    def fullyExpandBodyPane  (self,event=None): pass
-    def fullyExpandLogPane   (self,event=None): pass
-    def fullyExpandPane      (self,event=None): pass
-    def fullyExpandOutlinePane (self,event=None): pass
-    def hideBodyPane         (self,event=None): pass
-    def hideLogPane          (self,event=None): pass
-    def hidePane             (self,event=None): pass
-    def hideOutlinePane      (self,event=None): pass
-
-    # In the Window menu...
-    def cascade              (self,event=None): pass
-    def equalSizedPanes      (self,event=None): pass
-    def hideLogWindow        (self,event=None): pass
-    def minimizeAll          (self,event=None): pass
-    def resizeToScreen       (self,event=None): pass
-    def toggleActivePane     (self,event=None): pass
-    def toggleSplitDirection (self,event=None): pass
-
-    # In help menu...
-    def leoHelp (self,event=None): pass
-    #@nonl
-    #@-node:ekr.20070930114157.3:Gui-dependent commands
-    #@+node:ekr.20070930114157.4:Window...
-    def bringToFront (self):    pass
-    def deiconify (self):       pass
-    def get_window_info(self):
-        # Set w,h,x,y to a reasonable size and position.
-        return 600,500,20,20
-    def lift (self):            pass
-    def setWrap (self,flag):    pass
-    def update (self):          pass
-    #@-node:ekr.20070930114157.4:Window...
-    #@-node:ekr.20070930114157:Overrides
-    #@-node:ekr.20071001091647:stubs (to be removed)
-    #@+node:ekr.20071001105348:Not ready yet
-    if 0:
-        #@    @+others
-        #@+node:ekr.20071001091231.24: Birth & Death (swingFrame)
-        #@+node:ekr.20071001091231.25:__init__ (swingFrame)
-        def __init__(self,title,gui):
-
-            g.trace('swingFrame')
-
-            # Init the base class.
-            leoFrame.leoFrame.__init__(self,gui)
-
-            self.title = title
-
-            leoSwingFrame.instances += 1
-
-            self.c = None # Set in finishCreate.
-            self.iconBarClass = self.swingIconBarClass
-            self.statusLineClass = self.swingStatusLineClass
-            self.iconBar = None
-
-            self.trace_status_line = None # Set in finishCreate.
-
-            #@    << set the leoSwingFrame ivars >>
-            #@+node:ekr.20071001091231.26:<< set the leoSwingFrame ivars >>
-            # "Official ivars created in createLeoFrame and its allies.
-            self.bar1 = None
-            self.bar2 = None
-            self.body = None
-            self.bodyBar = None
-            self.bodyCtrl = None
-            self.bodyXBar = None
-            self.f1 = self.f2 = None
-            self.findPanel = None # Inited when first opened.
-            self.iconBarComponentName = 'iconBar'
-            self.iconFrame = None 
-            self.log = None
-            self.canvas = None
-            self.outerFrame = None
-            self.statusFrame = None
-            self.statusLineComponentName = 'statusLine'
-            self.statusText = None 
-            self.statusLabel = None 
-            self.top = None
-            self.tree = None
-            # self.treeBar = None # Replaced by injected frame.canvas.leo_treeBar.
-
-            # Used by event handlers...
-            self.controlKeyIsDown = False # For control-drags
-            self.draggedItem = None
-            self.isActive = True
-            self.redrawCount = 0
-            self.wantedWidget = None
-            self.wantedCallbackScheduled = False
-            self.scrollWay = None
-            #@-node:ekr.20071001091231.26:<< set the leoSwingFrame ivars >>
-            #@nl
-        #@-node:ekr.20071001091231.25:__init__ (swingFrame)
-        #@+node:ekr.20071001091231.27:__repr__ (swingFrame)
-        def __repr__ (self):
-
-            return "<leoSwingFrame: %s>" % self.title
-        #@-node:ekr.20071001091231.27:__repr__ (swingFrame)
-        #@+node:ekr.20071001091231.28:swingFrame.finishCreate & helpers
-        def finishCreate (self,c):
-
-            f = self ; f.c = c
-            # g.trace('swingFrame','c',c,g.callers())
-
-            self.trace_status_line = c.config.getBool('trace_status_line')
-            self.use_chapters      = c.config.getBool('use_chapters')
-            self.use_chapter_tabs  = c.config.getBool('use_chapter_tabs')
-
-            # This must be done after creating the commander.
-            f.splitVerticalFlag,f.ratio,f.secondary_ratio = f.initialRatios()
-
-            f.createOuterFrame() ### Call the stub. (to be removed)
-            return #######
-
-            f.createOuterFrames()
-            f.createIconBar()
-            f.createSplitterComponents()
-            f.createStatusLine()
-            f.createFirstTreeNode()
-            f.menu = leoSwingMenu.leoSwingMenu(f)
-                # c.finishCreate calls f.createMenuBar later.
-            c.setLog()
-            g.app.windowList.append(f)
-            c.initVersion()
-            c.signOnWithVersion()
-            f.miniBufferWidget = f.createMiniBufferWidget()
-            c.bodyWantsFocusNow()
-        #@+node:ekr.20071001091231.29:createOuterFrames
-        def createOuterFrames (self):
-
-            self.createOuterFrame()
-            return ###
-
-            f = self ; c = f.c
-            ### f.top = top = Tk.Toplevel()
-            ### g.app.gui.attachLeoIcon(top)
-            ### top.title(f.title)
-            ### top.minsize(30,10) # In grid units.
-
-            if g.os_path_exists(g.app.user_xresources_path):
-                f.top.option_readfile(g.app.user_xresources_path)
-
-            f.top.protocol("WM_DELETE_WINDOW", f.OnCloseLeoEvent)
-            f.top.bind("<Button-1>", f.OnActivateLeoEvent)
-
-            f.top.bind("<Control-KeyPress>",f.OnControlKeyDown)
-            f.top.bind("<Control-KeyRelease>",f.OnControlKeyUp)
-
-            # These don't work on Windows. Because of bugs in window managers,
-            # there is NO WAY to know which window is on top!
-            # f.top.bind("<Activate>",f.OnActivateLeoEvent)
-            # f.top.bind("<Deactivate>",f.OnDeactivateLeoEvent)
-
-            # Create the outer frame, the 'hull' component.
-            f.outerFrame = Tk.Frame(top)
-            f.outerFrame.pack(expand=1,fill="both")
-        #@-node:ekr.20071001091231.29:createOuterFrames
-        #@+node:ekr.20071001091231.30:createSplitterComponents
-        def createSplitterComponents (self):
-
-            f = self ; c = f.c
-
-            f.createLeoSplitters(f.outerFrame)
-
+        if 0: ###
             # Create the canvas, tree, log and body.
             if f.use_chapters:
                 c.chapterController = cc = leoChapters.chapterController(c)
@@ -308,1833 +192,1852 @@ class leoSwingFrame (leoFrame.leoFrame):
             f.log    = leoSwingLog(f,f.split2Pane2)
             f.body   = leoSwingBody(f,f.split1Pane2)
 
-            # Yes, this an "official" ivar: this is a kludge.
-            f.bodyCtrl = f.body.bodyCtrl
+        f.body = leoSwingBody(f,f.top)
+        f.tree = leoSwingTree(c,f,f.top)
+        f.log  = leoSwingLog(f,f.top)
 
-            # Configure.
-            f.setTabWidth(c.tab_width)
-            f.reconfigurePanes()
-            f.body.setFontFromConfig()
-            f.body.setColorFromConfig()
-        #@-node:ekr.20071001091231.30:createSplitterComponents
-        #@+node:ekr.20071001091231.31:createFirstTreeNode
-        def createFirstTreeNode (self):
+        # Yes, this an "official" ivar: this is a kludge.
+        g.trace('f.body',f.body,'f.body.bodyCtrl',f.body.bodyCtrl)
+        f.bodyCtrl = f.body.bodyCtrl
 
-            f = self ; c = f.c
+        # Configure.
+        f.setTabWidth(c.tab_width)
+        f.reconfigurePanes()
+        f.body.setFontFromConfig()
+        f.body.setColorFromConfig()
+    #@-node:ekr.20071001091231.30:createSplitterComponents
+    #@+node:ekr.20071001091231.31:createFirstTreeNode
+    def createFirstTreeNode (self):
 
-            t = leoNodes.tnode()
-            v = leoNodes.vnode(t)
-            p = leoNodes.position(v,[])
-            v.initHeadString("NewHeadline")
-            p.moveToRoot(oldRoot=None)
-            c.setRootPosition(p) # New in 4.4.2.
-            c.editPosition(p)
-        #@-node:ekr.20071001091231.31:createFirstTreeNode
-        #@-node:ekr.20071001091231.28:swingFrame.finishCreate & helpers
-        #@+node:ekr.20071001091231.33:swingFrame.createCanvas & helpers
-        def createCanvas (self,parentFrame,pack=True):
+        f = self ; c = f.c
 
-            c = self.c
+        t = leoNodes.tnode()
+        v = leoNodes.vnode(t)
+        p = leoNodes.position(v,[])
+        v.initHeadString("NewHeadline")
+        p.moveToRoot(oldRoot=None)
+        c.setRootPosition(p) # New in 4.4.2.
+        c.editPosition(p)
+    #@-node:ekr.20071001091231.31:createFirstTreeNode
+    #@-node:ekr.20071001091231.28:swingFrame.finishCreate & helpers
+    #@+node:ekr.20071001091231.33:swingFrame.createCanvas & helpers
+    def createCanvas (self,parentFrame,pack=True):
 
-            scrolls = c.config.getBool('outline_pane_scrolls_horizontally')
-            scrolls = g.choose(scrolls,1,0)
-            canvas = self.createTkTreeCanvas(parentFrame,scrolls,pack)
-            self.setCanvasColorFromConfig(canvas)
+        c = self.c
 
-            return canvas
-        #@nonl
-        #@+node:ekr.20071001091231.34:f.createTkTreeCanvas & callbacks
-        def createTkTreeCanvas (self,parentFrame,scrolls,pack):
+        scrolls = c.config.getBool('outline_pane_scrolls_horizontally')
+        scrolls = g.choose(scrolls,1,0)
+        canvas = self.createTkTreeCanvas(parentFrame,scrolls,pack)
+        self.setCanvasColorFromConfig(canvas)
 
-            frame = self
+        return canvas
+    #@nonl
+    #@+node:ekr.20071001091231.34:f.createTkTreeCanvas & callbacks
+    def createTkTreeCanvas (self,parentFrame,scrolls,pack):
 
-            canvas = Tk.Canvas(parentFrame,name="canvas",
-                bd=0,bg="white",relief="flat")
+        frame = self
 
-            treeBar = Tk.Scrollbar(parentFrame,name="treeBar")
+        canvas = Tk.Canvas(parentFrame,name="canvas",
+            bd=0,bg="white",relief="flat")
 
-            # New in Leo 4.4.3 b1: inject the ivar into the canvas.
-            canvas.leo_treeBar = treeBar
+        treeBar = Tk.Scrollbar(parentFrame,name="treeBar")
 
-            # Bind mouse wheel event to canvas
-            if sys.platform != "win32": # Works on 98, crashes on XP.
-                canvas.bind("<MouseWheel>", frame.OnMouseWheel)
-                if 1: # New in 4.3.
-                    #@            << workaround for mouse-wheel problems >>
-                    #@+node:ekr.20071001091231.35:<< workaround for mouse-wheel problems >>
-                    # Handle mapping of mouse-wheel to buttons 4 and 5.
+        # New in Leo 4.4.3 b1: inject the ivar into the canvas.
+        canvas.leo_treeBar = treeBar
 
-                    def mapWheel(e):
-                        if e.num == 4: # Button 4
-                            e.delta = 120
-                            return frame.OnMouseWheel(e)
-                        elif e.num == 5: # Button 5
-                            e.delta = -120
-                            return frame.OnMouseWheel(e)
+        # Bind mouse wheel event to canvas
+        if sys.platform != "win32": # Works on 98, crashes on XP.
+            canvas.bind("<MouseWheel>", frame.OnMouseWheel)
+            if 1: # New in 4.3.
+                #@            << workaround for mouse-wheel problems >>
+                #@+node:ekr.20071001091231.35:<< workaround for mouse-wheel problems >>
+                # Handle mapping of mouse-wheel to buttons 4 and 5.
 
-                    canvas.bind("<ButtonPress>",mapWheel,add=1)
-                    #@-node:ekr.20071001091231.35:<< workaround for mouse-wheel problems >>
-                    #@nl
+                def mapWheel(e):
+                    if e.num == 4: # Button 4
+                        e.delta = 120
+                        return frame.OnMouseWheel(e)
+                    elif e.num == 5: # Button 5
+                        e.delta = -120
+                        return frame.OnMouseWheel(e)
 
-            canvas['yscrollcommand'] = self.setCallback
-            treeBar['command']     = self.yviewCallback
-            treeBar.pack(side="right", fill="y")
-            if scrolls: 
-                treeXBar = Tk.Scrollbar( 
-                    parentFrame,name='treeXBar',orient="horizontal") 
-                canvas['xscrollcommand'] = treeXBar.set 
-                treeXBar['command'] = canvas.xview 
-                treeXBar.pack(side="bottom", fill="x")
-
-            if pack:
-                canvas.pack(expand=1,fill="both")
-
-            canvas.bind("<Button-1>", frame.OnActivateTree)
-
-            # Handle mouse wheel in the outline pane.
-            if sys.platform == "linux2": # This crashes tcl83.dll
-                canvas.bind("<MouseWheel>", frame.OnMouseWheel)
-            if 0:
-                #@        << do scrolling by hand in a separate thread >>
-                #@+node:ekr.20071001091231.36:<< do scrolling by hand in a separate thread >>
-                # New in 4.3: replaced global way with scrollWay ivar.
-                ev = threading.Event()
-
-                def run(self=self,canvas=canvas,ev=ev):
-
-                    while 1:
-                        ev.wait()
-                        if self.scrollWay =='Down': canvas.yview("scroll", 1,"units")
-                        else:                       canvas.yview("scroll",-1,"units")
-                        time.sleep(.1)
-
-                t = threading.Thread(target = run)
-                t.setDaemon(True)
-                t.start()
-
-                def scrollUp(event): scrollUpOrDown(event,'Down')
-                def scrollDn(event): scrollUpOrDown(event,'Up')
-
-                def scrollUpOrDown(event,theWay):
-                    if event.widget!=canvas: return
-                    if 0: # This seems to interfere with scrolling.
-                        if canvas.find_overlapping(event.x,event.y,event.x,event.y): return
-                    ev.set()
-                    self.scrollWay = theWay
-
-                def off(event,ev=ev,canvas=canvas):
-                    if event.widget!=canvas: return
-                    ev.clear()
-
-                if 1: # Use shift-click
-                    # Shift-button-1 scrolls up, Shift-button-2 scrolls down
-                    canvas.bind_all('<Shift Button-3>',scrollDn)
-                    canvas.bind_all('<Shift Button-1>',scrollUp)
-                    canvas.bind_all('<Shift ButtonRelease-1>',off)
-                    canvas.bind_all('<Shift ButtonRelease-3>',off)
-                else: # Use plain click.
-                    canvas.bind_all( '<Button-3>',scrollDn)
-                    canvas.bind_all( '<Button-1>',scrollUp)
-                    canvas.bind_all( '<ButtonRelease-1>',off)
-                    canvas.bind_all( '<ButtonRelease-3>',off)
-                #@-node:ekr.20071001091231.36:<< do scrolling by hand in a separate thread >>
+                canvas.bind("<ButtonPress>",mapWheel,add=1)
+                #@-node:ekr.20071001091231.35:<< workaround for mouse-wheel problems >>
                 #@nl
 
-            # g.print_bindings("canvas",canvas)
-            return canvas
-        #@+node:ekr.20071001091231.37:Scrolling callbacks (swingFrame)
-        def setCallback (self,*args,**keys):
+        canvas['yscrollcommand'] = self.setCallback
+        treeBar['command']     = self.yviewCallback
+        treeBar.pack(side="right", fill="y")
+        if scrolls: 
+            treeXBar = Tk.Scrollbar( 
+                parentFrame,name='treeXBar',orient="horizontal") 
+            canvas['xscrollcommand'] = treeXBar.set 
+            treeXBar['command'] = canvas.xview 
+            treeXBar.pack(side="bottom", fill="x")
 
-            """Callback to adjust the scrollbar.
+        if pack:
+            canvas.pack(expand=1,fill="both")
 
-            Args is a tuple of two floats describing the fraction of the visible area."""
+        canvas.bind("<Button-1>", frame.OnActivateTree)
 
-            #g.trace(self.tree.redrawCount,args,g.callers())
+        # Handle mouse wheel in the outline pane.
+        if sys.platform == "linux2": # This crashes tcl83.dll
+            canvas.bind("<MouseWheel>", frame.OnMouseWheel)
+        if 0:
+            #@        << do scrolling by hand in a separate thread >>
+            #@+node:ekr.20071001091231.36:<< do scrolling by hand in a separate thread >>
+            # New in 4.3: replaced global way with scrollWay ivar.
+            ev = threading.Event()
 
-            apply(self.canvas.leo_treeBar.set,args,keys)
+            def run(self=self,canvas=canvas,ev=ev):
 
-            if self.tree.allocateOnlyVisibleNodes:
-                self.tree.setVisibleArea(args)
+                while 1:
+                    ev.wait()
+                    if self.scrollWay =='Down': canvas.yview("scroll", 1,"units")
+                    else:                       canvas.yview("scroll",-1,"units")
+                    time.sleep(.1)
 
-        def yviewCallback (self,*args,**keys):
+            t = threading.Thread(target = run)
+            t.setDaemon(True)
+            t.start()
 
-            """Tell the canvas to scroll"""
+            def scrollUp(event): scrollUpOrDown(event,'Down')
+            def scrollDn(event): scrollUpOrDown(event,'Up')
 
-            #g.trace(vyiewCallback,args,keys,g.callers())
+            def scrollUpOrDown(event,theWay):
+                if event.widget!=canvas: return
+                if 0: # This seems to interfere with scrolling.
+                    if canvas.find_overlapping(event.x,event.y,event.x,event.y): return
+                ev.set()
+                self.scrollWay = theWay
 
-            if self.tree.allocateOnlyVisibleNodes:
-                self.tree.allocateNodesBeforeScrolling(args)
+            def off(event,ev=ev,canvas=canvas):
+                if event.widget!=canvas: return
+                ev.clear()
 
-            apply(self.canvas.yview,args,keys)
-        #@nonl
-        #@-node:ekr.20071001091231.37:Scrolling callbacks (swingFrame)
-        #@-node:ekr.20071001091231.34:f.createTkTreeCanvas & callbacks
-        #@+node:ekr.20071001091231.38:f.setCanvasColorFromConfig
-        def setCanvasColorFromConfig (self,canvas):
-
-            c = self.c
-
-            bg = c.config.getColor("outline_pane_background_color") or 'white'
-
-            try:
-                canvas.configure(bg=bg)
-            except:
-                g.es("exception setting outline pane background color")
-                g.es_exception()
-        #@-node:ekr.20071001091231.38:f.setCanvasColorFromConfig
-        #@-node:ekr.20071001091231.33:swingFrame.createCanvas & helpers
-        #@+node:ekr.20071001091231.39:swingFrame.createLeoSplitters & helpers
-        #@+at 
-        #@nonl
-        # The key invariants used throughout this code:
-        # 
-        # 1. self.splitVerticalFlag tells the alignment of the main splitter 
-        # and
-        # 2. not self.splitVerticalFlag tells the alignment of the secondary 
-        # splitter.
-        # 
-        # Only the general-purpose divideAnySplitter routine doesn't know 
-        # about these
-        # invariants. So most of this code is specialized for Leo's window. 
-        # OTOH, creating
-        # a single splitter window would be much easier than this code.
-        #@-at
-        #@@c
-
-        def createLeoSplitters (self,parentFrame):
-
-            # Splitter 1 is the main splitter containing splitter2 and the body pane.
-            f1,bar1,split1Pane1,split1Pane2 = self.createLeoTkSplitter(
-                parentFrame,self.splitVerticalFlag,'splitter1')
-
-            self.f1,self.bar1 = f1,bar1
-            self.split1Pane1,self.split1Pane2 = split1Pane1,split1Pane2
-
-            # Splitter 2 is the secondary splitter containing the tree and log panes.
-            f2,bar2,split2Pane1,split2Pane2 = self.createLeoTkSplitter(
-                split1Pane1,not self.splitVerticalFlag,'splitter2')
-
-            self.f2,self.bar2 = f2,bar2
-            self.split2Pane1,self.split2Pane2 = split2Pane1,split2Pane2
-        #@nonl
-        #@+node:ekr.20071001091231.40:createLeoTkSplitter
-        def createLeoTkSplitter (self,parent,verticalFlag,componentName):
-
-            c = self.c
-
-            # Create the frames.
-            f = Tk.Frame(parent,bd=0,relief="flat")
-            f.pack(expand=1,fill="both",pady=1)
-
-            f1 = Tk.Frame(f)
-            f2 = Tk.Frame(f)
-            bar = Tk.Frame(f,bd=2,relief="raised",bg="LightSteelBlue2")
-
-            # Configure and place the frames.
-            self.configureBar(bar,verticalFlag)
-            self.bindBar(bar,verticalFlag)
-            self.placeSplitter(bar,f1,f2,verticalFlag)
-
-            return f, bar, f1, f2
-        #@nonl
-        #@-node:ekr.20071001091231.40:createLeoTkSplitter
-        #@+node:ekr.20071001091231.41:bindBar
-        def bindBar (self, bar, verticalFlag):
-
-            if verticalFlag == self.splitVerticalFlag:
-                bar.bind("<B1-Motion>", self.onDragMainSplitBar)
-
-            else:
-                bar.bind("<B1-Motion>", self.onDragSecondarySplitBar)
-        #@-node:ekr.20071001091231.41:bindBar
-        #@+node:ekr.20071001091231.42:divideAnySplitter
-        # This is the general-purpose placer for splitters.
-        # It is the only general-purpose splitter code in Leo.
-
-        def divideAnySplitter (self, frac, verticalFlag, bar, pane1, pane2):
-
-            if verticalFlag:
-                # Panes arranged vertically; horizontal splitter bar
-                bar.place(rely=frac)
-                pane1.place(relheight=frac)
-                pane2.place(relheight=1-frac)
-            else:
-                # Panes arranged horizontally; vertical splitter bar
-                bar.place(relx=frac)
-                pane1.place(relwidth=frac)
-                pane2.place(relwidth=1-frac)
-        #@-node:ekr.20071001091231.42:divideAnySplitter
-        #@+node:ekr.20071001091231.43:divideLeoSplitter
-        # Divides the main or secondary splitter, using the key invariant.
-        def divideLeoSplitter (self, verticalFlag, frac):
-
-            if self.splitVerticalFlag == verticalFlag:
-                self.divideLeoSplitter1(frac,verticalFlag)
-                self.ratio = frac # Ratio of body pane to tree pane.
-            else:
-                self.divideLeoSplitter2(frac,verticalFlag)
-                self.secondary_ratio = frac # Ratio of tree pane to log pane.
-
-        # Divides the main splitter.
-        def divideLeoSplitter1 (self, frac, verticalFlag): 
-            self.divideAnySplitter(frac, verticalFlag,
-                self.bar1, self.split1Pane1, self.split1Pane2)
-
-        # Divides the secondary splitter.
-        def divideLeoSplitter2 (self, frac, verticalFlag): 
-            self.divideAnySplitter (frac, verticalFlag,
-                self.bar2, self.split2Pane1, self.split2Pane2)
-        #@-node:ekr.20071001091231.43:divideLeoSplitter
-        #@+node:ekr.20071001091231.44:onDrag...
-        def onDragMainSplitBar (self, event):
-            self.onDragSplitterBar(event,self.splitVerticalFlag)
-
-        def onDragSecondarySplitBar (self, event):
-            self.onDragSplitterBar(event,not self.splitVerticalFlag)
-
-        def onDragSplitterBar (self, event, verticalFlag):
-
-            # x and y are the coordinates of the cursor relative to the bar, not the main window.
-            bar = event.widget
-            x = event.x
-            y = event.y
-            top = bar.winfo_toplevel()
-
-            if verticalFlag:
-                # Panes arranged vertically; horizontal splitter bar
-                wRoot = top.winfo_rooty()
-                barRoot = bar.winfo_rooty()
-                wMax = top.winfo_height()
-                offset = float(barRoot) + y - wRoot
-            else:
-                # Panes arranged horizontally; vertical splitter bar
-                wRoot = top.winfo_rootx()
-                barRoot = bar.winfo_rootx()
-                wMax = top.winfo_width()
-                offset = float(barRoot) + x - wRoot
-
-            # Adjust the pixels, not the frac.
-            if offset < 3: offset = 3
-            if offset > wMax - 2: offset = wMax - 2
-            # Redraw the splitter as the drag is occuring.
-            frac = float(offset) / wMax
-            # g.trace(frac)
-            self.divideLeoSplitter(verticalFlag, frac)
-        #@-node:ekr.20071001091231.44:onDrag...
-        #@+node:ekr.20071001091231.45:placeSplitter
-        def placeSplitter (self,bar,pane1,pane2,verticalFlag):
-
-            if verticalFlag:
-                # Panes arranged vertically; horizontal splitter bar
-                pane1.place(relx=0.5, rely =   0, anchor="n", relwidth=1.0, relheight=0.5)
-                pane2.place(relx=0.5, rely = 1.0, anchor="s", relwidth=1.0, relheight=0.5)
-                bar.place  (relx=0.5, rely = 0.5, anchor="c", relwidth=1.0)
-            else:
-                # Panes arranged horizontally; vertical splitter bar
-                # adj gives tree pane more room when tiling vertically.
-                adj = g.choose(verticalFlag != self.splitVerticalFlag,0.65,0.5)
-                pane1.place(rely=0.5, relx =   0, anchor="w", relheight=1.0, relwidth=adj)
-                pane2.place(rely=0.5, relx = 1.0, anchor="e", relheight=1.0, relwidth=1.0-adj)
-                bar.place  (rely=0.5, relx = adj, anchor="c", relheight=1.0)
-        #@-node:ekr.20071001091231.45:placeSplitter
-        #@-node:ekr.20071001091231.39:swingFrame.createLeoSplitters & helpers
-        #@+node:ekr.20071001091231.46:Destroying the swingFrame
-        #@+node:ekr.20071001091231.47:destroyAllObjects
-        def destroyAllObjects (self):
-
-            """Clear all links to objects in a Leo window."""
-
-            frame = self ; c = self.c ; tree = frame.tree ; body = self.body
-
-            # g.printGcAll()
-
-            # Do this first.
-            #@    << clear all vnodes and tnodes in the tree >>
-            #@+node:ekr.20071001091231.48:<< clear all vnodes and tnodes in the tree>>
-            # Using a dict here is essential for adequate speed.
-            vList = [] ; tDict = {}
-
-            for p in c.allNodes_iter():
-                vList.append(p.v)
-                if p.v.t:
-                    key = id(p.v.t)
-                    if not tDict.has_key(key):
-                        tDict[key] = p.v.t
-
-            for key in tDict.keys():
-                g.clearAllIvars(tDict[key])
-
-            for v in vList:
-                g.clearAllIvars(v)
-
-            vList = [] ; tDict = {} # Remove these references immediately.
-            #@-node:ekr.20071001091231.48:<< clear all vnodes and tnodes in the tree>>
+            if 1: # Use shift-click
+                # Shift-button-1 scrolls up, Shift-button-2 scrolls down
+                canvas.bind_all('<Shift Button-3>',scrollDn)
+                canvas.bind_all('<Shift Button-1>',scrollUp)
+                canvas.bind_all('<Shift ButtonRelease-1>',off)
+                canvas.bind_all('<Shift ButtonRelease-3>',off)
+            else: # Use plain click.
+                canvas.bind_all( '<Button-3>',scrollDn)
+                canvas.bind_all( '<Button-1>',scrollUp)
+                canvas.bind_all( '<ButtonRelease-1>',off)
+                canvas.bind_all( '<ButtonRelease-3>',off)
+            #@-node:ekr.20071001091231.36:<< do scrolling by hand in a separate thread >>
             #@nl
 
-            # Destroy all ivars in subcommanders.
-            g.clearAllIvars(c.atFileCommands)
-            if c.chapterController: # New in Leo 4.4.3 b1.
-                g.clearAllIvars(c.chapterController)
-            g.clearAllIvars(c.fileCommands)
-            g.clearAllIvars(c.keyHandler) # New in Leo 4.4.3 b1.
-            g.clearAllIvars(c.importCommands)
-            g.clearAllIvars(c.tangleCommands)
-            g.clearAllIvars(c.undoer)
+        # g.print_bindings("canvas",canvas)
+        return canvas
+    #@+node:ekr.20071001091231.37:Scrolling callbacks (swingFrame)
+    def setCallback (self,*args,**keys):
 
-            g.clearAllIvars(c)
-            g.clearAllIvars(body.colorizer)
-            g.clearAllIvars(body)
-            g.clearAllIvars(tree)
+        """Callback to adjust the scrollbar.
 
-            # This must be done last.
-            frame.destroyAllPanels()
-            g.clearAllIvars(frame)
+        Args is a tuple of two floats describing the fraction of the visible area."""
 
-        #@-node:ekr.20071001091231.47:destroyAllObjects
-        #@+node:ekr.20071001091231.49:destroyAllPanels
-        def destroyAllPanels (self):
+        #g.trace(self.tree.redrawCount,args,g.callers())
 
-            """Destroy all panels attached to this frame."""
+        apply(self.canvas.leo_treeBar.set,args,keys)
 
-            panels = (self.comparePanel, self.colorPanel, self.findPanel, self.fontPanel, self.prefsPanel)
+        if self.tree.allocateOnlyVisibleNodes:
+            self.tree.setVisibleArea(args)
 
-            for panel in panels:
-                if panel:
-                    panel.top.destroy()
-        #@-node:ekr.20071001091231.49:destroyAllPanels
-        #@+node:ekr.20071001091231.50:destroySelf (swingFrame)
-        def destroySelf (self):
+    def yviewCallback (self,*args,**keys):
 
-            # Remember these: we are about to destroy all of our ivars!
-            top = self.top 
-            c = self.c
+        """Tell the canvas to scroll"""
 
-            # Indicate that the commander is no longer valid.
-            c.exists = False 
+        #g.trace(vyiewCallback,args,keys,g.callers())
 
-            # g.trace(self)
+        if self.tree.allocateOnlyVisibleNodes:
+            self.tree.allocateNodesBeforeScrolling(args)
 
-            # Important: this destroys all the objects of the commander too.
-            self.destroyAllObjects()
+        apply(self.canvas.yview,args,keys)
+    #@nonl
+    #@-node:ekr.20071001091231.37:Scrolling callbacks (swingFrame)
+    #@-node:ekr.20071001091231.34:f.createTkTreeCanvas & callbacks
+    #@+node:ekr.20071001091231.38:f.setCanvasColorFromConfig
+    def setCanvasColorFromConfig (self,canvas):
 
-            c.exists = False # Make sure this one ivar has not been destroyed.
+        c = self.c
 
-            top.destroy()
-        #@-node:ekr.20071001091231.50:destroySelf (swingFrame)
-        #@-node:ekr.20071001091231.46:Destroying the swingFrame
-        #@-node:ekr.20071001091231.24: Birth & Death (swingFrame)
-        #@+node:ekr.20071001091231.51:class swingStatusLineClass
-        class swingStatusLineClass:
+        bg = c.config.getColor("outline_pane_background_color") or 'white'
 
-            '''A class representing the status line.'''
+        try:
+            canvas.configure(bg=bg)
+        except:
+            g.es("exception setting outline pane background color")
+            g.es_exception()
+    #@-node:ekr.20071001091231.38:f.setCanvasColorFromConfig
+    #@-node:ekr.20071001091231.33:swingFrame.createCanvas & helpers
+    #@+node:ekr.20071001091231.39:swingFrame.createLeoSplitters & helpers
+    #@+at 
+    #@nonl
+    # The key invariants used throughout this code:
+    # 
+    # 1. self.splitVerticalFlag tells the alignment of the main splitter and
+    # 2. not self.splitVerticalFlag tells the alignment of the secondary 
+    # splitter.
+    # 
+    # Only the general-purpose divideAnySplitter routine doesn't know about 
+    # these
+    # invariants. So most of this code is specialized for Leo's window. OTOH, 
+    # creating
+    # a single splitter window would be much easier than this code.
+    #@-at
+    #@@c
 
-            #@    @+others
-            #@+node:ekr.20071001091231.52: ctor
-            def __init__ (self,c,parentFrame):
+    def createLeoSplitters (self,parentFrame):
 
-                self.c = c
-                self.colorTags = [] # list of color names used as tags.
-                self.enabled = False
+        # Splitter 1 is the main splitter containing splitter2 and the body pane.
+        f1,bar1,split1Pane1,split1Pane2 = self.createLeoSwingSplitter(
+            parentFrame,self.splitVerticalFlag,'splitter1')
+
+        self.f1,self.bar1 = f1,bar1
+        self.split1Pane1,self.split1Pane2 = split1Pane1,split1Pane2
+
+        # Splitter 2 is the secondary splitter containing the tree and log panes.
+        f2,bar2,split2Pane1,split2Pane2 = self.createLeoSwingSplitter(
+            split1Pane1,not self.splitVerticalFlag,'splitter2')
+
+        self.f2,self.bar2 = f2,bar2
+        self.split2Pane1,self.split2Pane2 = split2Pane1,split2Pane2
+    #@nonl
+    #@+node:ekr.20071001091231.40:createLeoSwingSplitter
+    def createLeoSwingSplitter (self,parent,verticalFlag,componentName):
+
+        c = self.c
+
+        return None,None,None,None ###
+
+        # # Create the frames.
+        # f = Tk.Frame(parent,bd=0,relief="flat")
+        # f.pack(expand=1,fill="both",pady=1)
+
+        # f1 = Tk.Frame(f)
+        # f2 = Tk.Frame(f)
+        # bar = Tk.Frame(f,bd=2,relief="raised",bg="LightSteelBlue2")
+
+        # # Configure and place the frames.
+        # self.configureBar(bar,verticalFlag)
+        # self.bindBar(bar,verticalFlag)
+        # self.placeSplitter(bar,f1,f2,verticalFlag)
+
+        # return f, bar, f1, f2
+    #@-node:ekr.20071001091231.40:createLeoSwingSplitter
+    #@+node:ekr.20071001091231.41:bindBar
+    def bindBar (self, bar, verticalFlag):
+
+        if verticalFlag == self.splitVerticalFlag:
+            bar.bind("<B1-Motion>", self.onDragMainSplitBar)
+
+        else:
+            bar.bind("<B1-Motion>", self.onDragSecondarySplitBar)
+    #@-node:ekr.20071001091231.41:bindBar
+    #@+node:ekr.20071001091231.42:divideAnySplitter
+    # This is the general-purpose placer for splitters.
+    # It is the only general-purpose splitter code in Leo.
+
+    def divideAnySplitter (self, frac, verticalFlag, bar, pane1, pane2):
+
+        pass ###
+
+        # if verticalFlag:
+            # # Panes arranged vertically; horizontal splitter bar
+            # bar.place(rely=frac)
+            # pane1.place(relheight=frac)
+            # pane2.place(relheight=1-frac)
+        # else:
+            # # Panes arranged horizontally; vertical splitter bar
+            # bar.place(relx=frac)
+            # pane1.place(relwidth=frac)
+            # pane2.place(relwidth=1-frac)
+    #@-node:ekr.20071001091231.42:divideAnySplitter
+    #@+node:ekr.20071001091231.43:divideLeoSplitter
+    # Divides the main or secondary splitter, using the key invariant.
+    def divideLeoSplitter (self, verticalFlag, frac):
+
+        if self.splitVerticalFlag == verticalFlag:
+            self.divideLeoSplitter1(frac,verticalFlag)
+            self.ratio = frac # Ratio of body pane to tree pane.
+        else:
+            self.divideLeoSplitter2(frac,verticalFlag)
+            self.secondary_ratio = frac # Ratio of tree pane to log pane.
+
+    # Divides the main splitter.
+    def divideLeoSplitter1 (self, frac, verticalFlag): 
+        self.divideAnySplitter(frac, verticalFlag,
+            self.bar1, self.split1Pane1, self.split1Pane2)
+
+    # Divides the secondary splitter.
+    def divideLeoSplitter2 (self, frac, verticalFlag): 
+        self.divideAnySplitter (frac, verticalFlag,
+            self.bar2, self.split2Pane1, self.split2Pane2)
+    #@-node:ekr.20071001091231.43:divideLeoSplitter
+    #@+node:ekr.20071001091231.44:onDrag...
+    def onDragMainSplitBar (self, event):
+        self.onDragSplitterBar(event,self.splitVerticalFlag)
+
+    def onDragSecondarySplitBar (self, event):
+        self.onDragSplitterBar(event,not self.splitVerticalFlag)
+
+    def onDragSplitterBar (self, event, verticalFlag):
+
+        # x and y are the coordinates of the cursor relative to the bar, not the main window.
+        bar = event.widget
+        x = event.x
+        y = event.y
+        top = bar.winfo_toplevel()
+
+        if verticalFlag:
+            # Panes arranged vertically; horizontal splitter bar
+            wRoot = top.winfo_rooty()
+            barRoot = bar.winfo_rooty()
+            wMax = top.winfo_height()
+            offset = float(barRoot) + y - wRoot
+        else:
+            # Panes arranged horizontally; vertical splitter bar
+            wRoot = top.winfo_rootx()
+            barRoot = bar.winfo_rootx()
+            wMax = top.winfo_width()
+            offset = float(barRoot) + x - wRoot
+
+        # Adjust the pixels, not the frac.
+        if offset < 3: offset = 3
+        if offset > wMax - 2: offset = wMax - 2
+        # Redraw the splitter as the drag is occuring.
+        frac = float(offset) / wMax
+        # g.trace(frac)
+        self.divideLeoSplitter(verticalFlag, frac)
+    #@-node:ekr.20071001091231.44:onDrag...
+    #@+node:ekr.20071001091231.45:placeSplitter
+    def placeSplitter (self,bar,pane1,pane2,verticalFlag):
+
+        if verticalFlag:
+            # Panes arranged vertically; horizontal splitter bar
+            pane1.place(relx=0.5, rely =   0, anchor="n", relwidth=1.0, relheight=0.5)
+            pane2.place(relx=0.5, rely = 1.0, anchor="s", relwidth=1.0, relheight=0.5)
+            bar.place  (relx=0.5, rely = 0.5, anchor="c", relwidth=1.0)
+        else:
+            # Panes arranged horizontally; vertical splitter bar
+            # adj gives tree pane more room when tiling vertically.
+            adj = g.choose(verticalFlag != self.splitVerticalFlag,0.65,0.5)
+            pane1.place(rely=0.5, relx =   0, anchor="w", relheight=1.0, relwidth=adj)
+            pane2.place(rely=0.5, relx = 1.0, anchor="e", relheight=1.0, relwidth=1.0-adj)
+            bar.place  (rely=0.5, relx = adj, anchor="c", relheight=1.0)
+    #@-node:ekr.20071001091231.45:placeSplitter
+    #@-node:ekr.20071001091231.39:swingFrame.createLeoSplitters & helpers
+    #@+node:ekr.20071001091231.46:Destroying the swingFrame
+    #@+node:ekr.20071001091231.47:destroyAllObjects
+    def destroyAllObjects (self):
+
+        """Clear all links to objects in a Leo window."""
+
+        frame = self ; c = self.c ; tree = frame.tree ; body = self.body
+
+        # g.printGcAll()
+
+        # Do this first.
+        #@    << clear all vnodes and tnodes in the tree >>
+        #@+node:ekr.20071001091231.48:<< clear all vnodes and tnodes in the tree>>
+        # Using a dict here is essential for adequate speed.
+        vList = [] ; tDict = {}
+
+        for p in c.allNodes_iter():
+            vList.append(p.v)
+            if p.v.t:
+                key = id(p.v.t)
+                if not tDict.has_key(key):
+                    tDict[key] = p.v.t
+
+        for key in tDict.keys():
+            g.clearAllIvars(tDict[key])
+
+        for v in vList:
+            g.clearAllIvars(v)
+
+        vList = [] ; tDict = {} # Remove these references immediately.
+        #@-node:ekr.20071001091231.48:<< clear all vnodes and tnodes in the tree>>
+        #@nl
+
+        # Destroy all ivars in subcommanders.
+        g.clearAllIvars(c.atFileCommands)
+        if c.chapterController: # New in Leo 4.4.3 b1.
+            g.clearAllIvars(c.chapterController)
+        g.clearAllIvars(c.fileCommands)
+        g.clearAllIvars(c.keyHandler) # New in Leo 4.4.3 b1.
+        g.clearAllIvars(c.importCommands)
+        g.clearAllIvars(c.tangleCommands)
+        g.clearAllIvars(c.undoer)
+
+        g.clearAllIvars(c)
+        g.clearAllIvars(body.colorizer)
+        g.clearAllIvars(body)
+        g.clearAllIvars(tree)
+
+        # This must be done last.
+        frame.destroyAllPanels()
+        g.clearAllIvars(frame)
+
+    #@-node:ekr.20071001091231.47:destroyAllObjects
+    #@+node:ekr.20071001091231.49:destroyAllPanels
+    def destroyAllPanels (self):
+
+        """Destroy all panels attached to this frame."""
+
+        panels = (self.comparePanel, self.colorPanel, self.findPanel, self.fontPanel, self.prefsPanel)
+
+        for panel in panels:
+            if panel:
+                panel.top.destroy()
+    #@-node:ekr.20071001091231.49:destroyAllPanels
+    #@+node:ekr.20071001091231.50:destroySelf (swingFrame)
+    def destroySelf (self):
+
+        # Remember these: we are about to destroy all of our ivars!
+        top = self.top 
+        c = self.c
+
+        # Indicate that the commander is no longer valid.
+        c.exists = False 
+
+        # g.trace(self)
+
+        # Important: this destroys all the objects of the commander too.
+        self.destroyAllObjects()
+
+        c.exists = False # Make sure this one ivar has not been destroyed.
+
+        top.destroy()
+    #@-node:ekr.20071001091231.50:destroySelf (swingFrame)
+    #@-node:ekr.20071001091231.46:Destroying the swingFrame
+    #@-node:ekr.20071001091231.24: Birth & Death (swingFrame)
+    #@+node:ekr.20071001091231.51:class swingStatusLineClass
+    class swingStatusLineClass:
+
+        '''A class representing the status line.'''
+
+        #@    @+others
+        #@+node:ekr.20071001091231.52: ctor
+        def __init__ (self,c,parentFrame):
+
+            self.c = c
+            self.colorTags = [] # list of color names used as tags.
+            self.enabled = False
+            self.isVisible = False
+            self.lastRow = self.lastCol = 0
+            self.log = c.frame.log
+            #if 'black' not in self.log.colorTags:
+            #    self.log.colorTags.append("black")
+            self.parentFrame = parentFrame
+            self.statusFrame = Tk.Frame(parentFrame,bd=2)
+            text = "line 0, col 0"
+            width = len(text) + 4
+            self.labelWidget = Tk.Label(self.statusFrame,text=text,width=width,anchor="w")
+            self.labelWidget.pack(side="left",padx=1)
+
+            bg = self.statusFrame.cget("background")
+            self.textWidget = w = g.app.gui.bodyTextWidget(
+                self.statusFrame,
+                height=1,state="disabled",bg=bg,relief="groove",name='status-line')
+            self.textWidget.pack(side="left",expand=1,fill="x")
+            w.bind("<Button-1>", self.onActivate)
+            self.show()
+
+            c.frame.statusFrame = self.statusFrame
+            c.frame.statusLabel = self.labelWidget
+            c.frame.statusText  = self.textWidget
+        #@-node:ekr.20071001091231.52: ctor
+        #@+node:ekr.20071001091231.53:clear
+        def clear (self):
+
+            w = self.textWidget
+            if not w: return
+
+            w.configure(state="normal")
+            w.delete(0,"end")
+            w.configure(state="disabled")
+        #@-node:ekr.20071001091231.53:clear
+        #@+node:ekr.20071001091231.54:enable, disable & isEnabled
+        def disable (self,background=None):
+
+            c = self.c ; w = self.textWidget
+            if w:
+                if not background:
+                    background = self.statusFrame.cget("background")
+                w.configure(state="disabled",background=background)
+            self.enabled = False
+            c.bodyWantsFocus()
+
+        def enable (self,background="white"):
+
+            # g.trace()
+            c = self.c ; w = self.textWidget
+            if w:
+                w.configure(state="normal",background=background)
+                c.widgetWantsFocus(w)
+            self.enabled = True
+
+        def isEnabled(self):
+            return self.enabled
+        #@nonl
+        #@-node:ekr.20071001091231.54:enable, disable & isEnabled
+        #@+node:ekr.20071001091231.55:get
+        def get (self):
+
+            w = self.textWidget
+            if w:
+                return w.getAllText()
+            else:
+                return ""
+        #@-node:ekr.20071001091231.55:get
+        #@+node:ekr.20071001091231.56:getFrame
+        def getFrame (self):
+
+            return self.statusFrame
+        #@-node:ekr.20071001091231.56:getFrame
+        #@+node:ekr.20071001091231.57:onActivate
+        def onActivate (self,event=None):
+
+            # Don't change background as the result of simple mouse clicks.
+            background = self.statusFrame.cget("background")
+            self.enable(background=background)
+        #@-node:ekr.20071001091231.57:onActivate
+        #@+node:ekr.20071001091231.58:pack & show
+        def pack (self):
+
+            if not self.isVisible:
+                self.isVisible = True
+                self.statusFrame.pack(fill="x",pady=1)
+
+        show = pack
+        #@-node:ekr.20071001091231.58:pack & show
+        #@+node:ekr.20071001091231.59:put (leoSwingFrame:statusLineClass)
+        def put(self,s,color=None):
+
+            # g.trace('swingStatusLine',self.textWidget,s)
+
+            w = self.textWidget
+            if not w:
+                g.trace('swingStatusLine','***** disabled')
+                return
+
+            w.configure(state="normal")
+            w.insert("end",s)
+
+            if color:
+                if color not in self.colorTags:
+                    self.colorTags.append(color)
+                    w.tag_config(color,foreground=color)
+                w.tag_add(color,"end-%dc" % (len(s)+1),"end-1c")
+                w.tag_config("black",foreground="black")
+                w.tag_add("black","end")
+
+            w.configure(state="disabled")
+        #@-node:ekr.20071001091231.59:put (leoSwingFrame:statusLineClass)
+        #@+node:ekr.20071001091231.60:unpack & hide
+        def unpack (self):
+
+            if self.isVisible:
                 self.isVisible = False
-                self.lastRow = self.lastCol = 0
-                self.log = c.frame.log
-                #if 'black' not in self.log.colorTags:
-                #    self.log.colorTags.append("black")
-                self.parentFrame = parentFrame
-                self.statusFrame = Tk.Frame(parentFrame,bd=2)
-                text = "line 0, col 0"
-                width = len(text) + 4
-                self.labelWidget = Tk.Label(self.statusFrame,text=text,width=width,anchor="w")
-                self.labelWidget.pack(side="left",padx=1)
+                self.statusFrame.pack_forget()
 
-                bg = self.statusFrame.cget("background")
-                self.textWidget = w = g.app.gui.bodyTextWidget(
-                    self.statusFrame,
-                    height=1,state="disabled",bg=bg,relief="groove",name='status-line')
-                self.textWidget.pack(side="left",expand=1,fill="x")
-                w.bind("<Button-1>", self.onActivate)
-                self.show()
+        hide = unpack
+        #@-node:ekr.20071001091231.60:unpack & hide
+        #@+node:ekr.20071001091231.61:update (statusLine)
+        def update (self):
 
-                c.frame.statusFrame = self.statusFrame
-                c.frame.statusLabel = self.labelWidget
-                c.frame.statusText  = self.textWidget
-            #@-node:ekr.20071001091231.52: ctor
-            #@+node:ekr.20071001091231.53:clear
-            def clear (self):
+            c = self.c ; bodyCtrl = c.frame.body.bodyCtrl
 
-                w = self.textWidget
-                if not w: return
+            if g.app.killed or not self.isVisible:
+                return
 
-                w.configure(state="normal")
-                w.delete(0,"end")
-                w.configure(state="disabled")
-            #@-node:ekr.20071001091231.53:clear
-            #@+node:ekr.20071001091231.54:enable, disable & isEnabled
-            def disable (self,background=None):
+            s = bodyCtrl.getAllText()    
+            index = bodyCtrl.getInsertPoint()
+            row,col = g.convertPythonIndexToRowCol(s,index)
+            if col > 0:
+                s2 = s[index-col:index]
+                s2 = g.toUnicode(s2,g.app.tkEncoding)
+                col = g.computeWidth (s2,c.tab_width)
 
-                c = self.c ; w = self.textWidget
-                if w:
-                    if not background:
-                        background = self.statusFrame.cget("background")
-                    w.configure(state="disabled",background=background)
-                self.enabled = False
-                c.bodyWantsFocus()
+            # Important: this does not change the focus because labels never get focus.
+            self.labelWidget.configure(text="line %d, col %d" % (row,col))
+            self.lastRow = row
+            self.lastCol = col
+        #@-node:ekr.20071001091231.61:update (statusLine)
+        #@-others
+    #@-node:ekr.20071001091231.51:class swingStatusLineClass
+    #@+node:ekr.20071001091231.62:class swingIconBarClass
+    class swingIconBarClass:
 
-            def enable (self,background="white"):
+        '''A class representing the singleton Icon bar'''
 
-                # g.trace()
-                c = self.c ; w = self.textWidget
-                if w:
-                    w.configure(state="normal",background=background)
-                    c.widgetWantsFocus(w)
-                self.enabled = True
+        #@    @+others
+        #@+node:ekr.20071001091231.63: ctor
+        def __init__ (self,c,parentFrame):
 
-            def isEnabled(self):
-                return self.enabled
-            #@nonl
-            #@-node:ekr.20071001091231.54:enable, disable & isEnabled
-            #@+node:ekr.20071001091231.55:get
-            def get (self):
+            self.c = c
 
-                w = self.textWidget
-                if w:
-                    return w.getAllText()
-                else:
-                    return ""
-            #@-node:ekr.20071001091231.55:get
-            #@+node:ekr.20071001091231.56:getFrame
-            def getFrame (self):
+            self.buttons = {}
+            self.iconFrame = w = Tk.Frame(parentFrame,height="5m",bd=2,relief="groove")
+            self.c.frame.iconFrame = self.iconFrame
+            self.font = None
+            self.parentFrame = parentFrame
+            self.visible = False
+            self.show()
+        #@-node:ekr.20071001091231.63: ctor
+        #@+node:ekr.20071001091231.64:add
+        def add(self,*args,**keys):
 
-                return self.statusFrame
-            #@-node:ekr.20071001091231.56:getFrame
-            #@+node:ekr.20071001091231.57:onActivate
-            def onActivate (self,event=None):
+            """Add a button containing text or a picture to the icon bar.
 
-                # Don't change background as the result of simple mouse clicks.
-                background = self.statusFrame.cget("background")
-                self.enable(background=background)
-            #@-node:ekr.20071001091231.57:onActivate
-            #@+node:ekr.20071001091231.58:pack & show
-            def pack (self):
+            Pictures take precedence over text"""
 
-                if not self.isVisible:
-                    self.isVisible = True
-                    self.statusFrame.pack(fill="x",pady=1)
+            c = self.c ; f = self.iconFrame
+            text = keys.get('text')
+            imagefile = keys.get('imagefile')
+            image = keys.get('image')
+            command = keys.get('command')
+            bg = keys.get('bg')
 
-            show = pack
-            #@-node:ekr.20071001091231.58:pack & show
-            #@+node:ekr.20071001091231.59:put (leoSwingFrame:statusLineClass)
-            def put(self,s,color=None):
+            if not imagefile and not image and not text: return
 
-                # g.trace('swingStatusLine',self.textWidget,s)
+            # First define n.
+            try:
+                g.app.iconWidgetCount += 1
+                n = g.app.iconWidgetCount
+            except:
+                n = g.app.iconWidgetCount = 1
 
-                w = self.textWidget
-                if not w:
-                    g.trace('swingStatusLine','***** disabled')
-                    return
+            if not command:
+                def command():
+                    print "command for widget %s" % (n)
 
-                w.configure(state="normal")
-                w.insert("end",s)
-
-                if color:
-                    if color not in self.colorTags:
-                        self.colorTags.append(color)
-                        w.tag_config(color,foreground=color)
-                    w.tag_add(color,"end-%dc" % (len(s)+1),"end-1c")
-                    w.tag_config("black",foreground="black")
-                    w.tag_add("black","end")
-
-                w.configure(state="disabled")
-            #@-node:ekr.20071001091231.59:put (leoSwingFrame:statusLineClass)
-            #@+node:ekr.20071001091231.60:unpack & hide
-            def unpack (self):
-
-                if self.isVisible:
-                    self.isVisible = False
-                    self.statusFrame.pack_forget()
-
-            hide = unpack
-            #@-node:ekr.20071001091231.60:unpack & hide
-            #@+node:ekr.20071001091231.61:update (statusLine)
-            def update (self):
-
-                c = self.c ; bodyCtrl = c.frame.body.bodyCtrl
-
-                if g.app.killed or not self.isVisible:
-                    return
-
-                s = bodyCtrl.getAllText()    
-                index = bodyCtrl.getInsertPoint()
-                row,col = g.convertPythonIndexToRowCol(s,index)
-                if col > 0:
-                    s2 = s[index-col:index]
-                    s2 = g.toUnicode(s2,g.app.tkEncoding)
-                    col = g.computeWidth (s2,c.tab_width)
-
-                # Important: this does not change the focus because labels never get focus.
-                self.labelWidget.configure(text="line %d, col %d" % (row,col))
-                self.lastRow = row
-                self.lastCol = col
-            #@-node:ekr.20071001091231.61:update (statusLine)
-            #@-others
-        #@-node:ekr.20071001091231.51:class swingStatusLineClass
-        #@+node:ekr.20071001091231.62:class swingIconBarClass
-        class swingIconBarClass:
-
-            '''A class representing the singleton Icon bar'''
-
-            #@    @+others
-            #@+node:ekr.20071001091231.63: ctor
-            def __init__ (self,c,parentFrame):
-
-                self.c = c
-
-                self.buttons = {}
-                self.iconFrame = w = Tk.Frame(parentFrame,height="5m",bd=2,relief="groove")
-                self.c.frame.iconFrame = self.iconFrame
-                self.font = None
-                self.parentFrame = parentFrame
-                self.visible = False
-                self.show()
-            #@-node:ekr.20071001091231.63: ctor
-            #@+node:ekr.20071001091231.64:add
-            def add(self,*args,**keys):
-
-                """Add a button containing text or a picture to the icon bar.
-
-                Pictures take precedence over text"""
-
-                c = self.c ; f = self.iconFrame
-                text = keys.get('text')
-                imagefile = keys.get('imagefile')
-                image = keys.get('image')
-                command = keys.get('command')
-                bg = keys.get('bg')
-
-                if not imagefile and not image and not text: return
-
-                # First define n.
+            if imagefile or image:
+                #@        << create a picture >>
+                #@+node:ekr.20071001091231.65:<< create a picture >>
                 try:
-                    g.app.iconWidgetCount += 1
-                    n = g.app.iconWidgetCount
-                except:
-                    n = g.app.iconWidgetCount = 1
+                    if imagefile:
+                        # Create the image.  Throws an exception if file not found
+                        imagefile = g.os_path_join(g.app.loadDir,imagefile)
+                        imagefile = g.os_path_normpath(imagefile)
+                        image = Tk.PhotoImage(master=g.app.root,file=imagefile)
 
-                if not command:
-                    def command():
-                        print "command for widget %s" % (n)
+                        # Must keep a reference to the image!
+                        try:
+                            refs = g.app.iconImageRefs
+                        except:
+                            refs = g.app.iconImageRefs = []
 
-                if imagefile or image:
-                    #@        << create a picture >>
-                    #@+node:ekr.20071001091231.65:<< create a picture >>
-                    try:
-                        if imagefile:
-                            # Create the image.  Throws an exception if file not found
-                            imagefile = g.os_path_join(g.app.loadDir,imagefile)
-                            imagefile = g.os_path_normpath(imagefile)
-                            image = Tk.PhotoImage(master=g.app.root,file=imagefile)
+                        refs.append((imagefile,image),)
 
-                            # Must keep a reference to the image!
-                            try:
-                                refs = g.app.iconImageRefs
-                            except:
-                                refs = g.app.iconImageRefs = []
+                    if not bg:
+                        bg = f.cget("bg")
 
-                            refs.append((imagefile,image),)
-
-                        if not bg:
-                            bg = f.cget("bg")
-
-                        b = Tk.Button(f,image=image,relief="flat",bd=0,command=command,bg=bg)
-                        b.pack(side="left",fill="y")
-                        return b
-
-                    except:
-                        g.es_exception()
-                        return None
-                    #@-node:ekr.20071001091231.65:<< create a picture >>
-                    #@nl
-                elif text:
-                    b = Tk.Button(f,text=text,relief="groove",bd=2,command=command)
-                    if not self.font:
-                        self.font = c.config.getFontFromParams(
-                            "button_text_font_family", "button_text_font_size",
-                            "button_text_font_slant",  "button_text_font_weight",)
-                    b.configure(font=self.font)
-                    # elif sys.platform.startswith('win'):
-                        # width = max(6,len(text))
-                        # b.configure(width=width,font=('verdana',7,'bold'))
-                    if bg: b.configure(bg=bg)
-                    b.pack(side="left", fill="none")
+                    b = Tk.Button(f,image=image,relief="flat",bd=0,command=command,bg=bg)
+                    b.pack(side="left",fill="y")
                     return b
 
-                return None
-            #@-node:ekr.20071001091231.64:add
-            #@+node:ekr.20071001091231.66:clear
-            def clear(self):
-
-                """Destroy all the widgets in the icon bar"""
-
-                f = self.iconFrame
-
-                for slave in f.pack_slaves():
-                    slave.destroy()
-                self.visible = False
-
-                f.configure(height="5m") # The default height.
-                g.app.iconWidgetCount = 0
-                g.app.iconImageRefs = []
-            #@-node:ekr.20071001091231.66:clear
-            #@+node:ekr.20071001091231.67:deleteButton (new in Leo 4.4.3)
-            def deleteButton (self,w):
-
-                w.pack_forget()
-            #@-node:ekr.20071001091231.67:deleteButton (new in Leo 4.4.3)
-            #@+node:ekr.20071001091231.68:getFrame
-            def getFrame (self):
-
-                return self.iconFrame
-            #@-node:ekr.20071001091231.68:getFrame
-            #@+node:ekr.20071001091231.69:pack (show)
-            def pack (self):
-
-                """Show the icon bar by repacking it"""
-
-                if not self.visible:
-                    self.visible = True
-                    self.iconFrame.pack(fill="x",pady=2)
-
-            show = pack
-            #@-node:ekr.20071001091231.69:pack (show)
-            #@+node:ekr.20071001091231.70:setCommandForButton (new in Leo 4.4.3)
-            def setCommandForButton(self,b,command):
-
-                b.configure(command=command)
-            #@-node:ekr.20071001091231.70:setCommandForButton (new in Leo 4.4.3)
-            #@+node:ekr.20071001091231.71:unpack (hide)
-            def unpack (self):
-
-                """Hide the icon bar by unpacking it.
-
-                A later call to show will repack it in a new location."""
-
-                if self.visible:
-                    self.visible = False
-                    self.iconFrame.pack_forget()
-
-            hide = unpack
-            #@-node:ekr.20071001091231.71:unpack (hide)
-            #@-others
-        #@-node:ekr.20071001091231.62:class swingIconBarClass
-        #@+node:ekr.20071001091231.72:Minibuffer methods
-        #@+node:ekr.20071001091231.73:showMinibuffer
-        def showMinibuffer (self):
-
-            '''Make the minibuffer visible.'''
-
-            frame = self
-
-            if not frame.minibufferVisible:
-                frame.minibufferFrame.pack(side='bottom',fill='x')
-                frame.minibufferVisible = True
-        #@-node:ekr.20071001091231.73:showMinibuffer
-        #@+node:ekr.20071001091231.74:hideMinibuffer
-        def hideMinibuffer (self):
-
-            '''Hide the minibuffer.'''
-
-            frame = self
-            if frame.minibufferVisible:
-                frame.minibufferFrame.pack_forget()
-                frame.minibufferVisible = False
-        #@-node:ekr.20071001091231.74:hideMinibuffer
-        #@+node:ekr.20071001091231.75:f.createMiniBufferWidget
-        def createMiniBufferWidget (self):
-
-            '''Create the minbuffer below the status line.'''
-
-            frame = self ; c = frame.c
-
-            frame.minibufferFrame = f = Tk.Frame(frame.outerFrame,relief='flat',borderwidth=0)
-            if c.showMinibuffer:
-                f.pack(side='bottom',fill='x')
-
-            lab = Tk.Label(f,text='mini-buffer',justify='left',anchor='nw',foreground='blue')
-            lab.pack(side='left')
-
-            if c.useTextMinibuffer:
-                label = g.app.gui.plainTextWidget(
-                    f,height=1,relief='groove',background='lightgrey',name='minibuffer')
-                label.pack(side='left',fill='x',expand=1,padx=2,pady=1)
-            else:
-                label = Tk.Label(f,relief='groove',justify='left',anchor='w',name='minibuffer')
-                label.pack(side='left',fill='both',expand=1,padx=2,pady=1)
-
-            frame.minibufferVisible = c.showMinibuffer
-
-            return label
-        #@-node:ekr.20071001091231.75:f.createMiniBufferWidget
-        #@+node:ekr.20071001091231.76:f.setMinibufferBindings
-        def setMinibufferBindings (self):
-
-            '''Create bindings for the minibuffer..'''
-
-            f = self ; c = f.c ; k = c.k ; w = f.miniBufferWidget
-
-            if not c.useTextMinibuffer: return
-
-            for kind,callback in (
-                ('<Key>',           k.masterKeyHandler),
-                ('<Button-1>',      k.masterClickHandler),
-                ('<Button-3>',      k.masterClick3Handler),
-                ('<Double-1>',      k.masterDoubleClickHandler),
-                ('<Double-3>',      k.masterDoubleClick3Handler),
-            ):
-                w.bind(kind,callback)
-
-            if 0:
-                if sys.platform.startswith('win'):
-                    # Support Linux middle-button paste easter egg.
-                    w.bind("<Button-2>",frame.OnPaste)
-        #@-node:ekr.20071001091231.76:f.setMinibufferBindings
-        #@-node:ekr.20071001091231.72:Minibuffer methods
-        #@+node:ekr.20071001091231.77:Configuration (swingFrame)
-        #@+node:ekr.20071001091231.78:configureBar
-        def configureBar (self,bar,verticalFlag):
-
-            c = self.c
-
-            # Get configuration settings.
-            w = c.config.getInt("split_bar_width")
-            if not w or w < 1: w = 7
-            relief = c.config.get("split_bar_relief","relief")
-            if not relief: relief = "flat"
-            color = c.config.getColor("split_bar_color")
-            if not color: color = "LightSteelBlue2"
-
-            try:
-                if verticalFlag:
-                    # Panes arranged vertically; horizontal splitter bar
-                    bar.configure(relief=relief,height=w,bg=color,cursor="sb_v_double_arrow")
-                else:
-                    # Panes arranged horizontally; vertical splitter bar
-                    bar.configure(relief=relief,width=w,bg=color,cursor="sb_h_double_arrow")
-            except: # Could be a user error. Use all defaults
-                g.es("exception in user configuration for splitbar")
-                g.es_exception()
-                if verticalFlag:
-                    # Panes arranged vertically; horizontal splitter bar
-                    bar.configure(height=7,cursor="sb_v_double_arrow")
-                else:
-                    # Panes arranged horizontally; vertical splitter bar
-                    bar.configure(width=7,cursor="sb_h_double_arrow")
-        #@-node:ekr.20071001091231.78:configureBar
-        #@+node:ekr.20071001091231.79:configureBarsFromConfig
-        def configureBarsFromConfig (self):
-
-            c = self.c
-
-            w = c.config.getInt("split_bar_width")
-            if not w or w < 1: w = 7
-
-            relief = c.config.get("split_bar_relief","relief")
-            if not relief or relief == "": relief = "flat"
-
-            color = c.config.getColor("split_bar_color")
-            if not color or color == "": color = "LightSteelBlue2"
-
-            if self.splitVerticalFlag:
-                bar1,bar2=self.bar1,self.bar2
-            else:
-                bar1,bar2=self.bar2,self.bar1
-
-            try:
-                bar1.configure(relief=relief,height=w,bg=color)
-                bar2.configure(relief=relief,width=w,bg=color)
-            except: # Could be a user error.
-                g.es("exception in user configuration for splitbar")
-                g.es_exception()
-        #@-node:ekr.20071001091231.79:configureBarsFromConfig
-        #@+node:ekr.20071001091231.80:reconfigureFromConfig
-        def reconfigureFromConfig (self):
-
-            frame = self ; c = frame.c
-
-            frame.tree.setFontFromConfig()
-            ### frame.tree.setColorFromConfig()
-
-            frame.configureBarsFromConfig()
-
-            frame.body.setFontFromConfig()
-            frame.body.setColorFromConfigt()
-
-            frame.setTabWidth(c.tab_width)
-            frame.log.setFontFromConfig()
-            frame.log.setColorFromConfig()
-
-            c.redraw_now()
-        #@-node:ekr.20071001091231.80:reconfigureFromConfig
-        #@+node:ekr.20071001091231.81:setInitialWindowGeometry
-        def setInitialWindowGeometry(self):
-
-            """Set the position and size of the frame to config params."""
-
-            c = self.c
-
-            h = c.config.getInt("initial_window_height") or 500
-            w = c.config.getInt("initial_window_width") or 600
-            x = c.config.getInt("initial_window_left") or 10
-            y = c.config.getInt("initial_window_top") or 10
-
-            if h and w and x and y:
-                pass ### self.setTopGeometry(w,h,x,y)
-        #@-node:ekr.20071001091231.81:setInitialWindowGeometry
-        #@+node:ekr.20071001091231.82:setTabWidth
-        def setTabWidth (self, w):
-
-            try: # This can fail when called from scripts
-                # Use the present font for computations.
-                font = self.bodyCtrl.cget("font")
-                root = g.app.root # 4/3/03: must specify root so idle window will work properly.
-                font = swingFont.Font(root=root,font=font)
-                tabw = font.measure(" " * abs(w)) # 7/2/02
-                self.bodyCtrl.configure(tabs=tabw)
-                self.tab_width = w
-                # g.trace(w,tabw)
-            except:
-                g.es_exception()
-                pass
-        #@-node:ekr.20071001091231.82:setTabWidth
-        #@+node:ekr.20071001091231.83:f.setWrap
-        def setWrap (self,p):
-
-            c = self.c
-            theDict = g.scanDirectives(c,p)
-            if not theDict: return
-
-            wrap = theDict.get("wrap")
-            if self.body.wrapState == wrap: return
-
-            self.body.wrapState = wrap
-            # g.trace(wrap)
-            if wrap:
-                self.bodyCtrl.configure(wrap="word")
-                self.bodyXBar.pack_forget()
-            else:
-                self.bodyCtrl.configure(wrap="none")
-                # Bug fix: 3/10/05: We must unpack the text area to make the scrollbar visible.
-                self.bodyCtrl.pack_forget()
-                self.bodyXBar.pack(side="bottom", fill="x")
-                self.bodyCtrl.pack(expand=1,fill="both")
-        #@-node:ekr.20071001091231.83:f.setWrap
-        #@+node:ekr.20071001091231.84:setTopGeometry
-        def setTopGeometry(self,w,h,x,y,adjustSize=True):
-
-            # Put the top-left corner on the screen.
-            x = max(10,x) ; y = max(10,y)
-
-            if adjustSize:
-                top = self.top
-                sw = top.winfo_screenwidth()
-                sh = top.winfo_screenheight()
-
-                # Adjust the size so the whole window fits on the screen.
-                w = min(sw-10,w)
-                h = min(sh-10,h)
-
-                # Adjust position so the whole window fits on the screen.
-                if x + w > sw: x = 10
-                if y + h > sh: y = 10
-
-            geom = "%dx%d%+d%+d" % (w,h,x,y)
-
-            self.top.geometry(geom)
-        #@-node:ekr.20071001091231.84:setTopGeometry
-        #@+node:ekr.20071001091231.85:reconfigurePanes (use config bar_width)
-        def reconfigurePanes (self):
-
-            c = self.c
-
-            border = c.config.getInt('additional_body_text_border')
-            if border == None: border = 0
-
-            # The body pane needs a _much_ bigger border when tiling horizontally.
-            border = g.choose(self.splitVerticalFlag,2+border,6+border)
-            self.bodyCtrl.configure(bd=border)
-
-            # The log pane needs a slightly bigger border when tiling vertically.
-            border = g.choose(self.splitVerticalFlag,4,2) 
-            self.log.configureBorder(border)
-        #@-node:ekr.20071001091231.85:reconfigurePanes (use config bar_width)
-        #@+node:ekr.20071001091231.86:resizePanesToRatio
-        def resizePanesToRatio(self,ratio,ratio2):
-
-            # g.trace(ratio,ratio2,g.callers())
-
-            self.divideLeoSplitter(self.splitVerticalFlag,ratio)
-            self.divideLeoSplitter(not self.splitVerticalFlag,ratio2)
-        #@nonl
-        #@-node:ekr.20071001091231.86:resizePanesToRatio
-        #@-node:ekr.20071001091231.77:Configuration (swingFrame)
-        #@+node:ekr.20071001091231.87:Event handlers (swingFrame)
-        #@+node:ekr.20071001091231.88:frame.OnCloseLeoEvent
-        # Called from quit logic and when user closes the window.
-        # Returns True if the close happened.
-
-        def OnCloseLeoEvent(self):
-
-            f = self ; c = f.c
-
-            if c.inCommand:
-                # g.trace('requesting window close')
-                c.requestCloseWindow = True
-            else:
-                g.app.closeLeoWindow(self)
-        #@-node:ekr.20071001091231.88:frame.OnCloseLeoEvent
-        #@+node:ekr.20071001091231.89:frame.OnControlKeyUp/Down
-        def OnControlKeyDown (self,event=None):
-
-            __pychecker__ = '--no-argsused' # event not used.
-
-            self.controlKeyIsDown = True
-
-        def OnControlKeyUp (self,event=None):
-
-            __pychecker__ = '--no-argsused' # event not used.
-
-            self.controlKeyIsDown = False
-        #@-node:ekr.20071001091231.89:frame.OnControlKeyUp/Down
-        #@+node:ekr.20071001091231.90:OnActivateBody (swingFrame)
-        def OnActivateBody (self,event=None):
-
-            __pychecker__ = '--no-argsused' # event not used.
-
-            try:
-                frame = self ; c = frame.c
-                c.setLog()
-                w = c.get_focus()
-                if w != c.frame.body.bodyCtrl:
-                    frame.tree.OnDeactivate()
-                c.bodyWantsFocus()
-            except:
-                g.es_event_exception("activate body")
-
-            return 'break'
-        #@-node:ekr.20071001091231.90:OnActivateBody (swingFrame)
-        #@+node:ekr.20071001091231.91:OnActivateLeoEvent, OnDeactivateLeoEvent
-        def OnActivateLeoEvent(self,event=None):
-
-            '''Handle a click anywhere in the Leo window.'''
-
-            __pychecker__ = '--no-argsused' # event.
-
-            self.c.setLog()
-
-        def OnDeactivateLeoEvent(self,event=None):
-
-            pass # This causes problems on the Mac.
-        #@-node:ekr.20071001091231.91:OnActivateLeoEvent, OnDeactivateLeoEvent
-        #@+node:ekr.20071001091231.92:OnActivateTree
-        def OnActivateTree (self,event=None):
-
-            try:
-                frame = self ; c = frame.c
-                c.setLog()
-
-                if 0: # Do NOT do this here!
-                    # OnActivateTree can get called when the tree gets DE-activated!!
-                    c.bodyWantsFocus()
-
-            except:
-                g.es_event_exception("activate tree")
-        #@-node:ekr.20071001091231.92:OnActivateTree
-        #@+node:ekr.20071001091231.93:OnBodyClick, OnBodyRClick (Events)
-        def OnBodyClick (self,event=None):
-
-            try:
-                c = self.c ; p = c.currentPosition()
-                if not g.doHook("bodyclick1",c=c,p=p,v=p,event=event):
-                    self.OnActivateBody(event=event)
-                g.doHook("bodyclick2",c=c,p=p,v=p,event=event)
-            except:
-                g.es_event_exception("bodyclick")
-
-        def OnBodyRClick(self,event=None):
-
-            try:
-                c = self.c ; p = c.currentPosition()
-                if not g.doHook("bodyrclick1",c=c,p=p,v=p,event=event):
-                    pass # By default Leo does nothing.
-                g.doHook("bodyrclick2",c=c,p=p,v=p,event=event)
-            except:
-                g.es_event_exception("iconrclick")
-        #@-node:ekr.20071001091231.93:OnBodyClick, OnBodyRClick (Events)
-        #@+node:ekr.20071001091231.94:OnBodyDoubleClick (Events)
-        def OnBodyDoubleClick (self,event=None):
-
-            try:
-                c = self.c ; p = c.currentPosition()
-                if event and not g.doHook("bodydclick1",c=c,p=p,v=p,event=event):
-                    c.editCommands.extendToWord(event) # Handles unicode properly.
-                g.doHook("bodydclick2",c=c,p=p,v=p,event=event)
-            except:
-                g.es_event_exception("bodydclick")
-
-            return "break" # Restore this to handle proper double-click logic.
-        #@-node:ekr.20071001091231.94:OnBodyDoubleClick (Events)
-        #@+node:ekr.20071001091231.95:OnMouseWheel (Tomaz Ficko)
-        # Contributed by Tomaz Ficko.  This works on some systems.
-        # On XP it causes a crash in tcl83.dll.  Clearly a Tk bug.
-
-        def OnMouseWheel(self, event=None):
-
-            try:
-                if event.delta < 1:
-                    self.canvas.yview(Tk.SCROLL, 1, Tk.UNITS)
-                else:
-                    self.canvas.yview(Tk.SCROLL, -1, Tk.UNITS)
-            except:
-                g.es_event_exception("scroll wheel")
-
-            return "break"
-        #@-node:ekr.20071001091231.95:OnMouseWheel (Tomaz Ficko)
-        #@-node:ekr.20071001091231.87:Event handlers (swingFrame)
-        #@+node:ekr.20071001091231.96:Gui-dependent commands
-        #@+node:ekr.20071001091231.97:Minibuffer commands... (swingFrame)
-
-        #@+node:ekr.20071001091231.98:contractPane
-        def contractPane (self,event=None):
-
-            '''Contract the selected pane.'''
-
-            f = self ; c = f.c
-            w = c.get_requested_focus()
-            wname = c.widget_name(w)
-
-            # g.trace(wname)
-            if not w: return
-
-            if wname.startswith('body'):
-                f.contractBodyPane()
-            elif wname.startswith('log'):
-                f.contractLogPane()
-            elif wname.startswith('head') or wname.startswith('canvas'):
-                f.contractOutlinePane()
-        #@-node:ekr.20071001091231.98:contractPane
-        #@+node:ekr.20071001091231.99:expandPane
-        def expandPane (self,event=None):
-
-            '''Expand the selected pane.'''
-
-            f = self ; c = f.c
-
-            w = c.get_requested_focus()
-            wname = c.widget_name(w)
-
-            # g.trace(wname)
-            if not w: return
-
-            if wname.startswith('body'):
-                f.expandBodyPane()
-            elif wname.startswith('log'):
-                f.expandLogPane()
-            elif wname.startswith('head') or wname.startswith('canvas'):
-                f.expandOutlinePane()
-        #@-node:ekr.20071001091231.99:expandPane
-        #@+node:ekr.20071001091231.100:fullyExpandPane
-        def fullyExpandPane (self,event=None):
-
-            '''Fully expand the selected pane.'''
-
-            f = self ; c = f.c
-
-            w = c.get_requested_focus()
-            wname = c.widget_name(w)
-
-            # g.trace(wname)
-            if not w: return
-
-            if wname.startswith('body'):
-                f.fullyExpandBodyPane()
-            elif wname.startswith('log'):
-                f.fullyExpandLogPane()
-            elif wname.startswith('head') or wname.startswith('canvas'):
-                f.fullyExpandOutlinePane()
-        #@-node:ekr.20071001091231.100:fullyExpandPane
-        #@+node:ekr.20071001091231.101:hidePane
-        def hidePane (self,event=None):
-
-            '''Completely contract the selected pane.'''
-
-            f = self ; c = f.c
-
-            w = c.get_requested_focus()
-            wname = c.widget_name(w)
-
-            g.trace(wname)
-            if not w: return
-
-            if wname.startswith('body'):
-                f.hideBodyPane()
-                c.treeWantsFocusNow()
-            elif wname.startswith('log'):
-                f.hideLogPane()
-                c.bodyWantsFocusNow()
-            elif wname.startswith('head') or wname.startswith('canvas'):
-                f.hideOutlinePane()
-                c.bodyWantsFocusNow()
-        #@-node:ekr.20071001091231.101:hidePane
-        #@+node:ekr.20071001091231.102:expand/contract/hide...Pane
-        #@+at 
-        #@nonl
-        # The first arg to divideLeoSplitter means the following:
-        # 
-        #     f.splitVerticalFlag: use the primary   (tree/body) ratio.
-        # not f.splitVerticalFlag: use the secondary (tree/log) ratio.
-        #@-at
-        #@@c
-
-        def contractBodyPane (self,event=None):
-            '''Contract the body pane.'''
-            f = self ; r = min(1.0,f.ratio+0.1)
-            f.divideLeoSplitter(f.splitVerticalFlag,r)
-
-        def contractLogPane (self,event=None):
-            '''Contract the log pane.'''
-            f = self ; r = min(1.0,f.ratio+0.1)
-            f.divideLeoSplitter(not f.splitVerticalFlag,r)
-
-        def contractOutlinePane (self,event=None):
-            '''Contract the outline pane.'''
-            f = self ; r = max(0.0,f.ratio-0.1)
-            f.divideLeoSplitter(f.splitVerticalFlag,r)
-
-        def expandBodyPane (self,event=None):
-            '''Expand the body pane.'''
-            self.contractOutlinePane()
-
-        def expandLogPane(self,event=None):
-            '''Expand the log pane.'''
-            f = self ; r = max(0.0,f.ratio-0.1)
-            f.divideLeoSplitter(not f.splitVerticalFlag,r)
-
-        def expandOutlinePane (self,event=None):
-            '''Expand the outline pane.'''
-            self.contractBodyPane()
-        #@-node:ekr.20071001091231.102:expand/contract/hide...Pane
-        #@+node:ekr.20071001091231.103:fullyExpand/hide...Pane
-        def fullyExpandBodyPane (self,event=None):
-            '''Fully expand the body pane.'''
-            f = self ; f.divideLeoSplitter(f.splitVerticalFlag,0.0)
-
-        def fullyExpandLogPane (self,event=None):
-            '''Fully expand the log pane.'''
-            f = self ; f.divideLeoSplitter(not f.splitVerticalFlag,0.0)
-
-        def fullyExpandOutlinePane (self,event=None):
-            '''Fully expand the outline pane.'''
-            f = self ; f.divideLeoSplitter(f.splitVerticalFlag,1.0)
-
-        def hideBodyPane (self,event=None):
-            '''Completely contract the body pane.'''
-            f = self ; f.divideLeoSplitter(f.splitVerticalFlag,1.0)
-
-        def hideLogPane (self,event=None):
-            '''Completely contract the log pane.'''
-            f = self ; f.divideLeoSplitter(not f.splitVerticalFlag,1.0)
-
-        def hideOutlinePane (self,event=None):
-            '''Completely contract the outline pane.'''
-            f = self ; f.divideLeoSplitter(f.splitVerticalFlag,0.0)
-        #@-node:ekr.20071001091231.103:fullyExpand/hide...Pane
-        #@-node:ekr.20071001091231.97:Minibuffer commands... (swingFrame)
-        #@+node:ekr.20071001091231.104:Window Menu...
-        #@+node:ekr.20071001091231.105:toggleActivePane
-        def toggleActivePane (self,event=None):
-
-            '''Toggle the focus between the outline and body panes.'''
-
-            frame = self ; c = frame.c
-
-            if c.get_focus() == frame.bodyCtrl:
-                c.treeWantsFocusNow()
-            else:
-                c.endEditing()
-                c.bodyWantsFocusNow()
-        #@-node:ekr.20071001091231.105:toggleActivePane
-        #@+node:ekr.20071001091231.106:cascade
-        def cascade (self,event=None):
-
-            '''Cascade all Leo windows.'''
-
-            x,y,delta = 10,10,10
-            for frame in g.app.windowList:
-                top = frame.top
-
-                # Compute w,h
-                top.update_idletasks() # Required to get proper info.
-                geom = top.geometry() # geom = "WidthxHeight+XOffset+YOffset"
-                dim,junkx,junky = string.split(geom,'+')
-                w,h = string.split(dim,'x')
-                w,h = int(w),int(h)
-
-                # Set new x,y and old w,h
-                frame.setTopGeometry(w,h,x,y,adjustSize=False)
-
-                # Compute the new offsets.
-                x += 30 ; y += 30
-                if x > 200:
-                    x = 10 + delta ; y = 40 + delta
-                    delta += 10
-        #@-node:ekr.20071001091231.106:cascade
-        #@+node:ekr.20071001091231.107:equalSizedPanes
-        def equalSizedPanes (self,event=None):
-
-            '''Make the outline and body panes have the same size.'''
-
-            frame = self
-            frame.resizePanesToRatio(0.5,frame.secondary_ratio)
-        #@-node:ekr.20071001091231.107:equalSizedPanes
-        #@+node:ekr.20071001091231.108:hideLogWindow
-        def hideLogWindow (self,event=None):
-
-            frame = self
-            frame.divideLeoSplitter2(0.99, not frame.splitVerticalFlag)
-        #@-node:ekr.20071001091231.108:hideLogWindow
-        #@+node:ekr.20071001091231.109:minimizeAll
-        def minimizeAll (self,event=None):
-
-            '''Minimize all Leo's windows.'''
-
-            self.minimize(g.app.pythonFrame)
-            for frame in g.app.windowList:
-                self.minimize(frame)
-                self.minimize(frame.findPanel)
-
-        def minimize(self,frame):
-
-            if frame and frame.top.state() == "normal":
-                frame.top.iconify()
-        #@-node:ekr.20071001091231.109:minimizeAll
-        #@+node:ekr.20071001091231.110:toggleSplitDirection (swingFrame)
-        # The key invariant: self.splitVerticalFlag tells the alignment of the main splitter.
-
-        def toggleSplitDirection (self,event=None):
-
-            '''Toggle the split direction in the present Leo window.'''
-
-            # Switch directions.
-            c = self.c
-            self.splitVerticalFlag = not self.splitVerticalFlag
-            orientation = g.choose(self.splitVerticalFlag,"vertical","horizontal")
-            c.config.set("initial_splitter_orientation","string",orientation)
-
-            self.toggleTkSplitDirection(self.splitVerticalFlag)
-        #@+node:ekr.20071001091231.111:toggleTkSplitDirection
-        def toggleTkSplitDirection (self,verticalFlag):
-
-            # Abbreviations.
-            frame = self
-            bar1 = self.bar1 ; bar2 = self.bar2
-            split1Pane1,split1Pane2 = self.split1Pane1,self.split1Pane2
-            split2Pane1,split2Pane2 = self.split2Pane1,self.split2Pane2
-            # Reconfigure the bars.
-            bar1.place_forget()
-            bar2.place_forget()
-            self.configureBar(bar1,verticalFlag)
-            self.configureBar(bar2,not verticalFlag)
-            # Make the initial placements again.
-            self.placeSplitter(bar1,split1Pane1,split1Pane2,verticalFlag)
-            self.placeSplitter(bar2,split2Pane1,split2Pane2,not verticalFlag)
-            # Adjust the log and body panes to give more room around the bars.
-            self.reconfigurePanes()
-            # Redraw with an appropriate ratio.
-            vflag,ratio,secondary_ratio = frame.initialRatios()
-            self.resizePanesToRatio(ratio,secondary_ratio)
-        #@-node:ekr.20071001091231.111:toggleTkSplitDirection
-        #@-node:ekr.20071001091231.110:toggleSplitDirection (swingFrame)
-        #@+node:ekr.20071001091231.112:resizeToScreen
-        def resizeToScreen (self,event=None):
-
-            '''Resize the Leo window so it fill the entire screen.'''
-
-            top = self.top
-
-            w = top.winfo_screenwidth()
-            h = top.winfo_screenheight()
-
-            if sys.platform.startswith('win'):
-                top.state('zoomed')
-            elif sys.platform == 'darwin':
-                # Must leave room to get at very small resizing area.
-                geom = "%dx%d%+d%+d" % (w-20,h-55,10,25)
-                top.geometry(geom)
-            else:
-                # Fill almost the entire screen.
-                # Works on Windows. YMMV for other platforms.
-                geom = "%dx%d%+d%+d" % (w-8,h-46,0,0)
-                top.geometry(geom)
-        #@-node:ekr.20071001091231.112:resizeToScreen
-        #@-node:ekr.20071001091231.104:Window Menu...
-        #@+node:ekr.20071001091231.113:Help Menu...
-        #@+node:ekr.20071001091231.114:leoHelp
-        def leoHelp (self,event=None):
-
-            '''Open Leo's offline tutorial.'''
-
-            frame = self ; c = frame.c
-
-            theFile = g.os_path_join(g.app.loadDir,"..","doc","sbooks.chm")
-
-            if g.os_path_exists(theFile):
-                os.startfile(theFile)
-            else:
-                answer = g.app.gui.runAskYesNoDialog(c,
-                    "Download Tutorial?",
-                    "Download tutorial (sbooks.chm) from SourceForge?")
-
-                if answer == "yes":
-                    try:
-                        if 0: # Download directly.  (showProgressBar needs a lot of work)
-                            url = "http://umn.dl.sourceforge.net/sourceforge/leo/sbooks.chm"
-                            import urllib
-                            self.scale = None
-                            urllib.urlretrieve(url,theFile,self.showProgressBar)
-                            if self.scale:
-                                self.scale.destroy()
-                                self.scale = None
-                        else:
-                            url = "http://prdownloads.sourceforge.net/leo/sbooks.chm?download"
-                            import webbrowser
-                            os.chdir(g.app.loadDir)
-                            webbrowser.open_new(url)
-                    except:
-                        g.es("exception dowloading sbooks.chm")
-                        g.es_exception()
-        #@+node:ekr.20071001091231.115:showProgressBar
-        def showProgressBar (self,count,size,total):
-
-            # g.trace("count,size,total:",count,size,total)
-            if self.scale == None:
-                #@        << create the scale widget >>
-                #@+node:ekr.20071001091231.116:<< create the scale widget >>
-                top = Tk.Toplevel()
-                top.title("Download progress")
-                self.scale = scale = Tk.Scale(top,state="normal",orient="horizontal",from_=0,to=total)
-                scale.pack()
-                top.lift()
-                #@-node:ekr.20071001091231.116:<< create the scale widget >>
+                except:
+                    g.es_exception()
+                    return None
+                #@-node:ekr.20071001091231.65:<< create a picture >>
                 #@nl
-            self.scale.set(count*size)
-            self.scale.update_idletasks()
-        #@-node:ekr.20071001091231.115:showProgressBar
-        #@-node:ekr.20071001091231.114:leoHelp
-        #@-node:ekr.20071001091231.113:Help Menu...
-        #@-node:ekr.20071001091231.96:Gui-dependent commands
-        #@+node:ekr.20071001091231.117:Delayed Focus (swingFrame)
-        #@+at 
-        #@nonl
-        # New in 4.3. The proper way to change focus is to call 
-        # c.frame.xWantsFocus.
-        # 
-        # Important: This code never calls select, so there can be no race 
-        # condition here
-        # that alters text improperly.
-        #@-at
-        #@-node:ekr.20071001091231.117:Delayed Focus (swingFrame)
-        #@+node:ekr.20071001091231.118:Tk bindings...
-        def bringToFront (self):
-            # g.trace(g.callers())
-            self.top.deiconify()
-            self.top.lift()
+            elif text:
+                b = Tk.Button(f,text=text,relief="groove",bd=2,command=command)
+                if not self.font:
+                    self.font = c.config.getFontFromParams(
+                        "button_text_font_family", "button_text_font_size",
+                        "button_text_font_slant",  "button_text_font_weight",)
+                b.configure(font=self.font)
+                # elif sys.platform.startswith('win'):
+                    # width = max(6,len(text))
+                    # b.configure(width=width,font=('verdana',7,'bold'))
+                if bg: b.configure(bg=bg)
+                b.pack(side="left", fill="none")
+                return b
 
-        def getFocus(self):
-            """Returns the widget that has focus, or body if None."""
-            try:
-                # This method is unreliable while focus is changing.
-                # The call to update_idletasks may help.  Or not.
-                self.top.update_idletasks()
-                f = self.top.focus_displayof()
-            except Exception:
-                f = None
-            if f:
-                return f
-            else:
-                return self.bodyCtrl
+            return None
+        #@-node:ekr.20071001091231.64:add
+        #@+node:ekr.20071001091231.66:clear
+        def clear(self):
 
-        def getTitle (self):
-            return self.top.title()
+            """Destroy all the widgets in the icon bar"""
 
-        def setTitle (self,title):
-            return self.top.title(title)
+            f = self.iconFrame
 
-        def get_window_info(self):
-            return g.app.gui.get_window_info(self.top)
+            for slave in f.pack_slaves():
+                slave.destroy()
+            self.visible = False
 
-        def iconify(self):
-            self.top.iconify()
+            f.configure(height="5m") # The default height.
+            g.app.iconWidgetCount = 0
+            g.app.iconImageRefs = []
+        #@-node:ekr.20071001091231.66:clear
+        #@+node:ekr.20071001091231.67:deleteButton (new in Leo 4.4.3)
+        def deleteButton (self,w):
 
-        def deiconify (self):
-            self.top.deiconify()
+            w.pack_forget()
+        #@-node:ekr.20071001091231.67:deleteButton (new in Leo 4.4.3)
+        #@+node:ekr.20071001091231.68:getFrame
+        def getFrame (self):
 
-        def lift (self):
-            self.top.lift()
+            return self.iconFrame
+        #@-node:ekr.20071001091231.68:getFrame
+        #@+node:ekr.20071001091231.69:pack (show)
+        def pack (self):
 
-        def update (self):
-            self.top.update()
-        #@-node:ekr.20071001091231.118:Tk bindings...
+            """Show the icon bar by repacking it"""
+
+            if not self.visible:
+                self.visible = True
+                self.iconFrame.pack(fill="x",pady=2)
+
+        show = pack
+        #@-node:ekr.20071001091231.69:pack (show)
+        #@+node:ekr.20071001091231.70:setCommandForButton (new in Leo 4.4.3)
+        def setCommandForButton(self,b,command):
+
+            b.configure(command=command)
+        #@-node:ekr.20071001091231.70:setCommandForButton (new in Leo 4.4.3)
+        #@+node:ekr.20071001091231.71:unpack (hide)
+        def unpack (self):
+
+            """Hide the icon bar by unpacking it.
+
+            A later call to show will repack it in a new location."""
+
+            if self.visible:
+                self.visible = False
+                self.iconFrame.pack_forget()
+
+        hide = unpack
+        #@-node:ekr.20071001091231.71:unpack (hide)
         #@-others
+    #@-node:ekr.20071001091231.62:class swingIconBarClass
+    #@+node:ekr.20071001091231.72:Minibuffer methods
+    #@+node:ekr.20071001091231.73:showMinibuffer
+    def showMinibuffer (self):
+
+        '''Make the minibuffer visible.'''
+
+        frame = self
+
+        if not frame.minibufferVisible:
+            frame.minibufferFrame.pack(side='bottom',fill='x')
+            frame.minibufferVisible = True
+    #@-node:ekr.20071001091231.73:showMinibuffer
+    #@+node:ekr.20071001091231.74:hideMinibuffer
+    def hideMinibuffer (self):
+
+        '''Hide the minibuffer.'''
+
+        frame = self
+        if frame.minibufferVisible:
+            frame.minibufferFrame.pack_forget()
+            frame.minibufferVisible = False
+    #@-node:ekr.20071001091231.74:hideMinibuffer
+    #@+node:ekr.20071001091231.75:f.createMiniBufferWidget
+    def createMiniBufferWidget (self):
+
+        '''Create the minbuffer below the status line.'''
+
+        frame = self ; c = frame.c
+
+        # frame.minibufferFrame = f = Tk.Frame(frame.outerFrame,relief='flat',borderwidth=0)
+        # if c.showMinibuffer:
+            # f.pack(side='bottom',fill='x')
+
+        # lab = Tk.Label(f,text='mini-buffer',justify='left',anchor='nw',foreground='blue')
+        # lab.pack(side='left')
+
+        # if c.useTextMinibuffer:
+            # label = g.app.gui.plainTextWidget(
+                # f,height=1,relief='groove',background='lightgrey',name='minibuffer')
+            # label.pack(side='left',fill='x',expand=1,padx=2,pady=1)
+        # else:
+            # label = Tk.Label(f,relief='groove',justify='left',anchor='w',name='minibuffer')
+            # label.pack(side='left',fill='both',expand=1,padx=2,pady=1)
+
+        # frame.minibufferVisible = c.showMinibuffer
+
+        # return label
+    #@-node:ekr.20071001091231.75:f.createMiniBufferWidget
+    #@+node:ekr.20071001091231.76:f.setMinibufferBindings
+    def setMinibufferBindings (self):
+
+        '''Create bindings for the minibuffer..'''
+
+        f = self ; c = f.c ; k = c.k ; w = f.miniBufferWidget
+
+        if not c.useTextMinibuffer: return
+
+        # for kind,callback in (
+            # ('<Key>',           k.masterKeyHandler),
+            # ('<Button-1>',      k.masterClickHandler),
+            # ('<Button-3>',      k.masterClick3Handler),
+            # ('<Double-1>',      k.masterDoubleClickHandler),
+            # ('<Double-3>',      k.masterDoubleClick3Handler),
+        # ):
+            # w.bind(kind,callback)
+
+        # if 0:
+            # if sys.platform.startswith('win'):
+                # # Support Linux middle-button paste easter egg.
+                # w.bind("<Button-2>",frame.OnPaste)
+    #@-node:ekr.20071001091231.76:f.setMinibufferBindings
+    #@-node:ekr.20071001091231.72:Minibuffer methods
+    #@+node:ekr.20071001091231.77:Configuration (swingFrame)
+    #@+node:ekr.20071001091231.78:configureBar
+    def configureBar (self,bar,verticalFlag):
+
+        c = self.c
+
+        # Get configuration settings.
+        w = c.config.getInt("split_bar_width")
+        if not w or w < 1: w = 7
+        relief = c.config.get("split_bar_relief","relief")
+        if not relief: relief = "flat"
+        color = c.config.getColor("split_bar_color")
+        if not color: color = "LightSteelBlue2"
+
+        try:
+            if verticalFlag:
+                # Panes arranged vertically; horizontal splitter bar
+                bar.configure(relief=relief,height=w,bg=color,cursor="sb_v_double_arrow")
+            else:
+                # Panes arranged horizontally; vertical splitter bar
+                bar.configure(relief=relief,width=w,bg=color,cursor="sb_h_double_arrow")
+        except: # Could be a user error. Use all defaults
+            g.es("exception in user configuration for splitbar")
+            g.es_exception()
+            if verticalFlag:
+                # Panes arranged vertically; horizontal splitter bar
+                bar.configure(height=7,cursor="sb_v_double_arrow")
+            else:
+                # Panes arranged horizontally; vertical splitter bar
+                bar.configure(width=7,cursor="sb_h_double_arrow")
+    #@-node:ekr.20071001091231.78:configureBar
+    #@+node:ekr.20071001091231.79:configureBarsFromConfig
+    def configureBarsFromConfig (self):
+
+        c = self.c
+
+        w = c.config.getInt("split_bar_width")
+        if not w or w < 1: w = 7
+
+        relief = c.config.get("split_bar_relief","relief")
+        if not relief or relief == "": relief = "flat"
+
+        color = c.config.getColor("split_bar_color")
+        if not color or color == "": color = "LightSteelBlue2"
+
+        if self.splitVerticalFlag:
+            bar1,bar2=self.bar1,self.bar2
+        else:
+            bar1,bar2=self.bar2,self.bar1
+
+        try:
+            bar1.configure(relief=relief,height=w,bg=color)
+            bar2.configure(relief=relief,width=w,bg=color)
+        except: # Could be a user error.
+            g.es("exception in user configuration for splitbar")
+            g.es_exception()
+    #@-node:ekr.20071001091231.79:configureBarsFromConfig
+    #@+node:ekr.20071001091231.80:reconfigureFromConfig
+    def reconfigureFromConfig (self):
+
+        frame = self ; c = frame.c
+
+        frame.tree.setFontFromConfig()
+        ### frame.tree.setColorFromConfig()
+
+        frame.configureBarsFromConfig()
+
+        frame.body.setFontFromConfig()
+        frame.body.setColorFromConfigt()
+
+        frame.setTabWidth(c.tab_width)
+        frame.log.setFontFromConfig()
+        frame.log.setColorFromConfig()
+
+        c.redraw_now()
+    #@-node:ekr.20071001091231.80:reconfigureFromConfig
+    #@+node:ekr.20071001091231.81:setInitialWindowGeometry
+    def setInitialWindowGeometry(self):
+
+        """Set the position and size of the frame to config params."""
+
+        c = self.c
+
+        h = c.config.getInt("initial_window_height") or 500
+        w = c.config.getInt("initial_window_width") or 600
+        x = c.config.getInt("initial_window_left") or 10
+        y = c.config.getInt("initial_window_top") or 10
+
+        if h and w and x and y:
+            pass ### self.setTopGeometry(w,h,x,y)
+    #@-node:ekr.20071001091231.81:setInitialWindowGeometry
+    #@+node:ekr.20071001091231.82:setTabWidth
+    def setTabWidth (self, w):
+
+        pass
+
+        # try: # This can fail when called from scripts
+            # # Use the present font for computations.
+            # font = self.bodyCtrl.cget("font")
+            # root = g.app.root # 4/3/03: must specify root so idle window will work properly.
+            # font = swingFont.Font(root=root,font=font)
+            # tabw = font.measure(" " * abs(w)) # 7/2/02
+            # self.bodyCtrl.configure(tabs=tabw)
+            # self.tab_width = w
+            # # g.trace(w,tabw)
+        # except:
+            # g.es_exception()
+            # pass
+    #@-node:ekr.20071001091231.82:setTabWidth
+    #@+node:ekr.20071001091231.83:f.setWrap
+    def setWrap (self,p):
+
+        c = self.c
+
+        theDict = g.scanDirectives(c,p)
+        if not theDict: return
+
+        wrap = theDict.get("wrap")
+
+        ### if self.body.wrapState == wrap: return
+
+        self.body.wrapState = wrap
+        # g.trace(wrap)
+
+        ### Rewrite for swing.
+
+        # if wrap:
+            # self.bodyCtrl.configure(wrap="word")
+            # self.bodyXBar.pack_forget()
+        # else:
+            # self.bodyCtrl.configure(wrap="none")
+            # # Bug fix: 3/10/05: We must unpack the text area to make the scrollbar visible.
+            # self.bodyCtrl.pack_forget()
+            # self.bodyXBar.pack(side="bottom", fill="x")
+            # self.bodyCtrl.pack(expand=1,fill="both")
+    #@-node:ekr.20071001091231.83:f.setWrap
+    #@+node:ekr.20071001091231.84:setTopGeometry
+    def setTopGeometry(self,w,h,x,y,adjustSize=True):
+
+        # Put the top-left corner on the screen.
+        x = max(10,x) ; y = max(10,y)
+
+        if adjustSize:
+            top = self.top
+            sw = top.winfo_screenwidth()
+            sh = top.winfo_screenheight()
+
+            # Adjust the size so the whole window fits on the screen.
+            w = min(sw-10,w)
+            h = min(sh-10,h)
+
+            # Adjust position so the whole window fits on the screen.
+            if x + w > sw: x = 10
+            if y + h > sh: y = 10
+
+        geom = "%dx%d%+d%+d" % (w,h,x,y)
+
+        self.top.geometry(geom)
+    #@-node:ekr.20071001091231.84:setTopGeometry
+    #@+node:ekr.20071001091231.85:reconfigurePanes (use config bar_width)
+    def reconfigurePanes (self):
+
+        c = self.c
+
+        border = c.config.getInt('additional_body_text_border')
+        if border == None: border = 0
+
+        # The body pane needs a _much_ bigger border when tiling horizontally.
+        border = g.choose(self.splitVerticalFlag,2+border,6+border)
+        ### self.bodyCtrl.configure(bd=border)
+
+        # The log pane needs a slightly bigger border when tiling vertically.
+        border = g.choose(self.splitVerticalFlag,4,2) 
+        ### self.log.configureBorder(border)
+    #@-node:ekr.20071001091231.85:reconfigurePanes (use config bar_width)
+    #@+node:ekr.20071001091231.86:resizePanesToRatio
+    def resizePanesToRatio(self,ratio,ratio2):
+
+        # g.trace(ratio,ratio2,g.callers())
+
+        self.divideLeoSplitter(self.splitVerticalFlag,ratio)
+        self.divideLeoSplitter(not self.splitVerticalFlag,ratio2)
     #@nonl
-    #@-node:ekr.20071001105348:Not ready yet
+    #@-node:ekr.20071001091231.86:resizePanesToRatio
+    #@-node:ekr.20071001091231.77:Configuration (swingFrame)
+    #@+node:ekr.20071001091231.87:Event handlers (swingFrame)
+    #@+node:ekr.20071001091231.88:frame.OnCloseLeoEvent
+    # Called from quit logic and when user closes the window.
+    # Returns True if the close happened.
+
+    def OnCloseLeoEvent(self):
+
+        f = self ; c = f.c
+
+        if c.inCommand:
+            # g.trace('requesting window close')
+            c.requestCloseWindow = True
+        else:
+            g.app.closeLeoWindow(self)
+    #@-node:ekr.20071001091231.88:frame.OnCloseLeoEvent
+    #@+node:ekr.20071001091231.89:frame.OnControlKeyUp/Down
+    def OnControlKeyDown (self,event=None):
+
+        __pychecker__ = '--no-argsused' # event not used.
+
+        self.controlKeyIsDown = True
+
+    def OnControlKeyUp (self,event=None):
+
+        __pychecker__ = '--no-argsused' # event not used.
+
+        self.controlKeyIsDown = False
+    #@-node:ekr.20071001091231.89:frame.OnControlKeyUp/Down
+    #@+node:ekr.20071001091231.90:OnActivateBody (swingFrame)
+    def OnActivateBody (self,event=None):
+
+        __pychecker__ = '--no-argsused' # event not used.
+
+        try:
+            frame = self ; c = frame.c
+            c.setLog()
+            w = c.get_focus()
+            if w != c.frame.body.bodyCtrl:
+                frame.tree.OnDeactivate()
+            c.bodyWantsFocus()
+        except:
+            g.es_event_exception("activate body")
+
+        return 'break'
+    #@-node:ekr.20071001091231.90:OnActivateBody (swingFrame)
+    #@+node:ekr.20071001091231.91:OnActivateLeoEvent, OnDeactivateLeoEvent
+    def OnActivateLeoEvent(self,event=None):
+
+        '''Handle a click anywhere in the Leo window.'''
+
+        __pychecker__ = '--no-argsused' # event.
+
+        self.c.setLog()
+
+    def OnDeactivateLeoEvent(self,event=None):
+
+        pass # This causes problems on the Mac.
+    #@-node:ekr.20071001091231.91:OnActivateLeoEvent, OnDeactivateLeoEvent
+    #@+node:ekr.20071001091231.92:OnActivateTree
+    def OnActivateTree (self,event=None):
+
+        try:
+            frame = self ; c = frame.c
+            c.setLog()
+
+            if 0: # Do NOT do this here!
+                # OnActivateTree can get called when the tree gets DE-activated!!
+                c.bodyWantsFocus()
+
+        except:
+            g.es_event_exception("activate tree")
+    #@-node:ekr.20071001091231.92:OnActivateTree
+    #@+node:ekr.20071001091231.93:OnBodyClick, OnBodyRClick (Events)
+    def OnBodyClick (self,event=None):
+
+        try:
+            c = self.c ; p = c.currentPosition()
+            if not g.doHook("bodyclick1",c=c,p=p,v=p,event=event):
+                self.OnActivateBody(event=event)
+            g.doHook("bodyclick2",c=c,p=p,v=p,event=event)
+        except:
+            g.es_event_exception("bodyclick")
+
+    def OnBodyRClick(self,event=None):
+
+        try:
+            c = self.c ; p = c.currentPosition()
+            if not g.doHook("bodyrclick1",c=c,p=p,v=p,event=event):
+                pass # By default Leo does nothing.
+            g.doHook("bodyrclick2",c=c,p=p,v=p,event=event)
+        except:
+            g.es_event_exception("iconrclick")
+    #@-node:ekr.20071001091231.93:OnBodyClick, OnBodyRClick (Events)
+    #@+node:ekr.20071001091231.94:OnBodyDoubleClick (Events)
+    def OnBodyDoubleClick (self,event=None):
+
+        try:
+            c = self.c ; p = c.currentPosition()
+            if event and not g.doHook("bodydclick1",c=c,p=p,v=p,event=event):
+                c.editCommands.extendToWord(event) # Handles unicode properly.
+            g.doHook("bodydclick2",c=c,p=p,v=p,event=event)
+        except:
+            g.es_event_exception("bodydclick")
+
+        return "break" # Restore this to handle proper double-click logic.
+    #@-node:ekr.20071001091231.94:OnBodyDoubleClick (Events)
+    #@+node:ekr.20071001091231.95:OnMouseWheel (Tomaz Ficko)
+    # Contributed by Tomaz Ficko.  This works on some systems.
+    # On XP it causes a crash in tcl83.dll.  Clearly a Tk bug.
+
+    def OnMouseWheel(self, event=None):
+
+        try:
+            if event.delta < 1:
+                self.canvas.yview(Tk.SCROLL, 1, Tk.UNITS)
+            else:
+                self.canvas.yview(Tk.SCROLL, -1, Tk.UNITS)
+        except:
+            g.es_event_exception("scroll wheel")
+
+        return "break"
+    #@-node:ekr.20071001091231.95:OnMouseWheel (Tomaz Ficko)
+    #@-node:ekr.20071001091231.87:Event handlers (swingFrame)
+    #@+node:ekr.20071001091231.96:Gui-dependent commands
+    #@+node:ekr.20071001091231.97:Minibuffer commands... (swingFrame)
+
+    #@+node:ekr.20071001091231.98:contractPane
+    def contractPane (self,event=None):
+
+        '''Contract the selected pane.'''
+
+        f = self ; c = f.c
+        w = c.get_requested_focus()
+        wname = c.widget_name(w)
+
+        # g.trace(wname)
+        if not w: return
+
+        if wname.startswith('body'):
+            f.contractBodyPane()
+        elif wname.startswith('log'):
+            f.contractLogPane()
+        elif wname.startswith('head') or wname.startswith('canvas'):
+            f.contractOutlinePane()
+    #@-node:ekr.20071001091231.98:contractPane
+    #@+node:ekr.20071001091231.99:expandPane
+    def expandPane (self,event=None):
+
+        '''Expand the selected pane.'''
+
+        f = self ; c = f.c
+
+        w = c.get_requested_focus()
+        wname = c.widget_name(w)
+
+        # g.trace(wname)
+        if not w: return
+
+        if wname.startswith('body'):
+            f.expandBodyPane()
+        elif wname.startswith('log'):
+            f.expandLogPane()
+        elif wname.startswith('head') or wname.startswith('canvas'):
+            f.expandOutlinePane()
+    #@-node:ekr.20071001091231.99:expandPane
+    #@+node:ekr.20071001091231.100:fullyExpandPane
+    def fullyExpandPane (self,event=None):
+
+        '''Fully expand the selected pane.'''
+
+        f = self ; c = f.c
+
+        w = c.get_requested_focus()
+        wname = c.widget_name(w)
+
+        # g.trace(wname)
+        if not w: return
+
+        if wname.startswith('body'):
+            f.fullyExpandBodyPane()
+        elif wname.startswith('log'):
+            f.fullyExpandLogPane()
+        elif wname.startswith('head') or wname.startswith('canvas'):
+            f.fullyExpandOutlinePane()
+    #@-node:ekr.20071001091231.100:fullyExpandPane
+    #@+node:ekr.20071001091231.101:hidePane
+    def hidePane (self,event=None):
+
+        '''Completely contract the selected pane.'''
+
+        f = self ; c = f.c
+
+        w = c.get_requested_focus()
+        wname = c.widget_name(w)
+
+        g.trace(wname)
+        if not w: return
+
+        if wname.startswith('body'):
+            f.hideBodyPane()
+            c.treeWantsFocusNow()
+        elif wname.startswith('log'):
+            f.hideLogPane()
+            c.bodyWantsFocusNow()
+        elif wname.startswith('head') or wname.startswith('canvas'):
+            f.hideOutlinePane()
+            c.bodyWantsFocusNow()
+    #@-node:ekr.20071001091231.101:hidePane
+    #@+node:ekr.20071001091231.102:expand/contract/hide...Pane
+    #@+at 
+    #@nonl
+    # The first arg to divideLeoSplitter means the following:
+    # 
+    #     f.splitVerticalFlag: use the primary   (tree/body) ratio.
+    # not f.splitVerticalFlag: use the secondary (tree/log) ratio.
+    #@-at
+    #@@c
+
+    def contractBodyPane (self,event=None):
+        '''Contract the body pane.'''
+        f = self ; r = min(1.0,f.ratio+0.1)
+        f.divideLeoSplitter(f.splitVerticalFlag,r)
+
+    def contractLogPane (self,event=None):
+        '''Contract the log pane.'''
+        f = self ; r = min(1.0,f.ratio+0.1)
+        f.divideLeoSplitter(not f.splitVerticalFlag,r)
+
+    def contractOutlinePane (self,event=None):
+        '''Contract the outline pane.'''
+        f = self ; r = max(0.0,f.ratio-0.1)
+        f.divideLeoSplitter(f.splitVerticalFlag,r)
+
+    def expandBodyPane (self,event=None):
+        '''Expand the body pane.'''
+        self.contractOutlinePane()
+
+    def expandLogPane(self,event=None):
+        '''Expand the log pane.'''
+        f = self ; r = max(0.0,f.ratio-0.1)
+        f.divideLeoSplitter(not f.splitVerticalFlag,r)
+
+    def expandOutlinePane (self,event=None):
+        '''Expand the outline pane.'''
+        self.contractBodyPane()
+    #@-node:ekr.20071001091231.102:expand/contract/hide...Pane
+    #@+node:ekr.20071001091231.103:fullyExpand/hide...Pane
+    def fullyExpandBodyPane (self,event=None):
+        '''Fully expand the body pane.'''
+        f = self ; f.divideLeoSplitter(f.splitVerticalFlag,0.0)
+
+    def fullyExpandLogPane (self,event=None):
+        '''Fully expand the log pane.'''
+        f = self ; f.divideLeoSplitter(not f.splitVerticalFlag,0.0)
+
+    def fullyExpandOutlinePane (self,event=None):
+        '''Fully expand the outline pane.'''
+        f = self ; f.divideLeoSplitter(f.splitVerticalFlag,1.0)
+
+    def hideBodyPane (self,event=None):
+        '''Completely contract the body pane.'''
+        f = self ; f.divideLeoSplitter(f.splitVerticalFlag,1.0)
+
+    def hideLogPane (self,event=None):
+        '''Completely contract the log pane.'''
+        f = self ; f.divideLeoSplitter(not f.splitVerticalFlag,1.0)
+
+    def hideOutlinePane (self,event=None):
+        '''Completely contract the outline pane.'''
+        f = self ; f.divideLeoSplitter(f.splitVerticalFlag,0.0)
+    #@-node:ekr.20071001091231.103:fullyExpand/hide...Pane
+    #@-node:ekr.20071001091231.97:Minibuffer commands... (swingFrame)
+    #@+node:ekr.20071001091231.104:Window Menu...
+    #@+node:ekr.20071001091231.105:toggleActivePane
+    def toggleActivePane (self,event=None):
+
+        '''Toggle the focus between the outline and body panes.'''
+
+        frame = self ; c = frame.c
+
+        if c.get_focus() == frame.bodyCtrl:
+            c.treeWantsFocusNow()
+        else:
+            c.endEditing()
+            c.bodyWantsFocusNow()
+    #@-node:ekr.20071001091231.105:toggleActivePane
+    #@+node:ekr.20071001091231.106:cascade
+    def cascade (self,event=None):
+
+        '''Cascade all Leo windows.'''
+
+        x,y,delta = 10,10,10
+        for frame in g.app.windowList:
+            top = frame.top
+
+            # Compute w,h
+            top.update_idletasks() # Required to get proper info.
+            geom = top.geometry() # geom = "WidthxHeight+XOffset+YOffset"
+            dim,junkx,junky = string.split(geom,'+')
+            w,h = string.split(dim,'x')
+            w,h = int(w),int(h)
+
+            # Set new x,y and old w,h
+            frame.setTopGeometry(w,h,x,y,adjustSize=False)
+
+            # Compute the new offsets.
+            x += 30 ; y += 30
+            if x > 200:
+                x = 10 + delta ; y = 40 + delta
+                delta += 10
+    #@-node:ekr.20071001091231.106:cascade
+    #@+node:ekr.20071001091231.107:equalSizedPanes
+    def equalSizedPanes (self,event=None):
+
+        '''Make the outline and body panes have the same size.'''
+
+        frame = self
+        frame.resizePanesToRatio(0.5,frame.secondary_ratio)
+    #@-node:ekr.20071001091231.107:equalSizedPanes
+    #@+node:ekr.20071001091231.108:hideLogWindow
+    def hideLogWindow (self,event=None):
+
+        frame = self
+        frame.divideLeoSplitter2(0.99, not frame.splitVerticalFlag)
+    #@-node:ekr.20071001091231.108:hideLogWindow
+    #@+node:ekr.20071001091231.109:minimizeAll
+    def minimizeAll (self,event=None):
+
+        '''Minimize all Leo's windows.'''
+
+        self.minimize(g.app.pythonFrame)
+        for frame in g.app.windowList:
+            self.minimize(frame)
+            self.minimize(frame.findPanel)
+
+    def minimize(self,frame):
+
+        if frame and frame.top.state() == "normal":
+            frame.top.iconify()
+    #@-node:ekr.20071001091231.109:minimizeAll
+    #@+node:ekr.20071001091231.110:toggleSplitDirection (swingFrame)
+    # The key invariant: self.splitVerticalFlag tells the alignment of the main splitter.
+
+    def toggleSplitDirection (self,event=None):
+
+        '''Toggle the split direction in the present Leo window.'''
+
+        # Switch directions.
+        c = self.c
+        self.splitVerticalFlag = not self.splitVerticalFlag
+        orientation = g.choose(self.splitVerticalFlag,"vertical","horizontal")
+        c.config.set("initial_splitter_orientation","string",orientation)
+
+        self.toggleTkSplitDirection(self.splitVerticalFlag)
+    #@+node:ekr.20071001091231.111:toggleTkSplitDirection
+    def toggleTkSplitDirection (self,verticalFlag):
+
+        # Abbreviations.
+        frame = self
+        bar1 = self.bar1 ; bar2 = self.bar2
+        split1Pane1,split1Pane2 = self.split1Pane1,self.split1Pane2
+        split2Pane1,split2Pane2 = self.split2Pane1,self.split2Pane2
+        # Reconfigure the bars.
+        bar1.place_forget()
+        bar2.place_forget()
+        self.configureBar(bar1,verticalFlag)
+        self.configureBar(bar2,not verticalFlag)
+        # Make the initial placements again.
+        self.placeSplitter(bar1,split1Pane1,split1Pane2,verticalFlag)
+        self.placeSplitter(bar2,split2Pane1,split2Pane2,not verticalFlag)
+        # Adjust the log and body panes to give more room around the bars.
+        self.reconfigurePanes()
+        # Redraw with an appropriate ratio.
+        vflag,ratio,secondary_ratio = frame.initialRatios()
+        self.resizePanesToRatio(ratio,secondary_ratio)
+    #@-node:ekr.20071001091231.111:toggleTkSplitDirection
+    #@-node:ekr.20071001091231.110:toggleSplitDirection (swingFrame)
+    #@+node:ekr.20071001091231.112:resizeToScreen
+    def resizeToScreen (self,event=None):
+
+        '''Resize the Leo window so it fill the entire screen.'''
+
+        top = self.top
+
+        w = top.winfo_screenwidth()
+        h = top.winfo_screenheight()
+
+        if sys.platform.startswith('win'):
+            top.state('zoomed')
+        elif sys.platform == 'darwin':
+            # Must leave room to get at very small resizing area.
+            geom = "%dx%d%+d%+d" % (w-20,h-55,10,25)
+            top.geometry(geom)
+        else:
+            # Fill almost the entire screen.
+            # Works on Windows. YMMV for other platforms.
+            geom = "%dx%d%+d%+d" % (w-8,h-46,0,0)
+            top.geometry(geom)
+    #@-node:ekr.20071001091231.112:resizeToScreen
+    #@-node:ekr.20071001091231.104:Window Menu...
+    #@+node:ekr.20071001091231.113:Help Menu...
+    #@+node:ekr.20071001091231.114:leoHelp
+    def leoHelp (self,event=None):
+
+        '''Open Leo's offline tutorial.'''
+
+        frame = self ; c = frame.c
+
+        theFile = g.os_path_join(g.app.loadDir,"..","doc","sbooks.chm")
+
+        if g.os_path_exists(theFile):
+            os.startfile(theFile)
+        else:
+            answer = g.app.gui.runAskYesNoDialog(c,
+                "Download Tutorial?",
+                "Download tutorial (sbooks.chm) from SourceForge?")
+
+            if answer == "yes":
+                try:
+                    if 0: # Download directly.  (showProgressBar needs a lot of work)
+                        url = "http://umn.dl.sourceforge.net/sourceforge/leo/sbooks.chm"
+                        import urllib
+                        self.scale = None
+                        urllib.urlretrieve(url,theFile,self.showProgressBar)
+                        if self.scale:
+                            self.scale.destroy()
+                            self.scale = None
+                    else:
+                        url = "http://prdownloads.sourceforge.net/leo/sbooks.chm?download"
+                        import webbrowser
+                        os.chdir(g.app.loadDir)
+                        webbrowser.open_new(url)
+                except:
+                    g.es("exception dowloading sbooks.chm")
+                    g.es_exception()
+    #@+node:ekr.20071001091231.115:showProgressBar
+    def showProgressBar (self,count,size,total):
+
+        # g.trace("count,size,total:",count,size,total)
+        if self.scale == None:
+            #@        << create the scale widget >>
+            #@+node:ekr.20071001091231.116:<< create the scale widget >>
+            top = Tk.Toplevel()
+            top.title("Download progress")
+            self.scale = scale = Tk.Scale(top,state="normal",orient="horizontal",from_=0,to=total)
+            scale.pack()
+            top.lift()
+            #@-node:ekr.20071001091231.116:<< create the scale widget >>
+            #@nl
+        self.scale.set(count*size)
+        self.scale.update_idletasks()
+    #@-node:ekr.20071001091231.115:showProgressBar
+    #@-node:ekr.20071001091231.114:leoHelp
+    #@-node:ekr.20071001091231.113:Help Menu...
+    #@-node:ekr.20071001091231.96:Gui-dependent commands
+    #@+node:ekr.20071001091231.117:Delayed Focus (swingFrame)
+    #@+at 
+    #@nonl
+    # New in 4.3. The proper way to change focus is to call 
+    # c.frame.xWantsFocus.
+    # 
+    # Important: This code never calls select, so there can be no race 
+    # condition here
+    # that alters text improperly.
+    #@-at
+    #@-node:ekr.20071001091231.117:Delayed Focus (swingFrame)
+    #@+node:ekr.20071001091231.118:Tk bindings...
+    def bringToFront (self):
+        # g.trace(g.callers())
+        self.top.deiconify()
+        self.top.lift()
+
+    def getFocus(self):
+        """Returns the widget that has focus, or body if None."""
+        try:
+            # This method is unreliable while focus is changing.
+            # The call to update_idletasks may help.  Or not.
+            self.top.update_idletasks()
+            f = self.top.focus_displayof()
+        except Exception:
+            f = None
+        if f:
+            return f
+        else:
+            return self.bodyCtrl
+
+    def getTitle (self):
+        return self.top.title()
+
+    def setTitle (self,title):
+        return self.top.title(title)
+
+    def get_window_info(self):
+        return g.app.gui.get_window_info(self.top)
+
+    def iconify(self):
+        self.top.iconify()
+
+    def deiconify (self):
+        self.top.deiconify()
+
+    def lift (self):
+        self.top.lift()
+
+    def update (self):
+        self.top.update()
+    #@-node:ekr.20071001091231.118:Tk bindings...
     #@-others
 #@-node:ekr.20070930105601.2:class leoSwingFrame
 #@+node:ekr.20070930110535:class leoSwingBody
 class leoSwingBody (leoFrame.leoBody):
 
-    if 1: ### stubs
+    ###
 
-        def __init__ (self,frame,parentFrame):
-            # g.trace('leoSwingBody')
-            leoFrame.leoBody.__init__(self,frame,parentFrame) # Init the base class.
+    # def __init__ (self,frame,parentFrame):
+        # # g.trace('leoSwingBody')
+        # leoFrame.leoBody.__init__(self,frame,parentFrame) # Init the base class.
 
-        # Birth, death & config...
-        def createBindings (self,w=None):               pass
-        def createControl (self,frame,parentFrame,p):   pass
-        def setColorFromConfig (self,w=None):           pass
-        def setFontFromConfig (self,w=None):            pass
+    # # Birth, death & config...
+    # def createBindings (self,w=None):               pass
+    # def createControl (self,frame,parentFrame,p):   pass
+    # def setColorFromConfig (self,w=None):           pass
+    # def setFontFromConfig (self,w=None):            pass
 
-        # Editor...
-        def createEditorLabel (self,pane):  pass
-        def setEditorColors (self,bg,fg):   pass
+    # # Editor...
+    # def createEditorLabel (self,pane):  pass
+    # def setEditorColors (self,bg,fg):   pass
 
-        # Events...
-        def scheduleIdleTimeRoutine (self,function,*args,**keys): pass
+    # # Events...
+    # def scheduleIdleTimeRoutine (self,function,*args,**keys): pass
 
-    else:
+    #@    @+others
+    #@+node:ekr.20071001091231.3: Birth & death
+    #@+node:ekr.20071001091231.4:swingBody. __init__
+    def __init__ (self,frame,parentFrame):
 
-        #@        @+others
-        #@+node:ekr.20071001091231.3: Birth & death
-        #@+node:ekr.20071001091231.4:swingBody. __init__
-        def __init__ (self,frame,parentFrame):
+        g.trace('leoSwingBody')
 
-            # g.trace("leoSwingBody")
+        # Call the base class constructor.
+        leoFrame.leoBody.__init__(self,frame,parentFrame)
 
-            # Call the base class constructor.
-            leoFrame.leoBody.__init__(self,frame,parentFrame)
+        c = self.c ; p = c.currentPosition()
+        self.editor_name = None
+        self.editor_v = None
 
-            c = self.c ; p = c.currentPosition()
-            self.editor_name = None
-            self.editor_v = None
+        self.trace_onBodyChanged = c.config.getBool('trace_onBodyChanged')
+        self.bodyCtrl = self.createControl(frame,parentFrame,p)
+        self.colorizer = leoColor.colorizer(c)
+    #@-node:ekr.20071001091231.4:swingBody. __init__
+    #@+node:ekr.20071001091231.5:swingBody.createBindings
+    def createBindings (self,w=None):
 
-            self.trace_onBodyChanged = c.config.getBool('trace_onBodyChanged')
-            self.bodyCtrl = self.createControl(frame,parentFrame,p)
-            self.colorizer = leoColor.colorizer(c)
-        #@-node:ekr.20071001091231.4:swingBody. __init__
-        #@+node:ekr.20071001091231.5:swingBody.createBindings
-        def createBindings (self,w=None):
+        '''(swingBody) Create gui-dependent bindings.
+        These are *not* made in nullBody instances.'''
 
-            '''(swingBody) Create gui-dependent bindings.
-            These are *not* made in nullBody instances.'''
+        frame = self.frame ; c = self.c ; k = c.k
+        if not w: w = self.bodyCtrl
 
-            frame = self.frame ; c = self.c ; k = c.k
-            if not w: w = self.bodyCtrl
+        # w.bind('<Key>', k.masterKeyHandler)
 
-            w.bind('<Key>', k.masterKeyHandler)
+        # for kind,func,handler in (
+            # ('<Button-1>',  frame.OnBodyClick,          k.masterClickHandler),
+            # ('<Button-3>',  frame.OnBodyRClick,         k.masterClick3Handler),
+            # ('<Double-1>',  frame.OnBodyDoubleClick,    k.masterDoubleClickHandler),
+            # ('<Double-3>',  None,                       k.masterDoubleClick3Handler),
+            # ('<Button-2>',  frame.OnPaste,              k.masterClickHandler),
+        # ):
+            # def bodyClickCallback(event,handler=handler,func=func):
+                # return handler(event,func)
 
-            for kind,func,handler in (
-                ('<Button-1>',  frame.OnBodyClick,          k.masterClickHandler),
-                ('<Button-3>',  frame.OnBodyRClick,         k.masterClick3Handler),
-                ('<Double-1>',  frame.OnBodyDoubleClick,    k.masterDoubleClickHandler),
-                ('<Double-3>',  None,                       k.masterDoubleClick3Handler),
-                ('<Button-2>',  frame.OnPaste,              k.masterClickHandler),
-            ):
-                def bodyClickCallback(event,handler=handler,func=func):
-                    return handler(event,func)
+            # w.bind(kind,bodyClickCallback)
+    #@nonl
+    #@-node:ekr.20071001091231.5:swingBody.createBindings
+    #@+node:ekr.20071001091231.6:swingBody.createControl
+    def createControl (self,frame,parentFrame,p):
 
-                w.bind(kind,bodyClickCallback)
-        #@nonl
-        #@-node:ekr.20071001091231.5:swingBody.createBindings
-        #@+node:ekr.20071001091231.6:swingBody.createControl
-        def createControl (self,frame,parentFrame,p):
+        c = self.c
 
-            c = self.c
+        g.trace('swingBody')
 
-            # New in 4.4.1: make the parent frame a PanedWidget.
-            self.numberOfEditors = 1 ; name = '1'
-            self.totalNumberOfEditors = 1
+        # New in 4.4.1: make the parent frame a PanedWidget.
+        self.numberOfEditors = 1 ; name = '1'
+        self.totalNumberOfEditors = 1
 
-            orient = c.config.getString('editor_orientation') or 'horizontal'
-            if orient not in ('horizontal','vertical'): orient = 'horizontal'
+        orient = c.config.getString('editor_orientation') or 'horizontal'
+        if orient not in ('horizontal','vertical'): orient = 'horizontal'
 
-            self.pb = pb = Pmw.PanedWidget(parentFrame,orient=orient)
-            parentFrame = pb.add(name)
-            pb.pack(expand=1,fill='both') # Must be done after the first page created.
+        # self.pb = pb = Pmw.PanedWidget(parentFrame,orient=orient)
+        # parentFrame = pb.add(name)
+        # pb.pack(expand=1,fill='both') # Must be done after the first page created.
 
-            w = self.createTextWidget(frame,parentFrame,p,name)
-            self.editorWidgets[name] = w
+        w = self.createTextWidget(frame,parentFrame,p,name)
+        self.editorWidgets[name] = w
 
-            return w
-        #@-node:ekr.20071001091231.6:swingBody.createControl
-        #@+node:ekr.20071001091231.7:swingBody.createTextWidget
-        def createTextWidget (self,frame,parentFrame,p,name):
+        return w
+    #@-node:ekr.20071001091231.6:swingBody.createControl
+    #@+node:ekr.20071001091231.7:swingBody.createTextWidget
+    def createTextWidget (self,frame,parentFrame,p,name):
 
-            # pychecker complains that there is no leo_p attribute.
+        # pychecker complains that there is no leo_p attribute.
 
-            c = self.c
+        c = self.c
 
-            parentFrame.configure(bg='LightSteelBlue1')
+        # parentFrame.configure(bg='LightSteelBlue1')
 
-            wrap = c.config.getBool('body_pane_wraps')
-            wrap = g.choose(wrap,"word","none")
+        wrap = c.config.getBool('body_pane_wraps')
+        wrap = g.choose(wrap,"word","none")
 
-            # Setgrid=1 cause severe problems with the font panel.
-            body = w = leoTkTextWidget (parentFrame,name='body-pane',
-                bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
+        # # Setgrid=1 cause severe problems with the font panel.
+        body = w = leoSwingTextWidget (parentFrame,name='body-pane',
+            bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
 
-            bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
-            frame.bodyBar = self.bodyBar = bodyBar
+        # bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
+        # frame.bodyBar = self.bodyBar = bodyBar
 
-            def yscrollCallback(x,y,bodyBar=bodyBar,w=w):
-                # g.trace(x,y,g.callers())
-                if hasattr(w,'leo_scrollBarSpot'):
-                    w.leo_scrollBarSpot = (x,y)
-                return bodyBar.set(x,y)
+        # def yscrollCallback(x,y,bodyBar=bodyBar,w=w):
+            # # g.trace(x,y,g.callers())
+            # if hasattr(w,'leo_scrollBarSpot'):
+                # w.leo_scrollBarSpot = (x,y)
+            # return bodyBar.set(x,y)
 
-            body['yscrollcommand'] = yscrollCallback # bodyBar.set
+        # body['yscrollcommand'] = yscrollCallback # bodyBar.set
 
-            bodyBar['command'] =  body.yview
-            bodyBar.pack(side="right", fill="y")
+        # bodyBar['command'] =  body.yview
+        # bodyBar.pack(side="right", fill="y")
 
-            # Always create the horizontal bar.
-            frame.bodyXBar = self.bodyXBar = bodyXBar = Tk.Scrollbar(
-                parentFrame,name='bodyXBar',orient="horizontal")
-            body['xscrollcommand'] = bodyXBar.set
-            bodyXBar['command'] = body.xview
-            self.bodyXbar = frame.bodyXBar = bodyXBar
+        # # Always create the horizontal bar.
+        # frame.bodyXBar = self.bodyXBar = bodyXBar = Tk.Scrollbar(
+            # parentFrame,name='bodyXBar',orient="horizontal")
+        # body['xscrollcommand'] = bodyXBar.set
+        # bodyXBar['command'] = body.xview
+        # self.bodyXbar = frame.bodyXBar = bodyXBar
 
-            if wrap == "none":
-                # g.trace(parentFrame)
-                bodyXBar.pack(side="bottom", fill="x")
+        # if wrap == "none":
+            # # g.trace(parentFrame)
+            # bodyXBar.pack(side="bottom", fill="x")
 
-            body.pack(expand=1,fill="both")
+        # body.pack(expand=1,fill="both")
 
-            self.wrapState = wrap
+        # self.wrapState = wrap
 
-            if 0: # Causes the cursor not to blink.
-                body.configure(insertofftime=0)
+        # if 0: # Causes the cursor not to blink.
+            # body.configure(insertofftime=0)
 
-            # Inject ivars
-            if name == '1':
-                w.leo_p = w.leo_v = None # Will be set when the second editor is created.
-            else:
-                w.leo_p = p.copy()
-                w.leo_v = body.leo_p.v
-                    # pychecker complains body.leo_p does not exist.
-            w.leo_active = True
-            w.leo_chapter = None
-            w.leo_frame = parentFrame
-            w.leo_name = name
-            w.leo_label = None
-            w.leo_label_s = None
-            w.leo_scrollBarSpot = None
-            w.leo_insertSpot = None
-            w.leo_selection = None
+        # # Inject ivars
+        if name == '1':
+            w.leo_p = w.leo_v = None # Will be set when the second editor is created.
+        else:
+            w.leo_p = p.copy()
+            w.leo_v = body.leo_p.v
+                # pychecker complains body.leo_p does not exist.
+        w.leo_active = True
+        w.leo_chapter = None
+        w.leo_frame = parentFrame
+        w.leo_name = name
+        w.leo_label = None
+        w.leo_label_s = None
+        w.leo_scrollBarSpot = None
+        w.leo_insertSpot = None
+        w.leo_selection = None
 
-            return w
-        #@nonl
-        #@-node:ekr.20071001091231.7:swingBody.createTextWidget
-        #@-node:ekr.20071001091231.3: Birth & death
-        #@+node:ekr.20071001091231.8:swingBody.setColorFromConfig
-        def setColorFromConfig (self,w=None):
+        return w
+    #@-node:ekr.20071001091231.7:swingBody.createTextWidget
+    #@-node:ekr.20071001091231.3: Birth & death
+    #@+node:ekr.20071001091231.8:swingBody.setColorFromConfig
+    def setColorFromConfig (self,w=None):
 
-            c = self.c
-            if w is None: w = self.bodyCtrl
+        c = self.c
+        if w is None: w = self.bodyCtrl
 
-            bg = c.config.getColor("body_text_background_color") or 'white'
-            # g.trace(id(w),bg)
+        return ###
 
-            try: w.configure(bg=bg)
+        bg = c.config.getColor("body_text_background_color") or 'white'
+        # g.trace(id(w),bg)
+
+        try: w.configure(bg=bg)
+        except:
+            g.es("exception setting body text background color")
+            g.es_exception()
+
+        fg = c.config.getColor("body_text_foreground_color") or 'black'
+        try: w.configure(fg=fg)
+        except:
+            g.es("exception setting body textforeground color")
+            g.es_exception()
+
+        bg = c.config.getColor("body_insertion_cursor_color")
+        if bg:
+            try: w.configure(insertbackground=bg)
             except:
-                g.es("exception setting body text background color")
+                g.es("exception setting body pane cursor color")
                 g.es_exception()
 
-            fg = c.config.getColor("body_text_foreground_color") or 'black'
-            try: w.configure(fg=fg)
-            except:
-                g.es("exception setting body textforeground color")
-                g.es_exception()
+        sel_bg = c.config.getColor('body_text_selection_background_color') or 'Gray80'
+        try: w.configure(selectbackground=sel_bg)
+        except Exception:
+            g.es("exception setting body pane text selection background color")
+            g.es_exception()
 
-            bg = c.config.getColor("body_insertion_cursor_color")
-            if bg:
-                try: w.configure(insertbackground=bg)
+        sel_fg = c.config.getColor('body_text_selection_foreground_color') or 'white'
+        try: w.configure(selectforeground=sel_fg)
+        except Exception:
+            g.es("exception setting body pane text selection foreground color")
+            g.es_exception()
+
+        if sys.platform != "win32": # Maybe a Windows bug.
+            fg = c.config.getColor("body_cursor_foreground_color")
+            bg = c.config.getColor("body_cursor_background_color")
+            if fg and bg:
+                cursor="xterm" + " " + fg + " " + bg
+                try: w.configure(cursor=cursor)
                 except:
-                    g.es("exception setting body pane cursor color")
-                    g.es_exception()
+                    import traceback ; traceback.print_exc()
+    #@-node:ekr.20071001091231.8:swingBody.setColorFromConfig
+    #@+node:ekr.20071001091231.9:swingBody.setFontFromConfig
+    def setFontFromConfig (self,w=None):
 
-            sel_bg = c.config.getColor('body_text_selection_background_color') or 'Gray80'
-            try: w.configure(selectbackground=sel_bg)
-            except Exception:
-                g.es("exception setting body pane text selection background color")
-                g.es_exception()
+        c = self.c
 
-            sel_fg = c.config.getColor('body_text_selection_foreground_color') or 'white'
-            try: w.configure(selectforeground=sel_fg)
-            except Exception:
-                g.es("exception setting body pane text selection foreground color")
-                g.es_exception()
+        if not w: w = self.bodyCtrl
 
-            if sys.platform != "win32": # Maybe a Windows bug.
-                fg = c.config.getColor("body_cursor_foreground_color")
-                bg = c.config.getColor("body_cursor_background_color")
-                if fg and bg:
-                    cursor="xterm" + " " + fg + " " + bg
-                    try: w.configure(cursor=cursor)
-                    except:
-                        import traceback ; traceback.print_exc()
-        #@-node:ekr.20071001091231.8:swingBody.setColorFromConfig
-        #@+node:ekr.20071001091231.9:swingBody.setFontFromConfig
-        def setFontFromConfig (self,w=None):
+        font = c.config.getFontFromParams(
+            "body_text_font_family", "body_text_font_size",
+            "body_text_font_slant",  "body_text_font_weight",
+            c.config.defaultBodyFontSize)
 
-            c = self.c
+        self.fontRef = font # ESSENTIAL: retain a link to font.
+        ### w.configure(font=font)
 
-            if not w: w = self.bodyCtrl
+        # g.trace("BODY",body.cget("font"),font.cget("family"),font.cget("weight"))
+    #@-node:ekr.20071001091231.9:swingBody.setFontFromConfig
+    #@+node:ekr.20071001091231.10:Focus (swingBody)
+    def hasFocus (self):
 
-            font = c.config.getFontFromParams(
-                "body_text_font_family", "body_text_font_size",
-                "body_text_font_slant",  "body_text_font_weight",
-                c.config.defaultBodyFontSize)
+        return self.bodyCtrl == self.frame.top.focus_displayof()
 
-            self.fontRef = font # ESSENTIAL: retain a link to font.
-            w.configure(font=font)
+    def setFocus (self):
 
-            # g.trace("BODY",body.cget("font"),font.cget("family"),font.cget("weight"))
-        #@-node:ekr.20071001091231.9:swingBody.setFontFromConfig
-        #@+node:ekr.20071001091231.10:Focus (swingBody)
-        def hasFocus (self):
+        self.c.widgetWantsFocus(self.bodyCtrl)
+    #@-node:ekr.20071001091231.10:Focus (swingBody)
+    #@+node:ekr.20071001091231.11:forceRecolor
+    def forceFullRecolor (self):
 
-            return self.bodyCtrl == self.frame.top.focus_displayof()
+        self.forceFullRecolorFlag = True
+    #@-node:ekr.20071001091231.11:forceRecolor
+    #@+node:ekr.20071001091231.12:Tk bindings (swingBbody)
+    #@+node:ekr.20071001193426:bind (new)
+    def bind (self,*args,**keys):
 
-        def setFocus (self):
+        pass
+    #@-node:ekr.20071001193426:bind (new)
+    #@+node:ekr.20071001091231.13:Color tags (Tk spelling)
+    def tag_add (self,tagName,index1,index2):
+        self.bodyCtrl.tag_add(tagName,index1,index2)
 
-            self.c.widgetWantsFocus(self.bodyCtrl)
-        #@-node:ekr.20071001091231.10:Focus (swingBody)
-        #@+node:ekr.20071001091231.11:forceRecolor
-        def forceFullRecolor (self):
+    def tag_bind (self,tagName,event,callback):
+        self.bodyCtrl.tag_bind(tagName,event,callback)
 
-            self.forceFullRecolorFlag = True
-        #@-node:ekr.20071001091231.11:forceRecolor
-        #@+node:ekr.20071001091231.12:Tk bindings (swingBbody)
-        #@+node:ekr.20071001091231.13:Color tags (Tk spelling)
-        def tag_add (self,tagName,index1,index2):
-            self.bodyCtrl.tag_add(tagName,index1,index2)
+    def tag_configure (self,colorName,**keys):
+        self.bodyCtrl.tag_configure(colorName,keys)
 
-        def tag_bind (self,tagName,event,callback):
-            self.bodyCtrl.tag_bind(tagName,event,callback)
+    def tag_delete(self,tagName):
+        self.bodyCtrl.tag_delete(tagName)
 
-        def tag_configure (self,colorName,**keys):
-            self.bodyCtrl.tag_configure(colorName,keys)
+    def tag_names(self,*args): # New in Leo 4.4.1.
+        return self.bodyCtrl.tag_names(*args)
 
-        def tag_delete(self,tagName):
-            self.bodyCtrl.tag_delete(tagName)
+    def tag_remove (self,tagName,index1,index2):
+        return self.bodyCtrl.tag_remove(tagName,index1,index2)
+    #@-node:ekr.20071001091231.13:Color tags (Tk spelling)
+    #@+node:ekr.20071001091231.14:Configuration (Tk spelling)
+    def cget(self,*args,**keys):
 
-        def tag_names(self,*args): # New in Leo 4.4.1.
-            return self.bodyCtrl.tag_names(*args)
+        val = self.bodyCtrl.cget(*args,**keys)
 
-        def tag_remove (self,tagName,index1,index2):
-            return self.bodyCtrl.tag_remove(tagName,index1,index2)
-        #@-node:ekr.20071001091231.13:Color tags (Tk spelling)
-        #@+node:ekr.20071001091231.14:Configuration (Tk spelling)
-        def cget(self,*args,**keys):
+        if g.app.trace:
+            g.trace(val,args,keys)
 
-            val = self.bodyCtrl.cget(*args,**keys)
+        return val
 
-            if g.app.trace:
-                g.trace(val,args,keys)
+    def configure (self,*args,**keys):
 
-            return val
+        # g.trace(args,keys)
 
-        def configure (self,*args,**keys):
+        return self.bodyCtrl.configure(*args,**keys)
+    #@-node:ekr.20071001091231.14:Configuration (Tk spelling)
+    #@+node:ekr.20071001091231.15:Height & width
+    def getBodyPaneHeight (self):
 
-            # g.trace(args,keys)
+        return self.bodyCtrl.winfo_height()
 
-            return self.bodyCtrl.configure(*args,**keys)
-        #@-node:ekr.20071001091231.14:Configuration (Tk spelling)
-        #@+node:ekr.20071001091231.15:Height & width
-        def getBodyPaneHeight (self):
+    def getBodyPaneWidth (self):
 
-            return self.bodyCtrl.winfo_height()
+        return self.bodyCtrl.winfo_width()
+    #@-node:ekr.20071001091231.15:Height & width
+    #@+node:ekr.20071001091231.16:Idle time...
+    def scheduleIdleTimeRoutine (self,function,*args,**keys):
 
-        def getBodyPaneWidth (self):
+        pass ### self.bodyCtrl.after_idle(function,*args,**keys)
+    #@-node:ekr.20071001091231.16:Idle time...
+    #@+node:ekr.20071001091231.17:Menus
+    def bind (self,*args,**keys):
 
-            return self.bodyCtrl.winfo_width()
-        #@-node:ekr.20071001091231.15:Height & width
-        #@+node:ekr.20071001091231.16:Idle time...
-        def scheduleIdleTimeRoutine (self,function,*args,**keys):
+        pass ### return self.bodyCtrl.bind(*args,**keys)
+    #@-node:ekr.20071001091231.17:Menus
+    #@+node:ekr.20071001091231.18:Text (now in base class)
+    # def getAllText (self):              return self.bodyCtrl.getAllText()
+    # def getInsertPoint(self):           return self.bodyCtrl.getInsertPoint()
+    # def getSelectedText (self):         return self.bodyCtrl.getSelectedText()
+    # def getSelectionRange (self,sort=True): return self.bodyCtrl.getSelectionRange(sort)
+    # def hasTextSelection (self):        return self.bodyCtrl.hasSelection()
+    # # def scrollDown (self):            g.app.gui.yscroll(self.bodyCtrl,1,'units')
+    # # def scrollUp (self):              g.app.gui.yscroll(self.bodyCtrl,-1,'units')
+    # def see (self,index):               self.bodyCtrl.see(index)
+    # def seeInsertPoint (self):          self.bodyCtrl.seeInsertPoint()
+    # def selectAllText (self,event=None):
+        # w = g.app.gui.eventWidget(event) or self.bodyCtrl
+        # return w.selectAllText()
+    # def setInsertPoint (self,pos):      return self.bodyCtrl.getInsertPoint(pos)
+    # def setSelectionRange (self,sel):
+        # i,j = sel
+        # self.bodyCtrl.setSelectionRange(i,j)
+    #@nonl
+    #@-node:ekr.20071001091231.18:Text (now in base class)
+    #@-node:ekr.20071001091231.12:Tk bindings (swingBbody)
+    #@+node:ekr.20071001091231.19:Editors (swingBody)
+    #@+node:ekr.20071001091231.20:createEditorFrame
+    def createEditorFrame (self,pane):
 
-            self.bodyCtrl.after_idle(function,*args,**keys)
-        #@-node:ekr.20071001091231.16:Idle time...
-        #@+node:ekr.20071001091231.17:Menus
-        def bind (self,*args,**keys):
+        f = Tk.Frame(pane)
+        f.pack(side='top',expand=1,fill='both')
+        return f
+    #@-node:ekr.20071001091231.20:createEditorFrame
+    #@+node:ekr.20071001091231.21:packEditorLabelWidget
+    def packEditorLabelWidget (self,w):
 
-            return self.bodyCtrl.bind(*args,**keys)
-        #@-node:ekr.20071001091231.17:Menus
-        #@+node:ekr.20071001091231.18:Text (now in base class)
-        # def getAllText (self):              return self.bodyCtrl.getAllText()
-        # def getInsertPoint(self):           return self.bodyCtrl.getInsertPoint()
-        # def getSelectedText (self):         return self.bodyCtrl.getSelectedText()
-        # def getSelectionRange (self,sort=True): return self.bodyCtrl.getSelectionRange(sort)
-        # def hasTextSelection (self):        return self.bodyCtrl.hasSelection()
-        # # def scrollDown (self):            g.app.gui.yscroll(self.bodyCtrl,1,'units')
-        # # def scrollUp (self):              g.app.gui.yscroll(self.bodyCtrl,-1,'units')
-        # def see (self,index):               self.bodyCtrl.see(index)
-        # def seeInsertPoint (self):          self.bodyCtrl.seeInsertPoint()
-        # def selectAllText (self,event=None):
-            # w = g.app.gui.eventWidget(event) or self.bodyCtrl
-            # return w.selectAllText()
-        # def setInsertPoint (self,pos):      return self.bodyCtrl.getInsertPoint(pos)
-        # def setSelectionRange (self,sel):
-            # i,j = sel
-            # self.bodyCtrl.setSelectionRange(i,j)
-        #@nonl
-        #@-node:ekr.20071001091231.18:Text (now in base class)
-        #@-node:ekr.20071001091231.12:Tk bindings (swingBbody)
-        #@+node:ekr.20071001091231.19:Editors (swingBody)
-        #@+node:ekr.20071001091231.20:createEditorFrame
-        def createEditorFrame (self,pane):
+        '''Create a Tk label widget.'''
 
-            f = Tk.Frame(pane)
-            f.pack(side='top',expand=1,fill='both')
-            return f
-        #@-node:ekr.20071001091231.20:createEditorFrame
-        #@+node:ekr.20071001091231.21:packEditorLabelWidget
-        def packEditorLabelWidget (self,w):
+        if not hasattr(w,'leo_label') or not w.leo_label:
+            # g.trace('w.leo_frame',id(w.leo_frame))
+            w.pack_forget()
+            w.leo_label = Tk.Label(w.leo_frame)
+            w.leo_label.pack(side='top')
+            w.pack(expand=1,fill='both')
+    #@nonl
+    #@-node:ekr.20071001091231.21:packEditorLabelWidget
+    #@+node:ekr.20071001091231.22:setEditorColors
+    def setEditorColors (self,bg,fg):
 
-            '''Create a Tk label widget.'''
+        c = self.c ; d = self.editorWidgets
 
-            if not hasattr(w,'leo_label') or not w.leo_label:
-                # g.trace('w.leo_frame',id(w.leo_frame))
-                w.pack_forget()
-                w.leo_label = Tk.Label(w.leo_frame)
-                w.leo_label.pack(side='top')
-                w.pack(expand=1,fill='both')
-        #@nonl
-        #@-node:ekr.20071001091231.21:packEditorLabelWidget
-        #@+node:ekr.20071001091231.22:setEditorColors
-        def setEditorColors (self,bg,fg):
+        ###
 
-            c = self.c ; d = self.editorWidgets
-
-            for key in d.keys():
-                w2 = d.get(key)
-                # g.trace(id(w2),bg,fg)
-                try:
-                    w2.configure(bg=bg,fg=fg)
-                except Exception:
-                    g.es_exception()
-                    pass
-        #@-node:ekr.20071001091231.22:setEditorColors
-        #@-node:ekr.20071001091231.19:Editors (swingBody)
-        #@-others
+        # for key in d.keys():
+            # w2 = d.get(key)
+            # # g.trace(id(w2),bg,fg)
+            # try:
+                # w2.configure(bg=bg,fg=fg)
+            # except Exception:
+                # g.es_exception()
+                # pass
+    #@-node:ekr.20071001091231.22:setEditorColors
+    #@-node:ekr.20071001091231.19:Editors (swingBody)
+    #@-others
 #@-node:ekr.20070930110535:class leoSwingBody
 #@+node:ekr.20070930111347:class leoSwingKeys
 class swingKeyHandlerClass (leoKeys.keyHandlerClass):
@@ -2148,6 +2051,748 @@ class swingKeyHandlerClass (leoKeys.keyHandlerClass):
         # Init the base class.
         leoKeys.keyHandlerClass.__init__(self,c,useGlobalKillbuffer,useGlobalRegisters)
 #@-node:ekr.20070930111347:class leoSwingKeys
+#@+node:ekr.20071001173734:class leoSwingMenu
+class leoSwingMenu( leoMenu.leoMenu ):
+
+    #@    @+others
+    #@+node:ekr.20071001173734.1: leoSwingMenu.__init__
+    def __init__ (self,frame):
+
+        if 0:
+            ld = io.File( g.app.loadDir )
+            ijcl.addToSearchPath( ld )
+            ijcl.beginLoading()
+            self.font = frame.top.getFont()
+            self.executor = java.util.concurrent.Executors.newCachedThreadPool()
+            self.queue = java.util.concurrent.LinkedBlockingQueue()
+            self.menu_changer = self.MenuChanger( self.queue )
+            self.names_and_commands = {}
+            self.keystrokes_and_actions = {}
+
+        leoMenu.leoMenu.__init__( self, frame )
+
+        #self.createLeoSwingPrint()
+        #self.defineLeoSwingPrintTable()
+        #self.addCommanderSupplemental()
+
+
+
+
+
+
+
+
+    #@-node:ekr.20071001173734.1: leoSwingMenu.__init__
+    #@+node:ekr.20071001173943:not ready yet
+    if 0:
+        #@    @+others
+        #@+node:ekr.20071001173734.2:class MenuChanger
+        class MenuChanger( java.lang.Runnable, java.util.concurrent.Callable ):
+
+            def __init__( self, queue ):
+                self.queue = queue
+
+            def run( self ):
+
+                ft = java.util.concurrent.FutureTask( self )
+                java.awt.EventQueue.invokeLater( ft )
+
+
+            def call( self ):
+
+                menu , name , label, enabled = self.queue.take() 
+                target = None
+                for z in menu.getMenuComponents():
+                    if hasattr( z, "getText" ) and z.getText() == name:
+                        target = z
+                        break
+
+
+                if target:
+                    target.setText( label )
+                    target.setEnabled( enabled )
+        #@-node:ekr.20071001173734.2:class MenuChanger
+        #@+node:ekr.20071001173734.3:print menu stuff...
+
+        #@+node:ekr.20071001173734.4:defineLeoSwingPrintTable
+        def defineLeoSwingPrintTable( self ):
+
+            self.printNodeTable= (
+
+            ( "Print Current Node" , None, lambda event: self.lsp.printNode() ),
+            ( "Print Current Node as HTML", None, lambda event: self.lsp.printNode( type = "HTML" ) ),
+            ( "Print Marked Nodes", None, lambda event:  self.lsp.printMarkedNodes() ),
+            ( "Print Marked Nodes as HTML", None, lambda event: self.lsp.printNode( type ="HTML" ) ),
+
+            )
+
+            for z in self.printNodeTable:
+                self.names_and_commands[ z[ 0 ] ] = z[ 2 ]
+        #@-node:ekr.20071001173734.4:defineLeoSwingPrintTable
+        #@+node:ekr.20071001173734.5:createLeoSwingPrintMenu
+        def createLeoSwingPrintMenu( self ):
+
+            fmenu = self.getMenu( "File" )
+
+            components = fmenu.getMenuComponents()
+
+            x = 0
+            for z in components:
+
+                if hasattr( z, 'getText' ) and z.getText() == "Recent Files...":
+                    break
+                x += 1
+
+
+            spot = x + 1
+
+            pmenu = swing.JMenu( "Printing" )
+
+            pnodes = swing.JMenu( "Print Nodes" )
+            pmenu.add( pnodes )
+            for z in self.printNodeTable:
+                item = swing.JMenuItem( z[ 0 ] )
+                item.actionPerformed = z[ 2 ]
+                pnodes.add( item )
+
+            sep = swing.JSeparator()
+            fmenu.add( sep, spot  )
+            fmenu.add( pmenu, spot + 1 )
+
+            print_tree = swing.JMenuItem( "Print Tree As Is" )
+            print_tree.actionPerformed = self.lsp.printTreeAsIs
+            pmenu.add( print_tree )
+            self.names_and_commands[ "Print Tree As Is" ] = self.lsp.printTreeAsIs
+            print_as_more = swing.JMenuItem( "Print Outline in More Format" )
+            print_as_more.actionPerformed = self.lsp.printOutlineAsMore
+            self.names_and_commands[ "Print Outline in More Formet" ] = self.lsp.printOutlineAsMore
+            pmenu.add( print_as_more )
+
+
+
+
+
+
+
+
+
+
+
+        #@-node:ekr.20071001173734.5:createLeoSwingPrintMenu
+        #@+node:ekr.20071001173734.6:createLeoSwingPrint
+        def createLeoSwingPrint( self ):
+
+            c = self.c
+            import leoSwingPrint
+            lsp = leoSwingPrint.leoSwingPrint( c )
+            menu = lsp.getAsMenu()
+
+            fmenu = self.getMenu( "File" )
+
+            components = fmenu.getMenuComponents()
+
+            x = 0
+            for z in components:
+
+                if hasattr( z, 'getText' ) and z.getText() == "Recent Files...":
+                    break
+                x += 1
+
+
+            spot = x + 1
+
+
+            sep = swing.JSeparator()
+            fmenu.add( sep, spot  )
+            fmenu.add( menu, spot + 1 )
+
+
+        #@-node:ekr.20071001173734.6:createLeoSwingPrint
+        #@-node:ekr.20071001173734.3:print menu stuff...
+        #@+node:ekr.20071001173734.7:plugin menu stuff...
+        #@+node:ekr.20071001173734.8:createPluginMenu
+        def createPluginMenu( self ):
+
+            top = self.getMenu( 'top' )
+            oline = self.getMenu( 'Outline' )
+            ind = top.getComponentIndex( oline ) + 1
+            import leoSwingPluginManager
+            self.plugin_menu = pmenu = leoSwingPluginManager.createPluginsMenu()
+            #self.plugin_menu = pmenu = swing.JMenu( "Plugins" )
+            top.add( pmenu, ind )
+            #cpm = swing.JMenuItem( "Plugin Manager" )
+            #cpm.actionPerformed = self.createPluginManager
+            #pmenu.add( cpm )
+            #pmenu.addSeparator()
+
+
+            #self.names_and_commands[ "Plugin Manager" ] = self.createPluginManager
+
+
+        #@-node:ekr.20071001173734.8:createPluginMenu
+        #@+node:ekr.20071001173734.9:createPluginManager
+        def createPluginManager( self, event ):
+
+            import leoSwingPluginManager as lspm
+            lspm.topLevelMenu()
+
+        #@-node:ekr.20071001173734.9:createPluginManager
+        #@+node:ekr.20071001173734.10:getPluginMenu
+        def getPluginMenu( self ):
+
+            return self.plugin_menu
+        #@-node:ekr.20071001173734.10:getPluginMenu
+        #@-node:ekr.20071001173734.7:plugin menu stuff...
+        #@+node:ekr.20071001173734.11:JythonShell stuff
+
+        #@+node:ekr.20071001173734.12:openJythonShell
+        def openJythonShell( self ):
+
+            js = ijcl.getJythonShell()
+            jd = js.getDelegate()
+            config = g.app.config
+            c = self.c
+
+            import leoSwingFrame
+            getColorInstance = leoSwingFrame.getColorInstance 
+
+            colorconfig = js.getColorConfiguration()
+            color = config.getColor( c, "jyshell_background" )
+            colorconfig.setBackgroundColor( getColorInstance( color, awt.Color.WHITE ) )
+
+            color = config.getColor( c, "jyshell_foreground" )
+            colorconfig.setForegroundColor( getColorInstance( color, awt.Color.GRAY ) )
+
+            color = config.getColor( c, "jyshell_keyword" )
+            colorconfig.setKeywordColor( getColorInstance( color, awt.Color.GREEN ) )
+
+            color = config.getColor( c, "jyshell_local" )
+            colorconfig.setLocalColor( getColorInstance( color, awt.Color.ORANGE ) )
+
+            color = config.getColor( c, "jyshell_ps1color" )
+            colorconfig.setPromptOneColor( getColorInstance( color, awt.Color.BLUE ) )
+
+            color = config.getColor( c, "jyshell_ps2color" )
+            colorconfig.setPromptTwoColor( getColorInstance( color, awt.Color.GREEN ) )
+
+            color = config.getColor( c, "jyshell_syntax" )
+            colorconfig.setSyntaxColor( getColorInstance( color, awt.Color.RED ) )
+
+            color = config.getColor( c, "jyshell_output" )
+            colorconfig.setOutColor( getColorInstance( color, awt.Color.GRAY ) )
+
+            color = config.getColor( c, "jyshell_error" )
+            colorconfig.setErrColor( getColorInstance( color, awt.Color.RED ) )
+
+            family = config.get( c, "jyshell_text_font_family", "family" )
+            size = config.get( c, "jyshell_text_font_size", "size" )
+            weight = config.get( c, "jyshell_text_font_weight", "weight" )
+            slant = None
+            font = config.getFontFromParams( c, "jyshell_text_font_family", "jyshell_text_font_size", None, "jyshell_text_font_weight")
+
+            use_bgimage = g.app.config.getBool( c, "jyshell_background_image" )
+            if use_bgimage:
+
+                image_location = g.app.config.getString( c, "jyshell_image_location@as-filedialog" )
+                test_if_exists = java.io.File( image_location )
+                if test_if_exists.exists():
+                    ii = swing.ImageIcon( image_location )
+                    alpha = g.app.config.getFloat( c, "jyshell_background_alpha" )
+                    js.setBackgroundImage( ii.getImage(), float( alpha ) )
+
+            if font:
+                js.setFont( font )
+
+            js.setVisible( True )
+            widget = js.getWidget()
+            log = self.c.frame.log    
+            self.addMenuToJythonShell( js )
+            log.addTab( "JythonShell", widget )
+            log.selectTab( widget )
+
+
+        #@-node:ekr.20071001173734.12:openJythonShell
+        #@+node:ekr.20071001173734.13:addMenuToJythonShell
+        def addMenuToJythonShell( self, js ):
+
+            c = self.c
+            jd = js.getDelegate()
+            jmenu = swing.JMenu( "Leo" )
+            jd.addToMenu( jmenu )
+
+            e = swing.JMenuItem( "Execute Node As Script" )  
+            e.actionPerformed = lambda event, jd = jd: self.fireNodeAsScript( event, jd )
+            jmenu.add( e )
+
+            p = swing.JMenuItem( "Run Node in Pdb" )
+            p.actionPerformed = self.getRunNodeInPdb( c, jd )
+            jmenu.add( p )
+
+            captext = "Capture Shell Input In Node"
+            totext = "Turn Off Shell Input Capture"
+            sc = swing.JMenuItem( captext )
+            import org.leo.JTextComponentOutputStream as jtcos
+            class logcontrol:
+                def __init__( self, menu ):
+                    self.menu = menu
+                    self.loging = False
+                    self.ostream = jtcos( c.frame.body.editor.editor )
+
+                def __call__( self, event ):  
+                    menu = self.menu
+                    loging = self.loging
+                    if not loging:
+                        js.addLogger( self.ostream )
+                        menu.setText( totext )
+                        self.loging = True
+                    else:
+                        js.removeLogger( self.ostream )
+                        menu.setText( captext )
+                        self.loging = False
+
+            sc.actionPerformed = logcontrol( sc )           
+            jmenu.add( sc )
+
+            d = swing.JMenuItem( "Detach Shell" )
+            class detacher( java.util.concurrent.Callable ):
+
+                def __init__( self, menu ):
+                    self.menu = menu
+                    self.embeded = True
+                    js.setCloser( self )
+
+                def call( self ):
+
+                    if self.embeded:
+                        log = c.frame.log
+                        widget = js.getWidget()
+                        log.removeTab( widget )
+                    else:
+                        widget = js.getWidget()
+                        parent = widget.getTopLevelAncestor()
+                        parent.dispose();
+
+                def __call__( self, event ):
+                    d = self.menu
+                    text = d.getText()
+                    if( text == "Detach Shell" ):
+                        d.setText( "Retach Shell" )
+                        jf = swing.JFrame( "JythonShell" )
+                        widget = js.getWidget()
+                        log = c.frame.log 
+                        log.removeTab( widget )
+                        jf.add( widget )
+                        jf.setSize( 500, 500 )
+                        jf.visible = 1
+                        self.embeded = False
+                    else:
+                        d.setText( "Detach Shell" )
+                        widget = js.getWidget()
+                        parent = widget.getTopLevelAncestor()
+                        parent.dispose();
+                        log = c.frame.log
+                        log.addTab( "JythonShell", widget  )
+                        log.selectTab( widget ) 
+                        self.embeded = True
+
+            d.actionPerformed = detacher( d )
+            jmenu.add( d )    
+
+
+        #@-node:ekr.20071001173734.13:addMenuToJythonShell
+        #@+node:ekr.20071001173734.14:getInsertNodeIntoShell
+        def getInsertNodeIntoShell( self, c, jd ):
+
+            jm = swing.JMenuItem( "Write Node Into Shell as Reference" )
+            def writeNode( event ):
+
+                cp = c.currentPosition()
+                at = c.atFileCommands 
+                c.fileCommands.assignFileIndices()
+                at.write(cp.copy(),nosentinels=True,toString=True,scriptWrite=True)
+                data = at.stringOutput
+
+                jtf = self._GetReferenceName( jd, data )
+                jtf.rmv_spot = jd.insertWidget( jtf )
+                jtf.requestFocusInWindow()
+
+
+
+            jm.actionPerformed = writeNode
+            return jm
+        #@-node:ekr.20071001173734.14:getInsertNodeIntoShell
+        #@+node:ekr.20071001173734.15:getInsertReferenceIntoLeo
+        def getInsertReferenceIntoLeo( self, jd ):
+
+            jmi = swing.JMenuItem( "Insert Reference As Node" )
+
+            def action( event ):
+
+                jtf = self._GetReferenceAsObject( jd, self.c )
+                jtf.rmv_spot = jd.insertWidget( jtf )
+                jtf.requestFocusInWindow()
+
+            jmi.actionPerformed = action
+            return jmi
+        #@nonl
+        #@-node:ekr.20071001173734.15:getInsertReferenceIntoLeo
+        #@+node:ekr.20071001173734.16:getRunNodeInPdb
+        def getRunNodeInPdb( self, c, jd ):
+
+            def runInPdb( event ):
+
+                cp = c.currentPosition()
+                name = cp.headString()
+                name = name.split()[ 0 ]
+                at = c.atFileCommands 
+                c.fileCommands.assignFileIndices()
+                at.write(cp.copy(),nosentinels=True,toString=True,scriptWrite=True)
+                data = at.stringOutput
+
+                f = java.io.File.createTempFile( "leopdbrun", None )
+                pw = java.io.PrintWriter( f )
+                pw.println( "import pdb" )
+                pw.println( "pdb.set_trace()" )
+                for z in data.split( "\n" ):
+                    pw.println( z )            
+                pw.close()
+                f.deleteOnExit()       
+                l = java.util.Vector()
+                l.add( "execfile( '%s', globals(), locals())" % f.getAbsolutePath() )
+                jd.processAsScript( l )
+
+
+            return runInPdb      
+        #@-node:ekr.20071001173734.16:getRunNodeInPdb
+        #@+node:ekr.20071001173734.17:fireNodeAsScript
+        def fireNodeAsScript( self, event, jd ):
+
+            c = self.c        
+            cp = c.currentPosition()    
+            at = c.atFileCommands 
+            c.fileCommands.assignFileIndices()
+            at.write(cp.copy(),nosentinels=True,toString=True,scriptWrite=True)
+            data = at.stringOutput.split( '\n' ) 
+
+
+            l = java.util.Vector()
+            for z in data:
+                l.add( java.lang.String( z ) )
+
+            jd.processAsScript( l )
+        #@nonl
+        #@-node:ekr.20071001173734.17:fireNodeAsScript
+        #@+node:ekr.20071001173734.18:class _GetReferenceName
+        class _GetReferenceName( swing.JTextField, aevent.KeyListener ):
+
+
+            def __init__( self, jd, data ):
+                swing.JTextField.__init__( self )
+                self.jd = jd
+                self.data = data
+                border = self.getBorder()
+                tborder = sborder.TitledBorder( border )
+                tborder.setTitle( "Choose Reference Name:" )
+                self.setBorder( tborder )
+                self.addKeyListener( self )
+                self.rmv_spot = None
+
+            def keyPressed( self, event ):
+
+                kc = event.getKeyChar();
+                if kc == '\n':
+                    self.execute()
+                elif java.lang.Character.isWhitespace( kc ):
+                    event.consume
+
+            def execute( self ):
+
+                self.jd.setReference( self.getText(), self.data )
+                if self.rmv_spot:
+                    self.jd.remove( self.rmv_spot)
+                self.jd.requestFocusInWindow()
+
+            def keyTyped( self, event ):
+
+                kc = event.getKeyChar()
+                if kc == '\n': return
+                elif java.lang.Character.isWhitespace( kc ):
+                    event.consume()
+
+            def keyReleased( self, event ):
+
+                kc = event.getKeyChar()
+                if kc == '\n': return
+                elif java.lang.Character.isWhitespace( kc ):
+                    event.consume()
+
+
+        class _GetReferenceAsObject( _GetReferenceName ):
+
+            def __init__( self, jd, c ):
+                leoSwingMenu._GetReferenceName.__init__( self, jd, None )
+                self.c = c
+                border = self.getBorder()
+                border.setTitle( "Which Reference To Insert:" )
+
+
+            def execute( self ):
+
+                ref = self.jd.getReference( self.getText() )
+                if ref:
+                    self.c.beginUpdate()
+                    pos = self.c.currentPosition()
+                    npos = pos.insertAfter()
+                    npos.setHeadString( "Reference: %s" % self.getText() )
+                    npos.setTnodeText( str( ref ) )
+                    self.c.endUpdate()
+                if self.rmv_spot:
+                    self.jd.remove( self.rmv_spot )
+        #@-node:ekr.20071001173734.18:class _GetReferenceName
+        #@-node:ekr.20071001173734.11:JythonShell stuff
+        #@+node:ekr.20071001173734.19:addUserGuide
+        def addUserGuide( self ):
+
+            help = self.getMenu( 'Help' )
+            c = self.c
+            help.addSeparator()
+            jmi = swing.JCheckBoxMenuItem( "View User Guide" )
+            widgets = []
+            def showUserGuide( event ):
+                if jmi.getState() and not widgets:
+                    import leoSwingLeoTutorial
+                    lswlt = leoSwingLeoTutorial.leoSwingLeoTutorial()
+                    widget = lswlt.getWidget()
+                    widgets.append( widget )
+                    c.frame.body.addTab( "User Guide", widget )
+                elif jmi.getState() and widgets:
+                    widget = widgets[ 0 ]
+                    c.frame.body.addTab( "User Guide", widget )
+                else:
+                    widget = widgets[ 0 ]
+                    c.frame.body.removeTab( widget )
+
+
+            jmi.actionPerformed = showUserGuide
+            help.add( jmi )
+        #@-node:ekr.20071001173734.19:addUserGuide
+        #@+node:ekr.20071001173734.20:createRecentFilesMenuItems (leoMenu)
+        def createRecentFilesMenuItems (self):
+
+            c = self.c ; frame = c.frame
+            recentFilesMenu = self.getMenu("Recent Files...")
+
+            # Delete all previous entries.
+            if len( recentFilesMenu.getMenuComponents() ) != 0:
+                deferable = lambda :self.delete_range(recentFilesMenu,0,len(c.recentFiles)+2)
+                if not swing.SwingUtilities.isEventDispatchThread():
+                    dc = DefCallable( deferable )
+                    ft = dc.wrappedAsFutureTask()
+                    swing.SwingUtilities.invokeAndWait( ft )
+                else:
+                    deferable()
+            # Create the first two entries.
+            table = (
+                ("Clear Recent Files",None,c.clearRecentFiles),
+                ("-",None,None))
+            self.createMenuEntries(recentFilesMenu,table,init=True)
+
+            # Create all the other entries.
+            i = 3
+            for name in c.recentFiles:
+                def callback (event=None,c=c,name=name): # 12/9/03
+                    c.openRecentFile(name)
+                label = "%d %s" % (i-2,g.computeWindowTitle(name))
+                self.add_command(recentFilesMenu,label=label,command=callback,underline=0)
+                i += 1
+        #@nonl
+        #@-node:ekr.20071001173734.20:createRecentFilesMenuItems (leoMenu)
+        #@+node:ekr.20071001173734.21:oops
+        def oops (self):
+
+            print "leoMenu oops:", g.callerName(2), "should be overridden in subclass"
+        #@nonl
+        #@-node:ekr.20071001173734.21:oops
+        #@+node:ekr.20071001173734.22:Must be overridden in menu subclasses
+        #@+node:ekr.20071001173734.23:9 Routines with Tk spellings
+        def add_cascade (self,parent,label,menu,underline):
+
+            menu.setText( label )
+
+        def add_command (self,menu,**keys):
+
+            if keys[ 'label' ] == "Open Python Window":
+                keys[ 'command' ] = self.openJythonShell
+
+            self.names_and_commands[ keys[ 'label' ] ] = keys[ 'command' ]
+
+            action = self.MenuRunnable( keys[ 'label' ], keys[ 'command' ], self.c, self.executor )
+            jmenu = swing.JMenuItem( action )
+            if keys.has_key( 'accelerator' ) and keys[ 'accelerator' ]:
+                accel = keys[ 'accelerator' ]
+                acc_list = accel.split( '+' )
+                changeTo = { 'Alt': 'alt', 'Shift':'shift', #translation table
+                             'Ctrl':'ctrl', 'UpArrow':'UP', 'DnArrow':'DOWN',
+                             '-':'MINUS', '+':'PLUS', '=':'EQUALS',
+                             '[':'typed [', ']':'typed ]', '{':'typed {',
+                             '}':'typed }', 'Esc':'ESCAPE', '.':'typed .',
+                              "`":"typed `", "BkSp":"BACK_SPACE"} #SEE java.awt.event.KeyEvent for further translations
+                chg_list = []
+                for z in acc_list:
+                    if z in changeTo:
+                        chg_list.append( changeTo[ z ] )
+                    else:
+                        chg_list.append( z )
+                accelerator = " ".join( chg_list )
+                ks = swing.KeyStroke.getKeyStroke( accelerator )
+                if ks:
+                    self.keystrokes_and_actions[ ks ] = action
+                    jmenu.setAccelerator( ks )
+                else:
+                    pass
+            menu.add( jmenu )
+            label = keys[ 'label' ]
+            return jmenu
+
+        def add_separator(self,menu):
+            menu.addSeparator()
+
+        def bind (self,bind_shortcut,callback):
+            #self.oops() 
+            pass
+
+        def delete (self,menu,realItemName):
+            self.oops()
+
+        def delete_range (self,menu,n1,n2):
+
+
+            items = menu.getMenuComponents()
+            n3 = n1
+            components = []
+            while 1:
+                if n3 == n2:
+                    break
+                item = menu.getMenuComponent( n3 )
+                components.append( item )
+                n3 += 1
+
+            for z in components:
+                menu.remove( z )
+
+
+        def destroy (self,menu):
+            self.oops()
+
+        def insert_cascade (self,parent,index,label,menu,underline):
+            self.oops()
+
+        def new_menu(self,parent,tearoff=0):
+            jm = swing.JMenu( "1" )
+            #jm = self.LeoMenu( "1" )
+            parent.add( jm )
+            #jm.setFont( self.font)
+            return jm
+        #@nonl
+        #@-node:ekr.20071001173734.23:9 Routines with Tk spellings
+        #@+node:ekr.20071001173734.24:7 Routines with new spellings
+        def createMenuBar (self,frame):
+
+            top = frame.top
+            self.defineMenuTables()
+            topMenu = swing.JMenuBar()
+            top.setJMenuBar( topMenu )
+            topMenu.setFont( self.font )
+            # Do gui-independent stuff.
+            self.setMenu("top",topMenu)
+            self.createMenusFromTables()
+            self.createLeoSwingPrint()
+            self.createPluginMenu()
+            self.addUserGuide()
+
+        def createOpenWithMenuFromTable (self,table):
+            self.oops()
+
+        def defineMenuCallback(self,command,name):
+            return command
+
+        def defineOpenWithMenuCallback(self,command):
+            self.oops()
+
+        def disableMenu (self,menu,name):
+            for z in menu.getMenuComponents():
+                if hasattr( z, "getText" ) and z.getText() == name:
+                    z.setEnabled( False )
+
+        def enableMenu (self,menu,name,val):
+            for z in menu.getMenuComponents():
+                if hasattr( z, "getText" ) and z.getText() == name:
+                    z.setEnabled( bool( val ) )
+
+        def setMenuLabel (self,menu,name,label,underline=-1, enabled = 1):
+
+            item = ( menu, name, label, enabled )
+            self.queue.offer( item )
+            self.executor.submit( self.menu_changer )
+        #@-node:ekr.20071001173734.24:7 Routines with new spellings
+        #@+node:ekr.20071001173734.25:class MenuRunnable
+        class MenuRunnable( swing.AbstractAction, java.lang.Runnable): 
+
+            def __init__( self, name, command, c , executor):
+                swing.AbstractAction.__init__( self, name )
+                self.command = command
+                self.c = c
+                self.name = name
+                self.executor = executor
+
+            def run( self ):
+                self.c.doCommand( self.command, self.name ) #command()
+
+            def actionPerformed( self, aE ):
+
+                #print self.command
+                #if self.name == 'Save':
+                self.executor.submit( self )
+
+                #else:        
+                #    se
+        #@nonl
+        #@-node:ekr.20071001173734.25:class MenuRunnable
+        #@+node:ekr.20071001173734.26:class MenuExecuteOnSelect
+        class MenuExecuteOnSelect( sevent.MenuListener ):
+
+            def __init__( self, method ):
+                self.method = method
+
+            def menuSelected( self, me ):
+                self.method()
+
+            def menuCanceled( self, me ):
+                pass
+
+            def menuDeselected( self, me ):
+                pass
+        #@nonl
+        #@-node:ekr.20071001173734.26:class MenuExecuteOnSelect
+        #@+node:ekr.20071001173734.27:class LeoMenu
+        class LeoMenu( swing.JMenu ):
+
+            def __init__( self, *args ):
+                swing.JMenu.__init__( self, *args )
+
+            def add( self, *items ):
+                if hasattr( items[ 0 ], "setFont" ):
+                    items[ 0 ].setFont( self.getFont() )
+                return self.super__add( *items )
+
+        #@-node:ekr.20071001173734.27:class LeoMenu
+        #@-node:ekr.20071001173734.22:Must be overridden in menu subclasses
+        #@-others
+    #@nonl
+    #@-node:ekr.20071001173943:not ready yet
+    #@-others
+#@nonl
+#@-node:ekr.20071001173734:class leoSwingMenu
 #@+node:ekr.20070930184746.8:class leoSplash (java.lang.Runnable)
 class leoSplash ( java.lang.Runnable ):
 
@@ -2262,24 +2907,26 @@ class leoSwingLog (leoFrame.leoLog):
 
         c = self.c
 
-        self.nb = Pmw.NoteBook(parentFrame,
-            borderwidth = 1, pagemargin = 0,
-            raisecommand = self.raiseTab,
-            lowercommand = self.lowerTab,
-            arrownavigation = 0,
-        )
+        return self ### self.logCtrl
 
-        menu = self.makeTabMenu(tabName=None)
+        # self.nb = Pmw.NoteBook(parentFrame,
+            # borderwidth = 1, pagemargin = 0,
+            # raisecommand = self.raiseTab,
+            # lowercommand = self.lowerTab,
+            # arrownavigation = 0,
+        # )
 
-        def hullMenuCallback(event):
-            return self.onRightClick(event,menu)
+        # menu = self.makeTabMenu(tabName=None)
 
-        self.nb.bind('<Button-3>',hullMenuCallback)
+        # def hullMenuCallback(event):
+            # return self.onRightClick(event,menu)
 
-        self.nb.pack(fill='both',expand=1)
-        self.selectTab('Log') # Create and activate the default tabs.
+        # self.nb.bind('<Button-3>',hullMenuCallback)
 
-        return self.logCtrl
+        # self.nb.pack(fill='both',expand=1)
+        # self.selectTab('Log') # Create and activate the default tabs.
+
+        # return self.logCtrl
     #@-node:ekr.20071001091231.122:swingLog.createControl
     #@+node:ekr.20071001091231.123:swingLog.finishCreate
     def finishCreate (self):
@@ -2296,24 +2943,25 @@ class leoSwingLog (leoFrame.leoLog):
     def createTextWidget (self,parentFrame):
 
         self.logNumber += 1
+
         log = g.app.gui.plainTextWidget(
             parentFrame,name="log-%d" % self.logNumber,
             setgrid=0,wrap=self.wrap,bd=2,bg="white",relief="flat")
 
-        logBar = Tk.Scrollbar(parentFrame,name="logBar")
+        # logBar = Tk.Scrollbar(parentFrame,name="logBar")
 
-        log['yscrollcommand'] = logBar.set
-        logBar['command'] = log.yview
+        # log['yscrollcommand'] = logBar.set
+        # logBar['command'] = log.yview
 
-        logBar.pack(side="right", fill="y")
-        # rr 8/14/02 added horizontal elevator 
-        if self.wrap == "none": 
-            logXBar = Tk.Scrollbar( 
-                parentFrame,name='logXBar',orient="horizontal") 
-            log['xscrollcommand'] = logXBar.set 
-            logXBar['command'] = log.xview 
-            logXBar.pack(side="bottom", fill="x")
-        log.pack(expand=1, fill="both")
+        # logBar.pack(side="right", fill="y")
+        # # rr 8/14/02 added horizontal elevator 
+        # if self.wrap == "none": 
+            # logXBar = Tk.Scrollbar( 
+                # parentFrame,name='logXBar',orient="horizontal") 
+            # log['xscrollcommand'] = logXBar.set 
+            # logXBar['command'] = log.xview 
+            # logXBar.pack(side="bottom", fill="x")
+        # log.pack(expand=1, fill="both")
 
         return log
     #@-node:ekr.20071001091231.124:swingLog.createTextWidget
@@ -2325,28 +2973,28 @@ class leoSwingLog (leoFrame.leoLog):
         # g.trace(tabName,g.callers())
 
         c = self.c
-        hull = self.nb.component('hull') # A Tk.Canvas.
+        # hull = self.nb.component('hull') # A Tk.Canvas.
 
-        menu = Tk.Menu(hull,tearoff=0)
-        menu.add_command(label='New Tab',command=self.newTabFromMenu)
+        # menu = Tk.Menu(hull,tearoff=0)
+        # menu.add_command(label='New Tab',command=self.newTabFromMenu)
 
-        if tabName:
-            # Important: tabName is the name when the tab is created.
-            # It is not affected by renaming, so we don't have to keep
-            # track of the correspondence between this name and what is in the label.
-            def deleteTabCallback():
-                return self.deleteTab(tabName)
+        # if tabName:
+            # # Important: tabName is the name when the tab is created.
+            # # It is not affected by renaming, so we don't have to keep
+            # # track of the correspondence between this name and what is in the label.
+            # def deleteTabCallback():
+                # return self.deleteTab(tabName)
 
-            label = g.choose(
-                tabName in ('Find','Spell'),'Hide This Tab','Delete This Tab')
-            menu.add_command(label=label,command=deleteTabCallback)
+            # label = g.choose(
+                # tabName in ('Find','Spell'),'Hide This Tab','Delete This Tab')
+            # menu.add_command(label=label,command=deleteTabCallback)
 
-            def renameTabCallback():
-                return self.renameTabFromMenu(tabName)
+            # def renameTabCallback():
+                # return self.renameTabFromMenu(tabName)
 
-            menu.add_command(label='Rename This Tab',command=renameTabCallback)
+            # menu.add_command(label='Rename This Tab',command=renameTabCallback)
 
-        return menu
+        # return menu
     #@-node:ekr.20071001091231.125:swingLog.makeTabMenu
     #@-node:ekr.20071001091231.120:swingLog Birth
     #@+node:ekr.20071001091231.126:Config & get/saveState
@@ -2435,7 +3083,7 @@ class leoSwingLog (leoFrame.leoLog):
             c.config.defaultLogFontSize)
 
         self.fontRef = font # ESSENTIAL: retain a link to font.
-        logCtrl.configure(font=font)
+        ### logCtrl.configure(font=font)
 
         # g.trace("LOG",logCtrl.cget("font"),font.cget("family"),font.cget("weight"))
 
@@ -2505,35 +3153,39 @@ class leoSwingLog (leoFrame.leoLog):
         if tabName:
             self.selectTab(tabName)
 
-        if self.logCtrl:
-            #@        << put s to log control >>
+        # if self.logCtrl:
+            # 
+            #@nonl
+            #@<< put s to log control >>
             #@+node:ekr.20071001091231.139:<< put s to log control >>
-            if color:
-                if color not in self.colorTags:
-                    self.colorTags.append(color)
-                    self.logCtrl.tag_config(color,foreground=color)
-                self.logCtrl.insert("end",s)
-                self.logCtrl.tag_add(color,"end-%dc" % (len(s)+1),"end-1c")
-                self.logCtrl.tag_add("black","end")
-            else:
-                self.logCtrl.insert("end",s)
+            # if color:
+                # if color not in self.colorTags:
+                    # self.colorTags.append(color)
+                    # self.logCtrl.tag_config(color,foreground=color)
+                # self.logCtrl.insert("end",s)
+                # self.logCtrl.tag_add(color,"end-%dc" % (len(s)+1),"end-1c")
+                # self.logCtrl.tag_add("black","end")
+            # else:
+                # self.logCtrl.insert("end",s)
 
-            self.logCtrl.see('end')
-            self.forceLogUpdate(s)
+            # self.logCtrl.see('end')
+            # self.forceLogUpdate(s)
             #@-node:ekr.20071001091231.139:<< put s to log control >>
             #@nl
-            self.logCtrl.update_idletasks()
-        else:
-            #@        << put s to logWaiting and print s >>
+            # self.logCtrl.update_idletasks()
+        # else:
+            # 
+            #@nonl
+            #@<< put s to logWaiting and print s >>
             #@+node:ekr.20071001091231.140:<< put s to logWaiting and print s >>
-            g.app.logWaiting.append((s,color),)
+            # g.app.logWaiting.append((s,color),)
 
-            print "Null swing log"
+            # print "Null swing log"
 
-            if type(s) == type(u""):
-                s = g.toEncodedString(s,"ascii")
+            # if type(s) == type(u""):
+                # s = g.toEncodedString(s,"ascii")
 
-            print s
+            # print s
             #@-node:ekr.20071001091231.140:<< put s to logWaiting and print s >>
             #@nl
     #@-node:ekr.20071001091231.138:put
@@ -2545,15 +3197,15 @@ class leoSwingLog (leoFrame.leoLog):
         if tabName:
             self.selectTab(tabName)
 
-        if self.logCtrl:
-            self.logCtrl.insert("end",'\n')
-            self.logCtrl.see('end')
-            self.forceLogUpdate('\n')
-        else:
-            # Put a newline to logWaiting and print newline
-            g.app.logWaiting.append(('\n',"black"),)
-            print "Null swing log"
-            print
+        # if self.logCtrl:
+            # self.logCtrl.insert("end",'\n')
+            # self.logCtrl.see('end')
+            # self.forceLogUpdate('\n')
+        # else:
+            # # Put a newline to logWaiting and print newline
+            # g.app.logWaiting.append(('\n',"black"),)
+            # print "Null swing log"
+            # print
     #@-node:ekr.20071001091231.141:putnl
     #@-node:ekr.20071001091231.137:put & putnl (swingLog)
     #@+node:ekr.20071001091231.142:Tab (TkLog)
@@ -2570,41 +3222,44 @@ class leoSwingLog (leoFrame.leoLog):
         # g.trace(tabName,wrap)
 
         c = self.c ; k = c.k
-        tabFrame = self.nb.add(tabName)
-        self.menu = self.makeTabMenu(tabName)
-        if createText:
-            #@        << Create the tab's text widget >>
+
+        # tabFrame = self.nb.add(tabName)
+        # self.menu = self.makeTabMenu(tabName)
+        # if createText:
+            # 
+            #@nonl
+            #@<< Create the tab's text widget >>
             #@+node:ekr.20071001091231.145:<< Create the tab's text widget >>
-            w = self.createTextWidget(tabFrame)
+            # w = self.createTextWidget(tabFrame)
 
-            # Set the background color.
-            configName = 'log_pane_%s_tab_background_color' % tabName
-            bg = c.config.getColor(configName) or 'MistyRose1'
+            # # Set the background color.
+            # configName = 'log_pane_%s_tab_background_color' % tabName
+            # bg = c.config.getColor(configName) or 'MistyRose1'
 
-            if wrap not in ('none','char','word'): wrap = 'none'
-            try: w.configure(bg=bg,wrap=wrap)
-            except Exception: pass # Could be a user error.
+            # if wrap not in ('none','char','word'): wrap = 'none'
+            # try: w.configure(bg=bg,wrap=wrap)
+            # except Exception: pass # Could be a user error.
 
-            self.SetWidgetFontFromConfig(logCtrl=w)
+            # self.SetWidgetFontFromConfig(logCtrl=w)
 
-            self.frameDict [tabName] = tabFrame
-            self.textDict [tabName] = w
+            # self.frameDict [tabName] = tabFrame
+            # self.textDict [tabName] = w
 
-            # Switch to a new colorTags list.
-            if self.tabName:
-                self.colorTagsDict [self.tabName] = self.colorTags [:]
+            # # Switch to a new colorTags list.
+            # if self.tabName:
+                # self.colorTagsDict [self.tabName] = self.colorTags [:]
 
-            self.colorTags = ['black']
-            self.colorTagsDict [tabName] = self.colorTags
+            # self.colorTags = ['black']
+            # self.colorTagsDict [tabName] = self.colorTags
             #@-node:ekr.20071001091231.145:<< Create the tab's text widget >>
             #@nl
-            if tabName != 'Log':
-                # c.k doesn't exist when the log pane is created.
-                # k.makeAllBindings will call setTabBindings('Log')
-                self.setTabBindings(tabName)
-        else:
-            self.textDict [tabName] = None
-            self.frameDict [tabName] = tabFrame
+            # if tabName != 'Log':
+                # # c.k doesn't exist when the log pane is created.
+                # # k.makeAllBindings will call setTabBindings('Log')
+                # self.setTabBindings(tabName)
+        # else:
+            # self.textDict [tabName] = None
+            # self.frameDict [tabName] = tabFrame
     #@-node:ekr.20071001091231.144:createTab
     #@+node:ekr.20071001091231.146:cycleTabFocus
     def cycleTabFocus (self,event=None,stop_w = None):
@@ -2632,14 +3287,14 @@ class leoSwingLog (leoFrame.leoLog):
         elif tabName in ('Find','Spell') and not force:
             self.selectTab('Log')
 
-        elif tabName in self.nb.pagenames():
-            # g.trace(tabName,force)
-            self.nb.delete(tabName)
-            self.colorTagsDict [tabName] = []
-            self.textDict [tabName] = None
-            self.frameDict [tabName] = None
-            self.tabName = None
-            self.selectTab('Log')
+        # elif tabName in self.nb.pagenames():
+            # # g.trace(tabName,force)
+            # self.nb.delete(tabName)
+            # self.colorTagsDict [tabName] = []
+            # self.textDict [tabName] = None
+            # self.frameDict [tabName] = None
+            # self.tabName = None
+            # self.selectTab('Log')
 
         # New in Leo 4.4b1.
         self.c.invalidateFocus()
@@ -2660,17 +3315,17 @@ class leoSwingLog (leoFrame.leoLog):
     #@+node:ekr.20071001091231.150:lower/raiseTab
     def lowerTab (self,tabName):
 
-        if tabName:
-            b = self.nb.tab(tabName) # b is a Tk.Button.
-            b.config(bg='grey80')
+        # if tabName:
+            # b = self.nb.tab(tabName) # b is a Tk.Button.
+            # b.config(bg='grey80')
         self.c.invalidateFocus()
         self.c.bodyWantsFocus()
 
     def raiseTab (self,tabName):
 
-        if tabName:
-            b = self.nb.tab(tabName) # b is a Tk.Button.
-            b.config(bg='LightSteelBlue1')
+        # if tabName:
+            # b = self.nb.tab(tabName) # b is a Tk.Button.
+            # b.config(bg='LightSteelBlue1')
         self.c.invalidateFocus()
         self.c.bodyWantsFocus()
     #@-node:ekr.20071001091231.150:lower/raiseTab
@@ -2684,8 +3339,10 @@ class leoSwingLog (leoFrame.leoLog):
 
         # g.trace('newName',newName)
 
-        label = self.nb.tab(oldName)
-        label.configure(text=newName)
+        # label = self.nb.tab(oldName)
+        # label.configure(text=newName)
+
+        pass
     #@-node:ekr.20071001091231.152:renameTab
     #@+node:ekr.20071001091231.153:selectTab
     def selectTab (self,tabName,createText=True,wrap='none'):
@@ -2694,53 +3351,53 @@ class leoSwingLog (leoFrame.leoLog):
 
         c = self.c
 
-        tabFrame = self.frameDict.get(tabName)
-        logCtrl = self.textDict.get(tabName)
+        # tabFrame = self.frameDict.get(tabName)
+        # logCtrl = self.textDict.get(tabName)
 
-        if tabFrame and logCtrl:
-            # Switch to a new colorTags list.
-            newColorTags = self.colorTagsDict.get(tabName)
-            self.colorTagsDict [self.tabName] = self.colorTags [:]
-            self.colorTags = newColorTags
-        elif not tabFrame:
-            self.createTab(tabName,createText=createText,wrap=wrap)
+        # if tabFrame and logCtrl:
+            # # Switch to a new colorTags list.
+            # newColorTags = self.colorTagsDict.get(tabName)
+            # self.colorTagsDict [self.tabName] = self.colorTags [:]
+            # self.colorTags = newColorTags
+        # elif not tabFrame:
+            # self.createTab(tabName,createText=createText,wrap=wrap)
 
-        self.nb.selectpage(tabName)
-        # Update the status vars.
-        self.tabName = tabName
-        self.logCtrl = self.textDict.get(tabName)
-        self.tabFrame = self.frameDict.get(tabName)
+        # self.nb.selectpage(tabName)
+        # # Update the status vars.
+        # self.tabName = tabName
+        # self.logCtrl = self.textDict.get(tabName)
+        # self.tabFrame = self.frameDict.get(tabName)
 
-        if 0: # Absolutely do not do this here!  It is a cause of the 'sticky focus' problem.
-            c.widgetWantsFocusNow(self.logCtrl)
-        return tabFrame
+        # if 0: # Absolutely do not do this here!  It is a cause of the 'sticky focus' problem.
+            # c.widgetWantsFocusNow(self.logCtrl)
+        # return tabFrame
     #@-node:ekr.20071001091231.153:selectTab
     #@+node:ekr.20071001091231.154:setTabBindings
     def setTabBindings (self,tabName):
 
         c = self.c ; k = c.k
-        tab = self.nb.tab(tabName)
-        w = self.textDict.get(tabName)
+        # tab = self.nb.tab(tabName)
+        # w = self.textDict.get(tabName)
 
-        # Send all event in the text area to the master handlers.
-        for kind,handler in (
-            ('<Key>',       k.masterKeyHandler),
-            ('<Button-1>',  k.masterClickHandler),
-            ('<Button-3>',  k.masterClick3Handler),
-        ):
-            w.bind(kind,handler)
+        # # Send all event in the text area to the master handlers.
+        # for kind,handler in (
+            # ('<Key>',       k.masterKeyHandler),
+            # ('<Button-1>',  k.masterClickHandler),
+            # ('<Button-3>',  k.masterClick3Handler),
+        # ):
+            # w.bind(kind,handler)
 
-        # Clicks in the tab area are harmless: use the old code.
-        def tabMenuRightClickCallback(event,menu=self.menu):
-            return self.onRightClick(event,menu)
+        # # Clicks in the tab area are harmless: use the old code.
+        # def tabMenuRightClickCallback(event,menu=self.menu):
+            # return self.onRightClick(event,menu)
 
-        def tabMenuClickCallback(event,tabName=tabName):
-            return self.onClick(event,tabName)
+        # def tabMenuClickCallback(event,tabName=tabName):
+            # return self.onClick(event,tabName)
 
-        tab.bind('<Button-1>',tabMenuClickCallback)
-        tab.bind('<Button-3>',tabMenuRightClickCallback)
+        # tab.bind('<Button-1>',tabMenuClickCallback)
+        # tab.bind('<Button-3>',tabMenuRightClickCallback)
 
-        k.completeAllBindingsForWidget(w)
+        # k.completeAllBindingsForWidget(w)
     #@-node:ekr.20071001091231.154:setTabBindings
     #@+node:ekr.20071001091231.155:Tab menu callbacks & helpers
     #@+node:ekr.20071001091231.156:onRightClick & onClick
@@ -3190,8 +3847,8 @@ class leoSwingTreeTab (leoFrame.leoTreeTab):
     #@-others
 #@nonl
 #@-node:ekr.20071001091231.177:class leoSwingTreeTab (REWRITE)
-#@+node:ekr.20071001091231.187:class leoSwingTextWidget (REWRITE)
-class leoSwingTextWidget:
+#@+node:ekr.20071001091231.187:class leoSwingTextWidget (revise)
+class leoSwingTextWidget: ### (leoFrame.baseTextWidget):
 
     '''A class to wrap the Tk.Text widget.
     Translates Python (integer) indices to and from Tk (string) indices.
@@ -3203,28 +3860,35 @@ class leoSwingTextWidget:
 
     def __repr__(self):
         name = hasattr(self,'_name') and self._name or '<no name>'
-        return 'leoTkTextWidget id: %s name: %s' % (id(self),name)
+        return 'swingTextWidget id: %s name: %s' % (id(self),name)
 
     #@    @+others
-    #@+node:ekr.20071001091231.188:plainTextWidget.__init__
-    if 0:
-        def __init__ (self,c,*args,**keys):
+    #@+node:ekr.20071001091231.188:swingTextWidget.__init__
 
-            w = self
+    def __init__ (self,parentFrame,*args,**keys):
 
-            # Create the actual gui widget.
-            self.widget = Tk.Text(*args,**keys)
+        # Create the actual gui widget.
+        ### self.widget = Tk.Text(*args,**keys)
 
-            # Init the base class.
-            name = keys.get('name') or '<unknown plainTextWidget>'
-            baseTextWidget.__init__(self,c=c,
-                baseClassName='plainTextWidget',name=name,widget=self.widget)
+        ### To do: probably need to subclass JTextField so we can inject ivars.
 
-            # self.defaultFont = font = wx.Font(pointSize=10,
-                # family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
-                # style  = wx.FONTSTYLE_NORMAL,
-                # weight = wx.FONTWEIGHT_NORMAL,)
-    #@-node:ekr.20071001091231.188:plainTextWidget.__init__
+        self.widget = w = swing.JTextField() ###preferredSize=(200,20))
+        parentFrame.contentPane.add(w)
+
+        ### Probably should be somewhere else.
+        parentFrame.pack()
+        parentFrame.show()
+
+        # Init the base class.
+        # name = keys.get('name') or '<unknown swingTextWidget>'
+        # leoFrame.baseTextWidget.__init__(self,c=c,
+            # baseClassName='swingTextWidget',name=name,widget=self.widget)
+
+        # self.defaultFont = font = wx.Font(pointSize=10,
+            # family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
+            # style  = wx.FONTSTYLE_NORMAL,
+            # weight = wx.FONTWEIGHT_NORMAL,)
+    #@-node:ekr.20071001091231.188:swingTextWidget.__init__
     #@+node:ekr.20071001091231.189:bindings (not used)
     # Specify the names of widget-specific methods.
     # These particular names are the names of wx.TextCtrl methods.
@@ -3247,7 +3911,7 @@ class leoSwingTextWidget:
     # def _setInsertPoint(self,i):        return self.widget.mark_set('insert',i)
     # # def _setSelectionRange(self,i,j):   return self.widget.SetSelection(i,j)
     #@-node:ekr.20071001091231.189:bindings (not used)
-    #@+node:ekr.20071001091231.190:Index conversion (leoTextWidget)
+    #@+node:ekr.20071001091231.190:Index conversion (swingTextWidget)
     #@+node:ekr.20071001091231.191:w.toGuiIndex
     def toGuiIndex (self,i,s=None):
         '''Convert a Python index to a Tk index as needed.'''
@@ -3259,13 +3923,13 @@ class leoSwingTextWidget:
             # The 's' arg supports the threaded colorizer.
             if s is None:
                 # This *must* be 'end-1c', even if other code must change.
-                s = Tk.Text.get(w,'1.0','end-1c')
+                s = '' ### s = Tk.Text.get(w,'1.0','end-1c')
             row,col = g.convertPythonIndexToRowCol(s,i)
             i = '%s.%s' % (row+1,col)
             # g.trace(len(s),i,repr(s))
         else:
             try:
-                i = Tk.Text.index(w,i)
+                i = 0 ### i = Tk.Text.index(w,i)
             except Exception:
                 # g.es_exception()
                 g.trace('Tk.Text.index failed:',repr(i),g.callers())
@@ -3281,8 +3945,8 @@ class leoSwingTextWidget:
             g.trace('can not happen: i is None')
             return 0
         elif type(i) in (type('a'),type(u'a')):
-            s = Tk.Text.get(w,'1.0','end') # end-1c does not work.
-            i = Tk.Text.index(w,i) # Convert to row/column form.
+            s = '' ### s = Tk.Text.get(w,'1.0','end') # end-1c does not work.
+            i = '1.0' ### i = Tk.Text.index(w,i) # Convert to row/column form.
             row,col = i.split('.')
             row,col = int(row),int(col)
             row -= 1
@@ -3299,7 +3963,7 @@ class leoSwingTextWidget:
         return '%s.%s' % (row+1,col)
     #@nonl
     #@-node:ekr.20071001091231.193:w.rowColToGuiIndex
-    #@-node:ekr.20071001091231.190:Index conversion (leoTextWidget)
+    #@-node:ekr.20071001091231.190:Index conversion (swingTextWidget)
     #@+node:ekr.20071001091231.194:getName (Tk.Text)
     def getName (self):
 
@@ -3326,7 +3990,17 @@ class leoSwingTextWidget:
             if insert is not None:
                 w.setInsertPoint(insert)
     #@-node:ekr.20071001091231.195:_setSelectionRange
-    #@+node:ekr.20071001091231.196:Wrapper methods (leoTextWidget)
+    #@+node:ekr.20071001091231.196:Wrapper methods (swingTextWidget)
+    #@+node:ekr.20071001185205:after_idle (new)
+    def after_idle(self,*args,**keys):
+
+        pass
+    #@-node:ekr.20071001185205:after_idle (new)
+    #@+node:ekr.20071001193522:bind (new)
+    def bind (self,*args,**keys):
+
+        pass
+    #@-node:ekr.20071001193522:bind (new)
     #@+node:ekr.20071001091231.197:delete
     def delete(self,i,j=None):
 
@@ -3334,33 +4008,33 @@ class leoSwingTextWidget:
         i = w.toGuiIndex(i)
 
         if j is None:
-            Tk.Text.delete(w,i)
+            pass ### Tk.Text.delete(w,i)
         else:
             j = w.toGuiIndex(j)
-            Tk.Text.delete(w,i,j)
+            pass ### Tk.Text.delete(w,i,j)
     #@-node:ekr.20071001091231.197:delete
     #@+node:ekr.20071001091231.198:flashCharacter
     def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # swingTextWidget.
 
         w = self
 
-        def addFlashCallback(w,count,index):
-            # g.trace(count,index)
-            i,j = w.toGuiIndex(index),w.toGuiIndex(index+1)
-            Tk.Text.tag_add(w,'flash',i,j)
-            Tk.Text.after(w,delay,removeFlashCallback,w,count-1,index)
+        # def addFlashCallback(w,count,index):
+            # # g.trace(count,index)
+            # i,j = w.toGuiIndex(index),w.toGuiIndex(index+1)
+            # Tk.Text.tag_add(w,'flash',i,j)
+            # Tk.Text.after(w,delay,removeFlashCallback,w,count-1,index)
 
-        def removeFlashCallback(w,count,index):
-            # g.trace(count,index)
-            Tk.Text.tag_remove(w,'flash','1.0','end')
-            if count > 0:
-                Tk.Text.after(w,delay,addFlashCallback,w,count,index)
+        # def removeFlashCallback(w,count,index):
+            # # g.trace(count,index)
+            # Tk.Text.tag_remove(w,'flash','1.0','end')
+            # if count > 0:
+                # Tk.Text.after(w,delay,addFlashCallback,w,count,index)
 
-        try:
-            Tk.Text.tag_configure(w,'flash',foreground=fg,background=bg)
-            addFlashCallback(w,flashes,i)
-        except Exception:
-            pass ; g.es_exception()
+        # try:
+            # Tk.Text.tag_configure(w,'flash',foreground=fg,background=bg)
+            # addFlashCallback(w,flashes,i)
+        # except Exception:
+            # pass ; g.es_exception()
     #@nonl
     #@-node:ekr.20071001091231.198:flashCharacter
     #@+node:ekr.20071001091231.199:get
@@ -3370,10 +4044,10 @@ class leoSwingTextWidget:
         i = w.toGuiIndex(i)
 
         if j is None:
-            return Tk.Text.get(w,i)
+            return '' ### return Tk.Text.get(w,i)
         else:
             j = w.toGuiIndex(j)
-            return Tk.Text.get(w,i,j)
+            return ### return Tk.Text.get(w,i,j)
     #@-node:ekr.20071001091231.199:get
     #@+node:ekr.20071001091231.200:getAllText
     def getAllText (self): # swingTextWidget.
@@ -3381,7 +4055,8 @@ class leoSwingTextWidget:
         """Return all the text of Tk.Text widget w converted to unicode."""
 
         w = self
-        s = Tk.Text.get(w,"1.0","end-1c") # New in 4.4.1: use end-1c.
+        ### s = Tk.Text.get(w,"1.0","end-1c") # New in 4.4.1: use end-1c.
+        s = '' ###
 
         if s is None:
             return u""
@@ -3392,7 +4067,7 @@ class leoSwingTextWidget:
     def getInsertPoint(self): # swingTextWidget.
 
         w = self
-        i = Tk.Text.index(w,'insert')
+        i = 0 ### i = Tk.Text.index(w,'insert')
         i = w.toPythonIndex(i)
         return i
     #@-node:ekr.20071001091231.201:getInsertPoint
@@ -3403,7 +4078,7 @@ class leoSwingTextWidget:
         i,j = w.getSelectionRange()
         if i != j:
             i,j = w.toGuiIndex(i),w.toGuiIndex(j)
-            s = Tk.Text.get(w,i,j)
+            s = '' ### s = Tk.Text.get(w,i,j)
             return g.toUnicode(s,g.app.tkEncoding)
         else:
             return u""
@@ -3416,11 +4091,11 @@ class leoSwingTextWidget:
         Return a tuple giving the insertion point if no range of text is selected."""
 
         w = self
-        sel = Tk.Text.tag_ranges(w,"sel")
+        sel = 0,0 ### sel = Tk.Text.tag_ranges(w,"sel")
         if len(sel) == 2:
             i,j = sel
         else:
-            i = j = Tk.Text.index(w,"insert")
+            i = j = 0 ### i = j = Tk.Text.index(w,"insert")
 
         i,j = w.toPythonIndex(i),w.toPythonIndex(j)  
         if sort and i > j: i,j = j,i
@@ -3431,7 +4106,7 @@ class leoSwingTextWidget:
     def getYScrollPosition (self):
 
          w = self
-         return w.yview()
+         return 0 ### return w.yview()
     #@-node:ekr.20071001091231.204:getYScrollPosition
     #@+node:ekr.20071001091231.205:getWidth
     def getWidth (self):
@@ -3441,7 +4116,7 @@ class leoSwingTextWidget:
         and gui's may choose not to do anything here.'''
 
         w = self
-        return w.cget('width')
+        return 0 ### return w.cget('width')
     #@-node:ekr.20071001091231.205:getWidth
     #@+node:ekr.20071001091231.206:hasSelection
     def hasSelection (self):
@@ -3457,7 +4132,7 @@ class leoSwingTextWidget:
 
         w = self
         i = w.toGuiIndex(i)
-        Tk.Text.insert(w,i,s)
+        ### Tk.Text.insert(w,i,s)
 
     #@-node:ekr.20071001091231.207:insert
     #@+node:ekr.20071001091231.208:indexIsVisible
@@ -3465,7 +4140,7 @@ class leoSwingTextWidget:
 
         w = self
 
-        return w.dlineinfo(i)
+        return True ### return w.dlineinfo(i)
     #@nonl
     #@-node:ekr.20071001091231.208:indexIsVisible
     #@+node:ekr.20071001091231.209:mark_set NO LONGER USED
@@ -3481,21 +4156,21 @@ class leoSwingTextWidget:
         w = self
         i,j = w.toGuiIndex(i),w.toGuiIndex(j)
 
-        Tk.Text.delete(w,i,j)
-        Tk.Text.insert(w,i,s)
+        ### Tk.Text.delete(w,i,j)
+        ### Tk.Text.insert(w,i,s)
     #@-node:ekr.20071001091231.210:replace
     #@+node:ekr.20071001091231.211:see
     def see (self,i): # swingTextWidget.
 
         w = self
         i = w.toGuiIndex(i)
-        Tk.Text.see(w,i)
+        ### Tk.Text.see(w,i)
     #@-node:ekr.20071001091231.211:see
     #@+node:ekr.20071001091231.212:seeInsertPoint
     def seeInsertPoint (self): # swingTextWidget.
 
         w = self
-        Tk.Text.see(w,'insert')
+        ### Tk.Text.see(w,'insert')
     #@-node:ekr.20071001091231.212:seeInsertPoint
     #@+node:ekr.20071001091231.213:selectAllText
     def selectAllText (self,insert=None): # swingTextWidget
@@ -3511,13 +4186,13 @@ class leoSwingTextWidget:
 
         w = self
 
-        state = Tk.Text.cget(w,"state")
-        Tk.Text.configure(w,state="normal")
+        # state = Tk.Text.cget(w,"state")
+        # Tk.Text.configure(w,state="normal")
 
-        Tk.Text.delete(w,'1.0','end')
-        Tk.Text.insert(w,'1.0',s)
+        # Tk.Text.delete(w,'1.0','end')
+        # Tk.Text.insert(w,'1.0',s)
 
-        Tk.Text.configure(w,state=state)
+        # Tk.Text.configure(w,state=state)
     #@-node:ekr.20071001091231.214:setAllText
     #@+node:ekr.20071001091231.215:setBackgroundColor
     def setBackgroundColor (self,color):
@@ -3532,7 +4207,7 @@ class leoSwingTextWidget:
         w = self
         i = w.toGuiIndex(i)
         # g.trace(i,g.callers())
-        Tk.Text.mark_set(w,'insert',i)
+        ### Tk.Text.mark_set(w,'insert',i)
     #@-node:ekr.20071001091231.216:setInsertPoint
     #@+node:ekr.20071001091231.217:setSelectionRange
     def setSelectionRange (self,i,j,insert=None): # swingTextWidget
@@ -3544,13 +4219,15 @@ class leoSwingTextWidget:
         # g.trace('i,j,insert',repr(i),repr(j),repr(insert),g.callers())
 
         # g.trace('i,j,insert',i,j,repr(insert))
-        if Tk.Text.compare(w,i, ">", j): i,j = j,i
-        Tk.Text.tag_remove(w,"sel","1.0",i)
-        Tk.Text.tag_add(w,"sel",i,j)
-        Tk.Text.tag_remove(w,"sel",j,"end")
 
-        if insert is not None:
-            w.setInsertPoint(insert)
+        ###
+        # if Tk.Text.compare(w,i, ">", j): i,j = j,i
+        # Tk.Text.tag_remove(w,"sel","1.0",i)
+        # Tk.Text.tag_add(w,"sel",i,j)
+        # Tk.Text.tag_remove(w,"sel",j,"end")
+
+        # if insert is not None:
+            # w.setInsertPoint(insert)
     #@-node:ekr.20071001091231.217:setSelectionRange
     #@+node:ekr.20071001091231.218:setYScrollPosition
     def setYScrollPosition (self,i):
@@ -3577,18 +4254,25 @@ class leoSwingTextWidget:
         w = self
         i = w.toGuiIndex(i)
 
-        if j is None:
-            Tk.Text.tag_add(w,tagName,i,*args)
-        else:
-            j = w.toGuiIndex(j)
-            Tk.Text.tag_add(w,tagName,i,j,*args)
+        # if j is None:
+            # Tk.Text.tag_add(w,tagName,i,*args)
+        # else:
+            # j = w.toGuiIndex(j)
+            # Tk.Text.tag_add(w,tagName,i,j,*args)
 
     #@-node:ekr.20071001091231.220:tag_add
+    #@+node:ekr.20071001184404:tag_configure (NEW)
+    def tag_configure (self,*args,**keys):
+
+        pass
+
+    tag_config = tag_configure
+    #@-node:ekr.20071001184404:tag_configure (NEW)
     #@+node:ekr.20071001091231.221:tag_ranges
     def tag_ranges(self,tagName):
 
         w = self
-        aList = Tk.Text.tag_ranges(w,tagName)
+        aList = [] ### aList = Tk.Text.tag_ranges(w,tagName)
         aList = [w.toPythonIndex(z) for z in aList]
         return tuple(aList)
     #@-node:ekr.20071001091231.221:tag_ranges
@@ -3599,10 +4283,10 @@ class leoSwingTextWidget:
         i = w.toGuiIndex(i)
 
         if j is None:
-            Tk.Text.tag_remove(w,tagName,i,*args)
+            pass ### Tk.Text.tag_remove(w,tagName,i,*args)
         else:
             j = w.toGuiIndex(j)
-            Tk.Text.tag_remove(w,tagName,i,j,*args)
+            ### Tk.Text.tag_remove(w,tagName,i,j,*args)
 
 
     #@-node:ekr.20071001091231.222:tag_remove
@@ -3610,29 +4294,29 @@ class leoSwingTextWidget:
     def deleteTextSelection (self): # swingTextWidget
 
         w = self
-        sel = Tk.Text.tag_ranges(w,"sel")
-        if len(sel) == 2:
-            start,end = sel
-            if Tk.Text.compare(w,start,"!=",end):
-                Tk.Text.delete(w,start,end)
+        # sel = Tk.Text.tag_ranges(w,"sel")
+        # if len(sel) == 2:
+            # start,end = sel
+            # if Tk.Text.compare(w,start,"!=",end):
+                # Tk.Text.delete(w,start,end)
     #@-node:ekr.20071001091231.223:w.deleteTextSelection
     #@+node:ekr.20071001091231.224:xyToGui/PythonIndex
     def xyToGuiIndex (self,x,y): # swingTextWidget
 
         w = self
-        return Tk.Text.index(w,"@%d,%d" % (x,y))
+        return 0 ### return Tk.Text.index(w,"@%d,%d" % (x,y))
 
     def xyToPythonIndex(self,x,y): # swingTextWidget
 
         w = self
-        i = Tk.Text.index(w,"@%d,%d" % (x,y))
+        i = 0 ### i = Tk.Text.index(w,"@%d,%d" % (x,y))
         i = w.toPythonIndex(i)
         return i
     #@-node:ekr.20071001091231.224:xyToGui/PythonIndex
-    #@-node:ekr.20071001091231.196:Wrapper methods (leoTextWidget)
+    #@-node:ekr.20071001091231.196:Wrapper methods (swingTextWidget)
     #@-others
 #@nonl
-#@-node:ekr.20071001091231.187:class leoSwingTextWidget (REWRITE)
+#@-node:ekr.20071001091231.187:class leoSwingTextWidget (revise)
 #@+node:ekr.20071001092453:class leoSwingTree (REWRITE)
 class leoSwingTree (leoFrame.leoTree):
 
@@ -3811,7 +4495,7 @@ class leoSwingTree (leoFrame.leoTree):
         self.trace_redraw   = c.config.getBool('trace_tree_redraw')
         self.trace_select   = c.config.getBool('trace_select')
         self.trace_stats    = c.config.getBool('show_tree_stats')
-        self.use_chapters   = c.config.getBool('use_chapters')
+        self.use_chapters   = False and c.config.getBool('use_chapters') ###
 
         # Objects associated with this tree.
         self.canvas = canvas
@@ -3857,8 +4541,9 @@ class leoSwingTree (leoFrame.leoTree):
         self.visibleArea = None
         self.expandedVisibleArea = None
 
-        if self.allocateOnlyVisibleNodes:
-            self.frame.bar1.bind("<B1-ButtonRelease>", self.redraw_now)
+        ###
+        # if self.allocateOnlyVisibleNodes:
+            # self.frame.bar1.bind("<B1-ButtonRelease>", self.redraw_now)
         #@-node:ekr.20071001092453.10:<< old ivars >>
         #@nl
         #@    << inject callbacks into the position class >>
@@ -3916,37 +4601,39 @@ class leoSwingTree (leoFrame.leoTree):
 
         tree = self ; k = self.c.k ; canvas = self.canvas
 
-        # g.trace('self',self,'canvas',canvas)
+        if 0:
 
-        #@    << make bindings for a common binding widget >>
-        #@+node:ekr.20071001092453.13:<< make bindings for a common binding widget >>
-        self.bindingWidget = w = g.app.gui.plainTextWidget(
-            self.canvas,name='bindingWidget')
+            # g.trace('self',self,'canvas',canvas)
 
-        w.bind('<Key>',k.masterKeyHandler)
+            #@        << make bindings for a common binding widget >>
+            #@+node:ekr.20071001092453.13:<< make bindings for a common binding widget >>
+            self.bindingWidget = w = g.app.gui.plainTextWidget(
+                self.canvas,name='bindingWidget')
 
-        table = (
-            ('<Button-1>',       k.masterClickHandler,          tree.onHeadlineClick),
-            ('<Button-3>',       k.masterClick3Handler,         tree.onHeadlineRightClick),
-            ('<Double-Button-1>',k.masterDoubleClickHandler,    tree.onHeadlineClick),
-            ('<Double-Button-3>',k.masterDoubleClick3Handler,   tree.onHeadlineRightClick),
-        )
+            w.bind('<Key>',k.masterKeyHandler)
 
-        for a,handler,func in table:
-            def treeBindingCallback(event,handler=handler,func=func):
-                # g.trace('func',func)
-                return handler(event,func)
-            w.bind(a,treeBindingCallback)
+            table = (
+                ('<Button-1>',       k.masterClickHandler,          tree.onHeadlineClick),
+                ('<Button-3>',       k.masterClick3Handler,         tree.onHeadlineRightClick),
+                ('<Double-Button-1>',k.masterDoubleClickHandler,    tree.onHeadlineClick),
+                ('<Double-Button-3>',k.masterDoubleClick3Handler,   tree.onHeadlineRightClick),
+            )
 
-        self.textBindings = w.bindtags()
-        #@-node:ekr.20071001092453.13:<< make bindings for a common binding widget >>
-        #@nl
+            for a,handler,func in table:
+                def treeBindingCallback(event,handler=handler,func=func):
+                    # g.trace('func',func)
+                    return handler(event,func)
+                w.bind(a,treeBindingCallback)
 
-        tree.setCanvasBindings(canvas)
+            ### self.textBindings = w.bindtags()
+            #@-node:ekr.20071001092453.13:<< make bindings for a common binding widget >>
+            #@nl
 
-        k.completeAllBindingsForWidget(canvas)
+            tree.setCanvasBindings(canvas)
 
-        k.completeAllBindingsForWidget(self.bindingWidget)
+            k.completeAllBindingsForWidget(canvas)
+
+            k.completeAllBindingsForWidget(self.bindingWidget)
 
     #@-node:ekr.20071001092453.12:swingTtree.setBindings
     #@+node:ekr.20071001092453.14:swingTree.setCanvasBindings
@@ -3954,42 +4641,44 @@ class leoSwingTree (leoFrame.leoTree):
 
         k = self.c.k
 
-        canvas.bind('<Key>',k.masterKeyHandler)
-        canvas.bind('<Button-1>',self.onTreeClick)
+        if 0: ###
 
-        #@    << make bindings for tagged items on the canvas >>
-        #@+node:ekr.20071001092453.15:<< make bindings for tagged items on the canvas >>
-        where = g.choose(self.expanded_click_area,'clickBox','plusBox')
+            canvas.bind('<Key>',k.masterKeyHandler)
+            canvas.bind('<Button-1>',self.onTreeClick)
 
-        table = (
-            (where,    '<Button-1>',self.onClickBoxClick),
-            ('iconBox','<Button-1>',self.onIconBoxClick),
-            ('iconBox','<Double-1>',self.onIconBoxDoubleClick),
-            ('iconBox','<Button-3>',self.onIconBoxRightClick),
-            ('iconBox','<Double-3>',self.onIconBoxRightClick),
-            ('iconBox','<B1-Motion>',self.onDrag),
-            ('iconBox','<Any-ButtonRelease-1>',self.onEndDrag),
-        )
-        for tag,event,callback in table:
-            canvas.tag_bind(tag,event,callback)
-        #@-node:ekr.20071001092453.15:<< make bindings for tagged items on the canvas >>
-        #@nl
-        #@    << create baloon bindings for tagged items on the canvas >>
-        #@+node:ekr.20071001092453.16:<< create baloon bindings for tagged items on the canvas >>
-        if 0: # I find these very irritating.
-            for tag,text in (
-                # ('plusBox','plusBox'),
-                ('iconBox','Icon Box'),
-                ('selectBox','Click to select'),
-                ('clickBox','Click to expand or contract'),
-                # ('textBox','Headline'),
-            ):
-                # A fairly long wait is best.
-                balloon = Pmw.Balloon(self.canvas,initwait=700)
-                balloon.tagbind(self.canvas,tag,balloonHelp=text)
-        #@-node:ekr.20071001092453.16:<< create baloon bindings for tagged items on the canvas >>
-        #@nl
-    #@nonl
+            #@        << make bindings for tagged items on the canvas >>
+            #@+node:ekr.20071001092453.15:<< make bindings for tagged items on the canvas >>
+            where = g.choose(self.expanded_click_area,'clickBox','plusBox')
+
+            ###
+            # table = (
+                # (where,    '<Button-1>',self.onClickBoxClick),
+                # ('iconBox','<Button-1>',self.onIconBoxClick),
+                # ('iconBox','<Double-1>',self.onIconBoxDoubleClick),
+                # ('iconBox','<Button-3>',self.onIconBoxRightClick),
+                # ('iconBox','<Double-3>',self.onIconBoxRightClick),
+                # ('iconBox','<B1-Motion>',self.onDrag),
+                # ('iconBox','<Any-ButtonRelease-1>',self.onEndDrag),
+            # )
+            # for tag,event,callback in table:
+                # canvas.tag_bind(tag,event,callback)
+            #@-node:ekr.20071001092453.15:<< make bindings for tagged items on the canvas >>
+            #@nl
+            #@        << create baloon bindings for tagged items on the canvas >>
+            #@+node:ekr.20071001092453.16:<< create baloon bindings for tagged items on the canvas >>
+            if 0: # I find these very irritating.
+                for tag,text in (
+                    # ('plusBox','plusBox'),
+                    ('iconBox','Icon Box'),
+                    ('selectBox','Click to select'),
+                    ('clickBox','Click to expand or contract'),
+                    # ('textBox','Headline'),
+                ):
+                    # A fairly long wait is best.
+                    balloon = Pmw.Balloon(self.canvas,initwait=700)
+                    balloon.tagbind(self.canvas,tag,balloonHelp=text)
+            #@-node:ekr.20071001092453.16:<< create baloon bindings for tagged items on the canvas >>
+            #@nl
     #@-node:ekr.20071001092453.14:swingTree.setCanvasBindings
     #@-node:ekr.20071001092453.7: Birth... (swingTree)
     #@+node:ekr.20071001092453.17:Allocation...
@@ -4094,7 +4783,7 @@ class leoSwingTree (leoFrame.leoTree):
             w = g.app.gui.plainTextWidget(
                 canvas,name='head-%d' % self.textNumber,
                 state="normal",font=self.font,bd=0,relief="flat",height=1)
-            w.bindtags(self.textBindings) # Set the bindings for this widget.
+            ### w.bindtags(self.textBindings) # Set the bindings for this widget.
 
             if 0: # Crashes on XP.
                 #@            << patch by Maciej Kalisiak to handle scroll-wheel events >>
@@ -4111,10 +4800,11 @@ class leoSwingTree (leoFrame.leoTree):
                     canvas.event_generate("<MouseWheel>")
                     return "break"
 
-                instance_tag = w.bindtags()[0]
-                w.bind_class(instance_tag, "<Button-4>", PropagateButton4)
-                w.bind_class(instance_tag, "<Button-5>", PropagateButton5)
-                w.bind_class(instance_tag, "<MouseWheel>",PropagateMouseWheel)
+                ### 
+                # instance_tag = w.bindtags()[0]
+                # w.bind_class(instance_tag, "<Button-4>", PropagateButton4)
+                # w.bind_class(instance_tag, "<Button-5>", PropagateButton5)
+                # w.bind_class(instance_tag, "<MouseWheel>",PropagateMouseWheel)
                 #@-node:ekr.20071001092453.23:<< patch by Maciej Kalisiak  to handle scroll-wheel events >>
                 #@nl
 
@@ -4292,15 +4982,17 @@ class leoSwingTree (leoFrame.leoTree):
     #@+node:ekr.20071001092453.31:setLineHeight
     def setLineHeight (self,font):
 
-        try:
-            metrics = font.metrics()
-            linespace = metrics ["linespace"]
-            self.line_height = linespace + 5 # Same as before for the default font on Windows.
-            # print metrics
-        except:
-            self.line_height = self.default_line_height
-            g.es("exception setting outline line height")
-            g.es_exception()
+        pass ###
+
+        # try:
+            # metrics = font.metrics()
+            # linespace = metrics ["linespace"]
+            # self.line_height = linespace + 5 # Same as before for the default font on Windows.
+            # # print metrics
+        # except:
+            # self.line_height = self.default_line_height
+            # g.es("exception setting outline line height")
+            # g.es_exception()
     #@-node:ekr.20071001092453.31:setLineHeight
     #@-node:ekr.20071001092453.28:Config & Measuring...
     #@+node:ekr.20071001092453.32:Debugging...
@@ -4400,7 +5092,7 @@ class leoSwingTree (leoFrame.leoTree):
         if self.idle_redraw:
             def idleRedrawCallback(event=None,self=self,scroll=scroll):
                 self.redrawHelper(scroll=scroll)
-            self.canvas.after_idle(idleRedrawCallback)
+            ### self.canvas.after_idle(idleRedrawCallback)
         else:
             self.redrawHelper(scroll=scroll)
         if g.app.unitTesting:
@@ -4412,28 +5104,31 @@ class leoSwingTree (leoFrame.leoTree):
     def redrawHelper (self,scroll=True):
 
         c = self.c
-        oldcursor = self.canvas['cursor']
-        self.canvas['cursor'] = "watch"
 
-        if not g.doHook("redraw-entire-outline",c=c):
-            c.setTopVnode(None)
-            self.setVisibleAreaToFullCanvas()
-            self.drawTopTree()
-            # Set up the scroll region after the tree has been redrawn.
-            bbox = self.canvas.bbox('all')
-            # g.trace('canvas',self.canvas,'bbox',bbox)
-            if bbox is None:
-                x0,y0,x1,y1 = 0,0,100,100
-            else:
-                x0, y0, x1, y1 = bbox
-            self.canvas.configure(scrollregion=(0, 0, x1, y1))
-            if scroll:
-                self.canvas.update_idletasks() # Essential.
-                self.scrollTo()
+        ###
+
+        # oldcursor = self.canvas['cursor']
+        # self.canvas['cursor'] = "watch"
+
+        # if not g.doHook("redraw-entire-outline",c=c):
+            # c.setTopVnode(None)
+            # self.setVisibleAreaToFullCanvas()
+            # self.drawTopTree()
+            # # Set up the scroll region after the tree has been redrawn.
+            # bbox = self.canvas.bbox('all')
+            # # g.trace('canvas',self.canvas,'bbox',bbox)
+            # if bbox is None:
+                # x0,y0,x1,y1 = 0,0,100,100
+            # else:
+                # x0, y0, x1, y1 = bbox
+            # self.canvas.configure(scrollregion=(0, 0, x1, y1))
+            # if scroll:
+                # self.canvas.update_idletasks() # Essential.
+                # self.scrollTo()
 
         g.doHook("after-redraw-outline",c=c)
 
-        self.canvas['cursor'] = oldcursor
+        ### self.canvas['cursor'] = oldcursor
     #@-node:ekr.20071001092453.38:redrawHelper
     #@-node:ekr.20071001092453.37:tree.redraw_now & helper
     #@+node:ekr.20071001092453.39:idle_second_redraw
@@ -4954,7 +5649,7 @@ class leoSwingTree (leoFrame.leoTree):
                         #g.trace("frac2 "1.2f %3d %3d %1.2f %1.2f" % (frac2,h1,h2,lo,hi))
 
             if self.allocateOnlyVisibleNodes:
-                self.canvas.after_idle(self.idle_second_redraw)
+                pass ### self.canvas.after_idle(self.idle_second_redraw)
 
             c.setTopVnode(p) # 1/30/04: remember a pseudo "top" node.
 
@@ -5297,7 +5992,7 @@ class leoSwingTree (leoFrame.leoTree):
                     # Queue up another event to keep scrolling while the cursor is outside the canvas.
                     lo, hi = frame.canvas.leo_treeBar.get()
                     if (y < 0 and lo > 0.1) or (y > h and hi < 0.9):
-                        canvas.after_idle(self.onContinueDrag,None) # Don't propagate the event.
+                        pass ### canvas.after_idle(self.onContinueDrag,None) # Don't propagate the event.
                 #@-node:ekr.20071001092453.82:<< scroll the canvas as needed >>
                 #@nl
         except:
@@ -5707,13 +6402,15 @@ class leoSwingTree (leoFrame.leoTree):
 
         c = self.c ; menu = self.popupMenu
 
-        if sys.platform == "linux2": # 20-SEP-2002 DTHEIN: not needed for Windows
-            menu.bind("<FocusOut>",self.OnPopupFocusLost)
+        ###
 
-        menu.post(event.x_root, event.y_root)
+        # if sys.platform == "linux2": # 20-SEP-2002 DTHEIN: not needed for Windows
+            # menu.bind("<FocusOut>",self.OnPopupFocusLost)
 
-        # Set the focus immediately so we know when we lose it.
-        c.widgetWantsFocus(menu)
+        # menu.post(event.x_root, event.y_root)
+
+        # # Set the focus immediately so we know when we lose it.
+        # c.widgetWantsFocus(menu)
     #@-node:ekr.20071001092453.103:showPopupMenu
     #@-node:ekr.20071001092453.97:tree.OnPopup & allies
     #@+node:ekr.20071001092453.104:onTreeClick

@@ -8,7 +8,7 @@ import leoGlobals as g
 import string
 
 #@+others
-#@+node:ekr.20071001092721.1: class leoTkinterDialog
+#@+node:ekr.20071001092721.1: class leoSwingDialog
 class leoSwingDialog:
     """The base class for all Leo swing dialogs"""
     #@    @+others
@@ -131,7 +131,7 @@ class leoSwingDialog:
         def attachIconCallback(top=self.top):
             g.app.gui.attachLeoIcon(top)
 
-        self.top.after_idle(attachIconCallback)
+        ### self.top.after_idle(attachIconCallback)
     #@-node:ekr.20071001092721.7:createTopFrame
     #@+node:ekr.20071001092721.8:onClose
     def onClose (self):
@@ -172,7 +172,7 @@ class leoSwingDialog:
             return None
     #@-node:ekr.20071001092721.9:run (tkDialog)
     #@-others
-#@-node:ekr.20071001092721.1: class leoTkinterDialog
+#@-node:ekr.20071001092721.1: class leoSwingDialog
 #@+node:ekr.20071001092721.10:class swingAboutLeo
 class swingAboutLeo (leoSwingDialog):
 

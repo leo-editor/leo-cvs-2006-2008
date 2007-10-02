@@ -43,8 +43,8 @@ class swingGui(leoGui.leoGui):
 
         self.root = None
 
-        self.bodyTextWidget  = leoFrame.stringTextWidget
-        self.plainTextWidget = leoFrame.stringTextWidget
+        self.bodyTextWidget  = leoSwingFrame.leoSwingTextWidget
+        self.plainTextWidget = leoSwingFrame.leoSwingTextWidget
 
         self.bitmap_name = None
         self.bitmap = None
@@ -191,7 +191,9 @@ class swingGui(leoGui.leoGui):
     #@+node:ekr.20070930102228.16:swingGui.createSpellTab
     def createSpellTab(self,c,spellHandler,tabName):
 
-        return leoSwingFind.swingSpellTab(c,spellHandler,tabName)
+        ### return leoSwingFind.swingSpellTab(c,spellHandler,tabName)
+
+        pass
     #@-node:ekr.20070930102228.16:swingGui.createSpellTab
     #@+node:ekr.20070930102228.17:swingGui file dialogs
     # We no longer specify default extensions so that we can open and save files without extensions.
@@ -242,17 +244,18 @@ class swingGui(leoGui.leoGui):
     #@+node:ekr.20070930102228.20:swingGui panels
     def createComparePanel(self,c):
         """Create a swing color picker panel."""
-        return leoSwingComparePanel.leoSwingComparePanel(c)
+        ### return leoSwingComparePanel.leoSwingComparePanel(c)
 
     def createFindPanel(self,c):
         """Create a hidden swing find panel."""
-        panel = leoSwingFind.leoSwingFind(c)
-        panel.top.withdraw()
-        return panel
+        ### 
+        # panel = leoSwingFind.leoSwingFind(c)
+        # panel.top.withdraw()
+        # return panel
 
     def createFindTab (self,c,parentFrame):
         """Create a swing find tab in the indicated frame."""
-        return leoSwingFind.swingFindTab(c,parentFrame)
+        ### return leoSwingFind.swingFindTab(c,parentFrame)
 
     def createLeoFrame(self,title):
         """Create a new Leo frame."""
@@ -479,7 +482,7 @@ class swingGui(leoGui.leoGui):
     #@+node:ekr.20070930102228.36:getFullVersion
     def getFullVersion (self,c):
 
-        swingLevel = c.frame.top.getvar("tk_patchLevel")
+        swingLevel = '<swingLevel>' ### c.frame.top.getvar("tk_patchLevel")
 
         return 'swing %s' % (swingLevel)
     #@-node:ekr.20070930102228.36:getFullVersion
@@ -577,8 +580,11 @@ class swingGui(leoGui.leoGui):
     #@+node:ekr.20070930102228.42:swingGui.setIdleTimeHook
     def setIdleTimeHook (self,idleTimeHookHandler):
 
-        if self.root:
-            self.root.after_idle(idleTimeHookHandler)
+        # if self.root:
+            # self.root.after_idle(idleTimeHookHandler)
+
+        pass
+    #@nonl
     #@-node:ekr.20070930102228.42:swingGui.setIdleTimeHook
     #@+node:ekr.20070930102228.43:setIdleTimeHookAfterDelay
     def setIdleTimeHookAfterDelay (self,idleTimeHookHandler):
