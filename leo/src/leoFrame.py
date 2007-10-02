@@ -1097,7 +1097,7 @@ class leoBody:
         c = self.c ; cc = c.chapterController
 
         if not hasattr(w,'leo_chapter') or not w.leo_chapter:
-            if cc and self.use_chapters: ### c.config.getBool('use_chapters'):
+            if cc and self.use_chapters:
                 w.leo_chapter = cc.getSelectedChapter()
             else:
                 w.leo_chapter = None
@@ -1184,7 +1184,7 @@ class leoBody:
 
         c = self.c ; cc = c.chapterController ; 
 
-        if cc and self.use_chapters: ### c.config.getBool('use_chapters'):
+        if cc and self.use_chapters:
             w.leo_chapter = cc.getSelectedChapter()
         else:
             w.leo_chapter = None
