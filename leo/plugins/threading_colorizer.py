@@ -981,6 +981,7 @@ class colorizer:
         self.selection = w.getSelectionRange()
         # g.trace('ins',self.insertPoint,'sel',self.selection)
         self.globalTagList = []
+        self.prev = None ### Bug fix: 10/3/07
         self.tagsRemoved = False
         self.waitCount = 0
 
@@ -1026,6 +1027,7 @@ class colorizer:
 
         x1,x2 = w.toGuiIndex(self.start_i,s=s), w.toGuiIndex(self.end_i,s=s)
         for tag in names:
+            # g.trace(tag,x1,x2)
             w.tag_remove(tag,x1,x2)
     #@-node:ekr.20070720165737:removeTagsFromRange
     #@+node:ekr.20070724120821:tag & index (threadingColorizer)
@@ -1039,7 +1041,7 @@ class colorizer:
     def tag (self,name,i,j):
 
         s = self.s ; w = self.w
-        # g.trace(name,i,j,repr(s[i:j]))
+        # g.trace(name,i,j,repr(s[i:j]),g.callers())
         x1,x2 = w.toGuiIndex(i,s=s), w.toGuiIndex(j,s=s)
         w.tag_add(name,x1,x2)
     #@-node:ekr.20070724120821:tag & index (threadingColorizer)
@@ -1064,29 +1066,6 @@ class colorizer:
 
         self.removeTagsFromRange(self.start_i,self.end_i)
 
-        # It appears that something is wrong with this.
-
-        # # g.trace('removing tags from',self.start_i,self.end_i) # repr(s[self.start_i:self.end_i]))
-        # if len(tagList) < 10:
-            # # Single characters typically change less than 10 tags on a line.
-            # if trace: g.trace('tagList',tagList)
-            # gaps = [] ; last_i = None ; last_j = None
-            # for tag,i,j in tagList:
-                # if last_i is None:
-                    # if self.start_i != i:
-                        # gaps.append((self.start_i,i),)
-                # else:
-                    # if i != last_j:
-                        # gaps.append((last_j,i),)
-                # last_i = i ; last_j = j
-            # if last_j != self.end_i:
-                # gaps.append((last_j,self.end_i),)
-            # if trace: g.trace('***','gaps',gaps)
-            # for i,j in gaps:
-                # self.removeTagsFromRange(i,j)
-        # else:
-            # self.removeTagsFromRange(self.start_i,self.end_i)
-
         for tag,i,j in tagList:
             x1,x2 = w.toGuiIndex(i,s=s), w.toGuiIndex(j,s=s)
             # A crucial optimization for large body text.
@@ -1096,6 +1075,7 @@ class colorizer:
                     colorer=self,p=self.p,v=self.p,s=s,i=i,j=j,colortag=tag):
                     w.tag_add(tag,x1,x2)
             else:
+                # g.trace(tag,x1,x2,i,j)
                 w.tag_add(tag,x1,x2)
         self.start_i = self.end_i
     #@-node:ekr.20070718131458.45:tagAll
@@ -1161,7 +1141,7 @@ class colorizer:
         if not self.flag: return
 
         if delegate:
-            # g.trace(delegate,i,j)
+            # g.trace(delegate,i,j,g.callers())
             self.modeStack.append(self.modeBunch)
             self.init_mode(delegate)
             # Color everything at once, using the same indices as the caller.
@@ -1176,7 +1156,7 @@ class colorizer:
             bunch = self.modeStack.pop()
             self.initModeFromBunch(bunch)
         elif not exclude_match:
-            # g.trace('***',self.rulesetName,tag,i,j,s[i:j])
+            # g.trace('***',self.rulesetName,tag,i,j,s[i:j],g.callers())
             # if self.trace: g.trace(tag,i,j,repr(s[i:j]))
             # Critical section: must be as fast as possible.
             if self.lock_trace: g.trace('lock on',self.threadCount)
@@ -1563,6 +1543,7 @@ class colorizer:
             # Color the previous token.
             if self.prev:
                 i2,j2,kind2 = self.prev
+                # g.trace(i2,j2,kind2)
                 self.colorRangeWithTag(s,i2,j2,kind2,exclude_match=False)
             if not exclude_match:
                 self.colorRangeWithTag(s,i,j,kind)
@@ -1571,7 +1552,6 @@ class colorizer:
             return j - i
         else:
             return 0
-    #@nonl
     #@-node:ekr.20070718131458.59:match_mark_previous
     #@+node:ekr.20070718131458.60:match_regexp_helper
     def match_regexp_helper (self,s,i,pattern):
@@ -1665,8 +1645,9 @@ class colorizer:
             if j == -1:
                 j = i
             else:
-                # g.trace(i,j,s[i:j],kind,no_line_break)
+
                 i2 = i + len(begin) ; j2 = j + len(end)
+                # g.trace(i,j,s[i:j2],kind)
                 self.colorRangeWithTag(s,i,i2,kind,delegate=None,    exclude_match=exclude_match)
                 self.colorRangeWithTag(s,i2,j,kind,delegate=delegate,exclude_match=exclude_match)
                 self.colorRangeWithTag(s,j,j2,kind,delegate=None,    exclude_match=exclude_match)
@@ -1675,7 +1656,6 @@ class colorizer:
 
         self.trace_match(kind,s,i,j)
         return j - i
-    #@nonl
     #@+node:ekr.20070718131458.64:match_span_helper
     def match_span_helper (self,s,i,pattern,no_escape,no_line_break):
 
