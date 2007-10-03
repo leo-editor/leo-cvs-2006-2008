@@ -2082,6 +2082,33 @@ class leoTkinterLog (leoFrame.leoLog):
         c.spellCommands.openSpellTab()
         log.selectTab('Log')
     #@-node:ekr.20070114070939:tkLog.finishCreate
+    #@+node:ekr.20071002143627:tkLog.createCanvasWidget
+    def createCanvasWidget (self,parentFrame):
+
+        self.logNumber += 1
+
+        w = Tk.Canvas(parentFrame)
+
+        logBar = Tk.Scrollbar(parentFrame,name="logBar")
+        w['yscrollcommand'] = logBar.set
+        logBar['command'] = w.yview
+        logBar.pack(side="right", fill="y")
+
+        logXBar = Tk.Scrollbar(parentFrame,name='logXBar',orient="horizontal") 
+        w['xscrollcommand'] = logXBar.set 
+        logXBar['command'] = w.xview 
+        logXBar.pack(side="bottom", fill="x")
+
+        w.pack(expand=1, fill="both")
+
+        # Set the background color.
+        configName = 'log_canvas_pane_tab_background_color'
+        bg = self.c.config.getColor(configName) or 'MistyRose1'
+        try: w.configure(bg=bg)
+        except Exception: pass # Could be a user error.
+
+        return w
+    #@-node:ekr.20071002143627:tkLog.createCanvasWidget
     #@+node:ekr.20051016103459:tkLog.createTextWidget
     def createTextWidget (self,parentFrame):
 
@@ -2108,7 +2135,7 @@ class leoTkinterLog (leoFrame.leoLog):
         return log
     #@-node:ekr.20051016103459:tkLog.createTextWidget
     #@+node:ekr.20051019134106.1:tkLog.makeTabMenu
-    def makeTabMenu (self,tabName=None):
+    def makeTabMenu (self,tabName=None,allowRename=True):
 
         '''Create a tab popup menu.'''
 
@@ -2119,6 +2146,7 @@ class leoTkinterLog (leoFrame.leoLog):
 
         menu = Tk.Menu(hull,tearoff=0)
         menu.add_command(label='New Tab',command=self.newTabFromMenu)
+        menu.add_command(label='New CanvasTab',command=self.newCanvasTabFromMenu)
 
         if tabName:
             # Important: tabName is the name when the tab is created.
@@ -2134,7 +2162,8 @@ class leoTkinterLog (leoFrame.leoLog):
             def renameTabCallback():
                 return self.renameTabFromMenu(tabName)
 
-            menu.add_command(label='Rename This Tab',command=renameTabCallback)
+            if allowRename:
+                menu.add_command(label='Rename This Tab',command=renameTabCallback)
 
         return menu
     #@-node:ekr.20051019134106.1:tkLog.makeTabMenu
@@ -2354,6 +2383,28 @@ class leoTkinterLog (leoFrame.leoLog):
         w = self.logCtrl
         w and w.delete(0,'end')
     #@-node:ekr.20051017212057:clearTab
+    #@+node:ekr.20071002143627.1:createCanvas
+    def createCanvas (self,tabName=None):
+
+        c = self.c ; k = c.k
+
+        if tabName is None:
+            self.logNumber += 1
+            tabName = 'Canvas %d' % self.logNumber
+
+        tabFrame = self.nb.add(tabName)
+        menu = self.makeTabMenu(tabName,allowRename=False)
+
+        w = self.createCanvasWidget(tabFrame)
+
+        self.canvasDict [tabName ] = w
+        self.textDict [tabName] = None
+        self.frameDict [tabName] = tabFrame
+
+        self.setCanvasTabBindings(tabName,menu)
+
+        return w
+    #@-node:ekr.20071002143627.1:createCanvas
     #@+node:ekr.20051024173701:createTab
     def createTab (self,tabName,createText=True,wrap='none'):
 
@@ -2377,6 +2428,7 @@ class leoTkinterLog (leoFrame.leoLog):
 
             self.SetWidgetFontFromConfig(logCtrl=w)
 
+            self.canvasDict [tabName ] = None
             self.frameDict [tabName] = tabFrame
             self.textDict [tabName] = w
 
@@ -2393,6 +2445,7 @@ class leoTkinterLog (leoFrame.leoLog):
                 # k.makeAllBindings will call setTabBindings('Log')
                 self.setTabBindings(tabName)
         else:
+            self.canvasDict [tabName] = None
             self.textDict [tabName] = None
             self.frameDict [tabName] = tabFrame
     #@-node:ekr.20051024173701:createTab
@@ -2426,6 +2479,7 @@ class leoTkinterLog (leoFrame.leoLog):
             # g.trace(tabName,force)
             self.nb.delete(tabName)
             self.colorTagsDict [tabName] = []
+            self.canvasDict [tabName ] = None
             self.textDict [tabName] = None
             self.frameDict [tabName] = None
             self.tabName = None
@@ -2498,7 +2552,8 @@ class leoTkinterLog (leoFrame.leoLog):
         self.nb.selectpage(tabName)
         # Update the status vars.
         self.tabName = tabName
-        self.logCtrl = self.textDict.get(tabName)
+        w = self.textDict.get(tabName)
+        if w: self.logCtrl = w
         self.tabFrame = self.frameDict.get(tabName)
 
         if 0: # Absolutely do not do this here!  It is a cause of the 'sticky focus' problem.
@@ -2532,6 +2587,21 @@ class leoTkinterLog (leoFrame.leoLog):
 
         k.completeAllBindingsForWidget(w)
     #@-node:ekr.20051022162730:setTabBindings
+    #@+node:ekr.20071003090546:setCanvasTabBindings
+    def setCanvasTabBindings (self,tabName,menu):
+
+        c = self.c ; tab = self.nb.tab(tabName)
+
+        def tabMenuRightClickCallback(event,menu=menu):
+            return self.onRightClick(event,menu)
+
+        def tabMenuClickCallback(event,tabName=tabName):
+            return self.onClick(event,tabName)
+
+        tab.bind('<Button-1>',tabMenuClickCallback)
+        tab.bind('<Button-3>',tabMenuRightClickCallback)
+
+    #@-node:ekr.20071003090546:setCanvasTabBindings
     #@+node:ekr.20051019134106:Tab menu callbacks & helpers
     #@+node:ekr.20051019134422:onRightClick & onClick
     def onRightClick (self,event,menu):
@@ -2544,7 +2614,7 @@ class leoTkinterLog (leoFrame.leoLog):
 
         self.selectTab(tabName)
     #@-node:ekr.20051019134422:onRightClick & onClick
-    #@+node:ekr.20051019140004.1:newTabFromMenu
+    #@+node:ekr.20051019140004.1:newTabFromMenu & newCanvasTabFromMenu
     def newTabFromMenu (self,tabName='Log'):
 
         self.selectTab(tabName)
@@ -2554,7 +2624,11 @@ class leoTkinterLog (leoFrame.leoLog):
             return self.selectTab(newName)
 
         self.getTabName(selectTabCallback)
-    #@-node:ekr.20051019140004.1:newTabFromMenu
+
+    def newCanvasTabFromMenu (self):
+
+        self.createCanvas()
+    #@-node:ekr.20051019140004.1:newTabFromMenu & newCanvasTabFromMenu
     #@+node:ekr.20051019165401:renameTabFromMenu
     def renameTabFromMenu (self,tabName):
 

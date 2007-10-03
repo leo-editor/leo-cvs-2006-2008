@@ -2099,10 +2099,12 @@ class leoLog:
         self.isNull = False
 
         # Official status variables.  Can be used by client code.
+        self.canvasCtrl = None # Set below. Same as self.canvasDict.get(self.tabName)
         self.logCtrl = None # Set below. Same as self.textDict.get(self.tabName)
         self.tabName = None # The name of the active tab.
         self.tabFrame = None # Same as self.frameDict.get(self.tabName)
 
+        self.canvasDict = {} # Keys are page names.  Values are Tk.Canvas's.
         self.frameDict = {}  # Keys are page names. Values are Tk.Frames.
         self.logNumber = 0 # To create unique name fields for text widgets.
         self.newTabCount = 0 # Number of new tabs created.
@@ -2128,6 +2130,7 @@ class leoLog:
     def configure (self,*args,**keys):      pass
     def configureBorder(self,border):       pass
     def createControl (self,parentFrame):   pass
+    def createCanvas (self,tabName):        pass
     def finishCreate (self):                pass
     def setColorFromConfig (self):          pass
     def setFontFromConfig (self):           pass
@@ -2146,11 +2149,15 @@ class leoLog:
         c = self.c ; k = c.k
 
         if createText:
-            w = self.createTextWidget(tabFrame)
+            w = self.createTextWidget(self.tabFrame)
+            self.canvasDict [tabName] = None
             self.textDict [tabName] = w
         else:
+            self.canvasDict [tabName] = None
             self.textDict [tabName] = None
             self.frameDict [tabName] = tabName # tabFrame
+
+
     #@-node:ekr.20070302094848.2:createTab
     #@+node:ekr.20070302094848.4:cycleTabFocus
     def cycleTabFocus (self,event=None,stop_w = None):
@@ -2178,7 +2185,7 @@ class leoLog:
         elif tabName in ('Find','Spell') and not force:
             self.selectTab('Log')
         else:
-            for d in (self.textDict,self.frameDict):
+            for d in (self.canvasDict,self.textDict,self.frameDict):
                 if tabName in d.keys():
                     del d[tabName]
             self.tabName = None
@@ -2231,6 +2238,7 @@ class leoLog:
 
         # Update the status vars.
         self.tabName = tabName
+        self.canvasCtrl = self.canvasDict.get(tabName)
         self.logCtrl = self.textDict.get(tabName)
         self.tabFrame = self.frameDict.get(tabName)
 
@@ -3225,6 +3233,7 @@ class nullLog (leoLog):
     #@-node:ekr.20041012083237.3:put and putnl (nullLog)
     #@+node:ekr.20060124085830:tabs
     def clearTab        (self,tabName):     pass
+    def createCanvas (self,tabName):        pass
     def createTab (self,tabName,createText=True,wrap='none'): pass
     def deleteTab       (self,tabName,force=False):     pass
     def getSelectedTab          (self):     pass
