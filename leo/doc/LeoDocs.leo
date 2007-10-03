@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="349" height="759" width="892"/>
+	<global_window_position top="10" left="349" height="739" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -353,7 +353,7 @@
 </v>
 </v>
 <v t="ekr.20050831195331.4"><vh>Chapter 7: Scripting Leo with Python</vh>
-<v t="ekr.20040403171740"><vh>@rst html\scripting.html</vh>
+<v t="ekr.20040403171740" a="E"><vh>@rst html\scripting.html</vh>
 <v t="ekr.20050812134441.1"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20050901184158"><vh>@rst-ignore Important: you can run these examples!</vh></v>
 <v t="ekr.20040403183229" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3122206e616d653d22687474702d6e6f64652d6d61726b65722d31223e710155043c2f613e71025d710328553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710455063c2f6469763e71055d71062855063c626f64793e710755073c2f626f64793e71085d71092855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710a55073c2f68746d6c3e710b4e65656555243c64697620636c6173733d2273656374696f6e222069643d226f76657276696577223e0a710c55493c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643122206e616d653d226f76657276696577223e4f766572766965773c2f613e3c2f68313e0a710d652e"><vh>Commonly used classes</vh></v>
@@ -619,14 +619,14 @@
 <v t="ekr.20050912133515"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060612102055"><vh>Chapter 13: Writing Plugins</vh>
-<v t="ekr.20060612103240"><vh>@rst html\writingPlugins.html</vh>
+<v t="ekr.20060612102055" a="E"><vh>Chapter 13: Writing Plugins</vh>
+<v t="ekr.20060612103240" a="E"><vh>@rst html\writingPlugins.html</vh>
 <v t="ekr.20060612103824"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050903075144"><vh>Overview</vh></v>
 <v t="EKR.20040524104904.224"><vh>Important security warnings</vh></v>
 <v t="ekr.20050903074833"><vh>Writing plugins and hooks</vh></v>
 <v t="ekr.20050903074833.1"><vh>Summary of hooks</vh></v>
-<v t="EKR.20040524104904.231"><vh>Convenience routines for plugins</vh></v>
+<v t="EKR.20040524104904.231" a="TV"><vh>Convenience routines for plugins</vh></v>
 <v t="EKR.20040524104904.240"><vh>Support for unit testing</vh></v>
 <v t="ekr.20050417072710.1"><vh>How to make operations undoable</vh></v>
 <v t="ekr.20060621075135"><vh>Turning script buttons into plugins</vh></v>
@@ -769,8 +769,8 @@
 </v>
 </v>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
-<v t="ekr.20070809145744" a="E"><vh>What's New in Leo 4.4.4</vh>
-<v t="ekr.20070809145744.1" a="E"><vh>@rst html\new-4-4-4.html</vh>
+<v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
+<v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
 <v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070809145744.3"><vh>@rst-ignore Important new features</vh></v>
 <v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
@@ -1081,9 +1081,9 @@
 </v>
 </v>
 <v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
-<v t="ekr.20060620094033" a="E"><vh>What's New...</vh>
-<v t="ekr.20070809145744" a="E"><vh>What's New in Leo 4.4.4</vh>
-<v t="ekr.20070809145744.1" a="E"><vh>@rst html\new-4-4-4.html</vh>
+<v t="ekr.20060620094033"><vh>What's New...</vh>
+<v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
+<v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
 <v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070809145744.3"><vh>@rst-ignore Important new features</vh></v>
 <v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
@@ -1094,7 +1094,7 @@
 </v>
 <v t="ekr.20070920092716"><vh>Added new commands for resolving cvs conflicts</vh></v>
 <v t="ekr.20070809145744.4"><vh>New commands</vh></v>
-<v t="ekr.20071001122703" a="TV"><vh>New kinds of settings: @buttons and @menus trees</vh></v>
+<v t="ekr.20071001122703"><vh>New kinds of settings: @buttons and @menus trees</vh></v>
 <v t="ekr.20070809145744.5"><vh>@rst-ignore New settings</vh></v>
 <v t="ekr.20070809145744.6"><vh>Plugins</vh></v>
 <v t="ekr.20070809145744.7"><vh>Minor improvements</vh></v>
@@ -4343,7 +4343,7 @@ For example::
 If the ``openWith`` keyword argument is 1 the items are added to a submenu of the Open With menu.
 However, it will be more convenient to use the ``createOpenWithMenuFromTable`` method to create the ``Open With`` menu.
 
-**c.frame.createNewMenu (self,menuName,parentName="top")**
+**c.frame.menu.createNewMenu (self,menuName,parentName="top")**
 
 This method creates a new menu:
 
@@ -4353,7 +4353,7 @@ This method creates a new menu:
 This method returns the menu object that was created, or None if there was a problem.
 Your code need not remember the value returned by this method.  Instead, your code will refer to menus by name.
 
-**c.frame.createOpenWithMenuFromTable (self,table)**
+**c.frame.menu.createOpenWithMenuFromTable (self,table)**
 
 This method adds items to submenu of the ``Open With`` menu item in the ``File`` menu.
 The table argument describes the entries to be created.
@@ -4378,11 +4378,11 @@ For example::
     
     top().frame.createOpenWithMenuFromTable(table)
 
-**c.frame.deleteMenu (self,menuName)**
+**c.frame.menu.deleteMenu (self,menuName)**
 
 Deletes the menu whose name is given, including all entries in the menu.
 
-**c.frame.deleteMenuItem (self,itemName,menuName="top")**
+**c.frame.menu.deleteMenuItem (self,itemName,menuName="top")**
 
 Deletes the item whose name is itemName from the menu whose name is menuName.
 To delete a menu in the menubar, specify ``menuName="top"``.
