@@ -5039,6 +5039,23 @@ def clearMarked (self):
     self.statusBits &= ~ self.markedBit
 #@-node:ekr.20031218072017.3391:v.clearMarked
 #@-node:ekr.20071001054731:Greatly improved speed of unmark-all
+#@+node:ekr.20070930102053:Fixed problems with new colorizer
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4544813
+
+When the 'r' in 'str(' is deleted, the closing bracket on the next line changes
+color.  There are lots of variations, for example putting the 'r' back causes
+the opening bracket on the next line to change color.
+
+@color
+
+g.es(r'abc')
+g.es('hello')
+
+# The fix was to init self.prev: match_previous was coloring the wrong range.
+#@nonl
+#@-node:ekr.20070930102053:Fixed problems with new colorizer
 #@-node:ekr.20070920083033:Bugs
 #@+node:ekr.20070920083033.1:Features
 #@+node:ekr.20070919124912:Added button-font params
