@@ -7755,6 +7755,167 @@ def createRecentFilesMenuItems (self):
         i += 1
 #@-node:ekr.20031218072017.2078:createRecentFilesMenuItems (leoMenu)
 #@-node:ekr.20070925144337.1:Added @menus trees in @settings trees
+#@+node:ekr.20071002093247:Added convenience methods to a canvas log
+@nocolor
+
+Cvs now contains a createCanvas convenience method to create a canvas tab in the log pane.  Here is a sample script in test.leo:
+
+log = c.frame.log ; tag = 'my-canvas'
+
+w = log.canvasDict.get(tag)
+if not w:
+..w = log.createCanvas(tag)
+..w.configure(bg='yellow')
+
+log.selectTab(tag)
+
+I have not added a corresponding minibuffer command: only scripts have any real use for canvas tabs at present.  I'm not going to do more work on this unless somebody has a real need for it.
+
+For an introduction to what can be done with Tk canvas widgets, see:
+
+http://www.pythonware.com/library/tkinter/introduction/
+
+@color
+#@+node:ekr.20071002143627:tkLog.createCanvasWidget
+def createCanvasWidget (self,parentFrame):
+
+    self.logNumber += 1
+
+    w = Tk.Canvas(parentFrame)
+
+    logBar = Tk.Scrollbar(parentFrame,name="logBar")
+    w['yscrollcommand'] = logBar.set
+    logBar['command'] = w.yview
+    logBar.pack(side="right", fill="y")
+
+    logXBar = Tk.Scrollbar(parentFrame,name='logXBar',orient="horizontal") 
+    w['xscrollcommand'] = logXBar.set 
+    logXBar['command'] = w.xview 
+    logXBar.pack(side="bottom", fill="x")
+
+    w.pack(expand=1, fill="both")
+
+    # Set the background color.
+    configName = 'log_canvas_pane_tab_background_color'
+    bg = self.c.config.getColor(configName) or 'MistyRose1'
+    try: w.configure(bg=bg)
+    except Exception: pass # Could be a user error.
+
+    return w
+#@-node:ekr.20071002143627:tkLog.createCanvasWidget
+#@+node:ekr.20071002143627.1:createCanvas
+def createCanvas (self,tabName=None):
+
+    c = self.c ; k = c.k
+
+    if tabName is None:
+        self.logNumber += 1
+        tabName = 'Canvas %d' % self.logNumber
+
+    tabFrame = self.nb.add(tabName)
+    menu = self.makeTabMenu(tabName,allowRename=False)
+
+    w = self.createCanvasWidget(tabFrame)
+
+    self.canvasDict [tabName ] = w
+    self.textDict [tabName] = None
+    self.frameDict [tabName] = tabFrame
+
+    self.setCanvasTabBindings(tabName,menu)
+
+    return w
+#@-node:ekr.20071002143627.1:createCanvas
+#@+node:ekr.20051019134106.1:tkLog.makeTabMenu
+def makeTabMenu (self,tabName=None,allowRename=True):
+
+    '''Create a tab popup menu.'''
+
+    # g.trace(tabName,g.callers())
+
+    c = self.c
+    hull = self.nb.component('hull') # A Tk.Canvas.
+
+    menu = Tk.Menu(hull,tearoff=0)
+    menu.add_command(label='New Tab',command=self.newTabFromMenu)
+    menu.add_command(label='New CanvasTab',command=self.newCanvasTabFromMenu)
+
+    if tabName:
+        # Important: tabName is the name when the tab is created.
+        # It is not affected by renaming, so we don't have to keep
+        # track of the correspondence between this name and what is in the label.
+        def deleteTabCallback():
+            return self.deleteTab(tabName)
+
+        label = g.choose(
+            tabName in ('Find','Spell'),'Hide This Tab','Delete This Tab')
+        menu.add_command(label=label,command=deleteTabCallback)
+
+        def renameTabCallback():
+            return self.renameTabFromMenu(tabName)
+
+        if allowRename:
+            menu.add_command(label='Rename This Tab',command=renameTabCallback)
+
+    return menu
+#@-node:ekr.20051019134106.1:tkLog.makeTabMenu
+#@+node:ekr.20051019140004.1:newTabFromMenu & newCanvasTabFromMenu
+def newTabFromMenu (self,tabName='Log'):
+
+    self.selectTab(tabName)
+
+    # This is called by getTabName.
+    def selectTabCallback (newName):
+        return self.selectTab(newName)
+
+    self.getTabName(selectTabCallback)
+
+def newCanvasTabFromMenu (self):
+
+    self.createCanvas()
+#@-node:ekr.20051019140004.1:newTabFromMenu & newCanvasTabFromMenu
+#@+node:ekr.20051022162730:setTabBindings
+def setTabBindings (self,tabName):
+
+    c = self.c ; k = c.k
+    tab = self.nb.tab(tabName)
+    w = self.textDict.get(tabName)
+
+    # Send all event in the text area to the master handlers.
+    for kind,handler in (
+        ('<Key>',       k.masterKeyHandler),
+        ('<Button-1>',  k.masterClickHandler),
+        ('<Button-3>',  k.masterClick3Handler),
+    ):
+        w.bind(kind,handler)
+
+    # Clicks in the tab area are harmless: use the old code.
+    def tabMenuRightClickCallback(event,menu=self.menu):
+        return self.onRightClick(event,menu)
+
+    def tabMenuClickCallback(event,tabName=tabName):
+        return self.onClick(event,tabName)
+
+    tab.bind('<Button-1>',tabMenuClickCallback)
+    tab.bind('<Button-3>',tabMenuRightClickCallback)
+
+    k.completeAllBindingsForWidget(w)
+#@-node:ekr.20051022162730:setTabBindings
+#@+node:ekr.20071003090546:setCanvasTabBindings
+def setCanvasTabBindings (self,tabName,menu):
+
+    c = self.c ; tab = self.nb.tab(tabName)
+
+    def tabMenuRightClickCallback(event,menu=menu):
+        return self.onRightClick(event,menu)
+
+    def tabMenuClickCallback(event,tabName=tabName):
+        return self.onClick(event,tabName)
+
+    tab.bind('<Button-1>',tabMenuClickCallback)
+    tab.bind('<Button-3>',tabMenuRightClickCallback)
+
+#@-node:ekr.20071003090546:setCanvasTabBindings
+#@-node:ekr.20071002093247:Added convenience methods to a canvas log
 #@-node:ekr.20070920083033.1:Features
 #@-node:ekr.20070919132518:4.4.4 b3
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
