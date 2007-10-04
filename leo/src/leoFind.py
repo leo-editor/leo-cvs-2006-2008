@@ -194,7 +194,6 @@ class leoFind:
             self.reverse = None
             self.script_search = None
             self.script_change = None
-            # self.selection_only = None
             self.wrap = None
             self.whole_word = None
 
@@ -240,7 +239,6 @@ class leoFind:
         self.onlyPosition = None # The starting node for suboutline-only searches.
         self.wrapPos = None # The starting position of the wrapped search: persists between calls.
         self.errors = 0
-        self.selStart = self.selEnd = None # For selection-only searches.
         #@-node:ekr.20031218072017.3054:<< init the gui-independent ivars >>
         #@nl
 
@@ -259,8 +257,6 @@ class leoFind:
 
         if self.script_change:
             self.doChangeAllScript()
-        # elif self.selection_only:
-            # self.change()
         else:
             self.changeAll()
     #@-node:ekr.20031218072017.3057:changeAllButton
@@ -307,8 +303,6 @@ class leoFind:
 
         if self.script_search:
             self.doFindAllScript()
-        # elif self.selection_only:
-            # self.findNext()
         else:
             self.findAll()
     #@-node:ekr.20031218072017.3060:findAllButton
@@ -997,9 +991,6 @@ class leoFind:
 
         c = self.c ; p = self.p ; trace = False
 
-        # if self.selection_only:
-            # return None
-
         # Start suboutline only searches.
         if self.suboutline_only and not self.onlyPosition:
             # p.copy not needed because the find code never calls p.moveToX.
@@ -1111,57 +1102,52 @@ class leoFind:
             val = False
         return val
     #@-node:ekr.20031218072017.3083:checkArgs
-    #@+node:ekr.20051020120306.28:init_s_ctrl
-    def init_s_ctrl (self,s):
-
-        w = self.s_ctrl
-        w.setAllText(s)
-        i = g.choose(self.reverse,len(s),0)
-        w.setInsertPoint(i)
-        return w
-    #@-node:ekr.20051020120306.28:init_s_ctrl
     #@+node:ekr.20031218072017.3084:initBatchCommands
     # Initializes for the Find All and Change All commands.
 
     def initBatchCommands (self):
 
-        c = self.c ; w = c.frame.body.bodyCtrl
+        c = self.c
         self.in_headline = self.search_headline # Search headlines first.
         self.errors = 0
 
         # Select the first node.
-        if self.suboutline_only or self.node_only: # or self.selection_only:
+        if self.suboutline_only or self.node_only:
             self.p = c.currentPosition()
-            self.selStart,self.selEnd = None,None
-            # if self.selection_only: self.selStart,self.selEnd = w.getSelectionRange()
-            # else:                   self.selStart,self.selEnd = None,None
         else:
             p = c.rootPosition()
             if self.reverse:
+                while p and p.next():
+                    p = p.next()
                 p = p.lastNode()
-                # while p and p.next():
-                    # p = p.next()
-                # p = p.lastNode()
             self.p = p
 
         # Set the insert point.
         self.initBatchText()
     #@-node:ekr.20031218072017.3084:initBatchCommands
-    #@+node:ekr.20031218072017.3085:initBatchText & initNextText
+    #@+node:ekr.20031218072017.3085:initBatchText, initNextText & init_s_ctrl
     # Returns s_ctrl with "insert" point set properly for batch searches.
-    def initBatchText(self):
+    def initBatchText(self,ins=None):
         p = self.p
         self.wrapping = False # Only interactive commands allow wrapping.
         s = g.choose(self.in_headline,p.headString(), p.bodyString())
-        return self.init_s_ctrl(s)
+        self.init_s_ctrl(s,ins)
 
     # Call this routine when moving to the next node when a search fails.
     # Same as above except we don't reset wrapping flag.
-    def initNextText(self):
+    def initNextText(self,ins=None):
         p = self.p
         s = g.choose(self.in_headline,p.headString(), p.bodyString())
-        return self.init_s_ctrl(s)
-    #@-node:ekr.20031218072017.3085:initBatchText & initNextText
+        self.init_s_ctrl(s,ins)
+
+    def init_s_ctrl (self,s,ins):
+
+        w = self.s_ctrl
+        w.setAllText(s)
+        if ins is None:
+            ins = g.choose(self.reverse,len(s),0)
+        w.setInsertPoint(ins)
+    #@-node:ekr.20031218072017.3085:initBatchText, initNextText & init_s_ctrl
     #@+node:ekr.20031218072017.3086:initInHeadline
     # Guesses which pane to start in for incremental searches and changes.
     # This must not alter the current "insert" or "sel" marks.
@@ -1184,31 +1170,20 @@ class leoFind:
             self.in_headline = self.search_headline
     #@-node:ekr.20031218072017.3086:initInHeadline
     #@+node:ekr.20031218072017.3087:initInteractiveCommands
-    # For incremental searches
-
     def initInteractiveCommands(self):
 
         c = self.c ; p = self.p
-
+        w = g.choose(self.in_headline,c.edit_widget(p),c.frame.body.bodyCtrl)
         self.errors = 0
-        if self.in_headline:
-            c.frame.tree.setEditPosition(p)
-            w = c.edit_widget(p)
-            sel = None
-        else:
-            w = c.frame.bodyCtrl
-            sel = w.getSelectionRange()
-        pos = w.getInsertPoint()
-        st = self.initNextText()
+
+        # We only use the insert point, *never* the selection range.
+        ins = w.getInsertPoint()
+        self.initNextText(ins=ins)
         c.widgetWantsFocus(w)
-        st.setInsertPoint(pos)
-        if sel:
-            self.selStart,self.selEnd = sel
-        else:
-            self.selStart,self.selEnd = None,None
+
         self.wrapping = self.wrap
         if self.wrap and self.wrapPosition == None:
-            self.wrapPos = pos
+            self.wrapPos = ins
             # Do not set self.wrapPosition here: that must be done after the first search.
     #@-node:ekr.20031218072017.3087:initInteractiveCommands
     #@+node:ekr.20031218072017.3088:printLine
