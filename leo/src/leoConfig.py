@@ -364,7 +364,7 @@ class parserBaseClass:
                             p.moveToThreadNext()
                             break
             else:
-                g.trace('***skipping***',p.headString())
+                # g.trace('***skipping***',p.headString())
                 p.moveToThreadNext()
     #@nonl
     #@-node:ekr.20070926141716:doItems
