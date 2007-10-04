@@ -22671,7 +22671,7 @@ prompts for a filename.
 #@-node:ekr.20070919083650:Added read-file-into-node and write-file-from-node commands
 #@-node:ekr.20070703182412.1:Features
 #@-node:ekr.20070915101503:4.4.4 b2
-#@+node:ekr.20070919132518:4.4.4 b3
+#@+node:ekr.20070919132518:4.4.4 final
 #@+node:ekr.20070920083033:Bugs
 #@+node:ekr.20070920055354:Fixed new @auto bug
 @nocolor
@@ -23136,7 +23136,7 @@ g.es('hello')
 #@-node:ekr.20070930102053:Fixed problems with new colorizer
 #@+node:ekr.20071001052611:Made sure dirty bits get updated in xemacs plugin
 @nocolor
-https://sourceforge.net/forum/message.php?msg_id=4543844
+http://sourceforge.net/forum/message.php?msg_id=4543844
 By: terry_n_brown
 
 Using the xemacs plug-in for node editing it seems the tree's node-has-contents
@@ -23186,6 +23186,10 @@ def setBodyString (self,p,s,encoding="utf-8"):
             c.endUpdate()
 #@-node:ekr.20040305223522:c.setBodyString
 #@-node:ekr.20071001052611:Made sure dirty bits get updated in xemacs plugin
+#@+node:ekr.20071004084327:Fixed string problems in new colorizer
+# The fix was to set self.prev to None in the init logic.
+#@nonl
+#@-node:ekr.20071004084327:Fixed string problems in new colorizer
 #@-node:ekr.20070920083033:Bugs
 #@+node:ekr.20070920083033.1:Features
 #@+node:ekr.20070919124912:Added button-font params
@@ -26063,8 +26067,10 @@ def setCanvasTabBindings (self,tabName,menu):
 
 #@-node:ekr.20071003090546:setCanvasTabBindings
 #@-node:ekr.20071002093247:Added convenience methods to a canvas log
+#@+node:ekr.20071004083334:Installed graphed.py plugin
+#@-node:ekr.20071004083334:Installed graphed.py plugin
 #@-node:ekr.20070920083033.1:Features
-#@-node:ekr.20070919132518:4.4.4 b3
+#@-node:ekr.20070919132518:4.4.4 final
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@-all
 #@nonl

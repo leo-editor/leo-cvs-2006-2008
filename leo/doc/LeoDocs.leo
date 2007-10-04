@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="349" height="739" width="892"/>
+	<global_window_position top="10" left="349" height="719" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -353,7 +353,7 @@
 </v>
 </v>
 <v t="ekr.20050831195331.4"><vh>Chapter 7: Scripting Leo with Python</vh>
-<v t="ekr.20040403171740" a="E"><vh>@rst html\scripting.html</vh>
+<v t="ekr.20040403171740"><vh>@rst html\scripting.html</vh>
 <v t="ekr.20050812134441.1"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20050901184158"><vh>@rst-ignore Important: you can run these examples!</vh></v>
 <v t="ekr.20040403183229" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3122206e616d653d22687474702d6e6f64652d6d61726b65722d31223e710155043c2f613e71025d710328553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710455063c2f6469763e71055d71062855063c626f64793e710755073c2f626f64793e71085d71092855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710a55073c2f68746d6c3e710b4e65656555243c64697620636c6173733d2273656374696f6e222069643d226f76657276696577223e0a710c55493c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643122206e616d653d226f76657276696577223e4f766572766965773c2f613e3c2f68313e0a710d652e"><vh>Commonly used classes</vh></v>
@@ -619,14 +619,14 @@
 <v t="ekr.20050912133515"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060612102055" a="E"><vh>Chapter 13: Writing Plugins</vh>
-<v t="ekr.20060612103240" a="E"><vh>@rst html\writingPlugins.html</vh>
+<v t="ekr.20060612102055"><vh>Chapter 13: Writing Plugins</vh>
+<v t="ekr.20060612103240"><vh>@rst html\writingPlugins.html</vh>
 <v t="ekr.20060612103824"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050903075144"><vh>Overview</vh></v>
 <v t="EKR.20040524104904.224"><vh>Important security warnings</vh></v>
 <v t="ekr.20050903074833"><vh>Writing plugins and hooks</vh></v>
 <v t="ekr.20050903074833.1"><vh>Summary of hooks</vh></v>
-<v t="EKR.20040524104904.231" a="TV"><vh>Convenience routines for plugins</vh></v>
+<v t="EKR.20040524104904.231"><vh>Convenience routines for plugins</vh></v>
 <v t="EKR.20040524104904.240"><vh>Support for unit testing</vh></v>
 <v t="ekr.20050417072710.1"><vh>How to make operations undoable</vh></v>
 <v t="ekr.20060621075135"><vh>Turning script buttons into plugins</vh></v>
@@ -773,18 +773,21 @@
 <v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
 <v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070809145744.3"><vh>@rst-ignore Important new features</vh></v>
-<v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
+<v t="ekr.20071004103659"><vh>The Great Graph Aha</vh></v>
+<v t="ekr.20070806090226.15"><vh>Added support for @auto files</vh>
 <v t="ekr.20070806095535.1"><vh>What @auto does</vh></v>
 <v t="ekr.20070809141529" a="M"><vh>Perfect import checks</vh></v>
 <v t="ekr.20070806101412"><vh>Commands related to @auto</vh></v>
 <v t="ekr.20070806100055"><vh>Extending the code: adding new parsers</vh></v>
 </v>
-<v t="ekr.20070920092716"><vh>Added new commands for resolving cvs conflicts</vh></v>
-<v t="ekr.20070809145744.4"><vh>New commands</vh></v>
-<v t="ekr.20071001122703"><vh>New kinds of settings: @buttons and @menus trees</vh></v>
-<v t="ekr.20070809145744.5"><vh>@rst-ignore New settings</vh></v>
-<v t="ekr.20070809145744.6"><vh>Plugins</vh></v>
+<v t="ekr.20070920092716"><vh>New commands for resolving cvs conflicts</vh></v>
+<v t="ekr.20070809145744.5"><vh>New kinds of settings trees</vh>
+<v t="ekr.20071001122703"><vh>@buttons trees</vh></v>
+<v t="ekr.20071004110818"><vh>@menus trees</vh></v>
+</v>
+<v t="ekr.20070809145744.6"><vh>New plugins</vh></v>
 <v t="ekr.20070809145744.7"><vh>Minor improvements</vh></v>
+<v t="ekr.20070809145744.4"><vh>Summary of new commands</vh></v>
 <v t="ekr.20070809145744.8"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -830,6 +833,7 @@
 <v t="ekr.20060621132338"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070622212132"><vh>New commands</vh></v>
 <v t="ekr.20060620133820.16"><vh>New features</vh></v>
+<v t="ekr.20071004101443.178"><vh>Added new convenience methods for scripts and plugins</vh></v>
 <v t="ekr.20060620140130"><vh>New and improved plugins</vh></v>
 <v t="ekr.20060620140228"><vh>New and improved settings</vh></v>
 <v t="ekr.20060621132923.1"><vh>@rst-no-head end stuff</vh></v>
@@ -1086,18 +1090,21 @@
 <v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
 <v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070809145744.3"><vh>@rst-ignore Important new features</vh></v>
-<v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
+<v t="ekr.20071004103659"><vh>The Great Graph Aha</vh></v>
+<v t="ekr.20070806090226.15"><vh>Added support for @auto files</vh>
 <v t="ekr.20070806095535.1"><vh>What @auto does</vh></v>
 <v t="ekr.20070809141529" a="M"><vh>Perfect import checks</vh></v>
 <v t="ekr.20070806101412"><vh>Commands related to @auto</vh></v>
 <v t="ekr.20070806100055"><vh>Extending the code: adding new parsers</vh></v>
 </v>
-<v t="ekr.20070920092716"><vh>Added new commands for resolving cvs conflicts</vh></v>
-<v t="ekr.20070809145744.4"><vh>New commands</vh></v>
-<v t="ekr.20071001122703"><vh>New kinds of settings: @buttons and @menus trees</vh></v>
-<v t="ekr.20070809145744.5"><vh>@rst-ignore New settings</vh></v>
-<v t="ekr.20070809145744.6"><vh>Plugins</vh></v>
+<v t="ekr.20070920092716"><vh>New commands for resolving cvs conflicts</vh></v>
+<v t="ekr.20070809145744.5"><vh>New kinds of settings trees</vh>
+<v t="ekr.20071001122703"><vh>@buttons trees</vh></v>
+<v t="ekr.20071004110818"><vh>@menus trees</vh></v>
+</v>
+<v t="ekr.20070809145744.6"><vh>New plugins</vh></v>
 <v t="ekr.20070809145744.7"><vh>Minor improvements</vh></v>
+<v t="ekr.20070809145744.4"><vh>Summary of new commands</vh></v>
 <v t="ekr.20070809145744.8"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -1143,6 +1150,7 @@
 <v t="ekr.20060621132338"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070622212132"><vh>New commands</vh></v>
 <v t="ekr.20060620133820.16"><vh>New features</vh></v>
+<v t="ekr.20071004101443.178"><vh>Added new convenience methods for scripts and plugins</vh></v>
 <v t="ekr.20060620140130"><vh>New and improved plugins</vh></v>
 <v t="ekr.20060620140228"><vh>New and improved settings</vh></v>
 <v t="ekr.20060621132923.1"><vh>@rst-no-head end stuff</vh></v>
@@ -3263,13 +3271,11 @@
 </v>
 </v>
 </v>
-<v t="ekr.20070806090235"><vh>4.4.4 @auto, threading syntax colorer</vh></v>
-</v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20070806090235"><vh>4.4.4 @auto, @menus, threading syntax colorer</vh>
 <v t="ekr.20070806090235.1"><vh>4.4.4 b1</vh>
 <v t="ekr.20070806090226.1"><vh>Added support for @mark-for-unit-tests node</vh></v>
 <v t="ekr.20070806090226.14"><vh>Created threading_colorizer</vh></v>
-<v t="ekr.20070806090226.15"><vh>Added support for @auto</vh>
+<v t="ekr.20070806090226.15"><vh>Added support for @auto files</vh>
 <v t="ekr.20070806095535.1"><vh>What @auto does</vh></v>
 <v t="ekr.20070809141529" a="M"><vh>Perfect import checks</vh></v>
 <v t="ekr.20070806101412"><vh>Commands related to @auto</vh></v>
@@ -3294,7 +3300,31 @@
 </v>
 <v t="ekr.20070915101157.82"><vh>Features</vh>
 <v t="ekr.20070915101157.168"><vh>Read @auto nodes during saves if the node has not been read previously</vh></v>
-<v t="ekr.20070920092716"><vh>Added new commands for resolving cvs conflicts</vh></v>
+<v t="ekr.20070920092716"><vh>New commands for resolving cvs conflicts</vh></v>
+</v>
+</v>
+</v>
+</v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20071004101349" a="ETV"><vh>4.4.4 final</vh>
+<v t="ekr.20071004101443.1"><vh>Bugs fixed</vh>
+<v t="ekr.20071004101443.18"><vh>Greatly improved speed of unmark-all</vh></v>
+<v t="ekr.20071004101443.26"><vh>Made sure dirty bits get updated in xemacs plugin</vh></v>
+</v>
+<v t="ekr.20071004101443.29"><vh>New Features</vh>
+<v t="ekr.20071004103659"><vh>The Great Graph Aha</vh></v>
+<v t="ekr.20070806090226.15"><vh>Added support for @auto files</vh>
+<v t="ekr.20070806095535.1"><vh>What @auto does</vh></v>
+<v t="ekr.20070809141529" a="M"><vh>Perfect import checks</vh></v>
+<v t="ekr.20070806101412"><vh>Commands related to @auto</vh></v>
+<v t="ekr.20070806100055"><vh>Extending the code: adding new parsers</vh></v>
+</v>
+<v t="ekr.20071004101443.52"><vh>Added @buttons trees in @settings trees</vh></v>
+<v t="ekr.20071004101443.105"><vh>Added @menus trees in @settings trees</vh></v>
+<v t="ekr.20070920092716"><vh>New commands for resolving cvs conflicts</vh></v>
+<v t="ekr.20071004105000"><vh>Added the graphed plugin</vh></v>
+<v t="ekr.20071004101443.178"><vh>Added new convenience methods for scripts and plugins</vh></v>
+<v t="ekr.20071004101443.30"><vh>Added button font settings</vh></v>
 </v>
 </v>
 </v>
@@ -28596,7 +28626,19 @@ The following creates a tab named test or make it visible if it already exists::
 g.es, g.enl, g.ecnl, g.ecnls write to the log tab specified by the optional
 tabName argument. The default for tabName is 'Log'. The put and putnl methods of
 the tkinterLog class also take an optional tabName argument which defaults to
-'Log'.</t>
+'Log'.
+
+**New in Leo 4.4.4**: plugins and scripts may call the
+c.frame.canvas.createCanvas method to create a log tab containing a Tk.Canvas
+widget. Here is an example script::
+    
+    log = c.frame.log ; tag = 'my-canvas'
+    w = log.canvasDict.get(tag)
+    if not w:
+        w = log.createCanvas(tag)
+        w.configure(bg='yellow')
+    log.selectTab(tag)
+</t>
 <t tx="ekr.20061003204952.1">The c.frame.log class contains the following 'official' ivars::
 
     g.es('tabName',c.frame.log.tabName)     # The name of the active tab.
@@ -31820,11 +31862,23 @@ What's New in Leo 4.4.4
 
 The highlights of Leo 4.4.4:
     
-- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
-  This plugin features much better performance.  It's ready for prime time.
-
-- Support for @auto nodes.  Such nodes allow people to collaborate using Leo
+- **The Great Graph Aha**: simple scripts allow Leo outlines to represent arbitrary
+  directed graphs. There is no need for a separate 'graph world'. The graphed.py
+  plugin is a direct result of this Aha. It allows you to create general graphs
+  from Leo outlines.
+  
+- Support for **@auto nodes**.  Such nodes allow people to collaborate using Leo
   without inserting Leo sentinels in the files Leo generates.
+  
+- **@menus trees** in settings files create all of Leo's menus.  It is now dead
+  easy to make Leo's menus look the way you want.
+
+- **@buttons trees** in settings files create common @button nodes created in all
+  Leo outlines.
+
+- A new, faster, **colorizer plugin** replaces the __jEdit_colorizer__ plugin.
+  
+- New commands for **resolving cvs conflicts**.
     
 .. contents::</t>
 <t tx="ekr.20070809145744.2">.. Links used in this document.
@@ -31855,20 +31909,28 @@ The highlights of Leo 4.4.4:
     write-at-auto-nodes
     write-dirty-at-auto-nodes
     write-file-from-node</t>
-<t tx="ekr.20070809145744.5">::
-    @bool whatever
-    
-For details of these new settings, see leoSettings.leo
+<t tx="ekr.20070809145744.5"></t>
+<t tx="ekr.20070809145744.6">- The graphed plugin allows users to manipulate parts of Leo outlines as if they
+  were general graphs. It is still early days for this exciting plugin.
 
-
-
-</t>
-<t tx="ekr.20070809145744.6">- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
+- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
   This plugin features much better performance.  It's ready for prime time.
 </t>
 <t tx="ekr.20070809145744.7">- See the release notes for a list of bugs fixed in Leo 4.4.4.
 
 - Added the 'clear-all-marks' hook.
+
+- Added button font setting. See the node: "@settings--&gt;Fonts--&gt;@font button font" in leoSettings.leo.
+
+- Plugins and scripts may call the c.frame.canvas.createCanvas method to create a
+  log tab containing a Tk.Canvas widget. Here is an example script::
+    
+    log = c.frame.log ; tag = 'my-canvas'
+    w = log.canvasDict.get(tag)
+    if not w:
+        w = log.createCanvas(tag)
+        w.configure(bg='yellow')
+    log.selectTab(tag)
 
 </t>
 <t tx="ekr.20070809145744.8">-----------------------
@@ -32159,15 +32221,116 @@ entire .leo file.
 The **compare-leo-outlines** command prompts for another (presubably similar)
 .leo file that will be compared with the presently selected outline file (main
 window). It then creates clones of all inserted, deleted and changed nodes.</t>
-<t tx="ekr.20071001122703">``@buttons``
-
-All @buttons tree in a settings file defines global buttons that are created in
+<t tx="ekr.20071001122703">All @buttons tree in a settings file defines global buttons that are created in
 the icon area of all .leo files. You define @button nodes in the @buttons tree
-as usual.
+as usual.</t>
+<t tx="ekr.20071004101349">Leo 4.4.4 final                              October 5, 2007
 
-``@menus``
+Leo 4.4.4 final is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
-Leo creates its menus from the @menu and @item nodes in the @menus tree. Within
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.4:
+----------------------------
+
+- The Great Graph Aha (tm): simple scripts allow Leo outlines to represent
+  arbitrary directed graphs. There is no need for a separate 'graph world'. The
+  graphed.py plugin is a direct result of this Aha. The graphed.py plugin allows
+  you to create general graphs from Leo outlines.
+  
+- @menus trees in settings files create all of Leo's menus.  It is now dead
+  easy to make Leo's menus look the way you want.
+
+- @buttons trees in settings files create common @button nodes created in all
+  Leo outlines.
+
+- @auto nodes eliminate sentinels in derived files, thereby allowing people to
+  collaborate using Leo more easily.
+  
+- New commands for resolving cvs conflicts.
+
+- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
+  This plugin features much better performance.
+
+- The usual assortment of bug fixes and other minor improvements.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20071004101443.1"></t>
+<t tx="ekr.20071004101443.18"></t>
+<t tx="ekr.20071004101443.26">http://sourceforge.net/forum/message.php?msg_id=4543844
+</t>
+<t tx="ekr.20071004101443.29"></t>
+<t tx="ekr.20071004101443.30">See the node:
+    
+@settings--&gt;Fonts--&gt;@font button font
+
+in leoSettings.leo.</t>
+<t tx="ekr.20071004101443.52">@button nodes in the @buttons tree in settings file define **global buttons** that appear in all Leo outlines.</t>
+<t tx="ekr.20071004101443.105">Leo creates its menus using @menus trees. Within @menus trees,
+@menu nodes create menus and @item nodes create menu items.
+
+Notes:
+
+- The menu name always follows @menu. If the menu name is 'Plugins', Leo will
+  create the Plugins menu and populate the menu by calling the
+  'create-optional-menus' hook. This creates the Plugins menu as usual.
+
+- Nested @menu nodes contain submenus.
+
+- The command name follows @item. If the body text of an @item node exists, this
+  body text is the menu name. Otherwise, the menu name is the command name.
+  However, if the command name starts with a '*', hyphens are removed from the
+  menu name.
+
+- Menu names and command names may contain a single ampersand (&amp;). If present,
+  the following character is underlined in the name.
+
+- If the command name in an @item node is just a hyphen (-), the item represents
+  a menu separator.</t>
+<t tx="ekr.20071004101443.178">The c.frame.logcreateCanvas convenience method create a canvas tab in the log pane.
+Here is a sample script:
+
+log = c.frame.log ; tag = 'my-canvas'
+
+w = log.canvasDict.get(tag)
+if not w:
+..w = log.createCanvas(tag)
+..w.configure(bg='yellow')
+
+log.selectTab(tag)
+</t>
+<t tx="ekr.20071004103659">**The graph world is unnecessary because we can use Leo nodes and trees as data
+to other graphing packages.** That is, Python scripts can build arbitrary graphs
+using Leo's existing nodes and trees. And Python scripts can manipulate those
+graphs. And Python scripts could do the reverse: manipulate the Leo outline by
+traversing general graphs. So there is no need to complicate Leo's fundamental
+data structures. Hurray! Instead, we build on the strengths of already existing
+graphing packages.
+
+The Great Graph Aha created the opportunity for immediate action:
+ 
+1. test.leo contains the essential scripts to implement graphs in Leo files.
+   These short, simple, self-contained, easily modifiable scripts make possible
+   everything ever envisaged by the (now-defunct) graph world project::
+ 
+    leo2graph: convert a normal Leo tree to a NetworkX graph. 
+    at-graph2graph: convert an @graph tree to a NetworkX graph. 
+    at-networkx2graph: convert an @networkx tree to a NetworkX graph 
+    at-networkx2at-graph: create an @graph tree from an @networkx tree.
+
+2. The graphed plugin allows users to manipulate parts of Leo outlines as if
+they were general graphs. It is still early days for this exciting plugin.</t>
+<t tx="ekr.20071004105000">The graphed plugin allows users to manipulate parts of Leo outlines as if
+they were general graphs. It is still early days for this exciting plugin.</t>
+<t tx="ekr.20071004110818">Leo creates its menus from the @menu and @item nodes in the @menus tree. Within
 @menus trees, @menu nodes create menus and @item nodes create menu items.
 
 The menu name always follows @menu. If the menu name is 'Plugins', Leo will

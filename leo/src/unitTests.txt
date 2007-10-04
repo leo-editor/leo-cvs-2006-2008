@@ -424,7 +424,7 @@ if 0: # This causes p to be written, thereby clearing the tnodeList.
 
 if 0: # This actually saves this file, so it is a bit dangerous.
     g.app.unitTestDict = {}
-    ### c.save()
+    # c.save()
     ok = g.app.unitTestDict.get("warning")
     assert ok, "putVnode failed to give warning"
 #@nonl

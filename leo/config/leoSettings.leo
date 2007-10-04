@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.665511265165">
-	<global_window_position top="17" left="238" height="557" width="861"/>
+	<global_window_position top="17" left="238" height="860" width="861"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -84,7 +84,7 @@
 </v>
 </v>
 <v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
-<v t="ekr.20070926132045"><vh>Buttons</vh>
+<v t="ekr.20070926132045" a="ETV"><vh>Buttons</vh>
 <v t="ekr.20070926082407"><vh>@buttons</vh>
 <v t="ekr.20070926082256.1"><vh>@button Beautify</vh></v>
 </v>
@@ -514,8 +514,8 @@
 </v>
 </v>
 <v t="ekr.20070925144552" a="E"><vh>Menus</vh>
-<v t="ekr.20070925144534" a="E"><vh>@menus</vh>
-<v t="ekr.20070925144534.1" a="E"><vh>@menu File</vh>
+<v t="ekr.20070925144534"><vh>@menus</vh>
+<v t="ekr.20070925144534.1"><vh>@menu File</vh>
 <v t="ekr.20070925144534.2"><vh>@item *&amp;new</vh></v>
 <v t="ekr.20070925144534.3"><vh>@item open-outline</vh></v>
 <v t="ekr.20070925144534.4"><vh>@menu Open &amp;With...</vh></v>
@@ -529,14 +529,14 @@
 <v t="ekr.20070925144534.12"><vh>@item revert</vh></v>
 <v t="ekr.20070927173324"><vh>@menu Recent &amp;Files</vh></v>
 <v t="ekr.20070927051742"><vh>@item -</vh></v>
-<v t="ekr.20070925144534.13" a="E"><vh>@menu &amp;Read/Write...</vh>
+<v t="ekr.20070925144534.13"><vh>@menu &amp;Read/Write...</vh>
 <v t="ekr.20071001120755"><vh>@item *&amp;check-derived-file</vh></v>
 <v t="ekr.20071001120755.1"><vh>@item *check-le&amp;o-file</vh></v>
 <v t="ekr.20071001121059"><vh>@item *compare-leo-file&amp;s</vh></v>
 <v t="ekr.20071001120755.2"><vh>@item -</vh></v>
 <v t="ekr.20070925144534.14"><vh>@item *&amp;read-outline-only</vh></v>
 <v t="ekr.20070925144534.15"><vh>@item *write-&amp;outline-only</vh></v>
-<v t="ekr.20071001123216" a="V"><vh>@item -</vh></v>
+<v t="ekr.20071001123216"><vh>@item -</vh></v>
 <v t="ekr.20071001120755.3"><vh>@item *read-&amp;file-into-node</vh></v>
 <v t="ekr.20071001120755.4"><vh>@item *writ&amp;e-file-from-node</vh></v>
 <v t="ekr.20070925144534.16"><vh>@item -</vh></v>
@@ -8337,7 +8337,7 @@ a menu separator.</t>
 <t tx="ekr.20070925144552"></t>
 <t tx="ekr.20070926082256.1">c.prettyPrintPythonNode()</t>
 <t tx="ekr.20070926082407">@color</t>
-<t tx="ekr.20070926132045"></t>
+<t tx="ekr.20070926132045">All @button nodes in this tree define **global buttons** that appear in all Leo outlines.</t>
 <t tx="ekr.20070927051742"></t>
 <t tx="ekr.20070927051856"></t>
 <t tx="ekr.20070927173324">A placeholder for the actual menu.
