@@ -267,49 +267,6 @@ def initAllEditCommanders (c):
         theInstance.init()
 #@-node:ekr.20050924100713.1:initAllEditCommanders
 #@-node:ekr.20050924100713: Module level...
-#@+node:ekr.20050920085536.84:class Tracker (an iterator)
-class Tracker:
-
-    '''An iterator class to allow the user to cycle through and change a list.'''
-
-    #@    @+others
-    #@+node:ekr.20050920085536.85:init
-    def __init__ (self):
-
-        self.tablist = []
-        self.prefix = None 
-        self.ng = self._next()
-    #@-node:ekr.20050920085536.85:init
-    #@+node:ekr.20050920085536.86:setTabList
-    def setTabList (self,prefix,tlist):
-
-        self.prefix = prefix 
-        self.tablist = tlist
-    #@-node:ekr.20050920085536.86:setTabList
-    #@+node:ekr.20050920085536.87:_next
-    # def _next (self):
-
-        # while 1:
-            # tlist = self.tablist 
-            # if not tlist:yield ''
-            # for z in self.tablist:
-                # if tlist!=self.tablist:
-                    # break 
-                # yield z
-    #@-node:ekr.20050920085536.87:_next
-    #@+node:ekr.20050920085536.88:next
-    def next (self):
-
-        return self.ng.next()
-    #@-node:ekr.20050920085536.88:next
-    #@+node:ekr.20050920085536.89:clear
-    def clear (self):
-
-        self.tablist = []
-        self.prefix = None
-    #@-node:ekr.20050920085536.89:clear
-    #@-others
-#@-node:ekr.20050920085536.84:class Tracker (an iterator)
 #@+node:ekr.20050920084036.13:abbrevCommandsClass (test)
 #@+at
 # 
@@ -369,7 +326,7 @@ class abbrevCommandsClass (baseEditCommandsClass):
             # Static...
             'abbrev-mode':                  self.toggleAbbrevMode,
             'add-global-abbrev':            self.addAbbreviation,
-            'expand-region-abbrevs':        self.regionalExpandAbbrev,
+            # 'expand-region-abbrevs':        self.regionalExpandAbbrev,
             'inverse-add-global-abbrev':    self.addInverseAbbreviation,
             'kill-all-abbrevs':             self.killAllAbbrevs,
             'list-abbrevs':                 self.listAbbrevs,
@@ -608,16 +565,18 @@ class abbrevCommandsClass (baseEditCommandsClass):
             g.es('Can not open',fileName)
     #@-node:ekr.20050920084036.20:readAbbreviations
     #@+node:ekr.20050920084036.21:regionalExpandAbbrev (TK code)
-    def regionalExpandAbbrev (self,event):
+    # def regionalExpandAbbrev (self,event):
 
-        '''Exapand abbreviations throughout a region.'''
+        # '''Exapand abbreviations throughout a region.'''
 
-        k = self.k ; w = self.editWidget(event)
-        if not w or not self._chckSel(event): return
+        # k = self.k ; w = self.editWidget(event)
+        # if not w or not self._chckSel(event): return
 
-        i1,i2 = w.getSelectionRange()
-        ins = w.getInsertPoint()
-        #@    << define a new generator searchXR >>
+        # i1,i2 = w.getSelectionRange()
+        # ins = w.getInsertPoint()
+        # 
+        #@nonl
+        #@<< define a new generator searchXR >>
         #@+node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
         # @ This is a generator (it contains a yield).
         # To make this work we must define a new generator for each call to regionalExpandAbbrev.
@@ -653,9 +612,9 @@ class abbrevCommandsClass (baseEditCommandsClass):
         #@-node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
         #@nl
 
-        # EKR: the 'result' of calling searchXR is a generator object.
-        k.regx.iter = searchXR(i1,i2,ins,event)
-        k.regx.iter.next() # Call it the first time.
+        # # EKR: the 'result' of calling searchXR is a generator object.
+        # k.regx.iter = searchXR(i1,i2,ins,event)
+        # k.regx.iter.next() # Call it the first time.
     #@nonl
     #@-node:ekr.20050920084036.21:regionalExpandAbbrev (TK code)
     #@+node:ekr.20050920084036.23:toggleAbbrevMode
