@@ -81,7 +81,8 @@ def init ():
     ok = True
 
     if g.app.unitTesting:
-        print "\nEmacs plugin installed: double clicking will start..."
+        # print "\nEmacs plugin installed: double clicking will start..."
+        return False
 
     if useDoubleClick: # Open on double click
         leoPlugins.registerHandler("icondclick2", open_in_emacs)
