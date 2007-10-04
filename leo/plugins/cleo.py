@@ -40,7 +40,7 @@ import sys
 #@nonl
 #@-node:tbrown.20060903121429.2:<< imports >>
 #@nl
-__version__ = "0.23"
+__version__ = "0.24"
 #@<< version history >>
 #@+node:tbrown.20060903121429.3:<< version history >>
 #@@killcolor
@@ -111,6 +111,7 @@ __version__ = "0.23"
 # dynamic unit tests.
 # 0.22 EKR: fixed crasher in custom_colours.
 # 0.23 EKR: added 'c' arg to p.isVisible (v.isVisible no longer exists).
+# 0.24 EKR: removed bugs section.
 #@-at
 #@nonl
 #@-node:tbrown.20060903121429.3:<< version history >>
@@ -119,25 +120,6 @@ __version__ = "0.23"
 ok = Tk is not None
 
 #@+others
-#@+node:tbrown.20060903121429.4:BUGS
-#@+node:tbrown.20060903121429.5:squirming
-#@-node:tbrown.20060903121429.5:squirming
-#@+node:tbrown.20060903121429.7:squished
-#@+node:tbrown.20060903121429.8:right clicking icon area on inactive tree gives no redraw
-#@-node:tbrown.20060903121429.8:right clicking icon area on inactive tree gives no redraw
-#@+node:tbrown.20060903121429.9:marks drawn on all trees
-#@-node:tbrown.20060903121429.9:marks drawn on all trees
-#@+node:tbrown.20060903121429.10:still getting no frame bug (from fg/bg?)
-#@-node:tbrown.20060903121429.10:still getting no frame bug (from fg/bg?)
-#@+node:tbrown.20060903121429.6:registering a frame-close handler...
-#@+at
-# trying to use close-frame to unregister handlers, but as soon as
-# it's triggered the whole plug-in dies.  Not that big a deal.
-#@-at
-#@nonl
-#@-node:tbrown.20060903121429.6:registering a frame-close handler...
-#@-node:tbrown.20060903121429.7:squished
-#@-node:tbrown.20060903121429.4:BUGS
 #@+node:tbrown.20060903121429.11:class TkPickleVar(Tk.Variable)
 if ok: # Don't define this if import Tkinter failed.
 
