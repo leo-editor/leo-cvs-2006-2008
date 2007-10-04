@@ -2497,10 +2497,13 @@ def idleTimeHookHandler(*args,**keys):
 
     if 0: # Do not use g.trace here!
         global trace_count ; trace_count += 1
-        if trace_count % 10 == 0:
-            for z in g.app.windowList:
-                c = z.c
-                print "idleTimeHookHandler",trace_count,c.shortFileName()
+        if 1:
+            print 'idleTimeHookHandler',trace_count
+        else:
+            if trace_count % 10 == 0:
+                for z in g.app.windowList:
+                    c = z.c
+                    print "idleTimeHookHandler",trace_count,c.shortFileName()
 
     # New for Python 2.3: may be called during shutdown.
     if g.app.killed: return
@@ -2519,6 +2522,7 @@ def idleTimeHookHandler(*args,**keys):
         g.app.afterHandler = g.idleTimeHookHandler
     else:
         g.app.afterHandler = None
+#@nonl
 #@-node:EKR.20040602125018.2:idleTimeHookHandler
 #@-node:ekr.20031218072017.1315:idle time functions (leoGlobals)
 #@+node:ekr.20031218072017.1596:g.doHook
