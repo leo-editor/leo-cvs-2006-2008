@@ -7068,11 +7068,15 @@ class baseCommands:
 
         # Keep the body text in the tnode up-to-date.
         if v.t.bodyString != s:
-            v.setTnodeText(s)
-            v.t.setSelection(0,0)
-            p.setDirty()
-            if not c.isChanged():
-                c.setChanged(True)
+            c.beginUpdate()
+            try:
+                v.setTnodeText(s)
+                v.t.setSelection(0,0)
+                p.setDirty()
+                if not c.isChanged():
+                    c.setChanged(True)
+            finally:
+                c.endUpdate()
     #@-node:ekr.20040305223522:c.setBodyString
     #@+node:ekr.20031218072017.2989:c.setChanged
     def setChanged (self,changedFlag):
