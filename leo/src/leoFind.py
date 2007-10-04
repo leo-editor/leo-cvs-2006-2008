@@ -194,7 +194,7 @@ class leoFind:
             self.reverse = None
             self.script_search = None
             self.script_change = None
-            self.selection_only = None
+            # self.selection_only = None
             self.wrap = None
             self.whole_word = None
 
@@ -259,8 +259,8 @@ class leoFind:
 
         if self.script_change:
             self.doChangeAllScript()
-        elif self.selection_only:
-            self.change()
+        # elif self.selection_only:
+            # self.change()
         else:
             self.changeAll()
     #@-node:ekr.20031218072017.3057:changeAllButton
@@ -307,8 +307,8 @@ class leoFind:
 
         if self.script_search:
             self.doFindAllScript()
-        elif self.selection_only:
-            self.findNext()
+        # elif self.selection_only:
+            # self.findNext()
         else:
             self.findAll()
     #@-node:ekr.20031218072017.3060:findAllButton
@@ -743,14 +743,14 @@ class leoFind:
 
         pos, newpos = self.findNextMatch()
 
-        if pos is not None:
-            self.showSuccess(pos,newpos)
-        else:
+        if pos is None:
             if self.wrapping:
                 g.es("end of wrapped search")
             else:
                 g.es("not found: " + "'" + self.find_text + "'")
             self.restore(data)
+        else:
+            self.showSuccess(pos,newpos)
     #@-node:ekr.20031218072017.3074:findNext
     #@+node:ekr.20031218072017.3075:findNextMatch
     # Resumes the search where it left off.
@@ -767,6 +767,7 @@ class leoFind:
             return None, None
 
         p = self.p ; self.errors = 0
+        attempts = 0
         while p:
             pos, newpos = self.search()
             # g.trace('pos',pos,'p',p.headString(),g.callers())
@@ -776,11 +777,14 @@ class leoFind:
                     c.frame.tree.drawIcon(p) # redraw only the icon.
                 return pos, newpos
             elif self.errors:
+                g.trace('find errors')
                 return None,None # Abort the search.
             elif self.node_only:
                 return None,None # We are only searching one node.
             else:
+                attempts += 1
                 p = self.p = self.selectNextPosition()
+        g.trace('attempts',attempts)
         return None, None
     #@-node:ekr.20031218072017.3075:findNextMatch
     #@+node:ekr.20031218072017.3076:resetWrap
@@ -813,10 +817,11 @@ class leoFind:
         if self.wrapping and self.wrapPos is not None and self.wrapPosition and p == self.wrapPosition:
 
             if self.reverse and pos < self.wrapPos:
-                # g.trace("wrap done")
+                # g.trace("reverse wrap done")
                 return None, None
 
             if not self.reverse and newpos > self.wrapPos:
+                # g.trace('wrap done')
                 return None, None
         #@-node:ekr.20060526140328:<< fail if we are passed the wrap point >>
         #@nl
@@ -904,7 +909,7 @@ class leoFind:
                     j = max(0,k-1)
         else:
             k = s.rfind(pattern,i,j)
-            # g.trace(i,j,k)
+            # g.trace(i,j,g.choose(j==len(s),'(end)',''),k)
             if k == -1:
                 return -1, -1
             else:
@@ -990,10 +995,10 @@ class leoFind:
 
     def selectNextPosition(self):
 
-        c = self.c ; p = self.p
+        c = self.c ; p = self.p ; trace = False
 
-        if self.selection_only:
-            return None
+        # if self.selection_only:
+            # return None
 
         # Start suboutline only searches.
         if self.suboutline_only and not self.onlyPosition:
@@ -1012,11 +1017,13 @@ class leoFind:
             # just switch to body pane.
             self.in_headline = False
             self.initNextText()
-            # g.trace('switching to body',g.callers(5))
+            if trace: g.trace('switching to body',g.callers(5))
             return p
 
         if self.reverse: p = p.threadBack()
         else:            p = p.threadNext()
+
+        # if trace: g.trace(p and p.headString() or 'None')
 
         # New in 4.3: restrict searches to hoisted area.
         # End searches outside hoisted area.
@@ -1041,7 +1048,7 @@ class leoFind:
 
         # End wrapped searches.
         if self.wrapping and p and p == self.wrapPosition:
-            # g.trace("ending wrapped search")
+            if trace: g.trace("ending wrapped search")
             p = None ; self.resetWrap()
 
         # End suboutline only searches.
@@ -1123,16 +1130,18 @@ class leoFind:
         self.errors = 0
 
         # Select the first node.
-        if self.suboutline_only or self.node_only or self.selection_only:
+        if self.suboutline_only or self.node_only: # or self.selection_only:
             self.p = c.currentPosition()
-            if self.selection_only: self.selStart,self.selEnd = w.getSelectionRange()
-            else:                   self.selStart,self.selEnd = None,None
+            self.selStart,self.selEnd = None,None
+            # if self.selection_only: self.selStart,self.selEnd = w.getSelectionRange()
+            # else:                   self.selStart,self.selEnd = None,None
         else:
             p = c.rootPosition()
             if self.reverse:
-                while p and p.next():
-                    p = p.next()
                 p = p.lastNode()
+                # while p and p.next():
+                    # p = p.next()
+                # p = p.lastNode()
             self.p = p
 
         # Set the insert point.
@@ -1285,6 +1294,7 @@ class leoFind:
                         p.expand()
                         redraw = True
             p = self.p
+            if not p: g.trace('can not happen: self.p is None')
             c.selectPosition(p)
         finally:
             c.endUpdate(redraw)
