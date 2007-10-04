@@ -5458,9 +5458,9 @@ class killBufferCommandsClass (baseEditCommandsClass):
         baseEditCommandsClass.__init__(self,c) # init the base class.
 
         self.killBuffer = [] # May be changed in finishCreate.
-        ### self.kbiterator = self.iterateKillBuffer()
+        self.kbiterator = self.iterateKillBuffer()
         self.last_clipboard = None # For interacting with system clipboard.
-        self.reset = False
+        # self.reset = False
 
     def finishCreate (self):
 
@@ -5491,19 +5491,23 @@ class killBufferCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.183:addToKillBuffer
     def addToKillBuffer (self,text):
 
-        killKeys =(
-            '<Control-k>', '<Control-w>',
-            '<Alt-d>', '<Alt-Delete', '<Alt-z>', '<Delete>',
-            '<Control-Alt-w>')
+        # killKeys =(
+            # '<Control-k>', '<Control-w>',
+            # '<Alt-d>', '<Alt-Delete', '<Alt-z>', '<Delete>',
+            # '<Control-Alt-w>')
 
-        k = self.k
-        self.reset = True
+        # k = self.k
+        # self.reset = True
 
-        # g.trace(repr(text))
+        # # g.trace(repr(text))
 
-        if self.killBuffer and k.stroke in killKeys:
-            self.killBuffer [0] = self.killBuffer [0] + text
-        else:
+        # if self.killBuffer and k.stroke in killKeys:
+            # self.killBuffer [0] = self.killBuffer [0] + text
+        # else:
+            # self.killBuffer.insert(0,text)
+
+        # Don't bother with just whitespace.
+        if text.strip():
             self.killBuffer.insert(0,text)
     #@-node:ekr.20050920084036.183:addToKillBuffer
     #@+node:ekr.20050920084036.181:backwardKillSentence
@@ -5585,8 +5589,48 @@ class killBufferCommandsClass (baseEditCommandsClass):
                         # self.reset = False
                         # break
                     # yield z
+
+    class killBuffer_iter_class:
+
+        """Returns a list of positions in a subtree, possibly including the root of the subtree."""
+
+        #@    @+others
+        #@+node:ekr.20071003160252.1:__init__ & __iter__
+        def __init__(self,c):
+
+            # g.trace('iterateKillBuffer.__init')
+            self.c = c
+            self.index = -1 # start with item 0.
+
+        def __iter__(self):
+
+            return self
+        #@-node:ekr.20071003160252.1:__init__ & __iter__
+        #@+node:ekr.20071003160252.2:next
+        def next(self):
+
+            commands = self.c.killBufferCommands
+
+            aList = commands.killBuffer
+
+            # g.trace(g.listToString([repr(z) for z in aList]))
+
+            if not aList:
+                return '<empty>'
+            elif self.index < len(aList):
+                self.index += 1
+                return aList[self.index-1]
+            else:
+                self.index = -1
+                return aList[0]
+        #@-node:ekr.20071003160252.2:next
+        #@-others
+
+    def iterateKillBuffer (self):
+
+        return self.killBuffer_iter_class(self.c)
     #@-node:ekr.20050920084036.184:iterateKillBuffer
-    #@+node:ekr.20050920084036.178:kill, killLine
+    #@+node:ekr.20050920084036.178:kill
     def kill (self,event,frm,to,undoType=None):
 
         k = self.k
@@ -5602,7 +5646,8 @@ class killBufferCommandsClass (baseEditCommandsClass):
         if undoType:
             self.c.frame.body.forceFullRecolor()
             self.endCommand(changed=True,setLabel=True)
-
+    #@-node:ekr.20050920084036.178:kill
+    #@+node:ekr.20071003183657:KillLine
     def killLine (self,event):
         '''Kill the line containing the cursor.'''
         w = self.editWidget(event)
@@ -5619,7 +5664,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
         else: # Kill the newline.
             pass
         self.kill(event,i,j,undoType='kill-line')
-    #@-node:ekr.20050920084036.178:kill, killLine
+    #@-node:ekr.20071003183657:KillLine
     #@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
     def killRegion (self,event):
         '''Kill the text selection.'''
@@ -5700,17 +5745,23 @@ class killBufferCommandsClass (baseEditCommandsClass):
         if g.app.gui.guiName() != 'tkinter':
             return g.es('command not ready yet',color='blue')
 
-        i = w.getInsertPoint()
+        #ins = w.getInsertPoint()
+        i,j = w.getSelectionRange()
         clip_text = self.getClipboard(w)
 
         if self.killBuffer or clip_text:
             self.beginCommand(undoType='yank')
-            self.reset = True
+            # self.reset = True
             s = clip_text or self.kbiterator.next()
-            w.tag_delete('kb')
-            w.insert(i,s) # Insert the text, marked with the 'kb' tag.
-            w.tag_add('kb',w.toGuiIndex(i),w.toGuiIndex(i+len(s)))
-            w.setInsertPoint(i+len(s))
+            # w.tag_delete('kb')
+            if i == j:
+                w.insert(i,s)
+            else:
+                w.deleteTextSelection()
+                w.insert(i,s) # Insert the text, marked with the 'kb' tag.
+            #w.tag_add('kb',w.toGuiIndex(i),w.toGuiIndex(i+len(s)))
+            w.setSelectionRange(i,i+len(s),insert=i+len(s))
+            #w.setInsertPoint(i+len(s))
             c.frame.body.forceFullRecolor()
             self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050930091642.1:yank
