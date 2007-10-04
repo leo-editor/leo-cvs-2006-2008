@@ -4500,7 +4500,7 @@ if g.unitTesting:
                 key.startswith('delete-') and key.endswith('-button')
             ):
                 vals2.append(key)
-            elif key in buttonKeys: ### ('save','unit-test',):
+            elif key in buttonKeys:
                 # List of buttons defined in this file.
                 vals2.append(key)
             elif key.startswith('open-with-'):

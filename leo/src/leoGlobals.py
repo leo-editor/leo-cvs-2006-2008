@@ -9,8 +9,6 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-### from __future__ import generators # To make the code work in Python 2.2.
-
 __pychecker__ = '--no-import --no-reimportself --no-reimport\
      --no-constCond --no-constant1'
     # Disable all import warnings: This module must do strange things with imports. 

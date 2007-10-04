@@ -4,8 +4,6 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-### from __future__ import generators # To make the code work in Python 2.2.
-
 __pychecker__ = '--no-reuseattr' # Suppress warnings about redefining vnode and tnode classes.
 
 use_zodb = False

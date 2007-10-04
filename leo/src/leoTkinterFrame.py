@@ -1387,8 +1387,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         frame = self ; c = frame.c
 
         frame.tree.setFontFromConfig()
-        ### frame.tree.setColorFromConfig()
-
         frame.configureBarsFromConfig()
 
         frame.body.setFontFromConfig()
@@ -3101,9 +3099,9 @@ class leoTkTextWidget (Tk.Text):
     # def _getLastPosition(self):         return self.widget.index('end')
     # def _getSelectedText(self):         return self.widget.get('sel.start','sel.end')
     # def _getSelectionRange(self):       return self.widget.index('sel.start'),self.widget.index('sel.end')
-    # def _hitTest(self,pos):             pass ###
+    # def _hitTest(self,pos):             pass
     # def _insertText(self,i,s):          return self.widget.insert(i,s)
-    # def _scrollLines(self,n):           pass ###
+    # def _scrollLines(self,n):           pass
     # def _see(self,i):                   return self.widget.see(i)
     # def _setAllText(self,s):            self.widget.delete('1.0','end') ; self.widget.insert('1.0',s)
     # def _setBackgroundColor(self,color): return self.widget.configure(background=color)

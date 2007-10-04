@@ -706,7 +706,7 @@ class leoBody:
         frame.body = self
 
         # May be overridden in subclasses...
-        self.bodyCtrl = self.widget = None ### self
+        self.bodyCtrl = self.widget = None
         self.numberOfEditors = 1
         self.pb = None # paned body widget.
 
@@ -3219,7 +3219,7 @@ class nullLog (leoLog):
     #@+node:ekr.20041012083237.3:put and putnl (nullLog)
     def put (self,s,color=None,tabName='Log'):
         if self.enabled:
-            ### g.rawPrint(s)
+            # g.rawPrint(s)
             try:
                 print s,
             except UnicodeError:

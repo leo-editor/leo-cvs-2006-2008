@@ -8,8 +8,6 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-### from __future__ import generators # To make the code work in Python 2.2.
-
 __pychecker__ = '--no-constCond -- no-constant1'
     # Disable checks for constant conditionals.
 
@@ -213,7 +211,7 @@ class baseCommands:
             useGlobalKillbuffer=True,
             useGlobalRegisters=True)
 
-        if initEditCommanders: ### g.app.config and g.app.config.inited:
+        if initEditCommanders:
             # A 'real' .leo file.
             c.commandsDict = leoEditCommands.finishCreateEditCommanders(c)
             k.finishCreate()
@@ -4280,7 +4278,6 @@ class baseCommands:
             s = p.bodyString()
             if not s: return
 
-            ### readlines = g.readLinesGenerator(s).next # not valid in jyleo.
             readlines = g.readLinesClass(s).next
 
             try:
