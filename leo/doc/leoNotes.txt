@@ -2446,6 +2446,48 @@ def update (self):          pass
 #@-node:ekr.20070930114157.4:Window...
 #@-node:ekr.20070930114157:Overrides
 #@-node:ekr.20071001091647:swingFrame stubs (no longer used)
+#@+node:ekr.20050920085536.84:class Tracker (an iterator)
+class Tracker:
+
+    '''An iterator class to allow the user to cycle through and change a list.'''
+
+    @others
+#@+node:ekr.20050920085536.85:init
+def __init__ (self):
+
+    self.tablist = []
+    self.prefix = None 
+    self.ng = self._next()
+#@-node:ekr.20050920085536.85:init
+#@+node:ekr.20050920085536.86:setTabList
+def setTabList (self,prefix,tlist):
+
+    self.prefix = prefix 
+    self.tablist = tlist
+#@-node:ekr.20050920085536.86:setTabList
+#@+node:ekr.20050920085536.87:_next
+# def _next (self):
+
+    # while 1:
+        # tlist = self.tablist 
+        # if not tlist:yield ''
+        # for z in self.tablist:
+            # if tlist!=self.tablist:
+                # break 
+            # yield z
+#@-node:ekr.20050920085536.87:_next
+#@+node:ekr.20050920085536.88:next
+def next (self):
+
+    return self.ng.next()
+#@-node:ekr.20050920085536.88:next
+#@+node:ekr.20050920085536.89:clear
+def clear (self):
+
+    self.tablist = []
+    self.prefix = None
+#@-node:ekr.20050920085536.89:clear
+#@-node:ekr.20050920085536.84:class Tracker (an iterator)
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl
