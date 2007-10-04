@@ -331,7 +331,7 @@ class baseTextWidget:
         if len(sel) == 2 and sel[0] >= 0 and sel[1] >= 0:
             #g.trace(self,'baseWidget: sel',repr(sel),g.callers(6))
             i,j = sel
-            if sort and i > j: i,j = j,i
+            if sort and i > j: sel = j,i # Bug fix: 10/5/07
             return sel
         else:
             # Return the insertion point if there is no selected text.
