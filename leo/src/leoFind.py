@@ -762,6 +762,7 @@ class leoFind:
 
         p = self.p ; self.errors = 0
         attempts = 0
+        self.backwardAttempts = 0
         while p:
             pos, newpos = self.search()
             # g.trace('pos',pos,'p',p.headString(),g.callers())
@@ -778,7 +779,7 @@ class leoFind:
             else:
                 attempts += 1
                 p = self.p = self.selectNextPosition()
-        g.trace('attempts',attempts)
+        # g.trace('attempts',attempts,'backwardAttempts',self.backwardAttempts)
         return None, None
     #@-node:ekr.20031218072017.3075:findNextMatch
     #@+node:ekr.20031218072017.3076:resetWrap
@@ -797,8 +798,8 @@ class leoFind:
 
         c = self.c ; p = self.p ; w = self.s_ctrl
         index = w.getInsertPoint()
-
         s = w.getAllText()
+
         # g.trace(index,repr(s[index:index+20]))
         stopindex = g.choose(self.reverse,0,len(s)) # 'end' doesn't work here.
         pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
@@ -830,7 +831,7 @@ class leoFind:
         # g.trace(backwards,i,j,repr(s[i:i+20]))
 
         if not s[i:j] or not pattern:
-            # g.trace('empty',i,j)
+            # if s: g.trace('empty',i,j,'len(s)',len(s),'pattern',pattern)
             return -1,-1
 
         if regexp:
@@ -885,14 +886,46 @@ class leoFind:
         return -1,-1
     #@-node:ekr.20060526092203:regexHelper
     #@+node:ekr.20060526140744:backwardsHelper
+    debugIndices = []
+
+    #@+at
+    # rfind(sub [,start [,end]])
+    # 
+    # Return the highest index in the string where substring sub is found, 
+    # such that
+    # sub is contained within s[start,end]. Optional arguments start and end 
+    # are
+    # interpreted as in slice notation. Return -1 on failure.
+    #@-at
+    #@@c
+
     def backwardsHelper (self,s,i,j,pattern,nocase,word):
 
+        debug = False
         if nocase:
-            s = s.lower() ; pattern.lower()
+            s = s.lower() ; pattern = pattern.lower() # Bug fix: 10/5/06: At last the bug is found!
         pattern = self.replaceBackSlashes(pattern)
         n = len(pattern)
 
+        if i < 0 or i > len(s) or j < 0 or j > len(s):
+            g.trace('bad index: i = %s, j = %s' % (i,j))
+            i = 0 ; j = len(s)
+
+        if debug and (s and i == 0 and j == 0):
+            g.trace('two zero indices')
+
+        self.backwardAttempts += 1
+
+        # short circuit the search: helps debugging.
+        if s.find(pattern) == -1:
+            if debug:
+                self.debugCount += 1
+                if self.debugCount < 50:
+                    g.trace(i,j,'len(s)',len(s),self.p.headString())
+            return -1,-1
+
         if word:
+            if debug: g.trace('**word** %3s %3s %5s -> %s %s' % (i,j,g.choose(j==len(s),'(end)',''),k,self.p.headString()))
             while 1:
                 k = s.rfind(pattern,i,j)
                 # g.trace(i,j,k)
@@ -903,7 +936,7 @@ class leoFind:
                     j = max(0,k-1)
         else:
             k = s.rfind(pattern,i,j)
-            # g.trace(i,j,g.choose(j==len(s),'(end)',''),k)
+            if debug: g.trace('%3s %3s %5s -> %s %s' % (i,j,g.choose(j==len(s),'(end)',''),k,self.p.headString()))
             if k == -1:
                 return -1, -1
             else:
@@ -1146,6 +1179,9 @@ class leoFind:
         w.setAllText(s)
         if ins is None:
             ins = g.choose(self.reverse,len(s),0)
+            # print g.choose(self.reverse,'.','*'),
+        else:
+            pass # g.trace('ins',ins)
         w.setInsertPoint(ins)
     #@-node:ekr.20031218072017.3085:initBatchText, initNextText & init_s_ctrl
     #@+node:ekr.20031218072017.3086:initInHeadline
@@ -1178,6 +1214,8 @@ class leoFind:
 
         # We only use the insert point, *never* the selection range.
         ins = w.getInsertPoint()
+        # g.trace('ins',ins)
+        self.debugCount = 0
         self.initNextText(ins=ins)
         c.widgetWantsFocus(w)
 
