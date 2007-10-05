@@ -5417,7 +5417,9 @@ class killBufferCommandsClass (baseEditCommandsClass):
         self.killBuffer = [] # May be changed in finishCreate.
         self.kbiterator = self.iterateKillBuffer()
         self.last_clipboard = None # For interacting with system clipboard.
-        # self.reset = False
+        self.lastYankP = None # The position of the last item returned by iterateKillBuffer.
+        self.reset = None
+            # None, or the index of the next item to be returned in killBuffer by iterateKillBuffer.
 
     def finishCreate (self):
 
@@ -5441,27 +5443,12 @@ class killBufferCommandsClass (baseEditCommandsClass):
             'kill-region':              self.killRegion,
             'kill-region-save':         self.killRegionSave,
             'yank':                     self.yank,
-            'yank-pop':                 self.yankPop,
+            # 'yank-pop':                 self.yankPop,
             'zap-to-character':         self.zapToCharacter,
         }
     #@-node:ekr.20050920084036.176: getPublicCommands
     #@+node:ekr.20050920084036.183:addToKillBuffer
     def addToKillBuffer (self,text):
-
-        # killKeys =(
-            # '<Control-k>', '<Control-w>',
-            # '<Alt-d>', '<Alt-Delete', '<Alt-z>', '<Delete>',
-            # '<Control-Alt-w>')
-
-        # k = self.k
-        # self.reset = True
-
-        # # g.trace(repr(text))
-
-        # if self.killBuffer and k.stroke in killKeys:
-            # self.killBuffer [0] = self.killBuffer [0] + text
-        # else:
-            # self.killBuffer.insert(0,text)
 
         # Don't bother with just whitespace.
         if text.strip():
@@ -5536,17 +5523,6 @@ class killBufferCommandsClass (baseEditCommandsClass):
         return None
     #@-node:ekr.20050920084036.185:getClipboard
     #@+node:ekr.20050920084036.184:iterateKillBuffer
-    # def iterateKillBuffer (self):
-
-        # while 1:
-            # if self.killBuffer:
-                # self.last_clipboard = None
-                # for z in self.killBuffer:
-                    # if self.reset:
-                        # self.reset = False
-                        # break
-                    # yield z
-
     class killBuffer_iter_class:
 
         """Returns a list of positions in a subtree, possibly including the root of the subtree."""
@@ -5557,7 +5533,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
 
             # g.trace('iterateKillBuffer.__init')
             self.c = c
-            self.index = -1 # start with item 0.
+            self.index = 0 # The index of the next item to be returned.
 
         def __iter__(self):
 
@@ -5567,19 +5543,25 @@ class killBufferCommandsClass (baseEditCommandsClass):
         def next(self):
 
             commands = self.c.killBufferCommands
-
             aList = commands.killBuffer
 
             # g.trace(g.listToString([repr(z) for z in aList]))
 
             if not aList:
-                return '<empty>'
-            elif self.index < len(aList):
-                self.index += 1
-                return aList[self.index-1]
+                self.index = 0
+                return None
+
+            if commands.reset is None:
+                i = self.index
             else:
-                self.index = -1
-                return aList[0]
+                i = commands.reset
+                commands.reset = None
+
+            if i < 0 or i >= len(aList): i = 0
+            g.trace(i)
+            val = aList[i]
+            self.index = i + 1
+            return val
         #@-node:ekr.20071003160252.2:next
         #@-others
 
@@ -5696,57 +5678,31 @@ class killBufferCommandsClass (baseEditCommandsClass):
 
         '''Insert the next entry in the kill ring at the insert point.'''
 
+        # There is no need for the yank-pop command.
+
         c = self.c ; k = self.k
         w = self.editWidget(event)
         if not w: return
-        if g.app.gui.guiName() != 'tkinter':
-            return g.es('command not ready yet',color='blue')
-
-        #ins = w.getInsertPoint()
-        i,j = w.getSelectionRange()
+        current = c.currentPosition()
+        if not current: return
+        i, j = w.getSelectionRange()
         clip_text = self.getClipboard(w)
+        if not self.killBuffer and not clip_text: return
 
-        if self.killBuffer or clip_text:
-            self.beginCommand(undoType='yank')
-            # self.reset = True
-            s = clip_text or self.kbiterator.next()
-            # w.tag_delete('kb')
-            if i == j:
-                w.insert(i,s)
-            else:
-                w.deleteTextSelection()
-                w.insert(i,s) # Insert the text, marked with the 'kb' tag.
-            #w.tag_add('kb',w.toGuiIndex(i),w.toGuiIndex(i+len(s)))
+        self.beginCommand(undoType='yank')
+        try:
+            if i == j or self.lastYankP and self.lastYankP != current:
+                self.reset = 0
+            s = self.kbiterator.next()
+            if s is None: s = clip_text or ''
+            if i != j: w.deleteTextSelection()
+            w.insert(i,s)
             w.setSelectionRange(i,i+len(s),insert=i+len(s))
-            #w.setInsertPoint(i+len(s))
+            self.lastYankP = current.copy()
             c.frame.body.forceFullRecolor()
+        finally:
             self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050930091642.1:yank
-    #@+node:ekr.20050930091642.2:yankPop
-    def yankPop (self,event):
-
-        '''Replaces the just-yanked kill buffer with the contents of the previous kill buffer.'''
-
-        k = self.k ; w = self.editWidget(event)
-        if not w: return
-
-        s = w.getAllText()
-        ins = w.getInsertPoint()
-        t,t1 = g.convertPythonIndexToRowCol(s,ins)
-        clip_text = self.getClipboard(w)
-
-        if self.killBuffer or clip_text:
-            s = clip_text or self.kbiterator.next()
-            r = w.tag_ranges('kb') ###
-            if r:
-                r1,r2 = r
-                r1,r2 = w.toPythonIndex(r1),w.toPythonIndex(r2)
-                if r1 == ins:
-                    w.delete(r1,r2)
-            w.tag_delete('kb') ###
-            w.insert('insert',s,('kb')) ###
-            w.setInsertPoint(ins)
-    #@-node:ekr.20050930091642.2:yankPop
     #@+node:ekr.20050920084036.128:zapToCharacter
     def zapToCharacter (self,event):
 
