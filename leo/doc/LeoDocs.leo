@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="349" height="719" width="892"/>
+	<global_window_position top="10" left="349" height="699" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -786,6 +786,7 @@
 <v t="ekr.20071004110818"><vh>@menus trees</vh></v>
 </v>
 <v t="ekr.20070809145744.6"><vh>New plugins</vh></v>
+<v t="ekr.20071005100213"><vh>Leo's core is now compatible with jython</vh></v>
 <v t="ekr.20070809145744.7"><vh>Minor improvements</vh></v>
 <v t="ekr.20070809145744.4"><vh>Summary of new commands</vh></v>
 <v t="ekr.20070809145744.8"><vh>@rst-no-head end stuff</vh></v>
@@ -1103,6 +1104,7 @@
 <v t="ekr.20071004110818"><vh>@menus trees</vh></v>
 </v>
 <v t="ekr.20070809145744.6"><vh>New plugins</vh></v>
+<v t="ekr.20071005100213"><vh>Leo's core is now compatible with jython</vh></v>
 <v t="ekr.20070809145744.7"><vh>Minor improvements</vh></v>
 <v t="ekr.20070809145744.4"><vh>Summary of new commands</vh></v>
 <v t="ekr.20070809145744.8"><vh>@rst-no-head end stuff</vh></v>
@@ -3325,6 +3327,7 @@
 <v t="ekr.20071004105000"><vh>Added the graphed plugin</vh></v>
 <v t="ekr.20071004101443.178"><vh>Added new convenience methods for scripts and plugins</vh></v>
 <v t="ekr.20071004101443.30"><vh>Added button font settings</vh></v>
+<v t="ekr.20071005095907"><vh>Leo's core is now compatible with jython</vh></v>
 </v>
 </v>
 </v>
@@ -31860,6 +31863,7 @@ verbose=True
 What's New in Leo 4.4.4
 ##########################################
 
+Leo 4.4.4 contains many important features originally planned for later releases.
 The highlights of Leo 4.4.4:
     
 - **The Great Graph Aha**: simple scripts allow Leo outlines to represent arbitrary
@@ -31879,6 +31883,8 @@ The highlights of Leo 4.4.4:
 - A new, faster, **colorizer plugin** replaces the __jEdit_colorizer__ plugin.
   
 - New commands for **resolving cvs conflicts**.
+
+- Leo's core is now compatible with jython.
     
 .. contents::</t>
 <t tx="ekr.20070809145744.2">.. Links used in this document.
@@ -32224,10 +32230,13 @@ window). It then creates clones of all inserted, deleted and changed nodes.</t>
 <t tx="ekr.20071001122703">All @buttons tree in a settings file defines global buttons that are created in
 the icon area of all .leo files. You define @button nodes in the @buttons tree
 as usual.</t>
-<t tx="ekr.20071004101349">Leo 4.4.4 final                              October 5, 2007
+<t tx="ekr.20071004101349">Leo 4.4.4 final                              October 7, 2007
 
 Leo 4.4.4 final is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo 4.4.4 contains many important features originally planned for later releases.
+It's been a good month :-)
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
@@ -32253,6 +32262,8 @@ The highlights of Leo 4.4.4:
 
 - A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
   This plugin features much better performance.
+  
+- Leo is now compatible with jython.
 
 - The usual assortment of bug fixes and other minor improvements.
 
@@ -32344,5 +32355,11 @@ However, if the command name starts with a '*', hyphens are removed from the
 menu name. Menu names and command names may contain a single ampersand (&amp;). If
 present, the following character is underlined in the name. If the command name
 in an @item node is just a hyphen (-), the item represents a menu separator.</t>
+<t tx="ekr.20071005095907">- Replaced all 'yield' statements with iterators.
+
+- Added 'jyLeo' keyword to leo.run.
+
+- All of Leo's startup code works with the swing gui enabled (jyLeo = True in leo.run).</t>
+<t tx="ekr.20071005100213">Essentially all of Leo's startup code now runs with jython 2.2 and the (unfinished!) swing gui.</t>
 </tnodes>
 </leo_file>

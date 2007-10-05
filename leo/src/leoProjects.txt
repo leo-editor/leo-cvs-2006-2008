@@ -23193,6 +23193,17 @@ Simplified the code:
 - initBatch/NextText now take an optional ins argument.
   Both these methods set the insert point by calling init_s_ctrl.
 
+
+The bug fix was to change:
+
+pattern.lower()
+
+to:
+
+pattern = pattern.lower()
+
+in backwardsHelper.
+
 @color
 #@nonl
 #@+node:ekr.20061212084717:class leoFind
@@ -23801,6 +23812,7 @@ def findNextMatch(self):
 
     p = self.p ; self.errors = 0
     attempts = 0
+    self.backwardAttempts = 0
     while p:
         pos, newpos = self.search()
         # g.trace('pos',pos,'p',p.headString(),g.callers())
@@ -23817,7 +23829,7 @@ def findNextMatch(self):
         else:
             attempts += 1
             p = self.p = self.selectNextPosition()
-    g.trace('attempts',attempts)
+    # g.trace('attempts',attempts,'backwardAttempts',self.backwardAttempts)
     return None, None
 #@-node:ekr.20031218072017.3075:findNextMatch
 #@+node:ekr.20031218072017.3076:resetWrap
@@ -23836,8 +23848,8 @@ def search (self):
 
     c = self.c ; p = self.p ; w = self.s_ctrl
     index = w.getInsertPoint()
-
     s = w.getAllText()
+
     # g.trace(index,repr(s[index:index+20]))
     stopindex = g.choose(self.reverse,0,len(s)) # 'end' doesn't work here.
     pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
@@ -23868,7 +23880,7 @@ def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word,swapij=True):
     # g.trace(backwards,i,j,repr(s[i:i+20]))
 
     if not s[i:j] or not pattern:
-        # g.trace('empty',i,j)
+        # if s: g.trace('empty',i,j,'len(s)',len(s),'pattern',pattern)
         return -1,-1
 
     if regexp:
@@ -23923,14 +23935,43 @@ def regexHelper (self,s,i,j,pattern,backwards,nocase):
     return -1,-1
 #@-node:ekr.20060526092203:regexHelper
 #@+node:ekr.20060526140744:backwardsHelper
+debugIndices = []
+
+@
+rfind(sub [,start [,end]])
+
+Return the highest index in the string where substring sub is found, such that
+sub is contained within s[start,end]. Optional arguments start and end are
+interpreted as in slice notation. Return -1 on failure.
+@c
+
 def backwardsHelper (self,s,i,j,pattern,nocase,word):
 
+    debug = False
     if nocase:
-        s = s.lower() ; pattern.lower()
+        s = s.lower() ; pattern = pattern.lower() # Bug fix: 10/5/06: At last the bug is found!
     pattern = self.replaceBackSlashes(pattern)
     n = len(pattern)
 
+    if i < 0 or i > len(s) or j < 0 or j > len(s):
+        g.trace('bad index: i = %s, j = %s' % (i,j))
+        i = 0 ; j = len(s)
+
+    if debug and (s and i == 0 and j == 0):
+        g.trace('two zero indices')
+
+    self.backwardAttempts += 1
+
+    # short circuit the search: helps debugging.
+    if s.find(pattern) == -1:
+        if debug:
+            self.debugCount += 1
+            if self.debugCount < 50:
+                g.trace(i,j,'len(s)',len(s),self.p.headString())
+        return -1,-1
+
     if word:
+        if debug: g.trace('**word** %3s %3s %5s -> %s %s' % (i,j,g.choose(j==len(s),'(end)',''),k,self.p.headString()))
         while 1:
             k = s.rfind(pattern,i,j)
             # g.trace(i,j,k)
@@ -23941,7 +23982,7 @@ def backwardsHelper (self,s,i,j,pattern,nocase,word):
                 j = max(0,k-1)
     else:
         k = s.rfind(pattern,i,j)
-        # g.trace(i,j,g.choose(j==len(s),'(end)',''),k)
+        if debug: g.trace('%3s %3s %5s -> %s %s' % (i,j,g.choose(j==len(s),'(end)',''),k,self.p.headString()))
         if k == -1:
             return -1, -1
         else:
@@ -24184,6 +24225,9 @@ def init_s_ctrl (self,s,ins):
     w.setAllText(s)
     if ins is None:
         ins = g.choose(self.reverse,len(s),0)
+        # print g.choose(self.reverse,'.','*'),
+    else:
+        pass # g.trace('ins',ins)
     w.setInsertPoint(ins)
 #@-node:ekr.20031218072017.3085:initBatchText, initNextText & init_s_ctrl
 #@+node:ekr.20031218072017.3086:initInHeadline
@@ -24216,6 +24260,8 @@ def initInteractiveCommands(self):
 
     # We only use the insert point, *never* the selection range.
     ins = w.getInsertPoint()
+    # g.trace('ins',ins)
+    self.debugCount = 0
     self.initNextText(ins=ins)
     c.widgetWantsFocus(w)
 
@@ -24404,6 +24450,7 @@ def findNextMatch(self):
 
     p = self.p ; self.errors = 0
     attempts = 0
+    self.backwardAttempts = 0
     while p:
         pos, newpos = self.search()
         # g.trace('pos',pos,'p',p.headString(),g.callers())
@@ -24420,7 +24467,7 @@ def findNextMatch(self):
         else:
             attempts += 1
             p = self.p = self.selectNextPosition()
-    g.trace('attempts',attempts)
+    # g.trace('attempts',attempts,'backwardAttempts',self.backwardAttempts)
     return None, None
 #@-node:ekr.20031218072017.3075:findNextMatch
 #@+node:ekr.20031218072017.3081:selectNextPosition
@@ -24505,8 +24552,8 @@ def search (self):
 
     c = self.c ; p = self.p ; w = self.s_ctrl
     index = w.getInsertPoint()
-
     s = w.getAllText()
+
     # g.trace(index,repr(s[index:index+20]))
     stopindex = g.choose(self.reverse,0,len(s)) # 'end' doesn't work here.
     pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
@@ -24537,7 +24584,7 @@ def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word,swapij=True):
     # g.trace(backwards,i,j,repr(s[i:i+20]))
 
     if not s[i:j] or not pattern:
-        # g.trace('empty',i,j)
+        # if s: g.trace('empty',i,j,'len(s)',len(s),'pattern',pattern)
         return -1,-1
 
     if regexp:
@@ -24592,14 +24639,43 @@ def regexHelper (self,s,i,j,pattern,backwards,nocase):
     return -1,-1
 #@-node:ekr.20060526092203:regexHelper
 #@+node:ekr.20060526140744:backwardsHelper
+debugIndices = []
+
+@
+rfind(sub [,start [,end]])
+
+Return the highest index in the string where substring sub is found, such that
+sub is contained within s[start,end]. Optional arguments start and end are
+interpreted as in slice notation. Return -1 on failure.
+@c
+
 def backwardsHelper (self,s,i,j,pattern,nocase,word):
 
+    debug = False
     if nocase:
-        s = s.lower() ; pattern.lower()
+        s = s.lower() ; pattern = pattern.lower() # Bug fix: 10/5/06: At last the bug is found!
     pattern = self.replaceBackSlashes(pattern)
     n = len(pattern)
 
+    if i < 0 or i > len(s) or j < 0 or j > len(s):
+        g.trace('bad index: i = %s, j = %s' % (i,j))
+        i = 0 ; j = len(s)
+
+    if debug and (s and i == 0 and j == 0):
+        g.trace('two zero indices')
+
+    self.backwardAttempts += 1
+
+    # short circuit the search: helps debugging.
+    if s.find(pattern) == -1:
+        if debug:
+            self.debugCount += 1
+            if self.debugCount < 50:
+                g.trace(i,j,'len(s)',len(s),self.p.headString())
+        return -1,-1
+
     if word:
+        if debug: g.trace('**word** %3s %3s %5s -> %s %s' % (i,j,g.choose(j==len(s),'(end)',''),k,self.p.headString()))
         while 1:
             k = s.rfind(pattern,i,j)
             # g.trace(i,j,k)
@@ -24610,7 +24686,7 @@ def backwardsHelper (self,s,i,j,pattern,nocase,word):
                 j = max(0,k-1)
     else:
         k = s.rfind(pattern,i,j)
-        # g.trace(i,j,g.choose(j==len(s),'(end)',''),k)
+        if debug: g.trace('%3s %3s %5s -> %s %s' % (i,j,g.choose(j==len(s),'(end)',''),k,self.p.headString()))
         if k == -1:
             return -1, -1
         else:
@@ -24712,50 +24788,11 @@ def init_s_ctrl (self,s,ins):
     w.setAllText(s)
     if ins is None:
         ins = g.choose(self.reverse,len(s),0)
+        # print g.choose(self.reverse,'.','*'),
+    else:
+        pass # g.trace('ins',ins)
     w.setInsertPoint(ins)
 #@-node:ekr.20031218072017.3085:initBatchText, initNextText & init_s_ctrl
-#@+node:ekr.20060526140744:backwardsHelper
-def backwardsHelper (self,s,i,j,pattern,nocase,word):
-
-    if nocase:
-        s = s.lower() ; pattern.lower()
-    pattern = self.replaceBackSlashes(pattern)
-    n = len(pattern)
-
-    if word:
-        while 1:
-            k = s.rfind(pattern,i,j)
-            # g.trace(i,j,k)
-            if k == -1: return -1, -1
-            if self.matchWord(s,k,pattern):
-                return k,k+n
-            else:
-                j = max(0,k-1)
-    else:
-        k = s.rfind(pattern,i,j)
-        # g.trace(i,j,g.choose(j==len(s),'(end)',''),k)
-        if k == -1:
-            return -1, -1
-        else:
-            return k,k+n
-#@-node:ekr.20060526140744:backwardsHelper
-#@+node:ekr.20031218072017.3087:initInteractiveCommands
-def initInteractiveCommands(self):
-
-    c = self.c ; p = self.p
-    w = g.choose(self.in_headline,c.edit_widget(p),c.frame.body.bodyCtrl)
-    self.errors = 0
-
-    # We only use the insert point, *never* the selection range.
-    ins = w.getInsertPoint()
-    self.initNextText(ins=ins)
-    c.widgetWantsFocus(w)
-
-    self.wrapping = self.wrap
-    if self.wrap and self.wrapPosition == None:
-        self.wrapPos = ins
-        # Do not set self.wrapPosition here: that must be done after the first search.
-#@-node:ekr.20031218072017.3087:initInteractiveCommands
 #@+node:ekr.20070228074312.22:getSelectionRange (baseText)
 def getSelectionRange (self,sort=True):
 
@@ -24777,6 +24814,79 @@ def getSelectionRange (self,sort=True):
         #g.trace(self,'baseWidget: i',i,g.callers(6))
         return i,i
 #@-node:ekr.20070228074312.22:getSelectionRange (baseText)
+#@+node:ekr.20031218072017.3087:initInteractiveCommands
+def initInteractiveCommands(self):
+
+    c = self.c ; p = self.p
+    w = g.choose(self.in_headline,c.edit_widget(p),c.frame.body.bodyCtrl)
+    self.errors = 0
+
+    # We only use the insert point, *never* the selection range.
+    ins = w.getInsertPoint()
+    # g.trace('ins',ins)
+    self.debugCount = 0
+    self.initNextText(ins=ins)
+    c.widgetWantsFocus(w)
+
+    self.wrapping = self.wrap
+    if self.wrap and self.wrapPosition == None:
+        self.wrapPos = ins
+        # Do not set self.wrapPosition here: that must be done after the first search.
+#@-node:ekr.20031218072017.3087:initInteractiveCommands
+#@+node:ekr.20060526140744:backwardsHelper
+debugIndices = []
+
+@
+rfind(sub [,start [,end]])
+
+Return the highest index in the string where substring sub is found, such that
+sub is contained within s[start,end]. Optional arguments start and end are
+interpreted as in slice notation. Return -1 on failure.
+@c
+
+def backwardsHelper (self,s,i,j,pattern,nocase,word):
+
+    debug = False
+    if nocase:
+        s = s.lower() ; pattern = pattern.lower() # Bug fix: 10/5/06: At last the bug is found!
+    pattern = self.replaceBackSlashes(pattern)
+    n = len(pattern)
+
+    if i < 0 or i > len(s) or j < 0 or j > len(s):
+        g.trace('bad index: i = %s, j = %s' % (i,j))
+        i = 0 ; j = len(s)
+
+    if debug and (s and i == 0 and j == 0):
+        g.trace('two zero indices')
+
+    self.backwardAttempts += 1
+
+    # short circuit the search: helps debugging.
+    if s.find(pattern) == -1:
+        if debug:
+            self.debugCount += 1
+            if self.debugCount < 50:
+                g.trace(i,j,'len(s)',len(s),self.p.headString())
+        return -1,-1
+
+    if word:
+        if debug: g.trace('**word** %3s %3s %5s -> %s %s' % (i,j,g.choose(j==len(s),'(end)',''),k,self.p.headString()))
+        while 1:
+            k = s.rfind(pattern,i,j)
+            # g.trace(i,j,k)
+            if k == -1: return -1, -1
+            if self.matchWord(s,k,pattern):
+                return k,k+n
+            else:
+                j = max(0,k-1)
+    else:
+        k = s.rfind(pattern,i,j)
+        if debug: g.trace('%3s %3s %5s -> %s %s' % (i,j,g.choose(j==len(s),'(end)',''),k,self.p.headString()))
+        if k == -1:
+            return -1, -1
+        else:
+            return k,k+n
+#@-node:ekr.20060526140744:backwardsHelper
 #@-node:ekr.20071003204338.1:Fixed backward find bug
 #@-node:ekr.20070920083033:Bugs
 #@+node:ekr.20070920083033.1:Features
@@ -27658,419 +27768,6 @@ def setCanvasTabBindings (self,tabName,menu):
 #@+node:ekr.20071004083334:Installed graphed.py plugin
 #@-node:ekr.20071004083334:Installed graphed.py plugin
 #@-node:ekr.20070920083033.1:Features
-#@+node:ekr.20071003123335:Improved yank command
-# Yank if there is no selection.  Yank-pop if there is a selection.
-#@+node:ekr.20050920084036.184:iterateKillBuffer
-class killBuffer_iter_class:
-
-    """Returns a list of positions in a subtree, possibly including the root of the subtree."""
-
-    @others
-
-def iterateKillBuffer (self):
-
-    return self.killBuffer_iter_class(self.c)
-#@+node:ekr.20071003160252.1:__init__ & __iter__
-def __init__(self,c):
-
-    # g.trace('iterateKillBuffer.__init')
-    self.c = c
-    self.index = 0 # The index of the next item to be returned.
-
-def __iter__(self):
-
-    return self
-#@-node:ekr.20071003160252.1:__init__ & __iter__
-#@+node:ekr.20071003160252.2:next
-def next(self):
-
-    commands = self.c.killBufferCommands
-    aList = commands.killBuffer
-
-    # g.trace(g.listToString([repr(z) for z in aList]))
-
-    if not aList:
-        self.index = 0
-        return None
-
-    if commands.reset is None:
-        i = self.index
-    else:
-        i = commands.reset
-        commands.reset = None
-
-    if i < 0 or i >= len(aList): i = 0
-    g.trace(i)
-    val = aList[i]
-    self.index = i + 1
-    return val
-#@-node:ekr.20071003160252.2:next
-#@-node:ekr.20050920084036.184:iterateKillBuffer
-#@+node:ekr.20050930091642.1:yank
-def yank (self,event):
-
-    '''Insert the next entry in the kill ring at the insert point.'''
-
-    # There is no need for the yank-pop command.
-
-    c = self.c ; k = self.k
-    w = self.editWidget(event)
-    if not w: return
-    current = c.currentPosition()
-    if not current: return
-    i, j = w.getSelectionRange()
-    clip_text = self.getClipboard(w)
-    if not self.killBuffer and not clip_text: return
-
-    self.beginCommand(undoType='yank')
-    try:
-        if i == j or self.lastYankP and self.lastYankP != current:
-            self.reset = 0
-        s = self.kbiterator.next()
-        if s is None: s = clip_text or ''
-        if i != j: w.deleteTextSelection()
-        w.insert(i,s)
-        w.setSelectionRange(i,i+len(s),insert=i+len(s))
-        self.lastYankP = current.copy()
-        c.frame.body.forceFullRecolor()
-    finally:
-        self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050930091642.1:yank
-#@+node:ekr.20050920084036.183:addToKillBuffer
-def addToKillBuffer (self,text):
-
-    # Don't bother with just whitespace.
-    if text.strip():
-        self.killBuffer.insert(0,text)
-#@-node:ekr.20050920084036.183:addToKillBuffer
-#@+node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
-class killBufferCommandsClass (baseEditCommandsClass):
-
-    '''A class to manage the kill buffer.'''
-
-    @others
-#@+node:ekr.20050920084036.175: ctor & finishCreate
-def __init__ (self,c):
-
-    baseEditCommandsClass.__init__(self,c) # init the base class.
-
-    self.killBuffer = [] # May be changed in finishCreate.
-    self.kbiterator = self.iterateKillBuffer()
-    self.last_clipboard = None # For interacting with system clipboard.
-    self.lastYankP = None # The position of the last item returned by iterateKillBuffer.
-    self.reset = None
-        # None, or the index of the next item to be returned in killBuffer by iterateKillBuffer.
-
-def finishCreate (self):
-
-    baseEditCommandsClass.finishCreate(self)
-        # Call the base finishCreate.
-        # This sets self.k
-
-    if self.k.useGlobalKillbuffer:
-        self.killBuffer = leoKeys.keyHandlerClass.global_killbuffer
-#@-node:ekr.20050920084036.175: ctor & finishCreate
-#@+node:ekr.20050920084036.176: getPublicCommands
-def getPublicCommands (self):
-
-    return {
-        'backward-kill-sentence':   self.backwardKillSentence,
-        'backward-kill-word':       self.backwardKillWord,
-        'clear-kill-ring':          self.clearKillRing,
-        'kill-line':                self.killLine,
-        'kill-word':                self.killWord,
-        'kill-sentence':            self.killSentence,
-        'kill-region':              self.killRegion,
-        'kill-region-save':         self.killRegionSave,
-        'yank':                     self.yank,
-        # 'yank-pop':                 self.yankPop,
-        'zap-to-character':         self.zapToCharacter,
-    }
-#@-node:ekr.20050920084036.176: getPublicCommands
-#@+node:ekr.20050920084036.183:addToKillBuffer
-def addToKillBuffer (self,text):
-
-    # Don't bother with just whitespace.
-    if text.strip():
-        self.killBuffer.insert(0,text)
-#@-node:ekr.20050920084036.183:addToKillBuffer
-#@+node:ekr.20050920084036.181:backwardKillSentence
-def backwardKillSentence (self,event):
-
-    '''Kill the previous sentence.'''
-
-    w = self.editWidget(event)
-    if not w: return
-
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    i = s.rfind('.',ins)
-    if i == -1: return
-
-    undoType='backward-kill-sentence'
-
-    self.beginCommand(undoType=undoType)
-
-    i2 = s.rfind('.',0,i) + 1
-    self.kill(event,i2,i+1,undoType=undoType)
-    self.c.frame.body.forceFullRecolor()
-    w.setInsertPoint(i2)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.181:backwardKillSentence
-#@+node:ekr.20050920084036.180:backwardKillWord & killWord
-def backwardKillWord (self,event):
-    '''Kill the previous word.'''
-    c = self.c
-    self.beginCommand(undoType='backward-kill-word')
-    c.editCommands.backwardWord(event)
-    self.killWs(event)
-    self.kill(event,'insert wordstart','insert wordend',undoType=None)
-    c.frame.body.forceFullRecolor()
-    self.endCommand(changed=True,setLabel=True)
-
-def killWord (self,event):
-    '''Kill the word containing the cursor.'''
-    c = self.c
-    self.beginCommand(undoType='kill-word')
-    self.kill(event,'insert wordstart','insert wordend',undoType=None)
-    self.killWs(event)
-    c.frame.body.forceFullRecolor()
-    self.endCommand(changed=True,setLabel=True)
-
-#@-node:ekr.20050920084036.180:backwardKillWord & killWord
-#@+node:ekr.20051216151811:clearKillRing
-def clearKillRing (self,event=None):
-
-    '''Clear the kill ring.'''
-
-    self.killBuffer = []
-#@-node:ekr.20051216151811:clearKillRing
-#@+node:ekr.20050920084036.185:getClipboard
-def getClipboard (self,w):
-
-    __pychecker__ = '--no-argsused' # w not used.
-
-    try:
-        ctxt = g.app.gui.getTextFromClipboard()
-        if not self.killBuffer or ctxt != self.last_clipboard:
-            self.last_clipboard = ctxt
-            if not self.killBuffer or self.killBuffer [0] != ctxt:
-                return ctxt
-    except:
-        g.es_exception()
-
-    return None
-#@-node:ekr.20050920084036.185:getClipboard
-#@+node:ekr.20050920084036.184:iterateKillBuffer
-class killBuffer_iter_class:
-
-    """Returns a list of positions in a subtree, possibly including the root of the subtree."""
-
-    @others
-
-def iterateKillBuffer (self):
-
-    return self.killBuffer_iter_class(self.c)
-#@+node:ekr.20071003160252.1:__init__ & __iter__
-def __init__(self,c):
-
-    # g.trace('iterateKillBuffer.__init')
-    self.c = c
-    self.index = 0 # The index of the next item to be returned.
-
-def __iter__(self):
-
-    return self
-#@-node:ekr.20071003160252.1:__init__ & __iter__
-#@+node:ekr.20071003160252.2:next
-def next(self):
-
-    commands = self.c.killBufferCommands
-    aList = commands.killBuffer
-
-    # g.trace(g.listToString([repr(z) for z in aList]))
-
-    if not aList:
-        self.index = 0
-        return None
-
-    if commands.reset is None:
-        i = self.index
-    else:
-        i = commands.reset
-        commands.reset = None
-
-    if i < 0 or i >= len(aList): i = 0
-    g.trace(i)
-    val = aList[i]
-    self.index = i + 1
-    return val
-#@-node:ekr.20071003160252.2:next
-#@-node:ekr.20050920084036.184:iterateKillBuffer
-#@+node:ekr.20050920084036.178:kill
-def kill (self,event,frm,to,undoType=None):
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    s = w.get(frm,to)
-    if undoType: self.beginCommand(undoType=undoType)
-    self.addToKillBuffer(s)
-    g.app.gui.replaceClipboardWith(s)
-    w.delete(frm,to)
-    w.setInsertPoint(frm)
-    if undoType:
-        self.c.frame.body.forceFullRecolor()
-        self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.178:kill
-#@+node:ekr.20071003183657:KillLine
-def killLine (self,event):
-    '''Kill the line containing the cursor.'''
-    w = self.editWidget(event)
-    if not w: return
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    i,j = g.getLine(s,ins)
-    # g.trace(i,j,ins,len(s),repr(s[i:j]))
-    if ins >= len(s) and g.match(s,j-1,'\n'): # Kill the trailing newline.
-        i = max(0,len(s)-1)
-        j = len(s)
-    elif j > i+1 and g.match(s,j-1,'\n'): # Kill the line, but not the newline.
-        j -= 1
-    else: # Kill the newline.
-        pass
-    self.kill(event,i,j,undoType='kill-line')
-#@-node:ekr.20071003183657:KillLine
-#@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
-def killRegion (self,event):
-    '''Kill the text selection.'''
-    self.killRegionHelper(event,deleteFlag=True)
-
-def killRegionSave (self,event):
-    '''Add the selected text to the kill ring, but do not delete it.'''
-    self.killRegionHelper(event,deleteFlag=False)
-
-def killRegionHelper (self,event,deleteFlag):
-
-    w = self.editWidget(event)
-    if not w: return
-    theRange = w.tag_ranges('sel')
-    if not theRange: return
-
-    s = w.get(theRange[0],theRange[-1])
-    if deleteFlag:
-        self.beginCommand(undoType='kill-region')
-        w.delete(theRange[0],theRange[-1])
-        self.c.frame.body.forceFullRecolor()
-        self.endCommand(changed=True,setLabel=True)
-    self.addToKillBuffer(s)
-    g.app.gui.replaceClipboardWith(s)
-    # self.removeRKeys(w)
-#@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
-#@+node:ekr.20050930095323.1:killSentence
-def killSentence (self,event):
-
-    '''Kill the sentence containing the cursor.'''
-
-    w = self.editWidget(event)
-    if not w: return
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    i = s.find('.',ins)
-    if i == -1: return
-
-    undoType='kill-sentence'
-
-    self.beginCommand(undoType=undoType)
-
-    i2 = s.rfind('.',0,ins) + 1
-    self.kill(event,i2,i+1,undoType=undoType)
-    self.c.frame.body.forceFullRecolor()
-    w.setInsertPoint(i2)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050930095323.1:killSentence
-#@+node:ekr.20050930100733:killWs
-def killWs (self,event,undoType=None):
-
-    ws = ''
-    w = self.editWidget(event)
-    if not w: return
-
-    while 1:
-        s = w.get('insert')
-        if s in (' ','\t'):
-            w.delete('insert')
-            ws = ws + s
-        else:
-            break
-
-    if ws:
-        if undoType: self.beginCommand(undoType=undoType)
-        self.addToKillBuffer(ws)
-        if undoType: self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050930100733:killWs
-#@+node:ekr.20050930091642.1:yank
-def yank (self,event):
-
-    '''Insert the next entry in the kill ring at the insert point.'''
-
-    # There is no need for the yank-pop command.
-
-    c = self.c ; k = self.k
-    w = self.editWidget(event)
-    if not w: return
-    current = c.currentPosition()
-    if not current: return
-    i, j = w.getSelectionRange()
-    clip_text = self.getClipboard(w)
-    if not self.killBuffer and not clip_text: return
-
-    self.beginCommand(undoType='yank')
-    try:
-        if i == j or self.lastYankP and self.lastYankP != current:
-            self.reset = 0
-        s = self.kbiterator.next()
-        if s is None: s = clip_text or ''
-        if i != j: w.deleteTextSelection()
-        w.insert(i,s)
-        w.setSelectionRange(i,i+len(s),insert=i+len(s))
-        self.lastYankP = current.copy()
-        c.frame.body.forceFullRecolor()
-    finally:
-        self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050930091642.1:yank
-#@+node:ekr.20050920084036.128:zapToCharacter
-def zapToCharacter (self,event):
-
-    '''Kill characters from the insertion point to a given character.'''
-
-    k = self.k ; w = self.editWidget(event)
-    if not w: return
-
-    state = k.getState('zap-to-char')
-    if state == 0:
-        k.setLabelBlue('Zap To Character: ',protect=True)
-        k.setState('zap-to-char',1,handler=self.zapToCharacter)
-    else:
-        ch = event and event.char or ' '
-        k.resetLabel()
-        k.clearState()
-        if ch.isspace(): return
-        s = w.getAllText()
-        ins = w.getInsertPoint()
-        i = s.find(ch,ins)
-        if i == -1: return
-        self.beginCommand(undoType='zap-to-char')
-        self.addToKillBuffer(s[ins:i])
-        w.setAllText(s[:ins] + s[i:])
-        w.setInsertPoint(ins)
-        self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.128:zapToCharacter
-#@-node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
-#@-node:ekr.20071003123335:Improved yank command
 #@-node:ekr.20070919132518:4.4.4 final
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@-all
