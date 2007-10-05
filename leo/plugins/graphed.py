@@ -5,9 +5,13 @@
 """
 graphed.py  -- Edit graphs visually
 
-Based on the Gred graph editor from the Gato Graph Animation Toolbox
-at http://gato.sourceforge.net/
+Graph commands are in the Outline/Graph submenu.
+See http://leo.zwiki.org/GraphEd for documentation.
 
+Graph editor component based on the Gred graph editor from the
+Gato Graph Animation Toolbox at http://gato.sourceforge.net/
+
+Leo plugin by Terry Brown terry_n_brown@yahoo.com
 """
 #@-node:ekr.20071004090250.1:<< docstring >>
 #@nl
@@ -16,7 +20,7 @@ at http://gato.sourceforge.net/
 #@@tabwidth -4
 #@@nowrap
 
-__version__ = "0.1"
+__version__ = "0.2"
 
 #@<< imports >>
 #@+node:ekr.20071004090250.2:<< imports >>
@@ -33,17 +37,11 @@ gato_path = g.os_path_join(g.app.loadDir,'..','extensions','Gato')
 if gato_path not in sys.path:
     sys.path.append(gato_path)
 
-# GATO_path = "/home/tbrown/Desktop/Package/Gato"
-# 
-# if GATO_path not in sys.path:
-#     sys.path.append(GATO_path)
-
 try:
     from Gato import Gred, Embedder, Graph, GraphEditor, DataStructures
     Gato_ok = True
 except:
     Gato_ok = False
-    g.es_print('ERROR: graphed: could not import Gato')
 #@-node:ekr.20071004090250.2:<< imports >>
 #@nl
 #@<< version history >>
@@ -61,6 +59,12 @@ except:
 # entire @thin node) to avoid conflict with cleo (!!)
 # 
 # - Add leo/extensions/Gato to sys.path before importing from Gato.
+# 0.2 TNB:
+#   - moved leo <-> graph stuff into separate class, much tidier not
+#     mixing that with Gato stuff
+#   - put x,y uAs on tnodes rather than vnodes because low level graph
+#     class is a graph of tnodes (gnxs)
+#   - implemented dot export functions
 #@-at
 #@-node:ekr.20071004090250.3:<< version history >>
 #@nl
@@ -69,12 +73,8 @@ except:
 #@+node:ekr.20071004090250.9:init
 def init():
 
-    if Tk is None:
-        return False
-
     if not Gato_ok:
-        g.es('graphed: Gato import failed',color='red')
-        return False
+        g.es('graphed: Gato import failed, functions reduced',color='red')
 
     leoPlugins.registerHandler('after-create-leo-frame', onCreate)
     g.plugin_signon(__name__)
@@ -85,6 +85,204 @@ def init():
 def onCreate (tag,key):
     GraphEd(key['c'])
 #@-node:ekr.20071004090250.10:onCreate
+#@+node:tbrown.20071004135224.1:class tGraph
+class tGraph:
+    """Minimalist graph-of-tnodes wrapper"""
+    #@    @+others
+    #@+node:tbrown.20071004135224.2:__init__
+    def __init__(self):
+        self._nodes = set()
+        self._edges = set()
+        self._gnxStr2tnode = {}
+    #@-node:tbrown.20071004135224.2:__init__
+    #@+node:tbrown.20071004135224.3:nodes
+    def nodes(self):
+        """Return set of nodes"""
+        return self._nodes
+    #@-node:tbrown.20071004135224.3:nodes
+    #@+node:tbrown.20071004135224.4:edges
+    def edges(self):
+        """Return set of (node0, node1) tuples"""
+        return self._edges
+    #@-node:tbrown.20071004135224.4:edges
+    #@+node:tbrown.20071004135224.5:addNode
+    def addNode(self, n):
+        """Add n as a node"""
+        self._nodes.add(n)
+    #@-node:tbrown.20071004135224.5:addNode
+    #@+node:tbrown.20071004135224.6:addDirectedEdge
+    def addDirectedEdge(self, n0, n1):
+        """Add an edge from n0 and n1 as a node"""
+        self._edges.add((n0, n1))
+    #@-node:tbrown.20071004135224.6:addDirectedEdge
+    #@+node:tbrown.20071004141737:addGraphFromPosition
+    def addGraphFromPosition(self, p):
+        """
+        *Add* nodes and edges from the position and its descendants.
+
+        Need to add all the nodes before trying to resolve edges from @links
+        """
+
+        self._addNodesLinks(p)
+        self._addLinks(p)
+    #@-node:tbrown.20071004141737:addGraphFromPosition
+    #@+node:tbrown.20071004152905:createTreeFromGraph
+    def createTreeFromGraph(self, p):
+        """Build tree representing graph after p, assuming our nodes are tnodes"""
+
+        todo = set(self.nodes())
+
+        root = p.insertAfter()
+        root.setHeadString('new: graph top level')
+        root.expand()
+        pos = root.copy()
+
+        node2tnode = {}  # for gnx lookups for making @links
+
+        inOut = {}  # count in and out for each node
+        for n0, n1 in self.edges():
+            if n0 in inOut:  # out edge
+                inOut[n0] = (inOut[n0][0], inOut[n0][1]+1)
+            else:
+                inOut[n0] = (0,1)
+            if n1 in inOut:  # in edge
+                inOut[n1] = (inOut[n1][0]+1, inOut[n1][1])
+            else:
+                inOut[n1] = (1,0)
+
+        def nextStart(todo):
+            """find the node with the fewest in edges and most
+             out edges, writing these node first may give a more
+             human readable tree representation of the graph"""
+            maxOut = -1
+            minIn = 9999
+            maxIdx = None
+            for i in todo:
+                In = inOut[i][0]
+                out = inOut[i][1]
+                if In < minIn:
+                    maxOut = out
+                    minIn = In
+                    maxIdx = i
+                if In == minIn and out > maxOut:
+                    maxOut = out
+                    minIn = In
+                    maxIdx = i
+            return maxIdx
+
+        def makeTree(pos, node0):
+
+            nd = pos.insertAsLastChild()
+            nd.expand()
+            self._setIndex(nd)
+            node2tnode[node0] = str(nd.v.t.fileIndex)                
+            nd.setHeadString(node0.headString)
+            nd.setTnodeText(node0.getBody())
+            if hasattr(node0, 'unknownAttributes'):
+                nd.v.t.unknownAttributes = dict(node0.unknownAttributes)
+
+            desc = [i[1] for i in self.edges() if i[0] == node0]
+            while desc:
+                node1 = nextStart(desc)
+                desc.remove(node1)
+
+                if node1 in todo:
+                    todo.remove(node1)
+                    makeTree(nd, node1)
+                else:
+                    lnk = nd.insertAsLastChild()
+                    lnk.setHeadString(
+                        self._formatLink(node2tnode[node1], node1.headString))
+
+        while todo:
+            next = nextStart(todo)
+            todo.remove(next)
+            makeTree(pos, next)
+
+        ans = pos
+
+        # if only one top level node, remove the holder node
+        if pos.numberOfChildren() == 1:
+            ch = pos.children_iter().next()
+            ch.linkAfter(pos)
+            ans = ch
+            pos.unlink()
+
+        return ans
+    #@-node:tbrown.20071004152905:createTreeFromGraph
+    #@+node:tbrown.20071004141737.1:_addNodesLinks
+    def _addNodesLinks(self, p):
+        """Add nodes and simple descendent links from p"""
+
+        self.addNode(p.v.t)
+        self._setIndex(p)
+        self._gnxStr2tnode[str(p.v.t.fileIndex)] = p.v.t
+
+        for nd0 in p.children_iter():
+            if nd0.headString().startswith('@link'): continue
+            self._addNodesLinks(nd0)
+            self.addDirectedEdge(p.v.t, nd0.v.t)
+    #@-node:tbrown.20071004141737.1:_addNodesLinks
+    #@+node:tbrown.20071004141737.2:_addLinks
+    def _addLinks(self, p):
+        """Collect the @links from p, now we know the nodes are in
+        self._gnxStr2tnode"""
+
+        for nd0 in p.children_iter():
+            if nd0.headString().startswith('@link'):
+                s = self._indexStrFromStr(nd0.headString())
+                try:
+                    tnd = self._gnxStr2tnode[s]
+                    self.addDirectedEdge(p.v.t, tnd)
+                except:  # @link node went stale
+                    g.es('Broken %s' % nd0.headString())
+            else:
+                self._addLinks(nd0)
+    #@-node:tbrown.20071004141737.2:_addLinks
+    #@+node:tbrown.20071004141911:_setIndex
+    def _setIndex(self, p):
+        """fresh tnodes may not have .fileIndex, this adds it"""
+        try:
+            theId,time,n = p.v.t.fileIndex
+        except TypeError:
+            p.v.t.fileIndex = g.app.nodeIndices.getNewIndex()
+    #@-node:tbrown.20071004141911:_setIndex
+    #@+node:tbrown.20071004141931:_indexStrFromStr
+    def _indexStrFromStr(self, s):
+        """isolate the '(...)' part of s"""
+        return s[s.find('(') : s.find(')')+1]
+    #@-node:tbrown.20071004141931:_indexStrFromStr
+    #@+node:tbrown.20071004155803:_formatLink
+    def _formatLink(self, tid, hs):
+        """format @link headString,
+        strips '(' and ')' so _indexStrFromStr works"""
+        return '@link %s %s' % (hs.replace('(','[').replace(')',']'),str(tid))
+    #@-node:tbrown.20071004155803:_formatLink
+    #@-others
+#@-node:tbrown.20071004135224.1:class tGraph
+#@+node:tbrown.20071004225829:class tGraphUtil
+class tGraphUtil(tGraph):
+    """Misc. utility functions on a tGraph"""
+
+    #@    @+others
+    #@+node:tbrown.20071004225829.1:dotStrFromPosition
+    def dotStrFromPosition(self,p):
+        """return complete Graphviz dot format graph text"""
+        self.addGraphFromPosition(p)
+        node = {}  # gnx to node number map
+        nodes = []
+        for n,i in enumerate(self.nodes()):
+            node[str(i.fileIndex)]=n
+            nodes.append('n%s [label="%s"]' % (n, i.headString))
+        edges = []
+        for f,t in self.edges():
+            edges.append('n%d -> n%d' % (node[str(f.fileIndex)],
+                                         node[str(t.fileIndex)]))
+
+        return 'digraph G {\n%s\n\n%s\n}' % ('\n'.join(nodes), '\n'.join(edges))
+    #@-node:tbrown.20071004225829.1:dotStrFromPosition
+    #@-others
+#@-node:tbrown.20071004225829:class tGraphUtil
 #@+node:ekr.20071004090250.11:class GraphEd
 class GraphEd:
 
@@ -97,13 +295,15 @@ class GraphEd:
         self.dictName = 'graphed'  # for uA dictionary
 
         self.c = c
-        table = (("Edit node as graph",None,self.editGraph),
+        table = []
+        if Gato_ok: table.append(("Edit node as graph",None,self.editGraph))
+        table += (
                  # BROKEN ("Edit whole tree as graph",None,self.editWholeTree),
                  ("Copy link to clipboard",None,self.copyLink),
                  ("Follow link",None,self.followLink),
-                 ("Export to Graphviz dot format",None,self.undone), # FIXME
-                 ("Make Graphviz dot node",None,self.undone), # FIXME
-                 ("Layout using Graphviz dot",None,self.undone), # FIXME
+                 ("Export to Graphviz dot format",None,self.dotFile),
+                 ("Make Graphviz dot node",None,self.dotNode),
+                 # CAN'T ("Layout using Graphviz dot",None,self.undone), # FIXME
                  )
         c.frame.menu.createNewMenu('Graph', 'Outline')
         c.frame.menu.createMenuItemsFromTable('Graph', table)
@@ -270,9 +470,12 @@ class GraphEd:
 
         self.p = p
 
-        # make sure fileIndex is set on everything
-        for p2 in p.self_and_subtree_iter():
-            self.setIndex(p2)
+        tgraph = tGraph()
+        tgraph.addGraphFromPosition(p)
+
+        #X # make sure fileIndex is set on everything
+        #X for p2 in p.self_and_subtree_iter():
+        #X     self.setIndex(p2)
 
         self.graph = Graph.Graph()
         # graph.simple = 0  # only blocks self loops?
@@ -280,8 +483,8 @@ class GraphEd:
 
         self.tnode2gnode = {}
         self.gnode2attribs = {}
-        self.loadGraph(self.graph, p)
-        self.loadGraphLinks(self.graph, p)
+        self.loadGraph(self.graph, tgraph)
+        # self.loadGraphLinks(self.graph, p)
 
         editor = Gred.SAGraphEditor(g.app.root)
         self.editor = editor
@@ -310,40 +513,23 @@ class GraphEd:
     #@-at
     #@-node:ekr.20071004090250.27:editWholeTree
     #@+node:ekr.20071004090250.28:loadGraph
-    def loadGraph(self, graph, p):
+    def loadGraph(self, graph, tgraph):
 
-        vid = graph.AddVertex()
-        self.tnode2gnode[str(p.v.t.fileIndex)] = vid
-        self.gnode2attribs[vid] = {}
-        self.gnode2attribs[vid]['bodyString'] = p.bodyString()
-        graph.SetLabeling(vid, p.headString())
-        x,y = self.getat(p.v,'x'), self.getat(p.v,'y')
-        if x == None: x = 0
-        if y == None: y = 0
-        graph.SetEmbedding(vid, x, y)
+        for nd in tgraph.nodes():
+            vid = graph.AddVertex()
+            self.tnode2gnode[str(nd.fileIndex)] = vid
+            self.gnode2attribs[vid] = {}
+            self.gnode2attribs[vid]['bodyString'] = nd.getBody()
+            graph.SetLabeling(vid, nd.headString)
+            x,y = self.getat(nd,'x'), self.getat(nd,'y')
+            if x == None: x = 0
+            if y == None: y = 0
+            graph.SetEmbedding(vid, x, y)
 
-        for nd0 in p.children_iter():
-            if nd0.headString().startswith('@link'): continue
-            cid = self.loadGraph(graph, nd0)
-            graph.AddEdge(vid, cid)
-            graph.SetEdgeWeight(0, vid, cid, 30)
-        return vid
+        for nd0, nd1 in tgraph.edges():
+            graph.AddEdge(self.tnode2gnode[str(nd0.fileIndex)],
+                          self.tnode2gnode[str(nd1.fileIndex)])
     #@-node:ekr.20071004090250.28:loadGraph
-    #@+node:ekr.20071004090250.29:loadGraphLinks
-    def loadGraphLinks(self, graph, p):
-
-        for nd0 in p.children_iter():
-            if nd0.headString().startswith('@link'):
-                s = self.indexStrFromStr(nd0.headString())
-                vid = self.tnode2gnode[str(p.v.t.fileIndex)]
-                try:
-                    cid = self.tnode2gnode[s]
-                    graph.AddEdge(vid, cid)
-                    graph.SetEdgeWeight(0, vid, cid, 30)
-                except:  # @link node went stale
-                    g.es('Link to %s broke' % nd0.headString())
-            self.loadGraphLinks(graph, nd0)
-    #@-node:ekr.20071004090250.29:loadGraphLinks
     #@+node:ekr.20071004090250.30:exiting
     def exiting(self):
         ans = g.app.gui.runAskYesNoCancelDialog(
@@ -359,75 +545,53 @@ class GraphEd:
     #@+node:ekr.20071004090250.31:saveGraph
     def saveGraph(self, p, graph):
 
+        class notAtnode(object):
+            """copy just enound of a tnodes signature to fool
+            tGraph.createTreeFromGraph - attribs will be set below"""
+
+            def getBody(self):
+                if hasattr(self, 'bodyString'):
+                    return self.bodyString
+                else:
+                    return ""
+
+        def label(i):
+             """change undefined (numeric) labels from ints to strs"""
+             return str(graph.GetLabeling(i))
+
         c = self.c
         c.beginUpdate()
         try:
-            # FIXME should check p is ok and default to root if not
 
-            todo = set(graph.Vertices())
+            tgraph = tGraph()
+            gnode2nottnode = {}
+            for node in graph.Vertices():
+                tn = notAtnode()
+                gnode2nottnode[node] = tn
+                tn.headString = label(node)
+                tn.unknownAttributes = {}
+                tn.unknownAttributes[self.dictName] = {}
+                x = graph.GetEmbedding(node)
+                x,y = x.x,x.y
+                tn.unknownAttributes[self.dictName]['x'] = x
+                tn.unknownAttributes[self.dictName]['y'] = y
+
+                if node in self.gnode2attribs:
+                    tn.bodyString = self.gnode2attribs[node]['bodyString']
+                    # FIXME copy uAs too
+                tgraph.addNode(tn)
+
+            for node0, node1 in graph.Edges():
+                tgraph.addDirectedEdge(gnode2nottnode[node0],gnode2nottnode[node1])
 
             c.setHeadString(p, 'OLD: ' + p.headString())
             p.setDirty()
             c.selectPosition(p)
             c.contractNode()
-            root = p.insertAfter()
-            root.setHeadString('NEW: graph top level')
-            root.expand()
-            pos = root.copy()
 
-            gnode2tnode = {}
+            newp = tgraph.createTreeFromGraph(p)
 
-            def label(i):
-                """change undefined (numeric) labels from ints to strs"""
-                return str(graph.GetLabeling(i))
-
-            def nextStart():
-                """find the node with the most outedges"""
-                maxOut = -1
-                maxIdx = None
-                for i in todo:
-                    out = len(graph.OutNeighbors(i))
-                    if out > maxOut:
-                        maxOut = out
-                        maxIdx = i
-                return maxIdx
-
-            def makeTree(pos, node0):
-
-                nd = pos.insertAsLastChild()
-                nd.expand()
-                self.setIndex(nd)
-                gnode2tnode[node0] = str(nd.v.t.fileIndex)                
-                nd.setHeadString(label(node0))
-                x = graph.GetEmbedding(node0)
-                x,y = x.x,x.y
-                self.setat(nd.v, 'x', x)
-                self.setat(nd.v, 'y', y)
-                if node0 in self.gnode2attribs:
-                    nd.setTnodeText(self.gnode2attribs[node0]['bodyString'])
-                    # FIXME copy uAs over too
-
-                for node1 in graph.OutNeighbors(node0):
-                    if node1 in todo:
-                        todo.remove(node1)
-                        makeTree(nd, node1)
-                    else:
-                        lnk = nd.insertAsLastChild()
-                        lnk.setHeadString(
-                            self.formatLink(gnode2tnode[node1], label(node1)))
-
-            while todo:
-                next = nextStart()
-                todo.remove(next)
-                makeTree(pos, next)
-
-            if pos.numberOfChildren() == 1:
-                ch = pos.children_iter().next()
-                ch.linkAfter(pos)
-                c.selectPosition(ch)
-                pos.unlink()
-            else:
-                c.selectPosition(pos)
+            c.selectPosition(newp)
 
         finally:
             c.setChanged(True)
@@ -460,6 +624,36 @@ class GraphEd:
     def formatLink(self, tid, hs):
         return '@link %s %s' % (hs.replace('(','[').replace(')',']'),str(tid))
     #@-node:ekr.20071004090250.34:formatLink
+    #@+node:tbrown.20071004225829.2:dotNode
+    def dotNode(self, event=None):
+        c = self.c
+        p = c.currentPosition()
+        t = p.headString()
+        tg = tGraphUtil()
+        dot = tg.dotStrFromPosition(p)
+        p = p.insertAfter()
+        c.setHeadString(p, 'DOT FORMAT: ' + t)
+        c.setBodyString(p, dot)
+        c.selectPosition(p)
+    #@-node:tbrown.20071004225829.2:dotNode
+    #@+node:tbrown.20071005092239:dotFile
+    def dotFile(self, event=None):
+        c = self.c
+        p = c.currentPosition()
+        t = p.headString()
+        tg = tGraphUtil()
+        dot = tg.dotStrFromPosition(p)
+        fn = g.app.gui.runSaveFileDialog(
+            '',
+            'Save dot file to' ,
+            [('Dot', '*.dot'), ('All', '*.*')],
+            '.dot'
+            )
+        if not fn.lower().endswith('.dot'):
+            fn += '.dot'
+        file(fn, 'w').write(dot)
+        g.es('Wrote %s' % fn)
+    #@-node:tbrown.20071005092239:dotFile
     #@+node:ekr.20071004090250.35:undone
     def undone(self, event = None):
         g.app.gui.runAskOkDialog(self.c, 'Not implemented',
