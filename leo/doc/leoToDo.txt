@@ -417,6 +417,44 @@ def zapToCharacter (self,event):
 #@-node:ekr.20050920084036.128:zapToCharacter
 #@-node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
 #@-node:ekr.20071003123335:Improved yank command
+#@+node:ekr.20071005131749:Fix cursor down problem
+#@-node:ekr.20071005131749:Fix cursor down problem
+#@+node:ekr.20071005131749.1:Fix all colorizor bugs
+#comment
+
+def eggs():
+
+    '''Mult-line docstrings
+
+    lint two'''
+
+    Test.
+
+    """Multi-line docstrings
+
+    eggs"""
+
+    def spam():
+        pass
+#@nonl
+#@-node:ekr.20071005131749.1:Fix all colorizor bugs
+#@+node:ekr.20071005132705:test on Linux
+#@-node:ekr.20071005132705:test on Linux
+#@+node:ekr.20071005132657:big docstring
+""" aaaaaaaaaaaaa
+bbbbbbbbbbbbb
+cccccccccccc
+ccccccccccc
+ddddddddddddddddddddd
+ffffffffffffffffff
+
+"
+#@nonl
+#@-node:ekr.20071005132657:big docstring
+#@+node:ekr.20071005132005:Check new graphed version
+#@-node:ekr.20071005132005:Check new graphed version
+#@+node:ekr.20071005173203:Create Insert Child command
+#@-node:ekr.20071005173203:Create Insert Child command
 #@+node:ekr.20071004195359:Pychecker & unit tests
 #@-node:ekr.20071004195359:Pychecker & unit tests
 #@-node:ekr.20071001045205:To do: 4.4.4

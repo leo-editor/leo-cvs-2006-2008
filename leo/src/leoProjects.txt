@@ -27767,6 +27767,55 @@ def setCanvasTabBindings (self,tabName,menu):
 #@-node:ekr.20071002093247:Added convenience methods to a canvas log
 #@+node:ekr.20071004083334:Installed graphed.py plugin
 #@-node:ekr.20071004083334:Installed graphed.py plugin
+#@+node:ekr.20071005174441:Added insert-child command
+#@+node:ekr.20071005173203.1:c.insertChild
+def insertChild (self,event=None):
+
+    '''Insert a node after the presently selected node.'''
+
+    c = self
+
+    return c.insertHeadline(event=event,op_name='Insert Child',as_child=True)
+#@-node:ekr.20071005173203.1:c.insertChild
+#@+node:ekr.20031218072017.1761:c.insertHeadline
+def insertHeadline (self,event=None,op_name="Insert Node",as_child=False):
+
+    '''Insert a node after the presently selected node.'''
+
+    c = self ; u = c.undoer
+    current = c.currentPosition()
+
+    if not current: return
+
+    c.beginUpdate()
+    try:
+        undoData = c.undoer.beforeInsertNode(current)
+        # Make sure the new node is visible when hoisting.
+        if (as_child or
+            (current.hasChildren() and current.isExpanded()) or
+            (c.hoistStack and current == c.hoistStack[-1].p)
+        ):
+            if c.config.getBool('insert_new_nodes_at_end'):
+                p = current.insertAsLastChild()
+            else:
+                p = current.insertAsNthChild(0)
+        else:
+            p = current.insertAfter()
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        c.selectPosition(p)
+        c.setChanged(True)
+        u.afterInsertNode(p,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate()
+    c.beginUpdate()
+    try:
+        c.editPosition(p,selectAll=True)
+    finally:
+        c.endUpdate(False)
+
+    return p # for mod_labels plugin.
+#@-node:ekr.20031218072017.1761:c.insertHeadline
+#@-node:ekr.20071005174441:Added insert-child command
 #@-node:ekr.20070920083033.1:Features
 #@-node:ekr.20070919132518:4.4.4 final
 #@-node:ekr.20070703172548:Leo 4.4.4 projects

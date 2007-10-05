@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.665511265165">
-	<global_window_position top="17" left="238" height="820" width="861"/>
+	<global_window_position top="17" left="238" height="800" width="861"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -451,7 +451,7 @@
 </v>
 </v>
 <v t="ekr.20070810180015"><vh>@@keys Vim bindings</vh>
-<v t="ekr.20070810180015.1"><vh>Modes</vh>
+<v t="ekr.20070810180015.1" a="E"><vh>Modes</vh>
 <v t="ekr.20070810182514"><vh>@mode focus</vh></v>
 <v t="ekr.20070810181929"><vh>@shortcuts top-level plain keys</vh></v>
 <v t="ekr.20070810180015.2"><vh>@@mode quick-command (Alt-C)</vh></v>
@@ -651,6 +651,7 @@
 <v t="ekr.20070925144534.114"><vh>@item *&amp;delete-node</vh></v>
 <v t="ekr.20070925144534.115"><vh>@item -</vh></v>
 <v t="ekr.20070925144534.116"><vh>@item *&amp;insert-node</vh></v>
+<v t="ekr.20071005173455"><vh>@item *insert-child</vh></v>
 <v t="ekr.20070925144534.117"><vh>@item *&amp;clone-node</vh></v>
 <v t="ekr.20070925144534.118"><vh>@item *sort-childre&amp;n</vh></v>
 <v t="ekr.20070925144534.119"><vh>@item *&amp;sort-siblings</vh></v>
@@ -1154,71 +1155,6 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060117092249"><vh>About modes</vh></v>
-<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
-<v t="ekr.20060603215208.4"><vh>Modes</vh>
-<v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-Shift-C)</vh></v>
-</v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
-<v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
-<v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
-<v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
-<v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves using plain keys</vh></v>
-<v t="ekr.20060925060533.2"><vh>@shortcuts Gui operations</vh></v>
-<v t="ekr.20060925061845"><vh>@shortcuts File commands</vh></v>
-<v t="ekr.20060603215208.19"><vh>@shortcuts Find commands</vh></v>
-<v t="ekr.20070613133747" a="M"><vh>@shortcuts Menu commands</vh></v>
-<v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer commands/bindings</vh></v>
-<v t="ekr.20060925061845.1"><vh>@shortcuts Other commands</vh></v>
-<v t="ekr.20060925060533.3"><vh>@shortcuts Outline operations</vh></v>
-<v t="ekr.20060925060533.4"><vh>@shortcuts Text operations</vh></v>
-</v>
-</v>
-<v t="ekr.20060110141538.1" a="E"><vh>@keys No bindings</vh>
-<v t="ekr.20051218202206" a="TV" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
-<v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: F-M</vh></v>
-<v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
-</v>
-<v t="ekr.20070810181604"><vh>Vim stuff: not ready yet</vh>
-<v t="ekr.20070810181528"><vh>@@strings  [ignore,insert, overwrite] top_level_unbound_key_action = ignore</vh></v>
-<v t="ekr.20070810180015"><vh>@@keys Vim bindings</vh>
-<v t="ekr.20070810180015.1"><vh>Modes</vh>
-<v t="ekr.20070810182514"><vh>@mode focus</vh></v>
-<v t="ekr.20070810181929"><vh>@shortcuts top-level plain keys</vh></v>
-<v t="ekr.20070810180015.2"><vh>@@mode quick-command (Alt-C)</vh></v>
-<v t="ekr.20070810181929.2"><vh>@@mode Edit (Alt-Control-space)</vh>
-<v t="ekr.20070810181929.3"><vh>@@mode Edit-extend</vh></v>
-</v>
-<v t="ekr.20070810181929.4" annotate="7d71002e"><vh>@@mode File</vh></v>
-<v t="ekr.20070810181929.5"><vh>@@mode File-open</vh></v>
-<v t="ekr.20070810181929.6"><vh>@@mode Find </vh>
-<v t="ekr.20070810181929.7"><vh>@@@mode Find-reverse</vh></v>
-</v>
-<v t="ekr.20070810181929.8"><vh>@@mode Find-options</vh></v>
-<v t="ekr.20070810181929.9" annotate="7d71002e"><vh>@@mode Outline (Control-Shift-O)</vh>
-<v t="ekr.20070810181929.10"><vh>@@mode Outline-move</vh></v>
-</v>
-<v t="ekr.20070810181929.11"><vh>@@mode Quick-command (Alt-C)</vh></v>
-</v>
-<v t="ekr.20070810180015.3"><vh>Shortcuts</vh>
-<v t="ekr.20070810181453"><vh>@shortcuts Arrow keys</vh></v>
-<v t="ekr.20070810181453.1"><vh>@shortcuts Home/End keys</vh></v>
-<v t="ekr.20070810181453.2"><vh>old...</vh></v>
-<v t="ekr.20070810180015.4"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
-<v t="ekr.20070810180015.5"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
-<v t="ekr.20070810180015.6"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
-<v t="ekr.20070810180015.7"><vh>@shortcuts Cursor Moves using plain keys</vh></v>
-<v t="ekr.20070810180015.8"><vh>@shortcuts Gui operations</vh></v>
-<v t="ekr.20070810180015.9"><vh>@shortcuts File commands</vh></v>
-<v t="ekr.20070810180015.10"><vh>@shortcuts Find commands</vh></v>
-<v t="ekr.20070810180015.11" a="M"><vh>@shortcuts Menu commands</vh></v>
-<v t="ekr.20070810180015.12"><vh>@shortcuts Minibuffer commands/bindings</vh></v>
-<v t="ekr.20070810180015.13"><vh>@shortcuts Other commands</vh></v>
-<v t="ekr.20070810180015.14"><vh>@shortcuts Outline operations</vh></v>
-<v t="ekr.20070810180015.15"><vh>@shortcuts Text operations</vh></v>
-</v>
-</v>
-</v>
 <v t="ekr.20070925144552"><vh>Menus</vh>
 <v t="ekr.20070925144534"><vh>@menus</vh>
 <v t="ekr.20070925144534.1"><vh>@menu File</vh>
@@ -1357,6 +1293,7 @@
 <v t="ekr.20070925144534.114"><vh>@item *&amp;delete-node</vh></v>
 <v t="ekr.20070925144534.115"><vh>@item -</vh></v>
 <v t="ekr.20070925144534.116"><vh>@item *&amp;insert-node</vh></v>
+<v t="ekr.20071005173455"><vh>@item *insert-child</vh></v>
 <v t="ekr.20070925144534.117"><vh>@item *&amp;clone-node</vh></v>
 <v t="ekr.20070925144534.118"><vh>@item *sort-childre&amp;n</vh></v>
 <v t="ekr.20070925144534.119"><vh>@item *&amp;sort-siblings</vh></v>
@@ -1710,6 +1647,71 @@
 <v t="ekr.20070925144534.425"><vh>@item -</vh></v>
 <v t="ekr.20070925144534.426"><vh>@item *pri&amp;nt-bindings</vh></v>
 <v t="ekr.20070925144534.427"><vh>@item *print-c&amp;ommands</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20060117092249"><vh>About modes</vh></v>
+<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208.4"><vh>Modes</vh>
+<v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-Shift-C)</vh></v>
+</v>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
+<v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
+<v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
+<v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves using plain keys</vh></v>
+<v t="ekr.20060925060533.2"><vh>@shortcuts Gui operations</vh></v>
+<v t="ekr.20060925061845"><vh>@shortcuts File commands</vh></v>
+<v t="ekr.20060603215208.19"><vh>@shortcuts Find commands</vh></v>
+<v t="ekr.20070613133747" a="M"><vh>@shortcuts Menu commands</vh></v>
+<v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer commands/bindings</vh></v>
+<v t="ekr.20060925061845.1"><vh>@shortcuts Other commands</vh></v>
+<v t="ekr.20060925060533.3"><vh>@shortcuts Outline operations</vh></v>
+<v t="ekr.20060925060533.4"><vh>@shortcuts Text operations</vh></v>
+</v>
+</v>
+<v t="ekr.20060110141538.1"><vh>@keys No bindings</vh>
+<v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
+<v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: F-M</vh></v>
+<v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
+</v>
+<v t="ekr.20070810181604" a="E"><vh>Vim stuff: not ready yet</vh>
+<v t="ekr.20070810181528"><vh>@@strings  [ignore,insert, overwrite] top_level_unbound_key_action = ignore</vh></v>
+<v t="ekr.20070810180015" a="E"><vh>@@keys Vim bindings</vh>
+<v t="ekr.20070810180015.1" a="E"><vh>Modes</vh>
+<v t="ekr.20070810182514"><vh>@mode focus</vh></v>
+<v t="ekr.20070810181929"><vh>@shortcuts top-level plain keys</vh></v>
+<v t="ekr.20070810180015.2"><vh>@@mode quick-command (Alt-C)</vh></v>
+<v t="ekr.20070810181929.2"><vh>@@mode Edit (Alt-Control-space)</vh>
+<v t="ekr.20070810181929.3"><vh>@@mode Edit-extend</vh></v>
+</v>
+<v t="ekr.20070810181929.4" annotate="7d71002e"><vh>@@mode File</vh></v>
+<v t="ekr.20070810181929.5"><vh>@@mode File-open</vh></v>
+<v t="ekr.20070810181929.6"><vh>@@mode Find </vh>
+<v t="ekr.20070810181929.7"><vh>@@@mode Find-reverse</vh></v>
+</v>
+<v t="ekr.20070810181929.8"><vh>@@mode Find-options</vh></v>
+<v t="ekr.20070810181929.9" annotate="7d71002e"><vh>@@mode Outline (Control-Shift-O)</vh>
+<v t="ekr.20070810181929.10"><vh>@@mode Outline-move</vh></v>
+</v>
+<v t="ekr.20070810181929.11" a="TV"><vh>@@mode Quick-command (Alt-C)</vh></v>
+</v>
+<v t="ekr.20070810180015.3"><vh>Shortcuts</vh>
+<v t="ekr.20070810181453"><vh>@shortcuts Arrow keys</vh></v>
+<v t="ekr.20070810181453.1"><vh>@shortcuts Home/End keys</vh></v>
+<v t="ekr.20070810181453.2"><vh>old...</vh></v>
+<v t="ekr.20070810180015.4"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
+<v t="ekr.20070810180015.5"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
+<v t="ekr.20070810180015.6"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
+<v t="ekr.20070810180015.7"><vh>@shortcuts Cursor Moves using plain keys</vh></v>
+<v t="ekr.20070810180015.8"><vh>@shortcuts Gui operations</vh></v>
+<v t="ekr.20070810180015.9"><vh>@shortcuts File commands</vh></v>
+<v t="ekr.20070810180015.10"><vh>@shortcuts Find commands</vh></v>
+<v t="ekr.20070810180015.11" a="M"><vh>@shortcuts Menu commands</vh></v>
+<v t="ekr.20070810180015.12"><vh>@shortcuts Minibuffer commands/bindings</vh></v>
+<v t="ekr.20070810180015.13"><vh>@shortcuts Other commands</vh></v>
+<v t="ekr.20070810180015.14"><vh>@shortcuts Outline operations</vh></v>
+<v t="ekr.20070810180015.15"><vh>@shortcuts Text operations</vh></v>
 </v>
 </v>
 </v>
@@ -3582,6 +3584,7 @@ indent-relative                     = None
 indent-rigidly                      = None
 indent-to-comment-column            = None
 insert-body-time                    = None
+insert-child                        = None
 insert-file                         = None
 insert-headline-time                = None
 # insert-keyboard-macro             = None
@@ -3696,6 +3699,7 @@ indent-relative                         = None
 indent-rigidly                          = None
 indent-to-comment-column                = None
 insert-body-time                        = None      # Shift-Ctrl-G: not useful enough.
+insert-child                            = None
 insert-file                             = None
 insert-headline-time                    = None      # Shift-Ctrl-H: not useful enough.
 # insert-keyboard-macro                 = None
@@ -3970,6 +3974,7 @@ indent-relative                     = None
 indent-rigidly                      = None
 indent-to-comment-column            = Alt-semicolon
 insert-body-time                    = None         # Removed Shift-Ctrl-G: not useful enough.
+insert-child                        = None
 insert-file                         = None
 insert-headline-time                = None         # Removed Shift-Ctrl-H: not useful enough.
 insert-newline                      = Control-o
@@ -4240,6 +4245,7 @@ indent-relative                         = None
 indent-rigidly                          = None
 indent-to-comment-column                = None
 insert-body-time                        = Shift-Ctrl-G
+insert-child                            = None
 insert-file                             = None
 insert-headline-time                    = Shift-Ctrl-H
 # insert-keyboard-macro                 = None
@@ -4534,6 +4540,7 @@ indent-relative                     = None
 indent-rigidly                      = None
 indent-to-comment-column            = None
 insert-body-time                    = None
+insert-child                        = None
 insert-file                         = None
 insert-headline-time                = None
 # insert-keyboard-macro             = None
@@ -8868,5 +8875,6 @@ Leo's init code populates this menu as a special case.</t>
 <t tx="ekr.20071004121840"></t>
 <t tx="ekr.20071004121840.1"></t>
 <t tx="ekr.20071004121840.2"></t>
+<t tx="ekr.20071005173455"></t>
 </tnodes>
 </leo_file>

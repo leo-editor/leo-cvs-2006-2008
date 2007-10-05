@@ -5840,6 +5840,7 @@ class leoCommandsClass (baseEditCommandsClass):
             'import-flattened-outline':     c.importFlattenedOutline,
             'import-noweb-files':           c.importNowebFiles,
             'indent-region':                c.indentBody,
+            'insert-child':                 c.insertChild,
             'insert-node':                  c.insertHeadline,
             'insert-body-time':             c.insertBodyTime,
             'insert-headline-time':         f.insertHeadlineTime,

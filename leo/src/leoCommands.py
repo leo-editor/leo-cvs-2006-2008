@@ -3573,7 +3573,7 @@ class baseCommands:
         c.validateOutline()
     #@-node:ekr.20031218072017.1193:c.deleteOutline
     #@+node:ekr.20031218072017.1761:c.insertHeadline
-    def insertHeadline (self,event=None,op_name="Insert Node"):
+    def insertHeadline (self,event=None,op_name="Insert Node",as_child=False):
 
         '''Insert a node after the presently selected node.'''
 
@@ -3586,7 +3586,7 @@ class baseCommands:
         try:
             undoData = c.undoer.beforeInsertNode(current)
             # Make sure the new node is visible when hoisting.
-            if (
+            if (as_child or
                 (current.hasChildren() and current.isExpanded()) or
                 (c.hoistStack and current == c.hoistStack[-1].p)
             ):
@@ -3597,6 +3597,7 @@ class baseCommands:
             else:
                 p = current.insertAfter()
             dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+            c.selectPosition(p)
             c.setChanged(True)
             u.afterInsertNode(p,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
         finally:
@@ -3609,6 +3610,15 @@ class baseCommands:
 
         return p # for mod_labels plugin.
     #@-node:ekr.20031218072017.1761:c.insertHeadline
+    #@+node:ekr.20071005173203.1:c.insertChild
+    def insertChild (self,event=None):
+
+        '''Insert a node after the presently selected node.'''
+
+        c = self
+
+        return c.insertHeadline(event=event,op_name='Insert Child',as_child=True)
+    #@-node:ekr.20071005173203.1:c.insertChild
     #@+node:ekr.20031218072017.1762:c.clone
     def clone (self,event=None):
 
