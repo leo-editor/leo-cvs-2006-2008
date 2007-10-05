@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.665511265165">
-	<global_window_position top="17" left="238" height="840" width="861"/>
+	<global_window_position top="17" left="238" height="820" width="861"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -450,7 +450,7 @@
 <v t="ekr.20060923114638.28" annotate="7d71002e"><vh>@shortcuts EKR: N-Z</vh></v>
 </v>
 </v>
-<v t="ekr.20070810180015"><vh>@keys Vim bindings</vh>
+<v t="ekr.20070810180015"><vh>@@keys Vim bindings</vh>
 <v t="ekr.20070810180015.1"><vh>Modes</vh>
 <v t="ekr.20070810182514"><vh>@mode focus</vh></v>
 <v t="ekr.20070810181929"><vh>@shortcuts top-level plain keys</vh></v>
@@ -1174,14 +1174,14 @@
 <v t="ekr.20060925060533.4"><vh>@shortcuts Text operations</vh></v>
 </v>
 </v>
-<v t="ekr.20060110141538.1"><vh>@keys No bindings</vh>
-<v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
+<v t="ekr.20060110141538.1" a="E"><vh>@keys No bindings</vh>
+<v t="ekr.20051218202206" a="TV" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
 <v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: F-M</vh></v>
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
 <v t="ekr.20070810181604"><vh>Vim stuff: not ready yet</vh>
 <v t="ekr.20070810181528"><vh>@@strings  [ignore,insert, overwrite] top_level_unbound_key_action = ignore</vh></v>
-<v t="ekr.20070810180015"><vh>@keys Vim bindings</vh>
+<v t="ekr.20070810180015"><vh>@@keys Vim bindings</vh>
 <v t="ekr.20070810180015.1"><vh>Modes</vh>
 <v t="ekr.20070810182514"><vh>@mode focus</vh></v>
 <v t="ekr.20070810181929"><vh>@shortcuts top-level plain keys</vh></v>
@@ -1219,7 +1219,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20070925144552" a="TV"><vh>Menus</vh>
+<v t="ekr.20070925144552"><vh>Menus</vh>
 <v t="ekr.20070925144534"><vh>@menus</vh>
 <v t="ekr.20070925144534.1"><vh>@menu File</vh>
 <v t="ekr.20070925144534.2"><vh>@item *&amp;new</vh></v>
@@ -2516,7 +2516,7 @@ expand-next-level                   = None
 expand-node                         = Alt-]
 expand-or-go-right                  = Alt-RtArrow
 expand-prev-level                   = None
-expand-region-abbrevs               = None
+# expand-region-abbrevs             = None
 expand-to-level-1                   = None
 expand-to-level-2                   = None
 expand-to-level-3                   = None
@@ -2897,7 +2897,7 @@ expand-log-pane                     = None
 expand-outline-pane                 = None
 expand-pane                         = None
 expand-prev-level                   = None
-expand-region-abbrevs               = None
+# expand-region-abbrevs             = None
 expand-to-level-1                   = None
 expand-to-level-2                   = None
 expand-to-level-3                   = None
@@ -3017,7 +3017,7 @@ expand-next-level                   = Alt+=
 expand-node                         = Alt-]
 expand-or-go-right                  = Alt-RtArrow
 expand-prev-level                   = Alt+.
-expand-region-abbrevs               = None
+# expand-region-abbrevs             = None
 expand-to-level-1                   = Alt-1
 expand-to-level-2                   = Alt-2
 expand-to-level-3                   = Alt-3
@@ -3143,7 +3143,7 @@ expand-next-level                   = Alt-=
 expand-node                         = Alt-]
 expand-or-go-right                  = None
 expand-prev-level                   = Alt-.
-expand-region-abbrevs               = None
+# expand-region-abbrevs             = None
 expand-to-level-1                   = None
 expand-to-level-2                   = None
 expand-to-level-3                   = None
@@ -3315,7 +3315,7 @@ write-dirty-at-file-nodes           = None
 write-missing-at-file-nodes         = None
 write-outline-only                  = None 
 yank                                = Control-y
-yank-pop                            = Alt-y
+# yank-pop                          = Alt-y
 yank-rectangle                      = None
 zap-to-character                    = Alt-z</t>
 <t tx="ekr.20060102113259"># A silly mode illustrating vim-like operation.
@@ -3486,7 +3486,7 @@ expand-next-level                   = Alt-=
 expand-node                         = Alt-]
 expand-or-go-right                  = None
 expand-prev-level                   = Alt-.
-expand-region-abbrevs               = None
+# expand-region-abbrevs             = None
 expand-to-level-1                   = None      # Was Alt-1 through Alt-8...
 expand-to-level-2                   = None
 expand-to-level-3                   = None
@@ -3898,7 +3898,7 @@ write-dirty-at-file-nodes               = None
 write-missing-at-file-nodes             = None
 write-outline-only                      = None 
 yank                                    = Control-y
-yank-pop                                = Alt-y
+# yank-pop                              = Alt-y
 yank-rectangle                          = None
 zap-to-character                        = Alt-z</t>
 <t tx="ekr.20060112090844"># indent-for-tab                    = Control-i
@@ -4173,7 +4173,7 @@ write-dirty-at-file-nodes       = None
 write-missing-at-file-nodes     = None
 write-outline-only              = None 
 yank                            = Control-y
-yank-pop                        = Alt-y
+# yank-pop                      = Alt-y
 yank-rectangle                  = None
 zap-to-character                = Alt-z
 </t>
@@ -4442,7 +4442,7 @@ write-dirty-at-file-nodes           = Shift+Ctrl+Q
 write-missing-at-file-nodes         = None
 write-outline-only                  = None
 yank                                = None
-yank-pop                            = None
+# yank-pop                          = None
 yank-rectangle                      = None
 zap-to-character                    = None</t>
 <t tx="ekr.20060112093227.1">fill-paragraph                      = None
@@ -4765,7 +4765,7 @@ write-dirty-at-file-nodes           = None
 write-missing-at-file-nodes         = None
 write-outline-only                  = None
 yank                                = None
-yank-pop                            = None
+# yank-pop                          = None
 yank-rectangle                      = None
 zap-to-character                    = None</t>
 <t tx="ekr.20060112103537.17">'''This script reports commands that exist in some but not all key- binding
@@ -5946,7 +5946,7 @@ scroll-down-extend-selection
 scroll-up
 scroll-up-extend-selection
 yank
-yank-pop
+# yank-pop
 zap-to-character
 
 Focus

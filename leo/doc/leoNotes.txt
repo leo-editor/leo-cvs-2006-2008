@@ -2488,6 +2488,31 @@ def clear (self):
     self.prefix = None
 #@-node:ekr.20050920085536.89:clear
 #@-node:ekr.20050920085536.84:class Tracker (an iterator)
+#@+node:ekr.20050930091642.2:yankPop
+def yankPop (self,event):
+
+    '''Replaces the just-yanked kill buffer with the contents of the previous kill buffer.'''
+
+    k = self.k ; w = self.editWidget(event)
+    if not w: return
+
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    t,t1 = g.convertPythonIndexToRowCol(s,ins)
+    clip_text = self.getClipboard(w)
+
+    if self.killBuffer or clip_text:
+        s = clip_text or self.kbiterator.next()
+        r = w.tag_ranges('kb') ###
+        if r:
+            r1,r2 = r
+            r1,r2 = w.toPythonIndex(r1),w.toPythonIndex(r2)
+            if r1 == ins:
+                w.delete(r1,r2)
+        w.tag_delete('kb') ###
+        w.insert('insert',s,('kb')) ###
+        w.setInsertPoint(ins)
+#@-node:ekr.20050930091642.2:yankPop
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl
