@@ -1,15 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet ekr_stylesheet?>
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.379273504274">
-	<global_window_position top="10" left="105" height="936" width="942"/>
+<globals body_outline_ratio="0.452991452991">
+	<global_window_position top="10" left="247" height="936" width="942"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
 <v t="ekr.20051031040240" str_leo_pos="9"><vh>Startup</vh>
+<v t="ekr.20071001054335"><vh>@@button split-defs</vh></v>
+<v t="ekr.20071004062031"><vh>@@button print -----</vh></v>
 <v t="ekr.20070629073827"><vh>Disabled buttons</vh>
 <v t="ekr.20060910141935"><vh>ZODB plugin buttons</vh>
 <v t="ekr.20060910141935.1"><vh>@@button zodb-read</vh></v>
@@ -41,11 +43,11 @@
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
 <v t="EKR.20040429143933"><vh>@thin leoProjects.txt</vh></v>
 </v>
-<v t="EKR.20040519090151.2"><vh>To do</vh>
+<v t="EKR.20040519090151.2" a="TV"><vh>To do</vh>
 <v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
-<v t="ekr.20031218072017.2406" a="TV"><vh>Code</vh>
+<v t="ekr.20031218072017.2406"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
 <v t="ekr.20040629121554.1"><vh>getSignOnLine (Contains hard-coded version info)</vh></v>
 <v t="ekr.20031218072017.2604"><vh>Core classes...</vh>
@@ -78,8 +80,10 @@
 <v t="ekr.20031218072017.3749"><vh>@thin leoMenu.py</vh></v>
 </v>
 <v t="ekr.20070930105601"><vh>Gui Swing classes</vh>
+<v t="ekr.20071001092721"><vh>@thin leoSwingDialog.py</vh></v>
 <v t="ekr.20070930105125"><vh>@thin leoSwingFrame.py</vh></v>
 <v t="ekr.20070930102053.1"><vh>@thin leoSwingGui.py</vh></v>
+<v t="ekr.20071001081358"><vh>@thin leoSwingUtils.py</vh></v>
 </v>
 <v t="ekr.20031218072017.3821"><vh>Gui Tkinter classes</vh>
 <v t="ekr.20031218072017.3838"><vh>@thin leoTkinterComparePanel.py</vh></v>
@@ -159,7 +163,7 @@ if 0: # Set to 1 for lint-like testing.
 <t tx="ekr.20031218072017.3821"></t>
 <t tx="ekr.20040629121554.1">def getSignOnLine (self):
     c = self
-    return "Leo 4.4.4 beta 2, build %s, September 19, 2007" % c.getBuildNumber()
+    return "Leo 4.4.4 final, build %s, October 5, 2007" % c.getBuildNumber()
 </t>
 <t tx="ekr.20050721093241">@nocolor
 
@@ -341,6 +345,41 @@ c.setBodyString(p,s)
 u.afterChangeNodeContents(p,'add-if-g-unitTesting',b)
 </t>
 <t tx="ekr.20070629073827"></t>
-<t tx="ekr.20070930105601"></t>
+<t tx="ekr.20070930105601">    </t>
+<t tx="ekr.20071001054335"># script to split node containing multiple def's into child nodes
+
+def createChild (parent,body,line):
+    p = parent.insertAsLastChild()
+    h = line [3:].strip()
+    i = h.find('(')
+    if i &gt; -1:
+        func = h [: i].strip()
+    h2 = g.choose(func,func,h)
+    p.setHeadString(h2)
+    p.setTnodeText(''.join(body))
+
+s = p.bodyString()
+if s.strip():
+    b = c.undoer.beforeChangeTree(p)
+    c.beginUpdate()
+    try:
+        lines = g.splitLines(s) ; body = [] ; changed = False ; lastDefLine = ''
+        for line in lines:
+            if g.match_word(line,0,'def'):
+                if body and lastDefLine:
+                    createChild(p,body,lastDefLine)
+                    body = [] ; changed = True
+                lastDefLine = line
+            body.append(line)
+        if body and lastDefLine:
+            createChild(p,body,lastDefLine)
+            changed = True
+        if changed:
+            c.setChanged(True) ; c.setBodyString(p,'')
+    finally:
+        c.undoer.afterChangeTree(p,'split-defs',b)
+        c.endUpdate()</t>
+<t tx="ekr.20071004062031">print '-'*60
+</t>
 </tnodes>
 </leo_file>
