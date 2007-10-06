@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.665511265165">
-	<global_window_position top="17" left="238" height="780" width="958"/>
+	<global_window_position top="17" left="238" height="740" width="958"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -178,7 +178,8 @@
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
 </v>
-<v t="ekr.20041119034357.10" annotate="7d71002e"><vh>Command options</vh>
+<v t="ekr.20041119034357.10" a="E" annotate="7d71002e"><vh>Command options</vh>
+<v t="ekr.20071006153053" a="TV"><vh>@bool add_ws_to_kill_ring = False</vh></v>
 <v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
 <v t="ekr.20051027175030"><vh>@bool autocomplete-brackets = False</vh></v>
 <v t="ekr.20070615094204"><vh>@bool contractVisitedNodes = True</vh></v>
@@ -343,7 +344,7 @@
 <v t="ekr.20060804095015"><vh>@string open_flash_brackets = ([{</vh></v>
 <v t="ekr.20060926161207.2" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 </v>
-<v t="ekr.20051007200824" a="E" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
+<v t="ekr.20051007200824" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
 <v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
 <v t="ekr.20051007200824.1" annotate="7d71002e"><vh>About shortcut specifiers</vh></v>
 <v t="ekr.20060116090646"><vh>Reference for function keys</vh></v>
@@ -488,16 +489,16 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-Shift-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
 <v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves using plain keys</vh></v>
-<v t="ekr.20060925060533.2" a="TV"><vh>@shortcuts Gui operations</vh></v>
+<v t="ekr.20060925060533.2"><vh>@shortcuts Gui operations</vh></v>
 <v t="ekr.20060925061845"><vh>@shortcuts File commands</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find commands</vh></v>
 <v t="ekr.20070613133747" a="M"><vh>@shortcuts Menu commands</vh></v>
@@ -949,6 +950,7 @@
 <v t="ekr.20071004121840.1"><vh>@item kill-re&amp;gion</vh></v>
 <v t="ekr.20071004121840.2"><vh>@item kill-region-s&amp;ave</vh></v>
 <v t="ekr.20071004121248.2"><vh>@item kill-&amp;sentence</vh></v>
+<v t="ekr.20071006153725"><vh>@item kill-ws</vh></v>
 <v t="ekr.20071004121248.1"><vh>@item kill-&amp;word</vh></v>
 <v t="ekr.20071004121248.3"><vh>@item -</vh></v>
 <v t="ekr.20071004121248.4"><vh>@item &amp;yank</vh></v>
@@ -1591,6 +1593,7 @@
 <v t="ekr.20071004121840.1"><vh>@item kill-re&amp;gion</vh></v>
 <v t="ekr.20071004121840.2"><vh>@item kill-region-s&amp;ave</vh></v>
 <v t="ekr.20071004121248.2"><vh>@item kill-&amp;sentence</vh></v>
+<v t="ekr.20071006153725"><vh>@item kill-ws</vh></v>
 <v t="ekr.20071004121248.1"><vh>@item kill-&amp;word</vh></v>
 <v t="ekr.20071004121248.3"><vh>@item -</vh></v>
 <v t="ekr.20071004121248.4"><vh>@item &amp;yank</vh></v>
@@ -1655,7 +1658,7 @@
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-Shift-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -8877,5 +8880,7 @@ Leo's init code populates this menu as a special case.</t>
 <t tx="ekr.20071004121840.1"></t>
 <t tx="ekr.20071004121840.2"></t>
 <t tx="ekr.20071005173455"></t>
+<t tx="ekr.20071006153053">True: add stuff consisting only of whitespace to the kill ring.</t>
+<t tx="ekr.20071006153725"></t>
 </tnodes>
 </leo_file>
