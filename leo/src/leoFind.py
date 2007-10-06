@@ -490,7 +490,7 @@ class leoFind:
             self.initInHeadline()
             self.changeSelection()
     #@-node:ekr.20031218072017.3068:change
-    #@+node:ekr.20031218072017.3069:changeAll (sets end of change-all group)
+    #@+node:ekr.20031218072017.3069:changeAll
     def changeAll(self):
 
         # g.trace(g.callers())
@@ -521,7 +521,7 @@ class leoFind:
         finally:
             c.endUpdate()
             self.restore(saveData)
-    #@-node:ekr.20031218072017.3069:changeAll (sets end of change-all group)
+    #@-node:ekr.20031218072017.3069:changeAll
     #@+node:ekr.20031218072017.3070:changeSelection
     # Replace selection with self.change_text.
     # If no selection, insert self.change_text at the cursor.
