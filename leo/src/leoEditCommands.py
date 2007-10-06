@@ -3178,7 +3178,7 @@ class editCommandsClass (baseEditCommandsClass):
                 i2,j2 = g.getLine(s,spot)
                 line = s[i2:j2]
                 row,col = g.convertPythonIndexToRowCol(s,spot)
-                if j2 < len(s)-1:
+                if True: #### j2 < len(s)-1:
                     n = min(self.moveCol,max(0,len(line)-1))
                 else:
                     n = min(self.moveCol,max(0,len(line))) # A tricky boundary.
@@ -3225,6 +3225,7 @@ class editCommandsClass (baseEditCommandsClass):
 
         c = self.c ; w = self.editWidget(event)
         if not w: return
+        trace = False
 
         ins = w.getInsertPoint()
         s = w.getAllText()
@@ -3232,6 +3233,7 @@ class editCommandsClass (baseEditCommandsClass):
 
         # Find the start of the next/prev line.
         row,col = g.convertPythonIndexToRowCol(s,ins)
+        if trace: g.trace('ins',ins,'row',row,'col',col)
         i,j = g.getLine(s,ins)
         if direction == 'down':
             i2,j2 = g.getLine(s,j)
@@ -3239,9 +3241,10 @@ class editCommandsClass (baseEditCommandsClass):
             i2,j2 = g.getLine(s,i-1)
 
         # The spot is the start of the line plus the column index.
-        col2 = max(0,min(col,j2-i2-1))
+        n = max(0,j2-i2-1) # The length of the new line.
+        col2 = min(col,n)
         spot = i2 + col2
-        # g.trace('spot',spot,'col',col,'line',repr(s[i2:j2]))
+        if trace: g.trace('spot',spot,'n',n,'col',col,'line',repr(s[i2:j2]))
 
         self.extendHelper(w,extend,spot,upOrDown=True)
     #@nonl

@@ -5423,7 +5423,7 @@ def getLine (s,i):
     s[j] is a newline unless there is no trailing newline.
     '''
 
-    if i >= len(s): i = len(s) - 1
+    if i > len(s): i = len(s) -1 # Bug fix: 10/6/07 (was if i >= len(s))
     if i < 0: i = 0
     j = s.rfind('\n',0,i) # A newline *ends* the line, so look to the left of a newline.
     if j == -1: j = 0
