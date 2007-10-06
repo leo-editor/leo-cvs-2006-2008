@@ -5417,6 +5417,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
 
         baseEditCommandsClass.__init__(self,c) # init the base class.
 
+        self.addWsToKillRing = c.config.getBool('add-ws-to-kill-ring')
         self.killBuffer = [] # May be changed in finishCreate.
         self.kbiterator = self.iterateKillBuffer()
         self.last_clipboard = None # For interacting with system clipboard.
@@ -5445,18 +5446,20 @@ class killBufferCommandsClass (baseEditCommandsClass):
             'kill-sentence':            self.killSentence,
             'kill-region':              self.killRegion,
             'kill-region-save':         self.killRegionSave,
+            'kill-ws':                  self.killWs,
             'yank':                     self.yank,
             'yank-pop':                 self.yankPop,
             'zap-to-character':         self.zapToCharacter,
         }
     #@-node:ekr.20050920084036.176: getPublicCommands
     #@+node:ekr.20050920084036.183:addToKillBuffer
-    def addToKillBuffer (self,text,force=False):
+    def addToKillBuffer (self,text):
 
         '''Insert the text into the kill buffer if force is True or
         the text contains something other than whitespace.'''
 
-        if force or text.strip():
+        if self.addWsToKillRing or text.strip():
+            self.killBuffer = [z for z in self.killBuffer if z != text]
             self.killBuffer.insert(0,text)
     #@-node:ekr.20050920084036.183:addToKillBuffer
     #@+node:ekr.20050920084036.181:backwardKillSentence
@@ -5663,25 +5666,30 @@ class killBufferCommandsClass (baseEditCommandsClass):
         self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050930095323.1:killSentence
     #@+node:ekr.20050930100733:killWs
-    def killWs (self,event,undoType=None):
+    def killWs (self,event,undoType='kill-ws'):
 
         '''Kill whitespace.'''
 
         ws = ''
         w = self.editWidget(event)
         if not w: return
+        s = w.getAllText()
+        i = j = ins = w.getInsertPoint()
 
-        while 1:
-            s = w.get('insert')
-            if s in (' ','\t'):
-                w.delete('insert')
-                ws = ws + s
-            else:
-                break
+        while i >= 0 and s[i] in (' ','\t'):
+            i-= 1
+        if i < ins: i += 1
 
-        if ws:
+        while j < len(s) and s[j] in (' ','\t'):
+            j += 1
+
+        if j > i:
+            ws = s[i:j]
+            # g.trace(i,j,repr(ws))
+            w.delete(i,j)
             if undoType: self.beginCommand(undoType=undoType)
-            self.addToKillBuffer(ws,force=True)
+            if self.addWsToKillRing:
+                self.addToKillBuffer(ws)
             if undoType: self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050930100733:killWs
     #@+node:ekr.20050930091642.1:yank
