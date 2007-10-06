@@ -83,7 +83,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20070926132045"><vh>Buttons</vh>
 <v t="ekr.20070926082407"><vh>@buttons</vh>
 <v t="ekr.20070926082256.1"><vh>@button Beautify</vh></v>
@@ -178,8 +178,8 @@
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
 </v>
-<v t="ekr.20041119034357.10" a="E" annotate="7d71002e"><vh>Command options</vh>
-<v t="ekr.20071006153053" a="TV"><vh>@bool add_ws_to_kill_ring = False</vh></v>
+<v t="ekr.20041119034357.10" annotate="7d71002e"><vh>Command options</vh>
+<v t="ekr.20071006153053"><vh>@bool add_ws_to_kill_ring = False</vh></v>
 <v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
 <v t="ekr.20051027175030"><vh>@bool autocomplete-brackets = False</vh></v>
 <v t="ekr.20070615094204"><vh>@bool contractVisitedNodes = True</vh></v>

@@ -4,412 +4,85 @@
 #@+node:ekr.20071001045205:To do: 4.4.4
 #@+node:ekr.20071006091833:Make sure there are unit tests for all commands affected by g.getLine
 #@+node:ekr.20071006093912:Found: g.getLine
-#@+node:ekr.20031218072017.1833:reformatParagraph & tests
-def reformatParagraph (self,event=None):
+#@+node:ekr.20071006152341: utils
+#@+node:ekr.20031218072017.4030:getInsertLines & test
+def getInsertLines (self):
 
-    """Reformat a text paragraph in a Tk.Text widget
+    """Return before,after where:
 
-Wraps the concatenated text to present page width setting. Leading tabs are
-sized to present tab width setting. First and second line of original text is
-used to determine leading whitespace in reformatted text. Hanging indentation
-is honored.
+    before is all the lines before the line containing the insert point.
+    sel is the line containing the insert point.
+    after is all the lines after the line containing the insert point.
 
-Paragraph is bound by start of body, end of body, blank lines, and lines
-starting with "@". Paragraph is selected by position of current insertion
-cursor."""
+    All lines end in a newline, except possibly the last line."""
 
-    c = self ; body = c.frame.body ; w = body.bodyCtrl
+    w = self.bodyCtrl
+    s = w.getAllText()
+    insert = w.getInsertPoint()
+    i,j = g.getLine(s,insert)
+    before = s[0:i]
+    ins = s[i:j]
+    after = s[j:]
+
+    before = g.toUnicode(before,g.app.tkEncoding)
+    ins    = g.toUnicode(ins,   g.app.tkEncoding)
+    after  = g.toUnicode(after ,g.app.tkEncoding)
+
+    return before,ins,after
+#@+node:ekr.20070627082044.920:@test leoBody.getInsertLines
+# line 1
+# line 2
+# line 3
+if g.unitTesting:
+    c.beginUpdate()
+    try:
+        w = c.frame.body.bodyCtrl
+        index = 11 # in the second line.
+        w.setInsertPoint(index)
+        before,ins,after = c.frame.body.getInsertLines()
+        assert before == '# line 1\n','Got %s' % repr(before)
+        assert ins    == '# line 2\n','Got %s' % repr(ins)
+        assert after.startswith('# line 3\n')
+        assert after.endswith('# end.')
+    finally:
+        c.endUpdate(False)
+# end.
+#@nonl
+#@-node:ekr.20070627082044.920:@test leoBody.getInsertLines
+#@-node:ekr.20031218072017.4030:getInsertLines & test
+#@+node:ekr.20031218072017.2377:getSelectionLines
+def getSelectionLines (self):
+
+    """Return before,sel,after where:
+
+    before is the all lines before the selected text
+    (or the text before the insert point if no selection)
+    sel is the selected text (or "" if no selection)
+    after is all lines after the selected text
+    (or the text after the insert point if no selection)"""
 
     if g.app.batchMode:
-        c.notValidInBatchMode("xxx")
-        return
+        c.notValidInBatchMode(undoType)
+        return '','',''
 
-    if body.hasTextSelection():
-        g.es("Text selection inhibits Reformat Paragraph",color="blue")
-        return
-
-    << compute vars for reformatParagraph >>
-    if lines:
-        << compute the leading whitespace >>
-        << compute the result of wrapping all lines >>
-        << update the body, selection & undo state >>
-#@nonl
-#@+node:ekr.20031218072017.1834:<< compute vars for reformatParagraph >>
-theDict = g.scanDirectives(c)
-pageWidth = theDict.get("pagewidth")
-tabWidth  = theDict.get("tabwidth")
-
-original = w.getAllText()
-oldSel =  w.getSelectionRange()
-oldYview = body.getYScrollPosition()
-
-head,lines,tail = c.findBoundParagraph()
-#@-node:ekr.20031218072017.1834:<< compute vars for reformatParagraph >>
-#@+node:ekr.20031218072017.1835:<< compute the leading whitespace >>
-indents = [0,0] ; leading_ws = ["",""]
-
-for i in (0,1):
-    if i < len(lines):
-        # Use the original, non-optimized leading whitespace.
-        leading_ws[i] = ws = g.get_leading_ws(lines[i])
-        indents[i] = g.computeWidth(ws,tabWidth)
-
-indents[1] = max(indents)
-if len(lines) == 1:
-    leading_ws[1] = leading_ws[0]
-#@-node:ekr.20031218072017.1835:<< compute the leading whitespace >>
-#@+node:ekr.20031218072017.1836:<< compute the result of wrapping all lines >>
-trailingNL = lines and lines[-1].endswith('\n')
-lines = [g.choose(z.endswith('\n'),z[:-1],z) for z in lines]
-
-# Wrap the lines, decreasing the page width by indent.
-result = g.wrap_lines(lines,
-    pageWidth-indents[1],
-    pageWidth-indents[0])
-
-# prefix with the leading whitespace, if any
-paddedResult = []
-paddedResult.append(leading_ws[0] + result[0])
-for line in result[1:]:
-    paddedResult.append(leading_ws[1] + line)
-
-# Convert the result to a string.
-result = '\n'.join(paddedResult)
-if trailingNL: result = result + '\n'
-#@nonl
-#@-node:ekr.20031218072017.1836:<< compute the result of wrapping all lines >>
-#@+node:ekr.20031218072017.1837:<< update the body, selection & undo state >>
-junk, ins = body.setSelectionAreas(head,result,tail)
-
-# Advance to the next paragraph.
-s = w.getAllText()
-ins += 1 # Move past the selection.
-while ins < len(s):
-    i,j = g.getLine(s,ins)
-    line = s[i:j]
-    if line.startswith('@') or line.isspace():
-        ins = j+1
-    else:
-        ins = i ; break
-
-changed = original != head + result + tail
-if changed:
-    undoType = g.choose(changed,"Reformat Paragraph",None)
-    body.onBodyChanged(undoType,oldSel=oldSel,oldYview=oldYview)
-
-w.setSelectionRange(ins,ins,insert=ins)
-w.see(ins)
-if changed:
-    c.recolor()
-#@-node:ekr.20031218072017.1837:<< update the body, selection & undo state >>
-#@-node:ekr.20031218072017.1833:reformatParagraph & tests
-#@+node:ekr.20050920084036.134:indentToCommentColumn (test)
-def indentToCommentColumn (self,event):
-
-    '''Insert whitespace to indent to the comment column.'''
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    self.beginCommand(undoType='indent-to-comment-column')
-
+    # At present, called only by c.getBodyLines.
+    w = self.bodyCtrl
     s = w.getAllText()
-    junk, i = g.getLine(s,w.getInsertPoint())
-    i1, i2 = g.convertPythonIndexToRowCol(s,i)
-    c1 = int(self.ccolumn)
-
-    if i2 < c1: w.insert(i,' '*(c1-i2))
-    if i2 >= c1: w.insert(i,' ')
-    w.setInsertPoint(i)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.134:indentToCommentColumn (test)
-#@+node:ekr.20050920084036.67:centerLine
-def centerLine (self,event):
-
-    '''Centers line within current fill column'''
-
-    k = self.k ; w = self.editWidget(event)
-    if not w: return
-
-    s = w.getAllText()
-    i,j = g.getLine(s,w.getInsertPoint())
-    line = s [i:j].strip()
-    if not line or len(line) >= self.fillColumn: return
-
-    self.beginCommand(undoType='center-line')
-    n = (self.fillColumn-len(line)) / 2
-    ws = ' ' * n
-    k = g.skip_ws(s,i)
-    if k > i: w.delete(i,k-i)
-    w.insert(i,ws)
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.67:centerLine
-#@+node:ekr.20050920084036.69:centerRegion
-def centerRegion (self,event):
-
-    '''Centers the selected text within the fill column'''
-
-    k = self.k ; w = self.editWidget(event)
-    if not w: return
-
-    s = w.getAllText()
-    sel_1, sel_2 = w.getSelectionRange()
-    ind, junk = g.getLine(s,sel_1)
-    junk, end = g.getLine(s,sel_2)
-
-    self.beginCommand(undoType='center-region')
-
-    inserted = 0
-    while ind < end:
-        s = w.getAllText()
-        i, j = g.getLine(s,ind)
-        line = s [i:j].strip()
-        # g.trace(len(line),repr(line))
-        if len(line) >= self.fillColumn:
-            ind = j
-        else:
-            n = (self.fillColumn-len(line)) / 2
-            inserted += n
-            k = g.skip_ws(s,i)
-            if k > i: w.delete(i,k-i)
-            w.insert(i,' '*n)
-            ind = j + n-(k-i)
-
-    w.setSelectionRange(sel_1,sel_2+inserted)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.69:centerRegion
-#@+node:ekr.20050920084036.70:setFillPrefix (test)
-def setFillPrefix( self, event ):
-
-    '''Make the selected text the fill prefix.'''
-
-    w = self.editWidget(event)
-    if not w: return
-
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    i,junk = g.getLine(s,ins)
-    txt = s[i:ins]
-    self.fillPrefix = txt
-#@-node:ekr.20050920084036.70:setFillPrefix (test)
-#@+node:ekr.20050920084036.75:backToIndentation
-def backToIndentation (self,event):
-
-    '''Position the point at the first non-blank character on the line.'''
-
-    w = self.editWidget(event)
-    if not w: return
-
-    self.beginCommand(undoType='back-to-indentation')
-
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    i,j = g.getLine(s,ins)
-    while i < j and s[i] in (' \t'):
-        i += 1
-    w.setInsertPoint(i)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.75:backToIndentation
-#@+node:ekr.20050920084036.76:deleteIndentation (test)
-def deleteIndentation (self,event):
-
-    '''Delete indentation in the presently line.'''
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    self.beginCommand(undoType='delete-indentation')
-
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    i,j = g.getLine(s,ins)
-    txt = s[i:j].strip()
-    w.delete(i,j)
-    w.insert(ins-1,txt)
-    w.setInsertPoint(i)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.76:deleteIndentation (test)
-#@+node:ekr.20050920084036.78:indentRelative
-def indentRelative (self,event):
-
-    '''The indent-relative command indents at the point based on the previous
-    line (actually, the last non-empty line.) It inserts whitespace at the
-    point, moving point, until it is underneath an indentation point in the
-    previous line.
-
-    An indentation point is the end of a sequence of whitespace or the end of
-    the line. If the point is farther right than any indentation point in the
-    previous line, the whitespace before point is deleted and the first
-    indentation point then applicable is used. If no indentation point is
-    applicable even then whitespace equivalent to a single tab is inserted.'''
-
-    c = self.c ; undoType = 'indent-relative' ; w = self.editWidget(event)
-    if not w: return
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    oldSel = w.getSelectionRange()
-    oldYview = w.getYScrollPosition()
-    # Find the previous non-blank line
-    i,j = g.getLine(s,ins)
-    while 1:
-        if i <= 0: return
-        i,j = g.getLine(s,i-1)
-        line = s[i:j]
-        if line.strip(): break
-    self.beginCommand(undoType=undoType)
-    try:
-        k = g.skip_ws(s,i)
-        ws = s[i:k]
-        i2,j2 = g.getLine(s,ins)
-        k = g.skip_ws(s,i2)
-        line = ws + s[k:j2]
-        w.delete(i2,j2)
-        w.insert(i2,line)
-        w.setInsertPoint(i2+len(ws))
-        c.frame.body.onBodyChanged(undoType,oldSel=oldSel,oldText=s,oldYview=oldYview)
-    finally:
-        self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.78:indentRelative
-#@+node:ekr.20051026092433.1:backwardDeleteCharacter
-def backwardDeleteCharacter (self,event=None):
-
-    '''Delete the character to the left of the cursor.'''
-
-    c = self.c ; p = c.currentPosition()
-    w = self.editWidget(event)
-    if not w: return
-
-    wname = c.widget_name(w)
-    ins = w.getInsertPoint()
     i,j = w.getSelectionRange()
-    # g.trace(wname,i,j,ins)
-
-    if wname.startswith('body'):
-        self.beginCommand()
-        try:
-            d = g.scanDirectives(c,p)
-            tab_width = d.get("tabwidth",c.tab_width)
-            changed = True
-            if i != j:
-                w.delete(i,j)
-                w.setSelectionRange(i,i,insert=i)
-            elif i == 0:
-                changed = False
-            elif tab_width > 0:
-                w.delete(ins-1)
-                w.setSelectionRange(ins-1,ins-1,insert=ins-1)
-            else:
-                << backspace with negative tab_width >>
-        finally:
-            self.endCommand(changed=True,setLabel=False) # Necessary to make text changes stick.
+    if i == j:
+        i,j = g.getLine(s,i)
     else:
-        # No undo in this widget.
-        # Make sure we actually delete something if we can.
-        s = w.getAllText()
-        if i != j:
-            j = max(i,min(j,len(s)))
-            w.delete(i,j)
-            w.setSelectionRange(i,i,insert=i)
-        elif ins != 0:
-            # Do nothing at the start of the headline.
-            w.delete(ins-1)
-            ins = ins-1
-            w.setSelectionRange(ins,ins,insert=ins)
-#@+node:ekr.20051026092746:<< backspace with negative tab_width >>
-s = prev = w.getAllText()
-ins = w.getInsertPoint()
-i,j = g.getLine(s,ins)
-s = prev = s[i:ins]
-n = len(prev)
-abs_width = abs(tab_width)
+        i,junk = g.getLine(s,i)
+        junk,j = g.getLine(s,j)
 
-# Delete up to this many spaces.
-n2 = (n % abs_width) or abs_width
-n2 = min(n,n2) ; count = 0
 
-while n2 > 0:
-    n2 -= 1
-    ch = prev[n-count-1]
-    if ch != ' ': break
-    else: count += 1
+    before = g.toUnicode(s[0:i],g.app.tkEncoding)
+    sel    = g.toUnicode(s[i:j],g.app.tkEncoding)
+    after  = g.toUnicode(s[j:len(s)],g.app.tkEncoding)
 
-# Make sure we actually delete something.
-i = ins-(max(1,count))
-w.delete(i,ins)
-w.setSelectionRange(i,i,insert=i)
-#@-node:ekr.20051026092746:<< backspace with negative tab_width >>
-#@-node:ekr.20051026092433.1:backwardDeleteCharacter
-#@+node:ekr.20050920084036.135:deleteSpaces
-def deleteSpaces (self,event,insertspace=False):
-
-    '''Delete all whitespace surrounding the cursor.'''
-
-    c = self.c ; w = self.editWidget(event)
-    undoType = g.choose(insertspace,'insert-space','delete-spaces')
-    if not w: return
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    i,j = g.getLine(s,ins)
-    w1 = ins-1
-    while w1 >= i and s[w1].isspace():
-        w1 -= 1
-    w1 += 1
-    w2 = ins
-    while w2 <= j and s[w2].isspace():
-        w2 += 1
-    spaces = s[w1:w2]
-    if spaces:
-        self.beginCommand(undoType=undoType)
-        if insertspace: s = s[:w1] + ' ' + s[w2:]
-        else:           s = s[:w1] + s[w2:]
-        w.setAllText(s)
-        w.setInsertPoint(w1)
-        self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.135:deleteSpaces
-#@+node:ekr.20051026171121.1:udpateAutoIndent
-def updateAutoIndent (self,p,w):
-
-    c = self.c ; d = g.scanDirectives(c,p)
-    tab_width = d.get("tabwidth",c.tab_width)
-    # Get the previous line.
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    i = g.skip_to_start_of_line(s,ins)
-    i,j = g.getLine(s,i-1)
-    s = s[i:j-1]
-    # g.trace(i,j,repr(s))
-
-    # Add the leading whitespace to the present line.
-    junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
-    # g.trace('width',width,'tab_width',tab_width)
-
-    if s and s [-1] == ':':
-        # For Python: increase auto-indent after colons.
-        if g.scanColorDirectives(c,p) == 'python':
-            width += abs(tab_width)
-    if self.smartAutoIndent:
-        # Determine if prev line has unclosed parens/brackets/braces
-        bracketWidths = [width] ; tabex = 0
-        for i in range(0,len(s)):
-            if s [i] == '\t':
-                tabex += tab_width-1
-            if s [i] in '([{':
-                bracketWidths.append(i+tabex+1)
-            elif s [i] in '}])' and len(bracketWidths) > 1:
-                bracketWidths.pop()
-        width = bracketWidths.pop()
-    ws = g.computeLeadingWhitespace(width,tab_width)
-    if ws:
-        i = w.getInsertPoint()
-        w.insert(i,ws)
-        w.setInsertPoint(i+len(ws))
-#@-node:ekr.20051026171121.1:udpateAutoIndent
+    # g.trace(i,j,'sel',repr(s[i:j]),'after',repr(after))
+    return before,sel,after # 3 strings.
+#@-node:ekr.20031218072017.2377:getSelectionLines
 #@+node:ekr.20060113130510:extendHelper & test
 def extendHelper (self,w,extend,spot,upOrDown=False):
     '''Handle the details of extending the selection.
@@ -480,81 +153,111 @@ if g.unitTesting:
         c.endUpdate(False)
 #@-node:ekr.20070627082044.269:@test extendHelper
 #@-node:ekr.20060113130510:extendHelper & test
-#@+node:ekr.20060113105246.1:moveUpOrDownHelper & test
-def moveUpOrDownHelper (self,event,direction,extend):
+#@+node:ekr.20050920084036.97:selectParagraphHelper
+def selectParagraphHelper (self,w,start):
 
-    c = self.c ; w = self.editWidget(event)
-    if not w: return
-    trace = False
+    '''Select from start to the end of the paragraph.'''
 
-    ins = w.getInsertPoint()
     s = w.getAllText()
-    w.seeInsertPoint()
+    i1,j = g.getLine(s,start)
+    while j < len(s):
+        i,j2 = g.getLine(s,j)
+        line = s[i:j2]
+        if line.strip(): j = j2
+        else: break
 
-    # Find the start of the next/prev line.
-    row,col = g.convertPythonIndexToRowCol(s,ins)
-    if trace: g.trace('ins',ins,'row',row,'col',col)
-    i,j = g.getLine(s,ins)
-    if direction == 'down':
-        i2,j2 = g.getLine(s,j)
-    else:
-        i2,j2 = g.getLine(s,i-1)
+    j = max(start,j-1)
+    w.setSelectionRange(i1,j,insert=j)
+#@-node:ekr.20050920084036.97:selectParagraphHelper
+#@-node:ekr.20071006152341: utils
+#@+node:ekr.20050920084036.75:backToIndentation
+def backToIndentation (self,event):
 
-    # The spot is the start of the line plus the column index.
-    n = max(0,j2-i2-1) # The length of the new line.
-    col2 = min(col,n)
-    spot = i2 + col2
-    if trace: g.trace('spot',spot,'n',n,'col',col,'line',repr(s[i2:j2]))
-
-    self.extendHelper(w,extend,spot,upOrDown=True)
-#@nonl
-#@+node:ekr.20070627082044.272:@test moveUpOrDownHelper
-if g.unitTesting:
-    c.beginUpdate()
-    try:
-
-        ec = c.editCommands ; w = c.frame.body.bodyCtrl
-
-        for i,result,direction in (('5.8','4.8','up'),('5.8','6.8','down')):
-            event = None ; extend = False; ec.moveSpot = None
-            w.setInsertPoint(i)
-            ec.moveUpOrDownHelper (event,direction,extend)
-            i2,j2 = w.getSelectionRange()
-            if 1:
-                break
-            else:
-                assert i==i2, 'Expected %s, got %s' % (repr(i),repr(i2))
-                assert j==j2, 'Expected %s, got %s' % (repr(j),repr(j2))
-                w.setSelectionRange(0,0,insert=None)
-    finally:
-        c.endUpdate(False)
-#@-node:ekr.20070627082044.272:@test moveUpOrDownHelper
-#@-node:ekr.20060113105246.1:moveUpOrDownHelper & test
-#@+node:ekr.20051218133207.1:forwardParagraphHelper
-def forwardParagraphHelper (self,event,extend):
+    '''Position the point at the first non-blank character on the line.'''
 
     w = self.editWidget(event)
     if not w: return
+
+    self.beginCommand(undoType='back-to-indentation')
+
     s = w.getAllText()
     ins = w.getInsertPoint()
     i,j = g.getLine(s,ins)
-    line = s[i:j]
+    while i < j and s[i] in (' \t'):
+        i += 1
+    w.setInsertPoint(i)
 
-    if line.strip(): # Skip past the present paragraph.
-        self.selectParagraphHelper(w,i)
-        i,j = w.getSelectionRange()
-        j += 1
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.75:backToIndentation
+#@+node:ekr.20051026092433.1:backwardDeleteCharacter
+def backwardDeleteCharacter (self,event=None):
 
-    # Skip to the next non-blank line.
-    i = j
-    while j < len(s):
-        i,j = g.getLine(s,j)
-        line = s[i:j]
-        if line.strip(): break
+    '''Delete the character to the left of the cursor.'''
 
-    w.setInsertPoint(ins) # Restore the original insert point.
-    self.moveToHelper(event,i,extend)
-#@-node:ekr.20051218133207.1:forwardParagraphHelper
+    c = self.c ; p = c.currentPosition()
+    w = self.editWidget(event)
+    if not w: return
+
+    wname = c.widget_name(w)
+    ins = w.getInsertPoint()
+    i,j = w.getSelectionRange()
+    # g.trace(wname,i,j,ins)
+
+    if wname.startswith('body'):
+        self.beginCommand()
+        try:
+            d = g.scanDirectives(c,p)
+            tab_width = d.get("tabwidth",c.tab_width)
+            changed = True
+            if i != j:
+                w.delete(i,j)
+                w.setSelectionRange(i,i,insert=i)
+            elif i == 0:
+                changed = False
+            elif tab_width > 0:
+                w.delete(ins-1)
+                w.setSelectionRange(ins-1,ins-1,insert=ins-1)
+            else:
+                << backspace with negative tab_width >>
+        finally:
+            self.endCommand(changed=True,setLabel=False) # Necessary to make text changes stick.
+    else:
+        # No undo in this widget.
+        # Make sure we actually delete something if we can.
+        s = w.getAllText()
+        if i != j:
+            j = max(i,min(j,len(s)))
+            w.delete(i,j)
+            w.setSelectionRange(i,i,insert=i)
+        elif ins != 0:
+            # Do nothing at the start of the headline.
+            w.delete(ins-1)
+            ins = ins-1
+            w.setSelectionRange(ins,ins,insert=ins)
+#@+node:ekr.20051026092746:<< backspace with negative tab_width >>
+s = prev = w.getAllText()
+ins = w.getInsertPoint()
+i,j = g.getLine(s,ins)
+s = prev = s[i:ins]
+n = len(prev)
+abs_width = abs(tab_width)
+
+# Delete up to this many spaces.
+n2 = (n % abs_width) or abs_width
+n2 = min(n,n2) ; count = 0
+
+while n2 > 0:
+    n2 -= 1
+    ch = prev[n-count-1]
+    if ch != ' ': break
+    else: count += 1
+
+# Make sure we actually delete something.
+i = ins-(max(1,count))
+w.delete(i,ins)
+w.setSelectionRange(i,i,insert=i)
+#@-node:ekr.20051026092746:<< backspace with negative tab_width >>
+#@-node:ekr.20051026092433.1:backwardDeleteCharacter
 #@+node:ekr.20051218133207:backwardParagraphHelper
 def backwardParagraphHelper (self,event,extend):
 
@@ -586,6 +289,372 @@ def backwardParagraphHelper (self,event,extend):
     self.moveToHelper(event,i,extend)
 #@nonl
 #@-node:ekr.20051218133207:backwardParagraphHelper
+#@+node:ekr.20050920084036.67:centerLine
+def centerLine (self,event):
+
+    '''Centers line within current fill column'''
+
+    k = self.k ; w = self.editWidget(event)
+    if not w: return
+
+    s = w.getAllText()
+    i,j = g.getLine(s,w.getInsertPoint())
+    line = s [i:j].strip()
+    if not line or len(line) >= self.fillColumn: return
+
+    self.beginCommand(undoType='center-line')
+    n = (self.fillColumn-len(line)) / 2
+    ws = ' ' * n
+    k = g.skip_ws(s,i)
+    if k > i: w.delete(i,k-i)
+    w.insert(i,ws)
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.67:centerLine
+#@+node:ekr.20050920084036.69:centerRegion
+def centerRegion (self,event):
+
+    '''Centers the selected text within the fill column'''
+
+    k = self.k ; w = self.editWidget(event)
+    if not w: return
+
+    s = w.getAllText()
+    sel_1, sel_2 = w.getSelectionRange()
+    ind, junk = g.getLine(s,sel_1)
+    junk, end = g.getLine(s,sel_2)
+
+    self.beginCommand(undoType='center-region')
+
+    inserted = 0
+    while ind < end:
+        s = w.getAllText()
+        i, j = g.getLine(s,ind)
+        line = s [i:j].strip()
+        # g.trace(len(line),repr(line))
+        if len(line) >= self.fillColumn:
+            ind = j
+        else:
+            n = (self.fillColumn-len(line)) / 2
+            inserted += n
+            k = g.skip_ws(s,i)
+            if k > i: w.delete(i,k-i)
+            w.insert(i,' '*n)
+            ind = j + n-(k-i)
+
+    w.setSelectionRange(sel_1,sel_2+inserted)
+
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.69:centerRegion
+#@+node:ekr.20031218072017.3069:changeAll
+def changeAll(self):
+
+    # g.trace(g.callers())
+
+    c = self.c ; u = c.undoer ; undoType = 'Change All'
+    current = c.currentPosition()
+    w = self.s_ctrl
+    if not self.checkArgs(): return
+    self.initInHeadline()
+    saveData = self.save()
+    self.initBatchCommands()
+    count = 0
+    c.beginUpdate()
+    try: # In update...
+        u.beforeChangeGroup(current,undoType)
+        while 1:
+            pos1, pos2 = self.findNextMatch()
+            if pos1 is None: break
+            count += 1
+            self.batchChange(pos1,pos2)
+            s = w.getAllText()
+            i,j = g.getLine(s,pos1)
+            line = s[i:j]
+            self.printLine(line,allFlag=True)
+        p = c.currentPosition()
+        u.afterChangeGroup(p,undoType,reportFlag=True)
+        g.es("changed: %d instances" % (count))
+    finally:
+        c.endUpdate()
+        self.restore(saveData)
+#@-node:ekr.20031218072017.3069:changeAll
+#@+node:ekr.20050920084036.76:deleteIndentation (test)
+def deleteIndentation (self,event):
+
+    '''Delete indentation in the presently line.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    self.beginCommand(undoType='delete-indentation')
+
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getLine(s,ins)
+    txt = s[i:j].strip()
+    w.delete(i,j)
+    w.insert(ins-1,txt)
+    w.setInsertPoint(i)
+
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.76:deleteIndentation (test)
+#@+node:ekr.20050920084036.135:deleteSpaces
+def deleteSpaces (self,event,insertspace=False):
+
+    '''Delete all whitespace surrounding the cursor.'''
+
+    c = self.c ; w = self.editWidget(event)
+    undoType = g.choose(insertspace,'insert-space','delete-spaces')
+    if not w: return
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getLine(s,ins)
+    w1 = ins-1
+    while w1 >= i and s[w1].isspace():
+        w1 -= 1
+    w1 += 1
+    w2 = ins
+    while w2 <= j and s[w2].isspace():
+        w2 += 1
+    spaces = s[w1:w2]
+    if spaces:
+        self.beginCommand(undoType=undoType)
+        if insertspace: s = s[:w1] + ' ' + s[w2:]
+        else:           s = s[:w1] + s[w2:]
+        w.setAllText(s)
+        w.setInsertPoint(w1)
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.135:deleteSpaces
+#@+node:ekr.20050920084036.96:extend-to-paragraph & helper
+def extendToParagraph (self,event):
+
+    '''Select the paragraph surrounding the cursor.'''
+
+    w = self.editWidget(event)
+    if not w: return
+    s = w.getAllText() ; ins = w.getInsertPoint()
+    i,j = g.getLine(s,ins)
+    line = s[i:j]
+
+    # Find the start of the paragraph.
+    if line.strip(): # Search backward.
+        while i > 0:
+            i2,j2 = g.getLine(s,i-1)
+            line = s[i2:j2]
+            if line.strip(): i = i2
+            else: break # Use the previous line.
+    else: # Search forward.
+        while j < len(s):
+            i,j = g.getLine(s,j)
+            line = s[i:j]
+            if line.strip(): break
+        else: return
+
+    # Select from i to the end of the paragraph.
+    self.selectParagraphHelper(w,i)
+#@+node:ekr.20050920084036.97:selectParagraphHelper
+def selectParagraphHelper (self,w,start):
+
+    '''Select from start to the end of the paragraph.'''
+
+    s = w.getAllText()
+    i1,j = g.getLine(s,start)
+    while j < len(s):
+        i,j2 = g.getLine(s,j)
+        line = s[i:j2]
+        if line.strip(): j = j2
+        else: break
+
+    j = max(start,j-1)
+    w.setSelectionRange(i1,j,insert=j)
+#@-node:ekr.20050920084036.97:selectParagraphHelper
+#@-node:ekr.20050920084036.96:extend-to-paragraph & helper
+#@+node:ekr.20050920084036.100:fillRegion
+def fillRegion (self,event):
+
+    '''Fill all paragraphs in the selected text.'''
+    k = self.k
+    w = self.editWidget(event)
+    if not w or not self._chckSel(event): return
+
+    self.beginCommand(undoType='fill-region')
+
+    s = w.getAllText()
+    s1,s2 = w.getSelectionRange()
+    w.setInsertPoint(s1)
+    self.backwardParagraph(event)
+    i = w.getInsertPoint()
+    i,junk = g.getLine(s,i)
+    if i == 0:
+        self.fillParagraph(event)
+    while 1:
+        self.forwardParagraph(event)
+        if w.getInsertPoint() > s2:
+            break
+        self.fillParagraph(event)
+
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.100:fillRegion
+#@+node:ekr.20031218072017.3073:findAll
+def findAll(self):
+
+    c = self.c ; w = self.s_ctrl ; u = c.undoer
+    undoType = 'Clone Find All'
+    if not self.checkArgs():
+        return
+    self.initInHeadline()
+    data = self.save()
+    self.initBatchCommands()
+    count = 0 ; clones = []
+    while 1:
+        pos, newpos = self.findNextMatch()
+        if pos is None: break
+        count += 1
+        s = w.getAllText()
+        i,j = g.getLine(s,pos)
+        line = s[i:j]
+        if not self.clone_find_all:
+            self.printLine(line,allFlag=True)
+        if self.clone_find_all and self.p.v.t not in clones:
+            # g.trace(self.p.v.t,self.p.headString())
+            if not clones:
+                << create the found node and begin the undo group >>
+            clones.append(self.p.v.t)
+            << create a clone of p under the find node >>
+    if self.clone_find_all and clones:
+        c.setRootPosition(c.findRootPosition(found)) # New in 4.4.2.
+        u.afterChangeGroup(found,undoType,reportFlag=True) 
+        c.selectPosition(found) # Recomputes root.
+        c.setChanged(True)
+
+    c.redraw_now()
+    g.es("found: %d matches" % (count))
+    self.restore(data)
+#@+node:ekr.20051113110735:<< create the found node and begin the undo group >>
+u.beforeChangeGroup(c.currentPosition(),undoType)
+
+undoData = u.beforeInsertNode(c.currentPosition())
+
+oldRoot = c.rootPosition()
+found = oldRoot.insertAfter()
+found.moveToRoot(oldRoot)
+c.setHeadString(found,'Found: ' + self.find_text)
+
+u.afterInsertNode(found,undoType,undoData,dirtyVnodeList=[])
+#@-node:ekr.20051113110735:<< create the found node and begin the undo group >>
+#@+node:ekr.20051113110851:<< create a clone of p under the find node >>
+undoData = u.beforeCloneNode(self.p)
+q = self.p.clone()
+q.moveToLastChildOf(found)
+u.afterCloneNode(q,undoType,undoData,dirtyVnodeList=[])
+#@-node:ekr.20051113110851:<< create a clone of p under the find node >>
+#@-node:ekr.20031218072017.3073:findAll
+#@+node:ekr.20051218133207.1:forwardParagraphHelper
+def forwardParagraphHelper (self,event,extend):
+
+    w = self.editWidget(event)
+    if not w: return
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getLine(s,ins)
+    line = s[i:j]
+
+    if line.strip(): # Skip past the present paragraph.
+        self.selectParagraphHelper(w,i)
+        i,j = w.getSelectionRange()
+        j += 1
+
+    # Skip to the next non-blank line.
+    i = j
+    while j < len(s):
+        i,j = g.getLine(s,j)
+        line = s[i:j]
+        if line.strip(): break
+
+    w.setInsertPoint(ins) # Restore the original insert point.
+    self.moveToHelper(event,i,extend)
+#@-node:ekr.20051218133207.1:forwardParagraphHelper
+#@+node:ekr.20050920084036.78:indentRelative
+def indentRelative (self,event):
+
+    '''The indent-relative command indents at the point based on the previous
+    line (actually, the last non-empty line.) It inserts whitespace at the
+    point, moving point, until it is underneath an indentation point in the
+    previous line.
+
+    An indentation point is the end of a sequence of whitespace or the end of
+    the line. If the point is farther right than any indentation point in the
+    previous line, the whitespace before point is deleted and the first
+    indentation point then applicable is used. If no indentation point is
+    applicable even then whitespace equivalent to a single tab is inserted.'''
+
+    c = self.c ; undoType = 'indent-relative' ; w = self.editWidget(event)
+    if not w: return
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    oldSel = w.getSelectionRange()
+    oldYview = w.getYScrollPosition()
+    # Find the previous non-blank line
+    i,j = g.getLine(s,ins)
+    while 1:
+        if i <= 0: return
+        i,j = g.getLine(s,i-1)
+        line = s[i:j]
+        if line.strip(): break
+    self.beginCommand(undoType=undoType)
+    try:
+        k = g.skip_ws(s,i)
+        ws = s[i:k]
+        i2,j2 = g.getLine(s,ins)
+        k = g.skip_ws(s,i2)
+        line = ws + s[k:j2]
+        w.delete(i2,j2)
+        w.insert(i2,line)
+        w.setInsertPoint(i2+len(ws))
+        c.frame.body.onBodyChanged(undoType,oldSel=oldSel,oldText=s,oldYview=oldYview)
+    finally:
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.78:indentRelative
+#@+node:ekr.20050920084036.134:indentToCommentColumn (test)
+def indentToCommentColumn (self,event):
+
+    '''Insert whitespace to indent to the comment column.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    self.beginCommand(undoType='indent-to-comment-column')
+
+    s = w.getAllText()
+    junk, i = g.getLine(s,w.getInsertPoint())
+    i1, i2 = g.convertPythonIndexToRowCol(s,i)
+    c1 = int(self.ccolumn)
+
+    if i2 < c1: w.insert(i,' '*(c1-i2))
+    if i2 >= c1: w.insert(i,' ')
+    w.setInsertPoint(i)
+
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.134:indentToCommentColumn (test)
+#@+node:ekr.20071003183657:KillLine
+def killLine (self,event):
+    '''Kill the line containing the cursor.'''
+    w = self.editWidget(event)
+    if not w: return
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getLine(s,ins)
+    # g.trace(i,j,ins,len(s),repr(s[i:j]))
+    if ins >= len(s) and g.match(s,j-1,'\n'): # Kill the trailing newline.
+        i = max(0,len(s)-1)
+        j = len(s)
+    elif j > i+1 and g.match(s,j-1,'\n'): # Kill the line, but not the newline.
+        j -= 1
+    else: # Kill the newline.
+        pass
+    self.kill(event,i,j,undoType='kill-line')
+#@-node:ekr.20071003183657:KillLine
 #@+node:ekr.20051218141237:lines
 def beginningOfLine (self,event):
     '''Move the cursor to the start of the line, extending the selection if in extend mode.'''
@@ -631,119 +700,6 @@ def prevLineExtendSelection (self,event):
     '''Extend the selection by moving the cursor up.'''
     self.moveUpOrDownHelper(event,'up',extend=True)
 #@-node:ekr.20051218141237:lines
-#@+node:ekr.20050920084036.100:fillRegion
-def fillRegion (self,event):
-
-    '''Fill all paragraphs in the selected text.'''
-    k = self.k
-    w = self.editWidget(event)
-    if not w or not self._chckSel(event): return
-
-    self.beginCommand(undoType='fill-region')
-
-    s = w.getAllText()
-    s1,s2 = w.getSelectionRange()
-    w.setInsertPoint(s1)
-    self.backwardParagraph(event)
-    i = w.getInsertPoint()
-    i,junk = g.getLine(s,i)
-    if i == 0:
-        self.fillParagraph(event)
-    while 1:
-        self.forwardParagraph(event)
-        if w.getInsertPoint() > s2:
-            break
-        self.fillParagraph(event)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.100:fillRegion
-#@+node:ekr.20050920084036.96:extend-to-paragraph & helper
-def extendToParagraph (self,event):
-
-    '''Select the paragraph surrounding the cursor.'''
-
-    w = self.editWidget(event)
-    if not w: return
-    s = w.getAllText() ; ins = w.getInsertPoint()
-    i,j = g.getLine(s,ins)
-    line = s[i:j]
-
-    # Find the start of the paragraph.
-    if line.strip(): # Search backward.
-        while i > 0:
-            i2,j2 = g.getLine(s,i-1)
-            line = s[i2:j2]
-            if line.strip(): i = i2
-            else: break # Use the previous line.
-    else: # Search forward.
-        while j < len(s):
-            i,j = g.getLine(s,j)
-            line = s[i:j]
-            if line.strip(): break
-        else: return
-
-    # Select from i to the end of the paragraph.
-    self.selectParagraphHelper(w,i)
-#@+node:ekr.20050920084036.97:selectParagraphHelper
-def selectParagraphHelper (self,w,start):
-
-    '''Select from start to the end of the paragraph.'''
-
-    s = w.getAllText()
-    i1,j = g.getLine(s,start)
-    while j < len(s):
-        i,j2 = g.getLine(s,j)
-        line = s[i:j2]
-        if line.strip(): j = j2
-        else: break
-
-    j = max(start,j-1)
-    w.setSelectionRange(i1,j,insert=j)
-#@-node:ekr.20050920084036.97:selectParagraphHelper
-#@-node:ekr.20050920084036.96:extend-to-paragraph & helper
-#@+node:ekr.20050920084036.97:selectParagraphHelper
-def selectParagraphHelper (self,w,start):
-
-    '''Select from start to the end of the paragraph.'''
-
-    s = w.getAllText()
-    i1,j = g.getLine(s,start)
-    while j < len(s):
-        i,j2 = g.getLine(s,j)
-        line = s[i:j2]
-        if line.strip(): j = j2
-        else: break
-
-    j = max(start,j-1)
-    w.setSelectionRange(i1,j,insert=j)
-#@-node:ekr.20050920084036.97:selectParagraphHelper
-#@+node:ekr.20050920084036.108:tabIndentRegion (indent-rigidly)
-def tabIndentRegion (self,event):
-
-    '''Insert a hard tab at the start of each line of the selected text.'''
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w or not self._chckSel(event): return
-
-    self.beginCommand(undoType='indent-rigidly')
-
-    s = w.getAllText()
-    i1,j1 = w.getSelectionRange()
-    i,junk = g.getLine(s,i1)
-    junk,j = g.getLine(s,j1)
-
-    lines = g.splitlines(s[i:j])
-    n = len(lines)
-    lines = g.joinLines(['\t' + line for line in lines])
-    s = s[:i] + lines + s[j:]
-    w.setAllText(s)
-
-    # Retain original row/col selection.
-    w.setSelectionRange(i1,j1+n,insert=j1+n)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.108:tabIndentRegion (indent-rigidly)
 #@+node:ekr.20060417183606:moveLinesDown
 def moveLinesDown (self,event):
 
@@ -844,6 +800,155 @@ def moveLinesUp (self,event):
     finally:
         self.endCommand(changed=changed,setLabel=True)
 #@-node:ekr.20060417183606.1:moveLinesUp
+#@+node:ekr.20060113105246.1:moveUpOrDownHelper & test
+def moveUpOrDownHelper (self,event,direction,extend):
+
+    c = self.c ; w = self.editWidget(event)
+    if not w: return
+    trace = False
+
+    ins = w.getInsertPoint()
+    s = w.getAllText()
+    w.seeInsertPoint()
+
+    # Find the start of the next/prev line.
+    row,col = g.convertPythonIndexToRowCol(s,ins)
+    if trace: g.trace('ins',ins,'row',row,'col',col)
+    i,j = g.getLine(s,ins)
+    if direction == 'down':
+        i2,j2 = g.getLine(s,j)
+    else:
+        i2,j2 = g.getLine(s,i-1)
+
+    # The spot is the start of the line plus the column index.
+    n = max(0,j2-i2-1) # The length of the new line.
+    col2 = min(col,n)
+    spot = i2 + col2
+    if trace: g.trace('spot',spot,'n',n,'col',col,'line',repr(s[i2:j2]))
+
+    self.extendHelper(w,extend,spot,upOrDown=True)
+#@nonl
+#@+node:ekr.20070627082044.272:@test moveUpOrDownHelper
+if g.unitTesting:
+    c.beginUpdate()
+    try:
+
+        ec = c.editCommands ; w = c.frame.body.bodyCtrl
+
+        for i,result,direction in (('5.8','4.8','up'),('5.8','6.8','down')):
+            event = None ; extend = False; ec.moveSpot = None
+            w.setInsertPoint(i)
+            ec.moveUpOrDownHelper (event,direction,extend)
+            i2,j2 = w.getSelectionRange()
+            if 1:
+                break
+            else:
+                assert i==i2, 'Expected %s, got %s' % (repr(i),repr(i2))
+                assert j==j2, 'Expected %s, got %s' % (repr(j),repr(j2))
+                w.setSelectionRange(0,0,insert=None)
+    finally:
+        c.endUpdate(False)
+#@-node:ekr.20070627082044.272:@test moveUpOrDownHelper
+#@-node:ekr.20060113105246.1:moveUpOrDownHelper & test
+#@+node:ekr.20031218072017.1833:reformatParagraph & tests
+def reformatParagraph (self,event=None):
+
+    """Reformat a text paragraph in a Tk.Text widget
+
+Wraps the concatenated text to present page width setting. Leading tabs are
+sized to present tab width setting. First and second line of original text is
+used to determine leading whitespace in reformatted text. Hanging indentation
+is honored.
+
+Paragraph is bound by start of body, end of body, blank lines, and lines
+starting with "@". Paragraph is selected by position of current insertion
+cursor."""
+
+    c = self ; body = c.frame.body ; w = body.bodyCtrl
+
+    if g.app.batchMode:
+        c.notValidInBatchMode("xxx")
+        return
+
+    if body.hasTextSelection():
+        g.es("Text selection inhibits Reformat Paragraph",color="blue")
+        return
+
+    << compute vars for reformatParagraph >>
+    if lines:
+        << compute the leading whitespace >>
+        << compute the result of wrapping all lines >>
+        << update the body, selection & undo state >>
+#@nonl
+#@+node:ekr.20031218072017.1834:<< compute vars for reformatParagraph >>
+theDict = g.scanDirectives(c)
+pageWidth = theDict.get("pagewidth")
+tabWidth  = theDict.get("tabwidth")
+
+original = w.getAllText()
+oldSel =  w.getSelectionRange()
+oldYview = body.getYScrollPosition()
+
+head,lines,tail = c.findBoundParagraph()
+#@-node:ekr.20031218072017.1834:<< compute vars for reformatParagraph >>
+#@+node:ekr.20031218072017.1835:<< compute the leading whitespace >>
+indents = [0,0] ; leading_ws = ["",""]
+
+for i in (0,1):
+    if i < len(lines):
+        # Use the original, non-optimized leading whitespace.
+        leading_ws[i] = ws = g.get_leading_ws(lines[i])
+        indents[i] = g.computeWidth(ws,tabWidth)
+
+indents[1] = max(indents)
+if len(lines) == 1:
+    leading_ws[1] = leading_ws[0]
+#@-node:ekr.20031218072017.1835:<< compute the leading whitespace >>
+#@+node:ekr.20031218072017.1836:<< compute the result of wrapping all lines >>
+trailingNL = lines and lines[-1].endswith('\n')
+lines = [g.choose(z.endswith('\n'),z[:-1],z) for z in lines]
+
+# Wrap the lines, decreasing the page width by indent.
+result = g.wrap_lines(lines,
+    pageWidth-indents[1],
+    pageWidth-indents[0])
+
+# prefix with the leading whitespace, if any
+paddedResult = []
+paddedResult.append(leading_ws[0] + result[0])
+for line in result[1:]:
+    paddedResult.append(leading_ws[1] + line)
+
+# Convert the result to a string.
+result = '\n'.join(paddedResult)
+if trailingNL: result = result + '\n'
+#@nonl
+#@-node:ekr.20031218072017.1836:<< compute the result of wrapping all lines >>
+#@+node:ekr.20031218072017.1837:<< update the body, selection & undo state >>
+junk, ins = body.setSelectionAreas(head,result,tail)
+
+# Advance to the next paragraph.
+s = w.getAllText()
+ins += 1 # Move past the selection.
+while ins < len(s):
+    i,j = g.getLine(s,ins)
+    line = s[i:j]
+    if line.startswith('@') or line.isspace():
+        ins = j+1
+    else:
+        ins = i ; break
+
+changed = original != head + result + tail
+if changed:
+    undoType = g.choose(changed,"Reformat Paragraph",None)
+    body.onBodyChanged(undoType,oldSel=oldSel,oldYview=oldYview)
+
+w.setSelectionRange(ins,ins,insert=ins)
+w.see(ins)
+if changed:
+    c.recolor()
+#@-node:ekr.20031218072017.1837:<< update the body, selection & undo state >>
+#@-node:ekr.20031218072017.1833:reformatParagraph & tests
 #@+node:ekr.20050920084036.110:reverseRegion
 def reverseRegion (self,event):
 
@@ -871,33 +976,20 @@ def reverseRegion (self,event):
 
     self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050920084036.110:reverseRegion
-#@+node:ekr.20050920084036.118:sortLines
-def sortLines (self,event,which=None):
+#@+node:ekr.20050920084036.70:setFillPrefix (test)
+def setFillPrefix( self, event ):
 
-    '''Sort lines of the selected text by comparing the entire text of a line.
-    A prefix argument means sort in descending order.'''
+    '''Make the selected text the fill prefix.'''
 
-    c = self.c ; k = c.k
     w = self.editWidget(event)
-    if not self._chckSel(event): return
+    if not w: return
 
-    self.beginCommand(undoType='sort-lines')
-    try:
-        s = w.getAllText()
-        sel_1,sel_2 = w.getSelectionRange()
-        ins = w.getInsertPoint()
-        i,junk = g.getLine(s,sel_1)
-        junk,j = g.getLine(s,sel_2)
-        aList = g.splitLines(s[i:j])
-        aList.sort()
-        if which: aList.reverse()
-        s = g.joinLines(aList)
-        w.delete(i,j)
-        w.insert(i,s)
-        w.setSelectionRange(sel_1,sel_2,insert=ins)
-    finally:
-        self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.118:sortLines
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,junk = g.getLine(s,ins)
+    txt = s[i:ins]
+    self.fillPrefix = txt
+#@-node:ekr.20050920084036.70:setFillPrefix (test)
 #@+node:ekr.20050920084036.119:sortColumns
 def sortColumns (self,event):
 
@@ -980,6 +1072,60 @@ def sortFields (self,event,which=None):
 
     self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050920084036.120:sortFields
+#@+node:ekr.20050920084036.118:sortLines
+def sortLines (self,event,which=None):
+
+    '''Sort lines of the selected text by comparing the entire text of a line.
+    A prefix argument means sort in descending order.'''
+
+    c = self.c ; k = c.k
+    w = self.editWidget(event)
+    if not self._chckSel(event): return
+
+    self.beginCommand(undoType='sort-lines')
+    try:
+        s = w.getAllText()
+        sel_1,sel_2 = w.getSelectionRange()
+        ins = w.getInsertPoint()
+        i,junk = g.getLine(s,sel_1)
+        junk,j = g.getLine(s,sel_2)
+        aList = g.splitLines(s[i:j])
+        aList.sort()
+        if which: aList.reverse()
+        s = g.joinLines(aList)
+        w.delete(i,j)
+        w.insert(i,s)
+        w.setSelectionRange(sel_1,sel_2,insert=ins)
+    finally:
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.118:sortLines
+#@+node:ekr.20050920084036.108:tabIndentRegion (indent-rigidly)
+def tabIndentRegion (self,event):
+
+    '''Insert a hard tab at the start of each line of the selected text.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w or not self._chckSel(event): return
+
+    self.beginCommand(undoType='indent-rigidly')
+
+    s = w.getAllText()
+    i1,j1 = w.getSelectionRange()
+    i,junk = g.getLine(s,i1)
+    junk,j = g.getLine(s,j1)
+
+    lines = g.splitlines(s[i:j])
+    n = len(lines)
+    lines = g.joinLines(['\t' + line for line in lines])
+    s = s[:i] + lines + s[j:]
+    w.setAllText(s)
+
+    # Retain original row/col selection.
+    w.setSelectionRange(i1,j1+n,insert=j1+n)
+
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.108:tabIndentRegion (indent-rigidly)
 #@+node:ekr.20050920084036.122:transposeLines
 def transposeLines (self,event):
 
@@ -1013,188 +1159,44 @@ def transposeLines (self,event):
 
     self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050920084036.122:transposeLines
-#@+node:ekr.20071003183657:KillLine
-def killLine (self,event):
-    '''Kill the line containing the cursor.'''
-    w = self.editWidget(event)
-    if not w: return
+#@+node:ekr.20051026171121.1:udpateAutoIndent
+def updateAutoIndent (self,p,w):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width)
+    # Get the previous line.
     s = w.getAllText()
     ins = w.getInsertPoint()
-    i,j = g.getLine(s,ins)
-    # g.trace(i,j,ins,len(s),repr(s[i:j]))
-    if ins >= len(s) and g.match(s,j-1,'\n'): # Kill the trailing newline.
-        i = max(0,len(s)-1)
-        j = len(s)
-    elif j > i+1 and g.match(s,j-1,'\n'): # Kill the line, but not the newline.
-        j -= 1
-    else: # Kill the newline.
-        pass
-    self.kill(event,i,j,undoType='kill-line')
-#@-node:ekr.20071003183657:KillLine
-#@+node:ekr.20031218072017.3069:changeAll
-def changeAll(self):
+    i = g.skip_to_start_of_line(s,ins)
+    i,j = g.getLine(s,i-1)
+    s = s[i:j-1]
+    # g.trace(i,j,repr(s))
 
-    # g.trace(g.callers())
+    # Add the leading whitespace to the present line.
+    junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
+    # g.trace('width',width,'tab_width',tab_width)
 
-    c = self.c ; u = c.undoer ; undoType = 'Change All'
-    current = c.currentPosition()
-    w = self.s_ctrl
-    if not self.checkArgs(): return
-    self.initInHeadline()
-    saveData = self.save()
-    self.initBatchCommands()
-    count = 0
-    c.beginUpdate()
-    try: # In update...
-        u.beforeChangeGroup(current,undoType)
-        while 1:
-            pos1, pos2 = self.findNextMatch()
-            if pos1 is None: break
-            count += 1
-            self.batchChange(pos1,pos2)
-            s = w.getAllText()
-            i,j = g.getLine(s,pos1)
-            line = s[i:j]
-            self.printLine(line,allFlag=True)
-        p = c.currentPosition()
-        u.afterChangeGroup(p,undoType,reportFlag=True)
-        g.es("changed: %d instances" % (count))
-    finally:
-        c.endUpdate()
-        self.restore(saveData)
-#@-node:ekr.20031218072017.3069:changeAll
-#@+node:ekr.20031218072017.3073:findAll
-def findAll(self):
-
-    c = self.c ; w = self.s_ctrl ; u = c.undoer
-    undoType = 'Clone Find All'
-    if not self.checkArgs():
-        return
-    self.initInHeadline()
-    data = self.save()
-    self.initBatchCommands()
-    count = 0 ; clones = []
-    while 1:
-        pos, newpos = self.findNextMatch()
-        if pos is None: break
-        count += 1
-        s = w.getAllText()
-        i,j = g.getLine(s,pos)
-        line = s[i:j]
-        if not self.clone_find_all:
-            self.printLine(line,allFlag=True)
-        if self.clone_find_all and self.p.v.t not in clones:
-            # g.trace(self.p.v.t,self.p.headString())
-            if not clones:
-                << create the found node and begin the undo group >>
-            clones.append(self.p.v.t)
-            << create a clone of p under the find node >>
-    if self.clone_find_all and clones:
-        c.setRootPosition(c.findRootPosition(found)) # New in 4.4.2.
-        u.afterChangeGroup(found,undoType,reportFlag=True) 
-        c.selectPosition(found) # Recomputes root.
-        c.setChanged(True)
-
-    c.redraw_now()
-    g.es("found: %d matches" % (count))
-    self.restore(data)
-#@+node:ekr.20051113110735:<< create the found node and begin the undo group >>
-u.beforeChangeGroup(c.currentPosition(),undoType)
-
-undoData = u.beforeInsertNode(c.currentPosition())
-
-oldRoot = c.rootPosition()
-found = oldRoot.insertAfter()
-found.moveToRoot(oldRoot)
-c.setHeadString(found,'Found: ' + self.find_text)
-
-u.afterInsertNode(found,undoType,undoData,dirtyVnodeList=[])
-#@-node:ekr.20051113110735:<< create the found node and begin the undo group >>
-#@+node:ekr.20051113110851:<< create a clone of p under the find node >>
-undoData = u.beforeCloneNode(self.p)
-q = self.p.clone()
-q.moveToLastChildOf(found)
-u.afterCloneNode(q,undoType,undoData,dirtyVnodeList=[])
-#@-node:ekr.20051113110851:<< create a clone of p under the find node >>
-#@-node:ekr.20031218072017.3073:findAll
-#@+node:ekr.20031218072017.4030:getInsertLines & test
-def getInsertLines (self):
-
-    """Return before,after where:
-
-    before is all the lines before the line containing the insert point.
-    sel is the line containing the insert point.
-    after is all the lines after the line containing the insert point.
-
-    All lines end in a newline, except possibly the last line."""
-
-    w = self.bodyCtrl
-    s = w.getAllText()
-    insert = w.getInsertPoint()
-    i,j = g.getLine(s,insert)
-    before = s[0:i]
-    ins = s[i:j]
-    after = s[j:]
-
-    before = g.toUnicode(before,g.app.tkEncoding)
-    ins    = g.toUnicode(ins,   g.app.tkEncoding)
-    after  = g.toUnicode(after ,g.app.tkEncoding)
-
-    return before,ins,after
-#@+node:ekr.20070627082044.920:@test leoBody.getInsertLines
-# line 1
-# line 2
-# line 3
-if g.unitTesting:
-    c.beginUpdate()
-    try:
-        w = c.frame.body.bodyCtrl
-        index = 11 # in the second line.
-        w.setInsertPoint(index)
-        before,ins,after = c.frame.body.getInsertLines()
-        assert before == '# line 1\n','Got %s' % repr(before)
-        assert ins    == '# line 2\n','Got %s' % repr(ins)
-        assert after.startswith('# line 3\n')
-        assert after.endswith('# end.')
-    finally:
-        c.endUpdate(False)
-# end.
-#@nonl
-#@-node:ekr.20070627082044.920:@test leoBody.getInsertLines
-#@-node:ekr.20031218072017.4030:getInsertLines & test
-#@+node:ekr.20031218072017.2377:getSelectionLines
-def getSelectionLines (self):
-
-    """Return before,sel,after where:
-
-    before is the all lines before the selected text
-    (or the text before the insert point if no selection)
-    sel is the selected text (or "" if no selection)
-    after is all lines after the selected text
-    (or the text after the insert point if no selection)"""
-
-    if g.app.batchMode:
-        c.notValidInBatchMode(undoType)
-        return '','',''
-
-    # At present, called only by c.getBodyLines.
-    w = self.bodyCtrl
-    s = w.getAllText()
-    i,j = w.getSelectionRange()
-    if i == j:
-        i,j = g.getLine(s,i)
-    else:
-        i,junk = g.getLine(s,i)
-        junk,j = g.getLine(s,j)
-
-
-    before = g.toUnicode(s[0:i],g.app.tkEncoding)
-    sel    = g.toUnicode(s[i:j],g.app.tkEncoding)
-    after  = g.toUnicode(s[j:len(s)],g.app.tkEncoding)
-
-    # g.trace(i,j,'sel',repr(s[i:j]),'after',repr(after))
-    return before,sel,after # 3 strings.
-#@-node:ekr.20031218072017.2377:getSelectionLines
+    if s and s [-1] == ':':
+        # For Python: increase auto-indent after colons.
+        if g.scanColorDirectives(c,p) == 'python':
+            width += abs(tab_width)
+    if self.smartAutoIndent:
+        # Determine if prev line has unclosed parens/brackets/braces
+        bracketWidths = [width] ; tabex = 0
+        for i in range(0,len(s)):
+            if s [i] == '\t':
+                tabex += tab_width-1
+            if s [i] in '([{':
+                bracketWidths.append(i+tabex+1)
+            elif s [i] in '}])' and len(bracketWidths) > 1:
+                bracketWidths.pop()
+        width = bracketWidths.pop()
+    ws = g.computeLeadingWhitespace(width,tab_width)
+    if ws:
+        i = w.getInsertPoint()
+        w.insert(i,ws)
+        w.setInsertPoint(i+len(ws))
+#@-node:ekr.20051026171121.1:udpateAutoIndent
 #@-node:ekr.20071006093912:Found: g.getLine
 #@-node:ekr.20071006091833:Make sure there are unit tests for all commands affected by g.getLine
 #@+node:ekr.20071005132705:test on Linux
