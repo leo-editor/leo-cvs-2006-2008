@@ -4457,7 +4457,7 @@ class editCommandsClass (baseEditCommandsClass):
         self.swapSpots.pop()
         self.swapSpots.pop()
     #@-node:ekr.20060529184652:swapHelper
-    #@+node:ekr.20050920084036.122:transposeLines (pass)
+    #@+node:ekr.20050920084036.122:transposeLines
     def transposeLines (self,event):
 
         '''Transpose the line containing the cursor with the preceding line.'''
@@ -4489,7 +4489,7 @@ class editCommandsClass (baseEditCommandsClass):
             w.setInsertPoint(j-1)
 
         self.endCommand(changed=True,setLabel=True)
-    #@-node:ekr.20050920084036.122:transposeLines (pass)
+    #@-node:ekr.20050920084036.122:transposeLines
     #@+node:ekr.20050920084036.123:swapWords
     def swapWords (self,event,swapspots):
 
@@ -5406,7 +5406,7 @@ class keyHandlerCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.173:getPublicCommands (keyHandler)
     #@-others
 #@-node:ekr.20050920084036.171:keyHandlerCommandsClass (add docstrings)
-#@+node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
+#@+node:ekr.20050920084036.174:killBufferCommandsClass
 class killBufferCommandsClass (baseEditCommandsClass):
 
     '''A class to manage the kill buffer.'''
@@ -5446,15 +5446,17 @@ class killBufferCommandsClass (baseEditCommandsClass):
             'kill-region':              self.killRegion,
             'kill-region-save':         self.killRegionSave,
             'yank':                     self.yank,
-            # 'yank-pop':                 self.yankPop,
+            'yank-pop':                 self.yankPop,
             'zap-to-character':         self.zapToCharacter,
         }
     #@-node:ekr.20050920084036.176: getPublicCommands
     #@+node:ekr.20050920084036.183:addToKillBuffer
-    def addToKillBuffer (self,text):
+    def addToKillBuffer (self,text,force=False):
 
-        # Don't bother with just whitespace.
-        if text.strip():
+        '''Insert the text into the kill buffer if force is True or
+        the text contains something other than whitespace.'''
+
+        if force or text.strip():
             self.killBuffer.insert(0,text)
     #@-node:ekr.20050920084036.183:addToKillBuffer
     #@+node:ekr.20050920084036.181:backwardKillSentence
@@ -5512,6 +5514,8 @@ class killBufferCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.185:getClipboard
     def getClipboard (self,w):
 
+        '''Return the contents of the clipboard.'''
+
         __pychecker__ = '--no-argsused' # w not used.
 
         try:
@@ -5561,7 +5565,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
                 commands.reset = None
 
             if i < 0 or i >= len(aList): i = 0
-            g.trace(i)
+            # g.trace(i)
             val = aList[i]
             self.index = i + 1
             return val
@@ -5574,6 +5578,8 @@ class killBufferCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.184:iterateKillBuffer
     #@+node:ekr.20050920084036.178:kill
     def kill (self,event,frm,to,undoType=None):
+
+        '''A helper method for all kill commands.'''
 
         k = self.k
         w = self.editWidget(event)
@@ -5659,6 +5665,8 @@ class killBufferCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050930100733:killWs
     def killWs (self,event,undoType=None):
 
+        '''Kill whitespace.'''
+
         ws = ''
         w = self.editWidget(event)
         if not w: return
@@ -5673,18 +5681,17 @@ class killBufferCommandsClass (baseEditCommandsClass):
 
         if ws:
             if undoType: self.beginCommand(undoType=undoType)
-            self.addToKillBuffer(ws)
+            self.addToKillBuffer(ws,force=True)
             if undoType: self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050930100733:killWs
     #@+node:ekr.20050930091642.1:yank
-    def yank (self,event):
+    def yank (self,event,pop=False):
 
-        '''Insert the next entry in the kill ring at the insert point.'''
+        '''yank: insert the first entry of the kill ring.
+        yank-pop: insert the next entry of the kill ring.
+        '''
 
-        # There is no need for the yank-pop command.
-
-        c = self.c ; k = self.k
-        w = self.editWidget(event)
+        c = self.c ; w = self.editWidget(event)
         if not w: return
         current = c.currentPosition()
         if not current: return
@@ -5692,9 +5699,10 @@ class killBufferCommandsClass (baseEditCommandsClass):
         clip_text = self.getClipboard(w)
         if not self.killBuffer and not clip_text: return
 
-        self.beginCommand(undoType='yank')
+        undoType = g.choose(pop,'yank-pop','yank')
+        self.beginCommand(undoType=undoType)
         try:
-            if i == j or self.lastYankP and self.lastYankP != current:
+            if not pop or self.lastYankP and self.lastYankP != current:
                 self.reset = 0
             s = self.kbiterator.next()
             if s is None: s = clip_text or ''
@@ -5706,6 +5714,14 @@ class killBufferCommandsClass (baseEditCommandsClass):
         finally:
             self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050930091642.1:yank
+    #@+node:ekr.20050930091642.2:yankPop
+    def yankPop (self,event):
+
+        '''Insert the next entry of the kill ring.'''
+
+        self.yank(event,pop=True)
+
+    #@-node:ekr.20050930091642.2:yankPop
     #@+node:ekr.20050920084036.128:zapToCharacter
     def zapToCharacter (self,event):
 
@@ -5734,7 +5750,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
             self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.128:zapToCharacter
     #@-others
-#@-node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
+#@-node:ekr.20050920084036.174:killBufferCommandsClass
 #@+node:ekr.20050920084036.186:leoCommandsClass (add docstrings)
 class leoCommandsClass (baseEditCommandsClass):
 
