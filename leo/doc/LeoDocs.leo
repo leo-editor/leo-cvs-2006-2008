@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="349" height="699" width="892"/>
+	<global_window_position top="10" left="349" height="679" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -3328,6 +3328,7 @@
 <v t="ekr.20071004101443.178"><vh>Added new convenience methods for scripts and plugins</vh></v>
 <v t="ekr.20071004101443.30"><vh>Added button font settings</vh></v>
 <v t="ekr.20071005095907"><vh>Leo's core is now compatible with jython</vh></v>
+<v t="ekr.20071006093614"><vh>Added the insert-child command</vh></v>
 </v>
 </v>
 </v>
@@ -31910,6 +31911,7 @@ The highlights of Leo 4.4.4:
     check-derived-file
     check-leo-file
     compare-leo-outlines
+    insert-child
     read-at-auto-nodes
     read-file-into-node
     write-at-auto-nodes
@@ -32361,5 +32363,6 @@ in an @item node is just a hyphen (-), the item represents a menu separator.</t>
 
 - All of Leo's startup code works with the swing gui enabled (jyLeo = True in leo.run).</t>
 <t tx="ekr.20071005100213">Essentially all of Leo's startup code now runs with jython 2.2 and the (unfinished!) swing gui.</t>
+<t tx="ekr.20071006093614">This inserts a child node.</t>
 </tnodes>
 </leo_file>

@@ -17649,7 +17649,7 @@ def next(self):
         commands.reset = None
 
     if i < 0 or i >= len(aList): i = 0
-    g.trace(i)
+    # g.trace(i)
     val = aList[i]
     self.index = i + 1
     return val
@@ -22666,7 +22666,7 @@ prompts for a filename.
 #@-node:ekr.20070919083650:Added read-file-into-node and write-file-from-node commands
 #@-node:ekr.20070703182412.1:Features
 #@-node:ekr.20070915101503:4.4.4 b2
-#@+node:ekr.20070919132518:4.4.4 final
+#@+node:ekr.20070919132518:4.4.4 b3
 #@+node:ekr.20070920083033:Bugs
 #@+node:ekr.20070920055354:Fixed new @auto bug
 @nocolor
@@ -23542,7 +23542,7 @@ def change(self,event=None):
         self.initInHeadline()
         self.changeSelection()
 #@-node:ekr.20031218072017.3068:change
-#@+node:ekr.20031218072017.3069:changeAll (sets end of change-all group)
+#@+node:ekr.20031218072017.3069:changeAll
 def changeAll(self):
 
     # g.trace(g.callers())
@@ -23573,7 +23573,7 @@ def changeAll(self):
     finally:
         c.endUpdate()
         self.restore(saveData)
-#@-node:ekr.20031218072017.3069:changeAll (sets end of change-all group)
+#@-node:ekr.20031218072017.3069:changeAll
 #@+node:ekr.20031218072017.3070:changeSelection
 # Replace selection with self.change_text.
 # If no selection, insert self.change_text at the cursor.
@@ -24888,6 +24888,716 @@ def backwardsHelper (self,s,i,j,pattern,nocase,word):
             return k,k+n
 #@-node:ekr.20060526140744:backwardsHelper
 #@-node:ekr.20071003204338.1:Fixed backward find bug
+#@+node:ekr.20071005131749:Fixed cursor up/down problem
+@
+The was to g.getLine.
+
+This is a potentially major change.  All unit tests pass.
+#@nonl
+#@+node:ekr.20071006090557:Example of problems
+At least three bugs.
+
+- Place cursor on last (blank) line.  Cursor up goes one line too far.
+- Place cursor at end of line 1.  Second cursor down does nothing.
+- Place cursor at end of xxxx line.  Second cursor down goes one line too far.
+
+xxxxxxxxx
+line 1
+line 2
+#@-node:ekr.20071006090557:Example of problems
+#@+node:ekr.20061031102333.2:g.getWord & getLine & tests
+def getWord (s,i):
+
+    '''Return i,j such that s[i:j] is the word surrounding s[i].'''
+
+    if i >= len(s): i = len(s) - 1
+    if i < 0: i = 0
+    # Scan backwards.
+    while 0 <= i < len(s) and g.isWordChar(s[i]):
+        i-= 1
+    i += 1
+    # Scan forwards.
+    j = i
+    while 0 <= j < len(s) and g.isWordChar(s[j]):
+        j += 1
+    return i,j
+
+def getLine (s,i):
+
+    '''Return i,j such that s[i:j] is the line surrounding s[i].
+    s[i] is a newline only if the line is empty.
+    s[j] is a newline unless there is no trailing newline.
+    '''
+
+    if i > len(s): i = len(s) -1 # Bug fix: 10/6/07 (was if i >= len(s))
+    if i < 0: i = 0
+    j = s.rfind('\n',0,i) # A newline *ends* the line, so look to the left of a newline.
+    if j == -1: j = 0
+    else:       j += 1
+    k = s.find('\n',i)
+    if k == -1: k = len(s)
+    else:       k = k + 1
+    # g.trace('i,j,k',i,j,k,repr(s[j:k]))
+    return j,k
+#@nonl
+#@+node:ekr.20070627082044.839:@test g.getLine
+if g.unitTesting:
+    s = 'a\ncd\n\ne'
+    for i,result in (
+        (-1,(0,2)), # One too few.
+        (0,(0,2)),(1,(0,2)),
+        (2,(2,5)),(3,(2,5)),(4,(2,5)),
+        (5,(5,6)),
+        (6,(6,7)),
+        (7,(6,7)), # One too many.
+    ):
+        j,k = g.getLine(s,i)
+        assert (j,k) == result, 'i: %d, expected %d,%d, got %d,%d' % (i,result[0],result[1],j,k)
+#@nonl
+#@-node:ekr.20070627082044.839:@test g.getLine
+#@+node:ekr.20070627082044.834:@test g.getWord
+if g.unitTesting:
+    s = 'abc xy_z5 pdq'
+    i,j = g.getWord(s,5)
+    assert s[i:j] == 'xy_z5','got %s' % s[i:j]
+#@-node:ekr.20070627082044.834:@test g.getWord
+#@-node:ekr.20061031102333.2:g.getWord & getLine & tests
+#@+node:ekr.20050929114218:move cursor... (leoEditCommands)
+#@+node:ekr.20051218170358: helpers
+#@+node:ekr.20060113130510:extendHelper & test
+def extendHelper (self,w,extend,spot,upOrDown=False):
+    '''Handle the details of extending the selection.
+    This method is called for all cursor moves.
+
+    extend: Clear the selection unless this is True.
+    spot:   The *new* insert point.
+    '''
+    c = self.c ; p = c.currentPosition()
+    extend = extend or self.extendMode
+    ins = w.getInsertPoint()
+    i,j = w.getSelectionRange()
+    # g.trace('extend',extend,'ins',ins,'sel=',i,j,'spot=',spot,'moveSpot',self.moveSpot)
+
+    # Reset the move spot if needed.
+    if self.moveSpot is None or p.v.t != self.moveSpotNode:
+        # g.trace('no spot')
+        self.setMoveCol(w,g.choose(extend,ins,spot)) # sets self.moveSpot.
+    elif extend:
+        if i == j or self.moveSpot not in (i,j):
+            # g.trace('spot not in sel')
+            self.setMoveCol(w,ins) # sets self.moveSpot.
+    else:
+        if upOrDown:
+            s = w.getAllText()
+            i2,j2 = g.getLine(s,spot)
+            line = s[i2:j2]
+            row,col = g.convertPythonIndexToRowCol(s,spot)
+            if True: #### j2 < len(s)-1:
+                n = min(self.moveCol,max(0,len(line)-1))
+            else:
+                n = min(self.moveCol,max(0,len(line))) # A tricky boundary.
+            # g.trace('using moveCol',self.moveCol,'line',repr(line),'n',n)
+            spot = g.convertRowColToPythonIndex(s,row,n)
+        else:  # Plain move forward or back.
+            # g.trace('plain forward/back move')
+            self.setMoveCol(w,spot) # sets self.moveSpot.
+
+    if extend:
+        if spot < self.moveSpot:
+            w.setSelectionRange(spot,self.moveSpot,insert=spot)
+        else:
+            w.setSelectionRange(self.moveSpot,spot,insert=spot)
+    else:
+        w.setSelectionRange(spot,spot,insert=spot)
+
+    w.seeInsertPoint()
+    c.frame.updateStatusLine()
+#@nonl
+#@+node:ekr.20070627082044.269:@test extendHelper
+if g.unitTesting:
+    c.beginUpdate()
+    try:
+        ec = c.editCommands ; w = c.frame.body.bodyCtrl
+
+        for i,j,python in (
+            # ('1.0','4.5',False),
+            (5,50,True),
+        ):
+            extend = True
+            ec.moveSpot = None # It's hard to init this properly.
+            ec.extendHelper(w,extend,j)
+            i2,j2 = w.getSelectionRange()
+            # print i2,j2
+            #assert 0==i2, 'Expected i=%s, got %s' % (repr(i),repr(i2))
+            #assert j==j2, 'Expected j=%s, got %s' % (repr(j),repr(j2))
+    finally:
+        c.endUpdate(False)
+#@-node:ekr.20070627082044.269:@test extendHelper
+#@-node:ekr.20060113130510:extendHelper & test
+#@+node:ekr.20060113105246.1:moveUpOrDownHelper & test
+def moveUpOrDownHelper (self,event,direction,extend):
+
+    c = self.c ; w = self.editWidget(event)
+    if not w: return
+    trace = False
+
+    ins = w.getInsertPoint()
+    s = w.getAllText()
+    w.seeInsertPoint()
+
+    # Find the start of the next/prev line.
+    row,col = g.convertPythonIndexToRowCol(s,ins)
+    if trace: g.trace('ins',ins,'row',row,'col',col)
+    i,j = g.getLine(s,ins)
+    if direction == 'down':
+        i2,j2 = g.getLine(s,j)
+    else:
+        i2,j2 = g.getLine(s,i-1)
+
+    # The spot is the start of the line plus the column index.
+    n = max(0,j2-i2-1) # The length of the new line.
+    col2 = min(col,n)
+    spot = i2 + col2
+    if trace: g.trace('spot',spot,'n',n,'col',col,'line',repr(s[i2:j2]))
+
+    self.extendHelper(w,extend,spot,upOrDown=True)
+#@nonl
+#@+node:ekr.20070627082044.272:@test moveUpOrDownHelper
+if g.unitTesting:
+    c.beginUpdate()
+    try:
+
+        ec = c.editCommands ; w = c.frame.body.bodyCtrl
+
+        for i,result,direction in (('5.8','4.8','up'),('5.8','6.8','down')):
+            event = None ; extend = False; ec.moveSpot = None
+            w.setInsertPoint(i)
+            ec.moveUpOrDownHelper (event,direction,extend)
+            i2,j2 = w.getSelectionRange()
+            if 1:
+                break
+            else:
+                assert i==i2, 'Expected %s, got %s' % (repr(i),repr(i2))
+                assert j==j2, 'Expected %s, got %s' % (repr(j),repr(j2))
+                w.setSelectionRange(0,0,insert=None)
+    finally:
+        c.endUpdate(False)
+#@-node:ekr.20070627082044.272:@test moveUpOrDownHelper
+#@-node:ekr.20060113105246.1:moveUpOrDownHelper & test
+#@+node:ekr.20051218122116:moveToHelper & test
+def moveToHelper (self,event,spot,extend):
+
+    '''Common helper method for commands the move the cursor
+    in a way that can be described by a Tk Text expression.'''
+
+    c = self.c ; k = c.k ; w = self.editWidget(event)
+    if not w: return
+
+    c.widgetWantsFocusNow(w)
+
+    # Put the request in the proper range.
+    if c.widget_name(w).startswith('mini'):
+        i,j = k.getEditableTextRange()
+        if   spot < i: spot = i
+        elif spot > j: spot = j
+
+    self.extendHelper(w,extend,spot,upOrDown=False)
+#@nonl
+#@+node:ekr.20070627082044.271:@test moveToHelper
+if g.unitTesting:
+    c.beginUpdate()
+    try:
+        ec = c.editCommands ; w = c.frame.body.bodyCtrl
+
+        for i,j,python in (
+            #('1.0','4.5',False),
+            (5,50,True),
+        ):
+            event = None ; extend = True ; ec.moveSpot = None
+            w.setInsertPoint(i)
+            ec.moveToHelper (event,j,extend)
+            i2,j2 = w.getSelectionRange()
+            assert i==i2, 'Expected %s, got %s' % (repr(i),repr(i2))
+            assert j==j2, 'Expected %s, got %s' % (repr(j),repr(j2))
+            w.setSelectionRange(0,0,insert=None)
+    finally:
+        c.endUpdate(False)
+#@-node:ekr.20070627082044.271:@test moveToHelper
+#@-node:ekr.20051218122116:moveToHelper & test
+#@+node:ekr.20051218171457:movePastCloseHelper
+def movePastCloseHelper (self,event,extend):
+
+    c = self.c ; w = self.editWidget(event)
+    if not w: return
+
+    c.widgetWantsFocusNow(w)
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    # Scan backwards for i,j.
+    i = ins
+    while i >= 0 and s[i] != '\n':
+        if s[i] == '(': break
+        i -= 1
+    else: return
+    j = ins
+    while j >= 0 and s[j] != '\n':
+        if s[j] == '(': break
+        j -= 1
+    if i < j: return
+    # Scan forward for i2,j2.
+    i2 = ins
+    while i2 < len(s) and s[i2] != '\n':
+        if s[i2] == ')': break
+        i2 += 1
+    else: return
+    j2 = ins
+    while j2 < len(s) and s[j2] != '\n':
+        if s[j2] == ')': break
+        j2 += 1
+    if i2 > j2: return
+
+    self.moveToHelper(event,i2+1,extend)
+#@-node:ekr.20051218171457:movePastCloseHelper
+#@+node:ekr.20051218121447:moveWordHelper
+def moveWordHelper (self,event,extend,forward,end=False):
+
+    '''Move the cursor to the next word.
+    The cursor is placed at the start of the word unless end=True'''
+
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
+
+    c.widgetWantsFocusNow(w)
+    s = w.getAllText() ; n = len(s)
+    i = w.getInsertPoint()
+
+    if forward:
+        # Unlike backward-word moves, there are two options...
+        if end:
+            while 0 <= i < n and not g.isWordChar(s[i]):
+                i += 1
+            while 0 <= i < n and g.isWordChar(s[i]):
+                i += 1
+        else:
+            while 0 <= i < n and g.isWordChar(s[i]):
+                i += 1
+            while 0 <= i < n and not g.isWordChar(s[i]):
+                i += 1
+    else:
+        i -= 1
+        while 0 <= i < n and not g.isWordChar(s[i]):
+            i -= 1
+        while 0 <= i < n and g.isWordChar(s[i]):
+            i -= 1
+        i += 1
+
+    self.moveToHelper(event,i,extend)
+#@nonl
+#@-node:ekr.20051218121447:moveWordHelper
+#@+node:ekr.20051213094517:backSentenceHelper
+def backSentenceHelper (self,event,extend):
+
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
+
+    c.widgetWantsFocusNow(w)
+    s = w.getAllText()
+    i = w.getInsertPoint()
+
+    while i >= 0:
+        if s[i] == '.': break
+        i -= 1
+    else: return
+
+    j = i-1
+    while j >= 0:
+        if s[j] == '.':
+            j += 1 ; break
+        j -= 1
+    else: j = 0
+
+    while j < i and s[j].isspace():
+        j += 1
+
+    if j < i:
+        self.moveToHelper(event,j,extend)
+#@-node:ekr.20051213094517:backSentenceHelper
+#@+node:ekr.20050920084036.137:forwardSentenceHelper
+def forwardSentenceHelper (self,event,extend):
+
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
+
+    c.widgetWantsFocusNow(w)
+
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i = s.find('.',ins) + 1
+    i = min(i,len(s))
+    self.moveToHelper(event,i,extend)
+#@-node:ekr.20050920084036.137:forwardSentenceHelper
+#@+node:ekr.20051218133207.1:forwardParagraphHelper
+def forwardParagraphHelper (self,event,extend):
+
+    w = self.editWidget(event)
+    if not w: return
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getLine(s,ins)
+    line = s[i:j]
+
+    if line.strip(): # Skip past the present paragraph.
+        self.selectParagraphHelper(w,i)
+        i,j = w.getSelectionRange()
+        j += 1
+
+    # Skip to the next non-blank line.
+    i = j
+    while j < len(s):
+        i,j = g.getLine(s,j)
+        line = s[i:j]
+        if line.strip(): break
+
+    w.setInsertPoint(ins) # Restore the original insert point.
+    self.moveToHelper(event,i,extend)
+#@-node:ekr.20051218133207.1:forwardParagraphHelper
+#@+node:ekr.20051218133207:backwardParagraphHelper
+def backwardParagraphHelper (self,event,extend):
+
+    w = self.editWidget(event)
+    if not w: return
+
+    s = w.getAllText()
+    i,j = w.getSelectionRange()
+    # A hack for wx gui: set the insertion point to the end of the selection range.
+    if g.app.unitTesting:
+        w.setInsertPoint(j)
+    i,j = g.getLine(s,j)
+    line = s[i:j]
+
+    if line.strip():
+        # Find the start of the present paragraph.
+        while i > 0:
+            i,j = g.getLine(s,i-1)
+            line = s[i:j]
+            if not line.strip(): break
+
+    # Find the end of the previous paragraph.
+    while i > 0:
+        i,j = g.getLine(s,i-1)
+        line = s[i:j]
+        if line.strip():
+            i = j-1 ; break
+
+    self.moveToHelper(event,i,extend)
+#@nonl
+#@-node:ekr.20051218133207:backwardParagraphHelper
+#@+node:ekr.20060209095101:setMoveCol & test
+def setMoveCol (self,w,spot):
+
+    '''Set the column to which an up or down arrow will attempt to move.'''
+
+    c = self.c ; p = c.currentPosition()
+    s = w.getAllText()
+    i = w.toPythonIndex(spot)
+    junk,col = g.convertPythonIndexToRowCol(s,i)
+    # g.trace('spot,i,col',spot,i,col)
+
+    self.moveSpot = i
+    self.moveCol = col
+    self.moveSpotNode = p.v.t
+#@nonl
+#@+node:ekr.20070627082044.276:@test setMoveCol
+if g.unitTesting:
+    c.beginUpdate()
+    try:
+        w = c.frame.body.bodyCtrl
+        ec = c.editCommands
+
+        for spot,result in (('1.0',0),(5,5)):
+            ec.setMoveCol(w,spot)
+            assert ec.moveSpot == result
+            assert ec.moveCol == result
+    finally:
+        c.endUpdate(False)
+#@-node:ekr.20070627082044.276:@test setMoveCol
+#@-node:ekr.20060209095101:setMoveCol & test
+#@-node:ekr.20051218170358: helpers
+#@+node:ekr.20050920084036.148:buffers
+def beginningOfBuffer (self,event):
+    '''Move the cursor to the start of the body text.'''
+    self.moveToHelper(event,0,extend=False)
+
+def beginningOfBufferExtendSelection (self,event):
+    '''Extend the text selection by moving the cursor to the start of the body text.'''
+    self.moveToHelper(event,0,extend=True)
+
+def endOfBuffer (self,event):
+    '''Move the cursor to the end of the body text.'''
+    w = self.editWidget(event)
+    s = w.getAllText()
+    self.moveToHelper(event,len(s),extend=False)
+
+def endOfBufferExtendSelection (self,event):
+    '''Extend the text selection by moving the cursor to the end of the body text.'''
+    w = self.editWidget(event)
+    s = w.getAllText()
+    self.moveToHelper(event,len(s),extend=True)
+#@-node:ekr.20050920084036.148:buffers
+#@+node:ekr.20051213080533:characters
+def backCharacter (self,event):
+    '''Move the cursor back one character, extending the selection if in extend mode.'''
+    w = self.editWidget(event)
+    i = w.getInsertPoint()
+    i = max(0,i-1)
+    self.moveToHelper(event,i,extend=False)
+
+def backCharacterExtendSelection (self,event):
+    '''Extend the selection by moving the cursor back one character.'''
+    w = self.editWidget(event)
+    i = w.getInsertPoint()
+    i = max(0,i-1)
+    self.moveToHelper(event,i,extend=True)
+
+def forwardCharacter (self,event):
+    '''Move the cursor forward one character, extending the selection if in extend mode.'''
+    w = self.editWidget(event)
+    s = w.getAllText()
+    i = w.getInsertPoint()
+    i = min(i+1,len(s))
+    self.moveToHelper(event,i,extend=False)
+
+def forwardCharacterExtendSelection (self,event):
+    '''Extend the selection by moving the cursor forward one character.'''
+    w = self.editWidget(event)
+    s = w.getAllText()
+    i = w.getInsertPoint()
+    i = min(i+1,len(s))
+    self.moveToHelper(event,i,extend=True)
+#@-node:ekr.20051213080533:characters
+#@+node:ekr.20051218174113:clear/set/ToggleExtendMode
+def clearExtendMode (self,event):
+    '''Turn off extend mode: cursor movement commands do not extend the selection.'''
+    self.extendModeHelper(event,False)
+
+def setExtendMode (self,event):
+    '''Turn on extend mode: cursor movement commands do extend the selection.'''
+    self.extendModeHelper(event,True)
+
+def toggleExtendMode (self,event):
+    '''Toggle extend mode, i.e., toggle whether cursor movement commands extend the selections.'''
+    self.extendModeHelper(event,not self.extendMode)
+
+def extendModeHelper (self,event,val):
+
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
+
+    self.extendMode = val
+    g.es('Extend mode %s' % (g.choose(val,'on','off')), color='red')
+    c.widgetWantsFocusNow(w)
+#@-node:ekr.20051218174113:clear/set/ToggleExtendMode
+#@+node:ekr.20050920084036.136:exchangePointMark
+def exchangePointMark (self,event):
+
+    '''Exchange the point (insert point) with the mark (the other end of the selected text).'''
+
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
+
+    c.widgetWantsFocusNow(w)
+    i,j = w.getSelectionRange(sort=False)
+    if i == j: return
+
+    ins = w.getInsertPoint()
+    ins = g.choose(ins==i,j,i)
+    w.setInsertPoint(ins)
+    w.setSelectionRange(i,j,insert=None)
+#@-node:ekr.20050920084036.136:exchangePointMark
+#@+node:ekr.20061007082956:extend-to-line
+def extendToLine (self,event):
+
+    '''Select the line at the cursor.'''
+
+    c = self.c ; w = self.editWidget(event)
+    if not w: return
+
+    s = w.getAllText() ; n = len(s)
+    i = w.getInsertPoint()
+
+    while 0 <= i < n and not s[i] == '\n':
+        i -= 1
+    i += 1 ; i1 = i
+    while 0 <= i < n and not s[i] == '\n':
+        i += 1
+
+    w.setSelectionRange(i1,i)
+#@-node:ekr.20061007082956:extend-to-line
+#@+node:ekr.20061007214835.4:extend-to-sentence
+def extendToSentence (self,event):
+
+    '''Select the line at the cursor.'''
+
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
+
+    s = w.getAllText() ; n = len(s)
+    i = w.getInsertPoint()
+
+    i2 = 1 + s.find('.',i)
+    if i2 == -1: i2 = n
+    i1 = 1 + s.rfind('.',0,i2-1)
+
+    w.setSelectionRange(i1,i2)
+#@nonl
+#@-node:ekr.20061007214835.4:extend-to-sentence
+#@+node:ekr.20060116074839.2:extend-to-word
+def extendToWord (self,event):
+
+    '''Select the word at the cursor.'''
+
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
+
+    s = w.getAllText() ; n = len(s)
+    i = w.getInsertPoint()
+
+    while 0 <= i < n and not g.isWordChar(s[i]):
+        i -= 1
+    while 0 <= i < n and g.isWordChar(s[i]):
+        i -= 1
+    i += 1
+
+    # Move to the end of the word.
+    i1 = i
+    while 0 <= i < n and g.isWordChar(s[i]):
+        i += 1
+
+    w.setSelectionRange(i1,i)
+#@nonl
+#@-node:ekr.20060116074839.2:extend-to-word
+#@+node:ekr.20051218141237:lines
+def beginningOfLine (self,event):
+    '''Move the cursor to the start of the line, extending the selection if in extend mode.'''
+    w = self.editWidget(event)
+    i,junk = g.getLine(w.getAllText(),w.getInsertPoint())
+    self.moveToHelper(event,i,extend=False)
+
+def beginningOfLineExtendSelection (self,event):
+    '''Extend the selection by moving the cursor to the start of the line.'''
+    w = self.editWidget(event)
+    i,junk = g.getLine(w.getAllText(),w.getInsertPoint())
+    self.moveToHelper(event,i,extend=True)
+
+def endOfLine (self,event): # passed
+    '''Move the cursor to the end of the line, extending the selection if in extend mode.'''
+    w = self.editWidget(event)
+    s = w.getAllText()
+    junk,i = g.getLine(s,w.getInsertPoint())
+    if g.match(s,i-1,'\n'): i -= 1
+    self.moveToHelper(event,i,extend=False)
+
+def endOfLineExtendSelection (self,event): # passed
+    '''Extend the selection by moving the cursor to the end of the line.'''
+    w = self.editWidget(event)
+    s = w.getAllText()
+    junk,i = g.getLine(s,w.getInsertPoint())
+    if g.match(s,i-1,'\n'): i -= 1
+    self.moveToHelper(event,i,extend=True)
+
+def nextLine (self,event):
+    '''Move the cursor down, extending the selection if in extend mode.'''
+    self.moveUpOrDownHelper(event,'down',extend=False)
+
+def nextLineExtendSelection (self,event):
+    '''Extend the selection by moving the cursor down.'''
+    self.moveUpOrDownHelper(event,'down',extend=True)
+
+def prevLine (self,event):
+    '''Move the cursor up, extending the selection if in extend mode.'''
+    self.moveUpOrDownHelper(event,'up',extend=False)
+
+def prevLineExtendSelection (self,event):
+    '''Extend the selection by moving the cursor up.'''
+    self.moveUpOrDownHelper(event,'up',extend=True)
+#@-node:ekr.20051218141237:lines
+#@+node:ekr.20050920084036.140:movePastClose
+def movePastClose (self,event):
+    '''Move the cursor past the closing parenthesis.'''
+    self.movePastCloseHelper(event,extend=False)
+
+def movePastCloseExtendSelection (self,event):
+    '''Extend the selection by moving the cursor past the closing parenthesis.'''
+    self.movePastCloseHelper(event,extend=True)
+#@-node:ekr.20050920084036.140:movePastClose
+#@+node:ekr.20050920084036.102:paragraphs
+def backwardParagraph (self,event):
+    '''Move the cursor to the previous paragraph.'''
+    self.backwardParagraphHelper (event,extend=False)
+
+def backwardParagraphExtendSelection (self,event):
+    '''Extend the selection by moving the cursor to the previous paragraph.'''
+    self.backwardParagraphHelper (event,extend=True)
+
+def forwardParagraph (self,event):
+    '''Move the cursor to the next paragraph.'''
+    self.forwardParagraphHelper(event,extend=False)
+
+def forwardParagraphExtendSelection (self,event):
+    '''Extend the selection by moving the cursor to the next paragraph.'''
+    self.forwardParagraphHelper(event,extend=True)
+#@-node:ekr.20050920084036.102:paragraphs
+#@+node:ekr.20050920084036.131:sentences
+def backSentence (self,event):
+    '''Move the cursor to the previous sentence.'''
+    self.backSentenceHelper(event,extend=False)
+
+def backSentenceExtendSelection (self,event):
+    '''Extend the selection by moving the cursor to the previous sentence.'''
+    self.backSentenceHelper(event,extend=True)
+
+def forwardSentence (self,event):
+    '''Move the cursor to the next sentence.'''
+    self.forwardSentenceHelper(event,extend=False)
+
+def forwardSentenceExtendSelection (self,event):
+    '''Extend the selection by moving the cursor to the next sentence.'''
+    self.forwardSentenceHelper(event,extend=True)
+#@-node:ekr.20050920084036.131:sentences
+#@+node:ekr.20050920084036.149:words
+def backwardWord (self,event):
+    '''Move the cursor to the previous word.'''
+    self.moveWordHelper(event,extend=False,forward=False)
+
+def backwardWordExtendSelection (self,event):
+    '''Extend the selection by moving the cursor to the next word.'''
+    self.moveWordHelper(event,extend=True,forward=False)
+
+def forwardEndWord (self,event): # New in Leo 4.4.2
+    '''Move the cursor to the next word.'''
+    self.moveWordHelper(event,extend=False,forward=True,end=True)
+
+def forwardEndWordExtendSelection (self,event): # New in Leo 4.4.2
+    '''Extend the selection by moving the cursor to the previous word.'''
+    self.moveWordHelper(event,extend=True,forward=True,end=True)
+
+def forwardWord (self,event):
+    '''Move the cursor to the next word.'''
+    self.moveWordHelper(event,extend=False,forward=True)
+
+def forwardWordExtendSelection (self,event):
+    '''Extend the selection by moving the cursor to the previous word.'''
+    self.moveWordHelper(event,extend=True,forward=True)
+#@-node:ekr.20050920084036.149:words
+#@-node:ekr.20050929114218:move cursor... (leoEditCommands)
+#@-node:ekr.20071005131749:Fixed cursor up/down problem
 #@-node:ekr.20070920083033:Bugs
 #@+node:ekr.20070920083033.1:Features
 #@+node:ekr.20070919124912:Added button-font params
@@ -27816,8 +28526,448 @@ def insertHeadline (self,event=None,op_name="Insert Node",as_child=False):
     return p # for mod_labels plugin.
 #@-node:ekr.20031218072017.1761:c.insertHeadline
 #@-node:ekr.20071005174441:Added insert-child command
+#@+node:ekr.20071003123335:Improved yank and yank-pop commands
+# New ekr bindings: Alt-Y: yank-pop.  Alt-Ctrl-Y: cycle-all-focus.
+#@nonl
+#@+node:ekr.20050920084036.184:iterateKillBuffer
+class killBuffer_iter_class:
+
+    """Returns a list of positions in a subtree, possibly including the root of the subtree."""
+
+    @others
+
+def iterateKillBuffer (self):
+
+    return self.killBuffer_iter_class(self.c)
+#@+node:ekr.20071003160252.1:__init__ & __iter__
+def __init__(self,c):
+
+    # g.trace('iterateKillBuffer.__init')
+    self.c = c
+    self.index = 0 # The index of the next item to be returned.
+
+def __iter__(self):
+
+    return self
+#@-node:ekr.20071003160252.1:__init__ & __iter__
+#@+node:ekr.20071003160252.2:next
+def next(self):
+
+    commands = self.c.killBufferCommands
+    aList = commands.killBuffer
+
+    # g.trace(g.listToString([repr(z) for z in aList]))
+
+    if not aList:
+        self.index = 0
+        return None
+
+    if commands.reset is None:
+        i = self.index
+    else:
+        i = commands.reset
+        commands.reset = None
+
+    if i < 0 or i >= len(aList): i = 0
+    # g.trace(i)
+    val = aList[i]
+    self.index = i + 1
+    return val
+#@-node:ekr.20071003160252.2:next
+#@-node:ekr.20050920084036.184:iterateKillBuffer
+#@+node:ekr.20050920084036.183:addToKillBuffer
+def addToKillBuffer (self,text,force=False):
+
+    '''Insert the text into the kill buffer if force is True or
+    the text contains something other than whitespace.'''
+
+    if force or text.strip():
+        self.killBuffer.insert(0,text)
+#@-node:ekr.20050920084036.183:addToKillBuffer
+#@+node:ekr.20050920084036.174:killBufferCommandsClass
+class killBufferCommandsClass (baseEditCommandsClass):
+
+    '''A class to manage the kill buffer.'''
+
+    @others
+#@+node:ekr.20050920084036.175: ctor & finishCreate
+def __init__ (self,c):
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+
+    self.killBuffer = [] # May be changed in finishCreate.
+    self.kbiterator = self.iterateKillBuffer()
+    self.last_clipboard = None # For interacting with system clipboard.
+    self.lastYankP = None # The position of the last item returned by iterateKillBuffer.
+    self.reset = None
+        # None, or the index of the next item to be returned in killBuffer by iterateKillBuffer.
+
+def finishCreate (self):
+
+    baseEditCommandsClass.finishCreate(self)
+        # Call the base finishCreate.
+        # This sets self.k
+
+    if self.k.useGlobalKillbuffer:
+        self.killBuffer = leoKeys.keyHandlerClass.global_killbuffer
+#@-node:ekr.20050920084036.175: ctor & finishCreate
+#@+node:ekr.20050920084036.176: getPublicCommands
+def getPublicCommands (self):
+
+    return {
+        'backward-kill-sentence':   self.backwardKillSentence,
+        'backward-kill-word':       self.backwardKillWord,
+        'clear-kill-ring':          self.clearKillRing,
+        'kill-line':                self.killLine,
+        'kill-word':                self.killWord,
+        'kill-sentence':            self.killSentence,
+        'kill-region':              self.killRegion,
+        'kill-region-save':         self.killRegionSave,
+        'yank':                     self.yank,
+        'yank-pop':                 self.yankPop,
+        'zap-to-character':         self.zapToCharacter,
+    }
+#@-node:ekr.20050920084036.176: getPublicCommands
+#@+node:ekr.20050920084036.183:addToKillBuffer
+def addToKillBuffer (self,text,force=False):
+
+    '''Insert the text into the kill buffer if force is True or
+    the text contains something other than whitespace.'''
+
+    if force or text.strip():
+        self.killBuffer.insert(0,text)
+#@-node:ekr.20050920084036.183:addToKillBuffer
+#@+node:ekr.20050920084036.181:backwardKillSentence
+def backwardKillSentence (self,event):
+
+    '''Kill the previous sentence.'''
+
+    w = self.editWidget(event)
+    if not w: return
+
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i = s.rfind('.',ins)
+    if i == -1: return
+
+    undoType='backward-kill-sentence'
+
+    self.beginCommand(undoType=undoType)
+
+    i2 = s.rfind('.',0,i) + 1
+    self.kill(event,i2,i+1,undoType=undoType)
+    self.c.frame.body.forceFullRecolor()
+    w.setInsertPoint(i2)
+
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.181:backwardKillSentence
+#@+node:ekr.20050920084036.180:backwardKillWord & killWord
+def backwardKillWord (self,event):
+    '''Kill the previous word.'''
+    c = self.c
+    self.beginCommand(undoType='backward-kill-word')
+    c.editCommands.backwardWord(event)
+    self.killWs(event)
+    self.kill(event,'insert wordstart','insert wordend',undoType=None)
+    c.frame.body.forceFullRecolor()
+    self.endCommand(changed=True,setLabel=True)
+
+def killWord (self,event):
+    '''Kill the word containing the cursor.'''
+    c = self.c
+    self.beginCommand(undoType='kill-word')
+    self.kill(event,'insert wordstart','insert wordend',undoType=None)
+    self.killWs(event)
+    c.frame.body.forceFullRecolor()
+    self.endCommand(changed=True,setLabel=True)
+
+#@-node:ekr.20050920084036.180:backwardKillWord & killWord
+#@+node:ekr.20051216151811:clearKillRing
+def clearKillRing (self,event=None):
+
+    '''Clear the kill ring.'''
+
+    self.killBuffer = []
+#@-node:ekr.20051216151811:clearKillRing
+#@+node:ekr.20050920084036.185:getClipboard
+def getClipboard (self,w):
+
+    '''Return the contents of the clipboard.'''
+
+    __pychecker__ = '--no-argsused' # w not used.
+
+    try:
+        ctxt = g.app.gui.getTextFromClipboard()
+        if not self.killBuffer or ctxt != self.last_clipboard:
+            self.last_clipboard = ctxt
+            if not self.killBuffer or self.killBuffer [0] != ctxt:
+                return ctxt
+    except:
+        g.es_exception()
+
+    return None
+#@-node:ekr.20050920084036.185:getClipboard
+#@+node:ekr.20050920084036.184:iterateKillBuffer
+class killBuffer_iter_class:
+
+    """Returns a list of positions in a subtree, possibly including the root of the subtree."""
+
+    @others
+
+def iterateKillBuffer (self):
+
+    return self.killBuffer_iter_class(self.c)
+#@+node:ekr.20071003160252.1:__init__ & __iter__
+def __init__(self,c):
+
+    # g.trace('iterateKillBuffer.__init')
+    self.c = c
+    self.index = 0 # The index of the next item to be returned.
+
+def __iter__(self):
+
+    return self
+#@-node:ekr.20071003160252.1:__init__ & __iter__
+#@+node:ekr.20071003160252.2:next
+def next(self):
+
+    commands = self.c.killBufferCommands
+    aList = commands.killBuffer
+
+    # g.trace(g.listToString([repr(z) for z in aList]))
+
+    if not aList:
+        self.index = 0
+        return None
+
+    if commands.reset is None:
+        i = self.index
+    else:
+        i = commands.reset
+        commands.reset = None
+
+    if i < 0 or i >= len(aList): i = 0
+    # g.trace(i)
+    val = aList[i]
+    self.index = i + 1
+    return val
+#@-node:ekr.20071003160252.2:next
+#@-node:ekr.20050920084036.184:iterateKillBuffer
+#@+node:ekr.20050920084036.178:kill
+def kill (self,event,frm,to,undoType=None):
+
+    '''A helper method for all kill commands.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    s = w.get(frm,to)
+    if undoType: self.beginCommand(undoType=undoType)
+    self.addToKillBuffer(s)
+    g.app.gui.replaceClipboardWith(s)
+    w.delete(frm,to)
+    w.setInsertPoint(frm)
+    if undoType:
+        self.c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.178:kill
+#@+node:ekr.20071003183657:KillLine
+def killLine (self,event):
+    '''Kill the line containing the cursor.'''
+    w = self.editWidget(event)
+    if not w: return
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getLine(s,ins)
+    # g.trace(i,j,ins,len(s),repr(s[i:j]))
+    if ins >= len(s) and g.match(s,j-1,'\n'): # Kill the trailing newline.
+        i = max(0,len(s)-1)
+        j = len(s)
+    elif j > i+1 and g.match(s,j-1,'\n'): # Kill the line, but not the newline.
+        j -= 1
+    else: # Kill the newline.
+        pass
+    self.kill(event,i,j,undoType='kill-line')
+#@-node:ekr.20071003183657:KillLine
+#@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
+def killRegion (self,event):
+    '''Kill the text selection.'''
+    self.killRegionHelper(event,deleteFlag=True)
+
+def killRegionSave (self,event):
+    '''Add the selected text to the kill ring, but do not delete it.'''
+    self.killRegionHelper(event,deleteFlag=False)
+
+def killRegionHelper (self,event,deleteFlag):
+
+    w = self.editWidget(event)
+    if not w: return
+    theRange = w.tag_ranges('sel')
+    if not theRange: return
+
+    s = w.get(theRange[0],theRange[-1])
+    if deleteFlag:
+        self.beginCommand(undoType='kill-region')
+        w.delete(theRange[0],theRange[-1])
+        self.c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+    self.addToKillBuffer(s)
+    g.app.gui.replaceClipboardWith(s)
+    # self.removeRKeys(w)
+#@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
+#@+node:ekr.20050930095323.1:killSentence
+def killSentence (self,event):
+
+    '''Kill the sentence containing the cursor.'''
+
+    w = self.editWidget(event)
+    if not w: return
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i = s.find('.',ins)
+    if i == -1: return
+
+    undoType='kill-sentence'
+
+    self.beginCommand(undoType=undoType)
+
+    i2 = s.rfind('.',0,ins) + 1
+    self.kill(event,i2,i+1,undoType=undoType)
+    self.c.frame.body.forceFullRecolor()
+    w.setInsertPoint(i2)
+
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050930095323.1:killSentence
+#@+node:ekr.20050930100733:killWs
+def killWs (self,event,undoType=None):
+
+    '''Kill whitespace.'''
+
+    ws = ''
+    w = self.editWidget(event)
+    if not w: return
+
+    while 1:
+        s = w.get('insert')
+        if s in (' ','\t'):
+            w.delete('insert')
+            ws = ws + s
+        else:
+            break
+
+    if ws:
+        if undoType: self.beginCommand(undoType=undoType)
+        self.addToKillBuffer(ws,force=True)
+        if undoType: self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050930100733:killWs
+#@+node:ekr.20050930091642.1:yank
+def yank (self,event,pop=False):
+
+    '''yank: insert the first entry of the kill ring.
+    yank-pop: insert the next entry of the kill ring.
+    '''
+
+    c = self.c ; w = self.editWidget(event)
+    if not w: return
+    current = c.currentPosition()
+    if not current: return
+    i, j = w.getSelectionRange()
+    clip_text = self.getClipboard(w)
+    if not self.killBuffer and not clip_text: return
+
+    undoType = g.choose(pop,'yank-pop','yank')
+    self.beginCommand(undoType=undoType)
+    try:
+        if not pop or self.lastYankP and self.lastYankP != current:
+            self.reset = 0
+        s = self.kbiterator.next()
+        if s is None: s = clip_text or ''
+        if i != j: w.deleteTextSelection()
+        w.insert(i,s)
+        w.setSelectionRange(i,i+len(s),insert=i+len(s))
+        self.lastYankP = current.copy()
+        c.frame.body.forceFullRecolor()
+    finally:
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050930091642.1:yank
+#@+node:ekr.20050930091642.2:yankPop
+def yankPop (self,event):
+
+    '''Insert the next entry of the kill ring.'''
+
+    self.yank(event,pop=True)
+
+#@-node:ekr.20050930091642.2:yankPop
+#@+node:ekr.20050920084036.128:zapToCharacter
+def zapToCharacter (self,event):
+
+    '''Kill characters from the insertion point to a given character.'''
+
+    k = self.k ; w = self.editWidget(event)
+    if not w: return
+
+    state = k.getState('zap-to-char')
+    if state == 0:
+        k.setLabelBlue('Zap To Character: ',protect=True)
+        k.setState('zap-to-char',1,handler=self.zapToCharacter)
+    else:
+        ch = event and event.char or ' '
+        k.resetLabel()
+        k.clearState()
+        if ch.isspace(): return
+        s = w.getAllText()
+        ins = w.getInsertPoint()
+        i = s.find(ch,ins)
+        if i == -1: return
+        self.beginCommand(undoType='zap-to-char')
+        self.addToKillBuffer(s[ins:i])
+        w.setAllText(s[:ins] + s[i:])
+        w.setInsertPoint(ins)
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.128:zapToCharacter
+#@-node:ekr.20050920084036.174:killBufferCommandsClass
+#@+node:ekr.20050930091642.1:yank
+def yank (self,event,pop=False):
+
+    '''yank: insert the first entry of the kill ring.
+    yank-pop: insert the next entry of the kill ring.
+    '''
+
+    c = self.c ; w = self.editWidget(event)
+    if not w: return
+    current = c.currentPosition()
+    if not current: return
+    i, j = w.getSelectionRange()
+    clip_text = self.getClipboard(w)
+    if not self.killBuffer and not clip_text: return
+
+    undoType = g.choose(pop,'yank-pop','yank')
+    self.beginCommand(undoType=undoType)
+    try:
+        if not pop or self.lastYankP and self.lastYankP != current:
+            self.reset = 0
+        s = self.kbiterator.next()
+        if s is None: s = clip_text or ''
+        if i != j: w.deleteTextSelection()
+        w.insert(i,s)
+        w.setSelectionRange(i,i+len(s),insert=i+len(s))
+        self.lastYankP = current.copy()
+        c.frame.body.forceFullRecolor()
+    finally:
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050930091642.1:yank
+#@+node:ekr.20050930091642.2:yankPop
+def yankPop (self,event):
+
+    '''Insert the next entry of the kill ring.'''
+
+    self.yank(event,pop=True)
+
+#@-node:ekr.20050930091642.2:yankPop
+#@-node:ekr.20071003123335:Improved yank and yank-pop commands
 #@-node:ekr.20070920083033.1:Features
-#@-node:ekr.20070919132518:4.4.4 final
+#@-node:ekr.20070919132518:4.4.4 b3
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@-all
 #@nonl

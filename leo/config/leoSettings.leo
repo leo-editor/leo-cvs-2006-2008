@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.665511265165">
-	<global_window_position top="17" left="238" height="800" width="861"/>
+	<global_window_position top="17" left="238" height="780" width="958"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -83,7 +83,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20070926132045"><vh>Buttons</vh>
 <v t="ekr.20070926082407"><vh>@buttons</vh>
 <v t="ekr.20070926082256.1"><vh>@button Beautify</vh></v>
@@ -343,7 +343,7 @@
 <v t="ekr.20060804095015"><vh>@string open_flash_brackets = ([{</vh></v>
 <v t="ekr.20060926161207.2" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 </v>
-<v t="ekr.20051007200824" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
+<v t="ekr.20051007200824" a="E" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
 <v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
 <v t="ekr.20051007200824.1" annotate="7d71002e"><vh>About shortcut specifiers</vh></v>
 <v t="ekr.20060116090646"><vh>Reference for function keys</vh></v>
@@ -451,7 +451,7 @@
 </v>
 </v>
 <v t="ekr.20070810180015"><vh>@@keys Vim bindings</vh>
-<v t="ekr.20070810180015.1" a="E"><vh>Modes</vh>
+<v t="ekr.20070810180015.1"><vh>Modes</vh>
 <v t="ekr.20070810182514"><vh>@mode focus</vh></v>
 <v t="ekr.20070810181929"><vh>@shortcuts top-level plain keys</vh></v>
 <v t="ekr.20070810180015.2"><vh>@@mode quick-command (Alt-C)</vh></v>
@@ -488,16 +488,16 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-Shift-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
 <v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves using plain keys</vh></v>
-<v t="ekr.20060925060533.2"><vh>@shortcuts Gui operations</vh></v>
+<v t="ekr.20060925060533.2" a="TV"><vh>@shortcuts Gui operations</vh></v>
 <v t="ekr.20060925061845"><vh>@shortcuts File commands</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find commands</vh></v>
 <v t="ekr.20070613133747" a="M"><vh>@shortcuts Menu commands</vh></v>
@@ -952,7 +952,7 @@
 <v t="ekr.20071004121248.1"><vh>@item kill-&amp;word</vh></v>
 <v t="ekr.20071004121248.3"><vh>@item -</vh></v>
 <v t="ekr.20071004121248.4"><vh>@item &amp;yank</vh></v>
-<v t="ekr.20071004121619"><vh>@@item yank-&amp;pop (yank does double duty)</vh></v>
+<v t="ekr.20071004121619"><vh>@item yank-&amp;pop</vh></v>
 <v t="ekr.20071004121248.5"><vh>@item yank-r&amp;ectangle</vh></v>
 </v>
 </v>
@@ -1594,7 +1594,7 @@
 <v t="ekr.20071004121248.1"><vh>@item kill-&amp;word</vh></v>
 <v t="ekr.20071004121248.3"><vh>@item -</vh></v>
 <v t="ekr.20071004121248.4"><vh>@item &amp;yank</vh></v>
-<v t="ekr.20071004121619"><vh>@@item yank-&amp;pop (yank does double duty)</vh></v>
+<v t="ekr.20071004121619"><vh>@item yank-&amp;pop</vh></v>
 <v t="ekr.20071004121248.5"><vh>@item yank-r&amp;ectangle</vh></v>
 </v>
 </v>
@@ -1655,7 +1655,7 @@
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-Shift-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -1675,10 +1675,10 @@
 <v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: F-M</vh></v>
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
-<v t="ekr.20070810181604" a="E"><vh>Vim stuff: not ready yet</vh>
+<v t="ekr.20070810181604"><vh>Vim stuff: not ready yet</vh>
 <v t="ekr.20070810181528"><vh>@@strings  [ignore,insert, overwrite] top_level_unbound_key_action = ignore</vh></v>
-<v t="ekr.20070810180015" a="E"><vh>@@keys Vim bindings</vh>
-<v t="ekr.20070810180015.1" a="E"><vh>Modes</vh>
+<v t="ekr.20070810180015"><vh>@@keys Vim bindings</vh>
+<v t="ekr.20070810180015.1"><vh>Modes</vh>
 <v t="ekr.20070810182514"><vh>@mode focus</vh></v>
 <v t="ekr.20070810181929"><vh>@shortcuts top-level plain keys</vh></v>
 <v t="ekr.20070810180015.2"><vh>@@mode quick-command (Alt-C)</vh></v>
@@ -1694,7 +1694,7 @@
 <v t="ekr.20070810181929.9" annotate="7d71002e"><vh>@@mode Outline (Control-Shift-O)</vh>
 <v t="ekr.20070810181929.10"><vh>@@mode Outline-move</vh></v>
 </v>
-<v t="ekr.20070810181929.11" a="TV"><vh>@@mode Quick-command (Alt-C)</vh></v>
+<v t="ekr.20070810181929.11"><vh>@@mode Quick-command (Alt-C)</vh></v>
 </v>
 <v t="ekr.20070810180015.3"><vh>Shortcuts</vh>
 <v t="ekr.20070810181453"><vh>@shortcuts Arrow keys</vh></v>
@@ -3317,7 +3317,7 @@ write-dirty-at-file-nodes           = None
 write-missing-at-file-nodes         = None
 write-outline-only                  = None 
 yank                                = Control-y
-# yank-pop                          = Alt-y
+yank-pop                            = Alt-y
 yank-rectangle                      = None
 zap-to-character                    = Alt-z</t>
 <t tx="ekr.20060102113259"># A silly mode illustrating vim-like operation.
@@ -3902,7 +3902,7 @@ write-dirty-at-file-nodes               = None
 write-missing-at-file-nodes             = None
 write-outline-only                      = None 
 yank                                    = Control-y
-# yank-pop                              = Alt-y
+yank-pop                                = Alt-y
 yank-rectangle                          = None
 zap-to-character                        = Alt-z</t>
 <t tx="ekr.20060112090844"># indent-for-tab                    = Control-i
@@ -4178,7 +4178,7 @@ write-dirty-at-file-nodes       = None
 write-missing-at-file-nodes     = None
 write-outline-only              = None 
 yank                            = Control-y
-# yank-pop                      = Alt-y
+yank-pop                        = Alt-y
 yank-rectangle                  = None
 zap-to-character                = Alt-z
 </t>
@@ -4448,7 +4448,7 @@ write-dirty-at-file-nodes           = Shift+Ctrl+Q
 write-missing-at-file-nodes         = None
 write-outline-only                  = None
 yank                                = None
-# yank-pop                          = None
+yank-pop                            = None
 yank-rectangle                      = None
 zap-to-character                    = None</t>
 <t tx="ekr.20060112093227.1">fill-paragraph                      = None
@@ -4772,7 +4772,7 @@ write-dirty-at-file-nodes           = None
 write-missing-at-file-nodes         = None
 write-outline-only                  = None
 yank                                = None
-# yank-pop                          = None
+yank-pop                            = None
 yank-rectangle                      = None
 zap-to-character                    = None</t>
 <t tx="ekr.20060112103537.17">'''This script reports commands that exist in some but not all key- binding
@@ -5953,7 +5953,7 @@ scroll-down-extend-selection
 scroll-up
 scroll-up-extend-selection
 yank
-# yank-pop
+yank-pop  
 zap-to-character
 
 Focus
@@ -7036,7 +7036,7 @@ move-past-close-extend-selection    = None
 # previous-line-extend-selection    ! text = Ctrl-Shift-P
 select-all                          ! text =  Alt-Shift-A  # Shift-Ctrl-A: beginning-of-line-extend-selection.
 </t>
-<t tx="ekr.20060925060533.2">cycle-all-focus             = Alt-Y
+<t tx="ekr.20060925060533.2">cycle-all-focus             = Alt-Ctrl-Y
 contract-pane               = Alt+Ctrl+-
 expand-pane                 = Alt+Ctrl-=
 focus-to-body               = Alt-D  # boDy
@@ -7095,6 +7095,7 @@ reformat-paragraph                  = Shift-Ctrl-p
 split-line                          = None
 unindent-region                     = Ctrl-[
 yank                                = Ctrl-Y
+yank-pop                            = Alt-Y
 zap-to-character                    = Alt-z</t>
 <t tx="ekr.20060925061845">close-window                = Alt-F4
 exit-leo                    = Ctrl-q
