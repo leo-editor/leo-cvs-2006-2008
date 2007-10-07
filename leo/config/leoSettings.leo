@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.665511265165">
-	<global_window_position top="17" left="238" height="740" width="958"/>
+	<global_window_position top="17" left="238" height="720" width="958"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -83,7 +83,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20070926132045"><vh>Buttons</vh>
 <v t="ekr.20070926082407"><vh>@buttons</vh>
 <v t="ekr.20070926082256.1"><vh>@button Beautify</vh></v>
@@ -515,8 +515,8 @@
 </v>
 </v>
 <v t="ekr.20070925144552"><vh>Menus</vh>
-<v t="ekr.20070925144534"><vh>@menus</vh>
-<v t="ekr.20070925144534.1"><vh>@menu File</vh>
+<v t="ekr.20070925144534" a="E"><vh>@menus</vh>
+<v t="ekr.20070925144534.1"><vh>@menu &amp;File</vh>
 <v t="ekr.20070925144534.2"><vh>@item *&amp;new</vh></v>
 <v t="ekr.20070925144534.3"><vh>@item open-outline</vh></v>
 <v t="ekr.20070925144534.4"><vh>@menu Open &amp;With...</vh></v>
@@ -579,7 +579,7 @@
 <v t="ekr.20070927051856"><vh>@item -</vh></v>
 <v t="ekr.20070925144534.47"><vh>@item exit-leo</vh></v>
 </v>
-<v t="ekr.20070925144534.48"><vh>@menu Edit</vh>
+<v t="ekr.20070925144534.48"><vh>@menu &amp;Edit</vh>
 <v t="ekr.20070925144534.49"><vh>@item undo</vh></v>
 <v t="ekr.20070925144534.50"><vh>@item redo</vh></v>
 <v t="ekr.20070925144534.51"><vh>@item -</vh></v>
@@ -644,7 +644,7 @@
 <v t="ekr.20070925144534.107"><vh>@item toggle-invisibles</vh></v>
 <v t="ekr.20070925144534.108"><vh>@item open-leoSettings-leo</vh></v>
 </v>
-<v t="ekr.20070925144534.109"><vh>@menu Outline</vh>
+<v t="ekr.20070925144534.109"><vh>@menu &amp;Outline</vh>
 <v t="ekr.20070925144534.110"><vh>@item *c&amp;ut-node</vh></v>
 <v t="ekr.20070925144534.111"><vh>@item *c&amp;opy-node</vh></v>
 <v t="ekr.20070925144534.112"><vh>@item *&amp;paste-node</vh></v>
@@ -732,8 +732,8 @@
 <v t="ekr.20070925144534.189"><vh>@item goto-last-visible-node</vh></v>
 </v>
 </v>
-<v t="ekr.20070925144534.190"><vh>@menu Plugins</vh></v>
-<v t="ekr.20070925144534.191"><vh>@menu Cmds</vh>
+<v t="ekr.20070925144534.190"><vh>@menu &amp;Plugins</vh></v>
+<v t="ekr.20070925144534.191"><vh>@menu &amp;Cmds</vh>
 <v t="ekr.20070925144534.192"><vh>@menu &amp;Abbrev...</vh>
 <v t="ekr.20070925144534.193"><vh>@item abbre&amp;v-mode</vh></v>
 <v t="ekr.20070925144534.194"><vh>@item -</vh></v>
@@ -958,7 +958,7 @@
 <v t="ekr.20071004121248.5"><vh>@item yank-r&amp;ectangle</vh></v>
 </v>
 </v>
-<v t="ekr.20070925144534.380"><vh>@menu Window</vh>
+<v t="ekr.20070925144534.380"><vh>@menu &amp;Window</vh>
 <v t="ekr.20070925144534.381"><vh>@item *&amp;equal-sized-panes</vh></v>
 <v t="ekr.20070925144534.382"><vh>@item *&amp;toggle-active-pane</vh></v>
 <v t="ekr.20070925144534.383"><vh>@item *toggle-&amp;split-direction</vh></v>
@@ -985,7 +985,7 @@
 <v t="ekr.20070925144534.404"><vh>@item *open-compare-window</vh></v>
 <v t="ekr.20070925144534.405"><vh>@item *open-python-&amp;window</vh></v>
 </v>
-<v t="ekr.20070925144534.406"><vh>@menu Help</vh>
+<v t="ekr.20070925144534.406"><vh>@menu &amp;Help</vh>
 <v t="ekr.20070925144534.407"><vh>@item about-leo</vh></v>
 <v t="ekr.20070925144534.408"><vh>@item open-online-home</vh></v>
 <v t="ekr.20070925144534.409"><vh>@item *open-online-&amp;tutorial</vh></v>
@@ -1157,9 +1157,9 @@
 </v>
 </v>
 </v>
-<v t="ekr.20070925144552"><vh>Menus</vh>
-<v t="ekr.20070925144534"><vh>@menus</vh>
-<v t="ekr.20070925144534.1"><vh>@menu File</vh>
+<v t="ekr.20070925144552" a="E"><vh>Menus</vh>
+<v t="ekr.20070925144534" a="E"><vh>@menus</vh>
+<v t="ekr.20070925144534.1"><vh>@menu &amp;File</vh>
 <v t="ekr.20070925144534.2"><vh>@item *&amp;new</vh></v>
 <v t="ekr.20070925144534.3"><vh>@item open-outline</vh></v>
 <v t="ekr.20070925144534.4"><vh>@menu Open &amp;With...</vh></v>
@@ -1222,7 +1222,7 @@
 <v t="ekr.20070927051856"><vh>@item -</vh></v>
 <v t="ekr.20070925144534.47"><vh>@item exit-leo</vh></v>
 </v>
-<v t="ekr.20070925144534.48"><vh>@menu Edit</vh>
+<v t="ekr.20070925144534.48"><vh>@menu &amp;Edit</vh>
 <v t="ekr.20070925144534.49"><vh>@item undo</vh></v>
 <v t="ekr.20070925144534.50"><vh>@item redo</vh></v>
 <v t="ekr.20070925144534.51"><vh>@item -</vh></v>
@@ -1287,7 +1287,7 @@
 <v t="ekr.20070925144534.107"><vh>@item toggle-invisibles</vh></v>
 <v t="ekr.20070925144534.108"><vh>@item open-leoSettings-leo</vh></v>
 </v>
-<v t="ekr.20070925144534.109"><vh>@menu Outline</vh>
+<v t="ekr.20070925144534.109"><vh>@menu &amp;Outline</vh>
 <v t="ekr.20070925144534.110"><vh>@item *c&amp;ut-node</vh></v>
 <v t="ekr.20070925144534.111"><vh>@item *c&amp;opy-node</vh></v>
 <v t="ekr.20070925144534.112"><vh>@item *&amp;paste-node</vh></v>
@@ -1375,8 +1375,8 @@
 <v t="ekr.20070925144534.189"><vh>@item goto-last-visible-node</vh></v>
 </v>
 </v>
-<v t="ekr.20070925144534.190"><vh>@menu Plugins</vh></v>
-<v t="ekr.20070925144534.191"><vh>@menu Cmds</vh>
+<v t="ekr.20070925144534.190"><vh>@menu &amp;Plugins</vh></v>
+<v t="ekr.20070925144534.191"><vh>@menu &amp;Cmds</vh>
 <v t="ekr.20070925144534.192"><vh>@menu &amp;Abbrev...</vh>
 <v t="ekr.20070925144534.193"><vh>@item abbre&amp;v-mode</vh></v>
 <v t="ekr.20070925144534.194"><vh>@item -</vh></v>
@@ -1601,7 +1601,7 @@
 <v t="ekr.20071004121248.5"><vh>@item yank-r&amp;ectangle</vh></v>
 </v>
 </v>
-<v t="ekr.20070925144534.380"><vh>@menu Window</vh>
+<v t="ekr.20070925144534.380"><vh>@menu &amp;Window</vh>
 <v t="ekr.20070925144534.381"><vh>@item *&amp;equal-sized-panes</vh></v>
 <v t="ekr.20070925144534.382"><vh>@item *&amp;toggle-active-pane</vh></v>
 <v t="ekr.20070925144534.383"><vh>@item *toggle-&amp;split-direction</vh></v>
@@ -1628,7 +1628,7 @@
 <v t="ekr.20070925144534.404"><vh>@item *open-compare-window</vh></v>
 <v t="ekr.20070925144534.405"><vh>@item *open-python-&amp;window</vh></v>
 </v>
-<v t="ekr.20070925144534.406"><vh>@menu Help</vh>
+<v t="ekr.20070925144534.406" a="V"><vh>@menu &amp;Help</vh>
 <v t="ekr.20070925144534.407"><vh>@item about-leo</vh></v>
 <v t="ekr.20070925144534.408"><vh>@item open-online-home</vh></v>
 <v t="ekr.20070925144534.409"><vh>@item *open-online-&amp;tutorial</vh></v>
