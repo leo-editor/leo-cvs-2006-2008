@@ -925,10 +925,9 @@ class leoFind:
             return -1,-1
 
         if word:
-            if debug: g.trace('**word** %3s %3s %5s -> %s %s' % (i,j,g.choose(j==len(s),'(end)',''),k,self.p.headString()))
             while 1:
                 k = s.rfind(pattern,i,j)
-                # g.trace(i,j,k)
+                if debug: g.trace('**word** %3s %3s %5s -> %s %s' % (i,j,g.choose(j==len(s),'(end)',''),k,self.p.headString()))
                 if k == -1: return -1, -1
                 if self.matchWord(s,k,pattern):
                     return k,k+n
