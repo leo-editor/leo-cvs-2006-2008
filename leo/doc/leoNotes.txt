@@ -2488,6 +2488,43 @@ def clear (self):
     self.prefix = None
 #@-node:ekr.20050920085536.89:clear
 #@-node:ekr.20050920085536.84:class Tracker (an iterator)
+#@+node:ekr.20071008075017:old g.trace code
+
+while n > 0:
+    s = g._callerName(n,files=files)
+    if s.endswith('callers'):
+        if excludeCaller and result:
+            del result [-1]
+        break
+    elif s:
+        if first and files:
+            first = False ; s = '\n' + s
+        result.append(s)
+    n -= 1
+#@nonl
+#@-node:ekr.20071008075017:old g.trace code
+#@+node:ekr.20071008072637:old jythoncode from trace
+import java.lang
+try:
+    raise java.lang.Exception
+except java.lang.Exception,e:
+
+    frame = sys._getframe(1)
+    # print 'g.trace(jython)',e.toString()
+    # print e.printStackTrace()
+    # aList = e.getStackTrace()
+    # shortList = [z for z in aList if repr(z).startswith('leo')]
+    # print '='*20
+    # shortList = shortList[2:]
+    # shortList.reverse()
+    # for z in shortList:
+        # aList2 = repr(z).split('$')
+        # if len(aList2) > 2:
+            # # print z
+            # print aList2
+    name = '' 
+#@nonl
+#@-node:ekr.20071008072637:old jythoncode from trace
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

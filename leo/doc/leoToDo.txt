@@ -9,11 +9,6 @@
 #@+node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
 #@-node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
 #@+node:ekr.20070814070312:First
-#@+node:ekr.20071003204338:further improve kill buffer
-@nocolor
-
-Append if the selection hasn't move since last kill.
-#@-node:ekr.20071003204338:further improve kill buffer
 #@+node:ekr.20070814144804:Incorrect conversion of paths to absolute paths (for Leo 4.4.5)
 @nocolor
 https://sourceforge.net/forum/message.php?msg_id=4464649
@@ -200,25 +195,6 @@ SCS as a back-up system, saving many (uninteresting) intermediate steps while
 implementing a new feature.
 #@nonl
 #@-node:ekr.20071001052501:Versioning for nodes
-#@+node:ekr.20071005131749.1:Fix all colorizor bugs (if any remain)
-#comment
-
-def eggs():
-
-    '''Mult-line docstrings
-
-    lint two'''
-
-    Test.
-
-    """Multi-line docstrings
-
-    eggs"""
-
-    def spam():
-        pass
-#@nonl
-#@-node:ekr.20071005131749.1:Fix all colorizor bugs (if any remain)
 #@-node:ekr.20070703111455.1:Most important
 #@+node:ekr.20070630143345:Easy and useful
 #@+node:ekr.20070220082124:Make sure Leo can generate Latex
