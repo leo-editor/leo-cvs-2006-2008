@@ -42,7 +42,7 @@ class leoSwingFrame (leoFrame.leoFrame):
     #@+node:ekr.20071001091231.25:__init__ (swingFrame)
     def __init__(self,title,gui):
 
-        g.trace('swingFrame')
+        g.trace('swingFrame',g.callers(20))
 
         # Init the base class.
         leoFrame.leoFrame.__init__(self,gui)
@@ -197,7 +197,7 @@ class leoSwingFrame (leoFrame.leoFrame):
         f.log  = leoSwingLog(f,f.top)
 
         # Yes, this an "official" ivar: this is a kludge.
-        g.trace('f.body',f.body,'f.body.bodyCtrl',f.body.bodyCtrl)
+        # g.trace('f.body',f.body,'f.body.bodyCtrl',f.body.bodyCtrl)
         f.bodyCtrl = f.body.bodyCtrl
 
         # Configure.
