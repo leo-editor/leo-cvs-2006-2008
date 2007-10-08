@@ -309,7 +309,7 @@ class baseCommands:
     #@+node:ekr.20040629121554.1:getSignOnLine (Contains hard-coded version info)
     def getSignOnLine (self):
         c = self
-        return "Leo 4.4.4 final, build %s, October 5, 2007" % c.getBuildNumber()
+        return "Leo 4.4.4 b3, build %s, October 8, 2007" % c.getBuildNumber()
     #@-node:ekr.20040629121554.1:getSignOnLine (Contains hard-coded version info)
     #@+node:ekr.20040629121554.2:initVersion
     def initVersion (self):
@@ -3041,7 +3041,7 @@ class baseCommands:
     #@-node:ekr.20050312114529.2:deleteComments (test)
     #@-node:ekr.20050312114529:insert/removeComments
     #@+node:ekr.20031218072017.1833:reformatParagraph & tests
-    def reformatParagraph (self,event=None):
+    def reformatParagraph (self,event=None,undoType='Reformat Paragraph'):
 
         """Reformat a text paragraph in a Tk.Text widget
 
@@ -3061,8 +3061,10 @@ class baseCommands:
             return
 
         if body.hasTextSelection():
-            g.es("Text selection inhibits Reformat Paragraph",color="blue")
-            return
+            # g.es("Text selection inhibits Reformat Paragraph",color="blue")
+            # return
+            i,j = w.getSelectionRange()
+            w.setInsertPoint(i)
 
         #@    << compute vars for reformatParagraph >>
         #@+node:ekr.20031218072017.1834:<< compute vars for reformatParagraph >>
@@ -3132,7 +3134,6 @@ class baseCommands:
 
             changed = original != head + result + tail
             if changed:
-                undoType = g.choose(changed,"Reformat Paragraph",None)
                 body.onBodyChanged(undoType,oldSel=oldSel,oldYview=oldYview)
 
             w.setSelectionRange(ins,ins,insert=ins)
