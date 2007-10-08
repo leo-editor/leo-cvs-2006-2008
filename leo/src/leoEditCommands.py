@@ -1902,10 +1902,10 @@ class editCommandsClass (baseEditCommandsClass):
         self.ccolumn = col
     #@nonl
     #@-node:ekr.20050920084036.133:setCommentColumn
-    #@+node:ekr.20050920084036.134:indentToCommentColumn (test)
+    #@+node:ekr.20050920084036.134:indentToCommentColumn
     def indentToCommentColumn (self,event):
 
-        '''Insert whitespace to indent to the comment column.'''
+        '''Insert whitespace to indent the line containing the insert point to the comment column.'''
 
         k = self.k
         w = self.editWidget(event)
@@ -1914,16 +1914,18 @@ class editCommandsClass (baseEditCommandsClass):
         self.beginCommand(undoType='indent-to-comment-column')
 
         s = w.getAllText()
-        junk, i = g.getLine(s,w.getInsertPoint())
-        i1, i2 = g.convertPythonIndexToRowCol(s,i)
+        ins = w.getInsertPoint()
+        i,j = g.getLine(s,ins)
+        line = s[i:j]
         c1 = int(self.ccolumn)
-
-        if i2 < c1: w.insert(i,' '*(c1-i2))
-        if i2 >= c1: w.insert(i,' ')
-        w.setInsertPoint(i)
+        line2 = ' ' * c1 + line.lstrip()
+        if line2 != line:
+            w.delete(i,j)
+            w.insert(i,line2)
+        w.setInsertPoint(i+c1)
 
         self.endCommand(changed=True,setLabel=True)
-    #@-node:ekr.20050920084036.134:indentToCommentColumn (test)
+    #@-node:ekr.20050920084036.134:indentToCommentColumn
     #@-node:ekr.20050920084036.132:comment column...
     #@+node:ekr.20050920084036.62:esc methods for Python evaluation
     #@+node:ekr.20050920084036.63:watchEscape (Revise)
@@ -2097,7 +2099,7 @@ class editCommandsClass (baseEditCommandsClass):
 
         self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.69:centerRegion
-    #@+node:ekr.20050920084036.70:setFillPrefix (test)
+    #@+node:ekr.20050920084036.70:setFillPrefix
     def setFillPrefix( self, event ):
 
         '''Make the selected text the fill prefix.'''
@@ -2106,11 +2108,9 @@ class editCommandsClass (baseEditCommandsClass):
         if not w: return
 
         s = w.getAllText()
-        ins = w.getInsertPoint()
-        i,junk = g.getLine(s,ins)
-        txt = s[i:ins]
-        self.fillPrefix = txt
-    #@-node:ekr.20050920084036.70:setFillPrefix (test)
+        i,j = w.getSelectionRange()
+        self.fillPrefix = s[i:j]
+    #@-node:ekr.20050920084036.70:setFillPrefix
     #@+node:ekr.20050920084036.71:_addPrefix
     def _addPrefix (self,ntxt):
 
@@ -2306,7 +2306,7 @@ class editCommandsClass (baseEditCommandsClass):
 
         self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.75:backToIndentation
-    #@+node:ekr.20050920084036.76:deleteIndentation (test)
+    #@+node:ekr.20050920084036.76:deleteIndentation
     def deleteIndentation (self,event):
 
         '''Delete indentation in the presently line.'''
@@ -2315,18 +2315,23 @@ class editCommandsClass (baseEditCommandsClass):
         w = self.editWidget(event)
         if not w: return
 
-        self.beginCommand(undoType='delete-indentation')
 
         s = w.getAllText()
         ins = w.getInsertPoint()
         i,j = g.getLine(s,ins)
-        txt = s[i:j].strip()
-        w.delete(i,j)
-        w.insert(ins-1,txt)
-        w.setInsertPoint(i)
+        line = s[i:j]
+        line2 = s[i:j].lstrip()
+        delta = len(line) - len(line2)
+        if delta:
+            self.beginCommand(undoType='delete-indentation')
 
-        self.endCommand(changed=True,setLabel=True)
-    #@-node:ekr.20050920084036.76:deleteIndentation (test)
+            w.delete(i,j)
+            w.insert(i,line2)
+            ins -= delta
+            w.setSelectionRange(ins,ins,insert=ins)
+
+            self.endCommand(changed=True,setLabel=True)
+    #@-node:ekr.20050920084036.76:deleteIndentation
     #@+node:ekr.20050920084036.78:indentRelative
     def indentRelative (self,event):
 
@@ -3807,27 +3812,20 @@ class editCommandsClass (baseEditCommandsClass):
     def fillRegion (self,event):
 
         '''Fill all paragraphs in the selected text.'''
-        k = self.k
+
+        # New in Leo 4.4.4: just use reformat-paragraph logic.
+
+        c = self.c ; p = c.currentPosition() ; undoType = 'fill-region'
         w = self.editWidget(event)
-        if not w or not self._chckSel(event): return
-
-        self.beginCommand(undoType='fill-region')
-
-        s = w.getAllText()
-        s1,s2 = w.getSelectionRange()
-        w.setInsertPoint(s1)
-        self.backwardParagraph(event)
-        i = w.getInsertPoint()
-        i,junk = g.getLine(s,i)
-        if i == 0:
-            self.fillParagraph(event)
+        i,j = w.getSelectionRange()
+        c.undoer.beforeChangeGroup(p,undoType)
         while 1:
-            self.forwardParagraph(event)
-            if w.getInsertPoint() > s2:
+            self.c.reformatParagraph(event,undoType='reformat-paragraph')
+            ins = w.getInsertPoint()
+            s = w.getAllText()
+            if ins >= j or ins >= len(s):
                 break
-            self.fillParagraph(event)
-
-        self.endCommand(changed=True,setLabel=True)
+        c.undoer.afterChangeGroup(p,undoType)
     #@-node:ekr.20050920084036.100:fillRegion
     #@+node:ekr.20050920084036.104:fillRegionAsParagraph
     def fillRegionAsParagraph (self,event):
