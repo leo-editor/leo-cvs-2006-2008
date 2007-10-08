@@ -878,22 +878,24 @@ def callers (n=8,excludeCaller=True,files=False):
 
     '''Return a list containing the callers of the function that called g.callerList.
 
-    By default, the function that called g.callerList is not on the list,
-    which is what is wanted when using g.trace.'''
+    If the excludeCaller keyword is True (the default), g.callers is not on the list.
 
-    result = [] ; first = True
-    while n > 0:
-        s = g._callerName(n,files=files)
-        if s.endswith('callers'):
-            if excludeCaller and result:
-                del result [-1]
-            break
-        elif s:
-            if first and files:
-                first = False ; s = '\n' + s
+    If the files keyword argument is True, filenames are included in the list.
+    '''
+
+    # sys._getframe throws ValueError in both cpython and jython if there are less than i entries.
+    # The jython stack often has less than 8 entries,
+    # so we must be careful to call g._callerName with smaller values of i first.
+    result = []
+    i = g.choose(excludeCaller,3,2)
+    while 1:
+        s = g._callerName(i,files=files)
+        if s:
             result.append(s)
-        n -= 1
+        if not s or len(result) >= n: break
+        i += 1
 
+    result.reverse()
     sep = g.choose(files,'\n',',')
     return sep.join(result)
 #@+node:ekr.20031218072017.3107:_callerName
@@ -1576,7 +1578,7 @@ def init_trace(args,echo=1):
 
 def trace (*args,**keys):
 
-    callers = keys.get("callers",False)
+    #callers = keys.get("callers",False)
     newline = keys.get("newline",True)
     align =   keys.get("align",0)
 
@@ -1597,12 +1599,12 @@ def trace (*args,**keys):
         f1 = sys._getframe(1) # The stack frame, one level up.
         code1 = f1.f_code # The code object
         name = code1.co_name # The code name
-    except: name = ""
+    except: name = ''
     if name == "?":
         name = "<unknown>"
 
-    if callers:
-        traceback.print_stack()
+    # if callers:
+        # traceback.print_stack()
 
     if align != 0 and len(name) < abs(align):
         pad = ' ' * (abs(align) - len(name))
@@ -1613,7 +1615,6 @@ def trace (*args,**keys):
         print name + ": " + message
     else:
         print name + ": " + message,
-#@nonl
 #@-node:ekr.20031218072017.2317:trace
 #@+node:ekr.20031218072017.2318:trace_tag
 # Convert all args to strings.
