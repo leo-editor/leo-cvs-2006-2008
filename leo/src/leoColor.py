@@ -1240,48 +1240,6 @@ class baseColorizer:
         #@-node:ekr.20041107094252:<< extend forth words from files >>
         #@nl
     #@-node:ekr.20031218072017.1605:color.__init__
-    #@+node:ekr.20050420083821:disable & enable
-    def disable (self):
-
-        # print "disabling all syntax coloring"
-        self.enabled=False
-
-    def enable (self):
-
-        self.enabled=True
-    #@-node:ekr.20050420083821:disable & enable
-    #@+node:ekr.20041217041016:setFontFromConfig (colorizer)
-    def setFontFromConfig (self):
-
-        c = self.c
-
-        self.bold_font = c.config.getFontFromParams(
-            "body_text_font_family", "body_text_font_size",
-            "body_text_font_slant",  "body_text_font_weight",
-            c.config.defaultBodyFontSize)
-
-        if self.bold_font:
-            self.bold_font.configure(weight="bold")
-
-        self.italic_font = c.config.getFontFromParams(
-            "body_text_font_family", "body_text_font_size",
-            "body_text_font_slant",  "body_text_font_weight",
-            c.config.defaultBodyFontSize)
-
-        if self.italic_font:
-            self.italic_font.configure(slant="italic",weight="normal")
-
-        self.bolditalic_font = c.config.getFontFromParams(
-            "body_text_font_family", "body_text_font_size",
-            "body_text_font_slant",  "body_text_font_weight",
-            c.config.defaultBodyFontSize)
-
-        if self.bolditalic_font:
-            self.bolditalic_font.configure(weight="bold",slant="italic")
-
-        self.color_tags_list = []
-        self.image_references = []
-    #@-node:ekr.20041217041016:setFontFromConfig (colorizer)
     #@+node:ekr.20031218072017.2801:colorize & recolor_range
     # The main colorizer entry point.
 
@@ -2390,6 +2348,67 @@ class baseColorizer:
             self.body.tag_remove(tag,self.index(0),self.index("end")) # 10/27/03
     #@-node:ekr.20031218072017.1604:removeAllTags & removeTagsFromLines
     #@-node:ekr.20031218072017.1892:colorizeLine & allies
+    #@+node:ekr.20050420083821:disable & enable
+    def disable (self):
+
+        # print "disabling all syntax coloring"
+        self.enabled=False
+
+    def enable (self):
+
+        self.enabled=True
+    #@-node:ekr.20050420083821:disable & enable
+    #@+node:ekr.20031218072017.2803:getCwebWord
+    def getCwebWord (self,s,i):
+
+        # g.trace(g.get_line(s,i))
+        if not g.match(s,i,"@"):
+            return None
+
+        ch1 = ch2 = word = None
+        if i + 1 < len(s): ch1 = s[i+1]
+        if i + 2 < len(s): ch2 = s[i+2]
+
+        if g.match(s,i,"@**"):
+            word = "@**"
+        elif not ch1:
+            word = "@"
+        elif not ch2:
+            word = s[i:i+2]
+        elif (
+            (ch1 in string.ascii_letters and not ch2 in string.ascii_letters) or # single-letter control code
+            ch1 not in string.ascii_letters # non-letter control code
+        ):
+            word = s[i:i+2]
+
+        # if word: g.trace(word)
+
+        return word
+    #@-node:ekr.20031218072017.2803:getCwebWord
+    #@+node:ekr.20071009094150:isSameColorState
+    def isSameColorState (self):
+
+        return False
+    #@nonl
+    #@-node:ekr.20071009094150:isSameColorState
+    #@+node:ekr.20031218072017.1944:removeAllImages (leoColor)
+    def removeAllImages (self):
+
+        '''Remove all references to previous images.
+        In Tk, this will cause all images to disappear.'''
+
+        # for photo,image,line_index,i in self.image_references:
+            # try:
+                # s = self.allBodyText
+                # w = self.body.bodyCtrl
+                # index = g.convertRowColToPythonIndex(s,line_index,i)
+                # w.delete(index)
+                # self.allBodyText = w.getAllText()
+            # except:
+                # pass # The image may have been deleted earlier.
+
+        self.image_references = []
+    #@-node:ekr.20031218072017.1944:removeAllImages (leoColor)
     #@+node:ekr.20031218072017.1377:scanColorDirectives
     def scanColorDirectives(self,p):
 
@@ -2444,51 +2463,38 @@ class baseColorizer:
 
         return self.language # For use by external routines.
     #@-node:ekr.20031218072017.1377:scanColorDirectives
-    #@+node:ekr.20031218072017.2803:getCwebWord
-    def getCwebWord (self,s,i):
+    #@+node:ekr.20041217041016:setFontFromConfig (colorizer)
+    def setFontFromConfig (self):
 
-        # g.trace(g.get_line(s,i))
-        if not g.match(s,i,"@"):
-            return None
+        c = self.c
 
-        ch1 = ch2 = word = None
-        if i + 1 < len(s): ch1 = s[i+1]
-        if i + 2 < len(s): ch2 = s[i+2]
+        self.bold_font = c.config.getFontFromParams(
+            "body_text_font_family", "body_text_font_size",
+            "body_text_font_slant",  "body_text_font_weight",
+            c.config.defaultBodyFontSize)
 
-        if g.match(s,i,"@**"):
-            word = "@**"
-        elif not ch1:
-            word = "@"
-        elif not ch2:
-            word = s[i:i+2]
-        elif (
-            (ch1 in string.ascii_letters and not ch2 in string.ascii_letters) or # single-letter control code
-            ch1 not in string.ascii_letters # non-letter control code
-        ):
-            word = s[i:i+2]
+        if self.bold_font:
+            self.bold_font.configure(weight="bold")
 
-        # if word: g.trace(word)
+        self.italic_font = c.config.getFontFromParams(
+            "body_text_font_family", "body_text_font_size",
+            "body_text_font_slant",  "body_text_font_weight",
+            c.config.defaultBodyFontSize)
 
-        return word
-    #@-node:ekr.20031218072017.2803:getCwebWord
-    #@+node:ekr.20031218072017.1944:removeAllImages (leoColor)
-    def removeAllImages (self):
+        if self.italic_font:
+            self.italic_font.configure(slant="italic",weight="normal")
 
-        '''Remove all references to previous images.
-        In Tk, this will cause all images to disappear.'''
+        self.bolditalic_font = c.config.getFontFromParams(
+            "body_text_font_family", "body_text_font_size",
+            "body_text_font_slant",  "body_text_font_weight",
+            c.config.defaultBodyFontSize)
 
-        # for photo,image,line_index,i in self.image_references:
-            # try:
-                # s = self.allBodyText
-                # w = self.body.bodyCtrl
-                # index = g.convertRowColToPythonIndex(s,line_index,i)
-                # w.delete(index)
-                # self.allBodyText = w.getAllText()
-            # except:
-                # pass # The image may have been deleted earlier.
+        if self.bolditalic_font:
+            self.bolditalic_font.configure(weight="bold",slant="italic")
 
+        self.color_tags_list = []
         self.image_references = []
-    #@-node:ekr.20031218072017.1944:removeAllImages (leoColor)
+    #@-node:ekr.20041217041016:setFontFromConfig (colorizer)
     #@+node:ekr.20031218072017.2804:updateSyntaxColorer
     # self.flag is True unless an unambiguous @nocolor is seen.
 
