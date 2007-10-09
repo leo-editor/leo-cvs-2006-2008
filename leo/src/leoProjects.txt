@@ -29169,6 +29169,18 @@ def yankPop (self,event):
 #@-node:ekr.20050930091642.2:yankPop
 #@-node:ekr.20071003123335:Improved yank and yank-pop commands
 #@+node:ekr.20071009104339:Disabled unnecessary recolors
+@nocolor
+
+What I did:
+
+- Fixed a major bug in findMarkAtIndex, the method that computes the starting point for incremental colorizing.  This was likely the source of the so-called 'docstring' bug.
+
+- Rewrote and re-enabled the code in partialColor that determines when to end coloring. I suspect that the bug in findMarkAtIndex was making this code look more buggy than it was.
+
+- Added the isSameColorState method in the threading colorizer (and a dummy in the old colorizer).  This allows the crucial node-switching code in treeSelectHelper to avoid colorizing a node if no real change has been made.  This can speed up the find command significantly when many matches occur in large body text.
+
+@color
+#@nonl
 #@+node:ekr.20070423101911:treeSelectHelper
 #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
 
