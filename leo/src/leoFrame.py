@@ -2762,11 +2762,16 @@ class leoTree:
             frame.setWrap(p)
 
             # Always do this.  Otherwise there can be problems with trailing newlines.
-            s = g.toUnicode(p.v.t.bodyString,"utf-8")
-            w.setAllText(s)
 
-            # We must do a full recoloring: we may be changing context!
-            self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
+            s = g.toUnicode(p.v.t.bodyString,"utf-8")
+            old_s = w.getAllText()
+
+            if True and p and p == old_p and c.frame.body.colorizer.isSameColorState() and s == old_s:
+                pass
+            else:
+                # This destroys all color tags, so do a full recolor.
+                w.setAllText(s)
+                self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
 
             if p.v and p.v.t.scrollBarSpot != None:
                 first,last = p.v.t.scrollBarSpot
