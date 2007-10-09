@@ -20,7 +20,7 @@ Leo plugin by Terry Brown terry_n_brown@yahoo.com
 #@@tabwidth -4
 #@@nowrap
 
-__version__ = "0.2"
+__version__ = "0.3"
 
 #@<< imports >>
 #@+node:ekr.20071004090250.2:<< imports >>
@@ -65,6 +65,11 @@ except:
 #   - put x,y uAs on tnodes rather than vnodes because low level graph
 #     class is a graph of tnodes (gnxs)
 #   - implemented dot export functions
+# 0.3 TNB:
+#   - cleo background colors used in editor and graphviz export
+#   - gNode class used to make API more friendly
+#   - ask user if they want headings split into lines on spaces
+#   - @graph headString text to indicate container node
 #@-at
 #@-node:ekr.20071004090250.3:<< version history >>
 #@nl
@@ -85,6 +90,57 @@ def init():
 def onCreate (tag,key):
     GraphEd(key['c'])
 #@-node:ekr.20071004090250.10:onCreate
+#@+node:tbrown.20071007201356:class gNode
+class gNode(object):
+    """Simple graph node.  Acts as a dictionary, although not by descent, as
+     it needs to be hashable.
+
+     Special attributes (not in dict):
+       - x x-coord of node in graph
+       - y y-coord of node in graph
+       - title label for node in graph, headString for leo node
+       - body bodText for leo node
+     """
+    #@    @+others
+    #@+node:tbrown.20071007213346:__init__
+    def __init__(self, *args, **kwds):
+        self._dict = {}
+        self.x = self.y = 10
+        self.body = self.label = ""
+        self.attr = {}
+    #@-node:tbrown.20071007213346:__init__
+    #@+node:tbrown.20071007213346.1:readtnode
+    def readtnode(self, tn, splitLabels = True, vnode = None):
+        if splitLabels:
+            self.title = tn.headString.replace(' ', '\n')
+        else:
+            self.title = tn.headString
+        self.body = tn.bodyString
+        self.x = getattr(tn,'unknownAttributes',{}).get('graphed',{}).get('x',0)
+        self.y = getattr(tn,'unknownAttributes',{}).get('graphed',{}).get('y',0)
+        self.attr.update(getattr(tn,'unknownAttributes',{}))
+        self.vnode = vnode
+    #@-node:tbrown.20071007213346.1:readtnode
+    #@+node:tbrown.20071007220740:writetnode
+    def writetnode(self, nd, vnode = None):
+        nd.setHeadString(self.title.replace('\n', ' '))
+        nd.setTnodeText(self.body)
+        if self.attr:
+            if not hasattr(nd,'unknownAttributes'): nd.unknownAttributes = {}
+            nd.unknownAttributes.update(self.attr)
+        if hasattr(self, 'vnode'):
+            if self.vnode != None and vnode != None:
+                if not hasattr(vnode,'unknownAttributes'):
+                    vnode.unknownAttributes = {}
+                vnode.unknownAttributes.update(
+                    getattr(self.vnode, 'unknownAttributes', {}))
+        if self.x != 0 or self.y != 0:
+            if not hasattr(nd,'unknownAttributes'): nd.unknownAttributes = {}
+            nd.unknownAttributes.setdefault('graphed',{}).update(
+                {'x': self.x, 'y': self.y})
+    #@-node:tbrown.20071007220740:writetnode
+    #@-others
+#@-node:tbrown.20071007201356:class gNode
 #@+node:tbrown.20071004135224.1:class tGraph
 class tGraph:
     """Minimalist graph-of-tnodes wrapper"""
@@ -116,24 +172,34 @@ class tGraph:
         self._edges.add((n0, n1))
     #@-node:tbrown.20071004135224.6:addDirectedEdge
     #@+node:tbrown.20071004141737:addGraphFromPosition
-    def addGraphFromPosition(self, p):
+    def addGraphFromPosition(self, p, splitLabels = True):
         """
         *Add* nodes and edges from the position and its descendants.
 
         Need to add all the nodes before trying to resolve edges from @links
         """
 
-        self._addNodesLinks(p)
-        self._addLinks(p)
+        self.splitLabels = splitLabels
+        if '@graph' in p.headString():
+            for p1 in p.children_iter():
+                self._addNodesLinks(p1)
+            for p1 in p.children_iter():
+                self._addLinks(p1)
+        else:
+            self._addNodesLinks(p)
+            self._addLinks(p)
     #@-node:tbrown.20071004141737:addGraphFromPosition
     #@+node:tbrown.20071004152905:createTreeFromGraph
     def createTreeFromGraph(self, p):
-        """Build tree representing graph after p, assuming our nodes are tnodes"""
+        """Build tree representing graph after p, assuming our nodes are gNodes"""
 
         todo = set(self.nodes())
 
         root = p.insertAfter()
-        root.setHeadString('new: graph top level')
+        if '@graph' in p.headString():
+            root.setHeadString(p.headString())
+        else:
+            root.setHeadString('@graph ' + p.headString())
         root.expand()
         pos = root.copy()
 
@@ -174,12 +240,16 @@ class tGraph:
 
             nd = pos.insertAsLastChild()
             nd.expand()
+            nd.setDirty()
             self._setIndex(nd)
-            node2tnode[node0] = str(nd.v.t.fileIndex)                
-            nd.setHeadString(node0.headString)
-            nd.setTnodeText(node0.getBody())
-            if hasattr(node0, 'unknownAttributes'):
-                nd.v.t.unknownAttributes = dict(node0.unknownAttributes)
+            node2tnode[node0] = str(nd.v.t.fileIndex)
+            node0.writetnode(nd.v.t, vnode = nd.v)
+            #X if hasattr(node0, 'vnode'):
+            #X     if node0.vnode != None:
+            #X         if not hasattr(nd.v, 'unknownAttributes'):
+            #X             nd.v.unknownAttributes = {}
+            #X         nd.v.unknownAttributes.update(
+            #X             node0.vnode.get('unknownAttributes', {}))
 
             desc = [i[1] for i in self.edges() if i[0] == node0]
             while desc:
@@ -192,7 +262,7 @@ class tGraph:
                 else:
                     lnk = nd.insertAsLastChild()
                     lnk.setHeadString(
-                        self._formatLink(node2tnode[node1], node1.headString))
+                        self._formatLink(node2tnode[node1], node1.title))
 
         while todo:
             next = nextStart(todo)
@@ -214,28 +284,34 @@ class tGraph:
     def _addNodesLinks(self, p):
         """Add nodes and simple descendent links from p"""
 
-        self.addNode(p.v.t)
-        self._setIndex(p)
-        self._gnxStr2tnode[str(p.v.t.fileIndex)] = p.v.t
+        gn = gNode()
+        gn.readtnode(p.v.t, splitLabels = self.splitLabels, vnode = p.v)
+        self.addNode(gn)
+        self._gnxStr2tnode[str(p.v.t.fileIndex)] = gn
 
         for nd0 in p.children_iter():
             if nd0.headString().startswith('@link'): continue
-            self._addNodesLinks(nd0)
-            self.addDirectedEdge(p.v.t, nd0.v.t)
+            gn1 = self._addNodesLinks(nd0)
+            self.addDirectedEdge(gn, gn1)
+
+        return gn
     #@-node:tbrown.20071004141737.1:_addNodesLinks
     #@+node:tbrown.20071004141737.2:_addLinks
     def _addLinks(self, p):
         """Collect the @links from p, now we know the nodes are in
         self._gnxStr2tnode"""
 
+        s0 = str(p.v.t.fileIndex)
         for nd0 in p.children_iter():
             if nd0.headString().startswith('@link'):
-                s = self._indexStrFromStr(nd0.headString())
+                s1 = self._indexStrFromStr(nd0.headString())
                 try:
-                    tnd = self._gnxStr2tnode[s]
-                    self.addDirectedEdge(p.v.t, tnd)
+                    fnd = self._gnxStr2tnode[s0]
+                    tnd = self._gnxStr2tnode[s1]
+                    self.addDirectedEdge(fnd, tnd)
                 except:  # @link node went stale
                     g.es('Broken %s' % nd0.headString())
+                    raise
             else:
                 self._addLinks(nd0)
     #@-node:tbrown.20071004141737.2:_addLinks
@@ -266,18 +342,29 @@ class tGraphUtil(tGraph):
 
     #@    @+others
     #@+node:tbrown.20071004225829.1:dotStrFromPosition
-    def dotStrFromPosition(self,p):
+    def dotStrFromPosition(self,p, includeXY = True):
         """return complete Graphviz dot format graph text"""
         self.addGraphFromPosition(p)
         node = {}  # gnx to node number map
         nodes = []
         for n,i in enumerate(self.nodes()):
-            node[str(i.fileIndex)]=n
-            nodes.append('n%s [label="%s"]' % (n, i.headString))
+            node[i]=n
+            xy = ""
+            if includeXY:
+                xy += ' pos="%d,%d"' % (i.x, i.y)
+            color = ''
+            try:
+                color = i.vnode.unknownAttributes['annotate']['bg']
+                if color:
+
+                    color = ' style="filled" fillcolor="%s"' % color
+            except:
+                color = ''
+            nodes.append('n%s [label="%s"%s%s]' % (
+                n, i.title.replace('\n', '\\n'), xy, color))
         edges = []
         for f,t in self.edges():
-            edges.append('n%d -> n%d' % (node[str(f.fileIndex)],
-                                         node[str(t.fileIndex)]))
+            edges.append('n%d -> n%d' % (node[f],node[t]))
 
         return 'digraph G {\n%s\n\n%s\n}' % ('\n'.join(nodes), '\n'.join(edges))
     #@-node:tbrown.20071004225829.1:dotStrFromPosition
@@ -471,7 +558,9 @@ class GraphEd:
         self.p = p
 
         tgraph = tGraph()
-        tgraph.addGraphFromPosition(p)
+        splitL = g.app.gui.runAskYesNoDialog(self.c,
+            'Split labels with spaces?') 
+        tgraph.addGraphFromPosition(p, splitLabels = (splitL == 'yes'))
 
         #X # make sure fileIndex is set on everything
         #X for p2 in p.self_and_subtree_iter():
@@ -483,18 +572,30 @@ class GraphEd:
 
         self.tnode2gnode = {}
         self.gnode2attribs = {}
+
+
         self.loadGraph(self.graph, tgraph)
         # self.loadGraphLinks(self.graph, p)
 
         editor = Gred.SAGraphEditor(g.app.root)
         self.editor = editor
         editor.dirty = 0
-        editor.cVertexDefault = '#d8d8ff'
-        editor.cEdgeDefault = '#808080'
+        editor.cVertexDefault = '#e8e8ff'
+        editor.cEdgeDefault = '#a0a0a0'
         editor.cLabelDefault = 'black'
         editor.leoQuit = self.exiting
         editor.master.protocol("WM_DELETE_WINDOW", self.exiting)
+
         editor.ShowGraph(self.graph, "test")
+        for vert in self.graph.Vertices():
+            if hasattr(self.gnode2attribs[vert], 'vnode'):
+                nd = self.gnode2attribs[vert].vnode
+                if hasattr(nd, 'unknownAttributes'):
+                    if 'annotate' in nd.unknownAttributes:
+                        if 'bg' in nd.unknownAttributes['annotate']:
+                            editor.SetVertexColor(vert,
+                                nd.unknownAttributes['annotate']['bg'])
+
         # layout = Embedder.BFSTreeEmbedder()
         # layout.Embed(self.editor)
         # self.editor.grab_set()
@@ -517,18 +618,13 @@ class GraphEd:
 
         for nd in tgraph.nodes():
             vid = graph.AddVertex()
-            self.tnode2gnode[str(nd.fileIndex)] = vid
-            self.gnode2attribs[vid] = {}
-            self.gnode2attribs[vid]['bodyString'] = nd.getBody()
-            graph.SetLabeling(vid, nd.headString)
-            x,y = self.getat(nd,'x'), self.getat(nd,'y')
-            if x == None: x = 0
-            if y == None: y = 0
-            graph.SetEmbedding(vid, x, y)
-
+            self.tnode2gnode[nd] = vid
+            self.gnode2attribs[vid] = nd
+            graph.SetLabeling(vid, nd.title)
+            graph.SetEmbedding(vid, nd.x, nd.y)
         for nd0, nd1 in tgraph.edges():
-            graph.AddEdge(self.tnode2gnode[str(nd0.fileIndex)],
-                          self.tnode2gnode[str(nd1.fileIndex)])
+            graph.AddEdge(self.tnode2gnode[nd0],
+                          self.tnode2gnode[nd1])
     #@-node:ekr.20071004090250.28:loadGraph
     #@+node:ekr.20071004090250.30:exiting
     def exiting(self):
@@ -545,16 +641,6 @@ class GraphEd:
     #@+node:ekr.20071004090250.31:saveGraph
     def saveGraph(self, p, graph):
 
-        class notAtnode(object):
-            """copy just enound of a tnodes signature to fool
-            tGraph.createTreeFromGraph - attribs will be set below"""
-
-            def getBody(self):
-                if hasattr(self, 'bodyString'):
-                    return self.bodyString
-                else:
-                    return ""
-
         def label(i):
              """change undefined (numeric) labels from ints to strs"""
              return str(graph.GetLabeling(i))
@@ -566,30 +652,27 @@ class GraphEd:
             tgraph = tGraph()
             gnode2nottnode = {}
             for node in graph.Vertices():
-                tn = notAtnode()
+                tn = gNode()
                 gnode2nottnode[node] = tn
-                tn.headString = label(node)
-                tn.unknownAttributes = {}
-                tn.unknownAttributes[self.dictName] = {}
+                tn.title = label(node)
                 x = graph.GetEmbedding(node)
-                x,y = x.x,x.y
-                tn.unknownAttributes[self.dictName]['x'] = x
-                tn.unknownAttributes[self.dictName]['y'] = y
-
+                tn.x, tn.y = x.x,x.y
                 if node in self.gnode2attribs:
-                    tn.bodyString = self.gnode2attribs[node]['bodyString']
-                    # FIXME copy uAs too
+                    tn.body = self.gnode2attribs[node].body
+                    tn.vnode = self.gnode2attribs[node].vnode
+                    tn.attr.update(self.gnode2attribs[node].attr)
+
                 tgraph.addNode(tn)
 
             for node0, node1 in graph.Edges():
                 tgraph.addDirectedEdge(gnode2nottnode[node0],gnode2nottnode[node1])
 
+            newp = tgraph.createTreeFromGraph(p)
+
             c.setHeadString(p, 'OLD: ' + p.headString())
             p.setDirty()
             c.selectPosition(p)
             c.contractNode()
-
-            newp = tgraph.createTreeFromGraph(p)
 
             c.selectPosition(newp)
 
