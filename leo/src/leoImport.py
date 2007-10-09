@@ -735,6 +735,8 @@ class baseLeoImportCommands:
 
         if ext in (".c", ".cpp", ".cxx"):
             self.scanCText(s,p,atAuto=atAuto)
+        elif ext == '.c#':
+            self.scanCSharpText(s,p,atAuto=atAuto)
         elif ext == ".el":
             self.scanElispText(s,p,atAuto=atAuto)
         elif ext == ".java":
@@ -2517,6 +2519,39 @@ class baseLeoImportCommands:
             self.sigFailTokens = [';','=']
     #@-node:edreamleo.20070710093042:class cScanner (baseScannerClass)
     #@-node:edreamleo.20070710110114.1:C scanner
+    #@+node:ekr.20071008130845:C# scanner
+    #@+node:ekr.20071008130845.1:scanCSharpText
+    def scanCSharpText (self,s,parent,atAuto=False):
+
+        scanner = self.cSharpScanner(importCommands=self,atAuto=atAuto)
+
+        scanner.run(s,parent)
+    #@-node:ekr.20071008130845.1:scanCSharpText
+    #@+node:ekr.20071008130845.2:class cSharpScanner (baseScannerClass)
+    class cSharpScanner (baseScannerClass):
+
+        def __init__ (self,importCommands,atAuto):
+
+            # Init the base class.
+            importCommands.baseScannerClass.__init__(self,importCommands,
+                atAuto=atAuto,language='c')
+
+            # Set the parser delims.
+            self.blockCommentDelim1 = '/*'
+            self.blockCommentDelim2 = '*/'
+            self.blockDelim1 = '{'
+            self.blockDelim2 = '}'
+            self.classTags = ['class','interface','namespace',]
+            self.extraIdChars = ':'
+            self.functionTags = []
+            self.lineCommentDelim = '//'
+            self.lineCommentDelim2 = None
+            self.outerBlockDelim1 = '{'
+            self.outerBlockDelim2 = '}'
+            self.sigHeadExtraTokens = []
+            self.sigFailTokens = []
+    #@-node:ekr.20071008130845.2:class cSharpScanner (baseScannerClass)
+    #@-node:ekr.20071008130845:C# scanner
     #@+node:ekr.20070711060107:Elisp scanner
     #@+node:ekr.20070711060107.1:scanElispText
     def scanElispText (self,s,parent,atAuto=False):
