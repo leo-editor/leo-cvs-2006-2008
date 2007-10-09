@@ -847,6 +847,28 @@ class colorizer:
         self.enabled=True
     #@nonl
     #@-node:ekr.20070718131458.35:enable & disable
+    #@+node:ekr.20071009093328:isSameColorState
+    def isSameColorState (self):
+
+        # g.trace(g.callers())
+
+        def dumpState(state):
+            flag,language = state
+            return 'flag: %s, %s' % (flag,language)
+
+        if not self.enable:
+            # g.trace('returns False')
+            return False
+
+        state1 = self.flag,self.language
+        language = self.updateSyntaxColorer(self.c.currentPosition()) # Sets self.flag.
+        if language is None: language = self.language
+        state2 = self.flag,language
+
+        equal = state1 == state2
+        # g.trace('=',equal,'state1',dumpState(state1),'state2',dumpState(state2))
+        return equal
+    #@-node:ekr.20071009093328:isSameColorState
     #@+node:ekr.20070718131458.36:interrupt (does nothing)
     # This is needed, even without threads.
 
@@ -902,21 +924,20 @@ class colorizer:
     #@+node:ekr.20070720113510:findMarkAtIndex
     def findMarkAtIndex(self,d,i):
 
-        '''Return the position of a match in d that covers i.
-        Return i if no such match.'''
+        '''Return the higest match that starts strictly before i.
+        Return 0 if no such match.'''
 
         keys = d.keys()
         keys.sort()
+        last_i = 0 
         for key in keys:
             if key >= i:
-                return i
+                break
             else:
-                n = d.get(key)
-                if key + n >= i:
-                    # g.trace('*** found','i',i,'key',key)
-                    return key
-        else:
-            return i
+                last_i = key
+
+        if self.trace: g.trace('*******',last_i)
+        return last_i
     #@-node:ekr.20070720113510:findMarkAtIndex
     #@+node:ekr.20070718131458.42:finishColoring
     def finishColoring (self,done):
@@ -953,7 +974,7 @@ class colorizer:
 
         if self.lock_trace: g.trace('lock off',self.threadCount)
 
-        w.update_idletasks()
+        ### w.update_idletasks()
 
         return done
     #@-node:ekr.20070718131458.42:finishColoring
@@ -1086,7 +1107,6 @@ class colorizer:
 
         if tagList:
             for tag,i,j in tagList:
-                self.start_i = j
                 x1,x2 = w.toGuiIndex(i,s=s), w.toGuiIndex(j,s=s)
                 # A crucial optimization for large body text.
                 # Even so, the color_markup plugin slows down coloring considerably.
@@ -1097,15 +1117,18 @@ class colorizer:
                 else:
                     # g.trace(tag,x1,x2,i,j)
                     w.tag_add(tag,x1,x2)
-        else:
-            self.start_i = self.end_i
+
+        self.start_i = self.end_i
     #@-node:ekr.20070718131458.45:tagAll
     #@+node:ekr.20070718131458.46:threadColorizer
     thread_count = 0
 
     def threadColorizer (self,p,incremental,interruptable):
 
+        if self.trace: g.trace(g.callers())
+
         # Kill the previous thread for this widget.
+        if self.trace: g.trace('incremental',incremental,g.callers())
         t = self.helperThread
         if t and t.isAlive():
             self.killFlag = True
@@ -1113,7 +1136,8 @@ class colorizer:
             t.join()
             if self.trace: g.trace('after join',self.threadCount)
             self.killFlag = False
-            incremental = False # Bug fix: 10/8/07: must recolor **everything**.
+            # This produces bad response for big body text.
+            # incremental = False # recolor **everything**.
         self.helperThread = None
         # Init the ivars *after* ending the previous helper thread.
         self.init(p,incremental,interruptable) # Sets 'p','s','w' and other ivars.
@@ -1275,7 +1299,7 @@ class colorizer:
 
         '''Fully recolor s.'''
 
-        if self.trace: g.trace(self.language,self.threadCount)
+        if self.trace: g.trace(self.language,self.threadCount) #,g.callers())
         i = self.start_i = self.end_i = 0
         self.marksDict = {}
         while i < len(s):
@@ -1306,28 +1330,23 @@ class colorizer:
 
         '''Partially recolor s'''
 
-        if self.trace: g.trace(self.language,self.threadCount)
-        # if self.trace: g.trace('before computeIndices')
-        mid_i,tail_i,delta,all = self.computeIndices()
-        # if self.trace: g.trace('after computeIndices')
-        if all:
-            if self.trace: g.trace('all lines match')
-            return self.fullColor(s)
-        else:
-            d = self.marksDict = self.adjustMarksDict(self.marksDict,mid_i,delta)
-            assert(mid_i == 0 or s[mid_i-1] == '\n')
-            i = self.findMarkAtIndex(d,max(0,mid_i-1))
-            # if mid_i-1 != i: g.trace('backtrack',repr(s[i:mid_i]))
 
+        mid_i,tail_i,delta,all = self.computeIndices()
+        if all:
+            if self.trace: g.trace('*** all lines match: recolor all')
+            return self.fullColor(s)
+
+        d = self.marksDict = self.adjustMarksDict(self.marksDict,mid_i,delta)
+        assert(mid_i == 0 or s[mid_i-1] == '\n')
+        i = self.findMarkAtIndex(d,max(0,mid_i-1))
         self.start_i = self.self_end_i = i
-        # g.trace('start_i',self.start_i)
+        # if mid_i-1 != i: g.trace('backtrack',repr(s[i:mid_i]))
+
         # Create a list of (i,n) pairs from marksDict.
-        if self.trace: g.trace('marks',self.threadCount)
         d = self.marksDict ; keys = d.keys() ; keys.sort()
         endList = [(z,d.get(z)) for z in keys if z + d.get(z) >= tail_i]
-        endList_i = 0
         self.marksDict = {}
-        if self.trace: g.trace('loop',self.threadCount)
+        if self.trace: g.trace(self.language,'thread',self.threadCount,'i',i)
         while i < len(s):
             progress = i
             if self.killFlag:
@@ -1343,31 +1362,34 @@ class colorizer:
                     i += n ; break
             else:
                 i += 1
-                if 0: # This is too buggy at present.
-                    if i > tail_i:
-                        #@                    << finish if no item in endList covers i >>
-                        #@+node:ekr.20070720141852:<< finish if no item in endList covers i >>
-                        while endList_i < len(endList):
-                            i2, n2 = endList[endList_i]
-                            if i2 + n2 < i:
-                                endList_i += 1
-                            elif i2 < i and i2 + n2 > i:
-                                done = False ; break
-                            else:
-                                done = True ; break
+            if i > tail_i:
+                #@            << finish if no item in endList covers i >>
+                #@+node:ekr.20070720141852:<< finish if no item in endList covers i >>
+                done = False ; n = 0 # count of elements to be removed.
+                for z in endList:
+                    i2,n2 = z
+                    if i2 <= i:
+                        if i2 + n2 < i:
+                            n += 1 # strictly before i. Remove it below.
                         else:
-                            done = True ; break
+                            break # covers i.  Not done.
+                    else: # i2 > i:
+                        done = True
+                    if done: # Add trailing items in endList to the marksDict.
+                        self.marksDict[i2] = n2
+                else:
+                    done = True
 
-                        if done:
-                            # g.trace('*** found end: %s' % repr(s[i:i+20]))
-
-                            # Add all items in endList to the marksDict.
-                            for z in endList[endList_i:]:
-                                i2, n2 = z
-                                self.marksDict[i2] = n2
-                            break
-                        #@-node:ekr.20070720141852:<< finish if no item in endList covers i >>
-                        #@nl
+                if done:
+                    if self.trace: g.trace('*** found end: i: %d %s' % (i,repr(s[i:i+20])))
+                    break
+                else:
+                    # Delete n entries from the front of endList.
+                    if n > 0:
+                        endList = endList[n:]
+                #@nonl
+                #@-node:ekr.20070720141852:<< finish if no item in endList covers i >>
+                #@nl
             assert progress < i
         self.end_i = i
         self.old_s = self.s
@@ -1377,7 +1399,7 @@ class colorizer:
     def target(self,*args,**keys):
 
         s = keys.get('s')
-        if self.trace: g.trace(self.threadCount)
+        # if self.trace: g.trace(self.threadCount)
 
         try:
             if self.incremental:
