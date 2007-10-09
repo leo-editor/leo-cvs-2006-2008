@@ -26,27 +26,6 @@
 # leoGlobals.py:4015: No module attribute (CODESET) found
 # leoGlobals.py:4693: No module attribute (mtime) found
 
-# Fixed...
-# leoAtFile.py:2999: Parameter (force) not used
-# c:\prog\tigris-cvs\leo\src\leoAtFile.py:26: Imported module (leoColor) not used
-# leoImport.py:14: Imported module (parser) not used
-# leoImport.py:15: Imported module (re) not used
-# leoImport.py:17: Imported module (tabnanny) not used
-# leoImport.py:18: Imported module (tokenize) not used
-# leoImport.py:787: Parameter (toString) not used
-# leoImport.py:2913: Parameter (atAuto) not used
-# leoImport.py:2886: Parameter (ext) not used
-# leoImport.py:2886: Parameter (fileName) not used
-# leoImport.py:2889: Parameter (ext) not used
-# leoImport.py:2892: Parameter (ext) not used
-# leoImport.py:2895: Parameter (ext) not used
-# leoImport.py:2898: Parameter (ext) not used
-# leoImport.py:2901: Parameter (ext) not used
-# leoImport.py:2904: Parameter (ext) not used
-# leoImport.py:2907: Parameter (ext) not used
-# leoImport.py:2910: Parameter (ext) not used
-
-
 #@-node:ekr.20070809131638:Pychecker report
 #@+node:ekr.20070930102228:( jyLeo )
 #@+node:ekr.20071008000135:Debugging in jython
@@ -18515,6 +18494,8 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
 
     if ext in (".c", ".cpp", ".cxx"):
         self.scanCText(s,p,atAuto=atAuto)
+    elif ext == '.c#':
+        self.scanCSharpText(s,p,atAuto=atAuto)
     elif ext == ".el":
         self.scanElispText(s,p,atAuto=atAuto)
     elif ext == ".java":
@@ -18716,6 +18697,8 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
 
     if ext in (".c", ".cpp", ".cxx"):
         self.scanCText(s,p,atAuto=atAuto)
+    elif ext == '.c#':
+        self.scanCSharpText(s,p,atAuto=atAuto)
     elif ext == ".el":
         self.scanElispText(s,p,atAuto=atAuto)
     elif ext == ".java":
@@ -20423,6 +20406,8 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
 
     if ext in (".c", ".cpp", ".cxx"):
         self.scanCText(s,p,atAuto=atAuto)
+    elif ext == '.c#':
+        self.scanCSharpText(s,p,atAuto=atAuto)
     elif ext == ".el":
         self.scanElispText(s,p,atAuto=atAuto)
     elif ext == ".java":
@@ -22444,6 +22429,8 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
 
     if ext in (".c", ".cpp", ".cxx"):
         self.scanCText(s,p,atAuto=atAuto)
+    elif ext == '.c#':
+        self.scanCSharpText(s,p,atAuto=atAuto)
     elif ext == ".el":
         self.scanElispText(s,p,atAuto=atAuto)
     elif ext == ".java":
@@ -29181,6 +29168,117 @@ def yankPop (self,event):
 
 #@-node:ekr.20050930091642.2:yankPop
 #@-node:ekr.20071003123335:Improved yank and yank-pop commands
+#@+node:ekr.20071009104339:Disabled unnecessary recolors
+#@+node:ekr.20070423101911:treeSelectHelper
+#  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
+
+def treeSelectHelper (self,p,updateBeadList,scroll):
+
+    c = self.c ; frame = c.frame
+    body = w = frame.bodyCtrl
+    old_p = c.currentPosition()
+
+    if not p:
+        # Bug fix: 5/31/07: do *not* test c.positionExists(p) here.
+        # We may be in the process of changing roots.
+        return None # Not an error.
+
+    # g.trace('      ===',id(w),p and p.headString())
+    if self.trace_select and not g.app.unitTesting: g.trace('tree',g.callers())
+
+    if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
+        if old_p:
+            << unselect the old node >>
+
+    g.doHook("unselect2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+
+    if not g.doHook("select1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
+        << select the new node >>
+        if p and p != old_p: # Suppress duplicate call.
+            try: # may fail during initialization.
+                # p is NOT c.currentPosition() here!
+                if 0: # Interferes with new colorizer.
+                    self.canvas.update_idletasks()
+                    self.scrollTo(p)
+                if scroll and g.app.gui.guiName() == 'tkinter':
+                    def scrollCallback(self=self,p=p):
+                        self.scrollTo(p)
+                    self.canvas.after(100,scrollCallback)
+            except Exception: pass
+        c.nodeHistory.update(p,updateBeadList) # Remember this position.
+    c.setCurrentPosition(p)
+    << set the current node >>
+    c.frame.body.assignPositionToEditor(p) # New in Leo 4.4.1.
+    c.frame.updateStatusLine() # New in Leo 4.4.1.
+
+    g.doHook("select2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+    g.doHook("select3",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+
+    return 'break' # Supresses unwanted selection.
+#@+node:ekr.20040803072955.129:<< unselect the old node >>
+# Remember the position of the scrollbar before making any changes.
+if not body: g.trace('no body!','c.frame',c.frame,'old_p',old_p)
+
+yview = body.getYScrollPosition()
+insertSpot = c.frame.body.getInsertPoint()
+
+if old_p != p:
+    self.endEditLabel() # sets editPosition = None
+    self.setUnselectedLabelState(old_p) # 12/17/04
+
+if c.edit_widget(old_p):
+    old_p.v.t.scrollBarSpot = yview
+    old_p.v.t.insertSpot = insertSpot
+#@-node:ekr.20040803072955.129:<< unselect the old node >>
+#@+node:ekr.20040803072955.130:<< select the new node >>
+# Bug fix: we must always set this, even if we never edit the node.
+self.revertHeadline = p.headString()
+frame.setWrap(p)
+
+# Always do this.  Otherwise there can be problems with trailing newlines.
+
+s = g.toUnicode(p.v.t.bodyString,"utf-8")
+old_s = w.getAllText()
+
+if True and p and p == old_p and c.frame.body.colorizer.isSameColorState() and s == old_s:
+    pass
+else:
+    # This destroys all color tags, so do a full recolor.
+    w.setAllText(s)
+    self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
+
+if p.v and p.v.t.scrollBarSpot != None:
+    first,last = p.v.t.scrollBarSpot
+    w.setYScrollPosition(first)
+
+if p.v and p.v.t.insertSpot != None:
+    spot = p.v.t.insertSpot
+    w.setInsertPoint(spot)
+    w.see(spot)
+else:
+    w.setInsertPoint(0)
+
+# g.trace("select:",p.headString())
+#@-node:ekr.20040803072955.130:<< select the new node >>
+#@+node:ekr.20040803072955.133:<< set the current node >>
+self.setSelectedLabelState(p)
+
+frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
+
+if self.use_chapters:
+    cc = c.chapterController
+    theChapter = cc.getSelectedChapter()
+    if theChapter:
+        theChapter.p = p.copy()
+        # g.trace('tkTree',theChapter.name,'v',id(p.v),p.headString())
+
+if self.stayInTree:
+    c.treeWantsFocus()
+else:
+    c.bodyWantsFocus()
+#@-node:ekr.20040803072955.133:<< set the current node >>
+#@-node:ekr.20070423101911:treeSelectHelper
+#@-node:ekr.20071009104339:Disabled unnecessary recolors
 #@-node:ekr.20070920083033.1:Features
 #@-node:ekr.20070919132518:4.4.4 b3
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
