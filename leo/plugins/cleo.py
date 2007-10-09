@@ -468,6 +468,19 @@ class cleoController:
         self.c.redraw()
     #@nonl
     #@-node:tbrown.20060903121429.25:remove_colours
+    #@+node:tbrown.20071008150126:subtree_colours
+    def subtree_colours(self,v):
+
+        fg = self.getat(v, 'fg')
+        bg = self.getat(v, 'bg')
+        child = v.firstChild()
+        while child:
+            self.setat(child, 'fg', fg)
+            self.setat(child, 'bg', bg)
+            self.subtree_colours(child)
+            child = child.next()
+        self.c.redraw()
+    #@-node:tbrown.20071008150126:subtree_colours
     #@+node:tbrown.20060912130940:add_colour
     def add_colour(self):
 
@@ -888,16 +901,20 @@ class cleoController:
 
         def cleoColorsMenuCallback():
             self.remove_colours(p.v)
+        def cleoColorsMenuSubtree():
+            self.subtree_colours(p.v)
 
         parent.add_command(label='Remove Colouring', underline=0,
             command=cleoColorsMenuCallback)
+
+        parent.add_command(label='Colour subtree', underline=0,
+            command=cleoColorsMenuSubtree)
 
         def cleoAddColorsMenuCallback():
             self.add_colour()
 
         parent.add_command(label='New Colour', underline=0,
             command=cleoAddColorsMenuCallback)
-    #@nonl
     #@-node:tbrown.20060903121429.50:colours_menu
     #@+node:tbrown.20060903121429.51:node menu
     def nodes_menu(self,parent,p):
