@@ -182,6 +182,7 @@ class SAGraphEditor(GraphEditor, Frame):
         # using the native drawing environment (TkAqua)
         self.windowingsystem = self.tk.call("tk", "windowingsystem")
         self.G = None
+        self.graphName = ''
         self.pack() 
         self.pack(expand=1,fill=BOTH) # Makes whole window resizeable
         self.makeMenuBar()
