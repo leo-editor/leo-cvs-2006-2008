@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.665511265165">
-	<global_window_position top="17" left="238" height="700" width="958"/>
+	<global_window_position top="83" left="243" height="660" width="958"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -84,8 +84,8 @@
 </v>
 </v>
 <v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
-<v t="ekr.20070926132045" a="E"><vh>Buttons</vh>
-<v t="ekr.20070926082407" a="E"><vh>@buttons</vh>
+<v t="ekr.20070926132045"><vh>Buttons</vh>
+<v t="ekr.20070926082407"><vh>@buttons</vh>
 <v t="ekr.20070926082256.1"><vh>@button Beautify</vh></v>
 <v t="ekr.20071009135515"><vh>@button rst3</vh></v>
 </v>
@@ -1048,6 +1048,10 @@
 <v t="ekr.20070925144534.425"><vh>@item -</vh></v>
 <v t="ekr.20070925144534.426"><vh>@item *pri&amp;nt-bindings</vh></v>
 <v t="ekr.20070925144534.427"><vh>@item *print-c&amp;ommands</vh></v>
+</v>
+<v t="ekr.20071010123015"><vh>@@menu 文件</vh>
+<v t="ekr.20071010123015.1"><vh>@item new</vh></v>
+<v t="ekr.20071010123223.1"><vh>@item open-outline</vh></v>
 </v>
 </v>
 </v>
@@ -8380,5 +8384,8 @@ else:
     else:
         # Ask to be removed.
         g.app.scriptDict['removeMe'] = True</t>
+<t tx="ekr.20071010123015">文件</t>
+<t tx="ekr.20071010123015.1">新建</t>
+<t tx="ekr.20071010123223.1">打开</t>
 </tnodes>
 </leo_file>
