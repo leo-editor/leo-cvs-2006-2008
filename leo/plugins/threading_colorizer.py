@@ -850,6 +850,8 @@ class colorizer:
     #@+node:ekr.20071009093328:isSameColorState
     def isSameColorState (self):
 
+        return False
+
         # g.trace(g.callers())
 
         def dumpState(state):
