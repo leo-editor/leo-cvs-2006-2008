@@ -1506,6 +1506,8 @@ class baseLeoImportCommands:
             )
 
             s1,s2 = self.file_s, at.stringOutput
+            s1 = s1.replace('\r','')
+            s2 = s2.replace('\r','')
             if s1 == s2: return True
 
             lines1 = g.splitLines(s1) ; n1 = len(lines1)
