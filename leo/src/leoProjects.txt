@@ -51,6 +51,7 @@ def trace (*args,**keys):
         else:
             s = arg
     message = s
+
     try: # get the function name from the call stack.
         f1 = sys._getframe(1) # The stack frame, one level up.
         code1 = f1.f_code # The code object
@@ -66,6 +67,8 @@ def trace (*args,**keys):
         pad = ' ' * (abs(align) - len(name))
         if align > 0: name = name + pad
         else:         name = pad + name
+
+    message = g.toEncodedString(message,'ascii') # Bug fix: 10/10/07.
 
     if newline:
         print name + ": " + message
@@ -20978,6 +20981,7 @@ def __init__ (self,importCommands,atAuto,language):
 
     self.atAuto = atAuto
     self.c = c = ic.c
+    self.classId = None # The identifier containing the class tag: 'class', 'interface', 'namespace', etc.
     self.codeEnd = None
         # The character after the last character of the class, method or function.
         # An error will be given if this is not a newline.
@@ -20996,7 +21000,7 @@ def __init__ (self,importCommands,atAuto,language):
     self.root = None # The top-level node of the generated tree.
     self.rootLine = ic.rootLine # '' or @root + self.fileName
     self.sigEnd = None # The index of the end of the signature.
-    self.sigID = None # The identifier contained in the signature, i.e., the function or method name.
+    self.sigId = None # The identifier contained in the signature, i.e., the function or method name.
     self.sigStart = None
         # The start of the line containing the signature.
         # An error will be given if something other than whitespace precedes the signature.
@@ -21312,11 +21316,13 @@ def putClass (self,s,sigStart,sigEnd,codeEnd,start,parent):
     '''Creates a child node c of parent for the class, and children of c for each def in the class.'''
 
     prefix = self.createClassNodePrefix()
-    if not self.sigID:
-        g.trace('Can not happen: no sigID')
-        sigID = 'Unknown class name'
-    class_name = self.sigID
-    headline = 'class ' + class_name
+    if not self.sigId:
+        g.trace('Can not happen: no sigId')
+        sigId = 'Unknown class name'
+    class_kind = self.classId
+    class_name = self.sigId
+    # headline = 'class ' + class_name
+    headline = '%s %s' % (class_kind,class_name)
     body = s[start:sigEnd]
     body = self.undentBody(body)
     i = self.extendSignature(s,sigEnd)
@@ -21371,7 +21377,7 @@ def putClassHelper(self,s,i,end,class_name,class_node):
     Parse s for inner methods and classes, and create nodes.'''
 
     # Put any leading decls in the class node.
-    trace = False
+    trace = False or self.trace
     start = i
     i = self.skipDecls(s,i,end)
     decls = s[start:i]
@@ -21391,19 +21397,23 @@ def putClassHelper(self,s,i,end,class_name,class_node):
             i = self.skipComment(s,i)
         elif self.startsString(s,i):
             i = self.skipString(s,i)
-        elif g.match(s,i,self.outerBlockDelim1):
-            i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
         elif self.startsClass(s,i):  # Sets sigStart,sigEnd & codeEnd ivars.
             putRef = True
             end2 = self.codeEnd # putClass may change codeEnd ivar.
+            saveIndent = self.startSigIndent # Bug fix: 10/10/07
             self.putClass(s,self.sigStart,self.sigEnd,self.codeEnd,start,class_node)
+            self.startSigIndent = saveIndent
             i = start = end2
         elif self.startsFunction(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
             putRef = True
+            saveIndent = self.startSigIndent # Bug fix: 10/10/07
             self.putFunction(s,self.sigStart,self.codeEnd,start,class_node)
+            self.startSigIndent = saveIndent
             i = start = self.codeEnd
         elif self.startsId(s,i):
             i = self.skipId(s,i);
+        elif g.match(s,i,self.outerBlockDelim1): # Bug fix: do this after testing for classes.
+            i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
         else: i += 1
         assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
 
@@ -21412,7 +21422,7 @@ def putClassHelper(self,s,i,end,class_name,class_node):
 
     if start < end:
         trailing = s[start:end]
-        if trace or self.trace: g.trace('trailing\n%s' % trailing)
+        if trace: g.trace('trailing\n%s' % trailing)
         self.appendTextToClassNode(class_node,trailing)
 #@-node:ekr.20070707171329:putClassHelper
 #@-node:ekr.20070707113832.1:putClass & helpers
@@ -21421,10 +21431,10 @@ def putFunction (self,s,sigStart,codeEnd,start,parent):
 
     '''Create a node of parent for a function defintion.'''
 
-    if self.sigID:
-        headline = self.sigID
+    if self.sigId:
+        headline = self.sigId
     else:
-        g.trace('Can not happen: no sigID')
+        g.trace('Can not happen: no sigId')
         headline = 'unknown function'
 
     body1 = self.undentBody(s[start:sigStart],ignoreComments=False)
@@ -21438,7 +21448,7 @@ def putFunction (self,s,sigStart,codeEnd,start,parent):
     if not body.endswith('\n'):
         self.error(
             'function %s does not end with a newline; one will be added\n%s' % (
-                self.sigID,g.get_line(s,codeEnd)))
+                self.sigId,g.get_line(s,codeEnd)))
         g.trace(g.callers())
 
     self.createFunctionNode(headline,body,parent)
@@ -21598,7 +21608,7 @@ def skipBlock(self,s,i,delim1=None,delim2=None):
         if g.is_nl(s,i):
             backslashNewline = i > 0 and g.match(s,i-1,'\\\n')
             i = g.skip_nl(s,i)
-            if not backslashNewline:
+            if not backslashNewline and not g.is_nl(s,i):
                 j, indent = g.skip_leading_ws_with_indent(s,i,self.tab_width)
                 line = g.get_line(s,j)
                 if trace: g.trace('indent',indent,line)
@@ -21684,7 +21694,7 @@ def skipDecls (self,s,i,end):
 
     '''Skip everything until the start of the next class or function.'''
 
-    trace = False
+    trace = False or self.trace
     start = i ; prefix = None
     while i < end:
         progress = i
@@ -21696,12 +21706,9 @@ def skipDecls (self,s,i,end):
         elif self.startsString(s,i):
             i = self.skipString(s,i)
             prefix = None
-        elif g.match(s,i,self.outerBlockDelim1):
-            i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
-            prefix = None
         elif self.startsClass(s,i,quick=True):
             # Important: do not include leading ws in the decls.
-            i = self.adjustClassOrFunctionStart(s,i,'class')
+            i = self.adjustClassOrFunctionStart(s,i,self.classId) # 'class')
             break
         elif self.startsFunction(s,i,quick=True):
             # Important: do not include leading ws in the decls.
@@ -21710,6 +21717,10 @@ def skipDecls (self,s,i,end):
         elif self.startsId(s,i):
             i = self.skipId(s,i)
             prefix = None
+        # Bug fix: don't skip outer blocks: they may contain classes.
+        # elif g.match(s,i,self.outerBlockDelim1):
+            # i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+            # prefix = None
         else:
             i += 1 ;  prefix = None
         assert(progress < i)
@@ -21732,13 +21743,17 @@ def adjustClassOrFunctionStart(self,s,i,tag):
     '''
 
     j = g.find_line_start(s,i)
-    if s[j:i].strip():
-        self.error(
-            '%s %s does not start a line. Leo must insert a newline\n%s' % (
-                tag,self.sigID,g.get_line(s,j)))
-        return i
-    else:
-        return j
+    return j
+
+
+
+    # if s[j:i].strip():
+        # self.error(
+            # '%s %s does not start a line. Leo must insert a newline\n%s' % (
+                # tag,self.sigId,g.get_line(s,j)))
+        # return i
+    # else:
+        # return j
 #@-node:ekr.20070709084313:adjustClassOrFunctionStart
 #@-node:ekr.20070707080042:skipDecls & helper
 #@+node:ekr.20070707094858.1:skipId
@@ -21767,7 +21782,7 @@ def skipNewline(self,s,i,kind):
     else:
         self.error(
             '%s %s does not end in a newline; one will be added\n%s' % (
-                kind,self.sigID,g.get_line(s,i)))
+                kind,self.sigId,g.get_line(s,i)))
         # g.trace(g.callers())
 
     return i
@@ -21790,22 +21805,23 @@ def skipString (self,s,i):
 
 def startsClass (self,s,i,quick=False):
     '''Return True if s[i:] starts a class definition.
-    Sets sigStart, sigEnd, sigID and codeEnd ivars.'''
+    Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
     i = self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
     return i
 
 def startsFunction (self,s,i,quick=False):
     '''Return True if s[i:] starts a function.
-    Sets sigStart, sigEnd, sigID and codeEnd ivars.'''
+    Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
     i = self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
     return i
 #@+node:ekr.20070712112008:startsHelper
 def startsHelper(self,s,i,kind,quick,tags):
     '''return True if s[i:] starts a class or function.
-    Sets sigStart, sigEnd, sigID and codeEnd ivars.'''
+    Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
 
-    trace = False
-    self.codeEnd = self.sigEnd = self.sigID = None
+    trace = False or self.trace
+    verbose = False
+    self.codeEnd = self.sigEnd = self.sigId = None
     self.sigStart = i
 
     # Underindented lines can happen in any language, not just Python.
@@ -21816,47 +21832,46 @@ def startsHelper(self,s,i,kind,quick,tags):
     # Get the tag that starts the class or function.
     j = g.skip_ws_and_nl(s,i)
     i = self.skipId(s,j)
-    self.sigID = theId = s[j:i] # Set sigId ivar 'early' for error messages.
+    self.sigId = theId = s[j:i] # Set sigId ivar 'early' for error messages.
     if not theId: return False
     if tags:
         if theId not in tags:
             return False
-        if trace: g.trace('tags',tags,'theId',theId)
         if quick: return True
 
-    if trace: g.trace('kind',kind,'id',theId,g.callers())
+    if trace and verbose: g.trace('kind',kind,'id',theId)
 
     # Get the class/function id.
-    i, ids = self.skipSigStart(s,j,tags) # Rescan the first id.
+    i, ids, classId = self.skipSigStart(s,j,tags) # Rescan the first id.
     i, sigId = self.skipSigId(s,i,ids)
     if not sigId:
-        if trace: g.trace('no sigId',g.get_line(s,i))
+        if trace and verbose: g.trace('no sigId',g.get_line(s,i))
         return False
 
     # Skip the argument list.
     i, ok = self.skipArgs(s,i,kind)
     if not ok:
-        if trace: g.trace('no args',g.get_line(s,i))
+        if trace and verbose: g.trace('no args',g.get_line(s,i))
         return False
     i = g.skip_ws_and_nl(s,i)
 
     # Skip the tail of the signature
     i, ok = self.skipSigTail(s,i)
     if not ok:
-        if trace: g.trace('no tail',g.get_line(s,i))
+        if trace and verbose: g.trace('no tail',g.get_line(s,i))
         return False
     sigEnd = i
 
     # A trick: make sure the signature ends in a newline,
     # even if it overlaps the start of the block.
     if not g.match(s,sigEnd,'\n') and not g.match(s,sigEnd-1,'\n'):
-        if trace: g.trace('extending sigEnd')
+        if trace and verbose: g.trace('extending sigEnd')
         sigEnd = g.skip_line(s,sigEnd)
 
     if self.blockDelim1:
         i = g.skip_ws_and_nl(s,i)
         if not g.match(s,i,self.blockDelim1):
-            if trace: g.trace('no block',g.get_line(s,i))
+            if trace and verbose: g.trace('no block',g.get_line(s,i))
             return False
 
     i,ok = self.skipCodeBlock(s,i,kind)
@@ -21866,7 +21881,8 @@ def startsHelper(self,s,i,kind,quick,tags):
     # Success: set the ivars.
     self.codeEnd = i
     self.sigEnd = sigEnd
-    self.sigID = sigId
+    self.sigId = sigId
+    self.classId = classId
 
     # Note: backing up here is safe because
     # we won't back up past scan's 'start' point.
@@ -21876,11 +21892,16 @@ def startsHelper(self,s,i,kind,quick,tags):
         self.sigStart = g.find_line_start(s,k)
 
     # Isue this warning only if we have a real class or function.
-    if s[self.sigStart:k].strip():
-        self.error('%s definition does not start a line\n%s' % (
-            kind,g.get_line(s,k)))
+    if 0: ### wrong.
+        if s[self.sigStart:k].strip():
+            self.error('%s definition does not start a line\n%s' % (
+                kind,g.get_line(s,k)))
 
-    if trace or self.trace: g.trace(kind,'returns\n'+s[self.sigStart:i])
+    if trace:
+        if 1:
+            g.trace(kind,'returns\n'+s[self.sigStart:i])
+        else:
+            g.trace(kind,'returns s[sigStart:i] = [%d:%d]' % (self.sigStart,i))
     return True
 #@-node:ekr.20070712112008:startsHelper
 #@+node:ekr.20070711140703:skipSigStart
@@ -21892,10 +21913,10 @@ def skipSigStart (self,s,i,tags):
 
     Return (i,ids) where ids is list of all ids found, in order.'''
 
-    __pychecker__ = '--no-argsused' # tags not used in the base class.
+    # __pychecker__ = '--no-argsused' # tags not used in the base class.
 
-    trace = False
-    ids = []
+    trace = False or self.trace
+    ids = [] ; classId = None
     start = i
     while i < len(s):
         j = g.skip_ws_and_nl(s,i)
@@ -21909,10 +21930,11 @@ def skipSigStart (self,s,i,tags):
         else:
             i = self.skipId(s,j)
             theId = s[j:i]
+            if theId and theId in tags: classId = theId
             if theId: ids.append(theId)
             else: break
 
-    return i, ids
+    return i, ids, classId
 #@-node:ekr.20070711140703:skipSigStart
 #@+node:ekr.20070711134534:skipSigId
 def skipSigId (self,s,i,ids):
@@ -21928,7 +21950,7 @@ def skipSigTail(self,s,i):
 
     '''Skip from the end of the arg list to the start of the block.'''
 
-    trace = False
+    trace = False or self.trace
     start = i
     i = g.skip_ws(s,i)
     for z in self.sigFailTokens:
@@ -25943,6 +25965,56 @@ if g.unitTesting:
 #@-node:ekr.20070816103348:@test checkTriailWrite
 #@-node:ekr.20070703122141.104:checkTrialWrite & tests
 #@-node:ekr.20071009083345:Regularize newlines in @auto compare
+#@+node:ekr.20071010134833:Fixed unicode bug in trace
+# This should have been done long ago.
+#@nonl
+#@+node:ekr.20031218072017.2317:trace
+# Convert all args to strings.
+
+def trace (*args,**keys):
+
+    #callers = keys.get("callers",False)
+    newline = keys.get("newline",True)
+    align =   keys.get("align",0)
+
+    s = ""
+    for arg in args:
+        if type(arg) == type(u""):
+            pass
+            # try:    arg = str(arg) 
+            # except: arg = repr(arg)
+        elif type(arg) != type(""):
+            arg = repr(arg)
+        if len(s) > 0:
+            s = s + " " + arg
+        else:
+            s = arg
+    message = s
+
+    try: # get the function name from the call stack.
+        f1 = sys._getframe(1) # The stack frame, one level up.
+        code1 = f1.f_code # The code object
+        name = code1.co_name # The code name
+    except: name = ''
+    if name == "?":
+        name = "<unknown>"
+
+    # if callers:
+        # traceback.print_stack()
+
+    if align != 0 and len(name) < abs(align):
+        pad = ' ' * (abs(align) - len(name))
+        if align > 0: name = name + pad
+        else:         name = pad + name
+
+    message = g.toEncodedString(message,'ascii') # Bug fix: 10/10/07.
+
+    if newline:
+        print name + ": " + message
+    else:
+        print name + ": " + message,
+#@-node:ekr.20031218072017.2317:trace
+#@-node:ekr.20071010134833:Fixed unicode bug in trace
 #@-node:ekr.20070920083033:Bugs
 #@+node:ekr.20070920083033.1:Features
 #@+node:ekr.20070919124912:Added button-font params
@@ -27384,7 +27456,7 @@ def createMenuEntries (self,menu,table,dynamicMenu=False):
             command=masterMenuCallback,
             underline=amp_index)
 #@+node:ekr.20051021091958:<< get label & command or continue >>
-if type(data) == type(''):
+if type(data) in (type(''),type(u'')): # Bug fix: 10/10/07: Allow unicode labels.
     # New in Leo 4.4.2: Can use the same string for both the label and the command string.
     ok = True
     s = data
@@ -28524,6 +28596,7 @@ def createMenuFromConfigList (self,parentName,aList,level=0):
     for z in aList:
         kind,val,val2 = z
         if kind.startswith('@menu'):
+            # Menu names can be unicode without any problem.
             name = kind[5:].strip()
             if table:
                 self.createMenuEntries(parentMenu,table)
@@ -28532,15 +28605,18 @@ def createMenuFromConfigList (self,parentName,aList,level=0):
                 self.createNewMenu(name,parentName) # Create submenu of parent menu.
                 self.createMenuFromConfigList(name,val,level+1)
         elif kind == '@item':
-            # The menu methods require non-unicode strings.
-            name = str(val) 
-            if val2: table.append((str(val2),name),)
-            else: table.append(name)
+            name = str(val) # Item names must always be ascii.
+            if val2:
+                # Translated names can be unicode.
+                table.append((val2,name),)
+            else:
+                table.append(name)
         else:
             g.trace('can not happen: bad kind:',kind)
 
     if table:
         self.createMenuEntries(parentMenu,table)
+#@nonl
 #@-node:ekr.20070927082205:createMenuFromConfigList
 #@+node:ekr.20070927172712:handleSpecialMenus
 def handleSpecialMenus (self,name,parentName):
@@ -28589,6 +28665,7 @@ def createMenuFromConfigList (self,parentName,aList,level=0):
     for z in aList:
         kind,val,val2 = z
         if kind.startswith('@menu'):
+            # Menu names can be unicode without any problem.
             name = kind[5:].strip()
             if table:
                 self.createMenuEntries(parentMenu,table)
@@ -28597,15 +28674,18 @@ def createMenuFromConfigList (self,parentName,aList,level=0):
                 self.createNewMenu(name,parentName) # Create submenu of parent menu.
                 self.createMenuFromConfigList(name,val,level+1)
         elif kind == '@item':
-            # The menu methods require non-unicode strings.
-            name = str(val) 
-            if val2: table.append((str(val2),name),)
-            else: table.append(name)
+            name = str(val) # Item names must always be ascii.
+            if val2:
+                # Translated names can be unicode.
+                table.append((val2,name),)
+            else:
+                table.append(name)
         else:
             g.trace('can not happen: bad kind:',kind)
 
     if table:
         self.createMenuEntries(parentMenu,table)
+#@nonl
 #@-node:ekr.20070927082205:createMenuFromConfigList
 #@+node:ekr.20070927172712:handleSpecialMenus
 def handleSpecialMenus (self,name,parentName):
@@ -29448,6 +29528,214 @@ else:
 Suppressed doc-part-delims when show_doc_parts_as_paragraphs is True
 #@nonl
 #@-node:ekr.20071009145420:Improved (I hope) the rst3 plugin
+#@+node:ekr.20071010113431:Allow chinese characters work in @menus trees
+#@+node:ekr.20070927082205:createMenuFromConfigList
+def createMenuFromConfigList (self,parentName,aList,level=0):
+
+    table = [] ; parentMenu = self.getMenu(parentName)
+
+    for z in aList:
+        kind,val,val2 = z
+        if kind.startswith('@menu'):
+            # Menu names can be unicode without any problem.
+            name = kind[5:].strip()
+            if table:
+                self.createMenuEntries(parentMenu,table)
+                table = []
+            if not self.handleSpecialMenus(name,parentName):
+                self.createNewMenu(name,parentName) # Create submenu of parent menu.
+                self.createMenuFromConfigList(name,val,level+1)
+        elif kind == '@item':
+            name = str(val) # Item names must always be ascii.
+            if val2:
+                # Translated names can be unicode.
+                table.append((val2,name),)
+            else:
+                table.append(name)
+        else:
+            g.trace('can not happen: bad kind:',kind)
+
+    if table:
+        self.createMenuEntries(parentMenu,table)
+#@nonl
+#@-node:ekr.20070927082205:createMenuFromConfigList
+#@+node:ekr.20031218072017.3782:get/setRealMenuName & setRealMenuNamesFromTable
+# Returns the translation of a menu name or an item name.
+
+def getRealMenuName (self,menuName):
+
+    cmn = self.canonicalizeTranslatedMenuName(menuName)
+    return g.app.realMenuNameDict.get(cmn,menuName)
+
+def setRealMenuName (self,untrans,trans):
+
+    cmn = self.canonicalizeTranslatedMenuName(untrans)
+    g.app.realMenuNameDict[cmn] = trans
+
+def setRealMenuNamesFromTable (self,table):
+
+    try:
+        for untrans,trans in table:
+            self.setRealMenuName(untrans,trans)
+    except:
+        g.es("exception in setRealMenuNamesFromTable")
+        g.es_exception()
+#@-node:ekr.20031218072017.3782:get/setRealMenuName & setRealMenuNamesFromTable
+#@+node:ekr.20031218072017.3804:createNewMenu
+def createNewMenu (self,menuName,parentName="top",before=None):
+
+    try:
+        parent = self.getMenu(parentName) # parent may be None.
+        menu = self.getMenu(menuName)
+        if menu:
+            g.es("menu already exists: " + menuName,color="red")
+        else:
+            menu = self.new_menu(parent,tearoff=0)
+            self.setMenu(menuName,menu)
+            label = self.getRealMenuName(menuName)
+            amp_index = label.find("&")
+            label = label.replace("&","")
+            if before: # Insert the menu before the "before" menu.
+                index_label = self.getRealMenuName(before)
+                amp_index = index_label.find("&")
+                index_label = index_label.replace("&","")
+                index = parent.index(index_label)
+                self.insert_cascade(parent,index=index,label=label,menu=menu,underline=amp_index)
+            else:
+                self.add_cascade(parent,label=label,menu=menu,underline=amp_index)
+            return menu
+    except:
+        g.es("exception creating " + menuName + " menu")
+        g.es_exception()
+        return None
+#@-node:ekr.20031218072017.3804:createNewMenu
+#@+node:ekr.20031218072017.1723:createMenuEntries
+def createMenuEntries (self,menu,table,dynamicMenu=False):
+
+    '''Create a menu entry from the table.
+    New in 4.4: this method shows the shortcut in the menu,
+    but this method **never** binds any shortcuts.'''
+
+    # g.trace('c',self.c)
+
+    c = self.c ; f = c.frame ; k = c.k
+    if g.app.unitTesting: return
+    for data in table:
+        << get label & command or continue >>
+        << compute commandName & accel from label & command >>
+        accelerator = stroke = k.shortcutFromSetting(accel) or ''
+        accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
+        def masterMenuCallback (k=k,stroke=stroke,command=command,commandName=commandName):
+            return k.masterMenuHandler(stroke,command,commandName)
+        realLabel = self.getRealMenuName(label)
+        amp_index = realLabel.find("&")
+        realLabel = realLabel.replace("&","")
+        if sys.platform == 'darwin':
+            << clear accelerator if it is a plain key >>
+        self.add_command(menu,label=realLabel,
+            accelerator=accelerator,
+            command=masterMenuCallback,
+            underline=amp_index)
+#@+node:ekr.20051021091958:<< get label & command or continue >>
+if type(data) in (type(''),type(u'')): # Bug fix: 10/10/07: Allow unicode labels.
+    # New in Leo 4.4.2: Can use the same string for both the label and the command string.
+    ok = True
+    s = data
+    removeHyphens = s and s[0]=='*'
+    if removeHyphens: s = s[1:]
+    label = self.capitalizeMinibufferMenuName(s,removeHyphens)
+    command = s.replace('&','').lower()
+    if label == '-':
+        self.add_separator(menu)
+        continue # That's all.
+else:
+    ok = type(data) in (type(()), type([])) and len(data) in (2,3)
+    if ok:
+        if len(data) == 2:
+            # New in 4.4b2: command can be a minibuffer-command name (a string)
+            label,command = data
+        else:
+            # New in 4.4: we ignore shortcuts bound in menu tables.
+            label,junk,command = data
+
+        if label in (None,'-'):
+            self.add_separator(menu)
+            continue # That's all.
+    else:
+        g.trace('bad data in menu table: %s' % repr(data))
+        continue # Ignore bad data
+#@nonl
+#@-node:ekr.20051021091958:<< get label & command or continue >>
+#@+node:ekr.20031218072017.1725:<< compute commandName & accel from label & command >>
+# New in 4.4b2: command can be a minibuffer-command name (a string)
+minibufferCommand = type(command) == type('')
+accel = None
+if minibufferCommand:
+    commandName = command 
+    command = c.commandsDict.get(commandName)
+    if command:
+        rawKey,bunchList = c.config.getShortcut(commandName)
+        # Pick the first entry that is not a mode.
+        for bunch in bunchList:
+            if not bunch.pane.endswith('-mode'):
+                # g.trace('1',bunch)
+                accel = bunch and bunch.val
+                if bunch.pane  == 'text': break # New in Leo 4.4.2: prefer text bindings.
+    else:
+        if not g.app.unitTesting and not dynamicMenu:
+            # Don't warn during unit testing.
+            # This may come from a plugin that normally isn't enabled.
+            g.trace('No inverse for %s' % commandName)
+        continue # There is no way to make this menu entry.
+else:
+    # First, get the old-style name.
+    commandName = self.computeOldStyleShortcutKey(label)
+    rawKey,bunchList = c.config.getShortcut(commandName)
+    for bunch in bunchList:
+        if not bunch.pane.endswith('-mode'):
+            # g.trace('2',bunch)
+            accel = bunch and bunch.val ; break
+    # Second, get new-style name.
+    if not accel:
+        << compute emacs_name >>
+            # Contains the not-so-horrible kludge.
+        if emacs_name:
+            commandName = emacs_name
+            rawKey,bunchList = c.config.getShortcut(emacs_name)
+            # Pick the first entry that is not a mode.
+            for bunch in bunchList:
+                if not bunch.pane.endswith('-mode'):
+                    accel = bunch.val ; break
+                    # g.trace('2',bunch)
+        elif not dynamicMenu:
+            g.trace('No inverse for %s' % commandName)
+#@+node:ekr.20051021100806.1:<< compute emacs_name >>
+@ One not-so-horrible kludge remains.
+
+The cut/copy/paste commands in the menu tables are not the same as the methods
+actually bound to cut/copy/paste-text minibuffer commands, so we must do a bit
+of extra translation to discover whether the user has overridden their
+bindings.
+@c
+
+if command in (f.OnCutFromMenu,f.OnCopyFromMenu,f.OnPasteFromMenu):
+    emacs_name = '%s-text' % commandName
+else:
+    try: # User errors in the table can cause this.
+        emacs_name = k.inverseCommandsDict.get(command.__name__)
+    except Exception:
+        emacs_name = None
+#@-node:ekr.20051021100806.1:<< compute emacs_name >>
+#@-node:ekr.20031218072017.1725:<< compute commandName & accel from label & command >>
+#@+node:ekr.20060216110502:<< clear accelerator if it is a plain key >>
+for z in ('Alt','Ctrl','Command'):
+    if accelerator.find(z) != -1:
+        break # Found.
+else:
+    accelerator = ''
+#@-node:ekr.20060216110502:<< clear accelerator if it is a plain key >>
+#@-node:ekr.20031218072017.1723:createMenuEntries
+#@-node:ekr.20071010113431:Allow chinese characters work in @menus trees
 #@-node:ekr.20070920083033.1:Features
 #@-node:ekr.20070919132518:4.4.4 b3
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
