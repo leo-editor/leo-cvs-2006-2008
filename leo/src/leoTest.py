@@ -635,7 +635,7 @@ def runLeoTest(c,path,verbose=False,full=False):
         if frame and frame.c != c:
             frame.c.setChanged(False)
             g.app.closeLeoWindow(frame.c.frame)
-        c.frame.update()
+        ### c.frame.update()
 #@nonl
 #@-node:ekr.20051104075904.42:runLeoTest
 #@+node:ekr.20070627135407:runTestsExternally & helper class
