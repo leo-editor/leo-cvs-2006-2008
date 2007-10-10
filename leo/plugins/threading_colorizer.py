@@ -157,6 +157,7 @@ def onStart1 (tag, keywords):
     '''Override Leo's core colorizer classes.'''
 
     import leoColor
+    print 'threading_colorizer overriding core classes'
     leoColor.colorizer = colorizer
     leoColor.nullColorizer = nullColorizer
 #@-node:ekr.20070718131458.10:onStart1
@@ -379,6 +380,8 @@ class colorizer:
     #@+node:ekr.20070718131458.21:Birth and init
     #@+node:ekr.20070718131458.22:__init__
     def __init__(self,c):
+
+        # g.trace('threading_colorizer',self)
         # Copies of ivars.
         self.c = c
         self.frame = c.frame
@@ -456,6 +459,7 @@ class colorizer:
         self.threadCount = 0
         self.helperThread = None # A singleton helper thread.
         self.killFlag = False
+
     #@-node:ekr.20070718131458.22:__init__
     #@+node:ekr.20070718131458.23:addImportedRules
     def addImportedRules (self,mode,rulesDict,rulesetName):
@@ -976,13 +980,16 @@ class colorizer:
 
         if self.lock_trace: g.trace('lock off',self.threadCount)
 
-        ### w.update_idletasks()
+        w.update_idletasks()
 
         return done
     #@-node:ekr.20070718131458.42:finishColoring
     #@+node:ekr.20070718131458.50:idleHandler
     def idleHandler (self,n):
 
+        if not self.c.frame in g.app.windowList:
+            print 'threading_colorizer: window killed'
+            return
         if not self.use_threads:
             self.finishColoring(done=False)
         elif not self.helperThread or n < self.threadCount:
@@ -1159,17 +1166,25 @@ class colorizer:
     #@-node:ekr.20070719111308:Colorers & helpers
     #@+node:edreamleo.20070728081453:In helper thread
     #@+node:ekr.20070720101942:adjustMarksDict
-    def adjustMarksDict (self,d,mid_i,delta):
+    def adjustMarksDict (self,d,mid_i,tail_i,delta):
 
         '''Adjust the marksDict d by adding delta to
         all keys and values whose keys are >= mid_i.'''
 
         # Pass 1: Add changed items to d2, and delete them from d.
+        # Important: missing entries do not cause bugs--
+        # at worst they slow down the colorizer.
+        # Thus, we err on the side of caution.
         d2 = {}
         for i in d.keys():
-            if i > mid_i:
+            if i > tail_i:
                 # d2 [i+delta] = d.get(i) + delta
-                d2 [max(0,i+delta)] = max(0,d.get(i) + delta) # Bug fix: 10/10/07
+                if i + delta >= 0:
+                    val = d.get(i) + delta
+                    if val >= 0:
+                        d2 [i+delta] = val
+                del d[i]
+            elif i >= mid_i:
                 del d[i]
 
         # Pass 2: Insert changed items back into d.
@@ -1307,6 +1322,9 @@ class colorizer:
         self.marksDict = {}
         while i < len(s):
             progress = i
+            if self.c.frame not in g.app.windowList:
+                # print 'threading_colorizer: fullColor: window killed'
+                return
             if self.killFlag:
                 if self.trace: g.trace('*** killed %d' % self.threadCount)
                 return
@@ -1338,7 +1356,7 @@ class colorizer:
             if self.trace: g.trace('*** all lines match: recolor all')
             return self.fullColor(s)
 
-        d = self.marksDict = self.adjustMarksDict(self.marksDict,mid_i,delta)
+        d = self.marksDict = self.adjustMarksDict(self.marksDict,mid_i,tail_i,delta)
         assert(mid_i == 0 or s[mid_i-1] == '\n')
         i = self.findMarkAtIndex(d,max(0,mid_i-1))
         self.start_i = self.self_end_i = i
@@ -1351,11 +1369,14 @@ class colorizer:
         if self.trace: g.trace(self.language,'thread',self.threadCount,'i',i)
         while i < len(s):
             progress = i
+            if self.c.frame not in g.app.windowList:
+                # print 'threading_colorizer: partialColor: window killed'
+                return
             if self.killFlag:
                 if self.trace: g.trace('*** killed %d*' % self.threadCount)
                 return
-            if i < 0 or i >= len(s):
-                g.trace('can not happen','i out of range',i)
+            # if i < 0 or i >= len(s):
+                # g.trace('can not happen','i out of range',i)
             for f in self.rulesDict.get(s[i],[]):
                 n = f(self,s,i)
                 if n is None: g.trace('Can not happen: matcher returns None')
@@ -1524,7 +1545,6 @@ class colorizer:
             return result
         else:
             return 0
-    #@nonl
     #@-node:ekr.20070718131458.56:match_keywords
     #@+node:ekr.20070718131458.57:match_mark_following & getNextToken
     def match_mark_following (self,s,i,
