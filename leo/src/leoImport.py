@@ -1415,6 +1415,7 @@ class baseLeoImportCommands:
 
             self.atAuto = atAuto
             self.c = c = ic.c
+            self.classId = None # The identifier containing the class tag: 'class', 'interface', 'namespace', etc.
             self.codeEnd = None
                 # The character after the last character of the class, method or function.
                 # An error will be given if this is not a newline.
@@ -1433,7 +1434,7 @@ class baseLeoImportCommands:
             self.root = None # The top-level node of the generated tree.
             self.rootLine = ic.rootLine # '' or @root + self.fileName
             self.sigEnd = None # The index of the end of the signature.
-            self.sigID = None # The identifier contained in the signature, i.e., the function or method name.
+            self.sigId = None # The identifier contained in the signature, i.e., the function or method name.
             self.sigStart = None
                 # The start of the line containing the signature.
                 # An error will be given if something other than whitespace precedes the signature.
@@ -1753,11 +1754,13 @@ class baseLeoImportCommands:
             '''Creates a child node c of parent for the class, and children of c for each def in the class.'''
 
             prefix = self.createClassNodePrefix()
-            if not self.sigID:
-                g.trace('Can not happen: no sigID')
-                sigID = 'Unknown class name'
-            class_name = self.sigID
-            headline = 'class ' + class_name
+            if not self.sigId:
+                g.trace('Can not happen: no sigId')
+                sigId = 'Unknown class name'
+            class_kind = self.classId
+            class_name = self.sigId
+            # headline = 'class ' + class_name
+            headline = '%s %s' % (class_kind,class_name)
             body = s[start:sigEnd]
             body = self.undentBody(body)
             i = self.extendSignature(s,sigEnd)
@@ -1812,7 +1815,7 @@ class baseLeoImportCommands:
             Parse s for inner methods and classes, and create nodes.'''
 
             # Put any leading decls in the class node.
-            trace = False
+            trace = False or self.trace
             start = i
             i = self.skipDecls(s,i,end)
             decls = s[start:i]
@@ -1832,19 +1835,23 @@ class baseLeoImportCommands:
                     i = self.skipComment(s,i)
                 elif self.startsString(s,i):
                     i = self.skipString(s,i)
-                elif g.match(s,i,self.outerBlockDelim1):
-                    i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
                 elif self.startsClass(s,i):  # Sets sigStart,sigEnd & codeEnd ivars.
                     putRef = True
                     end2 = self.codeEnd # putClass may change codeEnd ivar.
+                    saveIndent = self.startSigIndent # Bug fix: 10/10/07
                     self.putClass(s,self.sigStart,self.sigEnd,self.codeEnd,start,class_node)
+                    self.startSigIndent = saveIndent
                     i = start = end2
                 elif self.startsFunction(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
                     putRef = True
+                    saveIndent = self.startSigIndent # Bug fix: 10/10/07
                     self.putFunction(s,self.sigStart,self.codeEnd,start,class_node)
+                    self.startSigIndent = saveIndent
                     i = start = self.codeEnd
                 elif self.startsId(s,i):
                     i = self.skipId(s,i);
+                elif g.match(s,i,self.outerBlockDelim1): # Bug fix: do this after testing for classes.
+                    i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
                 else: i += 1
                 assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
 
@@ -1853,7 +1860,7 @@ class baseLeoImportCommands:
 
             if start < end:
                 trailing = s[start:end]
-                if trace or self.trace: g.trace('trailing\n%s' % trailing)
+                if trace: g.trace('trailing\n%s' % trailing)
                 self.appendTextToClassNode(class_node,trailing)
         #@-node:ekr.20070707171329:putClassHelper
         #@-node:ekr.20070707113832.1:putClass & helpers
@@ -1862,10 +1869,10 @@ class baseLeoImportCommands:
 
             '''Create a node of parent for a function defintion.'''
 
-            if self.sigID:
-                headline = self.sigID
+            if self.sigId:
+                headline = self.sigId
             else:
-                g.trace('Can not happen: no sigID')
+                g.trace('Can not happen: no sigId')
                 headline = 'unknown function'
 
             body1 = self.undentBody(s[start:sigStart],ignoreComments=False)
@@ -1879,7 +1886,7 @@ class baseLeoImportCommands:
             if not body.endswith('\n'):
                 self.error(
                     'function %s does not end with a newline; one will be added\n%s' % (
-                        self.sigID,g.get_line(s,codeEnd)))
+                        self.sigId,g.get_line(s,codeEnd)))
                 g.trace(g.callers())
 
             self.createFunctionNode(headline,body,parent)
@@ -2042,7 +2049,7 @@ class baseLeoImportCommands:
                 if g.is_nl(s,i):
                     backslashNewline = i > 0 and g.match(s,i-1,'\\\n')
                     i = g.skip_nl(s,i)
-                    if not backslashNewline:
+                    if not backslashNewline and not g.is_nl(s,i):
                         j, indent = g.skip_leading_ws_with_indent(s,i,self.tab_width)
                         line = g.get_line(s,j)
                         if trace: g.trace('indent',indent,line)
@@ -2128,7 +2135,7 @@ class baseLeoImportCommands:
 
             '''Skip everything until the start of the next class or function.'''
 
-            trace = False
+            trace = False or self.trace
             start = i ; prefix = None
             while i < end:
                 progress = i
@@ -2140,12 +2147,9 @@ class baseLeoImportCommands:
                 elif self.startsString(s,i):
                     i = self.skipString(s,i)
                     prefix = None
-                elif g.match(s,i,self.outerBlockDelim1):
-                    i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
-                    prefix = None
                 elif self.startsClass(s,i,quick=True):
                     # Important: do not include leading ws in the decls.
-                    i = self.adjustClassOrFunctionStart(s,i,'class')
+                    i = self.adjustClassOrFunctionStart(s,i,self.classId) # 'class')
                     break
                 elif self.startsFunction(s,i,quick=True):
                     # Important: do not include leading ws in the decls.
@@ -2154,6 +2158,10 @@ class baseLeoImportCommands:
                 elif self.startsId(s,i):
                     i = self.skipId(s,i)
                     prefix = None
+                # Bug fix: don't skip outer blocks: they may contain classes.
+                # elif g.match(s,i,self.outerBlockDelim1):
+                    # i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+                    # prefix = None
                 else:
                     i += 1 ;  prefix = None
                 assert(progress < i)
@@ -2176,13 +2184,17 @@ class baseLeoImportCommands:
             '''
 
             j = g.find_line_start(s,i)
-            if s[j:i].strip():
-                self.error(
-                    '%s %s does not start a line. Leo must insert a newline\n%s' % (
-                        tag,self.sigID,g.get_line(s,j)))
-                return i
-            else:
-                return j
+            return j
+
+
+
+            # if s[j:i].strip():
+                # self.error(
+                    # '%s %s does not start a line. Leo must insert a newline\n%s' % (
+                        # tag,self.sigId,g.get_line(s,j)))
+                # return i
+            # else:
+                # return j
         #@-node:ekr.20070709084313:adjustClassOrFunctionStart
         #@-node:ekr.20070707080042:skipDecls & helper
         #@+node:ekr.20070707094858.1:skipId
@@ -2211,7 +2223,7 @@ class baseLeoImportCommands:
             else:
                 self.error(
                     '%s %s does not end in a newline; one will be added\n%s' % (
-                        kind,self.sigID,g.get_line(s,i)))
+                        kind,self.sigId,g.get_line(s,i)))
                 # g.trace(g.callers())
 
             return i
@@ -2234,22 +2246,23 @@ class baseLeoImportCommands:
 
         def startsClass (self,s,i,quick=False):
             '''Return True if s[i:] starts a class definition.
-            Sets sigStart, sigEnd, sigID and codeEnd ivars.'''
+            Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
             i = self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
             return i
 
         def startsFunction (self,s,i,quick=False):
             '''Return True if s[i:] starts a function.
-            Sets sigStart, sigEnd, sigID and codeEnd ivars.'''
+            Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
             i = self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
             return i
         #@+node:ekr.20070712112008:startsHelper
         def startsHelper(self,s,i,kind,quick,tags):
             '''return True if s[i:] starts a class or function.
-            Sets sigStart, sigEnd, sigID and codeEnd ivars.'''
+            Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
 
-            trace = False
-            self.codeEnd = self.sigEnd = self.sigID = None
+            trace = False or self.trace
+            verbose = False
+            self.codeEnd = self.sigEnd = self.sigId = None
             self.sigStart = i
 
             # Underindented lines can happen in any language, not just Python.
@@ -2260,47 +2273,46 @@ class baseLeoImportCommands:
             # Get the tag that starts the class or function.
             j = g.skip_ws_and_nl(s,i)
             i = self.skipId(s,j)
-            self.sigID = theId = s[j:i] # Set sigId ivar 'early' for error messages.
+            self.sigId = theId = s[j:i] # Set sigId ivar 'early' for error messages.
             if not theId: return False
             if tags:
                 if theId not in tags:
                     return False
-                if trace: g.trace('tags',tags,'theId',theId)
                 if quick: return True
 
-            if trace: g.trace('kind',kind,'id',theId,g.callers())
+            if trace and verbose: g.trace('kind',kind,'id',theId)
 
             # Get the class/function id.
-            i, ids = self.skipSigStart(s,j,tags) # Rescan the first id.
+            i, ids, classId = self.skipSigStart(s,j,tags) # Rescan the first id.
             i, sigId = self.skipSigId(s,i,ids)
             if not sigId:
-                if trace: g.trace('no sigId',g.get_line(s,i))
+                if trace and verbose: g.trace('no sigId',g.get_line(s,i))
                 return False
 
             # Skip the argument list.
             i, ok = self.skipArgs(s,i,kind)
             if not ok:
-                if trace: g.trace('no args',g.get_line(s,i))
+                if trace and verbose: g.trace('no args',g.get_line(s,i))
                 return False
             i = g.skip_ws_and_nl(s,i)
 
             # Skip the tail of the signature
             i, ok = self.skipSigTail(s,i)
             if not ok:
-                if trace: g.trace('no tail',g.get_line(s,i))
+                if trace and verbose: g.trace('no tail',g.get_line(s,i))
                 return False
             sigEnd = i
 
             # A trick: make sure the signature ends in a newline,
             # even if it overlaps the start of the block.
             if not g.match(s,sigEnd,'\n') and not g.match(s,sigEnd-1,'\n'):
-                if trace: g.trace('extending sigEnd')
+                if trace and verbose: g.trace('extending sigEnd')
                 sigEnd = g.skip_line(s,sigEnd)
 
             if self.blockDelim1:
                 i = g.skip_ws_and_nl(s,i)
                 if not g.match(s,i,self.blockDelim1):
-                    if trace: g.trace('no block',g.get_line(s,i))
+                    if trace and verbose: g.trace('no block',g.get_line(s,i))
                     return False
 
             i,ok = self.skipCodeBlock(s,i,kind)
@@ -2310,7 +2322,8 @@ class baseLeoImportCommands:
             # Success: set the ivars.
             self.codeEnd = i
             self.sigEnd = sigEnd
-            self.sigID = sigId
+            self.sigId = sigId
+            self.classId = classId
 
             # Note: backing up here is safe because
             # we won't back up past scan's 'start' point.
@@ -2320,11 +2333,16 @@ class baseLeoImportCommands:
                 self.sigStart = g.find_line_start(s,k)
 
             # Isue this warning only if we have a real class or function.
-            if s[self.sigStart:k].strip():
-                self.error('%s definition does not start a line\n%s' % (
-                    kind,g.get_line(s,k)))
+            if 0: ### wrong.
+                if s[self.sigStart:k].strip():
+                    self.error('%s definition does not start a line\n%s' % (
+                        kind,g.get_line(s,k)))
 
-            if trace or self.trace: g.trace(kind,'returns\n'+s[self.sigStart:i])
+            if trace:
+                if 1:
+                    g.trace(kind,'returns\n'+s[self.sigStart:i])
+                else:
+                    g.trace(kind,'returns s[sigStart:i] = [%d:%d]' % (self.sigStart,i))
             return True
         #@-node:ekr.20070712112008:startsHelper
         #@+node:ekr.20070711140703:skipSigStart
@@ -2336,10 +2354,10 @@ class baseLeoImportCommands:
 
             Return (i,ids) where ids is list of all ids found, in order.'''
 
-            __pychecker__ = '--no-argsused' # tags not used in the base class.
+            # __pychecker__ = '--no-argsused' # tags not used in the base class.
 
-            trace = False
-            ids = []
+            trace = False or self.trace
+            ids = [] ; classId = None
             start = i
             while i < len(s):
                 j = g.skip_ws_and_nl(s,i)
@@ -2353,10 +2371,11 @@ class baseLeoImportCommands:
                 else:
                     i = self.skipId(s,j)
                     theId = s[j:i]
+                    if theId and theId in tags: classId = theId
                     if theId: ids.append(theId)
                     else: break
 
-            return i, ids
+            return i, ids, classId
         #@-node:ekr.20070711140703:skipSigStart
         #@+node:ekr.20070711134534:skipSigId
         def skipSigId (self,s,i,ids):
@@ -2372,7 +2391,7 @@ class baseLeoImportCommands:
 
             '''Skip from the end of the arg list to the start of the block.'''
 
-            trace = False
+            trace = False or self.trace
             start = i
             i = g.skip_ws(s,i)
             for z in self.sigFailTokens:
@@ -2589,15 +2608,15 @@ class baseLeoImportCommands:
         #@+node:ekr.20070711060113.3:startsClass/Function & skipSignature
         def startsClass (self,s,i):
             '''Return True if s[i:] starts a class definition.
-            Sets sigStart, sigEnd, sigID and codeEnd ivars.'''
+            Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
             return False
 
         def startsFunction(self,s,i):
             '''Return True if s[i:] starts a function.
-            Sets sigStart, sigEnd, sigID and codeEnd ivars.'''
+            Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
 
             self.sigStart = i
-            self.codeEnd = self.sigEnd = self.sigID = None
+            self.codeEnd = self.sigEnd = self.sigId = None
             if not g.match(s,i,'('): return False
             end = self.skipBlock(s,i)
             if not g.match(s,end,')'): return False
