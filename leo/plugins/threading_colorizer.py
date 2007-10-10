@@ -1161,14 +1161,15 @@ class colorizer:
     #@+node:ekr.20070720101942:adjustMarksDict
     def adjustMarksDict (self,d,mid_i,delta):
 
-        '''Adjust the marksDict d by adding delat to
+        '''Adjust the marksDict d by adding delta to
         all keys and values whose keys are >= mid_i.'''
 
         # Pass 1: Add changed items to d2, and delete them from d.
         d2 = {}
         for i in d.keys():
             if i > mid_i:
-                d2 [i+delta] = d.get(i) + delta
+                # d2 [i+delta] = d.get(i) + delta
+                d2 [max(0,i+delta)] = max(0,d.get(i) + delta) # Bug fix: 10/10/07
                 del d[i]
 
         # Pass 2: Insert changed items back into d.
@@ -1332,7 +1333,6 @@ class colorizer:
 
         '''Partially recolor s'''
 
-
         mid_i,tail_i,delta,all = self.computeIndices()
         if all:
             if self.trace: g.trace('*** all lines match: recolor all')
@@ -1354,6 +1354,8 @@ class colorizer:
             if self.killFlag:
                 if self.trace: g.trace('*** killed %d*' % self.threadCount)
                 return
+            if i < 0 or i >= len(s):
+                g.trace('can not happen','i out of range',i)
             for f in self.rulesDict.get(s[i],[]):
                 n = f(self,s,i)
                 if n is None: g.trace('Can not happen: matcher returns None')
