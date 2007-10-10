@@ -495,6 +495,7 @@ class leoMenu:
         for z in aList:
             kind,val,val2 = z
             if kind.startswith('@menu'):
+                # Menu names can be unicode without any problem.
                 name = kind[5:].strip()
                 if table:
                     self.createMenuEntries(parentMenu,table)
@@ -503,15 +504,18 @@ class leoMenu:
                     self.createNewMenu(name,parentName) # Create submenu of parent menu.
                     self.createMenuFromConfigList(name,val,level+1)
             elif kind == '@item':
-                # The menu methods require non-unicode strings.
-                name = str(val) 
-                if val2: table.append((str(val2),name),)
-                else: table.append(name)
+                name = str(val) # Item names must always be ascii.
+                if val2:
+                    # Translated names can be unicode.
+                    table.append((val2,name),)
+                else:
+                    table.append(name)
             else:
                 g.trace('can not happen: bad kind:',kind)
 
         if table:
             self.createMenuEntries(parentMenu,table)
+    #@nonl
     #@-node:ekr.20070927082205:createMenuFromConfigList
     #@+node:ekr.20070927172712:handleSpecialMenus
     def handleSpecialMenus (self,name,parentName):
@@ -1309,7 +1313,7 @@ class leoMenu:
         for data in table:
             #@        << get label & command or continue >>
             #@+node:ekr.20051021091958:<< get label & command or continue >>
-            if type(data) == type(''):
+            if type(data) in (type(''),type(u'')): # Bug fix: 10/10/07: Allow unicode labels.
                 # New in Leo 4.4.2: Can use the same string for both the label and the command string.
                 ok = True
                 s = data
