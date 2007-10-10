@@ -29444,6 +29444,10 @@ else:
 #@-node:ekr.20040803072955.133:<< set the current node >>
 #@-node:ekr.20070423101911:treeSelectHelper
 #@-node:ekr.20071009104339:Disabled unnecessary recolors
+#@+node:ekr.20071009145420:Improved (I hope) the rst3 plugin
+Suppressed doc-part-delims when show_doc_parts_as_paragraphs is True
+#@nonl
+#@-node:ekr.20071009145420:Improved (I hope) the rst3 plugin
 #@-node:ekr.20070920083033.1:Features
 #@-node:ekr.20070919132518:4.4.4 b3
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
