@@ -19364,6 +19364,8 @@ def checkTrialWrite (self,s1=None,s2=None):
     )
 
     s1,s2 = self.file_s, at.stringOutput
+    s1 = s1.replace('\r','')
+    s2 = s2.replace('\r','')
     if s1 == s2: return True
 
     lines1 = g.splitLines(s1) ; n1 = len(lines1)
@@ -21067,6 +21069,8 @@ def checkTrialWrite (self,s1=None,s2=None):
     )
 
     s1,s2 = self.file_s, at.stringOutput
+    s1 = s1.replace('\r','')
+    s2 = s2.replace('\r','')
     if s1 == s2: return True
 
     lines1 = g.splitLines(s1) ; n1 = len(lines1)
@@ -25790,6 +25794,155 @@ def setFillPrefix( self, event ):
     self.fillPrefix = s[i:j]
 #@-node:ekr.20050920084036.70:setFillPrefix
 #@-node:ekr.20071006093912:Created new unit tests
+#@+node:ekr.20071008110010:Fixed doc bug
+http://sourceforge.net/forum/message.php?msg_id=4557854
+
+The customizing attributes code doesn't work from the User's Guide here:
+
+http://webpages.charter.net/edreamleo/customizing.html#adding-extensible-attribu
+tes-to-nodes-and-leo-files
+
+I corrected the hasattr problem and added sample read code here:
+
+@color
+
+# Create the uA if necessary.
+if not hasattr(p.v.t,'unknownAttributes'):
+....p.v.t.unknownAttributes = {}
+
+# Get the inner dictionary for the 'xyzzy' plugin, creating it if necessary.
+d = p.v.t.unknownAttributes.get('xyzzy',{})
+
+# Set some values. These values must be picklable.
+d ['duration'] = 5
+d ['notes'] = "This is a note."
+
+# Update the uA.
+p.v.t.unknownAttributes ['xyzzy'] = d
+
+if hasattr(p.v.t,"unknownAttributes"):
+....d = p.v.t.unknownAttributes.get("xyzzy",{ })
+....g.es(d['duration'])
+....g.es(d['notes'])
+#@-node:ekr.20071008110010:Fixed doc bug
+#@+node:ekr.20071009083345:Regularize newlines in @auto compare
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4558330
+By: vransmayr
+
+Hi Edward,
+
+I don't get @auto nodes/trees to work the way I expected them to work ...
+
+Here are the facts as they occur in my environment:
+
+* I'm using the latest CVS-snapshot of Leo.
+
+<Leo Log Pane>
+
+Leo Log Window...
+Leo 4.4.4 b3, build  1.210 , October 8, 2007
+Python 2.4.3, Tk 8.4.7, Pmw 1.2
+Windows 5, 1, 2600, 2, Service Pack 2
+
+redefining close-window in all to extend-to-word in all
+redefining goto-first-node in tree to goto-first-visible-node in tree
+redefining goto-first-node in tree to goto-first-visible-node in all
+redefining goto-first-node in tree to goto-first-visible-node in all
+redefining forward-sentence in text to propagate-key-event in all
+redefining forward-word in text to propagate-key-event in all
+redefining kill-region-save in all to propagate-key-event in all
+leoID = vr20060903 (in C:\Dokumente und Einstellungen\VR)
+global config dir: C:\CVS-Reps\leo\config
+home dir: C:\Dokumente und Einstellungen\VR
+reading settings in C:\CVS-Reps\leo\config\leoSettings.leo
+reading settings in C:\Dokumente und Einstellungen\VR\myLeoSettings.leo
+reading settings in C:\Dokumente und Einstellungen\VR\Eigene
+Dateien\WLog\WLog.leo
+reading: C:\Dokumente und Einstellungen\VR\Eigene Dateien\WLog\WLog.leo
+
+</Leo Log Pane>
+
+I try to create an @auto-node from a simple python file, where I would
+not expect
+any problems with. - In my case I used "roman.py" in
+"C:\Python24\Lib\site-packages\".
+
+@auto C:\\Python24\\Lib\\site-packages\\roman.py
+
+When I try to save the outline I receive the following error-messages:
+
+<Leo Log Pane>
+
+reading new @auto C:\\Python24\\Lib\\site-packages\\roman.py
+*** first mismatch at line 1
+original line:  u'"""Convert to and from Roman numerals"""\n'
+generated line: '"""Convert to and from Roman numerals"""\r\n'
+@auto did not import the file perfectly
+first mismatched line: 1
+'"""Convert to and from Roman numerals"""\r\n'
+inserting @ignore
+Errors inhibited read @auto C:\\Python24\\Lib\\site-packages\\roman.py
+saved: WLog.leo
+
+</Leo Log Pane>
+
+What am I missing ?
+
+Regards,
+
+    Viktor Ransmayr
+#@+node:ekr.20070703122141.104:checkTrialWrite & tests
+def checkTrialWrite (self,s1=None,s2=None):
+
+    '''Return True if a trial write produces the original file.'''
+
+    c = self.c ; at = c.atFileCommands
+
+    if s1 and s2:
+        if s1 == s2: return True
+
+    at.write(self.root,
+        nosentinels=True,thinFile=False,
+        scriptWrite=False,toString=True,
+        write_strips_blank_lines=False,
+    )
+
+    s1,s2 = self.file_s, at.stringOutput
+    s1 = s1.replace('\r','')
+    s2 = s2.replace('\r','')
+    if s1 == s2: return True
+
+    lines1 = g.splitLines(s1) ; n1 = len(lines1)
+    lines2 = g.splitLines(s2) ; n2 = len(lines2)
+
+    ok = True ; bad_i = 0
+    for i in xrange(max(n1,n2)):
+        ok = self.compareHelper(lines1,lines2,i,self.strict)
+        if not ok:
+            bad_i = i + 1
+            break
+
+    if g.app.unitTesting:
+        d = g.app.unitTestDict
+        ok = d.get('expectedMismatchLine') == d.get('actualMismatchLine')
+
+    if not ok:
+        self.reportMismatch(lines1,lines2,bad_i)
+
+    return ok
+#@+node:ekr.20070816103348:@test checkTriailWrite
+if g.unitTesting:
+
+    ic = c.importCommands
+    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+
+    s1 = 'line1\nline2\n'
+    s2 = 'line1\nline2a\n'
+    runner.checkTrialWrite(s1=s1,s2=s2)
+#@-node:ekr.20070816103348:@test checkTriailWrite
+#@-node:ekr.20070703122141.104:checkTrialWrite & tests
+#@-node:ekr.20071009083345:Regularize newlines in @auto compare
 #@-node:ekr.20070920083033:Bugs
 #@+node:ekr.20070920083033.1:Features
 #@+node:ekr.20070919124912:Added button-font params

@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="304" height="735" width="892"/>
+	<global_window_position top="10" left="304" height="695" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -3273,7 +3273,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20070806090235"><vh>4.4.4 @auto, @menus, threading syntax colorer</vh>
+<v t="ekr.20070806090235"><vh>4.4.4 @auto, @menus, threading syntax colorer, the Great Graph Aha</vh>
 <v t="ekr.20070806090235.1"><vh>4.4.4 b1</vh>
 <v t="ekr.20070806090226.1"><vh>Added support for @mark-for-unit-tests node</vh></v>
 <v t="ekr.20070806090226.14"><vh>Created threading_colorizer</vh></v>
@@ -3308,7 +3308,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071004101349" a="ETV"><vh>4.4.4 final</vh>
+<v t="ekr.20071004101349" a="TV"><vh>4.4.4 b3</vh>
 <v t="ekr.20071004101443.1"><vh>Bugs fixed</vh>
 <v t="ekr.20071004101443.18"><vh>Greatly improved speed of unmark-all</vh></v>
 <v t="ekr.20071004101443.26"><vh>Made sure dirty bits get updated in xemacs plugin</vh></v>
@@ -12384,20 +12384,25 @@ Attribute ivars must be Python dictionaries, whose keys are names of plugins and
 whose values are *other* dictionaries, called **inner dictionaries**, for
 exclusive use of each plugin. For example, a plugin named 'xyzzy' would set
 ``t.unknownAttributes`` as follows::
-
+    
     # Create the uA if necessary.
-    if not p.v.t.hasattr('unknownAttributes'):
+    if not hasattr(p.v.t,'unknownAttributes'):
         p.v.t.unknownAttributes = {}
     
     # Get the inner dictionary for the 'xyzzy' plugin, creating it if necessary.
     d = p.v.t.unknownAttributes.get('xyzzy',{})
-
+    
     # Set some values. These values must be picklable.
-    d ['key1'] = someValue
-    d ['key2'] = anotherValue
-
+    d ['duration'] = 5
+    d ['notes'] = "This is a note."
+    
     # Update the uA.
     p.v.t.unknownAttributes ['xyzzy'] = d
+    
+    if hasattr(p.v.t,"unknownAttributes"):
+        d = p.v.t.unknownAttributes.get("xyzzy",{})
+        g.es(d['duration'])
+        g.es(d['notes'])
 
 Plugins would use similar code to create ``v.unknownAttributes``,
 ``t.tempAttributes``, and ``v.tempAttributes`` ivars.
@@ -22808,73 +22813,6 @@ It's not clear that there were serious problems with the plugin, but I improved 
 Several plugins use the icon-double-click hook.  The reported problems could have been due to plugin conflicts.
 </t>
 <t tx="ekr.20060214074035.66">http://sourceforge.net/forum/message.php?msg_id=3517080
-
-Patch for CLeo to allow check-marks:
------------------------------------------------------
-Line 412 in def draw_arrow:
-replace 
-............canvas.create_line(v.iconx-10,v.icony+7,v.iconx+5,v.icony+7,fill
-= 'Gray50',width=1)
-
-with
-............#@........&lt;&lt; Blank Check &gt;&gt;
-............#@+node:rjries.20060113114142:&lt;&lt; Blank Check &gt;&gt;
-............#@&lt;&lt; Point Setter &gt;&gt;
-............#@+node:rjries.20060113114350:&lt;&lt; Point Setter &gt;&gt;
-............# Define the 3 points of a check mark to allow quick adjustment
-............XpointA = v.iconx  -15+3
-............YpointA = v.icony  +8-2
-............XpointB = v.iconx  -7
-............YpointB = v.icony  +13
-............XpointC = v.iconx  +5
-............YpointC = v.icony  -2
-............#@nonl
-............#@-node:rjries.20060113114350:&lt;&lt; Point Setter &gt;&gt;
-............#@nl
-............# "white-out" the check mark
-............canvas.create_line(XpointA, YpointA, XpointB, YpointB,
-fill=colour,width=2)
-............canvas.create_line(XpointB, YpointB, XpointC, YpointC,
-fill=colour,width=2)
-............#@nonl
-............#@-node:rjries.20060113114142:&lt;&lt; Blank Check &gt;&gt;
-............#@nl
-............# restore line 
-............canvas.create_line(v.iconx-12,v.icony+7,v.iconx+6,v.icony+7,fill
-= 'Gray50',width=1)
-
------------------------------------------------------
-Line 421-422 in def draw_tick (**not draw_arrow):
-replace 
-........canvas.create_line(v.iconx+13-5,v.icony+8,v.iconx+13,v.icony+13,fill=colour,width=2)
-........canvas.create_line(v.iconx+13,v.icony+13,v.iconx+13+12,v.icony-2,fill=colour,width=2)
-
-with
-
-........#@....&lt;&lt; Point Setter &gt;&gt;
-........#@+node:rjries.20060113114350:&lt;&lt; Point Setter &gt;&gt;
-........# Define the 3 points of a check mark to allow quick adjustment
-........XpointA = v.iconx  -15+3
-........YpointA = v.icony  +8-2
-........XpointB = v.iconx  -7
-........YpointB = v.icony  +13
-........XpointC = v.iconx  +5
-........YpointC = v.icony  -2
-........#@nonl
-........#@-node:rjries.20060113114350:&lt;&lt; Point Setter &gt;&gt;
-........#@nl
-........# draw the check-mark
-........canvas.create_line(XpointA, YpointA, XpointB, YpointB,
-fill=colour,width=2)
-........canvas.create_line(XpointB, YpointB, XpointC, YpointC,
-fill=colour,width=2)
-
------------------------------------------------------
-Line 598 in def priority_menu
-replace
-............# (self.donePriority,'Done'),
-with
-............(self.donePriority,'Done'),
 </t>
 <t tx="ekr.20060214074035.67">http://sourceforge.net/forum/message.php?msg_id=3571431
 By: ktenney
@@ -32233,9 +32171,9 @@ window). It then creates clones of all inserted, deleted and changed nodes.</t>
 <t tx="ekr.20071001122703">All @buttons tree in a settings file defines global buttons that are created in
 the icon area of all .leo files. You define @button nodes in the @buttons tree
 as usual.</t>
-<t tx="ekr.20071004101349">Leo 4.4.4 final                              October 7, 2007
+<t tx="ekr.20071004101349">Leo 4.4.4 beta 3                            October 7, 2007
 
-Leo 4.4.4 final is available at:
+Leo 4.4.4 beta 3 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 Leo 4.4.4 contains many important features originally planned for later releases.

@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.665511265165">
-	<global_window_position top="17" left="238" height="720" width="958"/>
+	<global_window_position top="17" left="238" height="700" width="958"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -84,9 +84,10 @@
 </v>
 </v>
 <v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
-<v t="ekr.20070926132045"><vh>Buttons</vh>
-<v t="ekr.20070926082407"><vh>@buttons</vh>
+<v t="ekr.20070926132045" a="E"><vh>Buttons</vh>
+<v t="ekr.20070926082407" a="E"><vh>@buttons</vh>
 <v t="ekr.20070926082256.1"><vh>@button Beautify</vh></v>
+<v t="ekr.20071009135515"><vh>@button rst3</vh></v>
 </v>
 </v>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
@@ -8363,5 +8364,21 @@ Leo's init code populates this menu as a special case.</t>
 <t tx="ekr.20071005173455"></t>
 <t tx="ekr.20071006153053">True: add stuff consisting only of whitespace to the kill ring.</t>
 <t tx="ekr.20071006153725"></t>
+<t tx="ekr.20071009135515">import leoPlugins
+
+rst3 = leoPlugins.getPluginModule('rst3')
+
+if rst3:
+    controller = rst3.controllers.get(c)
+    if controller:
+        controller.processTopTree(p)
+else:
+    rst3 = leoPlugins.loadOnePlugin('rst3',verbose=True)
+    if rst3:
+        g.es('rst3 loaded')
+        rst3.onCreate('tag',{'c':c})
+    else:
+        # Ask to be removed.
+        g.app.scriptDict['removeMe'] = True</t>
 </tnodes>
 </leo_file>
