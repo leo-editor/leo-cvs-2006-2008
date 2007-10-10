@@ -157,7 +157,7 @@ def onStart1 (tag, keywords):
     '''Override Leo's core colorizer classes.'''
 
     import leoColor
-    print 'threading_colorizer overriding core classes'
+    # print 'threading_colorizer overriding core classes'
     leoColor.colorizer = colorizer
     leoColor.nullColorizer = nullColorizer
 #@-node:ekr.20070718131458.10:onStart1
