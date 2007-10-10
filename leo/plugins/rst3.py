@@ -1382,7 +1382,6 @@ class rstClass:
         s = '\n'.join(lines).strip()
         if s:
             self.write('%s\n\n' % s)
-    #@nonl
     #@+node:ekr.20050811150541:handleCodeMode & helper
     def handleCodeMode (self,lines):
 
@@ -1555,7 +1554,9 @@ class rstClass:
     #@+node:ekr.20050811105438.1:handleSpecialDocParts
     def handleSpecialDocParts (self,lines,kind,retainContents):
 
-        n = 0 ; result = []
+        # g.trace(kind,g.listToString(lines))
+
+        result = [] ; n = 0
         while n < len(lines):
             s = lines [n] ; n += 1
             if s.strip().endswith('::'):
@@ -1569,7 +1570,6 @@ class rstClass:
                 result.append(s)
 
         return result
-    #@nonl
     #@-node:ekr.20050811105438.1:handleSpecialDocParts
     #@+node:ekr.20050805162550.30:replaceCodeBlockDirectives
     def replaceCodeBlockDirectives (self,lines):
@@ -1603,6 +1603,8 @@ class rstClass:
     #@+node:ekr.20050811154552:getDocPart
     def getDocPart (self,lines,n):
 
+        # g.trace('n',n,repr(''.join(lines)))
+
         result = []
         #@    << Append whatever follows @doc or @space to result >>
         #@+node:ekr.20060610104435:<< Append whatever follows @doc or @space to result >>
@@ -1614,9 +1616,14 @@ class rstClass:
                 s = line[1:].lstrip()
             else:
                 s = ''
+
+            # New in Leo 4.4.4: remove these special tags.
+            for tag in ('@rst-options','@rst-option','@rst-markup'):
+                if g.match_word(s,0,tag):
+                    s = s[len(tag):].strip()
+
             if s.strip():
                 result.append(s)
-        #@nonl
         #@-node:ekr.20060610104435:<< Append whatever follows @doc or @space to result >>
         #@nl
         while n < len(lines):
