@@ -1595,6 +1595,7 @@ def trace (*args,**keys):
         else:
             s = arg
     message = s
+
     try: # get the function name from the call stack.
         f1 = sys._getframe(1) # The stack frame, one level up.
         code1 = f1.f_code # The code object
@@ -1610,6 +1611,8 @@ def trace (*args,**keys):
         pad = ' ' * (abs(align) - len(name))
         if align > 0: name = name + pad
         else:         name = pad + name
+
+    message = g.toEncodedString(message,'ascii') # Bug fix: 10/10/07.
 
     if newline:
         print name + ": " + message
