@@ -1,5 +1,5 @@
 #@+leo-ver=4-thin
-#@+node:ekr.20070718094819:@thin threading_colorizer.py	
+#@+node:ekr.20071010193720:@thin threading_colorizer.py	
 '''A threading colorizer using jEdit language description files.
 
 See: http://webpages.charter.net/edreamleo/coloring.html for documentation.
@@ -9,13 +9,13 @@ See: http://webpages.charter.net/edreamleo/coloring.html for documentation.
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.5'
+__version__ = '1.0'
 
 trace_all_matches = False
 trace_leo_matches = False
 
 #@<< imports >>
-#@+node:ekr.20070718131458.1:<< imports >>
+#@+node:ekr.20071010193720.1:<< imports >>
 import leoGlobals as g
 import leoPlugins
 
@@ -30,10 +30,10 @@ import xml.sax.saxutils
 # php_re = re.compile("<?(\s|=|[pP][hH][pP])")
 php_re = re.compile("<?(\s[pP][hH][pP])")
 #@nonl
-#@-node:ekr.20070718131458.1:<< imports >>
+#@-node:ekr.20071010193720.1:<< imports >>
 #@nl
 #@<< version history >>
-#@+node:ekr.20070718100326.1:<< version history >>
+#@+node:ekr.20071010193720.2:<< version history >>
 #@@nocolor
 #@+at
 # 
@@ -47,21 +47,26 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # - Process only 'limit' items in finishColoring.
 # - finishColoring now returns a 'done' indicator, and idleHandler
 #   re-queues itself if more work remains.
+# 1.0 EKR: A complete rewrite:
+#     - No incremental coloring **at all**.
+#     - The helper thread runs to completion before *any* tagging is done.
+#     - No locks are needed because the globalTagList is never simultaneously 
+# accessed.
 #@-at
 #@nonl
-#@-node:ekr.20070718100326.1:<< version history >>
+#@-node:ekr.20071010193720.2:<< version history >>
 #@nl
 #@<< define leoKeywordsDict >>
-#@+node:ekr.20070725161027:<< define leoKeywordsDict >>
+#@+node:ekr.20071010193720.3:<< define leoKeywordsDict >>
 leoKeywordsDict = {}
 
 for key in g.globalDirectiveList:
     leoKeywordsDict [key] = 'leoKeyword'
 #@nonl
-#@-node:ekr.20070725161027:<< define leoKeywordsDict >>
+#@-node:ekr.20071010193720.3:<< define leoKeywordsDict >>
 #@nl
 #@<< define default_colors_dict >>
-#@+node:ekr.20070718131458.7:<< define default_colors_dict >>
+#@+node:ekr.20071010193720.4:<< define default_colors_dict >>
 # These defaults are sure to exist.
 
 default_colors_dict = {
@@ -98,10 +103,10 @@ default_colors_dict = {
     'operator'  :('operator_color', 'black'),
     }
 #@nonl
-#@-node:ekr.20070718131458.7:<< define default_colors_dict >>
+#@-node:ekr.20071010193720.4:<< define default_colors_dict >>
 #@nl
 #@<< define default_font_dict >>
-#@+node:ekr.20070718131458.8:<< define default_font_dict >>
+#@+node:ekr.20071010193720.5:<< define default_font_dict >>
 default_font_dict = {
     # tag name       : option name
     'comment'        :'comment_font',
@@ -137,12 +142,12 @@ default_font_dict = {
     'operator'  :'operator_font',
     }
 #@nonl
-#@-node:ekr.20070718131458.8:<< define default_font_dict >>
+#@-node:ekr.20071010193720.5:<< define default_font_dict >>
 #@nl
 
 #@+others
-#@+node:ekr.20070718131458.5:module-level
-#@+node:ekr.20070718131458.9:init
+#@+node:ekr.20071010193720.6:module-level
+#@+node:ekr.20071010193720.7:init
 def init ():
 
     leoPlugins.registerHandler('start1',onStart1)
@@ -150,8 +155,8 @@ def init ():
 
     return True
 #@nonl
-#@-node:ekr.20070718131458.9:init
-#@+node:ekr.20070718131458.10:onStart1
+#@-node:ekr.20071010193720.7:init
+#@+node:ekr.20071010193720.8:onStart1
 def onStart1 (tag, keywords):
 
     '''Override Leo's core colorizer classes.'''
@@ -160,8 +165,8 @@ def onStart1 (tag, keywords):
     # print 'threading_colorizer overriding core classes'
     leoColor.colorizer = colorizer
     leoColor.nullColorizer = nullColorizer
-#@-node:ekr.20070718131458.10:onStart1
-#@+node:ekr.20070718131458.11:Leo rule functions (in helper thread)
+#@-node:ekr.20071010193720.8:onStart1
+#@+node:ekr.20071010193720.9:Leo rule functions (in helper thread)
 #@+at
 # These rule functions recognize noweb syntactic constructions. These are 
 # treated
@@ -171,7 +176,7 @@ def onStart1 (tag, keywords):
 #@-at
 #@@c
 
-#@+node:ekr.20070718131458.12:match_at_color
+#@+node:ekr.20071010193720.10:match_at_color
 def match_at_color (self,s,i):
 
     if trace_leo_matches: g.trace()
@@ -188,8 +193,8 @@ def match_at_color (self,s,i):
     else:
         return 0
 #@nonl
-#@-node:ekr.20070718131458.12:match_at_color
-#@+node:ekr.20070718131458.13:match_at_nocolor
+#@-node:ekr.20071010193720.10:match_at_color
+#@+node:ekr.20071010193720.11:match_at_nocolor
 def match_at_nocolor (self,s,i):
 
     if trace_leo_matches: g.trace()
@@ -211,8 +216,8 @@ def match_at_nocolor (self,s,i):
         self.flag = False # Disable coloring.
         return k+1-j
 
-#@-node:ekr.20070718131458.13:match_at_nocolor
-#@+node:ekr.20070718131458.14:match_doc_part
+#@-node:ekr.20071010193720.11:match_at_nocolor
+#@+node:ekr.20071010193720.12:match_doc_part
 def match_doc_part (self,s,i):
 
     if g.match_word(s,i,'@doc'):
@@ -240,8 +245,8 @@ def match_doc_part (self,s,i):
     j = n - 1
     return j - i
 #@nonl
-#@-node:ekr.20070718131458.14:match_doc_part
-#@+node:ekr.20070718131458.15:match_leo_keywords
+#@-node:ekr.20071010193720.12:match_doc_part
+#@+node:ekr.20071010193720.13:match_leo_keywords
 def match_leo_keywords(self,s,i):
 
     '''Succeed if s[i:] is a Leo keyword.'''
@@ -270,8 +275,8 @@ def match_leo_keywords(self,s,i):
     else:
         return 0
 #@nonl
-#@-node:ekr.20070718131458.15:match_leo_keywords
-#@+node:ekr.20070718131458.16:match_section_ref
+#@-node:ekr.20071010193720.13:match_leo_keywords
+#@+node:ekr.20071010193720.14:match_section_ref
 def match_section_ref (self,s,i):
 
     if trace_leo_matches: g.trace()
@@ -287,7 +292,7 @@ def match_section_ref (self,s,i):
         if ref:
             if self.use_hyperlinks:
                 #@                << set the hyperlink >>
-                #@+node:ekr.20070718131458.17:<< set the hyperlink >>
+                #@+node:ekr.20071010193720.15:<< set the hyperlink >>
                 # Set the bindings to vnode callbacks.
                 # Create the tag.
                 # Create the tag name.
@@ -301,7 +306,7 @@ def match_section_ref (self,s,i):
                 self.body.tag_bind(tagName,"<Any-Enter>",ref.OnHyperLinkEnter)
                 self.body.tag_bind(tagName,"<Any-Leave>",ref.OnHyperLinkLeave)
                 #@nonl
-                #@-node:ekr.20070718131458.17:<< set the hyperlink >>
+                #@-node:ekr.20071010193720.15:<< set the hyperlink >>
                 #@nl
             else:
                 self.colorRangeWithTag(s,i+2,k,'link')
@@ -312,8 +317,8 @@ def match_section_ref (self,s,i):
     else:
         return 0
 #@nonl
-#@-node:ekr.20070718131458.16:match_section_ref
-#@+node:ekr.20070718131458.18:match_blanks
+#@-node:ekr.20071010193720.14:match_section_ref
+#@+node:ekr.20071010193720.16:match_blanks
 def match_blanks (self,s,i):
 
     # if trace_leo_matches: g.trace()
@@ -331,8 +336,8 @@ def match_blanks (self,s,i):
     else:
         return 0
 #@nonl
-#@-node:ekr.20070718131458.18:match_blanks
-#@+node:ekr.20070718131458.19:match_tabs
+#@-node:ekr.20071010193720.16:match_blanks
+#@+node:ekr.20071010193720.17:match_tabs
 def match_tabs (self,s,i):
 
     if trace_leo_matches: g.trace()
@@ -349,8 +354,8 @@ def match_tabs (self,s,i):
     else:
         return 0
 #@nonl
-#@-node:ekr.20070718131458.19:match_tabs
-#@+node:ekr.20070720161950:match_incomplete_strings
+#@-node:ekr.20071010193720.17:match_tabs
+#@+node:ekr.20071010193720.18:match_incomplete_strings
 # def match_incomplete_strings (self,s,i):
 
     # if trace_leo_matches: g.trace()
@@ -370,15 +375,15 @@ def match_tabs (self,s,i):
         # return j-i
     # else:
         # return 0
-#@-node:ekr.20070720161950:match_incomplete_strings
-#@-node:ekr.20070718131458.11:Leo rule functions (in helper thread)
-#@-node:ekr.20070718131458.5:module-level
-#@+node:ekr.20070718131458.20:class colorizer
+#@-node:ekr.20071010193720.18:match_incomplete_strings
+#@-node:ekr.20071010193720.9:Leo rule functions (in helper thread)
+#@-node:ekr.20071010193720.6:module-level
+#@+node:ekr.20071010193720.19:class colorizer
 class colorizer:
 
     #@    @+others
-    #@+node:ekr.20070718131458.21:Birth and init
-    #@+node:ekr.20070718131458.22:__init__
+    #@+node:ekr.20071010193720.20:Birth and init
+    #@+node:ekr.20071010193720.21:__init__
     def __init__(self,c):
 
         # g.trace('threading_colorizer',self)
@@ -402,31 +407,25 @@ class colorizer:
         self.use_hyperlinks = c.config.getBool("use_hyperlinks")
         self.enabled = c.config.getBool('use_syntax_coloring')
         # Debugging.
-        self.lock_trace = False
         self.trace = False or c.config.getBool('trace_colorizer')
         self.trace_match_flag = False
-        self.use_threads = True
+        self.count = 0 # For unit testing.
         # State ivars...
-        self.count = 0
         self.comment_string = None # Can be set by @comment directive.
         self.defaultRulesList = []
         self.flag = True # True unless in range of @nocolor
         self.importedRulesets = {}
-        self.interruptable = True
         self.language = 'python' # set by scanColorDirectives.
         self.prev = None # The previous token.
-        self.ranges = 0
         # Data...
         self.fonts = {} # Keys are config names.  Values are actual fonts.
-        self.insertPoint = None
         self.keywords = {} # Keys are keywords, values are 0..5.
         self.modes = {} # Keys are languages, values are modes.
         self.mode = None # The mode object for the present language.
         self.modeBunch = None # A bunch fully describing a mode.
         self.modeStack = []
-        self.selection = None
-        if 0:
-            self.defineAndExtendForthWords()
+        self.s = None # The string being colorized.
+        # self.defineAndExtendForthWords()
         self.word_chars = {} # Inited by init_keywords().
         self.setFontFromConfig()
         self.tags = [
@@ -445,23 +444,18 @@ class colorizer:
             'label','literal1','literal2','literal3','literal4',
             'markup','operator',
         ]
-        # Incremental data.
-        self.end_i = 0 # The ending index of the text that has been colored.
-        self.marksDict = {} # Keys are indices of matches, values are lengths of the match.
-        self.old_s = None # The previous value of self.s
-        self.s = None # The string being colorized.
-        self.start_i = 0 # The starting index of the text that has been colored.
+
         # Threading stuff.
         self.globalTagList = [] # The interface between the helper and main thread.
             # The helper thread puts items on the list.  The main thread removes items.
-            # All accesses to this list *must* be protected by self.lock.
-        self.lock = threading.Condition()
+            # In the new threading colorizer, the helper thread completes before
+            # the main thread uses this list, so no lock is needed.
         self.threadCount = 0
         self.helperThread = None # A singleton helper thread.
         self.killFlag = False
-
-    #@-node:ekr.20070718131458.22:__init__
-    #@+node:ekr.20070718131458.23:addImportedRules
+    #@nonl
+    #@-node:ekr.20071010193720.21:__init__
+    #@+node:ekr.20071010193720.22:addImportedRules
     def addImportedRules (self,mode,rulesDict,rulesetName):
 
         '''Append any imported rules at the end of the rulesets specified in mode.importDict'''
@@ -491,8 +485,8 @@ class colorizer:
             # g.trace('***** added rules for %s from %s' % (name,rulesetName))
             self.initModeFromBunch(savedBunch)
     #@nonl
-    #@-node:ekr.20070718131458.23:addImportedRules
-    #@+node:ekr.20070718131458.24:addLeoRules
+    #@-node:ekr.20071010193720.22:addImportedRules
+    #@+node:ekr.20071010193720.23:addLeoRules
     def addLeoRules (self,theDict):
 
         '''Put Leo-specific rules to theList.'''
@@ -519,8 +513,8 @@ class colorizer:
                 theList.append(rule)
             theDict [ch] = theList
     #@nonl
-    #@-node:ekr.20070718131458.24:addLeoRules
-    #@+node:ekr.20070718131458.25:configure_tags
+    #@-node:ekr.20071010193720.23:addLeoRules
+    #@+node:ekr.20071010193720.24:configure_tags
     def configure_tags (self):
 
         c = self.c ; w = self.w
@@ -616,8 +610,8 @@ class colorizer:
         for name in self.color_tags_list:
             self.body.tag_configure(name,foreground=name)
     #@nonl
-    #@-node:ekr.20070718131458.25:configure_tags
-    #@+node:ekr.20070718131458.26:configure_variable_tags
+    #@-node:ekr.20071010193720.24:configure_tags
+    #@+node:ekr.20071010193720.25:configure_variable_tags
     def configure_variable_tags (self):
 
         c = self.c
@@ -642,8 +636,8 @@ class colorizer:
         # Special case:
         if not self.showInvisibles:
             self.body.tag_configure("elide",elide="1")
-    #@-node:ekr.20070718131458.26:configure_variable_tags
-    #@+node:ekr.20070718131458.27:init_mode & helpers
+    #@-node:ekr.20071010193720.25:configure_variable_tags
+    #@+node:ekr.20071010193720.26:init_mode & helpers
     def init_mode (self,name):
 
         '''Name may be a language name or a delegate name.'''
@@ -698,7 +692,7 @@ class colorizer:
             self.updateDelimsTables()
             return True
     #@nonl
-    #@+node:ekr.20070718131458.28:nameToRulesetName
+    #@+node:ekr.20071010193720.27:nameToRulesetName
     def nameToRulesetName (self,name):
 
         '''Compute language and rulesetName from name, which is either a language or a delegate name.'''
@@ -717,8 +711,8 @@ class colorizer:
         # g.trace(name,language,rulesetName)
         return language,rulesetName
     #@nonl
-    #@-node:ekr.20070718131458.28:nameToRulesetName
-    #@+node:ekr.20070718131458.29:setKeywords
+    #@-node:ekr.20071010193720.27:nameToRulesetName
+    #@+node:ekr.20071010193720.28:setKeywords
     def setKeywords (self):
 
         '''Initialize the keywords for the present language.
@@ -750,8 +744,8 @@ class colorizer:
 
         # g.trace(len(d.keys()))
     #@nonl
-    #@-node:ekr.20070718131458.29:setKeywords
-    #@+node:ekr.20070718131458.30:setModeAttributes
+    #@-node:ekr.20071010193720.28:setKeywords
+    #@+node:ekr.20071010193720.29:setModeAttributes
     def setModeAttributes (self):
 
         '''Set the ivars from self.attributesDict,
@@ -774,8 +768,8 @@ class colorizer:
             setattr(self,key,val)
             # g.trace(key,val)
     #@nonl
-    #@-node:ekr.20070718131458.30:setModeAttributes
-    #@+node:ekr.20070718131458.31:initModeFromBunch
+    #@-node:ekr.20071010193720.29:setModeAttributes
+    #@+node:ekr.20071010193720.30:initModeFromBunch
     def initModeFromBunch (self,bunch):
 
         self.modeBunch = bunch
@@ -791,8 +785,8 @@ class colorizer:
 
         # g.trace(self.rulesetName)
     #@nonl
-    #@-node:ekr.20070718131458.31:initModeFromBunch
-    #@+node:ekr.20070718131458.32:updateDelimsTables
+    #@-node:ekr.20071010193720.30:initModeFromBunch
+    #@+node:ekr.20071010193720.31:updateDelimsTables
     def updateDelimsTables (self):
 
         '''Update g.app.language_delims_dict if no entry for the language exists.'''
@@ -816,14 +810,14 @@ class colorizer:
             if not d.get(self.language):
                 d [self.language] = delims
                 # g.trace(self.language,'delims:',repr(delims))
-    #@-node:ekr.20070718131458.32:updateDelimsTables
-    #@-node:ekr.20070718131458.27:init_mode & helpers
-    #@-node:ekr.20070718131458.21:Birth and init
-    #@+node:ekr.20070718131458.33:Entry points
+    #@-node:ekr.20071010193720.31:updateDelimsTables
+    #@-node:ekr.20071010193720.26:init_mode & helpers
+    #@-node:ekr.20071010193720.20:Birth and init
+    #@+node:ekr.20071010193720.32:Entry points
     def idleHandler (self,event=None):
 
         if not self.helpterThread: return
-    #@+node:ekr.20070718131458.34:colorize
+    #@+node:ekr.20071010193720.33:colorize
     def colorize(self,p,incremental=False,interruptable=True):
 
         '''The main colorizer entry point.'''
@@ -834,14 +828,13 @@ class colorizer:
 
         if self.enabled:
             self.updateSyntaxColorer(p) # Sets self.flag.
-            # g.trace('self.flag',self.flag,'incremental',incremental)
-            self.threadColorizer(p,incremental,interruptable)
+            self.threadColorizer(p)
         else:
             self.removeAllTags()
 
         return "ok" # For unit testing.
-    #@-node:ekr.20070718131458.34:colorize
-    #@+node:ekr.20070718131458.35:enable & disable
+    #@-node:ekr.20071010193720.33:colorize
+    #@+node:ekr.20071010193720.34:enable & disable
     def disable (self):
 
         print "disabling all syntax coloring"
@@ -850,32 +843,14 @@ class colorizer:
     def enable (self):
         self.enabled=True
     #@nonl
-    #@-node:ekr.20070718131458.35:enable & disable
-    #@+node:ekr.20071009093328:isSameColorState
+    #@-node:ekr.20071010193720.34:enable & disable
+    #@+node:ekr.20071010193720.35:isSameColorState
     def isSameColorState (self):
 
         return False
-
-        # g.trace(g.callers())
-
-        def dumpState(state):
-            flag,language = state
-            return 'flag: %s, %s' % (flag,language)
-
-        if not self.enable:
-            # g.trace('returns False')
-            return False
-
-        state1 = self.flag,self.language
-        language = self.updateSyntaxColorer(self.c.currentPosition()) # Sets self.flag.
-        if language is None: language = self.language
-        state2 = self.flag,language
-
-        equal = state1 == state2
-        # g.trace('=',equal,'state1',dumpState(state1),'state2',dumpState(state2))
-        return equal
-    #@-node:ekr.20071009093328:isSameColorState
-    #@+node:ekr.20070718131458.36:interrupt (does nothing)
+    #@nonl
+    #@-node:ekr.20071010193720.35:isSameColorState
+    #@+node:ekr.20071010193720.36:interrupt (does nothing)
     # This is needed, even without threads.
 
     interrupt_count = 0
@@ -884,9 +859,9 @@ class colorizer:
 
         '''Interrupt colorOneChunk'''
 
-        pass
-    #@-node:ekr.20070718131458.36:interrupt (does nothing)
-    #@+node:ekr.20070718131458.40:useSyntaxColoring
+        if self.trace: g.trace('thread',self.threadCount)
+    #@-node:ekr.20071010193720.36:interrupt (does nothing)
+    #@+node:ekr.20071010193720.37:useSyntaxColoring
     def useSyntaxColoring (self,p):
 
         """Return True unless p is unambiguously under the control of @nocolor."""
@@ -914,8 +889,8 @@ class colorizer:
         # g.trace(first.headString(),val)
         return val
     #@nonl
-    #@-node:ekr.20070718131458.40:useSyntaxColoring
-    #@+node:ekr.20070718131458.41:updateSyntaxColorer
+    #@-node:ekr.20071010193720.37:useSyntaxColoring
+    #@+node:ekr.20071010193720.38:updateSyntaxColorer
     def updateSyntaxColorer (self,p):
 
         p = p.copy()
@@ -924,121 +899,63 @@ class colorizer:
         self.flag = self.useSyntaxColoring(p)
         self.scanColorDirectives(p)
     #@nonl
-    #@-node:ekr.20070718131458.41:updateSyntaxColorer
-    #@-node:ekr.20070718131458.33:Entry points
-    #@+node:ekr.20070719111308:Colorers & helpers
-    #@+node:ekr.20070720113510:findMarkAtIndex
-    def findMarkAtIndex(self,d,i):
-
-        '''Return the higest match that starts strictly before i.
-        Return 0 if no such match.'''
-
-        keys = d.keys()
-        keys.sort()
-        last_i = 0 
-        for key in keys:
-            if key >= i:
-                break
-            else:
-                last_i = key
-
-        if self.trace: g.trace('*******',last_i)
-        return last_i
-    #@-node:ekr.20070720113510:findMarkAtIndex
-    #@+node:ekr.20070718131458.42:finishColoring
-    def finishColoring (self,done):
-
-        c = self.c ; w = self.w
-        # if self.killFlag: return
-
-        if self.trace: #  and self.globalTagList:
-            g.trace('%d' % self.threadCount,'done',done,'globalTagList',len(self.globalTagList))
-
-        # Critical section: must be as fast as possible.
-        limit = 500
-        if self.lock_trace: g.trace('lock on',self.threadCount)
-        self.lock.acquire()
-        try:
-            if self.killFlag:
-                tagList = []
-                self.globalTagList = [] # Bug fix: 10/8/07
-            # elif done: # Bug fix: 10/8/07
-                # tagList = self.globalTagList[:]
-                # self.globalTagList = []
-            # elif limit:
-                # tagList = self.globalTagList[:limit]
-                # self.globalTagList = self.globalTagList[limit:]
-            else:
-                tagList = self.globalTagList[:]
-                self.globalTagList = []
-            # Apparently, this must be inside the lock.
-            # This *must* be called, even if we are killing the thread.
-            self.tagAll(tagList)
-            done = len(self.globalTagList) == 0
-        finally:
-            self.lock.release()
-
-        if self.lock_trace: g.trace('lock off',self.threadCount)
-
-        w.update_idletasks()
-
-        return done
-    #@-node:ekr.20070718131458.42:finishColoring
-    #@+node:ekr.20070718131458.50:idleHandler
+    #@-node:ekr.20071010193720.38:updateSyntaxColorer
+    #@-node:ekr.20071010193720.32:Entry points
+    #@+node:ekr.20071010193720.39:Colorers & helpers
+    #@+node:ekr.20071010193720.42:idleHandler
     def idleHandler (self,n):
 
         if not self.c.frame in g.app.windowList:
-            print 'threading_colorizer: window killed'
+            # print 'threading_colorizer.idleHandler: window killed %d' % n
             return
-        if not self.use_threads:
-            self.finishColoring(done=False)
-        elif not self.helperThread or n < self.threadCount:
+
+        if self.threadCount > n:
+            if self.trace: g.trace('*** old thread %d' % n)
             return
-        elif self.helperThread.isAlive():
-            if self.trace: g.trace('*** alive %d' % self.threadCount)
-            self.waitCount += 1
-            self.finishColoring(done=False)
-            # self.w.after_idle(self.idleHandler,n)
+
+        if self.killFlag:
+            if self.trace: g.trace('*** helper killed %d' % n)
+            return
+
+        t = self.helperThread
+        if t and t.isAlive():
+            if self.trace: g.trace('*** helper working %d' % n)
+            self.w.after(200,self.idleHandler,n)
+            return
+
+        # if self.trace: g.trace('*** helper done %d' % n)
+
+        if not self.tagsRemoved:
+            if self.trace: g.trace('***** remove all tags %d' %n)
+            self.removeAllTags()
+            self.tagsRemoved = True
+
+        self.tagAll()
+
+        if self.globalTagList:
+            # if self.trace: g.trace('*** tagAll not done %d' % n)
             self.w.after(200,self.idleHandler,n)
         else:
-            # if self.waitCount: g.trace('waitCount',self.waitCount)
-            if 1: # Much better response.
-                done = self.finishColoring(done=True)
-                if done:
-                    if self.trace: g.trace('*** dead  %d' % n)
-                else:
-                    if self.trace: g.trace('*** dead, not done %d' % n)
-                    self.w.after(200,self.idleHandler,n)
-            else: # safe, slow
-                if self.trace: g.trace('*** dead  %d' % n)
-                self.finishColoring(done=True)
-
-
-
-    #@-node:ekr.20070718131458.50:idleHandler
-    #@+node:ekr.20070718131458.49:init
-    def init (self,p,incremental,interruptable):
+            if self.trace: g.trace('*** tagAll done %d' % n)
+            self.w.update_idletasks()
+    #@-node:ekr.20071010193720.42:idleHandler
+    #@+node:ekr.20071010193720.43:init
+    def init (self,p):
 
         self.w = w = self.c.frame.body.bodyCtrl
 
-        self.incremental = incremental
-        self.interruptable = interruptable
-        self.insertPoint = w.getInsertPoint()  
         self.killFlag = False
         # self.language is set by self.updateSyntaxColorer.
         self.p = p.copy()
         self.s = w.getAllText()
-        self.selection = w.getSelectionRange()
-        # g.trace('ins',self.insertPoint,'sel',self.selection)
         self.globalTagList = []
-        self.prev = None ### Bug fix: 10/3/07
+        self.prev = None
         self.tagsRemoved = False
-        self.waitCount = 0
 
         self.init_mode(self.language)
         self.configure_tags() # Must do this every time to support multiple editors.
-    #@-node:ekr.20070718131458.49:init
-    #@+node:ekr.20070718131458.43:removeAllImages
+    #@-node:ekr.20071010193720.43:init
+    #@+node:ekr.20071010193720.44:removeAllImages
     def removeAllImages (self):
 
         # for photo,image,i in self.image_references:
@@ -1056,34 +973,21 @@ class colorizer:
                 # pass # The image may have been deleted earlier.
 
         self.image_references = []
-    #@-node:ekr.20070718131458.43:removeAllImages
-    #@+node:ekr.20070718131458.44:removeAllTags
+    #@-node:ekr.20071010193720.44:removeAllImages
+    #@+node:ekr.20071010193720.45:removeAllTags
     def removeAllTags (self):
 
         w = self.w
 
         if self.trace: g.trace()
+
         names = w.tag_names()
         i,j = w.toGuiIndex(0), w.toGuiIndex('end')
         for name in names:
             if name not in ('sel','insert'):
                 w.tag_remove(name,i,j)
-    #@-node:ekr.20070718131458.44:removeAllTags
-    #@+node:ekr.20070720165737:removeTagsFromRange
-    def removeTagsFromRange(self,i,j):
-
-        s = self.s ; w = self.w
-
-        if self.trace: g.trace('i',i,'j',j)
-
-        names = [z for z in w.tag_names() if z not in ('sel','insert')]
-
-        x1,x2 = w.toGuiIndex(self.start_i,s=s), w.toGuiIndex(self.end_i,s=s)
-        for tag in names:
-            # g.trace(tag,x1,x2)
-            w.tag_remove(tag,x1,x2)
-    #@-node:ekr.20070720165737:removeTagsFromRange
-    #@+node:ekr.20070724120821:tag & index (threadingColorizer)
+    #@-node:ekr.20071010193720.45:removeAllTags
+    #@+node:ekr.20071010193720.47:tag & index (threadingColorizer)
     def index (self,i):
 
         w = self.w
@@ -1097,22 +1001,18 @@ class colorizer:
         # g.trace(name,i,j,repr(s[i:j]),g.callers())
         x1,x2 = w.toGuiIndex(i,s=s), w.toGuiIndex(j,s=s)
         w.tag_add(name,x1,x2)
-    #@-node:ekr.20070724120821:tag & index (threadingColorizer)
-    #@+node:ekr.20070718131458.45:tagAll
-    def tagAll (self,tagList):
+    #@-node:ekr.20071010193720.47:tag & index (threadingColorizer)
+    #@+node:ekr.20071010193720.48:tagAll
+    def tagAll (self):
 
         '''Process all items on the tagList.'''
 
-        s = self.s ; w = self.w ; trace = False
+        s = self.s ; w = self.w ; limit = 500
 
-        if (self.trace or trace) and tagList:
-            g.trace('len(tagList)',len(tagList),'start:end',self.start_i,self.end_i)
+        tagList = self.globalTagList[:limit]
+        self.globalTagList = self.globalTagList[limit:]
 
-        if self.start_i == self.end_i:
-            # self.start_i = self.end_i
-            return
-
-        self.removeTagsFromRange(self.start_i,self.end_i)
+        # if self.trace: g.trace('len(globalTagList)',len(self.globalTagList))
 
         if tagList:
             for tag,i,j in tagList:
@@ -1126,74 +1026,40 @@ class colorizer:
                 else:
                     # g.trace(tag,x1,x2,i,j)
                     w.tag_add(tag,x1,x2)
-
-        self.start_i = self.end_i
-    #@-node:ekr.20070718131458.45:tagAll
-    #@+node:ekr.20070718131458.46:threadColorizer
+    #@-node:ekr.20071010193720.48:tagAll
+    #@+node:ekr.20071010193720.49:threadColorizer
     thread_count = 0
 
-    def threadColorizer (self,p,incremental,interruptable):
+    def threadColorizer (self,p):
 
         if self.trace: g.trace(g.callers())
 
         # Kill the previous thread for this widget.
-        if self.trace: g.trace('incremental',incremental,g.callers())
         t = self.helperThread
         if t and t.isAlive():
             self.killFlag = True
-            if self.trace: g.trace('before join',self.threadCount)
+            if self.trace: g.trace('*** before join',self.threadCount)
             t.join()
-            if self.trace: g.trace('after join',self.threadCount)
+            if self.trace: g.trace('*** after join',self.threadCount)
             self.killFlag = False
-            # This produces bad response for big body text.
-            # incremental = False # recolor **everything**.
         self.helperThread = None
+
         # Init the ivars *after* ending the previous helper thread.
-        self.init(p,incremental,interruptable) # Sets 'p','s','w' and other ivars.
+        self.init(p) # Sets 'p','s','w' and other ivars.
         g.doHook("init-color-markup",colorer=self,p=self.p,v=self.p)
+
         if self.killcolorFlag or not self.mode:
-            self.finishColoring(done=True)
-        elif self.use_threads: # Start the helper thread.
+            self.removeAllTags()
+        else:
             self.threadCount += 1
             t = threading.Thread(target=self.target,kwargs={'s':self.s})
             self.helperThread = t
             t.start()
             self.w.after_idle(self.idleHandler,self.threadCount)
-        else:
-            self.target(s=self.s)
-            self.w.after_idle(self.idleHandler,self.threadCount)
-    #@-node:ekr.20070718131458.46:threadColorizer
-    #@-node:ekr.20070719111308:Colorers & helpers
-    #@+node:edreamleo.20070728081453:In helper thread
-    #@+node:ekr.20070720101942:adjustMarksDict
-    def adjustMarksDict (self,d,mid_i,tail_i,delta):
-
-        '''Adjust the marksDict d by adding delta to
-        all keys and values whose keys are >= mid_i.'''
-
-        # Pass 1: Add changed items to d2, and delete them from d.
-        # Important: missing entries do not cause bugs--
-        # at worst they slow down the colorizer.
-        # Thus, we err on the side of caution.
-        d2 = {}
-        for i in d.keys():
-            if i > tail_i:
-                # d2 [i+delta] = d.get(i) + delta
-                if i + delta >= 0:
-                    val = d.get(i) + delta
-                    if val >= 0:
-                        d2 [i+delta] = val
-                del d[i]
-            elif i >= mid_i:
-                del d[i]
-
-        # Pass 2: Insert changed items back into d.
-        for i in d2.keys():
-            d[i] = d2.get(i)
-
-        return d
-    #@-node:ekr.20070720101942:adjustMarksDict
-    #@+node:ekr.20070718131458.48:colorRangeWithTag (in helper thread)
+    #@-node:ekr.20071010193720.49:threadColorizer
+    #@-node:ekr.20071010193720.39:Colorers & helpers
+    #@+node:ekr.20071010193720.50:In helper thread
+    #@+node:ekr.20071010193720.52:colorRangeWithTag (in helper thread)
     def colorRangeWithTag (self,s,i,j,tag,delegate='',exclude_match=False):
 
         '''Add an item to the globalTagList if colorizing is enabled.'''
@@ -1220,110 +1086,21 @@ class colorizer:
             bunch = self.modeStack.pop()
             self.initModeFromBunch(bunch)
         elif not exclude_match:
-            # g.trace('***',self.rulesetName,tag,i,j,s[i:j],g.callers())
-            # if self.trace: g.trace(tag,i,j,repr(s[i:j]))
-            # Critical section: must be as fast as possible.
-            if self.lock_trace: g.trace('lock on',self.threadCount)
-            self.lock.acquire()
             self.globalTagList.append((tag,i,j),)
-            self.end_i = j
-            self.lock.notify()
-            self.lock.release()
-            if self.lock_trace: g.trace('lock off',self.threadCount)
-    #@-node:ekr.20070718131458.48:colorRangeWithTag (in helper thread)
-    #@+node:ekr.20070720095702:computeIndices
-    def computeIndices (self):
-
-        '''Return (mid_i,tail_i,delta,all) where
-        - mid_i is the index of the start of the changed text,
-        - tail_i is the index of the start of the **new** trailing lines,
-        - delta is the change in the size of the changed text,
-        - all is true if all text must be recolored.'''
-
-        old_s,new_s = self.old_s,self.s
-
-        # The first optimization: recolor **everything** if all lines match.
-        # Some routines delete, then insert the text again, deleting all tags in the process.
-        if old_s == new_s:
-            all = True
-            return 0,0,0,all
-
-        # The second optimization. Check to see if only one line has changed.
-        ins = self.insertPoint # We must *not* call Tk here!
-        new_i,new_j = g.getLine(new_s,ins)
-        old_i,old_j = g.getLine(old_s,new_i)
-        new_head = new_s[:new_i]
-        old_head = old_s[:old_i]
-        new_tail = new_s[new_j:]
-        old_tail = old_s[old_j:]
-        #g.trace('new_head',repr(new_head),'\n','old_head',repr(old_head))
-        #g.trace('new_tail',repr(new_tail),'\n','old_tail',repr(old_tail))
-        if new_head == old_head and new_tail == old_tail:
-            # g.trace('**one line changed')
-            mid_i = new_i
-            tail_i = new_j
-            #new_line = new_s[new_i:new_j]
-            #old_line = old_s[old_i:old_j]
-            #delta = len(new_line) - len(old_line)
-            delta = (new_j-new_i) - (old_j-old_i)
-            all = False
-            return mid_i,tail_i,delta,all
-
-        # The general case: compare line-by line to find the head and tail.
-        new_lines = g.splitLines(new_s)
-        old_lines = g.splitLines(old_s)
-        new_len = len(new_lines)
-        old_len = len(old_lines)
-        # Find the head lines, the leading matching lines.
-        i = 0
-        while i < new_len and i < old_len and old_lines[i] == new_lines[i]:
-            i += 1
-        head = i
-        # Find the tail lines, the trailing matching lines.
-        i = 0
-        while (
-            old_len-i-1 >=0 and new_len-i-1 >=0 and
-            old_lines[old_len-i-1] == new_lines[new_len-i-1]
-        ):
-            i += 1
-        tail = i
-        # Compute the change (middle) lines.
-        new_head = ''.join(new_lines[:head])
-        old_head = ''.join(old_lines[:head])
-        # assert old_head == new_head
-        if tail:
-            new_tail = ''.join(new_lines[-tail:])
-            old_tail = ''.join(old_lines[-tail:])
-            new_middle = ''.join(new_lines[head:-tail])
-            old_middle = ''.join(old_lines[head:-tail])
-        else:
-            # g.trace('no tail')
-            new_tail = old_tail = ''
-            new_middle = ''.join(new_lines[head:])
-            old_middle = ''.join(old_lines[head:])
-        # assert old_tail == new_tail
-
-        # This recolors all of all changed lines.
-        # We could optimize this a bit, but I doubt it would make much difference.
-        mid_i = len(new_head)
-        tail_i = mid_i + len(new_middle)
-        delta = len(new_middle) - len(old_middle)
-        all = False
-        # g.trace('mid_i',mid_i,'tail_i',tail_i,'delta',delta,'all',all)
-        return mid_i,tail_i,delta,all
-    #@-node:ekr.20070720095702:computeIndices
-    #@+node:ekr.20070719105813:fullColor (in helper thread)
+    #@nonl
+    #@-node:ekr.20071010193720.52:colorRangeWithTag (in helper thread)
+    #@+node:ekr.20071010193720.54:fullColor (in helper thread)
     def fullColor (self,s):
 
         '''Fully recolor s.'''
 
-        if self.trace: g.trace(self.language,self.threadCount) #,g.callers())
-        i = self.start_i = self.end_i = 0
+        if self.trace: g.trace(self.language,'thread',self.threadCount,'len(s)',len(s))
+        i = 0
         self.marksDict = {}
         while i < len(s):
             progress = i
             if self.c.frame not in g.app.windowList:
-                # print 'threading_colorizer: fullColor: window killed'
+                # print 'threading_colorizer.fullColor: window killed'
                 return
             if self.killFlag:
                 if self.trace: g.trace('*** killed %d' % self.threadCount)
@@ -1342,103 +1119,23 @@ class colorizer:
                 i += 1
             assert i > progress
 
-        self.end_i = len(s)
-        self.old_s = self.s
         if self.trace: g.trace('*** done',self.threadCount)
-    #@-node:ekr.20070719105813:fullColor (in helper thread)
-    #@+node:ekr.20070719110029:partialColor (in helper thread)
-    def partialColor (self,s):
-
-        '''Partially recolor s'''
-
-        mid_i,tail_i,delta,all = self.computeIndices()
-        if all:
-            if self.trace: g.trace('*** all lines match: recolor all')
-            return self.fullColor(s)
-
-        d = self.marksDict = self.adjustMarksDict(self.marksDict,mid_i,tail_i,delta)
-        assert(mid_i == 0 or s[mid_i-1] == '\n')
-        i = self.findMarkAtIndex(d,max(0,mid_i-1))
-        self.start_i = self.self_end_i = i
-        # if mid_i-1 != i: g.trace('backtrack',repr(s[i:mid_i]))
-
-        # Create a list of (i,n) pairs from marksDict.
-        d = self.marksDict ; keys = d.keys() ; keys.sort()
-        endList = [(z,d.get(z)) for z in keys if z + d.get(z) >= tail_i]
-        self.marksDict = {}
-        if self.trace: g.trace(self.language,'thread',self.threadCount,'i',i)
-        while i < len(s):
-            progress = i
-            if self.c.frame not in g.app.windowList:
-                # print 'threading_colorizer: partialColor: window killed'
-                return
-            if self.killFlag:
-                if self.trace: g.trace('*** killed %d*' % self.threadCount)
-                return
-            # if i < 0 or i >= len(s):
-                # g.trace('can not happen','i out of range',i)
-            for f in self.rulesDict.get(s[i],[]):
-                n = f(self,s,i)
-                if n is None: g.trace('Can not happen: matcher returns None')
-                elif n > 0:
-                    if (trace_all_matches) and f.__name__ != 'match_blanks':
-                        g.trace(f.__name__,repr(s[i:i+n]))
-                    self.marksDict[i] = n
-                    i += n ; break
-            else:
-                i += 1
-            if i > tail_i:
-                #@            << finish if no item in endList covers i >>
-                #@+node:ekr.20070720141852:<< finish if no item in endList covers i >>
-                done = False ; n = 0 # count of elements to be removed.
-                for z in endList:
-                    i2,n2 = z
-                    if i2 <= i:
-                        if i2 + n2 < i:
-                            n += 1 # strictly before i. Remove it below.
-                        else:
-                            break # covers i.  Not done.
-                    else: # i2 > i:
-                        done = True
-                    if done: # Add trailing items in endList to the marksDict.
-                        self.marksDict[i2] = n2
-                else:
-                    done = True
-
-                if done:
-                    if self.trace: g.trace('*** found end: i: %d %s' % (i,repr(s[i:i+20])))
-                    break
-                else:
-                    # Delete n entries from the front of endList.
-                    if n > 0:
-                        endList = endList[n:]
-                #@nonl
-                #@-node:ekr.20070720141852:<< finish if no item in endList covers i >>
-                #@nl
-            assert progress < i
-        self.end_i = i
-        self.old_s = self.s
-        if self.trace: g.trace('*** done',self.threadCount)
-    #@-node:ekr.20070719110029:partialColor (in helper thread)
-    #@+node:ekr.20070718131458.52:target (in helper thread)
+    #@-node:ekr.20071010193720.54:fullColor (in helper thread)
+    #@+node:ekr.20071010193720.57:target (in helper thread)
     def target(self,*args,**keys):
 
         s = keys.get('s')
         # if self.trace: g.trace(self.threadCount)
-
         try:
-            if self.incremental:
-                self.partialColor(s)
-            else:
-                self.fullColor(s)
+            self.fullColor(s)
             return "ok" # for testing.
         except:
             # We can not use g.es_exception: it calls Tk methods.
             traceback.print_exc()
             return "error" # for unit testing.
-    #@-node:ekr.20070718131458.52:target (in helper thread)
-    #@-node:edreamleo.20070728081453:In helper thread
-    #@+node:ekr.20070718131458.53:jEdit matchers (in helper thread)
+    #@-node:ekr.20071010193720.57:target (in helper thread)
+    #@-node:ekr.20071010193720.50:In helper thread
+    #@+node:ekr.20071010193720.58:jEdit matchers (in helper thread)
     #@@nocolor
     #@+at
     # 
@@ -1471,7 +1168,7 @@ class colorizer:
     #@-at
     #@@c
     #@@color
-    #@+node:ekr.20070718131458.54:match_eol_span
+    #@+node:ekr.20071010193720.59:match_eol_span
     def match_eol_span (self,s,i,
         kind=None,seq='',
         at_line_start=False,at_whitespace_end=False,at_word_start=False,
@@ -1493,8 +1190,8 @@ class colorizer:
             return j - i
         else:
             return 0
-    #@-node:ekr.20070718131458.54:match_eol_span
-    #@+node:ekr.20070718131458.55:match_eol_span_regexp
+    #@-node:ekr.20071010193720.59:match_eol_span
+    #@+node:ekr.20071010193720.60:match_eol_span_regexp
     def match_eol_span_regexp (self,s,i,
         kind='',regexp='',
         at_line_start=False,at_whitespace_end=False,at_word_start=False,
@@ -1518,8 +1215,8 @@ class colorizer:
         else:
             return 0
     #@nonl
-    #@-node:ekr.20070718131458.55:match_eol_span_regexp
-    #@+node:ekr.20070718131458.56:match_keywords
+    #@-node:ekr.20071010193720.60:match_eol_span_regexp
+    #@+node:ekr.20071010193720.61:match_keywords
     # This is a time-critical method.
     def match_keywords (self,s,i):
 
@@ -1545,8 +1242,8 @@ class colorizer:
             return result
         else:
             return 0
-    #@-node:ekr.20070718131458.56:match_keywords
-    #@+node:ekr.20070718131458.57:match_mark_following & getNextToken
+    #@-node:ekr.20071010193720.61:match_keywords
+    #@+node:ekr.20071010193720.62:match_mark_following & getNextToken
     def match_mark_following (self,s,i,
         kind='',pattern='',
         at_line_start=False,at_whitespace_end=False,at_word_start=False,
@@ -1573,7 +1270,7 @@ class colorizer:
         else:
             return 0
     #@nonl
-    #@+node:ekr.20070718131458.58:getNextToken
+    #@+node:ekr.20071010193720.63:getNextToken
     def getNextToken (self,s,i):
 
         '''Return the index of the end of the next token for match_mark_following.
@@ -1586,9 +1283,9 @@ class colorizer:
 
         return min(len(s),i+1)
     #@nonl
-    #@-node:ekr.20070718131458.58:getNextToken
-    #@-node:ekr.20070718131458.57:match_mark_following & getNextToken
-    #@+node:ekr.20070718131458.59:match_mark_previous
+    #@-node:ekr.20071010193720.63:getNextToken
+    #@-node:ekr.20071010193720.62:match_mark_following & getNextToken
+    #@+node:ekr.20071010193720.64:match_mark_previous
     def match_mark_previous (self,s,i,
         kind='',pattern='',
         at_line_start=False,at_whitespace_end=False,at_word_start=False,
@@ -1620,8 +1317,8 @@ class colorizer:
             return j - i
         else:
             return 0
-    #@-node:ekr.20070718131458.59:match_mark_previous
-    #@+node:ekr.20070718131458.60:match_regexp_helper
+    #@-node:ekr.20071010193720.64:match_mark_previous
+    #@+node:ekr.20071010193720.65:match_regexp_helper
     def match_regexp_helper (self,s,i,pattern):
 
         '''Return the length of the matching text if seq (a regular expression) matches the present position.'''
@@ -1645,8 +1342,8 @@ class colorizer:
             # g.trace('match: %s' % repr(s[start: end]))
             # g.trace('groups',mo.groups())
             return end - start
-    #@-node:ekr.20070718131458.60:match_regexp_helper
-    #@+node:ekr.20070718131458.61:match_seq
+    #@-node:ekr.20071010193720.65:match_regexp_helper
+    #@+node:ekr.20071010193720.66:match_seq
     def match_seq (self,s,i,
         kind='',seq='',
         at_line_start=False,at_whitespace_end=False,at_word_start=False,
@@ -1669,8 +1366,8 @@ class colorizer:
             j = i
         return j - i
     #@nonl
-    #@-node:ekr.20070718131458.61:match_seq
-    #@+node:ekr.20070718131458.62:match_seq_regexp
+    #@-node:ekr.20071010193720.66:match_seq
+    #@+node:ekr.20071010193720.67:match_seq_regexp
     def match_seq_regexp (self,s,i,
         kind='',regexp='',
         at_line_start=False,at_whitespace_end=False,at_word_start=False,
@@ -1690,8 +1387,8 @@ class colorizer:
         self.trace_match(kind,s,i,j)
         return j - i
     #@nonl
-    #@-node:ekr.20070718131458.62:match_seq_regexp
-    #@+node:ekr.20070718131458.63:match_span & helper
+    #@-node:ekr.20071010193720.67:match_seq_regexp
+    #@+node:ekr.20071010193720.68:match_span & helper
     def match_span (self,s,i,
         kind='',begin='',end='',
         at_line_start=False,at_whitespace_end=False,at_word_start=False,
@@ -1724,7 +1421,7 @@ class colorizer:
 
         self.trace_match(kind,s,i,j)
         return j - i
-    #@+node:ekr.20070718131458.64:match_span_helper
+    #@+node:ekr.20071010193720.69:match_span_helper
     def match_span_helper (self,s,i,pattern,no_escape,no_line_break):
 
         '''Return n >= 0 if s[i] ends with a non-escaped 'end' string.'''
@@ -1758,9 +1455,9 @@ class colorizer:
             else:
                 return j
     #@nonl
-    #@-node:ekr.20070718131458.64:match_span_helper
-    #@-node:ekr.20070718131458.63:match_span & helper
-    #@+node:ekr.20070718131458.65:match_span_regexp
+    #@-node:ekr.20071010193720.69:match_span_helper
+    #@-node:ekr.20071010193720.68:match_span & helper
+    #@+node:ekr.20071010193720.70:match_span_regexp
     def match_span_regexp (self,s,i,
         kind='',begin='',end='',
         at_line_start=False,at_whitespace_end=False,at_word_start=False,
@@ -1800,15 +1497,15 @@ class colorizer:
             self.trace_match(kind,s,i,j2)
             return j2 - i
         else: return 0
-    #@-node:ekr.20070718131458.65:match_span_regexp
-    #@-node:ekr.20070718131458.53:jEdit matchers (in helper thread)
-    #@+node:ekr.20070718131458.66:Utils
+    #@-node:ekr.20071010193720.70:match_span_regexp
+    #@-node:ekr.20071010193720.58:jEdit matchers (in helper thread)
+    #@+node:ekr.20071010193720.71:Utils
     #@+at 
     #@nonl
     # These methods are like the corresponding functions in leoGlobals.py 
     # except they issue no error messages.
     #@-at
-    #@+node:ekr.20070718131458.67:dump
+    #@+node:ekr.20071010193720.72:dump
     def dump (self,s):
 
         if s.find('\n') == -1:
@@ -1816,8 +1513,8 @@ class colorizer:
         else:
             return '\n' + s + '\n'
     #@nonl
-    #@-node:ekr.20070718131458.67:dump
-    #@+node:ekr.20070718131458.69:munge
+    #@-node:ekr.20071010193720.72:dump
+    #@+node:ekr.20071010193720.73:munge
     def munge(self,s):
 
         '''Munge a mode name so that it is a valid python id.'''
@@ -1826,8 +1523,8 @@ class colorizer:
 
         return ''.join([g.choose(ch in valid,ch.lower(),'_') for ch in s])
     #@nonl
-    #@-node:ekr.20070718131458.69:munge
-    #@+node:ekr.20070718131458.70:scanColorDirectives
+    #@-node:ekr.20071010193720.73:munge
+    #@+node:ekr.20071010193720.74:scanColorDirectives
     def scanColorDirectives(self,p):
 
         """Scan position p and p's ancestors looking for @comment, @language and @root directives,
@@ -1846,7 +1543,7 @@ class colorizer:
             s = p.v.t.bodyString
             theDict = g.get_directives_dict(s)
             #@        << Test for @comment or @language >>
-            #@+node:ekr.20070718131458.71:<< Test for @comment or @language >>
+            #@+node:ekr.20071010193720.75:<< Test for @comment or @language >>
             # @comment and @language may coexist in the same node.
 
             if theDict.has_key("comment"):
@@ -1864,10 +1561,10 @@ class colorizer:
             if theDict.has_key("comment") or theDict.has_key("language"):
                 break
             #@nonl
-            #@-node:ekr.20070718131458.71:<< Test for @comment or @language >>
+            #@-node:ekr.20071010193720.75:<< Test for @comment or @language >>
             #@nl
             #@        << Test for @root, @root-doc or @root-code >>
-            #@+node:ekr.20070718131458.72:<< Test for @root, @root-doc or @root-code >>
+            #@+node:ekr.20071010193720.76:<< Test for @root, @root-doc or @root-code >>
             if theDict.has_key("root") and not self.rootMode:
 
                 k = theDict["root"]
@@ -1879,15 +1576,15 @@ class colorizer:
                     doc = c.config.at_root_bodies_start_in_doc_mode
                     self.rootMode = g.choose(doc,"doc","code")
             #@nonl
-            #@-node:ekr.20070718131458.72:<< Test for @root, @root-doc or @root-code >>
+            #@-node:ekr.20071010193720.76:<< Test for @root, @root-doc or @root-code >>
             #@nl
 
         # g.trace(self.language)
 
         return self.language # For use by external routines.
     #@nonl
-    #@-node:ekr.20070718131458.70:scanColorDirectives
-    #@+node:ekr.20070718131458.73:setFontFromConfig
+    #@-node:ekr.20071010193720.74:scanColorDirectives
+    #@+node:ekr.20071010193720.77:setFontFromConfig
     def setFontFromConfig (self):
 
         c = self.c
@@ -1919,35 +1616,35 @@ class colorizer:
         self.color_tags_list = []
         self.image_references = []
     #@nonl
-    #@-node:ekr.20070718131458.73:setFontFromConfig
-    #@+node:ekr.20070718131458.74:trace_match
+    #@-node:ekr.20071010193720.77:setFontFromConfig
+    #@+node:ekr.20071010193720.78:trace_match
     def trace_match(self,kind,s,i,j):
 
         if j != i and self.trace_match_flag:
             g.trace(kind,i,j,g.callers(4),self.dump(s[i:j]))
     #@nonl
-    #@-node:ekr.20070718131458.74:trace_match
-    #@-node:ekr.20070718131458.66:Utils
+    #@-node:ekr.20071010193720.78:trace_match
+    #@-node:ekr.20071010193720.71:Utils
     #@-others
-#@-node:ekr.20070718131458.20:class colorizer
+#@-node:ekr.20071010193720.19:class colorizer
 #@-others
 
 #@<< class nullColorizer (colorizer) >>
-#@+node:ekr.20070718131458.2:<< class nullColorizer (colorizer) >>
+#@+node:ekr.20071010193720.79:<< class nullColorizer (colorizer) >>
 class nullColorizer (colorizer):
 
     """A do-nothing colorer class"""
 
     #@    @+others
-    #@+node:ekr.20070718131458.3:__init__
+    #@+node:ekr.20071010193720.80:__init__
     def __init__ (self,c):
 
         colorizer.__init__(self,c) # init the base class.
 
         self.c = c
         self.enabled = False
-    #@-node:ekr.20070718131458.3:__init__
-    #@+node:ekr.20070718131458.4:entry points
+    #@-node:ekr.20071010193720.80:__init__
+    #@+node:ekr.20071010193720.81:entry points
     def colorize(self,p,incremental=False): pass
 
     def disable(self): pass
@@ -1962,11 +1659,11 @@ class nullColorizer (colorizer):
 
     def updateSyntaxColorer (self,p): pass
     #@nonl
-    #@-node:ekr.20070718131458.4:entry points
+    #@-node:ekr.20071010193720.81:entry points
     #@-others
 #@nonl
-#@-node:ekr.20070718131458.2:<< class nullColorizer (colorizer) >>
+#@-node:ekr.20071010193720.79:<< class nullColorizer (colorizer) >>
 #@nl
 #@nonl
-#@-node:ekr.20070718094819:@thin threading_colorizer.py	
+#@-node:ekr.20071010193720:@thin threading_colorizer.py	
 #@-leo
