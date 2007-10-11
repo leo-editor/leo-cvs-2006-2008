@@ -387,45 +387,43 @@ class colorizer:
     def __init__(self,c):
 
         # g.trace('threading_colorizer',self)
-        # Copies of ivars.
+        # Copies of ivars...
         self.c = c
         self.frame = c.frame
         self.body = c.frame.body
         self.p = None
         self.w = self.body.bodyCtrl
-        # Attributes dict ivars: defaults are as shown.
+        # Attributes dict ivars: defaults are as shown...
         self.default = 'null'
         self.digit_re = ''
         self.escape = ''
         self.highlight_digits = True
         self.ignore_case = True
         self.no_word_sep = ''
-        # Config settings.
+        # Config settings...
         self.comment_string = None # Set by scanColorDirectives on @comment
         self.showInvisibles = False # True: show "invisible" characters.
         self.underline_undefined = c.config.getBool("underline_undefined_section_names")
         self.use_hyperlinks = c.config.getBool("use_hyperlinks")
         self.enabled = c.config.getBool('use_syntax_coloring')
-        # Debugging.
+        # Debugging...
         self.trace = False or c.config.getBool('trace_colorizer')
         self.trace_match_flag = False
         self.count = 0 # For unit testing.
-        # State ivars...
+        # Data...
         self.comment_string = None # Can be set by @comment directive.
         self.defaultRulesList = []
         self.flag = True # True unless in range of @nocolor
         self.importedRulesets = {}
         self.language = 'python' # set by scanColorDirectives.
         self.prev = None # The previous token.
-        # Data...
         self.fonts = {} # Keys are config names.  Values are actual fonts.
         self.keywords = {} # Keys are keywords, values are 0..5.
         self.modes = {} # Keys are languages, values are modes.
         self.mode = None # The mode object for the present language.
         self.modeBunch = None # A bunch fully describing a mode.
         self.modeStack = []
-        self.s = None # The string being colorized.
-        # self.defineAndExtendForthWords()
+        if 0: self.defineAndExtendForthWords()
         self.word_chars = {} # Inited by init_keywords().
         self.setFontFromConfig()
         self.tags = [
@@ -445,14 +443,15 @@ class colorizer:
             'markup','operator',
         ]
 
-        # Threading stuff.
+        # Threading stuff...
         self.globalTagList = [] # The interface between the helper and main thread.
             # The helper thread puts items on the list.  The main thread removes items.
-            # In the new threading colorizer, the helper thread completes before
-            # the main thread uses this list, so no lock is needed.
+            # The helper thread completes before the main thread uses this list, so no lock is needed.
+        self.i = 0 # The start of the text whose tags have not been cleared.
         self.threadCount = 0
         self.helperThread = None # A singleton helper thread.
         self.killFlag = False
+        self.s = None # The string being colorized.
     #@nonl
     #@-node:ekr.20071010193720.21:__init__
     #@+node:ekr.20071010193720.22:addImportedRules
@@ -905,6 +904,9 @@ class colorizer:
     #@+node:ekr.20071010193720.42:idleHandler
     def idleHandler (self,n):
 
+        tweak1 = False # Erase tags in tagAll, not all at once.
+        tweak2 = not sys.platform.startswith('win') # Call update_idletasks every time tagAll is called.
+
         if not self.c.frame in g.app.windowList:
             # print 'threading_colorizer.idleHandler: window killed %d' % n
             return
@@ -925,19 +927,23 @@ class colorizer:
 
         # if self.trace: g.trace('*** helper done %d' % n)
 
-        if not self.tagsRemoved:
-            if self.trace: g.trace('***** remove all tags %d' %n)
-            self.removeAllTags()
-            self.tagsRemoved = True
+        if not tweak1: # Tweak one removes tags in tagAll.
+            if not self.tagsRemoved:
+                if self.trace: g.trace('***** remove all tags %d' %n)
+                self.removeAllTags()
+                self.tagsRemoved = True
 
-        self.tagAll()
+        self.tagAll(tweak1,tweak2)
 
         if self.globalTagList:
             # if self.trace: g.trace('*** tagAll not done %d' % n)
             self.w.after(200,self.idleHandler,n)
         else:
             if self.trace: g.trace('*** tagAll done %d' % n)
-            self.w.update_idletasks()
+            if not tweak2:
+                # Call update_idletasks only at the very end.
+                self.w.update_idletasks()
+    #@nonl
     #@-node:ekr.20071010193720.42:idleHandler
     #@+node:ekr.20071010193720.43:init
     def init (self,p):
@@ -946,6 +952,7 @@ class colorizer:
 
         self.killFlag = False
         # self.language is set by self.updateSyntaxColorer.
+        self.i = 0
         self.p = p.copy()
         self.s = w.getAllText()
         self.globalTagList = []
@@ -987,6 +994,20 @@ class colorizer:
             if name not in ('sel','insert'):
                 w.tag_remove(name,i,j)
     #@-node:ekr.20071010193720.45:removeAllTags
+    #@+node:ekr.20071011042037:removeTagsFromRange
+    def removeTagsFromRange(self,i,j):
+
+        s = self.s ; w = self.w
+
+        if self.trace: g.trace('i',i,'j',j)
+
+        names = [z for z in w.tag_names() if z not in ('sel','insert')]
+
+        x1,x2 = w.toGuiIndex(i,s=s), w.toGuiIndex(j,s=s)
+        for tag in names:
+            # g.trace(tag,x1,x2)
+            w.tag_remove(tag,x1,x2)
+    #@-node:ekr.20071011042037:removeTagsFromRange
     #@+node:ekr.20071010193720.47:tag & index (threadingColorizer)
     def index (self,i):
 
@@ -1003,7 +1024,7 @@ class colorizer:
         w.tag_add(name,x1,x2)
     #@-node:ekr.20071010193720.47:tag & index (threadingColorizer)
     #@+node:ekr.20071010193720.48:tagAll
-    def tagAll (self):
+    def tagAll (self,tweak1,tweak2):
 
         '''Process all items on the tagList.'''
 
@@ -1011,6 +1032,14 @@ class colorizer:
 
         tagList = self.globalTagList[:limit]
         self.globalTagList = self.globalTagList[limit:]
+
+        if tweak1:
+            if self.globalTagList: # Remove the tag only from tagList.
+                tag,i,j = tagList[-1]
+            else: # Remove all remaining tags.
+                j = len(self.s)
+            self.removeTagsFromRange(self.i,j)
+            self.i = j
 
         # if self.trace: g.trace('len(globalTagList)',len(self.globalTagList))
 
@@ -1026,6 +1055,9 @@ class colorizer:
                 else:
                     # g.trace(tag,x1,x2,i,j)
                     w.tag_add(tag,x1,x2)
+
+        if tweak2:
+            w.update_idletasks()
     #@-node:ekr.20071010193720.48:tagAll
     #@+node:ekr.20071010193720.49:threadColorizer
     thread_count = 0
