@@ -1960,6 +1960,1287 @@ class cSharpScanner (baseScannerClass):
         self.sigFailTokens = []
 #@-node:ekr.20071008130845.2:class cSharpScanner (baseScannerClass)
 #@-node:ekr.20071008130845:C# scanner
+#@+node:ekr.20070703122141.65: class baseScannerClass
+class baseScannerClass:
+
+    '''The base class for all import scanner classes.
+    This class contains common utility methods.'''
+
+    @others
+#@+node:ekr.20070703122141.66:baseScannerClass.__init__
+def __init__ (self,importCommands,atAuto,language):
+
+    ic = importCommands
+
+    self.atAuto = atAuto
+    self.c = c = ic.c
+    self.classId = None # The identifier containing the class tag: 'class', 'interface', 'namespace', etc.
+    self.codeEnd = None
+        # The character after the last character of the class, method or function.
+        # An error will be given if this is not a newline.
+    self.encoding = ic.encoding # g.app.tkEncoding
+    self.errors = 0
+    ic.errors = 0
+    self.errorLines = []
+    self.extraIdChars = ''
+    self.fileName = ic.fileName # The original filename.
+    self.fileType = ic.fileType # The extension,  '.py', '.c', etc.
+    self.fullChecks = c.config.getBool('full_import_checks')
+    self.importCommands = ic
+    self.language = language
+    self.methodName = ic.methodName # x, as in < < x methods > > =
+    self.output_newline = ic.output_newline # = c.config.getBool('output_newline')
+    self.root = None # The top-level node of the generated tree.
+    self.rootLine = ic.rootLine # '' or @root + self.fileName
+    self.sigEnd = None # The index of the end of the signature.
+    self.sigId = None # The identifier contained in the signature, i.e., the function or method name.
+    self.sigStart = None
+        # The start of the line containing the signature.
+        # An error will be given if something other than whitespace precedes the signature.
+    self.startSigIndent = None
+    self.tab_width = ic.getTabWidth() # The tab width in effect in the c.currentPosition.
+    self.trace = False or ic.trace # = c.config.getBool('trace_import')
+    self.treeType = ic.treeType # '@root' or '@file'
+    self.webType = ic.webType # 'cweb' or 'noweb'  
+
+    # Compute language ivars.
+    delim1,delim2,delim3 = g.set_delims_from_language(language)
+    self.comment_delim = delim1
+
+    # Create the ws equivalent to one tab.
+    if self.tab_width < 0:
+        self.tab_ws = ' '*abs(self.tab_width)
+    else:
+        self.tab_ws = '\t'
+
+    # May be overridden in subclasses.
+    self.blockCommentDelim1 = None
+    self.blockCommentDelim2 = None
+    self.blockDelim1 = '{'
+    self.blockDelim2 = '}'
+    self.classTags = ['class',]
+        # tags that start a tag.
+    self.functionTags = []
+    self.lineCommentDelim = None
+    self.lineCommentDelim2 = None
+    self.outerBlockDelim1 = None
+    self.outerBlockDelim2 = None
+    self.sigHeadExtraTokens = [] # Extra tokens valid in head of signature.
+    self.sigFailTokens = []
+        # A list of strings that abort a signature when seen in a tail.
+        # For example, ';' and '=' in C.
+
+    self.strict = False # True if leading whitespace is very significant.
+#@-node:ekr.20070703122141.66:baseScannerClass.__init__
+#@+node:ekr.20070808115837:Checking
+#@+node:ekr.20070703122141.102:check
+def check (self,s,parent):
+
+    '''Make sure the generated nodes are equivalent to the original file.
+
+    1. Regularize and check leading whitespace.
+    2. Check that a trial write produces the original file.
+
+    Return True if the nodes are equivalent to the original file.
+    '''
+
+    if self.fullChecks and self.treeType == '@file':
+        return self.checkTrialWrite()
+    else:
+        return True
+#@-node:ekr.20070703122141.102:check
+#@+node:ekr.20070703122141.104:checkTrialWrite & tests
+def checkTrialWrite (self,s1=None,s2=None):
+
+    '''Return True if a trial write produces the original file.'''
+
+    c = self.c ; at = c.atFileCommands
+
+    if s1 and s2:
+        if s1 == s2: return True
+
+    at.write(self.root,
+        nosentinels=True,thinFile=False,
+        scriptWrite=False,toString=True,
+        write_strips_blank_lines=False,
+    )
+
+    s1,s2 = self.file_s, at.stringOutput
+    s1 = s1.replace('\r','')
+    s2 = s2.replace('\r','')
+    if s1 == s2: return True
+
+    lines1 = g.splitLines(s1) ; n1 = len(lines1)
+    lines2 = g.splitLines(s2) ; n2 = len(lines2)
+
+    ok = True ; bad_i = 0
+    for i in xrange(max(n1,n2)):
+        ok = self.compareHelper(lines1,lines2,i,self.strict)
+        if not ok:
+            bad_i = i + 1
+            break
+
+    if g.app.unitTesting:
+        d = g.app.unitTestDict
+        ok = d.get('expectedMismatchLine') == d.get('actualMismatchLine')
+
+    if not ok:
+        self.reportMismatch(lines1,lines2,bad_i)
+
+    return ok
+#@+node:ekr.20070816103348:@test checkTriailWrite
+if g.unitTesting:
+
+    ic = c.importCommands
+    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+
+    s1 = 'line1\nline2\n'
+    s2 = 'line1\nline2a\n'
+    runner.checkTrialWrite(s1=s1,s2=s2)
+#@-node:ekr.20070816103348:@test checkTriailWrite
+#@-node:ekr.20070703122141.104:checkTrialWrite & tests
+#@+node:ekr.20070730093735:compareHelper & tests
+def compareHelper (self,lines1,lines2,i,strict):
+
+    '''Compare lines1[i] and lines2[i].
+    strict is True if leading whitespace is very significant.'''
+
+    def pr(*args,**keys):
+        g.es_print(color='blue',*args,**keys)
+
+    d = g.app.unitTestDict
+    expectedMismatch = g.app.unitTesting and d.get('expectedMismatchLine')
+
+    if i >= len(lines1):
+        if i != expectedMismatch or not g.app.unitTesting:
+            pr('extra lines')
+            for line in lines2[i:]:
+                pr(repr(line))
+        d ['actualMismatchLine'] = i
+        return False
+
+    if i >= len(lines2):
+        if i != expectedMismatch or not g.app.unitTesting:
+            g.es_print('missing lines')
+            for line in lines2[i:]:
+                g.es_print(repr(line))
+        d ['actualMismatchLine'] = i
+        return False
+
+    line1,line2 = lines1[i],lines2[i]
+    if line1 == line2:
+        return True # An exact match.
+    elif not line1.strip() and not line2.strip():
+        return True # All blank lines compare equal.
+    elif not strict and line1.lstrip() == line2.lstrip():
+        return True # A match excluding leading whitespace.
+    else:
+        g.trace(g.callers())
+        if not g.app.unitTesting or i+1 != expectedMismatch:
+            g.es_print('*** first mismatch at line %d' % (i+1))
+            g.es_print('original line:  %s' % repr(line1))
+            g.es_print('generated line: %s' % repr(line2))
+        d ['actualMismatchLine'] = i+1
+        # g.trace('lines 1...\n',repr(lines1),'\nlines2...\n',repr(lines2))
+        return False
+#@+node:ekr.20070816101019:@test compareHelper
+if g.unitTesting:
+
+    ic = c.importCommands
+    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+    i = 0
+    lines1 = ['abc',]
+    lines2 = ['xyz',]
+    runner.compareHelper(lines1,lines2,i,strict=True)
+#@-node:ekr.20070816101019:@test compareHelper
+#@-node:ekr.20070730093735:compareHelper & tests
+#@+node:ekr.20070911110507:reportMismatch & test
+def reportMismatch (self,lines1,lines2,bad_i):
+
+    def pr(*args,**keys):
+        g.es_print(color='blue',*args,**keys)
+
+    kind = g.choose(self.atAuto,'@auto','import command')
+    self.error(
+        '%s did not import the file perfectly\nfirst mismatched line: %d\n%s' % (
+            kind,bad_i,repr(lines2[bad_i-1])))
+
+    if len(lines1) < 30:
+        pr('input...')
+        for i in xrange(len(lines1)):
+            pr('%3d %s' % (i,lines1[i]),newline=False)
+        pr('output...')
+        for i in xrange(len(lines2)):
+            pr('%3d %s' % (i,lines2[i]),newline=False)
+
+    return False
+#@+node:ekr.20070913084008:@test pr
+if False or g.unitTesting:
+    def pr(*args,**keys):
+        g.es_print(color='blue',*args,**keys)
+
+    pr('input...')
+    pr('newline=False:',newline=False)
+    pr('after')
+    pr('done')
+#@-node:ekr.20070913084008:@test pr
+#@-node:ekr.20070911110507:reportMismatch & test
+#@-node:ekr.20070808115837:Checking
+#@+node:ekr.20070706084535:Code generation
+@ None of these methods should ever need to be overridden in subclasses.
+
+#@+node:ekr.20070707073044.1:addRef
+def addRef (self,parent):
+
+    '''Create an unindented @others or section reference in the parent node.'''
+
+    c = self.c
+
+    if self.treeType == '@file':
+        c.appendStringToBody(parent,'@others\n')
+
+    if self.treeType == '@root' and self.methodsSeen:
+        c.appendStringToBody(parent,
+            g.angleBrackets(' ' + self.methodName + ' methods ') + '\n\n')
+#@-node:ekr.20070707073044.1:addRef
+#@+node:ekr.20070705144309:createDeclsNode
+def createDeclsNode (self,parent,s):
+
+    '''Create a child node of parent containing s.'''
+
+    # Create the node for the decls.
+    headline = self.methodName + ' declarations'
+    body = self.undentBody(s)
+    self.createHeadline(parent,body,headline)
+#@-node:ekr.20070705144309:createDeclsNode
+#@+node:ekr.20070707085612:createFunctionNode
+def createFunctionNode (self,headline,body,parent):
+
+    # Create the prefix line for @root trees.
+    if self.treeType == '@file':
+        prefix = ''
+    else:
+        prefix = g.angleBrackets(' ' + headline + ' methods ') + '=\n\n'
+        self.methodsSeen = True
+
+    # Create the node.
+    self.createHeadline(parent,prefix + body,headline)
+
+#@-node:ekr.20070707085612:createFunctionNode
+#@+node:ekr.20070703122141.77:createHeadline
+def createHeadline (self,parent,body,headline):
+
+    # g.trace('parent,headline:',parent,headline)
+
+    # Create the node.
+    p = parent.insertAsLastChild()
+    p.initHeadString(headline,self.encoding)
+
+    # Set the body.
+    if body:
+        self.c.setBodyString(p,body,self.encoding)
+    return p
+#@-node:ekr.20070703122141.77:createHeadline
+#@+node:ekr.20070703122141.79:getLeadingIndent
+def getLeadingIndent (self,s,i,ignoreComments=True):
+
+    '''Return the leading whitespace of a line.
+    Ignore blank and comment lines if ignoreComments is True'''
+
+    width = 0
+    i = g.find_line_start(s,i)
+    if ignoreComments:
+        while i < len(s):
+            # g.trace(g.get_line(s,i))
+            j = g.skip_ws(s,i)
+            if g.is_nl(s,j) or g.match(s,j,self.comment_delim):
+                i = g.skip_line(s,i) # ignore blank lines and comment lines.
+            else:
+                i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+                break      
+    else:
+        i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+
+    # g.trace('returns:',width)
+    return width
+#@-node:ekr.20070703122141.79:getLeadingIndent
+#@+node:ekr.20070709094002:indentBody
+def indentBody (self,s,lws=None):
+
+    '''Add whitespace equivalent to one tab for all non-blank lines of s.'''
+
+    result = []
+    if not lws: lws = self.tab_ws
+
+    for line in g.splitLines(s):
+        if line.strip():
+            result.append(lws + line)
+        elif line.endswith('\n'):
+            result.append('\n')
+
+    result = ''.join(result)
+    return result
+#@-node:ekr.20070709094002:indentBody
+#@+node:ekr.20070705085335:insertIgnoreDirective
+def insertIgnoreDirective (self,parent):
+
+    self.c.appendStringToBody(parent,'@ignore')
+
+    if not g.unitTesting:
+        g.es_print('inserting @ignore',color='blue')
+#@-node:ekr.20070705085335:insertIgnoreDirective
+#@+node:ekr.20070703122141.81:massageComment
+def massageComment (self,s):
+
+    '''Return s with leading and trailing whitespace removed and all other
+    runs of whitespace and newlines converted to a single blank.'''
+
+    s = s.strip()
+    s = s.replace('\n',' ')
+    s = s.replace('\r',' ')
+    s = s.replace('\t',' ')
+    s = s.replace('  ',' ')
+    s = s.strip()
+    return s
+#@-node:ekr.20070703122141.81:massageComment
+#@+node:ekr.20070707113832.1:putClass & helpers
+def putClass (self,s,sigStart,sigEnd,codeEnd,start,parent):
+
+    '''Creates a child node c of parent for the class, and children of c for each def in the class.'''
+
+    prefix = self.createClassNodePrefix()
+    if not self.sigId:
+        g.trace('Can not happen: no sigId')
+        sigId = 'Unknown class name'
+    class_kind = self.classId
+    class_name = self.sigId
+    # headline = 'class ' + class_name
+    headline = '%s %s' % (class_kind,class_name)
+    body = s[start:sigEnd]
+    body = self.undentBody(body)
+    i = self.extendSignature(s,sigEnd)
+    extend = s[sigEnd:i]
+    if extend:
+        extend = self.undentBody(extend)
+        extend = self.indentBody(extend)
+        body = body + extend
+
+    class_node = self.createHeadline(parent,prefix + body,headline)
+    savedMethodName = self.methodName
+    self.methodName = headline
+    self.putClassHelper(s,i,codeEnd,class_name,class_node)
+    self.methodName = savedMethodName
+#@+node:ekr.20070703122141.106:appendRefToClassNode
+def appendRefToClassNode (self,class_name,class_node):
+
+    '''Insert the proper body text in the class_vnode.'''
+
+    if self.treeType == '@file':
+        s = '@others'
+    else:
+        s = g.angleBrackets(' class %s methods ' % (class_name))
+
+    self.appendTextToClassNode(class_node,'%s%s\n' % (self.tab_ws,s))
+#@-node:ekr.20070703122141.106:appendRefToClassNode
+#@+node:ekr.20070707190351:appendTextToClassNode
+def appendTextToClassNode (self,class_node,s):
+
+    c = self.c
+
+    c.appendStringToBody(class_node,s) 
+#@-node:ekr.20070707190351:appendTextToClassNode
+#@+node:ekr.20070703122141.105:createClassNodePrefix
+def createClassNodePrefix (self):
+
+    '''Create the class node prefix.'''
+
+    if  self.treeType == '@file':
+        prefix = ''
+    else:
+        prefix = g.angleBrackets(' ' + self.methodName + ' methods ') + '=\n\n'
+        self.methodsSeen = True
+
+    return prefix
+#@-node:ekr.20070703122141.105:createClassNodePrefix
+#@+node:ekr.20070707171329:putClassHelper
+def putClassHelper(self,s,i,end,class_name,class_node):
+
+    '''s contains the body of a class, not including the signature.
+
+    Parse s for inner methods and classes, and create nodes.'''
+
+    # Put any leading decls in the class node.
+    trace = False or self.trace
+    start = i
+    i = self.skipDecls(s,i,end)
+    decls = s[start:i]
+    if decls:
+        # We must regularize the indentation to match the @others
+        decls = self.undentBody(decls)
+        decls = self.indentBody(decls)
+        if self.trace: g.trace('decls\n%s' % decls)
+        # g.trace(class_name,'decls',repr(decls))
+        self.appendTextToClassNode(class_node,decls)
+    start = i ; putRef = False
+    while i < end:
+        progress = i
+        if s[i] in (' ','\t','\n'):
+            i += 1 # Prevent lookahead below, and speed up the scan.
+        elif self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            i = self.skipString(s,i)
+        elif self.startsClass(s,i):  # Sets sigStart,sigEnd & codeEnd ivars.
+            putRef = True
+            end2 = self.codeEnd # putClass may change codeEnd ivar.
+            saveIndent = self.startSigIndent # Bug fix: 10/10/07
+            self.putClass(s,self.sigStart,self.sigEnd,self.codeEnd,start,class_node)
+            self.startSigIndent = saveIndent
+            i = start = end2
+        elif self.startsFunction(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
+            putRef = True
+            saveIndent = self.startSigIndent # Bug fix: 10/10/07
+            self.putFunction(s,self.sigStart,self.codeEnd,start,class_node)
+            self.startSigIndent = saveIndent
+            i = start = self.codeEnd
+        elif self.startsId(s,i):
+            i = self.skipId(s,i);
+        elif g.match(s,i,self.outerBlockDelim1): # Bug fix: do this after testing for classes.
+            i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+        else: i += 1
+        assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
+
+    if putRef:
+        self.appendRefToClassNode(class_name,class_node)
+
+    if start < end:
+        trailing = s[start:end]
+        if trace: g.trace('trailing\n%s' % trailing)
+        self.appendTextToClassNode(class_node,trailing)
+#@-node:ekr.20070707171329:putClassHelper
+#@-node:ekr.20070707113832.1:putClass & helpers
+#@+node:ekr.20070707082432:putFunction
+def putFunction (self,s,sigStart,codeEnd,start,parent):
+
+    '''Create a node of parent for a function defintion.'''
+
+    if self.sigId:
+        headline = self.sigId
+    else:
+        g.trace('Can not happen: no sigId')
+        headline = 'unknown function'
+
+    body1 = self.undentBody(s[start:sigStart],ignoreComments=False)
+
+    body2 = self.undentBody(s[sigStart:codeEnd])
+    body = body1 + body2
+    if self.trace:
+        g.trace('body\n%s' % repr(body))
+        g.trace('body\n%s' % body)
+
+    if not body.endswith('\n'):
+        self.error(
+            'function %s does not end with a newline; one will be added\n%s' % (
+                self.sigId,g.get_line(s,codeEnd)))
+        g.trace(g.callers())
+
+    self.createFunctionNode(headline,body,parent)
+#@-node:ekr.20070707082432:putFunction
+#@+node:ekr.20070705094630:putRootText
+def putRootText (self,p):
+
+    c = self.c
+
+    c.appendStringToBody(p,'%s@language %s\n@tabwidth %d\n' % (
+        self.rootLine,self.language,self.tab_width))
+#@-node:ekr.20070705094630:putRootText
+#@+node:ekr.20070703122141.88:undentBody
+def undentBody (self,s,ignoreComments=True):
+
+    '''Remove the first line's leading indentation from all lines of s.'''
+
+    #g.trace('before',repr(s))
+
+    # Copy an @code line as is.
+    i = 0
+    if g.match(s,i,'@code'):
+        j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
+        result += s[j:i]
+
+    # Calculate the amount to be removed from each line.
+    undent = self.getLeadingIndent(s,i,ignoreComments=ignoreComments)
+    if undent == 0:
+        return s
+    else:
+        result = ''.join([
+            g.removeLeadingWhitespace(line,undent,self.tab_width)
+                for line in g.splitLines(s)])
+        #g.trace('after',repr(result))
+        return result
+#@-node:ekr.20070703122141.88:undentBody
+#@+node:ekr.20070801074524:underindentedComment & underindentedLine
+def underindentedComment (self,line):
+
+    self.error(
+        'underindented python comments.\nExtra leading whitespace will be added\n' + line)
+
+def underindentedLine (self,line):
+
+    self.error(
+        'underindented line.\nExtra leading whitespace will be added\n' + line)
+#@-node:ekr.20070801074524:underindentedComment & underindentedLine
+#@-node:ekr.20070706084535:Code generation
+#@+node:ekr.20070703122141.78:error & oops
+def error (self,s):
+
+    self.errors += 1
+    self.importCommands.errors += 1
+    if g.app.unitTesting:
+        if self.errors == 1:
+            g.app.unitTestDict['actualErrorMessage'] = s
+        g.app.unitTestDict['actualErrors'] = self.errors
+        if 0: # For debugging unit tests.
+            g.es_print(s,color='red')
+    else:
+        g.es_print(s,color='red')
+
+def oops (self):
+    print 'baseScannerClass oops: %s must be overridden in subclass' % g.callers()
+#@-node:ekr.20070703122141.78:error & oops
+#@+node:ekr.20070706084535.1:Parsing
+@ Scan and skipDecls would typically not be overridden.
+#@+node:ekr.20070707150022:extendSignature
+def extendSignature(self,s,i):
+
+    '''Extend the signature line if appropriate.
+    The text *must* end with a newline.
+
+    For example, the Python scanner appends docstrings if they exist.'''
+
+    return i
+#@-node:ekr.20070707150022:extendSignature
+#@+node:ekr.20070706101600:scan
+def scan (self,s,parent):
+
+    '''A language independent scanner: it uses language-specific helpers.
+
+    Create a child of self.root for:
+    - Leading outer-level declarations.
+    - Outer-level classes.
+    - Outer-level functions.
+    '''
+    self.putRootText(parent)
+    i = start = self.skipDecls(s,0,len(s))
+    decls = s[:i]
+    if decls: self.createDeclsNode(parent,decls)
+    while i < len(s):
+        progress = i
+        if s[i] in (' ','\t','\n'):
+            i += 1 # Prevent lookahead below, and speed up the scan.
+        elif self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            i = self.skipString(s,i)
+        elif g.match(s,i,self.outerBlockDelim1):
+            # k = i
+            i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+            # g.trace('\n',s[k:i])
+        elif self.startsClass(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
+            end2 = self.codeEnd # putClass may change codeEnd ivar.
+            self.putClass(s,self.sigStart,self.sigEnd,self.codeEnd,start,parent)
+            i = start = end2
+        elif self.startsFunction(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
+            self.putFunction(s,self.sigStart,self.codeEnd,start,parent)
+            i = start = self.codeEnd
+        elif self.startsId(s,i):
+            i = self.skipId(s,i);
+        else: i += 1
+        assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
+    self.addRef(parent)
+    if start < len(s):
+        self.c.appendStringToBody(parent,s[start:]) 
+#@-node:ekr.20070706101600:scan
+#@+node:ekr.20070712075148:skipArgs
+def skipArgs (self,s,i,kind):
+
+    '''Skip the argument or class list.  Return i, ok
+
+    kind is in ('class','function')'''
+
+    start = i
+    i = g.skip_ws_and_nl(s,i)
+    if not g.match(s,i,'('):
+        return start,kind == 'class'
+
+    i = self.skipParens(s,i)
+    # skipParens skips the ')'
+    if i >= len(s):
+        return start,False
+    else:
+        return i,True 
+#@-node:ekr.20070712075148:skipArgs
+#@+node:ekr.20070707073859:skipBlock
+def skipBlock(self,s,i,delim1=None,delim2=None):
+
+    '''Skip from the opening delim to *past* the matching closing delim.
+
+    If no matching is found i is set to len(s)'''
+
+    trace = False
+    start = i
+    if delim1 is None: delim1 = self.blockDelim1
+    if delim2 is None: delim2 = self.blockDelim2
+    match1 = g.choose(len(delim1)==1,g.match,g.match_word)
+    match2 = g.choose(len(delim2)==1,g.match,g.match_word)
+    assert match1(s,i,delim1)
+    level = 0 ; start = i
+    startIndent = self.startSigIndent
+    if trace: g.trace('***','startIndent',startIndent,g.callers())
+    while i < len(s):
+        progress = i
+        if g.is_nl(s,i):
+            backslashNewline = i > 0 and g.match(s,i-1,'\\\n')
+            i = g.skip_nl(s,i)
+            if not backslashNewline and not g.is_nl(s,i):
+                j, indent = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+                line = g.get_line(s,j)
+                if trace: g.trace('indent',indent,line)
+                if indent < startIndent and line.strip():
+                    # An non-empty underindented line.
+                    # Issue an error unless it contains just the closing bracket.
+                    if level == 1 and match2(s,j,delim2):
+                        pass
+                    else:
+                        if j not in self.errorLines: # No error yet given.
+                            self.errorLines.append(j)
+                            self.underindentedLine(line)
+        elif s[i] in (' ','\t',):
+            i += 1 # speed up the scan.
+        elif self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            i = self.skipString(s,i)
+        elif match1(s,i,delim1):
+            level += 1 ; i += len(delim1)
+        elif match2(s,i,delim2):
+            level -= 1 ; i += len(delim2)
+            if level <= 0:
+                if trace: g.trace('returns\n',repr(s[start:i]))
+                return i
+
+        else: i += 1
+        assert progress < i
+
+    if trace: g.trace('** no block')
+    return start
+#@-node:ekr.20070707073859:skipBlock
+#@+node:ekr.20070712091019:skipCodeBlock
+def skipCodeBlock (self,s,i,kind):
+
+    '''Skip the code block in a function or class definition.'''
+
+    trace = False
+    start = i
+    i = self.skipBlock(s,i,delim1=None,delim2=None)
+
+    if self.sigFailTokens:
+        i = g.skip_ws(s,i)
+        for z in self.sigFailTokens:
+            if g.match(s,i,z):
+                if trace: g.trace('failtoken',z)
+                return start,False
+
+    if i > start:
+        i = self.skipNewline(s,i,kind)
+
+    return i,True
+#@-node:ekr.20070712091019:skipCodeBlock
+#@+node:ekr.20070711104014:skipComment & helper
+def skipComment (self,s,i):
+
+    '''Skip a comment and return the index of the following character.'''
+
+    if g.match(s,i,self.lineCommentDelim) or g.match(s,i,self.lineCommentDelim2):
+        return g.skip_to_end_of_line(s,i)
+    else:
+        return self.skipBlockComment(s,i)
+#@+node:ekr.20070707074541:skipBlockComment
+def skipBlockComment (self,s,i):
+
+    '''Skip past a block comment.'''
+
+    # Skip the opening delim.
+    assert(g.match(s,i,self.blockCommentDelim1))
+    start = i ; i += len(self.blockCommentDelim1)
+
+    # Find the closing delim.
+    k = string.find(s,self.blockCommentDelim2,i)
+    if k == -1:
+        self.error('Run on block comment: ' + s[start:i])
+        return len(s)
+    else:
+        return k + len(self.blockCommentDelim2)
+#@-node:ekr.20070707074541:skipBlockComment
+#@-node:ekr.20070711104014:skipComment & helper
+#@+node:ekr.20070707080042:skipDecls & helper
+def skipDecls (self,s,i,end):
+
+    '''Skip everything until the start of the next class or function.'''
+
+    trace = False or self.trace
+    start = i ; prefix = None
+    while i < end:
+        progress = i
+        if s[i] in (' ','\t','\n'):
+            i += 1 # Prevent lookahead below, and speed up the scan.
+        elif self.startsComment(s,i):
+            if prefix is None: prefix = i
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            i = self.skipString(s,i)
+            prefix = None
+        elif self.startsClass(s,i,quick=True):
+            # Important: do not include leading ws in the decls.
+            i = self.adjustClassOrFunctionStart(s,i,self.classId) # 'class')
+            break
+        elif self.startsFunction(s,i,quick=True):
+            # Important: do not include leading ws in the decls.
+            i = self.adjustClassOrFunctionStart(s,i,'function')
+            break
+        elif self.startsId(s,i):
+            i = self.skipId(s,i)
+            prefix = None
+        # Bug fix: don't skip outer blocks: they may contain classes.
+        # elif g.match(s,i,self.outerBlockDelim1):
+            # i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+            # prefix = None
+        else:
+            i += 1 ;  prefix = None
+        assert(progress < i)
+
+    # Ignore empty decls.
+    if prefix is not None: i = prefix
+    if s[start:i].strip():
+        if trace or self.trace: g.trace('\n'+s[start:i])
+        return i
+    else:
+        return start
+#@+node:ekr.20070709084313:adjustClassOrFunctionStart
+def adjustClassOrFunctionStart(self,s,i,tag):
+
+    '''
+    s[i:] starts a class or function.
+    Adjust i so it points at the start of the line.
+
+    Issue a warning if anything except whitespace appears.
+    '''
+
+    j = g.find_line_start(s,i)
+    return j
+
+
+
+    # if s[j:i].strip():
+        # self.error(
+            # '%s %s does not start a line. Leo must insert a newline\n%s' % (
+                # tag,self.sigId,g.get_line(s,j)))
+        # return i
+    # else:
+        # return j
+#@-node:ekr.20070709084313:adjustClassOrFunctionStart
+#@-node:ekr.20070707080042:skipDecls & helper
+#@+node:ekr.20070707094858.1:skipId
+def skipId (self,s,i):
+
+    return g.skip_id(s,i,chars=self.extraIdChars)
+#@nonl
+#@-node:ekr.20070707094858.1:skipId
+#@+node:ekr.20070730134936:skipNewline
+def skipNewline(self,s,i,kind):
+
+    '''Skip whitespace and comments up to a newline, then skip the newline.
+    Issue an error if no newline is found.'''
+
+    while i < len(s):
+        i = g.skip_ws(s,i)
+        if self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        else: break
+
+    if i >= len(s):
+        return len(s)
+
+    if g.match(s,i,'\n'):
+        i += 1
+    else:
+        self.error(
+            '%s %s does not end in a newline; one will be added\n%s' % (
+                kind,self.sigId,g.get_line(s,i)))
+        # g.trace(g.callers())
+
+    return i
+#@-node:ekr.20070730134936:skipNewline
+#@+node:ekr.20070712081451:skipParens
+def skipParens (self,s,i):
+
+    '''Skip a parenthisized list, that might contain strings or comments.'''
+
+    return self.skipBlock(s,i,delim1='(',delim2=')')
+#@-node:ekr.20070712081451:skipParens
+#@+node:ekr.20070707073627.2:skipString
+def skipString (self,s,i):
+
+    # Returns len(s) on unterminated string.
+    return g.skip_string(s,i,verbose=False)
+#@-node:ekr.20070707073627.2:skipString
+#@+node:ekr.20070711132314:startsClass/Function (baseClass) & helpers
+# We don't expect to override this code, but subclasses may override the helpers.
+
+def startsClass (self,s,i,quick=False):
+    '''Return True if s[i:] starts a class definition.
+    Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
+    i = self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
+    return i
+
+def startsFunction (self,s,i,quick=False):
+    '''Return True if s[i:] starts a function.
+    Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
+    i = self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
+    return i
+#@+node:ekr.20070712112008:startsHelper
+def startsHelper(self,s,i,kind,quick,tags):
+    '''return True if s[i:] starts a class or function.
+    Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
+
+    trace = False or self.trace
+    verbose = False
+    self.codeEnd = self.sigEnd = self.sigId = None
+    self.sigStart = i
+
+    # Underindented lines can happen in any language, not just Python.
+    # The skipBlock method of the base class checks for such lines.
+    self.startSigIndent = self.getLeadingIndent(s,i)
+
+    # Run a quick check first.
+    # Get the tag that starts the class or function.
+    j = g.skip_ws_and_nl(s,i)
+    i = self.skipId(s,j)
+    self.sigId = theId = s[j:i] # Set sigId ivar 'early' for error messages.
+    if not theId: return False
+    if tags:
+        if theId not in tags:
+            return False
+        if quick: return True
+
+    if trace and verbose: g.trace('kind',kind,'id',theId)
+
+    # Get the class/function id.
+    i, ids, classId = self.skipSigStart(s,j,tags) # Rescan the first id.
+    i, sigId = self.skipSigId(s,i,ids)
+    if not sigId:
+        if trace and verbose: g.trace('no sigId',g.get_line(s,i))
+        return False
+
+    # Skip the argument list.
+    i, ok = self.skipArgs(s,i,kind)
+    if not ok:
+        if trace and verbose: g.trace('no args',g.get_line(s,i))
+        return False
+    i = g.skip_ws_and_nl(s,i)
+
+    # Skip the tail of the signature
+    i, ok = self.skipSigTail(s,i)
+    if not ok:
+        if trace and verbose: g.trace('no tail',g.get_line(s,i))
+        return False
+    sigEnd = i
+
+    # A trick: make sure the signature ends in a newline,
+    # even if it overlaps the start of the block.
+    if not g.match(s,sigEnd,'\n') and not g.match(s,sigEnd-1,'\n'):
+        if trace and verbose: g.trace('extending sigEnd')
+        sigEnd = g.skip_line(s,sigEnd)
+
+    if self.blockDelim1:
+        i = g.skip_ws_and_nl(s,i)
+        if not g.match(s,i,self.blockDelim1):
+            if trace and verbose: g.trace('no block',g.get_line(s,i))
+            return False
+
+    i,ok = self.skipCodeBlock(s,i,kind)
+    if not ok: return False
+        # skipCodeBlock skips the trailing delim.
+
+    # Success: set the ivars.
+    self.codeEnd = i
+    self.sigEnd = sigEnd
+    self.sigId = sigId
+    self.classId = classId
+
+    # Note: backing up here is safe because
+    # we won't back up past scan's 'start' point.
+    # Thus, characters will never be output twice.
+    k = self.sigStart
+    if not g.match(s,k,'\n'):
+        self.sigStart = g.find_line_start(s,k)
+
+    # Isue this warning only if we have a real class or function.
+    if 0: ### wrong.
+        if s[self.sigStart:k].strip():
+            self.error('%s definition does not start a line\n%s' % (
+                kind,g.get_line(s,k)))
+
+    if trace:
+        if 1:
+            g.trace(kind,'returns\n'+s[self.sigStart:i])
+        else:
+            g.trace(kind,'returns s[sigStart:i] = [%d:%d]' % (self.sigStart,i))
+    return True
+#@-node:ekr.20070712112008:startsHelper
+#@+node:ekr.20070711140703:skipSigStart
+def skipSigStart (self,s,i,tags):
+
+    '''Skip over the start of a function/class signature.
+
+    tags is in (self.classTags,self.functionTags).
+
+    Return (i,ids) where ids is list of all ids found, in order.'''
+
+    # __pychecker__ = '--no-argsused' # tags not used in the base class.
+
+    trace = False or self.trace
+    ids = [] ; classId = None
+    start = i
+    while i < len(s):
+        j = g.skip_ws_and_nl(s,i)
+        for z in self.sigFailTokens:
+            if g.match(s,j,z):
+                if trace: g.trace('failtoken',z,'ids',ids)
+                return start, []
+        for z in self.sigHeadExtraTokens:
+            if g.match(s,j,z):
+                i += len(z) ; break
+        else:
+            i = self.skipId(s,j)
+            theId = s[j:i]
+            if theId and theId in tags: classId = theId
+            if theId: ids.append(theId)
+            else: break
+
+    return i, ids, classId
+#@-node:ekr.20070711140703:skipSigStart
+#@+node:ekr.20070711134534:skipSigId
+def skipSigId (self,s,i,ids):
+
+    '''Return (i, id) where id is the signature's id.
+
+    By default, this is the last id in the ids list.'''
+
+    return i, ids and ids[-1]
+#@-node:ekr.20070711134534:skipSigId
+#@+node:ekr.20070712082913:skipSigTail
+def skipSigTail(self,s,i):
+
+    '''Skip from the end of the arg list to the start of the block.'''
+
+    trace = False or self.trace
+    start = i
+    i = g.skip_ws(s,i)
+    for z in self.sigFailTokens:
+        if g.match(s,i,z):
+            if trace: g.trace('failToken',z,'line',g.skip_line(s,i))
+            return i,False
+    while i < len(s):
+        if self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        elif g.match(s,i,self.blockDelim1):
+            if trace: g.trace(repr(s[start:i]))
+            return i,True
+        else:
+            i += 1
+    if trace: g.trace('no block delim')
+    return i,False
+#@-node:ekr.20070712082913:skipSigTail
+#@-node:ekr.20070711132314:startsClass/Function (baseClass) & helpers
+#@+node:ekr.20070711104014.1:startsComment
+def startsComment (self,s,i):
+
+    return (
+        g.match(s,i,self.lineCommentDelim) or
+        g.match(s,i,self.lineCommentDelim2) or
+        g.match(s,i,self.blockCommentDelim1))
+#@-node:ekr.20070711104014.1:startsComment
+#@+node:ekr.20070707094858.2:startsId
+def startsId(self,s,i):
+
+    return g.is_c_id(s[i:i+1])
+#@-node:ekr.20070707094858.2:startsId
+#@+node:ekr.20070707172732.1:startsString
+def startsString(self,s,i):
+
+    return g.match(s,i,'"') or g.match(s,i,"'")
+#@-node:ekr.20070707172732.1:startsString
+#@-node:ekr.20070706084535.1:Parsing
+#@+node:ekr.20070707072749:run (baseScannerClass)
+def run (self,s,parent):
+
+    scanner = self ; c = self.c
+    scanner.root = parent
+    scanner.file_s = s
+
+    # Init the error/status info.
+    self.errors = 0
+    self.errorLines = []
+    changed = c.isChanged()
+
+    # Regularize leading whitespace for strict languages only.
+    if self.strict:
+        s = scanner.regularizeWhitespace(s)
+
+    # Generate the nodes, including directive and section references.
+    scanner.scan(s,parent)
+
+    # Check the generated nodes.
+    # Return True if the result is equivalent to the original file.
+    ok = self.errors == 0 and scanner.check(s,parent)
+    g.app.unitTestDict ['result'] = ok
+
+    # Insert an @ignore directive if there were any serious problems.
+    if not ok: scanner.insertIgnoreDirective(parent)
+
+    if self.atAuto and ok:
+        for p in parent.self_and_subtree_iter():
+            p.clearDirty()
+        c.setChanged(changed)
+    else:
+        parent.setDirty(setDescendentsDirty=False)
+        c.setChanged(True)
+#@+node:ekr.20070808115837.1:regularizeWhitespace
+def regularizeWhitespace (self,s):
+
+    '''Regularize leading whitespace in s:
+    Convert tabs to blanks or vice versa depending on the @tabwidth in effect.
+    This is only called for strict languages.'''
+
+    changed = False ; lines = g.splitLines(s) ; result = [] ; tab_width = self.tab_width
+
+    if tab_width < 0: # Convert tabs to blanks.
+        for line in lines:
+            i, w = g.skip_leading_ws_with_indent(line,0,tab_width)
+            s = g.computeLeadingWhitespace(w,-abs(tab_width)) + line [i:] # Use negative width.
+            if s != line: changed = True
+            result.append(s)
+    elif tab_width > 0: # Convert blanks to tabs.
+        for line in lines:
+            s = g.optimizeLeadingWhitespace(line,abs(tab_width)) # Use positive width.
+            if s != line: changed = True
+            result.append(s)
+
+    if changed: self.regularizeError()
+
+    return ''.join(result)
+#@+node:ekr.20070808121958:regularizeError
+def regularizeError (self):
+
+    # Create the message.
+    kind = g.choose(self.strict,'error','warning')
+    s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
+    message = '%s: inconsistent leading whitespace. %s' % (kind,s)
+
+    # Issue an error or warning.
+    if self.strict:
+        self.error(message)
+    else:
+        print message
+        g.es(message,color='red')
+
+#@-node:ekr.20070808121958:regularizeError
+#@-node:ekr.20070808115837.1:regularizeWhitespace
+#@-node:ekr.20070707072749:run (baseScannerClass)
+#@-node:ekr.20070703122141.65: class baseScannerClass
+#@+node:ekr.20070707113832.1:putClass & helpers
+def putClass (self,s,sigStart,sigEnd,codeEnd,start,parent):
+
+    '''Creates a child node c of parent for the class, and children of c for each def in the class.'''
+
+    prefix = self.createClassNodePrefix()
+    if not self.sigId:
+        g.trace('Can not happen: no sigId')
+        sigId = 'Unknown class name'
+    class_kind = self.classId
+    class_name = self.sigId
+    # headline = 'class ' + class_name
+    headline = '%s %s' % (class_kind,class_name)
+    body = s[start:sigEnd]
+    body = self.undentBody(body)
+    i = self.extendSignature(s,sigEnd)
+    extend = s[sigEnd:i]
+    if extend:
+        extend = self.undentBody(extend)
+        extend = self.indentBody(extend)
+        body = body + extend
+
+    class_node = self.createHeadline(parent,prefix + body,headline)
+    savedMethodName = self.methodName
+    self.methodName = headline
+    self.putClassHelper(s,i,codeEnd,class_name,class_node)
+    self.methodName = savedMethodName
+#@+node:ekr.20070703122141.106:appendRefToClassNode
+def appendRefToClassNode (self,class_name,class_node):
+
+    '''Insert the proper body text in the class_vnode.'''
+
+    if self.treeType == '@file':
+        s = '@others'
+    else:
+        s = g.angleBrackets(' class %s methods ' % (class_name))
+
+    self.appendTextToClassNode(class_node,'%s%s\n' % (self.tab_ws,s))
+#@-node:ekr.20070703122141.106:appendRefToClassNode
+#@+node:ekr.20070707190351:appendTextToClassNode
+def appendTextToClassNode (self,class_node,s):
+
+    c = self.c
+
+    c.appendStringToBody(class_node,s) 
+#@-node:ekr.20070707190351:appendTextToClassNode
+#@+node:ekr.20070703122141.105:createClassNodePrefix
+def createClassNodePrefix (self):
+
+    '''Create the class node prefix.'''
+
+    if  self.treeType == '@file':
+        prefix = ''
+    else:
+        prefix = g.angleBrackets(' ' + self.methodName + ' methods ') + '=\n\n'
+        self.methodsSeen = True
+
+    return prefix
+#@-node:ekr.20070703122141.105:createClassNodePrefix
+#@+node:ekr.20070707171329:putClassHelper
+def putClassHelper(self,s,i,end,class_name,class_node):
+
+    '''s contains the body of a class, not including the signature.
+
+    Parse s for inner methods and classes, and create nodes.'''
+
+    # Put any leading decls in the class node.
+    trace = False or self.trace
+    start = i
+    i = self.skipDecls(s,i,end)
+    decls = s[start:i]
+    if decls:
+        # We must regularize the indentation to match the @others
+        decls = self.undentBody(decls)
+        decls = self.indentBody(decls)
+        if self.trace: g.trace('decls\n%s' % decls)
+        # g.trace(class_name,'decls',repr(decls))
+        self.appendTextToClassNode(class_node,decls)
+    start = i ; putRef = False
+    while i < end:
+        progress = i
+        if s[i] in (' ','\t','\n'):
+            i += 1 # Prevent lookahead below, and speed up the scan.
+        elif self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            i = self.skipString(s,i)
+        elif self.startsClass(s,i):  # Sets sigStart,sigEnd & codeEnd ivars.
+            putRef = True
+            end2 = self.codeEnd # putClass may change codeEnd ivar.
+            saveIndent = self.startSigIndent # Bug fix: 10/10/07
+            self.putClass(s,self.sigStart,self.sigEnd,self.codeEnd,start,class_node)
+            self.startSigIndent = saveIndent
+            i = start = end2
+        elif self.startsFunction(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
+            putRef = True
+            saveIndent = self.startSigIndent # Bug fix: 10/10/07
+            self.putFunction(s,self.sigStart,self.codeEnd,start,class_node)
+            self.startSigIndent = saveIndent
+            i = start = self.codeEnd
+        elif self.startsId(s,i):
+            i = self.skipId(s,i);
+        elif g.match(s,i,self.outerBlockDelim1): # Bug fix: do this after testing for classes.
+            i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+        else: i += 1
+        assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
+
+    if putRef:
+        self.appendRefToClassNode(class_name,class_node)
+
+    if start < end:
+        trailing = s[start:end]
+        if trace: g.trace('trailing\n%s' % trailing)
+        self.appendTextToClassNode(class_node,trailing)
+#@-node:ekr.20070707171329:putClassHelper
+#@-node:ekr.20070707113832.1:putClass & helpers
+#@+node:ekr.20070707080042:skipDecls & helper
+def skipDecls (self,s,i,end):
+
+    '''Skip everything until the start of the next class or function.'''
+
+    trace = False or self.trace
+    start = i ; prefix = None
+    while i < end:
+        progress = i
+        if s[i] in (' ','\t','\n'):
+            i += 1 # Prevent lookahead below, and speed up the scan.
+        elif self.startsComment(s,i):
+            if prefix is None: prefix = i
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            i = self.skipString(s,i)
+            prefix = None
+        elif self.startsClass(s,i,quick=True):
+            # Important: do not include leading ws in the decls.
+            i = self.adjustClassOrFunctionStart(s,i,self.classId) # 'class')
+            break
+        elif self.startsFunction(s,i,quick=True):
+            # Important: do not include leading ws in the decls.
+            i = self.adjustClassOrFunctionStart(s,i,'function')
+            break
+        elif self.startsId(s,i):
+            i = self.skipId(s,i)
+            prefix = None
+        # Bug fix: don't skip outer blocks: they may contain classes.
+        # elif g.match(s,i,self.outerBlockDelim1):
+            # i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+            # prefix = None
+        else:
+            i += 1 ;  prefix = None
+        assert(progress < i)
+
+    # Ignore empty decls.
+    if prefix is not None: i = prefix
+    if s[start:i].strip():
+        if trace or self.trace: g.trace('\n'+s[start:i])
+        return i
+    else:
+        return start
+#@+node:ekr.20070709084313:adjustClassOrFunctionStart
+def adjustClassOrFunctionStart(self,s,i,tag):
+
+    '''
+    s[i:] starts a class or function.
+    Adjust i so it points at the start of the line.
+
+    Issue a warning if anything except whitespace appears.
+    '''
+
+    j = g.find_line_start(s,i)
+    return j
+
+
+
+    # if s[j:i].strip():
+        # self.error(
+            # '%s %s does not start a line. Leo must insert a newline\n%s' % (
+                # tag,self.sigId,g.get_line(s,j)))
+        # return i
+    # else:
+        # return j
+#@-node:ekr.20070709084313:adjustClassOrFunctionStart
+#@-node:ekr.20070707080042:skipDecls & helper
 #@-node:ekr.20071008130552:Add c# importer
 #@-node:ekr.20071001045205:To do: 4.4.4
 #@+node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
@@ -2156,6 +3437,19 @@ implementing a new feature.
 #@-node:ekr.20071001052501:Versioning for nodes
 #@-node:ekr.20070703111455.1:Most important
 #@+node:ekr.20070630143345:Easy and useful
+#@+node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4562648
+By: rogererens
+
+Maybe I may use this thread to make another suggestion for Leo 4.4.5, related
+to @menus: have the menu-options for right-clicking in the various panes also
+in the @settings-tree.
+
+Regards, Roger
+#@nonl
+#@-node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
 #@+node:ekr.20070220082124:Make sure Leo can generate Latex
 #@-node:ekr.20070220082124:Make sure Leo can generate Latex
 #@+node:ekr.20070521105645:Improve api docs with epidoc?

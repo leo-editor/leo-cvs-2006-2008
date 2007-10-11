@@ -29736,6 +29736,241 @@ else:
 #@-node:ekr.20060216110502:<< clear accelerator if it is a plain key >>
 #@-node:ekr.20031218072017.1723:createMenuEntries
 #@-node:ekr.20071010113431:Allow chinese characters work in @menus trees
+#@+node:ekr.20071010211808:Rewrote threading colorizer: hurray!
+#@+node:ekr.20071010211707:Not used in new colorizer
+#@+node:ekr.20071010211707.1:findMarkAtIndex
+def findMarkAtIndex(self,d,i):
+
+    '''Return the higest match that starts strictly before i.
+    Return 0 if no such match.'''
+
+    keys = d.keys()
+    keys.sort()
+    last_i = 0 
+    for key in keys:
+        if key >= i:
+            break
+        else:
+            last_i = key
+
+    if self.trace: g.trace('*******',last_i)
+    return last_i
+#@-node:ekr.20071010211707.1:findMarkAtIndex
+#@+node:ekr.20071010211707.2:finishColoring
+def finishColoring (self):
+
+    if self.trace:
+        g.trace('%d' % self.threadCount,'globalTagList',len(self.globalTagList))
+
+    limit = 500
+
+    if self.killFlag:
+        tagList = []
+        self.globalTagList = []
+    else:
+        tagList = self.globalTagList[:limit]
+        self.globalTagList = self.globalTagList[limt:]
+        self.tagAll(tagList)
+#@nonl
+#@-node:ekr.20071010211707.2:finishColoring
+#@+node:ekr.20071010211707.3:partialColor (in helper thread)
+def partialColor (self,s):
+
+    '''Partially recolor s'''
+
+    mid_i,tail_i,delta,all = self.computeIndices()
+    if all:
+        if self.trace: g.trace('*** all lines match: recolor all')
+        return self.fullColor(s)
+
+    d = self.marksDict = self.adjustMarksDict(self.marksDict,mid_i,tail_i,delta)
+    assert(mid_i == 0 or s[mid_i-1] == '\n')
+    i = self.findMarkAtIndex(d,max(0,mid_i-1))
+    self.start_i = self.self_end_i = i
+    # if mid_i-1 != i: g.trace('backtrack',repr(s[i:mid_i]))
+
+    # Create a list of (i,n) pairs from marksDict.
+    d = self.marksDict ; keys = d.keys() ; keys.sort()
+    endList = [(z,d.get(z)) for z in keys if z + d.get(z) >= tail_i]
+    self.marksDict = {}
+    if self.trace: g.trace(self.language,'thread',self.threadCount,'i',i)
+    while i < len(s):
+        progress = i
+        if self.c.frame not in g.app.windowList:
+            # print 'threading_colorizer: partialColor: window killed'
+            return
+        if self.killFlag:
+            if self.trace: g.trace('*** killed %d*' % self.threadCount)
+            return
+        # if i < 0 or i >= len(s):
+            # g.trace('can not happen','i out of range',i)
+        for f in self.rulesDict.get(s[i],[]):
+            n = f(self,s,i)
+            if n is None: g.trace('Can not happen: matcher returns None')
+            elif n > 0:
+                if (trace_all_matches) and f.__name__ != 'match_blanks':
+                    g.trace(f.__name__,repr(s[i:i+n]))
+                self.marksDict[i] = n
+                i += n ; break
+        else:
+            i += 1
+        if i > tail_i:
+            << finish if no item in endList covers i >>
+        assert progress < i
+    self.end_i = i
+    self.old_s = self.s
+    if self.trace: g.trace('*** done',self.threadCount)
+#@+node:ekr.20071010211707.4:<< finish if no item in endList covers i >>
+done = False ; n = 0 # count of elements to be removed.
+for z in endList:
+    i2,n2 = z
+    if i2 <= i:
+        if i2 + n2 < i:
+            n += 1 # strictly before i. Remove it below.
+        else:
+            break # covers i.  Not done.
+    else: # i2 > i:
+        done = True
+    if done: # Add trailing items in endList to the marksDict.
+        self.marksDict[i2] = n2
+else:
+    done = True
+
+if done:
+    if self.trace: g.trace('*** found end: i: %d %s' % (i,repr(s[i:i+20])))
+    break
+else:
+    # Delete n entries from the front of endList.
+    if n > 0:
+        endList = endList[n:]
+#@nonl
+#@-node:ekr.20071010211707.4:<< finish if no item in endList covers i >>
+#@-node:ekr.20071010211707.3:partialColor (in helper thread)
+#@+node:ekr.20071010211707.5:adjustMarksDict
+def adjustMarksDict (self,d,mid_i,tail_i,delta):
+
+    '''Adjust the marksDict d by adding delta to
+    all keys and values whose keys are >= mid_i.'''
+
+    # Pass 1: Add changed items to d2, and delete them from d.
+    # Important: missing entries do not cause bugs--
+    # at worst they slow down the colorizer.
+    # Thus, we err on the side of caution.
+    d2 = {}
+    for i in d.keys():
+        if i > tail_i:
+            # d2 [i+delta] = d.get(i) + delta
+            if i + delta >= 0:
+                val = d.get(i) + delta
+                if val >= 0:
+                    d2 [i+delta] = val
+            del d[i]
+        elif i >= mid_i:
+            del d[i]
+
+    # Pass 2: Insert changed items back into d.
+    for i in d2.keys():
+        d[i] = d2.get(i)
+
+    return d
+#@-node:ekr.20071010211707.5:adjustMarksDict
+#@+node:ekr.20071010211707.6:removeTagsFromRange
+def removeTagsFromRange(self,i,j):
+
+    s = self.s ; w = self.w
+
+    if self.trace: g.trace('i',i,'j',j)
+
+    names = [z for z in w.tag_names() if z not in ('sel','insert')]
+
+    x1,x2 = w.toGuiIndex(self.start_i,s=s), w.toGuiIndex(self.end_i,s=s)
+    for tag in names:
+        # g.trace(tag,x1,x2)
+        w.tag_remove(tag,x1,x2)
+#@-node:ekr.20071010211707.6:removeTagsFromRange
+#@+node:ekr.20071010211707.7:computeIndices
+def computeIndices (self):
+
+    '''Return (mid_i,tail_i,delta,all) where
+    - mid_i is the index of the start of the changed text,
+    - tail_i is the index of the start of the **new** trailing lines,
+    - delta is the change in the size of the changed text,
+    - all is true if all text must be recolored.'''
+
+    old_s,new_s = self.old_s,self.s
+
+    # The first optimization: recolor **everything** if all lines match.
+    # Some routines delete, then insert the text again, deleting all tags in the process.
+    if old_s == new_s:
+        all = True
+        return 0,0,0,all
+
+    # The second optimization. Check to see if only one line has changed.
+    ins = self.insertPoint # We must *not* call Tk here!
+    new_i,new_j = g.getLine(new_s,ins)
+    old_i,old_j = g.getLine(old_s,new_i)
+    new_head = new_s[:new_i]
+    old_head = old_s[:old_i]
+    new_tail = new_s[new_j:]
+    old_tail = old_s[old_j:]
+    #g.trace('new_head',repr(new_head),'\n','old_head',repr(old_head))
+    #g.trace('new_tail',repr(new_tail),'\n','old_tail',repr(old_tail))
+    if new_head == old_head and new_tail == old_tail:
+        # g.trace('**one line changed')
+        mid_i = new_i
+        tail_i = new_j
+        #new_line = new_s[new_i:new_j]
+        #old_line = old_s[old_i:old_j]
+        #delta = len(new_line) - len(old_line)
+        delta = (new_j-new_i) - (old_j-old_i)
+        all = False
+        return mid_i,tail_i,delta,all
+
+    # The general case: compare line-by line to find the head and tail.
+    new_lines = g.splitLines(new_s)
+    old_lines = g.splitLines(old_s)
+    new_len = len(new_lines)
+    old_len = len(old_lines)
+    # Find the head lines, the leading matching lines.
+    i = 0
+    while i < new_len and i < old_len and old_lines[i] == new_lines[i]:
+        i += 1
+    head = i
+    # Find the tail lines, the trailing matching lines.
+    i = 0
+    while (
+        old_len-i-1 >=0 and new_len-i-1 >=0 and
+        old_lines[old_len-i-1] == new_lines[new_len-i-1]
+    ):
+        i += 1
+    tail = i
+    # Compute the change (middle) lines.
+    new_head = ''.join(new_lines[:head])
+    old_head = ''.join(old_lines[:head])
+    # assert old_head == new_head
+    if tail:
+        new_tail = ''.join(new_lines[-tail:])
+        old_tail = ''.join(old_lines[-tail:])
+        new_middle = ''.join(new_lines[head:-tail])
+        old_middle = ''.join(old_lines[head:-tail])
+    else:
+        # g.trace('no tail')
+        new_tail = old_tail = ''
+        new_middle = ''.join(new_lines[head:])
+        old_middle = ''.join(old_lines[head:])
+    # assert old_tail == new_tail
+
+    # This recolors all of all changed lines.
+    # We could optimize this a bit, but I doubt it would make much difference.
+    mid_i = len(new_head)
+    tail_i = mid_i + len(new_middle)
+    delta = len(new_middle) - len(old_middle)
+    all = False
+    # g.trace('mid_i',mid_i,'tail_i',tail_i,'delta',delta,'all',all)
+    return mid_i,tail_i,delta,all
+#@-node:ekr.20071010211707.7:computeIndices
+#@-node:ekr.20071010211707:Not used in new colorizer
+#@-node:ekr.20071010211808:Rewrote threading colorizer: hurray!
 #@-node:ekr.20070920083033.1:Features
 #@-node:ekr.20070919132518:4.4.4 b3
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
