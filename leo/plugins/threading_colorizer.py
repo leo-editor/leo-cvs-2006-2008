@@ -22,7 +22,6 @@ import leoPlugins
 import os
 import re
 import string
-import sys
 import threading
 import traceback
 import xml.sax
@@ -905,8 +904,12 @@ class colorizer:
     #@+node:ekr.20071010193720.42:idleHandler
     def idleHandler (self,n):
 
-        tweak1 = False # Erase tags in tagAll, not all at once.
-        tweak2 = not sys.platform.startswith('win') # Call update_idletasks every time tagAll is called.
+        tweak1 = True
+            # Erase tags in tagAll, not all at once.
+            # This tweak is essential for large text.
+        tweak2 = False
+            # Call update_idletasks every time tagAll is called.
+            # This seems to have no effect, or a slightly negative effect.
 
         if not self.c.frame in g.app.windowList:
             # print 'threading_colorizer.idleHandler: window killed %d' % n
@@ -928,7 +931,8 @@ class colorizer:
 
         # if self.trace: g.trace('*** helper done %d' % n)
 
-        if not tweak1: # Tweak one removes tags in tagAll.
+        if not tweak1:
+            # Remove all tags here.
             if not self.tagsRemoved:
                 if self.trace: g.trace('***** remove all tags %d' %n)
                 self.removeAllTags()
