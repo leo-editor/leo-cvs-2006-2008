@@ -22,6 +22,7 @@ import leoPlugins
 import os
 import re
 import string
+import sys
 import threading
 import traceback
 import xml.sax
