@@ -1236,8 +1236,7 @@ class colorizer:
                 for tag in tk_tags:
                     row,col = tag.split('.')
                     row,col = int(row),int(col)
-                    # This was a huge bottleneck.
-                    # Adding the lines keyword arg speeds things up tremendously.
+                    # This was a huge bottleneck. Adding the lines keyword helped, but not enough.
                     # tags.append(g.convertRowColToPythonIndex(self.s,row-1,col,lines=lines))
                     i = quickConvertRowColToPyhthonIndex(row-1,col)
                     # g.trace('row',row,'col',col,'i',i)
@@ -1448,7 +1447,8 @@ class colorizer:
         if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
 
         if g.match(s,i,seq):
-            j = g.skip_to_end_of_line(s,i)
+            #j = g.skip_to_end_of_line(s,i)
+            j = g.skip_line(s,i) # Include the newline so we don't get a flash at the end of the line.
             self.colorRangeWithTag(s,i,j,kind,delegate=delegate,exclude_match=exclude_match)
             self.prev = (i,j,kind)
             self.trace_match(kind,s,i,j)
@@ -1472,7 +1472,8 @@ class colorizer:
 
         n = self.match_regexp_helper(s,i,regexp)
         if n > 0:
-            j = g.skip_to_end_of_line(s,i)
+            # j = g.skip_to_end_of_line(s,i)
+            j = g.skip_line(s,i) # Include the newline so we don't get a flash at the end of the line.
             self.colorRangeWithTag(s,i,j,kind,delegate=delegate,exclude_match=exclude_match)
             self.prev = (i,j,kind)
             self.trace_match(kind,s,i,j)
