@@ -480,6 +480,7 @@ class colorizer:
         self.enabled = c.config.getBool('use_syntax_coloring')
         # Debugging...
         self.count = 0 # For unit testing.
+        self.allow_mark_prev = False # This stuff is evil.
         self.trace = True or c.config.getBool('trace_colorizer')
         self.trace_match_flag = False
         self.trace_tags = False
@@ -1054,7 +1055,7 @@ class colorizer:
         #@nl
 
         s = self.s ; w = self.w ; limit = 500
-        trace = self.trace ; verbose = False and self.trace_tags
+        trace = self.trace ; verbose = self.trace_tags
 
         tagList = self.globalTagList[:limit]
         self.globalTagList = self.globalTagList[limit:]
@@ -1218,7 +1219,8 @@ class colorizer:
 
     def sortExistingTags (self):
 
-        w = self.w ; names = w.tag_names() ; trace = self.trace and self.trace_tags
+        w = self.w ; names = w.tag_names()
+        trace = self.trace and self.trace_tags ; verbose = True
         if trace: g.trace('len(s)',len(self.s))
         lines = g.splitLines(self.s)
         lineIndices = [0]
@@ -1255,7 +1257,7 @@ class colorizer:
 
         aList.sort()
 
-        if trace and len(aList) < 100:
+        if trace and (verbose or len(aList) < 100):
             # g.trace(len(aList))
             dumpList = []
             for z in aList:
@@ -1276,43 +1278,61 @@ class colorizer:
         Don't actually add (tag,i,j) if an exact match is found.'''
 
         # The heart of the optimized tagger: a kind of sort-merge algorithm.
-        trace = self.trace and self.trace_tags and len(self.existingTagsList) < 100
-        # Preliminary checks.
+        trace = self.trace and self.trace_tags
+        verbose = True or len(self.existingTagsList) < 100
         newTag = i,j,tag
-        if self.existing_i > 0:
-            # Look for duplicate matches.
-            i2,j2,tag2 = oldTag = self.existingTagsList[self.existing_i-1]
-            if oldTag == newTag:
-                if trace: g.trace('*** match2',tag,i,j,self.s[i:j])
-                return
-            # Coelese with previous match if possible.
-            # if i == j2 and tag == tag2:
-                # if True or trace: g.trace('*** merge',tag,i,j,self.s[i2:j])
-                # self.existingTagsList[self.existing_i-1] = (i2,j,tag)
-                # return
 
+        # Delete previously occuring tags.
         while self.existing_i < len(self.existingTagsList):
             i2,j2,tag2 = oldTag = self.existingTagsList[self.existing_i]
             if oldTag == newTag:
-                if trace: g.trace('*** match',tag,i,j,self.s[i:j])
+                if trace and verbose: g.trace('*** match',tag,i,j,self.s[i:j])
                 self.existing_i += 1
                 return
 
             # elif trace: g.trace('mismatch','oldTag',oldTag,'newTag',newTag)
             if i2 > i: break
             else:
-                if trace: g.trace('*** del  ',tag2,i2,j2,self.s[i2:j2])
+                if trace and verbose: g.trace('*** del  ',tag2,i2,j2,self.s[i2:j2])
                 self.globalDeleteList.append((tag2,i2,j2),)
                 self.existing_i += 1
 
-        # Look at the 
-        for z in self.globalTagList[max(0,len(self.globalTagList)-2):]:
-            if z == (tag,i,j):
-                if trace: g.trace('*** duplicate',tag,i,j,self.s[i:j])
-                break
-        else:
-            if trace: g.trace('*** add  ',tag,i,j,self.s[i:j])
-            self.globalTagList.append((tag,i,j),)
+        # Check for duplicates, extensions and overlaps.
+        if self.globalTagList:
+            tag2,i2,j2 = self.globalTagList[-1]
+            # g.trace('comparing',tag2,i2,j2,tag,i,j)
+            if tag == tag2:
+                if (i2,j2) == (i,j):
+                    if trace and verbose: g.trace('*** duplicate',tag,i,j,self.s[i:j])
+                    return
+                elif j2 == i:
+                    if trace and verbose: g.trace('*** new extends old',tag,i,j,self.s[i:j])
+                    self.globalTagList.pop()
+                    i = i2
+                elif i2 <= i and j <= j2:
+                    if trace and verbose: g.trace('*** old covers new',tag,i,j,self.s[i:j])
+                    return
+                elif i <= i2 and j2 <= j:
+                    if trace and verbose: g.trace('*** new covers old',tag,i,j,self.s[i:j])
+                    self.globalTagList.pop()
+
+        # Remove the last deletion if it matches the new addition.
+        if self.globalDeleteList:
+            tag2,i2,j2 = self.globalDeleteList[-1]
+            if (tag2,i2,j2) == (tag,i,j):
+                if trace and verbose: g.trace('*** undo delete',tag2,i2,j2,self.s[i2:j2])
+                self.globalDeleteList.pop()
+                return
+
+        # Make a final check for duplicates:
+        if self.globalTagList:
+            tag2,i2,j2 = self.globalTagList[-1]
+            if (tag2,i2,j2) == (tag,i,j):
+                if trace and verbose: g.trace('*** duplicate 2',tag,i,j,self.s[i:j])
+                return
+
+        if trace and verbose: g.trace('*** add  ',tag,i,j,self.s[i:j])
+        self.globalTagList.append((tag,i,j),)
     #@-node:ekr.20071011082754:addToTagsLists
     #@+node:ekr.20071011195132:removeExistingTrailingTags
     def removeExistingTrailingTags (self):
@@ -1517,6 +1537,8 @@ class colorizer:
 
         '''Succeed if s[i:] matches pattern.'''
 
+        if not self.allow_mark_prev: return 0
+
         if self.trace_match_flag: g.trace(g.callers(2),i,repr(s[i:i+20]))
 
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
@@ -1535,7 +1557,6 @@ class colorizer:
             return j - i
         else:
             return 0
-    #@nonl
     #@+node:ekr.20071010193720.63:getNextToken
     def getNextToken (self,s,i):
 
@@ -1562,6 +1583,8 @@ class colorizer:
         'at_line_start':    True: sequence must start the line.
         'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
         'at_word_start':    True: sequence must start a word.'''
+
+        if not self.allow_mark_prev: return 0
 
         if self.trace_match_flag: g.trace(g.callers(2),i,repr(s[i:i+20]))
 
