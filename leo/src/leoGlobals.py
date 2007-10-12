@@ -4311,19 +4311,21 @@ if g.unitTesting:
 #@-node:ekr.20070627082044.835:@test g.convertPythonIndexToRowCol
 #@-node:ekr.20050314140957:g.convertPythonIndexToRowCol & test
 #@+node:ekr.20050315071727:g.convertRowColToPythonIndex & test
-def convertRowColToPythonIndex (s,row,col):
+def convertRowColToPythonIndex (s,row,col,lines=None):
 
     '''Convert zero-based row/col indices into a python index into string s.'''
 
     if row < 0: return 0
 
-    lines = g.splitLines(s)
+    if lines is None:
+        lines = g.splitLines(s)
 
     if row >= len(lines):
         return len(s)
 
     col = min(col, len(lines[row]))
 
+    #### A big bottleneck
     prev = 0
     for line in lines[:row]:
         prev += len(line)
