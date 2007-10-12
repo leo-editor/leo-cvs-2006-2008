@@ -29970,6 +29970,140 @@ def computeIndices (self):
     return mid_i,tail_i,delta,all
 #@-node:ekr.20071010211707.7:computeIndices
 #@-node:ekr.20071010211707:Not used in new colorizer
+#@+node:ekr.20071011085119:Related to new colorizer
+#@+node:ekr.20061113151148.9:tag_ranges
+def tag_ranges(self,tagName):
+
+    w = self
+    aList = Tk.Text.tag_ranges(w,tagName)
+    aList = [w.toPythonIndex(z) for z in aList]
+    return tuple(aList)
+#@-node:ekr.20061113151148.9:tag_ranges
+#@+node:ekr.20061117085824.1:w.toPythonIndex
+def toPythonIndex (self,i):
+    '''Convert a Tk index to a Python index as needed.'''
+    w =self
+    if i is None:
+        g.trace('can not happen: i is None')
+        return 0
+    elif type(i) in (type('a'),type(u'a')):
+        s = Tk.Text.get(w,'1.0','end') # end-1c does not work.
+        i = Tk.Text.index(w,i) # Convert to row/column form.
+        row,col = i.split('.')
+        row,col = int(row),int(col)
+        row -= 1
+        i = g.convertRowColToPythonIndex(s,row,col)
+        #g.es_print(i)
+    return i
+#@-node:ekr.20061117085824.1:w.toPythonIndex
+#@+node:ekr.20050315071727:g.convertRowColToPythonIndex & test
+def convertRowColToPythonIndex (s,row,col,lines=None):
+
+    '''Convert zero-based row/col indices into a python index into string s.'''
+
+    if row < 0: return 0
+
+    if lines is None:
+        lines = g.splitLines(s)
+
+    if row >= len(lines):
+        return len(s)
+
+    col = min(col, len(lines[row]))
+
+    #### A big bottleneck
+    prev = 0
+    for line in lines[:row]:
+        prev += len(line)
+
+    return prev + col
+#@+node:ekr.20070627082044.833:@test g.convertRowColToPythonIndex
+if g.unitTesting:
+    s1 = 'abc\n\np\nxy'
+    s2 = 'abc\n\np\nxy\n'
+    table1 = (
+        (0,(-1,0)), # One too small.
+        (0,(0,0)),
+        (1,(0,1)),
+        (2,(0,2)),
+        (3,(0,3)), # The newline ends a row.
+        (4,(1,0)),
+        (5,(2,0)),
+        (6,(2,1)),
+        (7,(3,0)),
+        (8,(3,1)),
+        (9,(3,2)), # One too large.
+    )
+    table2 = (
+        (9,(3,2)),
+        (10,(4,0)), # One two many.
+    )
+    for s,table in ((s1,table1),(s2,table2)):
+        for i,data in table:
+            row,col = data
+            result = g.convertRowColToPythonIndex(s,row,col)
+            assert i == result, 'row: %d, col: %d, expected: %d, got: %s' % (row,col,i,result)
+#@nonl
+#@-node:ekr.20070627082044.833:@test g.convertRowColToPythonIndex
+#@-node:ekr.20050315071727:g.convertRowColToPythonIndex & test
+#@+node:ekr.20050314140957:g.convertPythonIndexToRowCol & test
+def convertPythonIndexToRowCol (s,i):
+
+    '''Convert index i into string s into zero-based row/col indices.'''
+
+    if not s or i <= 0:
+        return 0,0
+
+    i = min(i,len(s))
+
+    # works regardless of what s[i] is
+    row = s.count('\n',0,i) # Don't include i
+    if row == 0:
+        return row,i
+    else:
+        prevNL = s.rfind('\n',0,i) # Don't include i
+        # g.trace('prevNL',prevNL,'i',i,g.callers())
+        return row,i-prevNL-1
+#@+node:ekr.20070627082044.835:@test g.convertPythonIndexToRowCol
+if g.unitTesting:
+    s1 = 'abc\n\np\nxy'
+    table1 = (
+        (-1,(0,0)), # One too small.
+        (0,(0,0)),
+        (1,(0,1)),
+        (2,(0,2)),
+        (3,(0,3)), # The newline ends a row.
+        (4,(1,0)),
+        (5,(2,0)),
+        (6,(2,1)),
+        (7,(3,0)),
+        (8,(3,1)),
+        (9,(3,2)), # One too many.
+        (10,(3,2)), # Two too many.
+    )
+    s2 = 'abc\n\np\nxy\n'
+    table2 = (
+        (9,(3,2)),
+        (10,(4,0)), # One too many.
+        (11,(4,0)), # Two too many.
+    )
+    s3 = 'ab' # Test special case.  This was the cause of off-by-one problems.
+    table3 = (
+        (-1,(0,0)), # One too small.
+        (0,(0,0)),
+        (1,(0,1)),
+        (2,(0,2)), # One too many.
+        (3,(0,3)), # Two too many.
+    )
+
+    for s,table in ((s1,table1),(s2,table2)):
+        for i,result in table:
+            row,col = g.convertPythonIndexToRowCol(s,i)
+            assert row == result[0], 'i: %d, expected row %d, got %d' % (i,result[0],row)
+            assert col == result[1], 'i: %d, expected col %d, got %d' % (i,result[1],col)
+#@-node:ekr.20070627082044.835:@test g.convertPythonIndexToRowCol
+#@-node:ekr.20050314140957:g.convertPythonIndexToRowCol & test
+#@-node:ekr.20071011085119:Related to new colorizer
 #@-node:ekr.20071010211808:Rewrote threading colorizer: hurray!
 #@-node:ekr.20070920083033.1:Features
 #@-node:ekr.20070919132518:4.4.4 b3
