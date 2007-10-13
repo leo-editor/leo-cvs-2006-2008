@@ -459,11 +459,12 @@ class colorizer:
     def __init__(self,c):
 
         # g.trace('threading_colorizer',self)
-        # Copies of ivars...
+        # Basic data...
         self.c = c
         self.frame = c.frame
         self.body = c.frame.body
         self.p = None
+        self.s = None # The string being colorized.
         self.w = self.body.bodyCtrl
         # Attributes dict ivars: defaults are as shown...
         self.default = 'null'
@@ -481,11 +482,11 @@ class colorizer:
         # Debugging...
         self.count = 0 # For unit testing.
         self.allow_mark_prev = False # This stuff is evil.
-        self.trace = False or c.config.getBool('trace_colorizer')
+        self.trace = True or c.config.getBool('trace_colorizer')
         self.trace_match_flag = False
         self.trace_tags = False
         self.verbose = False
-        # Data...
+        # Mode data...
         self.comment_string = None # Can be set by @comment directive.
         self.defaultRulesList = []
         self.flag = True # True unless in range of @nocolor
@@ -517,22 +518,18 @@ class colorizer:
             'label','literal1','literal2','literal3','literal4',
             'markup','operator',
         ]
-
-        # Threading stuff...
-        self.existingTagsList = []
-        self.existing_i = 0
-        self.globalDeleteList = []
-        self.globalTagList = []
-            # The interface between the helper and main thread.
-            # The helper thread puts items on these lists.  The main thread removes items.
-            # The helper thread completes before the main thread uses this list, so no lock is needed.
-        self.i = 0 # The start of the text whose tags have not been cleared.
+        # Threading info...
         self.threadCount = 0
         self.helperThread = None # A singleton helper thread.
         self.killFlag = False
-        self.old_p = None
+        # Tagging...
+        self.oldTags = [] # Sorted list of all old tags.
+        self.oldTagsDict = {} # Keys are tag names, values are (i,j)
+        self.globalAddList = [] # The tags (i,j,tagName) remaining to be colored.
+        self.newTagsDict = {} # Keys are tag names, values are lists of tuples (i,j)
+            # The helper thread adds to this dict.  idleHandler in the main thread uses these dicts.
+        self.oldTagsDict = {}
         self.postPassStarted = False
-        self.s = None # The string being colorized.
     #@nonl
     #@-node:ekr.20071010193720.21:__init__
     #@+node:ekr.20071010193720.22:addImportedRules
@@ -982,6 +979,126 @@ class colorizer:
     #@-node:ekr.20071010193720.38:updateSyntaxColorer
     #@-node:ekr.20071010193720.32:Entry points
     #@+node:ekr.20071010193720.39:Colorers & helpers
+    #@+node:ekr.20071013072543:computeNewTags
+    def computeNewTags (self,oldList,newList):
+
+        '''Return (addList,deleteList)
+        deleteList: a list of old tags to be deleted.
+        addList: a list of new tags to be added.
+
+        '''
+        trace = self.trace and self.trace_tags
+        old_len = len(oldList) ; new_len = len(newList)
+        addList = [] ; deleteList = []
+
+        def report(kind,tag):
+            i,j,name = tag
+            print 'computeNewTags: *** %-5s' % (kind),i,j,self.s[i:j]
+
+        # Compare while both lists have remaining elements.
+        old_n = 0 ; new_n = 0
+        while old_n < old_len and new_n < new_len:
+            progress = old_n + new_n
+            old_i, old_j, old_name = oldTag = oldList[old_n]
+            new_i, new_j, new_name = newTag = newList[new_n]
+            if oldTag == newTag:
+                if trace and verbose: report('match',oldTag)
+                old_n += 1 ; new_n += 1
+            elif old_i <= new_i:
+                if trace: report('del',oldTag)
+                deleteList.append(oldTag)
+                old_n += 1
+            else:
+                if trace: report('add',newTag)
+                addList.append(newTag)
+                new_n += 1
+            assert old_n + new_n > progress
+
+        # Add all remaining entries of the newList to delete list.
+        while old_n < old_len:
+            oldTag = oldList[old_n]
+            if trace: report('del',oldTag)
+            deleteList.append(oldTag)
+            old_n += 1
+
+        # Add all remaining entries of the newList to the add List.
+        while new_n < new_len:
+            newTag = newList[new_n]
+            if trace: report('add',newTag)
+            addList.append(newTag)
+            new_n += 1
+
+        return addList,deleteList
+    #@-node:ekr.20071013072543:computeNewTags
+    #@+node:ekr.20071011080442:getOldTags
+    #@+at
+    # tag_names(). Return a tuple containing all tags used in the widget. This 
+    # includes the SEL selection tag.
+    # 
+    # tag_names(index). Return a tuple containing all tags used by the 
+    # character at the given position.
+    #   tag_nextrange
+    # 
+    # tag_ranges(tag). Return a tuple with start- and stop-indexes for each 
+    # occurence of the given tag. If the tag doesn't exist, this method 
+    # returns an empty tuple. Note that the tuple contains two items for each 
+    # range.
+    #@-at
+    #@@c
+
+    def getOldTags (self):
+
+        w = self.w ; names = w.tag_names()
+        trace = self.trace and self.trace_tags ; verbose = True
+        if trace: g.trace('len(s)',len(self.s))
+        lines = g.splitLines(self.s)
+        lineIndices = [0]
+        for i in xrange(1,len(lines)+1): # Add one more line
+            lineIndices.append(lineIndices[i-1] + len(lines[i-1]))
+        def quickConvertRowColToPyhthonIndex(row,col):
+            return lineIndices[min(len(lineIndices)-1,row)] + col
+        aList = [] ; self.oldTagsDict = {}
+        for name in names:
+            if name in self.tags:
+                # Call Tk.tag_ranges to avoid overhead in toPython index (called from w.tag_ranges)
+                tk_tags = Tk.Text.tag_ranges(w,name)
+                # if tk_tags: g.trace(name,tk_tags)
+                tags = []
+                for tag in tk_tags:
+                    row,col = tag.split('.')
+                    row,col = int(row),int(col)
+                    # This was a huge bottleneck. Adding the lines keyword helped, but not enough.
+                    # tags.append(g.convertRowColToPythonIndex(self.s,row-1,col,lines=lines))
+                    i = quickConvertRowColToPyhthonIndex(row-1,col)
+                    # g.trace('row',row,'col',col,'i',i)
+                    tags.append(i)
+                if tags:
+                    # g.trace(name,len(tags))
+                    if (len(tags) % 2) == 0:
+                        aList2 = []
+                        i = 0
+                        while i < len(tags):
+                            a,b = tags[i],tags[i+1]
+                            if a > b: a,b = b,a
+                            # g.trace(name,a,b)
+                            aList.append((a,b,name),)
+                            aList2.append((a,b),)
+                            i += 2
+                        self.oldTagsDict[name] = aList2
+                    else:
+                        g.trace('*** can not happen: odd length of tag_ranges tuple')
+
+        aList.sort()
+
+        if trace and (verbose or len(aList) < 100):
+            # g.trace(len(aList))
+            dumpList = []
+            for z in aList:
+                a,b,name = z
+                dumpList.append((a,b,name,self.s[a:b]),)
+            g.trace('\n',g.listToString(dumpList,sort=False))
+        return aList
+    #@-node:ekr.20071011080442:getOldTags
     #@+node:ekr.20071010193720.42:idleHandler
     def idleHandler (self,n):
 
@@ -991,14 +1108,14 @@ class colorizer:
 
         # Do this after we know the ivars exist.
         after_time = 5 # minimum time (in msec.) before this method gets called again.
-        trace = False and self.trace
-        verbose = False and self.trace and self.verbose
+        trace = self.trace and not g.unitTesting
+        verbose = self.trace and self.verbose and not g.unitTesting
 
         if self.threadCount > n:
-            if trace: g.trace('*** old thread %d' % n)
+            if verbose: g.trace('*** old thread %d' % n)
             return
         if self.killFlag:
-            if trace: g.trace('*** helper killed %d' % n)
+            if verbose: g.trace('*** helper killed %d' % n)
             return
         t = self.helperThread
         if t and t.isAlive():
@@ -1006,16 +1123,25 @@ class colorizer:
             self.w.after(200,self.idleHandler,n)
             return
 
+        newCode = True ###
+
         if not self.postPassStarted:
-            if trace: g.trace('****** post processing')
+            # if trace: g.trace('****** post processing')
             self.postPassStarted = True
-            self.existingTagsList = self.sortExistingTags() # Must be in main thread!
-            self.mergeTags()
-            self.removeExistingTrailingTags()
+            self.oldTags = self.getOldTags() # Must be in main thread!
+            newList = self.newMergeTags()
+            addList,deleteList = self.computeNewTags(self.oldTags,newList)
+            self.globalAddList = addList
+            self.removeOldTags(deleteList)
+        else:
+            addList = self.globalAddList ; deleteList = []
 
-        self.quickTagAll()
+        if verbose or (trace and (addList or deleteList)):
+            g.trace('-%-3d +%-3d' % (len(deleteList),len(addList)))
 
-        if self.globalTagList:
+        self.putNewTags()
+
+        if self.globalAddList:
             self.w.after(after_time,self.idleHandler,n)
         else:
             if verbose: g.trace('****** thread done %d' % n)
@@ -1029,13 +1155,12 @@ class colorizer:
 
         self.killFlag = False
         # self.language is set by self.updateSyntaxColorer.
-        self.i = 0
         self.p = p.copy()
         self.s = w.getAllText()
-        self.existingTagsList = []
-        self.existing_i = 0
-        self.globalDeleteList = []
-        self.globalTagList = []
+        self.oldTags = []
+        self.globalAddList = []
+        self.newTagsDict = {}
+        self.oldTagsDict = {}
         self.postPassStarted = False
         self.prev = None
         self.tagsRemoved = False
@@ -1043,88 +1168,75 @@ class colorizer:
         self.init_mode(self.language)
         self.configure_tags() # Must do this every time to support multiple editors.
     #@-node:ekr.20071010193720.43:init
-    #@+node:ekr.20071012131804:mergeTags
-    def mergeTags(self):
+    #@+node:ekr.20071013090135:newMergeTags & helper
+    def newMergeTags (self):
 
-        self.existing_i = 0
+        result = []
 
-        aList = self.globalTagList[:]
-        self.globalTagList = []
+        for tagName in self.tags:
+            aList = self.newTagsDict.get(tagName,[])
+            aList2 = self.mergeOneTag(tagName,aList)
+            result.extend(aList2)
 
-        for z in aList:
-            tag,i,j = z
-            self.addToTagLists(tag,i,j)
-    #@-node:ekr.20071012131804:mergeTags
-    #@+node:ekr.20071011103954:quickTagAll
-    def quickTagAll (self):
+        result.sort()
+        return result
+    #@+node:ekr.20071013065508:mergeOneTag
+    def mergeOneTag(self,tagName,aList):
 
-        # quickConvertPythonIndexToRowCol(i,last_row,last_col,last_i)
-        #@    << define quickConvertPythonIndexToRowCol >>
-        #@+node:ekr.20071011201952:<< define quickConvertPythonIndexToRowCol >>
-        def quickConvertPythonIndexToRowCol(i,last_row,last_col,last_i):
+        '''Return a copy of aList with all adjacent and overlapping entries merged.'''
 
-            # trace = False and self.trace
-            # if trace: g.trace('i',i,'last_row',last_row,'last_col',last_col,'last_i',last_i)
-            row = s.count('\n',last_i,i) # Don't include i
-            # if trace: g.trace('row',row)
-            if row == 0:
-                # if trace: g.trace('returns',last_row,last_col+i-last_i)
-                return last_row,last_col+i-last_i
-            else:
-                prevNL = s.rfind('\n',last_i,i) # Don't include i
-                # if trace: g.trace('prevNL',prevNL,'returns',last_row+row,i-prevNL-1)
-                return last_row+row,i-prevNL-1
-        #@-node:ekr.20071011201952:<< define quickConvertPythonIndexToRowCol >>
-        #@nl
+        trace = self.trace and self.trace_tags
+        if not aList: return []
+        aList.sort()
+        # g.trace('entry',tagName,aList)
+        n = 1
+        while n < len(aList):
+            i,j = aList[n]
+            i2,j2 = aList[n-1]
+            if (i2,j2) == (i,j):
+                if trace: g.trace('*** duplicate',tagName,i,j,self.s[i:j])
+                aList[n-1] = None
+            elif j2 == i:
+                if trace: g.trace('*** new extends old',tagName,i,j,self.s[i:j])
+                aList[n-1] = None
+                aList[n] = i2,j
+            elif i2 <= i and j <= j2:
+                if trace: g.trace('*** old covers new',tagName,i,j,self.s[i:j])
+                aList[n-1] = None
+                aList[n] = i2,j2
+            elif i <= i2 and j2 <= j:
+                if trace: g.trace('*** new covers old',tagName,i,j,self.s[i:j])
+                aList[n-1] = None
+            n += 1
+
+        result = [tuple((z[0],z[1],tagName),) for z in aList if z is not None]
+        if trace: g.trace('%s returns' % (tagName), result)
+        return result
+    #@-node:ekr.20071013065508:mergeOneTag
+    #@-node:ekr.20071013090135:newMergeTags & helper
+    #@+node:ekr.20071013085626:putNewTags
+    def putNewTags (self):
 
         s = self.s ; len_s = len(s); w = self.w ; limit = 500
-        trace = self.trace ; verbose = self.trace_tags
+        trace = self.trace ; verbose = self.trace and self.trace_tags
 
-        tagList = self.globalTagList[:limit]
-        self.globalTagList = self.globalTagList[limit:]
+        addList = self.globalAddList[:limit]
+        self.globalAddList = self.globalAddList[limit:]
 
-        if verbose or (trace and (self.globalDeleteList or tagList)):
-            g.trace('-%-3d +%-3d' % (len(self.globalDeleteList),len(tagList)))
-
-        # Delete all tags on the delete list.
-        last_i = last_row = last_col = last_i = 0
-        for aTuple in self.globalDeleteList:
-            tag,i,j = aTuple
-            if i > j: i,j = j,i
-            if last_i > i:
-                # Restart the scan. 
-                last_i = last_row = last_col = last_i = 0
-                # g.trace('******* last_i > i')
-            if trace and verbose: g.trace('del',tag,i,j)
-            # w.tag_remove calls g.convertPythonIndexToRowCol,
-            # so it is **much** slower than the following code.
-            # w.tag_remove(tag,i,j)
-            row_i,col_i = quickConvertPythonIndexToRowCol(i,last_row,last_col,last_i)
-            last_row = row_i ; last_col = col_i ; last_i = i
-            x_i = '%d.%d' % (row_i+1,col_i)
-            # An important hack to extend the coloring at the very end of the text.
-            if j >= len_s:
-                x_j = 'end'
-            else:
-                row_j,col_j = quickConvertPythonIndexToRowCol(j,last_row,last_col,last_i)
-                last_row = row_j ; last_col = col_j ; last_i = j
-                x_j = '%d.%d' % (row_j+1,col_j)
-            # if trace: g.trace('i',i,'x_i',x_i,'j',j,'x_j',x_j)
-            Tk.Text.tag_remove(w,tag,x_i,x_j)
-            self.globalDeleteList = []
+        # if verbose and addList:g.trace(len(addList))
 
         last_i = last_row = last_col = last_i = 0
-        for tag,i,j in tagList:
-            if trace and verbose: g.trace('add',tag,i,j)
+        for i,j,tag in addList:
+            if trace and verbose: g.trace('add',tag,i,j,self.s[i:j])
             ### x1,x2 = w.toGuiIndex(i,s=s), w.toGuiIndex(j,s=s)
-            row_i,col_i = quickConvertPythonIndexToRowCol(i,last_row,last_col,last_i)
+            row_i,col_i = self.quickConvertPythonIndexToRowCol(i,last_row,last_col,last_i)
             last_row = row_i ; last_col = col_i ; last_i = i
             x1 = '%d.%d' % (row_i+1,col_i)
             # An important hack to extend the coloring at the very end of the text.
             if j >= len_s -1:
                 x2 = 'end'
             else:
-                row_j,col_j = quickConvertPythonIndexToRowCol(j,last_row,last_col,last_i)
+                row_j,col_j = self.quickConvertPythonIndexToRowCol(j,last_row,last_col,last_i)
                 last_row = row_j ; last_col = col_j ; last_i = j
                 x2 = '%d.%d' % (row_j+1,col_j)
             # A crucial optimization for large body text.
@@ -1138,7 +1250,7 @@ class colorizer:
                 # g.trace(tag,x1,x2,i,j)
                 # w.tag_add(tag,x1,x2)
                 Tk.Text.tag_add(w,tag,x1,x2)
-    #@-node:ekr.20071011103954:quickTagAll
+    #@-node:ekr.20071013085626:putNewTags
     #@+node:ekr.20071010193720.44:removeAllImages
     def removeAllImages (self):
 
@@ -1171,6 +1283,41 @@ class colorizer:
             if name not in ('sel','insert'):
                 w.tag_remove(name,i,j)
     #@-node:ekr.20071010193720.45:removeAllTags
+    #@+node:ekr.20071013084305:removeOldTags
+    def removeOldTags (self,deleteList):
+
+        '''Call Tk to delete all tags on deleteList.'''
+
+        s = self.s ; len_s = len(s); w = self.w
+        verbose = self.trace and self.verbose
+
+        # Delete all tags on the delete list.
+        last_i = last_row = last_col = last_i = 0
+        for aTuple in deleteList:
+            i,j,tagName = aTuple
+            if i > j: i,j = j,i
+            if last_i > i:
+                # Restart the scan. 
+                last_i = last_row = last_col = last_i = 0
+                # g.trace('******* last_i > i')
+            if verbose: g.trace('del',tagName,i,j,self.s[i:j])
+            # w.tag_remove calls g.convertPythonIndexToRowCol,
+            # so it is **much** slower than the following code.
+            # w.tag_remove(tag,i,j)
+            row_i,col_i = self.quickConvertPythonIndexToRowCol(i,last_row,last_col,last_i)
+            last_row = row_i ; last_col = col_i ; last_i = i
+            x_i = '%d.%d' % (row_i+1,col_i)
+            # An important hack to extend the coloring at the very end of the text.
+            if j >= len_s:
+                x_j = 'end'
+            else:
+                row_j,col_j = self.quickConvertPythonIndexToRowCol(j,last_row,last_col,last_i)
+                last_row = row_j ; last_col = col_j ; last_i = j
+                x_j = '%d.%d' % (row_j+1,col_j)
+            # if trace: g.trace('i',i,'x_i',x_i,'j',j,'x_j',x_j)
+            Tk.Text.tag_remove(w,tagName,x_i,x_j)
+    #@nonl
+    #@-node:ekr.20071013084305:removeOldTags
     #@+node:ekr.20071011042037:removeTagsFromRange
     def removeTagsFromRange(self,i,j):
 
@@ -1185,71 +1332,6 @@ class colorizer:
             # g.trace(tag,x1,x2)
             w.tag_remove(tag,x1,x2)
     #@-node:ekr.20071011042037:removeTagsFromRange
-    #@+node:ekr.20071011080442:sortExistingTags
-    #@+at
-    # tag_names(). Return a tuple containing all tags used in the widget. This 
-    # includes the SEL selection tag.
-    # 
-    # tag_names(index). Return a tuple containing all tags used by the 
-    # character at the given position.
-    #   tag_nextrange
-    # 
-    # tag_ranges(tag). Return a tuple with start- and stop-indexes for each 
-    # occurence of the given tag. If the tag doesn't exist, this method 
-    # returns an empty tuple. Note that the tuple contains two items for each 
-    # range.
-    #@-at
-    #@@c
-
-    def sortExistingTags (self):
-
-        w = self.w ; names = w.tag_names()
-        trace = self.trace and self.trace_tags ; verbose = True
-        if trace: g.trace('len(s)',len(self.s))
-        lines = g.splitLines(self.s)
-        lineIndices = [0]
-        for i in xrange(1,len(lines)+1): # Add one more line
-            lineIndices.append(lineIndices[i-1] + len(lines[i-1]))
-        def quickConvertRowColToPyhthonIndex(row,col):
-            return lineIndices[min(len(lineIndices)-1,row)] + col
-        aList = []
-        for name in names:
-            if name in self.tags:
-                # Call Tk.tag_ranges to avoid overhead in toPython index (called from w.tag_ranges)
-                tk_tags = Tk.Text.tag_ranges(w,name)
-                # if tk_tags: g.trace(name,tk_tags)
-                tags = []
-                for tag in tk_tags:
-                    row,col = tag.split('.')
-                    row,col = int(row),int(col)
-                    # This was a huge bottleneck. Adding the lines keyword helped, but not enough.
-                    # tags.append(g.convertRowColToPythonIndex(self.s,row-1,col,lines=lines))
-                    i = quickConvertRowColToPyhthonIndex(row-1,col)
-                    # g.trace('row',row,'col',col,'i',i)
-                    tags.append(i)
-                if tags:
-                    # g.trace(name,len(tags))
-                    if (len(tags) % 2) == 0:
-                        i = 0
-                        while i < len(tags):
-                            a,b = tags[i],tags[i+1]
-                            # g.trace(name,a,b)
-                            aList.append((a,b,name),)
-                            i += 2
-                    else:
-                        g.trace('*** can not happen: odd length of tag_ranges tuple')
-
-        aList.sort()
-
-        if trace and (verbose or len(aList) < 100):
-            # g.trace(len(aList))
-            dumpList = []
-            for z in aList:
-                a,b,name = z
-                dumpList.append((a,b,name,self.s[a:b]),)
-            g.trace('\n',g.listToString(dumpList,sort=False))
-        return aList
-    #@-node:ekr.20071011080442:sortExistingTags
     #@+node:ekr.20071010193720.47:tag & index (threadingColorizer)
     def index (self,i):
 
@@ -1290,7 +1372,6 @@ class colorizer:
         if self.killcolorFlag or not self.mode:
             self.removeAllTags()
         else:
-            self.existing_i = 0 # Index for addTagsToList
             self.threadCount += 1
             t = threading.Thread(target=self.target,kwargs={'s':self.s})
             self.helperThread = t
@@ -1301,85 +1382,10 @@ class colorizer:
     #@+node:ekr.20071010193720.50:In helper thread
     # Important: g.pdb will crash if called from within helper thread.
     #@nonl
-    #@+node:ekr.20071011082754:addToTagLists
-    def addToTagLists(self,tag,i,j):
-
-        '''add (tag,i,j) to the globalTagList after deleting all non-matching tags
-        from self.existingTagsList whose starting index is in the range self.existing_i..i.
-        Don't actually add (tag,i,j) if an exact match is found.'''
-
-        # The heart of the optimized tagger: a kind of sort-merge algorithm.
-        trace = self.trace and self.trace_tags
-        verbose = True or len(self.existingTagsList) < 100
-        newTag = i,j,tag
-
-        # Delete previously occuring tags.
-        while self.existing_i < len(self.existingTagsList):
-            i2,j2,tag2 = oldTag = self.existingTagsList[self.existing_i]
-            if oldTag == newTag:
-                if trace and verbose: g.trace('*** match',tag,i,j,self.s[i:j])
-                self.existing_i += 1
-                return
-
-            # elif trace: g.trace('mismatch','oldTag',oldTag,'newTag',newTag)
-            if i2 > i: break
-            else:
-                if trace and verbose: g.trace('*** del  ',tag2,i2,j2,self.s[i2:j2])
-                self.globalDeleteList.append((tag2,i2,j2),)
-                self.existing_i += 1
-
-        # Check for duplicates, extensions and overlaps.
-        if self.globalTagList:
-            tag2,i2,j2 = self.globalTagList[-1]
-            # g.trace('comparing',tag2,i2,j2,tag,i,j)
-            if tag == tag2:
-                if (i2,j2) == (i,j):
-                    if trace and verbose: g.trace('*** duplicate',tag,i,j,self.s[i:j])
-                    return
-                elif j2 == i:
-                    if trace and verbose: g.trace('*** new extends old',tag,i,j,self.s[i:j])
-                    self.globalTagList.pop()
-                    i = i2
-                elif i2 <= i and j <= j2:
-                    if trace and verbose: g.trace('*** old covers new',tag,i,j,self.s[i:j])
-                    return
-                elif i <= i2 and j2 <= j:
-                    if trace and verbose: g.trace('*** new covers old',tag,i,j,self.s[i:j])
-                    self.globalTagList.pop()
-
-        # Remove the last deletion if it matches the new addition.
-        if self.globalDeleteList:
-            tag2,i2,j2 = self.globalDeleteList[-1]
-            if (tag2,i2,j2) == (tag,i,j):
-                if trace and verbose: g.trace('*** undo delete',tag2,i2,j2,self.s[i2:j2])
-                self.globalDeleteList.pop()
-                return
-
-        # Make a final check for duplicates:
-        if self.globalTagList:
-            tag2,i2,j2 = self.globalTagList[-1]
-            if (tag2,i2,j2) == (tag,i,j):
-                if trace and verbose: g.trace('*** duplicate 2',tag,i,j,self.s[i:j])
-                return
-
-        if trace and verbose: g.trace('*** add  ',tag,i,j,self.s[i:j])
-        self.globalTagList.append((tag,i,j),)
-    #@-node:ekr.20071011082754:addToTagLists
-    #@+node:ekr.20071011195132:removeExistingTrailingTags
-    def removeExistingTrailingTags (self):
-
-        trace = self.trace and self.trace_tags and len(self.existingTagsList) < 100
-
-        while self.existing_i < len(self.existingTagsList):
-            i2,j2,tag2 = self.existingTagsList[self.existing_i]
-            if trace: g.trace('*** del  ',tag2,i2,j2,self.s[i2:j2])
-            self.globalDeleteList.append((tag2,i2,j2),)
-            self.existing_i += 1
-    #@-node:ekr.20071011195132:removeExistingTrailingTags
     #@+node:ekr.20071010193720.52:colorRangeWithTag (in helper thread)
     def colorRangeWithTag (self,s,i,j,tag,delegate='',exclude_match=False):
 
-        '''Add an item to the globalTagList if colorizing is enabled.'''
+        '''Add an item to the globalAddList if colorizing is enabled.'''
 
         if self.killFlag:
             if self.trace and self.verbose: g.trace('*** killed',self.threadCount)
@@ -1403,7 +1409,10 @@ class colorizer:
             bunch = self.modeStack.pop()
             self.initModeFromBunch(bunch)
         elif not exclude_match:
-            self.globalTagList.append((tag,i,j),)
+            ### self.globalAddList.append((tag,i,j),)
+            aList = self.newTagsDict.get(tag,[])
+            aList.append((i,j),)
+            self.newTagsDict[tag] = aList
     #@nonl
     #@-node:ekr.20071010193720.52:colorRangeWithTag (in helper thread)
     #@+node:ekr.20071010193720.54:fullColor (in helper thread)
@@ -1433,21 +1442,8 @@ class colorizer:
             assert i > progress
 
         if trace: g.trace('*** done',self.threadCount)
+    #@nonl
     #@-node:ekr.20071010193720.54:fullColor (in helper thread)
-    #@+node:ekr.20071010193720.57:target (in helper thread)
-    def target(self,*args,**keys):
-
-        s = keys.get('s')
-        # if self.trace: g.trace(self.threadCount)
-        try:
-            self.fullColor(s)
-            return "ok" # for testing.
-        except:
-            # We can not use g.es_exception: it calls Tk methods.
-            traceback.print_exc()
-            return "error" # for unit testing.
-    #@-node:ekr.20071010193720.57:target (in helper thread)
-    #@-node:ekr.20071010193720.50:In helper thread
     #@+node:ekr.20071010193720.58:jEdit matchers (in helper thread)
     #@@nocolor
     #@+at
@@ -1756,9 +1752,6 @@ class colorizer:
                 if no_line_break:
                     return -1
                 else:
-                    # g.trace('match to end',
-                        # 'len(globalTagList)',len(self.globalTagList),
-                        # 'start_i',self.start_i,'i',i,repr(s[self.start_i:i]))
                     return len(s)
             elif no_line_break and '\n' in s[i:j]:
                 return -1
@@ -1823,6 +1816,20 @@ class colorizer:
         else: return 0
     #@-node:ekr.20071010193720.70:match_span_regexp
     #@-node:ekr.20071010193720.58:jEdit matchers (in helper thread)
+    #@+node:ekr.20071010193720.57:target (in helper thread)
+    def target(self,*args,**keys):
+
+        s = keys.get('s')
+        # if self.trace: g.trace(self.threadCount)
+        try:
+            self.fullColor(s)
+            return "ok" # for testing.
+        except:
+            # We can not use g.es_exception: it calls Tk methods.
+            traceback.print_exc()
+            return "error" # for unit testing.
+    #@-node:ekr.20071010193720.57:target (in helper thread)
+    #@-node:ekr.20071010193720.50:In helper thread
     #@+node:ekr.20071010193720.71:Utils
     #@+at 
     #@nonl
@@ -1848,6 +1855,22 @@ class colorizer:
         return ''.join([g.choose(ch in valid,ch.lower(),'_') for ch in s])
     #@nonl
     #@-node:ekr.20071010193720.73:munge
+    #@+node:ekr.20071011201952:quickConvertPythonIndexToRowCol 
+    def quickConvertPythonIndexToRowCol(self,i,last_row,last_col,last_i):
+
+        # trace = False and self.trace
+        # if trace: g.trace('i',i,'last_row',last_row,'last_col',last_col,'last_i',last_i)
+        s = self.s
+        row = s.count('\n',last_i,i) # Don't include i
+        # if trace: g.trace('row',row)
+        if row == 0:
+            # if trace: g.trace('returns',last_row,last_col+i-last_i)
+            return last_row,last_col+i-last_i
+        else:
+            prevNL = s.rfind('\n',last_i,i) # Don't include i
+            # if trace: g.trace('prevNL',prevNL,'returns',last_row+row,i-prevNL-1)
+            return last_row+row,i-prevNL-1
+    #@-node:ekr.20071011201952:quickConvertPythonIndexToRowCol 
     #@+node:ekr.20071010193720.74:scanColorDirectives
     def scanColorDirectives(self,p):
 
