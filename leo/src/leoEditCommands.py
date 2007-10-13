@@ -5701,6 +5701,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
         if not w: return
         current = c.currentPosition()
         if not current: return
+        text = w.getAllText()
         i, j = w.getSelectionRange()
         clip_text = self.getClipboard(w)
         if not self.killBuffer and not clip_text: return
@@ -5713,6 +5714,13 @@ class killBufferCommandsClass (baseEditCommandsClass):
             s = self.kbiterator.next()
             if s is None: s = clip_text or ''
             if i != j: w.deleteTextSelection()
+            if s != s.lstrip(): # s contains leading whitespace.
+                i2,j2 = g.getLine(text,i)
+                k = g.skip_ws(text,i2)
+                if i2 < i <= k:
+                    # Replace the line's leading whitespace by s's leading whitespace.
+                    w.delete(i2,k)
+                    i = i2
             w.insert(i,s)
             w.setSelectionRange(i,i+len(s),insert=i+len(s))
             self.lastYankP = current.copy()
