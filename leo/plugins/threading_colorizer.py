@@ -481,8 +481,8 @@ class colorizer:
         self.enabled = c.config.getBool('use_syntax_coloring')
         # Debugging...
         self.count = 0 # For unit testing.
-        self.allow_mark_prev = False # This stuff is evil.
-        self.trace = True or c.config.getBool('trace_colorizer')
+        self.allow_mark_prev = True # The new colorizer tolerates this nonsense :-)
+        self.trace = False or c.config.getBool('trace_colorizer')
         self.trace_match_flag = False
         self.trace_tags = False
         self.verbose = False
