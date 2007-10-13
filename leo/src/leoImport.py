@@ -2364,7 +2364,7 @@ class baseLeoImportCommands:
                 for z in self.sigFailTokens:
                     if g.match(s,j,z):
                         if trace: g.trace('failtoken',z,'ids',ids)
-                        return start, []
+                        return start, [], None
                 for z in self.sigHeadExtraTokens:
                     if g.match(s,j,z):
                         i += len(z) ; break
