@@ -29251,6 +29251,7 @@ def yank (self,event,pop=False):
     if not w: return
     current = c.currentPosition()
     if not current: return
+    text = w.getAllText()
     i, j = w.getSelectionRange()
     clip_text = self.getClipboard(w)
     if not self.killBuffer and not clip_text: return
@@ -29263,6 +29264,13 @@ def yank (self,event,pop=False):
         s = self.kbiterator.next()
         if s is None: s = clip_text or ''
         if i != j: w.deleteTextSelection()
+        if s != s.lstrip(): # s contains leading whitespace.
+            i2,j2 = g.getLine(text,i)
+            k = g.skip_ws(text,i2)
+            if i2 < i <= k:
+                # Replace the line's leading whitespace by s's leading whitespace.
+                w.delete(i2,k)
+                i = i2
         w.insert(i,s)
         w.setSelectionRange(i,i+len(s),insert=i+len(s))
         self.lastYankP = current.copy()
@@ -29373,6 +29381,7 @@ def yank (self,event,pop=False):
     if not w: return
     current = c.currentPosition()
     if not current: return
+    text = w.getAllText()
     i, j = w.getSelectionRange()
     clip_text = self.getClipboard(w)
     if not self.killBuffer and not clip_text: return
@@ -29385,6 +29394,13 @@ def yank (self,event,pop=False):
         s = self.kbiterator.next()
         if s is None: s = clip_text or ''
         if i != j: w.deleteTextSelection()
+        if s != s.lstrip(): # s contains leading whitespace.
+            i2,j2 = g.getLine(text,i)
+            k = g.skip_ws(text,i2)
+            if i2 < i <= k:
+                # Replace the line's leading whitespace by s's leading whitespace.
+                w.delete(i2,k)
+                i = i2
         w.insert(i,s)
         w.setSelectionRange(i,i+len(s),insert=i+len(s))
         self.lastYankP = current.copy()
@@ -30105,6 +30121,46 @@ if g.unitTesting:
 #@-node:ekr.20050314140957:g.convertPythonIndexToRowCol & test
 #@-node:ekr.20071011085119:Related to new colorizer
 #@-node:ekr.20071010211808:Rewrote threading colorizer: hurray!
+#@+node:ekr.20071012112853.1:Optimized yank, by using yanked leading whitespace if it exists
+#@+node:ekr.20050930091642.1:yank
+def yank (self,event,pop=False):
+
+    '''yank: insert the first entry of the kill ring.
+    yank-pop: insert the next entry of the kill ring.
+    '''
+
+    c = self.c ; w = self.editWidget(event)
+    if not w: return
+    current = c.currentPosition()
+    if not current: return
+    text = w.getAllText()
+    i, j = w.getSelectionRange()
+    clip_text = self.getClipboard(w)
+    if not self.killBuffer and not clip_text: return
+
+    undoType = g.choose(pop,'yank-pop','yank')
+    self.beginCommand(undoType=undoType)
+    try:
+        if not pop or self.lastYankP and self.lastYankP != current:
+            self.reset = 0
+        s = self.kbiterator.next()
+        if s is None: s = clip_text or ''
+        if i != j: w.deleteTextSelection()
+        if s != s.lstrip(): # s contains leading whitespace.
+            i2,j2 = g.getLine(text,i)
+            k = g.skip_ws(text,i2)
+            if i2 < i <= k:
+                # Replace the line's leading whitespace by s's leading whitespace.
+                w.delete(i2,k)
+                i = i2
+        w.insert(i,s)
+        w.setSelectionRange(i,i+len(s),insert=i+len(s))
+        self.lastYankP = current.copy()
+        c.frame.body.forceFullRecolor()
+    finally:
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050930091642.1:yank
+#@-node:ekr.20071012112853.1:Optimized yank, by using yanked leading whitespace if it exists
 #@-node:ekr.20070920083033.1:Features
 #@-node:ekr.20070919132518:4.4.4 b3
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
