@@ -123,82 +123,16 @@ import sys
 #@-node:ekr.20060328125248.2:<< imports >>
 #@nl
 
-__version__ = '2.1'
+__version__ = '2.2'
 #@<< version history >>
 #@+node:ekr.20060328125248.3:<< version history >>
+#@@nocolor
 #@+at
 # 
-# 0.3 EKR: Don't mess with button sizes or fonts on MacOs/darwin
-# 0.4 EKR: Added support for @button, @script and @plugin.
-# 0.5 EKR: Added patch by Davide Salomoni: added start2 hook and related code.
-# 0.5 EKR: Use g.importExtention to import Tk.
-# 0.6.1 EKR: Improved docstring.
-# 0.7 EKR:
-# - Added support for 'removeMe' hack.
-#     Buttons can asked to be removed by setting s.app.scriptDict['removeMe'] 
-# = True.
-# 0.8 EKR: c.disableCommandsMessage disables buttons.
-# 0.9 EKR:
-# - Added init, onCreate.
-# - Created scriptingController class.
-# 0.10 EKR: Changed 'new_c' logic to 'c' logic.
-# 0.11 EKR:
-# - Removed bindLate options: it should always be on.
-# - Added support for:
-#     - @button name [@key=shortcut]
-#     - @command name [@key=shortcut]
-# 0.12 EKR:
-# - Use c.executeScript(p=p,silent=True) in @command so the
-#   'end of script' message doesn't switch tabs.
-# 0.13 EKR: Use set silent=True in all calls to c.executeScript except for the 
-# 'Run Script' button.
-# 0.14 EKR: All created buttons call bodyWantsFocus when the script completes.
-# 0.15 EKR: Fixed a recent crasher in deleteButton.
-# 0.16 EKR:
-# - Removed the unused bindLate global.
-# - Set silent=True in the Run Script callback.
-# 0.17 EKR: Added calls to c.updateScreen.
-# 0.18 EKR:
-# - Removed calls to c.updateScreen and c.frame.bodyWantsFocus.
-#   These calls would shift focus improperly when opening a new window.
-# 0.19 btheado: Refactored the code in scriptingController to remove 
-# duplication.
-# 0.20 EKR: converted to @thin.
-# 0.21 EKR: Added Debug button & balloons.
-# 0.22 EKR: Created leoScriptModule for use by the debugger and Debug Script 
-# button.
-# 0.23 EKR: Creating a script button creates the press-xxx-button command,
-#           and you can specify settings for such commands using @shortcuts 
-# nodes.
-# 0.24 EKR: Use 'button' pane for bindings.
-# 0.25 EKR:
-# - Added createRunButton and createScriptButton option.
-# - All standard buttons now create the corresponding press-x-button commands.
-# - cleanButtonText removes leading @..@button and does various other 
-# cleanings.
-# 1.0 EKR: Use settigns in leoSettings.leo instead of hard-coded settings.
-# 1.1 EKR: Updated docstring to reflect new settings.
-# 1.2 EKR: Make sure balloon exists before binding to it.
-# - cleanButtonText cleans less.  In particular, it retains interior --> and 
-# <--.
-# 1.3 EKR: Give up the attempt to use <-- and -->.
-# LeoSlideShows.leo now minibuffer names for buttons, and defines those same 
-# command.
-# 1.4 EKR: Create a delete-x-button command for each button.
-# 1.5 EKR: Reorganized and simplified much of the code, added many docstrings 
-# and revised the plugin's docstring.
-# 1.6 EKR: Created truncateButtonText utility to strip trailing '-' 
-# characters.
-# 1.7 EKR: Fix recent bug: lowercase all command names.
-# 1.8 EKR: An attempt to workaround problems deleting Pmw buttons/with 
-# balloons.
-# 1.9 EKR: Warn about nodes with no cleaned text.
-# 1.10 EKR: Strip @key from button text and command name.
-# 1.11 EKR: Removed platform-specific munging of text: this is now done in the 
-# leoFrame classes.
-# 1.12 EKR: Replaced g.app.gui by self.gui when testing whether to create a 
-# Pmw.Balloon.
 # 2.1 EKR: Support common @button nodes in @settings trees.
+# 2.2 EKR: Bug fix: use g.match_word rather than s.startswith to discover 
+# names.
+# This prevents an 's' button from being created from @buttons nodes.
 #@-at
 #@nonl
 #@-node:ekr.20060328125248.3:<< version history >>
@@ -295,14 +229,16 @@ class scriptingController:
                 h,script = z
                 self.handleAtButtonSetting(h,script)
         # Last, scan for user-defined nodes.
+        def startswith(p,s):
+            return g.match_word(p.headString(),0,s)
         for p in c.allNodes_iter():
-            if self.atButtonNodes and p.headString().startswith("@button"):
+            if self.atButtonNodes and startswith(p,'@button'): 
                 self.handleAtButtonNode(p)
-            if self.atCommandsNodes and p.headString().startswith("@command"):
+            if self.atCommandsNodes and startswith(p,'@command'):
                 self.handleAtCommandNode(p)
-            if self.atPluginNodes and p.headString().startswith("@plugin"):
+            if self.atPluginNodes and startswith(p,'@plugin'):
                 self.handleAtPluginNode(p)
-            if self.atScriptNodes and p.headString().startswith("@script"):
+            if self.atScriptNodes and startswith(p,'@script'):
                 self.handleAtScriptNode(p)
     #@nonl
     #@+node:ekr.20060328125248.20:createRunScriptIconButton 'run-script' & callback
@@ -618,7 +554,7 @@ class scriptingController:
         # Strip @...@button.
         while s.startswith('@'):
             s = s[1:]
-        if s.startswith('button'):
+        if g.match_word(s,0,'button'):
             s = s[6:]
         i = s.find('@key')
         if i != -1:
@@ -784,7 +720,7 @@ class scriptingController:
         '''Returns the button text found in the given headline string'''
 
         tag = "@button"
-        if h.startswith(tag):
+        if g.match_word(h,0,tag):
             h = h[len(tag):].strip()
 
         i = h.find('@key')
