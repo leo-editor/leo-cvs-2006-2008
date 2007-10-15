@@ -227,6 +227,7 @@ def code_block (name,arguments,options,content,lineno,content_offset,block_text,
 
     try:
         language = arguments [0]
+        g.trace(language)
         # See http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/252170
         module = getattr(SilverCity,language)
         generator = getattr(module,language+"HTMLGenerator")
@@ -236,6 +237,8 @@ def code_block (name,arguments,options,content,lineno,content_offset,block_text,
         raw = docutils.nodes.raw('',html,format='html')
         return [raw]
     except Exception: # Return html as shown.  Lines are separated by <br> elements.
+        g.es_trace('exception in rst3:code_block()')
+        g.es_exception()
         html = '<div class="code-block">\n%s\n</div>\n' % '<br>\n'.join(content)
         raw = docutils.nodes.raw('',html,format='html')
         return [raw]
@@ -796,6 +799,29 @@ class rstClass:
             print '%20s %s' % (key,d.get(key))
     #@nonl
     #@-node:ekr.20050812120933:dumpSettings (debugging)
+    #@+node:ekr.20050814134351:getOption
+    def getOption (self,name):
+
+        bwm = False
+        if bwm: g.trace("bwm: getOption self:%s, name:%s, value:%s" % (self, name, self.optionsDict.get(name)))
+        return self.optionsDict.get(name)
+    #@nonl
+    #@-node:ekr.20050814134351:getOption
+    #@+node:ekr.20071015110830:initCodeBlockString
+    def initCodeBlockString(self,p):
+
+        # New in Leo 4.4.4: do this here, not in initWrite:
+        d = g.scanDirectives(c=self.c,p=p)
+        language = d.get('language','').lower()
+        syntax = SilverCity is not None
+
+        # g.trace('language',language,'language.title()',language.title(),p.headString())
+
+        if syntax and language in ('python','ruby','perl','c'):
+            self.code_block_string = '**code**:\n\n.. code-block:: %s\n' % language.title()
+        else:
+            self.code_block_string = '**code**:\n\n.. class:: code\n..\n\n::\n'
+    #@-node:ekr.20071015110830:initCodeBlockString
     #@+node:ekr.20050807120331.1:preprocessTree & helpers
     def preprocessTree (self,root):
 
@@ -1001,6 +1027,7 @@ class rstClass:
         self.initOptionsFromSettings() # Must be done on every node.
         self.handleSingleNodeOptions(p)
         seen = self.singleNodeOptions[:] # Suppress inheritance of single-node options.
+
         # g.trace('-'*20)
         for p in p.self_and_parents_iter():
             d = self.tnodeOptionDict.get(p.v.t,{})
@@ -1011,12 +1038,12 @@ class rstClass:
                     seen.append(ivar)
                     val = d.get(key)
                     self.setOption(key,val,p.headString())
+
         # self.dumpSettings()
         if self.rst3_all:
             self.setOption("generate_rst", True, "rst3_all")
             self.setOption("http_server_support", True, "rst3_all")
             self.setOption("write_intermediate_file", True, "rst3_all")
-    #@nonl
     #@+node:ekr.20050805162550.13:initOptionsFromSettings
     def initOptionsFromSettings (self):
 
@@ -1069,14 +1096,6 @@ class rstClass:
         self.optionsDict [ivar] = val
     #@nonl
     #@-node:ekr.20050811135526:setOption
-    #@+node:ekr.20050814134351:getOption
-    def getOption (self,name):
-
-        bwm = False
-        if bwm: g.trace("bwm: getOption self:%s, name:%s, value:%s" % (self, name, self.optionsDict.get(name)))
-        return self.optionsDict.get(name)
-    #@nonl
-    #@-node:ekr.20050814134351:getOption
     #@-node:ekr.20050812122236:options...
     #@+node:ekr.20050809074827:write methods
     #@+node:ekr.20050809082854: Top-level write code
@@ -1090,14 +1109,6 @@ class rstClass:
         d = g.scanDirectives(c=self.c,p=p)
         self.encoding = encoding or d.get('encoding') or self.defaultEncoding
 
-        language = d.get('language','').lower()
-        syntax = SilverCity is not None
-
-        if syntax and language in ('python','ruby','perl','c'):
-            self.code_block_string = '**code**:\n\n.. code-block:: %s\n' % language.title()
-        else:
-            self.code_block_string = '**code**:\n\n.. class:: code\n..\n\n::\n'
-    #@nonl
     #@-node:ekr.20050809075309:initWrite
     #@+node:ekr.20050809080925:writeNormalTree
     def writeNormalTree (self,p,toString=False):
@@ -1333,6 +1344,7 @@ class rstClass:
 
         '''Format a node according to the options presently in effect.'''
 
+        self.initCodeBlockString(p)
         self.scanAllOptions(p)
 
         if 0:
