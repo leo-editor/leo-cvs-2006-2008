@@ -697,6 +697,9 @@ class rstClass:
             self.getOption('option_prefix'),
             self.getOption('options_prefix'),
             self.getOption('show_headline_prefix'),
+            # Suggested by Hemanth P.S.: prevent @file nodes from creating headings.
+            self.getOption('keep_at_file_prefix'),
+            self.getOption('strip_at_file_prefix'),
         ]
     #@nonl
     #@-node:ekr.20050813083007:initHeadlineCommands
@@ -761,12 +764,13 @@ class rstClass:
             'rst3_show_headlines': True,  # Can be set by @rst-no-head headlines.
             'rst3_show_organizer_nodes': True,
             'rst3_show_options_nodes': False,
+            'rst3_strip_at_file_prefixes': True,
             # Formatting options that apply only to code mode.
             'rst3_show_doc_parts_as_paragraphs': False,
             'rst3_show_leo_directives': True,
             'rst3_show_markup_doc_parts': False,
             'rst3_show_options_doc_parts': False,
-            # Names of headline commands...
+            # *Names* of headline commands...
             'rst3_code_prefix':             '@rst-code',     # Enter code mode.
             'rst3_doc_only_prefix':         '@rst-doc-only', # Enter doc-only mode.
             'rst3_rst_prefix':              '@rst',          # Enter rst mode.
@@ -778,6 +782,9 @@ class rstClass:
             'rst3_option_prefix':           '@rst-option',
             'rst3_options_prefix':          '@rst-options',
             'rst3_show_headline_prefix':    '@rst-head',
+            # New in Leo 4.4.4...
+            # 'rst3_keep_at_file_prefix':     '@rst-keep-at-file-prefix',
+            # 'rst3_strip_at_file_prefix':    '@rst-strip-at-file-prefix',
         }
     #@nonl
     #@-node:ekr.20050808064245:createDefaultOptionsDict
@@ -903,6 +910,9 @@ class rstClass:
                 ('ignore_prefix','ignore_this_tree',True),      # '@rst-ignore'
                 ('ignore_node_prefix','ignore_this_node',True), # '@rst-ignore-node'
                 ('ignore_tree_prefix','ignore_this_tree',True), # '@rst-ignore-tree'
+                # New in Leo 4.4.4:
+                # ('strip_at_file_prefix','show_at_file_prefix',False), # '@rst-strip-at-file-prefix'
+                # ('keep_at_file_prefix','strip_at_file_prefix',True), # '@rst-keep-at-file-prefix'
             ):
                 prefix = self.getOption(prefix)
                 if prefix and word == prefix: # Do _not_ munge this prefix!
@@ -921,7 +931,6 @@ class rstClass:
                 g.trace('unknown kind of @rst headline',p.headString())
 
             return {}
-    #@nonl
     #@-node:ekr.20050811173750:scanHeadlineForOptions
     #@+node:ekr.20050807120331.2:scanNodeForOptions
     def scanNodeForOptions (self,p):
@@ -1678,13 +1687,19 @@ class rstClass:
                     h = h [len(word):].strip()
                     break
 
+            # New in Leo 4.4.4.
+            if word.startswith('@'):
+                if self.getOption('strip_at_file_prefixes'):
+                    for s in ('@auto','@file','@nosent','@thin',):
+                        if g.match_word(word,0,s):
+                            h = h [len(s):].strip()
+
         if not h.strip(): return
 
         if self.getOption('generate_rst'):
             self.write('%s\n%s\n' % (h,self.underline(h,p)))
         else:
             self.write('\n%s\n' % h)
-    #@nonl
     #@-node:ekr.20060608102001:writeHeadlineHelper
     #@-node:ekr.20050805162550.26:writeHeadline & helper
     #@+node:ekr.20050811102607:skip_literal_block
