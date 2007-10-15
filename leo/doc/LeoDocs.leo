@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -633,12 +633,12 @@
 <v t="ekr.20060612104638"><vh>@rst-no-head end-of-page stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831184021.1"><vh>Chapter 14: Using the rst3 plugin</vh>
-<v t="ekr.20050818163826"><vh>@rst html\rstplugin3.html</vh>
+<v t="ekr.20050831184021.1" a="E"><vh>Chapter 14: Using the rst3 plugin</vh>
+<v t="ekr.20050818163826" a="E"><vh>@rst html\rstplugin3.html</vh>
 <v t="ekr.20050818163826.1"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050818163826.2"><vh>Overview</vh></v>
 <v t="ekr.20050818163826.3"><vh>Comparison with previous rst plugins</vh></v>
-<v t="ekr.20050818163826.4"><vh>Options</vh>
+<v t="ekr.20050818163826.4" a="ETV"><vh>Options</vh>
 <v t="ekr.20050818163826.5"><vh>Options supporting the http plugin</vh></v>
 <v t="ekr.20050818163826.6"><vh>Options that set command names</vh></v>
 </v>
@@ -3308,7 +3308,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071004101349" a="TV"><vh>4.4.4 b3</vh>
+<v t="ekr.20071004101349"><vh>4.4.4 b3</vh>
 <v t="ekr.20071004101443.1"><vh>Bugs fixed</vh>
 <v t="ekr.20071004101443.18"><vh>Greatly improved speed of unmark-all</vh></v>
 <v t="ekr.20071004101443.26"><vh>Made sure dirty bits get updated in xemacs plugin</vh></v>
@@ -14072,6 +14072,9 @@ show_options_nodes (default: False)
 show_organizer_nodes (default: True)
     True: generate rST sections for nodes that do not contain body text.
     This option has no effect unless the rST section would otherwise be written.
+    
+strip_at_file_prefixes (default: True)
+    True: remove @auto, @file, @nosent and '@thin' from the start of headlines.
 
 stylesheet_name (default: 'default.css')
     The name of the stylesheet passed to docutils.

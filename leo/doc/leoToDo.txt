@@ -3242,6 +3242,12 @@ def adjustClassOrFunctionStart(self,s,i,tag):
 #@-node:ekr.20070709084313:adjustClassOrFunctionStart
 #@-node:ekr.20070707080042:skipDecls & helper
 #@-node:ekr.20071008130552:Add c# importer
+#@+node:ekr.20071014112331:Make sure java scanner works with java interfaces
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4566691
+By: vransmayr
+#@-node:ekr.20071014112331:Make sure java scanner works with java interfaces
 #@-node:ekr.20071001045205:To do: 4.4.4
 #@+node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
 # Leo 4.4.5 will complete several projects that are long overdue.
@@ -3351,6 +3357,85 @@ I'm using current CVS, W2k
 
 Zombie!
 #@-node:ekr.20060609070148:Fix hung windows
+#@+node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
+@nocolor
+
+From email from Terry Brown
+
+python /home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py /home/tbrown/.tnb.leo
+
+(should be all on one line, i.e. run and open /home/tbrown/.tnb.leo)
+
+gives the traceback below.  Opening the file from within Leo works fine.
+
+Bah - I just now looked at it closely enough to realize it's the evil
+pickled Tk classes in cleo uAs.  So I don't know whether you want to
+fix that or not, it makes sense Leo would read the file specified on
+the command line before Tk is initialized - if it's just scanning for
+settings maybe it could catch and ignore failed uA reads at that time?
+
+At some point I want to take pickled Tk vars out of cleo, I was
+thinking when that guy was working on the wx gui would be a good time,
+too bad he got sick.
+
+Cheers -Terry
+
+reading settings in /mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/config/leoSettings.leo
+reading settings in /home/tbrown/leoSettings.leo
+reading settings in /home/tbrown/myLeoSettings.leo
+reading settings in /home/tbrown/.tnb.leo
+Traceback (most recent call last):
+  File "/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py", line 398, in <module>
+    run(fileName)
+  File "/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py", line 118, in run
+    g.app.config.readSettingsFiles(fileName,verbose)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoConfig.py", line 1649, in readSettingsFiles
+    c = self.openSettingsFile(path)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoConfig.py", line 1674, in openSettingsFile
+    theFile,path,readAtFileNodesFlag=False,silent=True) # closes theFile.
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 892, in open
+    silent=silent)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 779, in getLeoFile
+    self.getAllLeoElements(fileName,silent)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1317, in getAllLeoElements
+    self.getVnodes()
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1898, in getVnodes
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1738, in getVnode
+    attr,val = self.getUa("vnode")
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1658, in getUa
+    val2 = pickle.loads(binString)
+  File "/usr/lib/python2.5/pickle.py", line 1374, in loads
+    return Unpickler(file).load()
+  File "/usr/lib/python2.5/pickle.py", line 858, in load
+    dispatch[key](self)
+  File "/usr/lib/python2.5/pickle.py", line 1217, in load_build
+    setstate(state)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/plugins/cleo.py", line 130, in __setstate__
+    Tk.Variable.__init__(self)
+  File "/usr/lib/python2.5/lib-tk/Tkinter.py", line 188, in __init__
+    self._tk = master.tk
+AttributeError: 'NoneType' object has no attribute 'tk'
+Exception exceptions.AttributeError: "TkPickleVar instance has no attribute '_tk'" in <bound method TkPickleVar.__del__ of <cleo.TkPickleVar instance at 0xb73a876c>> ignored
+#@-node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
 #@-node:ekr.20070814070312:First
 #@+node:ekr.20070703111455.1:Most important
 #@+node:ekr.20070623144302:vim-like bindings

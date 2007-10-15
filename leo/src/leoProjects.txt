@@ -22990,6 +22990,22 @@ def debug (self,event=None):
     winpdb = self.findDebugger()
     if not winpdb: return
 
+    #check for doctest examples
+    try:
+        import doctest
+        parser = doctest.DocTestParser()
+        examples = parser.get_examples(script)
+
+        # if this is doctest, extract the examples as a script
+        if len(examples) > 0:
+            script = doctest.script_from_examples(script)
+            # special case; debug code may include g.es("info string")
+            # insert code fragment to make this expression legal outside Leo
+            hide_ges = "class G:\n def es(s,c=None):\n  pass\ng = G()\n"
+            script = hide_ges + script
+    except ImportError:
+        pass
+
     # Create a temp file from the presently selected node.
     filename = c.writeScriptFile(script)
     if not filename: return
@@ -26015,6 +26031,43 @@ def trace (*args,**keys):
         print name + ": " + message,
 #@-node:ekr.20031218072017.2317:trace
 #@-node:ekr.20071010134833:Fixed unicode bug in trace
+#@+node:ekr.20071012112853:fixed new @auto crasher
+@nocolor
+
+RE: C++ Import to @file problem (New)
+
+By: R Shanley (rjshanley1) - 2007-10-11 10:47
+I found this problem in last night's CVS download. 
+
+Line's like this, alone or in a larger file, take the exception shown.  
+
+stuff* stuff::m_instance = 0; 
+
+
+Traceback (most recent call last): 
+File "C:\leolatestCVS\leo\src\leoCommands.py", line 276, in doCommand 
+val = command(event) 
+File "C:\leolatestCVS\leo\src\leoCommands.py", line 1560, in importAtFile 
+c.importCommands.importFilesCommand(names,"@file") 
+File "C:\leolatestCVS\leo\src\leoImport.py", line 881, in importFilesCommand 
+v = self.createOutline(fileName,current) 
+File "C:\leolatestCVS\leo\src\leoImport.py", line 737, in createOutline 
+self.scanCText(s,p,atAuto=atAuto) 
+File "C:\leolatestCVS\leo\src\leoImport.py", line 2516, in scanCText 
+scanner.run(s,parent) 
+File "C:\leolatestCVS\leo\src\leoImport.py", line 2449, in run 
+scanner.scan(s,parent) 
+File "C:\leolatestCVS\leo\src\leoImport.py", line 1981, in scan 
+i = start = self.skipDecls(s,0,len(s)) 
+File "C:\leolatestCVS\leo\src\leoImport.py", line 2154, in skipDecls 
+elif self.startsFunction(s,i,quick=True): 
+File "C:\leolatestCVS\leo\src\leoImport.py", line 2256, in startsFunction 
+i = self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags) 
+File "C:\leolatestCVS\leo\src\leoImport.py", line 2286, in startsHelper 
+i, ids, classId = self.skipSigStart(s,j,tags) # Rescan the first id. 
+ValueError: need more than 2 values to unpack 
+
+#@-node:ekr.20071012112853:fixed new @auto crasher
 #@-node:ekr.20070920083033:Bugs
 #@+node:ekr.20070920083033.1:Features
 #@+node:ekr.20070919124912:Added button-font params
@@ -30161,6 +30214,142 @@ def yank (self,event,pop=False):
         self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050930091642.1:yank
 #@-node:ekr.20071012112853.1:Optimized yank, by using yanked leading whitespace if it exists
+#@+node:ekr.20071015080259:Added doctest patch to debug command
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4568499
+By: ktenney
+
+I like doctests, often debug with g.es()
+statements, and open winpdb to examine what's
+going on.
+
+I've a small patch to the debug command
+leoEditCommands.py-->debugCommandsClass-->debug
+to simplify this.
+
+The patch writes the following to the beginning of
+the script being debugged;
+
+class G:
+def es(s,c=None):
+  pass
+g = G()
+
+This makes the g.es() statements legal.
+
+The patch also checks for doctests in the script,
+and if found, converts them to regular code.
+
+A node containing;
+
+>>> import inspect, sys
+>>> insp = sys.modules['inspect']
+>>> print insp.__name__
+inspect
+>>> g.es(dir(insp))
+
+can be run as a doctest;
+<alt x> dt
+(if the dtest.py plugin is active)
+
+or sent to winpdb;
+<alt x> debug
+
+The patch doesn't change the handling of regular scripts.
+
+It goes right after;
+if not winpdb: return
+
+#check for doctest examples
+try:
+....import doctest
+....parser = doctest.DocTestParser()
+....examples = parser.get_examples(script)
+
+....# if this is doctest, extract the examples as a script
+....if len(examples) > 0:
+........script = doctest.script_from_examples(script)
+
+except ImportError:
+....pass
+
+# special case; debug code may include g.es("info string")
+# insert code fragment to make this expression legal outside Leo
+hide_ges = "class G:\n def es(s,c=None):\n  pass\ng = G()\n"
+
+script = hide_ges + script
+
+@color
+#@nonl
+#@+node:ekr.20060519003651:debug & helper
+def debug (self,event=None):
+
+    '''Start an external debugger in another process to debug a script.
+    The script is the presently selected text or then entire tree's script.'''
+
+    c = self.c ; p = c.currentPosition()
+    python = sys.executable
+    script = g.getScript(c,p)
+    winpdb = self.findDebugger()
+    if not winpdb: return
+
+    #check for doctest examples
+    try:
+        import doctest
+        parser = doctest.DocTestParser()
+        examples = parser.get_examples(script)
+
+        # if this is doctest, extract the examples as a script
+        if len(examples) > 0:
+            script = doctest.script_from_examples(script)
+            # special case; debug code may include g.es("info string")
+            # insert code fragment to make this expression legal outside Leo
+            hide_ges = "class G:\n def es(s,c=None):\n  pass\ng = G()\n"
+            script = hide_ges + script
+    except ImportError:
+        pass
+
+    # Create a temp file from the presently selected node.
+    filename = c.writeScriptFile(script)
+    if not filename: return
+
+    # Invoke the debugger, retaining the present environment.
+    args = [sys.executable, winpdb, '-t', filename]
+    os.chdir(g.app.loadDir)
+    try:
+        import subprocess
+        cmdline = '%s %s -t %s' % (python,winpdb,filename)
+        subprocess.Popen(cmdline)
+    except ImportError:
+        os.chdir(g.app.loadDir)
+        os.spawnv(os.P_NOWAIT, python, args)
+#@+node:ekr.20060521140213:findDebugger
+def findDebugger (self):
+
+    '''Find the debugger using settings.'''
+
+    c = self.c
+    pythonDir = g.os_path_dirname(sys.executable)
+
+    debuggers = (
+        c.config.getString('debugger_path'),
+        g.os_path_join(pythonDir,'Lib','site-packages','winpdb.py'), # winpdb 1.1.2 or newer
+        g.os_path_join(pythonDir,'scripts','_winpdb.py'), # oder version.
+    )
+
+    for debugger in debuggers:
+        if debugger:
+            debugger = g.os_path_abspath(debugger)
+            if g.os_path_exists(debugger):
+                return debugger
+            else:
+                g.es('Debugger does not exist: %s' % (debugger),color='blue')
+    else:
+        g.es('No debugger found.')
+        return None
+#@-node:ekr.20060521140213:findDebugger
+#@-node:ekr.20060519003651:debug & helper
+#@-node:ekr.20071015080259:Added doctest patch to debug command
 #@-node:ekr.20070920083033.1:Features
 #@-node:ekr.20070919132518:4.4.4 b3
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
