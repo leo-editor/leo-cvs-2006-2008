@@ -30352,6 +30352,16 @@ def findDebugger (self):
 #@-node:ekr.20060521140213:findDebugger
 #@-node:ekr.20060519003651:debug & helper
 #@-node:ekr.20071015080259:Added doctest patch to debug command
+#@+node:ekr.20071015102710.1:Added rst3 strip_at_file_prefixes option
+@nocolor
+
+From the documentation at: http://webpages.charter.net/edreamleo/rstplugin3.html#options
+
+strip_at_file_prefixes (default: True)
+
+True: remove @auto, @file, @nosent and @thin from the start of headlines.
+#@nonl
+#@-node:ekr.20071015102710.1:Added rst3 strip_at_file_prefixes option
 #@-node:ekr.20070920083033.1:Features
 #@-node:ekr.20070919132518:4.4.4 b3
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
