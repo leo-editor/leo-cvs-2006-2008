@@ -22999,12 +22999,13 @@ def debug (self,event=None):
         # if this is doctest, extract the examples as a script
         if len(examples) > 0:
             script = doctest.script_from_examples(script)
-            # special case; debug code may include g.es("info string")
-            # insert code fragment to make this expression legal outside Leo
-            hide_ges = "class G:\n def es(s,c=None):\n  pass\ng = G()\n"
-            script = hide_ges + script
     except ImportError:
         pass
+
+    # special case; debug code may include g.es("info string").
+    # insert code fragment to make this expression legal outside Leo.
+    hide_ges = "class G:\n def es(s,c=None):\n  pass\ng = G()\n"
+    script = hide_ges + script
 
     # Create a temp file from the presently selected node.
     filename = c.writeScriptFile(script)
@@ -30302,12 +30303,13 @@ def debug (self,event=None):
         # if this is doctest, extract the examples as a script
         if len(examples) > 0:
             script = doctest.script_from_examples(script)
-            # special case; debug code may include g.es("info string")
-            # insert code fragment to make this expression legal outside Leo
-            hide_ges = "class G:\n def es(s,c=None):\n  pass\ng = G()\n"
-            script = hide_ges + script
     except ImportError:
         pass
+
+    # special case; debug code may include g.es("info string").
+    # insert code fragment to make this expression legal outside Leo.
+    hide_ges = "class G:\n def es(s,c=None):\n  pass\ng = G()\n"
+    script = hide_ges + script
 
     # Create a temp file from the presently selected node.
     filename = c.writeScriptFile(script)
