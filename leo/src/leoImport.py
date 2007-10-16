@@ -1431,6 +1431,7 @@ class baseLeoImportCommands:
             self.language = language
             self.methodName = ic.methodName # x, as in < < x methods > > =
             self.output_newline = ic.output_newline # = c.config.getBool('output_newline')
+            self.output_indent = 0 # The minimum indentation presently in effect.
             self.root = None # The top-level node of the generated tree.
             self.rootLine = ic.rootLine # '' or @root + self.fileName
             self.sigEnd = None # The index of the end of the signature.
@@ -1548,7 +1549,7 @@ class baseLeoImportCommands:
             '''Compare lines1[i] and lines2[i].
             strict is True if leading whitespace is very significant.'''
 
-            def pr(*args,**keys):
+            def pr(*args,**keys): #compareHelper
                 g.es_print(color='blue',*args,**keys)
 
             d = g.app.unitTestDict
@@ -1600,7 +1601,7 @@ class baseLeoImportCommands:
         #@+node:ekr.20070911110507:reportMismatch & test
         def reportMismatch (self,lines1,lines2,bad_i):
 
-            def pr(*args,**keys):
+            def pr(*args,**keys): # reportMismatch
                 g.es_print(color='blue',*args,**keys)
 
             kind = g.choose(self.atAuto,'@auto','import command')
@@ -1620,7 +1621,7 @@ class baseLeoImportCommands:
             return False
         #@+node:ekr.20070913084008:@test pr
         if False or g.unitTesting:
-            def pr(*args,**keys):
+            def pr(*args,**keys): # reportMismatch test
                 g.es_print(color='blue',*args,**keys)
 
             pr('input...')
@@ -1789,6 +1790,7 @@ class baseLeoImportCommands:
             else:
                 s = g.angleBrackets(' class %s methods ' % (class_name))
 
+            # Increase effective indentation by the width of self.tab_ws.
             self.appendTextToClassNode(class_node,'%s%s\n' % (self.tab_ws,s))
         #@-node:ekr.20070703122141.106:appendRefToClassNode
         #@+node:ekr.20070707190351:appendTextToClassNode
@@ -1821,6 +1823,10 @@ class baseLeoImportCommands:
             # Put any leading decls in the class node.
             trace = False or self.trace
             start = i
+            # Increase the output indentation.
+            # This allows us to detect over-indented classes and functions.
+            old_output_indent = self.output_indent
+            self.output_indent += abs(self.tab_width)
             i = self.skipDecls(s,i,end)
             decls = s[start:i]
             if decls:
@@ -1866,6 +1872,9 @@ class baseLeoImportCommands:
                 trailing = s[start:end]
                 if trace: g.trace('trailing\n%s' % trailing)
                 self.appendTextToClassNode(class_node,trailing)
+
+            # Restore the output indentation.
+            self.output_indent = old_output_indent
         #@-node:ekr.20070707171329:putClassHelper
         #@-node:ekr.20070707113832.1:putClass & helpers
         #@+node:ekr.20070707082432:putFunction
@@ -2289,6 +2298,11 @@ class baseLeoImportCommands:
             i, sigId = self.skipSigId(s,i,ids)
             if not sigId:
                 if trace and verbose: g.trace('no sigId',g.get_line(s,i))
+                return False
+
+            if self.output_indent < self.startSigIndent:
+                if trace: g.trace('oeverindent',sigId)
+                    #,'output_indent',self.output_indent,'startSigIndent',self.startSigIndent)
                 return False
 
             # Skip the argument list.
@@ -2825,8 +2839,8 @@ class baseLeoImportCommands:
         #@+node:ekr.20070712090019.1:skipCodeBlock (python) & helper
         def skipCodeBlock (self,s,i,kind):
 
-            trace = False
-            if trace: g.trace('***',g.callers())
+            trace = False ; verbose = False
+            # if trace: g.trace('***',g.callers())
             startIndent = self.startSigIndent
             assert startIndent is not None
             i = start = g.skip_ws_and_nl(s,i)
@@ -2838,7 +2852,7 @@ class baseLeoImportCommands:
                 if g.is_nl(s,i):
                     backslashNewline = i > 0 and g.match(s,i-1,'\\\n')
                     i = g.skip_nl(s,i)
-                    if trace: g.trace(g.get_line(s,i))
+                    if trace and verbose: g.trace(g.get_line(s,i))
                     if not backslashNewline:
                         i,underIndentedStart,breakFlag = self.pythonNewlineHelper(
                             s,i,parenCount,startIndent,underIndentedStart)
@@ -2867,7 +2881,7 @@ class baseLeoImportCommands:
                 g.trace(g.get_line(s,i))
                 return i,False
             if (trace or self.trace) and s[start:i].strip():
-                g.trace('returns\n'+s[start:i])
+                g.trace('%s returns\n' % (kind) + s[start:i])
             return i,True
         #@+node:ekr.20070801080447:pythonNewlineHelper
         def pythonNewlineHelper (self,s,i,parenCount,startIndent,underIndentedStart):
