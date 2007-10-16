@@ -1524,8 +1524,10 @@ class baseLeoImportCommands:
             if g.app.unitTesting:
                 d = g.app.unitTestDict
                 ok = d.get('expectedMismatchLine') == d.get('actualMismatchLine')
+                # Unit tests do not generate errors unless the mismatch line does not match.
 
             if not ok:
+
                 self.reportMismatch(lines1,lines2,bad_i)
 
             return ok
@@ -1572,12 +1574,12 @@ class baseLeoImportCommands:
             if line1 == line2:
                 return True # An exact match.
             elif not line1.strip() and not line2.strip():
-                return True # All blank lines compare equal.
+                return True # Blank lines compare equal.
             elif not strict and line1.lstrip() == line2.lstrip():
                 return True # A match excluding leading whitespace.
             else:
-                g.trace(g.callers())
                 if not g.app.unitTesting or i+1 != expectedMismatch:
+                    # g.es_print('compareHelper')
                     g.es_print('*** first mismatch at line %d' % (i+1))
                     g.es_print('original line:  %s' % repr(line1))
                     g.es_print('generated line: %s' % repr(line2))
@@ -1602,6 +1604,7 @@ class baseLeoImportCommands:
                 g.es_print(color='blue',*args,**keys)
 
             kind = g.choose(self.atAuto,'@auto','import command')
+
             self.error(
                 '%s did not import the file perfectly\nfirst mismatched line: %d\n%s' % (
                     kind,bad_i,repr(lines2[bad_i-1])))
@@ -1751,7 +1754,7 @@ class baseLeoImportCommands:
         #@+node:ekr.20070707113832.1:putClass & helpers
         def putClass (self,s,sigStart,sigEnd,codeEnd,start,parent):
 
-            '''Creates a child node c of parent for the class, and children of c for each def in the class.'''
+            '''Creates a child node c of parent for the class, and a child of c for each def in the class.'''
 
             prefix = self.createClassNodePrefix()
             if not self.sigId:
@@ -1759,10 +1762,11 @@ class baseLeoImportCommands:
                 sigId = 'Unknown class name'
             class_kind = self.classId
             class_name = self.sigId
-            # headline = 'class ' + class_name
+
             headline = '%s %s' % (class_kind,class_name)
             body = s[start:sigEnd]
             body = self.undentBody(body)
+
             i = self.extendSignature(s,sigEnd)
             extend = s[sigEnd:i]
             if extend:
@@ -2186,8 +2190,6 @@ class baseLeoImportCommands:
             j = g.find_line_start(s,i)
             return j
 
-
-
             # if s[j:i].strip():
                 # self.error(
                     # '%s %s does not start a line. Leo must insert a newline\n%s' % (
@@ -2433,7 +2435,7 @@ class baseLeoImportCommands:
         def run (self,s,parent):
 
             scanner = self ; c = self.c
-            scanner.root = parent
+            scanner.root = root = parent.copy()
             scanner.file_s = s
 
             # Init the error/status info.
@@ -2457,11 +2459,11 @@ class baseLeoImportCommands:
             if not ok: scanner.insertIgnoreDirective(parent)
 
             if self.atAuto and ok:
-                for p in parent.self_and_subtree_iter():
+                for p in root.self_and_subtree_iter():
                     p.clearDirty()
                 c.setChanged(changed)
             else:
-                parent.setDirty(setDescendentsDirty=False)
+                root.setDirty(setDescendentsDirty=False)
                 c.setChanged(True)
         #@+node:ekr.20070808115837.1:regularizeWhitespace
         def regularizeWhitespace (self,s):
@@ -2955,39 +2957,44 @@ class baseLeoImportCommands:
     #@-node:ekr.20070713075352:Default scanner
     #@-node:ekr.20031218072017.3241:Scanners for createOutline
     #@+node:ekr.20070713075450:Unit tests
-    def cUnitTest(self,p,atAuto=False,fileName=None,s=None,showTree=False):
-        return self.scannerUnitTest(p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.c')
+    # atAuto must be False for unit tests: otherwise the test gets wiped out.
 
-    def elispUnitTest(self,p,atAuto=False,fileName=None,s=None,showTree=False):
-        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.el')
+    def cUnitTest(self,p,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest(p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.c')
 
-    def htmlUnitTest(self,p,atAuto=False,fileName=None,s=None,showTree=False):
-        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.htm')
+    def cSharpUnitTest(self,p,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest(p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.c#')
 
-    def javaUnitTest(self,p,atAuto=False,fileName=None,s=None,showTree=False):
-        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.java')
+    def elispUnitTest(self,p,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.el')
 
-    def pascalUnitTest(self,p,atAuto=False,fileName=None,s=None,showTree=False):
-        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.pas')
+    def htmlUnitTest(self,p,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.htm')
 
-    def phpUnitTest(self,p,atAuto=False,fileName=None,s=None,showTree=False):
-        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.php')
+    def javaUnitTest(self,p,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.java')
 
-    def pythonUnitTest(self,p,atAuto=False,fileName=None,s=None,showTree=False):
-        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.py')
+    def pascalUnitTest(self,p,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.pas')
 
-    def textUnitTest(self,p,atAuto=False,fileName=None,s=None,showTree=False):
-        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.txt')
+    def phpUnitTest(self,p,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.php')
 
-    def defaultImporterUnitTest(self,p,atAuto=False,fileName=None,s=None,showTree=False):
-        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,ext='.xxx')
+    def pythonUnitTest(self,p,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.py')
+
+    def textUnitTest(self,p,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.txt')
+
+    def defaultImporterUnitTest(self,p,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,ext='.xxx')
     #@+node:ekr.20070713082220:scannerUnitTest
     def scannerUnitTest (self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
 
         '''Run a unit test of an import scanner,
         i.e., create a tree from string s at location p.'''
 
-        c = self.c ; h = p.headString()
+        c = self.c ; h = p.headString() ; old_root = p.copy()
         oldChanged = c.changed
         c.beginUpdate()
         try:
@@ -3003,7 +3010,7 @@ class baseLeoImportCommands:
             if not fileName: fileName = p.headString()
             if not s: s = self.removeSentinelsCommand([fileName],toString=True)
             title = g.choose(h.startswith('@test'),h[5:],h)
-            self.createOutline(title.strip(),p.copy(),atAuto=atAuto,s=s,ext=ext)
+            root = self.createOutline(title.strip(),p.copy(),atAuto=atAuto,s=s,ext=ext)
             d = g.app.unitTestDict
             ok = ((d.get('result') and expectedErrors in (None,0)) or
                 (
@@ -3023,10 +3030,12 @@ class baseLeoImportCommands:
                     '\nexpectedErrorMessage',d.get('expectedErrorMessage'),
                 )
             if not showTree and ok:
-                while p.hasChildren():
-                    p.firstChild().doDelete()
+                while old_root.hasChildren():
+                    old_root.firstChild().doDelete()
                 c.setChanged(oldChanged)
+
         finally:
+            c.selectPosition(old_root)
             c.endUpdate()
 
         if g.app.unitTesting:
