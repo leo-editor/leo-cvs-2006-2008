@@ -26162,6 +26162,11 @@ i, ids, classId = self.skipSigStart(s,j,tags) # Rescan the first id.
 ValueError: need more than 2 values to unpack 
 
 #@-node:ekr.20071012112853:fixed new @auto crasher
+#@+node:ekr.20071017163533:Fixed chapter typo
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4574018
+#@-node:ekr.20071017163533:Fixed chapter typo
 #@-node:ekr.20070920083033:Bugs
 #@+node:ekr.20070920083033.1:Features
 #@+node:ekr.20070919124912:Added button-font params
