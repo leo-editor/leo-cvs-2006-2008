@@ -297,7 +297,7 @@ class chapterController:
 
         if state == 0:
             names = cc.chaptersDict.keys()
-            prefix = 'Copy node to chapter: '
+            prefix = 'Move node to chapter: '
             k.setLabelBlue(prefix,protect=True)
             k.getArg(event,tag,1,self.moveNodeToChapter,prefix=prefix,tabList=names)
         else:
@@ -464,7 +464,7 @@ class chapterController:
                 c.setCurrentPosition(chapter.p)
                 cc.selectedChapter = chapter
         else:
-            cc.error('cc.selectShapter: no such chapter: %s' % name)
+            cc.error('cc.selectChapter: no such chapter: %s' % name)
     #@-node:ekr.20070317130250:cc.selectChapterByName
     #@-node:ekr.20070317085437.30:Commands (chapters)
     #@+node:ekr.20070511081405:Creating/deleting nodes (chapterController)
