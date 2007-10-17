@@ -323,6 +323,8 @@ def match_leo_keywords(self,s,i):
 
     '''Succeed if s[i:] is a Leo keyword.'''
 
+    # g.trace(i,g.get_line(s,i))
+
     # We must be at the start of a word.
     if i > 0 and s[i-1] in self.word_chars:
         return 0
@@ -331,22 +333,20 @@ def match_leo_keywords(self,s,i):
         return 0
 
     # Get the word as quickly as possible.
-    j = i
+    j = i+1
     while j < len(s) and s[j] in self.word_chars:
         j += 1
+    word = s[i+1:j] # Bug fix: 10/17/07: entries in leoKeywordsDict do not start with '@'
 
-    word = s[i:j]
-    # g.trace(i,word,repr(self.word_chars))
     if leoKeywordsDict.get(word):
         kind = 'leoKeyword'
         self.colorRangeWithTag(s,i,j,kind)
         self.prev = (i,j,kind)
         result = j-i
-        # g.trace(g.callers(3),'result',result,'i',i,repr(s[i:i+g.choose(result,result,20)]))
+        self.trace_match(kind,s,i,j)
         return result
     else:
         return 0
-#@nonl
 #@-node:ekr.20071010193720.13:match_leo_keywords
 #@+node:ekr.20071010193720.14:match_section_ref
 def match_section_ref (self,s,i):
@@ -589,6 +589,8 @@ class colorizer:
             else:
                 theList.append(rule)
             theDict [ch] = theList
+
+        # g.trace(g.listToString(theDict.get('@')))
     #@nonl
     #@-node:ekr.20071010193720.23:addLeoRules
     #@+node:ekr.20071010193720.24:configure_tags
@@ -1549,9 +1551,13 @@ class colorizer:
             self.colorRangeWithTag(s,i,j,kind)
             self.prev = (i,j,kind)
             result = j - i
+            # g.trace('success',word,kind)
+            # g.trace('word in self.keywordsDict.keys()',word in self.keywordsDict.keys())
             self.trace_match(kind,s,i,j)
             return result
         else:
+            # g.trace('fail',word,kind)
+            # g.trace('word in self.keywordsDict.keys()',word in self.keywordsDict.keys())
             return 0
     #@-node:ekr.20071010193720.61:match_keywords
     #@+node:ekr.20071010193720.62:match_mark_following & getNextToken
