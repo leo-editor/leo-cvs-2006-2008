@@ -21719,7 +21719,10 @@ def skipDecls (self,s,i,end):
         if s[i] in (' ','\t','\n'):
             i += 1 # Prevent lookahead below, and speed up the scan.
         elif self.startsComment(s,i):
-            if prefix is None: prefix = i
+            # Add the comment to the decl if it *doesn't* start the line.
+            i2,junk = g.getLine(s,i)
+            i2 = g.skip_ws(s,i2)
+            if i2 == i and prefix is None: prefix = i
             i = self.skipComment(s,i)
         elif self.startsString(s,i):
             i = self.skipString(s,i)
