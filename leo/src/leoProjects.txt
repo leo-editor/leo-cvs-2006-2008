@@ -20987,6 +20987,7 @@ def __init__ (self,importCommands,atAuto,language):
     self.atAuto = atAuto
     self.c = c = ic.c
     self.classId = None # The identifier containing the class tag: 'class', 'interface', 'namespace', etc.
+    self.classIndent = 0 # The indentation of the start of the class.
     self.codeEnd = None
         # The character after the last character of the class, method or function.
         # An error will be given if this is not a newline.
@@ -20999,6 +21000,7 @@ def __init__ (self,importCommands,atAuto,language):
     self.fileType = ic.fileType # The extension,  '.py', '.c', etc.
     self.fullChecks = c.config.getBool('full_import_checks')
     self.importCommands = ic
+    self.indentRefFlag = None # None, True or False.
     self.language = language
     self.methodName = ic.methodName # x, as in < < x methods > > =
     self.output_newline = ic.output_newline # = c.config.getBool('output_newline')
@@ -21320,35 +21322,64 @@ def massageComment (self,s):
     return s
 #@-node:ekr.20070703122141.81:massageComment
 #@+node:ekr.20070707113832.1:putClass & helpers
-def putClass (self,s,sigStart,sigEnd,codeEnd,start,parent):
+def putClass (self,s,i,sigStart,sigEnd,codeEnd,start,parent):
 
     '''Creates a child node c of parent for the class, and a child of c for each def in the class.'''
 
+    # Enter a new class 1: save the old class info.
+    oldClassIndent = self.classIndent
+    oldMethodName = self.methodName
+    oldStartSigIndent = self.startSigIndent
+
+    # Enter a new class 2: init the new class info.
+    self.classIndent = self.getIndent(s,i)
+    self.classLines = []
+    self.indentRefFlag = None
+
+    class_kind = self.classId
+    class_name = self.sigId
+    headline = '%s %s' % (class_kind,class_name)
+    self.methodName = headline
+
+    # Compute the starting lines of the class.
     prefix = self.createClassNodePrefix()
     if not self.sigId:
         g.trace('Can not happen: no sigId')
         sigId = 'Unknown class name'
-    class_kind = self.classId
-    class_name = self.sigId
-
-    headline = '%s %s' % (class_kind,class_name)
-    body = s[start:sigEnd]
-    body = self.undentBody(body)
-
+    classHead = s[start:sigEnd]
     i = self.extendSignature(s,sigEnd)
     extend = s[sigEnd:i]
     if extend:
-        extend = self.undentBody(extend)
-        extend = self.indentBody(extend)
-        body = body + extend
+        classHead = classHead + extend
 
-    class_node = self.createHeadline(parent,prefix + body,headline)
-    savedMethodName = self.methodName
-    self.methodName = headline
-    self.putClassHelper(s,i,codeEnd,class_name,class_node)
-    self.methodName = savedMethodName
+    # Create the class node.
+    class_node = self.createHeadline(parent,'',headline)
+
+    # Call the helper to parse the inner part of the class.
+    putRef,indentFlag,decls,trailing = self.putClassHelper(s,i,codeEnd,class_name,class_node)
+
+    # g.trace(class_name,'indent',self.classIndent,'indentFlag',indentFlag)
+
+    # Set the body of the class node.
+    ref = putRef and self.getClassNodeRef(class_name,indentFlag) or ''
+
+    # Remove the leading whitespace only from the classHead and trailing parts.
+    undentVal = self.getLeadingIndent(classHead,0)
+    result = (
+        prefix +
+        self.undentBy(classHead,undentVal) +
+        ref +
+        self.undentBy(trailing,undentVal))
+
+    # Append the result to the class node.
+    self.appendTextToClassNode(class_node,result)
+
+    # Exit the new class: restore the previous class info.
+    self.classIndent = oldClassIndent
+    self.methodName = oldMethodName
+    self.startSigIndent = oldStartSigIndent
 #@+node:ekr.20070703122141.106:appendRefToClassNode
-def appendRefToClassNode (self,class_name,class_node):
+def getClassNodeRef (self,class_name,indentFlag):
 
     '''Insert the proper body text in the class_vnode.'''
 
@@ -21358,7 +21389,17 @@ def appendRefToClassNode (self,class_name,class_node):
         s = g.angleBrackets(' class %s methods ' % (class_name))
 
     # Increase effective indentation by the width of self.tab_ws.
-    self.appendTextToClassNode(class_node,'%s%s\n' % (self.tab_ws,s))
+    # g.trace('class_name',class_name,indentFlag)
+
+    if indentFlag:
+        return '%s%s\n' % (self.tab_ws,s)
+    else:
+        return '%s\n' % (s)
+
+    # if indentFlag:
+        # self.appendTextToClassNode(class_node,'%s%s\n' % (self.tab_ws,s))
+    # else:
+        # self.appendTextToClassNode(class_node,'%s\n' % s)
 #@-node:ekr.20070703122141.106:appendRefToClassNode
 #@+node:ekr.20070707190351:appendTextToClassNode
 def appendTextToClassNode (self,class_node,s):
@@ -21390,20 +21431,16 @@ def putClassHelper(self,s,i,end,class_name,class_node):
     # Put any leading decls in the class node.
     trace = False or self.trace
     start = i
-    # Increase the output indentation.
+    if trace: g.trace('%s **enter**' % (class_name))
+    # Increase the output indentation (used only in startsHelper).
     # This allows us to detect over-indented classes and functions.
     old_output_indent = self.output_indent
     self.output_indent += abs(self.tab_width)
-    i = self.skipDecls(s,i,end)
+    i = self.skipDecls(s,i,end,inClass=True)
     decls = s[start:i]
-    if decls:
-        # We must regularize the indentation to match the @others
-        decls = self.undentBody(decls)
-        decls = self.indentBody(decls)
-        if self.trace: g.trace('decls\n%s' % decls)
-        # g.trace(class_name,'decls',repr(decls))
-        self.appendTextToClassNode(class_node,decls)
-    start = i ; putRef = False
+    if trace and decls: g.trace('%s decls\n%s' % (class_name,decls))
+
+    start = i ; putRef = False ; indentFlag = None
     while i < end:
         progress = i
         if s[i] in (' ','\t','\n'):
@@ -21414,16 +21451,14 @@ def putClassHelper(self,s,i,end,class_name,class_node):
             i = self.skipString(s,i)
         elif self.startsClass(s,i):  # Sets sigStart,sigEnd & codeEnd ivars.
             putRef = True
+            if indentFlag is None: indentFlag = self.getIndent(s,i) > self.classIndent
             end2 = self.codeEnd # putClass may change codeEnd ivar.
-            saveIndent = self.startSigIndent # Bug fix: 10/10/07
-            self.putClass(s,self.sigStart,self.sigEnd,self.codeEnd,start,class_node)
-            self.startSigIndent = saveIndent
+            self.putClass(s,i,self.sigStart,self.sigEnd,self.codeEnd,start,class_node)
             i = start = end2
         elif self.startsFunction(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
-            putRef = True
-            saveIndent = self.startSigIndent # Bug fix: 10/10/07
+            putRef = True ; indent = self.getIndent(s,i)
+            if indentFlag is None: indentFlag = indent > self.classIndent
             self.putFunction(s,self.sigStart,self.codeEnd,start,class_node)
-            self.startSigIndent = saveIndent
             i = start = self.codeEnd
         elif self.startsId(s,i):
             i = self.skipId(s,i);
@@ -21432,22 +21467,22 @@ def putClassHelper(self,s,i,end,class_name,class_node):
         else: i += 1
         assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
 
-    if putRef:
-        self.appendRefToClassNode(class_name,class_node)
-
-    if start < end:
-        trailing = s[start:end]
-        if trace: g.trace('trailing\n%s' % trailing)
-        self.appendTextToClassNode(class_node,trailing)
+    if trace: g.trace('%s putRef: %s indentFlag: %s' % (class_name,putRef,indentFlag))
 
     # Restore the output indentation.
     self.output_indent = old_output_indent
+
+    trailing = s[start:end]
+    return putRef,indentFlag,decls,trailing
 #@-node:ekr.20070707171329:putClassHelper
 #@-node:ekr.20070707113832.1:putClass & helpers
 #@+node:ekr.20070707082432:putFunction
 def putFunction (self,s,sigStart,codeEnd,start,parent):
 
     '''Create a node of parent for a function defintion.'''
+
+    # Enter a new function: save the old function info.
+    oldStartSigIndent = self.startSigIndent
 
     if self.sigId:
         headline = self.sigId
@@ -21470,6 +21505,9 @@ def putFunction (self,s,sigStart,codeEnd,start,parent):
         g.trace(g.callers())
 
     self.createFunctionNode(headline,body,parent)
+
+    # Exit the function: restore the function info.
+    self.startSigIndent = oldStartSigIndent
 #@-node:ekr.20070707082432:putFunction
 #@+node:ekr.20070705094630:putRootText
 def putRootText (self,p):
@@ -21479,30 +21517,37 @@ def putRootText (self,p):
     c.appendStringToBody(p,'%s@language %s\n@tabwidth %d\n' % (
         self.rootLine,self.language,self.tab_width))
 #@-node:ekr.20070705094630:putRootText
-#@+node:ekr.20070703122141.88:undentBody
+#@+node:ekr.20070703122141.88:undentBody & undentBy
 def undentBody (self,s,ignoreComments=True):
 
     '''Remove the first line's leading indentation from all lines of s.'''
 
-    #g.trace('before',repr(s))
+    trace = False
+    if trace: g.trace('before...\n',g.listToString(g.splitLines(s)))
 
     # Copy an @code line as is.
-    i = 0
-    if g.match(s,i,'@code'):
-        j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
-        result += s[j:i]
+    # i = 0
+    # if g.match(s,i,'@code'):
+        # j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
+        # result += s[j:i]
 
     # Calculate the amount to be removed from each line.
-    undent = self.getLeadingIndent(s,i,ignoreComments=ignoreComments)
-    if undent == 0:
+    undentVal = self.getLeadingIndent(s,0,ignoreComments=ignoreComments)
+    if undentVal == 0:
         return s
     else:
-        result = ''.join([
-            g.removeLeadingWhitespace(line,undent,self.tab_width)
-                for line in g.splitLines(s)])
-        #g.trace('after',repr(result))
+        result = self.undentBy(s,undentVal)
+        # result = ''.join([
+            # g.removeLeadingWhitespace(line,undent,self.tab_width)
+                # for line in g.splitLines(s)])
+        if trace: g.trace('after...\n',g.listToString(g.splitLines(result)))
         return result
-#@-node:ekr.20070703122141.88:undentBody
+
+def undentBy (self,s,undentVal):
+    return ''.join(
+        [g.removeLeadingWhitespace(line,undentVal,self.tab_width)
+            for line in g.splitLines(s)])
+#@-node:ekr.20070703122141.88:undentBody & undentBy
 #@+node:ekr.20070801074524:underindentedComment & underindentedLine
 def underindentedComment (self,line):
 
@@ -21544,6 +21589,15 @@ def extendSignature(self,s,i):
 
     return i
 #@-node:ekr.20070707150022:extendSignature
+#@+node:ekr.20071017132056:getIndent
+def getIndent (self,s,i):
+
+    j,j2 = g.getLine(s,i)
+    junk,indent = g.skip_leading_ws_with_indent(s,j,self.tab_width)
+    # g.trace('%d %s' % (indent,s[j:j2]))
+    return indent
+#@nonl
+#@-node:ekr.20071017132056:getIndent
 #@+node:ekr.20070706101600:scan
 def scan (self,s,parent):
 
@@ -21555,12 +21609,15 @@ def scan (self,s,parent):
     - Outer-level functions.
     '''
     self.putRootText(parent)
-    i = start = self.skipDecls(s,0,len(s))
+    i = start = self.skipDecls(s,0,len(s),inClass=False)
     decls = s[:i]
     if decls: self.createDeclsNode(parent,decls)
+    localIndent = 0
     while i < len(s):
         progress = i
         if s[i] in (' ','\t','\n'):
+            if s[i] == '\n':
+                junk,localIndent = g.skip_leading_ws_with_indent(s,i+1,self.tab_width)
             i += 1 # Prevent lookahead below, and speed up the scan.
         elif self.startsComment(s,i):
             i = self.skipComment(s,i)
@@ -21572,7 +21629,7 @@ def scan (self,s,parent):
             # g.trace('\n',s[k:i])
         elif self.startsClass(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
             end2 = self.codeEnd # putClass may change codeEnd ivar.
-            self.putClass(s,self.sigStart,self.sigEnd,self.codeEnd,start,parent)
+            self.putClass(s,i,self.sigStart,self.sigEnd,self.codeEnd,start,parent)
             i = start = end2
         elif self.startsFunction(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
             self.putFunction(s,self.sigStart,self.codeEnd,start,parent)
@@ -21678,6 +21735,10 @@ def skipCodeBlock (self,s,i,kind):
     if i > start:
         i = self.skipNewline(s,i,kind)
 
+    if trace:
+        g.trace(g.callers())
+        g.trace('returns...\n',g.listToString(g.splitLines(s[start:i])))
+
     return i,True
 #@-node:ekr.20070712091019:skipCodeBlock
 #@+node:ekr.20070711104014:skipComment & helper
@@ -21708,12 +21769,13 @@ def skipBlockComment (self,s,i):
 #@-node:ekr.20070707074541:skipBlockComment
 #@-node:ekr.20070711104014:skipComment & helper
 #@+node:ekr.20070707080042:skipDecls & helper
-def skipDecls (self,s,i,end):
+def skipDecls (self,s,i,end,inClass):
 
     '''Skip everything until the start of the next class or function.'''
 
     trace = False or self.trace
     start = i ; prefix = None
+    classOrFunc = False
     while i < end:
         progress = i
         if s[i] in (' ','\t','\n'):
@@ -21729,10 +21791,12 @@ def skipDecls (self,s,i,end):
             prefix = None
         elif self.startsClass(s,i,quick=True):
             # Important: do not include leading ws in the decls.
+            classOrFunc = True
             i = self.adjustClassOrFunctionStart(s,i,self.classId) # 'class')
             break
         elif self.startsFunction(s,i,quick=True):
             # Important: do not include leading ws in the decls.
+            classOrFunc = True
             i = self.adjustClassOrFunctionStart(s,i,'function')
             break
         elif self.startsId(s,i):
@@ -21746,6 +21810,9 @@ def skipDecls (self,s,i,end):
             i += 1 ;  prefix = None
         assert(progress < i)
 
+    # Don't return decls if a class contains nothing but decls.
+    if inClass and not classOrFunc:
+        return start
     # Ignore empty decls.
     if prefix is not None: i = prefix
     if s[start:i].strip():
