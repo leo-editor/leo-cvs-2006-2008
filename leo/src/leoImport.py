@@ -2155,7 +2155,10 @@ class baseLeoImportCommands:
                 if s[i] in (' ','\t','\n'):
                     i += 1 # Prevent lookahead below, and speed up the scan.
                 elif self.startsComment(s,i):
-                    if prefix is None: prefix = i
+                    # Add the comment to the decl if it *doesn't* start the line.
+                    i2,junk = g.getLine(s,i)
+                    i2 = g.skip_ws(s,i2)
+                    if i2 == i and prefix is None: prefix = i
                     i = self.skipComment(s,i)
                 elif self.startsString(s,i):
                     i = self.skipString(s,i)
@@ -2587,6 +2590,8 @@ class baseLeoImportCommands:
             self.outerBlockDelim2 = '}'
             self.sigHeadExtraTokens = []
             self.sigFailTokens = []
+
+            self.strict = True ### TESTING ONLY
     #@-node:ekr.20071008130845.2:class cSharpScanner (baseScannerClass)
     #@-node:ekr.20071008130845:C# scanner
     #@+node:ekr.20070711060107:Elisp scanner
@@ -2803,10 +2808,9 @@ class baseLeoImportCommands:
             self.lineCommentDelim = '#'
             self.classTags = ['class',]
             self.functionTags = ['def',]
-            self.blockDelim1 = None
+            self.blockDelim1 = self.blockDelim2 = None
                 # Suppress the check for the block delim.
                 # The check is done in skipSigTail.
-            self.blockDelim2 = None
             self.strict = True
 
         #@-node:ekr.20070703122141.101: __init__
@@ -2850,13 +2854,17 @@ class baseLeoImportCommands:
                 progress = i
                 ch = s[i]
                 if g.is_nl(s,i):
-                    backslashNewline = i > 0 and g.match(s,i-1,'\\\n')
                     i = g.skip_nl(s,i)
-                    if trace and verbose: g.trace(g.get_line(s,i))
-                    if not backslashNewline:
-                        i,underIndentedStart,breakFlag = self.pythonNewlineHelper(
-                            s,i,parenCount,startIndent,underIndentedStart)
-                        if breakFlag: break
+                    j = g.skip_ws(s,i)
+                    if g.is_nl(s,j):
+                        pass # We have already made progress.
+                    else:
+                        if trace and verbose: g.trace(g.get_line(s,i))
+                        backslashNewline = i > 0 and g.match(s,i-1,'\\\n')
+                        if not backslashNewline:
+                            i,underIndentedStart,breakFlag = self.pythonNewlineHelper(
+                                s,i,parenCount,startIndent,underIndentedStart)
+                            if breakFlag: break
                 elif ch == '#':
                     i = g.skip_to_end_of_line(s,i)
                 elif ch == '"' or ch == '\'':
