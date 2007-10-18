@@ -181,13 +181,22 @@ def completeFileName (fileName):
 
     import leoGlobals as g
 
+    import os,sys
+
     if not fileName:
         return None
 
     # This does not depend on config settings.
-    fileName = g.os_path_join(os.getcwd(),fileName)
+    try:
+        if sys.platform.lower().startswith('win'):
+            fileName = g.toUnicode(fileName,'mbcs')
+        else:
+            fileName = g.toUnicode(fileName,'utf-8')
+    except Exception: pass
 
-    head,ext = g.os_path_splitext(fileName)
+    fileName = os.path.join(os.getcwd(),fileName)
+    head,ext = os.path.splitext(fileName)
+
     if not ext:
         fileName = fileName + ".leo"
 
@@ -199,12 +208,15 @@ def createFrame (fileName):
     """Create a LeoFrame during Leo's startup process."""
 
     import leoGlobals as g
+    import os
 
     # g.trace('fileName',fileName)
 
     # Try to create a frame for the file.
     if fileName:
-        if g.os_path_exists(fileName):
+        # g.trace(os.path.exists(fileName),fileName)
+        # if g.os_path_exists(fileName):
+        if os.path.exists(fileName):
             ok, frame = g.openWithFileName(fileName,None)
             if ok:
                 return frame.c,frame
@@ -225,7 +237,6 @@ def createFrame (fileName):
         g.es("File not found: " + fileName)
 
     return c,frame
-#@nonl
 #@-node:ekr.20031218072017.1624:createFrame (leo.py)
 #@+node:ekr.20031218072017.1938:createNullGuiWithScript (leo.py)
 def createNullGuiWithScript (script):
