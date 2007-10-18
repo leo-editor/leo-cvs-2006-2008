@@ -26167,6 +26167,63 @@ ValueError: need more than 2 values to unpack
 
 http://sourceforge.net/forum/message.php?msg_id=4574018
 #@-node:ekr.20071017163533:Fixed chapter typo
+#@+node:ekr.20071017195431:Fixed chapter crasher
+http://sourceforge.net/forum/message.php?msg_id=4573990
+#@+node:ekr.20070317085437.52:cc.moveNodeToChapterHelper
+def moveNodeToChapterHelper (self,toChapterName):
+
+    cc = self ; c = cc.c ; u = c.undoer ; undoType = 'Move Node To Chapter'
+    p = c.currentPosition()
+    fromChapter = cc.getSelectedChapter()
+    toChapter = cc.getChapter(toChapterName)
+    if not toChapter:
+        cc.error('chapter "%s" does not exist' % toChapterName)
+        return
+
+    if 1: # Defensive code: should never happen.
+        if fromChapter.name == 'main' and p.headString().startswith('@chapter'):
+            return cc.error('can not move @chapter node')
+
+    c.beginUpdate()
+    try:
+        if toChapter.name == 'main':
+            sel = (p.threadBack() != fromChapter.root and p.threadBack()) or p.nodeAfterTree()
+        else:
+            sel = p.threadBack() or p.nodeAfterTree()
+        if sel:
+            # Get 'before' undo data.
+            inAtIgnoreRange = p.inAtIgnoreRange()
+            undoData = u.beforeMoveNode(p)
+            dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+            # Do the move.
+            if toChapter.name == 'main':
+                p.unlink()
+                p.moveAfter(toChapter.p)
+            else:
+                p.unlink()
+                p.moveToLastChildOf(toChapter.root)
+            c.selectPosition(sel)
+            c.setChanged(True)
+            # Do the 'after' undo operation.
+            if inAtIgnoreRange and not p.inAtIgnoreRange():
+                # The moved nodes have just become newly unignored.
+                dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
+                dirtyVnodeList.extend(dirtyVnodeList2)
+            else: # No need to mark descendents dirty.
+                dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+                dirtyVnodeList.extend(dirtyVnodeList2)
+            u.afterMoveNode(p,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate(False) # toChapter.select will do the drawing.
+
+    if sel:
+        toChapter.p = p.copy()
+        toChapter.select()
+        fromChapter.p = sel.copy()
+    else:
+        cc.error('Can not move the last node of a chapter.')
+#@-node:ekr.20070317085437.52:cc.moveNodeToChapterHelper
+#@-node:ekr.20071017195431:Fixed chapter crasher
 #@-node:ekr.20070920083033:Bugs
 #@+node:ekr.20070920083033.1:Features
 #@+node:ekr.20070919124912:Added button-font params

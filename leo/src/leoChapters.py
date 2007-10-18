@@ -313,6 +313,9 @@ class chapterController:
         p = c.currentPosition()
         fromChapter = cc.getSelectedChapter()
         toChapter = cc.getChapter(toChapterName)
+        if not toChapter:
+            cc.error('chapter "%s" does not exist' % toChapterName)
+            return
 
         if 1: # Defensive code: should never happen.
             if fromChapter.name == 'main' and p.headString().startswith('@chapter'):
