@@ -1861,50 +1861,22 @@ class baseLeoImportCommands:
 
             Parse s for inner methods and classes, and create nodes.'''
 
-            # Put any leading decls in the class node.
-            trace = False or self.trace
-            start = i
-            if trace: g.trace('%s **enter**' % (class_name))
             # Increase the output indentation (used only in startsHelper).
             # This allows us to detect over-indented classes and functions.
             old_output_indent = self.output_indent
             self.output_indent += abs(self.tab_width)
-            i = self.skipDecls(s,i,end,inClass=True)
+
+            # Parse the decls.
+            start = i = self.skipDecls(s,i,end,inClass=True)
             decls = s[start:i]
-            if trace and decls: g.trace('%s decls\n%s' % (class_name,decls))
 
-            start = i ; putRef = False ; indentFlag = None
-            while i < end:
-                progress = i
-                if s[i] in (' ','\t','\n'):
-                    i += 1 # Prevent lookahead below, and speed up the scan.
-                elif self.startsComment(s,i):
-                    i = self.skipComment(s,i)
-                elif self.startsString(s,i):
-                    i = self.skipString(s,i)
-                elif self.startsClass(s,i):  # Sets sigStart,sigEnd & codeEnd ivars.
-                    putRef = True
-                    if indentFlag is None: indentFlag = self.getIndent(s,i) > self.classIndent
-                    end2 = self.codeEnd # putClass may change codeEnd ivar.
-                    self.putClass(s,i,self.sigStart,self.sigEnd,self.codeEnd,start,class_node)
-                    i = start = end2
-                elif self.startsFunction(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
-                    putRef = True ; indent = self.getIndent(s,i)
-                    if indentFlag is None: indentFlag = indent > self.classIndent
-                    self.putFunction(s,self.sigStart,self.codeEnd,start,class_node)
-                    i = start = self.codeEnd
-                elif self.startsId(s,i):
-                    i = self.skipId(s,i);
-                elif g.match(s,i,self.outerBlockDelim1): # Bug fix: do this after testing for classes.
-                    i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
-                else: i += 1
-                assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
-
-            if trace: g.trace('%s putRef: %s indentFlag: %s' % (class_name,putRef,indentFlag))
+            # Parse the rest of the class.
+            start,putRef,indentFlag = self.scanHelper(s,i,end=end,parent=class_node)
 
             # Restore the output indentation.
             self.output_indent = old_output_indent
 
+            # Return the results.
             trailing = s[start:end]
             return putRef,indentFlag,decls,trailing
         #@-node:ekr.20070707171329:putClassHelper
@@ -2034,7 +2006,7 @@ class baseLeoImportCommands:
             return indent
         #@nonl
         #@-node:ekr.20071017132056:getIndent
-        #@+node:ekr.20070706101600:scan
+        #@+node:ekr.20070706101600:scan & scanHelper
         def scan (self,s,parent):
 
             '''A language independent scanner: it uses language-specific helpers.
@@ -2044,40 +2016,59 @@ class baseLeoImportCommands:
             - Outer-level classes.
             - Outer-level functions.
             '''
+
+            # Create the initial body text in the root.
             self.putRootText(parent)
+
+            # Parse the decls.
             i = start = self.skipDecls(s,0,len(s),inClass=False)
             decls = s[:i]
+
+            # Create the decls node.
             if decls: self.createDeclsNode(parent,decls)
-            localIndent = 0
-            while i < len(s):
+
+            # Scan the rest of the file.
+            start,junk,junk = self.scanHelper(s,i,end=len(s),parent=parent)
+
+            # Finish adding to the parent's body text.
+            self.addRef(parent)
+            if start < len(s):
+                self.c.appendStringToBody(parent,s[start:]) 
+        #@+node:ekr.20071018084830:scanHelper
+        def scanHelper(self,s,i,end,parent):
+
+            '''Common scanning code used by both scan and putClassHelper.'''
+
+            start = i ; putRef = False ; indentFlag = None
+            while i < end:
                 progress = i
                 if s[i] in (' ','\t','\n'):
-                    if s[i] == '\n':
-                        junk,localIndent = g.skip_leading_ws_with_indent(s,i+1,self.tab_width)
                     i += 1 # Prevent lookahead below, and speed up the scan.
                 elif self.startsComment(s,i):
                     i = self.skipComment(s,i)
                 elif self.startsString(s,i):
                     i = self.skipString(s,i)
-                elif g.match(s,i,self.outerBlockDelim1):
-                    # k = i
-                    i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
-                    # g.trace('\n',s[k:i])
-                elif self.startsClass(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
+                elif self.startsClass(s,i):  # Sets sigStart,sigEnd & codeEnd ivars.
+                    putRef = True
+                    if indentFlag is None: indentFlag = self.getIndent(s,i) > self.classIndent
                     end2 = self.codeEnd # putClass may change codeEnd ivar.
                     self.putClass(s,i,self.sigStart,self.sigEnd,self.codeEnd,start,parent)
                     i = start = end2
                 elif self.startsFunction(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
+                    putRef = True ; indent = self.getIndent(s,i)
+                    if indentFlag is None: indentFlag = indent > self.classIndent
                     self.putFunction(s,self.sigStart,self.codeEnd,start,parent)
                     i = start = self.codeEnd
                 elif self.startsId(s,i):
                     i = self.skipId(s,i);
+                elif g.match(s,i,self.outerBlockDelim1): # Do this after testing for classes.
+                    i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
                 else: i += 1
                 assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
-            self.addRef(parent)
-            if start < len(s):
-                self.c.appendStringToBody(parent,s[start:]) 
-        #@-node:ekr.20070706101600:scan
+
+            return start,putRef,indentFlag
+        #@-node:ekr.20071018084830:scanHelper
+        #@-node:ekr.20070706101600:scan & scanHelper
         #@+node:ekr.20070712075148:skipArgs
         def skipArgs (self,s,i,kind):
 
@@ -2657,8 +2648,6 @@ class baseLeoImportCommands:
             self.outerBlockDelim2 = '}'
             self.sigHeadExtraTokens = []
             self.sigFailTokens = []
-
-            self.strict = True ### TESTING ONLY
     #@-node:ekr.20071008130845.2:class cSharpScanner (baseScannerClass)
     #@-node:ekr.20071008130845:C# scanner
     #@+node:ekr.20070711060107:Elisp scanner
