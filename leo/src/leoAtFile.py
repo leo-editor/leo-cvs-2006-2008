@@ -2441,7 +2441,7 @@ class atFile:
 
         at = self ; c = at.c
         new_df = False ; valid = True ; n = len(s)
-        isThinDerivedFile = False
+        start = '' ; end = '' ; isThinDerivedFile = False
         encoding_tag = "-encoding="
         version_tag = "-ver="
         tag = "@+leo"
@@ -2459,6 +2459,7 @@ class atFile:
             start = s[j:i]
         else:
             valid = False
+
         #@-node:ekr.20041005105605.121:<< set the opening comment delim >>
         #@nl
         #@    << make sure we have @+leo >>
