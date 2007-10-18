@@ -1514,6 +1514,10 @@ class baseLeoImportCommands:
             s2 = s2.replace('\r','')
             if s1 == s2: return True
 
+            # Make sure we have a trailing newline in both strings.
+            if not s1.endswith('\n'): s1 = s1 + '\n'
+            if not s2.endswith('\n'): s2 = s2 + '\n'
+
             lines1 = g.splitLines(s1) ; n1 = len(lines1)
             lines2 = g.splitLines(s2) ; n2 = len(lines2)
 
@@ -1530,7 +1534,6 @@ class baseLeoImportCommands:
                 # Unit tests do not generate errors unless the mismatch line does not match.
 
             if not ok:
-
                 self.reportMismatch(lines1,lines2,bad_i)
 
             return ok
