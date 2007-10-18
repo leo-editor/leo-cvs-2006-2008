@@ -1036,7 +1036,10 @@ def es_exception (full=True,c=None,color="red"):
     for line in lines:
         g.es_error(line,color=color)
         if not g.stdErrIsRedirected():
-            print line
+            try:
+                print line
+            except Exception:
+                print g.toEncodedString(s,'ascii')
 
     if g.app.debugSwitch > 1:
         import pdb # Be careful: g.pdb may or may not have been defined.

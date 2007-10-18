@@ -1644,8 +1644,10 @@ class configClass:
                 if verbose and not g.app.unitTesting and not self.silent and not g.app.batchMode:
                     s = 'reading settings in %s' % path
                     # This occurs early in startup, so use the following instead of g.es_print()
+                    s = g.toEncodedString(s,'ascii')
                     print s
                     g.app.logWaiting.append((s+'\n','blue'),)
+
                 c = self.openSettingsFile(path)
                 if c:
                     self.updateSettings(c,localFlag)
@@ -1655,7 +1657,6 @@ class configClass:
         self.readRecentFiles(localConfigFile)
         self.inited = True
         self.setIvarsFromSettings(None)
-    #@nonl
     #@+node:ekr.20041117085625:g.app.config.openSettingsFile
     def openSettingsFile (self,path):
 
