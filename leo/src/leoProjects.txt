@@ -34250,6 +34250,247 @@ class Class2: Class1, Interface1
 
 #@-node:ekr.20071008130824:c# syntax ref card
 #@-node:ekr.20071008130552:Added c# importer
+#@+node:ekr.20071018114556:Allow unicode characters in Leo file names
+#@+node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
+def newLeoCommanderAndFrame(self,fileName=None,gui=None,initEditCommanders=True,updateRecentFiles=True):
+
+    """Create a commander and its view frame for the Leo main window."""
+
+    app = self
+
+    import leoCommands
+
+    if not fileName: fileName = ""
+    if not gui: gui = g.app.gui
+    << compute the window title >>
+
+    # Create an unfinished frame to pass to the commanders.
+    frame = gui.createLeoFrame(title)
+
+    # Create the commander and its subcommanders.
+    c = leoCommands.Commands(frame,fileName)
+
+    if not app.initing:
+        g.doHook("before-create-leo-frame",c=c) # Was 'onCreate': too confusing.
+
+    frame.finishCreate(c)
+    c.finishCreate(initEditCommanders)
+
+    # Finish initing the subcommanders.
+    c.undoer.clearUndoState() # Menus must exist at this point.
+
+    if updateRecentFiles:
+        c.updateRecentFiles(fileName)
+
+    if not g.app.initing:
+        g.doHook("after-create-leo-frame",c=c)
+
+    return c,frame
+#@+node:ekr.20031218072017.2189:<< compute the window title >>
+# Set the window title and fileName
+if fileName:
+    title = g.computeWindowTitle(fileName)
+else:
+    s = "untitled"
+    n = g.app.numberOfWindows
+    if n > 0:
+        s += str(n)
+    title = g.computeWindowTitle(s)
+    g.app.numberOfWindows = n+1
+#@-node:ekr.20031218072017.2189:<< compute the window title >>
+#@-node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
+#@+node:ekr.20041124083125:completeFileName (leo.py)
+def completeFileName (fileName):
+
+    import leoGlobals as g
+
+    if not fileName:
+        return None
+
+    # This does not depend on config settings.
+    try:
+        import sys
+        if sys.platform.lower().startswith('win'):
+            fileName = g.toUnicode(fileName,'mbcs')
+        else:
+            fileName = g.toUnicode(fileName,'utf-8')
+    except Exception: pass
+
+    fileName = g.os_path_join(os.getcwd(),fileName)
+    head,ext = g.os_path_splitext(fileName)
+
+    if not ext:
+        fileName = fileName + ".leo"
+
+    return fileName
+#@-node:ekr.20041124083125:completeFileName (leo.py)
+#@+node:ekr.20041120064303:g.app.config.readSettingsFiles & helpers
+def readSettingsFiles (self,fileName,verbose=True):
+
+    seen = []
+    self.write_recent_files_as_needed = False # Will be set later.
+    << define localDirectory, localConfigFile & myLocalConfigFile >>
+
+    # Init settings from leoSettings.leo and myLeoSettings.leo files.
+    for path,localFlag in (
+        (self.globalConfigFile,False),
+        (self.homeFile,False),
+        (localConfigFile,False),
+        (self.myGlobalConfigFile,False),
+        (self.myHomeConfigFile,False),
+        (myLocalConfigFile,False),
+        (fileName,True),
+    ):
+        if path and path.lower() not in seen:
+            seen.append(path.lower())
+            if verbose and not g.app.unitTesting and not self.silent and not g.app.batchMode:
+                s = 'reading settings in %s' % path
+                # This occurs early in startup, so use the following instead of g.es_print()
+                s = g.toEncodedString(s,'ascii')
+                print s
+                g.app.logWaiting.append((s+'\n','blue'),)
+
+            c = self.openSettingsFile(path)
+            if c:
+                self.updateSettings(c,localFlag)
+                g.app.destroyWindow(c.frame)
+                self.write_recent_files_as_needed = c.config.getBool('write_recent_files_as_needed')
+                self.setIvarsFromSettings(c)
+    self.readRecentFiles(localConfigFile)
+    self.inited = True
+    self.setIvarsFromSettings(None)
+#@+node:ekr.20061028082834:<< define localDirectory, localConfigFile & myLocalConfigFile >>
+# This can't be done in initSettingsFiles because the local directory does not exits.
+localDirectory = g.os_path_dirname(fileName)
+
+#  Set the local leoSettings.leo file.
+localConfigFile = g.os_path_join(localDirectory,'leoSettings.leo')
+if not g.os_path_exists(localConfigFile):
+    localConfigFile = None
+
+# Set the local myLeoSetting.leo file.
+myLocalConfigFile = g.os_path_join(localDirectory,'myLeoSettings.leo')
+if not g.os_path_exists(myLocalConfigFile):
+    myLocalConfigFile = None
+#@nonl
+#@-node:ekr.20061028082834:<< define localDirectory, localConfigFile & myLocalConfigFile >>
+#@+node:ekr.20041117085625:g.app.config.openSettingsFile
+def openSettingsFile (self,path):
+
+    theFile,isZipped = g.openLeoOrZipFile(path)
+    if not theFile: return None
+
+    # Similar to g.openWithFileName except it uses a null gui.
+    # Changing g.app.gui here is a major hack.
+    oldGui = g.app.gui
+    g.app.gui = leoGui.nullGui("nullGui")
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=path,initEditCommanders=False,updateRecentFiles=False)
+    frame.log.enable(False)
+    c.setLog()
+    g.app.lockLog()
+    ok = frame.c.fileCommands.open(
+        theFile,path,readAtFileNodesFlag=False,silent=True) # closes theFile.
+    g.app.unlockLog()
+    frame.openDirectory = g.os_path_dirname(path)
+    g.app.gui = oldGui
+    return ok and c
+#@-node:ekr.20041117085625:g.app.config.openSettingsFile
+#@+node:ekr.20051013161232:g.app.config.updateSettings
+def updateSettings (self,c,localFlag):
+
+    d = self.readSettings(c)
+
+    if d:
+        d['_hash'] = theHash = c.hash()
+        if localFlag:
+            self.localOptionsDict[theHash] = d
+        else:
+            self.localOptionsList.insert(0,d)
+
+    if 0: # Good trace.
+        if localFlag:
+            g.trace(c.fileName())
+            g.trace(d and d.keys())
+#@-node:ekr.20051013161232:g.app.config.updateSettings
+#@-node:ekr.20041120064303:g.app.config.readSettingsFiles & helpers
+#@+node:ekr.20031218072017.1624:createFrame (leo.py)
+def createFrame (fileName):
+
+    """Create a LeoFrame during Leo's startup process."""
+
+    import leoGlobals as g
+
+    # Try to create a frame for the file.
+    if fileName and g.os_path_exists(fileName):
+        ok, frame = g.openWithFileName(fileName,None)
+        if ok: return frame.c,frame
+
+    # Create a _new_ frame & indicate it is the startup window.
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName,initEditCommanders=True)
+    frame.setInitialWindowGeometry()
+    frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
+    frame.startupWindow = True
+    if frame.c.chapterController:
+        frame.c.chapterController.finishCreate()
+        frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
+    # Call the 'new' hook for compatibility with plugins.
+    g.doHook("new",old_c=None,c=c,new_c=c)
+
+    # Report the failure to open the file.
+    if fileName:
+        g.es("File not found: " + fileName)
+
+    return c,frame
+#@-node:ekr.20031218072017.1624:createFrame (leo.py)
+#@+node:ekr.20071018120804:Report
+@nocolor
+
+> Oh joy. The problem can be fixed in Leo.
+
+Maybe I spoke too soon.  The crasher in print can be worked around.  But that is not the end of the story.
+
+The problem is determining the proper way to convert Lasidoré.leo to unicode.  Using 'utf-8' in g.toUnicode doesn't work on XP. It produces byte hash for the é.  Using 'utf-8' fails spectacularly: the entire file name looks like chinese!  It's possible that some other encoding would work, but how to discover it?
+
+Furthermore, g.os_path_exists returns False for Lasidoré.leo.  That may indicate a problem with the Python library, or not.
+
+Moreover, Lasidoré.leo isn't shown properly in the Leo window: 'byte hash' is shown for the é character.  Saving *this* (new) file gives a file with the dreaded square instead of é in XP.  And loading this new file also doesn't work: the file is not found and yet another new file is created.
+
+This could be a hard problem to solve.  I'm not sure I understand the interaction between unicode and file systems well enough to fix it.
+
+So for now, the workaround of avoiding non-ascii characters in file names seems prudent.  Sorry about this.  I would fix it if I could: it's most annoying to limit oneself to ascii file names.
+
+Edward
+#@-node:ekr.20071018120804:Report
+#@+node:ekr.20071018121409:Tests of file names
+@first # -*- coding: utf-8 -*-
+
+# The encoding above does not seem to matter--
+# it suppresses a warning given by execute-script.
+
+import os
+
+for name in ('Lasidoré.leo','test.leo'):
+    g.es('--')
+    for encoding in ('utf-16','utf-8','mbcs'):
+        s = r'c:\prog\tigris-cvs\leo\test\%s' % name
+        s = g.toUnicode(s,encoding) # pep 277 allows unicode file names.
+        g.es(encoding,s,os.path.exists(s))
+#@-node:ekr.20071018121409:Tests of file names
+#@+node:ekr.20050208093800.1:toUnicode
+def toUnicode (s,encoding,reportErrors=False):
+
+    if s is None:
+        s = u""
+    if type(s) == type(""):
+        try:
+            s = unicode(s,encoding,"strict")
+        except UnicodeError:
+            if reportErrors:
+                g.reportBadChars(s,encoding)
+            s = unicode(s,encoding,"replace")
+    return s
+#@-node:ekr.20050208093800.1:toUnicode
+#@-node:ekr.20071018114556:Allow unicode characters in Leo file names
 #@-node:ekr.20070920083033.1:Features
 #@-node:ekr.20070919132518:4.4.4 b3
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
