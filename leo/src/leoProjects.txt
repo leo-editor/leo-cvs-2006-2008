@@ -18648,88 +18648,6 @@ if c.frame :
                     at.default_directory = g.makeAllNonExistentDirectories(theDir,c=c)
 #@-node:ekr.20041005105605.241:<< Set current directory >>
 #@-node:ekr.20041005105605.236:atFile.scanDefaultDirectory
-#@+node:ekr.20070713075352:Default scanner
-def scanUnknownFileType (self,s,p,ext,atAuto=False):
-
-    c = self.c
-    changed = c.isChanged()
-    body = g.choose(atAuto,'','@ignore\n')
-    if ext in ('.html','.htm'): body += '@language html\n'
-    if ext in ('.txt','.text'): body += '@nocolor\n'
-    c.setBodyString(p,body + self.rootLine + s)
-    if atAuto:
-        for p in p.self_and_subtree_iter():
-            p.clearDirty()
-        if not changed:
-            c.setChanged(False)
-
-    g.app.unitTestDict = {'result':True}
-#@-node:ekr.20070713075352:Default scanner
-#@+node:ekr.20031218072017.3210:createOutline
-def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
-
-    c = self.c ; u = c.undoer ; s1 = s
-    junk,self.fileName = g.os_path_split(fileName)
-    self.methodName,self.fileType = g.os_path_splitext(self.fileName)
-    self.setEncoding()
-    # g.trace(self.fileName,self.fileType)
-    # All file types except the following just get copied to the parent node.
-    if not ext: ext = self.fileType
-    ext = ext.lower()
-    if not s:
-        << Read file into s >>
-
-    # Create the top-level headline.
-    if atAuto:
-        p = parent.copy()
-        c.beginUpdate()
-        try:
-            p.setTnodeText('')
-        finally:
-            c.endUpdate(False)
-    else:
-        undoData = u.beforeInsertNode(parent)
-        p = parent.insertAsLastChild()
-        if self.treeType == "@file" and not s1:
-            p.initHeadString("@nosent " + fileName)
-        else:
-            p.initHeadString(fileName)
-        u.afterInsertNode(p,'Import',undoData)
-
-    self.rootLine = g.choose(self.treeType=="@file","","@root-code "+self.fileName+'\n')
-
-    if ext in (".c", ".cpp", ".cxx"):
-        self.scanCText(s,p,atAuto=atAuto)
-    elif ext == '.c#':
-        self.scanCSharpText(s,p,atAuto=atAuto)
-    elif ext == ".el":
-        self.scanElispText(s,p,atAuto=atAuto)
-    elif ext == ".java":
-        self.scanJavaText(s,p,atAuto=atAuto)
-    elif ext == ".pas":
-        self.scanPascalText(s,p,atAuto=atAuto)
-    elif ext in (".py", ".pyw"):
-        self.scanPythonText(s,p,atAuto=atAuto)
-    elif ext == ".php":
-        self.scanPHPText(s,p,atAuto=atAuto)
-    else:
-        self.scanUnknownFileType(s,p,ext,atAuto=atAuto)
-
-    p.contract()
-    return p
-#@+node:ekr.20031218072017.3211:<< Read file into s >>
-try:
-    fileName = g.os_path_normpath(fileName)
-    theFile = open(fileName)
-    s = theFile.read()
-    s = g.toUnicode(s,self.encoding)
-    theFile.close()
-except IOError:
-    g.es("can not open %s%s" % (g.choose(atAuto,'@auto ',''),fileName),color='red')
-    leoTest.fail()
-    return None
-#@-node:ekr.20031218072017.3211:<< Read file into s >>
-#@-node:ekr.20031218072017.3210:createOutline
 #@-node:ekr.20070803112638:Fixed another path bug
 #@+node:ekr.20070804070844:fixed c parser so it handles non-ascii declaratsions
 @nocolor
@@ -21428,50 +21346,22 @@ def putClassHelper(self,s,i,end,class_name,class_node):
 
     Parse s for inner methods and classes, and create nodes.'''
 
-    # Put any leading decls in the class node.
-    trace = False or self.trace
-    start = i
-    if trace: g.trace('%s **enter**' % (class_name))
     # Increase the output indentation (used only in startsHelper).
     # This allows us to detect over-indented classes and functions.
     old_output_indent = self.output_indent
     self.output_indent += abs(self.tab_width)
-    i = self.skipDecls(s,i,end,inClass=True)
+
+    # Parse the decls.
+    start = i = self.skipDecls(s,i,end,inClass=True)
     decls = s[start:i]
-    if trace and decls: g.trace('%s decls\n%s' % (class_name,decls))
 
-    start = i ; putRef = False ; indentFlag = None
-    while i < end:
-        progress = i
-        if s[i] in (' ','\t','\n'):
-            i += 1 # Prevent lookahead below, and speed up the scan.
-        elif self.startsComment(s,i):
-            i = self.skipComment(s,i)
-        elif self.startsString(s,i):
-            i = self.skipString(s,i)
-        elif self.startsClass(s,i):  # Sets sigStart,sigEnd & codeEnd ivars.
-            putRef = True
-            if indentFlag is None: indentFlag = self.getIndent(s,i) > self.classIndent
-            end2 = self.codeEnd # putClass may change codeEnd ivar.
-            self.putClass(s,i,self.sigStart,self.sigEnd,self.codeEnd,start,class_node)
-            i = start = end2
-        elif self.startsFunction(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
-            putRef = True ; indent = self.getIndent(s,i)
-            if indentFlag is None: indentFlag = indent > self.classIndent
-            self.putFunction(s,self.sigStart,self.codeEnd,start,class_node)
-            i = start = self.codeEnd
-        elif self.startsId(s,i):
-            i = self.skipId(s,i);
-        elif g.match(s,i,self.outerBlockDelim1): # Bug fix: do this after testing for classes.
-            i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
-        else: i += 1
-        assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
-
-    if trace: g.trace('%s putRef: %s indentFlag: %s' % (class_name,putRef,indentFlag))
+    # Parse the rest of the class.
+    start,putRef,indentFlag = self.scanHelper(s,i,end=end,parent=class_node)
 
     # Restore the output indentation.
     self.output_indent = old_output_indent
 
+    # Return the results.
     trailing = s[start:end]
     return putRef,indentFlag,decls,trailing
 #@-node:ekr.20070707171329:putClassHelper
@@ -21598,7 +21488,7 @@ def getIndent (self,s,i):
     return indent
 #@nonl
 #@-node:ekr.20071017132056:getIndent
-#@+node:ekr.20070706101600:scan
+#@+node:ekr.20070706101600:scan & scanHelper
 def scan (self,s,parent):
 
     '''A language independent scanner: it uses language-specific helpers.
@@ -21608,40 +21498,59 @@ def scan (self,s,parent):
     - Outer-level classes.
     - Outer-level functions.
     '''
+
+    # Create the initial body text in the root.
     self.putRootText(parent)
+
+    # Parse the decls.
     i = start = self.skipDecls(s,0,len(s),inClass=False)
     decls = s[:i]
+
+    # Create the decls node.
     if decls: self.createDeclsNode(parent,decls)
-    localIndent = 0
-    while i < len(s):
+
+    # Scan the rest of the file.
+    start,junk,junk = self.scanHelper(s,i,end=len(s),parent=parent)
+
+    # Finish adding to the parent's body text.
+    self.addRef(parent)
+    if start < len(s):
+        self.c.appendStringToBody(parent,s[start:]) 
+#@+node:ekr.20071018084830:scanHelper
+def scanHelper(self,s,i,end,parent):
+
+    '''Common scanning code used by both scan and putClassHelper.'''
+
+    start = i ; putRef = False ; indentFlag = None
+    while i < end:
         progress = i
         if s[i] in (' ','\t','\n'):
-            if s[i] == '\n':
-                junk,localIndent = g.skip_leading_ws_with_indent(s,i+1,self.tab_width)
             i += 1 # Prevent lookahead below, and speed up the scan.
         elif self.startsComment(s,i):
             i = self.skipComment(s,i)
         elif self.startsString(s,i):
             i = self.skipString(s,i)
-        elif g.match(s,i,self.outerBlockDelim1):
-            # k = i
-            i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
-            # g.trace('\n',s[k:i])
-        elif self.startsClass(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
+        elif self.startsClass(s,i):  # Sets sigStart,sigEnd & codeEnd ivars.
+            putRef = True
+            if indentFlag is None: indentFlag = self.getIndent(s,i) > self.classIndent
             end2 = self.codeEnd # putClass may change codeEnd ivar.
             self.putClass(s,i,self.sigStart,self.sigEnd,self.codeEnd,start,parent)
             i = start = end2
         elif self.startsFunction(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
+            putRef = True ; indent = self.getIndent(s,i)
+            if indentFlag is None: indentFlag = indent > self.classIndent
             self.putFunction(s,self.sigStart,self.codeEnd,start,parent)
             i = start = self.codeEnd
         elif self.startsId(s,i):
             i = self.skipId(s,i);
+        elif g.match(s,i,self.outerBlockDelim1): # Do this after testing for classes.
+            i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
         else: i += 1
         assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
-    self.addRef(parent)
-    if start < len(s):
-        self.c.appendStringToBody(parent,s[start:]) 
-#@-node:ekr.20070706101600:scan
+
+    return start,putRef,indentFlag
+#@-node:ekr.20071018084830:scanHelper
+#@-node:ekr.20070706101600:scan & scanHelper
 #@+node:ekr.20070712075148:skipArgs
 def skipArgs (self,s,i,kind):
 

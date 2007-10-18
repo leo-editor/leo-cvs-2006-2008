@@ -2,6 +2,10 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20071001045205:To do: 4.4.4
+#@+node:ekr.20071018071814:Unit tests and documentation for new colorizer
+#@-node:ekr.20071018071814:Unit tests and documentation for new colorizer
+#@+node:ekr.20071018073812.1:Document g.app.gui.runX methods
+#@-node:ekr.20071018073812.1:Document g.app.gui.runX methods
 #@-node:ekr.20071001045205:To do: 4.4.4
 #@+node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
 # Leo 4.4.5 will complete several projects that are long overdue.
