@@ -588,8 +588,8 @@ class atFile:
         if g.os_path_exists(fileName):
             if ic.errors:
                 g.es_print('Errors inhibited read @auto %s' % (fileName),color='red')
-            else:
-                c.atAutoDict [fileName] = True
+            # else:
+                # c.atAutoDict [fileName] = True
     #@-node:ekr.20070909100252:readOneAtAutoNode (atFile)
     #@+node:ekr.20041005105605.27:readOpenFile
     def readOpenFile(self,root,theFile,fileName):
@@ -2966,7 +2966,7 @@ class atFile:
                     elif p.isAtIgnoreNode():
                         pass
                     elif p.isAtAutoNode():
-                        at.writeOneAtAutoNode(p,toString=toString)
+                        at.writeOneAtAutoNode(p,toString=toString,force=False)
                         writtenFiles.append(p.v.t)
                     elif p.isAtNorefFileNode():
                         at.norefWrite(p,toString=toString)
@@ -3028,7 +3028,7 @@ class atFile:
         c.fileCommands.assignFileIndices()
         while p and p != after:
             if p.isAtAutoNode() and not p.isAtIgnoreNode() and (p.isDirty() or not writeDirtyOnly):
-                ok = self.writeOneAtAutoNode(p,toString=toString)
+                ok = self.writeOneAtAutoNode(p,toString=toString,force=True)
                 if ok:
                     found = True
                     p.moveToNodeAfterTree()
@@ -3044,10 +3044,10 @@ class atFile:
         else:
             g.es("no @auto nodes in the selected tree")
     #@-node:ekr.20070806140208:writeAtAutoNodesHelper
-    #@+node:ekr.20070806141607:writeOneAtAutoNode & helper
-    def writeOneAtAutoNode(self,p,toString):
+    #@+node:ekr.20070806141607:writeOneAtAutoNode & helpers
+    def writeOneAtAutoNode(self,p,toString,force):
 
-        '''Write p, and @auto node.'''
+        '''Write p, an @auto node.'''
 
         at = self ; c = at.c ; root = p.copy()
 
@@ -3056,18 +3056,10 @@ class atFile:
 
         at.scanDefaultDirectory(p,importing=True) # Set default_directory
         fileName = g.os_path_join(at.default_directory,fileName)
+        exists = g.os_path_exists(fileName)
 
-        if not c.atAutoDict.get(fileName) and g.os_path_exists(fileName):
-            # Read the file if it would not wipe out significant info.
-            # Otherwise, do nothing (the @auto tree will be written to the outline).
-            if at.isSignificantAtAutoTree(p):
-                g.es('not written: @auto %s\nmay conflict with existing derived file.' % (
-                    fileName),color='red')
-                return False
-            else:
-                g.es_print('reading new @auto %s' % (fileName),color='blue')
-                at.readOneAtAutoNode(fileName,p)
-                return True
+        if not toString and not self.shouldWriteAtAutoNode(p,exists,force):
+            return False
 
         # This code is similar to code in at.write.
         c.endEditing() # Capture the current headline.
@@ -3081,12 +3073,48 @@ class atFile:
             at.writeOpenFile(root,nosentinels=True,toString=toString)
             at.closeWriteFile() # Sets stringOutput if toString is True.
             at.replaceTargetFileIfDifferent()
-            c.atAutoDict [fileName] = True # Bug fix: 9/27/07
+            # c.atAutoDict [fileName] = True
         elif not toString:
             root.setDirty() # Make _sure_ we try to rewrite this file.
             g.es("Not written: " + at.outputFileName)
 
         return ok
+    #@+node:ekr.20071019141745:shouldWriteAtAutoNode
+    #@+at 
+    #@nonl
+    # Much thought went into this decision tree:
+    # 
+    # - We do not want decisions to depend on past history.  That's too 
+    # confusing.
+    # - We must ensure that the file will be written if the user does 
+    # significant work.
+    # - We must ensure that the user can create an @auto x node at any time
+    #   without risk of of replacing x with empty or insignificant 
+    # information.
+    # - We want the user to be able to create an @auto node which will be 
+    # populated the next time the .leo file is opened.
+    # - We don't want minor import imperfections to be written to the @auto 
+    # file.
+    # - The explicit commands that read and write @auto trees must always be 
+    # honored.
+    #@-at
+    #@@c
+
+    def shouldWriteAtAutoNode (self,p,exists,force):
+
+        '''Return True if we should write the @auto node at p.'''
+
+        if force: # We are executing write-at-auto-node or write-dirty-at-auto-nodes.
+            return True
+        elif not exists: # We can write a non-existent file without danger.
+            return True
+        elif not p.isDirty(): # There is nothing new to write.
+            return False
+        elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
+            return False
+        else: # The @auto tree is dirty and contains significant info.
+            return True
+    #@-node:ekr.20071019141745:shouldWriteAtAutoNode
     #@+node:ekr.20070909103844:isSignificantAtAutoTree
     def isSignificantAtAutoTree (self,p):
 
@@ -3100,7 +3128,7 @@ class atFile:
             len(g.splitLines(s)) > 10
         )
     #@-node:ekr.20070909103844:isSignificantAtAutoTree
-    #@-node:ekr.20070806141607:writeOneAtAutoNode & helper
+    #@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
     #@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
     #@+node:ekr.20050506084734:writeFromString
     # This is at.write specialized for scripting.
