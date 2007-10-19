@@ -420,7 +420,7 @@ class baseLeoImportCommands:
 
             valid,new_df,start_delim,end_delim,derivedFileIsThin = at.parseLeoSentinel(line)
             if not valid:
-                g.es("invalid @+leo sentinel in " + fileName)
+                if not toString: g.es("invalid @+leo sentinel in " + fileName)
                 return
 
             if end_delim:
@@ -1458,7 +1458,6 @@ class baseLeoImportCommands:
                 self.tab_ws = '\t'
 
             # May be overridden in subclasses.
-            self.allowQuickScan = True # When start of function/class is easily found.
             self.blockCommentDelim1 = None
             self.blockCommentDelim2 = None
             self.blockDelim1 = '{'
@@ -2479,15 +2478,6 @@ class baseLeoImportCommands:
             if trace: g.trace('*exit ',kind,i,i < len(s) and s[i],ids,classId)
             return i, ids, classId
         #@-node:ekr.20070711140703:skipSigStart
-        #@+node:ekr.20070711134534:skipSigId
-        def skipSigId (self,s,i,ids):
-
-            '''Return (i, id) where id is the signature's id.
-
-            By default, this is the last id in the ids list.'''
-
-            return i, ids and ids[-1]
-        #@-node:ekr.20070711134534:skipSigId
         #@+node:ekr.20070712082913:skipSigTail
         def skipSigTail(self,s,i):
 
@@ -2511,6 +2501,15 @@ class baseLeoImportCommands:
             if trace: g.trace('no block delim')
             return i,False
         #@-node:ekr.20070712082913:skipSigTail
+        #@+node:ekr.20070711134534:skipSigId
+        def skipSigId (self,s,i,ids):
+
+            '''Return (i, id) where id is the signature's id.
+
+            By default, this is the last id in the ids list.'''
+
+            return i, ids and ids[-1]
+        #@-node:ekr.20070711134534:skipSigId
         #@-node:ekr.20070711132314:startsClass/Function (baseClass) & helpers
         #@+node:ekr.20070711104014.1:startsComment
         def startsComment (self,s,i):
@@ -2758,6 +2757,8 @@ class baseLeoImportCommands:
     #@+node:edreamleo.20070710085115:class javaScanner (baseScannerClass)
     class javaScanner (baseScannerClass):
 
+        #@    @+others
+        #@+node:ekr.20071019171430:javaScanner.__init__
         def __init__ (self,importCommands,atAuto):
 
             # Init the base class.
@@ -2765,7 +2766,6 @@ class baseLeoImportCommands:
                 atAuto=atAuto,language='java')
 
             # Set the parser delims.
-            self.allowQuickScan = False # Can't determine start of functions quickly.
             self.blockCommentDelim1 = '/*'
             self.blockCommentDelim2 = '*/'
             self.lineCommentDelim = '//'
@@ -2773,6 +2773,26 @@ class baseLeoImportCommands:
             self.outerBlockDelim1 = '{'
             self.classTags = ['class','interface']
             self.functionTags = []
+        #@-node:ekr.20071019171430:javaScanner.__init__
+        #@+node:ekr.20071019170943:javaScanner.skipSigId
+        def skipSigId (self,s,i,ids):
+
+            '''Return (i, id) where id is the signature's id.
+
+            By default, this is the last id in the ids list.'''
+
+            # Remove 'public' and 'private'
+            ids2 = [z for z in ids if z not in ('public','private','final',)]
+
+            # Remove 'extends' and everything after it.
+            ids = []
+            for z in ids2:
+                if z == 'extends': break
+                ids.append(z)
+
+            return i, ids and ids[-1]
+        #@-node:ekr.20071019170943:javaScanner.skipSigId
+        #@-others
     #@-node:edreamleo.20070710085115:class javaScanner (baseScannerClass)
     #@-node:edreamleo.20070710110114:Java scanner
     #@+node:ekr.20070711104241:Pascal scanner
