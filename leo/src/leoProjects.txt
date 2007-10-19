@@ -29639,6 +29639,61 @@ def putClassHelper(self,s,i,end,class_name,class_node):
 #@-node:ekr.20070707113832.1:putClass & helpers
 #@-node:ekr.20071016124052:Handle nested classes, interface and namespaces properly
 #@-node:ekr.20071016120719:Fixed several @auto bugs
+#@+node:ekr.20071019065431:Installed patch to fix Fedora Tk.Text bug
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=4576436
+By: thyrsus
+
+I found that the effect on the current CVS of Mr. Ignatov's Fedora 7 crash fix
+was that if you moved from a node that had text to a node that didn't have text,
+the text window would not be blanked.  I instead use this workaround in Code-->Gui
+Tkinter classes-->@thin leoTkinterFrame.py-->class leoTkTextWidget
+(Tk.Text)-->Wrapper methods (leoTextWidget)-->setAllText (diff taken on
+leoTkinterFrame.py).
+
+In case anyone has forgotten: this change is a workaround to a python bug that
+so far has only been distributed with Fedora Core 7.  I have reported the bug
+to the Fedora Core 7 folks, but they're presumably busy with other things.
+It's possible the problem is actually the responsibility of the python maintainers,
+in which case they'll either fix it or it will start showing up in other Linux
+distributions :-/
+
+***************
+*** 3380,3386 ****
+          Tk.Text.configure(w,state="normal")
+
+          Tk.Text.delete(w,'1.0','end')
+!        Tk.Text.insert(w,'1.0',s)
+
+          Tk.Text.configure(w,state=state)
+#@verbatim
+      #@-node:ekr.20061113151148.20:setAllText
+--- 3376,3382 ----
+          Tk.Text.configure(w,state="normal")
+
+          Tk.Text.delete(w,'1.0','end')
+!        if s: Tk.Text.insert(w,'1.0',s)
+
+          Tk.Text.configure(w,state=state)
+#@verbatim
+      #@-node:ekr.20061113151148.20:setAllText
+
+@color
+#@+node:ekr.20061113151148.20:setAllText
+def setAllText (self,s): # tkTextWidget
+
+    w = self
+
+    state = Tk.Text.cget(w,"state")
+    Tk.Text.configure(w,state="normal")
+
+    Tk.Text.delete(w,'1.0','end')
+    if s: Tk.Text.insert(w,'1.0',s) # The 'if s:' is a workaround for a fedora bug.
+
+    Tk.Text.configure(w,state=state)
+#@-node:ekr.20061113151148.20:setAllText
+#@-node:ekr.20071019065431:Installed patch to fix Fedora Tk.Text bug
 #@-node:ekr.20070920083033:Bugs
 #@+node:ekr.20070920083033.1:Features
 #@+node:ekr.20070919124912:Added button-font params
