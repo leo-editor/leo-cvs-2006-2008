@@ -3377,7 +3377,7 @@ class leoTkTextWidget (Tk.Text):
         Tk.Text.configure(w,state="normal")
 
         Tk.Text.delete(w,'1.0','end')
-        Tk.Text.insert(w,'1.0',s)
+        if s: Tk.Text.insert(w,'1.0',s) # The 'if s:' is a workaround for a fedora bug.
 
         Tk.Text.configure(w,state=state)
     #@-node:ekr.20061113151148.20:setAllText

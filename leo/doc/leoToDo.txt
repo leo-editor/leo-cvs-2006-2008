@@ -2,6 +2,64 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20071001045205:To do: 4.4.4 final
+#@+node:ekr.20071018173151:Install patch to put the outline in the main pane
+@nocolor
+
+I changed createSplitterComponents.
+
+Here's a diff, which gives me a ":o" arrangement, which suits me fine.   Obviously,
+inclusion in released code would need to make this dependent on an option.
+
+--- -  2007-10-18 14:07:47.799553726 -0400
++++ leoTkinterFrame.py  2007-10-18 13:58:24.000000000 -0400
+@@ -495,12 +495,12 @@
+@color
+
+        c.chapterController = cc = leoChapters.chapterController(c)
+
+        if self.use_chapters and self.use_chapter_tabs:
+-            cc.tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
++            cc.tt = leoTkinterTreeTab(c,f.split1Pane2,cc)
+
+-        f.canvas = f.createCanvas(f.split2Pane1)
++        f.canvas = f.createCanvas(f.split1Pane2)
+        f.tree  = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
+        f.log    = leoTkinterLog(f,f.split2Pane2)
+-        f.body  = leoTkinterBody(f,f.split1Pane2)
++        f.body  = leoTkinterBody(f,f.split2Pane1)
+
+        # Yes, this an "official" ivar: this is a kludge.
+        f.bodyCtrl = f.body.bodyCtrl
+#@nonl
+#@+node:ekr.20051009045208:createSplitterComponents
+def createSplitterComponents (self):
+
+    f = self ; c = f.c
+
+    f.createLeoSplitters(f.outerFrame)
+
+    # Create the canvas, tree, log and body.
+    if f.use_chapters:
+        c.chapterController = cc = leoChapters.chapterController(c)
+
+    if self.use_chapters and self.use_chapter_tabs:
+        cc.tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
+
+    f.canvas = f.createCanvas(f.split2Pane1)
+    f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
+    f.log    = leoTkinterLog(f,f.split2Pane2)
+    f.body   = leoTkinterBody(f,f.split1Pane2)
+
+    # Yes, this an "official" ivar: this is a kludge.
+    f.bodyCtrl = f.body.bodyCtrl
+
+    # Configure.
+    f.setTabWidth(c.tab_width)
+    f.reconfigurePanes()
+    f.body.setFontFromConfig()
+    f.body.setColorFromConfig()
+#@-node:ekr.20051009045208:createSplitterComponents
+#@-node:ekr.20071018173151:Install patch to put the outline in the main pane
 #@+node:ekr.20071018071814:Unit tests and documentation for new colorizer
 #@-node:ekr.20071018071814:Unit tests and documentation for new colorizer
 #@+node:ekr.20071018073812.1:Document g.app.gui.runX methods
