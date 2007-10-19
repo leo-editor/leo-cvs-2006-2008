@@ -1458,6 +1458,7 @@ class baseLeoImportCommands:
                 self.tab_ws = '\t'
 
             # May be overridden in subclasses.
+            self.allowQuickScan = True # When start of function/class is easily found.
             self.blockCommentDelim1 = None
             self.blockCommentDelim2 = None
             self.blockDelim1 = '{'
@@ -1791,8 +1792,10 @@ class baseLeoImportCommands:
             # Create the class node.
             class_node = self.createHeadline(parent,'',headline)
 
+            undentVal = self.getLeadingIndent(classHead,0)
+
             # Call the helper to parse the inner part of the class.
-            putRef,indentFlag,decls,trailing = self.putClassHelper(s,i,codeEnd,class_name,class_node)
+            putRef,indentFlag,classDelim,decls,trailing = self.putClassHelper(s,i,codeEnd,class_name,class_node)
 
             # g.trace(class_name,'indent',self.classIndent,'indentFlag',indentFlag)
 
@@ -1800,10 +1803,10 @@ class baseLeoImportCommands:
             ref = putRef and self.getClassNodeRef(class_name,indentFlag) or ''
 
             # Remove the leading whitespace only from the classHead and trailing parts.
-            undentVal = self.getLeadingIndent(classHead,0)
             result = (
                 prefix +
                 self.undentBy(classHead,undentVal) +
+                self.undentBy(classDelim,undentVal) +
                 ref +
                 self.undentBy(trailing,undentVal))
 
@@ -1874,14 +1877,24 @@ class baseLeoImportCommands:
             decls = s[start:i]
 
             # Parse the rest of the class.
-            start,putRef,indentFlag = self.scanHelper(s,i,end=end,parent=class_node)
+            delim1, delim2 = self.outerBlockDelim1, self.outerBlockDelim2
+            if g.match(s,i,delim1):
+                # Do *not* use g.skip_ws_and_nl here!
+                j = g.skip_ws(s,i + len(delim1))
+                if g.is_nl(s,j): j = g.skip_nl(s,j)
+                classDelim = s[i:j]
+                end2 = self.skipBlock(s,i,delim1=delim1,delim2=delim2)
+                start,putRef,indentFlag = self.scanHelper(s,j,end=end2,parent=class_node,kind='class')
+            else:
+                classDelim = ''
+                start,putRef,indentFlag = self.scanHelper(s,i,end=end,parent=class_node,kind='class')
 
             # Restore the output indentation.
             self.output_indent = old_output_indent
 
             # Return the results.
             trailing = s[start:end]
-            return putRef,indentFlag,decls,trailing
+            return putRef,indentFlag,classDelim,decls,trailing
         #@-node:ekr.20070707171329:putClassHelper
         #@-node:ekr.20070707113832.1:putClass & helpers
         #@+node:ekr.20070707082432:putFunction
@@ -2031,18 +2044,22 @@ class baseLeoImportCommands:
             if decls: self.createDeclsNode(parent,decls)
 
             # Scan the rest of the file.
-            start,junk,junk = self.scanHelper(s,i,end=len(s),parent=parent)
+            start,junk,junk = self.scanHelper(s,i,end=len(s),parent=parent,kind='outer')
 
             # Finish adding to the parent's body text.
             self.addRef(parent)
             if start < len(s):
                 self.c.appendStringToBody(parent,s[start:]) 
         #@+node:ekr.20071018084830:scanHelper
-        def scanHelper(self,s,i,end,parent):
+        def scanHelper(self,s,i,end,parent,kind):
 
             '''Common scanning code used by both scan and putClassHelper.'''
 
+            assert kind in ('class','outer')
             start = i ; putRef = False ; indentFlag = None
+            # if kind =='class' and g.match(s,i,self.outerBlockDelim1):
+                # end = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+                # start = i = i + len(self.outerBlockDelim1)
             while i < end:
                 progress = i
                 if s[i] in (' ','\t','\n'):
@@ -2064,8 +2081,8 @@ class baseLeoImportCommands:
                     i = start = self.codeEnd
                 elif self.startsId(s,i):
                     i = self.skipId(s,i);
-                elif g.match(s,i,self.outerBlockDelim1): # Do this after testing for classes.
-                    i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+                elif kind == 'outer' and g.match(s,i,self.outerBlockDelim1): # Do this after testing for classes.
+                    i = start = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
                 else: i += 1
                 assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
 
@@ -2214,7 +2231,8 @@ class baseLeoImportCommands:
                     # Add the comment to the decl if it *doesn't* start the line.
                     i2,junk = g.getLine(s,i)
                     i2 = g.skip_ws(s,i2)
-                    if i2 == i and prefix is None: prefix = i
+                    if i2 == i and prefix is None:
+                        prefix = i2 # Bug fix: must include leading whitespace in the comment.
                     i = self.skipComment(s,i)
                 elif self.startsString(s,i):
                     i = self.skipString(s,i)
@@ -2232,23 +2250,23 @@ class baseLeoImportCommands:
                 elif self.startsId(s,i):
                     i = self.skipId(s,i)
                     prefix = None
-                # Bug fix: don't skip outer blocks: they may contain classes.
-                # elif g.match(s,i,self.outerBlockDelim1):
-                    # i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
-                    # prefix = None
+                # Don't skip outer blocks: they may contain classes.
+                elif g.match(s,i,self.outerBlockDelim1):
+                    break
                 else:
                     i += 1 ;  prefix = None
                 assert(progress < i)
 
-            # Don't return decls if a class contains nothing but decls.
-            if inClass and not classOrFunc:
-                return start
-            # Ignore empty decls.
             if prefix is not None: i = prefix
-            if s[start:i].strip():
-                if trace or self.trace: g.trace('\n'+s[start:i])
+            decls = s[start:i]
+            if inClass and not classOrFunc:
+                # Don't return decls if a class contains nothing but decls.
+                if trace and decls.strip(): g.trace('**class is all decls...\n',decls)
+                return start
+            elif decls.strip(): 
+                if trace or self.trace: g.trace('\n'+decls)
                 return i
-            else:
+            else: # Ignore empty decls.
                 return start
         #@+node:ekr.20070709084313:adjustClassOrFunctionStart
         def adjustClassOrFunctionStart(self,s,i,tag):
@@ -2336,7 +2354,7 @@ class baseLeoImportCommands:
             Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
 
             trace = False or self.trace
-            verbose = False
+            verbose = kind=='function'
             self.codeEnd = self.sigEnd = self.sigId = None
             self.sigStart = i
 
@@ -2350,22 +2368,24 @@ class baseLeoImportCommands:
             i = self.skipId(s,j)
             self.sigId = theId = s[j:i] # Set sigId ivar 'early' for error messages.
             if not theId: return False
+
             if tags:
                 if theId not in tags:
+                    if trace and verbose: g.trace('**** %s theId: %s not in tags: %s' % (kind,theId,tags))
                     return False
                 if quick: return True
 
             if trace and verbose: g.trace('kind',kind,'id',theId)
 
             # Get the class/function id.
-            i, ids, classId = self.skipSigStart(s,j,tags) # Rescan the first id.
+            i, ids, classId = self.skipSigStart(s,j,kind,tags) # Rescan the first id.
             i, sigId = self.skipSigId(s,i,ids)
             if not sigId:
-                if trace and verbose: g.trace('no sigId',g.get_line(s,i))
+                if trace and verbose: g.trace('**no sigId',g.get_line(s,i))
                 return False
 
             if self.output_indent < self.startSigIndent:
-                if trace: g.trace('oeverindent',sigId)
+                if trace: g.trace('**over-indent',sigId)
                     #,'output_indent',self.output_indent,'startSigIndent',self.startSigIndent)
                 return False
 
@@ -2426,7 +2446,7 @@ class baseLeoImportCommands:
             return True
         #@-node:ekr.20070712112008:startsHelper
         #@+node:ekr.20070711140703:skipSigStart
-        def skipSigStart (self,s,i,tags):
+        def skipSigStart (self,s,i,kind,tags):
 
             '''Skip over the start of a function/class signature.
 
@@ -2436,8 +2456,9 @@ class baseLeoImportCommands:
 
             # __pychecker__ = '--no-argsused' # tags not used in the base class.
 
-            trace = False or self.trace
+            trace = self.trace # or kind =='function'
             ids = [] ; classId = None
+            if trace: g.trace('*entry',kind,i,s[i:i+20])
             start = i
             while i < len(s):
                 j = g.skip_ws_and_nl(s,i)
@@ -2455,6 +2476,7 @@ class baseLeoImportCommands:
                     if theId: ids.append(theId)
                     else: break
 
+            if trace: g.trace('*exit ',kind,i,i < len(s) and s[i],ids,classId)
             return i, ids, classId
         #@-node:ekr.20070711140703:skipSigStart
         #@+node:ekr.20070711134534:skipSigId
@@ -2743,11 +2765,14 @@ class baseLeoImportCommands:
                 atAuto=atAuto,language='java')
 
             # Set the parser delims.
+            self.allowQuickScan = False # Can't determine start of functions quickly.
             self.blockCommentDelim1 = '/*'
             self.blockCommentDelim2 = '*/'
             self.lineCommentDelim = '//'
             self.lineCommentDelim2 = None
-            self.classTags = ['class','interface',]
+            self.outerBlockDelim1 = '{'
+            self.classTags = ['class','interface']
+            self.functionTags = []
     #@-node:edreamleo.20070710085115:class javaScanner (baseScannerClass)
     #@-node:edreamleo.20070710110114:Java scanner
     #@+node:ekr.20070711104241:Pascal scanner
