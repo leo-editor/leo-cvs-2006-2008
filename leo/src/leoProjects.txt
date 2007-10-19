@@ -21010,7 +21010,6 @@ def __init__ (self,importCommands,atAuto,language):
         self.tab_ws = '\t'
 
     # May be overridden in subclasses.
-    self.allowQuickScan = True # When start of function/class is easily found.
     self.blockCommentDelim1 = None
     self.blockCommentDelim2 = None
     self.blockDelim1 = '{'
@@ -22024,15 +22023,6 @@ def skipSigStart (self,s,i,kind,tags):
     if trace: g.trace('*exit ',kind,i,i < len(s) and s[i],ids,classId)
     return i, ids, classId
 #@-node:ekr.20070711140703:skipSigStart
-#@+node:ekr.20070711134534:skipSigId
-def skipSigId (self,s,i,ids):
-
-    '''Return (i, id) where id is the signature's id.
-
-    By default, this is the last id in the ids list.'''
-
-    return i, ids and ids[-1]
-#@-node:ekr.20070711134534:skipSigId
 #@+node:ekr.20070712082913:skipSigTail
 def skipSigTail(self,s,i):
 
@@ -22056,6 +22046,15 @@ def skipSigTail(self,s,i):
     if trace: g.trace('no block delim')
     return i,False
 #@-node:ekr.20070712082913:skipSigTail
+#@+node:ekr.20070711134534:skipSigId
+def skipSigId (self,s,i,ids):
+
+    '''Return (i, id) where id is the signature's id.
+
+    By default, this is the last id in the ids list.'''
+
+    return i, ids and ids[-1]
+#@-node:ekr.20070711134534:skipSigId
 #@-node:ekr.20070711132314:startsClass/Function (baseClass) & helpers
 #@+node:ekr.20070711104014.1:startsComment
 def startsComment (self,s,i):
@@ -26641,6 +26640,296 @@ def pythonNewlineHelper (self,s,i,parenCount,startIndent,underIndentedStart):
 http://sourceforge.net/forum/message.php?msg_id=4566691
 By: vransmayr
 #@-node:ekr.20071014112331:Made sure java scanner works with java interfaces
+#@+node:ekr.20071019072034:Fixed bugs in Java parser
+@nocolor
+
+> When I tried to open the 'old' outline w/ the java-interfaces imported as
+@auto-nodes Leo 'crashed'. That is using pythonw.exe did not open the outline.
+
+Thanks for this report.  As I understand the rest of the trace, the following files did not import properly:
+
+AdminPermission.java 
+BundleEvent.java 
+BundleException.java 
+BundlePermission.java 
+FrameworkEvent.java 
+FrameworkUtil.java 
+InvalidSyntaxException.java 
+package.html 
+packageinfo 
+PackagePermission.java 
+ServiceEvent.java 
+ServicePermission.java 
+Version.java
+
+That should be enough to get me started :-)
+
+Edward
+
+Read and respond to this message at:
+https://sourceforge.net/forum/message.php?msg_id=4576575
+By: vransmayr
+
+Hi Edward,
+
+  I'm replying to this thread and not to
+
+http://sourceforge.net/forum/message.php?msg_id=4576197
+
+because I guess that it's not a Java-specific problem.
+
+For the record: I performed a CVS update just before the exercise.
+
+When I tried to open the 'old' outline w/ the java-interfaces imported
+as @auto-nodes
+Leo 'crashed'. - That is using "pythonw.exe ..." did not open the outline.
+
+When I modified the windows explorer to open outlines w/ "python.exe" I received
+the
+following output.
+
+<cmd shell output>
+
+reading settings in C:\CVS-Reps\leo\config\leoSettings.leo
+reading settings in C:\Dokumente und Einstellungen\VR\myLeoSettings.leo
+reading settings in C:\Dokumente und Einstellungen\VR\Eigene
+Dateien\Frameworks\
+OSGi\OSGi\r41\OSGi-Core-Framework-r41.leo
+reading C:\Dokumente und Einstellungen\VR\.leoRecentFiles.txt
+@enabled-plugins found in myLeoSettings.leo
+rst3 plugin: SilverCity not loaded
+loadOnePlugin: no init() detect_urls
+loadOnePlugin: no init() empty_leo_file
+redefining close-window in all to extend-to-word in all
+redefining goto-first-node in tree to goto-first-visible-node in tree
+redefining goto-first-node in tree to goto-first-visible-node in all
+redefining goto-first-node in tree to goto-first-visible-node in all
+redefining forward-sentence in text to propagate-key-event in all
+redefining forward-word in text to propagate-key-event in all
+redefining kill-region-save in all to propagate-key-event in all
+*** first mismatch at line 79
+original line:  u'\tstatic final long\t\t\t\t\tserialVersionUID\t=
+3070510045212
+61705L;\n'
+generated line: '    private static class ImplHolder implements
+PrivilegedAction
+{\n'
+@auto did not import the file perfectly
+first mismatched line: 79
+'    private static class ImplHolder implements PrivilegedAction {\n'
+inserting @ignore
+Errors inhibited read @auto C:\Dokumente und Einstellungen\VR\Eigene
+Dateien\Fra
+meworks\OSGi\OSGi\r41\.\OSGI-OPT\src\org\osgi\framework\AdminPermission.java
+*** first mismatch at line 41
+original line:  u'\tstatic final long\t\tserialVersionUID\t=
+4080640865971756012
+L;\n'
+generated line: '    /**\n'
+@auto did not import the file perfectly
+first mismatched line: 41
+'    /**\n'
+inserting @ignore
+Errors inhibited read @auto C:\Dokumente und Einstellungen\VR\Eigene
+Dateien\Fra
+meworks\OSGi\OSGi\r41\.\OSGI-OPT\src\org\osgi\framework\BundleEvent.java
+*** first mismatch at line 38
+original line:  u'\tstatic final long\tserialVersionUID\t=
+3571095144220455665L;
+\n'
+generated line: '    /**\n'
+@auto did not import the file perfectly
+first mismatched line: 38
+'    /**\n'
+inserting @ignore
+Errors inhibited read @auto C:\Dokumente und Einstellungen\VR\Eigene
+Dateien\Fra
+meworks\OSGi\OSGi\r41\.\OSGI-OPT\src\org\osgi\framework\BundleException.java
+*** first mismatch at line 51
+original line:  u'\n'
+generated line: '    /**\n'
+@auto did not import the file perfectly
+first mismatched line: 51
+'    /**\n'
+inserting @ignore
+Errors inhibited read @auto C:\Dokumente und Einstellungen\VR\Eigene
+Dateien\Fra
+meworks\OSGi\OSGi\r41\.\OSGI-OPT\src\org\osgi\framework\BundlePermission.java
+*** first mismatch at line 41
+original line:  u'\tstatic final long\t\tserialVersionUID\t=
+207051004521261705L
+;\n'
+generated line: '    /**\n'
+@auto did not import the file perfectly
+first mismatched line: 41
+'    /**\n'
+inserting @ignore
+Errors inhibited read @auto C:\Dokumente und Einstellungen\VR\Eigene
+Dateien\Fra
+meworks\OSGi\OSGi\r41\.\OSGI-OPT\src\org\osgi\framework\FrameworkEvent.java
+*** first mismatch at line 37
+original line:  u'\t/*\n'
+generated line: '    private static class ImplHolder implements
+PrivilegedAction
+{\n'
+@auto did not import the file perfectly
+first mismatched line: 37
+'    private static class ImplHolder implements PrivilegedAction {\n'
+inserting @ignore
+Errors inhibited read @auto C:\Dokumente und Einstellungen\VR\Eigene
+Dateien\Fra
+meworks\OSGi\OSGi\r41\.\OSGI-OPT\src\org\osgi\framework\FrameworkUtil.java
+*** first mismatch at line 38
+original line:  u'\tstatic final long\t\tserialVersionUID\t=
+-429519442081649187
+5L;\n'
+generated line: '    /**\n'
+@auto did not import the file perfectly
+first mismatched line: 38
+'    /**\n'
+inserting @ignore
+Errors inhibited read @auto C:\Dokumente und Einstellungen\VR\Eigene
+Dateien\Fra
+meworks\OSGi\OSGi\r41\.\OSGI-OPT\src\org\osgi\framework\InvalidSyntaxException.j
+ava
+Errors inhibited read @auto C:\Dokumente und Einstellungen\VR\Eigene
+Dateien\Fra
+meworks\OSGi\OSGi\r41\.\OSGI-OPT\src\org\osgi\framework\package.html
+Errors inhibited read @auto C:\Dokumente und Einstellungen\VR\Eigene
+Dateien\Fra
+meworks\OSGi\OSGi\r41\.\OSGI-OPT\src\org\osgi\framework\packageinfo
+*** first mismatch at line 50
+original line:  u'\tstatic final long\t\t\tserialVersionUID\t=
+-5107705877071099
+135L;\n'
+generated line: '    /**\n'
+@auto did not import the file perfectly
+first mismatched line: 50
+'    /**\n'
+inserting @ignore
+Errors inhibited read @auto C:\Dokumente und Einstellungen\VR\Eigene
+Dateien\Fra
+meworks\OSGi\OSGi\r41\.\OSGI-OPT\src\org\osgi\framework\PackagePermission.java
+*** first mismatch at line 41
+original line:  u'\tstatic final long\t\t\t\tserialVersionUID\t=
+879290148390940
+9299L;\n'
+generated line: '    /**\n'
+@auto did not import the file perfectly
+first mismatched line: 41
+'    /**\n'
+inserting @ignore
+Errors inhibited read @auto C:\Dokumente und Einstellungen\VR\Eigene
+Dateien\Fra
+meworks\OSGi\OSGi\r41\.\OSGI-OPT\src\org\osgi\framework\ServiceEvent.java
+*** first mismatch at line 43
+original line:  u'\tstatic final long\t\t\tserialVersionUID\t=
+-7662148639076511
+574L;\n'
+generated line: '    /**\n'
+@auto did not import the file perfectly
+first mismatched line: 43
+'    /**\n'
+inserting @ignore
+Errors inhibited read @auto C:\Dokumente und Einstellungen\VR\Eigene
+Dateien\Fra
+meworks\OSGi\OSGi\r41\.\OSGI-OPT\src\org\osgi\framework\ServicePermission.java
+*** first mismatch at line 46
+original line:  u'\tprivate final int\t\t\tmajor;\n'
+generated line: '    public static final Version\temptyVersion\t=
+new Version(0,
+0, 0);\n'
+@auto did not import the file perfectly
+first mismatched line: 46
+'    public static final Version\temptyVersion\t= new Version(0, 0, 0);\n'
+inserting @ignore
+Errors inhibited read @auto C:\Dokumente und Einstellungen\VR\Eigene
+Dateien\Fra
+meworks\OSGi\OSGi\r41\.\OSGI-OPT\src\org\osgi\framework\Version.java
+
+</cmd shell output>
+
+Kind regards,
+
+Viktor
+
+#@nonl
+#@-node:ekr.20071019072034:Fixed bugs in Java parser
+#@+node:ekr.20071019171754:Suppressed "invalid @+leo sentinel" when importing java
+#@+node:ekr.20031218072017.3300:removeSentinelsCommand
+def removeSentinelsCommand (self,paths,toString=False):
+
+    c = self.c
+
+    self.setEncoding()
+
+    for fileName in paths:
+        g.setGlobalOpenDir(fileName)
+        path, self.fileName = g.os_path_split(fileName)
+        << Read file into s >>
+        << set delims from the header line >>
+        # g.trace("line: '%s', start: '%s', end: '%s'" % (line_delim,start_delim,end_delim))
+        s = self.removeSentinelLines(s,line_delim,start_delim,end_delim)
+        ext = c.config.remove_sentinels_extension
+        if not ext:
+            ext = ".txt"
+        if ext[0] == '.':
+            newFileName = g.os_path_join(path,fileName+ext)
+        else:
+            head,ext2 = g.os_path_splitext(fileName) 
+            newFileName = g.os_path_join(path,head+ext+ext2)
+        if toString:
+            return s
+        else:
+            << Write s into newFileName >>
+            return None
+#@+node:ekr.20031218072017.3301:<< Read file into s >>
+try:
+    theFile = open(fileName)
+    s = theFile.read()
+    s = g.toUnicode(s,self.encoding)
+    theFile.close()
+except IOError:
+    g.es("can not open " + fileName, color="blue")
+    leoTest.fail()
+    return
+#@-node:ekr.20031218072017.3301:<< Read file into s >>
+#@+node:ekr.20031218072017.3302:<< set delims from the header line >>
+# Skip any non @+leo lines.
+i = 0
+while i < len(s) and not g.find_on_line(s,i,"@+leo"):
+    i = g.skip_line(s,i)
+
+# Get the comment delims from the @+leo sentinel line.
+at = self.c.atFileCommands
+j = g.skip_line(s,i) ; line = s[i:j]
+
+valid,new_df,start_delim,end_delim,derivedFileIsThin = at.parseLeoSentinel(line)
+if not valid:
+    if not toString: g.es("invalid @+leo sentinel in " + fileName)
+    return
+
+if end_delim:
+    line_delim = None
+else:
+    line_delim,start_delim = start_delim,None
+#@-node:ekr.20031218072017.3302:<< set delims from the header line >>
+#@+node:ekr.20031218072017.1149:<< Write s into newFileName >>
+try:
+    mode = c.config.output_newline
+    mode = g.choose(mode=="platform",'w','wb')
+    theFile = open(newFileName,mode)
+    s = g.toEncodedString(s,self.encoding,reportErrors=True)
+    theFile.write(s)
+    theFile.close()
+    if not g.unitTesting:
+        g.es("created: " + newFileName)
+except:
+    g.es("exception creating: " + newFileName)
+    g.es_exception()
+#@-node:ekr.20031218072017.1149:<< Write s into newFileName >>
+#@-node:ekr.20031218072017.3300:removeSentinelsCommand
+#@-node:ekr.20071019171754:Suppressed "invalid @+leo sentinel" when importing java
 #@-node:ekr.20071016120719:Fixed several @auto bugs
 #@+node:ekr.20071019065431:Installed patch to fix Fedora Tk.Text bug
 @nocolor
