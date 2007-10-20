@@ -3136,7 +3136,7 @@ class baseLeoImportCommands:
             if not fileName: fileName = p.headString()
             if not s: s = self.removeSentinelsCommand([fileName],toString=True)
             title = g.choose(h.startswith('@test'),h[5:],h)
-            root = self.createOutline(title.strip(),p.copy(),atAuto=atAuto,s=s,ext=ext)
+            self.createOutline(title.strip(),p.copy(),atAuto=atAuto,s=s,ext=ext)
             d = g.app.unitTestDict
             ok = ((d.get('result') and expectedErrors in (None,0)) or
                 (
