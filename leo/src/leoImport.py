@@ -1615,7 +1615,7 @@ class baseLeoImportCommands:
                 '%s did not import the file perfectly\nfirst mismatched line: %d\n%s' % (
                     kind,bad_i,repr(lines2[bad_i-1])))
 
-            if len(lines1) < 30:
+            if len(lines1) < 100:
                 pr('input...')
                 for i in xrange(len(lines1)):
                     pr('%3d %s' % (i,lines1[i]),newline=False)
@@ -1901,6 +1901,8 @@ class baseLeoImportCommands:
 
             '''Create a node of parent for a function defintion.'''
 
+            trace = False and self.trace
+
             # Enter a new function: save the old function info.
             oldStartSigIndent = self.startSigIndent
 
@@ -1914,9 +1916,7 @@ class baseLeoImportCommands:
 
             body2 = self.undentBody(s[sigStart:codeEnd])
             body = body1 + body2
-            if self.trace:
-                g.trace('body\n%s' % repr(body))
-                g.trace('body\n%s' % body)
+            if trace: g.trace('body\n%s' % body)
 
             if not body.endswith('\n'):
                 self.error(
@@ -2352,8 +2352,8 @@ class baseLeoImportCommands:
             '''return True if s[i:] starts a class or function.
             Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
 
-            trace = False or self.trace
-            verbose = kind=='function'
+            trace = self.trace
+            verbose = False # kind=='function'
             self.codeEnd = self.sigEnd = self.sigId = None
             self.sigStart = i
 
@@ -2455,7 +2455,7 @@ class baseLeoImportCommands:
 
             # __pychecker__ = '--no-argsused' # tags not used in the base class.
 
-            trace = self.trace # or kind =='function'
+            trace = False and self.trace # or kind =='function'
             ids = [] ; classId = None
             if trace: g.trace('*entry',kind,i,s[i:i+20])
             start = i
@@ -2483,7 +2483,7 @@ class baseLeoImportCommands:
 
             '''Skip from the end of the arg list to the start of the block.'''
 
-            trace = False or self.trace
+            trace = False and self.trace
             start = i
             i = g.skip_ws(s,i)
             for z in self.sigFailTokens:
@@ -2671,7 +2671,7 @@ class baseLeoImportCommands:
             self.outerBlockDelim1 = '{'
             self.outerBlockDelim2 = '}'
             self.sigHeadExtraTokens = []
-            self.sigFailTokens = []
+            self.sigFailTokens = [';','='] # Just like C.
     #@-node:ekr.20071008130845.2:class cSharpScanner (baseScannerClass)
     #@-node:ekr.20071008130845:C# scanner
     #@+node:ekr.20070711060107:Elisp scanner
