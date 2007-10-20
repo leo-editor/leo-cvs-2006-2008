@@ -3111,6 +3111,7 @@ class atFile:
         elif not p.isDirty(): # There is nothing new to write.
             return False
         elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
+            g.es_print('@auto node not written: no children and less than 10 characters',color='red')
             return False
         else: # The @auto tree is dirty and contains significant info.
             return True
@@ -3121,13 +3122,16 @@ class atFile:
         '''Return True if p's tree has a significant amount of information.'''
 
         s = p.bodyString()
-        lines = [z for z in g.splitLines(s) if z.strip()]
 
-        return (
-            p.hasChildren() or
-            len(s) > 100 or
-            len(lines) > 10
-        )
+        return p.hasChildren() or len(s.strip()) >= 10
+
+        # lines = [z for z in g.splitLines(s) if z.strip()]
+
+        # return (
+            # p.hasChildren() or
+            # len(s) > 100 or
+            # len(lines) >
+        # )
     #@-node:ekr.20070909103844:isSignificantAtAutoTree
     #@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
     #@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
