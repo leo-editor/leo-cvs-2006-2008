@@ -61,8 +61,12 @@ def createSplitterComponents (self):
 #@-node:ekr.20051009045208:createSplitterComponents
 #@-node:ekr.20071018173151:Install patch to put the outline in the main pane
 #@+node:ekr.20071018071814:Unit tests and documentation for new colorizer
+Posting re new colorizer to pyxides & wiki.
+#@nonl
 #@-node:ekr.20071018071814:Unit tests and documentation for new colorizer
 #@+node:ekr.20071018073812.1:Document g.app.gui.runX methods
+# The documentation for hooks should be in programming chapter, as well as customizing chapter?
+#@nonl
 #@-node:ekr.20071018073812.1:Document g.app.gui.runX methods
 #@+node:ekr.20071017163243:Make sure utf-8 files get imported properly
 @nocolor

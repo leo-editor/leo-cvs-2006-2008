@@ -20935,7 +20935,7 @@ def scannerUnitTest (self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=
         if not fileName: fileName = p.headString()
         if not s: s = self.removeSentinelsCommand([fileName],toString=True)
         title = g.choose(h.startswith('@test'),h[5:],h)
-        root = self.createOutline(title.strip(),p.copy(),atAuto=atAuto,s=s,ext=ext)
+        self.createOutline(title.strip(),p.copy(),atAuto=atAuto,s=s,ext=ext)
         d = g.app.unitTestDict
         ok = ((d.get('result') and expectedErrors in (None,0)) or
             (
@@ -30397,6 +30397,222 @@ def skipSigId (self,s,i,ids):
 #@-node:ekr.20070711134534:skipSigId
 #@-node:ekr.20070711132314:startsClass/Function (baseClass) & helpers
 #@-node:ekr.20071016124052:Handled nested classes, interface and namespaces properly
+#@+node:ekr.20071020054649:Fixed problem with @auto files w/o extension
+@nocolor
+https://sourceforge.net/forum/message.php?msg_id=4579298
+By: vransmayr
+
+However, with the plain text file w/o any suffix, a problem still exists:
+when I modify it and save the outline it is not written back to the original file.
+
+The fix was to make anything more than 10 characters 'significant', and write a
+message when the @auto node contains insignificant text.
+
+@color
+#@nonl
+#@+node:ekr.20041005105605.147:writeAll (atFile)
+def writeAll(self,writeAtFileNodesFlag=False,writeDirtyAtFileNodesFlag=False,toString=False):
+
+    """Write @file nodes in all or part of the outline"""
+
+    at = self ; c = at.c
+    writtenFiles = [] # Files that might be written again.
+    mustAutoSave = False
+
+    if writeAtFileNodesFlag:
+        # Write all nodes in the selected tree.
+        p = c.currentPosition()
+        after = p.nodeAfterTree()
+    else:
+        # Write dirty nodes in the entire outline.
+        p =  c.rootPosition()
+        after = c.nullPosition()
+
+    << Clear all orphan bits >>
+    while p and p != after:
+        if p.isAnyAtFileNode() or p.isAtIgnoreNode():
+            << handle v's tree >>
+            p.moveToNodeAfterTree()
+        else:
+            p.moveToThreadNext()
+
+    << say the command is finished >>
+    return mustAutoSave
+#@+node:ekr.20041005105605.148:<< Clear all orphan bits >>
+@ We must clear these bits because they may have been set on a previous write.
+Calls to atFile::write may set the orphan bits in @file nodes.
+If so, write_Leo_file will write the entire @file tree.
+@c
+
+for v2 in p.self_and_subtree_iter():
+    v2.clearOrphan()
+#@-node:ekr.20041005105605.148:<< Clear all orphan bits >>
+#@+node:ekr.20041005105605.149:<< handle v's tree >>
+if p.v.isDirty() or writeAtFileNodesFlag or p.v.t in writtenFiles:
+
+    at.fileChangedFlag = False
+    autoSave = False
+
+    # Tricky: @ignore not recognised in @silentfile nodes.
+    if p.isAtAsisFileNode():
+        at.asisWrite(p,toString=toString)
+        writtenFiles.append(p.v.t) ; autoSave = True
+    elif p.isAtIgnoreNode():
+        pass
+    elif p.isAtAutoNode():
+        at.writeOneAtAutoNode(p,toString=toString,force=False)
+        writtenFiles.append(p.v.t)
+    elif p.isAtNorefFileNode():
+        at.norefWrite(p,toString=toString)
+        writtenFiles.append(p.v.t) ; autoSave = True
+    elif p.isAtNoSentFileNode():
+        at.write(p,nosentinels=True,toString=toString)
+        writtenFiles.append(p.v.t) # No need for autosave
+    elif p.isAtThinFileNode():
+        at.write(p,thinFile=True,toString=toString)
+        writtenFiles.append(p.v.t) # No need for autosave.
+    elif p.isAtFileNode():
+        at.write(p,toString=toString)
+        writtenFiles.append(p.v.t) ; autoSave = True
+
+    if at.fileChangedFlag and autoSave: # Set by replaceTargetFileIfDifferent.
+        mustAutoSave = True
+#@-node:ekr.20041005105605.149:<< handle v's tree >>
+#@+node:ekr.20041005105605.150:<< say the command is finished >>
+if writeAtFileNodesFlag or writeDirtyAtFileNodesFlag:
+    if len(writtenFiles) > 0:
+        g.es("finished")
+    elif writeAtFileNodesFlag:
+        g.es("no @file nodes in the selected tree")
+    else:
+        g.es("no dirty @file nodes")
+#@-node:ekr.20041005105605.150:<< say the command is finished >>
+#@-node:ekr.20041005105605.147:writeAll (atFile)
+#@+node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
+def writeAtAutoNodes (self,event=None):
+
+    '''Write all @auto nodes in the selected outline.'''
+
+    at = self
+    at.writeAtAutoNodesHelper(writeDirtyOnly=False)
+
+def writeDirtyAtAutoNodes (self,event=None):
+
+    '''Write all dirty @auto nodes in the selected outline.'''
+
+    at = self
+    at.writeAtAutoNodesHelper(writeDirtyOnly=True)
+#@nonl
+#@+node:ekr.20070806140208:writeAtAutoNodesHelper
+def writeAtAutoNodesHelper(self,toString=False,writeDirtyOnly=True):
+
+    """Write @auto nodes in the selected outline"""
+
+    at = self ; c = at.c
+    p = c.currentPosition() ; after = p.nodeAfterTree()
+    found = False
+    c.fileCommands.assignFileIndices()
+    while p and p != after:
+        if p.isAtAutoNode() and not p.isAtIgnoreNode() and (p.isDirty() or not writeDirtyOnly):
+            ok = self.writeOneAtAutoNode(p,toString=toString,force=True)
+            if ok:
+                found = True
+                p.moveToNodeAfterTree()
+            else:
+                p.moveToThreadNext()
+        else:
+            p.moveToThreadNext()
+
+    if found:
+        g.es("finished")
+    elif writeDirtyOnly:
+        g.es("no dirty @auto nodes in the selected tree")
+    else:
+        g.es("no @auto nodes in the selected tree")
+#@-node:ekr.20070806140208:writeAtAutoNodesHelper
+#@+node:ekr.20070806141607:writeOneAtAutoNode & helpers
+def writeOneAtAutoNode(self,p,toString,force):
+
+    '''Write p, an @auto node.'''
+
+    at = self ; c = at.c ; root = p.copy()
+
+    fileName = p.atAutoNodeName()
+    if not fileName: return False
+
+    at.scanDefaultDirectory(p,importing=True) # Set default_directory
+    fileName = g.os_path_join(at.default_directory,fileName)
+    exists = g.os_path_exists(fileName)
+
+    if not toString and not self.shouldWriteAtAutoNode(p,exists,force):
+        return False
+
+    # This code is similar to code in at.write.
+    c.endEditing() # Capture the current headline.
+    at.targetFileName = g.choose(toString,"<string-file>",fileName)
+    at.initWriteIvars(root,at.targetFileName,
+        nosentinels=True,thinFile=False,scriptWrite=False,
+        toString=toString,write_strips_blank_lines=False)
+
+    ok = at.openFileForWriting (root,fileName=fileName,toString=toString)
+    if ok:
+        at.writeOpenFile(root,nosentinels=True,toString=toString)
+        at.closeWriteFile() # Sets stringOutput if toString is True.
+        at.replaceTargetFileIfDifferent()
+        # c.atAutoDict [fileName] = True
+    elif not toString:
+        root.setDirty() # Make _sure_ we try to rewrite this file.
+        g.es("Not written: " + at.outputFileName)
+
+    return ok
+#@+node:ekr.20071019141745:shouldWriteAtAutoNode
+@ Much thought went into this decision tree:
+
+- We do not want decisions to depend on past history.  That's too confusing.
+- We must ensure that the file will be written if the user does significant work.
+- We must ensure that the user can create an @auto x node at any time
+  without risk of of replacing x with empty or insignificant information.
+- We want the user to be able to create an @auto node which will be populated the next time the .leo file is opened.
+- We don't want minor import imperfections to be written to the @auto file.
+- The explicit commands that read and write @auto trees must always be honored.
+@c
+
+def shouldWriteAtAutoNode (self,p,exists,force):
+
+    '''Return True if we should write the @auto node at p.'''
+
+    if force: # We are executing write-at-auto-node or write-dirty-at-auto-nodes.
+        return True
+    elif not exists: # We can write a non-existent file without danger.
+        return True
+    elif not p.isDirty(): # There is nothing new to write.
+        return False
+    elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
+        g.es_print('@auto node not written: no children and less than 10 characters',color='red')
+        return False
+    else: # The @auto tree is dirty and contains significant info.
+        return True
+#@-node:ekr.20071019141745:shouldWriteAtAutoNode
+#@+node:ekr.20070909103844:isSignificantAtAutoTree
+def isSignificantAtAutoTree (self,p):
+
+    '''Return True if p's tree has a significant amount of information.'''
+
+    s = p.bodyString()
+
+    return p.hasChildren() or len(s.strip()) >= 10
+
+    # lines = [z for z in g.splitLines(s) if z.strip()]
+
+    # return (
+        # p.hasChildren() or
+        # len(s) > 100 or
+        # len(lines) >
+    # )
+#@-node:ekr.20070909103844:isSignificantAtAutoTree
+#@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
+#@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
+#@-node:ekr.20071020054649:Fixed problem with @auto files w/o extension
 #@-node:ekr.20071016120719:Fixed several @auto bugs
 #@+node:ekr.20071019065431:Installed patch to fix Fedora Tk.Text bug
 @nocolor

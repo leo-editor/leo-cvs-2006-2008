@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="304" height="927" width="892"/>
+	<global_window_position top="10" left="304" height="907" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -3306,7 +3306,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071004101349" a="TV"><vh>4.4.4 b3</vh>
+<v t="ekr.20071004101349" a="ETV"><vh>4.4.4 b3</vh>
 <v t="ekr.20071004101443.1"><vh>Bugs fixed</vh>
 <v t="ekr.20071004101443.18"><vh>Greatly improved speed of unmark-all</vh></v>
 <v t="ekr.20071004101443.26"><vh>Made sure dirty bits get updated in xemacs plugin</vh></v>
@@ -31717,7 +31717,7 @@ the root @auto tree is under the influence of an @ignore directive.
 2. Saving a .leo file does not save @auto nodes if a) they haven't been changed
 or b) they do not contain a **significant** amount of informtion. An @auto tree
 contains a significant amount of information if it has  children or if the
-root node contains more than 10 non-blank lines.
+root node contains more than 10 characters.
 
 Leo creates @auto trees by parsing the corresponding derived file. Parsers
 create descendant nodes of the @auto tree: one node for each class, method and
@@ -31904,7 +31904,7 @@ the root @auto tree is under the influence of an @ignore directive.
 2. Saving a .leo file does not save @auto nodes if a) they haven't been changed
 or b) they do not contain a **significant** amount of informtion. An @auto tree
 contains a significant amount of information if it has  children or if the
-root node contains more than 10 non-blank lines.
+root node contains more than 10 characters.
 
 Leo creates @auto trees by parsing the corresponding derived file. Parsers
 create descendant nodes of the @auto tree: one node for each class, method and
