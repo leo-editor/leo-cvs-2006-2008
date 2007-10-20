@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="304" height="695" width="892"/>
+	<global_window_position top="10" left="304" height="927" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -243,14 +243,8 @@
 <v t="ekr.20050831184021.5"><vh>Chapter 4: Programming with Leo</vh>
 <v t="ekr.20050828061213"><vh>@rst html\directives.html</vh>
 <v t="ekr.20050828160132"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20050828160132"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20050828065955"><vh>@rst-ignore To do</vh></v>
 <v t="ekr.20050828061501.1"><vh>@rst-no-head Intro.</vh></v>
 <v t="ekr.20050828163557"><vh>Overview: the seven ways of creating derived files</vh></v>
-<v t="ekr.20070814090306"><vh>@auto trees</vh>
-<v t="ekr.20070814090306.2" a="M"><vh>Perfect import checks</vh></v>
-<v t="ekr.20070814090306.3"><vh>Commands related to @auto</vh></v>
-</v>
 <v t="ekr.20050828211507"><vh>Overview: summary of directives</vh>
 <v t="ekr.20050829083129"><vh>@rst-ignore alternate representation</vh></v>
 </v>
@@ -276,11 +270,15 @@
 <v t="ekr.20050828061501.50"><vh>@verbose, @terse, @quiet and @silent</vh></v>
 <v t="ekr.20050828061501.42"><vh>@wrap and @nowrap</vh></v>
 </v>
-<v t="ekr.20050828062751"><vh>Reference: the six ways of creating derived files</vh>
-<v t="ekr.20050828061501.51"><vh> @file and @thin</vh></v>
-<v t="ekr.20050828174453.1"><vh> @nosent</vh></v>
-<v t="ekr.20050828174453.2"><vh> @asis and @noref</vh></v>
-<v t="ekr.20050828061501.45"><vh> @root</vh>
+<v t="ekr.20050828062751"><vh>Reference: the seven ways of creating derived files</vh>
+<v t="ekr.20070814090306"><vh>\@auto</vh>
+<v t="ekr.20070814090306.2" a="M"><vh>Perfect import checks</vh></v>
+<v t="ekr.20070814090306.3"><vh>Commands related to @auto</vh></v>
+</v>
+<v t="ekr.20050828061501.51"><vh>\@thin and @file</vh></v>
+<v t="ekr.20050828174453.1"><vh>\@nosent</vh></v>
+<v t="ekr.20050828174453.2"><vh>\@asis and @noref</vh></v>
+<v t="ekr.20050828061501.45"><vh>\@root</vh>
 <v t="ekr.20050828061501.47"><vh>Sections and section definitions</vh></v>
 <v t="ekr.20050828061501.48"><vh>Tangling @root trees with the Tangle commands</vh></v>
 <v t="ekr.20050828061501.49"><vh>Untangling @root trees with the Untangle commands</vh></v>
@@ -1086,7 +1084,7 @@
 </v>
 </v>
 <v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
-<v t="ekr.20060620094033" a="TV"><vh>What's New...</vh>
+<v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
 <v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
 <v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
@@ -3307,8 +3305,8 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
-<v t="ekr.20071004101349"><vh>4.4.4 b3</vh>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20071004101349" a="TV"><vh>4.4.4 b3</vh>
 <v t="ekr.20071004101443.1"><vh>Bugs fixed</vh>
 <v t="ekr.20071004101443.18"><vh>Greatly improved speed of unmark-all</vh></v>
 <v t="ekr.20071004101443.26"><vh>Made sure dirty bits get updated in xemacs plugin</vh></v>
@@ -15401,7 +15399,7 @@ The spelling in the first column is preferred:
 =========== =============== =================
 
 You can get any combination of sentinels/no sentinels and references/no references using
-``@file``, ``@nosent``, ``@noref`` and ``@asis`` trees:
+``@auto``, ``@file``, ``@thin``, ``@nosent``, ``@noref`` and ``@asis`` trees:
 
 +---------+------------+-------------------+
 |         |            | Sections and      |
@@ -15409,12 +15407,19 @@ You can get any combination of sentinels/no sentinels and references/no referenc
 +---------+------------+-------------------+
 | @asis   | no         | no                |
 +---------+------------+-------------------+
+| @auto   | no         | no                |
++---------+------------+-------------------+
 | @file   | yes        | yes               |
 +---------+------------+-------------------+
 | @noref  | yes        | no                |
 +---------+------------+-------------------+
 | @nosent | no         | yes               |
 +---------+------------+-------------------+
+| @root   | yes        | yes               |
++---------+------------+-------------------+
+| @thin   | yes        | yes               |
++---------+------------+-------------------+
+
 
 Leo can not update the outline from changes made from derived files unless those files contain sentinels.
 The primary source for ``@nosent`` and ``@asis`` trees are the outlines from which those files were derived.</t>
@@ -15434,7 +15439,6 @@ The ``@others`` directive that occurs highest in the ``@file`` tree refers to al
   In practice this is never a problem.
 
 - The ``@others`` directive is not valid in ``@root`` or ``@unit`` trees.</t>
-<t tx="ekr.20050828065955">* Spell check.</t>
 <t tx="ekr.20050828065955.3">The ``@ignore`` directive is valid *only* in the root node of ``@file`` trees.
 The ``@ignore`` directive has several uses:
 
@@ -15571,7 +15575,7 @@ Here are the six ways of creating derived files:
     
 \@auto
   Import the derived file when Leo reads an outline.
-  See `@auto trees`_ for full details.
+  See `@auto`_ for full details.
 
 \@thin
   Use this unless you have a good reason not to.
@@ -31704,17 +31708,16 @@ sentinels in the files Leo generates. In contrast to @nosent, @auto trees can
 change when the corresponding file changes outside of Leo.
 
 Leo will automatically recreate (import) all @auto trees when reading a .leo
-file, and will write all dirty @auto trees when saving a .leo file. There is one
-exception to this rule: Leo will never read (import) or write an @auto tree if
+file, and will write all dirty @auto trees when saving a .leo file. There are
+two exceptions to this statement:
+    
+1. Leo will never read (import) or write an @auto tree if
 the root @auto tree is under the influence of an @ignore directive.
 
-When saving a .leo file, Leo now *reads* an @auto node if
-
-1) the derived file exists,
-2) an 'insignificant' amount of data exists in the @auto tree, and
-3) the @auto node has not been read previously.
-
-This promises to fix some quite awkward use cases.
+2. Saving a .leo file does not save @auto nodes if a) they haven't been changed
+or b) they do not contain a **significant** amount of informtion. An @auto tree
+contains a significant amount of information if it has  children or if the
+root node contains more than 10 non-blank lines.
 
 Leo creates @auto trees by parsing the corresponding derived file. Parsers
 create descendant nodes of the @auto tree: one node for each class, method and
@@ -31722,8 +31725,9 @@ function in the derived file.
 
 Parsers presently exist for C, elisp, Java, Pascal, PHP and Python. Leo
 determines the language using the file's extension. If no parser exists for a
-language, the entire body of the derived file is copied to the body of the @auto
-node.</t>
+language, the entire body ofAn @auto tree contains a significant amount of information if it has any children or if the root node contains more than 10 non-blank lines. the derived file is copied to the body of the @auto
+node.
+</t>
 <t tx="ekr.20070806100055">All present parsers are short overrides of a powerful base parser class. Thus,
 it would be simple to add support for other languages. See the node
 
@@ -31891,9 +31895,16 @@ sentinels in the files Leo generates. In contrast to @nosent, @auto trees can
 change when the corresponding file changes outside of Leo.
 
 Leo will automatically recreate (import) all @auto trees when reading a .leo
-file, and will write all dirty @auto trees when saving a .leo file. There is one
-exception to this rule: Leo will never read (import) or write an @auto tree if
+file, and will write all dirty @auto trees when saving a .leo file. There are
+two exceptions to this statement:
+    
+1. Leo will never read (import) or write an @auto tree if
 the root @auto tree is under the influence of an @ignore directive.
+
+2. Saving a .leo file does not save @auto nodes if a) they haven't been changed
+or b) they do not contain a **significant** amount of informtion. An @auto tree
+contains a significant amount of information if it has  children or if the
+root node contains more than 10 non-blank lines.
 
 Leo creates @auto trees by parsing the corresponding derived file. Parsers
 create descendant nodes of the @auto tree: one node for each class, method and
