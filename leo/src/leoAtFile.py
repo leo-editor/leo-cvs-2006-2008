@@ -3121,11 +3121,12 @@ class atFile:
         '''Return True if p's tree has a significant amount of information.'''
 
         s = p.bodyString()
+        lines = [z for z in g.splitLines(s) if z.strip()]
 
         return (
             p.hasChildren() or
             len(s) > 100 or
-            len(g.splitLines(s)) > 10
+            len(lines) > 10
         )
     #@-node:ekr.20070909103844:isSignificantAtAutoTree
     #@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
