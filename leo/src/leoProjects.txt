@@ -33710,6 +33710,42 @@ def setAllText (self,s): # tkTextWidget
     Tk.Text.configure(w,state=state)
 #@-node:ekr.20061113151148.20:setAllText
 #@-node:ekr.20071019065431:Installed patch to fix Fedora Tk.Text bug
+#@+node:ekr.20071021110417:Fixed new rst3 problem
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4565216
+By: hemanthps
+
+I forgot to mention. I use the following options in my top @rst node.
+@ @rst-options
+code_mode=True
+doc_only_mode=False
+default_path =
+generate_rst=True
+http_server_support = False
+show_organizer_nodes=True
+show_headlines=True
+show_leo_directives=False
+stylesheet_path=./
+write_intermediate_file = True
+verbose=True
+show_doc_parts_as_paragraphs=True
+show_markup_doc_parts=True
+underline_characters = #=+*^~"'`-:><_
+@c
+
+Remaining nit:
+Even though I specify @language c in my @nosent myfile.c node, the generated
+rst from this plugin has
+.. code-block:: Python
+
+In Plugins-->Text formatting-->rst3-->@thin rst3.py-->class rstClass-->write
+methods--> Top-level write code-->initWrite of leoPlugins.leo, there is a line,
+language = d.get('language','').lower()
+in function initWrite(). But I could not yet figure out how to fill the value
+'c' in that dictionary instead of the default "Python".
+#@nonl
+#@-node:ekr.20071021110417:Fixed new rst3 problem
 #@-node:ekr.20070920083033:Bugs
 #@+node:ekr.20070920083033.1:Features
 #@+node:ekr.20070919124912:Added button-font params
@@ -38893,6 +38929,8 @@ def readOneAtAutoNode (self,fileName,p):
 - The 'writing plugins' chapter is now very simple.
 #@nonl
 #@-node:ekr.20071021102619:Improved the scripting and plugins chapters of Leo's Users Guide
+#@+node:ekr.20071021110355:Added rst3 strip_at_file_prefixes option
+#@-node:ekr.20071021110355:Added rst3 strip_at_file_prefixes option
 #@-node:ekr.20070920083033.1:Features
 #@-node:ekr.20070919132518:4.4.4 b3
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
