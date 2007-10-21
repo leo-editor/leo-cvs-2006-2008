@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="304" height="907" width="892"/>
+	<global_window_position top="89" left="311" height="867" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -350,7 +350,7 @@
 <v t="ekr.20050901102400.2"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.4"><vh>Chapter 7: Scripting Leo with Python</vh>
+<v t="ekr.20050831195331.4" a="M"><vh>Chapter 7: Scripting Leo with Python</vh>
 <v t="ekr.20040403171740"><vh>@rst html\scripting.html</vh>
 <v t="ekr.20050812134441.1"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20050901184158"><vh>@rst-ignore Important: you can run these examples!</vh></v>
@@ -376,6 +376,11 @@
 <v t="ekr.20040403173920.19" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d323922206e616d653d22687474702d6e6f64652d6d61726b65722d3239223e710155043c2f613e71025d71032855393c64697620636c6173733d2273656374696f6e222069643d22696e766f6b696e672d636f6d6d616e64732d66726f6d2d73637269707473223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f553b3c64697620636c6173733d2273656374696f6e222069643d2267657474696e672d616e642d73657474696e672d707265666572656e636573223e0a711055783c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964313522206e616d653d2267657474696e672d616e642d73657474696e672d707265666572656e636573223e47657474696e6720616e642073657474696e6720707265666572656e6365733c2f613e3c2f68313e0a7111652e"><vh>Getting and setting preferences</vh></v>
 <v t="ekr.20040403173920.21" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d333122206e616d653d22687474702d6e6f64652d6d61726b65722d3331223e710155043c2f613e71025d710328553a3c64697620636c6173733d2273656374696f6e222069643d2267657474696e672d616e642d73657474696e672d707265666572656e636573223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f55503c64697620636c6173733d2273656374696f6e222069643d2266756e6374696f6e732d666f722d66696e64696e672d616e642d6368616e67696e672d746578742d66726f6d2d73637269707473223e0a711055a23c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964313622206e616d653d2266756e6374696f6e732d666f722d66696e64696e672d616e642d6368616e67696e672d746578742d66726f6d2d73637269707473223e46756e6374696f6e7320666f722066696e64696e6720616e64206368616e67696e6720746578742066726f6d20736372697074733c2f613e3c2f68313e0a7111652e"><vh>Functions for finding and changing text from scripts</vh></v>
 <v t="ekr.20040403173920.25" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d333922206e616d653d22687474702d6e6f64652d6d61726b65722d3339223e710155043c2f613e71025d71032855343c64697620636c6173733d2273656374696f6e222069643d2272756e6e696e672d6c656f2d696e2d62617463682d6d6f6465223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f553e3c64697620636c6173733d2273656374696f6e222069643d2266756e6374696f6e732d646566696e65642d696e2d6c656f676c6f62616c732d7079223e0a7110557e3c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964323022206e616d653d2266756e6374696f6e732d646566696e65642d696e2d6c656f676c6f62616c732d7079223e46756e6374696f6e7320646566696e656420696e206c656f476c6f62616c732e70793c2f613e3c2f68313e0a7111652e"><vh>Functions defined in leoGlobals.py</vh></v>
+<v t="ekr.20050903074833"><vh>Event handlers</vh>
+<v t="ekr.20050903074833.1"><vh>@rst-no-head Summary of event handlers</vh></v>
+<v t="ekr.20071021102946"><vh>Enabling idle time event handlers</vh></v>
+</v>
+<v t="ekr.20050417072710.1"><vh>How to make operations undoable</vh></v>
 <v t="ekr.20040403173920.5" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d343122206e616d653d22687474702d6e6f64652d6d61726b65722d3431223e710155043c2f613e71025d710328553d3c64697620636c6173733d2273656374696f6e222069643d2266756e6374696f6e732d646566696e65642d696e2d6c656f676c6f62616c732d7079223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f553b3c64697620636c6173733d2273656374696f6e222069643d227265646972656374696e672d6f75747075742d66726f6d2d73637269707473223e0a711055783c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964323122206e616d653d227265646972656374696e672d6f75747075742d66726f6d2d73637269707473223e5265646972656374696e67206f75747075742066726f6d20736372697074733c2f613e3c2f68313e0a7111652e"><vh>Redirecting output from scripts</vh></v>
 <v t="ekr.20061003204952"><vh>Writing to different log tabs</vh></v>
 <v t="ekr.20051101171734"><vh>Customizing panes with different widgets</vh>
@@ -617,17 +622,14 @@
 <v t="ekr.20050912133515"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060612102055"><vh>Chapter 13: Writing Plugins</vh>
+<v t="ekr.20060612102055" a="M"><vh>Chapter 13: Writing Plugins</vh>
 <v t="ekr.20060612103240"><vh>@rst html\writingPlugins.html</vh>
 <v t="ekr.20060612103824"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050903075144"><vh>Overview</vh></v>
-<v t="EKR.20040524104904.224"><vh>Important security warnings</vh></v>
-<v t="ekr.20050903074833"><vh>Writing plugins and hooks</vh></v>
-<v t="ekr.20050903074833.1"><vh>Summary of hooks</vh></v>
-<v t="EKR.20040524104904.231"><vh>Convenience routines for plugins</vh></v>
 <v t="EKR.20040524104904.240"><vh>Support for unit testing</vh></v>
-<v t="ekr.20050417072710.1"><vh>How to make operations undoable</vh></v>
 <v t="ekr.20060621075135"><vh>Turning script buttons into plugins</vh></v>
+<v t="EKR.20040524104904.224"><vh>Important security warnings</vh></v>
+<v t="ekr.20071021101506"><vh>@rst-ignore menu convenience routines</vh></v>
 <v t="ekr.20060612104638"><vh>@rst-no-head end-of-page stuff</vh></v>
 </v>
 </v>
@@ -3306,7 +3308,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071004101349" a="ETV"><vh>4.4.4 b3</vh>
+<v t="ekr.20071004101349" a="TV"><vh>4.4.4 b3</vh>
 <v t="ekr.20071004101443.1"><vh>Bugs fixed</vh>
 <v t="ekr.20071004101443.18"><vh>Greatly improved speed of unmark-all</vh></v>
 <v t="ekr.20071004101443.26"><vh>Made sure dirty bits get updated in xemacs plugin</vh></v>
@@ -4341,100 +4343,6 @@ This script will introduce a security hole the .leo file without doing anything
 prohibited by rexec, and without leaving any traces of the perpetrating script
 behind. The damage will become permanent *outside* this script when the user
 saves the .leo file.</t>
-<t tx="EKR.20040524104904.231">The following methods exist for the convenience of plugins.
-
-**g.enableIdleTimeHook(idleTimeDelay=100)**
-
-Enables the "idle" hook. Afterwards, Leo will call the "idle" hook approximately every idleTimeDelay milliseconds.
-Leo will continue to call the "idle" hook periodically until ``disableIdleTimeHook`` is called.
-
-**g.disableIdleTimeHook()**
-
-Disables the "idle" hook.
-
-**c.frame.menu.createMenuItemsFromTable (self,menuName,table,openWith=0)**
-
-This method adds items to the menu whose name is menuName.
-The table argument describes the entries to be created.
-This table is a sequence of items of the form ``(name,None,command)``:
-
-- ``name`` is the command name.
-- ``None`` was a shortcut in previous versions of Leo, but shortcuts for user-defined commands
-  should now be defined in @shortcuts nodes.
-- ``command`` is the routine to execute when the menu item is selected.
-- An entry of the form ``("-",None,None)`` creates a separator line between menu items.
-
-
-For example::
-
-    table =
-        ("Toggle Active Pane",None,self.OnToggleActivePane),
-        ("-",None,None),
-        ("Toggle Split Direction",None,self.OnToggleSplitDirection))
-    c.frame.menu.createMenuItemsFromTable("Window",table)
-
-If the ``openWith`` keyword argument is 1 the items are added to a submenu of the Open With menu.
-However, it will be more convenient to use the ``createOpenWithMenuFromTable`` method to create the ``Open With`` menu.
-
-**c.frame.menu.createNewMenu (self,menuName,parentName="top")**
-
-This method creates a new menu:
-
-- menuName is the name of the menu to be created.
-- parentName is the name of the parent menu, or "top" if the menu is to created in the menu bar.
-
-This method returns the menu object that was created, or None if there was a problem.
-Your code need not remember the value returned by this method.  Instead, your code will refer to menus by name.
-
-**c.frame.menu.createOpenWithMenuFromTable (self,table)**
-
-This method adds items to submenu of the ``Open With`` menu item in the ``File`` menu.
-The table argument describes the entries to be created.
-This table is a sequence of items of the form ``(name,shortcut,data)``:
-
-- name is the command name
-- shortcut is the shortcut, or None to indicate no shortcut.
-- data is a tuple of the form (command,arg,ext)
-- command is one of "os.system", "os.startfile", "os.spawnl", "os.spawnv" or "exec".
-- arg is an argument to be passed to the given command.
-- ext is a file extension or None.
-
-When the user selects the ``Open With`` item corresponding to the table item Leo executes ``command(arg)``.
-If ``ext`` is not ``None``, the temp file has the given extension.
-Otherwise, Leo computes an extension based on what ``@language`` directive is in effect.
-For example::
-
-    table = (
-        ("Idle",   "Alt+Shift+I",("os.system",idle_arg,".py")),
-        ("Word",   "Alt+Shift+W",("os.startfile",None,".doc")),
-        ("Wordpad","Alt+Shift+T",("os.startfile",None,".txt")))
-    
-    top().frame.createOpenWithMenuFromTable(table)
-
-**c.frame.menu.deleteMenu (self,menuName)**
-
-Deletes the menu whose name is given, including all entries in the menu.
-
-**c.frame.menu.deleteMenuItem (self,itemName,menuName="top")**
-
-Deletes the item whose name is itemName from the menu whose name is menuName.
-To delete a menu in the menubar, specify ``menuName="top"``.
-
-**c.frame.menu.setRealMenuNamesFromTable(table)**
-
-Translates names of menus and menu items into another language.  For example::
-
-    table = (
-        ("Help", "&amp;Aide"),
-        ("About Leo...", "Au &amp;sujet de Leo..."),
-        ("Online Home Page", "&amp;Page d'Accueil en ligne"),
-        ("Open Online Tutorial", "Ouvrir &amp;Tutoriel en ligne"),
-        ("Open LeoDocs.leo", "Ouvrir Leo&amp;Docs.leo"),
-        ("Open LeoConfig.leo", "Ouvrir Leo&amp;Config.leo"),
-        ("Apply Settings", "Appliquer les &amp;Réglages"),
-    )
-
-    c.frame.menu.setRealMenuNamesFromTable(table)</t>
 <t tx="EKR.20040524104904.240">The plugins test suite creates a new convention: if a plugin has a function at
 the outer (module) level called ``unitTest``, Leo will call that function when
 doing unit testing for plugins. So it would be good if writers of plugins would
@@ -12603,8 +12511,8 @@ frame.onCreate.</t>
 <t tx="ekr.20050407144342.2"></t>
 <t tx="ekr.20050407144342.3"></t>
 <t tx="ekr.20050407144417"></t>
-<t tx="ekr.20050417072710.1">Client code should call ``u.beforeX`` and ``u.afterX`` methods to create a bead
-describing the operation that is being performed. **Note**: ``u`` is shorthand for
+<t tx="ekr.20050417072710.1">Plugins and scripts should call ``u.beforeX`` and ``u.afterX`` methods ato
+describe the operation that is being performed. **Note**: ``u`` is shorthand for
 ``c.undoer``. Most ``u.beforeX`` methods return ``undoData`` that the client
 code merely passes to the corresponding ``u.afterX`` method. This data contains
 the 'before' snapshot. The ``u.afterX`` methods then create a bead containing
@@ -12617,7 +12525,7 @@ commands for examples. The ``u.beforeChangeGroup`` and ``u.afterChangeGroup``
 methods substantially reduce the number of ``u.beforeX`` and ``afterX`` methods
 needed.
 
-Plugins may define their own ``u.beforeX`` and ``afterX`` methods. Indeed,
+Plugins and scripts may define their own ``u.beforeX`` and ``afterX`` methods. Indeed,
 ``u.afterX`` merely needs to set the ``bunch.undoHelper`` and
 ``bunch.redoHelper`` ivars to the methods used to undo and redo the operation.
 See the code for the various ``u.beforeX`` and ``afterX`` methods for guidance.
@@ -19253,17 +19161,13 @@ Here are some ideas for using script find/change.
     Scripts could even pull data from the file system
     into the outline so that you can see the effects of changes as the scripts
     operate.</t>
-<t tx="ekr.20050903074833">``leoPlugins.leo`` contains all of Leo's official hooks. Studying this file is
-the best way to learn how to write plugins.  This section discusses just a few details.
-
-Leo attempts to import all enabled plugins at startup time.
-Plugins register hooks with code such as::
+<t tx="ekr.20050903074833">Plugins and other scripts can register event handlers (also known as hooks) with code such as::
 
     leoPlugins.registerHandler("after-create-leo-frame",onCreate)
     leoPlugins.registerHandler("idle", on_idle) 
     leoPlugins.registerHandler(("start2","open2","command2"), create_open_with_menu) 
 
-As shown above, a plugin may register one or more hooks with a single call to
+As shown above, a plugin may register one or more event handlers with a single call to
 ``leoPlugins.registerHandler``. Once a hook is registered, Leo will call the
 registered function' at the named **hook time**. For example::
 
@@ -19271,7 +19175,7 @@ registered function' at the named **hook time**. For example::
 
 causes Leo to call ``on_idle`` at "idle" time.
 
-Hook functions must have the following signature::
+Event handlers must have the following signature::
 
     def myHook (tag, keywords):
         whatever
@@ -19283,18 +19187,18 @@ Hook functions must have the following signature::
 **Important**: hooks should get the proper commander this way::
 
     c = keywords.get('c')</t>
-<t tx="ekr.20050903074833.1">Leo's core defines hook times using in many places. The following table tell all
-about each hook: its name, when it is called, and the additional arguments
-passed to the hook in the ``keywords`` dictionary. For some kind of hooks, Leo
-will skip its own normal processing if the hook returns anything *other* than
-None. The table indicates such hooks with 'yes' in the 'Stop?' column.
+<t tx="ekr.20050903074833.1">The following table tells about each event handler: its name, when it is called,
+and the additional arguments passed to the hook in the ``keywords`` dictionary.
+For some kind of hooks, Leo will skip its own normal processing if the hook
+returns anything *other* than None. The table indicates such hooks with 'yes' in
+the 'Stop?' column.
 
 **Important**: Ever since Leo 4.2, the ``v``, ``old_v`` and ``new_v`` keys in
 the keyword dictionary contain *positions*, not vnodes. These keys are
 deprecated. The ``new_c`` key is also deprecated. Plugins should use the ``c`` key instead.
 
 ============================= ======== =================================== =============================
-Hook name (tag argument)      Stop?    When called                         Keys in keywords dict
+Event name (tag argument)     Stop?    When called                         Keys in keywords dict
 ============================= ======== =================================== =============================
 'after-create-leo-frame'               after creating any frame            c
 'after-redraw-outline'                 end of tree.redraw                  c (note 6)
@@ -19447,28 +19351,27 @@ Hook name (tag argument)      Stop?    When called                         Keys 
 13. New in Leo 4.4: Leo calls the 'headkey1' and 'headkey2' hooks only when the user completes
     the editing of a headline, and ch is always '\r', regardless of platform.</t>
 <t tx="ekr.20050903075144">A **plugin** is a Python file that appears in Leo's plugin directory. Plugins
-are a powerful way of enhancing and customizing Leo. The file
-``pluginsManager.txt`` controls tells which plugins are enabled. Leo looks for
-``pluginsManager.txt`` first in the users ``HOME`` directory, and then in Leo's
-plugins directory. Midway during startup, Leo imports all enabled plugins.
-Plugins can register functions called **hooks** that are to be run at specified
-times. Plugins can:
+modify how Leo works. With plugins you can give Leo new commands, modify how
+existing commands work, or change any other aspect of Leo's look and feel.
+``leoPlugins.leo`` contains all of Leo's official plugins. Studying this file is
+a good way to learn how to write plugins.
 
-- add new commands
-- modify how existing commands work
-- add new menus or customize existing menus.
-- override any of Leo's core code&gt;
+You **enable** plugins using @enabled-plugins nodes in leoSettings.leo or
+myLeoSettings.leo. For more details, see the @enabled-plugins node in
+leoSettings.leo. Leo imports all enabled plugins at startup time. Plugins become
+**active** if importing the plugin was successful.
 
-Here are some important features of plugins:
+Writing plugins is quite similar to writing any other Leo script.  See
+`Chapter 7\: Scripting Leo with Python`_. In particular:
+    
+1. Plugins can use any of Leo's source code simply by importing any module
+   defined in leoPy.leo.
 
--   Plugins can use any of Leo's source code for their own use.
-    Doing so is easy: after importing one of Leo's modules the plugin can call any routine in that module.
-    This documentation describes **convenience methods** in Leo's core that were created the use of plugins.
-
--   Plugins are permanent: they will not go away when Leo is updated.
-
--   Leo loads plugins in the order in which they appear in ``pluginsManager.txt.``
-    Leo disables all plugins if ``pluginsManager.txt`` does not exist in the plugins directory.</t>
+2. Plugins can register event handlers just like any other Leo script. For full
+   details, see the section called `event handlers`_ in Leo's scripting chapter.
+   
+The rest of this chapters discusses topics related specifically to plugins.
+</t>
 <t tx="ekr.20050903161843">Creating a script button should be your first thought whenever you want to
 automate any task. The scripting plugin, ``mod_scripting.py``, puts two buttons
 in the icon menu, a pink ``Run Script`` button and a yellow ``Script Button``
@@ -26129,9 +26032,12 @@ Chapter 13: Writing Plugins
 .. _reStructuredText:     http://docutils.sourceforge.net/rst.html
 .. _SilverCity:           http://silvercity.sourceforge.net
 
+
 .. Relative links...
 
-.. _`Chapter 8\: Customizing Leo`:  customizing.html
+.. _`Event handlers`:                           scripting.html#event-handlers
+.. _`Chapter 7\: Scripting Leo with Python`:    scripting.html
+.. _`Chapter 8\: Customizing Leo`:              customizing.html
 
 .. WARNING: image targets may not have upper case letters!
 
@@ -32318,5 +32224,107 @@ in an @item node is just a hyphen (-), the item represents a menu separator.</t>
 <t tx="ekr.20071005100213">Essentially all of Leo's startup code now runs with jython 2.2 and the (unfinished!) swing gui.</t>
 <t tx="ekr.20071006093614">This inserts a child node.</t>
 <t tx="ekr.20071006155647"></t>
+<t tx="ekr.20071021101506">Hurray--these are no longer needed.
+
+The following methods exist for the convenience of plugins.
+
+**g.enableIdleTimeHook(idleTimeDelay=100)**
+
+Enables the "idle" hook. Afterwards, Leo will call the "idle" hook approximately every idleTimeDelay milliseconds.
+Leo will continue to call the "idle" hook periodically until ``disableIdleTimeHook`` is called.
+
+**g.disableIdleTimeHook()**
+
+Disables the "idle" hook.
+
+
+**c.frame.menu.createMenuItemsFromTable (self,menuName,table,openWith=0)**
+
+This method adds items to the menu whose name is menuName.
+The table argument describes the entries to be created.
+This table is a sequence of items of the form ``(name,None,command)``:
+
+- ``name`` is the command name.
+- ``None`` was a shortcut in previous versions of Leo, but shortcuts for user-defined commands
+  should now be defined in @shortcuts nodes.
+- ``command`` is the routine to execute when the menu item is selected.
+- An entry of the form ``("-",None,None)`` creates a separator line between menu items.
+
+
+For example::
+
+    table =
+        ("Toggle Active Pane",None,self.OnToggleActivePane),
+        ("-",None,None),
+        ("Toggle Split Direction",None,self.OnToggleSplitDirection))
+    c.frame.menu.createMenuItemsFromTable("Window",table)
+
+If the ``openWith`` keyword argument is 1 the items are added to a submenu of the Open With menu.
+However, it will be more convenient to use the ``createOpenWithMenuFromTable`` method to create the ``Open With`` menu.
+
+**c.frame.menu.createNewMenu (self,menuName,parentName="top")**
+
+This method creates a new menu:
+
+- menuName is the name of the menu to be created.
+- parentName is the name of the parent menu, or "top" if the menu is to created in the menu bar.
+
+This method returns the menu object that was created, or None if there was a problem.
+Your code need not remember the value returned by this method.  Instead, your code will refer to menus by name.
+
+**c.frame.menu.createOpenWithMenuFromTable (self,table)**
+
+This method adds items to submenu of the ``Open With`` menu item in the ``File`` menu.
+The table argument describes the entries to be created.
+This table is a sequence of items of the form ``(name,shortcut,data)``:
+
+- name is the command name
+- shortcut is the shortcut, or None to indicate no shortcut.
+- data is a tuple of the form (command,arg,ext)
+- command is one of "os.system", "os.startfile", "os.spawnl", "os.spawnv" or "exec".
+- arg is an argument to be passed to the given command.
+- ext is a file extension or None.
+
+When the user selects the ``Open With`` item corresponding to the table item Leo executes ``command(arg)``.
+If ``ext`` is not ``None``, the temp file has the given extension.
+Otherwise, Leo computes an extension based on what ``@language`` directive is in effect.
+For example::
+
+    table = (
+        ("Idle",   "Alt+Shift+I",("os.system",idle_arg,".py")),
+        ("Word",   "Alt+Shift+W",("os.startfile",None,".doc")),
+        ("Wordpad","Alt+Shift+T",("os.startfile",None,".txt")))
+    
+    top().frame.createOpenWithMenuFromTable(table)
+
+**c.frame.menu.deleteMenu (self,menuName)**
+
+Deletes the menu whose name is given, including all entries in the menu.
+
+**c.frame.menu.deleteMenuItem (self,itemName,menuName="top")**
+
+Deletes the item whose name is itemName from the menu whose name is menuName.
+To delete a menu in the menubar, specify ``menuName="top"``.
+
+**c.frame.menu.setRealMenuNamesFromTable(table)**
+
+Translates names of menus and menu items into another language.  For example::
+
+    table = (
+        ("Help", "&amp;Aide"),
+        ("About Leo...", "Au &amp;sujet de Leo..."),
+        ("Online Home Page", "&amp;Page d'Accueil en ligne"),
+        ("Open Online Tutorial", "Ouvrir &amp;Tutoriel en ligne"),
+        ("Open LeoDocs.leo", "Ouvrir Leo&amp;Docs.leo"),
+        ("Open LeoConfig.leo", "Ouvrir Leo&amp;Config.leo"),
+        ("Apply Settings", "Appliquer les &amp;Réglages"),
+    )
+
+    c.frame.menu.setRealMenuNamesFromTable(table)</t>
+<t tx="ekr.20071021102946">Two methods in leoGlobals.py allow scripts and plugins to enable and disable 'idle' events.
+**g.enableIdleTimeHook(idleTimeDelay=100)** enables the "idle" hook.
+Afterwards, Leo will call the "idle" hook approximately every idleTimeDelay milliseconds.
+Leo will continue to call the "idle" hook periodically until disableIdleTimeHook is called.
+**g.disableIdleTimeHook()** disables the "idle" hook.</t>
 </tnodes>
 </leo_file>
