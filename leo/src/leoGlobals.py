@@ -5298,7 +5298,7 @@ def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=T
     if not p:
         p = c.currentPosition()
     try:
-        if g.app.batchMode:
+        if g.app.inBridge:
             s = p.bodyString()
         elif p == c.currentPosition():
             if useSelectedText and w.hasSelection():

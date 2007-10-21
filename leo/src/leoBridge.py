@@ -140,6 +140,7 @@ class bridgeController:
             import traceback ; traceback.print_exc()
         #@-node:ekr.20070227093629.2:<< import leoNodes and leoConfig >>
         #@nl
+        g.app.inBridge = True # Added 2007/10/21: support for g.getScript.
         g.app.nodeIndices = leoNodes.nodeIndices(g.app.leoID)
         g.app.config = leoConfig.configClass()
         g.app.config.readSettingsFiles(None,verbose=True)
