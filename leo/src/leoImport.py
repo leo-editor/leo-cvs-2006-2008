@@ -2773,6 +2773,7 @@ class baseLeoImportCommands:
             self.outerBlockDelim1 = '{'
             self.classTags = ['class','interface']
             self.functionTags = []
+            self.sigFailTokens = [';','='] # Just like c.
         #@-node:ekr.20071019171430:javaScanner.__init__
         #@+node:ekr.20071019170943:javaScanner.skipSigId
         def skipSigId (self,s,i,ids):
