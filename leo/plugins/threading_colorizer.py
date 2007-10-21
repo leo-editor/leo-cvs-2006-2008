@@ -1998,7 +1998,7 @@ class nullColorizer (colorizer):
         self.enabled = False
     #@-node:ekr.20071010193720.80:__init__
     #@+node:ekr.20071010193720.81:entry points
-    def colorize(self,p,incremental=False): pass
+    def colorize(self,p,incremental=False,interruptable=True): return 'ok' # used by unit tests.
 
     def disable(self): pass
 
