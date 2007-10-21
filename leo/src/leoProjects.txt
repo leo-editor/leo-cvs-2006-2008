@@ -23363,7 +23363,6 @@ Simplified the code:
 - initBatch/NextText now take an optional ins argument.
   Both these methods set the insert point by calling init_s_ctrl.
 
-
 The bug fix was to change:
 
 pattern.lower()

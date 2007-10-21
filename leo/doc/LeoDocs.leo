@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.448871181939">
-	<global_window_position top="89" left="311" height="867" width="892"/>
+<globals body_outline_ratio="0.655253837072">
+	<global_window_position top="16" left="247" height="941" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -3308,13 +3308,21 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071004101349" a="TV"><vh>4.4.4 b3</vh>
+<v t="ekr.20071004101349" a="ETV"><vh>4.4.4 b3</vh>
 <v t="ekr.20071004101443.1"><vh>Bugs fixed</vh>
 <v t="ekr.20071004101443.18"><vh>Greatly improved speed of unmark-all</vh></v>
 <v t="ekr.20071004101443.26"><vh>Made sure dirty bits get updated in xemacs plugin</vh></v>
+<v t="ekr.20071021111856.20"><vh>Fixed backward find bug</vh></v>
+<v t="ekr.20071021111856.83"><vh>Fixed cursor up/down problem</vh></v>
+<v t="ekr.20071021111856.124"><vh>Fixed unicode bug in trace</vh></v>
+<v t="ekr.20071021111856.127"><vh>Fixed chapter crasher</vh></v>
+<v t="ekr.20071021111856.252"><vh>Installed patch to fix Fedora Tk.Text bug</vh></v>
+<v t="ekr.20071021111856.437"><vh>Fixed bug in rst3 plugin</vh></v>
+<v t="ekr.20071021111856.461"><vh>Allow unicode characters in Leo file names</vh></v>
 </v>
 <v t="ekr.20071004101443.29"><vh>New Features</vh>
 <v t="ekr.20071004103659"><vh>The Great Graph Aha</vh></v>
+<v t="ekr.20071021111856.441"><vh>Rewrote threading colorizer</vh></v>
 <v t="ekr.20070806090226.15"><vh>Added support for @auto files</vh>
 <v t="ekr.20070806095535.1"><vh>What @auto does</vh></v>
 <v t="ekr.20070809141529" a="M"><vh>Perfect import checks</vh></v>
@@ -3330,6 +3338,11 @@
 <v t="ekr.20071005095907"><vh>Leo's core is now compatible with jython</vh></v>
 <v t="ekr.20071006093614"><vh>Added the insert-child command</vh></v>
 <v t="ekr.20071006155647"><vh>@bool add_ws_to_kill_ring setting</vh></v>
+<v t="ekr.20071021111856.412"><vh>Improved yank and yank-pop commands</vh></v>
+<v t="ekr.20071021111856.458"><vh>Improved debug command</vh></v>
+<v t="ekr.20071021111856.459"><vh>Added the @bool rst3 strip_at_file_prefixes setting</vh></v>
+<v t="ekr.20071021111856.476"><vh>Added g.app.inBridge ivar</vh></v>
+<v t="ekr.20071021111856.477"><vh>Improved the scripting and plugins chapters of Leo's Users Guide</vh></v>
 </v>
 </v>
 </v>
@@ -31773,8 +31786,9 @@ The highlights of Leo 4.4.4:
 <t tx="ekr.20070809145744.6">- The graphed plugin allows users to manipulate parts of Leo outlines as if they
   were general graphs. It is still early days for this exciting plugin.
 
-- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
-  This plugin features much better performance.  It's ready for prime time.
+- The threading_colorizer plugin replaces the __jEdit_colorizer__ plugin. This
+  plugin features an elegant new algorithm that has much better performance and
+  eliminates almost all flash.
 </t>
 <t tx="ekr.20070809145744.7">- See the release notes for a list of bugs fixed in Leo 4.4.4.
 
@@ -31792,7 +31806,18 @@ The highlights of Leo 4.4.4:
         w.configure(bg='yellow')
     log.selectTab(tag)
 
-- Added @bool add_ws_to_kill_ring setting.</t>
+- Improved the yank and yank-pop commands and added @bool add_ws_to_kill_ring setting.
+
+- Improved the debug command: it now adds the following code to the beginning of debug scripts::
+    
+    class G:
+        def es(s,c=None):
+          pass
+    g = G()
+    
+- Added the @bool rst3 strip_at_file_prefixes setting.
+
+- Added the Added g.app.inBridge ivar.</t>
 <t tx="ekr.20070809145744.8">-----------------------
 
 |prev| |leo| |next|</t>
@@ -32091,7 +32116,7 @@ window). It then creates clones of all inserted, deleted and changed nodes.</t>
 <t tx="ekr.20071001122703">All @buttons tree in a settings file defines global buttons that are created in
 the icon area of all .leo files. You define @button nodes in the @buttons tree
 as usual.</t>
-<t tx="ekr.20071004101349">Leo 4.4.4 beta 3                            October 7, 2007
+<t tx="ekr.20071004101349">Leo 4.4.4 beta 3                            October 22, 2007
 
 Leo 4.4.4 beta 3 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
@@ -32122,7 +32147,7 @@ The highlights of Leo 4.4.4:
 - New commands for resolving cvs conflicts.
 
 - A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
-  This plugin features much better performance.
+  This plugin features much better performance and a new, elegant algorithm.
   
 - Leo is now compatible with jython.
 
@@ -32166,7 +32191,9 @@ Notes:
   the following character is underlined in the name.
 
 - If the command name in an @item node is just a hyphen (-), the item represents
-  a menu separator.</t>
+  a menu separator.
+  
+- Unicode characters, e.g., Chinese characters *are* allowed.</t>
 <t tx="ekr.20071004101443.178">The c.frame.logcreateCanvas convenience method create a canvas tab in the log pane.
 Here is a sample script:
 
@@ -32326,5 +32353,116 @@ Translates names of menus and menu items into another language.  For example::
 Afterwards, Leo will call the "idle" hook approximately every idleTimeDelay milliseconds.
 Leo will continue to call the "idle" hook periodically until disableIdleTimeHook is called.
 **g.disableIdleTimeHook()** disables the "idle" hook.</t>
+<t tx="ekr.20071021111856.20">In some cases the find-previous command did not work.
+
+After much invesigation, the cause of the bug was found to be a blunder in backwardsHelper.  Changed:
+    
+pattern.lower()
+
+to:
+
+pattern = pattern.lower()</t>
+<t tx="ekr.20071021111856.83">There were at least 3 bugs:
+    
+At least three bugs.
+
+- Place cursor on last (blank) line.  Cursor up goes one line too far.
+- Place cursor at end of line 1.  Second cursor down does nothing.
+- Place cursor at end of xxxx line.  Second cursor down goes one line too far.
+
+xxxxxxxxx
+line 1
+line 2
+
+The fix was to g.getLine--potentially a major change.</t>
+<t tx="ekr.20071021111856.124">This should have been done long ago.</t>
+<t tx="ekr.20071021111856.127">http://sourceforge.net/forum/message.php?msg_id=4573990
+</t>
+<t tx="ekr.20071021111856.252">https://sourceforge.net/forum/message.php?msg_id=4576436
+</t>
+<t tx="ekr.20071021111856.412">Optimized yank, by using yanked leading whitespace if it exists
+
+New default bindings: Alt-Y: yank-pop.  Alt-Ctrl-Y: cycle-all-focus.
+
+New option: add-ws-to-kill-ring (or kill-ws-adds-to-kill-ring)
+</t>
+<t tx="ekr.20071021111856.437">Suppressed doc-part-delims when show_doc_parts_as_paragraphs is True.</t>
+<t tx="ekr.20071021111856.441">The new code is simple and elegant.  Almost all flash is gone.</t>
+<t tx="ekr.20071021111856.458">
+http://sourceforge.net/forum/message.php?msg_id=4568499
+
+I like doctests, often debug with g.es()
+statements, and open winpdb to examine what's
+going on.
+
+I've a small patch to the debug command
+leoEditCommands.py--&gt;debugCommandsClass--&gt;debug
+to simplify this.
+
+The patch writes the following to the beginning of
+the script being debugged;
+
+class G:
+def es(s,c=None):
+  pass
+g = G()
+
+This makes the g.es() statements legal.
+
+The patch also checks for doctests in the script,
+and if found, converts them to regular code.
+
+A node containing;
+
+&gt;&gt;&gt; import inspect, sys
+&gt;&gt;&gt; insp = sys.modules['inspect']
+&gt;&gt;&gt; print insp.__name__
+inspect
+&gt;&gt;&gt; g.es(dir(insp))
+
+can be run as a doctest;
+&lt;alt x&gt; dt
+(if the dtest.py plugin is active)
+
+or sent to winpdb;
+&lt;alt x&gt; debug
+
+The patch doesn't change the handling of regular scripts.
+
+It goes right after;
+if not winpdb: return
+
+#check for doctest examples
+try:
+    import doctest
+    parser = doctest.DocTestParser()
+    examples = parser.get_examples(script)
+
+    # if this is doctest, extract the examples as a script
+    if len(examples) &gt; 0:
+        script = doctest.script_from_examples(script)
+
+except ImportError:
+    pass
+
+# special case; debug code may include g.es("info string")
+# insert code fragment to make this expression legal outside Leo
+hide_ges = "class G:\n def es(s,c=None):\n  pass\ng = G()\n"
+script = hide_ges + script
+</t>
+<t tx="ekr.20071021111856.459">From the documentation at: http://webpages.charter.net/edreamleo/rstplugin3.html#options
+
+strip_at_file_prefixes (default: True)
+
+True: remove @auto, @file, @nosent and @thin from the start of headlines.</t>
+<t tx="ekr.20071021111856.461"></t>
+<t tx="ekr.20071021111856.476">This is used, at present, by g.getScript.  It is a natural status ivar in any case.</t>
+<t tx="ekr.20071021111856.477">- Use the term 'event handler' for hook.  This is much better terminology.
+
+- Move the discussion of event handlers to the scripting chapter.
+
+- Removed the discussion of all menu convenience routines: they are not needed now that Leo supports @menus nodes.
+
+- The 'writing plugins' chapter is now very simple.</t>
 </tnodes>
 </leo_file>

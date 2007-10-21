@@ -2,6 +2,8 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20071001045205:To do: 4.4.4 final
+#@+node:ekr.20071021112850:Brag about new colorizer
+#@-node:ekr.20071021112850:Brag about new colorizer
 #@+node:ekr.20071020205155:finish @textclone proto
 #@-node:ekr.20071020205155:finish @textclone proto
 #@+node:ekr.20071018173151:Install patch to put the outline in the main pane
