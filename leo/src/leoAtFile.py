@@ -3111,28 +3111,42 @@ class atFile:
         elif not p.isDirty(): # There is nothing new to write.
             return False
         elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
-            g.es_print('@auto node not written: no children and less than 10 characters',color='red')
+            g.es_print('@auto node not written:\nno children and less than 10 characters (excluding directives)',color='red')
             return False
         else: # The @auto tree is dirty and contains significant info.
             return True
     #@-node:ekr.20071019141745:shouldWriteAtAutoNode
-    #@+node:ekr.20070909103844:isSignificantAtAutoTree
+    #@+node:ekr.20070909103844:isSignificantAtAutoTree & test
     def isSignificantAtAutoTree (self,p):
 
         '''Return True if p's tree has a significant amount of information.'''
 
         s = p.bodyString()
 
-        return p.hasChildren() or len(s.strip()) >= 10
+        # Remove all blank lines and all Leo directives.
+        lines = []
+        for line in g.splitLines(s):
+            if not line.strip():
+                pass
+            elif line.startswith('@'):
+                i = 1 ; j = g.skip_id(line,i,chars='-')
+                word = s[i:j]
+                if not (word and word in g.globalDirectiveList):
+                    lines2.append(line)
+            else:
+                lines2.append(line)
 
-        # lines = [z for z in g.splitLines(s) if z.strip()]
+        s2 = ''.join(lines)
+        g.trace('s2',s2)
 
-        # return (
-            # p.hasChildren() or
-            # len(s) > 100 or
-            # len(lines) >
-        # )
-    #@-node:ekr.20070909103844:isSignificantAtAutoTree
+        return p.hasChildren() or len(s2.strip()) >= 10
+    #@+node:ekr.20071020082208:@test test isSignificantAtAutoTree
+    if g.unitTesting:
+
+        assert c.atFileCommands.isSignificantAtAutoTree(p)
+
+    #@-node:ekr.20071020082208:@test test isSignificantAtAutoTree
+    #@-node:ekr.20070909103844:isSignificantAtAutoTree & test
     #@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
     #@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
     #@+node:ekr.20050506084734:writeFromString
