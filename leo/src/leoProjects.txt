@@ -19251,28 +19251,42 @@ def shouldWriteAtAutoNode (self,p,exists,force):
     elif not p.isDirty(): # There is nothing new to write.
         return False
     elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
-        g.es_print('@auto node not written: no children and less than 10 characters',color='red')
+        g.es_print('@auto node not written:\nno children and less than 10 characters (excluding directives)',color='red')
         return False
     else: # The @auto tree is dirty and contains significant info.
         return True
 #@-node:ekr.20071019141745:shouldWriteAtAutoNode
-#@+node:ekr.20070909103844:isSignificantAtAutoTree
+#@+node:ekr.20070909103844:isSignificantAtAutoTree & test
 def isSignificantAtAutoTree (self,p):
 
     '''Return True if p's tree has a significant amount of information.'''
 
     s = p.bodyString()
 
-    return p.hasChildren() or len(s.strip()) >= 10
+    # Remove all blank lines and all Leo directives.
+    lines = []
+    for line in g.splitLines(s):
+        if not line.strip():
+            pass
+        elif line.startswith('@'):
+            i = 1 ; j = g.skip_id(line,i,chars='-')
+            word = s[i:j]
+            if not (word and word in g.globalDirectiveList):
+                lines2.append(line)
+        else:
+            lines2.append(line)
 
-    # lines = [z for z in g.splitLines(s) if z.strip()]
+    s2 = ''.join(lines)
+    g.trace('s2',s2)
 
-    # return (
-        # p.hasChildren() or
-        # len(s) > 100 or
-        # len(lines) >
-    # )
-#@-node:ekr.20070909103844:isSignificantAtAutoTree
+    return p.hasChildren() or len(s2.strip()) >= 10
+#@+node:ekr.20071020082208:@test test isSignificantAtAutoTree
+if g.unitTesting:
+
+    assert c.atFileCommands.isSignificantAtAutoTree(p)
+
+#@-node:ekr.20071020082208:@test test isSignificantAtAutoTree
+#@-node:ekr.20070909103844:isSignificantAtAutoTree & test
 #@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
 #@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
 #@-node:ekr.20070814143748.1:Fixed @auto path bug
@@ -19363,7 +19377,7 @@ def runLeoDynamicTest (self):
         g.app.loadDir, '..', 'test', 'leoDynamicTest.py'))
 
     if ' ' in path and sys.platform.startswith('win'): 
-        path = '"' + path + '"' 
+        path = '"' + path + '"'
 
     args = [sys.executable, path, '--silent']  
 
@@ -20079,28 +20093,42 @@ def shouldWriteAtAutoNode (self,p,exists,force):
     elif not p.isDirty(): # There is nothing new to write.
         return False
     elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
-        g.es_print('@auto node not written: no children and less than 10 characters',color='red')
+        g.es_print('@auto node not written:\nno children and less than 10 characters (excluding directives)',color='red')
         return False
     else: # The @auto tree is dirty and contains significant info.
         return True
 #@-node:ekr.20071019141745:shouldWriteAtAutoNode
-#@+node:ekr.20070909103844:isSignificantAtAutoTree
+#@+node:ekr.20070909103844:isSignificantAtAutoTree & test
 def isSignificantAtAutoTree (self,p):
 
     '''Return True if p's tree has a significant amount of information.'''
 
     s = p.bodyString()
 
-    return p.hasChildren() or len(s.strip()) >= 10
+    # Remove all blank lines and all Leo directives.
+    lines = []
+    for line in g.splitLines(s):
+        if not line.strip():
+            pass
+        elif line.startswith('@'):
+            i = 1 ; j = g.skip_id(line,i,chars='-')
+            word = s[i:j]
+            if not (word and word in g.globalDirectiveList):
+                lines2.append(line)
+        else:
+            lines2.append(line)
 
-    # lines = [z for z in g.splitLines(s) if z.strip()]
+    s2 = ''.join(lines)
+    g.trace('s2',s2)
 
-    # return (
-        # p.hasChildren() or
-        # len(s) > 100 or
-        # len(lines) >
-    # )
-#@-node:ekr.20070909103844:isSignificantAtAutoTree
+    return p.hasChildren() or len(s2.strip()) >= 10
+#@+node:ekr.20071020082208:@test test isSignificantAtAutoTree
+if g.unitTesting:
+
+    assert c.atFileCommands.isSignificantAtAutoTree(p)
+
+#@-node:ekr.20071020082208:@test test isSignificantAtAutoTree
+#@-node:ekr.20070909103844:isSignificantAtAutoTree & test
 #@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
 #@-node:ekr.20070816084029:Retain dirty bit after write @auto fails
 #@-node:ekr.20070703182412:Bugs
@@ -20114,7 +20142,6 @@ def runTestsExternally (c,all):
 
     runner = runTestHelperClass(c,all)
     runner.runTests()
-#@nonl
 #@+node:ekr.20070627140344:class runTestHelperClass
 class runTestHelperClass:
 
@@ -20275,7 +20302,7 @@ def runLeoDynamicTest (self):
         g.app.loadDir, '..', 'test', 'leoDynamicTest.py'))
 
     if ' ' in path and sys.platform.startswith('win'): 
-        path = '"' + path + '"' 
+        path = '"' + path + '"'
 
     args = [sys.executable, path, '--silent']  
 
@@ -20887,28 +20914,42 @@ def shouldWriteAtAutoNode (self,p,exists,force):
     elif not p.isDirty(): # There is nothing new to write.
         return False
     elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
-        g.es_print('@auto node not written: no children and less than 10 characters',color='red')
+        g.es_print('@auto node not written:\nno children and less than 10 characters (excluding directives)',color='red')
         return False
     else: # The @auto tree is dirty and contains significant info.
         return True
 #@-node:ekr.20071019141745:shouldWriteAtAutoNode
-#@+node:ekr.20070909103844:isSignificantAtAutoTree
+#@+node:ekr.20070909103844:isSignificantAtAutoTree & test
 def isSignificantAtAutoTree (self,p):
 
     '''Return True if p's tree has a significant amount of information.'''
 
     s = p.bodyString()
 
-    return p.hasChildren() or len(s.strip()) >= 10
+    # Remove all blank lines and all Leo directives.
+    lines = []
+    for line in g.splitLines(s):
+        if not line.strip():
+            pass
+        elif line.startswith('@'):
+            i = 1 ; j = g.skip_id(line,i,chars='-')
+            word = s[i:j]
+            if not (word and word in g.globalDirectiveList):
+                lines2.append(line)
+        else:
+            lines2.append(line)
 
-    # lines = [z for z in g.splitLines(s) if z.strip()]
+    s2 = ''.join(lines)
+    g.trace('s2',s2)
 
-    # return (
-        # p.hasChildren() or
-        # len(s) > 100 or
-        # len(lines) >
-    # )
-#@-node:ekr.20070909103844:isSignificantAtAutoTree
+    return p.hasChildren() or len(s2.strip()) >= 10
+#@+node:ekr.20071020082208:@test test isSignificantAtAutoTree
+if g.unitTesting:
+
+    assert c.atFileCommands.isSignificantAtAutoTree(p)
+
+#@-node:ekr.20071020082208:@test test isSignificantAtAutoTree
+#@-node:ekr.20070909103844:isSignificantAtAutoTree & test
 #@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
 #@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
 #@-node:ekr.20070806144024.2:Writing...
@@ -22793,28 +22834,42 @@ def shouldWriteAtAutoNode (self,p,exists,force):
     elif not p.isDirty(): # There is nothing new to write.
         return False
     elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
-        g.es_print('@auto node not written: no children and less than 10 characters',color='red')
+        g.es_print('@auto node not written:\nno children and less than 10 characters (excluding directives)',color='red')
         return False
     else: # The @auto tree is dirty and contains significant info.
         return True
 #@-node:ekr.20071019141745:shouldWriteAtAutoNode
-#@+node:ekr.20070909103844:isSignificantAtAutoTree
+#@+node:ekr.20070909103844:isSignificantAtAutoTree & test
 def isSignificantAtAutoTree (self,p):
 
     '''Return True if p's tree has a significant amount of information.'''
 
     s = p.bodyString()
 
-    return p.hasChildren() or len(s.strip()) >= 10
+    # Remove all blank lines and all Leo directives.
+    lines = []
+    for line in g.splitLines(s):
+        if not line.strip():
+            pass
+        elif line.startswith('@'):
+            i = 1 ; j = g.skip_id(line,i,chars='-')
+            word = s[i:j]
+            if not (word and word in g.globalDirectiveList):
+                lines2.append(line)
+        else:
+            lines2.append(line)
 
-    # lines = [z for z in g.splitLines(s) if z.strip()]
+    s2 = ''.join(lines)
+    g.trace('s2',s2)
 
-    # return (
-        # p.hasChildren() or
-        # len(s) > 100 or
-        # len(lines) >
-    # )
-#@-node:ekr.20070909103844:isSignificantAtAutoTree
+    return p.hasChildren() or len(s2.strip()) >= 10
+#@+node:ekr.20071020082208:@test test isSignificantAtAutoTree
+if g.unitTesting:
+
+    assert c.atFileCommands.isSignificantAtAutoTree(p)
+
+#@-node:ekr.20071020082208:@test test isSignificantAtAutoTree
+#@-node:ekr.20070909103844:isSignificantAtAutoTree & test
 #@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
 #@+node:ekr.20031218072017.1863:putVnode (3.x and 4.x)
 def putVnode (self,p,isIgnore=False):
@@ -23109,28 +23164,42 @@ def shouldWriteAtAutoNode (self,p,exists,force):
     elif not p.isDirty(): # There is nothing new to write.
         return False
     elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
-        g.es_print('@auto node not written: no children and less than 10 characters',color='red')
+        g.es_print('@auto node not written:\nno children and less than 10 characters (excluding directives)',color='red')
         return False
     else: # The @auto tree is dirty and contains significant info.
         return True
 #@-node:ekr.20071019141745:shouldWriteAtAutoNode
-#@+node:ekr.20070909103844:isSignificantAtAutoTree
+#@+node:ekr.20070909103844:isSignificantAtAutoTree & test
 def isSignificantAtAutoTree (self,p):
 
     '''Return True if p's tree has a significant amount of information.'''
 
     s = p.bodyString()
 
-    return p.hasChildren() or len(s.strip()) >= 10
+    # Remove all blank lines and all Leo directives.
+    lines = []
+    for line in g.splitLines(s):
+        if not line.strip():
+            pass
+        elif line.startswith('@'):
+            i = 1 ; j = g.skip_id(line,i,chars='-')
+            word = s[i:j]
+            if not (word and word in g.globalDirectiveList):
+                lines2.append(line)
+        else:
+            lines2.append(line)
 
-    # lines = [z for z in g.splitLines(s) if z.strip()]
+    s2 = ''.join(lines)
+    g.trace('s2',s2)
 
-    # return (
-        # p.hasChildren() or
-        # len(s) > 100 or
-        # len(lines) >
-    # )
-#@-node:ekr.20070909103844:isSignificantAtAutoTree
+    return p.hasChildren() or len(s2.strip()) >= 10
+#@+node:ekr.20071020082208:@test test isSignificantAtAutoTree
+if g.unitTesting:
+
+    assert c.atFileCommands.isSignificantAtAutoTree(p)
+
+#@-node:ekr.20071020082208:@test test isSignificantAtAutoTree
+#@-node:ekr.20070909103844:isSignificantAtAutoTree & test
 #@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
 #@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
 #@-node:ekr.20070927081004:Fixed yet another new @auto bug
@@ -26144,7 +26213,7 @@ def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=T
     if not p:
         p = c.currentPosition()
     try:
-        if g.app.batchMode:
+        if g.app.inBridge:
             s = p.bodyString()
         elif p == c.currentPosition():
             if useSelectedText and w.hasSelection():
@@ -28318,6 +28387,7 @@ def __init__ (self,importCommands,atAuto):
     self.outerBlockDelim1 = '{'
     self.classTags = ['class','interface']
     self.functionTags = []
+    self.sigFailTokens = [';','='] # Just like c.
 #@-node:ekr.20071019171430:javaScanner.__init__
 #@+node:ekr.20071019170943:javaScanner.skipSigId
 def skipSigId (self,s,i,ids):
@@ -30198,6 +30268,7 @@ def __init__ (self,importCommands,atAuto):
     self.outerBlockDelim1 = '{'
     self.classTags = ['class','interface']
     self.functionTags = []
+    self.sigFailTokens = [';','='] # Just like c.
 #@-node:ekr.20071019171430:javaScanner.__init__
 #@+node:ekr.20071019170943:javaScanner.skipSigId
 def skipSigId (self,s,i,ids):
@@ -30588,28 +30659,42 @@ def shouldWriteAtAutoNode (self,p,exists,force):
     elif not p.isDirty(): # There is nothing new to write.
         return False
     elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
-        g.es_print('@auto node not written: no children and less than 10 characters',color='red')
+        g.es_print('@auto node not written:\nno children and less than 10 characters (excluding directives)',color='red')
         return False
     else: # The @auto tree is dirty and contains significant info.
         return True
 #@-node:ekr.20071019141745:shouldWriteAtAutoNode
-#@+node:ekr.20070909103844:isSignificantAtAutoTree
+#@+node:ekr.20070909103844:isSignificantAtAutoTree & test
 def isSignificantAtAutoTree (self,p):
 
     '''Return True if p's tree has a significant amount of information.'''
 
     s = p.bodyString()
 
-    return p.hasChildren() or len(s.strip()) >= 10
+    # Remove all blank lines and all Leo directives.
+    lines = []
+    for line in g.splitLines(s):
+        if not line.strip():
+            pass
+        elif line.startswith('@'):
+            i = 1 ; j = g.skip_id(line,i,chars='-')
+            word = s[i:j]
+            if not (word and word in g.globalDirectiveList):
+                lines2.append(line)
+        else:
+            lines2.append(line)
 
-    # lines = [z for z in g.splitLines(s) if z.strip()]
+    s2 = ''.join(lines)
+    g.trace('s2',s2)
 
-    # return (
-        # p.hasChildren() or
-        # len(s) > 100 or
-        # len(lines) >
-    # )
-#@-node:ekr.20070909103844:isSignificantAtAutoTree
+    return p.hasChildren() or len(s2.strip()) >= 10
+#@+node:ekr.20071020082208:@test test isSignificantAtAutoTree
+if g.unitTesting:
+
+    assert c.atFileCommands.isSignificantAtAutoTree(p)
+
+#@-node:ekr.20071020082208:@test test isSignificantAtAutoTree
+#@-node:ekr.20070909103844:isSignificantAtAutoTree & test
 #@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
 #@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
 #@-node:ekr.20071020054649:Fixed problem with @auto files w/o extension
@@ -32294,6 +32379,7 @@ def __init__ (self,importCommands,atAuto):
     self.outerBlockDelim1 = '{'
     self.classTags = ['class','interface']
     self.functionTags = []
+    self.sigFailTokens = [';','='] # Just like c.
 #@-node:ekr.20071019171430:javaScanner.__init__
 #@+node:ekr.20071019170943:javaScanner.skipSigId
 def skipSigId (self,s,i,ids):
@@ -33471,6 +33557,103 @@ def underindentedLine (self,line):
 #@-node:ekr.20070801074524:underindentedComment & underindentedLine
 #@-node:ekr.20070706084535:Code generation
 #@-node:ekr.20071020065730:Better c# tests
+#@+node:ekr.20071020073107:Don't include leo directives in count of significant characters
+#@+node:ekr.20070806141607:writeOneAtAutoNode & helpers
+def writeOneAtAutoNode(self,p,toString,force):
+
+    '''Write p, an @auto node.'''
+
+    at = self ; c = at.c ; root = p.copy()
+
+    fileName = p.atAutoNodeName()
+    if not fileName: return False
+
+    at.scanDefaultDirectory(p,importing=True) # Set default_directory
+    fileName = g.os_path_join(at.default_directory,fileName)
+    exists = g.os_path_exists(fileName)
+
+    if not toString and not self.shouldWriteAtAutoNode(p,exists,force):
+        return False
+
+    # This code is similar to code in at.write.
+    c.endEditing() # Capture the current headline.
+    at.targetFileName = g.choose(toString,"<string-file>",fileName)
+    at.initWriteIvars(root,at.targetFileName,
+        nosentinels=True,thinFile=False,scriptWrite=False,
+        toString=toString,write_strips_blank_lines=False)
+
+    ok = at.openFileForWriting (root,fileName=fileName,toString=toString)
+    if ok:
+        at.writeOpenFile(root,nosentinels=True,toString=toString)
+        at.closeWriteFile() # Sets stringOutput if toString is True.
+        at.replaceTargetFileIfDifferent()
+        # c.atAutoDict [fileName] = True
+    elif not toString:
+        root.setDirty() # Make _sure_ we try to rewrite this file.
+        g.es("Not written: " + at.outputFileName)
+
+    return ok
+#@+node:ekr.20071019141745:shouldWriteAtAutoNode
+@ Much thought went into this decision tree:
+
+- We do not want decisions to depend on past history.  That's too confusing.
+- We must ensure that the file will be written if the user does significant work.
+- We must ensure that the user can create an @auto x node at any time
+  without risk of of replacing x with empty or insignificant information.
+- We want the user to be able to create an @auto node which will be populated the next time the .leo file is opened.
+- We don't want minor import imperfections to be written to the @auto file.
+- The explicit commands that read and write @auto trees must always be honored.
+@c
+
+def shouldWriteAtAutoNode (self,p,exists,force):
+
+    '''Return True if we should write the @auto node at p.'''
+
+    if force: # We are executing write-at-auto-node or write-dirty-at-auto-nodes.
+        return True
+    elif not exists: # We can write a non-existent file without danger.
+        return True
+    elif not p.isDirty(): # There is nothing new to write.
+        return False
+    elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
+        g.es_print('@auto node not written:\nno children and less than 10 characters (excluding directives)',color='red')
+        return False
+    else: # The @auto tree is dirty and contains significant info.
+        return True
+#@-node:ekr.20071019141745:shouldWriteAtAutoNode
+#@+node:ekr.20070909103844:isSignificantAtAutoTree & test
+def isSignificantAtAutoTree (self,p):
+
+    '''Return True if p's tree has a significant amount of information.'''
+
+    s = p.bodyString()
+
+    # Remove all blank lines and all Leo directives.
+    lines = []
+    for line in g.splitLines(s):
+        if not line.strip():
+            pass
+        elif line.startswith('@'):
+            i = 1 ; j = g.skip_id(line,i,chars='-')
+            word = s[i:j]
+            if not (word and word in g.globalDirectiveList):
+                lines2.append(line)
+        else:
+            lines2.append(line)
+
+    s2 = ''.join(lines)
+    g.trace('s2',s2)
+
+    return p.hasChildren() or len(s2.strip()) >= 10
+#@+node:ekr.20071020082208:@test test isSignificantAtAutoTree
+if g.unitTesting:
+
+    assert c.atFileCommands.isSignificantAtAutoTree(p)
+
+#@-node:ekr.20071020082208:@test test isSignificantAtAutoTree
+#@-node:ekr.20070909103844:isSignificantAtAutoTree & test
+#@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
+#@-node:ekr.20071020073107:Don't include leo directives in count of significant characters
 #@-node:ekr.20071016120719:Fixed several @auto bugs
 #@+node:ekr.20071019065431:Installed patch to fix Fedora Tk.Text bug
 @nocolor
@@ -38631,28 +38814,42 @@ def shouldWriteAtAutoNode (self,p,exists,force):
     elif not p.isDirty(): # There is nothing new to write.
         return False
     elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
-        g.es_print('@auto node not written: no children and less than 10 characters',color='red')
+        g.es_print('@auto node not written:\nno children and less than 10 characters (excluding directives)',color='red')
         return False
     else: # The @auto tree is dirty and contains significant info.
         return True
 #@-node:ekr.20071019141745:shouldWriteAtAutoNode
-#@+node:ekr.20070909103844:isSignificantAtAutoTree
+#@+node:ekr.20070909103844:isSignificantAtAutoTree & test
 def isSignificantAtAutoTree (self,p):
 
     '''Return True if p's tree has a significant amount of information.'''
 
     s = p.bodyString()
 
-    return p.hasChildren() or len(s.strip()) >= 10
+    # Remove all blank lines and all Leo directives.
+    lines = []
+    for line in g.splitLines(s):
+        if not line.strip():
+            pass
+        elif line.startswith('@'):
+            i = 1 ; j = g.skip_id(line,i,chars='-')
+            word = s[i:j]
+            if not (word and word in g.globalDirectiveList):
+                lines2.append(line)
+        else:
+            lines2.append(line)
 
-    # lines = [z for z in g.splitLines(s) if z.strip()]
+    s2 = ''.join(lines)
+    g.trace('s2',s2)
 
-    # return (
-        # p.hasChildren() or
-        # len(s) > 100 or
-        # len(lines) >
-    # )
-#@-node:ekr.20070909103844:isSignificantAtAutoTree
+    return p.hasChildren() or len(s2.strip()) >= 10
+#@+node:ekr.20071020082208:@test test isSignificantAtAutoTree
+if g.unitTesting:
+
+    assert c.atFileCommands.isSignificantAtAutoTree(p)
+
+#@-node:ekr.20071020082208:@test test isSignificantAtAutoTree
+#@-node:ekr.20070909103844:isSignificantAtAutoTree & test
 #@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
 #@+node:ekr.20070909100252:readOneAtAutoNode (atFile)
 def readOneAtAutoNode (self,fileName,p):
@@ -38680,6 +38877,22 @@ def readOneAtAutoNode (self,fileName,p):
             # c.atAutoDict [fileName] = True
 #@-node:ekr.20070909100252:readOneAtAutoNode (atFile)
 #@-node:ekr.20071014113031:Simplified how @auto works
+#@+node:ekr.20071021054356:Added g.app.inBridge ivar
+# This is used, at present, by g.getScript.  It is a natural status ivar in any case.
+#@nonl
+#@-node:ekr.20071021054356:Added g.app.inBridge ivar
+#@+node:ekr.20071021102619:Improved the scripting and plugins chapters of Leo's Users Guide
+@nocolor
+
+- Use the term 'event handler' for hook.  This is much better terminology.
+
+- Move the discussion of event handlers to the scripting chapter.
+
+- Removed the discussion of all menu convenience routines: they are not needed now that Leo supports @menus nodes.
+
+- The 'writing plugins' chapter is now very simple.
+#@nonl
+#@-node:ekr.20071021102619:Improved the scripting and plugins chapters of Leo's Users Guide
 #@-node:ekr.20070920083033.1:Features
 #@-node:ekr.20070919132518:4.4.4 b3
 #@-node:ekr.20070703172548:Leo 4.4.4 projects

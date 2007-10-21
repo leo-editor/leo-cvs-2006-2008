@@ -2,6 +2,8 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20071001045205:To do: 4.4.4 final
+#@+node:ekr.20071020205155:finish @textclone proto
+#@-node:ekr.20071020205155:finish @textclone proto
 #@+node:ekr.20071018173151:Install patch to put the outline in the main pane
 @nocolor
 
@@ -467,6 +469,8 @@ def completeFileName (fileName):
     return fileName
 #@-node:ekr.20041124083125:completeFileName (leo.py)
 #@-node:ekr.20071017163243:Make sure utf-8 files get imported properly
+#@+node:ekr.20071019202742:Unit tests for all new code
+#@-node:ekr.20071019202742:Unit tests for all new code
 #@-node:ekr.20071001045205:To do: 4.4.4 final
 #@+node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
 # Leo 4.4.5 will complete several projects that are long overdue.

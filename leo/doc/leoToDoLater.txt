@@ -3137,6 +3137,7 @@ def __init__(self):
     self.idle_imported = False # True: we have done an import idle
     self.idleTimeDelay = 100 # Delay in msec between calls to "idle time" hook.
     self.idleTimeHook = False # True: the global idleTimeHookHandler will reshedule itself.
+    self.inBridge = False # True: running from leoBridge module.
     self.initing = True # True: we are initiing the app.
     self.killed = False # True: we are about to destroy the root window.
     self.leoID = None # The id part of gnx's.

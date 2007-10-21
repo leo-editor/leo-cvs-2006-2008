@@ -803,7 +803,7 @@ def runTestsExternally (c,all):
                 g.app.loadDir, '..', 'test', 'leoDynamicTest.py'))
 
             if ' ' in path and sys.platform.startswith('win'): 
-                path = '"' + path + '"' 
+                path = '"' + path + '"'
 
             args = [sys.executable, path, '--silent']  
 
@@ -849,7 +849,6 @@ def runTestsExternally (c,all):
 
     runner = runTestHelperClass(c,all)
     runner.runTests()
-#@nonl
 #@-node:ekr.20070627135407:runTestsExternally & helper class
 #@+node:ekr.20051104075904.43:Specific to particular unit tests...
 #@+node:ekr.20051104075904.44:at-File test code (leoTest.py)

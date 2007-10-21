@@ -521,7 +521,7 @@ if g.unitTesting:
 #@-node:ekr.20070627082044.861:inner @test: Test consistency between parents iter and v.parents
 #@-node:ekr.20070629065730:Contain clones
 #@+node:ekr.20070629065730.1:Contain non-python code
-#@+node:ekr.20070630070931:leoNodes
+#@+node:ekr.20070630070931:leoNodes (2 fail)
 #@+node:ekr.20070630070045.6:@test p.iters and v.iters
 import leoNodes
 
@@ -633,8 +633,8 @@ after
 #@nonl
 #@-node:ekr.20070630070045.5:child
 #@-node:ekr.20070630070045.4:@test p.setBodyStringOrPane
-#@-node:ekr.20070630070931:leoNodes
-#@+node:ekr.20070630070931.1:commands
+#@-node:ekr.20070630070931:leoNodes (2 fail)
+#@+node:ekr.20070630070931.1:commands (8 fail)
 #@+node:ekr.20070627082044.684:@suite Edit body tests
 # Create unit tests in g.app.scriptDict["suite"]
 
@@ -5056,7 +5056,7 @@ difference?
 #@-node:ekr.20070627082044.800:data
 #@-node:ekr.20070627082044.799:@test directiveBreaksParagraphTest
 #@-node:ekr.20070627082044.733:Reformat Paragraph tests
-#@-node:ekr.20070630070931.1:commands
+#@-node:ekr.20070630070931.1:commands (8 fail)
 #@+node:ekr.20070627082044.191:Colorizer
 #@+node:ekr.20070627082044.195:@test @comment after @language plain
 if g.unitTesting:
@@ -5066,7 +5066,8 @@ if g.unitTesting:
     try:
         c.selectVnode(p) # Sets body text.
         val = c.frame.body.colorizer.colorize(p,incremental=False)
-        assert val=="ok", "colorizer test failed: %s" % p.headString()
+        print 'colorizer',c.frame.body.colorizer
+        assert val=="ok", "colorizer test failed: %s returns: %s" % (p.headString(),val)
     finally:
         c.endUpdate(False)
 #@+node:ekr.20070627082044.196:Test
