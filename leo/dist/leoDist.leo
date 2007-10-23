@@ -165,8 +165,8 @@
 <v t="ekr.20040701160830.1"><vh>names for use in suppressions</vh></v>
 <v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
-<v t="ekr.20050118095021" a="E"><vh>Leo 4.x installer</vh>
-<v t="ekr.20050118103207" a="E"><vh>Keeping installer/uninstallers in synch</vh>
+<v t="ekr.20050118095021" a="TV"><vh>Leo 4.x installer</vh>
+<v t="ekr.20050118103207"><vh>Keeping installer/uninstallers in synch</vh>
 <v t="ekr.20050118104149"><vh>config files</vh>
 <v t="ekr.20050118104149.1"><vh>&lt;&lt; install config files &gt;&gt;</vh></v>
 <v t="ekr.20050118104149.2"><vh>&lt;&lt; uninstall config files &gt;&gt;</vh></v>
@@ -179,8 +179,8 @@
 <v t="ekr.20050118104901.1"><vh>&lt;&lt; install doc files &gt;&gt;</vh></v>
 <v t="ekr.20050118104901.2"><vh>&lt;&lt; uninstall doc files &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20050118122740" a="E"><vh>extensions files</vh>
-<v t="ekr.20050118122404" a="TV"><vh>&lt;&lt; install extensions files &gt;&gt;</vh></v>
+<v t="ekr.20050118122740"><vh>extensions files</vh>
+<v t="ekr.20050118122404"><vh>&lt;&lt; install extensions files &gt;&gt;</vh></v>
 <v t="ekr.20050118122740.1"><vh>&lt;&lt; uninstall extensions files &gt;&gt;</vh></v>
 </v>
 <v t="ekr.20050118104901.3"><vh>icons</vh>

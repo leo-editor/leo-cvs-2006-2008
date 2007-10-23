@@ -9,6 +9,7 @@ Icons\LeoApp16.ico
 Icons\LeoDoc.ico
 Icons\LeoWin.gif
 Icons\Leoapp.GIF
+Icons\Leosplash.GIF
 Icons\Thumbs.db
 Icons\box00.GIF
 Icons\box00.bmp
@@ -327,6 +328,7 @@ extensions\Pmw\Pmw_1_2\lib\PmwEntryField.py
 extensions\Pmw\Pmw_1_2\lib\PmwGroup.py
 extensions\Pmw\Pmw_1_2\lib\PmwHistoryText.py
 extensions\Pmw\Pmw_1_2\lib\PmwLabeledWidget.py
+extensions\Pmw\Pmw_1_2\lib\PmwLoader$py.class
 extensions\Pmw\Pmw_1_2\lib\PmwLoader.py
 extensions\Pmw\Pmw_1_2\lib\PmwLogicalFont.py
 extensions\Pmw\Pmw_1_2\lib\PmwMainMenuBar.py
@@ -347,6 +349,7 @@ extensions\Pmw\Pmw_1_2\lib\PmwSelectionDialog.py
 extensions\Pmw\Pmw_1_2\lib\PmwTextDialog.py
 extensions\Pmw\Pmw_1_2\lib\PmwTimeCounter.py
 extensions\Pmw\Pmw_1_2\lib\PmwTimeFuncs.py
+extensions\Pmw\Pmw_1_2\lib\__init__$py.class
 extensions\Pmw\Pmw_1_2\lib\__init__.py
 extensions\Pmw\Pmw_1_2\lib\CVS\Entries.Extra
 extensions\Pmw\Pmw_1_2\lib\CVS\Entries.Extra.Old
@@ -706,6 +709,7 @@ plugins\fastGotoNode.py
 plugins\footprints.ini
 plugins\footprints.py
 plugins\french_fm.py
+plugins\graphed.py
 plugins\groupOperations.py
 plugins\hoist.py
 plugins\image.py
@@ -746,6 +750,7 @@ plugins\niceNosent.py
 plugins\nodebar.ini
 plugins\nodebar.py
 plugins\nodenavigator.py
+plugins\old_threading_colorizer.py
 plugins\open_shell.py
 plugins\open_with.py
 plugins\outline_export.py
@@ -839,6 +844,10 @@ src\leoNodes.py
 src\leoPlugins.py
 src\leoProjects.txt
 src\leoPymacs.py
+src\leoSwingDialog.py
+src\leoSwingFrame.py
+src\leoSwingGui.py
+src\leoSwingUtils.py
 src\leoTangle.py
 src\leoTest.py
 src\leoTkinterComparePanel.py
