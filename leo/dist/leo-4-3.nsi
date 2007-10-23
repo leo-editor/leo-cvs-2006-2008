@@ -18,7 +18,7 @@
 ;@+node:ekr.20050118092706.1:<< defines >>
 ;@<< 4.3 nsi installer version >>
 ;@+node:ekr.20050118124408:<< 4.3 nsi installer version >>
-!define PRODUCT_VERSION "4.4.4-beta-2"
+!define PRODUCT_VERSION "4.4.4-beta-3"
 ;@nonl
 ;@-node:ekr.20050118124408:<< 4.3 nsi installer version >>
 ;@nl
@@ -73,7 +73,7 @@ WindowIcon off
 
 ; settings from HM NIS Edit Wizard
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "LeoSetup-4-4-4-beta-2.exe"
+OutFile "LeoSetup-4-4-4-beta-3.exe"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 InstallDir "$PROGRAMFILES\Leo"
 Icon "..\Icons\leo_inst.ico"
@@ -291,6 +291,9 @@ Section "Leo" SEC01
   ;@+node:ekr.20050118122404:<< install extensions files >>
   File "..\extensions\aspell23.pyd"
   File "..\extensions\aspell24.pyd"
+
+  SetOutPath "$INSTDIR\extensions\Gato"
+  File "..\extensions\Gato\*.*
 
   ; File "..\extensions\__init__.py"
   File "..\extensions\optparse.py"
@@ -604,6 +607,8 @@ Section Uninstall
   Delete "$INSTDIR\extensions\aspell23.pyd"
   Delete "$INSTDIR\extensions\aspell24.pyd"
 
+  Delete "$INSTDIR\extensions\Gato\*.*"
+
   Delete "$INSTDIR\extensions\__init__.p*"
 
   Delete "$INSTDIR\extensions\optparse.py"
@@ -715,6 +720,7 @@ Section Uninstall
   RmDir "$INSTDIR\doc\LeoN"
   RMDir "$INSTDIR\doc"
 
+  RMDir "$INSTDIR\extensions\Gato"
   RMDir "$INSTDIR\extensions\Pmw\Pmw_1_2\bin"
   RMDir "$INSTDIR\extensions\Pmw\Pmw_1_2\contrib"
   RMDir "$INSTDIR\extensions\Pmw\Pmw_1_2\demos"

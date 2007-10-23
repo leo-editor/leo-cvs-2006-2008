@@ -19272,9 +19272,9 @@ def isSignificantAtAutoTree (self,p):
             i = 1 ; j = g.skip_id(line,i,chars='-')
             word = s[i:j]
             if not (word and word in g.globalDirectiveList):
-                lines2.append(line)
+                lines.append(line)
         else:
-            lines2.append(line)
+            lines.append(line)
 
     s2 = ''.join(lines)
     g.trace('s2',s2)
@@ -19316,18 +19316,17 @@ def checkTrialWrite (self,s1=None,s2=None):
 
     c = self.c ; at = c.atFileCommands
 
-    if s1 and s2:
-        if s1 == s2: return True
+    if s1 is None and s2 is None:
 
-    at.write(self.root,
-        nosentinels=True,thinFile=False,
-        scriptWrite=False,toString=True,
-        write_strips_blank_lines=False,
-    )
+        at.write(self.root,
+            nosentinels=True,thinFile=False,
+            scriptWrite=False,toString=True,
+            write_strips_blank_lines=False)
 
-    s1,s2 = self.file_s, at.stringOutput
-    s1 = s1.replace('\r','')
-    s2 = s2.replace('\r','')
+        s1,s2 = self.file_s, at.stringOutput
+        s1 = s1.replace('\r','')
+        s2 = s2.replace('\r','')
+
     if s1 == s2: return True
 
     # Make sure we have a trailing newline in both strings.
@@ -19358,6 +19357,7 @@ if g.unitTesting:
 
     ic = c.importCommands
     runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+    runner.root = p.copy()
 
     s1 = 'line1\nline2\n'
     s2 = 'line1\nline2a\n'
@@ -20114,9 +20114,9 @@ def isSignificantAtAutoTree (self,p):
             i = 1 ; j = g.skip_id(line,i,chars='-')
             word = s[i:j]
             if not (word and word in g.globalDirectiveList):
-                lines2.append(line)
+                lines.append(line)
         else:
-            lines2.append(line)
+            lines.append(line)
 
     s2 = ''.join(lines)
     g.trace('s2',s2)
@@ -20518,6 +20518,24 @@ def regularizeError (self):
 
 #@-node:ekr.20070808121958:regularizeError
 #@-node:ekr.20070808115837.1:regularizeWhitespace
+#@+node:ekr.20071023082323:@test run
+if g.unitTesting:
+
+    ic = c.importCommands
+    ic.methodName = 'test' ; ic.fileType = '.py'
+
+    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+    runner.root = p.copy()
+    parent = p.copy()
+
+    s = '''\
+def spam():
+    pass
+'''
+    s = g.adjustTripleString(s,-4)
+
+    runner.run(s,parent)
+#@-node:ekr.20071023082323:@test run
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@+node:ekr.20070806105721.1:readAtAutoNodes (commands)
 def readAtAutoNodes (self,event=None):
@@ -20935,9 +20953,9 @@ def isSignificantAtAutoTree (self,p):
             i = 1 ; j = g.skip_id(line,i,chars='-')
             word = s[i:j]
             if not (word and word in g.globalDirectiveList):
-                lines2.append(line)
+                lines.append(line)
         else:
-            lines2.append(line)
+            lines.append(line)
 
     s2 = ''.join(lines)
     g.trace('s2',s2)
@@ -21108,18 +21126,17 @@ def checkTrialWrite (self,s1=None,s2=None):
 
     c = self.c ; at = c.atFileCommands
 
-    if s1 and s2:
-        if s1 == s2: return True
+    if s1 is None and s2 is None:
 
-    at.write(self.root,
-        nosentinels=True,thinFile=False,
-        scriptWrite=False,toString=True,
-        write_strips_blank_lines=False,
-    )
+        at.write(self.root,
+            nosentinels=True,thinFile=False,
+            scriptWrite=False,toString=True,
+            write_strips_blank_lines=False)
 
-    s1,s2 = self.file_s, at.stringOutput
-    s1 = s1.replace('\r','')
-    s2 = s2.replace('\r','')
+        s1,s2 = self.file_s, at.stringOutput
+        s1 = s1.replace('\r','')
+        s2 = s2.replace('\r','')
+
     if s1 == s2: return True
 
     # Make sure we have a trailing newline in both strings.
@@ -21150,6 +21167,7 @@ if g.unitTesting:
 
     ic = c.importCommands
     runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+    runner.root = p.copy()
 
     s1 = 'line1\nline2\n'
     s2 = 'line1\nline2a\n'
@@ -22206,6 +22224,24 @@ def regularizeError (self):
 
 #@-node:ekr.20070808121958:regularizeError
 #@-node:ekr.20070808115837.1:regularizeWhitespace
+#@+node:ekr.20071023082323:@test run
+if g.unitTesting:
+
+    ic = c.importCommands
+    ic.methodName = 'test' ; ic.fileType = '.py'
+
+    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+    runner.root = p.copy()
+    parent = p.copy()
+
+    s = '''\
+def spam():
+    pass
+'''
+    s = g.adjustTripleString(s,-4)
+
+    runner.run(s,parent)
+#@-node:ekr.20071023082323:@test run
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@-node:ekr.20070703122141.65: class baseScannerClass
 #@+node:ekr.20070808115837.2:Regularize whitespace
@@ -22335,6 +22371,24 @@ def regularizeError (self):
 
 #@-node:ekr.20070808121958:regularizeError
 #@-node:ekr.20070808115837.1:regularizeWhitespace
+#@+node:ekr.20071023082323:@test run
+if g.unitTesting:
+
+    ic = c.importCommands
+    ic.methodName = 'test' ; ic.fileType = '.py'
+
+    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+    runner.root = p.copy()
+    parent = p.copy()
+
+    s = '''\
+def spam():
+    pass
+'''
+    s = g.adjustTripleString(s,-4)
+
+    runner.run(s,parent)
+#@-node:ekr.20071023082323:@test run
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@+node:ekr.20070703122141.102:check
 def check (self,s,parent):
@@ -22770,11 +22824,12 @@ def readOneAtAutoNode (self,fileName,p):
 
     ic.createOutline(fileName,parent=p.copy(),atAuto=True)
 
-    if g.os_path_exists(fileName):
-        if ic.errors:
-            g.es_print('Errors inhibited read @auto %s' % (fileName),color='red')
-        # else:
-            # c.atAutoDict [fileName] = True
+    if ic.errors:
+        g.es_print('Errors inhibited read @auto %s' % (fileName),color='red')
+
+    if ic.errors or not g.os_path_exists(fileName):
+        c.setBodyString(p,'')
+        p.clearDirty()
 #@-node:ekr.20070909100252:readOneAtAutoNode (atFile)
 #@+node:ekr.20070806141607:writeOneAtAutoNode & helpers
 def writeOneAtAutoNode(self,p,toString,force):
@@ -22855,9 +22910,9 @@ def isSignificantAtAutoTree (self,p):
             i = 1 ; j = g.skip_id(line,i,chars='-')
             word = s[i:j]
             if not (word and word in g.globalDirectiveList):
-                lines2.append(line)
+                lines.append(line)
         else:
-            lines2.append(line)
+            lines.append(line)
 
     s2 = ''.join(lines)
     g.trace('s2',s2)
@@ -23058,11 +23113,12 @@ def readOneAtAutoNode (self,fileName,p):
 
     ic.createOutline(fileName,parent=p.copy(),atAuto=True)
 
-    if g.os_path_exists(fileName):
-        if ic.errors:
-            g.es_print('Errors inhibited read @auto %s' % (fileName),color='red')
-        # else:
-            # c.atAutoDict [fileName] = True
+    if ic.errors:
+        g.es_print('Errors inhibited read @auto %s' % (fileName),color='red')
+
+    if ic.errors or not g.os_path_exists(fileName):
+        c.setBodyString(p,'')
+        p.clearDirty()
 #@-node:ekr.20070909100252:readOneAtAutoNode (atFile)
 #@+node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
 def writeAtAutoNodes (self,event=None):
@@ -23185,9 +23241,9 @@ def isSignificantAtAutoTree (self,p):
             i = 1 ; j = g.skip_id(line,i,chars='-')
             word = s[i:j]
             if not (word and word in g.globalDirectiveList):
-                lines2.append(line)
+                lines.append(line)
         else:
-            lines2.append(line)
+            lines.append(line)
 
     s2 = ''.join(lines)
     g.trace('s2',s2)
@@ -25933,18 +25989,17 @@ def checkTrialWrite (self,s1=None,s2=None):
 
     c = self.c ; at = c.atFileCommands
 
-    if s1 and s2:
-        if s1 == s2: return True
+    if s1 is None and s2 is None:
 
-    at.write(self.root,
-        nosentinels=True,thinFile=False,
-        scriptWrite=False,toString=True,
-        write_strips_blank_lines=False,
-    )
+        at.write(self.root,
+            nosentinels=True,thinFile=False,
+            scriptWrite=False,toString=True,
+            write_strips_blank_lines=False)
 
-    s1,s2 = self.file_s, at.stringOutput
-    s1 = s1.replace('\r','')
-    s2 = s2.replace('\r','')
+        s1,s2 = self.file_s, at.stringOutput
+        s1 = s1.replace('\r','')
+        s2 = s2.replace('\r','')
+
     if s1 == s2: return True
 
     # Make sure we have a trailing newline in both strings.
@@ -25975,6 +26030,7 @@ if g.unitTesting:
 
     ic = c.importCommands
     runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+    runner.root = p.copy()
 
     s1 = 'line1\nline2\n'
     s2 = 'line1\nline2a\n'
@@ -27122,18 +27178,17 @@ def checkTrialWrite (self,s1=None,s2=None):
 
     c = self.c ; at = c.atFileCommands
 
-    if s1 and s2:
-        if s1 == s2: return True
+    if s1 is None and s2 is None:
 
-    at.write(self.root,
-        nosentinels=True,thinFile=False,
-        scriptWrite=False,toString=True,
-        write_strips_blank_lines=False,
-    )
+        at.write(self.root,
+            nosentinels=True,thinFile=False,
+            scriptWrite=False,toString=True,
+            write_strips_blank_lines=False)
 
-    s1,s2 = self.file_s, at.stringOutput
-    s1 = s1.replace('\r','')
-    s2 = s2.replace('\r','')
+        s1,s2 = self.file_s, at.stringOutput
+        s1 = s1.replace('\r','')
+        s2 = s2.replace('\r','')
+
     if s1 == s2: return True
 
     # Make sure we have a trailing newline in both strings.
@@ -27164,6 +27219,7 @@ if g.unitTesting:
 
     ic = c.importCommands
     runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+    runner.root = p.copy()
 
     s1 = 'line1\nline2\n'
     s2 = 'line1\nline2a\n'
@@ -28220,6 +28276,24 @@ def regularizeError (self):
 
 #@-node:ekr.20070808121958:regularizeError
 #@-node:ekr.20070808115837.1:regularizeWhitespace
+#@+node:ekr.20071023082323:@test run
+if g.unitTesting:
+
+    ic = c.importCommands
+    ic.methodName = 'test' ; ic.fileType = '.py'
+
+    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+    runner.root = p.copy()
+    parent = p.copy()
+
+    s = '''\
+def spam():
+    pass
+'''
+    s = g.adjustTripleString(s,-4)
+
+    runner.run(s,parent)
+#@-node:ekr.20071023082323:@test run
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@-node:ekr.20070703122141.65: class baseScannerClass
 #@+node:edreamleo.20070710110114.1:C scanner
@@ -28792,18 +28866,17 @@ def checkTrialWrite (self,s1=None,s2=None):
 
     c = self.c ; at = c.atFileCommands
 
-    if s1 and s2:
-        if s1 == s2: return True
+    if s1 is None and s2 is None:
 
-    at.write(self.root,
-        nosentinels=True,thinFile=False,
-        scriptWrite=False,toString=True,
-        write_strips_blank_lines=False,
-    )
+        at.write(self.root,
+            nosentinels=True,thinFile=False,
+            scriptWrite=False,toString=True,
+            write_strips_blank_lines=False)
 
-    s1,s2 = self.file_s, at.stringOutput
-    s1 = s1.replace('\r','')
-    s2 = s2.replace('\r','')
+        s1,s2 = self.file_s, at.stringOutput
+        s1 = s1.replace('\r','')
+        s2 = s2.replace('\r','')
+
     if s1 == s2: return True
 
     # Make sure we have a trailing newline in both strings.
@@ -28834,6 +28907,7 @@ if g.unitTesting:
 
     ic = c.importCommands
     runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+    runner.root = p.copy()
 
     s1 = 'line1\nline2\n'
     s2 = 'line1\nline2a\n'
@@ -29890,6 +29964,24 @@ def regularizeError (self):
 
 #@-node:ekr.20070808121958:regularizeError
 #@-node:ekr.20070808115837.1:regularizeWhitespace
+#@+node:ekr.20071023082323:@test run
+if g.unitTesting:
+
+    ic = c.importCommands
+    ic.methodName = 'test' ; ic.fileType = '.py'
+
+    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+    runner.root = p.copy()
+    parent = p.copy()
+
+    s = '''\
+def spam():
+    pass
+'''
+    s = g.adjustTripleString(s,-4)
+
+    runner.run(s,parent)
+#@-node:ekr.20071023082323:@test run
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@-node:ekr.20070703122141.65: class baseScannerClass
 #@+node:ekr.20070712091019:skipCodeBlock
@@ -30679,9 +30771,9 @@ def isSignificantAtAutoTree (self,p):
             i = 1 ; j = g.skip_id(line,i,chars='-')
             word = s[i:j]
             if not (word and word in g.globalDirectiveList):
-                lines2.append(line)
+                lines.append(line)
         else:
-            lines2.append(line)
+            lines.append(line)
 
     s2 = ''.join(lines)
     g.trace('s2',s2)
@@ -31114,18 +31206,17 @@ def checkTrialWrite (self,s1=None,s2=None):
 
     c = self.c ; at = c.atFileCommands
 
-    if s1 and s2:
-        if s1 == s2: return True
+    if s1 is None and s2 is None:
 
-    at.write(self.root,
-        nosentinels=True,thinFile=False,
-        scriptWrite=False,toString=True,
-        write_strips_blank_lines=False,
-    )
+        at.write(self.root,
+            nosentinels=True,thinFile=False,
+            scriptWrite=False,toString=True,
+            write_strips_blank_lines=False)
 
-    s1,s2 = self.file_s, at.stringOutput
-    s1 = s1.replace('\r','')
-    s2 = s2.replace('\r','')
+        s1,s2 = self.file_s, at.stringOutput
+        s1 = s1.replace('\r','')
+        s2 = s2.replace('\r','')
+
     if s1 == s2: return True
 
     # Make sure we have a trailing newline in both strings.
@@ -31156,6 +31247,7 @@ if g.unitTesting:
 
     ic = c.importCommands
     runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+    runner.root = p.copy()
 
     s1 = 'line1\nline2\n'
     s2 = 'line1\nline2a\n'
@@ -32212,6 +32304,24 @@ def regularizeError (self):
 
 #@-node:ekr.20070808121958:regularizeError
 #@-node:ekr.20070808115837.1:regularizeWhitespace
+#@+node:ekr.20071023082323:@test run
+if g.unitTesting:
+
+    ic = c.importCommands
+    ic.methodName = 'test' ; ic.fileType = '.py'
+
+    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+    runner.root = p.copy()
+    parent = p.copy()
+
+    s = '''\
+def spam():
+    pass
+'''
+    s = g.adjustTripleString(s,-4)
+
+    runner.run(s,parent)
+#@-node:ekr.20071023082323:@test run
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@-node:ekr.20070703122141.65: class baseScannerClass
 #@+node:edreamleo.20070710110114.1:C scanner
@@ -33636,9 +33746,9 @@ def isSignificantAtAutoTree (self,p):
             i = 1 ; j = g.skip_id(line,i,chars='-')
             word = s[i:j]
             if not (word and word in g.globalDirectiveList):
-                lines2.append(line)
+                lines.append(line)
         else:
-            lines2.append(line)
+            lines.append(line)
 
     s2 = ''.join(lines)
     g.trace('s2',s2)
@@ -33653,6 +33763,34 @@ if g.unitTesting:
 #@-node:ekr.20070909103844:isSignificantAtAutoTree & test
 #@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
 #@-node:ekr.20071020073107:Don't include leo directives in count of significant characters
+#@+node:ekr.20071023083446:Made sure @auto import failure does result in writing the file
+#@+node:ekr.20070909100252:readOneAtAutoNode (atFile)
+def readOneAtAutoNode (self,fileName,p):
+
+    at = self ; c = at.c ; ic = c.importCommands
+
+    at.scanDefaultDirectory(p,importing=True) # Set default_directory
+    fileName = g.os_path_join(at.default_directory,fileName)
+    # g.trace(fileName)
+
+    # Delete all children.
+    c.beginUpdate()
+    try:
+        while p.hasChildren():
+            p.firstChild().doDelete()
+    finally:
+        c.endUpdate(False)
+
+    ic.createOutline(fileName,parent=p.copy(),atAuto=True)
+
+    if ic.errors:
+        g.es_print('Errors inhibited read @auto %s' % (fileName),color='red')
+
+    if ic.errors or not g.os_path_exists(fileName):
+        c.setBodyString(p,'')
+        p.clearDirty()
+#@-node:ekr.20070909100252:readOneAtAutoNode (atFile)
+#@-node:ekr.20071023083446:Made sure @auto import failure does result in writing the file
 #@-node:ekr.20071016120719:Fixed several @auto bugs
 #@+node:ekr.20071019065431:Installed patch to fix Fedora Tk.Text bug
 @nocolor
@@ -33745,6 +33883,569 @@ in function initWrite(). But I could not yet figure out how to fill the value
 'c' in that dictionary instead of the default "Python".
 #@nonl
 #@-node:ekr.20071021110417:Fixed new rst3 problem
+#@+node:ekr.20071019202447:Fixed bugs when running unit tests externally
+@nocolor
+@
+The run-unit-tests command runs tests using the bridge, which uses a nullGui and a stringTextWidget.
+
+Apparently, this causes problem for unit tests:
+
+1. Added a hack to g.getScript so it always gets the script from p.bodyString
+   when g.app.gui.inBridge is True. 
+
+2. Several unit tests fail when run from the bridge.
+
+Both of these problems are symptoms of bugs either in c.frame.body.bodyCtrl (a
+stringTextWidget) or in the code (especially c.frame.tree.select) that inits the
+text widget.
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.1934:run
+def run(fileName=None,pymacs=None,jyLeo=False,*args,**keywords):
+
+    """Initialize and run Leo"""
+
+    __pychecker__ = '--no-argsused' # keywords not used.
+
+    if not jyLeo and not isValidPython(): return
+    << import leoGlobals and leoApp >>
+    g.computeStandardDirectories()
+    adjustSysPath(g)
+    if pymacs:
+        script = windowFlag = False
+    else:
+        script, windowFlag = getBatchScript() # Do early so we can compute verbose next.
+    verbose = script is None
+    g.app.batchMode = script is not None
+    g.app.silentMode = '-silent' in sys.argv or '--silent' in sys.argv
+    g.app.setLeoID(verbose=verbose) # Force the user to set g.app.leoID.
+    << import leoNodes and leoConfig >>
+    g.app.nodeIndices = leoNodes.nodeIndices(g.app.leoID)
+    g.app.config = leoConfig.configClass()
+    fileName = completeFileName(fileName)
+    reportDirectories(verbose)
+    # Read settings *after* setting g.app.config.
+    # Read settings *before* opening plugins.  This means if-gui has effect only in per-file settings.
+    g.app.config.readSettingsFiles(fileName,verbose)
+    g.app.setEncoding()
+    if pymacs:
+        createNullGuiWithScript(None)
+    elif jyLeo:
+        import leoSwingGui
+        g.app.gui = leoSwingGui.swingGui()
+    elif script:
+        if windowFlag:
+            g.app.createTkGui() # Creates global windows.
+            g.app.gui.setScript(script)
+            sys.args = []
+        else:
+            createNullGuiWithScript(script)
+        fileName = None
+    # Load plugins. Plugins may create g.app.gui.
+    g.doHook("start1")
+    if g.app.killed: return # Support for g.app.forceShutdown.
+    # Create the default gui if needed.
+    if g.app.gui == None: g.app.createTkGui() # Creates global windows.
+    # Initialize tracing and statistics.
+    g.init_sherlock(args)
+    if g.app and g.app.use_psyco: startPsyco()
+    # Clear g.app.initing _before_ creating the frame.
+    g.app.initing = False # "idle" hooks may now call g.app.forceShutdown.
+    # Create the main frame.  Show it and all queued messages.
+    c,frame = createFrame(fileName)
+    if not frame: return
+    g.app.trace_gc          = c.config.getBool('trace_gc')
+    g.app.trace_gc_calls    = c.config.getBool('trace_gc_calls')
+    g.app.trace_gc_verbose  = c.config.getBool('trace_gc_verbose')
+    if g.app.disableSave:
+        g.es("disabling save commands",color="red")
+    g.app.writeWaitingLog()
+    p = c.currentPosition()
+    g.doHook("start2",c=c,p=p,v=p,fileName=fileName)
+    if c.config.getBool('allow_idle_time_hook'):
+        g.enableIdleTimeHook()
+    if not fileName:
+        c.redraw_now()
+    c.bodyWantsFocus()
+    g.app.gui.runMainLoop()
+#@+node:ekr.20041219072112:<< import leoGlobals and leoApp >>
+if jyLeo:
+
+    print '*** starting jyLeo',sys.platform # will be something like java1.6.0_02
+
+    ### This is a hack.
+    ### The jyleo script in test.leo sets the cwd to g.app.loadDir
+    ### Eventually, we will have to compute the equivalent here.
+
+    path = os.path.join(os.getcwd()) ### ,'..','src')
+    if path not in sys.path:
+        print 'appending %s to sys.path' % path
+        sys.path.append(path)
+    if 0:
+        print 'sys.path...'
+        for s in sys.path: print s
+
+# Import leoGlobals, but do NOT set g.
+import leoGlobals
+import leoApp
+
+# Create the app.
+leoGlobals.app = leoApp.LeoApp()
+
+# **now** we can set g.
+g = leoGlobals
+assert(g.app)
+
+if jyLeo:
+    startJyleo(g)
+#@-node:ekr.20041219072112:<< import leoGlobals and leoApp >>
+#@+node:ekr.20041219072416.1:<< import leoNodes and leoConfig >>
+import leoNodes
+import leoConfig
+
+# try:
+    # import leoNodes
+# except ImportError:
+    # print "Error importing leoNodes.py"
+    # import traceback ; traceback.print_exc()
+
+# try:
+    # import leoConfig
+# except ImportError:
+    # print "Error importing leoConfig.py"
+    # import traceback ; traceback.print_exc()
+#@-node:ekr.20041219072416.1:<< import leoNodes and leoConfig >>
+#@-node:ekr.20031218072017.1934:run
+#@+node:ekr.20070627135407:runTestsExternally & helper class
+def runTestsExternally (c,all):
+
+    @others
+
+    runner = runTestHelperClass(c,all)
+    runner.runTests()
+#@+node:ekr.20070627140344:class runTestHelperClass
+class runTestHelperClass:
+
+    '''A helper class to run tests externally.'''
+
+    @others
+#@+node:ekr.20070627140344.1: ctor: runTestHelperClass
+def __init__(self,c,all):
+
+    self.c = c
+    self.all = all
+
+    self.copyRoot = None # The root of copied tree.
+    self.fileName = 'dynamicUnitTest.leo'
+    self.root = None # The root of the tree to copy when self.all is False.
+    self.tags = ('@test','@suite','@unittests','@unit-tests')
+#@-node:ekr.20070627140344.1: ctor: runTestHelperClass
+#@+node:ekr.20070627135336.10:createFileFromOutline
+def createFileFromOutline (self,c2):
+
+    '''Write c's outline to test/dynamicUnitTest.leo.'''
+
+    path = g.os_path_abspath(
+        g.os_path_join(g.app.loadDir,'..','test', self.fileName))
+
+    c2.selectPosition(c2.rootPosition())
+    c2.mFileName = path
+    c2.fileCommands.save(path)
+    c2.close()
+#@-node:ekr.20070627135336.10:createFileFromOutline
+#@+node:ekr.20070627135336.9:createOutline & helpers
+def createOutline (self,c2):
+
+    '''Create a unit test ouline containing all @test and @suite nodes in p's outline.'''
+
+    c = self.c ; markTag = '@mark-for-unit-tests'
+    self.copyRoot = c2.rootPosition()
+    self.copyRoot.initHeadString('All unit tests')
+    c2.suppressHeadChanged = True # Suppress all onHeadChanged logic.
+    self.seen = []
+    << set p1/2,limit1/2,lookForMark1/2,lookForNodes1/2 >>
+    c2.beginUpdate()
+    try:
+        self.copyRoot.expand()
+        for p,limit,lookForMark,lookForNodes in (
+            (p1,limit1,lookForMark1,lookForNodes1),
+            (p2,limit2,lookForMark2,lookForNodes2),
+        ):
+            while p and p != limit:
+                h = p.headString()
+                if p.v.t in self.seen:
+                    p.moveToNodeAfterTree()
+                elif lookForMark and h.startswith(markTag):
+                    self.addMarkTree(p)
+                    p.moveToNodeAfterTree()
+                elif lookForNodes and self.isUnitTestNode(p):
+                    self.addNode(p)
+                    p.moveToNodeAfterTree()
+                else:
+                    p.moveToThreadNext()
+    finally:
+        c2.endUpdate(False)
+#@nonl
+#@+node:ekr.20070705065154:<< set p1/2,limit1/2,lookForMark1/2,lookForNodes1/2 >>
+if self.all:
+    # A single pass looks for all tags everywhere.
+    p1,limit1,lookForMark1,lookForNodes1 = c.rootPosition(),None,True,True
+    p2,limit2,lookForMark2,lookForNodes2 = None,None,False,False
+else:
+    # The first pass looks everywhere for only for @mark-for-unit-tests,
+    p1,limit1,lookForMark1,lookForNodes1 = c.rootPosition(),None,True,False
+    # The second pass looks in the selected tree for everything except @mark-for-unit-tests.
+    # There is no second pass if the present node is an @mark-for-unit-test node.
+    p = c.currentPosition()
+    if p.headString().startswith(markTag):
+        p2,limit2,lookForMark2,lookForNodes2 = None,None,False,False
+    else:
+        p2,limit2,lookForMark2,lookForNodes2 = p,p.nodeAfterTree(),False,True
+#@nonl
+#@-node:ekr.20070705065154:<< set p1/2,limit1/2,lookForMark1/2,lookForNodes1/2 >>
+#@+node:ekr.20070705080413:addMarkTree
+def addMarkTree (self,p):
+
+    # g.trace(len(self.seen),p.headString())
+
+    self.seen.append(p.v.t)
+
+    for p in p.subtree_iter():
+        if self.isUnitTestNode(p) and not p.v.t in self.seen:
+            self.addNode(p)
+#@-node:ekr.20070705080413:addMarkTree
+#@+node:ekr.20070705065154.1:addNode
+def addNode(self,p):
+
+    '''
+    Add an @test, @suite or an @unit-test tree as the last child of self.copyRoot.
+    '''
+
+    # g.trace(len(self.seen),p.headString())
+
+    p2 = p.copyTreeAfter()
+    p2.unlink()
+    p2.moveToLastChildOf(self.copyRoot)
+
+    self.seen.append(p.v.t)
+#@-node:ekr.20070705065154.1:addNode
+#@+node:ekr.20070705075604.3:isUnitTestNode
+def isUnitTestNode (self,p):
+
+    h = p.headString()
+    for tag in self.tags:
+        if h.startswith(tag):
+            return True
+    else:
+        return False
+#@-node:ekr.20070705075604.3:isUnitTestNode
+#@-node:ekr.20070627135336.9:createOutline & helpers
+#@+node:ekr.20070627140344.2:runTests
+def runTests (self):
+
+    '''
+    Create dynamicUnitTest.leo, then run all tests from dynamicUnitTest.leo in a separate process.
+    '''
+
+    trace = False
+    if trace: import time
+    g.es('Running %sunit tests' % (g.choose(self.all,'all ','')),color='blue')
+    print 'creating: %s' % (self.fileName)
+    c = self.c ; p = c.currentPosition()
+    if trace: t1 = time.time()
+    found = self.searchOutline(p.copy())
+    if trace:
+         t2 = time.time() ; print 'find:  %0.2f' % (t2-t1)
+    if found:
+        gui = leoGui.nullGui("nullGui")
+        c2 = c.new(gui=gui)
+        if trace:
+            t3 = time.time() ; print 'gui:   %0.2f' % (t3-t2)
+        found = self.createOutline(c2)
+        if trace:
+            t4 = time.time() ; print 'copy:  %0.2f' % (t4-t3)
+        self.createFileFromOutline(c2)
+        if trace:
+            t5 = time.time() ; print 'write: %0.2f' % (t5-t4)
+        self.runLeoDynamicTest()
+        if trace:
+            t6 = time.time() ; print 'run:   %0.2f' % (t6-t5)
+        c.selectPosition(p.copy())
+    else:
+        g.es_print('no @test or @suite nodes in selected outline')
+#@-node:ekr.20070627140344.2:runTests
+#@+node:ekr.20070627135336.11:runLeoDynamicTest
+def runLeoDynamicTest (self):
+
+    '''Run test/leoDynamicTest.py in a pristine environment.'''
+
+    path = g.os_path_abspath(g.os_path_join(
+        g.app.loadDir, '..', 'test', 'leoDynamicTest.py'))
+
+    if ' ' in path and sys.platform.startswith('win'): 
+        path = '"' + path + '"'
+
+    args = [sys.executable, path, '--silent']  
+
+    srcDir = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','src'))
+    os.chdir(srcDir)
+
+    os.spawnve(os.P_NOWAIT,sys.executable,args,os.environ)
+#@-node:ekr.20070627135336.11:runLeoDynamicTest
+#@+node:ekr.20070627135336.8:searchOutline
+def searchOutline (self,p):
+
+    c = self.c ; p = c.currentPosition()
+    iter = g.choose(self.all,c.allNodes_iter,p.self_and_subtree_iter)
+
+    # First, look down the tree.
+    for p in iter():
+        h = p.headString()
+        for s in self.tags:
+            if h.startswith(s):
+                self.root = c.currentPosition()
+                return True
+
+    # Next, look up the tree.
+    if not self.all:   
+        for p in c.currentPosition().parents_iter():
+            h = p.headString()
+            for s in self.tags:
+                if h.startswith(s):
+                    c.selectPosition(p)
+                    self.root = p.copy()
+                    return True
+
+    # Finally, look for all @mark-for-unit-test nodes.
+    for p in c.allNodes_iter():
+        if p.headString().startswith('@mark-for-unit-test'):
+            return True
+
+    return False
+#@-node:ekr.20070627135336.8:searchOutline
+#@-node:ekr.20070627140344:class runTestHelperClass
+#@-node:ekr.20070627135407:runTestsExternally & helper class
+#@+node:EKR.20040614071102.1:g.getScript & tests
+def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=True):
+
+    '''Return the expansion of the selected text of node p.
+    Return the expansion of all of node p's body text if there
+    is p is not the current node or if there is no text selection.'''
+
+    at = c.atFileCommands ; w = c.frame.body.bodyCtrl
+    if not p:
+        p = c.currentPosition()
+    try:
+        if g.app.inBridge:
+            s = p.bodyString()
+        elif p == c.currentPosition():
+            if useSelectedText and w.hasSelection():
+                s = w.getSelectedText()
+            else:
+                s = w.getAllText()
+        else:
+            s = p.bodyString()
+        # Remove extra leading whitespace so the user may execute indented code.
+        s = g.removeExtraLws(s,c.tab_width)
+        if s.strip():
+            g.app.scriptDict["script1"]=s
+            script = at.writeFromString(p.copy(),s,
+                forcePythonSentinels=forcePythonSentinels,
+                useSentinels=useSentinels)
+            script = script.replace("\r\n","\n") # Use brute force.
+            # Important, the script is an **encoded string**, not a unicode string.
+            g.app.scriptDict["script2"]=script
+        else: script = ''
+    except Exception:
+        s = "unexpected exception in g.getScript"
+        g.es_print(s)
+        g.es_exception()
+        script = ''
+
+    # g.trace(type(script),repr(script))
+    return script
+#@+node:ekr.20050211100535:@test g.getScript strips crlf
+if g.unitTesting:
+
+    c,p = g.getTestVars() # Optional: prevents pychecker warnings.
+    script = g.getScript(c,p) # This will get the text of this node.
+    assert script.find('\r\n') == -1, repr(script)
+#@-node:ekr.20050211100535:@test g.getScript strips crlf
+#@-node:EKR.20040614071102.1:g.getScript & tests
+#@+node:ekr.20031218072017.1939:getBatchScript
+def getBatchScript ():
+
+    import leoGlobals as g
+    windowFlag = False
+
+    name = None ; i = 1 # Skip the dummy first arg.
+    while i + 1 < len(sys.argv):
+        arg = sys.argv[i].strip().lower()
+        if arg in ("--script","-script"):
+            name = sys.argv[i+1].strip() ; break
+        if arg in ("--script-window","-script-window"):
+            name = sys.argv[i+1].strip() ; windowFlag = True ; break
+        i += 1
+
+    if not name:
+        return None, windowFlag
+    name = g.os_path_join(g.app.loadDir,name)
+    try:
+        f = None
+        try:
+            f = open(name,'r')
+            script = f.read()
+            # g.trace("script",script)
+        except IOError:
+            g.es_print("can not open script file: " + name, color="red")
+            script = None
+    finally:
+        if f: f.close()
+
+    # Bug fix 4/27/07: Don't put a return in a finally clause.
+    return script, windowFlag
+#@-node:ekr.20031218072017.1939:getBatchScript
+#@+node:ekr.20051104075904.4:doTests...
+def doTests(c,all,verbosity=1):
+
+    p = c.currentPosition() ; p1 = p.copy()
+    try:
+        g.unitTesting = g.app.unitTesting = True
+        g.app.unitTestDict["fail"] = False
+        g.app.unitTestDict['c'] = c
+        g.app.unitTestDict['g'] = g
+        g.app.unitTestDict['p'] = p and p.copy()
+        if all: theIter = c.all_positions_iter()
+        else:   theIter = p.self_and_subtree_iter()
+
+        # c.undoer.clearUndoState() # New in 4.3.1.
+        changed = c.isChanged()
+        suite = unittest.makeSuite(unittest.TestCase)
+        for p in theIter:
+            if isTestNode(p): # @test
+                test = makeTestCase(c,p)
+                if test: suite.addTest(test)
+            elif isSuiteNode(p): # @suite
+                test = makeTestSuite(c,p)
+                if test: suite.addTest(test)
+        # Verbosity: 1: print just dots.
+        unittest.TextTestRunner(verbosity=verbosity).run(suite)
+    finally:
+        c.setChanged(changed) # Restore changed state.
+        c.selectPosition(p1)
+        g.unitTesting = g.app.unitTesting = False
+#@+node:ekr.20051104075904.5:class generalTestCase
+class generalTestCase(unittest.TestCase):
+
+    """Create a unit test from a snippet of code."""
+
+    @others
+#@+node:ekr.20051104075904.6:__init__
+def __init__ (self,c,p):
+
+     # Init the base class.
+    unittest.TestCase.__init__(self)
+
+    self.c = c
+    self.p = p.copy()
+#@-node:ekr.20051104075904.6:__init__
+#@+node:ekr.20051104075904.7: fail
+def fail (self,msg=None):
+
+    """Mark a unit test as having failed."""
+
+    __pychecker__ = '--no-argsused'
+        #  msg needed so signature matches base class.
+
+    import leoGlobals as g
+
+    g.app.unitTestDict["fail"] = g.callers()
+#@-node:ekr.20051104075904.7: fail
+#@+node:ekr.20051104075904.8:setUp
+def setUp (self):
+
+    c = self.c ; p = self.p
+
+    c.selectPosition(p)
+#@-node:ekr.20051104075904.8:setUp
+#@+node:ekr.20051104075904.9:tearDown
+def tearDown (self):
+
+    pass
+
+    # To do: restore the outline.
+#@-node:ekr.20051104075904.9:tearDown
+#@+node:ekr.20051104075904.10:runTest
+def runTest (self,define_g = True):
+
+    c = self.c ; p = self.p.copy()
+    script = g.getScript(c,p).strip()
+    self.assert_(script)
+
+    # New in Leo 4.4.3: always define the entries in g.app.unitTestDict.
+    g.app.unitTestDict = {'c':c,'g':g,'p':p and p.copy()}
+
+    if define_g:
+        d = {'c':c,'g':g,'p':p}
+    else:
+        d = {}
+
+    # Execute the script. Let unit test handle any errors!
+
+    if 0: # debug
+        import pdb
+        pdb.run(script+'\n',d)
+    else:
+        exec script + '\n' in d
+#@-node:ekr.20051104075904.10:runTest
+#@+node:ekr.20051104075904.11:shortDescription
+def shortDescription (self):
+
+    return self.p.headString() + '\n'
+#@-node:ekr.20051104075904.11:shortDescription
+#@-node:ekr.20051104075904.5:class generalTestCase
+#@+node:ekr.20051104075904.12:makeTestSuite
+@ This code executes the script in an @suite node.  This code assumes:
+- The script creates a one or more unit tests.
+- The script puts the result in g.app.scriptDict["suite"]
+@c
+
+def makeTestSuite (c,p):
+
+    """Create a suite of test cases by executing the script in an @suite node."""
+
+    p = p.copy()
+
+    h = p.headString()
+    script = g.getScript(c,p).strip()
+    if not script:
+        print "no script in %s" % h
+        return None
+
+    try:
+        exec script + '\n' in {'c':c,'g':g,'p':p}
+        suite = g.app.scriptDict.get("suite")
+        if not suite:
+            print "%s script did not set g.app.scriptDict" % h
+        return suite
+    except:
+        g.trace('Exception creating test cases for %s' % p.headString())
+        g.es_exception()
+        return None
+#@-node:ekr.20051104075904.12:makeTestSuite
+#@+node:ekr.20051104075904.13:makeTestCase
+def makeTestCase (c,p):
+
+    p = p.copy()
+
+    if p.bodyString().strip():
+        return generalTestCase(c,p)
+    else:
+        return None
+#@-node:ekr.20051104075904.13:makeTestCase
+#@-node:ekr.20051104075904.4:doTests...
+#@-node:ekr.20071019202447:Fixed bugs when running unit tests externally
 #@-node:ekr.20070920083033:Bugs
 #@+node:ekr.20070920083033.1:Features
 #@+node:ekr.20070919124912:Added button-font params
@@ -38870,9 +39571,9 @@ def isSignificantAtAutoTree (self,p):
             i = 1 ; j = g.skip_id(line,i,chars='-')
             word = s[i:j]
             if not (word and word in g.globalDirectiveList):
-                lines2.append(line)
+                lines.append(line)
         else:
-            lines2.append(line)
+            lines.append(line)
 
     s2 = ''.join(lines)
     g.trace('s2',s2)
@@ -38905,11 +39606,12 @@ def readOneAtAutoNode (self,fileName,p):
 
     ic.createOutline(fileName,parent=p.copy(),atAuto=True)
 
-    if g.os_path_exists(fileName):
-        if ic.errors:
-            g.es_print('Errors inhibited read @auto %s' % (fileName),color='red')
-        # else:
-            # c.atAutoDict [fileName] = True
+    if ic.errors:
+        g.es_print('Errors inhibited read @auto %s' % (fileName),color='red')
+
+    if ic.errors or not g.os_path_exists(fileName):
+        c.setBodyString(p,'')
+        p.clearDirty()
 #@-node:ekr.20070909100252:readOneAtAutoNode (atFile)
 #@-node:ekr.20071014113031:Simplified how @auto works
 #@+node:ekr.20071021054356:Added g.app.inBridge ivar

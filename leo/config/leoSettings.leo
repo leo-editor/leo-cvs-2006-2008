@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.665511265165">
-	<global_window_position top="83" left="243" height="640" width="958"/>
+<globals body_outline_ratio="0.408299866131">
+	<global_window_position top="83" left="243" height="747" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -86,8 +86,8 @@
 <v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20070926132045"><vh>Buttons</vh>
 <v t="ekr.20070926082407"><vh>@buttons</vh>
-<v t="ekr.20070926082256.1"><vh>@button Beautify</vh></v>
-<v t="ekr.20071009135515"><vh>@button rst3</vh></v>
+<v t="ekr.20070926082256.1"><vh>@@button Beautify</vh></v>
+<v t="ekr.20071009135515"><vh>@@button rst3</vh></v>
 </v>
 </v>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
@@ -8341,7 +8341,10 @@ the following character is underlined in the name.
 a menu separator.</t>
 <t tx="ekr.20070926082256.1">c.prettyPrintPythonNode()</t>
 <t tx="ekr.20070926082407">@color</t>
-<t tx="ekr.20070926132045">All @button nodes in this tree define **global buttons** that appear in all Leo outlines.</t>
+<t tx="ekr.20070926132045">All @button nodes in this tree define **global buttons** that appear in all Leo outlines.
+
+At present, all @button nodes in this tree are disabled because they start with
+@@ instead of just @. A better place for global buttons is in myLeoSettings.leo.</t>
 <t tx="ekr.20070927051742"></t>
 <t tx="ekr.20070927051856"></t>
 <t tx="ekr.20070927173324">A placeholder for the actual menu.

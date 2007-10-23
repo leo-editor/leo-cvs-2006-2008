@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.452991452991">
-	<global_window_position top="10" left="247" height="936" width="942"/>
+<globals body_outline_ratio="0.5">
+	<global_window_position top="26" left="280" height="936" width="942"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -41,7 +41,8 @@
 <v t="ekr.20031218072017.329"><vh>@thin ../doc/leoNotes.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
-<v t="EKR.20040429143933"><vh>@thin leoProjects.txt</vh></v>
+<v t="EKR.20040429143933"
+marks="ekr.20070927082205,"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.2" a="TV"><vh>To do</vh>
 <v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
@@ -77,7 +78,8 @@
 <v t="ekr.20031218072017.3655"><vh>@thin leoFrame.py</vh></v>
 <v t="ekr.20031218072017.3719"><vh>@thin leoGui.py</vh></v>
 <v t="ekr.20061031131434"><vh>@thin leoKeys.py</vh></v>
-<v t="ekr.20031218072017.3749"><vh>@thin leoMenu.py</vh></v>
+<v t="ekr.20031218072017.3749"
+marks="ekr.20070927082205,"><vh>@thin leoMenu.py</vh></v>
 </v>
 <v t="ekr.20070930105601"><vh>Gui Swing classes</vh>
 <v t="ekr.20071001092721"><vh>@thin leoSwingDialog.py</vh></v>
@@ -163,7 +165,7 @@ if 0: # Set to 1 for lint-like testing.
 <t tx="ekr.20031218072017.3821"></t>
 <t tx="ekr.20040629121554.1">def getSignOnLine (self):
     c = self
-    return "Leo 4.4.4 final, build %s, October 5, 2007" % c.getBuildNumber()
+    return "Leo 4.4.4 b3, build %s, October 22, 2007" % c.getBuildNumber()
 </t>
 <t tx="ekr.20050721093241">@nocolor
 

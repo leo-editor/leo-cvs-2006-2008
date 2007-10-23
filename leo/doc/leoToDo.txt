@@ -4,6 +4,10 @@
 #@+node:ekr.20071001045205:To do: 4.4.4 final
 #@+node:ekr.20071021112850:Brag about new colorizer
 #@-node:ekr.20071021112850:Brag about new colorizer
+#@+node:ekr.20071021125124:Revise plugins manager plugin
+Expunge leoPluginsManager.txt.
+#@nonl
+#@-node:ekr.20071021125124:Revise plugins manager plugin
 #@+node:ekr.20071020205155:finish @textclone proto
 #@-node:ekr.20071020205155:finish @textclone proto
 #@+node:ekr.20071018173151:Install patch to put the outline in the main pane
@@ -745,6 +749,8 @@ SCS as a back-up system, saving many (uninteresting) intermediate steps while
 implementing a new feature.
 #@nonl
 #@-node:ekr.20071001052501:Versioning for nodes
+#@+node:ekr.20071021213334:Create an easy way to attach icons to headlines :-)
+#@-node:ekr.20071021213334:Create an easy way to attach icons to headlines :-)
 #@-node:ekr.20070703111455.1:Most important
 #@+node:ekr.20070630143345:Easy and useful
 #@+node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus

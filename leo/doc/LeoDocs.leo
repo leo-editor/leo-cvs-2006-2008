@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.655253837072">
-	<global_window_position top="16" left="247" height="941" width="892"/>
+	<global_window_position top="16" left="247" height="901" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -3319,6 +3319,7 @@
 <v t="ekr.20071021111856.252"><vh>Installed patch to fix Fedora Tk.Text bug</vh></v>
 <v t="ekr.20071021111856.437"><vh>Fixed bug in rst3 plugin</vh></v>
 <v t="ekr.20071021111856.461"><vh>Allow unicode characters in Leo file names</vh></v>
+<v t="ekr.20071023080957"><vh>Fixed bugs when running unit tests externally</vh></v>
 </v>
 <v t="ekr.20071004101443.29"><vh>New Features</vh>
 <v t="ekr.20071004103659"><vh>The Great Graph Aha</vh></v>
@@ -32116,7 +32117,7 @@ window). It then creates clones of all inserted, deleted and changed nodes.</t>
 <t tx="ekr.20071001122703">All @buttons tree in a settings file defines global buttons that are created in
 the icon area of all .leo files. You define @button nodes in the @buttons tree
 as usual.</t>
-<t tx="ekr.20071004101349">Leo 4.4.4 beta 3                            October 22, 2007
+<t tx="ekr.20071004101349">Leo 4.4.4 beta 3                            October 23, 2007
 
 Leo 4.4.4 beta 3 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
@@ -32464,5 +32465,9 @@ True: remove @auto, @file, @nosent and @thin from the start of headlines.</t>
 - Removed the discussion of all menu convenience routines: they are not needed now that Leo supports @menus nodes.
 
 - The 'writing plugins' chapter is now very simple.</t>
+<t tx="ekr.20071023080957">The run-unit-tests command runs tests using the bridge, which uses a nullGui and a stringTextWidget.
+
+Added a hack to g.getScript so it always gets the script from p.bodyString when
+g.app.gui.inBridge is True.</t>
 </tnodes>
 </leo_file>

@@ -46,6 +46,7 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
+<v t="ekr.20071023092623"><vh>ANN: Leo 4.4.4 beta 3</vh></v>
 <v t="ekr.20070919082634"><vh>ANN: Leo 4.4.4 beta 2</vh></v>
 <v t="ekr.20070703100935"><vh>ANN: Leo 4.4.4 beta 1</vh></v>
 <v t="EKR.20040519091259.30"><vh>Previous announcements</vh>
@@ -164,8 +165,8 @@
 <v t="ekr.20040701160830.1"><vh>names for use in suppressions</vh></v>
 <v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
-<v t="ekr.20050118095021"><vh>Leo 4.x installer</vh>
-<v t="ekr.20050118103207"><vh>Keeping installer/uninstallers in synch</vh>
+<v t="ekr.20050118095021" a="TV"><vh>Leo 4.x installer</vh>
+<v t="ekr.20050118103207" a="E"><vh>Keeping installer/uninstallers in synch</vh>
 <v t="ekr.20050118104149"><vh>config files</vh>
 <v t="ekr.20050118104149.1"><vh>&lt;&lt; install config files &gt;&gt;</vh></v>
 <v t="ekr.20050118104149.2"><vh>&lt;&lt; uninstall config files &gt;&gt;</vh></v>
@@ -178,7 +179,7 @@
 <v t="ekr.20050118104901.1"><vh>&lt;&lt; install doc files &gt;&gt;</vh></v>
 <v t="ekr.20050118104901.2"><vh>&lt;&lt; uninstall doc files &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20050118122740"><vh>extensions files</vh>
+<v t="ekr.20050118122740" a="E"><vh>extensions files</vh>
 <v t="ekr.20050118122404"><vh>&lt;&lt; install extensions files &gt;&gt;</vh></v>
 <v t="ekr.20050118122740.1"><vh>&lt;&lt; uninstall extensions files &gt;&gt;</vh></v>
 </v>
@@ -215,7 +216,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846"><vh>Distribution files</vh>
+<v t="EKR.20040519090846" a="E"><vh>Distribution files</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
@@ -234,12 +235,12 @@
 <v t="EKR.20040519082027.34"><vh>@file-thin ../uninstall</vh></v>
 </v>
 </v>
-<v t="ekr.20051205102401" a="E"><vh>Update these for each release</vh>
+<v t="ekr.20051205102401"><vh>Update these for each release</vh>
 <v t="EKR.20040519090846.9"><vh>@asis ../doc/README.TXT</vh></v>
 <v t="EKR.20040519090846.8"><vh>@asis ../doc/PKG-INFO.TXT</vh></v>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings for leo-4.3.nsi &gt;&gt;</vh></v>
 <v t="ekr.20050118124408"><vh>&lt;&lt; 4.3 nsi installer version &gt;&gt;</vh></v>
-<v t="ekr.20070622084634" a="TV"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
+<v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -689,7 +690,7 @@ c:\python22\python &lt;leopath&gt;leo.py %1
 </t>
 <t tx="EKR.20040519090846.8">Metadata-Version: 1.0
 Name: leo
-Version: 4.4.4-beta-2
+Version: 4.4.4-beta-3
 Summary: Leo: Literate Editor with Outlines
 Home-page: http://webpages.charter.net/edreamleo/front.html
 Author: Edward K. Ream
@@ -708,10 +709,13 @@ Description: Leo is an outline-oriented editor written in 100% pure Python.
 		Download tkIcon from http://www.effbot.org/downloads/#tkIcon
 Platform: Windows, Linux, Macintosh
 </t>
-<t tx="EKR.20040519090846.9">Leo 4.4.4 beta 2                                September 19, 2007
+<t tx="EKR.20040519090846.9">Leo 4.4.4 beta 3                                         October 23, 2007
 
-Leo 4.4.4 beta 2 is available at:
+Leo 4.4.4 beta 3 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo 4.4.4 contains many important features originally planned for later releases.
+It's been a good month :-)
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
@@ -719,11 +723,28 @@ http://webpages.charter.net/edreamleo/intro.html
 The highlights of Leo 4.4.4:
 ----------------------------
 
-- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
-  This plugin features much better performance.
+- The Great Graph Aha (tm): simple scripts allow Leo outlines to represent
+  arbitrary directed graphs. There is no need for a separate 'graph world'. The
+  graphed.py plugin is a direct result of this Aha. The graphed.py plugin allows
+  you to create general graphs from Leo outlines.
 
-- Support for @auto nodes.  Such nodes allow people to collaborate using Leo
-  without inserting Leo sentinels in the files Leo generates.
+- @menus trees in settings files create all of Leo's menus.  It is now dead
+  easy to make Leo's menus look the way you want.
+
+- @buttons trees in settings files create common @button nodes created in all
+  Leo outlines.
+
+- @auto nodes eliminate sentinels in derived files, thereby allowing people to
+  collaborate using Leo more easily.
+
+- New commands for resolving cvs conflicts.
+
+- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
+  This plugin features much better performance and a new, elegant algorithm.
+
+- Leo is now compatible with jython.
+
+- The usual assortment of bug fixes and other minor improvements.
 
 Links:
 ------
@@ -2882,7 +2903,7 @@ WindowIcon off
 
 ; settings from HM NIS Edit Wizard
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "LeoSetup-4-4-4-beta-2.exe"
+OutFile "LeoSetup-4-4-4-beta-3.exe"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 InstallDir "$PROGRAMFILES\Leo"
 Icon "..\Icons\leo_inst.ico"
@@ -3043,6 +3064,9 @@ Delete "$INSTDIR\scripts\openLeoScript.sh"</t>
 <t tx="ekr.20050118122404">File "..\extensions\aspell23.pyd"
 File "..\extensions\aspell24.pyd"
 
+SetOutPath "$INSTDIR\extensions\Gato"
+File "..\extensions\Gato\*.*
+
 ; File "..\extensions\__init__.py"
 File "..\extensions\optparse.py"
 File "..\extensions\path.py"
@@ -3083,6 +3107,8 @@ File "..\test\leoDynamicTest.py"
 <t tx="ekr.20050118122740.1">Delete "$INSTDIR\extensions\aspell23.pyd"
 Delete "$INSTDIR\extensions\aspell24.pyd"
 
+Delete "$INSTDIR\extensions\Gato\*.*"
+
 Delete "$INSTDIR\extensions\__init__.p*"
 
 Delete "$INSTDIR\extensions\optparse.py"
@@ -3106,7 +3132,7 @@ Delete "$INSTDIR\test\test.leo"
 Delete "$INSTDIR\test\unitTest.leo"
 Delete "$INSTDIR\test\leoBridgeTest.py"
 Delete "$INSTDIR\test\leoDynamicTest.py"</t>
-<t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4.4-beta-2"</t>
+<t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4.4-beta-3"</t>
 <t tx="ekr.20050124083006">Leo 4.3 alpha 1 is now available at http://sourceforge.net/projects/leo/
 
 Leo 4.3 is the culmination of more than four months of work. In spite
@@ -5382,7 +5408,7 @@ print ; print '='*30,'setup.py complete','='*30 ; print
 </t>
 <t tx="ekr.20070622081640"># These can't be used at present.</t>
 <t tx="ekr.20070622084133"></t>
-<t tx="ekr.20070622084634">version='4.4.4-beta-2' # No spaces and no trailing comma.</t>
+<t tx="ekr.20070622084634">version='4.4.4-beta-3' # No spaces and no trailing comma.</t>
 <t tx="ekr.20070622091049">Leo 4.4.3 beta 3                                June 23, 2006
 
 Leo 4.4.3 beta 3 is available at:
@@ -5509,6 +5535,50 @@ The highlights of Leo 4.4.4:
 
 - Support for @auto nodes.  Such nodes allow people to collaborate using Leo
   without inserting Leo sentinels in the files Leo generates.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20071023092623">Leo 4.4.4 beta 3                                         October 23, 2007
+
+Leo 4.4.4 beta 3 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo 4.4.4 contains many important features originally planned for later releases.
+It's been a good month :-)
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.4:
+----------------------------
+
+- The Great Graph Aha (tm): simple scripts allow Leo outlines to represent
+  arbitrary directed graphs. There is no need for a separate 'graph world'. The
+  graphed.py plugin is a direct result of this Aha. The graphed.py plugin allows
+  you to create general graphs from Leo outlines.
+  
+- @menus trees in settings files create all of Leo's menus.  It is now dead
+  easy to make Leo's menus look the way you want.
+
+- @buttons trees in settings files create common @button nodes created in all
+  Leo outlines.
+
+- @auto nodes eliminate sentinels in derived files, thereby allowing people to
+  collaborate using Leo more easily.
+  
+- New commands for resolving cvs conflicts.
+
+- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
+  This plugin features much better performance and a new, elegant algorithm.
+  
+- Leo is now compatible with jython.
+
+- The usual assortment of bug fixes and other minor improvements.
 
 Links:
 ------
