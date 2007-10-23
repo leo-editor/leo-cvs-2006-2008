@@ -293,7 +293,7 @@ Section "Leo" SEC01
   File "..\extensions\aspell24.pyd"
 
   SetOutPath "$INSTDIR\extensions\Gato"
-  File "..\extensions\Gato\*.*
+  File "..\extensions\Gato\*.*"
 
   ; File "..\extensions\__init__.py"
   File "..\extensions\optparse.py"
