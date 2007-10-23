@@ -165,7 +165,7 @@
 <v t="ekr.20040701160830.1"><vh>names for use in suppressions</vh></v>
 <v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
-<v t="ekr.20050118095021" a="TV"><vh>Leo 4.x installer</vh>
+<v t="ekr.20050118095021" a="E"><vh>Leo 4.x installer</vh>
 <v t="ekr.20050118103207" a="E"><vh>Keeping installer/uninstallers in synch</vh>
 <v t="ekr.20050118104149"><vh>config files</vh>
 <v t="ekr.20050118104149.1"><vh>&lt;&lt; install config files &gt;&gt;</vh></v>
@@ -180,7 +180,7 @@
 <v t="ekr.20050118104901.2"><vh>&lt;&lt; uninstall doc files &gt;&gt;</vh></v>
 </v>
 <v t="ekr.20050118122740" a="E"><vh>extensions files</vh>
-<v t="ekr.20050118122404"><vh>&lt;&lt; install extensions files &gt;&gt;</vh></v>
+<v t="ekr.20050118122404" a="TV"><vh>&lt;&lt; install extensions files &gt;&gt;</vh></v>
 <v t="ekr.20050118122740.1"><vh>&lt;&lt; uninstall extensions files &gt;&gt;</vh></v>
 </v>
 <v t="ekr.20050118104901.3"><vh>icons</vh>
@@ -216,7 +216,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846" a="E"><vh>Distribution files</vh>
+<v t="EKR.20040519090846"><vh>Distribution files</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
@@ -3065,7 +3065,7 @@ Delete "$INSTDIR\scripts\openLeoScript.sh"</t>
 File "..\extensions\aspell24.pyd"
 
 SetOutPath "$INSTDIR\extensions\Gato"
-File "..\extensions\Gato\*.*
+File "..\extensions\Gato\*.*"
 
 ; File "..\extensions\__init__.py"
 File "..\extensions\optparse.py"
