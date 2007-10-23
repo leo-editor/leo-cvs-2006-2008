@@ -1500,18 +1500,17 @@ class baseLeoImportCommands:
 
             c = self.c ; at = c.atFileCommands
 
-            if s1 and s2:
-                if s1 == s2: return True
+            if s1 is None and s2 is None:
 
-            at.write(self.root,
-                nosentinels=True,thinFile=False,
-                scriptWrite=False,toString=True,
-                write_strips_blank_lines=False,
-            )
+                at.write(self.root,
+                    nosentinels=True,thinFile=False,
+                    scriptWrite=False,toString=True,
+                    write_strips_blank_lines=False)
 
-            s1,s2 = self.file_s, at.stringOutput
-            s1 = s1.replace('\r','')
-            s2 = s2.replace('\r','')
+                s1,s2 = self.file_s, at.stringOutput
+                s1 = s1.replace('\r','')
+                s2 = s2.replace('\r','')
+
             if s1 == s2: return True
 
             # Make sure we have a trailing newline in both strings.
@@ -1542,6 +1541,7 @@ class baseLeoImportCommands:
 
             ic = c.importCommands
             runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+            runner.root = p.copy()
 
             s1 = 'line1\nline2\n'
             s2 = 'line1\nline2a\n'
@@ -2605,6 +2605,24 @@ class baseLeoImportCommands:
 
         #@-node:ekr.20070808121958:regularizeError
         #@-node:ekr.20070808115837.1:regularizeWhitespace
+        #@+node:ekr.20071023082323:@test run
+        if g.unitTesting:
+
+            ic = c.importCommands
+            ic.methodName = 'test' ; ic.fileType = '.py'
+
+            runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+            runner.root = p.copy()
+            parent = p.copy()
+
+            s = '''\
+        def spam():
+            pass
+        '''
+            s = g.adjustTripleString(s,-4)
+
+            runner.run(s,parent)
+        #@-node:ekr.20071023082323:@test run
         #@-node:ekr.20070707072749:run (baseScannerClass)
         #@-others
     #@-node:ekr.20070703122141.65: class baseScannerClass
