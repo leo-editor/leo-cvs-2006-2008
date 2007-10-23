@@ -8517,82 +8517,82 @@ class AspellClass:
                 assert(libname)
                 self.aspell = aspell = ctypes.CDLL(libname)
         except Exception:
-            # if not sys.platform.startswith('win'):
-                # g.es_exception()
-            # g.es('Can not load %s' % (path),color='blue')
             print 'Can not load %s' % (path)
-            self.aspell = None
-            self.check = None
-            self.sc = None
+            self.aspell = self.check = self.sc = None
             return
 
-        #@    << define and configure aspell entry points >>
-        #@+node:ekr.20061018111933:<< define and configure aspell entry points >>
-        # new_aspell_config
-        new_aspell_config = aspell.new_aspell_config 
-        new_aspell_config.restype = c_int
+        try:
+            #@        << define and configure aspell entry points >>
+            #@+node:ekr.20061018111933:<< define and configure aspell entry points >>
+            # new_aspell_config
+            new_aspell_config = aspell.new_aspell_config 
+            new_aspell_config.restype = c_int
 
-        # aspell_config_replace
-        aspell_config_replace = aspell.aspell_config_replace 
-        aspell_config_replace.argtypes = [c_int, c_char_p, c_char_p] 
+            # aspell_config_replace
+            aspell_config_replace = aspell.aspell_config_replace 
+            aspell_config_replace.argtypes = [c_int, c_char_p, c_char_p] 
 
-        # aspell_config_retrieve
-        aspell_config_retrieve = aspell.aspell_config_retrieve 
-        aspell_config_retrieve.restype = c_char_p  
-        aspell_config_retrieve.argtypes = [c_int, c_char_p] 
+            # aspell_config_retrieve
+            aspell_config_retrieve = aspell.aspell_config_retrieve 
+            aspell_config_retrieve.restype = c_char_p  
+            aspell_config_retrieve.argtypes = [c_int, c_char_p] 
 
-        # aspell_error_message
-        aspell_error_message = aspell.aspell_error_message 
-        aspell_error_message.restype = c_char_p  
+            # aspell_error_message
+            aspell_error_message = aspell.aspell_error_message 
+            aspell_error_message.restype = c_char_p  
 
-        sc = new_aspell_config()
-        if 0:
-            print sc 
-            print aspell_config_replace(sc, "prefix", aspell_dir) #1/0 
-            print 'prefix', aspell_dir, `aspell_config_retrieve(sc, "prefix")`
-            print aspell_config_retrieve(sc, "lang")
-            print aspell_config_replace(sc, "lang",self.local_language_code)
-            print aspell_config_retrieve(sc, "lang")
+            sc = new_aspell_config()
+            if 0:
+                print sc 
+                print aspell_config_replace(sc, "prefix", aspell_dir) #1/0 
+                print 'prefix', aspell_dir, `aspell_config_retrieve(sc, "prefix")`
+                print aspell_config_retrieve(sc, "lang")
+                print aspell_config_replace(sc, "lang",self.local_language_code)
+                print aspell_config_retrieve(sc, "lang")
 
-        possible_err = aspell.new_aspell_speller(sc)
-        aspell.delete_aspell_config(c_int(sc))
+            possible_err = aspell.new_aspell_speller(sc)
+            aspell.delete_aspell_config(c_int(sc))
 
-        # Rudimentary error checking, needs more.  
-        if aspell.aspell_error_number(possible_err) != 0:
-            print 'err', aspell_error_message(possible_err)
-            spell_checker = None
-        else: 
-            spell_checker = aspell.to_aspell_speller(possible_err)
+            # Rudimentary error checking, needs more.  
+            if aspell.aspell_error_number(possible_err) != 0:
+                print 'err', aspell_error_message(possible_err)
+                spell_checker = None
+            else: 
+                spell_checker = aspell.to_aspell_speller(possible_err)
 
-        if not spell_checker:
-            raise Exception('aspell checker not enabled')
+            if not spell_checker:
+                raise Exception('aspell checker not enabled')
 
-        word_list_size = aspell.aspell_word_list_size
-        word_list_size.restype = c_int
-        word_list_size.argtypes = [c_int,]
+            word_list_size = aspell.aspell_word_list_size
+            word_list_size.restype = c_int
+            word_list_size.argtypes = [c_int,]
 
-        # word_list_elements
-        word_list_elements = aspell.aspell_word_list_elements
-        word_list_elements.restype = c_int
-        word_list_elements.argtypes = [c_int,]
+            # word_list_elements
+            word_list_elements = aspell.aspell_word_list_elements
+            word_list_elements.restype = c_int
+            word_list_elements.argtypes = [c_int,]
 
-        # string_enumeration_next
-        string_enumeration_next = aspell.aspell_string_enumeration_next
-        string_enumeration_next.restype = c_char_p
-        string_enumeration_next.argtypes = [c_int,]
+            # string_enumeration_next
+            string_enumeration_next = aspell.aspell_string_enumeration_next
+            string_enumeration_next.restype = c_char_p
+            string_enumeration_next.argtypes = [c_int,]
 
-        # check
-        check = aspell.aspell_speller_check
-        check.restype = c_int 
-        check.argtypes = [c_int, c_char_p, c_int]
+            # check
+            check = aspell.aspell_speller_check
+            check.restype = c_int 
+            check.argtypes = [c_int, c_char_p, c_int]
 
-        # suggest
-        suggest = aspell.aspell_speller_suggest
-        suggest.restype = c_int 
-        suggest.argtypes = [c_int, c_char_p, c_int]
-        #@nonl
-        #@-node:ekr.20061018111933:<< define and configure aspell entry points >>
-        #@nl
+            # suggest
+            suggest = aspell.aspell_speller_suggest
+            suggest.restype = c_int 
+            suggest.argtypes = [c_int, c_char_p, c_int]
+            #@nonl
+            #@-node:ekr.20061018111933:<< define and configure aspell entry points >>
+            #@nl
+        except Exception:
+            print 'aspell checker not enabled'
+            self.aspell = self.check = self.sc = None
+            return
 
         # Remember these functions (bound methods).
         # No other ctypes data is known outside this method.
