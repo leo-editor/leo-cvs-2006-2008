@@ -585,11 +585,12 @@ class atFile:
 
         ic.createOutline(fileName,parent=p.copy(),atAuto=True)
 
-        if g.os_path_exists(fileName):
-            if ic.errors:
-                g.es_print('Errors inhibited read @auto %s' % (fileName),color='red')
-            # else:
-                # c.atAutoDict [fileName] = True
+        if ic.errors:
+            g.es_print('Errors inhibited read @auto %s' % (fileName),color='red')
+
+        if ic.errors or not g.os_path_exists(fileName):
+            c.setBodyString(p,'')
+            p.clearDirty()
     #@-node:ekr.20070909100252:readOneAtAutoNode (atFile)
     #@+node:ekr.20041005105605.27:readOpenFile
     def readOpenFile(self,root,theFile,fileName):
@@ -3132,9 +3133,9 @@ class atFile:
                 i = 1 ; j = g.skip_id(line,i,chars='-')
                 word = s[i:j]
                 if not (word and word in g.globalDirectiveList):
-                    lines2.append(line)
+                    lines.append(line)
             else:
-                lines2.append(line)
+                lines.append(line)
 
         s2 = ''.join(lines)
         g.trace('s2',s2)
