@@ -1,9 +1,14 @@
+# -*- coding: utf-8 -*-
 #@+leo-ver=4-thin
 #@+node:ekr.20031218072017.3206:@thin leoImport.py
+#@@first
+# The line above is required so non-ascii characters will be valid in unit tests.
 
 #@@language python
 #@@tabwidth -4
 #@@pagewidth 80
+#@@encoding utf-8
+# The line above is required so the unit test that simulates an @auto leoImport.py will work!
 
 # Minor to do: can leo determine the proper kind of import to do?  Should it?
 # Minor to do: can @auto handle files containing Leo sentinels?
@@ -673,10 +678,12 @@ class baseLeoImportCommands:
         return s
     #@-node:ekr.20031218072017.3312:massageWebBody
     #@+node:ekr.20031218072017.1463:setEncoding
-    def setEncoding (self):
+    def setEncoding (self,p=None):
 
         # scanDirectives checks the encoding: may return None.
-        theDict = g.scanDirectives(self.c)
+        c = self.c
+        if p is None: p = c.currentPosition()
+        theDict = g.scanDirectives(c,p)
         encoding = theDict.get("encoding")
         if encoding and g.isValidEncoding(encoding):
             self.encoding = encoding
@@ -693,7 +700,7 @@ class baseLeoImportCommands:
         c = self.c ; u = c.undoer ; s1 = s
         junk,self.fileName = g.os_path_split(fileName)
         self.methodName,self.fileType = g.os_path_splitext(self.fileName)
-        self.setEncoding()
+        self.setEncoding(p=parent)
         # g.trace(self.fileName,self.fileType)
         # All file types except the following just get copied to the parent node.
         if not ext: ext = self.fileType
@@ -1498,27 +1505,33 @@ class baseLeoImportCommands:
 
             '''Return True if a trial write produces the original file.'''
 
+            # s1 and s2 are for unit testing.
+
             c = self.c ; at = c.atFileCommands
 
             if s1 is None and s2 is None:
-
                 at.write(self.root,
                     nosentinels=True,thinFile=False,
                     scriptWrite=False,toString=True,
                     write_strips_blank_lines=False)
-
                 s1,s2 = self.file_s, at.stringOutput
-                s1 = s1.replace('\r','')
-                s2 = s2.replace('\r','')
 
-            if s1 == s2: return True
+            s1 = g.toUnicode(s1,self.encoding)
+            s2 = g.toUnicode(s2,self.encoding)
 
             # Make sure we have a trailing newline in both strings.
+            s1 = s1.replace('\r','')
+            s2 = s2.replace('\r','')
             if not s1.endswith('\n'): s1 = s1 + '\n'
             if not s2.endswith('\n'): s2 = s2 + '\n'
 
+            if s1 == s2: return True
+
             lines1 = g.splitLines(s1) ; n1 = len(lines1)
             lines2 = g.splitLines(s2) ; n2 = len(lines2)
+
+            # g.trace('lines1',lines1)
+            # g.trace('lines2',lines2)
 
             ok = True ; bad_i = 0
             for i in xrange(max(n1,n2)):
@@ -1543,8 +1556,10 @@ class baseLeoImportCommands:
             runner = ic.baseScannerClass(ic,atAuto=True,language='python')
             runner.root = p.copy()
 
-            s1 = 'line1\nline2\n'
-            s2 = 'line1\nline2a\n'
+            g.app.unitTestDict ['expectedErrors'] = 1
+
+            s1 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2\n',encoding='utf-8')
+            s2 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2a\n',encoding='utf-8')
             runner.checkTrialWrite(s1=s1,s2=s2)
         #@-node:ekr.20070816103348:@test checkTriailWrite
         #@-node:ekr.20070703122141.104:checkTrialWrite & tests
@@ -1587,8 +1602,8 @@ class baseLeoImportCommands:
                 if not g.app.unitTesting or i+1 != expectedMismatch:
                     # g.es_print('compareHelper')
                     g.es_print('*** first mismatch at line %d' % (i+1))
-                    g.es_print('original line:  %s' % repr(line1))
-                    g.es_print('generated line: %s' % repr(line2))
+                    g.es_print('original line:  %s' % line1)
+                    g.es_print('generated line: %s' % line2)
                 d ['actualMismatchLine'] = i+1
                 # g.trace('lines 1...\n',repr(lines1),'\nlines2...\n',repr(lines2))
                 return False
