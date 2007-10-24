@@ -19207,7 +19207,6 @@ def writeOneAtAutoNode(self,p,toString,force):
     fileName = g.os_path_join(at.default_directory,fileName)
     exists = g.os_path_exists(fileName)
 
-    g.trace('toString',toString)
     if not toString and not self.shouldWriteAtAutoNode(p,exists,force):
         return False
 
@@ -20058,7 +20057,6 @@ def writeOneAtAutoNode(self,p,toString,force):
     fileName = g.os_path_join(at.default_directory,fileName)
     exists = g.os_path_exists(fileName)
 
-    g.trace('toString',toString)
     if not toString and not self.shouldWriteAtAutoNode(p,exists,force):
         return False
 
@@ -20898,7 +20896,6 @@ def writeOneAtAutoNode(self,p,toString,force):
     fileName = g.os_path_join(at.default_directory,fileName)
     exists = g.os_path_exists(fileName)
 
-    g.trace('toString',toString)
     if not toString and not self.shouldWriteAtAutoNode(p,exists,force):
         return False
 
@@ -22867,7 +22864,6 @@ def writeOneAtAutoNode(self,p,toString,force):
     fileName = g.os_path_join(at.default_directory,fileName)
     exists = g.os_path_exists(fileName)
 
-    g.trace('toString',toString)
     if not toString and not self.shouldWriteAtAutoNode(p,exists,force):
         return False
 
@@ -23202,7 +23198,6 @@ def writeOneAtAutoNode(self,p,toString,force):
     fileName = g.os_path_join(at.default_directory,fileName)
     exists = g.os_path_exists(fileName)
 
-    g.trace('toString',toString)
     if not toString and not self.shouldWriteAtAutoNode(p,exists,force):
         return False
 
@@ -30757,7 +30752,6 @@ def writeOneAtAutoNode(self,p,toString,force):
     fileName = g.os_path_join(at.default_directory,fileName)
     exists = g.os_path_exists(fileName)
 
-    g.trace('toString',toString)
     if not toString and not self.shouldWriteAtAutoNode(p,exists,force):
         return False
 
@@ -33741,7 +33735,6 @@ def writeOneAtAutoNode(self,p,toString,force):
     fileName = g.os_path_join(at.default_directory,fileName)
     exists = g.os_path_exists(fileName)
 
-    g.trace('toString',toString)
     if not toString and not self.shouldWriteAtAutoNode(p,exists,force):
         return False
 
@@ -39570,7 +39563,6 @@ def writeOneAtAutoNode(self,p,toString,force):
     fileName = g.os_path_join(at.default_directory,fileName)
     exists = g.os_path_exists(fileName)
 
-    g.trace('toString',toString)
     if not toString and not self.shouldWriteAtAutoNode(p,exists,force):
         return False
 
@@ -40122,7 +40114,6 @@ def writeOneAtAutoNode(self,p,toString,force):
     fileName = g.os_path_join(at.default_directory,fileName)
     exists = g.os_path_exists(fileName)
 
-    g.trace('toString',toString)
     if not toString and not self.shouldWriteAtAutoNode(p,exists,force):
         return False
 
