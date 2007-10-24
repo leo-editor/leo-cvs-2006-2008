@@ -2643,7 +2643,7 @@ def enl(tabName='Log'):
         log.newlines += 1
         log.putnl(tabName)
 #@-node:ekr.20031218072017.1474:enl, ecnl & ecnls
-#@+node:ekr.20070626132332:es
+#@+node:ekr.20070626132332:es & minitest
 def es(s,*args,**keys):
     # print 'es','app.log',repr(app.log),'log.isNull',not app.log or app.log.isNull,repr(s)
     log = app.log
@@ -2685,8 +2685,25 @@ def es(s,*args,**keys):
         else:
             app.logWaiting.append((s,color),)
             # print s,
-#@-node:ekr.20070626132332:es
-#@+node:ekr.20050707064040:es_print & test
+#@+node:ekr.20071024101611:mini test of es
+#@@nocolor
+#@+at
+# 
+# This doesn't work as an external unit test.
+# To test, select all following lines and do execute-script.
+# 
+#@@first
+# 
+# s1 = 'line1 Ä, ڱ,  궯, 奠 end'
+# s2 = g.toUnicode(s1,'utf-8')
+# 
+# for s in (s1,s2):
+#     g.es(s)
+#     g.es_print(s)
+#@-at
+#@-node:ekr.20071024101611:mini test of es
+#@-node:ekr.20070626132332:es & minitest
+#@+node:ekr.20050707064040:es_print
 def es_print(s,*args,**keys):
 
     if keys.get('newline') in (True,None):
@@ -2702,7 +2719,7 @@ if g.unitTesting:
     g.es_print('after')
     g.es_print('done')
 #@-node:ekr.20070621092938:@@test g.es_print
-#@-node:ekr.20050707064040:es_print & test
+#@-node:ekr.20050707064040:es_print
 #@+node:ekr.20050707065530:es_trace & test
 def es_trace(s,*args,**keys):
 
