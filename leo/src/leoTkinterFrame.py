@@ -434,6 +434,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         f = self ; f.c = c
         # g.trace('tkFrame','c',c,g.callers())
 
+        self.bigTree           = c.config.getBool('big_outline_pane')
         self.trace_status_line = c.config.getBool('trace_status_line')
         self.use_chapters      = c.config.getBool('use_chapters')
         self.use_chapter_tabs  = c.config.getBool('use_chapter_tabs')
@@ -494,13 +495,20 @@ class leoTkinterFrame (leoFrame.leoFrame):
         if f.use_chapters:
             c.chapterController = cc = leoChapters.chapterController(c)
 
-        if self.use_chapters and self.use_chapter_tabs:
-            cc.tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
-
-        f.canvas = f.createCanvas(f.split2Pane1)
-        f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
-        f.log    = leoTkinterLog(f,f.split2Pane2)
-        f.body   = leoTkinterBody(f,f.split1Pane2)
+        if self.bigTree: # Put outline in the main splitter.
+            if self.use_chapters and self.use_chapter_tabs:
+                cc.tt = leoTkinterTreeTab(c,f.split1Pane2,cc)
+            f.canvas = f.createCanvas(f.split1Pane2)
+            f.tree  = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
+            f.log   = leoTkinterLog(f,f.split2Pane1)
+            f.body  = leoTkinterBody(f,f.split2Pane2)
+        else:
+            if self.use_chapters and self.use_chapter_tabs:
+                cc.tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
+            f.canvas = f.createCanvas(f.split2Pane1)
+            f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
+            f.log    = leoTkinterLog(f,f.split2Pane2)
+            f.body   = leoTkinterBody(f,f.split1Pane2)
 
         # Yes, this an "official" ivar: this is a kludge.
         f.bodyCtrl = f.body.bodyCtrl
@@ -779,6 +787,9 @@ class leoTkinterFrame (leoFrame.leoFrame):
 
     def divideAnySplitter (self, frac, verticalFlag, bar, pane1, pane2):
 
+        if self.bigTree:
+            pane1,pane2 = pane2,pane1
+
         if verticalFlag:
             # Panes arranged vertically; horizontal splitter bar
             bar.place(rely=frac)
@@ -849,6 +860,9 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20031218072017.3951:onDrag...
     #@+node:ekr.20031218072017.3952:placeSplitter
     def placeSplitter (self,bar,pane1,pane2,verticalFlag):
+
+        if self.bigTree:
+            pane1,pane2 = pane2,pane1
 
         if verticalFlag:
             # Panes arranged vertically; horizontal splitter bar

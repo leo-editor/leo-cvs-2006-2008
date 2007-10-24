@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.408299866131">
-	<global_window_position top="83" left="243" height="747" width="864"/>
+	<global_window_position top="83" left="243" height="727" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -1171,6 +1171,7 @@
 <v t="ekr.20041119052015.1"><vh>@bool log_pane_wraps = False</vh></v>
 </v>
 <v t="ekr.20041119034357.56"><vh>Options for new windows</vh>
+<v t="ekr.20071024145953"><vh>@bool big_outline_pane = False</vh></v>
 <v t="ekr.20060930085332"><vh>@bool outline_pane_has_initial_focus = True</vh></v>
 <v t="ekr.20041119034357.59"><vh>@strings[vertical,horizontal] initial_splitter_orientation = vertical</vh></v>
 <v t="ekr.20041119034357.57"><vh>@ratio initial_horizontal_ratio = 0.4</vh></v>
@@ -8390,5 +8391,7 @@ else:
 <t tx="ekr.20071010123015">文件</t>
 <t tx="ekr.20071010123015.1">新建</t>
 <t tx="ekr.20071010123223.1">打开</t>
+<t tx="ekr.20071024145953">False (legacy): Top pane contains outline and log panes.
+True: Top pane contains only outline.  Bottom pane contains body and log panes.</t>
 </tnodes>
 </leo_file>

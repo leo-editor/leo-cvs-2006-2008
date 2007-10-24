@@ -42922,6 +42922,379 @@ if False or g.unitTesting:
 #@-node:ekr.20070911110507:reportMismatch & test
 #@-node:ekr.20070808115837:Checking
 #@-node:ekr.20071017163243:Fixed bug: utf-8 files now get imported properly
+#@+node:ekr.20071018173151:Installed patch to put the outline in the main pane
+@nocolor
+
+I changed createSplitterComponents.
+
+Here's a diff, which gives me a ":o" arrangement, which suits me fine.   Obviously,
+inclusion in released code would need to make this dependent on an option.
+
+--- -  2007-10-18 14:07:47.799553726 -0400
++++ leoTkinterFrame.py  2007-10-18 13:58:24.000000000 -0400
+@@ -495,12 +495,12 @@
+@color
+
+        c.chapterController = cc = leoChapters.chapterController(c)
+
+        if self.use_chapters and self.use_chapter_tabs:
+-            cc.tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
++            cc.tt = leoTkinterTreeTab(c,f.split1Pane2,cc)
+
+-        f.canvas = f.createCanvas(f.split2Pane1)
++        f.canvas = f.createCanvas(f.split1Pane2)
+        f.tree  = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
+        f.log    = leoTkinterLog(f,f.split2Pane2)
+-        f.body  = leoTkinterBody(f,f.split1Pane2)
++        f.body  = leoTkinterBody(f,f.split2Pane1)
+
+        # Yes, this an "official" ivar: this is a kludge.
+        f.bodyCtrl = f.body.bodyCtrl
+#@nonl
+#@+node:ekr.20031218072017.3679:  leoFrame.__init__
+def __init__ (self,gui):
+
+    self.c = None # Must be created by subclasses.
+    self.title = None # Must be created by subclasses.
+    self.gui = gui
+
+    # Objects attached to this frame.
+    self.colorPanel = None 
+    self.comparePanel = None
+    self.findPanel = None
+    self.fontPanel = None
+    self.iconBar = None
+    self.isNullFrame = False
+    self.keys = None
+    self.menu = None
+    self.miniBufferWidget = None # New in 4.4.
+    self.prefsPanel = None
+    self.statusLine = None
+    self.useMiniBufferWidget = False # New in 4.4
+
+    # Gui-independent data
+    self.componentsDict = {} # Keys are names, values are componentClass instances.
+    self.es_newlines = 0 # newline count for this log stream
+    self.openDirectory = ""
+    self.requestRecolorFlag = False
+    self.saved=False # True if ever saved
+    self.splitVerticalFlag,self.ratio, self.secondary_ratio = True,0.5,0.5 # Set by initialRatios later.
+    self.startupWindow=False # True if initially opened window
+    self.stylesheet = None # The contents of <?xml-stylesheet...?> line.
+    self.tab_width = 0 # The tab width in effect in this pane.
+
+#@+node:ekr.20061109120726:leoFrame.mustBeDefinedOnlyInBaseClass
+mustBeDefinedOnlyInBaseClass = (
+
+    'initialRatios',
+    'longFileName',
+    'oops',
+    'promptForSave',
+    'scanForTabWidth',
+    'shortFileName',
+
+    # Headline editing.
+    'abortEditLabelCommand',
+    'endEditLabelCommand',
+    'insertHeadlineTime',
+
+    # Cut/Copy/Paste.
+    'OnPaste',
+    'OnPasteFromMenu',
+    'copyText',
+    'cutText',
+    'pasteText',
+
+    # Icon bar convenience methods.    
+    'addIconButton',
+    'clearIconBar',
+    'createIconBar',
+    'getIconBar',
+    'getIconBarObject',
+    'hideIconBar',
+
+    # Status line convenience methods.
+    'createStatusLine',
+    'clearStatusLine',
+    'disableStatusLine',
+    'enableStatusLine',
+    'getStatusLine',
+    'getStatusObject',
+    'putStatusLine',
+    'setFocusStatusLine',
+    'statusLineIsEnabled',
+    'updateStatusLine',
+)
+#@nonl
+#@-node:ekr.20061109120726:leoFrame.mustBeDefinedOnlyInBaseClass
+#@+node:ekr.20061109120704:leoFrame.mustBeDefinedInSubclasses
+mustBeDefinedInSubclasses = (
+    #Gui-dependent commands.
+    'cascade',
+    'contractBodyPane',
+    'contractLogPane',
+    'contractOutlinePane',
+    'contractPane',
+    'equalSizedPanes',
+    'expandLogPane',
+    'expandPane',
+    'fullyExpandBodyPane',
+    'fullyExpandLogPane',
+    'fullyExpandOutlinePane',
+    'fullyExpandPane',
+    'hideBodyPane',
+    'hideLogPane',
+    'hideLogWindow',
+    'hideOutlinePane',
+    'hidePane',
+    'leoHelp',
+    'minimizeAll',
+    'resizeToScreen',
+    'toggleActivePane',
+    'toggleSplitDirection',
+    # Windowutilities...
+    'bringToFront',
+    'deiconify',
+    'get_window_info',
+    'lift',
+    'update',
+    # Config...
+    'resizePanesToRatio',
+    'setInitialWindowGeometry',
+    'setTopGeometry',
+)
+#@nonl
+#@-node:ekr.20061109120704:leoFrame.mustBeDefinedInSubclasses
+#@-node:ekr.20031218072017.3679:  leoFrame.__init__
+#@+node:ekr.20051009045208:createSplitterComponents
+def createSplitterComponents (self):
+
+    f = self ; c = f.c
+
+    f.createLeoSplitters(f.outerFrame)
+
+    # Create the canvas, tree, log and body.
+    if f.use_chapters:
+        c.chapterController = cc = leoChapters.chapterController(c)
+
+    if self.bigTree: # Put outline in the main splitter.
+        if self.use_chapters and self.use_chapter_tabs:
+            cc.tt = leoTkinterTreeTab(c,f.split1Pane2,cc)
+        f.canvas = f.createCanvas(f.split1Pane2)
+        f.tree  = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
+        f.log   = leoTkinterLog(f,f.split2Pane1)
+        f.body  = leoTkinterBody(f,f.split2Pane2)
+    else:
+        if self.use_chapters and self.use_chapter_tabs:
+            cc.tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
+        f.canvas = f.createCanvas(f.split2Pane1)
+        f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
+        f.log    = leoTkinterLog(f,f.split2Pane2)
+        f.body   = leoTkinterBody(f,f.split1Pane2)
+
+    # Yes, this an "official" ivar: this is a kludge.
+    f.bodyCtrl = f.body.bodyCtrl
+
+    # Configure.
+    f.setTabWidth(c.tab_width)
+    f.reconfigurePanes()
+    f.body.setFontFromConfig()
+    f.body.setColorFromConfig()
+#@-node:ekr.20051009045208:createSplitterComponents
+#@+node:ekr.20031218072017.3952:placeSplitter
+def placeSplitter (self,bar,pane1,pane2,verticalFlag):
+
+    if self.bigTree:
+        pane1,pane2 = pane2,pane1
+
+    if verticalFlag:
+        # Panes arranged vertically; horizontal splitter bar
+        pane1.place(relx=0.5, rely =   0, anchor="n", relwidth=1.0, relheight=0.5)
+        pane2.place(relx=0.5, rely = 1.0, anchor="s", relwidth=1.0, relheight=0.5)
+        bar.place  (relx=0.5, rely = 0.5, anchor="c", relwidth=1.0)
+    else:
+        # Panes arranged horizontally; vertical splitter bar
+        # adj gives tree pane more room when tiling vertically.
+        adj = g.choose(verticalFlag != self.splitVerticalFlag,0.65,0.5)
+        pane1.place(rely=0.5, relx =   0, anchor="w", relheight=1.0, relwidth=adj)
+        pane2.place(rely=0.5, relx = 1.0, anchor="e", relheight=1.0, relwidth=1.0-adj)
+        bar.place  (rely=0.5, relx = adj, anchor="c", relheight=1.0)
+#@-node:ekr.20031218072017.3952:placeSplitter
+#@+node:ekr.20031218072017.3949:divideAnySplitter
+# This is the general-purpose placer for splitters.
+# It is the only general-purpose splitter code in Leo.
+
+def divideAnySplitter (self, frac, verticalFlag, bar, pane1, pane2):
+
+    if self.bigTree:
+        pane1,pane2 = pane2,pane1
+
+    if verticalFlag:
+        # Panes arranged vertically; horizontal splitter bar
+        bar.place(rely=frac)
+        pane1.place(relheight=frac)
+        pane2.place(relheight=1-frac)
+    else:
+        # Panes arranged horizontally; vertical splitter bar
+        bar.place(relx=frac)
+        pane1.place(relwidth=frac)
+        pane2.place(relwidth=1-frac)
+#@-node:ekr.20031218072017.3949:divideAnySplitter
+#@+node:ekr.20041221123325:tkFrame.createLeoSplitters & helpers
+@ The key invariants used throughout this code:
+
+1. self.splitVerticalFlag tells the alignment of the main splitter and
+2. not self.splitVerticalFlag tells the alignment of the secondary splitter.
+
+Only the general-purpose divideAnySplitter routine doesn't know about these
+invariants. So most of this code is specialized for Leo's window. OTOH, creating
+a single splitter window would be much easier than this code.
+@c
+
+def createLeoSplitters (self,parentFrame):
+
+    # Splitter 1 is the main splitter containing splitter2 and the body pane.
+    f1,bar1,split1Pane1,split1Pane2 = self.createLeoTkSplitter(
+        parentFrame,self.splitVerticalFlag,'splitter1')
+
+    self.f1,self.bar1 = f1,bar1
+    self.split1Pane1,self.split1Pane2 = split1Pane1,split1Pane2
+
+    # Splitter 2 is the secondary splitter containing the tree and log panes.
+    f2,bar2,split2Pane1,split2Pane2 = self.createLeoTkSplitter(
+        split1Pane1,not self.splitVerticalFlag,'splitter2')
+
+    self.f2,self.bar2 = f2,bar2
+    self.split2Pane1,self.split2Pane2 = split2Pane1,split2Pane2
+#@nonl
+#@+node:ekr.20041221073427.1:createLeoTkSplitter
+def createLeoTkSplitter (self,parent,verticalFlag,componentName):
+
+    c = self.c
+
+    # Create the frames.
+    f = Tk.Frame(parent,bd=0,relief="flat")
+    f.pack(expand=1,fill="both",pady=1)
+
+    f1 = Tk.Frame(f)
+    f2 = Tk.Frame(f)
+    bar = Tk.Frame(f,bd=2,relief="raised",bg="LightSteelBlue2")
+
+    # Configure and place the frames.
+    self.configureBar(bar,verticalFlag)
+    self.bindBar(bar,verticalFlag)
+    self.placeSplitter(bar,f1,f2,verticalFlag)
+
+    return f, bar, f1, f2
+#@nonl
+#@-node:ekr.20041221073427.1:createLeoTkSplitter
+#@+node:ekr.20031218072017.3947:bindBar
+def bindBar (self, bar, verticalFlag):
+
+    if verticalFlag == self.splitVerticalFlag:
+        bar.bind("<B1-Motion>", self.onDragMainSplitBar)
+
+    else:
+        bar.bind("<B1-Motion>", self.onDragSecondarySplitBar)
+#@-node:ekr.20031218072017.3947:bindBar
+#@+node:ekr.20031218072017.3949:divideAnySplitter
+# This is the general-purpose placer for splitters.
+# It is the only general-purpose splitter code in Leo.
+
+def divideAnySplitter (self, frac, verticalFlag, bar, pane1, pane2):
+
+    if self.bigTree:
+        pane1,pane2 = pane2,pane1
+
+    if verticalFlag:
+        # Panes arranged vertically; horizontal splitter bar
+        bar.place(rely=frac)
+        pane1.place(relheight=frac)
+        pane2.place(relheight=1-frac)
+    else:
+        # Panes arranged horizontally; vertical splitter bar
+        bar.place(relx=frac)
+        pane1.place(relwidth=frac)
+        pane2.place(relwidth=1-frac)
+#@-node:ekr.20031218072017.3949:divideAnySplitter
+#@+node:ekr.20031218072017.3950:divideLeoSplitter
+# Divides the main or secondary splitter, using the key invariant.
+def divideLeoSplitter (self, verticalFlag, frac):
+
+    if self.splitVerticalFlag == verticalFlag:
+        self.divideLeoSplitter1(frac,verticalFlag)
+        self.ratio = frac # Ratio of body pane to tree pane.
+    else:
+        self.divideLeoSplitter2(frac,verticalFlag)
+        self.secondary_ratio = frac # Ratio of tree pane to log pane.
+
+# Divides the main splitter.
+def divideLeoSplitter1 (self, frac, verticalFlag): 
+    self.divideAnySplitter(frac, verticalFlag,
+        self.bar1, self.split1Pane1, self.split1Pane2)
+
+# Divides the secondary splitter.
+def divideLeoSplitter2 (self, frac, verticalFlag): 
+    self.divideAnySplitter (frac, verticalFlag,
+        self.bar2, self.split2Pane1, self.split2Pane2)
+#@-node:ekr.20031218072017.3950:divideLeoSplitter
+#@+node:ekr.20031218072017.3951:onDrag...
+def onDragMainSplitBar (self, event):
+    self.onDragSplitterBar(event,self.splitVerticalFlag)
+
+def onDragSecondarySplitBar (self, event):
+    self.onDragSplitterBar(event,not self.splitVerticalFlag)
+
+def onDragSplitterBar (self, event, verticalFlag):
+
+    # x and y are the coordinates of the cursor relative to the bar, not the main window.
+    bar = event.widget
+    x = event.x
+    y = event.y
+    top = bar.winfo_toplevel()
+
+    if verticalFlag:
+        # Panes arranged vertically; horizontal splitter bar
+        wRoot = top.winfo_rooty()
+        barRoot = bar.winfo_rooty()
+        wMax = top.winfo_height()
+        offset = float(barRoot) + y - wRoot
+    else:
+        # Panes arranged horizontally; vertical splitter bar
+        wRoot = top.winfo_rootx()
+        barRoot = bar.winfo_rootx()
+        wMax = top.winfo_width()
+        offset = float(barRoot) + x - wRoot
+
+    # Adjust the pixels, not the frac.
+    if offset < 3: offset = 3
+    if offset > wMax - 2: offset = wMax - 2
+    # Redraw the splitter as the drag is occuring.
+    frac = float(offset) / wMax
+    # g.trace(frac)
+    self.divideLeoSplitter(verticalFlag, frac)
+#@-node:ekr.20031218072017.3951:onDrag...
+#@+node:ekr.20031218072017.3952:placeSplitter
+def placeSplitter (self,bar,pane1,pane2,verticalFlag):
+
+    if self.bigTree:
+        pane1,pane2 = pane2,pane1
+
+    if verticalFlag:
+        # Panes arranged vertically; horizontal splitter bar
+        pane1.place(relx=0.5, rely =   0, anchor="n", relwidth=1.0, relheight=0.5)
+        pane2.place(relx=0.5, rely = 1.0, anchor="s", relwidth=1.0, relheight=0.5)
+        bar.place  (relx=0.5, rely = 0.5, anchor="c", relwidth=1.0)
+    else:
+        # Panes arranged horizontally; vertical splitter bar
+        # adj gives tree pane more room when tiling vertically.
+        adj = g.choose(verticalFlag != self.splitVerticalFlag,0.65,0.5)
+        pane1.place(rely=0.5, relx =   0, anchor="w", relheight=1.0, relwidth=adj)
+        pane2.place(rely=0.5, relx = 1.0, anchor="e", relheight=1.0, relwidth=1.0-adj)
+        bar.place  (rely=0.5, relx = adj, anchor="c", relheight=1.0)
+#@-node:ekr.20031218072017.3952:placeSplitter
+#@-node:ekr.20041221123325:tkFrame.createLeoSplitters & helpers
+#@-node:ekr.20071018173151:Installed patch to put the outline in the main pane
 #@-node:ekr.20071023175714:4.4.4 final
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@-all
