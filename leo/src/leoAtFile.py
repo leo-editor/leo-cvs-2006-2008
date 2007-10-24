@@ -30,8 +30,6 @@ import time
 #@-node:ekr.20041005105605.2:<< imports >>
 #@nl
 
-#@+others
-#@+node:ekr.20041005105605.4:class atFile
 class atFile:
 
     #@    << define class constants >>
@@ -571,6 +569,7 @@ class atFile:
 
         at = self ; c = at.c ; ic = c.importCommands
 
+        oldChanged = c.isChanged()
         at.scanDefaultDirectory(p,importing=True) # Set default_directory
         fileName = g.os_path_join(at.default_directory,fileName)
         # g.trace(fileName)
@@ -591,6 +590,8 @@ class atFile:
         if ic.errors or not g.os_path_exists(fileName):
             c.setBodyString(p,'')
             p.clearDirty()
+            c.setChanged(oldChanged)
+    #@nonl
     #@-node:ekr.20070909100252:readOneAtAutoNode (atFile)
     #@+node:ekr.20041005105605.27:readOpenFile
     def readOpenFile(self,root,theFile,fileName):
@@ -3138,7 +3139,7 @@ class atFile:
                 lines.append(line)
 
         s2 = ''.join(lines)
-        g.trace('s2',s2)
+        # g.trace('s2',s2)
 
         return p.hasChildren() or len(s2.strip()) >= 10
     #@+node:ekr.20071020082208:@test test isSignificantAtAutoTree
@@ -5285,7 +5286,6 @@ class atFile:
     #@-node:ekr.20041005105605.243:sentinelName
     #@-node:ekr.20041005105605.219:Uilites... (atFile)
     #@-others
-#@-node:ekr.20041005105605.4:class atFile
-#@-others
+#@nonl
 #@-node:ekr.20041005105605.1:@thin leoAtFile.py
 #@-leo
