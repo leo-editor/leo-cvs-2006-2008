@@ -7978,6 +7978,7 @@ class searchCommandsClass (baseEditCommandsClass):
 #@+node:ekr.20070627082044.633:Unit tests
 #@+node:ekr.20070627082044.634:@test Find keeps focus in body & shows selected text
 if g.unitTesting:
+
     __pychecker__ = '--no-reimport'
     import leoEditCommands
 
@@ -7985,11 +7986,14 @@ if g.unitTesting:
     s = 'foo' ; bodyCtrl = c.frame.body.bodyCtrl
 
     c.searchCommands.openFindTab()
+    # print c.searchCommands
     h = c.searchCommands.findTabHandler
+    assert h
     w = h.find_ctrl
+    # g.trace(w)
     w.setAllText(s)
     c.bodyWantsFocus()
-    bodyCtrl.setInsertPoint(0)
+    bodyCtrl.setInsertPoint(0) # Don't use w!
     c.searchCommands.findTabFindNext()
     w = c.get_focus()
     wName = g.app.gui.widget_name(w)
@@ -7997,35 +8001,36 @@ if g.unitTesting:
     # in wxPython w != bodyCtrl (it's a proxy)
     assert wName.startswith('body'), 'focus: %s = %s, expected %s = %s' % (
         w,wName,bodyCtrl,g.app.gui.widget_name(bodyCtrl))
-#@nonl
+
+    c.keyHandler.keyboardQuit(event=None)
 #@-node:ekr.20070627082044.634:@test Find keeps focus in body & shows selected text
 #@+node:ekr.20070627082044.635:@test minbuffer find commands
 if g.unitTesting:
+
     table = (
         're-search-forward',
         're-search-backward',
-        'search-forward',
+        # 'search-forward',
         'search-backward',
         'word-search-forward',
         'word-search-backward',
+        'search-forward', # Do this last to restore defaults.
     )
 
     for command in table:
         # This is not a full test.  We must use keyboardQuit here!
         c.k.simulateCommand(command)
         c.k.keyboardQuit(None)
-#@nonl
 #@-node:ekr.20070627082044.635:@test minbuffer find commands
 #@+node:ekr.20070627082044.636:@test set find mode commands
 if g.unitTesting:
+
     table = (
         'set-find-everywhere',
         'set-find-node-only',
         'set-find-suboutline-only',
+        'set-find-everywhere', # Add this to restore to typical value
     )
-
-    # show-find-tab-options     = Ctrl-o
-    # show-find-options         = o
 
     for command in table:
         c.k.simulateCommand(command)
@@ -8048,6 +8053,7 @@ if g.unitTesting:
         'toggle-find-reverse-option',
         'toggle-find-word-option',
         'toggle-find-wrap-around-option',
+        'keyboard-quit', # to keep find panel hidden.
     )
 
     for command in table:
