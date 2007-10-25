@@ -1088,7 +1088,6 @@ class baseColorizer:
 
         self.c = c
         self.frame = c.frame
-        self.body = c.frame.body
         self.trace = c.config.getBool('trace_colorizer')
         self.count = 0 # how many times this has been called.
         self.use_hyperlinks = False # True: use hyperlinks and underline "live" links.
@@ -1266,7 +1265,7 @@ class baseColorizer:
 
         # g.trace(p and p.headString())
 
-        c = self.c ; w = self.body.bodyCtrl
+        c = self.c ; w = c.frame.body.bodyCtrl
 
         if not c.config.getBool('use_syntax_coloring'):
             # There have been reports of this trace causing crashes.
@@ -1347,7 +1346,7 @@ class baseColorizer:
             #@nl
             #@<< configure tags >>
             #@+node:ekr.20031218072017.1603:<< configure tags >>
-            # g.trace('configure tags',self.body.bodyCtrl)
+            # g.trace('configure tags',self.c.frame.body.bodyCtrl)
 
             for name in default_colors_dict.keys(): # Python 2.1 support.
                 option_name,default_color = default_colors_dict[name]
@@ -1355,9 +1354,9 @@ class baseColorizer:
                 color = g.choose(option_color,option_color,default_color)
                 # Must use foreground, not fg.
                 try:
-                    self.body.tag_configure(name, foreground=color)
+                    c.frame.body.tag_configure(name, foreground=color)
                 except: # Recover after a user error.
-                    self.body.tag_configure(name, foreground=default_color)
+                    c.frame.body.tag_configure(name, foreground=default_color)
 
             underline_undefined = c.config.getBool("underline_undefined_section_names")
             use_hyperlinks      = c.config.getBool("use_hyperlinks")
@@ -1365,14 +1364,14 @@ class baseColorizer:
 
             # underline=var doesn't seem to work.
             if 0: # use_hyperlinks: # Use the same coloring, even when hyperlinks are in effect.
-                self.body.tag_configure("link",underline=1) # defined
-                self.body.tag_configure("name",underline=0) # undefined
+                c.frame.body.tag_configure("link",underline=1) # defined
+                c.frame.body.tag_configure("name",underline=0) # undefined
             else:
-                self.body.tag_configure("link",underline=0)
+                c.frame.body.tag_configure("link",underline=0)
                 if underline_undefined:
-                    self.body.tag_configure("name",underline=1)
+                    c.frame.body.tag_configure("name",underline=1)
                 else:
-                    self.body.tag_configure("name",underline=0)
+                    c.frame.body.tag_configure("name",underline=0)
 
             # 8/4/02: we only create tags for whitespace when showing invisibles.
             if self.showInvisibles:
@@ -1382,33 +1381,33 @@ class baseColorizer:
                     option_color = c.config.getColor(option_name)
                     color = g.choose(option_color,option_color,default_color)
                     try:
-                        self.body.tag_configure(name,background=color)
+                        c.frame.body.tag_configure(name,background=color)
                     except: # Recover after a user error.
-                        self.body.tag_configure(name,background=default_color)
+                        c.frame.body.tag_configure(name,background=default_color)
 
             # 11/15/02: Colors for latex characters.  Should be user options...
 
             if 1: # Alas, the selection doesn't show if a background color is specified.
-                self.body.tag_configure("latexModeBackground",foreground="black")
-                self.body.tag_configure("latexModeKeyword",foreground="blue")
-                self.body.tag_configure("latexBackground",foreground="black")
-                self.body.tag_configure("latexKeyword",foreground="blue")
+                c.frame.body.tag_configure("latexModeBackground",foreground="black")
+                c.frame.body.tag_configure("latexModeKeyword",foreground="blue")
+                c.frame.body.tag_configure("latexBackground",foreground="black")
+                c.frame.body.tag_configure("latexKeyword",foreground="blue")
             else: # Looks cool, and good for debugging.
-                self.body.tag_configure("latexModeBackground",foreground="black",background="seashell1")
-                self.body.tag_configure("latexModeKeyword",foreground="blue",background="seashell1")
-                self.body.tag_configure("latexBackground",foreground="black",background="white")
-                self.body.tag_configure("latexKeyword",foreground="blue",background="white")
+                c.frame.body.tag_configure("latexModeBackground",foreground="black",background="seashell1")
+                c.frame.body.tag_configure("latexModeKeyword",foreground="blue",background="seashell1")
+                c.frame.body.tag_configure("latexBackground",foreground="black",background="white")
+                c.frame.body.tag_configure("latexKeyword",foreground="blue",background="white")
 
             # Tags for wiki coloring.
             if self.showInvisibles:
-                self.body.tag_configure("elide",background="yellow")
+                c.frame.body.tag_configure("elide",background="yellow")
             else:
-                self.body.tag_configure("elide",elide="1")
-            self.body.tag_configure("bold",font=self.bold_font)
-            self.body.tag_configure("italic",font=self.italic_font)
-            self.body.tag_configure("bolditalic",font=self.bolditalic_font)
+                c.frame.body.tag_configure("elide",elide="1")
+            c.frame.body.tag_configure("bold",font=self.bold_font)
+            c.frame.body.tag_configure("italic",font=self.italic_font)
+            c.frame.body.tag_configure("bolditalic",font=self.bolditalic_font)
             for name in self.color_tags_list:
-                self.body.tag_configure(name,foreground=name)
+                c.frame.body.tag_configure(name,foreground=name)
             #@-node:ekr.20031218072017.1603:<< configure tags >>
             #@nl
             #@<< configure language-specific settings >>
@@ -1773,7 +1772,7 @@ class baseColorizer:
     #@+node:ekr.20031218072017.1614:continueDocPart
     def continueDocPart (self,s,i):
 
-        state = "doc"
+        c = self.c ; state = "doc"
         if self.language == "cweb":
             #@        << handle cweb doc part >>
             #@+node:ekr.20031218072017.1615:<< handle cweb doc part >>
@@ -1827,7 +1826,7 @@ class baseColorizer:
 
             if word in ["@c","@code","@unit","@root","@root-code","@root-doc","@color","@nocolor"]:
                 # End of the doc part.
-                self.body.tag_remove("docPart",self.index(i),self.index(j)) # 10/27/03
+                c.frame.body.tag_remove("docPart",self.index(i),self.index(j)) # 10/27/03
                 self.tag("leoKeyword",i,j)
                 state = "normal"
                 if word != '@nocolor': i = j # 3/8/05: Rescan @nocolor.
@@ -2311,13 +2310,13 @@ class baseColorizer:
                     # Create the tag name.
                     tagName = "hyper" + str(self.hyperCount)
                     self.hyperCount += 1
-                    self.body.tag_delete(tagName)
+                    c.frame.body.tag_delete(tagName)
                     self.tag(tagName,i+2,j)
 
                     ref.tagName = tagName
-                    self.body.tag_bind(tagName,"<Control-1>",ref.OnHyperLinkControlClick)
-                    self.body.tag_bind(tagName,"<Any-Enter>",ref.OnHyperLinkEnter)
-                    self.body.tag_bind(tagName,"<Any-Leave>",ref.OnHyperLinkLeave)
+                    c.frame.body.tag_bind(tagName,"<Control-1>",ref.OnHyperLinkControlClick)
+                    c.frame.body.tag_bind(tagName,"<Any-Enter>",ref.OnHyperLinkEnter)
+                    c.frame.body.tag_bind(tagName,"<Any-Leave>",ref.OnHyperLinkLeave)
                     #@-node:ekr.20031218072017.1915:<< set the hyperlink >>
                     #@nl
             elif k == 3: # a section definition
@@ -2331,21 +2330,23 @@ class baseColorizer:
     #@+node:ekr.20031218072017.1604:removeAllTags & removeTagsFromLines
     def removeAllTags (self):
 
-        # Warning: the following DOES NOT WORK: self.body.tag_delete(self.tags)
+        # Warning: the following DOES NOT WORK: w.tag_delete(self.tags)
+        w = self.c.frame.body
         for tag in self.tags:
-            self.body.tag_delete(tag) # 10/27/03
+            w.tag_delete(tag)
 
         for tag in self.color_tags_list:
-            self.body.tag_delete(tag) # 10/27/03
+            w.tag_delete(tag)
 
     def removeTagsFromLine (self):
 
         # print "removeTagsFromLine",self.line_index
+        w = self.c.frame.body
         for tag in self.tags:
-            self.body.tag_remove(tag,self.index(0),self.index("end")) # 10/27/03
+            w.tag_remove(tag,self.index(0),self.index("end")) # 10/27/03
 
         for tag in self.color_tags_list:
-            self.body.tag_remove(tag,self.index(0),self.index("end")) # 10/27/03
+            w.tag_remove(tag,self.index(0),self.index("end")) # 10/27/03
     #@-node:ekr.20031218072017.1604:removeAllTags & removeTagsFromLines
     #@-node:ekr.20031218072017.1892:colorizeLine & allies
     #@+node:ekr.20050420083821:disable & enable
@@ -2400,7 +2401,7 @@ class baseColorizer:
         # for photo,image,line_index,i in self.image_references:
             # try:
                 # s = self.allBodyText
-                # w = self.body.bodyCtrl
+                # w = c.frame.body.bodyCtrl
                 # index = g.convertRowColToPythonIndex(s,line_index,i)
                 # w.delete(index)
                 # self.allBodyText = w.getAllText()
@@ -2542,17 +2543,17 @@ class baseColorizer:
     def index (self,i):
 
         # Short-circuit the redundant computations.
-        w = self.body.bodyCtrl ; s = self.allBodyText
+        w = self.c.frame.body.bodyCtrl ; s = self.allBodyText
         return w.rowColToGuiIndex(s,self.line_index-1,i)
 
     def tag (self,name,i,j):
 
         # if 0:
-            # w = self.body.bodyCtrl ; s = self.allBodyText
+            # w = c.frame.body.bodyCtrl ; s = self.allBodyText
             # i2 = w.toPythonIndex(self.index(i))
             # j2 = w.toPythonIndex(self.index(j))
             # g.trace(name,i,j,repr(s[i2:j2]))
-        self.body.tag_add(name,self.index(i),self.index(j))
+        self.c.frame.body.tag_add(name,self.index(i),self.index(j))
     #@nonl
     #@-node:ekr.20031218072017.1609:index & tag (leoColor)
     #@+node:ekr.20031218072017.2807:setFirstLineState
