@@ -844,7 +844,8 @@ class leoBody:
         self.createBindings(w=w)
         c.k.completeAllBindingsForWidget(w)
 
-        self.recolorWidget(w)
+        self.recolorWidget(p,w)
+        #@nonl
         #@-node:ekr.20060528110922:<< create text widget w >>
         #@nl
         self.editorWidgets[name] = w
@@ -853,7 +854,8 @@ class leoBody:
             self.pb.configurepane(pane,size=minSize)
 
         self.pb.updatelayout()
-        self.bodyCtrl = self.frame.bodyCtrl = w
+        c.frame.body.bodyCtrl = w
+
         self.updateInjectedIvars(w,p)
         self.selectLabel(w)
         self.selectEditor(w)
@@ -865,7 +867,7 @@ class leoBody:
 
         '''Cycle keyboard focus between the body text editors.'''
 
-        c = self.c ; d = self.editorWidgets ; w = self.bodyCtrl
+        c = self.c ; d = self.editorWidgets ; w = c.frame.body.bodyCtrl
         values = d.values()
         if len(values) > 1:
             i = values.index(w) + 1
@@ -873,7 +875,7 @@ class leoBody:
             w2 = d.values()[i]
             assert(w!=w2)
             self.selectEditor(w2)
-            self.bodyCtrl = self.frame.body.bodyCtrl = w2 # 2007/10/25: was self.frame.bodyCtrl: bug fix!
+            c.frame.body.bodyCtrl = w2
             # print '***',g.app.gui.widget_name(w2),id(w2)
 
         return 'break'
@@ -883,7 +885,7 @@ class leoBody:
 
         '''Delete the presently selected body text editor.'''
 
-        w = self.bodyCtrl ; d = self.editorWidgets
+        c = self.c ; w = c.frame.body.bodyCtrl ; d = self.editorWidgets
 
         if len(d.keys()) == 1: return
 
@@ -899,7 +901,7 @@ class leoBody:
 
         # Select another editor.
         w = d.values()[0]
-        self.bodyCtrl = self.frame.bodyCtrl = w
+        # c.frame.body.bodyCtrl = w # Don't do this now?
         self.numberOfEditors -= 1
         self.selectEditor(w)
     #@-node:ekr.20060528113806:deleteEditor
@@ -908,7 +910,7 @@ class leoBody:
 
         '''Return an editor to be assigned to chapter.'''
 
-        d = self.editorWidgets ; values = d.values()
+        c = self.c ; d = self.editorWidgets ; values = d.values()
 
         # First, try to match both the chapter and position.
         if p:
@@ -927,7 +929,7 @@ class leoBody:
 
         # As a last resort, return the present editor widget.
         # g.trace('***',id(self.bodyCtrl),'no match',p.headString())
-        return self.bodyCtrl
+        return c.frame.body.bodyCtrl
     #@-node:ekr.20070425180705:findEditorForChapter (leoBody)
     #@+node:ekr.20060530210057:select/unselectLabel
     def unselectLabel (self,w):
@@ -958,14 +960,13 @@ class leoBody:
         '''Select editor w and node w.leo_p.'''
 
         #  Called by body.onClick and whenever w must be selected.
-        trace = True
+        trace = False
+        c = self.c
 
         if self.selectEditorLockout:
             return
 
-        if w and self.bodyCtrl == w:
-            # Bug fix: 7-3-2007.
-            c = self.c
+        if w and w == self.c.frame.body.bodyCtrl:
             if w.leo_p and w.leo_p != c.currentPosition():
                 c.selectPosition(w.leo_p)
                 c.bodyWantsFocusNow()
@@ -984,7 +985,7 @@ class leoBody:
 
         c = self.c ; cc = c.chapterController ; d = self.editorWidgets
 
-        trace = True
+        trace = False
 
         if not w.leo_p:
             g.trace('no w.leo_p') 
@@ -998,7 +999,7 @@ class leoBody:
         self.inactivateActiveEditor(w)
 
         # The actual switch.
-        self.frame.body.bodyCtrl = self.bodyCtrl = w # Must change both ivars! # Bug fix: was self.frame.bodyCtrl.
+        c.frame.body.bodyCtrl = w
         w.leo_active = True
 
         self.switchToChapter(w)
@@ -1048,7 +1049,7 @@ class leoBody:
 
         '''Called *only* from tree.select to select the present body editor.'''
 
-        c = self.c ; cc = c.chapterController ; w = self.bodyCtrl
+        c = self.c ; cc = c.chapterController ; w = c.frame.body.bodyCtrl
 
         self.updateInjectedIvars(w,p)
         self.selectLabel(w)
@@ -1067,11 +1068,11 @@ class leoBody:
         for key in d.keys():
             w = d.get(key)
             v = w.leo_v
-            if v and v == p.v and w != self.bodyCtrl:
+            if v and v == p.v and w != c.frame.body.bodyCtrl:
                 w.delete(0,'end')
                 w.insert('end',p.bodyString())
                 # g.trace('update',w,v)
-                self.recolorWidget(w)
+                self.recolorWidget(p,w)
         c.bodyWantsFocus()
     #@-node:ekr.20060528131618:updateEditors
     #@-node:ekr.20070424053629:entries
@@ -1120,7 +1121,7 @@ class leoBody:
     #@+node:ekr.20070424080640:inactivateActiveEditor
     def inactivateActiveEditor(self,w):
 
-        '''Inactivate all the previously active editor.'''
+        '''Inactivate the previously active editor.'''
 
         d = self.editorWidgets
 
@@ -1135,26 +1136,23 @@ class leoBody:
                 w2.leo_selection = w2.getSelectionRange()
                 # g.trace('inactive:',id(w2),'scroll',w2.leo_scrollBarSpot,'ins',w2.leo_insertSpot)
                 # g.trace('inactivate',id(w2))
-                break
-        else:
-            if trace: g.trace('no active editor!')
-    #@nonl
+                return
     #@-node:ekr.20070424080640:inactivateActiveEditor
     #@+node:ekr.20060530204135:recolorWidget
-    def recolorWidget (self,w):
+    def recolorWidget (self,p,w):
 
-        c = self.c ; old_w = self.bodyCtrl
+        c = self.c ; old_w = c.frame.body.bodyCtrl
 
-        # g.trace(id(w),c.currentPosition().headString())
+        # g.trace('w',id(w),p.headString(),len(w.getAllText()))
 
         # Save.
-        self.bodyCtrl = self.frame.bodyCtrl = w
-
-        c.recolor_now(interruptable=False) # Force a complete recoloring.
-
-        # Restore.
-        self.bodyCtrl = self.frame.body.bodyCtrl = old_w # 2007/10/27: bug fix: was self.frame.bodyCtrl.
-    #@nonl
+        c.frame.body.bodyCtrl = w
+        try:
+            # c.recolor_now(interruptable=False) # Force a complete recoloring.
+            c.frame.body.colorizer.colorize(p,incremental=False,interruptable=False)
+        finally:
+            # Restore.
+            c.frame.body.bodyCtrl = old_w
     #@-node:ekr.20060530204135:recolorWidget
     #@+node:ekr.20070424084012:switchToChapter (leoBody)
     def switchToChapter (self,w):
@@ -1204,14 +1202,14 @@ class leoBody:
     #@-node:ekr.20070627082044.932:@test Add & Delete editor
     #@+node:ekr.20070627082044.933:@test Add editor, Delete leftmost editor
     if g.unitTesting:
-        frame = c.frame ; body = frame.body
+
+        body = c.frame.body
+
         body.addEditor()
 
         # Select the leftmost editor.
         w = body.editorWidgets.get('1')
         body.selectEditor(w)
-        ### body.bodyCtrl = frame.bodyCtrl = w
-        body.bodyCtrl = w # 2007/10/25: frame.bodyCtrl no longer exists.
 
         # Delete the selected editor.
         body.deleteEditor()
@@ -3036,9 +3034,6 @@ class nullFrame (leoFrame):
         self.menu = leoMenu.nullMenu(frame=self)
 
         c.setLog()
-
-        # Set the official ivar.
-        ##### self.bodyCtrl = self.body.bodyCtrl
 
         assert(c.undoer)
         if self.useNullUndoer:
