@@ -1014,8 +1014,14 @@ class leoBody:
                 hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
                 hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
 
-        c.frame.tree.expandAllAncestors(w.leo_p)
-        c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
+        c.beginUpdate()
+        try:
+            # g.trace('expanding ancestors of ',w.leo_p.headString(),g.callers())
+            c.frame.tree.expandAllAncestors(w.leo_p)
+            c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
+        finally:
+            c.endUpdate()
+
         c.recolor_now()
         #@    << restore the selection, insertion point and the scrollbar >>
         #@+node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
