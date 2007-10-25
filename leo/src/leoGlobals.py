@@ -2704,12 +2704,22 @@ def es(s,*args,**keys):
 #@-node:ekr.20071024101611:mini test of es
 #@-node:ekr.20070626132332:es & minitest
 #@+node:ekr.20050707064040:es_print
+# see: http://www.diveintopython.org/xml_processing/unicode.html
+
 def es_print(s,*args,**keys):
 
+    encoding = sys.getdefaultencoding()
+
+    try:
+        if type(s) != type(u''):
+            s = unicode(s,encoding)
+    except Exception:
+        s = g.toEncodedString(s,'ascii')
+
     if keys.get('newline') in (True,None):
-        print g.toEncodedString(s,'ascii')
+        print s
     else:
-        print g.toEncodedString(s,'ascii'),
+        print s,
 
     if g.app.gui and not g.app.gui.isNullGui and not g.unitTesting:
         g.es(s,*args,**keys)
