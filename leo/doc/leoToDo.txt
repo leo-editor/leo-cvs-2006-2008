@@ -2,40 +2,57 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20071001045205:To do: 4.4.4 final
-#@+node:ekr.20071024090626:Improve aspell diagnostics
-# diagnose-aspell command?
-#@nonl
-#@-node:ekr.20071024090626:Improve aspell diagnostics
-#@+node:ekr.20071025104426:More tests of old colorizer?
-#@-node:ekr.20071025104426:More tests of old colorizer?
-#@+node:ekr.20071025105604:New crasher
-# A shutdown failure.  Probably nothing.
+#@+node:ekr.20071025160653:Fun
+#@+node:ekr.20071024090626:Support @bool diagnose-aspell-installation
+#@-node:ekr.20071024090626:Support @bool diagnose-aspell-installation
+#@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree
+#@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree
+#@+node:ekr.20071025160653.2:Commands to add/remove icons
+Left-click to delete
 
-FAILED (failures=1)
-TclError Exception in Tk callback
-  Function: <function masterBindKeyCallback at 0x0221D630> (type: <type 'function'>)
-  Args: (<Tkinter.Event instance at 0x0110BB48>,)
-  Event type: KeyPress (type num: 2)
-Traceback (innermost last):
-  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
-    return apply(self.func, args)
-  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 2154, in masterBindKeyCallback
-    return k.masterKeyHandler(event,stroke=stroke)
-  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 3020, in masterKeyHandler
-    return k.masterCommand(event,k.keyboardQuit,stroke,'keyboard-quit')
-  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 2238, in masterCommand
-    k.keyboardQuit(event)
-  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 2868, in keyboardQuit
-    k.autoCompleter.exit()
-  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 403, in exit
-    i,j = w.getSelectionRange()
-  File "C:\prog\tigris-cvs\leo\src\leoTkinterFrame.py", line 3299, in getSelectionRange
-    sel = Tk.Text.tag_ranges(w,"sel")
-  File "C:\Python25\lib\lib-tk\Tkinter.py", line 3099, in tag_ranges
-    self._w, 'tag', 'ranges', tagName))
-TclError: invalid command name ".35183312.35184072.35184392.35184472.35410768.35411088.body-pane"
+insert-icon
+append-icon
+delete-first-icon
+delete-nth-icon
+delete-all-node-icons
+delete-all-icons-in-tree
+#@-node:ekr.20071025160653.2:Commands to add/remove icons
+#@+node:ekr.20071025161431:Fix end-of-text colorizer bug
+#@-node:ekr.20071025161431:Fix end-of-text colorizer bug
+#@+node:ekr.20071025161431.1:Test Leo on the Mac
+#@-node:ekr.20071025161431.1:Test Leo on the Mac
+#@+node:ekr.20071025161431.2:regex search not [body].bodyCtrl
+#@-node:ekr.20071025161431.2:regex search not [body].bodyCtrl
+#@+node:ekr.20071025161431.3:Disable @auto unit tests on Linux
+#@-node:ekr.20071025161431.3:Disable @auto unit tests on Linux
+#@-node:ekr.20071025160653:Fun
+#@+node:ekr.20071025144654:Postings
+#@+node:ekr.20071025143956:Posting: document unit test bug & describe coming new scheme
+@nocolor
+
+The new scheme:
+
+- Run tests externally from leoPy.leo to test recent changes.
+- Run tests locally from leoPy.leo for more 'accurate' tests.
+    - External tests use null gui.  This can distort the tests.
+    - Several tests fail because of problems in the nullGui (like select)
+
+- Put general unit tests in unitTest.leo.
+- Put most unit tests in leoPy.leo, near the code they test.
+- Run @test nodes in leoPy.leo **from unitTest.leo**.
 #@nonl
-#@-node:ekr.20071025105604:New crasher
+#@-node:ekr.20071025143956:Posting: document unit test bug & describe coming new scheme
+#@+node:ekr.20071025144518:Posting: toggle-big-tree is hard
+@nocolor
+
+To do this, we would need to implement reparent methods for the log, tree and body classes.
+#@nonl
+#@-node:ekr.20071025144518:Posting: toggle-big-tree is hard
+#@+node:ekr.20071021112850:Brag about new colorizer
+#@-node:ekr.20071021112850:Brag about new colorizer
+#@+node:ekr.20071025161431.4:Plugins as thought experiments
+#@-node:ekr.20071025161431.4:Plugins as thought experiments
+#@-node:ekr.20071025144654:Postings
 #@+node:ekr.20071024090626.1:Docs
 #@+node:ekr.20071024151640:Document @bool big_outline_pane setting
 #@-node:ekr.20071024151640:Document @bool big_outline_pane setting
@@ -43,8 +60,6 @@ TclError: invalid command name ".35183312.35184072.35184392.35184472.35410768.35
 # The documentation for hooks should be in programming chapter, as well as customizing chapter?
 #@nonl
 #@-node:ekr.20071018073812.1:Document g.app.gui.runX methods
-#@+node:ekr.20071021112850:Brag about new colorizer
-#@-node:ekr.20071021112850:Brag about new colorizer
 #@-node:ekr.20071024090626.1:Docs
 #@+node:ekr.20071024204327:Tests
 #@+node:ekr.20071018071814:Unit tests and documentation for new colorizer
@@ -1173,6 +1188,34 @@ Ran 354 tests in 33.531s
 FAILED (failures=27)
 #@-node:ekr.20071024185136:27 unitTest.txt tests fail when run externally
 #@-node:ekr.20071024172428:Failed unit tests when running externally
+#@+node:ekr.20071025105604:New crasher
+# A shutdown failure.  Probably nothing.
+
+FAILED (failures=1)
+TclError Exception in Tk callback
+  Function: <function masterBindKeyCallback at 0x0221D630> (type: <type 'function'>)
+  Args: (<Tkinter.Event instance at 0x0110BB48>,)
+  Event type: KeyPress (type num: 2)
+Traceback (innermost last):
+  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
+    return apply(self.func, args)
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 2154, in masterBindKeyCallback
+    return k.masterKeyHandler(event,stroke=stroke)
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 3020, in masterKeyHandler
+    return k.masterCommand(event,k.keyboardQuit,stroke,'keyboard-quit')
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 2238, in masterCommand
+    k.keyboardQuit(event)
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 2868, in keyboardQuit
+    k.autoCompleter.exit()
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 403, in exit
+    i,j = w.getSelectionRange()
+  File "C:\prog\tigris-cvs\leo\src\leoTkinterFrame.py", line 3299, in getSelectionRange
+    sel = Tk.Text.tag_ranges(w,"sel")
+  File "C:\Python25\lib\lib-tk\Tkinter.py", line 3099, in tag_ranges
+    self._w, 'tag', 'ranges', tagName))
+TclError: invalid command name ".35183312.35184072.35184392.35184472.35410768.35411088.body-pane"
+#@nonl
+#@-node:ekr.20071025105604:New crasher
 #@-node:ekr.20071024204327:Tests
 #@-node:ekr.20071001045205:To do: 4.4.4 final
 #@+node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
