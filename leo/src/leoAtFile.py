@@ -4165,8 +4165,9 @@ class atFile:
             ("@raw",0,at.rawDirective),
         ]
         for name in g.globalDirectiveList:
-            if name not in ('@','@all','@c','@code','@doc','@end_raw','@others','@raw',):
-                table.append((name,0,at.miscDirective),)
+            # Note: entries in g.globalDirectiveList do not start with '@'
+            if name not in ('all','c','code','doc','end_raw','others','raw',):
+                table.append(('@' + name,0,at.miscDirective),)
 
         for s,i,expected in table:
             result = at.directiveKind4(s,i)
