@@ -61,13 +61,12 @@ class leoSwingFrame (leoFrame.leoFrame):
         self.trace_status_line = None # Set in finishCreate.
 
         #@    << set the leoSwingFrame ivars >>
-        #@+node:ekr.20071001091231.26:<< set the leoSwingFrame ivars >>
+        #@+node:ekr.20071001091231.26:<< set the leoSwingFrame ivars >> (removed frame.bodyCtrl ivar)
         # "Official ivars created in createLeoFrame and its allies.
         self.bar1 = None
         self.bar2 = None
         self.body = None
         self.bodyBar = None
-        self.bodyCtrl = None
         self.bodyXBar = None
         self.f1 = self.f2 = None
         self.findPanel = None # Inited when first opened.
@@ -92,7 +91,7 @@ class leoSwingFrame (leoFrame.leoFrame):
         self.wantedWidget = None
         self.wantedCallbackScheduled = False
         self.scrollWay = None
-        #@-node:ekr.20071001091231.26:<< set the leoSwingFrame ivars >>
+        #@-node:ekr.20071001091231.26:<< set the leoSwingFrame ivars >> (removed frame.bodyCtrl ivar)
         #@nl
     #@-node:ekr.20071001091231.25:__init__ (swingFrame)
     #@+node:ekr.20071001091231.27:__repr__ (swingFrame)
@@ -170,7 +169,7 @@ class leoSwingFrame (leoFrame.leoFrame):
         # f.outerFrame = Tk.Frame(top)
         # f.outerFrame.pack(expand=1,fill="both")
     #@-node:ekr.20071001091231.29:createOuterFrames
-    #@+node:ekr.20071001091231.30:createSplitterComponents
+    #@+node:ekr.20071001091231.30:createSplitterComponents (removed frame.bodyCtrl ivar)
     def createSplitterComponents (self):
 
         f = self ; c = f.c
@@ -198,14 +197,14 @@ class leoSwingFrame (leoFrame.leoFrame):
 
         # Yes, this an "official" ivar: this is a kludge.
         # g.trace('f.body',f.body,'f.body.bodyCtrl',f.body.bodyCtrl)
-        f.bodyCtrl = f.body.bodyCtrl
+        ### f.bodyCtrl = f.body.bodyCtrl
 
         # Configure.
         f.setTabWidth(c.tab_width)
         f.reconfigurePanes()
         f.body.setFontFromConfig()
         f.body.setColorFromConfig()
-    #@-node:ekr.20071001091231.30:createSplitterComponents
+    #@-node:ekr.20071001091231.30:createSplitterComponents (removed frame.bodyCtrl ivar)
     #@+node:ekr.20071001091231.31:createFirstTreeNode
     def createFirstTreeNode (self):
 
@@ -990,7 +989,7 @@ class leoSwingFrame (leoFrame.leoFrame):
     #@-node:ekr.20071001091231.76:f.setMinibufferBindings
     #@-node:ekr.20071001091231.72:Minibuffer methods
     #@+node:ekr.20071001091231.77:Configuration (swingFrame)
-    #@+node:ekr.20071001091231.78:configureBar
+    #@+node:ekr.20071001091231.78:configureBar (swingFrame)
     def configureBar (self,bar,verticalFlag):
 
         c = self.c
@@ -1019,8 +1018,8 @@ class leoSwingFrame (leoFrame.leoFrame):
             else:
                 # Panes arranged horizontally; vertical splitter bar
                 bar.configure(width=7,cursor="sb_h_double_arrow")
-    #@-node:ekr.20071001091231.78:configureBar
-    #@+node:ekr.20071001091231.79:configureBarsFromConfig
+    #@-node:ekr.20071001091231.78:configureBar (swingFrame)
+    #@+node:ekr.20071001091231.79:configureBarsFromConfig (swingFrame)
     def configureBarsFromConfig (self):
 
         c = self.c
@@ -1045,8 +1044,8 @@ class leoSwingFrame (leoFrame.leoFrame):
         except: # Could be a user error.
             g.es("exception in user configuration for splitbar")
             g.es_exception()
-    #@-node:ekr.20071001091231.79:configureBarsFromConfig
-    #@+node:ekr.20071001091231.80:reconfigureFromConfig
+    #@-node:ekr.20071001091231.79:configureBarsFromConfig (swingFrame)
+    #@+node:ekr.20071001091231.80:reconfigureFromConfig (swingFrame)
     def reconfigureFromConfig (self):
 
         frame = self ; c = frame.c
@@ -1064,8 +1063,8 @@ class leoSwingFrame (leoFrame.leoFrame):
         frame.log.setColorFromConfig()
 
         c.redraw_now()
-    #@-node:ekr.20071001091231.80:reconfigureFromConfig
-    #@+node:ekr.20071001091231.81:setInitialWindowGeometry
+    #@-node:ekr.20071001091231.80:reconfigureFromConfig (swingFrame)
+    #@+node:ekr.20071001091231.81:setInitialWindowGeometry (swingFrame)
     def setInitialWindowGeometry(self):
 
         """Set the position and size of the frame to config params."""
@@ -1079,8 +1078,8 @@ class leoSwingFrame (leoFrame.leoFrame):
 
         if h and w and x and y:
             pass ### self.setTopGeometry(w,h,x,y)
-    #@-node:ekr.20071001091231.81:setInitialWindowGeometry
-    #@+node:ekr.20071001091231.82:setTabWidth
+    #@-node:ekr.20071001091231.81:setInitialWindowGeometry (swingFrame)
+    #@+node:ekr.20071001091231.82:setTabWidth (swingFrame)
     def setTabWidth (self, w):
 
         pass
@@ -1097,11 +1096,11 @@ class leoSwingFrame (leoFrame.leoFrame):
         # except:
             # g.es_exception()
             # pass
-    #@-node:ekr.20071001091231.82:setTabWidth
-    #@+node:ekr.20071001091231.83:f.setWrap
+    #@-node:ekr.20071001091231.82:setTabWidth (swingFrame)
+    #@+node:ekr.20071001091231.83:setWrap (swingFrame)
     def setWrap (self,p):
 
-        c = self.c
+        c = self.c ; w = c.frame.body.bodyCtrl
 
         theDict = g.scanDirectives(c,p)
         if not theDict: return
@@ -1116,16 +1115,16 @@ class leoSwingFrame (leoFrame.leoFrame):
         ### Rewrite for swing.
 
         # if wrap:
-            # self.bodyCtrl.configure(wrap="word")
+            # w.configure(wrap="word")
             # self.bodyXBar.pack_forget()
         # else:
-            # self.bodyCtrl.configure(wrap="none")
-            # # Bug fix: 3/10/05: We must unpack the text area to make the scrollbar visible.
-            # self.bodyCtrl.pack_forget()
+            # w.configure(wrap="none")
+            # We must unpack the text area to make the scrollbar visible.
+            # w.pack_forget()
             # self.bodyXBar.pack(side="bottom", fill="x")
-            # self.bodyCtrl.pack(expand=1,fill="both")
-    #@-node:ekr.20071001091231.83:f.setWrap
-    #@+node:ekr.20071001091231.84:setTopGeometry
+            # w.pack(expand=1,fill="both")
+    #@-node:ekr.20071001091231.83:setWrap (swingFrame)
+    #@+node:ekr.20071001091231.84:setTopGeometry (swingFrame)
     def setTopGeometry(self,w,h,x,y,adjustSize=True):
 
         # Put the top-left corner on the screen.
@@ -1147,8 +1146,8 @@ class leoSwingFrame (leoFrame.leoFrame):
         geom = "%dx%d%+d%+d" % (w,h,x,y)
 
         self.top.geometry(geom)
-    #@-node:ekr.20071001091231.84:setTopGeometry
-    #@+node:ekr.20071001091231.85:reconfigurePanes (use config bar_width)
+    #@-node:ekr.20071001091231.84:setTopGeometry (swingFrame)
+    #@+node:ekr.20071001091231.85:reconfigurePanes (use config bar_width) (swingFrame)
     def reconfigurePanes (self):
 
         c = self.c
@@ -1163,8 +1162,8 @@ class leoSwingFrame (leoFrame.leoFrame):
         # The log pane needs a slightly bigger border when tiling vertically.
         border = g.choose(self.splitVerticalFlag,4,2) 
         ### self.log.configureBorder(border)
-    #@-node:ekr.20071001091231.85:reconfigurePanes (use config bar_width)
-    #@+node:ekr.20071001091231.86:resizePanesToRatio
+    #@-node:ekr.20071001091231.85:reconfigurePanes (use config bar_width) (swingFrame)
+    #@+node:ekr.20071001091231.86:resizePanesToRatio (swingFrame)
     def resizePanesToRatio(self,ratio,ratio2):
 
         # g.trace(ratio,ratio2,g.callers())
@@ -1172,7 +1171,7 @@ class leoSwingFrame (leoFrame.leoFrame):
         self.divideLeoSplitter(self.splitVerticalFlag,ratio)
         self.divideLeoSplitter(not self.splitVerticalFlag,ratio2)
     #@nonl
-    #@-node:ekr.20071001091231.86:resizePanesToRatio
+    #@-node:ekr.20071001091231.86:resizePanesToRatio (swingFrame)
     #@-node:ekr.20071001091231.77:Configuration (swingFrame)
     #@+node:ekr.20071001091231.87:Event handlers (swingFrame)
     #@+node:ekr.20071001091231.88:frame.OnCloseLeoEvent
@@ -1447,19 +1446,19 @@ class leoSwingFrame (leoFrame.leoFrame):
     #@-node:ekr.20071001091231.103:fullyExpand/hide...Pane
     #@-node:ekr.20071001091231.97:Minibuffer commands... (swingFrame)
     #@+node:ekr.20071001091231.104:Window Menu...
-    #@+node:ekr.20071001091231.105:toggleActivePane
+    #@+node:ekr.20071001091231.105:toggleActivePane (changed)
     def toggleActivePane (self,event=None):
 
         '''Toggle the focus between the outline and body panes.'''
 
         frame = self ; c = frame.c
 
-        if c.get_focus() == frame.bodyCtrl:
+        if c.get_focus() == frame.body.bodyCtrl: # 2007:10/25
             c.treeWantsFocusNow()
         else:
             c.endEditing()
             c.bodyWantsFocusNow()
-    #@-node:ekr.20071001091231.105:toggleActivePane
+    #@-node:ekr.20071001091231.105:toggleActivePane (changed)
     #@+node:ekr.20071001091231.106:cascade
     def cascade (self,event=None):
 
@@ -1640,7 +1639,7 @@ class leoSwingFrame (leoFrame.leoFrame):
     # that alters text improperly.
     #@-at
     #@-node:ekr.20071001091231.117:Delayed Focus (swingFrame)
-    #@+node:ekr.20071001091231.118:Tk bindings...
+    #@+node:ekr.20071001091231.118:Tk bindings... (swingFrame)
     def bringToFront (self):
         # g.trace(g.callers())
         self.top.deiconify()
@@ -1658,7 +1657,7 @@ class leoSwingFrame (leoFrame.leoFrame):
         if f:
             return f
         else:
-            return self.bodyCtrl
+            return self.body.bodyCtrl
 
     def getTitle (self):
         return self.top.title()
@@ -1680,7 +1679,7 @@ class leoSwingFrame (leoFrame.leoFrame):
 
     def update (self):
         self.top.update()
-    #@-node:ekr.20071001091231.118:Tk bindings...
+    #@-node:ekr.20071001091231.118:Tk bindings... (swingFrame)
     #@-others
 #@-node:ekr.20070930105601.2:class leoSwingFrame
 #@+node:ekr.20070930110535:class leoSwingBody
@@ -1925,7 +1924,7 @@ class leoSwingBody (leoFrame.leoBody):
 
         pass
     #@-node:ekr.20071001193426:bind (new)
-    #@+node:ekr.20071001091231.13:Color tags (Tk spelling)
+    #@+node:ekr.20071001091231.13:Tags (Tk spelling) (swingBody)
     def tag_add (self,tagName,index1,index2):
         self.bodyCtrl.tag_add(tagName,index1,index2)
 
@@ -1943,11 +1942,12 @@ class leoSwingBody (leoFrame.leoBody):
 
     def tag_remove (self,tagName,index1,index2):
         return self.bodyCtrl.tag_remove(tagName,index1,index2)
-    #@-node:ekr.20071001091231.13:Color tags (Tk spelling)
-    #@+node:ekr.20071001091231.14:Configuration (Tk spelling)
+    #@-node:ekr.20071001091231.13:Tags (Tk spelling) (swingBody)
+    #@+node:ekr.20071001091231.14:Configuration (Tk spelling) (swingBody)
     def cget(self,*args,**keys):
 
-        val = self.bodyCtrl.cget(*args,**keys)
+        body = self ; w = self.bodyCtrl
+        val = w.cget(*args,**keys)
 
         if g.app.trace:
             g.trace(val,args,keys)
@@ -1958,9 +1958,10 @@ class leoSwingBody (leoFrame.leoBody):
 
         # g.trace(args,keys)
 
-        return self.bodyCtrl.configure(*args,**keys)
-    #@-node:ekr.20071001091231.14:Configuration (Tk spelling)
-    #@+node:ekr.20071001091231.15:Height & width
+        body = self ; w = body.bodyCtrl
+        return w.configure(*args,**keys)
+    #@-node:ekr.20071001091231.14:Configuration (Tk spelling) (swingBody)
+    #@+node:ekr.20071001091231.15:Height & width (swingBody)
     def getBodyPaneHeight (self):
 
         return self.bodyCtrl.winfo_height()
@@ -1968,18 +1969,18 @@ class leoSwingBody (leoFrame.leoBody):
     def getBodyPaneWidth (self):
 
         return self.bodyCtrl.winfo_width()
-    #@-node:ekr.20071001091231.15:Height & width
-    #@+node:ekr.20071001091231.16:Idle time...
+    #@-node:ekr.20071001091231.15:Height & width (swingBody)
+    #@+node:ekr.20071001091231.16:Idle time... (swingBody)
     def scheduleIdleTimeRoutine (self,function,*args,**keys):
 
         pass ### self.bodyCtrl.after_idle(function,*args,**keys)
-    #@-node:ekr.20071001091231.16:Idle time...
-    #@+node:ekr.20071001091231.17:Menus
+    #@-node:ekr.20071001091231.16:Idle time... (swingBody)
+    #@+node:ekr.20071001091231.17:Menus (swingBody)
     def bind (self,*args,**keys):
 
         pass ### return self.bodyCtrl.bind(*args,**keys)
-    #@-node:ekr.20071001091231.17:Menus
-    #@+node:ekr.20071001091231.18:Text (now in base class)
+    #@-node:ekr.20071001091231.17:Menus (swingBody)
+    #@+node:ekr.20071001091231.18:Text (now in base class) (swingBody)
     # def getAllText (self):              return self.bodyCtrl.getAllText()
     # def getInsertPoint(self):           return self.bodyCtrl.getInsertPoint()
     # def getSelectedText (self):         return self.bodyCtrl.getSelectedText()
@@ -1997,7 +1998,7 @@ class leoSwingBody (leoFrame.leoBody):
         # i,j = sel
         # self.bodyCtrl.setSelectionRange(i,j)
     #@nonl
-    #@-node:ekr.20071001091231.18:Text (now in base class)
+    #@-node:ekr.20071001091231.18:Text (now in base class) (swingBody)
     #@-node:ekr.20071001091231.12:Tk bindings (swingBbody)
     #@+node:ekr.20071001091231.19:Editors (swingBody)
     #@+node:ekr.20071001091231.20:createEditorFrame

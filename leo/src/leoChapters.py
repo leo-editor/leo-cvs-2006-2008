@@ -895,7 +895,6 @@ class chapter:
         # Next, recompute p and possibly select a new editor.
         if w:
             assert w == c.frame.body.bodyCtrl
-            assert w == c.frame.bodyCtrl
             assert w.leo_p
             # g.trace(name,'w.leo_p',w.leo_p,'p',p)
             self.p = p = self.findPositionInChapter(w.leo_p)

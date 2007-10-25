@@ -522,14 +522,14 @@ class leoFind:
             c.endUpdate()
             self.restore(saveData)
     #@-node:ekr.20031218072017.3069:changeAll
-    #@+node:ekr.20031218072017.3070:changeSelection
+    #@+node:ekr.20031218072017.3070:changeSelection (changed)
     # Replace selection with self.change_text.
     # If no selection, insert self.change_text at the cursor.
 
     def changeSelection(self):
 
         c = self.c ; p = self.p
-        w = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
+        w = g.choose(self.in_headline,c.edit_widget(p),c.frame.body.bodyCtrl) # 2007:10/25
         oldSel = sel = w.getSelectionRange()
         start,end = sel
         if start > end: start,end = end,start
@@ -599,7 +599,7 @@ class leoFind:
         result.append(s[i:])
         return ''.join(result)
     #@-node:ekr.20060526201951:makeRegexSubs
-    #@-node:ekr.20031218072017.3070:changeSelection
+    #@-node:ekr.20031218072017.3070:changeSelection (changed)
     #@+node:ekr.20031218072017.3071:changeThenFind
     def changeThenFind(self):
 
@@ -1272,13 +1272,19 @@ class leoFind:
     def save (self):
 
         c = self.c ; p = self.p
-        w = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
-        insert = w.getInsertPoint()
-        sel = w.getSelectionRange()
-        if len(sel) == 2:
-            start,end = sel
+        w = g.choose(self.in_headline,c.edit_widget(p),c.frame.body.bodyCtrl)
+
+        # 2007/10/24: defensive programming for unit tests.
+        if w:
+            insert = w.getInsertPoint()
+            sel = w.getSelectionRange()
+            if len(sel) == 2:
+                start,end = sel
+            else:
+                start,end = None,None
         else:
             start,end = None,None
+
         return (self.in_headline,p,w,insert,start,end)
     #@-node:ekr.20031218072017.3090:save
     #@+node:ekr.20031218072017.3091:showSuccess
@@ -1286,7 +1292,7 @@ class leoFind:
 
         """Displays the final result.
 
-        Returns self.dummy_vnode, c.edit_widget(p) or c.frame.bodyCtrl with
+        Returns self.dummy_vnode, c.edit_widget(p) or c.frame.body.bodyCtrl with
         "insert" and "sel" points set properly."""
 
         c = self.c ; p = self.p

@@ -806,16 +806,9 @@ class leoBody:
         return self.colorizer.updateSyntaxColorer(p.copy())
     #@-node:ekr.20031218072017.3677:Coloring
     #@+node:ekr.20060528100747:Editors (leoBody)
-    #@+at 
-    #@nonl
-    # Notes:
-    # - body.bodyCtrl and body.frame.bodyCtrl must always be the same.
-    # 
-    # - This code uses self.pb, a paned body widget, created by 
-    # tkBody.finishCreate.
-    # 
-    # 
-    #@-at
+    # This code uses self.pb, a paned body widget, created by tkBody.finishCreate.
+
+
     #@+node:ekr.20070424053629:entries
     #@+node:ekr.20060528100747.1:addEditor
     def addEditor (self,event=None):
@@ -880,7 +873,7 @@ class leoBody:
             w2 = d.values()[i]
             assert(w!=w2)
             self.selectEditor(w2)
-            self.bodyCtrl = self.frame.bodyCtrl = w2
+            self.bodyCtrl = self.frame.body.bodyCtrl = w2 # 2007/10/25: was self.frame.bodyCtrl: bug fix!
             # print '***',g.app.gui.widget_name(w2),id(w2)
 
         return 'break'
@@ -965,6 +958,7 @@ class leoBody:
         '''Select editor w and node w.leo_p.'''
 
         #  Called by body.onClick and whenever w must be selected.
+        trace = True
 
         if self.selectEditorLockout:
             return
@@ -990,11 +984,13 @@ class leoBody:
 
         c = self.c ; cc = c.chapterController ; d = self.editorWidgets
 
+        trace = True
+
         if not w.leo_p:
             g.trace('no w.leo_p') 
             return 'break'
 
-        if 0:
+        if trace:
             g.trace('==1',id(w),
                 hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
                 hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
@@ -1002,7 +998,7 @@ class leoBody:
         self.inactivateActiveEditor(w)
 
         # The actual switch.
-        self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
+        self.frame.body.bodyCtrl = self.bodyCtrl = w # Must change both ivars! # Bug fix: was self.frame.bodyCtrl.
         w.leo_active = True
 
         self.switchToChapter(w)
@@ -1012,7 +1008,7 @@ class leoBody:
             g.trace('***** no position editor!')
             return 'break'
 
-        if 0:
+        if trace:
             g.trace('==2',id(w),
                 hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
                 hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
@@ -1045,7 +1041,6 @@ class leoBody:
         #@nl
         c.bodyWantsFocusNow()
         return 'break'
-    #@nonl
     #@-node:ekr.20070423102603:selectEditorHelper
     #@-node:ekr.20061017083312:selectEditor & helpers
     #@+node:ekr.20060528132829:assignPositionToEditor
@@ -1158,7 +1153,7 @@ class leoBody:
         c.recolor_now(interruptable=False) # Force a complete recoloring.
 
         # Restore.
-        self.bodyCtrl = self.frame.bodyCtrl = old_w
+        self.bodyCtrl = self.frame.body.bodyCtrl = old_w # 2007/10/27: bug fix: was self.frame.bodyCtrl.
     #@nonl
     #@-node:ekr.20060530204135:recolorWidget
     #@+node:ekr.20070424084012:switchToChapter (leoBody)
@@ -1215,7 +1210,8 @@ class leoBody:
         # Select the leftmost editor.
         w = body.editorWidgets.get('1')
         body.selectEditor(w)
-        body.bodyCtrl = frame.bodyCtrl = w
+        ### body.bodyCtrl = frame.bodyCtrl = w
+        body.bodyCtrl = w # 2007/10/25: frame.bodyCtrl no longer exists.
 
         # Delete the selected editor.
         body.deleteEditor()
@@ -1228,6 +1224,7 @@ class leoBody:
 
         '''Update Leo after the body has been changed.'''
 
+        trace = False
         body = self ; c = self.c
         bodyCtrl = w = body.bodyCtrl
         p = c.currentPosition()
@@ -1235,13 +1232,13 @@ class leoBody:
         ch = g.choose(insert==0,'',w.get(insert-1))
         ch = g.toUnicode(ch,g.app.tkEncoding)
         newText = w.getAllText() # Note: getAllText converts to unicode.
-        # g.trace('newText',repr(newText),g.callers())
+        if trace: g.trace('w',w,'newText',repr(newText),g.callers())
         newSel = w.getSelectionRange()
         if not oldText:
             oldText = p.bodyString() ; changed = True
         else:
             changed = oldText != newText
-        # g.trace(repr(ch),'changed:',changed,'newText:',repr(newText))
+        if trace: g.trace(repr(ch),'changed:',changed,'newText:',repr(newText))
         if not changed: return
         c.undoer.setUndoTypingParams(p,undoType,
             oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
@@ -1321,7 +1318,7 @@ class leoBody:
         g.trace("leoBody oops:", g.callers(), "should be overridden in subclass")
     #@-node:ekr.20031218072017.3658:oops
     #@+node:ekr.20031218072017.4018:Text (leoBody)
-    #@+node:ekr.20031218072017.4030:getInsertLines & test
+    #@+node:ekr.20031218072017.4030:getInsertLines & test (changed)
     def getInsertLines (self):
 
         """Return before,after where:
@@ -1332,7 +1329,7 @@ class leoBody:
 
         All lines end in a newline, except possibly the last line."""
 
-        w = self.bodyCtrl
+        body = self ; w = body.bodyCtrl
         s = w.getAllText()
         insert = w.getInsertPoint()
         i,j = g.getLine(s,insert)
@@ -1365,8 +1362,8 @@ class leoBody:
     # end.
     #@nonl
     #@-node:ekr.20070627082044.920:@test leoBody.getInsertLines
-    #@-node:ekr.20031218072017.4030:getInsertLines & test
-    #@+node:ekr.20031218072017.4031:getSelectionAreas
+    #@-node:ekr.20031218072017.4030:getInsertLines & test (changed)
+    #@+node:ekr.20031218072017.4031:getSelectionAreas (changed)
     def getSelectionAreas (self):
 
         """Return before,sel,after where:
@@ -1377,7 +1374,7 @@ class leoBody:
         after is the text after the selected text
         (or the text after the insert point if no selection)"""
 
-        w = self.bodyCtrl
+        body = self ; w = body.bodyCtrl
         s = w.getAllText()
         i,j = w.getSelectionRange()
         if i == j: j = i + 1
@@ -1411,8 +1408,8 @@ class leoBody:
     # end.
     #@nonl
     #@-node:ekr.20070627082044.921:@test leoBody.getSelectionAreas & test
-    #@-node:ekr.20031218072017.4031:getSelectionAreas
-    #@+node:ekr.20031218072017.2377:getSelectionLines
+    #@-node:ekr.20031218072017.4031:getSelectionAreas (changed)
+    #@+node:ekr.20031218072017.2377:getSelectionLines (changed)
     def getSelectionLines (self):
 
         """Return before,sel,after where:
@@ -1428,7 +1425,7 @@ class leoBody:
             return '','',''
 
         # At present, called only by c.getBodyLines.
-        w = self.bodyCtrl
+        body = self ; w = body.bodyCtrl
         s = w.getAllText()
         i,j = w.getSelectionRange()
         if i == j:
@@ -1444,14 +1441,14 @@ class leoBody:
 
         # g.trace(i,j,'sel',repr(s[i:j]),'after',repr(after))
         return before,sel,after # 3 strings.
-    #@-node:ekr.20031218072017.2377:getSelectionLines
-    #@+node:ekr.20031218072017.4037:setSelectionAreas
+    #@-node:ekr.20031218072017.2377:getSelectionLines (changed)
+    #@+node:ekr.20031218072017.4037:setSelectionAreas (changed)
     def setSelectionAreas (self,before,sel,after):
 
         """Replace the body text by before + sel + after and
         set the selection so that the sel text is selected."""
 
-        w = self.bodyCtrl
+        body = self ; w = body.bodyCtrl
         s = w.getAllText()
         before = before or ''
         sel = sel or ''
@@ -1463,7 +1460,7 @@ class leoBody:
         # g.trace(i,j,repr(sel))
         w.setSelectionRange(i,j,insert=j)
         return i,j
-    #@-node:ekr.20031218072017.4037:setSelectionAreas
+    #@-node:ekr.20031218072017.4037:setSelectionAreas (changed)
     #@+node:ekr.20031218072017.4038:get/setYScrollPosition
     def getYScrollPosition (self):
         return self.bodyCtrl.getYScrollPosition()
@@ -1890,7 +1887,10 @@ class leoFrame:
         c.beginUpdate()
         try:
             w = c.frame.body.bodyCtrl
+            # print (w)
+            s2 = p.bodyString()
             s = w.getAllText()
+            assert s == s2, 'w.getAllText() != p.bodyString(): len(w)=%d, len(p)=%d' % (len(s),len(s2))
             w.setInsertPoint(len(s))
             c.k.previousSelection = 2,8
             event = g.Bunch(widget=w)
@@ -1899,11 +1899,11 @@ class leoFrame:
             assert len(s2) == len(s) + len('target')
         finally:
             w.setAllText(s)
-            p.v.t.bodyString = s
+            p.v.t.bodyString = s2
             # g.trace(repr(s))
             c.recolor()
             c.endUpdate(False)
-    # end
+    # end5targettargettarget
     #@nonl
     #@-node:ekr.20070627082044.842:@test pasteText
     #@-node:ekr.20070130115927.7:leoFrame.pasteText & test
@@ -2043,12 +2043,12 @@ class leoFrame:
     #@-node:ekr.20031218072017.3682:Window...
     #@-node:ekr.20031218072017.3680:Must be defined in subclasses
     #@+node:ekr.20061109125528:May be defined in subclasses
-    #@+node:ekr.20031218072017.3687:setTabWidth
+    #@+node:ekr.20031218072017.3687: setTabWidth (leoFrame)
     def setTabWidth (self,w):
 
         # Subclasses may override this to affect drawing.
         self.tab_width = w
-    #@-node:ekr.20031218072017.3687:setTabWidth
+    #@-node:ekr.20031218072017.3687: setTabWidth (leoFrame)
     #@+node:ekr.20031218072017.3688:getTitle & setTitle
     def getTitle (self):
         return self.title
@@ -2533,7 +2533,7 @@ class leoTree:
         # N.B. These vnode methods are entitled to know about details of the leoTkinterTree class.
 
         #@+others
-        #@+node:ekr.20040803072955.23:OnHyperLinkControlClick
+        #@+node:ekr.20040803072955.23:OnHyperLinkControlClick (changed)
         def OnHyperLinkControlClick (self,event=None,c=c):
 
             """Callback injected into position class."""
@@ -2546,12 +2546,12 @@ class leoTree:
                         c.selectPosition(p)
                     finally:
                         c.endUpdate()
-                    c.frame.bodyCtrl.setInsertPoint(0)
+                    c.frame.body.bodyCtrl.setInsertPoint(0) # 2007/10/27
                 g.doHook("hypercclick2",c=c,p=p,v=p,event=event)
             except:
                 g.es_event_exception("hypercclick")
-        #@-node:ekr.20040803072955.23:OnHyperLinkControlClick
-        #@+node:ekr.20040803072955.24:OnHyperLinkEnter
+        #@-node:ekr.20040803072955.23:OnHyperLinkControlClick (changed)
+        #@+node:ekr.20040803072955.24:OnHyperLinkEnter (changed)
         def OnHyperLinkEnter (self,event=None,c=c):
 
             """Callback injected into position class."""
@@ -2560,12 +2560,12 @@ class leoTree:
                 p = self
                 if not g.doHook("hyperenter1",c=c,p=p,v=p,event=event):
                     if 0: # This works, and isn't very useful.
-                        c.frame.bodyCtrl.tag_config(p.tagName,background="green")
+                        c.frame.body.bodyCtrl.tag_config(p.tagName,background="green") # 10/27/07
                 g.doHook("hyperenter2",c=c,p=p,v=p,event=event)
             except:
                 g.es_event_exception("hyperenter")
-        #@-node:ekr.20040803072955.24:OnHyperLinkEnter
-        #@+node:ekr.20040803072955.25:OnHyperLinkLeave
+        #@-node:ekr.20040803072955.24:OnHyperLinkEnter (changed)
+        #@+node:ekr.20040803072955.25:OnHyperLinkLeave (changed)
         def OnHyperLinkLeave (self,event=None,c=c):
 
             """Callback injected into position class."""
@@ -2574,11 +2574,12 @@ class leoTree:
                 p = self
                 if not g.doHook("hyperleave1",c=c,p=p,v=p,event=event):
                     if 0: # This works, and isn't very useful.
-                        c.frame.bodyCtrl.tag_config(p.tagName,background="white")
+                        c.frame.body.bodyCtrl.tag_config(p.tagName,background="white") # 2007/20/25
+
                 g.doHook("hyperleave2",c=c,p=p,v=p,event=event)
             except:
                 g.es_event_exception("hyperleave")
-        #@-node:ekr.20040803072955.25:OnHyperLinkLeave
+        #@-node:ekr.20040803072955.25:OnHyperLinkLeave (changed)
         #@-others
         #@-node:ekr.20040803072955.22:<< define callbacks to be injected in the position class >>
         #@nl
@@ -2715,13 +2716,13 @@ class leoTree:
             self.tree_select_lockout = False
 
         return val  # Don't put a return in a finally clause.
-    #@+node:ekr.20070423101911:treeSelectHelper
+    #@+node:ekr.20070423101911:treeSelectHelper (changed)
     #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
 
     def treeSelectHelper (self,p,updateBeadList,scroll):
 
         c = self.c ; frame = c.frame
-        body = w = frame.bodyCtrl
+        body = w = frame.body.bodyCtrl # 2007/10/25
         old_p = c.currentPosition()
 
         if not p:
@@ -2826,7 +2827,7 @@ class leoTree:
         g.doHook("select3",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
 
         return 'break' # Supresses unwanted selection.
-    #@-node:ekr.20070423101911:treeSelectHelper
+    #@-node:ekr.20070423101911:treeSelectHelper (changed)
     #@-node:ekr.20040803072955.128:leoTree.select & helper
     #@+node:ekr.20031218072017.3718:oops
     def oops(self):
@@ -3021,7 +3022,7 @@ class nullFrame (leoFrame):
 
         pass
     #@-node:ekr.20041120073824:destroySelf
-    #@+node:ekr.20040327105706.2:finishCreate
+    #@+node:ekr.20040327105706.2:finishCreate  (Removed nullFrame.bodyCtrl)
     def finishCreate(self,c):
 
         self.c = c
@@ -3037,14 +3038,14 @@ class nullFrame (leoFrame):
         c.setLog()
 
         # Set the official ivar.
-        self.bodyCtrl = self.body.bodyCtrl
+        ##### self.bodyCtrl = self.body.bodyCtrl
 
         assert(c.undoer)
         if self.useNullUndoer:
             c.undoer = leoUndo.nullUndoer(c)
 
 
-    #@-node:ekr.20040327105706.2:finishCreate
+    #@-node:ekr.20040327105706.2:finishCreate  (Removed nullFrame.bodyCtrl)
     #@+node:ekr.20061109124552:Overrides
     #@+node:ekr.20061109123828:Config...
     def resizePanesToRatio (self,ratio,secondary_ratio):    pass
