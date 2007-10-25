@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.653566229985">
-	<global_window_position top="83" left="243" height="667" width="864"/>
+	<global_window_position top="83" left="243" height="647" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -84,7 +84,7 @@
 </v>
 </v>
 <v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
-<v t="ekr.20070926132045"><vh>Buttons</vh>
+<v t="ekr.20070926132045" a="TV"><vh>Buttons</vh>
 <v t="ekr.20070926082407"><vh>@buttons</vh>
 <v t="ekr.20070926082256.1"><vh>@@button Beautify</vh></v>
 <v t="ekr.20071009135515"><vh>@@button rst3</vh></v>
@@ -1136,6 +1136,7 @@
 <v t="ekr.20041119034357.36"><vh>@bool run_untangle_done.py = False</vh></v>
 </v>
 <v t="ekr.20051025084017" annotate="7d71002e"><vh>Spell tab</vh>
+<v t="ekr.20071025161551"><vh>@bool diagnose-aspell-installation = True</vh></v>
 <v t="ekr.20051025084017.1"><vh>@string aspell_local_language_code = en</vh></v>
 <v t="ekr.20051025084017.2"><vh>@string aspell_local_dictionary = None</vh></v>
 <v t="ekr.20051025085144"><vh>@string aspell_dir = c:\aspell</vh></v>
@@ -1149,7 +1150,7 @@
 <v t="ekr.20050203090810" a="E" annotate="7d71002e"><vh>Unit test</vh>
 <v t="ekr.20050203085250"><vh>@int global_setting_for_unit_tests = 132</vh></v>
 </v>
-<v t="ekr.20041213105954" a="E" annotate="7d71002e"><vh>Window</vh>
+<v t="ekr.20041213105954" annotate="7d71002e"><vh>Window</vh>
 <v t="ekr.20041119034357.38"><vh>Body pane options</vh>
 <v t="ekr.20061010111324"><vh>@bool select_all_text_when_editing_headlines = False</vh></v>
 <v t="ekr.20060531094310"><vh>@bool autoindent_in_nocolor_mode = True</vh></v>
@@ -1170,8 +1171,8 @@
 <v t="ekr.20041213105954.1"><vh>Log pane options</vh>
 <v t="ekr.20041119052015.1"><vh>@bool log_pane_wraps = False</vh></v>
 </v>
-<v t="ekr.20041119034357.56" a="E"><vh>Options for new windows</vh>
-<v t="ekr.20071024145953" a="V"><vh>@bool big_outline_pane = False</vh></v>
+<v t="ekr.20041119034357.56"><vh>Options for new windows</vh>
+<v t="ekr.20071024145953"><vh>@bool big_outline_pane = False</vh></v>
 <v t="ekr.20060930085332"><vh>@bool outline_pane_has_initial_focus = True</vh></v>
 <v t="ekr.20041119034357.59"><vh>@strings[vertical,horizontal] initial_splitter_orientation = vertical</vh></v>
 <v t="ekr.20041119034357.57"><vh>@ratio initial_horizontal_ratio = 0.4</vh></v>
@@ -8393,5 +8394,6 @@ else:
 <t tx="ekr.20071010123223.1">打开</t>
 <t tx="ekr.20071024145953">False (legacy): Top pane contains outline and log panes.
 True: Top pane contains only outline.  Bottom pane contains body and log panes.</t>
+<t tx="ekr.20071025161551"></t>
 </tnodes>
 </leo_file>
