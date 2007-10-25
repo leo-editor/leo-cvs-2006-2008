@@ -9,7 +9,7 @@ See: http://webpages.charter.net/edreamleo/coloring.html for documentation.
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '1.0'
+__version__ = '1.1'
 
 trace_all_matches = False
 trace_leo_matches = False
@@ -39,23 +39,15 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 #@@nocolor
 #@+at
 # 
-# 0.1 EKR: Initial version based on code in test.leo.
-# 0.2 EKR: Do not restore the selection range or insert point: it messes 
-# things up.
-# 0.3 EKR: A rewrite of the incremental coloring logic.
-# 0.4 EKR: Minor changes.
-# 0.5 EKR: Several optimizations, of unknown real value:
-# - Minimize the time spent in critical sections.
-# - Process only 'limit' items in finishColoring.
-# - finishColoring now returns a 'done' indicator, and idleHandler
-#   re-queues itself if more work remains.
 # 1.0 EKR: A complete rewrite:
 #     - No incremental coloring **at all**.
 #     - The helper thread runs to completion before *any* tagging is done.
 #     - No locks are needed because the globalTagList is never simultaneously 
 # accessed.
+# 
+# 1.1: EKR: support non-interruptable coloring.  Required when there are 
+# multiple body editors.
 #@-at
-#@nonl
 #@-node:ekr.20071010193720.2:<< version history >>
 #@nl
 #@<< define leoKeywordsDict >>
@@ -521,6 +513,7 @@ class colorizer:
         # Threading info...
         self.threadCount = 0
         self.helperThread = None # A singleton helper thread.
+        self.interruptable = True
         self.killFlag = False
         # Tagging...
         self.oldTags = [] # Sorted list of all old tags.
@@ -903,6 +896,8 @@ class colorizer:
 
         self.count += 1 # For unit testing.
 
+        self.interruptable = interruptable
+
         c = self.c
 
         if self.enabled:
@@ -1125,7 +1120,20 @@ class colorizer:
             self.w.after(200,self.idleHandler,n)
             return
 
-        newCode = True ###
+        self.completeColoring()
+
+        if self.globalAddList:
+            self.w.after(after_time,self.idleHandler,n)
+        else:
+            if verbose: g.trace('****** thread done %d' % n)
+            # Call update_idletasks only at the very end.
+            self.w.update_idletasks()
+    #@nonl
+    #@-node:ekr.20071010193720.42:idleHandler
+    #@+node:ekr.20071025133020:completeColoring
+    def completeColoring (self):
+
+        trace = False ; verbose = False
 
         if not self.postPassStarted:
             # if trace: g.trace('****** post processing')
@@ -1141,15 +1149,13 @@ class colorizer:
         if verbose or (trace and (addList or deleteList)):
             g.trace('-%-3d +%-3d' % (len(deleteList),len(addList)))
 
-        self.putNewTags()
-
-        if self.globalAddList:
-            self.w.after(after_time,self.idleHandler,n)
+        if self.interruptable:
+            self.putNewTags()
         else:
-            if verbose: g.trace('****** thread done %d' % n)
-            # Call update_idletasks only at the very end.
-            self.w.update_idletasks()
-    #@-node:ekr.20071010193720.42:idleHandler
+            if trace: g.trace('**** non-interruptable')
+            while self.globalAddList:
+                self.putNewTags()
+    #@-node:ekr.20071025133020:completeColoring
     #@+node:ekr.20071010193720.43:init
     def init (self,p):
 
@@ -1373,12 +1379,15 @@ class colorizer:
 
         if self.killcolorFlag or not self.mode:
             self.removeAllTags()
-        else:
+        elif self.interruptable:
             self.threadCount += 1
             t = threading.Thread(target=self.target,kwargs={'s':self.s})
             self.helperThread = t
             t.start()
             self.w.after_idle(self.idleHandler,self.threadCount)
+        else:
+            self.fullColor(self.s)
+            self.completeColoring()
     #@-node:ekr.20071010193720.49:threadColorizer
     #@-node:ekr.20071010193720.39:Colorers & helpers
     #@+node:ekr.20071010193720.50:In helper thread
@@ -1861,7 +1870,7 @@ class colorizer:
         return ''.join([g.choose(ch in valid,ch.lower(),'_') for ch in s])
     #@nonl
     #@-node:ekr.20071010193720.73:munge
-    #@+node:ekr.20071011201952:quickConvertPythonIndexToRowCol 
+    #@+node:ekr.20071011201952:quickConvertPythonIndexToRowCol
     def quickConvertPythonIndexToRowCol(self,i,last_row,last_col,last_i):
 
         # trace = False and self.trace
@@ -1876,7 +1885,7 @@ class colorizer:
             prevNL = s.rfind('\n',last_i,i) # Don't include i
             # if trace: g.trace('prevNL',prevNL,'returns',last_row+row,i-prevNL-1)
             return last_row+row,i-prevNL-1
-    #@-node:ekr.20071011201952:quickConvertPythonIndexToRowCol 
+    #@-node:ekr.20071011201952:quickConvertPythonIndexToRowCol
     #@+node:ekr.20071010193720.74:scanColorDirectives
     def scanColorDirectives(self,p):
 
