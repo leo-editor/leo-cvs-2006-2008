@@ -7136,22 +7136,22 @@ reading d:\test.leo
 
 
 #@-node:ekr.20031218072017.721:Test File for Non Expanding Tabs
-#@+node:ekr.20031218072017.722:setTabWidth
+#@+node:ekr.20031218072017.722:setTabWidth (tkFrame) (changed)
 def setTabWidth (self, w):
 
     try: # This can fail when called from scripts
         # Use the present font for computations.
-        font = self.bodyCtrl.cget("font")
+        font = self.body.bodyCtrl.cget("font") # 2007/10/27
         root = g.app.root # 4/3/03: must specify root so idle window will work properly.
         font = tkFont.Font(root=root,font=font)
         tabw = font.measure(" " * abs(w)) # 7/2/02
-        self.bodyCtrl.configure(tabs=tabw)
+        self.body.bodyCtrl.configure(tabs=tabw)
         self.tab_width = w
         # g.trace(w,tabw)
     except:
         g.es_exception()
         pass
-#@-node:ekr.20031218072017.722:setTabWidth
+#@-node:ekr.20031218072017.722:setTabWidth (tkFrame) (changed)
 #@-node:ekr.20031218072017.718:(tab bug)
 #@-node:ekr.20031218072017.673:Tk bugs
 #@+node:ekr.20040129133809.8:top node not saved

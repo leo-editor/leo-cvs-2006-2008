@@ -139,13 +139,12 @@ def __init__(self,title,gui):
     self.trace_status_line = None # Set in finishCreate.
 
     << set the leoSwingFrame ivars >>
-#@+node:ekr.20071001091231.26:<< set the leoSwingFrame ivars >>
+#@+node:ekr.20071001091231.26:<< set the leoSwingFrame ivars >> (removed frame.bodyCtrl ivar)
 # "Official ivars created in createLeoFrame and its allies.
 self.bar1 = None
 self.bar2 = None
 self.body = None
 self.bodyBar = None
-self.bodyCtrl = None
 self.bodyXBar = None
 self.f1 = self.f2 = None
 self.findPanel = None # Inited when first opened.
@@ -170,7 +169,7 @@ self.redrawCount = 0
 self.wantedWidget = None
 self.wantedCallbackScheduled = False
 self.scrollWay = None
-#@-node:ekr.20071001091231.26:<< set the leoSwingFrame ivars >>
+#@-node:ekr.20071001091231.26:<< set the leoSwingFrame ivars >> (removed frame.bodyCtrl ivar)
 #@-node:ekr.20071001091231.25:__init__ (swingFrame)
 #@-node:ekr.20071008000135:Debugging in jython
 #@+node:ekr.20070930184746:from original swingGui plugin
@@ -19366,6 +19365,7 @@ if g.unitTesting:
     runner.root = p.copy()
 
     g.app.unitTestDict ['expectedErrors'] = 1
+    g.app.unitTestDict ['expectedMismatchLine'] = 2
 
     s1 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2\n',encoding='utf-8')
     s2 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2a\n',encoding='utf-8')
@@ -20015,8 +20015,9 @@ def reportMismatch (self,lines1,lines2,bad_i):
             pr('%3d %s' % (i,lines2[i]),newline=False)
 
     return False
-#@+node:ekr.20070913084008:@test pr
-if False or g.unitTesting:
+#@+node:ekr.20070913084008:minitest of pr
+if False: # Don't clutter the unit tests.
+
     def pr(*args,**keys): # reportMismatch test
         g.es_print(color='blue',*args,**keys)
 
@@ -20024,7 +20025,7 @@ if False or g.unitTesting:
     pr('newline=False:',newline=False)
     pr('after')
     pr('done')
-#@-node:ekr.20070913084008:@test pr
+#@-node:ekr.20070913084008:minitest of pr
 #@-node:ekr.20070911110507:reportMismatch & test
 #@-node:ekr.20070913085051:Fixed recent crasher involving pr and es_print
 #@+node:ekr.20070816084029:Retain dirty bit after write @auto fails
@@ -20526,24 +20527,6 @@ def regularizeError (self):
 
 #@-node:ekr.20070808121958:regularizeError
 #@-node:ekr.20070808115837.1:regularizeWhitespace
-#@+node:ekr.20071023082323:@test run
-if g.unitTesting:
-
-    ic = c.importCommands
-    ic.methodName = 'test' ; ic.fileType = '.py'
-
-    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
-    runner.root = p.copy()
-    parent = p.copy()
-
-    s = '''\
-def spam():
-    pass
-'''
-    s = g.adjustTripleString(s,-4)
-
-    runner.run(s,parent)
-#@-node:ekr.20071023082323:@test run
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@+node:ekr.20070806105721.1:readAtAutoNodes (commands)
 def readAtAutoNodes (self,event=None):
@@ -21184,6 +21167,7 @@ if g.unitTesting:
     runner.root = p.copy()
 
     g.app.unitTestDict ['expectedErrors'] = 1
+    g.app.unitTestDict ['expectedMismatchLine'] = 2
 
     s1 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2\n',encoding='utf-8')
     s2 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2a\n',encoding='utf-8')
@@ -21242,6 +21226,10 @@ if g.unitTesting:
     i = 0
     lines1 = ['abc',]
     lines2 = ['xyz',]
+
+    g.app.unitTestDict ['expectedErrors'] = 1
+    g.app.unitTestDict ['expectedMismatchLine'] = 1
+
     runner.compareHelper(lines1,lines2,i,strict=True)
 #@-node:ekr.20070816101019:@test compareHelper
 #@-node:ekr.20070730093735:compareHelper & tests
@@ -21266,8 +21254,9 @@ def reportMismatch (self,lines1,lines2,bad_i):
             pr('%3d %s' % (i,lines2[i]),newline=False)
 
     return False
-#@+node:ekr.20070913084008:@test pr
-if False or g.unitTesting:
+#@+node:ekr.20070913084008:minitest of pr
+if False: # Don't clutter the unit tests.
+
     def pr(*args,**keys): # reportMismatch test
         g.es_print(color='blue',*args,**keys)
 
@@ -21275,7 +21264,7 @@ if False or g.unitTesting:
     pr('newline=False:',newline=False)
     pr('after')
     pr('done')
-#@-node:ekr.20070913084008:@test pr
+#@-node:ekr.20070913084008:minitest of pr
 #@-node:ekr.20070911110507:reportMismatch & test
 #@-node:ekr.20070808115837:Checking
 #@+node:ekr.20070706084535:Code generation
@@ -22240,24 +22229,6 @@ def regularizeError (self):
 
 #@-node:ekr.20070808121958:regularizeError
 #@-node:ekr.20070808115837.1:regularizeWhitespace
-#@+node:ekr.20071023082323:@test run
-if g.unitTesting:
-
-    ic = c.importCommands
-    ic.methodName = 'test' ; ic.fileType = '.py'
-
-    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
-    runner.root = p.copy()
-    parent = p.copy()
-
-    s = '''\
-def spam():
-    pass
-'''
-    s = g.adjustTripleString(s,-4)
-
-    runner.run(s,parent)
-#@-node:ekr.20071023082323:@test run
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@-node:ekr.20070703122141.65: class baseScannerClass
 #@+node:ekr.20070808115837.2:Regularize whitespace
@@ -22387,24 +22358,6 @@ def regularizeError (self):
 
 #@-node:ekr.20070808121958:regularizeError
 #@-node:ekr.20070808115837.1:regularizeWhitespace
-#@+node:ekr.20071023082323:@test run
-if g.unitTesting:
-
-    ic = c.importCommands
-    ic.methodName = 'test' ; ic.fileType = '.py'
-
-    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
-    runner.root = p.copy()
-    parent = p.copy()
-
-    s = '''\
-def spam():
-    pass
-'''
-    s = g.adjustTripleString(s,-4)
-
-    runner.run(s,parent)
-#@-node:ekr.20071023082323:@test run
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@+node:ekr.20070703122141.102:check
 def check (self,s,parent):
@@ -23821,14 +23774,14 @@ def changeAll(self):
         c.endUpdate()
         self.restore(saveData)
 #@-node:ekr.20031218072017.3069:changeAll
-#@+node:ekr.20031218072017.3070:changeSelection
+#@+node:ekr.20031218072017.3070:changeSelection (changed)
 # Replace selection with self.change_text.
 # If no selection, insert self.change_text at the cursor.
 
 def changeSelection(self):
 
     c = self.c ; p = self.p
-    w = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
+    w = g.choose(self.in_headline,c.edit_widget(p),c.frame.body.bodyCtrl) # 2007:10/25
     oldSel = sel = w.getSelectionRange()
     start,end = sel
     if start > end: start,end = end,start
@@ -23898,7 +23851,7 @@ def makeRegexSubs(self,s,groups):
     result.append(s[i:])
     return ''.join(result)
 #@-node:ekr.20060526201951:makeRegexSubs
-#@-node:ekr.20031218072017.3070:changeSelection
+#@-node:ekr.20031218072017.3070:changeSelection (changed)
 #@+node:ekr.20031218072017.3071:changeThenFind
 def changeThenFind(self):
 
@@ -24565,13 +24518,19 @@ def restore (self,data):
 def save (self):
 
     c = self.c ; p = self.p
-    w = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
-    insert = w.getInsertPoint()
-    sel = w.getSelectionRange()
-    if len(sel) == 2:
-        start,end = sel
+    w = g.choose(self.in_headline,c.edit_widget(p),c.frame.body.bodyCtrl)
+
+    # 2007/10/24: defensive programming for unit tests.
+    if w:
+        insert = w.getInsertPoint()
+        sel = w.getSelectionRange()
+        if len(sel) == 2:
+            start,end = sel
+        else:
+            start,end = None,None
     else:
         start,end = None,None
+
     return (self.in_headline,p,w,insert,start,end)
 #@-node:ekr.20031218072017.3090:save
 #@+node:ekr.20031218072017.3091:showSuccess
@@ -24579,7 +24538,7 @@ def showSuccess(self,pos,newpos):
 
     """Displays the final result.
 
-    Returns self.dummy_vnode, c.edit_widget(p) or c.frame.bodyCtrl with
+    Returns self.dummy_vnode, c.edit_widget(p) or c.frame.body.bodyCtrl with
     "insert" and "sel" points set properly."""
 
     c = self.c ; p = self.p
@@ -26061,6 +26020,7 @@ if g.unitTesting:
     runner.root = p.copy()
 
     g.app.unitTestDict ['expectedErrors'] = 1
+    g.app.unitTestDict ['expectedMismatchLine'] = 2
 
     s1 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2\n',encoding='utf-8')
     s2 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2a\n',encoding='utf-8')
@@ -27258,6 +27218,7 @@ if g.unitTesting:
     runner.root = p.copy()
 
     g.app.unitTestDict ['expectedErrors'] = 1
+    g.app.unitTestDict ['expectedMismatchLine'] = 2
 
     s1 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2\n',encoding='utf-8')
     s2 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2a\n',encoding='utf-8')
@@ -27316,6 +27277,10 @@ if g.unitTesting:
     i = 0
     lines1 = ['abc',]
     lines2 = ['xyz',]
+
+    g.app.unitTestDict ['expectedErrors'] = 1
+    g.app.unitTestDict ['expectedMismatchLine'] = 1
+
     runner.compareHelper(lines1,lines2,i,strict=True)
 #@-node:ekr.20070816101019:@test compareHelper
 #@-node:ekr.20070730093735:compareHelper & tests
@@ -27340,8 +27305,9 @@ def reportMismatch (self,lines1,lines2,bad_i):
             pr('%3d %s' % (i,lines2[i]),newline=False)
 
     return False
-#@+node:ekr.20070913084008:@test pr
-if False or g.unitTesting:
+#@+node:ekr.20070913084008:minitest of pr
+if False: # Don't clutter the unit tests.
+
     def pr(*args,**keys): # reportMismatch test
         g.es_print(color='blue',*args,**keys)
 
@@ -27349,7 +27315,7 @@ if False or g.unitTesting:
     pr('newline=False:',newline=False)
     pr('after')
     pr('done')
-#@-node:ekr.20070913084008:@test pr
+#@-node:ekr.20070913084008:minitest of pr
 #@-node:ekr.20070911110507:reportMismatch & test
 #@-node:ekr.20070808115837:Checking
 #@+node:ekr.20070706084535:Code generation
@@ -28314,24 +28280,6 @@ def regularizeError (self):
 
 #@-node:ekr.20070808121958:regularizeError
 #@-node:ekr.20070808115837.1:regularizeWhitespace
-#@+node:ekr.20071023082323:@test run
-if g.unitTesting:
-
-    ic = c.importCommands
-    ic.methodName = 'test' ; ic.fileType = '.py'
-
-    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
-    runner.root = p.copy()
-    parent = p.copy()
-
-    s = '''\
-def spam():
-    pass
-'''
-    s = g.adjustTripleString(s,-4)
-
-    runner.run(s,parent)
-#@-node:ekr.20071023082323:@test run
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@-node:ekr.20070703122141.65: class baseScannerClass
 #@+node:edreamleo.20070710110114.1:C scanner
@@ -28954,6 +28902,7 @@ if g.unitTesting:
     runner.root = p.copy()
 
     g.app.unitTestDict ['expectedErrors'] = 1
+    g.app.unitTestDict ['expectedMismatchLine'] = 2
 
     s1 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2\n',encoding='utf-8')
     s2 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2a\n',encoding='utf-8')
@@ -29012,6 +28961,10 @@ if g.unitTesting:
     i = 0
     lines1 = ['abc',]
     lines2 = ['xyz',]
+
+    g.app.unitTestDict ['expectedErrors'] = 1
+    g.app.unitTestDict ['expectedMismatchLine'] = 1
+
     runner.compareHelper(lines1,lines2,i,strict=True)
 #@-node:ekr.20070816101019:@test compareHelper
 #@-node:ekr.20070730093735:compareHelper & tests
@@ -29036,8 +28989,9 @@ def reportMismatch (self,lines1,lines2,bad_i):
             pr('%3d %s' % (i,lines2[i]),newline=False)
 
     return False
-#@+node:ekr.20070913084008:@test pr
-if False or g.unitTesting:
+#@+node:ekr.20070913084008:minitest of pr
+if False: # Don't clutter the unit tests.
+
     def pr(*args,**keys): # reportMismatch test
         g.es_print(color='blue',*args,**keys)
 
@@ -29045,7 +28999,7 @@ if False or g.unitTesting:
     pr('newline=False:',newline=False)
     pr('after')
     pr('done')
-#@-node:ekr.20070913084008:@test pr
+#@-node:ekr.20070913084008:minitest of pr
 #@-node:ekr.20070911110507:reportMismatch & test
 #@-node:ekr.20070808115837:Checking
 #@+node:ekr.20070706084535:Code generation
@@ -30010,24 +29964,6 @@ def regularizeError (self):
 
 #@-node:ekr.20070808121958:regularizeError
 #@-node:ekr.20070808115837.1:regularizeWhitespace
-#@+node:ekr.20071023082323:@test run
-if g.unitTesting:
-
-    ic = c.importCommands
-    ic.methodName = 'test' ; ic.fileType = '.py'
-
-    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
-    runner.root = p.copy()
-    parent = p.copy()
-
-    s = '''\
-def spam():
-    pass
-'''
-    s = g.adjustTripleString(s,-4)
-
-    runner.run(s,parent)
-#@-node:ekr.20071023082323:@test run
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@-node:ekr.20070703122141.65: class baseScannerClass
 #@+node:ekr.20070712091019:skipCodeBlock
@@ -31302,6 +31238,7 @@ if g.unitTesting:
     runner.root = p.copy()
 
     g.app.unitTestDict ['expectedErrors'] = 1
+    g.app.unitTestDict ['expectedMismatchLine'] = 2
 
     s1 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2\n',encoding='utf-8')
     s2 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2a\n',encoding='utf-8')
@@ -31360,6 +31297,10 @@ if g.unitTesting:
     i = 0
     lines1 = ['abc',]
     lines2 = ['xyz',]
+
+    g.app.unitTestDict ['expectedErrors'] = 1
+    g.app.unitTestDict ['expectedMismatchLine'] = 1
+
     runner.compareHelper(lines1,lines2,i,strict=True)
 #@-node:ekr.20070816101019:@test compareHelper
 #@-node:ekr.20070730093735:compareHelper & tests
@@ -31384,8 +31325,9 @@ def reportMismatch (self,lines1,lines2,bad_i):
             pr('%3d %s' % (i,lines2[i]),newline=False)
 
     return False
-#@+node:ekr.20070913084008:@test pr
-if False or g.unitTesting:
+#@+node:ekr.20070913084008:minitest of pr
+if False: # Don't clutter the unit tests.
+
     def pr(*args,**keys): # reportMismatch test
         g.es_print(color='blue',*args,**keys)
 
@@ -31393,7 +31335,7 @@ if False or g.unitTesting:
     pr('newline=False:',newline=False)
     pr('after')
     pr('done')
-#@-node:ekr.20070913084008:@test pr
+#@-node:ekr.20070913084008:minitest of pr
 #@-node:ekr.20070911110507:reportMismatch & test
 #@-node:ekr.20070808115837:Checking
 #@+node:ekr.20070706084535:Code generation
@@ -32358,24 +32300,6 @@ def regularizeError (self):
 
 #@-node:ekr.20070808121958:regularizeError
 #@-node:ekr.20070808115837.1:regularizeWhitespace
-#@+node:ekr.20071023082323:@test run
-if g.unitTesting:
-
-    ic = c.importCommands
-    ic.methodName = 'test' ; ic.fileType = '.py'
-
-    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
-    runner.root = p.copy()
-    parent = p.copy()
-
-    s = '''\
-def spam():
-    pass
-'''
-    s = g.adjustTripleString(s,-4)
-
-    runner.run(s,parent)
-#@-node:ekr.20071023082323:@test run
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@-node:ekr.20070703122141.65: class baseScannerClass
 #@+node:edreamleo.20070710110114.1:C scanner
@@ -37918,13 +37842,13 @@ What I did:
 
 @color
 #@nonl
-#@+node:ekr.20070423101911:treeSelectHelper
+#@+node:ekr.20070423101911:treeSelectHelper (changed)
 #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
 
 def treeSelectHelper (self,p,updateBeadList,scroll):
 
     c = self.c ; frame = c.frame
-    body = w = frame.bodyCtrl
+    body = w = frame.body.bodyCtrl # 2007/10/25
     old_p = c.currentPosition()
 
     if not p:
@@ -38026,7 +37950,7 @@ if self.stayInTree:
 else:
     c.bodyWantsFocus()
 #@-node:ekr.20040803072955.133:<< set the current node >>
-#@-node:ekr.20070423101911:treeSelectHelper
+#@-node:ekr.20070423101911:treeSelectHelper (changed)
 #@-node:ekr.20071009104339:Disabled unnecessary recolors
 #@+node:ekr.20071009145420:Improved (I hope) the rst3 plugin
 Suppressed doc-part-delims when show_doc_parts_as_paragraphs is True
@@ -41052,6 +40976,7 @@ if g.unitTesting:
     runner.root = p.copy()
 
     g.app.unitTestDict ['expectedErrors'] = 1
+    g.app.unitTestDict ['expectedMismatchLine'] = 2
 
     s1 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2\n',encoding='utf-8')
     s2 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2a\n',encoding='utf-8')
@@ -41110,6 +41035,10 @@ if g.unitTesting:
     i = 0
     lines1 = ['abc',]
     lines2 = ['xyz',]
+
+    g.app.unitTestDict ['expectedErrors'] = 1
+    g.app.unitTestDict ['expectedMismatchLine'] = 1
+
     runner.compareHelper(lines1,lines2,i,strict=True)
 #@-node:ekr.20070816101019:@test compareHelper
 #@-node:ekr.20070730093735:compareHelper & tests
@@ -41134,8 +41063,9 @@ def reportMismatch (self,lines1,lines2,bad_i):
             pr('%3d %s' % (i,lines2[i]),newline=False)
 
     return False
-#@+node:ekr.20070913084008:@test pr
-if False or g.unitTesting:
+#@+node:ekr.20070913084008:minitest of pr
+if False: # Don't clutter the unit tests.
+
     def pr(*args,**keys): # reportMismatch test
         g.es_print(color='blue',*args,**keys)
 
@@ -41143,7 +41073,7 @@ if False or g.unitTesting:
     pr('newline=False:',newline=False)
     pr('after')
     pr('done')
-#@-node:ekr.20070913084008:@test pr
+#@-node:ekr.20070913084008:minitest of pr
 #@-node:ekr.20070911110507:reportMismatch & test
 #@-node:ekr.20070808115837:Checking
 #@+node:ekr.20070706084535:Code generation
@@ -42108,24 +42038,6 @@ def regularizeError (self):
 
 #@-node:ekr.20070808121958:regularizeError
 #@-node:ekr.20070808115837.1:regularizeWhitespace
-#@+node:ekr.20071023082323:@test run
-if g.unitTesting:
-
-    ic = c.importCommands
-    ic.methodName = 'test' ; ic.fileType = '.py'
-
-    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
-    runner.root = p.copy()
-    parent = p.copy()
-
-    s = '''\
-def spam():
-    pass
-'''
-    s = g.adjustTripleString(s,-4)
-
-    runner.run(s,parent)
-#@-node:ekr.20071023082323:@test run
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@-node:ekr.20070703122141.65: class baseScannerClass
 #@+node:edreamleo.20070710110114.1:C scanner
@@ -42827,6 +42739,7 @@ if g.unitTesting:
     runner.root = p.copy()
 
     g.app.unitTestDict ['expectedErrors'] = 1
+    g.app.unitTestDict ['expectedMismatchLine'] = 2
 
     s1 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2\n',encoding='utf-8')
     s2 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2a\n',encoding='utf-8')
@@ -42885,6 +42798,10 @@ if g.unitTesting:
     i = 0
     lines1 = ['abc',]
     lines2 = ['xyz',]
+
+    g.app.unitTestDict ['expectedErrors'] = 1
+    g.app.unitTestDict ['expectedMismatchLine'] = 1
+
     runner.compareHelper(lines1,lines2,i,strict=True)
 #@-node:ekr.20070816101019:@test compareHelper
 #@-node:ekr.20070730093735:compareHelper & tests
@@ -42909,8 +42826,9 @@ def reportMismatch (self,lines1,lines2,bad_i):
             pr('%3d %s' % (i,lines2[i]),newline=False)
 
     return False
-#@+node:ekr.20070913084008:@test pr
-if False or g.unitTesting:
+#@+node:ekr.20070913084008:minitest of pr
+if False: # Don't clutter the unit tests.
+
     def pr(*args,**keys): # reportMismatch test
         g.es_print(color='blue',*args,**keys)
 
@@ -42918,11 +42836,37 @@ if False or g.unitTesting:
     pr('newline=False:',newline=False)
     pr('after')
     pr('done')
-#@-node:ekr.20070913084008:@test pr
+#@-node:ekr.20070913084008:minitest of pr
 #@-node:ekr.20070911110507:reportMismatch & test
 #@-node:ekr.20070808115837:Checking
 #@-node:ekr.20071017163243:Fixed bug: utf-8 files now get imported properly
+#@+node:ekr.20071024184127:Added defensive code to leoFind.save
+#@+node:ekr.20031218072017.3090:save
+def save (self):
+
+    c = self.c ; p = self.p
+    w = g.choose(self.in_headline,c.edit_widget(p),c.frame.body.bodyCtrl)
+
+    # 2007/10/24: defensive programming for unit tests.
+    if w:
+        insert = w.getInsertPoint()
+        sel = w.getSelectionRange()
+        if len(sel) == 2:
+            start,end = sel
+        else:
+            start,end = None,None
+    else:
+        start,end = None,None
+
+    return (self.in_headline,p,w,insert,start,end)
+#@-node:ekr.20031218072017.3090:save
+#@-node:ekr.20071024184127:Added defensive code to leoFind.save
 #@+node:ekr.20071018173151:Installed patch to put the outline in the main pane
+@ The reason toggle-split-direction is relatively easy is that no parents change, only the placements.
+
+In contrast, the bigTree option requires reparenting, which is much harder in Tk.
+#@nonl
+#@+node:ekr.20071024231338:The patch
 @nocolor
 
 I changed createSplitterComponents.
@@ -42951,139 +42895,82 @@ inclusion in released code would need to make this dependent on an option.
         # Yes, this an "official" ivar: this is a kludge.
         f.bodyCtrl = f.body.bodyCtrl
 #@nonl
-#@+node:ekr.20031218072017.3679:  leoFrame.__init__
-def __init__ (self,gui):
+#@-node:ekr.20071024231338:The patch
+#@+node:ekr.20031218072017.2176:tkFrame.finishCreate & helpers
+def finishCreate (self,c):
 
-    self.c = None # Must be created by subclasses.
-    self.title = None # Must be created by subclasses.
-    self.gui = gui
+    f = self ; f.c = c
+    # g.trace('tkFrame','c',c,g.callers())
 
-    # Objects attached to this frame.
-    self.colorPanel = None 
-    self.comparePanel = None
-    self.findPanel = None
-    self.fontPanel = None
-    self.iconBar = None
-    self.isNullFrame = False
-    self.keys = None
-    self.menu = None
-    self.miniBufferWidget = None # New in 4.4.
-    self.prefsPanel = None
-    self.statusLine = None
-    self.useMiniBufferWidget = False # New in 4.4
+    self.bigTree           = c.config.getBool('big_outline_pane')
+    self.trace_status_line = c.config.getBool('trace_status_line')
+    self.use_chapters      = c.config.getBool('use_chapters')
+    self.use_chapter_tabs  = c.config.getBool('use_chapter_tabs')
 
-    # Gui-independent data
-    self.componentsDict = {} # Keys are names, values are componentClass instances.
-    self.es_newlines = 0 # newline count for this log stream
-    self.openDirectory = ""
-    self.requestRecolorFlag = False
-    self.saved=False # True if ever saved
-    self.splitVerticalFlag,self.ratio, self.secondary_ratio = True,0.5,0.5 # Set by initialRatios later.
-    self.startupWindow=False # True if initially opened window
-    self.stylesheet = None # The contents of <?xml-stylesheet...?> line.
-    self.tab_width = 0 # The tab width in effect in this pane.
+    # This must be done after creating the commander.
+    f.splitVerticalFlag,f.ratio,f.secondary_ratio = f.initialRatios()
+    f.createOuterFrames()
+    f.createIconBar()
+    f.createLeoSplitters(f.outerFrame)
+    f.createSplitterComponents()
+    f.createStatusLine()
+    f.createFirstTreeNode()
+    f.menu = leoTkinterMenu.leoTkinterMenu(f)
+        # c.finishCreate calls f.createMenuBar later.
+    c.setLog()
+    g.app.windowList.append(f)
+    c.initVersion()
+    c.signOnWithVersion()
+    f.miniBufferWidget = f.createMiniBufferWidget()
+    c.bodyWantsFocusNow()
 
-#@+node:ekr.20061109120726:leoFrame.mustBeDefinedOnlyInBaseClass
-mustBeDefinedOnlyInBaseClass = (
+    # f.enableTclTraces()
+#@+node:ekr.20051009044751:createOuterFrames
+def createOuterFrames (self):
 
-    'initialRatios',
-    'longFileName',
-    'oops',
-    'promptForSave',
-    'scanForTabWidth',
-    'shortFileName',
+    f = self ; c = f.c
+    f.top = top = Tk.Toplevel()
+    g.app.gui.attachLeoIcon(top)
+    top.title(f.title)
+    top.minsize(30,10) # In grid units.
 
-    # Headline editing.
-    'abortEditLabelCommand',
-    'endEditLabelCommand',
-    'insertHeadlineTime',
+    if g.os_path_exists(g.app.user_xresources_path):
+        f.top.option_readfile(g.app.user_xresources_path)
 
-    # Cut/Copy/Paste.
-    'OnPaste',
-    'OnPasteFromMenu',
-    'copyText',
-    'cutText',
-    'pasteText',
+    f.top.protocol("WM_DELETE_WINDOW", f.OnCloseLeoEvent)
+    f.top.bind("<Button-1>", f.OnActivateLeoEvent)
 
-    # Icon bar convenience methods.    
-    'addIconButton',
-    'clearIconBar',
-    'createIconBar',
-    'getIconBar',
-    'getIconBarObject',
-    'hideIconBar',
+    f.top.bind("<Control-KeyPress>",f.OnControlKeyDown)
+    f.top.bind("<Control-KeyRelease>",f.OnControlKeyUp)
 
-    # Status line convenience methods.
-    'createStatusLine',
-    'clearStatusLine',
-    'disableStatusLine',
-    'enableStatusLine',
-    'getStatusLine',
-    'getStatusObject',
-    'putStatusLine',
-    'setFocusStatusLine',
-    'statusLineIsEnabled',
-    'updateStatusLine',
-)
+    # These don't work on Windows. Because of bugs in window managers,
+    # there is NO WAY to know which window is on top!
+    # f.top.bind("<Activate>",f.OnActivateLeoEvent)
+    # f.top.bind("<Deactivate>",f.OnDeactivateLeoEvent)
+
+    # Create the outer frame, the 'hull' component.
+    f.outerFrame = Tk.Frame(top)
+    f.outerFrame.pack(expand=1,fill="both")
 #@nonl
-#@-node:ekr.20061109120726:leoFrame.mustBeDefinedOnlyInBaseClass
-#@+node:ekr.20061109120704:leoFrame.mustBeDefinedInSubclasses
-mustBeDefinedInSubclasses = (
-    #Gui-dependent commands.
-    'cascade',
-    'contractBodyPane',
-    'contractLogPane',
-    'contractOutlinePane',
-    'contractPane',
-    'equalSizedPanes',
-    'expandLogPane',
-    'expandPane',
-    'fullyExpandBodyPane',
-    'fullyExpandLogPane',
-    'fullyExpandOutlinePane',
-    'fullyExpandPane',
-    'hideBodyPane',
-    'hideLogPane',
-    'hideLogWindow',
-    'hideOutlinePane',
-    'hidePane',
-    'leoHelp',
-    'minimizeAll',
-    'resizeToScreen',
-    'toggleActivePane',
-    'toggleSplitDirection',
-    # Windowutilities...
-    'bringToFront',
-    'deiconify',
-    'get_window_info',
-    'lift',
-    'update',
-    # Config...
-    'resizePanesToRatio',
-    'setInitialWindowGeometry',
-    'setTopGeometry',
-)
-#@nonl
-#@-node:ekr.20061109120704:leoFrame.mustBeDefinedInSubclasses
-#@-node:ekr.20031218072017.3679:  leoFrame.__init__
-#@+node:ekr.20051009045208:createSplitterComponents
+#@-node:ekr.20051009044751:createOuterFrames
+#@+node:ekr.20051009045208:createSplitterComponents (tkFrame) (removed frame.bodyCtrl ivar)
 def createSplitterComponents (self):
 
     f = self ; c = f.c
-
-    f.createLeoSplitters(f.outerFrame)
 
     # Create the canvas, tree, log and body.
     if f.use_chapters:
         c.chapterController = cc = leoChapters.chapterController(c)
 
+    # split1.pane1 is the secondary splitter.
+
     if self.bigTree: # Put outline in the main splitter.
         if self.use_chapters and self.use_chapter_tabs:
             cc.tt = leoTkinterTreeTab(c,f.split1Pane2,cc)
-        f.canvas = f.createCanvas(f.split1Pane2)
+        f.canvas = f.createCanvas(f.split1Pane1)
         f.tree  = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
-        f.log   = leoTkinterLog(f,f.split2Pane1)
-        f.body  = leoTkinterBody(f,f.split2Pane2)
+        f.log   = leoTkinterLog(f,f.split2Pane2)
+        f.body  = leoTkinterBody(f,f.split2Pane1)
     else:
         if self.use_chapters and self.use_chapter_tabs:
             cc.tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
@@ -43093,53 +42980,96 @@ def createSplitterComponents (self):
         f.body   = leoTkinterBody(f,f.split1Pane2)
 
     # Yes, this an "official" ivar: this is a kludge.
-    f.bodyCtrl = f.body.bodyCtrl
+    # f.bodyCtrl = f.body.bodyCtrl
 
     # Configure.
     f.setTabWidth(c.tab_width)
     f.reconfigurePanes()
     f.body.setFontFromConfig()
     f.body.setColorFromConfig()
-#@-node:ekr.20051009045208:createSplitterComponents
-#@+node:ekr.20031218072017.3952:placeSplitter
-def placeSplitter (self,bar,pane1,pane2,verticalFlag):
+#@-node:ekr.20051009045208:createSplitterComponents (tkFrame) (removed frame.bodyCtrl ivar)
+#@+node:ekr.20051009045404:createFirstTreeNode
+def createFirstTreeNode (self):
 
-    if self.bigTree:
-        pane1,pane2 = pane2,pane1
+    f = self ; c = f.c
 
-    if verticalFlag:
-        # Panes arranged vertically; horizontal splitter bar
-        pane1.place(relx=0.5, rely =   0, anchor="n", relwidth=1.0, relheight=0.5)
-        pane2.place(relx=0.5, rely = 1.0, anchor="s", relwidth=1.0, relheight=0.5)
-        bar.place  (relx=0.5, rely = 0.5, anchor="c", relwidth=1.0)
+    t = leoNodes.tnode()
+    v = leoNodes.vnode(t)
+    p = leoNodes.position(v,[])
+    v.initHeadString("NewHeadline")
+    p.moveToRoot(oldRoot=None)
+    c.setRootPosition(p) # New in 4.4.2.
+    c.editPosition(p)
+#@-node:ekr.20051009045404:createFirstTreeNode
+#@+node:ekr.20051121092320:f.enableTclTraces
+def enableTclTraces (self):
+
+    c = self.c
+    # Put this in unit tests before the assert:
+    # c.frame.bar1.unbind_all("<FocusIn>")
+    # c.frame.bar1.unbind_all("<FocusOut>")
+
+    # Any widget would do:
+    w = c.frame.bar1
+    if True:
+        def focusIn (event):
+            print("Focus in  %s (%s)" % (
+                event.widget,event.widget.winfo_class()))
+
+        def focusOut (event):
+            print("Focus out %s (%s)" % (
+                event.widget,event.widget.winfo_class()))
+
+        w.bind_all("<FocusIn>", focusIn)
+        w.bind_all("<FocusOut>", focusOut)
     else:
-        # Panes arranged horizontally; vertical splitter bar
-        # adj gives tree pane more room when tiling vertically.
-        adj = g.choose(verticalFlag != self.splitVerticalFlag,0.65,0.5)
-        pane1.place(rely=0.5, relx =   0, anchor="w", relheight=1.0, relwidth=adj)
-        pane2.place(rely=0.5, relx = 1.0, anchor="e", relheight=1.0, relwidth=1.0-adj)
-        bar.place  (rely=0.5, relx = adj, anchor="c", relheight=1.0)
-#@-node:ekr.20031218072017.3952:placeSplitter
-#@+node:ekr.20031218072017.3949:divideAnySplitter
-# This is the general-purpose placer for splitters.
-# It is the only general-purpose splitter code in Leo.
+        def tracewidget(event):
+            g.trace('enabling widget trace')
+            Pmw.tracetk(event.widget, 1)
 
-def divideAnySplitter (self, frac, verticalFlag, bar, pane1, pane2):
+        def untracewidget(event):
+            g.trace('disabling widget trace')
+            Pmw.tracetk(event.widget,0)
 
-    if self.bigTree:
-        pane1,pane2 = pane2,pane1
+        w.bind_all("<Control-1>", tracewidget)
+        w.bind_all("<Control-Shift-1>", untracewidget)
+#@-node:ekr.20051121092320:f.enableTclTraces
+#@-node:ekr.20031218072017.2176:tkFrame.finishCreate & helpers
+#@+node:ekr.20051009045208:createSplitterComponents (tkFrame) (removed frame.bodyCtrl ivar)
+def createSplitterComponents (self):
 
-    if verticalFlag:
-        # Panes arranged vertically; horizontal splitter bar
-        bar.place(rely=frac)
-        pane1.place(relheight=frac)
-        pane2.place(relheight=1-frac)
+    f = self ; c = f.c
+
+    # Create the canvas, tree, log and body.
+    if f.use_chapters:
+        c.chapterController = cc = leoChapters.chapterController(c)
+
+    # split1.pane1 is the secondary splitter.
+
+    if self.bigTree: # Put outline in the main splitter.
+        if self.use_chapters and self.use_chapter_tabs:
+            cc.tt = leoTkinterTreeTab(c,f.split1Pane2,cc)
+        f.canvas = f.createCanvas(f.split1Pane1)
+        f.tree  = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
+        f.log   = leoTkinterLog(f,f.split2Pane2)
+        f.body  = leoTkinterBody(f,f.split2Pane1)
     else:
-        # Panes arranged horizontally; vertical splitter bar
-        bar.place(relx=frac)
-        pane1.place(relwidth=frac)
-        pane2.place(relwidth=1-frac)
-#@-node:ekr.20031218072017.3949:divideAnySplitter
+        if self.use_chapters and self.use_chapter_tabs:
+            cc.tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
+        f.canvas = f.createCanvas(f.split2Pane1)
+        f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
+        f.log    = leoTkinterLog(f,f.split2Pane2)
+        f.body   = leoTkinterBody(f,f.split1Pane2)
+
+    # Yes, this an "official" ivar: this is a kludge.
+    # f.bodyCtrl = f.body.bodyCtrl
+
+    # Configure.
+    f.setTabWidth(c.tab_width)
+    f.reconfigurePanes()
+    f.body.setFontFromConfig()
+    f.body.setColorFromConfig()
+#@-node:ekr.20051009045208:createSplitterComponents (tkFrame) (removed frame.bodyCtrl ivar)
 #@+node:ekr.20041221123325:tkFrame.createLeoSplitters & helpers
 @ The key invariants used throughout this code:
 
@@ -43153,20 +43083,23 @@ a single splitter window would be much easier than this code.
 
 def createLeoSplitters (self,parentFrame):
 
-    # Splitter 1 is the main splitter containing splitter2 and the body pane.
+    # Splitter 1 is the main splitter.
     f1,bar1,split1Pane1,split1Pane2 = self.createLeoTkSplitter(
         parentFrame,self.splitVerticalFlag,'splitter1')
 
     self.f1,self.bar1 = f1,bar1
     self.split1Pane1,self.split1Pane2 = split1Pane1,split1Pane2
 
-    # Splitter 2 is the secondary splitter containing the tree and log panes.
+    # ** new **
+    split2parent = g.choose(self.bigTree,split1Pane2,split1Pane1)
+
+    # Splitter 2 is the secondary splitter.
     f2,bar2,split2Pane1,split2Pane2 = self.createLeoTkSplitter(
-        split1Pane1,not self.splitVerticalFlag,'splitter2')
+        # split1Pane1,not self.splitVerticalFlag,'splitter2')
+        split2parent,not self.splitVerticalFlag,'splitter2')
 
     self.f2,self.bar2 = f2,bar2
     self.split2Pane1,self.split2Pane2 = split2Pane1,split2Pane2
-#@nonl
 #@+node:ekr.20041221073427.1:createLeoTkSplitter
 def createLeoTkSplitter (self,parent,verticalFlag,componentName):
 
@@ -43203,8 +43136,8 @@ def bindBar (self, bar, verticalFlag):
 
 def divideAnySplitter (self, frac, verticalFlag, bar, pane1, pane2):
 
-    if self.bigTree:
-        pane1,pane2 = pane2,pane1
+    # if self.bigTree:
+        # pane1,pane2 = pane2,pane1
 
     if verticalFlag:
         # Panes arranged vertically; horizontal splitter bar
@@ -43237,6 +43170,7 @@ def divideLeoSplitter1 (self, frac, verticalFlag):
 def divideLeoSplitter2 (self, frac, verticalFlag): 
     self.divideAnySplitter (frac, verticalFlag,
         self.bar2, self.split2Pane1, self.split2Pane2)
+#@nonl
 #@-node:ekr.20031218072017.3950:divideLeoSplitter
 #@+node:ekr.20031218072017.3951:onDrag...
 def onDragMainSplitBar (self, event):
@@ -43277,8 +43211,8 @@ def onDragSplitterBar (self, event, verticalFlag):
 #@+node:ekr.20031218072017.3952:placeSplitter
 def placeSplitter (self,bar,pane1,pane2,verticalFlag):
 
-    if self.bigTree:
-        pane1,pane2 = pane2,pane1
+    # if self.bigTree:
+        # pane1,pane2 = pane2,pane1
 
     if verticalFlag:
         # Panes arranged vertically; horizontal splitter bar
