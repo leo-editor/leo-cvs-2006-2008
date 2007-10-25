@@ -252,7 +252,7 @@ class leoTkinterBody (leoFrame.leoBody):
         self.forceFullRecolorFlag = True
     #@-node:ekr.20031218072017.3999:forceRecolor
     #@+node:ekr.20031218072017.4000:Tk bindings (tkBbody)
-    #@+node:ekr.20031218072017.4002:Color tags (Tk spelling)
+    #@+node:ekr.20031218072017.4002:Color tags (Tk spelling) (tkBody)
     def tag_add (self,tagName,index1,index2):
         self.bodyCtrl.tag_add(tagName,index1,index2)
 
@@ -270,8 +270,8 @@ class leoTkinterBody (leoFrame.leoBody):
 
     def tag_remove (self,tagName,index1,index2):
         return self.bodyCtrl.tag_remove(tagName,index1,index2)
-    #@-node:ekr.20031218072017.4002:Color tags (Tk spelling)
-    #@+node:ekr.20031218072017.2184:Configuration (Tk spelling)
+    #@-node:ekr.20031218072017.4002:Color tags (Tk spelling) (tkBody)
+    #@+node:ekr.20031218072017.2184:Configuration (Tk spelling) (tkBody)
     def cget(self,*args,**keys):
 
         val = self.bodyCtrl.cget(*args,**keys)
@@ -286,7 +286,7 @@ class leoTkinterBody (leoFrame.leoBody):
         # g.trace(args,keys)
 
         return self.bodyCtrl.configure(*args,**keys)
-    #@-node:ekr.20031218072017.2184:Configuration (Tk spelling)
+    #@-node:ekr.20031218072017.2184:Configuration (Tk spelling) (tkBody)
     #@+node:ekr.20031218072017.4004:Height & width
     def getBodyPaneHeight (self):
 
@@ -389,13 +389,12 @@ class leoTkinterFrame (leoFrame.leoFrame):
         self.trace_status_line = None # Set in finishCreate.
 
         #@    << set the leoTkinterFrame ivars >>
-        #@+node:ekr.20031218072017.1802:<< set the leoTkinterFrame ivars >>
+        #@+node:ekr.20031218072017.1802:<< set the leoTkinterFrame ivars >> (removed frame.bodyCtrl ivar)
         # "Official ivars created in createLeoFrame and its allies.
         self.bar1 = None
         self.bar2 = None
         self.body = None
         self.bodyBar = None
-        self.bodyCtrl = None
         self.bodyXBar = None
         self.f1 = self.f2 = None
         self.findPanel = None # Inited when first opened.
@@ -420,7 +419,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         self.wantedWidget = None
         self.wantedCallbackScheduled = False
         self.scrollWay = None
-        #@-node:ekr.20031218072017.1802:<< set the leoTkinterFrame ivars >>
+        #@-node:ekr.20031218072017.1802:<< set the leoTkinterFrame ivars >> (removed frame.bodyCtrl ivar)
         #@nl
     #@-node:ekr.20031218072017.1801:__init__ (tkFrame)
     #@+node:ekr.20031218072017.3942:__repr__ (tkFrame)
@@ -443,6 +442,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         f.splitVerticalFlag,f.ratio,f.secondary_ratio = f.initialRatios()
         f.createOuterFrames()
         f.createIconBar()
+        f.createLeoSplitters(f.outerFrame)
         f.createSplitterComponents()
         f.createStatusLine()
         f.createFirstTreeNode()
@@ -484,24 +484,24 @@ class leoTkinterFrame (leoFrame.leoFrame):
         f.outerFrame.pack(expand=1,fill="both")
     #@nonl
     #@-node:ekr.20051009044751:createOuterFrames
-    #@+node:ekr.20051009045208:createSplitterComponents
+    #@+node:ekr.20051009045208:createSplitterComponents (tkFrame) (removed frame.bodyCtrl ivar)
     def createSplitterComponents (self):
 
         f = self ; c = f.c
-
-        f.createLeoSplitters(f.outerFrame)
 
         # Create the canvas, tree, log and body.
         if f.use_chapters:
             c.chapterController = cc = leoChapters.chapterController(c)
 
+        # split1.pane1 is the secondary splitter.
+
         if self.bigTree: # Put outline in the main splitter.
             if self.use_chapters and self.use_chapter_tabs:
                 cc.tt = leoTkinterTreeTab(c,f.split1Pane2,cc)
-            f.canvas = f.createCanvas(f.split1Pane2)
+            f.canvas = f.createCanvas(f.split1Pane1)
             f.tree  = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
-            f.log   = leoTkinterLog(f,f.split2Pane1)
-            f.body  = leoTkinterBody(f,f.split2Pane2)
+            f.log   = leoTkinterLog(f,f.split2Pane2)
+            f.body  = leoTkinterBody(f,f.split2Pane1)
         else:
             if self.use_chapters and self.use_chapter_tabs:
                 cc.tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
@@ -511,14 +511,14 @@ class leoTkinterFrame (leoFrame.leoFrame):
             f.body   = leoTkinterBody(f,f.split1Pane2)
 
         # Yes, this an "official" ivar: this is a kludge.
-        f.bodyCtrl = f.body.bodyCtrl
+        # f.bodyCtrl = f.body.bodyCtrl
 
         # Configure.
         f.setTabWidth(c.tab_width)
         f.reconfigurePanes()
         f.body.setFontFromConfig()
         f.body.setColorFromConfig()
-    #@-node:ekr.20051009045208:createSplitterComponents
+    #@-node:ekr.20051009045208:createSplitterComponents (tkFrame) (removed frame.bodyCtrl ivar)
     #@+node:ekr.20051009045404:createFirstTreeNode
     def createFirstTreeNode (self):
 
@@ -737,20 +737,23 @@ class leoTkinterFrame (leoFrame.leoFrame):
 
     def createLeoSplitters (self,parentFrame):
 
-        # Splitter 1 is the main splitter containing splitter2 and the body pane.
+        # Splitter 1 is the main splitter.
         f1,bar1,split1Pane1,split1Pane2 = self.createLeoTkSplitter(
             parentFrame,self.splitVerticalFlag,'splitter1')
 
         self.f1,self.bar1 = f1,bar1
         self.split1Pane1,self.split1Pane2 = split1Pane1,split1Pane2
 
-        # Splitter 2 is the secondary splitter containing the tree and log panes.
+        # ** new **
+        split2parent = g.choose(self.bigTree,split1Pane2,split1Pane1)
+
+        # Splitter 2 is the secondary splitter.
         f2,bar2,split2Pane1,split2Pane2 = self.createLeoTkSplitter(
-            split1Pane1,not self.splitVerticalFlag,'splitter2')
+            # split1Pane1,not self.splitVerticalFlag,'splitter2')
+            split2parent,not self.splitVerticalFlag,'splitter2')
 
         self.f2,self.bar2 = f2,bar2
         self.split2Pane1,self.split2Pane2 = split2Pane1,split2Pane2
-    #@nonl
     #@+node:ekr.20041221073427.1:createLeoTkSplitter
     def createLeoTkSplitter (self,parent,verticalFlag,componentName):
 
@@ -787,8 +790,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
 
     def divideAnySplitter (self, frac, verticalFlag, bar, pane1, pane2):
 
-        if self.bigTree:
-            pane1,pane2 = pane2,pane1
+        # if self.bigTree:
+            # pane1,pane2 = pane2,pane1
 
         if verticalFlag:
             # Panes arranged vertically; horizontal splitter bar
@@ -821,6 +824,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
     def divideLeoSplitter2 (self, frac, verticalFlag): 
         self.divideAnySplitter (frac, verticalFlag,
             self.bar2, self.split2Pane1, self.split2Pane2)
+    #@nonl
     #@-node:ekr.20031218072017.3950:divideLeoSplitter
     #@+node:ekr.20031218072017.3951:onDrag...
     def onDragMainSplitBar (self, event):
@@ -861,8 +865,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@+node:ekr.20031218072017.3952:placeSplitter
     def placeSplitter (self,bar,pane1,pane2,verticalFlag):
 
-        if self.bigTree:
-            pane1,pane2 = pane2,pane1
+        # if self.bigTree:
+            # pane1,pane2 = pane2,pane1
 
         if verticalFlag:
             # Panes arranged vertically; horizontal splitter bar
@@ -1339,7 +1343,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20060203114017:f.setMinibufferBindings
     #@-node:ekr.20051014154752:Minibuffer methods
     #@+node:ekr.20031218072017.3967:Configuration (tkFrame)
-    #@+node:ekr.20031218072017.3968:configureBar
+    #@+node:ekr.20031218072017.3968:configureBar (tkFrame)
     def configureBar (self,bar,verticalFlag):
 
         c = self.c
@@ -1368,8 +1372,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
             else:
                 # Panes arranged horizontally; vertical splitter bar
                 bar.configure(width=7,cursor="sb_h_double_arrow")
-    #@-node:ekr.20031218072017.3968:configureBar
-    #@+node:ekr.20031218072017.3969:configureBarsFromConfig
+    #@-node:ekr.20031218072017.3968:configureBar (tkFrame)
+    #@+node:ekr.20031218072017.3969:configureBarsFromConfig (tkFrame)
     def configureBarsFromConfig (self):
 
         c = self.c
@@ -1394,8 +1398,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
         except: # Could be a user error.
             g.es("exception in user configuration for splitbar")
             g.es_exception()
-    #@-node:ekr.20031218072017.3969:configureBarsFromConfig
-    #@+node:ekr.20031218072017.2246:reconfigureFromConfig
+    #@-node:ekr.20031218072017.3969:configureBarsFromConfig (tkFrame)
+    #@+node:ekr.20031218072017.2246:reconfigureFromConfig (tkFrame)
     def reconfigureFromConfig (self):
 
         frame = self ; c = frame.c
@@ -1411,8 +1415,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
         frame.log.setColorFromConfig()
 
         c.redraw_now()
-    #@-node:ekr.20031218072017.2246:reconfigureFromConfig
-    #@+node:ekr.20031218072017.1625:setInitialWindowGeometry
+    #@-node:ekr.20031218072017.2246:reconfigureFromConfig (tkFrame)
+    #@+node:ekr.20031218072017.1625:setInitialWindowGeometry (tkFrame)
     def setInitialWindowGeometry(self):
 
         """Set the position and size of the frame to config params."""
@@ -1426,24 +1430,24 @@ class leoTkinterFrame (leoFrame.leoFrame):
 
         if h and w and x and y:
             self.setTopGeometry(w,h,x,y)
-    #@-node:ekr.20031218072017.1625:setInitialWindowGeometry
-    #@+node:ekr.20031218072017.722:setTabWidth
+    #@-node:ekr.20031218072017.1625:setInitialWindowGeometry (tkFrame)
+    #@+node:ekr.20031218072017.722:setTabWidth (tkFrame) (changed)
     def setTabWidth (self, w):
 
         try: # This can fail when called from scripts
             # Use the present font for computations.
-            font = self.bodyCtrl.cget("font")
+            font = self.body.bodyCtrl.cget("font") # 2007/10/27
             root = g.app.root # 4/3/03: must specify root so idle window will work properly.
             font = tkFont.Font(root=root,font=font)
             tabw = font.measure(" " * abs(w)) # 7/2/02
-            self.bodyCtrl.configure(tabs=tabw)
+            self.body.bodyCtrl.configure(tabs=tabw)
             self.tab_width = w
             # g.trace(w,tabw)
         except:
             g.es_exception()
             pass
-    #@-node:ekr.20031218072017.722:setTabWidth
-    #@+node:ekr.20031218072017.1540:f.setWrap
+    #@-node:ekr.20031218072017.722:setTabWidth (tkFrame) (changed)
+    #@+node:ekr.20031218072017.1540:setWrap (tkFrame) (changed)
     def setWrap (self,p):
 
         c = self.c
@@ -1456,16 +1460,16 @@ class leoTkinterFrame (leoFrame.leoFrame):
         self.body.wrapState = wrap
         # g.trace(wrap)
         if wrap:
-            self.bodyCtrl.configure(wrap="word")
+            self.body.bodyCtrl.configure(wrap="word") # 2007/10/25
             self.bodyXBar.pack_forget()
         else:
-            self.bodyCtrl.configure(wrap="none")
+            self.body.bodyCtrl.configure(wrap="none")
             # Bug fix: 3/10/05: We must unpack the text area to make the scrollbar visible.
-            self.bodyCtrl.pack_forget()
+            self.body.bodyCtrl.pack_forget()  # 2007/10/25
             self.bodyXBar.pack(side="bottom", fill="x")
-            self.bodyCtrl.pack(expand=1,fill="both")
-    #@-node:ekr.20031218072017.1540:f.setWrap
-    #@+node:ekr.20031218072017.2307:setTopGeometry
+            self.body.bodyCtrl.pack(expand=1,fill="both")  # 2007/10/25
+    #@-node:ekr.20031218072017.1540:setWrap (tkFrame) (changed)
+    #@+node:ekr.20031218072017.2307:setTopGeometry (tkFrame)
     def setTopGeometry(self,w,h,x,y,adjustSize=True):
 
         # Put the top-left corner on the screen.
@@ -1487,8 +1491,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
         geom = "%dx%d%+d%+d" % (w,h,x,y)
 
         self.top.geometry(geom)
-    #@-node:ekr.20031218072017.2307:setTopGeometry
-    #@+node:ekr.20031218072017.3970:reconfigurePanes (use config bar_width)
+    #@-node:ekr.20031218072017.2307:setTopGeometry (tkFrame)
+    #@+node:ekr.20031218072017.3970:reconfigurePanes (use config bar_width) (tkFrame) (changed)
     def reconfigurePanes (self):
 
         c = self.c
@@ -1498,13 +1502,13 @@ class leoTkinterFrame (leoFrame.leoFrame):
 
         # The body pane needs a _much_ bigger border when tiling horizontally.
         border = g.choose(self.splitVerticalFlag,2+border,6+border)
-        self.bodyCtrl.configure(bd=border)
+        self.body.bodyCtrl.configure(bd=border) # 2007/10/25
 
         # The log pane needs a slightly bigger border when tiling vertically.
         border = g.choose(self.splitVerticalFlag,4,2) 
         self.log.configureBorder(border)
-    #@-node:ekr.20031218072017.3970:reconfigurePanes (use config bar_width)
-    #@+node:ekr.20060915124834:resizePanesToRatio
+    #@-node:ekr.20031218072017.3970:reconfigurePanes (use config bar_width) (tkFrame) (changed)
+    #@+node:ekr.20060915124834:resizePanesToRatio (tkFrame)
     def resizePanesToRatio(self,ratio,ratio2):
 
         # g.trace(ratio,ratio2,g.callers())
@@ -1512,7 +1516,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         self.divideLeoSplitter(self.splitVerticalFlag,ratio)
         self.divideLeoSplitter(not self.splitVerticalFlag,ratio2)
     #@nonl
-    #@-node:ekr.20060915124834:resizePanesToRatio
+    #@-node:ekr.20060915124834:resizePanesToRatio (tkFrame)
     #@-node:ekr.20031218072017.3967:Configuration (tkFrame)
     #@+node:ekr.20031218072017.3971:Event handlers (tkFrame)
     #@+node:ekr.20031218072017.3972:frame.OnCloseLeoEvent
@@ -1787,19 +1791,19 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20060210123852.1:fullyExpand/hide...Pane
     #@-node:ekr.20060209110128:Minibuffer commands... (tkFrame)
     #@+node:ekr.20031218072017.3984:Window Menu...
-    #@+node:ekr.20031218072017.3985:toggleActivePane
+    #@+node:ekr.20031218072017.3985:toggleActivePane (tkFrame) (changed)
     def toggleActivePane (self,event=None):
 
         '''Toggle the focus between the outline and body panes.'''
 
         frame = self ; c = frame.c
 
-        if c.get_focus() == frame.bodyCtrl:
+        if c.get_focus() == frame.body.bodyCtrl: # 2007/10/25
             c.treeWantsFocusNow()
         else:
             c.endEditing()
             c.bodyWantsFocusNow()
-    #@-node:ekr.20031218072017.3985:toggleActivePane
+    #@-node:ekr.20031218072017.3985:toggleActivePane (tkFrame) (changed)
     #@+node:ekr.20031218072017.3986:cascade
     def cascade (self,event=None):
 
@@ -1980,7 +1984,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
     # that alters text improperly.
     #@-at
     #@-node:ekr.20050120083053:Delayed Focus (tkFrame)
-    #@+node:ekr.20031218072017.3995:Tk bindings...
+    #@+node:ekr.20031218072017.3995:Tk bindings... (tkFrame) (changed)
     def bringToFront (self):
         # g.trace(g.callers())
         self.top.deiconify()
@@ -1998,7 +2002,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         if f:
             return f
         else:
-            return self.bodyCtrl
+            return self.body.bodyCtrl # 2007/10/25
 
     def getTitle (self):
         return self.top.title()
@@ -2020,7 +2024,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
 
     def update (self):
         self.top.update()
-    #@-node:ekr.20031218072017.3995:Tk bindings...
+    #@-node:ekr.20031218072017.3995:Tk bindings... (tkFrame) (changed)
     #@-others
 #@-node:ekr.20031218072017.3940:class leoTkinterFrame
 #@+node:ekr.20031218072017.4039:class leoTkinterLog
