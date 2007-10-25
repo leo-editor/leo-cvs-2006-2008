@@ -1557,6 +1557,7 @@ class baseLeoImportCommands:
             runner.root = p.copy()
 
             g.app.unitTestDict ['expectedErrors'] = 1
+            g.app.unitTestDict ['expectedMismatchLine'] = 2
 
             s1 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2\n',encoding='utf-8')
             s2 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2a\n',encoding='utf-8')
@@ -1615,6 +1616,10 @@ class baseLeoImportCommands:
             i = 0
             lines1 = ['abc',]
             lines2 = ['xyz',]
+
+            g.app.unitTestDict ['expectedErrors'] = 1
+            g.app.unitTestDict ['expectedMismatchLine'] = 1
+
             runner.compareHelper(lines1,lines2,i,strict=True)
         #@-node:ekr.20070816101019:@test compareHelper
         #@-node:ekr.20070730093735:compareHelper & tests
@@ -1639,8 +1644,9 @@ class baseLeoImportCommands:
                     pr('%3d %s' % (i,lines2[i]),newline=False)
 
             return False
-        #@+node:ekr.20070913084008:@test pr
-        if False or g.unitTesting:
+        #@+node:ekr.20070913084008:minitest of pr
+        if False: # Don't clutter the unit tests.
+
             def pr(*args,**keys): # reportMismatch test
                 g.es_print(color='blue',*args,**keys)
 
@@ -1648,7 +1654,7 @@ class baseLeoImportCommands:
             pr('newline=False:',newline=False)
             pr('after')
             pr('done')
-        #@-node:ekr.20070913084008:@test pr
+        #@-node:ekr.20070913084008:minitest of pr
         #@-node:ekr.20070911110507:reportMismatch & test
         #@-node:ekr.20070808115837:Checking
         #@+node:ekr.20070706084535:Code generation
@@ -2620,24 +2626,6 @@ class baseLeoImportCommands:
 
         #@-node:ekr.20070808121958:regularizeError
         #@-node:ekr.20070808115837.1:regularizeWhitespace
-        #@+node:ekr.20071023082323:@test run
-        if g.unitTesting:
-
-            ic = c.importCommands
-            ic.methodName = 'test' ; ic.fileType = '.py'
-
-            runner = ic.baseScannerClass(ic,atAuto=True,language='python')
-            runner.root = p.copy()
-            parent = p.copy()
-
-            s = '''\
-        def spam():
-            pass
-        '''
-            s = g.adjustTripleString(s,-4)
-
-            runner.run(s,parent)
-        #@-node:ekr.20071023082323:@test run
         #@-node:ekr.20070707072749:run (baseScannerClass)
         #@-others
     #@-node:ekr.20070703122141.65: class baseScannerClass
