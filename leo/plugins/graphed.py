@@ -134,7 +134,8 @@ class gNode(object):
                     vnode.unknownAttributes = {}
                 vnode.unknownAttributes.update(
                     getattr(self.vnode, 'unknownAttributes', {}))
-        if self.x != 0 or self.y != 0:
+        if (hasattr(self, 'x') and hasattr(self, 'y')
+            and self.x != 0 or self.y != 0):
             if not hasattr(nd,'unknownAttributes'): nd.unknownAttributes = {}
             nd.unknownAttributes.setdefault('graphed',{}).update(
                 {'x': self.x, 'y': self.y})
@@ -237,6 +238,13 @@ class tGraph:
             return maxIdx
 
         def makeTree(pos, node0):
+
+            # This does not work, all nodes become clones and things
+            # get parsed more than once.
+            #
+            # t = None
+            # if hasattr(node0, 'vnode'):
+            #     t = node0.vnode.t
 
             nd = pos.insertAsLastChild()
             nd.expand()
