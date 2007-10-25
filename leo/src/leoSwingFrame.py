@@ -178,7 +178,7 @@ class leoSwingFrame (leoFrame.leoFrame):
 
         f.createLeoSplitters(f.outerFrame)
 
-        if 0: ###
+        if 0:
             # Create the canvas, tree, log and body.
             if f.use_chapters:
                 c.chapterController = cc = leoChapters.chapterController(c)
@@ -194,10 +194,6 @@ class leoSwingFrame (leoFrame.leoFrame):
         f.body = leoSwingBody(f,f.top)
         f.tree = leoSwingTree(c,f,f.top)
         f.log  = leoSwingLog(f,f.top)
-
-        # Yes, this an "official" ivar: this is a kludge.
-        # g.trace('f.body',f.body,'f.body.bodyCtrl',f.body.bodyCtrl)
-        ### f.bodyCtrl = f.body.bodyCtrl
 
         # Configure.
         f.setTabWidth(c.tab_width)
