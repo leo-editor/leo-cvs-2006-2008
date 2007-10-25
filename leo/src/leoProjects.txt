@@ -39618,7 +39618,7 @@ def readOneAtAutoNode (self,fileName,p):
 #@-node:ekr.20071021110355:Added rst3 strip_at_file_prefixes option
 #@-node:ekr.20070920083033.1:Features
 #@-node:ekr.20070919132518:4.4.4 b3
-#@+node:ekr.20071023175714:4.4.4 final
+#@+node:ekr.20071023175714:4.4.4 b4
 #@+node:ekr.20071025134243:Fixed bugs
 #@+node:ekr.20071023105313:Fixed aspell problem
 # Replaced the (useless) trace with an error message to the console window.
@@ -43183,8 +43183,14 @@ def selectEditorHelper (self,w):
             hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
             hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
 
-    c.frame.tree.expandAllAncestors(w.leo_p)
-    c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
+    c.beginUpdate()
+    try:
+        # g.trace('expanding ancestors of ',w.leo_p.headString(),g.callers())
+        c.frame.tree.expandAllAncestors(w.leo_p)
+        c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
+    finally:
+        c.endUpdate()
+
     c.recolor_now()
     << restore the selection, insertion point and the scrollbar >>
     c.bodyWantsFocusNow()
@@ -43446,8 +43452,14 @@ def selectEditorHelper (self,w):
             hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
             hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
 
-    c.frame.tree.expandAllAncestors(w.leo_p)
-    c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
+    c.beginUpdate()
+    try:
+        # g.trace('expanding ancestors of ',w.leo_p.headString(),g.callers())
+        c.frame.tree.expandAllAncestors(w.leo_p)
+        c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
+    finally:
+        c.endUpdate()
+
     c.recolor_now()
     << restore the selection, insertion point and the scrollbar >>
     c.bodyWantsFocusNow()
@@ -44295,8 +44307,14 @@ def selectEditorHelper (self,w):
             hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
             hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
 
-    c.frame.tree.expandAllAncestors(w.leo_p)
-    c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
+    c.beginUpdate()
+    try:
+        # g.trace('expanding ancestors of ',w.leo_p.headString(),g.callers())
+        c.frame.tree.expandAllAncestors(w.leo_p)
+        c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
+    finally:
+        c.endUpdate()
+
     c.recolor_now()
     << restore the selection, insertion point and the scrollbar >>
     c.bodyWantsFocusNow()
@@ -44358,8 +44376,14 @@ def selectEditorHelper (self,w):
             hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
             hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
 
-    c.frame.tree.expandAllAncestors(w.leo_p)
-    c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
+    c.beginUpdate()
+    try:
+        # g.trace('expanding ancestors of ',w.leo_p.headString(),g.callers())
+        c.frame.tree.expandAllAncestors(w.leo_p)
+        c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
+    finally:
+        c.endUpdate()
+
     c.recolor_now()
     << restore the selection, insertion point and the scrollbar >>
     c.bodyWantsFocusNow()
@@ -44656,8 +44680,14 @@ def selectEditorHelper (self,w):
             hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
             hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
 
-    c.frame.tree.expandAllAncestors(w.leo_p)
-    c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
+    c.beginUpdate()
+    try:
+        # g.trace('expanding ancestors of ',w.leo_p.headString(),g.callers())
+        c.frame.tree.expandAllAncestors(w.leo_p)
+        c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
+    finally:
+        c.endUpdate()
+
     c.recolor_now()
     << restore the selection, insertion point and the scrollbar >>
     c.bodyWantsFocusNow()
@@ -44859,6 +44889,105 @@ if g.unitTesting:
 #@-node:ekr.20060528100747:Editors (leoBody)
 #@-node:ekr.20071025092707:Found: bodyCtrl
 #@-node:ekr.20071024143409:Fixed (maybe) multi-editor bug
+#@+node:ekr.20071024181544:Made sure proper node is visible when deleting a body editor
+#@+node:ekr.20061017083312:selectEditor & helpers
+selectEditorLockout = False
+
+def selectEditor(self,w):
+
+    '''Select editor w and node w.leo_p.'''
+
+    #  Called by body.onClick and whenever w must be selected.
+    trace = False
+    c = self.c
+
+    if self.selectEditorLockout:
+        return
+
+    if w and w == self.c.frame.body.bodyCtrl:
+        if w.leo_p and w.leo_p != c.currentPosition():
+            c.selectPosition(w.leo_p)
+            c.bodyWantsFocusNow()
+        return
+
+    try:
+        val = None
+        self.selectEditorLockout = True
+        val = self.selectEditorHelper(w)
+    finally:
+        self.selectEditorLockout = False
+
+    return val # Don't put a return in a finally clause.
+#@+node:ekr.20070423102603:selectEditorHelper
+def selectEditorHelper (self,w):
+
+    c = self.c ; cc = c.chapterController ; d = self.editorWidgets
+
+    trace = False
+
+    if not w.leo_p:
+        g.trace('no w.leo_p') 
+        return 'break'
+
+    if trace:
+        g.trace('==1',id(w),
+            hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
+            hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
+
+    self.inactivateActiveEditor(w)
+
+    # The actual switch.
+    c.frame.body.bodyCtrl = w
+    w.leo_active = True
+
+    self.switchToChapter(w)
+    self.selectLabel(w)
+
+    if not self.ensurePositionExists(w):
+        g.trace('***** no position editor!')
+        return 'break'
+
+    if trace:
+        g.trace('==2',id(w),
+            hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
+            hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
+
+    c.beginUpdate()
+    try:
+        # g.trace('expanding ancestors of ',w.leo_p.headString(),g.callers())
+        c.frame.tree.expandAllAncestors(w.leo_p)
+        c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
+    finally:
+        c.endUpdate()
+
+    c.recolor_now()
+    << restore the selection, insertion point and the scrollbar >>
+    c.bodyWantsFocusNow()
+    return 'break'
+#@+node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
+# g.trace('active:',id(w),'scroll',w.leo_scrollBarSpot,'ins',w.leo_insertSpot)
+
+if w.leo_insertSpot:
+    w.setInsertPoint(w.leo_insertSpot)
+else:
+    w.setInsertPoint(0)
+
+if w.leo_scrollBarSpot is not None:
+    first,last = w.leo_scrollBarSpot
+    w.yview('moveto',first)
+else:
+    w.seeInsertPoint()
+
+if w.leo_selection:
+    try:
+        start,end = w.leo_selection
+        w.setSelectionRange(start,end)
+    except Exception:
+        pass
+#@-node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
+#@-node:ekr.20070423102603:selectEditorHelper
+#@-node:ekr.20061017083312:selectEditor & helpers
+#@-node:ekr.20071024181544:Made sure proper node is visible when deleting a body editor
 #@-node:ekr.20071025134243:Fixed bugs
 #@+node:ekr.20071018173151:Installed patch to put the outline in the main pane
 @ The reason toggle-split-direction is relatively easy is that no parents change, only the placements.
@@ -45228,7 +45357,7 @@ def placeSplitter (self,bar,pane1,pane2,verticalFlag):
 #@-node:ekr.20031218072017.3952:placeSplitter
 #@-node:ekr.20041221123325:tkFrame.createLeoSplitters & helpers
 #@-node:ekr.20071018173151:Installed patch to put the outline in the main pane
-#@-node:ekr.20071023175714:4.4.4 final
+#@-node:ekr.20071023175714:4.4.4 b4
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@-all
 #@nonl
