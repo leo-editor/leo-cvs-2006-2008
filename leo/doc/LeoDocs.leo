@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.421602787456">
-	<global_window_position top="16" left="247" height="861" width="892"/>
+	<global_window_position top="16" left="247" height="841" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -3349,14 +3349,15 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071026053825" a="TV"><vh>4.4.4 b4</vh>
-<v t="ekr.20071026053931.1" a="E"><vh>Fixed bugs</vh>
+<v t="ekr.20071026053825" a="ETV"><vh>4.4.4 b4</vh>
+<v t="ekr.20071026053931.1"><vh>Fixed bugs</vh>
 <v t="ekr.20071026053931.2"><vh>Fixed aspell problem</vh></v>
 <v t="ekr.20071026053931.13"><vh>Fixed bug: utf-8 files now get imported properly</vh></v>
 <v t="ekr.20071026053931.156"><vh>Replaced c.frame.body with c.frame.body.bodyCtrl</vh></v>
 <v t="ekr.20071026053931.157"><vh>Fixed (maybe) multi-editor bug</vh></v>
 <v t="ekr.20071026053931.219"><vh>Made sure proper node is visible when deleting a body editor</vh></v>
 <v t="ekr.20071026053931.220"><vh>Fixed colorizer end-of-text bug</vh></v>
+<v t="ekr.20071026075016" a="E"><vh>Added support for fastGotoNode plugin to leoKeyEvent classes</vh></v>
 </v>
 <v t="ekr.20071026053931.221"><vh>Added @bool big_outline_pane setting</vh></v>
 <v t="ekr.20071026053931.234"><vh>Can print *can* handle unicode</vh></v>
@@ -32590,5 +32591,6 @@ Leo's g.es_print function attempts to convert incoming arguments to unicode usin
 For still more details, see:
 http://www.diveintopython.org/xml_processing/unicode.html 
 </t>
+<t tx="ekr.20071026075016">This fixes a fairly old crasher in the fastGotoNode plugin.</t>
 </tnodes>
 </leo_file>

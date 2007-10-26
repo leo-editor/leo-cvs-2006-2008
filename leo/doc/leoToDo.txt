@@ -19,8 +19,6 @@ delete-all-icons-in-tree
 #@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree
 #@+node:ekr.20071025161431.1:Test Leo on the Mac
 #@-node:ekr.20071025161431.1:Test Leo on the Mac
-#@+node:ekr.20071025161431.3:Disable @auto unit tests on Linux
-#@-node:ekr.20071025161431.3:Disable @auto unit tests on Linux
 #@+node:ekr.20071026052111:Fix cursesGui and script_io_to_body plugins
 #@+node:ekr.20071026051956:crash in cursesGui.py
 reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo

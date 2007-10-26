@@ -44960,6 +44960,98 @@ if w.leo_selection:
 # The hack in putNewTags that converted j to 'end' had an off-by-one error.
 #@nonl
 #@-node:ekr.20071026042929.1:Fixed colorizer end-of-text bug
+#@+node:ekr.20071026052154:Added support for fastGotoNode plugin to leoKeyEvent classes
+#@+node:ekr.20070228160107:class leoKeyEvent (leoGui)
+class leoKeyEvent:
+
+    '''A gui-independent wrapper for gui events.'''
+
+    def __init__ (self,event,c):
+
+        # g.trace('leoKeyEvent(leoGui)')
+        self.actualEvent = event
+        self.c      = c # Required to access c.k tables.
+        self.char   = hasattr(event,'char') and event.char or ''
+        self.keysym = hasattr(event,'keysym') and event.keysym or ''
+        self.w      = hasattr(event,'widget') and event.widget or None
+        self.x      = hasattr(event,'x') and event.x or 0
+        self.y      = hasattr(event,'y') and event.y or 0
+        # Support for fastGotoNode plugin
+        self.x_root = hasattr(event,'x_root') and event.x_root or 0
+        self.y_root = hasattr(event,'y_root') and event.y_root or 0
+
+        if self.keysym and c.k:
+            # Translate keysyms for ascii characters to the character itself.
+            self.keysym = c.k.guiBindNamesInverseDict.get(self.keysym,self.keysym)
+
+        self.widget = self.w
+
+    def __repr__ (self):
+
+        return 'leoGui.leoKeyEvent: char: %s, keysym: %s' % (repr(self.char),repr(self.keysym))
+#@nonl
+#@-node:ekr.20070228160107:class leoKeyEvent (leoGui)
+#@+node:ekr.20061112152012.2:class leoKeyEvent (tkGui)
+class leoKeyEvent:
+
+    '''A gui-independent wrapper for gui events.'''
+
+    def __init__ (self,event,c):
+
+        # g.trace('leoKeyEvent(tkGui)')
+        self.actualEvent = event
+        self.c      = c # Required to access c.k tables.
+        self.char   = hasattr(event,'char') and event.char or ''
+        self.keysym = hasattr(event,'keysym') and event.keysym or ''
+        self.w      = hasattr(event,'widget') and event.widget or None
+        self.x      = hasattr(event,'x') and event.x or 0
+        self.y      = hasattr(event,'y') and event.y or 0
+        # Support for fastGotoNode plugin
+        self.x_root = hasattr(event,'x_root') and event.x_root or 0
+        self.y_root = hasattr(event,'y_root') and event.y_root or 0
+
+        if self.keysym and c.k:
+            # Translate keysyms for ascii characters to the character itself.
+            self.keysym = c.k.guiBindNamesInverseDict.get(self.keysym,self.keysym)
+
+        self.widget = self.w
+
+    def __repr__ (self):
+
+        return 'tkGui.leoKeyEvent: char: %s, keysym: %s' % (repr(self.char),repr(self.keysym))
+#@nonl
+#@-node:ekr.20061112152012.2:class leoKeyEvent (tkGui)
+#@+node:ekr.20070930102228.50:class leoKeyEvent (swingGui)
+class leoKeyEvent:
+
+    '''A gui-independent wrapper for gui events.'''
+
+    def __init__ (self,event,c):
+
+        # g.trace('leoKeyEvent(swingGui)')
+        self.actualEvent = event
+        self.c      = c # Required to access c.k tables.
+        self.char   = hasattr(event,'char') and event.char or ''
+        self.keysym = hasattr(event,'keysym') and event.keysym or ''
+        self.w      = hasattr(event,'widget') and event.widget or None
+        self.x      = hasattr(event,'x') and event.x or 0
+        self.y      = hasattr(event,'y') and event.y or 0
+        # Support for fastGotoNode plugin
+        self.x_root = hasattr(event,'x_root') and event.x_root or 0
+        self.y_root = hasattr(event,'y_root') and event.y_root or 0
+
+        if self.keysym and c.k:
+            # Translate keysyms for ascii characters to the character itself.
+            self.keysym = c.k.guiBindNamesInverseDict.get(self.keysym,self.keysym)
+
+        self.widget = self.w
+
+    def __repr__ (self):
+
+        return 'swingGui.leoKeyEvent: char: %s, keysym: %s' % (repr(self.char),repr(self.keysym))
+#@nonl
+#@-node:ekr.20070930102228.50:class leoKeyEvent (swingGui)
+#@-node:ekr.20071026052154:Added support for fastGotoNode plugin to leoKeyEvent classes
 #@-node:ekr.20071025134243:Fixed bugs
 #@+node:ekr.20071018173151:Added support for @bool big_outline_pane
 @ The reason toggle-split-direction is relatively easy is that no parents change, only the placements.
