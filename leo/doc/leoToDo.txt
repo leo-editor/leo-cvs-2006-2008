@@ -3,8 +3,23 @@
 #@+all
 #@+node:ekr.20071001045205:To do: 4.4.4 final
 #@+node:ekr.20071025160653:Fun
+#@+node:ekr.20071024090626:Support @bool diagnose-aspell-installation
+#@-node:ekr.20071024090626:Support @bool diagnose-aspell-installation
+#@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree
+#@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree
 #@+node:ekr.20071025160653.2:Commands to add/remove icons
-Left-click to delete
+#@+node:ekr.20071026092640:To do
+@nocolor
+
+To do:
+
+* Define standard event handlers:
+    - on-left-click (deletes icon)
+    - on-click
+
+* Adjust location depending on icon size.
+
+- Define standard icons in a subfolder of Icons folder?
 
 insert-icon
 append-icon
@@ -12,11 +27,162 @@ delete-first-icon
 delete-nth-icon
 delete-all-node-icons
 delete-all-icons-in-tree
+#@-node:ekr.20071026092640:To do
+#@+node:ekr.20040803072955.46:drawUserIcons & helper
+def drawUserIcons(self,p,where,x,y):
+
+    """Draw any icons specified by p.v.t.unknownAttributes["icons"]."""
+
+    h,w = 0,0 ; t = p.v.t
+
+    if not hasattr(t,"unknownAttributes"):
+        return h,w
+
+    iconsList = t.unknownAttributes.get("icons")
+    if not iconsList:
+        return h,w
+
+    try:
+        for theDict in iconsList:
+            h2,w2 = self.drawUserIcon(p,where,x,y,w,theDict)
+            h = max(h,h2) ; w += w2
+    except:
+        g.es_exception()
+
+    # g.trace(where,h,w)
+
+    return h,w
+#@+node:ekr.20040803072955.47:drawUserIcon
+def drawUserIcon (self,p,where,x,y,w2,theDict):
+
+    h,w = 0,0
+
+    if where != theDict.get("where","beforeHeadline"):
+        return h,w
+
+    # if self.trace_gc: g.printNewObjects(tag='userIcon 1')
+
+    # g.trace(where,x,y,theDict)
+
+    << set offsets and pads >>
+    theType = theDict.get("type")
+    if theType == "icon":
+        if 0: # not ready yet.
+            s = theDict.get("icon")
+            << draw the icon in string s >>
+    elif theType == "file":
+        theFile = theDict.get("file")
+        << draw the icon at file >>
+    elif theType == "url":
+        ## url = theDict.get("url")
+        << draw the icon at url >>
+
+    # Allow user to specify height, width explicitly.
+    h = theDict.get("height",h)
+    w = theDict.get("width",w)
+
+    # if self.trace_gc: g.printNewObjects(tag='userIcon 2')
+
+    return h,w
+#@+node:ekr.20040803072955.48:<< set offsets and pads >>
+xoffset = theDict.get("xoffset")
+try:    xoffset = int(xoffset)
+except: xoffset = 0
+
+yoffset = theDict.get("yoffset")
+try:    yoffset = int(yoffset)
+except: yoffset = 0
+
+xpad = theDict.get("xpad")
+try:    xpad = int(xpad)
+except: xpad = 0
+
+ypad = theDict.get("ypad")
+try:    ypad = int(ypad)
+except: ypad = 0
+#@-node:ekr.20040803072955.48:<< set offsets and pads >>
+#@+node:ekr.20040803072955.49:<< draw the icon in string s >>
+pass
+#@-node:ekr.20040803072955.49:<< draw the icon in string s >>
+#@+node:ekr.20040803072955.50:<< draw the icon at file >>
+fullname = g.os_path_join(g.app.loadDir,"..","Icons",theFile)
+fullname = g.os_path_normpath(fullname)
+
+# Bug fix: the key must include distinguish nodes.
+key = (fullname,p.v.t)
+image = self.iconimages.get(key)
+if not image:
+    try:
+        image = Tk.PhotoImage(master=self.canvas,file=fullname)
+        self.iconimages[key] = image
+    except:
+        #g.es("Exception loading: " + fullname)
+        #g.es_exception()
+        image = None
+if image:
+    theId = self.canvas.create_image(
+        x+xoffset+w2,y+yoffset,
+        anchor="nw",image=image,tag="userIcon")
+    self.ids[theId] = p.copy()
+    # g.trace('id',theId,p.headString(),theFile,image)
+
+    # assert(theId not in self.visibleIcons)
+    self.visibleUserIcons.append(theId)
+
+    h = image.height() + yoffset + ypad
+    w = image.width()  + xoffset + xpad
+#@-node:ekr.20040803072955.50:<< draw the icon at file >>
+#@+node:ekr.20040803072955.51:<< draw the icon at url >>
+pass
+#@-node:ekr.20040803072955.51:<< draw the icon at url >>
+#@-node:ekr.20040803072955.47:drawUserIcon
+#@-node:ekr.20040803072955.46:drawUserIcons & helper
+#@+node:ekr.20040803072955.12:recycleWidgets
+def recycleWidgets (self):
+
+    canvas = self.canvas
+
+    for theId in self.visibleBoxes:
+        if theId not in self.freeBoxes:
+            self.freeBoxes.append(theId)
+        canvas.coords(theId,-100,-100)
+    self.visibleBoxes = []
+
+    for theId in self.visibleClickBoxes:
+        if theId not in self.freeClickBoxes:
+            self.freeClickBoxes.append(theId)
+        canvas.coords(theId,-100,-100,-100,-100)
+    self.visibleClickBoxes = []
+
+    for theId in self.visibleIcons:
+        if theId not in self.freeIcons:
+            self.freeIcons.append(theId)
+        canvas.coords(theId,-100,-100)
+    self.visibleIcons = []
+
+    for theId in self.visibleLines:
+        if theId not in self.freeLines:
+            self.freeLines.append(theId)
+        canvas.coords(theId,-100,-100,-100,-100)
+    self.visibleLines = []
+
+    aList = self.visibleText.values()
+    for data in aList:
+        w,theId = data
+        # assert theId == w.leo_window_id
+        canvas.coords(theId,-100,-100)
+        w.leo_position = None # Allow the position to be freed.
+        if data not in self.freeText:
+            self.freeText.append(data)
+    self.visibleText = {}
+
+    # g.trace('deleting visible user icons!')
+    for theId in self.visibleUserIcons:
+        # The present code does not recycle user Icons.
+        self.canvas.delete(theId)
+    self.visibleUserIcons = []
+#@-node:ekr.20040803072955.12:recycleWidgets
 #@-node:ekr.20071025160653.2:Commands to add/remove icons
-#@+node:ekr.20071024090626:Support @bool diagnose-aspell-installation
-#@-node:ekr.20071024090626:Support @bool diagnose-aspell-installation
-#@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree
-#@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree
 #@+node:ekr.20071025161431.1:Test Leo on the Mac
 #@-node:ekr.20071025161431.1:Test Leo on the Mac
 #@+node:ekr.20071026052111:Fix cursesGui and script_io_to_body plugins

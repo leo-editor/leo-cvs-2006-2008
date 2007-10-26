@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.421602787456">
-	<global_window_position top="16" left="247" height="841" width="892"/>
+	<global_window_position top="16" left="247" height="821" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -101,7 +101,7 @@
 </v>
 </v>
 <v t="ekr.20050831195331.1"><vh>FAQ</vh>
-<v t="ekr.20050830115714" a="E"><vh>@rst html\FAQ.html</vh>
+<v t="ekr.20050830115714"><vh>@rst html\FAQ.html</vh>
 <v t="ekr.20050830120007"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20070623145346"><vh>Installing Leo</vh>
 <v t="ekr.20060329101442"><vh>Nothing (or almost nothing) happens when I start Leo.  What should I do?</vh></v>
@@ -3357,7 +3357,8 @@
 <v t="ekr.20071026053931.157"><vh>Fixed (maybe) multi-editor bug</vh></v>
 <v t="ekr.20071026053931.219"><vh>Made sure proper node is visible when deleting a body editor</vh></v>
 <v t="ekr.20071026053931.220"><vh>Fixed colorizer end-of-text bug</vh></v>
-<v t="ekr.20071026075016" a="E"><vh>Added support for fastGotoNode plugin to leoKeyEvent classes</vh></v>
+<v t="ekr.20071026075016"><vh>Added support for fastGotoNode plugin to leoKeyEvent classes</vh></v>
+<v t="ekr.20071026092552"><vh>Fixed bug that disabled multiple occurances of the same user icon</vh></v>
 </v>
 <v t="ekr.20071026053931.221"><vh>Added @bool big_outline_pane setting</vh></v>
 <v t="ekr.20071026053931.234"><vh>Can print *can* handle unicode</vh></v>
@@ -32592,5 +32593,6 @@ For still more details, see:
 http://www.diveintopython.org/xml_processing/unicode.html 
 </t>
 <t tx="ekr.20071026075016">This fixes a fairly old crasher in the fastGotoNode plugin.</t>
+<t tx="ekr.20071026092552"></t>
 </tnodes>
 </leo_file>
