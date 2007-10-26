@@ -47,7 +47,10 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # 
 # 1.1: EKR: support non-interruptable coloring.  Required when there are 
 # multiple body editors.
+# 
+# 1.2: EKR: Fixed off-by-one bug in 'end' hack in putNewTags.
 #@-at
+#@nonl
 #@-node:ekr.20071010193720.2:<< version history >>
 #@nl
 #@<< define leoKeywordsDict >>
@@ -974,6 +977,32 @@ class colorizer:
     #@-node:ekr.20071010193720.38:updateSyntaxColorer
     #@-node:ekr.20071010193720.32:Entry points
     #@+node:ekr.20071010193720.39:Colorers & helpers
+    #@+node:ekr.20071025133020:completeColoring
+    def completeColoring (self):
+
+        trace = False ; verbose = False
+
+        if not self.postPassStarted:
+            # if trace: g.trace('****** post processing')
+            self.postPassStarted = True
+            self.oldTags = self.getOldTags() # Must be in main thread!
+            newList = self.newMergeTags()
+            addList,deleteList = self.computeNewTags(self.oldTags,newList)
+            self.globalAddList = addList
+            self.removeOldTags(deleteList)
+        else:
+            addList = self.globalAddList ; deleteList = []
+
+        if verbose or (trace and (addList or deleteList)):
+            g.trace('-%-3d +%-3d' % (len(deleteList),len(addList)))
+
+        if self.interruptable:
+            self.putNewTags()
+        else:
+            if trace: g.trace('**** non-interruptable')
+            while self.globalAddList:
+                self.putNewTags()
+    #@-node:ekr.20071025133020:completeColoring
     #@+node:ekr.20071013072543:computeNewTags
     def computeNewTags (self,oldList,newList):
 
@@ -1128,32 +1157,6 @@ class colorizer:
             self.w.update_idletasks()
     #@nonl
     #@-node:ekr.20071010193720.42:idleHandler
-    #@+node:ekr.20071025133020:completeColoring
-    def completeColoring (self):
-
-        trace = False ; verbose = False
-
-        if not self.postPassStarted:
-            # if trace: g.trace('****** post processing')
-            self.postPassStarted = True
-            self.oldTags = self.getOldTags() # Must be in main thread!
-            newList = self.newMergeTags()
-            addList,deleteList = self.computeNewTags(self.oldTags,newList)
-            self.globalAddList = addList
-            self.removeOldTags(deleteList)
-        else:
-            addList = self.globalAddList ; deleteList = []
-
-        if verbose or (trace and (addList or deleteList)):
-            g.trace('-%-3d +%-3d' % (len(deleteList),len(addList)))
-
-        if self.interruptable:
-            self.putNewTags()
-        else:
-            if trace: g.trace('**** non-interruptable')
-            while self.globalAddList:
-                self.putNewTags()
-    #@-node:ekr.20071025133020:completeColoring
     #@+node:ekr.20071010193720.43:init
     def init (self,p):
 
@@ -1239,7 +1242,8 @@ class colorizer:
             last_row = row_i ; last_col = col_i ; last_i = i
             x1 = '%d.%d' % (row_i+1,col_i)
             # An important hack to extend the coloring at the very end of the text.
-            if j >= len_s -1:
+            if j >= len_s:
+                # g.trace('end hack:',j,s[j:])
                 x2 = 'end'
             else:
                 row_j,col_j = self.quickConvertPythonIndexToRowCol(j,last_row,last_col,last_i)
