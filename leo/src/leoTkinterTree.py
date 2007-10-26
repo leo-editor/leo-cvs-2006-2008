@@ -619,6 +619,7 @@ class leoTkinterTree (leoFrame.leoTree):
                 self.freeText.append(data)
         self.visibleText = {}
 
+        # g.trace('deleting visible user icons!')
         for theId in self.visibleUserIcons:
             # The present code does not recycle user Icons.
             self.canvas.delete(theId)
@@ -1032,7 +1033,7 @@ class leoTkinterTree (leoFrame.leoTree):
 
         return self.line_height
     #@-node:ekr.20040803072955.44:drawText
-    #@+node:ekr.20040803072955.46:drawUserIcons
+    #@+node:ekr.20040803072955.46:drawUserIcons & helper
     def drawUserIcons(self,p,where,x,y):
 
         """Draw any icons specified by p.v.t.unknownAttributes["icons"]."""
@@ -1056,7 +1057,6 @@ class leoTkinterTree (leoFrame.leoTree):
         # g.trace(where,h,w)
 
         return h,w
-    #@-node:ekr.20040803072955.46:drawUserIcons
     #@+node:ekr.20040803072955.47:drawUserIcon
     def drawUserIcon (self,p,where,x,y,w2,theDict):
 
@@ -1101,25 +1101,27 @@ class leoTkinterTree (leoFrame.leoTree):
             theFile = theDict.get("file")
             #@        << draw the icon at file >>
             #@+node:ekr.20040803072955.50:<< draw the icon at file >>
-            try:
-                image = self.iconimages[theFile]
-                # Get the image from the cache if possible.
-            except KeyError:
+            fullname = g.os_path_join(g.app.loadDir,"..","Icons",theFile)
+            fullname = g.os_path_normpath(fullname)
+
+            # Bug fix: the key must include distinguish nodes.
+            key = (fullname,p.v.t)
+            image = self.iconimages.get(key)
+            if not image:
                 try:
-                    fullname = g.os_path_join(g.app.loadDir,"..","Icons",theFile)
-                    fullname = g.os_path_normpath(fullname)
                     image = Tk.PhotoImage(master=self.canvas,file=fullname)
-                    self.iconimages[fullname] = image
+                    self.iconimages[key] = image
                 except:
                     #g.es("Exception loading: " + fullname)
                     #g.es_exception()
                     image = None
-
             if image:
                 theId = self.canvas.create_image(
                     x+xoffset+w2,y+yoffset,
                     anchor="nw",image=image,tag="userIcon")
-                self.ids[theId] = p
+                self.ids[theId] = p.copy()
+                # g.trace('id',theId,p.headString(),theFile,image)
+
                 # assert(theId not in self.visibleIcons)
                 self.visibleUserIcons.append(theId)
 
@@ -1143,6 +1145,7 @@ class leoTkinterTree (leoFrame.leoTree):
 
         return h,w
     #@-node:ekr.20040803072955.47:drawUserIcon
+    #@-node:ekr.20040803072955.46:drawUserIcons & helper
     #@+node:ekr.20040803072955.52:drawTopTree
     def drawTopTree (self):
 
