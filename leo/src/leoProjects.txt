@@ -17811,48 +17811,6 @@ def next(self):
     # k.setLabelGrey('')
     # self.k.regx = g.bunch(iter=None,key=None)
 #@-node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
-#@+node:ekr.20050920085536.84:class Tracker (an iterator)
-class Tracker:
-
-    '''An iterator class to allow the user to cycle through and change a list.'''
-
-    @others
-#@+node:ekr.20050920085536.85:init
-def __init__ (self):
-
-    self.tablist = []
-    self.prefix = None 
-    self.ng = self._next()
-#@-node:ekr.20050920085536.85:init
-#@+node:ekr.20050920085536.86:setTabList
-def setTabList (self,prefix,tlist):
-
-    self.prefix = prefix 
-    self.tablist = tlist
-#@-node:ekr.20050920085536.86:setTabList
-#@+node:ekr.20050920085536.87:_next
-# def _next (self):
-
-    # while 1:
-        # tlist = self.tablist 
-        # if not tlist:yield ''
-        # for z in self.tablist:
-            # if tlist!=self.tablist:
-                # break 
-            # yield z
-#@-node:ekr.20050920085536.87:_next
-#@+node:ekr.20050920085536.88:next
-def next (self):
-
-    return self.ng.next()
-#@-node:ekr.20050920085536.88:next
-#@+node:ekr.20050920085536.89:clear
-def clear (self):
-
-    self.tablist = []
-    self.prefix = None
-#@-node:ekr.20050920085536.89:clear
-#@-node:ekr.20050920085536.84:class Tracker (an iterator)
 #@-node:ekr.20070930194035:Not converted yet
 #@-node:ekr.20070930102228.1:Rewrote iterators that use yield
 #@+node:ekr.20031218072017.2160:toUnicodeFileEncoding
@@ -45003,7 +44961,7 @@ if w.leo_selection:
 #@nonl
 #@-node:ekr.20071026042929.1:Fixed colorizer end-of-text bug
 #@-node:ekr.20071025134243:Fixed bugs
-#@+node:ekr.20071018173151:Installed patch to put the outline in the main pane
+#@+node:ekr.20071018173151:Added support for @bool big_outline_pane
 @ The reason toggle-split-direction is relatively easy is that no parents change, only the placements.
 
 In contrast, the bigTree option requires reparenting, which is much harder in Tk.
@@ -45370,7 +45328,7 @@ def placeSplitter (self,bar,pane1,pane2,verticalFlag):
         bar.place  (rely=0.5, relx = adj, anchor="c", relheight=1.0)
 #@-node:ekr.20031218072017.3952:placeSplitter
 #@-node:ekr.20041221123325:tkFrame.createLeoSplitters & helpers
-#@-node:ekr.20071018173151:Installed patch to put the outline in the main pane
+#@-node:ekr.20071018173151:Added support for @bool big_outline_pane
 #@+node:ekr.20071025144437:OMG: Can print *can* handle unicode
 # Just put the following in your siteCustomize.py.
 # (You can't call sys.setdefaultencoding after Python starts up).

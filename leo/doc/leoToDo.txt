@@ -19,10 +19,40 @@ delete-all-icons-in-tree
 #@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree
 #@+node:ekr.20071025161431.1:Test Leo on the Mac
 #@-node:ekr.20071025161431.1:Test Leo on the Mac
-#@+node:ekr.20071025161431.2:regex search not [body].bodyCtrl
-#@-node:ekr.20071025161431.2:regex search not [body].bodyCtrl
 #@+node:ekr.20071025161431.3:Disable @auto unit tests on Linux
 #@-node:ekr.20071025161431.3:Disable @auto unit tests on Linux
+#@+node:ekr.20071026052111:Fix cursesGui and script_io_to_body plugins
+#@+node:ekr.20071026051956:crash in cursesGui.py
+reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo
+reading settings in C:\Documents and Settings\HP_Administrator\My Documents\Edward\myLeoSettings.leo
+reading settings in C:\prog\tigris-cvs\leo\test\test.leo
+reading C:\Documents and Settings\HP_Administrator\My Documents\Edward\.leoRecentFiles.txt
+reading C:\prog\tigris-cvs\leo\config\.leoRecentFiles.txt
+@enabled-plugins found in test.leo
+textGui oops <module>,run,createFrame,openWithFileName,newLeoCommanderAndFrame,finishCreate,createKeyHandlerClass should be implem
+ented
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 401, in <module>
+    run(fileName)
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 144, in run
+    c,frame = createFrame(fileName)
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 213, in createFrame
+    ok, frame = g.openWithFileName(fileName,None)
+  File "C:\prog\tigris-cvs\leo\src\leoGlobals.py", line 1908, in openWithFileName
+    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
+  File "C:\prog\tigris-cvs\leo\src\leoApp.py", line 577, in newLeoCommanderAndFrame
+    c.finishCreate(initEditCommanders)
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 216, in finishCreate
+    c.commandsDict = leoEditCommands.finishCreateEditCommanders(c)
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 247, in finishCreateEditCommanders
+    d2 = theInstance.getPublicCommands()
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 1022, in getPublicCommands
+    'keyboard-quit':                k.keyboardQuit,
+AttributeError: 'NoneType' object has no attribute 'keyboardQuit'
+>>>
+#@nonl
+#@-node:ekr.20071026051956:crash in cursesGui.py
+#@-node:ekr.20071026052111:Fix cursesGui and script_io_to_body plugins
 #@-node:ekr.20071025160653:Fun
 #@+node:ekr.20071025144654:Postings
 #@+node:ekr.20071025143956:Posting: document unit test bug & describe coming new scheme
