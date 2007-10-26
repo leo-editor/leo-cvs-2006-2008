@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.421602787456">
-	<global_window_position top="16" left="247" height="801" width="892"/>
+	<global_window_position top="16" left="247" height="781" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -3351,7 +3351,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071026053825" a="TV"><vh>4.4.4 b4</vh>
+<v t="ekr.20071026053825" a="ETV"><vh>4.4.4 b4</vh>
 <v t="ekr.20071026053931.1"><vh>Fixed bugs</vh>
 <v t="ekr.20071026053931.2"><vh>Fixed aspell problem</vh></v>
 <v t="ekr.20071026053931.13"><vh>Fixed bug: utf-8 files now get imported properly</vh></v>
@@ -3362,9 +3362,11 @@
 <v t="ekr.20071026075016"><vh>Added support for fastGotoNode plugin to leoKeyEvent classes</vh></v>
 <v t="ekr.20071026092552"><vh>Fixed bug that disabled multiple occurances of the same user icon</vh></v>
 </v>
+<v t="ekr.20071026182824"><vh>Added features</vh>
 <v t="ekr.20071026053931.221"><vh>Added @bool big_outline_pane setting</vh></v>
 <v t="ekr.20071026053931.234"><vh>Can print *can* handle unicode</vh></v>
 <v t="ekr.20071026180804.1"><vh>Improved the prototype of icon handling</vh></v>
+</v>
 </v>
 </v>
 </v>
@@ -31569,56 +31571,38 @@ July, 2007</t>
 need to understand this material in order to use the threading colorizer.
 
 The threading_colorizer plugin uses a separate **helper thread** to compute the
-ranges of text that should be colored. The helper thread **must not contain any
+ranges of text that should be colored. **The helper thread must not contain any
 calls to Tk**. Tk is not thread safe--calling Tk in the helper thread will cause
-hard crashes in the Tk dll. In fact, however, the code in the helper thread is
-gui independent. The **main thread** is all of Leo's code except for a helper
+hard crashes in the Tk dll. However, the code in the helper thread is gui
+independent. The **main thread** contains all of Leo's code except for a helper
 thread. The main thread contains all calls to Tk, all entry points to the
-colorizer, and an idle-time handler for the colorizer called idleHandler.
+colorizer, and idleHandler, an idle-time handler.
 
 Only one helper thread is ever active at any one time. If a keystroke occurs
 while the helper thread is active, the colorizer code in the main thread sets
 the killFlag ivar and calls join to wait for the helper thread to terminate. The
 helper thread will terminate promptly because it looks at killFlag each time
-through its main loop. The *only* reason for using threading is so that main
-thread can continue working while the helper thread computes. This allows Tk (in
-the main thread) to respond to events. This in turn allows the colorizer code in
-the main thread to kill the helper thread if it is still working.
+through its main loop. Using a separate helper thread allows the main thread to
+continue working while the helper thread computes. This allows Tk (in the main
+thread) to respond to events. This in turn allows the colorizer code in the main
+thread to kill the helper thread if it is still working.
 
-The main and helper threads are in a general producer-consumer relationship. The
-helper thread is the producer, the idleHandler method is the consumer. The
-helper thread adds elements to the tagList. idleHandler removes items from the
-tagList and colorizes those items. All accesses to the tagList must be protected
-with calls to lock and release.
+**New in Leo 4.4.4**: the helper thread runs to completion before the main thread
+uses any of its results. Thus, no thread locking is needed, an important
+simplification. Once the helper thread completes, the main thread computes the
+tags to be sent to Tk, and actually sends those tags. When the user is typing
+rapidly, the colorizer will ignore the results of all helper threads except the
+last.
 
-Entries in the tag list have the form: tagName,i,j, where i and j are Python
-(integer) indices. Using integer indices is an important optimization.
-Converting to Tk (gui) indices is quite expensive, and the colorizer won't have
-to do that unless the results of the helper thread are actually used. When the
-user is typing rapidly, the colorizer will ignore the results of all helper
-threads except the last.
+**New in Leo 4.4.4**: After the helper thread generates the list of all requested
+tags, the main thread uses a kind of sort-merge algorithm to compare the
+existing tags (obtained from Tk) with the requested tags. In many cases, the
+lists are the same and colorizer issues *no* calls to Tk. This is a sensational
+optimization.  It absolutely minimizes the load on Tk.
 
-For long text strings, idleHandler will be called many times before the coloring
-is finished. This naturally breaks up the coloring work load: idleHandler
-colorizes only the new items in tagList. The idleHandler will re-queue itself
-only if the associated helper thread has not terminated.
-
-Every node must be completely colorized when the user selects the node. The
-fullColor method colors the entire text non-incrementally. For key-pressed
-events the colorizer computes the minimum range of text that must be colored.
-The partialColor method colors text from a **starting point** to an **ending
-point**. The **marksDict** ivar (used only by the main thread) remembers the
-list of previous matches. The partialColor method uses the marksDict to
-determine the starting and ending points. The new colorizer is character
-oriented rather than line oriented. The computeIndices method computes the range
-of changed text. The adjustMarksDict method adjust entries in the marksDict so
-they correspond to the present changed text.
-
-The limiting factor for responsiveness with very large text appears to be in Tk
-itself. This starts to be true for body text of about 100K.
-
-At present the 'interruptible' argument to the colorizer entry points is not
-used. This might be a problem when multiple body editors are present.</t>
+**New in Leo 4.4.4**: When the 'interruptible' argument to the colorizer is False,
+no threading is used and the main thread completely colors the entire text. This
+must be done when multiple body editors are present.</t>
 <t tx="ekr.20070806090226.1">The run-unit-tests command now includes *all* @mark-for-unit-test trees.
 </t>
 <t tx="ekr.20070806090226.14">The old __jEdit_colorizer__.py plugin has been retired.</t>
@@ -32622,5 +32606,6 @@ Buttons now exist to add icons to do the following:
 
 In addition, fixed a bug in the icon handling in the outline widget that caused
 duplicate icons not to be drawn properly.</t>
+<t tx="ekr.20071026182824"></t>
 </tnodes>
 </leo_file>
