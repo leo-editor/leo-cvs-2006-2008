@@ -5,6 +5,8 @@
 #@@language python
 #@@tabwidth -4
 
+__version__ = "1.4" # EKR: added init function.
+
 #@<< imports >>
 #@+node:ekr.20050101090207.4:<< imports >>
 import leoGlobals as g
@@ -16,6 +18,24 @@ Tk = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
 #@nl
 
 #@+others
+#@+node:ekr.20071025195133:init
+def init():
+
+    ok = Tk and not g.app.unitTesting
+        # Not for unit testing: modifies core classes.
+    if not ok: return False
+
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+
+    if g.app.gui.guiName() != "tkinter": return False
+
+    leoPlugins.registerHandler("start1", onStart)
+
+    g.plugin_signon(__name__)
+
+    return True
+#@-node:ekr.20071025195133:init
 #@+node:edream.110203113231.926:onStart
 def onStart (tag,keywords):
 
@@ -80,6 +100,8 @@ def newExecuteScript(self,event=None,v=None):
 #@+node:edream.110203113231.928:newPut and newPutNl
 # Same as frame.put except sends output to the end of the body text.
 def newPut (self,s):
+
+    g.pdb()
     c = self.frame.c
     bodyCtrl = c.frame.body.bodyCtrl
     if bodyCtrl:
@@ -91,7 +113,6 @@ def newPut (self,s):
 # Same as frame.putnl exceptsends output to the end of the body text.
 def newPutNl (self):
     newPut (self,'\n')
-#@nonl
 #@-node:edream.110203113231.928:newPut and newPutNl
 #@+node:edream.110203113231.929:newEs, etc.
 def newEnl():
@@ -119,17 +140,5 @@ def newEs(s,*args,**keys):
         print s,
 #@-node:edream.110203113231.929:newEs, etc.
 #@-others
-
-if Tk and not g.app.unitTesting: # Not for unit testing: modifies core classes.
-
-    if g.app.gui is None:
-        g.app.createTkGui(__file__)
-
-    if g.app.gui.guiName() == "tkinter":
-
-        leoPlugins.registerHandler("start1", onStart)
-
-        __version__ = "1.3" # Contains Tk-specific code.
-        g.plugin_signon(__name__)
 #@-node:edream.110203113231.925:@thin script_io_to_body.py
 #@-leo
