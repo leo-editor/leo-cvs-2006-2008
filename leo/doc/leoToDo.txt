@@ -111,14 +111,26 @@ fullname = g.os_path_normpath(fullname)
 # Bug fix: the key must include distinguish nodes.
 key = (fullname,p.v.t)
 image = self.iconimages.get(key)
+
+if not image:
+    try:
+        import PIL
+        from PIL import Image, ImageTk
+        image1 = Image.open(fullname)
+        image = ImageTk.PhotoImage(image1)
+        self.iconimages[key] = image
+    except Exception:
+        #g.es_exception()
+        image = None
+
 if not image:
     try:
         image = Tk.PhotoImage(master=self.canvas,file=fullname)
         self.iconimages[key] = image
-    except:
-        #g.es("Exception loading: " + fullname)
+    except Exception:
         #g.es_exception()
         image = None
+
 if image:
     theId = self.canvas.create_image(
         x+xoffset+w2,y+yoffset,
