@@ -3,10 +3,6 @@
 #@+all
 #@+node:ekr.20071001045205:To do: 4.4.4 final
 #@+node:ekr.20071025160653:Fun
-#@+node:ekr.20071024090626:Support @bool diagnose-aspell-installation
-#@-node:ekr.20071024090626:Support @bool diagnose-aspell-installation
-#@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree
-#@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree
 #@+node:ekr.20071025160653.2:Commands to add/remove icons
 Left-click to delete
 
@@ -17,8 +13,10 @@ delete-nth-icon
 delete-all-node-icons
 delete-all-icons-in-tree
 #@-node:ekr.20071025160653.2:Commands to add/remove icons
-#@+node:ekr.20071025161431:Fix end-of-text colorizer bug
-#@-node:ekr.20071025161431:Fix end-of-text colorizer bug
+#@+node:ekr.20071024090626:Support @bool diagnose-aspell-installation
+#@-node:ekr.20071024090626:Support @bool diagnose-aspell-installation
+#@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree
+#@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree
 #@+node:ekr.20071025161431.1:Test Leo on the Mac
 #@-node:ekr.20071025161431.1:Test Leo on the Mac
 #@+node:ekr.20071025161431.2:regex search not [body].bodyCtrl
@@ -42,25 +40,11 @@ The new scheme:
 - Run @test nodes in leoPy.leo **from unitTest.leo**.
 #@nonl
 #@-node:ekr.20071025143956:Posting: document unit test bug & describe coming new scheme
-#@+node:ekr.20071025144518:Posting: toggle-big-tree is hard
-@nocolor
-
-To do this, we would need to implement reparent methods for the log, tree and body classes.
-#@nonl
-#@-node:ekr.20071025144518:Posting: toggle-big-tree is hard
 #@+node:ekr.20071021112850:Brag about new colorizer
 #@-node:ekr.20071021112850:Brag about new colorizer
 #@+node:ekr.20071025161431.4:Plugins as thought experiments
 #@-node:ekr.20071025161431.4:Plugins as thought experiments
 #@-node:ekr.20071025144654:Postings
-#@+node:ekr.20071024090626.1:Docs
-#@+node:ekr.20071024151640:Document @bool big_outline_pane setting
-#@-node:ekr.20071024151640:Document @bool big_outline_pane setting
-#@+node:ekr.20071018073812.1:Document g.app.gui.runX methods
-# The documentation for hooks should be in programming chapter, as well as customizing chapter?
-#@nonl
-#@-node:ekr.20071018073812.1:Document g.app.gui.runX methods
-#@-node:ekr.20071024090626.1:Docs
 #@+node:ekr.20071024204327:Tests
 #@+node:ekr.20071018071814:Unit tests and documentation for new colorizer
 Posting re new colorizer to pyxides & wiki.
@@ -1217,6 +1201,14 @@ TclError: invalid command name ".35183312.35184072.35184392.35184472.35410768.35
 #@nonl
 #@-node:ekr.20071025105604:New crasher
 #@-node:ekr.20071024204327:Tests
+#@+node:ekr.20071024090626.1:Docs
+#@+node:ekr.20071018073812.1:Document g.app.gui.runX methods
+# The documentation for hooks should be in programming chapter, as well as customizing chapter?
+#@nonl
+#@-node:ekr.20071018073812.1:Document g.app.gui.runX methods
+#@+node:ekr.20071026045122:Revise the-threading-colorizer-plugin part of chapter 15
+#@-node:ekr.20071026045122:Revise the-threading-colorizer-plugin part of chapter 15
+#@-node:ekr.20071024090626.1:Docs
 #@-node:ekr.20071001045205:To do: 4.4.4 final
 #@+node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
 # Leo 4.4.5 will complete several projects that are long overdue.

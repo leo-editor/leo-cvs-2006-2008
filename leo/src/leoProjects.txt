@@ -44998,6 +44998,10 @@ if w.leo_selection:
 #@-node:ekr.20070423102603:selectEditorHelper
 #@-node:ekr.20061017083312:selectEditor & helpers
 #@-node:ekr.20071024181544:Made sure proper node is visible when deleting a body editor
+#@+node:ekr.20071026042929.1:Fixed colorizer end-of-text bug
+# The hack in putNewTags that converted j to 'end' had an off-by-one error.
+#@nonl
+#@-node:ekr.20071026042929.1:Fixed colorizer end-of-text bug
 #@-node:ekr.20071025134243:Fixed bugs
 #@+node:ekr.20071018173151:Installed patch to put the outline in the main pane
 @ The reason toggle-split-direction is relatively easy is that no parents change, only the placements.
@@ -45367,6 +45371,80 @@ def placeSplitter (self,bar,pane1,pane2,verticalFlag):
 #@-node:ekr.20031218072017.3952:placeSplitter
 #@-node:ekr.20041221123325:tkFrame.createLeoSplitters & helpers
 #@-node:ekr.20071018173151:Installed patch to put the outline in the main pane
+#@+node:ekr.20071025144437:OMG: Can print *can* handle unicode
+# Just put the following in your siteCustomize.py.
+# (You can't call sys.setdefaultencoding after Python starts up).
+
+import sys
+
+sys.setdefaultencoding('utf-8')
+#@nonl
+#@+node:ekr.20071025164326:Posting
+@nocolor
+
+Surely I must be the very last experienced programmer to figure this out :-)  Oh well, better late than never...
+
+Last week I realized that I have been stupidly putting up with quite an annoyance: Python will throw an exception if it is passed a string that can't be converted to Python's default encoding, which is typically 'ascii'.
+
+Today I thought to google for a solution. Clearly one was likely: Python handles unicode pretty well in most places.  I immediately found 
+
+http://www.diveintopython.org/xml_processing/unicode.html
+
+To change Python's default encoding, just put the following in your sitecustomize.py file (in Python's Lib folder:
+
+import sys
+
+sys.setdefaultencoding('utf-8')
+
+You must restart Python after doing this.  For reasons I don't understand, sys.setdefaultencoding can not be called after Python starts up.
+
+Cvs now contains a version of g.es_print that attempts to convert incoming arguments to unicode using the default encoding. With this change in place, the following Leo script always prints La Peña:
+
+@first # -*- coding: utf-8 -*-
+
+for s in (
+    '---',
+    u'La Pe\xf1a',
+    'La Peña', # print gives "byte hash"
+    u'La Peña',
+):
+    print s
+    g.es_print(s)
+
+BTW, the first line is required on Python 2.5.
+
+Coming soon: a FAQ entry :-)
+
+Edward
+#@-node:ekr.20071025164326:Posting
+#@+node:ekr.20050707064040:es_print
+# see: http://www.diveintopython.org/xml_processing/unicode.html
+
+def es_print(s,*args,**keys):
+
+    encoding = sys.getdefaultencoding()
+
+    try:
+        if type(s) != type(u''):
+            s = unicode(s,encoding)
+    except Exception:
+        s = g.toEncodedString(s,'ascii')
+
+    if keys.get('newline') in (True,None):
+        print s
+    else:
+        print s,
+
+    if g.app.gui and not g.app.gui.isNullGui and not g.unitTesting:
+        g.es(s,*args,**keys)
+#@+node:ekr.20070621092938:@@test g.es_print
+if g.unitTesting:
+    g.es_print('\ntest of es_print: Ă',color='red',newline=False)
+    g.es_print('after')
+    g.es_print('done')
+#@-node:ekr.20070621092938:@@test g.es_print
+#@-node:ekr.20050707064040:es_print
+#@-node:ekr.20071025144437:OMG: Can print *can* handle unicode
 #@-node:ekr.20071023175714:4.4.4 b4
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@-all
