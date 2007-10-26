@@ -190,9 +190,6 @@ class textFrame(leoFrame.leoFrame):
     f.log = textLog(frame=self, parentFrame=None)
     f.menu = textLeoMenu(self)
 
-    # Yes, this an "official" ivar: this is a kludge.
-    f.bodyCtrl = f.body.bodyCtrl
-
     f.createFirstTreeNode()
 
     # (*after* setting self.log)
@@ -538,7 +535,7 @@ class textTree(leoFrame.leoTree):
     # TODO Much more here: there's four hooks and all sorts of other things called in the TK version. 
 
     c = self.c ; frame = c.frame
-    body = w = frame.bodyCtrl
+    body = w = c.frame.body.bodyCtrl
 
     c.setCurrentPosition(p)
 

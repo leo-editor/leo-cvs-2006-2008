@@ -231,7 +231,7 @@ def addXSLTNode (c):
 #@+node:mork.20041010110121:addXSLTElement
 def addXSLTElement( c , element):
     '''adds some xslt to the text node'''
-    bodyCtrl = c.frame.bodyCtrl
+    bodyCtrl = c.frame.body.bodyCtrl
     bodyCtrl.insert( 'insert', element )
     bodyCtrl.event_generate( '<Key>' )
     bodyCtrl.update_idletasks()

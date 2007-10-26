@@ -344,7 +344,7 @@ def match_leo_keywords(self,s,i):
 def match_section_ref (self,s,i):
 
     if trace_leo_matches: g.trace()
-    c=self.c
+    c = self.c ; w = self.w
 
     if not g.match(s,i,'<<'):
         return 0
@@ -362,13 +362,13 @@ def match_section_ref (self,s,i):
                 # Create the tag name.
                 tagName = "hyper" + str(self.hyperCount)
                 self.hyperCount += 1
-                self.body.tag_delete(tagName)
+                w.tag_delete(tagName)
                 self.tag(tagName,i+2,j)
 
                 ref.tagName = tagName
-                self.body.tag_bind(tagName,"<Control-1>",ref.OnHyperLinkControlClick)
-                self.body.tag_bind(tagName,"<Any-Enter>",ref.OnHyperLinkEnter)
-                self.body.tag_bind(tagName,"<Any-Leave>",ref.OnHyperLinkLeave)
+                w.tag_bind(tagName,"<Control-1>",ref.OnHyperLinkControlClick)
+                w.tag_bind(tagName,"<Any-Enter>",ref.OnHyperLinkEnter)
+                w.tag_bind(tagName,"<Any-Leave>",ref.OnHyperLinkLeave)
                 #@nonl
                 #@-node:ekr.20071010193720.15:<< set the hyperlink >>
                 #@nl
@@ -453,11 +453,9 @@ class colorizer:
         # g.trace('threading_colorizer',self)
         # Basic data...
         self.c = c
-        self.frame = c.frame
-        self.body = c.frame.body
         self.p = None
         self.s = None # The string being colorized.
-        self.w = self.body.bodyCtrl
+        self.w = c.frame.body.bodyCtrl
         # Attributes dict ivars: defaults are as shown...
         self.default = 'null'
         self.digit_re = ''
@@ -644,49 +642,49 @@ class colorizer:
 
             # Must use foreground, not fg.
             try:
-                self.body.tag_configure(name, foreground=color)
+                w.tag_configure(name, foreground=color)
             except: # Recover after a user error.
                 g.es_exception()
-                self.body.tag_configure(name, foreground=default_color)
+                w.tag_configure(name, foreground=default_color)
 
         # underline=var doesn't seem to work.
         if 0: # self.use_hyperlinks: # Use the same coloring, even when hyperlinks are in effect.
-            self.body.tag_configure("link",underline=1) # defined
-            self.body.tag_configure("name",underline=0) # undefined
+            w.tag_configure("link",underline=1) # defined
+            w.tag_configure("name",underline=0) # undefined
         else:
-            self.body.tag_configure("link",underline=0)
+            w.tag_configure("link",underline=0)
             if self.underline_undefined:
-                self.body.tag_configure("name",underline=1)
+                w.tag_configure("name",underline=1)
             else:
-                self.body.tag_configure("name",underline=0)
+                w.tag_configure("name",underline=0)
 
         self.configure_variable_tags()
 
         # Colors for latex characters.  Should be user options...
 
         if 1: # Alas, the selection doesn't show if a background color is specified.
-            self.body.tag_configure("latexModeBackground",foreground="black")
-            self.body.tag_configure("latexModeKeyword",foreground="blue")
-            self.body.tag_configure("latexBackground",foreground="black")
-            self.body.tag_configure("latexKeyword",foreground="blue")
+            w.tag_configure("latexModeBackground",foreground="black")
+            w.tag_configure("latexModeKeyword",foreground="blue")
+            w.tag_configure("latexBackground",foreground="black")
+            w.tag_configure("latexKeyword",foreground="blue")
         else: # Looks cool, and good for debugging.
-            self.body.tag_configure("latexModeBackground",foreground="black",background="seashell1")
-            self.body.tag_configure("latexModeKeyword",foreground="blue",background="seashell1")
-            self.body.tag_configure("latexBackground",foreground="black",background="white")
-            self.body.tag_configure("latexKeyword",foreground="blue",background="white")
+            w.tag_configure("latexModeBackground",foreground="black",background="seashell1")
+            w.tag_configure("latexModeKeyword",foreground="blue",background="seashell1")
+            w.tag_configure("latexBackground",foreground="black",background="white")
+            w.tag_configure("latexKeyword",foreground="blue",background="white")
 
         # Tags for wiki coloring.
-        self.body.tag_configure("bold",font=self.bold_font)
-        self.body.tag_configure("italic",font=self.italic_font)
-        self.body.tag_configure("bolditalic",font=self.bolditalic_font)
+        w.tag_configure("bold",font=self.bold_font)
+        w.tag_configure("italic",font=self.italic_font)
+        w.tag_configure("bolditalic",font=self.bolditalic_font)
         for name in self.color_tags_list:
-            self.body.tag_configure(name,foreground=name)
+            w.tag_configure(name,foreground=name)
     #@nonl
     #@-node:ekr.20071010193720.24:configure_tags
     #@+node:ekr.20071010193720.25:configure_variable_tags
     def configure_variable_tags (self):
 
-        c = self.c
+        c = self.c ; w = self.w
 
         # g.trace()
 
@@ -701,13 +699,13 @@ class colorizer:
                 option_name,default_color = default_colors_dict.get(name,(None,None),)
                 color = option_name and c.config.getColor(option_name) or ''
             try:
-                self.body.tag_configure(name,background=color)
+                w.tag_configure(name,background=color)
             except: # A user error.
-                self.body.tag_configure(name,background=default_color)
+                w.tag_configure(name,background=default_color)
 
         # Special case:
         if not self.showInvisibles:
-            self.body.tag_configure("elide",elide="1")
+            w.tag_configure("elide",elide="1")
     #@-node:ekr.20071010193720.25:configure_variable_tags
     #@+node:ekr.20071010193720.26:init_mode & helpers
     def init_mode (self,name):
@@ -1268,7 +1266,7 @@ class colorizer:
                 # w.setAllText(w.getAllText())
 
                 # # i = self.index(i)
-                # # self.body.deleteCharacter(image)
+                # # w.deleteCharacter(image)
                 # # s = self.allBodyText ; w = self.w
                 # # w.delete(s,i)
                 # # self.allBodyText = w.getAllText()

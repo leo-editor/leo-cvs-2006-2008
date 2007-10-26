@@ -279,7 +279,7 @@ def getWindowMenu (pmenu,c):
     def bTF (frame):
         frame.bringToFront()
         g.app.setLog(frame.log)
-        frame.bodyCtrl.focus_set()
+        frame.body.bodyCtrl.focus_set()
         clear()
     sb = shouldBreak()
     for z in wl:

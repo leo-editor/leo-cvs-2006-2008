@@ -81,7 +81,7 @@ def newExecuteScript(self,event=None,v=None):
 # Same as frame.put except sends output to the end of the body text.
 def newPut (self,s):
     c = self.frame.c
-    bodyCtrl = self.frame.body.bodyCtrl
+    bodyCtrl = c.frame.body.bodyCtrl
     if bodyCtrl:
         bodyCtrl.insert("end",s)
         # bodyCtrl.see("end")

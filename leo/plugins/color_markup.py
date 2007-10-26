@@ -364,7 +364,8 @@ def doWikiText (colorer,s,i,end,colortag):
                     else:
                         try:
                             # print "entering", name
-                            colorer.body.bodyCtrl.tag_configure(name,foreground=name)
+                            c = colorer.c
+                            c.frame.body.bodyCtrl.tag_configure(name,foreground=name)
                             colorer.color_tags_list.append(name)
                             colorer.tag("elide",n1,n+1)
                             colorer.tag(name,n+1,n2)
@@ -438,7 +439,7 @@ def insertWikiPicture (colorer,filename,s,i):
         else:
             index = colorer.index(i)
             # g.trace('**inserting picture',i,index)
-            image = colorer.body.bodyCtrl.image_create(index,image=photo,padx=0)
+            image = c.frame.body.bodyCtrl.image_create(index,image=photo,padx=0)
             w.mark_set(filename,index)
             # Keep references so images stay on the canvas.
             # The reference to photo must appear, even though it is not used.
