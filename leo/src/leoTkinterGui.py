@@ -732,6 +732,9 @@ class tkinterGui(leoGui.leoGui):
             self.w      = hasattr(event,'widget') and event.widget or None
             self.x      = hasattr(event,'x') and event.x or 0
             self.y      = hasattr(event,'y') and event.y or 0
+            # Support for fastGotoNode plugin
+            self.x_root = hasattr(event,'x_root') and event.x_root or 0
+            self.y_root = hasattr(event,'y_root') and event.y_root or 0
 
             if self.keysym and c.k:
                 # Translate keysyms for ascii characters to the character itself.

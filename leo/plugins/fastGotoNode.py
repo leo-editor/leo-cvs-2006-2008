@@ -240,9 +240,9 @@ def pop (event,c):
     if mvsmenu: addMenu("Mv_Sibling",mvsmenu)
 
     smenu.bind_all("<Button-3>",lambda event,c=c: disappear(event,c))
+
     smenu.post(event.x_root,event.y_root)
     smenu.focus_set()
-#@nonl
 #@-node:mork.20041018091414.4:pop
 #@+node:ekr.20060110203946.1:Menus
 #@+node:mork.20041018091414.5:getSectionReferenceMenu
