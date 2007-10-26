@@ -45151,6 +45151,7 @@ pass
 #@-node:ekr.20040803072955.47:drawUserIcon
 #@-node:ekr.20071026092440:Fixed bug that disabled multiple occurances of the same icon
 #@-node:ekr.20071025134243:Fixed bugs
+#@+node:ekr.20071026180220:New features
 #@+node:ekr.20071018173151:Added support for @bool big_outline_pane
 @ The reason toggle-split-direction is relatively easy is that no parents change, only the placements.
 
@@ -45593,6 +45594,109 @@ if g.unitTesting:
 #@-node:ekr.20070621092938:@@test g.es_print
 #@-node:ekr.20050707064040:es_print
 #@-node:ekr.20071025144437:OMG: Can print *can* handle unicode
+#@+node:ekr.20071026180220.1:Greatly improved the 'Prototype of user icons' in test.leo
+#@-node:ekr.20071026180220.1:Greatly improved the 'Prototype of user icons' in test.leo
+#@+node:ekr.20071026125112:Improved icon handling in Leo's tree widget
+# The tree widget will use PIL if available.
+#@nonl
+#@+node:ekr.20040803072955.47:drawUserIcon
+def drawUserIcon (self,p,where,x,y,w2,theDict):
+
+    h,w = 0,0
+
+    if where != theDict.get("where","beforeHeadline"):
+        return h,w
+
+    # if self.trace_gc: g.printNewObjects(tag='userIcon 1')
+
+    # g.trace(where,x,y,theDict)
+
+    << set offsets and pads >>
+    theType = theDict.get("type")
+    if theType == "icon":
+        if 0: # not ready yet.
+            s = theDict.get("icon")
+            << draw the icon in string s >>
+    elif theType == "file":
+        theFile = theDict.get("file")
+        << draw the icon at file >>
+    elif theType == "url":
+        ## url = theDict.get("url")
+        << draw the icon at url >>
+
+    # Allow user to specify height, width explicitly.
+    h = theDict.get("height",h)
+    w = theDict.get("width",w)
+
+    # if self.trace_gc: g.printNewObjects(tag='userIcon 2')
+
+    return h,w
+#@+node:ekr.20040803072955.48:<< set offsets and pads >>
+xoffset = theDict.get("xoffset")
+try:    xoffset = int(xoffset)
+except: xoffset = 0
+
+yoffset = theDict.get("yoffset")
+try:    yoffset = int(yoffset)
+except: yoffset = 0
+
+xpad = theDict.get("xpad")
+try:    xpad = int(xpad)
+except: xpad = 0
+
+ypad = theDict.get("ypad")
+try:    ypad = int(ypad)
+except: ypad = 0
+#@-node:ekr.20040803072955.48:<< set offsets and pads >>
+#@+node:ekr.20040803072955.49:<< draw the icon in string s >>
+pass
+#@-node:ekr.20040803072955.49:<< draw the icon in string s >>
+#@+node:ekr.20040803072955.50:<< draw the icon at file >>
+fullname = g.os_path_join(g.app.loadDir,"..","Icons",theFile)
+fullname = g.os_path_normpath(fullname)
+
+# Bug fix: the key must include distinguish nodes.
+key = (fullname,p.v.t)
+image = self.iconimages.get(key)
+
+if not image:
+    try:
+        import PIL
+        from PIL import Image, ImageTk
+        image1 = Image.open(fullname)
+        image = ImageTk.PhotoImage(image1)
+        self.iconimages[key] = image
+    except Exception:
+        #g.es_exception()
+        image = None
+
+if not image:
+    try:
+        image = Tk.PhotoImage(master=self.canvas,file=fullname)
+        self.iconimages[key] = image
+    except Exception:
+        #g.es_exception()
+        image = None
+
+if image:
+    theId = self.canvas.create_image(
+        x+xoffset+w2,y+yoffset,
+        anchor="nw",image=image,tag="userIcon")
+    self.ids[theId] = p.copy()
+    # g.trace('id',theId,p.headString(),theFile,image)
+
+    # assert(theId not in self.visibleIcons)
+    self.visibleUserIcons.append(theId)
+
+    h = image.height() + yoffset + ypad
+    w = image.width()  + xoffset + xpad
+#@-node:ekr.20040803072955.50:<< draw the icon at file >>
+#@+node:ekr.20040803072955.51:<< draw the icon at url >>
+pass
+#@-node:ekr.20040803072955.51:<< draw the icon at url >>
+#@-node:ekr.20040803072955.47:drawUserIcon
+#@-node:ekr.20071026125112:Improved icon handling in Leo's tree widget
+#@-node:ekr.20071026180220:New features
 #@-node:ekr.20071023175714:4.4.4 b4
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@-all

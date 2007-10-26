@@ -1407,14 +1407,6 @@ TclError: invalid command name ".35183312.35184072.35184392.35184472.35410768.35
 #@nonl
 #@-node:ekr.20071025105604:New crasher
 #@-node:ekr.20071024204327:Tests
-#@+node:ekr.20071024090626.1:Docs
-#@+node:ekr.20071018073812.1:Document g.app.gui.runX methods
-# The documentation for hooks should be in programming chapter, as well as customizing chapter?
-#@nonl
-#@-node:ekr.20071018073812.1:Document g.app.gui.runX methods
-#@+node:ekr.20071026045122:Revise the-threading-colorizer-plugin part of chapter 15
-#@-node:ekr.20071026045122:Revise the-threading-colorizer-plugin part of chapter 15
-#@-node:ekr.20071024090626.1:Docs
 #@-node:ekr.20071001045205:To do: 4.4.4 final
 #@+node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
 # Leo 4.4.5 will complete several projects that are long overdue.
@@ -1652,6 +1644,58 @@ Give the complex nature of vims c and d commands (and others) it will probably b
 I am quite eager to get something truly vim-like working. It promises to increase my editing speed substantially. It also should appeal strongly to present vim users. 
 #@nonl
 #@-node:ekr.20070814083528.1:Design post
+#@+node:ekr.20071026140857:Posting re vim bindings
+@nocolor
+
+> I'm looking forward to this.
+
+Excellent.  You can help with the testing :-)
+
+Leo looks like a perfect match for the vim approach.  Indeed, vim typically uses a 1 or 2 level concatenation scheme (preceded by a repeat count).  This is kinda like a utf-8 encoding :-)  That is, it is a variable-length encoding of the command.
+
+This is a very powerful approach, one that vim doesn't really exploit (because it doesn't need to). But Leo absolutely needs this power of some extra levels.  Something like this:
+
+i input mode
+
+f focus commands
+..fb focus to body
+..fo focus to outline
+..fl focus to log
+..ft toggle body pane focus
+
+o outline commands
+..om outline move, i.e., actually move the nodes.
+..og outline go, i.e., select nodes without changing the outline
+..od outline delete
+..oh outline edit headline
+
+s search commands
+..so search options
+...soi toggle ignore-case checkbox
+...sow toggle word checkbox
+...etc!
+..st search using search tab
+..sf forward incremental search
+..sb backward incremental search
+
+x minibuffer commands
+
+w file commands
+..ws save outline
+..wq quit
+
+escape: universal escape, like ctrl-g now.
+
+Do you see?  Just one extra level allows 10+ times the number of key bindings.  This is a perfect match for Leo's complex environment.
+
+Naturally, Leo will allow the user to specify these bindings using nodes in the @settings tree. Indeed, this is truly an exciting prospect.
+
+Edward
+
+P.S.  I've glossed over the details of which single characters (like d for delete character) should be reserved for common editing and cursor-movement commands.  That's the beauty of creating these bindings with user settings: no need to argue :-)  And that's the beauty of arbitrarily deep key binding trees: there are plenty of keys to go around.
+
+EKR
+#@-node:ekr.20071026140857:Posting re vim bindings
 #@-node:ekr.20070623144302:vim-like bindings
 #@+node:ekr.20070625091423:Add translation services
 @nocolor

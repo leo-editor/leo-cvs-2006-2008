@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.421602787456">
-	<global_window_position top="16" left="247" height="821" width="892"/>
+	<global_window_position top="16" left="247" height="801" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -790,6 +790,7 @@
 </v>
 <v t="ekr.20070809145744.6"><vh>New plugins</vh></v>
 <v t="ekr.20071005100213"><vh>Leo's core is now compatible with jython</vh></v>
+<v t="ekr.20071026180804"><vh>Improved prototype for icons in headlines</vh></v>
 <v t="ekr.20070809145744.7"><vh>Minor improvements</vh></v>
 <v t="ekr.20070809145744.4"><vh>Summary of new commands</vh></v>
 <v t="ekr.20070809145744.8"><vh>@rst-no-head end stuff</vh></v>
@@ -1108,6 +1109,7 @@
 </v>
 <v t="ekr.20070809145744.6"><vh>New plugins</vh></v>
 <v t="ekr.20071005100213"><vh>Leo's core is now compatible with jython</vh></v>
+<v t="ekr.20071026180804"><vh>Improved prototype for icons in headlines</vh></v>
 <v t="ekr.20070809145744.7"><vh>Minor improvements</vh></v>
 <v t="ekr.20070809145744.4"><vh>Summary of new commands</vh></v>
 <v t="ekr.20070809145744.8"><vh>@rst-no-head end stuff</vh></v>
@@ -3349,7 +3351,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071026053825" a="ETV"><vh>4.4.4 b4</vh>
+<v t="ekr.20071026053825" a="TV"><vh>4.4.4 b4</vh>
 <v t="ekr.20071026053931.1"><vh>Fixed bugs</vh>
 <v t="ekr.20071026053931.2"><vh>Fixed aspell problem</vh></v>
 <v t="ekr.20071026053931.13"><vh>Fixed bug: utf-8 files now get imported properly</vh></v>
@@ -3362,6 +3364,7 @@
 </v>
 <v t="ekr.20071026053931.221"><vh>Added @bool big_outline_pane setting</vh></v>
 <v t="ekr.20071026053931.234"><vh>Can print *can* handle unicode</vh></v>
+<v t="ekr.20071026180804.1"><vh>Improved the prototype of icon handling</vh></v>
 </v>
 </v>
 </v>
@@ -32528,6 +32531,8 @@ The highlights of Leo 4.4.4:
   
 - Leo is now compatible with jython.
 
+- Better support for icons in headlines.
+
 - The usual assortment of bug fixes and other minor improvements.
 
 Links:
@@ -32594,5 +32599,28 @@ http://www.diveintopython.org/xml_processing/unicode.html
 </t>
 <t tx="ekr.20071026075016">This fixes a fairly old crasher in the fastGotoNode plugin.</t>
 <t tx="ekr.20071026092552"></t>
+<t tx="ekr.20071026180804">The prototype in test.leo now will use PIL (Python Imaging Library) if
+available, so many more kinds of icons can be used. Buttons now exist to add
+icons to do the following:
+    
+- Add any icon to any node.
+- Delete all icons from a single node or the entire tree.
+- Print the icon files associated with a node.
+- Print the sizes of icons in a directory.
+
+Fixed a bug in the icon handling in the outline widget that caused
+duplicate icons not to be drawn properly.</t>
+<t tx="ekr.20071026180804.1">The prototype in test.leo now uses PIL (Python Imaging Library) if available,
+so many more kinds of icons can be used.
+
+Buttons now exist to add icons to do the following:
+    
+- Add any icon to any node.
+- Delete all icons from a single node or the entire tree.
+- Print the icon files associated with a node.
+- Print the sizes of icons in a directory.
+
+In addition, fixed a bug in the icon handling in the outline widget that caused
+duplicate icons not to be drawn properly.</t>
 </tnodes>
 </leo_file>
