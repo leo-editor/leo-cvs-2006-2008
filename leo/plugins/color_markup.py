@@ -4,13 +4,14 @@
 #@+node:ekr.20050912182434:<< docstring >>
 '''Handle coloring for markup in doc parts and Python triple-double-quoted strings.
 
-**Important**: 
+Important notes:
 
-1. The add_directives.py plugin must be enabled for this plugin to work.
-2. The wiki text must be 
-    - in the range of an ``@markup wiki`` directive **and**
-    - in a Leo doc part (starting with '@') **or** a Python triple-quoted string.
-3. This plugin adds commands to the Edit:Edit Body menu.
+- The add_directives.py plugin must be enabled for this plugin to work.
+- At present, this plugin does *not* work with the threading_colorizer plugin.
+- The wiki text must be 
+    1. in the range of an ``@markup wiki`` directive **and**
+    2. in a Leo doc part (starting with '@') **or** a Python triple-quoted string.
+- This plugin adds commands to the Edit:Edit Body menu.
 
 The currently supported markups are:
 
@@ -479,7 +480,7 @@ def doWikiChooseColor(c):
         rgb,val = tkColorChooser.askcolor(color=wikiColoredText)
         if val:
             wikiColoredText = val
-            doWikiColor()
+            doWikiColor(c)
 #@-node:edream.110403140857.24:doWikiChooseColor
 #@+node:edream.110403140857.25:doWikiPicture
 def doWikiPicture(c):
