@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.655253837072">
-	<global_window_position top="16" left="247" height="901" width="892"/>
+<globals body_outline_ratio="0.421602787456">
+	<global_window_position top="16" left="247" height="861" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -101,7 +101,7 @@
 </v>
 </v>
 <v t="ekr.20050831195331.1"><vh>FAQ</vh>
-<v t="ekr.20050830115714"><vh>@rst html\FAQ.html</vh>
+<v t="ekr.20050830115714" a="E"><vh>@rst html\FAQ.html</vh>
 <v t="ekr.20050830120007"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20070623145346"><vh>Installing Leo</vh>
 <v t="ekr.20060329101442"><vh>Nothing (or almost nothing) happens when I start Leo.  What should I do?</vh></v>
@@ -152,19 +152,22 @@
 <v t="ekr.20050830115714.115"><vh>Error messages from the rst3 plugin aren't helpful. What can I do?</vh></v>
 <v t="ekr.20050906090012"><vh>How can I run Leo from a console window?</vh></v>
 <v t="ekr.20050830115714.77"><vh>How can I use Python's pdb debugger with Leo?</vh></v>
-<v t="ekr.20061021164213"><vh>I can not enter non-ascii characters.  What can I do?</vh></v>
 <v t="ekr.20050830115714.17"><vh>I can't write Imported files.  What's going on?</vh></v>
 <v t="edream.110203163054.61"><vh>I don't see the Leo icon in Leo windows</vh></v>
-<v t="ekr.20060917130130"><vh>I get weird results when defining unicode strings in scripts.  What is going on?</vh></v>
 <v t="ekr.20061021164213.1"><vh>Leo doesn't recognize commands with the caps-lock key down</vh></v>
 <v t="ekr.20050830115714.75"><vh>Leo is hanging on my Linux box.  What should I do?</vh></v>
 <v t="ekr.20060323105214"><vh>Leo's Recent Files menu doesn't work from a cvs shandbox.  What's going on?</vh></v>
 <v t="ekr.20060329101442"><vh>Nothing (or almost nothing) happens when I start Leo.  What should I do?</vh></v>
-<v t="ekr.20050830115714.10"><vh>Some characters are garbled when importing files. What can I do?</vh></v>
-<v t="ekr.20050830115714.9"><vh>Some characters in derived files look funny. What can I do?</vh></v>
 <v t="ekr.20050830115714.117"><vh>The new Python decorator syntax causes problems.  What can I do?</vh></v>
 <v t="ekr.20070623145346.1"><vh>Running Python setup.py install from the leo directory doesn't work.  Why not?</vh></v>
 <v t="ekr.20070816092449"><vh>I can't run the LeoBridge module outside of leo/src.  What should I do?</vh></v>
+</v>
+<v t="ekr.20071026055929"><vh>Unicode issues</vh>
+<v t="ekr.20061021164213"><vh>I can not enter non-ascii characters.  What can I do?</vh></v>
+<v t="ekr.20050830115714.9"><vh>Some characters in derived files look funny. What can I do?</vh></v>
+<v t="ekr.20060917130130"><vh>I get weird results when defining unicode strings in scripts.  What is going on?</vh></v>
+<v t="ekr.20050830115714.10"><vh>Some characters are garbled when importing files. What can I do?</vh></v>
+<v t="ekr.20071026055929.1"><vh>Python's print statement shows 'byte hash' for unicode characters.  What can I do?</vh></v>
 </v>
 <v t="ekr.20050906105946"><vh>@rst-no-head end stuff</vh></v>
 </v>
@@ -3305,10 +3308,7 @@
 <v t="ekr.20070920092716"><vh>New commands for resolving cvs conflicts</vh></v>
 </v>
 </v>
-</v>
-</v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071004101349" a="ETV"><vh>4.4.4 b3</vh>
+<v t="ekr.20071004101349"><vh>4.4.4 b3</vh>
 <v t="ekr.20071004101443.1"><vh>Bugs fixed</vh>
 <v t="ekr.20071004101443.18"><vh>Greatly improved speed of unmark-all</vh></v>
 <v t="ekr.20071004101443.26"><vh>Made sure dirty bits get updated in xemacs plugin</vh></v>
@@ -3345,6 +3345,21 @@
 <v t="ekr.20071021111856.476"><vh>Added g.app.inBridge ivar</vh></v>
 <v t="ekr.20071021111856.477"><vh>Improved the scripting and plugins chapters of Leo's Users Guide</vh></v>
 </v>
+</v>
+</v>
+</v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20071026053825" a="TV"><vh>4.4.4 b4</vh>
+<v t="ekr.20071026053931.1" a="E"><vh>Fixed bugs</vh>
+<v t="ekr.20071026053931.2"><vh>Fixed aspell problem</vh></v>
+<v t="ekr.20071026053931.13"><vh>Fixed bug: utf-8 files now get imported properly</vh></v>
+<v t="ekr.20071026053931.156"><vh>Replaced c.frame.body with c.frame.body.bodyCtrl</vh></v>
+<v t="ekr.20071026053931.157"><vh>Fixed (maybe) multi-editor bug</vh></v>
+<v t="ekr.20071026053931.219"><vh>Made sure proper node is visible when deleting a body editor</vh></v>
+<v t="ekr.20071026053931.220"><vh>Fixed colorizer end-of-text bug</vh></v>
+</v>
+<v t="ekr.20071026053931.221"><vh>Added @bool big_outline_pane setting</vh></v>
+<v t="ekr.20071026053931.234"><vh>Can print *can* handle unicode</vh></v>
 </v>
 </v>
 </v>
@@ -27822,18 +27837,22 @@ You will find this ctor in the node::
     
 Note that this ivar can not be set using settings in leoSettings.leo because
 Leo uses g.app.use_psyco before processing configuration settings.</t>
-<t tx="ekr.20060917130130">Constructs such as::
+<t tx="ekr.20060917130130">Add the following to the start of your scripts::
+    
+    @first # -*- coding: utf-8 -*-
+
+Without this line, constructs such as::
 
     u = u'a-é-賢-z'
     u = 'a-é-賢-z'
 
-will not work when executed with Leo's execute script command. Indeed, the
-Execute Script command creates the script by writing the tree containing the
-script to a string. This is done using Leo's write logic, and this logic
-converts the unicode input to a utf-8 encoded string. So *all non-ascii
-characters* (including both the é and 賢 characters) get converted to their
-equivalent in the utf-8 encoding. Call these encoding &lt;e1&gt; and &lt;e2&gt;. In effect
-the script becomes::
+will not work when executed with Leo's execute script command.
+Indeed, the Execute Script command creates the script by writing the tree
+containing the script to a string. This is done using Leo's write logic, and
+this logic converts the unicode input to a utf-8 encoded string. So *all
+non-ascii characters* (including both the é and 賢 characters) get converted to
+their equivalent in the utf-8 encoding. Call these encoding &lt;e1&gt; and &lt;e2&gt;. In
+effect the script becomes::
 
     u = u'a-&lt;e1&gt;-&lt;e2&gt;-z'
     u = 'a-&lt;e2&gt;-&lt;e&gt;-z'
@@ -27843,7 +27862,8 @@ Rather than defining strings using actual characters, Instead, one should use
 the equivalent escape sequences. For example::
 
     u = u'a-\u0233-\u8ce2-z'
-    u = 'a-\u0233-\u8ce2-z'</t>
+    u = 'a-\u0233-\u8ce2-z'
+</t>
 <t tx="ekr.20060920054924">.. _OPML:                   http://en.wikipedia.org/wiki/OPML
 .. _`OPML 2.0 standard`:    http://www.opml.org
 
@@ -31818,7 +31838,10 @@ The highlights of Leo 4.4.4:
     
 - Added the @bool rst3 strip_at_file_prefixes setting.
 
-- Added the Added g.app.inBridge ivar.</t>
+- Added the g.app.inBridge ivar.
+
+- Added @bool big_outline_pane setting. False (legacy): Top pane contains outline and log panes.
+  True: Top pane contains only the outline pane.  Bottom pane contains body and log panes.</t>
 <t tx="ekr.20070809145744.8">-----------------------
 
 |prev| |leo| |next|</t>
@@ -32469,5 +32492,103 @@ True: remove @auto, @file, @nosent and @thin from the start of headlines.</t>
 
 Added a hack to g.getScript so it always gets the script from p.bodyString when
 g.app.gui.inBridge is True.</t>
+<t tx="ekr.20071026053825">Leo 4.4.4 beta 4                            October 27, 2007
+
+Leo 4.4.4 beta 4 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo 4.4.4 contains many important features originally planned for later releases.
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.4:
+----------------------------
+
+- The Great Graph Aha (tm): simple scripts allow Leo outlines to represent
+  arbitrary directed graphs. There is no need for a separate 'graph world'. The
+  graphed.py plugin is a direct result of this Aha. The graphed.py plugin allows
+  you to create general graphs from Leo outlines.
+  
+- @menus trees in settings files create all of Leo's menus.  It is now dead
+  easy to make Leo's menus look the way you want.
+
+- @buttons trees in settings files create common @button nodes created in all
+  Leo outlines.
+
+- @auto nodes eliminate sentinels in derived files, thereby allowing people to
+  collaborate using Leo more easily.
+  
+- New commands for resolving cvs conflicts.
+
+- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
+  This plugin features much better performance and a new, elegant algorithm.
+  
+- Leo is now compatible with jython.
+
+- The usual assortment of bug fixes and other minor improvements.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20071026053931.1"></t>
+<t tx="ekr.20071026053931.2">Replaced the (useless) trace with an error message to the console window.</t>
+<t tx="ekr.20071026053931.13">http://sourceforge.net/forum/message.php?msg_id=4574271
+</t>
+<t tx="ekr.20071026053931.156">This should have been done a long time ago.</t>
+<t tx="ekr.20071026053931.157">http://sourceforge.net/forum/message.php?msg_id=4585396
+
+The threading colorizer must be run with interruptable=False when there are mutliple body editors.</t>
+<t tx="ekr.20071026053931.219"></t>
+<t tx="ekr.20071026053931.220"></t>
+<t tx="ekr.20071026053931.221">False (legacy): Top pane contains outline and log panes.
+True: Top pane contains only the outline pane.  Bottom pane contains body and log panes.</t>
+<t tx="ekr.20071026053931.234">To allow Python's print statement to print unicode characters properly, you must
+change Python's default encoding to something other than 'ascii'. To do this,
+put the following in your sitecustomize.py file in Python's Lib folder::
+ 
+    import sys 
+    sys.setdefaultencoding('utf-8') # 'iso-8859-1' is another choice.
+ 
+You must restart Python after doing this: sys.setdefaultencoding can not be
+called after Python starts up.
+ 
+Leo's g.es_print function attempts to convert incoming arguments to unicode
+using the default encoding. For example, the following Leo script always prints
+La Peña::
+ 
+    @first # -*- coding: utf-8 -*-
+    # The line above is required for Python 2.5
+     
+    for s in (u'La Pe\xf1a','La Peña',u'La Peña'): 
+        g.es_print(s)
+ 
+For still more details, see:
+    
+http://www.diveintopython.org/xml_processing/unicode.html 
+</t>
+<t tx="ekr.20071026055929"></t>
+<t tx="ekr.20071026055929.1">First, you must change Python's default encoding to something other than 'ascii'.  To do this, put the following in your sitecustomize.py file in Python's Lib folder::
+ 
+    import sys 
+    sys.setdefaultencoding('utf-8') # 'iso-8859-1' is another choice.
+ 
+You must restart Python after doing this: sys.setdefaultencoding can not be called after Python starts up. 
+ 
+Leo's g.es_print function attempts to convert incoming arguments to unicode using the default encoding. For example, the following Leo script always prints La Peña::
+ 
+    @first # -*- coding: utf-8 -*-
+    # The line above is required for Python 2.5
+     
+    for s in (u'La Pe\xf1a','La Peña',u'La Peña'): 
+        g.es_print(s)
+ 
+For still more details, see:
+http://www.diveintopython.org/xml_processing/unicode.html 
+</t>
 </tnodes>
 </leo_file>
