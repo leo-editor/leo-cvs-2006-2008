@@ -1378,34 +1378,6 @@ Ran 354 tests in 33.531s
 FAILED (failures=27)
 #@-node:ekr.20071024185136:27 unitTest.txt tests fail when run externally
 #@-node:ekr.20071024172428:Failed unit tests when running externally
-#@+node:ekr.20071025105604:New crasher
-# A shutdown failure.  Probably nothing.
-
-FAILED (failures=1)
-TclError Exception in Tk callback
-  Function: <function masterBindKeyCallback at 0x0221D630> (type: <type 'function'>)
-  Args: (<Tkinter.Event instance at 0x0110BB48>,)
-  Event type: KeyPress (type num: 2)
-Traceback (innermost last):
-  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
-    return apply(self.func, args)
-  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 2154, in masterBindKeyCallback
-    return k.masterKeyHandler(event,stroke=stroke)
-  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 3020, in masterKeyHandler
-    return k.masterCommand(event,k.keyboardQuit,stroke,'keyboard-quit')
-  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 2238, in masterCommand
-    k.keyboardQuit(event)
-  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 2868, in keyboardQuit
-    k.autoCompleter.exit()
-  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 403, in exit
-    i,j = w.getSelectionRange()
-  File "C:\prog\tigris-cvs\leo\src\leoTkinterFrame.py", line 3299, in getSelectionRange
-    sel = Tk.Text.tag_ranges(w,"sel")
-  File "C:\Python25\lib\lib-tk\Tkinter.py", line 3099, in tag_ranges
-    self._w, 'tag', 'ranges', tagName))
-TclError: invalid command name ".35183312.35184072.35184392.35184472.35410768.35411088.body-pane"
-#@nonl
-#@-node:ekr.20071025105604:New crasher
 #@-node:ekr.20071024204327:Tests
 #@-node:ekr.20071001045205:To do: 4.4.4 final
 #@+node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
