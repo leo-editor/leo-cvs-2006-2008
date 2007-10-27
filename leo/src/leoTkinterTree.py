@@ -1110,7 +1110,6 @@ class leoTkinterTree (leoFrame.leoTree):
 
             if not image:
                 try:
-                    import PIL
                     from PIL import Image, ImageTk
                     image1 = Image.open(fullname)
                     image = ImageTk.PhotoImage(image1)
