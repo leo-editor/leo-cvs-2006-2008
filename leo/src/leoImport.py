@@ -748,6 +748,8 @@ class baseLeoImportCommands:
             self.scanElispText(s,p,atAuto=atAuto)
         elif ext == ".java":
             self.scanJavaText(s,p,atAuto=atAuto)
+        elif ext == ".js":
+            self.scanJavaScriptText(s,p,atAuto=atAuto)
         elif ext == ".pas":
             self.scanPascalText(s,p,atAuto=atAuto)
         elif ext in (".py", ".pyw"):
@@ -1469,9 +1471,10 @@ class baseLeoImportCommands:
             self.blockCommentDelim2 = None
             self.blockDelim1 = '{'
             self.blockDelim2 = '}'
-            self.classTags = ['class',]
-                # tags that start a tag.
+            self.classTags = ['class',] # tags that start a tag.
             self.functionTags = []
+            self.hasClasses = True
+            self.hasFunctions = True
             self.lineCommentDelim = None
             self.lineCommentDelim2 = None
             self.outerBlockDelim1 = None
@@ -2104,6 +2107,8 @@ class baseLeoImportCommands:
                 elif kind == 'outer' and g.match(s,i,self.outerBlockDelim1): # Do this after testing for classes.
                     i = start = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
                 else: i += 1
+
+                # if progress == i: g.pdb()
                 assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
 
             return start,putRef,indentFlag
@@ -2180,6 +2185,7 @@ class baseLeoImportCommands:
                 else: i += 1
                 assert progress < i
 
+            self.error('no block')
             if trace: g.trace('** no block')
             return start
         #@-node:ekr.20070707073859:skipBlock
@@ -2275,6 +2281,7 @@ class baseLeoImportCommands:
                     break
                 else:
                     i += 1 ;  prefix = None
+                # if progress == i: g.pdb()
                 assert(progress < i)
 
             if prefix is not None: i = prefix
@@ -2360,18 +2367,20 @@ class baseLeoImportCommands:
         def startsClass (self,s,i,quick=False):
             '''Return True if s[i:] starts a class definition.
             Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-            i = self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
-            return i
+            val = self.hasClasses and self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
+            return val
 
         def startsFunction (self,s,i,quick=False):
             '''Return True if s[i:] starts a function.
             Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-            i = self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
-            return i
+            val = self.hasFunctions and self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
+            return val
         #@+node:ekr.20070712112008:startsHelper
         def startsHelper(self,s,i,kind,quick,tags):
             '''return True if s[i:] starts a class or function.
             Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
+
+            # if not tags: return False
 
             trace = self.trace
             verbose = False # kind=='function'
@@ -2817,6 +2826,43 @@ class baseLeoImportCommands:
         #@-others
     #@-node:edreamleo.20070710085115:class javaScanner (baseScannerClass)
     #@-node:edreamleo.20070710110114:Java scanner
+    #@+node:ekr.20071027111225:JavaScript scanner
+    #@+node:ekr.20071027111225.1:scanJavaScriptText
+    def scanJavaScriptText (self,s,parent,atAuto=False):
+
+        scanner = self.javaScriptScanner(importCommands=self,atAuto=atAuto)
+
+        scanner.run(s,parent)
+    #@-node:ekr.20071027111225.1:scanJavaScriptText
+    #@+node:ekr.20071027111225.2:class javaScriptScanner (baseScannerClass)
+    class javaScriptScanner (baseScannerClass):
+
+        #@    @+others
+        #@+node:ekr.20071027111225.3:javaScriptScanner.__init__
+        def __init__ (self,importCommands,atAuto):
+
+            # Init the base class.
+            importCommands.baseScannerClass.__init__(self,importCommands,
+                atAuto=atAuto,language='java') # Used to set comment delims.
+
+            # Set the parser delims.
+            self.blockCommentDelim1 = '/*'
+            self.blockCommentDelim2 = '*/'
+            self.blockDelim1 = '{'
+            self.blockDelim2 = '}'
+            self.hasClasses = False
+            self.hasFunctions = True
+            self.lineCommentDelim = '//'
+            self.lineCommentDelim2 = None
+            self.outerBlockDelim1 = None # For now, ignore outer blocks.
+            self.outerBlockDelim2 = None
+            self.classTags = []
+            self.functionTags = ['function']
+            self.sigFailTokens = [';',] # ','=',] # Just like Java.
+        #@-node:ekr.20071027111225.3:javaScriptScanner.__init__
+        #@-others
+    #@-node:ekr.20071027111225.2:class javaScriptScanner (baseScannerClass)
+    #@-node:ekr.20071027111225:JavaScript scanner
     #@+node:ekr.20070711104241:Pascal scanner
     #@+node:ekr.20070711104241.2:scanPascalText
     def scanPascalText (self,s,parent,atAuto=False):
@@ -3121,6 +3167,9 @@ class baseLeoImportCommands:
 
     def javaUnitTest(self,p,fileName=None,s=None,showTree=False):
         return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.java')
+
+    def javaScriptUnitTest(self,p,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.js')
 
     def pascalUnitTest(self,p,fileName=None,s=None,showTree=False):
         return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.pas')
