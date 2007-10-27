@@ -18463,6 +18463,8 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
         self.scanElispText(s,p,atAuto=atAuto)
     elif ext == ".java":
         self.scanJavaText(s,p,atAuto=atAuto)
+    elif ext == ".js":
+        self.scanJavaScriptText(s,p,atAuto=atAuto)
     elif ext == ".pas":
         self.scanPascalText(s,p,atAuto=atAuto)
     elif ext in (".py", ".pyw"):
@@ -20396,6 +20398,8 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
         self.scanElispText(s,p,atAuto=atAuto)
     elif ext == ".java":
         self.scanJavaText(s,p,atAuto=atAuto)
+    elif ext == ".js":
+        self.scanJavaScriptText(s,p,atAuto=atAuto)
     elif ext == ".pas":
         self.scanPascalText(s,p,atAuto=atAuto)
     elif ext in (".py", ".pyw"):
@@ -21047,9 +21051,10 @@ def __init__ (self,importCommands,atAuto,language):
     self.blockCommentDelim2 = None
     self.blockDelim1 = '{'
     self.blockDelim2 = '}'
-    self.classTags = ['class',]
-        # tags that start a tag.
+    self.classTags = ['class',] # tags that start a tag.
     self.functionTags = []
+    self.hasClasses = True
+    self.hasFunctions = True
     self.lineCommentDelim = None
     self.lineCommentDelim2 = None
     self.outerBlockDelim1 = None
@@ -21675,6 +21680,8 @@ def scanHelper(self,s,i,end,parent,kind):
         elif kind == 'outer' and g.match(s,i,self.outerBlockDelim1): # Do this after testing for classes.
             i = start = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
         else: i += 1
+
+        # if progress == i: g.pdb()
         assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
 
     return start,putRef,indentFlag
@@ -21751,6 +21758,7 @@ def skipBlock(self,s,i,delim1=None,delim2=None):
         else: i += 1
         assert progress < i
 
+    self.error('no block')
     if trace: g.trace('** no block')
     return start
 #@-node:ekr.20070707073859:skipBlock
@@ -21846,6 +21854,7 @@ def skipDecls (self,s,i,end,inClass):
             break
         else:
             i += 1 ;  prefix = None
+        # if progress == i: g.pdb()
         assert(progress < i)
 
     if prefix is not None: i = prefix
@@ -21931,18 +21940,20 @@ def skipString (self,s,i):
 def startsClass (self,s,i,quick=False):
     '''Return True if s[i:] starts a class definition.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-    i = self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
-    return i
+    val = self.hasClasses and self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
+    return val
 
 def startsFunction (self,s,i,quick=False):
     '''Return True if s[i:] starts a function.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-    i = self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
-    return i
+    val = self.hasFunctions and self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
+    return val
 #@+node:ekr.20070712112008:startsHelper
 def startsHelper(self,s,i,kind,quick,tags):
     '''return True if s[i:] starts a class or function.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
+
+    # if not tags: return False
 
     trace = self.trace
     verbose = False # kind=='function'
@@ -22595,6 +22606,8 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
         self.scanElispText(s,p,atAuto=atAuto)
     elif ext == ".java":
         self.scanJavaText(s,p,atAuto=atAuto)
+    elif ext == ".js":
+        self.scanJavaScriptText(s,p,atAuto=atAuto)
     elif ext == ".pas":
         self.scanPascalText(s,p,atAuto=atAuto)
     elif ext in (".py", ".pyw"):
@@ -26452,6 +26465,8 @@ def startsHelper(self,s,i,kind,quick,tags):
     '''return True if s[i:] starts a class or function.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
 
+    # if not tags: return False
+
     trace = self.trace
     verbose = False # kind=='function'
     self.codeEnd = self.sigEnd = self.sigId = None
@@ -27098,9 +27113,10 @@ def __init__ (self,importCommands,atAuto,language):
     self.blockCommentDelim2 = None
     self.blockDelim1 = '{'
     self.blockDelim2 = '}'
-    self.classTags = ['class',]
-        # tags that start a tag.
+    self.classTags = ['class',] # tags that start a tag.
     self.functionTags = []
+    self.hasClasses = True
+    self.hasFunctions = True
     self.lineCommentDelim = None
     self.lineCommentDelim2 = None
     self.outerBlockDelim1 = None
@@ -27726,6 +27742,8 @@ def scanHelper(self,s,i,end,parent,kind):
         elif kind == 'outer' and g.match(s,i,self.outerBlockDelim1): # Do this after testing for classes.
             i = start = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
         else: i += 1
+
+        # if progress == i: g.pdb()
         assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
 
     return start,putRef,indentFlag
@@ -27802,6 +27820,7 @@ def skipBlock(self,s,i,delim1=None,delim2=None):
         else: i += 1
         assert progress < i
 
+    self.error('no block')
     if trace: g.trace('** no block')
     return start
 #@-node:ekr.20070707073859:skipBlock
@@ -27897,6 +27916,7 @@ def skipDecls (self,s,i,end,inClass):
             break
         else:
             i += 1 ;  prefix = None
+        # if progress == i: g.pdb()
         assert(progress < i)
 
     if prefix is not None: i = prefix
@@ -27982,18 +28002,20 @@ def skipString (self,s,i):
 def startsClass (self,s,i,quick=False):
     '''Return True if s[i:] starts a class definition.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-    i = self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
-    return i
+    val = self.hasClasses and self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
+    return val
 
 def startsFunction (self,s,i,quick=False):
     '''Return True if s[i:] starts a function.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-    i = self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
-    return i
+    val = self.hasFunctions and self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
+    return val
 #@+node:ekr.20070712112008:startsHelper
 def startsHelper(self,s,i,kind,quick,tags):
     '''return True if s[i:] starts a class or function.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
+
+    # if not tags: return False
 
     trace = self.trace
     verbose = False # kind=='function'
@@ -28436,6 +28458,42 @@ def skipSigId (self,s,i,ids):
 #@-node:ekr.20071019170943:javaScanner.skipSigId
 #@-node:edreamleo.20070710085115:class javaScanner (baseScannerClass)
 #@-node:edreamleo.20070710110114:Java scanner
+#@+node:ekr.20071027111225:JavaScript scanner
+#@+node:ekr.20071027111225.1:scanJavaScriptText
+def scanJavaScriptText (self,s,parent,atAuto=False):
+
+    scanner = self.javaScriptScanner(importCommands=self,atAuto=atAuto)
+
+    scanner.run(s,parent)
+#@-node:ekr.20071027111225.1:scanJavaScriptText
+#@+node:ekr.20071027111225.2:class javaScriptScanner (baseScannerClass)
+class javaScriptScanner (baseScannerClass):
+
+    @others
+#@+node:ekr.20071027111225.3:javaScriptScanner.__init__
+def __init__ (self,importCommands,atAuto):
+
+    # Init the base class.
+    importCommands.baseScannerClass.__init__(self,importCommands,
+        atAuto=atAuto,language='java') # Used to set comment delims.
+
+    # Set the parser delims.
+    self.blockCommentDelim1 = '/*'
+    self.blockCommentDelim2 = '*/'
+    self.blockDelim1 = '{'
+    self.blockDelim2 = '}'
+    self.hasClasses = False
+    self.hasFunctions = True
+    self.lineCommentDelim = '//'
+    self.lineCommentDelim2 = None
+    self.outerBlockDelim1 = None # For now, ignore outer blocks.
+    self.outerBlockDelim2 = None
+    self.classTags = []
+    self.functionTags = ['function']
+    self.sigFailTokens = [';',] # ','=',] # Just like Java.
+#@-node:ekr.20071027111225.3:javaScriptScanner.__init__
+#@-node:ekr.20071027111225.2:class javaScriptScanner (baseScannerClass)
+#@-node:ekr.20071027111225:JavaScript scanner
 #@+node:ekr.20070711104241:Pascal scanner
 #@+node:ekr.20070711104241.2:scanPascalText
 def scanPascalText (self,s,parent,atAuto=False):
@@ -28782,9 +28840,10 @@ def __init__ (self,importCommands,atAuto,language):
     self.blockCommentDelim2 = None
     self.blockDelim1 = '{'
     self.blockDelim2 = '}'
-    self.classTags = ['class',]
-        # tags that start a tag.
+    self.classTags = ['class',] # tags that start a tag.
     self.functionTags = []
+    self.hasClasses = True
+    self.hasFunctions = True
     self.lineCommentDelim = None
     self.lineCommentDelim2 = None
     self.outerBlockDelim1 = None
@@ -29410,6 +29469,8 @@ def scanHelper(self,s,i,end,parent,kind):
         elif kind == 'outer' and g.match(s,i,self.outerBlockDelim1): # Do this after testing for classes.
             i = start = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
         else: i += 1
+
+        # if progress == i: g.pdb()
         assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
 
     return start,putRef,indentFlag
@@ -29486,6 +29547,7 @@ def skipBlock(self,s,i,delim1=None,delim2=None):
         else: i += 1
         assert progress < i
 
+    self.error('no block')
     if trace: g.trace('** no block')
     return start
 #@-node:ekr.20070707073859:skipBlock
@@ -29581,6 +29643,7 @@ def skipDecls (self,s,i,end,inClass):
             break
         else:
             i += 1 ;  prefix = None
+        # if progress == i: g.pdb()
         assert(progress < i)
 
     if prefix is not None: i = prefix
@@ -29666,18 +29729,20 @@ def skipString (self,s,i):
 def startsClass (self,s,i,quick=False):
     '''Return True if s[i:] starts a class definition.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-    i = self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
-    return i
+    val = self.hasClasses and self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
+    return val
 
 def startsFunction (self,s,i,quick=False):
     '''Return True if s[i:] starts a function.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-    i = self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
-    return i
+    val = self.hasFunctions and self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
+    return val
 #@+node:ekr.20070712112008:startsHelper
 def startsHelper(self,s,i,kind,quick,tags):
     '''return True if s[i:] starts a class or function.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
+
+    # if not tags: return False
 
     trace = self.trace
     verbose = False # kind=='function'
@@ -30052,6 +30117,8 @@ def scanHelper(self,s,i,end,parent,kind):
         elif kind == 'outer' and g.match(s,i,self.outerBlockDelim1): # Do this after testing for classes.
             i = start = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
         else: i += 1
+
+        # if progress == i: g.pdb()
         assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
 
     return start,putRef,indentFlag
@@ -30236,6 +30303,7 @@ def skipDecls (self,s,i,end,inClass):
             break
         else:
             i += 1 ;  prefix = None
+        # if progress == i: g.pdb()
         assert(progress < i)
 
     if prefix is not None: i = prefix
@@ -30336,18 +30404,20 @@ def skipSigId (self,s,i,ids):
 def startsClass (self,s,i,quick=False):
     '''Return True if s[i:] starts a class definition.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-    i = self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
-    return i
+    val = self.hasClasses and self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
+    return val
 
 def startsFunction (self,s,i,quick=False):
     '''Return True if s[i:] starts a function.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-    i = self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
-    return i
+    val = self.hasFunctions and self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
+    return val
 #@+node:ekr.20070712112008:startsHelper
 def startsHelper(self,s,i,kind,quick,tags):
     '''return True if s[i:] starts a class or function.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
+
+    # if not tags: return False
 
     trace = self.trace
     verbose = False # kind=='function'
@@ -31118,9 +31188,10 @@ def __init__ (self,importCommands,atAuto,language):
     self.blockCommentDelim2 = None
     self.blockDelim1 = '{'
     self.blockDelim2 = '}'
-    self.classTags = ['class',]
-        # tags that start a tag.
+    self.classTags = ['class',] # tags that start a tag.
     self.functionTags = []
+    self.hasClasses = True
+    self.hasFunctions = True
     self.lineCommentDelim = None
     self.lineCommentDelim2 = None
     self.outerBlockDelim1 = None
@@ -31746,6 +31817,8 @@ def scanHelper(self,s,i,end,parent,kind):
         elif kind == 'outer' and g.match(s,i,self.outerBlockDelim1): # Do this after testing for classes.
             i = start = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
         else: i += 1
+
+        # if progress == i: g.pdb()
         assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
 
     return start,putRef,indentFlag
@@ -31822,6 +31895,7 @@ def skipBlock(self,s,i,delim1=None,delim2=None):
         else: i += 1
         assert progress < i
 
+    self.error('no block')
     if trace: g.trace('** no block')
     return start
 #@-node:ekr.20070707073859:skipBlock
@@ -31917,6 +31991,7 @@ def skipDecls (self,s,i,end,inClass):
             break
         else:
             i += 1 ;  prefix = None
+        # if progress == i: g.pdb()
         assert(progress < i)
 
     if prefix is not None: i = prefix
@@ -32002,18 +32077,20 @@ def skipString (self,s,i):
 def startsClass (self,s,i,quick=False):
     '''Return True if s[i:] starts a class definition.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-    i = self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
-    return i
+    val = self.hasClasses and self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
+    return val
 
 def startsFunction (self,s,i,quick=False):
     '''Return True if s[i:] starts a function.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-    i = self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
-    return i
+    val = self.hasFunctions and self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
+    return val
 #@+node:ekr.20070712112008:startsHelper
 def startsHelper(self,s,i,kind,quick,tags):
     '''return True if s[i:] starts a class or function.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
+
+    # if not tags: return False
 
     trace = self.trace
     verbose = False # kind=='function'
@@ -32456,6 +32533,42 @@ def skipSigId (self,s,i,ids):
 #@-node:ekr.20071019170943:javaScanner.skipSigId
 #@-node:edreamleo.20070710085115:class javaScanner (baseScannerClass)
 #@-node:edreamleo.20070710110114:Java scanner
+#@+node:ekr.20071027111225:JavaScript scanner
+#@+node:ekr.20071027111225.1:scanJavaScriptText
+def scanJavaScriptText (self,s,parent,atAuto=False):
+
+    scanner = self.javaScriptScanner(importCommands=self,atAuto=atAuto)
+
+    scanner.run(s,parent)
+#@-node:ekr.20071027111225.1:scanJavaScriptText
+#@+node:ekr.20071027111225.2:class javaScriptScanner (baseScannerClass)
+class javaScriptScanner (baseScannerClass):
+
+    @others
+#@+node:ekr.20071027111225.3:javaScriptScanner.__init__
+def __init__ (self,importCommands,atAuto):
+
+    # Init the base class.
+    importCommands.baseScannerClass.__init__(self,importCommands,
+        atAuto=atAuto,language='java') # Used to set comment delims.
+
+    # Set the parser delims.
+    self.blockCommentDelim1 = '/*'
+    self.blockCommentDelim2 = '*/'
+    self.blockDelim1 = '{'
+    self.blockDelim2 = '}'
+    self.hasClasses = False
+    self.hasFunctions = True
+    self.lineCommentDelim = '//'
+    self.lineCommentDelim2 = None
+    self.outerBlockDelim1 = None # For now, ignore outer blocks.
+    self.outerBlockDelim2 = None
+    self.classTags = []
+    self.functionTags = ['function']
+    self.sigFailTokens = [';',] # ','=',] # Just like Java.
+#@-node:ekr.20071027111225.3:javaScriptScanner.__init__
+#@-node:ekr.20071027111225.2:class javaScriptScanner (baseScannerClass)
+#@-node:ekr.20071027111225:JavaScript scanner
 #@+node:ekr.20070711104241:Pascal scanner
 #@+node:ekr.20070711104241.2:scanPascalText
 def scanPascalText (self,s,parent,atAuto=False):
@@ -32824,6 +32937,8 @@ def scanHelper(self,s,i,end,parent,kind):
         elif kind == 'outer' and g.match(s,i,self.outerBlockDelim1): # Do this after testing for classes.
             i = start = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
         else: i += 1
+
+        # if progress == i: g.pdb()
         assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
 
     return start,putRef,indentFlag
@@ -32900,6 +33015,7 @@ def skipBlock(self,s,i,delim1=None,delim2=None):
         else: i += 1
         assert progress < i
 
+    self.error('no block')
     if trace: g.trace('** no block')
     return start
 #@-node:ekr.20070707073859:skipBlock
@@ -32995,6 +33111,7 @@ def skipDecls (self,s,i,end,inClass):
             break
         else:
             i += 1 ;  prefix = None
+        # if progress == i: g.pdb()
         assert(progress < i)
 
     if prefix is not None: i = prefix
@@ -33080,18 +33197,20 @@ def skipString (self,s,i):
 def startsClass (self,s,i,quick=False):
     '''Return True if s[i:] starts a class definition.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-    i = self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
-    return i
+    val = self.hasClasses and self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
+    return val
 
 def startsFunction (self,s,i,quick=False):
     '''Return True if s[i:] starts a function.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-    i = self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
-    return i
+    val = self.hasFunctions and self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
+    return val
 #@+node:ekr.20070712112008:startsHelper
 def startsHelper(self,s,i,kind,quick,tags):
     '''return True if s[i:] starts a class or function.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
+
+    # if not tags: return False
 
     trace = self.trace
     verbose = False # kind=='function'
@@ -39312,6 +39431,8 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
         self.scanElispText(s,p,atAuto=atAuto)
     elif ext == ".java":
         self.scanJavaText(s,p,atAuto=atAuto)
+    elif ext == ".js":
+        self.scanJavaScriptText(s,p,atAuto=atAuto)
     elif ext == ".pas":
         self.scanPascalText(s,p,atAuto=atAuto)
     elif ext in (".py", ".pyw"):
@@ -40145,6 +40266,8 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
         self.scanElispText(s,p,atAuto=atAuto)
     elif ext == ".java":
         self.scanJavaText(s,p,atAuto=atAuto)
+    elif ext == ".js":
+        self.scanJavaScriptText(s,p,atAuto=atAuto)
     elif ext == ".pas":
         self.scanPascalText(s,p,atAuto=atAuto)
     elif ext in (".py", ".pyw"):
@@ -40857,9 +40980,10 @@ def __init__ (self,importCommands,atAuto,language):
     self.blockCommentDelim2 = None
     self.blockDelim1 = '{'
     self.blockDelim2 = '}'
-    self.classTags = ['class',]
-        # tags that start a tag.
+    self.classTags = ['class',] # tags that start a tag.
     self.functionTags = []
+    self.hasClasses = True
+    self.hasFunctions = True
     self.lineCommentDelim = None
     self.lineCommentDelim2 = None
     self.outerBlockDelim1 = None
@@ -41485,6 +41609,8 @@ def scanHelper(self,s,i,end,parent,kind):
         elif kind == 'outer' and g.match(s,i,self.outerBlockDelim1): # Do this after testing for classes.
             i = start = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
         else: i += 1
+
+        # if progress == i: g.pdb()
         assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
 
     return start,putRef,indentFlag
@@ -41561,6 +41687,7 @@ def skipBlock(self,s,i,delim1=None,delim2=None):
         else: i += 1
         assert progress < i
 
+    self.error('no block')
     if trace: g.trace('** no block')
     return start
 #@-node:ekr.20070707073859:skipBlock
@@ -41656,6 +41783,7 @@ def skipDecls (self,s,i,end,inClass):
             break
         else:
             i += 1 ;  prefix = None
+        # if progress == i: g.pdb()
         assert(progress < i)
 
     if prefix is not None: i = prefix
@@ -41741,18 +41869,20 @@ def skipString (self,s,i):
 def startsClass (self,s,i,quick=False):
     '''Return True if s[i:] starts a class definition.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-    i = self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
-    return i
+    val = self.hasClasses and self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
+    return val
 
 def startsFunction (self,s,i,quick=False):
     '''Return True if s[i:] starts a function.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-    i = self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
-    return i
+    val = self.hasFunctions and self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
+    return val
 #@+node:ekr.20070712112008:startsHelper
 def startsHelper(self,s,i,kind,quick,tags):
     '''return True if s[i:] starts a class or function.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
+
+    # if not tags: return False
 
     trace = self.trace
     verbose = False # kind=='function'
@@ -42195,6 +42325,42 @@ def skipSigId (self,s,i,ids):
 #@-node:ekr.20071019170943:javaScanner.skipSigId
 #@-node:edreamleo.20070710085115:class javaScanner (baseScannerClass)
 #@-node:edreamleo.20070710110114:Java scanner
+#@+node:ekr.20071027111225:JavaScript scanner
+#@+node:ekr.20071027111225.1:scanJavaScriptText
+def scanJavaScriptText (self,s,parent,atAuto=False):
+
+    scanner = self.javaScriptScanner(importCommands=self,atAuto=atAuto)
+
+    scanner.run(s,parent)
+#@-node:ekr.20071027111225.1:scanJavaScriptText
+#@+node:ekr.20071027111225.2:class javaScriptScanner (baseScannerClass)
+class javaScriptScanner (baseScannerClass):
+
+    @others
+#@+node:ekr.20071027111225.3:javaScriptScanner.__init__
+def __init__ (self,importCommands,atAuto):
+
+    # Init the base class.
+    importCommands.baseScannerClass.__init__(self,importCommands,
+        atAuto=atAuto,language='java') # Used to set comment delims.
+
+    # Set the parser delims.
+    self.blockCommentDelim1 = '/*'
+    self.blockCommentDelim2 = '*/'
+    self.blockDelim1 = '{'
+    self.blockDelim2 = '}'
+    self.hasClasses = False
+    self.hasFunctions = True
+    self.lineCommentDelim = '//'
+    self.lineCommentDelim2 = None
+    self.outerBlockDelim1 = None # For now, ignore outer blocks.
+    self.outerBlockDelim2 = None
+    self.classTags = []
+    self.functionTags = ['function']
+    self.sigFailTokens = [';',] # ','=',] # Just like Java.
+#@-node:ekr.20071027111225.3:javaScriptScanner.__init__
+#@-node:ekr.20071027111225.2:class javaScriptScanner (baseScannerClass)
+#@-node:ekr.20071027111225:JavaScript scanner
 #@+node:ekr.20070711104241:Pascal scanner
 #@+node:ekr.20070711104241.2:scanPascalText
 def scanPascalText (self,s,parent,atAuto=False):
@@ -42498,6 +42664,9 @@ def htmlUnitTest(self,p,fileName=None,s=None,showTree=False):
 def javaUnitTest(self,p,fileName=None,s=None,showTree=False):
     return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.java')
 
+def javaScriptUnitTest(self,p,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.js')
+
 def pascalUnitTest(self,p,fileName=None,s=None,showTree=False):
     return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.pas')
 
@@ -42610,6 +42779,8 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
         self.scanElispText(s,p,atAuto=atAuto)
     elif ext == ".java":
         self.scanJavaText(s,p,atAuto=atAuto)
+    elif ext == ".js":
+        self.scanJavaScriptText(s,p,atAuto=atAuto)
     elif ext == ".pas":
         self.scanPascalText(s,p,atAuto=atAuto)
     elif ext in (".py", ".pyw"):
@@ -45696,6 +45867,49 @@ pass
 #@-node:ekr.20071026125112:Improved icon handling in Leo's tree widget
 #@-node:ekr.20071026180220:New features
 #@-node:ekr.20071023175714:4.4.4 b4
+#@+node:ekr.20071027155527:4.4.4 final
+#@+node:ekr.20071027145840:Fixed bug that caused rClick plugin to crash
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4591494
+By: rogererens
+
+This had probably to do with the RClick plugin that was enabled in mySettings.leo.
+This was the traceback:
+
+Traceback (most recent call last):
+
+  File "E:\_cvs_\Leo\src\leoGlobals.py", line 2575, in doHook
+    return f(tag,keywords)
+
+  File "E:\_cvs_\Leo\src\leoPlugins.py", line 91, in doPlugins
+    return doHandlersForTag(tag,keywords)
+
+  File "E:\_cvs_\Leo\src\leoPlugins.py", line 70, in doHandlersForTag
+    val = callTagHandler(bunch,tag,keywords)
+
+  File "E:\_cvs_\Leo\src\leoPlugins.py", line 49, in callTagHandler
+    result = handler(tag,keywords)
+
+  File "E:\_cvs_\Leo\plugins\rClick.py", line 77, in rClickbinder
+    c.frame.log.logCtrl.bind('<Button-3>',c.frame.OnBodyRClick)
+
+AttributeError: nullFrame instance has no attribute 'OnBodyRClick'
+
+Disabling RClick gives me the Plugins menu everywhere.
+
+@color
+#@nonl
+#@+node:ekr.20071027150501:event handlers (leoFrame)
+def OnBodyClick (self,event=None):
+   pass
+
+def OnBodyRClick(self,event=None):
+    pass
+#@nonl
+#@-node:ekr.20071027150501:event handlers (leoFrame)
+#@-node:ekr.20071027145840:Fixed bug that caused rClick plugin to crash
+#@-node:ekr.20071027155527:4.4.4 final
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@-all
 #@nonl

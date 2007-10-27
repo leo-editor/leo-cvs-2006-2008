@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.421602787456">
-	<global_window_position top="16" left="247" height="741" width="892"/>
+	<global_window_position top="16" left="247" height="721" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -405,9 +405,9 @@
 </v>
 </v>
 <v t="EKR.20040524104904.211"><vh>Chapter 8: Customizing Leo</vh>
-<v t="ekr.20050901101608.4"><vh>@rst html\customizing.html</vh>
+<v t="ekr.20050901101608.4" a="E"><vh>@rst html\customizing.html</vh>
 <v t="ekr.20050901102055"><vh>@rst-no-head links</vh></v>
-<v t="EKR.20040524104904.140"><vh>Specifying settings</vh>
+<v t="EKR.20040524104904.140" a="E"><vh>Specifying settings</vh>
 <v t="ekr.20070317043727"><vh>Organizer nodes</vh></v>
 <v t="ekr.20070317043727.1"><vh>@ignore nodes</vh></v>
 <v t="ekr.20070317043727.2"><vh>Simple settings nodes</vh></v>
@@ -3352,7 +3352,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071026053825" a="ETV"><vh>4.4.4 b4</vh>
+<v t="ekr.20071026053825" a="TV"><vh>4.4.4 b4</vh>
 <v t="ekr.20071026053931.1"><vh>Fixed bugs</vh>
 <v t="ekr.20071026053931.2"><vh>Fixed aspell problem</vh></v>
 <v t="ekr.20071026053931.13"><vh>Fixed bug: utf-8 files now get imported properly</vh></v>
@@ -30148,6 +30148,20 @@ set the value of ``name`` to ``val``, with the indicated type.
 <t tx="ekr.20070317043727.3">Complex settings nodes have headlines of the form::
 
     @&lt;type&gt; description
+    
+The type may be one of the following:
+    
+=================== =====================================================================
+&lt;type&gt;              Valid values 
+------------------- ---------------------------------------------------------------------
+\@buttons           Child @button nodes create global buttons
+\@enabled-plugins   Body text contains a list of enabled plugins
+\@font              Body text contains a font description
+\@menus             Child @menu and @item nodes create menus and menu items.
+\@mode [name]       Body text contains a list of shortcut specifiers.
+\@recentfiles       Body text contains a list of file paths.
+\@shortcuts         Body text contains a list of shortcut specifies.
+=================== =====================================================================
 
 The actual settings are specified in the body text.  At present, there are seven kinds of complex settings nodes:
     
