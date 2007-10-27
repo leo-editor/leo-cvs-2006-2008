@@ -1,13 +1,14 @@
-Leo 4.4.4 beta 3                                         October 23, 2007
+Leo 4.4.4 beta 4                            October 27, 2007
 
-Leo 4.4.4 beta 3 is available at:
+Leo 4.4.4 beta 4 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
 
-Leo 4.4.4 contains many important features originally planned for later releases.
-It's been a good month :-)
+This beta 4 version fixes all bugs reported against Leo 4.4.4 beta 3.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
+
+Leo 4.4.4 contains many important features originally planned for later releases.
 
 The highlights of Leo 4.4.4:
 ----------------------------
@@ -32,6 +33,8 @@ The highlights of Leo 4.4.4:
   This plugin features much better performance and a new, elegant algorithm.
 
 - Leo is now compatible with jython.
+
+- Better support for icons in headlines.
 
 - The usual assortment of bug fixes and other minor improvements.
 
