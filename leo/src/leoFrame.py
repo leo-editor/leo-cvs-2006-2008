@@ -2060,6 +2060,14 @@ class leoFrame:
     def setTitle (self,title):
         self.title = title
     #@-node:ekr.20031218072017.3688:getTitle & setTitle
+    #@+node:ekr.20071027150501:event handlers (leoFrame)
+    def OnBodyClick (self,event=None):
+       pass
+
+    def OnBodyRClick(self,event=None):
+        pass
+    #@nonl
+    #@-node:ekr.20071027150501:event handlers (leoFrame)
     #@-node:ekr.20061109125528:May be defined in subclasses
     #@+node:ekr.20060206093313:Focus (leoFrame)
     # For compatibility with old scripts.
