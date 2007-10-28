@@ -10,8 +10,8 @@
 <find_panel_settings/>
 <vnodes>
 <v t="ekr.20071028032354"><vh>@chapters</vh></v>
-<v t="ekr.20050421221914"><vh>About this file</vh></v>
-<v t="ekr.20050425064819" a="TV"><vh>3.x 2001 @file trees</vh>
+<v t="ekr.20050421221914" a="TV"><vh>About this file</vh></v>
+<v t="ekr.20050425064819"><vh>3.x 2001 @file trees</vh>
 <v t="ekr.20050425064819.1"><vh>Designing @file trees (From LeoDocs.Leo)</vh>
 <v t="ekr.20050425064819.2"><vh>Deciding to do Leo2</vh></v>
 <v t="ekr.20050425064819.3"><vh>A prototype</vh></v>
@@ -4810,13 +4810,15 @@ Edward
 This file contains many design-related postings from my hard drive. These
 correspond fairly closely, but not exactly, to SourceForge postings.
 
-I plan much more work on this file; it may form the basis of a proper theory of
-operation, as well as a Leo book.
+**You do not need to read this file to understand Leo.**
 
-It is amazing how difficult it is for me to keep the essential developments of
-Leo's history in proper order. I plan an overview section telling, for each
-major development, when it happened, what the design questions were and what the
-general resolution of those questions were.</t>
+This file is for 'historians' only. These are the raw data for Chapter 10,
+History of Leo, in LeoDocs.leo. This file shows the complexities involved in
+designing Leo. For historians (that is, me), the big problem with an Aha is that
+it alters the mental landscape in such a way as to make it essentially
+impossible to remember what the world was like before the Aha. This file is an
+attempt to retains some of what the world was like before the big Aha's that
+made Leo what it is today.</t>
 <t tx="ekr.20050422055636">Theme 1: Global Tnode Indices 
 2002-10-21 08:51 
 Previously I have dismissed the notion of global node (or clone) indices, saying that there is no way to guarantee
