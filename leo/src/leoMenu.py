@@ -535,6 +535,9 @@ class leoMenu:
             self.createNewMenu(name,parentName)
             c.recentFiles = c.config.getRecentFiles()
             return True
+        elif name2 == 'help' and sys.platform == 'darwin':
+            helpMenu = self.getMacHelpMenu()
+            return helpMenu is not None
         else:
             return False
     #@-node:ekr.20070927172712:handleSpecialMenus
