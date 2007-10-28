@@ -37935,7 +37935,7 @@ What I did:
 
 @color
 #@nonl
-#@+node:ekr.20070423101911:treeSelectHelper (changed)
+#@+node:ekr.20070423101911:treeSelectHelper
 #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
 
 def treeSelectHelper (self,p,updateBeadList,scroll):
@@ -38043,7 +38043,7 @@ if self.stayInTree:
 else:
     c.bodyWantsFocus()
 #@-node:ekr.20040803072955.133:<< set the current node >>
-#@-node:ekr.20070423101911:treeSelectHelper (changed)
+#@-node:ekr.20070423101911:treeSelectHelper
 #@-node:ekr.20071009104339:Disabled unnecessary recolors
 #@+node:ekr.20071009145420:Improved (I hope) the rst3 plugin
 Suppressed doc-part-delims when show_doc_parts_as_paragraphs is True
@@ -43902,7 +43902,7 @@ def OnHyperLinkLeave (self,event=None,c=c):
     except:
         g.es_event_exception("hyperleave")
 #@-node:ekr.20040803072955.25:OnHyperLinkLeave (changed)
-#@+node:ekr.20070423101911:treeSelectHelper (changed)
+#@+node:ekr.20070423101911:treeSelectHelper
 #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
 
 def treeSelectHelper (self,p,updateBeadList,scroll):
@@ -44010,7 +44010,7 @@ if self.stayInTree:
 else:
     c.bodyWantsFocus()
 #@-node:ekr.20040803072955.133:<< set the current node >>
-#@-node:ekr.20070423101911:treeSelectHelper (changed)
+#@-node:ekr.20070423101911:treeSelectHelper
 #@+node:ekr.20040327105706.2:finishCreate  (Removed nullFrame.bodyCtrl)
 def finishCreate(self,c):
 
@@ -45915,6 +45915,409 @@ def OnBodyRClick(self,event=None):
 #@nonl
 #@-node:ekr.20071027150501:event handlers (leoFrame)
 #@-node:ekr.20071027145840:Fixed bug that caused rClick plugin to crash
+#@+node:ekr.20071028041857:Fixed scrolling problem with chapters
+@nocolor
+
+From Terry Brown
+
+I find that if I'm viewing a chapter and insert a node the inserted
+selected 'Newheadline' scrolls out of view, although it retains focus
+for typing.  Doesn't seem to do this when not viewing chapters.
+Probably requires that the tree has more nodes than will fit vertically
+in the display before you can see the effect.  Inserting near the top
+of the list, the view jumps down the list for some reason.
+
+@color
+#@nonl
+#@+node:ekr.20070317131205.1:chapter.select & helpers
+def select (self,w=None,selectEditor=True):
+
+    '''Restore chapter information and redraw the tree when a chapter is selected.'''
+
+    if self.selectLockout: return
+
+    try:
+        self.selectLockout = True
+        self.chapterSelectHelper(w,selectEditor)
+        if self.cc.tt:
+            self.cc.tt.setTabLabel(self.name)
+    finally:
+        self.selectLockout = False
+#@+node:ekr.20070423102603.1:chapterSelectHelper
+def chapterSelectHelper (self,w=None,selectEditor=True):
+
+    c = self.c ; cc = self.cc ; name = self.name
+
+    # g.trace(name,'self.p',self.p) # ,'self.root',self.root) # 'w.leo_p',w and w.leo_p)
+
+    cc.selectedChapter = self
+
+    # Next, recompute p and possibly select a new editor.
+    if w:
+        assert w == c.frame.body.bodyCtrl
+        assert w.leo_p
+        # g.trace(name,'w.leo_p',w.leo_p,'p',p)
+        self.p = p = self.findPositionInChapter(w.leo_p)
+        if p != w.leo_p: g.trace('****** can not happen: lost p',w.leo_p)
+    else:
+        # This must be done *after* switching roots.
+        target_p = self.p or self.root.firstChild() or self.root
+        #g.trace(name,'target_p',target_p)
+        #g.trace(name,'self.p',self.p,'self.root',self.root)
+        self.p = p = self.findPositionInChapter(target_p)
+        if selectEditor:
+            w = self.findEditorInChapter(p)
+            c.frame.body.selectEditor(w) # Switches text.
+
+    c.beginUpdate()
+    try:
+        if name == 'main' and cc.chaptersNode:
+            cc.chaptersNode.contract()    
+        c.hoistStack = self.hoistStack[:]
+        c.selectPosition(p)
+    finally:
+        c.endUpdate()
+        g.doHook('hoist-changed',c=c)
+        c.bodyWantsFocusNow()
+#@nonl
+#@-node:ekr.20070423102603.1:chapterSelectHelper
+#@+node:ekr.20070317131708:chapter.findPositionInChapter
+def findPositionInChapter (self,p1,strict=False):
+
+    '''Return a valid position p such that p.v == v.'''
+
+    # Do nothing if the present position is in the proper chapter.
+    c = self.c ; name = self.name 
+
+    root = g.choose(self.name=='main',c.rootPosition(),self.root)
+    # g.trace('p1',p1)
+    if p1 and c.positionExists(p1,root=root):
+        # g.trace('using existing position',p)
+        return p1
+
+    if name == 'main':
+        for p in self.c.allNodes_iter():
+            if p.v == p1.v:
+                # g.trace('*** found in main chapter',p)
+                self.p = p.copy()
+                return self.p
+        if strict:
+            return None
+        else:
+            self.p = c.rootPosition()
+    else:
+        for p in self.root.self_and_subtree_iter():
+            # g.trace('testing',p,p1)
+            if p.v == p1.v:
+                # g.trace('*** found in chapter',p)
+                self.p = p.copy()
+                return self.p
+        if strict:
+            return None
+        else:
+            self.p = self.root.copy()
+
+    if 0:
+        self.error('***** chapter: %s findPositionInChapter: lost %s' % (
+            self.name,p1.v.t.headString))
+        g.trace(g.callers())
+
+    return self.p.copy()
+#@-node:ekr.20070317131708:chapter.findPositionInChapter
+#@+node:ekr.20070425175522:chapter.findEditorInChapter
+def findEditorInChapter (self,p):
+
+    '''return w, an editor displaying position p.'''
+
+    chapter = self ; c = self.c
+
+    w = c.frame.body.findEditorForChapter(chapter,p)
+    w.leo_chapter = chapter
+    w.leo_p = p and p.copy()
+    return w
+#@nonl
+#@-node:ekr.20070425175522:chapter.findEditorInChapter
+#@+node:ekr.20070615065222:chapter.positionIsInChapter
+def positionIsInChapter (self,p):
+
+    p2 = self.findPositionInChapter (p,strict=True)
+
+    # g.trace(self.name,'returns',p2)
+    return p2
+#@nonl
+#@-node:ekr.20070615065222:chapter.positionIsInChapter
+#@+node:ekr.20070529171934.1:chapter.rename (not used)
+def rename (self,newName):
+
+    p = self.root
+    s = '@chapter ' + newName
+    p.setHeadString(s)
+#@-node:ekr.20070529171934.1:chapter.rename (not used)
+#@-node:ekr.20070317131205.1:chapter.select & helpers
+#@+node:ekr.20040803072955.58:tree.redraw_now & helper
+# New in 4.4b2: suppress scrolling by default.
+
+def redraw_now (self,scroll=False):
+
+    '''Redraw immediately: used by Find so a redraw doesn't mess up selections in headlines.'''
+
+    if g.app.quitting or self.drag_p or self.frame not in g.app.windowList:
+        return
+
+    c = self.c
+
+    # g.trace('scroll',scroll,g.callers())
+
+    if not g.app.unitTesting:
+        if self.gc_before_redraw:
+            g.collectGarbage()
+        if g.app.trace_gc_verbose:
+            if (self.redrawCount % 5) == 0:
+                g.printGcSummary()
+        if self.trace_redraw or self.trace_alloc:
+            # g.trace(self.redrawCount,g.callers())
+            # g.trace(c.rootPosition().headString(),'canvas:',id(self.canvas),g.callers())
+            if self.trace_stats:
+                g.print_stats()
+                g.clear_stats()
+
+    # New in 4.4b2: Call endEditLabel, but suppress the redraw.
+    self.beginUpdate()
+    try:
+        self.endEditLabel()
+    finally:
+        self.endUpdate(False)
+
+    # Do the actual redraw.
+    self.expandAllAncestors(c.currentPosition())
+    if self.idle_redraw:
+        def idleRedrawCallback(event=None,self=self,scroll=scroll):
+            self.redrawHelper(scroll=scroll)
+        self.canvas.after_idle(idleRedrawCallback)
+    else:
+        self.redrawHelper(scroll=scroll)
+    if g.app.unitTesting:
+        self.canvas.update_idletasks() # Important for unit tests.
+    c.masterFocusHandler()
+
+redraw = redraw_now # Compatibility
+#@+node:ekr.20040803072955.59:redrawHelper
+def redrawHelper (self,scroll=True):
+
+    c = self.c ; trace = False
+    oldcursor = self.canvas['cursor']
+    self.canvas['cursor'] = "watch"
+
+    if not g.doHook("redraw-entire-outline",c=c):
+
+        if trace: g.trace('scroll',scroll,g.callers())
+        c.setTopVnode(None)
+        self.setVisibleAreaToFullCanvas()
+        self.drawTopTree()
+        # Set up the scroll region after the tree has been redrawn.
+        bbox = self.canvas.bbox('all')
+        # g.trace('canvas',self.canvas,'bbox',bbox)
+        if bbox is None:
+            x0,y0,x1,y1 = 0,0,100,100
+        else:
+            x0, y0, x1, y1 = bbox
+        self.canvas.configure(scrollregion=(0, 0, x1, y1))
+        if scroll:
+            self.canvas.update_idletasks() # Essential.
+            self.scrollTo()
+
+    g.doHook("after-redraw-outline",c=c)
+
+    self.canvas['cursor'] = oldcursor
+#@-node:ekr.20040803072955.59:redrawHelper
+#@-node:ekr.20040803072955.58:tree.redraw_now & helper
+#@+node:ekr.20031218072017.2028:Hoist & dehoist
+def dehoist (self,event=None):
+
+    '''Undo a previous hoist of an outline.'''
+
+    c = self ; p = c.currentPosition()
+    if p and c.canDehoist():
+        bunch = c.hoistStack.pop()
+        c.beginUpdate()
+        try:
+            if bunch.expanded: p.expand()
+            else:              p.contract()
+        finally:
+            c.endUpdate()
+        c.frame.clearStatusLine()
+        if c.hoistStack:
+            bunch = c.hoistStack[-1]
+            c.frame.putStatusLine("Hoist: " + bunch.p.headString())
+        else:
+            c.frame.putStatusLine("No hoist")
+        c.undoer.afterDehoist(p,'DeHoist')
+        g.doHook('hoist-changed',c=c)
+
+def hoist (self,event=None):
+
+    '''Make only the selected outline visible.'''
+
+    c = self ; p = c.currentPosition()
+    if p and c.canHoist():
+        # Remember the expansion state.
+        bunch = g.Bunch(p=p.copy(),expanded=p.isExpanded())
+        c.hoistStack.append(bunch)
+        c.beginUpdate()
+        try:
+            p.expand()
+        finally:
+            c.endUpdate()
+        c.frame.clearStatusLine()
+        c.frame.putStatusLine("Hoist: " + p.headString())
+        c.undoer.afterHoist(p,'Hoist')
+        g.doHook('hoist-changed',c=c)
+#@-node:ekr.20031218072017.2028:Hoist & dehoist
+#@+node:ekr.20040803072955.65:scrollTo
+def scrollTo(self,p=None):
+
+    """Scrolls the canvas so that p is in view."""
+
+    __pychecker__ = '--no-argsused' # event not used.
+    __pychecker__ = '--no-intdivide' # suppress warning about integer division.
+
+    c = self.c ; frame = c.frame ; trace = False
+    if not p or not c.positionExists(p):
+        p = c.currentPosition()
+    if not p or not c.positionExists(p):
+        if trace: g.trace('current p does not exist',p)
+        p = c.rootPosition()
+    if not p or not c.positionExists(p):
+        if trace: g.trace('no position')
+        return
+    try:
+        h1 = self.yoffset(p)
+        if self.center_selected_tree_node: # New in Leo 4.4.3.
+            << compute frac0 >>
+            delta = abs(self.prevMoveToFrac-frac0)
+            # g.trace(delta)
+            if delta > 0.0:
+                self.prevMoveToFrac = frac0
+                self.canvas.yview("moveto",frac0)
+                if trace: g.trace("frac0 %1.2f %3d %3d %3d" % (frac0,h1,htot,wtot))
+        else:
+            last = c.lastVisible()
+            nextToLast = last.visBack(c)
+            h2 = self.yoffset(last)
+            << compute approximate line height >>
+            << Compute the fractions to scroll down/up >>
+            if frac <= lo: # frac is for scrolling down.
+                if self.prevMoveToFrac != frac:
+                    self.prevMoveToFrac = frac
+                    self.canvas.yview("moveto",frac)
+                    if trace: g.trace("frac  %1.2f %3d %3d %1.2f %1.2f" % (frac, h1,h2,lo,hi))
+            elif frac2 + (hi - lo) >= hi: # frac2 is for scrolling up.
+                if self.prevMoveToFrac != frac2:
+                    self.prevMoveToFrac = frac2
+                    self.canvas.yview("moveto",frac2)
+                    if trace: g.trace("frac2 1.2f %3d %3d %1.2f %1.2f" % (frac2,h1,h2,lo,hi))
+
+        if self.allocateOnlyVisibleNodes:
+            self.canvas.after_idle(self.idle_second_redraw)
+
+        c.setTopVnode(p) # 1/30/04: remember a pseudo "top" node.
+
+    except:
+        g.es_exception()
+
+idle_scrollTo = scrollTo # For compatibility.
+#@nonl
+#@+node:ekr.20061030091926:<< compute frac0 >>
+# frac0 attempt to put the 
+scrollRegion = self.canvas.cget('scrollregion')
+geom = self.canvas.winfo_geometry()
+
+if scrollRegion and geom:
+    scrollRegion = scrollRegion.split(' ')
+    # g.trace('scrollRegion',repr(scrollRegion))
+    htot = int(scrollRegion[3])
+    wh,junk,junk = geom.split('+')
+    junk,h = wh.split('x')
+    if h: wtot = int(h)
+    else: wtot = 500
+    # g.trace('geom',geom,'wtot',wtot)
+    if htot > 0.1:
+        frac0 = float(h1-wtot/2)/float(htot)
+        frac0 = max(min(frac0,1.0),0.0)
+    else:
+        frac0 = 0.0
+else:
+    frac0 = 0.0 ; htot = wtot = 0
+#@-node:ekr.20061030091926:<< compute frac0 >>
+#@+node:ekr.20040803072955.66:<< compute approximate line height >>
+if nextToLast: # 2/2/03: compute approximate line height.
+    lineHeight = h2 - self.yoffset(nextToLast)
+else:
+    lineHeight = 20 # A reasonable default.
+#@-node:ekr.20040803072955.66:<< compute approximate line height >>
+#@+node:ekr.20040803072955.67:<< Compute the fractions to scroll down/up >>
+data = frame.canvas.leo_treeBar.get() # Get the previous values of the scrollbar.
+try: lo, hi = data
+except: lo,hi = 0.0,1.0
+
+# h1 and h2 are the y offsets of the present and last nodes.
+if h2 > 0.1:
+    frac = float(h1)/float(h2) # For scrolling down.
+    frac2 = float(h1+lineHeight/2)/float(h2) # For scrolling up.
+    frac2 = frac2 - (hi - lo)
+else:
+    frac = frac2 = 0.0 # probably any value would work here.
+
+frac =  max(min(frac,1.0),0.0)
+frac2 = max(min(frac2,1.0),0.0)
+#@nonl
+#@-node:ekr.20040803072955.67:<< Compute the fractions to scroll down/up >>
+#@-node:ekr.20040803072955.65:scrollTo
+#@+node:ekr.20040803072955.70:yoffset
+@ We can't just return icony because the tree hasn't been redrawn yet.
+For the same reason we can't rely on any TK canvas methods here.
+@c
+
+def yoffset(self,p1):
+    # if not p1.isVisible(): print "yoffset not visible:",p1
+    c = self.c
+    if c.hoistStack:
+        bunch = c.hoistStack[-1]
+        root = bunch.p.copy()
+    else:
+        root = self.c.rootPosition()
+    h,flag = self.yoffsetTree(root,p1,isTop=True)
+    # flag can be False during initialization.
+    # if not flag: print "yoffset fails:",h,v1
+    return h
+
+def yoffsetTree(self,p,p1,isTop):
+    c = self.c ; h = 0 ; trace = False ; verbose = False
+    if not c.positionExists(p):
+        if trace: g.trace('does not exist',p.headString())
+        return h,False # An extra precaution.
+    p = p.copy()
+    if trace and verbose and isTop and c.hoistStack:
+        g.trace('c.hoistStack',c.hoistStack[-1].p.headString())
+    if isTop and c.hoistStack: theIter = [p.firstChild()]
+    else: theIter = p.self_and_siblings_iter() # Bug fix 10/27/07: was p.siblings_iter()
+    for p2 in theIter: 
+        if p2 == p1:
+            if trace and verbose: g.trace(h,p1.headString())
+            return h, True
+        h += self.line_height
+        if p2.isExpanded() and p2.hasChildren():
+            child = p2.firstChild()
+            h2, flag = self.yoffsetTree(child,p1,isTop=False)
+            h += h2
+            if flag:
+                if trace and verbose: g.trace(h,p1.headString())
+                return h, True
+
+    if trace: g.trace('not found',p1.headString())
+    return h, False
+#@-node:ekr.20040803072955.70:yoffset
+#@-node:ekr.20071028041857:Fixed scrolling problem with chapters
 #@-node:ekr.20071027155527:4.4.4 final
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@-all
