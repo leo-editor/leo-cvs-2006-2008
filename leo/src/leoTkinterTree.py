@@ -791,7 +791,7 @@ class leoTkinterTree (leoFrame.leoTree):
 
         c = self.c
 
-        # g.trace(g.callers())
+        # g.trace('scroll',scroll,g.callers())
 
         if not g.app.unitTesting:
             if self.gc_before_redraw:
@@ -829,11 +829,13 @@ class leoTkinterTree (leoFrame.leoTree):
     #@+node:ekr.20040803072955.59:redrawHelper
     def redrawHelper (self,scroll=True):
 
-        c = self.c
+        c = self.c ; trace = False
         oldcursor = self.canvas['cursor']
         self.canvas['cursor'] = "watch"
 
         if not g.doHook("redraw-entire-outline",c=c):
+
+            if trace: g.trace('scroll',scroll,g.callers())
             c.setTopVnode(None)
             self.setVisibleAreaToFullCanvas()
             self.drawTopTree()
@@ -1300,14 +1302,14 @@ class leoTkinterTree (leoFrame.leoTree):
         __pychecker__ = '--no-argsused' # event not used.
         __pychecker__ = '--no-intdivide' # suppress warning about integer division.
 
-        c = self.c ; frame = c.frame
+        c = self.c ; frame = c.frame ; trace = False
         if not p or not c.positionExists(p):
             p = c.currentPosition()
         if not p or not c.positionExists(p):
-            # g.trace('current p does not exist',p)
+            if trace: g.trace('current p does not exist',p)
             p = c.rootPosition()
         if not p or not c.positionExists(p):
-            # g.trace('no position')
+            if trace: g.trace('no position')
             return
         try:
             h1 = self.yoffset(p)
@@ -1341,7 +1343,7 @@ class leoTkinterTree (leoFrame.leoTree):
                 if delta > 0.0:
                     self.prevMoveToFrac = frac0
                     self.canvas.yview("moveto",frac0)
-                    # g.trace("frac0 %1.2f %3d %3d %3d" % (frac0,h1,htot,wtot))
+                    if trace: g.trace("frac0 %1.2f %3d %3d %3d" % (frac0,h1,htot,wtot))
             else:
                 last = c.lastVisible()
                 nextToLast = last.visBack(c)
@@ -1377,12 +1379,12 @@ class leoTkinterTree (leoFrame.leoTree):
                     if self.prevMoveToFrac != frac:
                         self.prevMoveToFrac = frac
                         self.canvas.yview("moveto",frac)
-                        #g.trace("frac  %1.2f %3d %3d %1.2f %1.2f" % (frac, h1,h2,lo,hi))
+                        if trace: g.trace("frac  %1.2f %3d %3d %1.2f %1.2f" % (frac, h1,h2,lo,hi))
                 elif frac2 + (hi - lo) >= hi: # frac2 is for scrolling up.
                     if self.prevMoveToFrac != frac2:
                         self.prevMoveToFrac = frac2
                         self.canvas.yview("moveto",frac2)
-                        #g.trace("frac2 "1.2f %3d %3d %1.2f %1.2f" % (frac2,h1,h2,lo,hi))
+                        if trace: g.trace("frac2 1.2f %3d %3d %1.2f %1.2f" % (frac2,h1,h2,lo,hi))
 
             if self.allocateOnlyVisibleNodes:
                 self.canvas.after_idle(self.idle_second_redraw)
@@ -1405,28 +1407,41 @@ class leoTkinterTree (leoFrame.leoTree):
 
     def yoffset(self,p1):
         # if not p1.isVisible(): print "yoffset not visible:",p1
-        root = self.c.rootPosition()
-        h,flag = self.yoffsetTree(root,p1)
+        c = self.c
+        if c.hoistStack:
+            bunch = c.hoistStack[-1]
+            root = bunch.p.copy()
+        else:
+            root = self.c.rootPosition()
+        h,flag = self.yoffsetTree(root,p1,isTop=True)
         # flag can be False during initialization.
         # if not flag: print "yoffset fails:",h,v1
         return h
 
-    def yoffsetTree(self,p,p1):
-        h = 0
-        if not self.c.positionExists(p):
-            # g.trace('does not exist',p.headString())
+    def yoffsetTree(self,p,p1,isTop):
+        c = self.c ; h = 0 ; trace = False ; verbose = False
+        if not c.positionExists(p):
+            if trace: g.trace('does not exist',p.headString())
             return h,False # An extra precaution.
         p = p.copy()
-        for p2 in p.siblings_iter():
-            # print "yoffsetTree:", p2
+        if trace and verbose and isTop and c.hoistStack:
+            g.trace('c.hoistStack',c.hoistStack[-1].p.headString())
+        if isTop and c.hoistStack: theIter = [p.firstChild()]
+        else: theIter = p.self_and_siblings_iter() # Bug fix 10/27/07: was p.siblings_iter()
+        for p2 in theIter: 
             if p2 == p1:
+                if trace and verbose: g.trace(h,p1.headString())
                 return h, True
             h += self.line_height
             if p2.isExpanded() and p2.hasChildren():
                 child = p2.firstChild()
-                h2, flag = self.yoffsetTree(child,p1)
+                h2, flag = self.yoffsetTree(child,p1,isTop=False)
                 h += h2
-                if flag: return h, True
+                if flag:
+                    if trace and verbose: g.trace(h,p1.headString())
+                    return h, True
+
+        if trace: g.trace('not found',p1.headString())
         return h, False
     #@-node:ekr.20040803072955.70:yoffset
     #@-node:ekr.20040803072955.62:Helpers...
