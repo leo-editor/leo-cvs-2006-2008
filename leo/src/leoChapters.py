@@ -63,7 +63,14 @@ class chapterController:
                     else:
                         cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
 
-        cc.selectChapterByName('main')
+        p = c.currentPosition()
+        # g.trace(c.positionExists(p),p)
+        if c.positionExists(p):
+            name = cc.findChapterNameForPosition(p) or 'main'
+            # g.trace('chapterController',name,c.currentPosition())
+            cc.selectChapterByName(name)
+        else:
+            cc.selectChapterByName('main')
     #@-node:ekr.20070325104904:cc.finishCreate
     #@-node:ekr.20070530075604:Birth
     #@+node:ekr.20070317085437.30:Commands (chapters)
@@ -696,6 +703,25 @@ class chapterController:
         else:
             cc.selectChapterByName('main')
     #@-node:ekr.20070615075643:cc.selectChapterForPosition
+    #@+node:ekr.20071028091719:cc.findChapterForPosition (New in Leo 4.4.4)
+    def findChapterNameForPosition (self,p):
+
+        '''
+        Return the name of a chapter containing p or None if p does not exist.
+        '''
+        cc = self ; c = cc.c
+
+        if not p or not c.positionExists(p):
+            return None
+
+        for name in cc.chaptersDict.keys():
+            if name != 'main':
+                theChapter = cc.chaptersDict.get(name)
+                if theChapter.positionIsInChapter(p):
+                    return name
+        else:
+            return 'main'
+    #@-node:ekr.20071028091719:cc.findChapterForPosition (New in Leo 4.4.4)
     #@-node:ekr.20070317130648:Utils
     #@+node:ekr.20070610100031:Undo
     #@+node:ekr.20070606075125:afterCreateChapter
