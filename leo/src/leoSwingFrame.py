@@ -5553,7 +5553,7 @@ class leoSwingTree (leoFrame.leoTree):
             p.moveToVisNext(c)
         return n
     #@-node:ekr.20071001092453.60:numberOfVisibleNodes
-    #@+node:ekr.20071001092453.61:scrollTo
+    #@+node:ekr.20071001092453.61:scrollTo (swingTree)
     def scrollTo(self,p=None):
 
         """Scrolls the canvas so that p is in view."""
@@ -5561,14 +5561,14 @@ class leoSwingTree (leoFrame.leoTree):
         __pychecker__ = '--no-argsused' # event not used.
         __pychecker__ = '--no-intdivide' # suppress warning about integer division.
 
-        c = self.c ; frame = c.frame
+        c = self.c ; frame = c.frame ; trace = True
         if not p or not c.positionExists(p):
             p = c.currentPosition()
         if not p or not c.positionExists(p):
-            # g.trace('current p does not exist',p)
+            if trace: g.trace('current p does not exist',p)
             p = c.rootPosition()
         if not p or not c.positionExists(p):
-            # g.trace('no position')
+            if trace: g.trace('no root position')
             return
         try:
             h1 = self.yoffset(p)
@@ -5602,7 +5602,7 @@ class leoSwingTree (leoFrame.leoTree):
                 if delta > 0.0:
                     self.prevMoveToFrac = frac0
                     self.canvas.yview("moveto",frac0)
-                    # g.trace("frac0 %1.2f %3d %3d %3d" % (frac0,h1,htot,wtot))
+                    if trace: g.trace("frac0 %1.2f %3d %3d %3d" % (frac0,h1,htot,wtot))
             else:
                 last = c.lastVisible()
                 nextToLast = last.visBack(c)
@@ -5638,12 +5638,12 @@ class leoSwingTree (leoFrame.leoTree):
                     if self.prevMoveToFrac != frac:
                         self.prevMoveToFrac = frac
                         self.canvas.yview("moveto",frac)
-                        #g.trace("frac  %1.2f %3d %3d %1.2f %1.2f" % (frac, h1,h2,lo,hi))
+                        if trace: g.trace("frac  %1.2f %3d %3d %1.2f %1.2f" % (frac, h1,h2,lo,hi))
                 elif frac2 + (hi - lo) >= hi: # frac2 is for scrolling up.
                     if self.prevMoveToFrac != frac2:
                         self.prevMoveToFrac = frac2
                         self.canvas.yview("moveto",frac2)
-                        #g.trace("frac2 "1.2f %3d %3d %1.2f %1.2f" % (frac2,h1,h2,lo,hi))
+                        if trace: g.trace("frac2 1.2f %3d %3d %1.2f %1.2f" % (frac2,h1,h2,lo,hi))
 
             if self.allocateOnlyVisibleNodes:
                 pass ### self.canvas.after_idle(self.idle_second_redraw)
@@ -5655,8 +5655,8 @@ class leoSwingTree (leoFrame.leoTree):
 
     idle_scrollTo = scrollTo # For compatibility.
     #@nonl
-    #@-node:ekr.20071001092453.61:scrollTo
-    #@+node:ekr.20071001092453.65:yoffset
+    #@-node:ekr.20071001092453.61:scrollTo (swingTree)
+    #@+node:ekr.20071001092453.65:yoffset (swingTree)
     #@+at 
     #@nonl
     # We can't just return icony because the tree hasn't been redrawn yet.
@@ -5666,30 +5666,39 @@ class leoSwingTree (leoFrame.leoTree):
 
     def yoffset(self,p1):
         # if not p1.isVisible(): print "yoffset not visible:",p1
-        root = self.c.rootPosition()
+        if c.hoistStack:
+            bunch = c.hoistStack[-1]
+            root = bunch.p.copy()
+        else:
+            root = self.c.rootPosition()
         h,flag = self.yoffsetTree(root,p1)
         # flag can be False during initialization.
         # if not flag: print "yoffset fails:",h,v1
         return h
 
     def yoffsetTree(self,p,p1):
-        h = 0
+        h = 0 ; trace = True
         if not self.c.positionExists(p):
-            # g.trace('does not exist',p.headString())
+            if trace: g.trace('does not exist',p.headString())
             return h,False # An extra precaution.
         p = p.copy()
-        for p2 in p.siblings_iter():
+        for p2 in p.self_and_siblings_iter():  # was p.siblings_iter
             # print "yoffsetTree:", p2
             if p2 == p1:
+                if trace: g.trace(p.headString(),p1.headString(),h)
                 return h, True
             h += self.line_height
             if p2.isExpanded() and p2.hasChildren():
                 child = p2.firstChild()
                 h2, flag = self.yoffsetTree(child,p1)
                 h += h2
-                if flag: return h, True
+                if flag:
+                    if trace: g.trace(p.headString(),p1.headString(),h)
+                    return h, True
+
+        if trace: g.trace('not found',p.headString(),p1.headString())
         return h, False
-    #@-node:ekr.20071001092453.65:yoffset
+    #@-node:ekr.20071001092453.65:yoffset (swingTree)
     #@-node:ekr.20071001092453.57:Helpers...
     #@-node:ekr.20071001092453.35:Drawing... (swingTree)
     #@+node:ekr.20071001092453.66:Event handlers (swingTree)
