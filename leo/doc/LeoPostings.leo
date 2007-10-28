@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
-<leo_header file_format="2" tnodes="0" max_tnode_index="10" clone_windows="0"/>
+<leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.400862068966">
 	<global_window_position top="10" left="308" height="928" width="888"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
@@ -9,8 +9,9 @@
 <preferences/>
 <find_panel_settings/>
 <vnodes>
+<v t="ekr.20071028032354"><vh>@chapters</vh></v>
 <v t="ekr.20050421221914"><vh>About this file</vh></v>
-<v t="ekr.20050425064819" a="E"><vh>3.x 2001 @file trees</vh>
+<v t="ekr.20050425064819" a="TV"><vh>3.x 2001 @file trees</vh>
 <v t="ekr.20050425064819.1"><vh>Designing @file trees (From LeoDocs.Leo)</vh>
 <v t="ekr.20050425064819.2"><vh>Deciding to do Leo2</vh></v>
 <v t="ekr.20050425064819.3"><vh>A prototype</vh></v>
@@ -70,7 +71,7 @@
 </v>
 <v t="ekr.20050421192149.11" a="E"><vh>2003-02-18 gti_summary.doc</vh></v>
 </v>
-<v t="ekr.20050421194542.1" a="M"><vh>2003-04 thru 2003-07 Doubts about reliability &amp; resolution</vh>
+<v t="ekr.20050421194542.1" a="EM"><vh>2003-04 thru 2003-07 Doubts about reliability &amp; resolution</vh>
 <v t="ekr.20050421211313"><vh>2003-04-30 Design questions</vh></v>
 <v t="ekr.20050421204424" a="M"><vh>2003-05-01 thru  2003-05-30 vxnodes (shared nodes)</vh>
 <v t="ekr.20050421192149.15"><vh>2003-05-01 nodes.doc</vh></v>
@@ -116,7 +117,7 @@
 <v t="ekr.20050421212523.4"><vh>2003-07-31 comments about 4-0 design.doc</vh></v>
 <v t="ekr.20050421212523.5"><vh>2003-07-31 synch reply 2.doc</vh></v>
 </v>
-<v t="ekr.20050422065602.8" a="E"><vh>2003-09 Code details</vh>
+<v t="ekr.20050422065602.8"><vh>2003-09 Code details</vh>
 <v t="ekr.20050421212523.6"><vh>2003-09-05 New 4-0 Design Notes.doc</vh>
 <v t="ekr.20050421212523.7"><vh>Executive summary</vh></v>
 <v t="ekr.20050421212523.8"><vh>Background and discussion</vh></v>
@@ -196,7 +197,7 @@
 <v t="ekr.20050421214921.26"><vh>2004-03-19 The taste of dog food.doc *** (eliminating positions)</vh></v>
 </v>
 </v>
-<v t="ekr.20050425060514.1" a="TV"><vh>To do</vh></v>
+<v t="ekr.20050425060514.1"><vh>To do</vh></v>
 </vnodes>
 <tnodes>
 <t tx="ekr.20050421192149">What has been gained?
@@ -5479,5 +5480,6 @@ This ends the original history of Leo2. In fact, it took quite a while before Le
 
 </t>
 <t tx="ekr.20050425064819.11"></t>
+<t tx="ekr.20071028032354"></t>
 </tnodes>
 </leo_file>
