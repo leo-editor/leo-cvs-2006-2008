@@ -46540,6 +46540,94 @@ def finishCreate (self):
         cc.selectChapterByName('main')
 #@-node:ekr.20070325104904:cc.finishCreate
 #@-node:ekr.20071028054648:Fixed bug: select a chapter containing the initially selected node
+#@+node:ekr.20071027162712:Fixed Apple help menu reversion
+#@+node:ekr.20070927082205:createMenuFromConfigList
+def createMenuFromConfigList (self,parentName,aList,level=0):
+
+    table = [] ; parentMenu = self.getMenu(parentName)
+
+    for z in aList:
+        kind,val,val2 = z
+        if kind.startswith('@menu'):
+            # Menu names can be unicode without any problem.
+            name = kind[5:].strip()
+            if table:
+                self.createMenuEntries(parentMenu,table)
+            if not self.handleSpecialMenus(name,parentName,table):
+                self.createNewMenu(name,parentName) # Create submenu of parent menu.
+                self.createMenuFromConfigList(name,val,level+1)
+            table = []
+        elif kind == '@item':
+            name = str(val) # Item names must always be ascii.
+            if val2:
+                # Translated names can be unicode.
+                table.append((val2,name),)
+            else:
+                table.append(name)
+        else:
+            g.trace('can not happen: bad kind:',kind)
+
+    if table:
+        self.createMenuEntries(parentMenu,table)
+#@nonl
+#@-node:ekr.20070927082205:createMenuFromConfigList
+#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
+def createHelpMenuFromTable (self,table):
+
+    if sys.platform == 'darwin':
+        self.getMacHelpMenu(table)
+    else:
+        helpMenu = self.createNewMenu("&Help")
+        self.createMenuEntries(helpMenu,self.helpMenuTable)
+#@nonl
+#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
+#@+node:ekr.20060211144330.1:getMacHelpMenu
+def getMacHelpMenu (self,table):
+
+    defaultTable = [
+            # &: a,b,c,d,e,f,h,l,m,n,o,p,r,s,t,u
+            ('&About Leo...',           'about-leo'),
+            ('Online &Home Page',       'open-online-home'),
+            '*open-online-&tutorial',
+            '*open-&users-guide',
+            '-',
+            ('Open Leo&Docs.leo',       'open-leoDocs-leo'),
+            ('Open Leo&Plugins.leo',    'open-leoPlugins-leo'),
+            ('Open Leo&Settings.leo',   'open-leoSettings-leo'),
+            ('Open &myLeoSettings.leo', 'open-myLeoSettings-leo'),
+            ('Open scr&ipts.leo',       'open-scripts-leo'),
+            '-',
+            '*he&lp-for-minibuffer',
+            '*help-for-&command',
+            '-',
+            '*&apropos-autocompletion',
+            '*apropos-&bindings',
+            '*apropos-&debugging-commands',
+            '*apropos-&find-commands',
+            '-',
+            '*pri&nt-bindings',
+            '*print-c&ommands',
+        ]
+
+    try:
+        topMenu = self.getMenu('top')
+        # Use the name argument to create the special Macintosh Help menu.
+        helpMenu = Tk.Menu(topMenu,name='help',tearoff=0)
+        self.add_cascade(topMenu,label='Help',menu=helpMenu,underline=0)
+        self.createMenuEntries(helpMenu,table or defaultTable)
+        return helpMenu
+
+    except Exception:
+        g.trace('Can not get MacOS Help menu')
+        g.es_exception()
+        return None
+#@-node:ekr.20060211144330.1:getMacHelpMenu
+#@-node:ekr.20071027162712:Fixed Apple help menu reversion
+#@+node:ekr.20071029085216:Disabled the plugins manage plugin
+@
+
+It is too confusing at present, because it doesn't support @enabled-plugins nodes.
+#@-node:ekr.20071029085216:Disabled the plugins manage plugin
 #@-node:ekr.20071027155527:4.4.4 final
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@-all

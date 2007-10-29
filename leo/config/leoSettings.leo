@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.653566229985">
-	<global_window_position top="83" left="243" height="627" width="864"/>
+	<global_window_position top="83" left="243" height="738" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -6876,9 +6876,13 @@ desired.</t>
 
 #Standard plugins enabled in official distributions.
 
-# Plugin_manager.py needs plugins_menu.py
+# This plugin creates the Plugins menu.
 plugins_menu.py
-plugin_manager.py
+
+# The plugins manager plugin is too confusing at present:
+# It doesn't understand @enabled-plugins nodes.
+# plugin_manager.py
+
 # cleo.py
 open_with.py
 mod_scripting.py
