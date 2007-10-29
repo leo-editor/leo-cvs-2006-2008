@@ -100,7 +100,7 @@ __version__ = "1.14"
 
 __plugin_name__ = "Plugins Menu"
 __plugin_priority__ = -100
-__plugin_group__ = "Core"
+# __plugin_group__ = "Core"
 
 #@+others
 #@+node:ekr.20060107091318:Functions
