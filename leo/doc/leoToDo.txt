@@ -35,10 +35,10 @@ def createMenuFromConfigList (self,parentName,aList,level=0):
             name = kind[5:].strip()
             if table:
                 self.createMenuEntries(parentMenu,table)
-                table = []
-            if not self.handleSpecialMenus(name,parentName):
+            if not self.handleSpecialMenus(name,parentName,table):
                 self.createNewMenu(name,parentName) # Create submenu of parent menu.
                 self.createMenuFromConfigList(name,val,level+1)
+            table = []
         elif kind == '@item':
             name = str(val) # Item names must always be ascii.
             if val2:
@@ -54,7 +54,7 @@ def createMenuFromConfigList (self,parentName,aList,level=0):
 #@nonl
 #@-node:ekr.20070927082205:createMenuFromConfigList
 #@+node:ekr.20070927172712:handleSpecialMenus
-def handleSpecialMenus (self,name,parentName):
+def handleSpecialMenus (self,name,parentName,table=[]):
 
     '''Handle a special menu if name is the name of a special menu.
     return True if this method handles the menu.'''
@@ -72,46 +72,23 @@ def handleSpecialMenus (self,name,parentName):
         c.recentFiles = c.config.getRecentFiles()
         return True
     elif name2 == 'help' and sys.platform == 'darwin':
-        helpMenu = self.getMacHelpMenu()
+        helpMenu = self.getMacHelpMenu(table)
         return helpMenu is not None
     else:
         return False
 #@-node:ekr.20070927172712:handleSpecialMenus
 #@-node:ekr.20070926135612:createMenusFromConfigList & helpers
 #@-node:ekr.20071027145840.1:Make sure the plugins menu appears even if there are problems loading plugins
-#@+node:ekr.20071027162712:Fix Apple help menu bug
-#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
-def createHelpMenuFromTable (self):
-
-    if sys.platform == 'darwin':
-        self.getMacHelpMenu()
-    else:
-        helpMenu = self.createNewMenu("&Help")
-        self.createMenuEntries(helpMenu,self.helpMenuTable)
-#@nonl
-#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
-#@+node:ekr.20060211144330.1:getMacHelpMenu
-def getMacHelpMenu (self):
-
-    try:
-        topMenu = self.getMenu('top')
-        # Use the name argument to create the special Macintosh Help menu.
-        helpMenu = Tk.Menu(topMenu,name='help',tearoff=0)
-        self.add_cascade(topMenu,label='Help',menu=helpMenu,underline=0)
-        self.createMenuEntries(helpMenu,self.helpMenuTable)
-        return helpMenu
-
-    except Exception:
-        g.trace('Can not get MacOS Help menu')
-        g.es_exception()
-        return None
-#@nonl
-#@-node:ekr.20060211144330.1:getMacHelpMenu
-#@-node:ekr.20071027162712:Fix Apple help menu bug
 #@-node:ekr.20071001045205:To do: 4.4.4 final
 #@+node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
 # Leo 4.4.5 will complete several projects that are long overdue.
 
+#@+node:ekr.20071029082025:Improve distribution
+* Convert to svn  (use py_svn)
+* Enable sax option.
+* Proper xml namespace in .leo files.  Is this Leo 5.0??
+#@nonl
+#@-node:ekr.20071029082025:Improve distribution
 #@+node:ekr.20071028041803:Carry overs from 4.4.4
 #@+node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
 #@-node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
