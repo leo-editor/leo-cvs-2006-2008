@@ -462,10 +462,10 @@ class leoMenu:
         self.createMenuEntries(windowMenu,self.windowMenuTopTable)
     #@-node:ekr.20031218072017.3802:createWindowMenuFromTable
     #@+node:ekr.20031218072017.3803:createHelpMenuFromTable
-    def createHelpMenuFromTable (self):
+    def createHelpMenuFromTable (self,table):
 
         if sys.platform == 'darwin':
-            self.getMacHelpMenu()
+            self.getMacHelpMenu(table)
         else:
             helpMenu = self.createNewMenu("&Help")
             self.createMenuEntries(helpMenu,self.helpMenuTable)
@@ -499,10 +499,10 @@ class leoMenu:
                 name = kind[5:].strip()
                 if table:
                     self.createMenuEntries(parentMenu,table)
-                    table = []
-                if not self.handleSpecialMenus(name,parentName):
+                if not self.handleSpecialMenus(name,parentName,table):
                     self.createNewMenu(name,parentName) # Create submenu of parent menu.
                     self.createMenuFromConfigList(name,val,level+1)
+                table = []
             elif kind == '@item':
                 name = str(val) # Item names must always be ascii.
                 if val2:
@@ -518,7 +518,7 @@ class leoMenu:
     #@nonl
     #@-node:ekr.20070927082205:createMenuFromConfigList
     #@+node:ekr.20070927172712:handleSpecialMenus
-    def handleSpecialMenus (self,name,parentName):
+    def handleSpecialMenus (self,name,parentName,table=[]):
 
         '''Handle a special menu if name is the name of a special menu.
         return True if this method handles the menu.'''
@@ -536,7 +536,7 @@ class leoMenu:
             c.recentFiles = c.config.getRecentFiles()
             return True
         elif name2 == 'help' and sys.platform == 'darwin':
-            helpMenu = self.getMacHelpMenu()
+            helpMenu = self.getMacHelpMenu(table)
             return helpMenu is not None
         else:
             return False
