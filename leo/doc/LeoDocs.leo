@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.421602787456">
-	<global_window_position top="16" left="247" height="721" width="892"/>
+	<global_window_position top="16" left="247" height="701" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -32527,7 +32527,8 @@ The highlights of Leo 4.4.4:
   Leo outlines.
 
 - @auto nodes eliminate sentinels in derived files, thereby allowing people to
-  collaborate using Leo more easily.
+  collaborate using Leo more easily. **Warning**: for now, please make backup
+  copies of files imported with @auto.
   
 - New commands for resolving cvs conflicts.
 

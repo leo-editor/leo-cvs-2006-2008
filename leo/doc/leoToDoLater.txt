@@ -2393,6 +2393,7 @@ def find (self,event=None):
         # Restore the selection range.
         w.setSelectionRange(i,j,insert=ins)
         w.see(ins)
+        w.update() ###
     else:
         g.es("no more misspellings")
         self.tab.fillbox([])
