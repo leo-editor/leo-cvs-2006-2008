@@ -8336,6 +8336,7 @@ class spellTabHandler (leoFind.leoFind):
             # Restore the selection range.
             w.setSelectionRange(i,j,insert=ins)
             w.see(ins)
+            ### w.update() ###
         else:
             g.es("no more misspellings")
             self.tab.fillbox([])
@@ -8346,12 +8347,14 @@ class spellTabHandler (leoFind.leoFind):
         """Find the next unknown word."""
 
         c = self.c ; p = c.currentPosition()
+        w = c.frame.body.bodyCtrl
         aspell = self.aspell ; alts = None ; word = None
-
+        trace = True
         try:
             while 1:
                 # g.trace('p',p and p.headString())
-                p, word = self.findNextWord(p)
+                i,j,p,word = self.findNextWord(p)
+                # i,j = w.getSelectionRange()
                 if not p or not word:
                     alts = None
                     break
@@ -8374,9 +8377,8 @@ class spellTabHandler (leoFind.leoFind):
                 #@-node:ekr.20051025071455.46:<< Skip word if ignored or in local dictionary >>
                 #@nl
                 alts = aspell.processWord(word)
+                if trace: g.trace('alts',alts and len(alts) or 0,i,j,word,p and p.headString() or 'None')
                 if alts:
-                    w = c.frame.body.bodyCtrl
-                    i,j = w.getSelectionRange()
                     c.beginUpdate()
                     try:
                         c.frame.tree.expandAllAncestors(p)
@@ -8393,7 +8395,7 @@ class spellTabHandler (leoFind.leoFind):
     def findNextWord(self,p):
         """Scan for the next word, leaving the result in the work widget"""
 
-        c = self.c ; p = p.copy()
+        c = self.c ; p = p.copy() ; trace = False
         while 1:
             s = self.workCtrl.getAllText()
             i = self.workCtrl.getInsertPoint()
@@ -8411,7 +8413,8 @@ class spellTabHandler (leoFind.leoFind):
                 for w in (self.workCtrl,c.frame.body.bodyCtrl):
                     c.widgetWantsFocusNow(w)
                     w.setSelectionRange(i,j,insert=j)
-                return p,word
+                if trace: g.trace(i,j,word,p.headString())
+                return i,j,p,word
             else:
                 # End of the body text.
                 p.moveToThreadNext()
@@ -8421,7 +8424,9 @@ class spellTabHandler (leoFind.leoFind):
                 for w in (self.workCtrl,c.frame.body.bodyCtrl):
                     c.widgetWantsFocusNow(w)
                     w.setSelectionRange(0,0,insert=0)
-        return None,None
+                if trace: g.trace(0,0,'-->',p.headString())
+
+        return None,None,None,None
     #@nonl
     #@-node:ekr.20051025071455.47:findNextWord (tkSpell)
     #@-node:ekr.20051025071455.40:find & helpers
