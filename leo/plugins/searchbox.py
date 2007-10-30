@@ -138,6 +138,7 @@ class SearchBox:
         """Add the widgets to the navigation bar"""
 
         c = self.c ; toolbar = c.frame.iconFrame
+        if not toolbar: return
         # Button.
         self.go = Tk.Button(self._getSizer(toolbar, 25, 32), text="GO", command=self.doSearch)
         self.go.pack(side="right", fill="both", expand=1)

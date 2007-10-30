@@ -247,6 +247,7 @@ class UIHelperClass:
     def addWidgets(self):
         """Add the widgets to Leo"""
         toolbar = self.c.frame.iconFrame
+        if not toolbar: return
         # 
         self.frame = Tk.Frame(toolbar)
         self.frame.pack(side="right", padx=2)

@@ -242,6 +242,7 @@ def addNodeBar( tag, keywords ):
     if not c: return
 
     frame = determineFrame( c )
+    if not frame: return
     mbox = Tk.Frame( frame )
     mbox.pack( side = 'bottom' , fill = 'x' )
     for z in frame.children.values():

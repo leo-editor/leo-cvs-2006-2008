@@ -349,7 +349,8 @@ def addButtons (tags,keywords):
     """Add the "%s" and "---> %s" buttons to the icon area."""
 
     c = keywords['c']
-    toolbar = c.frame.iconFrame 
+    toolbar = c.frame.iconFrame
+    if not toolbar: return
 
     bbox = Pmw.ButtonBox(toolbar,pady=0,padx=0)
     bbox.pack()

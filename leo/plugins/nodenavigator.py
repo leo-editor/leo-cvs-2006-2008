@@ -156,6 +156,7 @@ class Navigator:
         c = self.c
         # Create the main container.
         self.frame = Tk.Frame(c.frame.iconFrame)
+        if not self.frame: return
         self.frame.pack(side="left")
         # Create the two menus.
         menus = []
