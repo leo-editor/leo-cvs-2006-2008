@@ -777,7 +777,7 @@ class tkSpellTab:
         self.c = c
         self.handler = handler
         self.tabName = tabName
-
+        self.change_i, change_j = None,None
         self.createFrame()
         self.createBindings()
         self.fillbox([])
@@ -903,6 +903,7 @@ class tkSpellTab:
         """Handle a click in the Add button in the Check Spelling dialog."""
 
         self.handler.add()
+        self.change_i, self.change_j = None,None
     #@-node:ekr.20051025071455.30:onAddButton
     #@+node:ekr.20051025071455.32:onChangeButton & onChangeThenFindButton
     def onChangeButton(self,event=None):
@@ -911,6 +912,7 @@ class tkSpellTab:
 
         self.handler.change()
         self.updateButtons()
+        self.change_i, self.change_j = None,None
 
 
     def onChangeThenFindButton(self,event=None):
@@ -920,6 +922,7 @@ class tkSpellTab:
         if self.handler.change():
             self.handler.find()
         self.updateButtons()
+        self.change_i, self.change_j = None,None
     #@-node:ekr.20051025071455.32:onChangeButton & onChangeThenFindButton
     #@+node:ekr.20051025071455.33:onFindButton
     def onFindButton(self):
@@ -931,6 +934,7 @@ class tkSpellTab:
         self.updateButtons()
         c.invalidateFocus()
         c.bodyWantsFocusNow()
+        self.change_i, self.change_j = None,None
     #@-node:ekr.20051025071455.33:onFindButton
     #@+node:ekr.20051025071455.34:onHideButton
     def onHideButton(self):
@@ -938,6 +942,7 @@ class tkSpellTab:
         """Handle a click in the Hide button in the Spell tab."""
 
         self.handler.hide()
+        self.change_i, self.change_j = None,None
     #@-node:ekr.20051025071455.34:onHideButton
     #@+node:ekr.20051025071455.31:onIgnoreButton
     def onIgnoreButton(self,event=None):
@@ -945,28 +950,40 @@ class tkSpellTab:
         """Handle a click in the Ignore button in the Check Spelling dialog."""
 
         self.handler.ignore()
+        self.change_i, self.change_j = None,None
+    #@nonl
     #@-node:ekr.20051025071455.31:onIgnoreButton
     #@+node:ekr.20051025071455.49:onMap
     def onMap (self, event=None):
         """Respond to a Tk <Map> event."""
 
-        self.update(show= False, fill= False)
+        # self.update(show= False, fill= False)
+        self.updateButtons()
     #@-node:ekr.20051025071455.49:onMap
     #@+node:ekr.20051025071455.50:onSelectListBox
     def onSelectListBox(self, event=None):
         """Respond to a click in the selection listBox."""
 
         c = self.c ; w = c.frame.body.bodyCtrl
-        i,j = w.getSelectionRange()
+
+        if self.change_i is None:
+
+            # A bad hack to get around the fact that only one selection
+            # exists at any one time on Linux.
+            i,j = w.getSelectionRange()
+            g.trace('setting',i,j)
+            self.change_i,self.change_j = i,j
+
         self.updateButtons()
-        c.bodyWantsFocus()
-        w.setSelectionRange(i,j,insert=j) ###
+
+        return 'continue'
     #@-node:ekr.20051025071455.50:onSelectListBox
     #@-node:ekr.20051025071455.29:Event handlers
     #@+node:ekr.20051025071455.42:Helpers
     #@+node:ekr.20051025071455.43:bringToFront
     def bringToFront (self):
 
+        # g.trace('tkSpellTab',g.callers())
         self.c.frame.log.selectTab('Spell')
     #@-node:ekr.20051025071455.43:bringToFront
     #@+node:ekr.20051025071455.44:fillbox
@@ -1005,22 +1022,22 @@ class tkSpellTab:
         else:
             return None
     #@-node:ekr.20051025071455.48:getSuggestion
-    #@+node:ekr.20051025071455.51:update
-    def update(self,show=True,fill=False):
+    #@+node:ekr.20051025071455.51:update (no longer used)
+    # def update(self,show=True,fill=False):
 
-        """Update the Spell Check dialog."""
+        # """Update the Spell Check dialog."""
 
-        c = self.c
+        # c = self.c
 
-        if fill:
-            self.fillbox([])
+        # if fill:
+            # self.fillbox([])
 
-        self.updateButtons()
+        # self.updateButtons()
 
-        if show:
-            self.bringToFront()
-            c.bodyWantsFocus()
-    #@-node:ekr.20051025071455.51:update
+        # if show:
+            # self.bringToFront()
+            # c.bodyWantsFocus()
+    #@-node:ekr.20051025071455.51:update (no longer used)
     #@+node:ekr.20051025071455.52:updateButtons (spellTab)
     def updateButtons (self):
 
