@@ -2,6 +2,63 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20071001045205:To do: 4.4.4 final
+#@+node:ekr.20071030122815:Fix new (fedora?) body editor bug
+#@+node:ekr.20071030122815.1:Report
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=4596477
+By: thyrsus
+
+Latest CVS.  I do "Cmds->Body Editors...->Add Body Editor" and it splits the
+body pane on the curent node.  Then I do "Cmds->Body Editors...->Delete Body
+Editor"; the second body pane goes away, but the log window has this:
+
+exception executing command
+Traceback (most recent call last):
+  File "/usr/local/lib/leo/src/leoCommands.py", line 276, in doCommand
+    val = command(event)
+  File "/usr/local/lib/leo/src/leoFrame.py", line 906, in deleteEditor
+    self.selectEditor(w)
+  File "/usr/local/lib/leo/src/leoFrame.py", line 978, in selectEditor
+    val = self.selectEditorHelper(w)
+  File "/usr/local/lib/leo/src/leoFrame.py", line 1021, in selectEditorHelper
+    c.selectPosition(w.leo_p,updateBeadList=True) # Calls
+assignPositionToEditor.
+  File "/usr/local/lib/leo/src/leoCommands.py", line 7300, in selectPosition
+    c.frame.tree.select(p,updateBeadList)
+  File "/usr/local/lib/leo/src/leoFrame.py", line 2726, in select
+    val = self.treeSelectHelper(p,updateBeadList,scroll)
+  File "/usr/local/lib/leo/src/leoFrame.py", line 2824, in treeSelectHelper
+    frame.setWrap(p)
+  File "/usr/local/lib/leo/src/leoTkinterFrame.py", line 1469, in setWrap
+    self.bodyXBar.pack(side="bottom", fill="x")
+  File "/usr/lib/python2.5/lib-tk/Tkinter.py", line 1762, in pack_configure
+    + self._options(cnf, kw))
+TclError: bad window path name
+".171002092.171002988.171041068.171041100.171041164.171041260.177140108.16854830
+0.168547916.bodyXBar"
+
+The problem occurs with Fedora 7,
+
+Leo 4.4.4 b4, build  1.215 , October 27, 2007
+Python 2.5.0, Tk 8.4.13, Pmw 1.2
+linux2
+
+The problem does not occur with Fedora Core 3,
+
+Leo 4.4.4 b4, build  1.215 , October 27, 2007
+Python 2.3.4, Tk 8.4.7, Pmw 1.2
+linux2
+
+In another thread you ask what's with Fedora Core 7?  Speaking from Stephen
+Colbert's gut, this feels similar to the other Python crash: Fedora turns on
+all the features, and they encounter the bugs.  If the Python folks don't fix
+them, you'll get to enjoy them on all the distributions soon enough :-).
+
+    - Stephen
+
+#@-node:ekr.20071030122815.1:Report
+#@-node:ekr.20071030122815:Fix new (fedora?) body editor bug
 #@+node:ekr.20071027145840.1:Make sure the plugins menu appears even if there are problems loading plugins
 This had probably to do with the RClick plugin that was enabled in mySettings.leo.
 ...

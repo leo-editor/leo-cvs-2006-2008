@@ -967,11 +967,10 @@ class tkSpellTab:
         c = self.c ; w = c.frame.body.bodyCtrl
 
         if self.change_i is None:
-
             # A bad hack to get around the fact that only one selection
             # exists at any one time on Linux.
             i,j = w.getSelectionRange()
-            g.trace('setting',i,j)
+            # g.trace('setting',i,j)
             self.change_i,self.change_j = i,j
 
         self.updateButtons()

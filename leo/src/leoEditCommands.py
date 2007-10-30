@@ -8294,7 +8294,7 @@ class spellTabHandler (leoFind.leoFind):
         if selection:
             if hasattr(self.tab,'change_i') and self.tab.change_i is not None:
                 start,end = oldSel = self.tab.change_i,self.tab.change_j
-                g.trace('using',start,end)
+                # g.trace('using',start,end)
             else:
                 start,end = oldSel = w.getSelectionRange()
             if start:
