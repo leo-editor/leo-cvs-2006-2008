@@ -559,9 +559,9 @@ class baseLeoImportCommands:
     def error (self,s): g.es(s)
     #@-node:ekr.20031218072017.3307:error
     #@+node:ekr.20041126042730:getTabWidth
-    def getTabWidth (self):
+    def getTabWidth (self,p=None):
 
-        d = g.scanDirectives(self.c)
+        d = g.scanDirectives(self.c,p=p)
         w = d.get("tabwidth")
         if w not in (0,None):
             return w
@@ -1441,6 +1441,7 @@ class baseLeoImportCommands:
             self.indentRefFlag = None # None, True or False.
             self.language = language
             self.methodName = ic.methodName # x, as in < < x methods > > =
+            self.mismatchWarningGiven = False
             self.output_newline = ic.output_newline # = c.config.getBool('output_newline')
             self.output_indent = 0 # The minimum indentation presently in effect.
             self.root = None # The top-level node of the generated tree.
@@ -1451,7 +1452,8 @@ class baseLeoImportCommands:
                 # The start of the line containing the signature.
                 # An error will be given if something other than whitespace precedes the signature.
             self.startSigIndent = None
-            self.tab_width = ic.getTabWidth() # The tab width in effect in the c.currentPosition.
+            self.tab_width = None # Set in run: the tab width in effect in the c.currentPosition.
+            self.tab_ws = '' # Set in run: the whitespace equivalent to one tab.
             self.trace = False or ic.trace # = c.config.getBool('trace_import')
             self.treeType = ic.treeType # '@root' or '@file'
             self.webType = ic.webType # 'cweb' or 'noweb'  
@@ -1459,12 +1461,6 @@ class baseLeoImportCommands:
             # Compute language ivars.
             delim1,delim2,delim3 = g.set_delims_from_language(language)
             self.comment_delim = delim1
-
-            # Create the ws equivalent to one tab.
-            if self.tab_width < 0:
-                self.tab_ws = ' '*abs(self.tab_width)
-            else:
-                self.tab_ws = '\t'
 
             # May be overridden in subclasses.
             self.blockCommentDelim1 = None
@@ -1580,7 +1576,7 @@ class baseLeoImportCommands:
             expectedMismatch = g.app.unitTesting and d.get('expectedMismatchLine')
 
             if i >= len(lines1):
-                if i != expectedMismatch or not g.app.unitTesting:
+                if i != expectedMismatch or not g.unitTesting:
                     pr('extra lines')
                     for line in lines2[i:]:
                         pr(repr(line))
@@ -1588,7 +1584,7 @@ class baseLeoImportCommands:
                 return False
 
             if i >= len(lines2):
-                if i != expectedMismatch or not g.app.unitTesting:
+                if i != expectedMismatch or not g.unitTesting:
                     g.es_print('missing lines')
                     for line in lines2[i:]:
                         g.es_print(repr(line))
@@ -1600,7 +1596,13 @@ class baseLeoImportCommands:
                 return True # An exact match.
             elif not line1.strip() and not line2.strip():
                 return True # Blank lines compare equal.
-            elif not strict and line1.lstrip() == line2.lstrip():
+            elif (not strict and not g.unitTesting) and line1.lstrip() == line2.lstrip():
+                if not self.mismatchWarningGiven:
+                    self.mismatchWarningGiven = True
+                    g.es_print('Warning: leading whitespace does not match')
+                    g.es_print('First mismatched line at line %d % (i+1)')
+                    g.es_print('original line:  %s' % line1)
+                    g.es_print('generated line: %s' % line2)
                 return True # A match excluding leading whitespace.
             else:
                 if not g.app.unitTesting or i+1 != expectedMismatch:
@@ -1625,6 +1627,22 @@ class baseLeoImportCommands:
 
             runner.compareHelper(lines1,lines2,i,strict=True)
         #@-node:ekr.20070816101019:@test compareHelper
+        #@+node:ekr.20071030115446.1:@test compareHelper-warning
+        if g.unitTesting:
+
+            ic = c.importCommands
+            runner = ic.baseScannerClass(ic,atAuto=True,language='java')
+            i = 0
+            lines1 = ['abc',]
+            lines2 = [' abc',]
+
+            g.unitTesting = False # force the warning.
+
+            g.app.unitTestDict ['expectedErrors'] = 0
+            g.app.unitTestDict ['expectedMismatchLine'] = 0
+
+            runner.compareHelper(lines1,lines2,i,strict=False)
+        #@-node:ekr.20071030115446.1:@test compareHelper-warning
         #@-node:ekr.20070730093735:compareHelper & tests
         #@+node:ekr.20070911110507:reportMismatch & test
         def reportMismatch (self,lines1,lines2,bad_i):
@@ -1820,17 +1838,20 @@ class baseLeoImportCommands:
             # Call the helper to parse the inner part of the class.
             putRef,indentFlag,classDelim,decls,trailing = self.putClassHelper(s,i,codeEnd,class_name,class_node)
 
-            # g.trace(class_name,'indent',self.classIndent,'indentFlag',indentFlag)
+            declsUndentVal = self.getLeadingIndent(decls,0)
+
+            # g.trace(class_name,'indent',self.classIndent,'indentFlag',indentFlag,'declsIndent',declsUndentVal)
 
             # Set the body of the class node.
             ref = putRef and self.getClassNodeRef(class_name,indentFlag) or ''
 
-            # Remove the leading whitespace only from the classHead and trailing parts.
+            # Remove the leading whitespace in various ways from each part.
             result = (
                 prefix +
                 self.undentBy(classHead,undentVal) +
                 self.undentBy(classDelim,undentVal) +
-                ref +
+                self.undentBy(decls,undentVal) +
+                self.undentBy(ref,declsUndentVal) +
                 self.undentBy(trailing,undentVal))
 
             # Append the result to the class node.
@@ -1840,7 +1861,7 @@ class baseLeoImportCommands:
             self.classIndent = oldClassIndent
             self.methodName = oldMethodName
             self.startSigIndent = oldStartSigIndent
-        #@+node:ekr.20070703122141.106:appendRefToClassNode
+        #@+node:ekr.20070703122141.106:getClassNodeRef
         def getClassNodeRef (self,class_name,indentFlag):
 
             '''Insert the proper body text in the class_vnode.'''
@@ -1857,12 +1878,7 @@ class baseLeoImportCommands:
                 return '%s%s\n' % (self.tab_ws,s)
             else:
                 return '%s\n' % (s)
-
-            # if indentFlag:
-                # self.appendTextToClassNode(class_node,'%s%s\n' % (self.tab_ws,s))
-            # else:
-                # self.appendTextToClassNode(class_node,'%s\n' % s)
-        #@-node:ekr.20070703122141.106:appendRefToClassNode
+        #@-node:ekr.20070703122141.106:getClassNodeRef
         #@+node:ekr.20070707190351:appendTextToClassNode
         def appendTextToClassNode (self,class_node,s):
 
@@ -1896,8 +1912,8 @@ class baseLeoImportCommands:
             self.output_indent += abs(self.tab_width)
 
             # Parse the decls.
-            start = i = self.skipDecls(s,i,end,inClass=True)
-            decls = s[start:i]
+            j = i ; i = self.skipDecls(s,i,end,inClass=True)
+            decls = s[j:i]
 
             # Parse the rest of the class.
             delim1, delim2 = self.outerBlockDelim1, self.outerBlockDelim2
@@ -1935,6 +1951,12 @@ class baseLeoImportCommands:
             else:
                 g.trace('Can not happen: no sigId')
                 headline = 'unknown function'
+
+            body1 = s[start:sigStart]
+            # Bug fix: 2007/20/31: adjust start backwards to get a better undent.
+            if body1.strip():
+                while start > 0 and s[start-1] in (' ','\t'):
+                    start -= 1
 
             body1 = self.undentBody(s[start:sigStart],ignoreComments=False)
 
@@ -2060,7 +2082,7 @@ class baseLeoImportCommands:
             self.putRootText(parent)
 
             # Parse the decls.
-            i = start = self.skipDecls(s,0,len(s),inClass=False)
+            i = self.skipDecls(s,0,len(s),inClass=False)
             decls = s[:i]
 
             # Create the decls node.
@@ -2080,9 +2102,6 @@ class baseLeoImportCommands:
 
             assert kind in ('class','outer')
             start = i ; putRef = False ; indentFlag = None
-            # if kind =='class' and g.match(s,i,self.outerBlockDelim1):
-                # end = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
-                # start = i = i + len(self.outerBlockDelim1)
             while i < end:
                 progress = i
                 if s[i] in (' ','\t','\n'):
@@ -2249,6 +2268,7 @@ class baseLeoImportCommands:
             trace = False or self.trace
             start = i ; prefix = None
             classOrFunc = False
+            if trace: g.trace(g.callers())
             while i < end:
                 progress = i
                 if s[i] in (' ','\t','\n'):
@@ -2563,29 +2583,37 @@ class baseLeoImportCommands:
         #@+node:ekr.20070707072749:run (baseScannerClass)
         def run (self,s,parent):
 
-            scanner = self ; c = self.c
-            scanner.root = root = parent.copy()
-            scanner.file_s = s
+            c = self.c
+            self.root = root = parent.copy()
+            self.file_s = s
+            self.tab_width = self.importCommands.getTabWidth(p=root)
+            # g.trace('tab_width',self.tab_width)
+            # Create the ws equivalent to one tab.
+            if self.tab_width < 0:
+                self.tab_ws = ' '*abs(self.tab_width)
+            else:
+                self.tab_ws = '\t'
 
             # Init the error/status info.
             self.errors = 0
             self.errorLines = []
+            self.mismatchWarningGiven = False
             changed = c.isChanged()
 
             # Regularize leading whitespace for strict languages only.
             if self.strict:
-                s = scanner.regularizeWhitespace(s)
+                s = self.regularizeWhitespace(s)
 
             # Generate the nodes, including directive and section references.
-            scanner.scan(s,parent)
+            self.scan(s,parent)
 
             # Check the generated nodes.
             # Return True if the result is equivalent to the original file.
-            ok = self.errors == 0 and scanner.check(s,parent)
+            ok = self.errors == 0 and self.check(s,parent)
             g.app.unitTestDict ['result'] = ok
 
             # Insert an @ignore directive if there were any serious problems.
-            if not ok: scanner.insertIgnoreDirective(parent)
+            if not ok: self.insertIgnoreDirective(parent)
 
             if self.atAuto and ok:
                 for p in root.self_and_subtree_iter():
