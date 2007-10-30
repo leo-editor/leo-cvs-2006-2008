@@ -956,9 +956,11 @@ class tkSpellTab:
     def onSelectListBox(self, event=None):
         """Respond to a click in the selection listBox."""
 
-        c = self.c
+        c = self.c ; w = c.frame.body.bodyCtrl
+        i,j = w.getSelectionRange()
         self.updateButtons()
         c.bodyWantsFocus()
+        w.setSelectionRange(i,j,insert=j) ###
     #@-node:ekr.20051025071455.50:onSelectListBox
     #@-node:ekr.20051025071455.29:Event handlers
     #@+node:ekr.20051025071455.42:Helpers

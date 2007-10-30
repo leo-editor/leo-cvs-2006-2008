@@ -8349,12 +8349,10 @@ class spellTabHandler (leoFind.leoFind):
         c = self.c ; p = c.currentPosition()
         w = c.frame.body.bodyCtrl
         aspell = self.aspell ; alts = None ; word = None
-        trace = True
+        trace = False
         try:
             while 1:
-                # g.trace('p',p and p.headString())
                 i,j,p,word = self.findNextWord(p)
-                # i,j = w.getSelectionRange()
                 if not p or not word:
                     alts = None
                     break
