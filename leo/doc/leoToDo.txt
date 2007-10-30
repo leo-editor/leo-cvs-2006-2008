@@ -2,6 +2,701 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20071001045205:To do: 4.4.4 final
+#@+node:ekr.20071027145840.1:Make sure the plugins menu appears even if there are problems loading plugins
+This had probably to do with the RClick plugin that was enabled in mySettings.leo.
+...
+Disabling RClick gives me the Plugins menu everywhere.
+#@nonl
+#@+node:ekr.20070926135612:createMenusFromConfigList & helpers
+def createMenusFromConfigList (self,aList):
+
+    '''Create menus from dictionary d instead of 'hard coded' menus.
+    The 'top' menu has already been created.'''
+
+    tag = '@menu'
+    for z in aList:
+        kind,val,val2 = z
+        if kind.startswith(tag):
+            name = kind[len(tag):].strip()
+            if not self.handleSpecialMenus(name,parentName=None):
+                self.createNewMenu(name) # Create top-level menu.
+                self.createMenuFromConfigList(name,val,level=0)
+        else:
+            self.error('%s %s not valid outside @menu tree' % (kind,val))
+#@+node:ekr.20070927082205:createMenuFromConfigList
+def createMenuFromConfigList (self,parentName,aList,level=0):
+
+    table = [] ; parentMenu = self.getMenu(parentName)
+
+    for z in aList:
+        kind,val,val2 = z
+        if kind.startswith('@menu'):
+            # Menu names can be unicode without any problem.
+            name = kind[5:].strip()
+            if table:
+                self.createMenuEntries(parentMenu,table)
+            if not self.handleSpecialMenus(name,parentName,table):
+                self.createNewMenu(name,parentName) # Create submenu of parent menu.
+                self.createMenuFromConfigList(name,val,level+1)
+            table = []
+        elif kind == '@item':
+            name = str(val) # Item names must always be ascii.
+            if val2:
+                # Translated names can be unicode.
+                table.append((val2,name),)
+            else:
+                table.append(name)
+        else:
+            g.trace('can not happen: bad kind:',kind)
+
+    if table:
+        self.createMenuEntries(parentMenu,table)
+#@nonl
+#@-node:ekr.20070927082205:createMenuFromConfigList
+#@+node:ekr.20070927172712:handleSpecialMenus
+def handleSpecialMenus (self,name,parentName,table=[]):
+
+    '''Handle a special menu if name is the name of a special menu.
+    return True if this method handles the menu.'''
+
+    c = self.c
+    name2 = name.replace('&','').replace(' ','').lower()
+
+    if name2 == 'plugins':
+        # Create the plugins menu using a hook.
+        g.doHook("create-optional-menus",c=c)
+        return True
+    elif name2.startswith('recentfiles'):
+        # Just create the menu.  createRecentFilesMenuItems will be called later.
+        self.createNewMenu(name,parentName)
+        c.recentFiles = c.config.getRecentFiles()
+        return True
+    elif name2 == 'help' and sys.platform == 'darwin':
+        helpMenu = self.getMacHelpMenu(table)
+        return helpMenu is not None
+    else:
+        return False
+#@-node:ekr.20070927172712:handleSpecialMenus
+#@-node:ekr.20070926135612:createMenusFromConfigList & helpers
+#@-node:ekr.20071027145840.1:Make sure the plugins menu appears even if there are problems loading plugins
+#@+node:ekr.20071029131305:Fix spell-check problem on Linux
+@nocolor
+
+http://sourceforge.net/forum/forum.php?thread_id=1853660&forum_id=10228
+
+By: Terry Brown (terry_n_brown) - 2007-10-25 09:35
+
+current CVS, ubuntu linux 
+
+- when I click the correct word in the list the wrong word in the body text loses its selection, so when I click Change the correct word is inserted after (with no space) the wrong word, which is not removed. 
+
+- spell tab uses a different font, should use the same font as find tab (log font probably?) 
+
+@color
+#@+node:ekr.20051025071455:Spell classes
+@others
+#@+node:ekr.20051025071455.1:class spellCommandsClass
+class spellCommandsClass (baseEditCommandsClass):
+
+    '''Commands to support the Spell Tab.'''
+
+    @others
+#@+node:ekr.20051025080056:ctor
+def __init__ (self,c):
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+
+    self.handler = None
+
+    # All the work happens when we first open the frame.
+#@-node:ekr.20051025080056:ctor
+#@+node:ekr.20051025080420:getPublicCommands (searchCommandsClass)
+def getPublicCommands (self):
+
+    return {
+        'open-spell-tab':           self.openSpellTab,
+        'spell-find':               self.find,
+        'spell-change':             self.change,
+        'spell-change-then-find':   self.changeThenFind,
+        'spell-ignore':             self.ignore,
+        'hide-spell-tab':           self.hide,
+    }
+#@-node:ekr.20051025080420:getPublicCommands (searchCommandsClass)
+#@+node:ekr.20051025080633:openSpellTab
+def openSpellTab (self,event=None):
+
+    '''Open the Spell Checker tab in the log pane.'''
+
+    c = self.c ; log = c.frame.log ; tabName = 'Spell'
+
+    if log.frameDict.get(tabName):
+        log.selectTab(tabName)
+    elif self.handler:
+        if self.handler.loaded:
+            self.handler.bringToFront()
+    else:
+        log.selectTab(tabName)
+        self.handler = spellTabHandler(c,tabName)
+        if not self.handler.loaded:
+            log.deleteTab(tabName,force=True)
+#@+node:ekr.20051025080420.1:commands...
+# Just open the Spell tab if it has never been opened.
+# For minibuffer commands, we must also force the Spell tab to be visible.
+
+def find (self,event=None):
+    '''Simulate pressing the 'Find' button in the Spell tab.'''
+    if self.handler:
+        self.openSpellTab()
+        self.handler.find()
+    else:
+        self.openSpellTab()
+
+def change(self,event=None):
+    '''Simulate pressing the 'Change' button in the Spell tab.'''
+    if self.handler:
+        self.openSpellTab()
+        self.handler.change()
+    else:
+        self.openSpellTab()
+
+def changeAll(self,event=None):
+
+    if self.handler:
+        self.openSpellTab()
+        self.handler.changeAll()
+    else:
+        self.openSpellTab()
+
+def changeThenFind (self,event=None):
+    '''Simulate pressing the 'Change, Find' button in the Spell tab.'''
+    if self.handler:
+        self.openSpellTab()
+        self.handler.changeThenFind()
+    else:
+        self.openSpellTab()
+
+def hide (self,event=None):
+    '''Hide the Spell tab.'''
+    if self.handler:
+        self.c.frame.log.selectTab('Log')
+        self.c.bodyWantsFocus()
+
+def ignore (self,event=None):
+    '''Simulate pressing the 'Ignore' button in the Spell tab.'''
+    if self.handler:
+        self.openSpellTab()
+        self.handler.ignore()
+    else:
+        self.openSpellTab()
+#@-node:ekr.20051025080420.1:commands...
+#@-node:ekr.20051025080633:openSpellTab
+#@-node:ekr.20051025071455.1:class spellCommandsClass
+#@+node:ekr.20051025071455.18:class spellTabHandler (leoFind.leoFind)
+class spellTabHandler (leoFind.leoFind):
+
+    """A class to create and manage Leo's Spell Check dialog."""
+
+    @others
+#@+node:ekr.20051025071455.19:Birth & death
+#@+node:ekr.20051025071455.20:spellTabHandler.__init__
+def __init__(self,c,tabName):
+
+    """Ctor for the Leo Spelling dialog."""
+
+    leoFind.leoFind.__init__(self,c) # Call the base ctor.
+
+    self.c = c
+    self.body = c.frame.body
+    self.currentWord = None
+    self.suggestions = []
+    self.messages = [] # List of message to be displayed when hiding the tab.
+    self.outerScrolledFrame = None
+    self.workCtrl = g.app.gui.plainTextWidget(c.frame.top)
+        # A text widget for scanning.
+        # Must have a parent frame even though it is not packed.
+
+    self.loaded = self.init_aspell(c)
+    if self.loaded:
+        self.tab = g.app.gui.createSpellTab(c,self,tabName)
+#@-node:ekr.20051025071455.20:spellTabHandler.__init__
+#@+node:ekr.20051025094004:init_aspell
+def init_aspell (self,c):
+
+    '''Init aspell and related ivars.  Return True if all went well.'''
+
+    self.local_language_code = c.config.getString('spell_local_language_code') or 'en'
+
+    self.dictionaryFileName = dictionaryFileName = (
+        c.config.getString('spell_local_dictionary') or
+        os.path.join(g.app.loadDir,"..","plugins",'spellpyx.txt'))
+
+    if not dictionaryFileName or not g.os_path_exists(dictionaryFileName):
+        g.es_print('Can not open dictionary file: %s' % (
+            dictionaryFileName), color='red')
+        return False
+
+    self.aspell = AspellClass(c,dictionaryFileName,self.local_language_code)
+
+    if self.aspell.aspell:
+        self.dictionary = self.readDictionary(dictionaryFileName)
+    else:
+        self.dictionary = False
+        # g.es_print('Can not open Aspell',color='red')
+
+    return self.aspell.aspell
+#@-node:ekr.20051025094004:init_aspell
+#@+node:ekr.20051025071455.16:readDictionary
+def readDictionary (self,fileName):
+
+    """Read the dictionary of words which we use as a local dictionary
+
+    Although Aspell itself has the functionality to handle this kind of things
+    we duplicate it here so that we can also use it for the "ignore" functionality
+    and so that in future a Python only solution could be developed."""
+
+    d = {}
+
+    try:
+        f = open(fileName,"r")
+    except IOError:
+        g.es("Unable to open local dictionary '%s' - using a blank one instead" % fileName)
+        return d
+
+    try:
+        # Create the dictionary - there are better ways to do this
+        # in later Python's but we stick with this method for compatibility
+        for word in f.readlines():
+            d [word.strip().lower()] = 0
+    finally:
+        f.close()
+
+    return d
+#@-node:ekr.20051025071455.16:readDictionary
+#@-node:ekr.20051025071455.19:Birth & death
+#@+node:ekr.20051025071455.36:Commands
+#@+node:ekr.20051025071455.37:add
+def add(self,event=None):
+    """Add the selected suggestion to the dictionary."""
+
+    if not self.currentWord: return
+
+    # g.trace(self.currentWord)
+
+    try:
+        f = None
+        try:
+            # Rewrite the dictionary in alphabetical order.
+            f = open(self.dictionaryFileName, "r")
+            words = f.readlines()
+            f.close()
+            words = [word.strip() for word in words]
+            words.append(self.currentWord)
+            words.sort()
+            f = open(self.dictionaryFileName, "w")
+            for word in words:
+                f.write("%s\n" % word)
+            f.flush()
+            f.close()
+            if 1:
+                s = 'Spell: added %s' % self.currentWord
+                self.messages.append(s)
+            else: # Too distracting.
+                g.es("Adding ", color= "blue", newline= False) 
+                g.es('%s' % self.currentWord)
+        except IOError:
+            g.es("Can not add %s to dictionary" % self.currentWord, color="red")
+    finally:
+        if f: f.close()
+
+    self.dictionary[self.currentWord.lower()] = 0
+    self.tab.onFindButton()
+#@-node:ekr.20051025071455.37:add
+#@+node:ekr.20051025071455.38:change (spellTab)
+def change(self,event=None):
+    """Make the selected change to the text"""
+
+    __pychecker__ = '--no-override --no-argsused'
+         # event param is not used, required, and different from base class.
+
+    c = self.c ; body = self.body ; w = body.bodyCtrl
+
+    selection = self.tab.getSuggestion()
+    if selection:
+        start,end = oldSel = w.getSelectionRange()
+        if start:
+            if start > end: start,end = end,start
+            w.delete(start,end)
+            w.insert(start,selection)
+            w.setSelectionRange(start,start+len(selection))
+            c.frame.body.onBodyChanged("Change",oldSel=oldSel)
+            c.invalidateFocus()
+            c.bodyWantsFocusNow()
+            return True
+
+    # The focus must never leave the body pane.
+    c.invalidateFocus()
+    c.bodyWantsFocusNow()
+    return False
+#@-node:ekr.20051025071455.38:change (spellTab)
+#@+node:ekr.20051025071455.40:find & helpers
+def find (self,event=None):
+    """Find the next unknown word."""
+
+    c = self.c ; body = c.frame.body ; w = body.bodyCtrl
+
+    # Reload the work pane from the present node.
+    s = w.getAllText().rstrip()
+    self.workCtrl.delete(0,"end")
+    self.workCtrl.insert("end",s)
+
+    # Reset the insertion point of the work widget.
+    ins = w.getInsertPoint()
+    self.workCtrl.setInsertPoint(ins)
+
+    alts, word = self.findNextMisspelledWord()
+    self.currentWord = word # Need to remember this for 'add' and 'ignore'
+
+    if alts:
+        # Save the selection range.
+        ins = w.getInsertPoint()
+        i,j = w.getSelectionRange()
+        self.tab.fillbox(alts,word)
+        c.invalidateFocus()
+        c.bodyWantsFocusNow()
+        # Restore the selection range.
+        w.setSelectionRange(i,j,insert=ins)
+        w.see(ins)
+    else:
+        g.es("no more misspellings")
+        self.tab.fillbox([])
+        c.invalidateFocus()
+        c.bodyWantsFocusNow()
+#@+node:ekr.20051025071455.45:findNextMisspelledWord
+def findNextMisspelledWord(self):
+    """Find the next unknown word."""
+
+    c = self.c ; p = c.currentPosition()
+    aspell = self.aspell ; alts = None ; word = None
+
+    try:
+        while 1:
+            # g.trace('p',p and p.headString())
+            p, word = self.findNextWord(p)
+            if not p or not word:
+                alts = None
+                break
+            << Skip word if ignored or in local dictionary >>
+            alts = aspell.processWord(word)
+            if alts:
+                w = c.frame.body.bodyCtrl
+                i,j = w.getSelectionRange()
+                c.beginUpdate()
+                try:
+                    c.frame.tree.expandAllAncestors(p)
+                    c.selectPosition(p)
+                finally:
+                    c.endUpdate()
+                    w.setSelectionRange(i,j,insert=j)
+                break
+    except:
+        g.es_exception()
+    return alts, word
+#@+node:ekr.20051025071455.46:<< Skip word if ignored or in local dictionary >>
+@ We don't bother to call apell if the word is in our dictionary. The dictionary contains both locally 'allowed' words and 'ignored' words. We put the test before aspell rather than after aspell because the cost of checking aspell is higher than the cost of checking our local dictionary. For small local dictionaries this is probably not True and this code could easily be located after the aspell call
+@c
+
+if self.dictionary.has_key(word.lower()):
+    continue
+#@-node:ekr.20051025071455.46:<< Skip word if ignored or in local dictionary >>
+#@-node:ekr.20051025071455.45:findNextMisspelledWord
+#@+node:ekr.20051025071455.47:findNextWord (tkSpell)
+def findNextWord(self,p):
+    """Scan for the next word, leaving the result in the work widget"""
+
+    c = self.c ; p = p.copy()
+    while 1:
+        s = self.workCtrl.getAllText()
+        i = self.workCtrl.getInsertPoint()
+        while i < len(s) and not g.isWordChar1(s[i]):
+            i += 1
+        # g.trace('p',p and p.headString(),'i',i,'len(s)',len(s))
+        if i < len(s):
+            # A non-empty word has been found.
+            j = i
+            while j < len(s) and g.isWordChar(s[j]):
+                j += 1
+            word = s[i:j]
+            # This trace verifies that all words have been checked.
+            # g.trace(repr(word))
+            for w in (self.workCtrl,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w)
+                w.setSelectionRange(i,j,insert=j)
+            return p,word
+        else:
+            # End of the body text.
+            p.moveToThreadNext()
+            if not p: break
+            self.workCtrl.delete(0,'end')
+            self.workCtrl.insert(0,p.bodyString())
+            for w in (self.workCtrl,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w)
+                w.setSelectionRange(0,0,insert=0)
+    return None,None
+#@nonl
+#@-node:ekr.20051025071455.47:findNextWord (tkSpell)
+#@-node:ekr.20051025071455.40:find & helpers
+#@+node:ekr.20051025121408:hide
+def hide (self,event=None):
+
+    self.c.frame.log.selectTab('Log')
+
+    for message in self.messages:
+        g.es(message,color='blue')
+
+    self.messages = []
+#@-node:ekr.20051025121408:hide
+#@+node:ekr.20051025071455.41:ignore
+def ignore(self,event=None):
+
+    """Ignore the incorrect word for the duration of this spell check session."""
+
+    if not self.currentWord: return
+
+    if 1: # Somewhat helpful: applies until the tab is destroyed.
+        s = 'Spell: ignore %s' % self.currentWord
+        self.messages.append(s)
+
+    if 0: # Too distracting
+        g.es("Ignoring ", color= "blue", newline= False)
+        g.es('%s' % self.currentWord)
+
+    self.dictionary[self.currentWord.lower()] = 0
+    self.tab.onFindButton()
+#@-node:ekr.20051025071455.41:ignore
+#@-node:ekr.20051025071455.36:Commands
+#@-node:ekr.20051025071455.18:class spellTabHandler (leoFind.leoFind)
+#@+node:ekr.20051025071455.6:class AspellClass
+class AspellClass:
+
+    """A wrapper class for Aspell spell checker"""
+
+    @others
+#@+node:ekr.20051025071455.7:Birth & death
+#@+node:ekr.20051025071455.8:__init__
+def __init__ (self,c,local_dictionary_file,local_language_code):
+
+    """Ctor for the Aspell class."""
+
+    self.c = c
+
+    self.aspell_dir = g.os_path_abspath(c.config.getString('aspell_dir'))
+    self.aspell_bin_dir = g.os_path_abspath(c.config.getString('aspell_bin_dir'))
+
+    self.local_language_code = local_language_code or 'en'
+    self.local_dictionary_file = g.os_path_abspath(local_dictionary_file)
+    self.local_dictionary = "%s.wl" % os.path.splitext(self.local_dictionary_file) [0]
+
+    # g.trace('code',self.local_language_code,'dict',self.local_dictionary_file)
+    # g.trace('dir',self.aspell_dir,'bin_dir',self.aspell_bin_dir)
+
+    try:
+        import ctypes
+        import ctypes.util
+        self.use_ctypes = True
+    except ImportError:
+        self.use_ctypes = False
+    self.aspell = self.sc = None
+
+    if self.use_ctypes:
+        self.getAspellWithCtypes()
+    else:
+        self.getAspell()
+#@-node:ekr.20051025071455.8:__init__
+#@+node:ekr.20061017125710:getAspell
+def getAspell (self):
+
+    try:
+        import aspell
+    except ImportError:
+        # Specify the path to the top-level Aspell directory.
+        theDir = g.choose(sys.platform=='darwin',self.aspell_dir,self.aspell_bin_dir)
+        aspell = g.importFromPath('aspell',theDir,pluginName=None,verbose=False)
+
+    self.aspell = aspell
+    self.sc = aspell and aspell.spell_checker(prefix=self.aspell_dir,lang=self.local_language_code)
+#@-node:ekr.20061017125710:getAspell
+#@+node:ekr.20061018111331:getAspellWithCtypes
+def getAspellWithCtypes (self):
+
+    import ctypes
+    import ctypes.util
+    c_int, c_char_p = ctypes.c_int, ctypes.c_char_p
+
+    try:
+        if sys.platform.startswith('win'):
+            path = g.os_path_join(self.aspell_bin_dir, "aspell-15.dll")
+            self.aspell = aspell = ctypes.CDLL(path)
+        else:
+            path = 'aspell'
+            libname = ctypes.util.find_library(path)
+            assert(libname)
+            self.aspell = aspell = ctypes.CDLL(libname)
+    except Exception:
+        print 'Can not load %s' % (path)
+        self.aspell = self.check = self.sc = None
+        return
+
+    try:
+        << define and configure aspell entry points >>
+    except Exception:
+        print 'aspell checker not enabled'
+        self.aspell = self.check = self.sc = None
+        return
+
+    # Remember these functions (bound methods).
+    # No other ctypes data is known outside this method.
+    self.check = check
+    self.spell_checker = spell_checker
+    self.string_enumeration_next = string_enumeration_next
+    self.suggest = suggest
+    self.word_list_elements = word_list_elements
+    self.word_list_size = word_list_size
+#@+node:ekr.20061018111933:<< define and configure aspell entry points >>
+# new_aspell_config
+new_aspell_config = aspell.new_aspell_config 
+new_aspell_config.restype = c_int
+
+# aspell_config_replace
+aspell_config_replace = aspell.aspell_config_replace 
+aspell_config_replace.argtypes = [c_int, c_char_p, c_char_p] 
+
+# aspell_config_retrieve
+aspell_config_retrieve = aspell.aspell_config_retrieve 
+aspell_config_retrieve.restype = c_char_p  
+aspell_config_retrieve.argtypes = [c_int, c_char_p] 
+
+# aspell_error_message
+aspell_error_message = aspell.aspell_error_message 
+aspell_error_message.restype = c_char_p  
+
+sc = new_aspell_config()
+if 0:
+    print sc 
+    print aspell_config_replace(sc, "prefix", aspell_dir) #1/0 
+    print 'prefix', aspell_dir, `aspell_config_retrieve(sc, "prefix")`
+    print aspell_config_retrieve(sc, "lang")
+    print aspell_config_replace(sc, "lang",self.local_language_code)
+    print aspell_config_retrieve(sc, "lang")
+
+possible_err = aspell.new_aspell_speller(sc)
+aspell.delete_aspell_config(c_int(sc))
+
+# Rudimentary error checking, needs more.  
+if aspell.aspell_error_number(possible_err) != 0:
+    print 'err', aspell_error_message(possible_err)
+    spell_checker = None
+else: 
+    spell_checker = aspell.to_aspell_speller(possible_err)
+
+if not spell_checker:
+    raise Exception('aspell checker not enabled')
+
+word_list_size = aspell.aspell_word_list_size
+word_list_size.restype = c_int
+word_list_size.argtypes = [c_int,]
+
+# word_list_elements
+word_list_elements = aspell.aspell_word_list_elements
+word_list_elements.restype = c_int
+word_list_elements.argtypes = [c_int,]
+
+# string_enumeration_next
+string_enumeration_next = aspell.aspell_string_enumeration_next
+string_enumeration_next.restype = c_char_p
+string_enumeration_next.argtypes = [c_int,]
+
+# check
+check = aspell.aspell_speller_check
+check.restype = c_int 
+check.argtypes = [c_int, c_char_p, c_int]
+
+# suggest
+suggest = aspell.aspell_speller_suggest
+suggest.restype = c_int 
+suggest.argtypes = [c_int, c_char_p, c_int]
+#@nonl
+#@-node:ekr.20061018111933:<< define and configure aspell entry points >>
+#@-node:ekr.20061018111331:getAspellWithCtypes
+#@-node:ekr.20051025071455.7:Birth & death
+#@+node:ekr.20051025071455.10:processWord
+def processWord(self, word):
+    """Pass a word to aspell and return the list of alternatives.
+    OK: 
+    * 
+    Suggestions: 
+    & «original» «count» «offset»: «miss», «miss», ... 
+    None: 
+    # «original» «offset» 
+    simplifyed to not create the string then make a list from it
+    """
+
+    # g.trace('word',word)
+
+    if not self.aspell:
+        g.trace('aspell not installed')
+        return None
+    elif self.use_ctypes:
+        if self.check(self.spell_checker,word,len(word)):
+            return None
+        else:
+            return self.suggestions(word)
+    else:
+        if self.sc.check(word):
+            return None
+        else:
+            return self.sc.suggest(word)
+#@-node:ekr.20051025071455.10:processWord
+#@+node:ekr.20061018101455.4:suggestions
+def suggestions(self,word):
+
+    "return list of words found"
+
+    aList = []
+    sw = self.suggest(self.spell_checker, word, len(word))
+
+    if self.word_list_size(sw):
+        ewords = self.word_list_elements(sw)
+        while 1: 
+            x = self.string_enumeration_next(ewords)
+            if x is None: break
+            aList.append(x)
+    return aList
+#@nonl
+#@-node:ekr.20061018101455.4:suggestions
+#@+node:ekr.20051025071455.11:updateDictionary
+def updateDictionary(self):
+
+    """Update the aspell dictionary from a list of words.
+
+    Return True if the dictionary was updated correctly."""
+
+    try:
+        # Create master list
+        basename = os.path.splitext(self.local_dictionary)[0]
+        cmd = (
+            "%s --lang=%s create master %s.wl < %s.txt" %
+            (self.aspell_bin_dir, self.local_language_code, basename,basename))
+        os.popen(cmd)
+        return True
+
+    except Exception, err:
+        # g.es_print("Unable to update local aspell dictionary: %s" % err)
+        print "Unable to update local aspell dictionary: %s" % (err)
+        return False
+#@-node:ekr.20051025071455.11:updateDictionary
+#@-node:ekr.20051025071455.6:class AspellClass
+#@-node:ekr.20051025071455:Spell classes
+#@-node:ekr.20071029131305:Fix spell-check problem on Linux
 #@-node:ekr.20071001045205:To do: 4.4.4 final
 #@+node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
 # Leo 4.4.5 will complete several projects that are long overdue.

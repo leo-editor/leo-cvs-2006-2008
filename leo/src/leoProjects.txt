@@ -46621,6 +46621,7 @@ def getMacHelpMenu (self,table):
         g.trace('Can not get MacOS Help menu')
         g.es_exception()
         return None
+#@nonl
 #@-node:ekr.20060211144330.1:getMacHelpMenu
 #@-node:ekr.20071027162712:Fixed Apple help menu reversion
 #@+node:ekr.20071029085216:Disabled the plugins manage plugin
@@ -46628,6 +46629,8 @@ def getMacHelpMenu (self,table):
 
 It is too confusing at present, because it doesn't support @enabled-plugins nodes.
 #@-node:ekr.20071029085216:Disabled the plugins manage plugin
+#@+node:ekr.20071029154326.1:Made sure plugins work if frame.iconFrame is None
+#@-node:ekr.20071029154326.1:Made sure plugins work if frame.iconFrame is None
 #@-node:ekr.20071027155527:4.4.4 final
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@-all

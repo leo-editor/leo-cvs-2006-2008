@@ -3,23 +3,23 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="26" left="280" height="936" width="942"/>
+	<global_window_position top="11" left="179" height="936" width="915"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
 <v t="ekr.20051031040240" str_leo_pos="9"><vh>Startup</vh>
+<v t="ekr.20070629073827"><vh>Disabled buttons</vh>
 <v t="ekr.20071001054335"><vh>@@button split-defs</vh></v>
 <v t="ekr.20071004062031"><vh>@@button print -----</vh></v>
-<v t="ekr.20070629073827"><vh>Disabled buttons</vh>
 <v t="ekr.20060910141935"><vh>ZODB plugin buttons</vh>
 <v t="ekr.20060910141935.1"><vh>@@button zodb-read</vh></v>
 <v t="ekr.20060910141935.2"><vh>@@button zodb-write</vh></v>
 </v>
 <v t="ekr.20070628175250"><vh>@@button Add if g.unitTesting @key=f6</vh></v>
 </v>
-<v t="ekr.20060531093331"><vh>@command clones-tab</vh>
+<v t="ekr.20060531093331"><vh>@@command clones-tab</vh>
 <v t="ekr.20060531093331.1"><vh>class cloneNavigator</vh>
 <v t="ekr.20060531093331.2"><vh>init</vh></v>
 <v t="ekr.20060531093331.3"><vh>getAllClones</vh></v>
@@ -29,6 +29,8 @@
 </v>
 </v>
 </v>
+<v t="ekr.20071024171346"><vh>@command unit-test @key=Alt+4</vh></v>
+<v t="ekr.20071024180738"><vh>@command ext-unit-test @key=Alt+6</vh></v>
 <v t="ekr.20070603183100"><vh>@settings</vh>
 <v t="ekr.20070603183100.1"><vh>@bool use_chapters = True</vh></v>
 <v t="ekr.20070605104326"><vh>@bool use_chapter_tabs = True</vh></v>
@@ -45,7 +47,8 @@
 marks="ekr.20070927082205,"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.2" a="TV"><vh>To do</vh>
-<v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
+<v t="ekr.20040117181936"
+marks="ekr.20070927082205,ekr.20071026092640,"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
 <v t="ekr.20031218072017.2406"><vh>Code</vh>
@@ -94,11 +97,13 @@ marks="ekr.20070927082205,"><vh>@thin leoMenu.py</vh></v>
 <v t="ekr.20031218072017.3939"><vh>@thin leoTkinterFrame.py</vh></v>
 <v t="ekr.20031218072017.4047"><vh>@thin leoTkinterGui.py</vh></v>
 <v t="ekr.20031218072017.4099"><vh>@thin leoTkinterKeys.py</vh></v>
-<v t="ekr.20031218072017.4100"><vh>@thin leoTkinterMenu.py</vh></v>
+<v t="ekr.20031218072017.4100"
+marks="ekr.20060211144330.1,"><vh>@thin leoTkinterMenu.py</vh></v>
 <v t="ekr.20040803072955"><vh>@thin leoTkinterTree.py</vh></v>
 </v>
 <v t="ekr.20070627083814"><vh>Unit tests</vh>
-<v t="ekr.20070627083814.1"><vh>@thin unitTests.txt</vh></v>
+<v t="ekr.20070627083814.1"
+marks="ekr.20070627082044.91,"><vh>@thin unitTests.txt</vh></v>
 </v>
 </v>
 </vnodes>
@@ -165,7 +170,7 @@ if 0: # Set to 1 for lint-like testing.
 <t tx="ekr.20031218072017.3821"></t>
 <t tx="ekr.20040629121554.1">def getSignOnLine (self):
     c = self
-    return "Leo 4.4.4 b3, build %s, October 22, 2007" % c.getBuildNumber()
+    return "Leo 4.4.4 b4, build %s, October 27, 2007" % c.getBuildNumber()
 </t>
 <t tx="ekr.20050721093241">@nocolor
 
@@ -209,7 +214,9 @@ Two (recently written) functions in leoGlobals.py support conversions from Pytho
 Important:  the first Tkinter index is '1.0', not '0.0', but the row returned by g.convertPythonIndexToRowCol is zero based, so the code that actually creates Tkinter indices from row/col must add 1 to the row.  Similar remarks apply when going in the reverse direction.
 </t>
 <t tx="ekr.20051031040240"></t>
-<t tx="ekr.20060217111834">.  any char
+<t tx="ekr.20060217111834">@nocolor
+
+.  any char
 ^  start line
 $  end of line
 \w alphanum: [a-zA-Z0-9_]
@@ -224,7 +231,16 @@ copy-to-start-of-each-line: ^([ \t]+)   --&gt;  \1x
 remove-leading-ws:  ^[ \t]+             --&gt;  empty
 remove-trailing-ws: [ \t]+$             --&gt;  empty
 paste-at-column:    ^(.{4})             --&gt;  \1x
-paste-after-lws:    ^([ \t]+)           --&gt;  \1x</t>
+paste-after-lws:    ^([ \t]+)           --&gt;  \1x
+
+(?=...)
+    Matches if ... matches next, but doesnt consume any of the string. This is called a lookahead assertion. For example, Isaac (?=Asimov) will match 'Isaac ' only if it's followed by 'Asimov'.
+
+(?!...)
+    Matches if ... doesn't match next. This is a negative lookahead assertion. For example, Isaac (?!Asimov) will match 'Isaac ' only if it is not followed by 'Asimov'.
+
+(?&lt;=...)
+    Matches if the current position in the string is preceded by a match for ... that ends at the current position. This is called a positive lookbehind assertion. The contained pattern must only match strings of some fixed length, meaning that abc or a|b are allowed, but a* and a{3,4} are not</t>
 <t tx="ekr.20060531093331">@
 Ever have a clone that is difficult to understand outside the context of its
 original parent? Here's some code to help. It displays the headline of the
@@ -332,7 +348,12 @@ else:
 <t tx="ekr.20070605104326">True:  Chapter tabs appear in the outline pane.
 False: Chapter tabs do not appear.</t>
 <t tx="ekr.20070605104410"></t>
-<t tx="ekr.20070627083814"></t>
+<t tx="ekr.20070627083814"># The following unit test can not be placed in the source files for various reasons.
+
+# Running these tests locally: All pass
+    
+# Running them externally (with nullGui): 27 failures
+</t>
 <t tx="ekr.20070628175250">@color
 
 u = c.undoer
@@ -382,6 +403,19 @@ if s.strip():
         c.undoer.afterChangeTree(p,'split-defs',b)
         c.endUpdate()</t>
 <t tx="ekr.20071004062031">print '-'*60
+</t>
+<t tx="ekr.20071024171346"># You can run unit tests by selecting an outline containing unit tests.
+
+import leoTest
+
+leoTest.doTests(c,all=False)
+c.selectPosition(p,updateBeadList=False)</t>
+<t tx="ekr.20071024180738"># You can run unit tests by selecting an outline containing unit tests.
+
+import leoTest
+
+leoTest.runTestsExternally(c,all=False)
+
 </t>
 </tnodes>
 </leo_file>
