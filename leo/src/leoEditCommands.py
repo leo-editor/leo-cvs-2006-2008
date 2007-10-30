@@ -8292,7 +8292,11 @@ class spellTabHandler (leoFind.leoFind):
 
         selection = self.tab.getSuggestion()
         if selection:
-            start,end = oldSel = w.getSelectionRange()
+            if hasattr(self.tab,'change_i') and self.tab.change_i is not None:
+                start,end = oldSel = self.tab.change_i,self.tab.change_j
+                g.trace('using',start,end)
+            else:
+                start,end = oldSel = w.getSelectionRange()
             if start:
                 if start > end: start,end = end,start
                 w.delete(start,end)
