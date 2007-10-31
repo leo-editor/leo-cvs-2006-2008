@@ -356,7 +356,7 @@ if 1: # To be replaced by ivars
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.4"
+__version__ = "0.5" # EKR: use c.frame.body.bodyCtrl.leo_bodyBar and .leo_bodyXBar.
 
 #@+others
 #@+node:ekr.20060513153648:Documentation
@@ -815,8 +815,8 @@ class controllerClass:
         cc.LeoFrame = c.frame	
 
         cc.LeoBodyText = cc.LeoFrame.body.bodyCtrl
-        cc.LeoYBodyBar = cc.LeoFrame.body.bodyBar
-        cc.LeoXBodyBar = cc.LeoFrame.body.bodyXBar
+        cc.LeoYBodyBar = cc.LeoFrame.body.bodyBar.leo_bodyBar
+        cc.LeoXBodyBar = cc.LeoFrame.body.bodyXBar.leo_bodyXBar
 
         cc.LeoFont = cc.LeoBodyText["font"]
         cc.LeoWrap = cc.LeoBodyText["wrap"]

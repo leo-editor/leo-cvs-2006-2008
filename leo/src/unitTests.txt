@@ -8169,7 +8169,8 @@ assert(c.frame==f)
 if g.app.gui.guiName() == 'tkinter':
     ivars = (
         'bar1','bar2',
-        'body','bodyBar','bodyCtrl','bodyXBar',
+        'body',
+        # 'bodyBar','bodyCtrl','bodyXBar',
         'canvas',
         'f1','f2',
         'iconBar','iconFrame',

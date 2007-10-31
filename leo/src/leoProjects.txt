@@ -144,8 +144,6 @@ def __init__(self,title,gui):
 self.bar1 = None
 self.bar2 = None
 self.body = None
-self.bodyBar = None
-self.bodyXBar = None
 self.f1 = self.f2 = None
 self.findPanel = None # Inited when first opened.
 self.iconBarComponentName = 'iconBar'
@@ -44253,8 +44251,6 @@ def toggleActivePane (self,event=None):
 self.bar1 = None
 self.bar2 = None
 self.body = None
-self.bodyBar = None
-self.bodyXBar = None
 self.f1 = self.f2 = None
 self.findPanel = None # Inited when first opened.
 self.iconBarComponentName = 'iconBar'
@@ -44330,7 +44326,7 @@ def setTabWidth (self, w):
         g.es_exception()
         pass
 #@-node:ekr.20031218072017.722:setTabWidth (tkFrame) (changed)
-#@+node:ekr.20031218072017.1540:setWrap (tkFrame) (changed)
+#@+node:ekr.20031218072017.1540:setWrap (tkFrame)
 def setWrap (self,p):
 
     c = self.c
@@ -44341,17 +44337,19 @@ def setWrap (self,p):
     if self.body.wrapState == wrap: return
 
     self.body.wrapState = wrap
+    w = self.body.bodyCtrl
+
     # g.trace(wrap)
     if wrap:
-        self.body.bodyCtrl.configure(wrap="word") # 2007/10/25
-        self.bodyXBar.pack_forget()
+        w.configure(wrap="word") # 2007/10/25
+        w.leo_bodyXBar.pack_forget() # 2007/10/31
     else:
-        self.body.bodyCtrl.configure(wrap="none")
+        w.configure(wrap="none")
         # Bug fix: 3/10/05: We must unpack the text area to make the scrollbar visible.
-        self.body.bodyCtrl.pack_forget()  # 2007/10/25
-        self.bodyXBar.pack(side="bottom", fill="x")
-        self.body.bodyCtrl.pack(expand=1,fill="both")  # 2007/10/25
-#@-node:ekr.20031218072017.1540:setWrap (tkFrame) (changed)
+        w.pack_forget()  # 2007/10/25
+        w.leo_bodyXBar.pack(side="bottom", fill="x") # 2007/10/31
+        w.pack(expand=1,fill="both")  # 2007/10/25
+#@-node:ekr.20031218072017.1540:setWrap (tkFrame)
 #@+node:ekr.20031218072017.3970:reconfigurePanes (use config bar_width) (tkFrame) (changed)
 def reconfigurePanes (self):
 
@@ -49922,6 +49920,572 @@ def onSelectListBox(self, event=None):
 # This involves using the default font.
 #@nonl
 #@-node:ekr.20071030143612:Use same font in spell tab as in  find tab
+#@+node:ekr.20071030122815:Fixed (old) body editor bug
+#@+node:ekr.20071030122815.1:Report
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=4596477
+By: thyrsus
+
+Latest CVS.  I do "Cmds->Body Editors...->Add Body Editor" and it splits the
+body pane on the curent node.  Then I do "Cmds->Body Editors...->Delete Body
+Editor"; the second body pane goes away, but the log window has this:
+
+exception executing command
+Traceback (most recent call last):
+  File "/usr/local/lib/leo/src/leoCommands.py", line 276, in doCommand
+    val = command(event)
+  File "/usr/local/lib/leo/src/leoFrame.py", line 906, in deleteEditor
+    self.selectEditor(w)
+  File "/usr/local/lib/leo/src/leoFrame.py", line 978, in selectEditor
+    val = self.selectEditorHelper(w)
+  File "/usr/local/lib/leo/src/leoFrame.py", line 1021, in selectEditorHelper
+    c.selectPosition(w.leo_p,updateBeadList=True) # Calls
+assignPositionToEditor.
+  File "/usr/local/lib/leo/src/leoCommands.py", line 7300, in selectPosition
+    c.frame.tree.select(p,updateBeadList)
+  File "/usr/local/lib/leo/src/leoFrame.py", line 2726, in select
+    val = self.treeSelectHelper(p,updateBeadList,scroll)
+  File "/usr/local/lib/leo/src/leoFrame.py", line 2824, in treeSelectHelper
+    frame.setWrap(p)
+  File "/usr/local/lib/leo/src/leoTkinterFrame.py", line 1469, in setWrap
+    self.bodyXBar.pack(side="bottom", fill="x")
+  File "/usr/lib/python2.5/lib-tk/Tkinter.py", line 1762, in pack_configure
+    + self._options(cnf, kw))
+TclError: bad window path name
+".171002092.171002988.171041068.171041100.171041164.171041260.177140108.16854830
+0.168547916.bodyXBar"
+
+The problem occurs with Fedora 7,
+
+Leo 4.4.4 b4, build  1.215 , October 27, 2007
+Python 2.5.0, Tk 8.4.13, Pmw 1.2
+linux2
+
+The problem does not occur with Fedora Core 3,
+
+Leo 4.4.4 b4, build  1.215 , October 27, 2007
+Python 2.3.4, Tk 8.4.7, Pmw 1.2
+linux2
+
+In another thread you ask what's with Fedora Core 7?  Speaking from Stephen
+Colbert's gut, this feels similar to the other Python crash: Fedora turns on
+all the features, and they encounter the bugs.  If the Python folks don't fix
+them, you'll get to enjoy them on all the distributions soon enough :-).
+
+    - Stephen
+
+#@-node:ekr.20071030122815.1:Report
+#@+node:ekr.20060528100747:Editors (leoBody)
+# This code uses self.pb, a paned body widget, created by tkBody.finishCreate.
+
+
+#@+node:ekr.20070424053629:entries
+#@+node:ekr.20060528100747.1:addEditor
+def addEditor (self,event=None):
+
+    '''Add another editor to the body pane.'''
+
+    c = self.c ; p = c.currentPosition()
+
+    self.totalNumberOfEditors += 1
+    self.numberOfEditors += 1
+
+    if self.numberOfEditors == 2:
+        # Inject the ivars into the first editor.
+        w_old = self.editorWidgets.get('1')
+        self.updateInjectedIvars(w_old,p)
+        self.selectLabel(w_old) # Immediately create the label in the old editor.
+
+    name = '%d' % self.totalNumberOfEditors
+    pane = self.pb.add(name)
+    panes = self.pb.panes()
+    minSize = float(1.0/float(len(panes)))
+
+    f = self.createEditorFrame(pane)
+    << create text widget w >>
+    self.editorWidgets[name] = w
+
+    for pane in panes:
+        self.pb.configurepane(pane,size=minSize)
+
+    self.pb.updatelayout()
+    c.frame.body.bodyCtrl = w
+
+    self.updateInjectedIvars(w,p)
+    self.selectLabel(w)
+    self.selectEditor(w)
+    self.updateEditors()
+    c.bodyWantsFocusNow()
+#@+node:ekr.20060528110922:<< create text widget w >>
+w = self.createTextWidget(self.frame,f,name=name,p=p)
+w.delete(0,'end')
+w.insert('end',p.bodyString())
+w.see(0)
+
+self.setFontFromConfig(w=w)
+self.setColorFromConfig(w=w)
+self.createBindings(w=w)
+c.k.completeAllBindingsForWidget(w)
+
+self.recolorWidget(p,w)
+#@nonl
+#@-node:ekr.20060528110922:<< create text widget w >>
+#@-node:ekr.20060528100747.1:addEditor
+#@+node:ekr.20060528170438:cycleEditorFocus
+def cycleEditorFocus (self,event=None):
+
+    '''Cycle keyboard focus between the body text editors.'''
+
+    c = self.c ; d = self.editorWidgets ; w = c.frame.body.bodyCtrl
+    values = d.values()
+    if len(values) > 1:
+        i = values.index(w) + 1
+        if i == len(values): i = 0
+        w2 = d.values()[i]
+        assert(w!=w2)
+        self.selectEditor(w2)
+        c.frame.body.bodyCtrl = w2
+        # print '***',g.app.gui.widget_name(w2),id(w2)
+
+    return 'break'
+#@-node:ekr.20060528170438:cycleEditorFocus
+#@+node:ekr.20060528113806:deleteEditor
+def deleteEditor (self,event=None):
+
+    '''Delete the presently selected body text editor.'''
+
+    c = self.c ; w = c.frame.body.bodyCtrl ; d = self.editorWidgets
+
+    if len(d.keys()) == 1: return
+
+    name = w.leo_name
+
+    del d [name] 
+    self.pb.delete(name)
+    panes = self.pb.panes()
+    minSize = float(1.0/float(len(panes)))
+
+    for pane in panes:
+        self.pb.configurepane(pane,size=minSize)
+
+    # Select another editor.
+    w = d.values()[0]
+    # c.frame.body.bodyCtrl = w # Don't do this now?
+    self.numberOfEditors -= 1
+    self.selectEditor(w)
+#@-node:ekr.20060528113806:deleteEditor
+#@+node:ekr.20070425180705:findEditorForChapter (leoBody)
+def findEditorForChapter (self,chapter,p):
+
+    '''Return an editor to be assigned to chapter.'''
+
+    c = self.c ; d = self.editorWidgets ; values = d.values()
+
+    # First, try to match both the chapter and position.
+    if p:
+        for w in values:
+            if (
+                hasattr(w,'leo_chapter') and w.leo_chapter == chapter and
+                hasattr(w,'leo_p') and w.leo_p and w.leo_p.equal(p)):
+                # g.trace('***',id(w),'match chapter and p',p.headString())
+                return w
+
+    # Next, try to match just the chapter.
+    for w in values:
+        if hasattr(w,'leo_chapter') and w.leo_chapter == chapter:
+            # g.trace('***',id(w),'match only chapter',p.headString())
+            return w
+
+    # As a last resort, return the present editor widget.
+    # g.trace('***',id(self.bodyCtrl),'no match',p.headString())
+    return c.frame.body.bodyCtrl
+#@-node:ekr.20070425180705:findEditorForChapter (leoBody)
+#@+node:ekr.20060530210057:select/unselectLabel
+def unselectLabel (self,w):
+
+    self.createChapterIvar(w)
+    self.packEditorLabelWidget(w)
+    s = self.computeLabel(w)
+    w.leo_label.configure(text=s,bg='LightSteelBlue1')
+
+def selectLabel (self,w):
+
+    if self.numberOfEditors > 1:
+        self.createChapterIvar(w)
+        self.packEditorLabelWidget(w)
+        s = self.computeLabel(w)
+        # g.trace(s,g.callers())
+        w.leo_label.configure(text=s,bg='white')
+    elif w.leo_label:
+        w.leo_label.pack_forget()
+        w.leo_label = None
+#@nonl
+#@-node:ekr.20060530210057:select/unselectLabel
+#@+node:ekr.20061017083312:selectEditor & helpers
+selectEditorLockout = False
+
+def selectEditor(self,w):
+
+    '''Select editor w and node w.leo_p.'''
+
+    #  Called by body.onClick and whenever w must be selected.
+    trace = False
+    c = self.c
+
+    if self.selectEditorLockout:
+        return
+
+    if w and w == self.c.frame.body.bodyCtrl:
+        if w.leo_p and w.leo_p != c.currentPosition():
+            c.selectPosition(w.leo_p)
+            c.bodyWantsFocusNow()
+        return
+
+    try:
+        val = None
+        self.selectEditorLockout = True
+        val = self.selectEditorHelper(w)
+    finally:
+        self.selectEditorLockout = False
+
+    return val # Don't put a return in a finally clause.
+#@+node:ekr.20070423102603:selectEditorHelper
+def selectEditorHelper (self,w):
+
+    c = self.c ; cc = c.chapterController ; d = self.editorWidgets
+
+    trace = False
+
+    if not w.leo_p:
+        g.trace('no w.leo_p') 
+        return 'break'
+
+    if trace:
+        g.trace('==1',id(w),
+            hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
+            hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
+
+    self.inactivateActiveEditor(w)
+
+    # The actual switch.
+    c.frame.body.bodyCtrl = w
+    w.leo_active = True
+
+    self.switchToChapter(w)
+    self.selectLabel(w)
+
+    if not self.ensurePositionExists(w):
+        g.trace('***** no position editor!')
+        return 'break'
+
+    if trace:
+        g.trace('==2',id(w),
+            hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
+            hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
+
+    c.beginUpdate()
+    try:
+        # g.trace('expanding ancestors of ',w.leo_p.headString(),g.callers())
+        c.frame.tree.expandAllAncestors(w.leo_p)
+        c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
+    finally:
+        c.endUpdate()
+
+    c.recolor_now()
+    << restore the selection, insertion point and the scrollbar >>
+    c.bodyWantsFocusNow()
+    return 'break'
+#@+node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
+# g.trace('active:',id(w),'scroll',w.leo_scrollBarSpot,'ins',w.leo_insertSpot)
+
+if w.leo_insertSpot:
+    w.setInsertPoint(w.leo_insertSpot)
+else:
+    w.setInsertPoint(0)
+
+if w.leo_scrollBarSpot is not None:
+    first,last = w.leo_scrollBarSpot
+    w.yview('moveto',first)
+else:
+    w.seeInsertPoint()
+
+if w.leo_selection:
+    try:
+        start,end = w.leo_selection
+        w.setSelectionRange(start,end)
+    except Exception:
+        pass
+#@-node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
+#@-node:ekr.20070423102603:selectEditorHelper
+#@-node:ekr.20061017083312:selectEditor & helpers
+#@+node:ekr.20060528132829:assignPositionToEditor
+def assignPositionToEditor (self,p):
+
+    '''Called *only* from tree.select to select the present body editor.'''
+
+    c = self.c ; cc = c.chapterController ; w = c.frame.body.bodyCtrl
+
+    self.updateInjectedIvars(w,p)
+    self.selectLabel(w)
+
+    # g.trace('===',id(w),w.leo_chapter.name,w.leo_p.headString())
+#@-node:ekr.20060528132829:assignPositionToEditor
+#@+node:ekr.20060528131618:updateEditors
+# Called from addEditor and assignPositionToEditor
+
+def updateEditors (self):
+
+    c = self.c ; p = c.currentPosition()
+    d = self.editorWidgets
+    if len(d.keys()) < 2: return # There is only the main widget.
+
+    for key in d.keys():
+        w = d.get(key)
+        v = w.leo_v
+        if v and v == p.v and w != c.frame.body.bodyCtrl:
+            w.delete(0,'end')
+            w.insert('end',p.bodyString())
+            # g.trace('update',w,v)
+            self.recolorWidget(p,w)
+    c.bodyWantsFocus()
+#@-node:ekr.20060528131618:updateEditors
+#@-node:ekr.20070424053629:entries
+#@+node:ekr.20070424053629.1:utils
+#@+node:ekr.20070422093128:computeLabel
+def computeLabel (self,w):
+
+    s = w.leo_label_s
+
+    if hasattr(w,'leo_chapter') and w.leo_chapter:
+        s = '%s: %s' % (w.leo_chapter.name,s)
+
+    return s
+#@-node:ekr.20070422093128:computeLabel
+#@+node:ekr.20070422094710:createChapterIvar
+def createChapterIvar (self,w):
+
+    c = self.c ; cc = c.chapterController
+
+    if not hasattr(w,'leo_chapter') or not w.leo_chapter:
+        if cc and self.use_chapters:
+            w.leo_chapter = cc.getSelectedChapter()
+        else:
+            w.leo_chapter = None
+#@-node:ekr.20070422094710:createChapterIvar
+#@+node:ekr.20070424084651:ensurePositionExists
+def ensurePositionExists(self,w):
+
+    '''Return True if w.leo_p exists or can be reconstituted.'''
+
+    c = self.c
+
+    if c.positionExists(w.leo_p):
+        return True
+    else:
+        g.trace('***** does not exist',w.leo_name)
+        for p2 in c.allNodes_iter():
+            if p2.v and p2.v == w.leo_v:
+                w.leo_p = p2.copy()
+                return True
+        else:
+             # This *can* happen when selecting a deleted node.
+            w.leo_p = c.currentPosition()
+            return False
+#@-node:ekr.20070424084651:ensurePositionExists
+#@+node:ekr.20070424080640:inactivateActiveEditor
+def inactivateActiveEditor(self,w):
+
+    '''Inactivate the previously active editor.'''
+
+    d = self.editorWidgets
+
+    # Don't capture ivars here! assignPositionToEditor keeps them up-to-date. (??)
+    for key in d.keys():
+        w2 = d.get(key)
+        if w2 != w and w2.leo_active:
+            w2.leo_active = False
+            self.unselectLabel(w2)
+            w2.leo_scrollBarSpot = w2.yview()
+            w2.leo_insertSpot = w2.getInsertPoint()
+            w2.leo_selection = w2.getSelectionRange()
+            # g.trace('inactive:',id(w2),'scroll',w2.leo_scrollBarSpot,'ins',w2.leo_insertSpot)
+            # g.trace('inactivate',id(w2))
+            return
+#@-node:ekr.20070424080640:inactivateActiveEditor
+#@+node:ekr.20060530204135:recolorWidget
+def recolorWidget (self,p,w):
+
+    c = self.c ; old_w = c.frame.body.bodyCtrl
+
+    # g.trace('w',id(w),p.headString(),len(w.getAllText()))
+
+    # Save.
+    c.frame.body.bodyCtrl = w
+    try:
+        # c.recolor_now(interruptable=False) # Force a complete recoloring.
+        c.frame.body.colorizer.colorize(p,incremental=False,interruptable=False)
+    finally:
+        # Restore.
+        c.frame.body.bodyCtrl = old_w
+#@-node:ekr.20060530204135:recolorWidget
+#@+node:ekr.20070424084012:switchToChapter (leoBody)
+def switchToChapter (self,w):
+
+    '''select w.leo_chapter.'''
+
+    c = self.c ; cc = c.chapterController
+
+    if hasattr(w,'leo_chapter') and w.leo_chapter:
+        chapter = w.leo_chapter
+        name = chapter and chapter.name
+        oldChapter = cc.getSelectedChapter()
+        if chapter != oldChapter:
+            # g.trace('===','old',oldChapter.name,'new',name,w.leo_p)
+            cc.selectChapterByName(name)
+            c.bodyWantsFocusNow()
+#@-node:ekr.20070424084012:switchToChapter (leoBody)
+#@+node:ekr.20070424092855:updateInjectedIvars
+# Called from addEditor and assignPositionToEditor.
+
+def updateInjectedIvars (self,w,p):
+
+    c = self.c ; cc = c.chapterController ; 
+
+    if cc and self.use_chapters:
+        w.leo_chapter = cc.getSelectedChapter()
+    else:
+        w.leo_chapter = None
+
+    w.leo_p = p.copy()
+    w.leo_v = w.leo_p.v
+    w.leo_label_s = p.headString()
+
+    # g.trace('   ===', id(w),w.leo_chapter and w.leo_chapter.name,p.headString())
+#@-node:ekr.20070424092855:updateInjectedIvars
+#@-node:ekr.20070424053629.1:utils
+#@+node:ekr.20070627082044.931:unit tests
+# Crashes on wx
+#@+node:ekr.20070627082044.932:@test Add & Delete editor
+if g.unitTesting:
+    body = c.frame.body
+    p2 = p.copy()
+    body.addEditor()
+    body.deleteEditor()
+    assert c.currentPosition() == p2
+#@nonl
+#@-node:ekr.20070627082044.932:@test Add & Delete editor
+#@+node:ekr.20070627082044.933:@test Add editor, Delete leftmost editor
+if g.unitTesting:
+
+    body = c.frame.body
+
+    body.addEditor()
+
+    # Select the leftmost editor.
+    w = body.editorWidgets.get('1')
+    body.selectEditor(w)
+
+    # Delete the selected editor.
+    body.deleteEditor()
+#@-node:ekr.20070627082044.933:@test Add editor, Delete leftmost editor
+#@-node:ekr.20070627082044.931:unit tests
+#@-node:ekr.20060528100747:Editors (leoBody)
+#@+node:ekr.20031218072017.1540:setWrap (tkFrame)
+def setWrap (self,p):
+
+    c = self.c
+    theDict = g.scanDirectives(c,p)
+    if not theDict: return
+
+    wrap = theDict.get("wrap")
+    if self.body.wrapState == wrap: return
+
+    self.body.wrapState = wrap
+    w = self.body.bodyCtrl
+
+    # g.trace(wrap)
+    if wrap:
+        w.configure(wrap="word") # 2007/10/25
+        w.leo_bodyXBar.pack_forget() # 2007/10/31
+    else:
+        w.configure(wrap="none")
+        # Bug fix: 3/10/05: We must unpack the text area to make the scrollbar visible.
+        w.pack_forget()  # 2007/10/25
+        w.leo_bodyXBar.pack(side="bottom", fill="x") # 2007/10/31
+        w.pack(expand=1,fill="both")  # 2007/10/25
+#@-node:ekr.20031218072017.1540:setWrap (tkFrame)
+#@+node:ekr.20060528100747.3:tkBody.createTextWidget
+def createTextWidget (self,frame,parentFrame,p,name):
+
+    # pychecker complains that there is no leo_p attribute.
+
+    c = self.c
+
+    parentFrame.configure(bg='LightSteelBlue1')
+
+    wrap = c.config.getBool('body_pane_wraps')
+    wrap = g.choose(wrap,"word","none")
+
+    # Setgrid=1 cause severe problems with the font panel.
+    body = w = leoTkTextWidget (parentFrame,name='body-pane',
+        bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
+
+    bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
+    ### self.bodyBar = bodyBar
+
+    def yscrollCallback(x,y,bodyBar=bodyBar,w=w):
+        # g.trace(x,y,g.callers())
+        if hasattr(w,'leo_scrollBarSpot'):
+            w.leo_scrollBarSpot = (x,y)
+        return bodyBar.set(x,y)
+
+    body['yscrollcommand'] = yscrollCallback # bodyBar.set
+
+    bodyBar['command'] =  body.yview
+    bodyBar.pack(side="right", fill="y")
+
+    # Always create the horizontal bar.
+    bodyXBar = Tk.Scrollbar(
+        parentFrame,name='bodyXBar',orient="horizontal")
+    body['xscrollcommand'] = bodyXBar.set
+    bodyXBar['command'] = body.xview
+
+    if wrap == "none":
+        # g.trace(parentFrame)
+        bodyXBar.pack(side="bottom", fill="x")
+
+    body.pack(expand=1,fill="both")
+
+    self.wrapState = wrap
+
+    if 0: # Causes the cursor not to blink.
+        body.configure(insertofftime=0)
+
+    # Inject ivars
+    if name == '1':
+        w.leo_p = w.leo_v = None # Will be set when the second editor is created.
+    else:
+        w.leo_p = p.copy()
+        w.leo_v = body.leo_p.v
+            # pychecker complains body.leo_p does not exist.
+    w.leo_active = True
+    # New in Leo 4.4.4 final: inject the scrollbar items into the text widget.
+    w.leo_bodyBar = bodyBar # 2007/10/31
+    w.leo_bodyXBar = bodyXBar # 2007/10/31
+    w.leo_chapter = None
+    w.leo_frame = parentFrame
+    w.leo_name = name
+    w.leo_label = None
+    w.leo_label_s = None
+    w.leo_scrollBarSpot = None
+    w.leo_insertSpot = None
+    w.leo_selection = None
+
+    return w
+#@nonl
+#@-node:ekr.20060528100747.3:tkBody.createTextWidget
+#@-node:ekr.20071030122815:Fixed (old) body editor bug
 #@-node:ekr.20071027155527:4.4.4 final
 #@-node:ekr.20070703172548:Leo 4.4.4 projects
 #@-all

@@ -120,7 +120,7 @@ class leoTkinterBody (leoFrame.leoBody):
             bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
 
         bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
-        frame.bodyBar = self.bodyBar = bodyBar
+        ### self.bodyBar = bodyBar
 
         def yscrollCallback(x,y,bodyBar=bodyBar,w=w):
             # g.trace(x,y,g.callers())
@@ -134,11 +134,10 @@ class leoTkinterBody (leoFrame.leoBody):
         bodyBar.pack(side="right", fill="y")
 
         # Always create the horizontal bar.
-        frame.bodyXBar = self.bodyXBar = bodyXBar = Tk.Scrollbar(
+        bodyXBar = Tk.Scrollbar(
             parentFrame,name='bodyXBar',orient="horizontal")
         body['xscrollcommand'] = bodyXBar.set
         bodyXBar['command'] = body.xview
-        self.bodyXbar = frame.bodyXBar = bodyXBar
 
         if wrap == "none":
             # g.trace(parentFrame)
@@ -159,6 +158,9 @@ class leoTkinterBody (leoFrame.leoBody):
             w.leo_v = body.leo_p.v
                 # pychecker complains body.leo_p does not exist.
         w.leo_active = True
+        # New in Leo 4.4.4 final: inject the scrollbar items into the text widget.
+        w.leo_bodyBar = bodyBar # 2007/10/31
+        w.leo_bodyXBar = bodyXBar # 2007/10/31
         w.leo_chapter = None
         w.leo_frame = parentFrame
         w.leo_name = name
@@ -394,8 +396,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         self.bar1 = None
         self.bar2 = None
         self.body = None
-        self.bodyBar = None
-        self.bodyXBar = None
         self.f1 = self.f2 = None
         self.findPanel = None # Inited when first opened.
         self.iconBarComponentName = 'iconBar'
@@ -1447,7 +1447,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
             g.es_exception()
             pass
     #@-node:ekr.20031218072017.722:setTabWidth (tkFrame) (changed)
-    #@+node:ekr.20031218072017.1540:setWrap (tkFrame) (changed)
+    #@+node:ekr.20031218072017.1540:setWrap (tkFrame)
     def setWrap (self,p):
 
         c = self.c
@@ -1458,17 +1458,19 @@ class leoTkinterFrame (leoFrame.leoFrame):
         if self.body.wrapState == wrap: return
 
         self.body.wrapState = wrap
+        w = self.body.bodyCtrl
+
         # g.trace(wrap)
         if wrap:
-            self.body.bodyCtrl.configure(wrap="word") # 2007/10/25
-            self.bodyXBar.pack_forget()
+            w.configure(wrap="word") # 2007/10/25
+            w.leo_bodyXBar.pack_forget() # 2007/10/31
         else:
-            self.body.bodyCtrl.configure(wrap="none")
+            w.configure(wrap="none")
             # Bug fix: 3/10/05: We must unpack the text area to make the scrollbar visible.
-            self.body.bodyCtrl.pack_forget()  # 2007/10/25
-            self.bodyXBar.pack(side="bottom", fill="x")
-            self.body.bodyCtrl.pack(expand=1,fill="both")  # 2007/10/25
-    #@-node:ekr.20031218072017.1540:setWrap (tkFrame) (changed)
+            w.pack_forget()  # 2007/10/25
+            w.leo_bodyXBar.pack(side="bottom", fill="x") # 2007/10/31
+            w.pack(expand=1,fill="both")  # 2007/10/25
+    #@-node:ekr.20031218072017.1540:setWrap (tkFrame)
     #@+node:ekr.20031218072017.2307:setTopGeometry (tkFrame)
     def setTopGeometry(self,w,h,x,y,adjustSize=True):
 

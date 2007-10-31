@@ -66,8 +66,6 @@ class leoSwingFrame (leoFrame.leoFrame):
         self.bar1 = None
         self.bar2 = None
         self.body = None
-        self.bodyBar = None
-        self.bodyXBar = None
         self.f1 = self.f2 = None
         self.findPanel = None # Inited when first opened.
         self.iconBarComponentName = 'iconBar'
@@ -1109,16 +1107,7 @@ class leoSwingFrame (leoFrame.leoFrame):
         # g.trace(wrap)
 
         ### Rewrite for swing.
-
-        # if wrap:
-            # w.configure(wrap="word")
-            # self.bodyXBar.pack_forget()
-        # else:
-            # w.configure(wrap="none")
-            # We must unpack the text area to make the scrollbar visible.
-            # w.pack_forget()
-            # self.bodyXBar.pack(side="bottom", fill="x")
-            # w.pack(expand=1,fill="both")
+    #@nonl
     #@-node:ekr.20071001091231.83:setWrap (swingFrame)
     #@+node:ekr.20071001091231.84:setTopGeometry (swingFrame)
     def setTopGeometry(self,w,h,x,y,adjustSize=True):
@@ -1782,7 +1771,6 @@ class leoSwingBody (leoFrame.leoBody):
             bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
 
         # bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
-        # frame.bodyBar = self.bodyBar = bodyBar
 
         # def yscrollCallback(x,y,bodyBar=bodyBar,w=w):
             # # g.trace(x,y,g.callers())
@@ -1796,11 +1784,10 @@ class leoSwingBody (leoFrame.leoBody):
         # bodyBar.pack(side="right", fill="y")
 
         # # Always create the horizontal bar.
-        # frame.bodyXBar = self.bodyXBar = bodyXBar = Tk.Scrollbar(
+        # bodyXBar = Tk.Scrollbar(
             # parentFrame,name='bodyXBar',orient="horizontal")
         # body['xscrollcommand'] = bodyXBar.set
         # bodyXBar['command'] = body.xview
-        # self.bodyXbar = frame.bodyXBar = bodyXBar
 
         # if wrap == "none":
             # # g.trace(parentFrame)
@@ -1821,6 +1808,8 @@ class leoSwingBody (leoFrame.leoBody):
             w.leo_v = body.leo_p.v
                 # pychecker complains body.leo_p does not exist.
         w.leo_active = True
+        w.leo_bodyBar = bodyBar
+        w.leo_bodyXBar = bodyXBar
         w.leo_chapter = None
         w.leo_frame = parentFrame
         w.leo_name = name
