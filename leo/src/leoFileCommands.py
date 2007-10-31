@@ -2722,12 +2722,17 @@ class baseFileCommands:
 
         fc = self ; c = fc.c ; v = p.v
         # Not writing @auto nodes is way too dangerous.
-        # isAuto = p.isAtAutoNode() and p.atAutoNodeName().strip()
+        isAuto = p.isAtAutoNode() and p.atAutoNodeName().strip()
         isThin = p.isAtThinFileNode()
         isOrphan = p.isOrphan()
         if not isIgnore: isIgnore = p.isAtIgnoreNode()
-        # forceWrite = isIgnore or not (isThin or isAuto) or (isThin and isOrphan)
-        forceWrite = isIgnore or not isThin or (isThin and isOrphan)
+
+        # forceWrite = isIgnore or not isThin or (isThin and isOrphan)
+        if isIgnore: forceWrite = True      # Always write full @ignore trees.
+        elif isAuto: forceWrite = False     # Never write non-ignored @auto trees.
+        elif isThin: forceWrite = isOrphan  # Only write orphan @thin trees.
+        else:        forceWrite = True      # Write all other @file trees.
+
         #@    << Set gnx = tnode index >>
         #@+node:ekr.20031218072017.1864:<< Set gnx = tnode index >>
         # New in Leo 4.4.3
@@ -2834,7 +2839,6 @@ class baseFileCommands:
             fc.put('</v>\n')
         else:
             fc.put('%s</v>\n' % v_head) # Call put only once.
-    #@nonl
     #@-node:ekr.20031218072017.1863:putVnode (3.x and 4.x)
     #@+node:ekr.20031218072017.2002:putTnodeList (4.0,4.2)
     def putTnodeList (self,v):
