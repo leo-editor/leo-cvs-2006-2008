@@ -816,6 +816,7 @@ class tkSpellTab:
     def createFrame (self):
 
         c = self.c ; log = c.frame.log ; tabName = self.tabName
+        setFont = False
 
         parentFrame = log.frameDict.get(tabName)
         w = log.textDict.get(tabName)
@@ -824,7 +825,8 @@ class tkSpellTab:
         # Set the common background color.
         bg = c.config.getColor('log_pane_Spell_tab_background_color') or 'LightSteelBlue2'
 
-        fontSize = g.choose(sys.platform.startswith('win'),9,14)
+        if setFont:
+            fontSize = g.choose(sys.platform.startswith('win'),9,14)
 
         #@    << Create the outer frames >>
         #@+node:ekr.20051113090322:<< Create the outer frames >>
@@ -846,14 +848,17 @@ class tkSpellTab:
 
         self.wordLabel = Tk.Label(f2,text="Suggestions for:")
         self.wordLabel.pack(side='left')
-        self.wordLabel.configure(font=('verdana',fontSize,'bold'))
+
+        if setFont:
+            self.wordLabel.configure(font=('verdana',fontSize,'bold'))
 
         fpane = Tk.Frame(outer,bg=bg,bd=2)
         fpane.pack(side='top',expand=1,fill='both')
 
         self.listBox = Tk.Listbox(fpane,height=6,width=10,selectmode="single")
         self.listBox.pack(side='left',expand=1,fill='both')
-        self.listBox.configure(font=('verdana',fontSize,'normal'))
+        if setFont:
+            self.listBox.configure(font=('verdana',fontSize,'normal'))
 
         listBoxBar = Tk.Scrollbar(fpane,name='listBoxBar')
 
@@ -873,7 +878,8 @@ class tkSpellTab:
             w.pack(side='top',expand=0,fill='x')
 
         buttonList = []
-        font = ('verdana',fontSize,'normal')
+        if setFont:
+            font = ('verdana',fontSize,'normal')
         width = 12
         for frame, text, command in (
             (buttons1,"Find",self.onFindButton),
@@ -883,7 +889,10 @@ class tkSpellTab:
             (buttons3,"Ignore",self.onIgnoreButton),
             (buttons3,"Hide",self.onHideButton),
         ):
-            b = Tk.Button(frame,font=font,width=width,text=text,command=command)
+            if setFont:
+                b = Tk.Button(frame,font=font,width=width,text=text,command=command)
+            else:
+                b = Tk.Button(frame,width=width,text=text,command=command)
             b.pack(side='left',expand=0,fill='none')
             buttonList.append(b)
 
