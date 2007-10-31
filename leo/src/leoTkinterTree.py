@@ -1384,7 +1384,7 @@ class leoTkinterTree (leoFrame.leoTree):
                     if self.prevMoveToFrac != frac2:
                         self.prevMoveToFrac = frac2
                         self.canvas.yview("moveto",frac2)
-                        if trace: g.trace("frac2 1.2f %3d %3d %1.2f %1.2f" % (frac2,h1,h2,lo,hi))
+                        if trace: g.trace("frac2 %1.2f %3d %3d %1.2f %1.2f" % (frac2,h1,h2,lo,hi))
 
             if self.allocateOnlyVisibleNodes:
                 self.canvas.after_idle(self.idle_second_redraw)

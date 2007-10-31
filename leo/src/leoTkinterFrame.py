@@ -55,7 +55,7 @@ class leoTkinterBody (leoFrame.leoBody):
         self.editor_v = None
 
         self.trace_onBodyChanged = c.config.getBool('trace_onBodyChanged')
-        self.bodyCtrl = self.createControl(frame,parentFrame,p)
+        self.bodyCtrl = self.createControl(parentFrame,p)
         self.colorizer = leoColor.colorizer(c)
     #@-node:ekr.20031218072017.2182:tkBody. __init__
     #@+node:ekr.20031218072017.838:tkBody.createBindings
@@ -83,7 +83,7 @@ class leoTkinterBody (leoFrame.leoBody):
     #@nonl
     #@-node:ekr.20031218072017.838:tkBody.createBindings
     #@+node:ekr.20031218072017.3998:tkBody.createControl
-    def createControl (self,frame,parentFrame,p):
+    def createControl (self,parentFrame,p):
 
         c = self.c
 
@@ -98,15 +98,13 @@ class leoTkinterBody (leoFrame.leoBody):
         parentFrame = pb.add(name)
         pb.pack(expand=1,fill='both') # Must be done after the first page created.
 
-        w = self.createTextWidget(frame,parentFrame,p,name)
+        w = self.createTextWidget(parentFrame,p,name)
         self.editorWidgets[name] = w
 
         return w
     #@-node:ekr.20031218072017.3998:tkBody.createControl
     #@+node:ekr.20060528100747.3:tkBody.createTextWidget
-    def createTextWidget (self,frame,parentFrame,p,name):
-
-        # pychecker complains that there is no leo_p attribute.
+    def createTextWidget (self,parentFrame,p,name):
 
         c = self.c
 
@@ -120,7 +118,6 @@ class leoTkinterBody (leoFrame.leoBody):
             bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
 
         bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
-        ### self.bodyBar = bodyBar
 
         def yscrollCallback(x,y,bodyBar=bodyBar,w=w):
             # g.trace(x,y,g.callers())
@@ -155,8 +152,8 @@ class leoTkinterBody (leoFrame.leoBody):
             w.leo_p = w.leo_v = None # Will be set when the second editor is created.
         else:
             w.leo_p = p.copy()
-            w.leo_v = body.leo_p.v
-                # pychecker complains body.leo_p does not exist.
+            w.leo_v = w.leo_p.v
+
         w.leo_active = True
         # New in Leo 4.4.4 final: inject the scrollbar items into the text widget.
         w.leo_bodyBar = bodyBar # 2007/10/31
@@ -171,7 +168,6 @@ class leoTkinterBody (leoFrame.leoBody):
         w.leo_selection = None
 
         return w
-    #@nonl
     #@-node:ekr.20060528100747.3:tkBody.createTextWidget
     #@-node:ekr.20031218072017.3997: Birth & death
     #@+node:ekr.20041217135735.1:tkBody.setColorFromConfig

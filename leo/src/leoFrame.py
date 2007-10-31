@@ -777,13 +777,13 @@ class leoBody:
     #@-node:ekr.20031218072017.3657:leoBody.__init__
     #@+node:ekr.20061109173122:leoBody: must be defined in subclasses
     # Birth, death & config
-    def createBindings (self,w=None):               self.oops()
-    def createControl (self,frame,parentFrame,p):   self.oops()
-    def setColorFromConfig (self,w=None):           self.oops()
-    def setFontFromConfig (self,w=None):            self.oops()
+    def createBindings (self,w=None):           self.oops()
+    def createControl (self,parentFrame,p):     self.oops()
+    def setColorFromConfig (self,w=None):       self.oops()
+    def setFontFromConfig (self,w=None):        self.oops()
     # Editor
-    def createEditorLabel (self,pane):              self.oops()
-    def setEditorColors (self,bg,fg):               self.oops()
+    def createEditorLabel (self,pane):          self.oops()
+    def setEditorColors (self,bg,fg):           self.oops()
     # Events...
     def scheduleIdleTimeRoutine (self,function,*args,**keys): self.oops()
     #@-node:ekr.20061109173122:leoBody: must be defined in subclasses
@@ -834,7 +834,7 @@ class leoBody:
         f = self.createEditorFrame(pane)
         #@    << create text widget w >>
         #@+node:ekr.20060528110922:<< create text widget w >>
-        w = self.createTextWidget(self.frame,f,name=name,p=p)
+        w = self.createTextWidget(f,name=name,p=p)
         w.delete(0,'end')
         w.insert('end',p.bodyString())
         w.see(0)
@@ -3015,7 +3015,7 @@ class nullBody (leoBody):
     # Birth, death & config
     def bind(self,*args,**keys):                pass
     def createBindings (self,w=None):           pass
-    def createControl (self,frame,parentFrame,p): pass
+    def createControl (self,parentFrame,p):     pass
     def setColorFromConfig (self,w=None):       pass
     def setFontFromConfig (self,w=None):        pass
     # Editors...

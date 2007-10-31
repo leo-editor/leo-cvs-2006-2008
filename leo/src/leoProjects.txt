@@ -595,7 +595,7 @@ def _syncText( self, event, which = 1 ):
 def createBindings (self,frame):
     self.oops()
 
-def createControl (self,frame,parentFrame):
+def createControl (self,parentFrame):
     self.oops()
 
 def initialRatios (self):
@@ -43331,7 +43331,7 @@ def addEditor (self,event=None):
     self.updateEditors()
     c.bodyWantsFocusNow()
 #@+node:ekr.20060528110922:<< create text widget w >>
-w = self.createTextWidget(self.frame,f,name=name,p=p)
+w = self.createTextWidget(f,name=name,p=p)
 w.delete(0,'end')
 w.insert('end',p.bodyString())
 w.see(0)
@@ -44476,7 +44476,7 @@ def addEditor (self,event=None):
     self.updateEditors()
     c.bodyWantsFocusNow()
 #@+node:ekr.20060528110922:<< create text widget w >>
-w = self.createTextWidget(self.frame,f,name=name,p=p)
+w = self.createTextWidget(f,name=name,p=p)
 w.delete(0,'end')
 w.insert('end',p.bodyString())
 w.see(0)
@@ -44828,7 +44828,7 @@ def addEditor (self,event=None):
     self.updateEditors()
     c.bodyWantsFocusNow()
 #@+node:ekr.20060528110922:<< create text widget w >>
-w = self.createTextWidget(self.frame,f,name=name,p=p)
+w = self.createTextWidget(f,name=name,p=p)
 w.delete(0,'end')
 w.insert('end',p.bodyString())
 w.see(0)
@@ -46384,7 +46384,7 @@ def scrollTo(self,p=None):
                 if self.prevMoveToFrac != frac2:
                     self.prevMoveToFrac = frac2
                     self.canvas.yview("moveto",frac2)
-                    if trace: g.trace("frac2 1.2f %3d %3d %1.2f %1.2f" % (frac2,h1,h2,lo,hi))
+                    if trace: g.trace("frac2 %1.2f %3d %3d %1.2f %1.2f" % (frac2,h1,h2,lo,hi))
 
         if self.allocateOnlyVisibleNodes:
             self.canvas.after_idle(self.idle_second_redraw)
@@ -50018,7 +50018,7 @@ def addEditor (self,event=None):
     self.updateEditors()
     c.bodyWantsFocusNow()
 #@+node:ekr.20060528110922:<< create text widget w >>
-w = self.createTextWidget(self.frame,f,name=name,p=p)
+w = self.createTextWidget(f,name=name,p=p)
 w.delete(0,'end')
 w.insert('end',p.bodyString())
 w.see(0)
@@ -50416,9 +50416,7 @@ def setWrap (self,p):
         w.pack(expand=1,fill="both")  # 2007/10/25
 #@-node:ekr.20031218072017.1540:setWrap (tkFrame)
 #@+node:ekr.20060528100747.3:tkBody.createTextWidget
-def createTextWidget (self,frame,parentFrame,p,name):
-
-    # pychecker complains that there is no leo_p attribute.
+def createTextWidget (self,parentFrame,p,name):
 
     c = self.c
 
@@ -50432,7 +50430,6 @@ def createTextWidget (self,frame,parentFrame,p,name):
         bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
 
     bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
-    ### self.bodyBar = bodyBar
 
     def yscrollCallback(x,y,bodyBar=bodyBar,w=w):
         # g.trace(x,y,g.callers())
@@ -50467,8 +50464,8 @@ def createTextWidget (self,frame,parentFrame,p,name):
         w.leo_p = w.leo_v = None # Will be set when the second editor is created.
     else:
         w.leo_p = p.copy()
-        w.leo_v = body.leo_p.v
-            # pychecker complains body.leo_p does not exist.
+        w.leo_v = w.leo_p.v
+
     w.leo_active = True
     # New in Leo 4.4.4 final: inject the scrollbar items into the text widget.
     w.leo_bodyBar = bodyBar # 2007/10/31
@@ -50483,7 +50480,6 @@ def createTextWidget (self,frame,parentFrame,p,name):
     w.leo_selection = None
 
     return w
-#@nonl
 #@-node:ekr.20060528100747.3:tkBody.createTextWidget
 #@-node:ekr.20071030122815:Fixed (old) body editor bug
 #@-node:ekr.20071027155527:4.4.4 final

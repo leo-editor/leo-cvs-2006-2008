@@ -1677,10 +1677,10 @@ class leoSwingBody (leoFrame.leoBody):
         # leoFrame.leoBody.__init__(self,frame,parentFrame) # Init the base class.
 
     # # Birth, death & config...
-    # def createBindings (self,w=None):               pass
-    # def createControl (self,frame,parentFrame,p):   pass
-    # def setColorFromConfig (self,w=None):           pass
-    # def setFontFromConfig (self,w=None):            pass
+    # def createBindings (self,w=None):         pass
+    # def createControl (self,parentFrame,p):   pass
+    # def setColorFromConfig (self,w=None):     pass
+    # def setFontFromConfig (self,w=None):      pass
 
     # # Editor...
     # def createEditorLabel (self,pane):  pass
@@ -1704,7 +1704,7 @@ class leoSwingBody (leoFrame.leoBody):
         self.editor_v = None
 
         self.trace_onBodyChanged = c.config.getBool('trace_onBodyChanged')
-        self.bodyCtrl = self.createControl(frame,parentFrame,p)
+        self.bodyCtrl = self.createControl(parentFrame,p)
         self.colorizer = leoColor.colorizer(c)
     #@-node:ekr.20071001091231.4:swingBody. __init__
     #@+node:ekr.20071001091231.5:swingBody.createBindings
@@ -1732,7 +1732,7 @@ class leoSwingBody (leoFrame.leoBody):
     #@nonl
     #@-node:ekr.20071001091231.5:swingBody.createBindings
     #@+node:ekr.20071001091231.6:swingBody.createControl
-    def createControl (self,frame,parentFrame,p):
+    def createControl (self,parentFrame,p):
 
         c = self.c
 
@@ -1749,15 +1749,13 @@ class leoSwingBody (leoFrame.leoBody):
         # parentFrame = pb.add(name)
         # pb.pack(expand=1,fill='both') # Must be done after the first page created.
 
-        w = self.createTextWidget(frame,parentFrame,p,name)
+        w = self.createTextWidget(parentFrame,p,name)
         self.editorWidgets[name] = w
 
         return w
     #@-node:ekr.20071001091231.6:swingBody.createControl
     #@+node:ekr.20071001091231.7:swingBody.createTextWidget
-    def createTextWidget (self,frame,parentFrame,p,name):
-
-        # pychecker complains that there is no leo_p attribute.
+    def createTextWidget (self,parentFrame,p,name):
 
         c = self.c
 
@@ -1805,7 +1803,7 @@ class leoSwingBody (leoFrame.leoBody):
             w.leo_p = w.leo_v = None # Will be set when the second editor is created.
         else:
             w.leo_p = p.copy()
-            w.leo_v = body.leo_p.v
+            w.leo_v = w.leo_p.v
                 # pychecker complains body.leo_p does not exist.
         w.leo_active = True
         w.leo_bodyBar = bodyBar
