@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.421602787456">
-	<global_window_position top="16" left="247" height="701" width="892"/>
+	<global_window_position top="16" left="247" height="681" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -405,9 +405,9 @@
 </v>
 </v>
 <v t="EKR.20040524104904.211"><vh>Chapter 8: Customizing Leo</vh>
-<v t="ekr.20050901101608.4" a="E"><vh>@rst html\customizing.html</vh>
+<v t="ekr.20050901101608.4"><vh>@rst html\customizing.html</vh>
 <v t="ekr.20050901102055"><vh>@rst-no-head links</vh></v>
-<v t="EKR.20040524104904.140" a="E"><vh>Specifying settings</vh>
+<v t="EKR.20040524104904.140"><vh>Specifying settings</vh>
 <v t="ekr.20070317043727"><vh>Organizer nodes</vh></v>
 <v t="ekr.20070317043727.1"><vh>@ignore nodes</vh></v>
 <v t="ekr.20070317043727.2"><vh>Simple settings nodes</vh></v>
@@ -3349,10 +3349,7 @@
 <v t="ekr.20071021111856.477"><vh>Improved the scripting and plugins chapters of Leo's Users Guide</vh></v>
 </v>
 </v>
-</v>
-</v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071026053825" a="TV"><vh>4.4.4 b4</vh>
+<v t="ekr.20071026053825"><vh>4.4.4 b4</vh>
 <v t="ekr.20071026053931.1"><vh>Fixed bugs</vh>
 <v t="ekr.20071026053931.2"><vh>Fixed aspell problem</vh></v>
 <v t="ekr.20071026053931.13"><vh>Fixed bug: utf-8 files now get imported properly</vh></v>
@@ -3367,6 +3364,26 @@
 <v t="ekr.20071026053931.221"><vh>Added @bool big_outline_pane setting</vh></v>
 <v t="ekr.20071026053931.234"><vh>Can print *can* handle unicode</vh></v>
 <v t="ekr.20071026180804.1"><vh>Improved the prototype of icon handling</vh></v>
+</v>
+</v>
+</v>
+</v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20071101162646" a="TV"><vh>4.4.4 b4</vh>
+<v t="ekr.20071101162751"><vh>Fixed bugs</vh>
+<v t="ekr.20071101162751.2"><vh>Fixed bug that caused rClick plugin to crash</vh></v>
+<v t="ekr.20071101162751.4"><vh>Fixed scrolling problem with chapters</vh></v>
+<v t="ekr.20071101162751.19"><vh>Fixed bug: select a chapter containing the initially selected node</vh></v>
+<v t="ekr.20071101162751.28"><vh>Fixed Apple help menu reversion</vh></v>
+<v t="ekr.20071101162751.32"><vh>Disabled the plugins manage plugin</vh></v>
+<v t="ekr.20071101162751.33"><vh>Made sure plugins work if frame.iconFrame is None</vh></v>
+<v t="ekr.20071101162751.34"><vh>Fixed @auto java bug</vh></v>
+<v t="ekr.20071101162751.97"><vh>Fixed spell-check problem on Linux</vh></v>
+<v t="ekr.20071101162751.149"><vh>Use the default spell tab</vh></v>
+<v t="ekr.20071101162751.150"><vh>Fixed long-standing and important body editor bug</vh></v>
+<v t="ekr.20071101162751.178"><vh>Non-ignored @auto trees do not get saved to the .leo file</vh></v>
+<v t="ekr.20071101162751.184"><vh>Fixed bug that cause the import of PyParse.py to fail</vh></v>
+<v t="ekr.20071101163257"><vh>Improved error reporting in rst3 plugins for code_block directive</vh></v>
 </v>
 </v>
 </v>
@@ -17886,6 +17903,7 @@ Glossary
 
 .. _`programming reference`:    directives.html
 .. _`@asis`:                    directives.html#asis-and-noref
+.. _`@auto`:                    directives.html#auto
 .. _`@file`:                    directives.html#file-and-thin
 .. _`@noref`:                   directives.html#asis-and-noref
 .. _`@nosent`:                  directives.html#nosent
@@ -32651,5 +32669,73 @@ Scripts can run File Open and Save dialogs with these methods::
 
 For details about how to use these file dialogs, look for examples in Leo's own
 source code. The runOpenFileDialog returns a list of file names.</t>
+<t tx="ekr.20071101162646">Leo 4.4.4 Final                           November 2, 2007
+
+Leo 4.4.4 Final is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+Leo 4.4.4 contains many important features originally planned for later releases.
+
+The highlights of Leo 4.4.4:
+----------------------------
+
+- The Great Graph Aha (tm): simple scripts allow Leo outlines to represent
+  arbitrary directed graphs. There is no need for a separate 'graph world'. The
+  graphed.py plugin is a direct result of this Aha. The graphed.py plugin allows
+  you to create general graphs from Leo outlines.
+  
+- @menus trees in settings files create all of Leo's menus.  It is now dead
+  easy to make Leo's menus look the way you want.
+
+- @buttons trees in settings files create common @button nodes created in all
+  Leo outlines.
+
+- @auto nodes eliminate sentinels in derived files, thereby allowing people to
+  collaborate using Leo more easily. **Warning**: for now, please make backup
+  copies of files imported with @auto.
+  
+- New commands for resolving cvs conflicts.
+
+- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
+  This plugin features much better performance and a new, elegant algorithm.
+  
+- Leo is now compatible with jython.
+
+- Better support for icons in headlines.
+
+- The usual assortment of bug fixes and other minor improvements.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20071101162751"></t>
+<t tx="ekr.20071101162751.2">http://sourceforge.net/forum/message.php?msg_id=4591494
+</t>
+<t tx="ekr.20071101162751.4"></t>
+<t tx="ekr.20071101162751.19">The fix doesn't actually remember which chapter was previously selected; it
+picks some chapter containing the initially selected node. This works exactly
+for non-cloned nodes, but can select the 'wrong' chapter for cloned nodes.
+Still, this is a big improvement over the previous code, which would not select
+any node if the selected node was not in the main chapters.</t>
+<t tx="ekr.20071101162751.28"></t>
+<t tx="ekr.20071101162751.32">It is too confusing at present, because it doesn't support @enabled-plugins nodes.
+</t>
+<t tx="ekr.20071101162751.33"></t>
+<t tx="ekr.20071101162751.34"></t>
+<t tx="ekr.20071101162751.97">http://sourceforge.net/forum/forum.php?thread_id=1853660&amp;forum_id=10228
+</t>
+<t tx="ekr.20071101162751.149">The spell tab now uses the same font as the find tab.</t>
+<t tx="ekr.20071101162751.150">http://sourceforge.net/forum/message.php?msg_id=4596477
+</t>
+<t tx="ekr.20071101162751.178"></t>
+<t tx="ekr.20071101162751.184"></t>
+<t tx="ekr.20071101163257"></t>
 </tnodes>
 </leo_file>
