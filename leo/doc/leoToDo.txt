@@ -6,12 +6,339 @@
 #@+node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
 # Leo 4.4.5 will complete several projects that are long overdue.
 
+#@+node:ekr.20070814070312:First
+#@+node:ekr.20071031113657:Remove Leo's hand-written parser: use sax or lxml
+#@-node:ekr.20071031113657:Remove Leo's hand-written parser: use sax or lxml
 #@+node:ekr.20071029082025:Improve distribution
 * Convert to svn  (use py_svn)
 * Enable sax option.
 * Proper xml namespace in .leo files.  Is this Leo 5.0??
 #@nonl
 #@-node:ekr.20071029082025:Improve distribution
+#@+node:ekr.20070814144804:Incorrect conversion of paths to absolute paths
+@nocolor
+https://sourceforge.net/forum/message.php?msg_id=4464649
+By: terry_n_brown
+
+Maybe it's not related to these other path issues, but an argument I'm always
+having with leo has to do with its conversion of file paths to 'absolute' forms.
+In the file browser I select '/home/tbrown/misc/foo.leo'.  Leo reinterprets
+this as '/media/hda2/usr1/home/tbrown/misc/foo.leo'  Then I switch machines,
+and while '/home/tbrown/misc/foo.leo' would still be valid,
+'/media/hda2/usr1/home/tbrown/misc/foo.leo' isn't - on the other machine it
+would be '/media/hdb1/home/tbrown/misc/foo.leo'.  I end up with the two entries
+in recent files, having to identify the right one.
+
+I haven't tested it, but if the Tk dialog is returning '/home/tbrown/misc/foo.leo',
+which I assume it is because that's what it's displaying, I wish leo would use
+and store that.
+
+@color
+#@nonl
+#@-node:ekr.20070814144804:Incorrect conversion of paths to absolute paths
+#@+node:ekr.20071021125124:Revise plugins manager plugin
+Expunge leoPluginsManager.txt.
+#@nonl
+#@-node:ekr.20071021125124:Revise plugins manager plugin
+#@+node:ekr.20070803115653:Support @path and other directives in headlines
+#@-node:ekr.20070803115653:Support @path and other directives in headlines
+#@+node:ekr.20060116173818:Fix vampire nodes
+@nocolor
+
+Vampire nodes from cvs
+
+I've just discovered a major problem with cvs updates.  It is a subtle consequence of how Leo writes outlines and reads derived files.  This is a big bug in Leo, not cvs.  The effect of the bug is that nodes can appear in derived files that were never written to them!
+
+The discovery of this 'big bug' came about as the result of the following Aha:
+
+**@thin files that contain @all directives should be a cvs binary (-kb) files.**
+
+The reason is straightforward:  cvs doesn't know enough to merge such files.  Maybe all @thin derived files should be -kb files, but Leo's users will never agree to that!
+
+Anyway, leoProjects.txt is now a binary file as far as cvs is concerned.  Other .txt files, like leoScripts.txt, should also be binary files.  As we shall see, the fact that leoProjects.txt is now a -kb file means that we can not possibly blame the cvs merge algorithm for what is about to happen.
+
+Ok, back to the 'big bug'.  Here is how I got bitten:
+
+- I changed leoProjects.txt in two sandboxes 1 and 2.  In sandbox 1 I added a node called 'changed in the main line'.  In sandbox 2 I added a node called 'changed2'.
+
+- I changed LeoPyRef.leo in sandbox 2, but *not* in sandbox 1.
+
+- I did a update in sandbox 2.
+
+As expected (now that leoProjects.txt is a binary file) I got the following from cvs:
+
+M src/LeoPyRef.leo
+...
+cvs update: nonmergeable file needs merge
+cvs update: revision 1.448 from repository is now in src/leoProjects.txt
+cvs update: file from working directory is now in .#leoProjects.txt.1.447
+
+To summarize the update:
+
+- LeoPyRef.leo has been marked as modified (M), but it has **not** been changed by cvs.
+
+- As expected, leoProjects.txt contains the version from sandbox **1**.
+
+So far, so good.  But when I opened LeoPyRef.leo I got a huge surprise: the outline contains **both** the node 'changed in main-line' and the node 'changed2'.  Whoa Nellie!
+
+How did this happen?  Well, obviously the 'changed in main-line' node came from the cvs update.  I expected that.  The 'changed2' line must have come from the local copy of LeoPyRef.leo.
+
+Once I knew what to look for it wasn't too hard to discover what had happened.  The 'changed2' is a descendent of a cloned node called '4.4 projects'.
+
+- One clone of '4.4 projects' node is a descendent of the @thin leoProjects.txt node.
+
+- Another clone of the '4.4 project' is in the LeoPyRef.leo file but outside of any @thin node.
+
+So the 'resurrection' of the 'changed2' node happened while Leo was reading leoProjects.txt into LeoPyRef.leo.  The '4.4 projects' node **already existed in the outline** before Leo read leoProjects.txt, and the present atFile read logic only **adds** nodes, it never deletes nodes.  Thus, the 'changed2' node 'survived' the atFile read logic.  The 'changed2' node became a 'vampire' node that couldn't be killed.
+
+The problem is far from benign.  Because of clones, the vampire node became an orphan node in **another** file, namely leoKeys.py.  I tried two or three times to remove the vampire/orphan node before realizing what had happened.
+
+The fix (there is *always* a fix) will require some care.  The present atFile.read logic is robust because it *doesn't* delete nodes.  It is essential that the read logic remain robust.  I suspect the solutions will be as follows:
+
+A. The atFile.read code can not delete the subtree of @thin nodes initially, because it doesn't know whether there will be read errors later.  If there are read errors absolutely nothing must change.  This ensures that read errors never destroy information.
+
+B. A new post-pass will look for vampire nodes: nodes that were not actually read from the derived file.  I think (but haven't proven) that all descendents of vampire nodes are also vampire nodes.  If that is so the post-pass will simply delete vampire nodes without worrying about whether they have descendents.
+
+Warning: the new scheme will mean that cvs update can destroy information that previously existed in the outline.  I believe this is correct: we assume that derived files are the 'truly meaningful' files.  Hey, if we are wrong we can always get the old info from cvs :-)
+
+Edward
+#@-node:ekr.20060116173818:Fix vampire nodes
+#@+node:ekr.20060609070148:Fix hung windows
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3768494
+By: ktenney
+
+I'm using current CVS, W2k
+
+1 open a Leo file (I'm using a batch file / console)
+
+2 click Edit->Open   <-- Having this dialog open is the problem.
+
+3 return focus to the Leo window
+
+4 click Help->Open leoDocs.leo
+
+Zombie!
+#@-node:ekr.20060609070148:Fix hung windows
+#@+node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
+@nocolor
+
+From email from Terry Brown
+
+python /home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py /home/tbrown/.tnb.leo
+
+(should be all on one line, i.e. run and open /home/tbrown/.tnb.leo)
+
+gives the traceback below.  Opening the file from within Leo works fine.
+
+Bah - I just now looked at it closely enough to realize it's the evil
+pickled Tk classes in cleo uAs.  So I don't know whether you want to
+fix that or not, it makes sense Leo would read the file specified on
+the command line before Tk is initialized - if it's just scanning for
+settings maybe it could catch and ignore failed uA reads at that time?
+
+At some point I want to take pickled Tk vars out of cleo, I was
+thinking when that guy was working on the wx gui would be a good time,
+too bad he got sick.
+
+Cheers -Terry
+
+reading settings in /mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/config/leoSettings.leo
+reading settings in /home/tbrown/leoSettings.leo
+reading settings in /home/tbrown/myLeoSettings.leo
+reading settings in /home/tbrown/.tnb.leo
+Traceback (most recent call last):
+  File "/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py", line 398, in <module>
+    run(fileName)
+  File "/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py", line 118, in run
+    g.app.config.readSettingsFiles(fileName,verbose)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoConfig.py", line 1649, in readSettingsFiles
+    c = self.openSettingsFile(path)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoConfig.py", line 1674, in openSettingsFile
+    theFile,path,readAtFileNodesFlag=False,silent=True) # closes theFile.
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 892, in open
+    silent=silent)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 779, in getLeoFile
+    self.getAllLeoElements(fileName,silent)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1317, in getAllLeoElements
+    self.getVnodes()
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1898, in getVnodes
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1738, in getVnode
+    attr,val = self.getUa("vnode")
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1658, in getUa
+    val2 = pickle.loads(binString)
+  File "/usr/lib/python2.5/pickle.py", line 1374, in loads
+    return Unpickler(file).load()
+  File "/usr/lib/python2.5/pickle.py", line 858, in load
+    dispatch[key](self)
+  File "/usr/lib/python2.5/pickle.py", line 1217, in load_build
+    setstate(state)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/plugins/cleo.py", line 130, in __setstate__
+    Tk.Variable.__init__(self)
+  File "/usr/lib/python2.5/lib-tk/Tkinter.py", line 188, in __init__
+    self._tk = master.tk
+AttributeError: 'NoneType' object has no attribute 'tk'
+Exception exceptions.AttributeError: "TkPickleVar instance has no attribute '_tk'" in <bound method TkPickleVar.__del__ of <cleo.TkPickleVar instance at 0xb73a876c>> ignored
+#@-node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
+#@-node:ekr.20070814070312:First
+#@+node:ekr.20070703111455.1:Most important
+#@+node:ekr.20070623144302:vim-like bindings
+#@+node:ekr.20070824094005:Requests
+@nocolor
+
+> Some of the features I've grown to like with VIM are search-and-replace within the current selection, easy keyboard navigation, and to some extent macro recording and running.
+
+Thanks for these comments.  I'll keep them in mind as I design the vim-like code.
+
+Edward
+#@nonl
+#@-node:ekr.20070824094005:Requests
+#@+node:ekr.20070814083528.1:Design post
+@nocolor
+
+http://sourceforge.net/forum/forum.php?thread_id=1800079&forum_id=10226
+
+Recent posts have discussed @menu trees and resolving cvs conflicts. The third of my recent ruminations concerns adding support for vim-like key bindings. 
+
+Earlier work involving input modes (@mode nodes in settings file) probably is not completely sufficient to implement plain-key key bindings in a way that would truly be vim-like. 
+
+Most of the issues are implementation issues: Leo's key-handling code is very complicated. The trick is to handle both vim and emacs styles compatibly. 
+
+The user must be able to specify vim-like key bindings without using @mode nodes. That is, top-level vim key bindings must always be available. Vim has an enormous number of key bindings: the user must be able to specify which are in effect. 
+
+My strategy will be as follows: 
+
+1. Create enter-vim-mode and exit-vim-mode commands, and create the setting: 
+
+@bool vim-mode-by-default = False 
+
+This will allow the user to specify vim mode as the default mode if desired. 
+
+2. Create **vim-edit** commands as needed in order to handler user interaction. For example, dd deletes the present line while d5 deletes 5 lines. Rather than trying to simulate this effect using the present mechanisms, the vim-delete command will prompt for the number of characters or lines to delete. 
+
+Give the complex nature of vims c and d commands (and others) it will probably be necessary to create a vim-edit class in leoEditCommands.py. This class will handle all the ways of specifying a range of characters to which the various commands will apply. It's not clear exactly how much work will be needed, but my guess is that it will, in fact, be easiest to handle vim-like interactions with new code. 
+
+3. Vim's ':' command will simply invoke Leo's minibuffer. This isn't precisely the same as Vim's status line: it is significantly better. Otoh, we will want a way to simulate the actual spelling of vim's ':' commands. Possible @abbreviation nodes can be pressed into service. 
+
+4. Internally, it will be quite a trick to allow top-level vim-like plain-key bindings in all text widgets. I'm not sure how to do this, but it is essential. 
+
+I am quite eager to get something truly vim-like working. It promises to increase my editing speed substantially. It also should appeal strongly to present vim users. 
+#@nonl
+#@-node:ekr.20070814083528.1:Design post
+#@+node:ekr.20071026140857:Posting re vim bindings
+@nocolor
+
+> I'm looking forward to this.
+
+Excellent.  You can help with the testing :-)
+
+Leo looks like a perfect match for the vim approach.  Indeed, vim typically uses a 1 or 2 level concatenation scheme (preceded by a repeat count).  This is kinda like a utf-8 encoding :-)  That is, it is a variable-length encoding of the command.
+
+This is a very powerful approach, one that vim doesn't really exploit (because it doesn't need to). But Leo absolutely needs this power of some extra levels.  Something like this:
+
+i input mode
+
+f focus commands
+..fb focus to body
+..fo focus to outline
+..fl focus to log
+..ft toggle body pane focus
+
+o outline commands
+..om outline move, i.e., actually move the nodes.
+..og outline go, i.e., select nodes without changing the outline
+..od outline delete
+..oh outline edit headline
+
+s search commands
+..so search options
+...soi toggle ignore-case checkbox
+...sow toggle word checkbox
+...etc!
+..st search using search tab
+..sf forward incremental search
+..sb backward incremental search
+
+x minibuffer commands
+
+w file commands
+..ws save outline
+..wq quit
+
+escape: universal escape, like ctrl-g now.
+
+Do you see?  Just one extra level allows 10+ times the number of key bindings.  This is a perfect match for Leo's complex environment.
+
+Naturally, Leo will allow the user to specify these bindings using nodes in the @settings tree. Indeed, this is truly an exciting prospect.
+
+Edward
+
+P.S.  I've glossed over the details of which single characters (like d for delete character) should be reserved for common editing and cursor-movement commands.  That's the beauty of creating these bindings with user settings: no need to argue :-)  And that's the beauty of arbitrarily deep key binding trees: there are plenty of keys to go around.
+
+EKR
+#@-node:ekr.20071026140857:Posting re vim bindings
+#@-node:ekr.20070623144302:vim-like bindings
+#@+node:ekr.20070625091423:Add translation services
+@nocolor
+
+*Many* calls to g.es and g.es_print have a mix of translated and untranslated items.
+Untranslated items should include file names, directories, gnx's, leo_id's etc.
+
+**Don't bother to do clone-find-all: there are 666 many matches!**
+
+Regardless of the chosen scheme:
+
+- g.translate will do the actual translation.
+
+- Some simple string, like tr, will be an abbreviation for g.translate.
+  The typical import will be::
+
+    import leoGlobals as g ; tr = g.translate
+
+The easiest scheme seems to be:
+
+- g.es and g.es_print translate all arguments.
+- g.esx and g.es_printx do no translation.
+
+g.esx and g.es_printx allow a mix on translated and untranslated arguments::
+
+    g.esx(tr('abc'),fileName)
+#@-node:ekr.20070625091423:Add translation services
+#@+node:ekr.20071001052501:Versioning for nodes
+@nocolor
+
+One feature I have not seen in SCS system is something which might be called
+"history compression": I might be interested in having both version 5 and 6
+in my source tree, when the current version is 7, but I am not really interested
+in the 2000 steps which transformed 5 into 6 (just suggested this feature to
+the bazaar people). This happens actually quite often to me, since I use the
+SCS as a back-up system, saving many (uninteresting) intermediate steps while
+implementing a new feature.
+#@nonl
+#@-node:ekr.20071001052501:Versioning for nodes
+#@+node:ekr.20071021213334:Create an easy way to attach icons to headlines :-)
+#@-node:ekr.20071021213334:Create an easy way to attach icons to headlines :-)
+#@-node:ekr.20070703111455.1:Most important
 #@+node:ekr.20071028041803:Carry overs from 4.4.4
 #@+node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
 #@-node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
@@ -1021,6 +1348,7 @@ def error (self,s):
             g.app.unitTestDict['actualErrorMessage'] = s
         g.app.unitTestDict['actualErrors'] = self.errors
         if 0: # For debugging unit tests.
+            g.trace(g.callers())
             g.es_print(s,color='red')
     else:
         g.es_print(s,color='red')
@@ -1265,12 +1593,12 @@ def skipDecls (self,s,i,end,inClass):
         elif self.startsString(s,i):
             i = self.skipString(s,i)
             prefix = None
-        elif self.startsClass(s,i,quick=True):
+        elif self.startsClass(s,i):
             # Important: do not include leading ws in the decls.
             classOrFunc = True
             i = self.adjustClassOrFunctionStart(s,i,self.classId) # 'class')
             break
-        elif self.startsFunction(s,i,quick=True):
+        elif self.startsFunction(s,i):
             # Important: do not include leading ws in the decls.
             classOrFunc = True
             i = self.adjustClassOrFunctionStart(s,i,'function')
@@ -1366,19 +1694,19 @@ def skipString (self,s,i):
 #@+node:ekr.20070711132314:startsClass/Function (baseClass) & helpers
 # We don't expect to override this code, but subclasses may override the helpers.
 
-def startsClass (self,s,i,quick=False):
+def startsClass (self,s,i):
     '''Return True if s[i:] starts a class definition.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-    val = self.hasClasses and self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
+    val = self.hasClasses and self.startsHelper(s,i,kind='class',tags=self.classTags)
     return val
 
-def startsFunction (self,s,i,quick=False):
+def startsFunction (self,s,i):
     '''Return True if s[i:] starts a function.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-    val = self.hasFunctions and self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
+    val = self.hasFunctions and self.startsHelper(s,i,kind='function',tags=self.functionTags)
     return val
 #@+node:ekr.20070712112008:startsHelper
-def startsHelper(self,s,i,kind,quick,tags):
+def startsHelper(self,s,i,kind,tags):
     '''return True if s[i:] starts a class or function.
     Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
 
@@ -1393,7 +1721,6 @@ def startsHelper(self,s,i,kind,quick,tags):
     # The skipBlock method of the base class checks for such lines.
     self.startSigIndent = self.getLeadingIndent(s,i)
 
-    # Run a quick check first.
     # Get the tag that starts the class or function.
     j = g.skip_ws_and_nl(s,i)
     i = self.skipId(s,j)
@@ -1404,7 +1731,6 @@ def startsHelper(self,s,i,kind,quick,tags):
         if theId not in tags:
             if trace and verbose: g.trace('**** %s theId: %s not in tags: %s' % (kind,theId,tags))
             return False
-        if quick: return True
 
     if trace and verbose: g.trace('kind',kind,'id',theId)
 
@@ -1469,11 +1795,7 @@ def startsHelper(self,s,i,kind,quick,tags):
             self.error('%s definition does not start a line\n%s' % (
                 kind,g.get_line(s,k)))
 
-    if trace:
-        if 1:
-            g.trace(kind,'returns\n'+s[self.sigStart:i])
-        else:
-            g.trace(kind,'returns s[sigStart:i] = [%d:%d]' % (self.sigStart,i))
+    if trace: g.trace(kind,'returns\n'+s[self.sigStart:i])
     return True
 #@-node:ekr.20070712112008:startsHelper
 #@+node:ekr.20070711140703:skipSigStart
@@ -2108,7 +2430,9 @@ def pythonNewlineHelper (self,s,i,parenCount,startIndent,underIndentedStart):
                 if line.strip():
                     junk, indent = g.skip_leading_ws_with_indent(line,0,self.tab_width)
                     if indent <= startIndent:
-                        self.underindentedComment(line)
+                        if j not in self.errorLines: # No error yet given.
+                            self.errorLines.append(j)
+                            self.underindentedComment(line)
             underIndentedStart = None
     if trace: g.trace('returns',i,'underIndentedStart',underIndentedStart)
     return i,underIndentedStart,breakFlag
@@ -3306,331 +3630,6 @@ FAILED (failures=27)
 #@-node:ekr.20071024172428:Failed unit tests when running externally
 #@-node:ekr.20071024204327:Tests
 #@-node:ekr.20071028041803:Carry overs from 4.4.4
-#@+node:ekr.20070814070312:First
-#@+node:ekr.20070814144804:Incorrect conversion of paths to absolute paths
-@nocolor
-https://sourceforge.net/forum/message.php?msg_id=4464649
-By: terry_n_brown
-
-Maybe it's not related to these other path issues, but an argument I'm always
-having with leo has to do with its conversion of file paths to 'absolute' forms.
-In the file browser I select '/home/tbrown/misc/foo.leo'.  Leo reinterprets
-this as '/media/hda2/usr1/home/tbrown/misc/foo.leo'  Then I switch machines,
-and while '/home/tbrown/misc/foo.leo' would still be valid,
-'/media/hda2/usr1/home/tbrown/misc/foo.leo' isn't - on the other machine it
-would be '/media/hdb1/home/tbrown/misc/foo.leo'.  I end up with the two entries
-in recent files, having to identify the right one.
-
-I haven't tested it, but if the Tk dialog is returning '/home/tbrown/misc/foo.leo',
-which I assume it is because that's what it's displaying, I wish leo would use
-and store that.
-
-@color
-#@nonl
-#@-node:ekr.20070814144804:Incorrect conversion of paths to absolute paths
-#@+node:ekr.20071021125124:Revise plugins manager plugin
-Expunge leoPluginsManager.txt.
-#@nonl
-#@-node:ekr.20071021125124:Revise plugins manager plugin
-#@+node:ekr.20070803115653:Support @path and other directives in headlines
-#@-node:ekr.20070803115653:Support @path and other directives in headlines
-#@+node:ekr.20060116173818:Fix vampire nodes
-@nocolor
-
-Vampire nodes from cvs
-
-I've just discovered a major problem with cvs updates.  It is a subtle consequence of how Leo writes outlines and reads derived files.  This is a big bug in Leo, not cvs.  The effect of the bug is that nodes can appear in derived files that were never written to them!
-
-The discovery of this 'big bug' came about as the result of the following Aha:
-
-**@thin files that contain @all directives should be a cvs binary (-kb) files.**
-
-The reason is straightforward:  cvs doesn't know enough to merge such files.  Maybe all @thin derived files should be -kb files, but Leo's users will never agree to that!
-
-Anyway, leoProjects.txt is now a binary file as far as cvs is concerned.  Other .txt files, like leoScripts.txt, should also be binary files.  As we shall see, the fact that leoProjects.txt is now a -kb file means that we can not possibly blame the cvs merge algorithm for what is about to happen.
-
-Ok, back to the 'big bug'.  Here is how I got bitten:
-
-- I changed leoProjects.txt in two sandboxes 1 and 2.  In sandbox 1 I added a node called 'changed in the main line'.  In sandbox 2 I added a node called 'changed2'.
-
-- I changed LeoPyRef.leo in sandbox 2, but *not* in sandbox 1.
-
-- I did a update in sandbox 2.
-
-As expected (now that leoProjects.txt is a binary file) I got the following from cvs:
-
-M src/LeoPyRef.leo
-...
-cvs update: nonmergeable file needs merge
-cvs update: revision 1.448 from repository is now in src/leoProjects.txt
-cvs update: file from working directory is now in .#leoProjects.txt.1.447
-
-To summarize the update:
-
-- LeoPyRef.leo has been marked as modified (M), but it has **not** been changed by cvs.
-
-- As expected, leoProjects.txt contains the version from sandbox **1**.
-
-So far, so good.  But when I opened LeoPyRef.leo I got a huge surprise: the outline contains **both** the node 'changed in main-line' and the node 'changed2'.  Whoa Nellie!
-
-How did this happen?  Well, obviously the 'changed in main-line' node came from the cvs update.  I expected that.  The 'changed2' line must have come from the local copy of LeoPyRef.leo.
-
-Once I knew what to look for it wasn't too hard to discover what had happened.  The 'changed2' is a descendent of a cloned node called '4.4 projects'.
-
-- One clone of '4.4 projects' node is a descendent of the @thin leoProjects.txt node.
-
-- Another clone of the '4.4 project' is in the LeoPyRef.leo file but outside of any @thin node.
-
-So the 'resurrection' of the 'changed2' node happened while Leo was reading leoProjects.txt into LeoPyRef.leo.  The '4.4 projects' node **already existed in the outline** before Leo read leoProjects.txt, and the present atFile read logic only **adds** nodes, it never deletes nodes.  Thus, the 'changed2' node 'survived' the atFile read logic.  The 'changed2' node became a 'vampire' node that couldn't be killed.
-
-The problem is far from benign.  Because of clones, the vampire node became an orphan node in **another** file, namely leoKeys.py.  I tried two or three times to remove the vampire/orphan node before realizing what had happened.
-
-The fix (there is *always* a fix) will require some care.  The present atFile.read logic is robust because it *doesn't* delete nodes.  It is essential that the read logic remain robust.  I suspect the solutions will be as follows:
-
-A. The atFile.read code can not delete the subtree of @thin nodes initially, because it doesn't know whether there will be read errors later.  If there are read errors absolutely nothing must change.  This ensures that read errors never destroy information.
-
-B. A new post-pass will look for vampire nodes: nodes that were not actually read from the derived file.  I think (but haven't proven) that all descendents of vampire nodes are also vampire nodes.  If that is so the post-pass will simply delete vampire nodes without worrying about whether they have descendents.
-
-Warning: the new scheme will mean that cvs update can destroy information that previously existed in the outline.  I believe this is correct: we assume that derived files are the 'truly meaningful' files.  Hey, if we are wrong we can always get the old info from cvs :-)
-
-Edward
-#@-node:ekr.20060116173818:Fix vampire nodes
-#@+node:ekr.20060609070148:Fix hung windows
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=3768494
-By: ktenney
-
-I'm using current CVS, W2k
-
-1 open a Leo file (I'm using a batch file / console)
-
-2 click Edit->Open   <-- Having this dialog open is the problem.
-
-3 return focus to the Leo window
-
-4 click Help->Open leoDocs.leo
-
-Zombie!
-#@-node:ekr.20060609070148:Fix hung windows
-#@+node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
-@nocolor
-
-From email from Terry Brown
-
-python /home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py /home/tbrown/.tnb.leo
-
-(should be all on one line, i.e. run and open /home/tbrown/.tnb.leo)
-
-gives the traceback below.  Opening the file from within Leo works fine.
-
-Bah - I just now looked at it closely enough to realize it's the evil
-pickled Tk classes in cleo uAs.  So I don't know whether you want to
-fix that or not, it makes sense Leo would read the file specified on
-the command line before Tk is initialized - if it's just scanning for
-settings maybe it could catch and ignore failed uA reads at that time?
-
-At some point I want to take pickled Tk vars out of cleo, I was
-thinking when that guy was working on the wx gui would be a good time,
-too bad he got sick.
-
-Cheers -Terry
-
-reading settings in /mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/config/leoSettings.leo
-reading settings in /home/tbrown/leoSettings.leo
-reading settings in /home/tbrown/myLeoSettings.leo
-reading settings in /home/tbrown/.tnb.leo
-Traceback (most recent call last):
-  File "/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py", line 398, in <module>
-    run(fileName)
-  File "/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py", line 118, in run
-    g.app.config.readSettingsFiles(fileName,verbose)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoConfig.py", line 1649, in readSettingsFiles
-    c = self.openSettingsFile(path)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoConfig.py", line 1674, in openSettingsFile
-    theFile,path,readAtFileNodesFlag=False,silent=True) # closes theFile.
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 892, in open
-    silent=silent)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 779, in getLeoFile
-    self.getAllLeoElements(fileName,silent)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1317, in getAllLeoElements
-    self.getVnodes()
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1898, in getVnodes
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1738, in getVnode
-    attr,val = self.getUa("vnode")
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1658, in getUa
-    val2 = pickle.loads(binString)
-  File "/usr/lib/python2.5/pickle.py", line 1374, in loads
-    return Unpickler(file).load()
-  File "/usr/lib/python2.5/pickle.py", line 858, in load
-    dispatch[key](self)
-  File "/usr/lib/python2.5/pickle.py", line 1217, in load_build
-    setstate(state)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/plugins/cleo.py", line 130, in __setstate__
-    Tk.Variable.__init__(self)
-  File "/usr/lib/python2.5/lib-tk/Tkinter.py", line 188, in __init__
-    self._tk = master.tk
-AttributeError: 'NoneType' object has no attribute 'tk'
-Exception exceptions.AttributeError: "TkPickleVar instance has no attribute '_tk'" in <bound method TkPickleVar.__del__ of <cleo.TkPickleVar instance at 0xb73a876c>> ignored
-#@-node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
-#@-node:ekr.20070814070312:First
-#@+node:ekr.20070703111455.1:Most important
-#@+node:ekr.20070623144302:vim-like bindings
-#@+node:ekr.20070824094005:Requests
-@nocolor
-
-> Some of the features I've grown to like with VIM are search-and-replace within the current selection, easy keyboard navigation, and to some extent macro recording and running.
-
-Thanks for these comments.  I'll keep them in mind as I design the vim-like code.
-
-Edward
-#@nonl
-#@-node:ekr.20070824094005:Requests
-#@+node:ekr.20070814083528.1:Design post
-@nocolor
-
-http://sourceforge.net/forum/forum.php?thread_id=1800079&forum_id=10226
-
-Recent posts have discussed @menu trees and resolving cvs conflicts. The third of my recent ruminations concerns adding support for vim-like key bindings. 
-
-Earlier work involving input modes (@mode nodes in settings file) probably is not completely sufficient to implement plain-key key bindings in a way that would truly be vim-like. 
-
-Most of the issues are implementation issues: Leo's key-handling code is very complicated. The trick is to handle both vim and emacs styles compatibly. 
-
-The user must be able to specify vim-like key bindings without using @mode nodes. That is, top-level vim key bindings must always be available. Vim has an enormous number of key bindings: the user must be able to specify which are in effect. 
-
-My strategy will be as follows: 
-
-1. Create enter-vim-mode and exit-vim-mode commands, and create the setting: 
-
-@bool vim-mode-by-default = False 
-
-This will allow the user to specify vim mode as the default mode if desired. 
-
-2. Create **vim-edit** commands as needed in order to handler user interaction. For example, dd deletes the present line while d5 deletes 5 lines. Rather than trying to simulate this effect using the present mechanisms, the vim-delete command will prompt for the number of characters or lines to delete. 
-
-Give the complex nature of vims c and d commands (and others) it will probably be necessary to create a vim-edit class in leoEditCommands.py. This class will handle all the ways of specifying a range of characters to which the various commands will apply. It's not clear exactly how much work will be needed, but my guess is that it will, in fact, be easiest to handle vim-like interactions with new code. 
-
-3. Vim's ':' command will simply invoke Leo's minibuffer. This isn't precisely the same as Vim's status line: it is significantly better. Otoh, we will want a way to simulate the actual spelling of vim's ':' commands. Possible @abbreviation nodes can be pressed into service. 
-
-4. Internally, it will be quite a trick to allow top-level vim-like plain-key bindings in all text widgets. I'm not sure how to do this, but it is essential. 
-
-I am quite eager to get something truly vim-like working. It promises to increase my editing speed substantially. It also should appeal strongly to present vim users. 
-#@nonl
-#@-node:ekr.20070814083528.1:Design post
-#@+node:ekr.20071026140857:Posting re vim bindings
-@nocolor
-
-> I'm looking forward to this.
-
-Excellent.  You can help with the testing :-)
-
-Leo looks like a perfect match for the vim approach.  Indeed, vim typically uses a 1 or 2 level concatenation scheme (preceded by a repeat count).  This is kinda like a utf-8 encoding :-)  That is, it is a variable-length encoding of the command.
-
-This is a very powerful approach, one that vim doesn't really exploit (because it doesn't need to). But Leo absolutely needs this power of some extra levels.  Something like this:
-
-i input mode
-
-f focus commands
-..fb focus to body
-..fo focus to outline
-..fl focus to log
-..ft toggle body pane focus
-
-o outline commands
-..om outline move, i.e., actually move the nodes.
-..og outline go, i.e., select nodes without changing the outline
-..od outline delete
-..oh outline edit headline
-
-s search commands
-..so search options
-...soi toggle ignore-case checkbox
-...sow toggle word checkbox
-...etc!
-..st search using search tab
-..sf forward incremental search
-..sb backward incremental search
-
-x minibuffer commands
-
-w file commands
-..ws save outline
-..wq quit
-
-escape: universal escape, like ctrl-g now.
-
-Do you see?  Just one extra level allows 10+ times the number of key bindings.  This is a perfect match for Leo's complex environment.
-
-Naturally, Leo will allow the user to specify these bindings using nodes in the @settings tree. Indeed, this is truly an exciting prospect.
-
-Edward
-
-P.S.  I've glossed over the details of which single characters (like d for delete character) should be reserved for common editing and cursor-movement commands.  That's the beauty of creating these bindings with user settings: no need to argue :-)  And that's the beauty of arbitrarily deep key binding trees: there are plenty of keys to go around.
-
-EKR
-#@-node:ekr.20071026140857:Posting re vim bindings
-#@-node:ekr.20070623144302:vim-like bindings
-#@+node:ekr.20070625091423:Add translation services
-@nocolor
-
-*Many* calls to g.es and g.es_print have a mix of translated and untranslated items.
-Untranslated items should include file names, directories, gnx's, leo_id's etc.
-
-**Don't bother to do clone-find-all: there are 666 many matches!**
-
-Regardless of the chosen scheme:
-
-- g.translate will do the actual translation.
-
-- Some simple string, like tr, will be an abbreviation for g.translate.
-  The typical import will be::
-
-    import leoGlobals as g ; tr = g.translate
-
-The easiest scheme seems to be:
-
-- g.es and g.es_print translate all arguments.
-- g.esx and g.es_printx do no translation.
-
-g.esx and g.es_printx allow a mix on translated and untranslated arguments::
-
-    g.esx(tr('abc'),fileName)
-#@-node:ekr.20070625091423:Add translation services
-#@+node:ekr.20071001052501:Versioning for nodes
-@nocolor
-
-One feature I have not seen in SCS system is something which might be called
-"history compression": I might be interested in having both version 5 and 6
-in my source tree, when the current version is 7, but I am not really interested
-in the 2000 steps which transformed 5 into 6 (just suggested this feature to
-the bazaar people). This happens actually quite often to me, since I use the
-SCS as a back-up system, saving many (uninteresting) intermediate steps while
-implementing a new feature.
-#@nonl
-#@-node:ekr.20071001052501:Versioning for nodes
-#@+node:ekr.20071021213334:Create an easy way to attach icons to headlines :-)
-#@-node:ekr.20071021213334:Create an easy way to attach icons to headlines :-)
-#@-node:ekr.20070703111455.1:Most important
 #@+node:ekr.20070630143345:Easy and useful
 #@+node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
 @nocolor

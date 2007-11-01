@@ -1124,6 +1124,7 @@ inContext
 in_headline
 incompletions
 indices
+initHeadString
 initMarked
 initWriteIvars
 init_zodb
