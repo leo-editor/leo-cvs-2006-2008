@@ -2036,6 +2036,7 @@ class baseLeoImportCommands:
                     g.app.unitTestDict['actualErrorMessage'] = s
                 g.app.unitTestDict['actualErrors'] = self.errors
                 if 0: # For debugging unit tests.
+                    g.trace(g.callers())
                     g.es_print(s,color='red')
             else:
                 g.es_print(s,color='red')
@@ -2283,12 +2284,12 @@ class baseLeoImportCommands:
                 elif self.startsString(s,i):
                     i = self.skipString(s,i)
                     prefix = None
-                elif self.startsClass(s,i,quick=True):
+                elif self.startsClass(s,i):
                     # Important: do not include leading ws in the decls.
                     classOrFunc = True
                     i = self.adjustClassOrFunctionStart(s,i,self.classId) # 'class')
                     break
-                elif self.startsFunction(s,i,quick=True):
+                elif self.startsFunction(s,i):
                     # Important: do not include leading ws in the decls.
                     classOrFunc = True
                     i = self.adjustClassOrFunctionStart(s,i,'function')
@@ -2384,19 +2385,19 @@ class baseLeoImportCommands:
         #@+node:ekr.20070711132314:startsClass/Function (baseClass) & helpers
         # We don't expect to override this code, but subclasses may override the helpers.
 
-        def startsClass (self,s,i,quick=False):
+        def startsClass (self,s,i):
             '''Return True if s[i:] starts a class definition.
             Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-            val = self.hasClasses and self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
+            val = self.hasClasses and self.startsHelper(s,i,kind='class',tags=self.classTags)
             return val
 
-        def startsFunction (self,s,i,quick=False):
+        def startsFunction (self,s,i):
             '''Return True if s[i:] starts a function.
             Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
-            val = self.hasFunctions and self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
+            val = self.hasFunctions and self.startsHelper(s,i,kind='function',tags=self.functionTags)
             return val
         #@+node:ekr.20070712112008:startsHelper
-        def startsHelper(self,s,i,kind,quick,tags):
+        def startsHelper(self,s,i,kind,tags):
             '''return True if s[i:] starts a class or function.
             Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
 
@@ -2411,7 +2412,6 @@ class baseLeoImportCommands:
             # The skipBlock method of the base class checks for such lines.
             self.startSigIndent = self.getLeadingIndent(s,i)
 
-            # Run a quick check first.
             # Get the tag that starts the class or function.
             j = g.skip_ws_and_nl(s,i)
             i = self.skipId(s,j)
@@ -2422,7 +2422,6 @@ class baseLeoImportCommands:
                 if theId not in tags:
                     if trace and verbose: g.trace('**** %s theId: %s not in tags: %s' % (kind,theId,tags))
                     return False
-                if quick: return True
 
             if trace and verbose: g.trace('kind',kind,'id',theId)
 
@@ -2487,11 +2486,7 @@ class baseLeoImportCommands:
                     self.error('%s definition does not start a line\n%s' % (
                         kind,g.get_line(s,k)))
 
-            if trace:
-                if 1:
-                    g.trace(kind,'returns\n'+s[self.sigStart:i])
-                else:
-                    g.trace(kind,'returns s[sigStart:i] = [%d:%d]' % (self.sigStart,i))
+            if trace: g.trace(kind,'returns\n'+s[self.sigStart:i])
             return True
         #@-node:ekr.20070712112008:startsHelper
         #@+node:ekr.20070711140703:skipSigStart
@@ -3131,7 +3126,9 @@ class baseLeoImportCommands:
                         if line.strip():
                             junk, indent = g.skip_leading_ws_with_indent(line,0,self.tab_width)
                             if indent <= startIndent:
-                                self.underindentedComment(line)
+                                if j not in self.errorLines: # No error yet given.
+                                    self.errorLines.append(j)
+                                    self.underindentedComment(line)
                     underIndentedStart = None
             if trace: g.trace('returns',i,'underIndentedStart',underIndentedStart)
             return i,underIndentedStart,breakFlag
