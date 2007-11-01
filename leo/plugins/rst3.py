@@ -227,21 +227,22 @@ def code_block (name,arguments,options,content,lineno,content_offset,block_text,
 
     try:
         language = arguments [0]
-        g.trace(language)
+        # g.trace(language)
         # See http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/252170
-        module = getattr(SilverCity,language)
-        generator = getattr(module,language+"HTMLGenerator")
-        io = StringIO.StringIO()
-        generator().generate_html(io,'\n'.join(content))
-        html = '<div class="code-block">\n%s\n</div>\n' % io.getvalue()
+        module = SilverCity and getattr(SilverCity,language)
+        generator = module and getattr(module,language+"HTMLGenerator")
+        if generator:
+            io = StringIO.StringIO()
+            generator().generate_html(io,'\n'.join(content))
+            html = '<div class="code-block">\n%s\n</div>\n' % io.getvalue()
+        else:
+            html = '<div class="code-block">\n%s\n</div>\n' % '<br>\n'.join(content)
         raw = docutils.nodes.raw('',html,format='html')
         return [raw]
     except Exception: # Return html as shown.  Lines are separated by <br> elements.
         g.es_trace('exception in rst3:code_block()')
         g.es_exception()
-        html = '<div class="code-block">\n%s\n</div>\n' % '<br>\n'.join(content)
-        raw = docutils.nodes.raw('',html,format='html')
-        return [raw]
+        return [None]
 
 # See http://docutils.sourceforge.net/spec/howto/rst-directives.html
 code_block.arguments = (
