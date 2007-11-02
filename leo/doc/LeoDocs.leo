@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.421602787456">
-	<global_window_position top="16" left="247" height="681" width="892"/>
+	<global_window_position top="16" left="247" height="661" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -353,7 +353,7 @@
 <v t="ekr.20050901102400.2"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.4" a="M"><vh>Chapter 7: Scripting Leo with Python</vh>
+<v t="ekr.20050831195331.4"><vh>Chapter 7: Scripting Leo with Python</vh>
 <v t="ekr.20040403171740"><vh>@rst html\scripting.html</vh>
 <v t="ekr.20050812134441.1"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20050901184158"><vh>@rst-ignore Important: you can run these examples!</vh></v>
@@ -626,7 +626,7 @@
 <v t="ekr.20050912133515"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060612102055" a="M"><vh>Chapter 13: Writing Plugins</vh>
+<v t="ekr.20060612102055"><vh>Chapter 13: Writing Plugins</vh>
 <v t="ekr.20060612103240"><vh>@rst html\writingPlugins.html</vh>
 <v t="ekr.20060612103824"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050903075144"><vh>Overview</vh></v>
@@ -780,7 +780,7 @@
 <v t="ekr.20071004103659"><vh>The Great Graph Aha</vh></v>
 <v t="ekr.20070806090226.15"><vh>Added support for @auto files</vh>
 <v t="ekr.20070806095535.1"><vh>What @auto does</vh></v>
-<v t="ekr.20070809141529" a="M"><vh>Perfect import checks</vh></v>
+<v t="ekr.20070809141529"><vh>Perfect import checks</vh></v>
 <v t="ekr.20070806101412"><vh>Commands related to @auto</vh></v>
 <v t="ekr.20070806100055"><vh>Extending the code: adding new parsers</vh></v>
 </v>
@@ -1099,7 +1099,7 @@
 <v t="ekr.20071004103659"><vh>The Great Graph Aha</vh></v>
 <v t="ekr.20070806090226.15"><vh>Added support for @auto files</vh>
 <v t="ekr.20070806095535.1"><vh>What @auto does</vh></v>
-<v t="ekr.20070809141529" a="M"><vh>Perfect import checks</vh></v>
+<v t="ekr.20070809141529"><vh>Perfect import checks</vh></v>
 <v t="ekr.20070806101412"><vh>Commands related to @auto</vh></v>
 <v t="ekr.20070806100055"><vh>Extending the code: adding new parsers</vh></v>
 </v>
@@ -3285,7 +3285,7 @@
 <v t="ekr.20070806090226.14"><vh>Created threading_colorizer</vh></v>
 <v t="ekr.20070806090226.15"><vh>Added support for @auto files</vh>
 <v t="ekr.20070806095535.1"><vh>What @auto does</vh></v>
-<v t="ekr.20070809141529" a="M"><vh>Perfect import checks</vh></v>
+<v t="ekr.20070809141529"><vh>Perfect import checks</vh></v>
 <v t="ekr.20070806101412"><vh>Commands related to @auto</vh></v>
 <v t="ekr.20070806100055"><vh>Extending the code: adding new parsers</vh></v>
 </v>
@@ -3329,7 +3329,7 @@
 <v t="ekr.20071021111856.441"><vh>Rewrote threading colorizer</vh></v>
 <v t="ekr.20070806090226.15"><vh>Added support for @auto files</vh>
 <v t="ekr.20070806095535.1"><vh>What @auto does</vh></v>
-<v t="ekr.20070809141529" a="M"><vh>Perfect import checks</vh></v>
+<v t="ekr.20070809141529"><vh>Perfect import checks</vh></v>
 <v t="ekr.20070806101412"><vh>Commands related to @auto</vh></v>
 <v t="ekr.20070806100055"><vh>Extending the code: adding new parsers</vh></v>
 </v>
@@ -3369,7 +3369,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071101162646" a="TV"><vh>4.4.4 b4</vh>
+<v t="ekr.20071101162646" a="TV"><vh>4.4.4 Final</vh>
 <v t="ekr.20071101162751"><vh>Fixed bugs</vh>
 <v t="ekr.20071101162751.2"><vh>Fixed bug that caused rClick plugin to crash</vh></v>
 <v t="ekr.20071101162751.4"><vh>Fixed scrolling problem with chapters</vh></v>
@@ -31693,7 +31693,11 @@ Parsers presently exist for C, elisp, Java, Pascal, PHP and Python. Leo
 determines the language using the file's extension. If no parser exists for a
 language, the entire body ofAn @auto tree contains a significant amount of information if it has any children or if the root node contains more than 10 non-blank lines. the derived file is copied to the body of the @auto
 node.
-</t>
+
+Leo does not write the contents of @auto trees to .leo files. In this respect,
+@auto trees work much like @thin trees. @auto trees whose root node is under the
+scope of an @ignore directive *will* be written to the .leo, just like @thin
+trees.</t>
 <t tx="ekr.20070806100055">All present parsers are short overrides of a powerful base parser class. Thus,
 it would be simple to add support for other languages. See the node
 
@@ -31742,8 +31746,8 @@ regularizing leading whitespace.
 
 After importing a file, Leo verifies that writing the @auto node would create
 the same file as the original file. For strict languages, the comparison must be
-exact, or nearly so. For non-strict languages, leading whitespace is ignored for
-the purposes of this comparison.
+exact, or nearly so. For non-strict languages, differences in leading whitespace
+generate warnings, not errors.
 
 File comparison mismatches can arise for several reasons:
     

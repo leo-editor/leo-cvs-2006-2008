@@ -1,9 +1,7 @@
-Leo 4.4.4 beta 4                            October 27, 2007
+Leo 4.4.4 Final                           November 2, 2007
 
-Leo 4.4.4 beta 4 is available at:
+Leo 4.4.4 Final is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
-
-This beta 4 version fixes all bugs reported against Leo 4.4.4 beta 3.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
@@ -25,7 +23,8 @@ The highlights of Leo 4.4.4:
   Leo outlines.
 
 - @auto nodes eliminate sentinels in derived files, thereby allowing people to
-  collaborate using Leo more easily.
+  collaborate using Leo more easily. **Warning**: for now, please make backup
+  copies of files imported with @auto.
 
 - New commands for resolving cvs conflicts.
 
