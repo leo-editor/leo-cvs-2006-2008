@@ -64,7 +64,6 @@ dist\leo-4-3.nsi
 dist\leoDist.leo
 doc\INSTALL.TXT
 doc\LICENSE.TXT
-doc\LeoDiary.leo
 doc\LeoDocs.leo
 doc\LeoPostings.leo
 doc\LeoSlideShows.leo
@@ -757,7 +756,6 @@ plugins\outline_export.py
 plugins\override_commands.py
 plugins\paste_as_headlines.py
 plugins\pie_menus.py
-plugins\plugin_manager.py
 plugins\pluginsManager.txt
 plugins\pluginsNotes.txt
 plugins\pluginsTest.py

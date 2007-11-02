@@ -169,7 +169,7 @@
 <v t="ekr.20040701160830.1"><vh>names for use in suppressions</vh></v>
 <v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
-<v t="ekr.20050118095021" a="TV"><vh>Leo 4.x installer</vh>
+<v t="ekr.20050118095021"><vh>Leo 4.x installer</vh>
 <v t="ekr.20050118103207"><vh>Keeping installer/uninstallers in synch</vh>
 <v t="ekr.20050118104149"><vh>config files</vh>
 <v t="ekr.20050118104149.1"><vh>&lt;&lt; install config files &gt;&gt;</vh></v>
@@ -220,7 +220,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846"><vh>Distribution files</vh>
+<v t="EKR.20040519090846" a="TV"><vh>Distribution files</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
@@ -2956,9 +2956,7 @@ Delete "$INSTDIR\dist\leo-4-3.nsi"
 
 # Delete "$INSTDIR\dist\.pycheckrc"</t>
 <t tx="ekr.20050118104901"></t>
-<t tx="ekr.20050118104901.1">File "..\doc\leoDiary.leo"
-File "..\doc\LeoDocs.leo"
-File "..\doc\LeoPostings.leo"
+<t tx="ekr.20050118104901.1">File "..\doc\LeoDocs.leo"
 File "..\doc\LeoSlideShows.leo"
 
 File "..\doc\leoNotes.txt"
@@ -2988,8 +2986,6 @@ SetOutPath "$INSTDIR\doc\html"
 File "..\doc\html\*.*"
 </t>
 <t tx="ekr.20050118104901.2">Delete "$INSTDIR\doc\LeoDocs.leo"
-Delete "$INSTDIR\doc\leoDiary.leo"
-Delete "$INSTDIR\doc\LeoPostings.leo"
 Delete "$INSTDIR\doc\LeoSlideShows.leo"
 
 Delete "$INSTDIR\doc\leoNotes.txt"
@@ -5182,10 +5178,8 @@ include dist/leo-4-3.nsi
 include dist/leoDist.leo
 include dist/.pycheckrc
 
-include doc/LeoDiary.leo
 include doc/LeoDocs.leo
 include doc/leoNotes.txt
-include doc/LeoPostings.leo
 include doc/LeoSlideShows.leo
 include doc/leoToDo.txt
 include doc/leoToDoLater.txt

@@ -254,9 +254,7 @@ Section "Leo" SEC01
   SetOutPath "$INSTDIR\doc"
   ;@  << install doc files >>
   ;@+node:ekr.20050118104901.1:<< install doc files >>
-  File "..\doc\leoDiary.leo"
   File "..\doc\LeoDocs.leo"
-  File "..\doc\LeoPostings.leo"
   File "..\doc\LeoSlideShows.leo"
 
   File "..\doc\leoNotes.txt"
@@ -574,8 +572,6 @@ Section Uninstall
   ;@  << uninstall doc files >>
   ;@+node:ekr.20050118104901.2:<< uninstall doc files >>
   Delete "$INSTDIR\doc\LeoDocs.leo"
-  Delete "$INSTDIR\doc\leoDiary.leo"
-  Delete "$INSTDIR\doc\LeoPostings.leo"
   Delete "$INSTDIR\doc\LeoSlideShows.leo"
 
   Delete "$INSTDIR\doc\leoNotes.txt"
