@@ -25,6 +25,405 @@
 <v t="ekr.20070105153901.12"><vh>Are any calls to calloc needed?</vh></v>
 <v t="ekr.20070105153901.13"><vh>Abbreviation Macros</vh></v>
 </v>
+<v t="ekr.20071105090148" a="TV"><vh>Old tests</vh>
+<v t="ekr.20071105090148.1"><vh>print Tk bindings</vh></v>
+<v t="ekr.20071105090148.2"><vh>byte-code tests</vh></v>
+<v t="ekr.20071105090148.3"><vh>print .</vh></v>
+<v t="ekr.20071105090148.4"><vh>Older tests</vh>
+<v t="ekr.20071105090148.5"><vh>@@button Undo problem</vh></v>
+<v t="ekr.20071105090148.6"><vh>@@nosent nosentTest.py</vh>
+<v t="ekr.20071105090148.7"><vh>node a</vh></v>
+</v>
+<v t="ekr.20071105090148.8"><vh>@@thin ./newFolder4/createDirectoriestest.txt</vh></v>
+<v t="ekr.20071105090148.9"><vh>@url http://webpages.charter.net/edreamleo/front.html  (Leo's home)</vh></v>
+<v t="ekr.20071105090148.10"><vh>checkversion</vh></v>
+<v t="ekr.20071105090148.11"><vh>code-block-regex</vh></v>
+<v t="ekr.20071105090148.12"><vh>import bug</vh>
+<v t="ekr.20071105090148.13"><vh>import</vh></v>
+<v t="ekr.20071105090148.14"><vh>@@file C:/prog/test/import-bug.cpp</vh>
+<v t="ekr.20071105090148.15"><vh>&lt;&lt; namespace arb declarations &gt;&gt;</vh></v>
+<v t="ekr.20071105090148.16"><vh>a</vh></v>
+<v t="ekr.20071105090148.17"><vh>&lt;&lt; namespace arb declarations &gt;&gt;</vh></v>
+<v t="ekr.20071105090148.18"><vh>b</vh></v>
+<v t="ekr.20071105090148.19"><vh>&lt;&lt; namespace arb declarations &gt;&gt;</vh></v>
+<v t="ekr.20071105090148.20"><vh>c</vh></v>
+<v t="ekr.20071105090148.21"><vh>&lt;&lt; namespace arb declarations &gt;&gt;</vh></v>
+<v t="ekr.20071105090148.22"><vh>d</vh></v>
+<v t="ekr.20071105090148.23"><vh>d</vh></v>
+<v t="ekr.20071105090148.24"><vh>c</vh></v>
+<v t="ekr.20071105090148.25"><vh>&lt;&lt; namespace arb declarations &gt;&gt;</vh></v>
+<v t="ekr.20071105090148.26"><vh>d</vh></v>
+<v t="ekr.20071105090148.27"><vh>d</vh></v>
+<v t="ekr.20071105090148.28"><vh>b</vh></v>
+<v t="ekr.20071105090148.29"><vh>&lt;&lt; namespace arb declarations &gt;&gt;</vh></v>
+<v t="ekr.20071105090148.30"><vh>c</vh></v>
+<v t="ekr.20071105090148.31"><vh>&lt;&lt; namespace arb declarations &gt;&gt;</vh></v>
+<v t="ekr.20071105090148.32"><vh>d</vh></v>
+<v t="ekr.20071105090148.33"><vh>d</vh></v>
+<v t="ekr.20071105090148.34"><vh>c</vh></v>
+<v t="ekr.20071105090148.35"><vh>&lt;&lt; namespace arb declarations &gt;&gt;</vh></v>
+<v t="ekr.20071105090148.36"><vh>d</vh></v>
+<v t="ekr.20071105090148.37"><vh>d</vh></v>
+<v t="ekr.20071105090148.38"><vh>a</vh></v>
+<v t="ekr.20071105090148.39"><vh>&lt;&lt; namespace arb declarations &gt;&gt;</vh></v>
+<v t="ekr.20071105090148.40"><vh>b</vh></v>
+<v t="ekr.20071105090148.41"><vh>&lt;&lt; namespace arb declarations &gt;&gt;</vh></v>
+<v t="ekr.20071105090148.42"><vh>c</vh></v>
+<v t="ekr.20071105090148.43"><vh>&lt;&lt; namespace arb declarations &gt;&gt;</vh></v>
+<v t="ekr.20071105090148.44"><vh>d</vh></v>
+<v t="ekr.20071105090148.45"><vh>d</vh></v>
+<v t="ekr.20071105090148.46"><vh>c</vh></v>
+<v t="ekr.20071105090148.47"><vh>&lt;&lt; namespace arb declarations &gt;&gt;</vh></v>
+<v t="ekr.20071105090148.48"><vh>d</vh></v>
+<v t="ekr.20071105090148.49"><vh>d</vh></v>
+<v t="ekr.20071105090148.50"><vh>b</vh></v>
+<v t="ekr.20071105090148.51"><vh>&lt;&lt; namespace arb declarations &gt;&gt;</vh></v>
+<v t="ekr.20071105090148.52"><vh>c</vh></v>
+<v t="ekr.20071105090148.53"><vh>&lt;&lt; namespace arb declarations &gt;&gt;</vh></v>
+<v t="ekr.20071105090148.54"><vh>d</vh></v>
+<v t="ekr.20071105090148.55"><vh>d</vh></v>
+<v t="ekr.20071105090148.56"><vh>c</vh></v>
+<v t="ekr.20071105090148.57"><vh>&lt;&lt; namespace arb declarations &gt;&gt;</vh></v>
+<v t="ekr.20071105090148.58"><vh>d</vh></v>
+<v t="ekr.20071105090148.59"><vh>d</vh></v>
+</v>
+</v>
+<v t="ekr.20071105090148.60"><vh>subprocess test</vh></v>
+<v t="ekr.20071105090148.61"><vh>test hash(fileIndex)</vh></v>
+<v t="ekr.20071105090148.62"><vh>Test of clean-all-lines</vh>
+<v t="ekr.20071105090148.63"><vh>a</vh></v>
+<v t="ekr.20071105090148.64"><vh>b</vh></v>
+</v>
+<v t="ekr.20071105090148.65"><vh>test of p.archivedPosition</vh></v>
+<v t="ekr.20071105090148.66"><vh>Test of wx indices</vh></v>
+<v t="ekr.20071105090148.67"><vh>test dynamic abbrev</vh></v>
+<v t="ekr.20071105090148.68"><vh>@@nosent refTest.html</vh>
+<v t="ekr.20071105090148.69"><vh>&lt;&lt;relpath&gt;&gt;</vh></v>
+</v>
+</v>
+<v t="ekr.20071105090148.70"><vh>Unicode tests</vh>
+<v t="ekr.20071105090148.71"><vh>@url http://www.fileformat.info/tip/microsoft/enter_unicode.htm</vh></v>
+<v t="ekr.20071105090148.72"><vh>test unicode escapes</vh></v>
+<v t="ekr.20071105090148.73"><vh>@@button put utf-8</vh>
+<v t="ekr.20071105090148.74"><vh>out utf-8</vh></v>
+</v>
+<v t="ekr.20071105090148.75"><vh>@@button get utf-8</vh>
+<v t="ekr.20071105090148.76"><vh>in utf-8</vh></v>
+</v>
+<v t="ekr.20071105090148.77"><vh>@@button put utf-16</vh>
+<v t="ekr.20071105090148.78"><vh>out utf-16</vh></v>
+</v>
+<v t="ekr.20071105090148.79"><vh>@@button get utf-16</vh>
+<v t="ekr.20071105090148.80"><vh>in utf-16</vh></v>
+</v>
+<v t="ekr.20071105090148.81"><vh>Find value of character</vh></v>
+<v t="ekr.20071105090148.82"><vh>test of g.isWordChar</vh></v>
+<v t="ekr.20071105090148.83"><vh>Problem with unicode in body pane (but not in headline) Stéphane</vh></v>
+<v t="ekr.20071105090148.84"><vh>word-forward test</vh></v>
+<v t="ekr.20071105090148.85"><vh>Node containing unicode characters: Ę</vh></v>
+<v t="ekr.20071105090148.86"><vh>Unicode characters in derived file names</vh>
+<v t="ekr.20071105090148.87"><vh>@@thin Lasidoré.py</vh></v>
+</v>
+<v t="ekr.20071105090148.88"><vh>test of unicode print</vh></v>
+<v t="ekr.20071105090148.89"><vh>Encoding</vh></v>
+</v>
+<v t="ekr.20071105090148.90"><vh>Tests of unl plugin</vh>
+<v t="ekr.20071105090148.91"><vh>UNL's in @url nodes</vh>
+<v t="ekr.20071105090148.92"><vh>@url 'ZODB--&gt;@button zodb-write'</vh></v>
+<v t="ekr.20071105090148.93"><vh>@url 'file: ./../../plugins/leoPlugins.leo#Plugins--&gt;Icon and status areas--&gt;@thin UNL.py--&gt;To do'</vh></v>
+</v>
+<v t="ekr.20071105090148.94"><vh>@url -- comment test</vh></v>
+<v t="ekr.20071105090148.95"><vh>@url 'file:c:/prog/tigris-cvs/leo/doc/leoDocs.leo#Users Guide'</vh></v>
+<v t="ekr.20071105090148.96"><vh>@url Tests</vh></v>
+<v t="ekr.20071105090148.97"><vh>@url 'file:./../doc/leoDocs.leo#Users Guide--&gt;Customizing Leo'</vh></v>
+<v t="ekr.20071105090148.98"><vh>@url 'http://webpages.charter.net/edreamleo/front.html'</vh></v>
+</v>
+<v t="ekr.20071105090148.99"><vh>Problems with @path</vh>
+<v t="ekr.20071105090148.100"><vh>@@file pathSepTest.txt</vh></v>
+</v>
+<v t="ekr.20071105090148.101"><vh>Up/down arrows with long lines</vh></v>
+<v t="ekr.20071105090148.102"><vh>Cursor bugs</vh></v>
+<v t="ekr.20071105090148.103"><vh>test of string problems</vh></v>
+<v t="ekr.20071105090148.104"><vh>test of kill buffer</vh></v>
+<v t="ekr.20071105090148.105"><vh>test of g.callers</vh></v>
+<v t="ekr.20071105090148.106"><vh>Coloring tests</vh>
+<v t="ekr.20071105090148.107"><vh>vbscript test</vh></v>
+<v t="ekr.20071105090148.108"><vh>Medium coloring test</vh></v>
+<v t="ekr.20071105090148.109"><vh>python colorizer bug</vh></v>
+<v t="ekr.20071105090148.110"><vh>test of colored markup</vh></v>
+<v t="ekr.20071105090148.111"><vh>test of @nocolor followed by @color</vh></v>
+<v t="ekr.20071105090148.112"><vh>fortran test</vh>
+<v t="ekr.20071105090148.113"><vh>child</vh></v>
+</v>
+<v t="ekr.20071105090148.114"><vh>Big coloring test</vh></v>
+<v t="ekr.20071105090148.115"><vh>Test of docstring</vh></v>
+<v t="ekr.20071105090148.116"><vh>Small coloring test</vh></v>
+<v t="ekr.20071105090148.117"><vh>cSharpTest.c#</vh></v>
+</v>
+<v t="ekr.20071105090148.118"><vh>dialog</vh></v>
+<v t="ekr.20071105090148.119"><vh>rst tests</vh>
+<v t="ekr.20071105090148.120"><vh>@@thin rst-test.py</vh>
+<v t="ekr.20071105090148.121"><vh>code part</vh>
+<v t="ekr.20071105090148.122"><vh>@rst-no-head This is my rst comment</vh></v>
+</v>
+</v>
+<v t="ekr.20071105090148.123"><vh>@@@rst rst-test.html</vh>
+<v t="ekr.20071105090148.124"><vh>@rst-no-head docs</vh>
+<v t="ekr.20071105090148.122"><vh>@rst-no-head This is my rst comment</vh></v>
+<v t="ekr.20071105090148.125" tnodeList="ekr.20071105090148.125"><vh>@nosent nosent_file_test.py</vh></v>
+</v>
+</v>
+<v t="ekr.20071105090148.126"><vh>@@rst rst-test.html</vh>
+<v t="ekr.20071105090148.127"><vh>inner (language c)</vh></v>
+</v>
+</v>
+<v t="ekr.20071105090148.128"><vh>color_markup test</vh></v>
+<v t="ekr.20071105090148.129"><vh>@rst code-block-test.html</vh></v>
+<v t="ekr.20071105090148.130"><vh>at-auto stuff</vh>
+<v t="ekr.20071105090148.131"><vh>@@auto atAutoTest.py</vh>
+<v t="ekr.20071105090148.132"><vh>atAutoTest declarations</vh></v>
+<v t="ekr.20071105090148.133"><vh>class baseLeoImportCommands</vh>
+<v t="ekr.20071105090148.134"><vh>__init__</vh></v>
+<v t="ekr.20071105090148.135"><vh>convertCodePartToWeb</vh></v>
+<v t="ekr.20071105090148.136"><vh>convertDocPartToWeb</vh></v>
+<v t="ekr.20071105090148.137"><vh>convertVnodeToWeb</vh></v>
+<v t="ekr.20071105090148.138"><vh>copyPart</vh></v>
+<v t="ekr.20071105090148.139"><vh>exportHeadlines</vh></v>
+<v t="ekr.20071105090148.140"><vh>flattenOutline</vh></v>
+<v t="ekr.20071105090148.141"><vh>outlineToWeb</vh></v>
+<v t="ekr.20071105090148.142"><vh>removeSentinelsCommand</vh></v>
+<v t="ekr.20071105090148.143"><vh>removeSentinelLines</vh></v>
+<v t="ekr.20071105090148.144"><vh>weave</vh></v>
+<v t="ekr.20071105090148.145"><vh>createHeadline</vh></v>
+<v t="ekr.20071105090148.146"><vh>error</vh></v>
+<v t="ekr.20071105090148.147"><vh>getTabWidth</vh></v>
+<v t="ekr.20071105090148.148"><vh>isDocStart</vh></v>
+<v t="ekr.20071105090148.149"><vh>isModuleStart</vh></v>
+<v t="ekr.20071105090148.150"><vh>massageComment</vh></v>
+<v t="ekr.20071105090148.151"><vh>massageWebBody</vh></v>
+<v t="ekr.20071105090148.152"><vh>setEncoding</vh></v>
+<v t="ekr.20071105090148.153"><vh>createOutline</vh></v>
+<v t="ekr.20071105090148.154"><vh>importDerivedFiles</vh></v>
+<v t="ekr.20071105090148.155"><vh>forceGnxOnPosition</vh></v>
+<v t="ekr.20071105090148.156"><vh>importFilesCommand</vh></v>
+<v t="ekr.20071105090148.157"><vh>convertMoreStringToOutlineAfter</vh></v>
+<v t="ekr.20071105090148.158"><vh>convertMoreStringsToOutlineAfter</vh></v>
+<v t="ekr.20071105090148.159"><vh>importFlattenedOutline</vh></v>
+<v t="ekr.20071105090148.160"><vh>moreHeadlineLevel</vh></v>
+<v t="ekr.20071105090148.161"><vh>stringIsValidMoreFile</vh></v>
+<v t="ekr.20071105090148.162"><vh>stringsAreValidMoreFile</vh></v>
+<v t="ekr.20071105090148.163"><vh>createOutlineFromWeb</vh></v>
+<v t="ekr.20071105090148.164"><vh>importWebCommand</vh></v>
+<v t="ekr.20071105090148.165"><vh>findFunctionDef</vh></v>
+<v t="ekr.20071105090148.166"><vh>scanBodyForHeadline</vh></v>
+<v t="ekr.20071105090148.167"><vh>scanWebFile</vh></v>
+<v t="ekr.20071105090148.168"><vh>cstCanonicalize</vh></v>
+<v t="ekr.20071105090148.169"><vh>cstDump</vh></v>
+<v t="ekr.20071105090148.170"><vh>cstEnter</vh></v>
+<v t="ekr.20071105090148.171"><vh>cstLookup</vh></v>
+<v t="ekr.20071105090148.172"><vh>perfectImport</vh></v>
+<v t="ekr.20071105090148.173"><vh>class baseScannerClass</vh>
+<v t="ekr.20071105090148.174"><vh>__init__</vh></v>
+<v t="ekr.20071105090148.175"><vh>check</vh></v>
+<v t="ekr.20071105090148.176"><vh>checkTabWithTabNanny</vh></v>
+<v t="ekr.20071105090148.177"><vh>checkWhitespace</vh></v>
+<v t="ekr.20071105090148.178"><vh>checkTrialWrite</vh></v>
+<v t="ekr.20071105090148.179"><vh>compareHelper</vh></v>
+<v t="ekr.20071105090148.180"><vh>addRef</vh></v>
+<v t="ekr.20071105090148.181"><vh>createDeclsNode</vh></v>
+<v t="ekr.20071105090148.182"><vh>createFunctionNode</vh></v>
+<v t="ekr.20071105090148.183"><vh>createHeadline</vh></v>
+<v t="ekr.20071105090148.184"><vh>getLeadingIndent</vh></v>
+<v t="ekr.20071105090148.185"><vh>indentBody</vh></v>
+<v t="ekr.20071105090148.186"><vh>insertIgnoreDirective</vh></v>
+<v t="ekr.20071105090148.187"><vh>massageComment</vh></v>
+<v t="ekr.20071105090148.188"><vh>putClass</vh></v>
+<v t="ekr.20071105090148.189"><vh>appendRefToClassNode</vh></v>
+<v t="ekr.20071105090148.190"><vh>appendTextToClassNode</vh></v>
+<v t="ekr.20071105090148.191"><vh>createClassNodePrefix</vh></v>
+<v t="ekr.20071105090148.192"><vh>putClassHelper</vh></v>
+<v t="ekr.20071105090148.193"><vh>putFunction</vh></v>
+<v t="ekr.20071105090148.194"><vh>putRootText</vh></v>
+<v t="ekr.20071105090148.195"><vh>undentBody</vh></v>
+<v t="ekr.20071105090148.196"><vh>underindentedComment</vh></v>
+<v t="ekr.20071105090148.197"><vh>underindentedLine</vh></v>
+<v t="ekr.20071105090148.198"><vh>error</vh></v>
+<v t="ekr.20071105090148.199"><vh>oops</vh></v>
+<v t="ekr.20071105090148.200"><vh>extendSignature</vh></v>
+<v t="ekr.20071105090148.201"><vh>scan</vh></v>
+<v t="ekr.20071105090148.202"><vh>skipArgs</vh></v>
+<v t="ekr.20071105090148.203"><vh>skipBlock</vh></v>
+<v t="ekr.20071105090148.204"><vh>skipCodeBlock</vh></v>
+<v t="ekr.20071105090148.205"><vh>skipComment</vh></v>
+<v t="ekr.20071105090148.206"><vh>skipBlockComment</vh></v>
+<v t="ekr.20071105090148.207"><vh>skipDecls</vh></v>
+<v t="ekr.20071105090148.208"><vh>adjustClassOrFunctionStart</vh></v>
+<v t="ekr.20071105090148.209"><vh>skipId</vh></v>
+<v t="ekr.20071105090148.210"><vh>skipNewline</vh></v>
+<v t="ekr.20071105090148.211"><vh>skipParens</vh></v>
+<v t="ekr.20071105090148.212"><vh>skipString</vh></v>
+<v t="ekr.20071105090148.213"><vh>startsClass</vh></v>
+<v t="ekr.20071105090148.214"><vh>startsFunction</vh></v>
+<v t="ekr.20071105090148.215"><vh>startsHelper</vh></v>
+<v t="ekr.20071105090148.216"><vh>skipSigStart</vh></v>
+<v t="ekr.20071105090148.217"><vh>skipSigId</vh></v>
+<v t="ekr.20071105090148.218"><vh>skipSigTail</vh></v>
+<v t="ekr.20071105090148.219"><vh>startsComment</vh></v>
+<v t="ekr.20071105090148.220"><vh>startsId</vh></v>
+<v t="ekr.20071105090148.221"><vh>startsString</vh></v>
+<v t="ekr.20071105090148.222"><vh>run</vh></v>
+</v>
+<v t="ekr.20071105090148.223"><vh>scanCText</vh></v>
+<v t="ekr.20071105090148.224"><vh>class cScanner</vh>
+<v t="ekr.20071105090148.225"><vh>__init__</vh></v>
+</v>
+<v t="ekr.20071105090148.226"><vh>scanElispText</vh></v>
+<v t="ekr.20071105090148.227"><vh>class elispScanner</vh>
+<v t="ekr.20071105090148.228"><vh>__init__</vh></v>
+<v t="ekr.20071105090148.229"><vh>startsClass</vh></v>
+<v t="ekr.20071105090148.230"><vh>startsFunction</vh></v>
+<v t="ekr.20071105090148.231"><vh>startsString</vh></v>
+</v>
+<v t="ekr.20071105090148.232"><vh>scanJavaText</vh></v>
+<v t="ekr.20071105090148.233"><vh>class javaScanner</vh>
+<v t="ekr.20071105090148.234"><vh>__init__</vh></v>
+</v>
+<v t="ekr.20071105090148.235"><vh>scanPascalText</vh></v>
+<v t="ekr.20071105090148.236"><vh>class pascalScanner</vh>
+<v t="ekr.20071105090148.237"><vh>__init__</vh></v>
+</v>
+<v t="ekr.20071105090148.238"><vh>scanPHPText</vh></v>
+<v t="ekr.20071105090148.239"><vh>class phpScanner</vh>
+<v t="ekr.20071105090148.240"><vh>__init__</vh></v>
+<v t="ekr.20071105090148.241"><vh>isPurePHP</vh></v>
+<v t="ekr.20071105090148.242"><vh>startsString</vh></v>
+<v t="ekr.20071105090148.243"><vh>skipString</vh></v>
+</v>
+<v t="ekr.20071105090148.244"><vh>scanPythonText</vh></v>
+<v t="ekr.20071105090148.245"><vh>class pythonScanner</vh>
+<v t="ekr.20071105090148.246"><vh>__init__</vh></v>
+<v t="ekr.20071105090148.247"><vh>extendSignature</vh></v>
+<v t="ekr.20071105090148.248"><vh>skipString</vh></v>
+<v t="ekr.20071105090148.249"><vh>skipCodeBlock</vh></v>
+<v t="ekr.20071105090148.250"><vh>pythonNewlineHelper</vh></v>
+<v t="ekr.20071105090148.251"><vh>skipSigTail</vh></v>
+</v>
+<v t="ekr.20071105090148.252"><vh>scanUnknownFileType</vh></v>
+<v t="ekr.20071105090148.253"><vh>cUnitTest</vh></v>
+<v t="ekr.20071105090148.254"><vh>elispUnitTest</vh></v>
+<v t="ekr.20071105090148.255"><vh>htmlUnitTest</vh></v>
+<v t="ekr.20071105090148.256"><vh>javaUnitTest</vh></v>
+<v t="ekr.20071105090148.257"><vh>pascalUnitTest</vh></v>
+<v t="ekr.20071105090148.258"><vh>phpUnitTest</vh></v>
+<v t="ekr.20071105090148.259"><vh>pythonUnitTest</vh></v>
+<v t="ekr.20071105090148.260"><vh>textUnitTest</vh></v>
+<v t="ekr.20071105090148.261"><vh>defaultImporterUnitTest</vh></v>
+<v t="ekr.20071105090148.262"><vh>scannerUnitTest</vh></v>
+</v>
+<v t="ekr.20071105090148.263"><vh>class leoImportCommands</vh></v>
+</v>
+<v t="ekr.20071105090148.264"><vh>@@auto tclDate.c</vh>
+<v t="ekr.20071105090148.265"><vh>tclDate declarations</vh></v>
+<v t="ekr.20071105090148.266"><vh>TclDatelex</vh></v>
+<v t="ekr.20071105090148.267"><vh>TclDateparse</vh></v>
+</v>
+<v t="ekr.20071105090148.268"><vh>@@auto addWhitelist.py</vh>
+<v t="ekr.20071105090148.269"><vh>addWhitelist declarations</vh></v>
+<v t="ekr.20071105090148.270"><vh>parseBox</vh></v>
+</v>
+<v t="ekr.20071105090148.271"><vh>path C:\prog\test</vh>
+<v t="ekr.20071105090148.272"><vh>@@auto xyzzy</vh></v>
+</v>
+<v t="ekr.20071105090148.273"><vh>path c:\prog\test</vh>
+<v t="ekr.20071105090148.274"><vh>@@auto atAutoTest.xxx</vh></v>
+</v>
+<v t="ekr.20071105090148.275"><vh>@@auto tclScan3.c</vh>
+<v t="ekr.20071105090148.276"><vh>tclScan3 declarations</vh></v>
+<v t="ekr.20071105090148.277"><vh>BuildCharSet</vh></v>
+<v t="ekr.20071105090148.278"><vh>CharInSet</vh></v>
+<v t="ekr.20071105090148.279"><vh>ReleaseCharSet</vh></v>
+<v t="ekr.20071105090148.280"><vh>ValidateFormat</vh></v>
+<v t="ekr.20071105090148.281"><vh>Tcl_ScanObjCmd</vh></v>
+</v>
+<v t="ekr.20071105090148.282"><vh>@@auto tclObj.c</vh>
+<v t="ekr.20071105090148.283"><vh>tclObj declarations</vh></v>
+<v t="ekr.20071105090148.284"><vh>TclInitObjSubsystem</vh></v>
+<v t="ekr.20071105090148.285"><vh>TclFinalizeObjects</vh></v>
+<v t="ekr.20071105090148.286"><vh>Tcl_RegisterObjType</vh></v>
+<v t="ekr.20071105090148.287"><vh>Tcl_AppendAllObjTypes</vh></v>
+<v t="ekr.20071105090148.288"><vh>Tcl_GetObjType</vh></v>
+<v t="ekr.20071105090148.289"><vh>Tcl_ConvertToType</vh></v>
+<v t="ekr.20071105090148.290"><vh>Tcl_NewObj</vh></v>
+<v t="ekr.20071105090148.291"><vh>Tcl_NewObj</vh></v>
+<v t="ekr.20071105090148.292"><vh>Tcl_DbNewObj</vh></v>
+<v t="ekr.20071105090148.293"><vh>Tcl_DbNewObj</vh></v>
+<v t="ekr.20071105090148.294"><vh>TclAllocateFreeObjects</vh></v>
+<v t="ekr.20071105090148.295"><vh>TclFreeObj</vh></v>
+<v t="ekr.20071105090148.296"><vh>Tcl_DuplicateObj</vh></v>
+<v t="ekr.20071105090148.297"><vh>Tcl_GetString</vh></v>
+<v t="ekr.20071105090148.298"><vh>Tcl_GetStringFromObj</vh></v>
+<v t="ekr.20071105090148.299"><vh>Tcl_InvalidateStringRep</vh></v>
+<v t="ekr.20071105090148.300"><vh>Tcl_NewBooleanObj</vh></v>
+<v t="ekr.20071105090148.301"><vh>Tcl_NewBooleanObj</vh></v>
+<v t="ekr.20071105090148.302"><vh>Tcl_DbNewBooleanObj</vh></v>
+<v t="ekr.20071105090148.303"><vh>Tcl_DbNewBooleanObj</vh></v>
+<v t="ekr.20071105090148.304"><vh>Tcl_SetBooleanObj</vh></v>
+<v t="ekr.20071105090148.305"><vh>Tcl_GetBooleanFromObj</vh></v>
+<v t="ekr.20071105090148.306"><vh>SetBooleanFromAny</vh></v>
+<v t="ekr.20071105090148.307"><vh>UpdateStringOfBoolean</vh></v>
+<v t="ekr.20071105090148.308"><vh>Tcl_NewDoubleObj</vh></v>
+<v t="ekr.20071105090148.309"><vh>Tcl_NewDoubleObj</vh></v>
+<v t="ekr.20071105090148.310"><vh>Tcl_DbNewDoubleObj</vh></v>
+<v t="ekr.20071105090148.311"><vh>Tcl_DbNewDoubleObj</vh></v>
+<v t="ekr.20071105090148.312"><vh>Tcl_SetDoubleObj</vh></v>
+<v t="ekr.20071105090148.313"><vh>Tcl_GetDoubleFromObj</vh></v>
+<v t="ekr.20071105090148.314"><vh>SetDoubleFromAny</vh></v>
+<v t="ekr.20071105090148.315"><vh>UpdateStringOfDouble</vh></v>
+<v t="ekr.20071105090148.316"><vh>Tcl_NewIntObj</vh></v>
+<v t="ekr.20071105090148.317"><vh>Tcl_NewIntObj</vh></v>
+<v t="ekr.20071105090148.318"><vh>Tcl_SetIntObj</vh></v>
+<v t="ekr.20071105090148.319"><vh>Tcl_GetIntFromObj</vh></v>
+<v t="ekr.20071105090148.320"><vh>SetIntFromAny</vh></v>
+<v t="ekr.20071105090148.321"><vh>SetIntOrWideFromAny</vh></v>
+<v t="ekr.20071105090148.322"><vh>UpdateStringOfInt</vh></v>
+<v t="ekr.20071105090148.323"><vh>Tcl_NewLongObj</vh></v>
+<v t="ekr.20071105090148.324"><vh>Tcl_NewLongObj</vh></v>
+<v t="ekr.20071105090148.325"><vh>Tcl_DbNewLongObj</vh></v>
+<v t="ekr.20071105090148.326"><vh>Tcl_DbNewLongObj</vh></v>
+<v t="ekr.20071105090148.327"><vh>Tcl_SetLongObj</vh></v>
+<v t="ekr.20071105090148.328"><vh>Tcl_GetLongFromObj</vh></v>
+<v t="ekr.20071105090148.329"><vh>SetWideIntFromAny</vh></v>
+<v t="ekr.20071105090148.330"><vh>UpdateStringOfWideInt</vh></v>
+<v t="ekr.20071105090148.331"><vh>Tcl_NewWideIntObj</vh></v>
+<v t="ekr.20071105090148.332"><vh>Tcl_NewWideIntObj</vh></v>
+<v t="ekr.20071105090148.333"><vh>Tcl_DbNewWideIntObj</vh></v>
+<v t="ekr.20071105090148.334"><vh>Tcl_DbNewWideIntObj</vh></v>
+<v t="ekr.20071105090148.335"><vh>Tcl_SetWideIntObj</vh></v>
+<v t="ekr.20071105090148.336"><vh>Tcl_GetWideIntFromObj</vh></v>
+<v t="ekr.20071105090148.337"><vh>Tcl_DbIncrRefCount</vh></v>
+<v t="ekr.20071105090148.338"><vh>Tcl_DbDecrRefCount</vh></v>
+<v t="ekr.20071105090148.339"><vh>Tcl_DbIsShared</vh></v>
+<v t="ekr.20071105090148.340"><vh>Tcl_InitObjHashTable</vh></v>
+<v t="ekr.20071105090148.341"><vh>AllocObjEntry</vh></v>
+<v t="ekr.20071105090148.342"><vh>CompareObjKeys</vh></v>
+<v t="ekr.20071105090148.343"><vh>FreeObjEntry</vh></v>
+<v t="ekr.20071105090148.344"><vh>HashObjKey</vh></v>
+<v t="ekr.20071105090148.345"><vh>Tcl_GetCommandFromObj</vh></v>
+<v t="ekr.20071105090148.346"><vh>TclSetCmdNameObj</vh></v>
+<v t="ekr.20071105090148.347"><vh>FreeCmdNameInternalRep</vh></v>
+<v t="ekr.20071105090148.348"><vh>DupCmdNameInternalRep</vh></v>
+<v t="ekr.20071105090148.349"><vh>SetCmdNameFromAny</vh></v>
+</v>
+<v t="ekr.20071105090148.350"><vh>@@read-file-into-node C:/prog/tigris-cvs/leo/src/leoApp.py</vh></v>
+<v t="ekr.20071105090148.351"><vh>@@read-file-into-node C:/prog/tigris-cvs/leo/test/ut.leo</vh></v>
+<v t="ekr.20071105090148.352"><vh>Test of @auto with unicode characters (@encoding)</vh>
+<v t="ekr.20071105090148.353"><vh>@@auto encoding-test.py</vh>
+<v t="ekr.20071105090148.354"><vh>encoding-test declarations</vh></v>
+</v>
+<v t="ekr.20071105090148.355"><vh>Multi-editor test</vh></v>
+</v>
+</v>
+</v>
 <v t="ekr.20071028032929"><vh>From LeoDiary.leo</vh>
 <v t="ekr.20071028032929.1"><vh>Early Milestones</vh>
 <v t="ekr.20071028032929.2"><vh>02/03/02 Leo 0.08 released</vh></v>
@@ -5984,7 +6383,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20071102162910" a="E"><vh>Leo 4.4.4 projects</vh>
+<v t="ekr.20071102162910"><vh>Leo 4.4.4 projects</vh>
 <v t="ekr.20071102162910.1"><vh>4.4.4 b2</vh>
 <v t="ekr.20071102162910.2"><vh>Bugs</vh>
 <v t="ekr.20071102162910.3"><vh>removed leoKeywords from colorizer</vh></v>
@@ -8125,7 +8524,7 @@
 <v t="ekr.20071102162910.318"><vh>pythonNewlineHelper</vh></v>
 </v>
 </v>
-<v t="ekr.20071102163001" a="TV"><vh>( jyLeo )</vh>
+<v t="ekr.20071102163001"><vh>( jyLeo )</vh>
 <v t="ekr.20071102163001.1"><vh>Debugging in jython</vh>
 <v t="ekr.20071102163001.2"><vh>trace</vh></v>
 <v t="ekr.20071102163001.3"><vh>callers &amp; _callerName</vh>
@@ -82872,5 +83271,18077 @@ def toFront( self ):
 def isVisible( self ):
     return self.splash.visible
 </t>
+<t tx="ekr.20071105090148"></t>
+<t tx="ekr.20071105090148.1">print c.frame.tree.bindingWidget
+print c.frame.tree.bindingWidget.bind()</t>
+<t tx="ekr.20071105090148.2">import dis
+
+def f():
+    return 'foo'
+    
+print '-' * 10
+dis.dis(f)</t>
+<t tx="ekr.20071105090148.3">path = g.os_path_abspath('.')
+print path</t>
+<t tx="ekr.20071105090148.4"></t>
+<t tx="ekr.20071105090148.5">bunch = c.undoer.beforeChangeNodeContents(p)
+#print 'before',bunch
+c.setBodyString(p, "New text")
+#print 'p.bodyString()',p.bodyString()
+c.undoer.afterChangeNodeContents(p,'xyzzy', bunch)
+</t>
+<t tx="ekr.20071105090148.6"># root line
+
+    @others
+
+# last root line</t>
+<t tx="ekr.20071105090148.7"># node a, only line</t>
+<t tx="ekr.20071105090148.8"># This is a test</t>
+<t tx="ekr.20071105090148.9"></t>
+<t tx="ekr.20071105090148.10">import sys
+version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
+print g.CheckVersion(version,'2.3')</t>
+<t tx="ekr.20071105090148.11">import re
+
+s = '''
+abc::
+    line1
+    line2
+
+after'''
+
+# Paul Paterson
+pattern = r'.*(::.*?\n)(\W*?)(?P&lt;indent&gt;\s+)(?P&lt;line1&gt;.*?$\n)((?P=indent)\s*(.*?$\n))*'
+
+# comp.lang.python
+pattern = r"(::\s*\n(\s*\n)*((\s+).*?\n)(((\4).*?\n)|(\s*\n))*)"
+
+flags = re.MULTILINE | re.VERBOSE | re.DOTALL
+# if nocase: flags |= re.IGNORECASE
+re_obj = re.compile(pattern,flags)
+mo = re_obj.search(s,0,len(s))
+if mo:
+    i,j = mo.start(),mo.end()
+    print i,j,repr(s[i:j])
+else:
+    print 'failed'</t>
+<t tx="ekr.20071105090148.12"></t>
+<t tx="ekr.20071105090148.13">#filename = r'c:\prog\tigris-cvs\leo\test\import-bug.cpp'
+filename = r'c:\prog\tigris-cvs\leo\test\longer-test.cpp'
+files = [filename]
+c.importCommands.importFilesCommand(files=files,treeType='@file',perfectImport=True,testing=False,verbose=False)</t>
+<t tx="ekr.20071105090148.14">namespace arb
+{&lt;&lt; namespace arb declarations &gt;&gt;
+@others
+
+
+namespace arb
+{&lt;&lt; namespace arb declarations &gt;&gt;
+@others
+
+
+namespace arb
+{&lt;&lt; namespace arb declarations &gt;&gt;
+@others
+
+
+namespace arb
+{&lt;&lt; namespace arb declarations &gt;&gt;
+@others
+
+
+namespace arb
+{&lt;&lt; namespace arb declarations &gt;&gt;
+@others
+
+
+namespace arb
+{&lt;&lt; namespace arb declarations &gt;&gt;
+@others
+
+
+namespace arb
+{&lt;&lt; namespace arb declarations &gt;&gt;
+@others
+
+
+namespace arb
+{&lt;&lt; namespace arb declarations &gt;&gt;
+@others
+@others
+
+
+namespace arb
+{&lt;&lt; namespace arb declarations &gt;&gt;
+@others
+
+
+namespace arb
+{&lt;&lt; namespace arb declarations &gt;&gt;
+@others
+
+
+namespace arb
+{&lt;&lt; namespace arb declarations &gt;&gt;
+@others
+
+
+namespace arb
+{&lt;&lt; namespace arb declarations &gt;&gt;
+@others
+
+
+namespace arb
+{&lt;&lt; namespace arb declarations &gt;&gt;
+@others
+
+
+namespace arb
+{&lt;&lt; namespace arb declarations &gt;&gt;
+@others
+
+
+namespace arb
+{&lt;&lt; namespace arb declarations &gt;&gt;
+@others
+</t>
+<t tx="ekr.20071105090148.15">
+
+class a: public dbm::X
+{
+public:
+a(int c);
+private:
+int m_a;
+};
+</t>
+<t tx="ekr.20071105090148.16">}
+
+arb::a::a
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.17">
+
+class b: public dbm::X
+{
+public:
+b(int c);
+private:
+int m_a;
+};
+</t>
+<t tx="ekr.20071105090148.18">}
+
+arb::a::b
+(
+int c
+)
+{
+m_b = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.19">
+
+class c: public dbm::X
+{
+public:
+c(int c);
+private:
+int m_a;
+};
+</t>
+<t tx="ekr.20071105090148.20">}
+
+arb::a::c
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.21">
+
+class d: public dbm::X
+{
+public:
+d(int c);
+private:
+int m_a;
+};
+</t>
+<t tx="ekr.20071105090148.22">}
+
+arb::a::d
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.23">}
+
+arb::a::d
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.24">}
+
+arb::a::c
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.25">
+
+class d: public dbm::X
+{
+public:
+d(int c);
+private:
+int m_a;
+};
+</t>
+<t tx="ekr.20071105090148.26">}
+
+arb::a::d
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.27">}
+
+arb::a::d
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.28">}
+
+arb::a::b
+(
+int c
+)
+{
+m_b = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.29">
+
+class c: public dbm::X
+{
+public:
+c(int c);
+private:
+int m_a;
+};
+</t>
+<t tx="ekr.20071105090148.30">}
+
+arb::a::c
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.31">
+
+class d: public dbm::X
+{
+public:
+d(int c);
+private:
+int m_a;
+};
+</t>
+<t tx="ekr.20071105090148.32">}
+
+arb::a::d
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.33">}
+
+arb::a::d
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.34">}
+
+arb::a::c
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.35">
+
+class d: public dbm::X
+{
+public:
+d(int c);
+private:
+int m_a;
+};
+</t>
+<t tx="ekr.20071105090148.36">}
+
+arb::a::d
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.37">}
+
+arb::a::d
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.38">}
+
+arb::a::a
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.39">
+
+class b: public dbm::X
+{
+public:
+b(int c);
+private:
+int m_a;
+};
+</t>
+<t tx="ekr.20071105090148.40">}
+
+arb::a::b
+(
+int c
+)
+{
+m_b = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.41">
+
+class c: public dbm::X
+{
+public:
+c(int c);
+private:
+int m_a;
+};
+</t>
+<t tx="ekr.20071105090148.42">}
+
+arb::a::c
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.43">
+
+class d: public dbm::X
+{
+public:
+d(int c);
+private:
+int m_a;
+};
+</t>
+<t tx="ekr.20071105090148.44">}
+
+arb::a::d
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.45">}
+
+arb::a::d
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.46">}
+
+arb::a::c
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.47">
+
+class d: public dbm::X
+{
+public:
+d(int c);
+private:
+int m_a;
+};
+</t>
+<t tx="ekr.20071105090148.48">}
+
+arb::a::d
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.49">}
+
+arb::a::d
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.50">}
+
+arb::a::b
+(
+int c
+)
+{
+m_b = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.51">
+
+class c: public dbm::X
+{
+public:
+c(int c);
+private:
+int m_a;
+};
+</t>
+<t tx="ekr.20071105090148.52">}
+
+arb::a::c
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.53">
+
+class d: public dbm::X
+{
+public:
+d(int c);
+private:
+int m_a;
+};
+</t>
+<t tx="ekr.20071105090148.54">}
+
+arb::a::d
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.55">}
+
+arb::a::d
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.56">}
+
+arb::a::c
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.57">
+
+class d: public dbm::X
+{
+public:
+d(int c);
+private:
+int m_a;
+};
+</t>
+<t tx="ekr.20071105090148.58">}
+
+arb::a::d
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.59">}
+
+arb::a::d
+(
+int c
+)
+{
+m_a = c**2;
+}
+</t>
+<t tx="ekr.20071105090148.60">import subprocess
+output = subprocess.Popen(["script.cmd"],
+stdout=subprocess.PIPE).communicate()[0]
+print output</t>
+<t tx="ekr.20071105090148.61">for p in c.allNodes_iter():
+    print hash(g.app.nodeIndices.toString(p.v.t.fileIndex))</t>
+<t tx="ekr.20071105090148.62">    
+    
+b
+</t>
+<t tx="ekr.20071105090148.63">a
+    
+    b
+c
+
+    
+</t>
+<t tx="ekr.20071105090148.64">    
+    a
+b
+    
+    
+
+    </t>
+<t tx="ekr.20071105090148.65">print '-'*40
+
+n = 5
+for p in c.allNodes_iter():
+    n = max(n,len(str(p.archivedPosition())))
+    
+for p in c.allNodes_iter():
+    print '%-*s' % (n,p.archivedPosition()), p.headString()[:40]</t>
+<t tx="ekr.20071105090148.66"># unlike as advertised in the documentation, these indices do correspond to Python indices.
+
+import wx
+w = c.frame.body.bodyCtrl
+s = w.getAllText()
+print repr(s)
+for i in xrange(len(s)):
+    print i,repr(w.textBaseClass.GetRange(w,i,i+1))</t>
+<t tx="ekr.20071105090148.67">abc
+def
+
+ab</t>
+<t tx="ekr.20071105090148.68">@language html
+
+&lt;link rel="stylesheet" type="text/css" href="&lt;&lt;relpath&gt;&gt;files/site.css"&gt; 
+</t>
+<t tx="ekr.20071105090148.69">/store/</t>
+<t tx="ekr.20071105090148.70"></t>
+<t tx="ekr.20071105090148.71"></t>
+<t tx="ekr.20071105090148.72">print 'a-\u0233-\u798d-z'
+
+print 'a-é-폤-z'
+
+# print u'a-é-폤-z'</t>
+<t tx="ekr.20071105090148.73">fileName = r'c:\prog\test\utf-8.txt'
+
+out = g.findNodeAnywhere(c,'out utf-8')
+if out:
+    u = out.bodyString()
+    u8 = g.toEncodedString(u,'utf-8',reportErrors=True)
+    g.es_dump(u8,title='wrote utf-8.txt')
+    f = file(fileName,'w+b')
+    try:
+        f.write(u8)
+    finally:
+        f.close()</t>
+<t tx="ekr.20071105090148.74">a-é-폤-z</t>
+<t tx="ekr.20071105090148.75">fileName = r'c:\prog\test\utf-8.txt'
+f = file(fileName)
+s = f.read()
+f.close()
+
+in2 = g.findNodeAnywhere(c,'in utf-8')
+if in2:
+    s = g.toUnicode(s,'utf-8')
+    c.setBodyString(in2,s)
+    c.selectPosition(in2)
+    c.redraw()
+
+g.es_dump(s,title='dump of %s\n' % (fileName))</t>
+<t tx="ekr.20071105090148.76">a-é-폤-z</t>
+<t tx="ekr.20071105090148.77">fileName = r'c:\prog\test\utf-16.txt'
+
+out = g.findNodeAnywhere(c,'out utf-16')
+if out:
+    u = out.bodyString()
+    u16 = g.toEncodedString(u,'utf-16',reportErrors=True)
+    g.es_dump(u16,title='wrote utf-16.txt')
+    f = file(fileName,'w+b')
+    try:
+        f.write(u16)
+    finally:
+        f.close()</t>
+<t tx="ekr.20071105090148.78">a-é-폤-z</t>
+<t tx="ekr.20071105090148.79">fileName = r'c:\prog\test\utf-16.txt'
+f = file(fileName)
+s = f.read()
+f.close()
+
+in2 = g.findNodeAnywhere(c,'in utf-16')
+if in2:
+    s = g.toUnicode(s,'utf-16')
+    c.setBodyString(in2,s)
+    c.selectPosition(in2)
+    c.redraw()
+
+g.es_dump(s,title='dump of %s\n' % (fileName))</t>
+<t tx="ekr.20071105090148.80">a-é-폤-z</t>
+<t tx="ekr.20071105090148.81">ch = '脖'
+ch = unicode(ch,'utf-8')
+print '%x' % ord(ch)
+print '脖'</t>
+<t tx="ekr.20071105090148.82">@ 
+80-е годы, ГДР. abc Один немецкий переводчик хвастался, что идеально знает\
+русский язык, переведет любую фразу. Ну, ему и предложили перевести на\
+немецкий:«Косил Косой косой косой». До сих пор мучается.
+@c
+
+import string
+print '-'*40
+for ch in p.bodyString():
+    if ch not in (string.letters+string.punctuation+string.whitespace):
+        print repr(ch),g.isWordChar(ch)</t>
+<t tx="ekr.20071105090148.83">abc Stéphane xyz</t>
+<t tx="ekr.20071105090148.84">@ Did not recognize word boundaries.
+
+80-е годы, ГДР. abc Один немецкий переводчик хвастался, что идеально знает
+русский язык, переведет любую фразу. Ну, ему и предложили перевести на
+немецкий:«Косил Косой косой косой». До сих пор мучается.
+@c
+
+# g.es_print(repr(p.bodyString()))
+
+if 1:
+
+    import unicodedata as u
+    
+    for ch in (
+        u'a',
+        u'\u0020',
+        u'\u00c4',
+        u'\ufeb1',
+        u'\u0439',
+        u'\u040A',
+    ):
+        g.es_print(type(ch),ch,'%9s' % (repr(ch)),u.category(ch)) # Don't use print here!
+    </t>
+<t tx="ekr.20071105090148.85">Ę
+
+This is a test of the mod_http plugin.</t>
+<t tx="ekr.20071105090148.86"></t>
+<t tx="ekr.20071105090148.87">@first # -*- coding: utf-8 -*-
+
+@language python
+
+# Lasidoré</t>
+<t tx="ekr.20071105090148.88">@first # -*- coding: utf-8 -*-
+
+for s in (
+    '---',
+    u'La Pe\xf1a',
+    'La Peña',
+    u'La Peña',
+):
+    # print s
+    g.es_print(s)
+</t>
+<t tx="ekr.20071105090148.89">@first # -*- coding: utf-8 -*-
+
+a = 'ټ'
+
+print 'done'</t>
+<t tx="ekr.20071105090148.90"></t>
+<t tx="ekr.20071105090148.91"></t>
+<t tx="ekr.20071105090148.92"></t>
+<t tx="ekr.20071105090148.93">@ It is possible to link to nodes within the same file.  However clones might be better.
+</t>
+<t tx="ekr.20071105090148.94">http://webpages.charter.net/edreamleo/front.html</t>
+<t tx="ekr.20071105090148.95"></t>
+<t tx="ekr.20071105090148.96"></t>
+<t tx="ekr.20071105090148.97"></t>
+<t tx="ekr.20071105090148.98"></t>
+<t tx="ekr.20071105090148.99">@path 'c:/prog/temp'</t>
+<t tx="ekr.20071105090148.100">test</t>
+<t tx="ekr.20071105090148.101">aaa
+xxxxxxxxxxxxxxxxxxxxxx yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy zzzzzzzzzzzzzzzzzzzzzzzzzzzzz wwwwwwwwwwwwwwwwwwwwwww cccccccccccccccccccccccc dddddddddddddddddddd eeeeeeeeeeeeeeeeeeeee one
+xxxxxxxxxxxxxxxxxxxxxx yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy zzzzzzzzzzzzzzzzzzzzzzzzzzzzz wwwwwwwwwwwwwwwwwwwwwww cccccccccccccccccccccccc dddddddddddddddddddd eeeeeeeeeeeeeeeeeeeee two
+bbb
+short line
+short line
+</t>
+<t tx="ekr.20071105090148.102">At least three bugs.
+
+- Place cursor on last (blank) line.  Cursor up goes one line too far.
+- Place cursor at end of line 8.  Second cursor down does nothing.
+- Place cursor at end of xxxx line.  Second cursor down goes one line too far.
+
+xxxxxxxxx
+line 8
+line 9
+</t>
+<t tx="ekr.20071105090148.103">#
+'this' is 'a' 'test'
+g.es(r'abc')
+g.es('hello')
+dir('abc')
+#changed 3</t>
+<t tx="ekr.20071105090148.104">abc
+xyz
+a      # end
+
+This sentence
+spans two lines.
+
+This sentence
+spans
+three lines.
+
+Last line.</t>
+<t tx="ekr.20071105090148.105">def one():
+    print 'one'
+    two()
+
+def two():
+    print 'two'
+    g.trace(g.callers(20))
+
+one()
+
+import sys
+# print sys._getframe(8) # The stack frame, n levels up.</t>
+<t tx="ekr.20071105090148.106"></t>
+<t tx="ekr.20071105090148.107">@language vbscript
+
+rem comment
+dim i, x, y 
+x = 100 
+y = 10 
+
+do while i &lt; x 
+if int(i/y) = 0 then 
+wscript.echo "." 
+end if 
+i = i + 1 
+loop 
+wscript.echo "Finished"
+</t>
+<t tx="ekr.20071105090148.108">@language python
+# killcolor. This is a test.
+
+pass
+
+'string'
+
+'another string'
+
+import leoGlobals as g
+import leoTest # Support for unit tests.
+
+import parser
+import re
+import string
+import tabnanny
+import tokenize
+
+class baseLeoImportCommands:
+    """The base class for Leo's import commands."""
+    def __init__ (self,c):
+
+        self.c = c
+
+        # New in 4.3: honor any tabwidth directive in effect when importing files.
+        self.tabwidth = c.tab_width
+
+        # Set by ImportFilesFommand.
+        self.treeType = "@file" # "@root" or "@file"
+        # Set by ImportWebCommand.
+        self.webType = "@noweb" # "cweb" or "noweb"
+
+        # Set by create_outline.
+        self.fileName = None # The original file name, say x.cpp
+        self.methodName = None # x, as in &lt; &lt; x methods &gt; &gt; =
+        self.fileType = None # ".py", ".c", etc.
+        self.rootLine = "" # Empty or @root + self.fileName
+
+        # Support of output_newline option
+        self.output_newline = g.getOutputNewline(c=c)
+
+        # Used by Importers.
+        self.web_st = []
+        self.encoding = g.app.tkEncoding # 2/25/03: was "utf-8"
+        self._forcedGnxPositionList = []
+        
+# This is 'abc' a test of deleting a comment delim.</t>
+<t tx="ekr.20071105090148.109">@color
+
+if self.matchTag("a=\""):
+    &lt;&lt; Handle vnode attribute bits &gt;&gt;
+elif self.matchTag("t="):
+    # New for 4.1.  Read either "Tnnn" or "gnx".
+    tref = index = self.getDqString()
+else:
+    a = "abc\"ab"</t>
+<t tx="ekr.20071105090148.110">@markup wiki
+@
+__abc__
+
+http://webpages.charter.net/edreamleo/front.html
+
+{picture file=C:\prog\tigris-cvs\leo\Icons\leo_inst.ico}
+
+__after__</t>
+<t tx="ekr.20071105090148.111">@nocolor
+
+'string
+
+@color</t>
+<t tx="ekr.20071105090148.112">@language fortran
+
+a = .false.
+
+C comment
+
+D comment
+
+
+! Comment
+
+amod
+modulo
+</t>
+<t tx="ekr.20071105090148.113">a = .false.
+
+C comment
+
+D comment
+
+
+! Comment
+
+amod
+modulo</t>
+<t tx="ekr.20071105090148.114">@language python
+# @killcolor.
+
+# This is a test.
+
+import leoGlobals as g
+import leoTest # Support for unit tests.
+
+import parser
+import re
+import string
+import tabnanny
+import tokenize
+
+# This is a test. 
+
+class baseLeoImportCommands:
+    """The base class for Leo's import commands."""
+    def __init__ (self,c):
+
+        self.c = c
+
+        # New in 4.3: honor any tabwidth directive in effect when importing files.
+        self.tabwidth = c.tab_width
+
+        # Set by ImportFilesFommand.
+        self.treeType = "@file" # "@root" or "@file"
+        # Set by ImportWebCommand.
+        self.webType = "@noweb" # "cweb" or "noweb"
+
+        # Set by create_outline.
+        self.fileName = None # The original file name, say x.cpp
+        self.methodName = None # x, as in &lt; &lt; x methods &gt; &gt; =
+        self.fileType = None # ".py", ".c", etc.
+        self.rootLine = "" # Empty or @root + self.fileName
+
+        # Support of output_newline option
+        self.output_newline = g.getOutputNewline(c=c)
+
+        # Used by Importers.
+        self.web_st = []
+        self.encoding = g.app.tkEncoding # 2/25/03: was "utf-8"
+        self._forcedGnxPositionList = []
+    def createOutline (self,fileName,parent):
+
+        c = self.c ; u = c.undoer
+        junk,self.fileName = g.os_path_split(fileName)
+        self.methodName,ext = g.os_path_splitext(self.fileName)
+        self.fileType = ext
+        self.setEncoding()
+        # g.trace(self.fileName,self.fileType)
+        # All file types except the following just get copied to the parent node.
+        ext = ext.lower()
+        appendFileFlag = ext not in (
+            ".c", ".cpp", ".cxx", ".el", ".java", ".lua", ".pas", ".py", ".pyw", ".php")
+        try:
+            theFile = open(fileName)
+            s = theFile.read()
+            s = g.toUnicode(s,self.encoding)
+            theFile.close()
+        except IOError:
+            g.es("can not open " + fileName)
+            leoTest.fail()
+            return None
+        # Create the top-level headline.
+        undoData = u.beforeInsertNode(parent)
+        p = parent.insertAsLastChild()
+        if self.treeType == "@file":
+            p.initHeadString("@file " + fileName)
+        else:
+            p.initHeadString(fileName)
+        u.afterInsertNode(p,'Import',undoData)
+
+        self.rootLine = g.choose(self.treeType=="@file","","@root-code "+self.fileName+'\n')
+
+        if appendFileFlag:
+            body = "@ignore\n"
+            if ext in (".html",".htm"): body += "@language html\n"
+            if ext in (".txt",".text"): body += "@nocolor\n"
+            c.setBodyString(p,body + self.rootLine + s)
+        elif ext in (".c", ".cpp", ".cxx"):
+            self.scanCText(s,p)
+        elif ext == ".el":
+            self.scanElispText(s,p)
+        elif ext in (".fs", ".fi"):
+            self.scanForthText(s,p)
+        elif ext == ".java":
+            self.scanJavaText(s,p,True) #outer level
+        elif ext == ".lua":
+            self.scanLuaText(s,p)
+        elif ext == ".pas":
+            self.scanPascalText(s,p)
+        elif ext in (".py", ".pyw"):
+            self.scanPythonText(s,p)
+        elif ext == ".php":
+            self.scanPHPText(s,p) # 08-SEP-2002 DTHEIN
+        else:
+            g.es("createOutline: can't happen")
+        return p
+    def getTabWidth (self):
+
+        d = g.scanDirectives(self.c)
+        w = d.get("tabwidth")
+        if w not in (0,None):
+            return w
+        else:
+            return self.c.tab_width
+    def importDerivedFiles (self,parent=None,paths=None):
+        # Not a command.  It must *not* have an event arg.
+
+        c = self.c ; u = c.undoer ; command = 'Import'
+        at = c.atFileCommands ; current = c.currentPosition()
+        self.tab_width = self.getTabWidth()
+        if not paths: return
+        c.beginUpdate()
+        try:
+            u.beforeChangeGroup(current,command)
+            for fileName in paths:
+                g.setGlobalOpenDir(fileName)
+                fileName = g.os_path_normpath(fileName)
+
+                try:
+                    theFile = open(fileName,'rb')
+                    isThin = at.scanHeaderForThin(theFile,fileName)
+                    theFile.close()
+                except IOError:
+                    isThin = False
+                undoData = u.beforeInsertNode(parent)
+                p = parent.insertAfter()
+                if isThin:
+                    at.forceGnxOnPosition(p)
+                    p.initHeadString("@thin " + fileName)
+                    at.read(p,thinFile=True)
+                else:
+                    p.initHeadString("Imported @file " + fileName)
+                    at.read(p,importFileName=fileName)
+                p.contract()
+                u.afterInsertNode(p,command,undoData)
+            current.expand()
+            c.selectPosition(current)
+            c.setChanged(True)
+            u.afterChangeGroup(p,command)
+        finally:
+            c.endUpdate()
+    def forceGnxOnPosition (self,p):
+
+        self._forcedGnxPositionList.append(p.v)
+    def importFilesCommand (self,files=None,treeType=None,
+        perfectImport=True,testing=False,verbose=False):
+            # Not a command.  It must *not* have an event arg.
+
+        c = self.c
+        if c == None: return
+        v = current = c.currentVnode()
+        if current == None: return
+        if len(files) &lt; 1: return
+        self.tab_width = self.getTabWidth() # New in 4.3.
+        self.treeType = treeType
+        c.beginUpdate()
+        try: # range of update...
+            if len(files) == 2:
+                # The two filenames have a common prefix everything before the 
+                # last period is the same.  For example, x.h and x.cpp.
+
+                name0 = files[0]
+                name1 = files[1]
+                prefix0, junk = g.os_path_splitext(name0)
+                prefix1, junk = g.os_path_splitext(name1)
+                if len(prefix0) &gt; 0 and prefix0 == prefix1:
+                    current = current.insertAsLastChild()
+                    junk, nameExt = g.os_path_split(prefix1)
+                    name,ext = g.os_path_splitext(prefix1)
+                    current.initHeadString(name)
+            for fileName in files:
+                g.setGlobalOpenDir(fileName)
+                v = self.createOutline(fileName,current)
+                if v: # createOutline may fail.
+                    perfectImport = False ###
+                    testing = True; verbose = True
+                    if perfectImport and treeType == "@file": # Can't correct @root trees.
+                        self.perfectImport(fileName,v,testing=testing,verbose=verbose,verify=False)
+                    else:
+                        if not g.unitTesting:
+                            g.es("imported " + fileName,color="blue")
+                    v.contract()
+                    v.setDirty()
+                    c.setChanged(True)
+            c.validateOutline()
+            current.expand()
+        finally:
+            c.endUpdate()
+        c.selectVnode(current)
+    # Used by paste logic.
+
+    def convertMoreStringToOutlineAfter (self,s,firstVnode):
+        s = string.replace(s,"\r","")
+        strings = string.split(s,"\n")
+        return self.convertMoreStringsToOutlineAfter(strings,firstVnode)
+
+    # Almost all the time spent in this command is spent here.
+
+    def convertMoreStringsToOutlineAfter (self,strings,firstVnode):
+
+        __pychecker__ = '--no-objattrs' # suppress bad warnings re lastVnode.
+
+        c = self.c
+        if len(strings) == 0: return None
+        if not self.stringsAreValidMoreFile(strings): return None
+        c.beginUpdate()
+        try: # range of update...
+            firstLevel, junk = self.moreHeadlineLevel(strings[0])
+            lastLevel = -1 ; theRoot = lastVnode = None
+            index = 0
+            while index &lt; len(strings):
+                progress = index
+                s = strings[index]
+                level, newFlag = self.moreHeadlineLevel(s)
+                level -= firstLevel
+                if level &gt;= 0:
+                    assert(level &gt;= 0)
+                    if lastVnode is None:
+                        # g.trace(firstVnode)
+                        theRoot = v = firstVnode.insertAfter()
+                    elif level == lastLevel:
+                        v = lastVnode.insertAfter()
+                    elif level == lastLevel + 1:
+                        v = lastVnode.insertAsNthChild(0)
+                    else:
+                        assert(level &lt; lastLevel)
+                        while level &lt; lastLevel:
+                            lastLevel -= 1
+                            lastVnode = lastVnode.parent()
+                            assert(lastVnode)
+                            assert(lastLevel &gt;= 0)
+                        v = lastVnode.insertAfter()
+                    lastVnode = v
+                    lastLevel = level
+                    j = 0
+                    while g.match(s,j,'\t'):
+                        j += 1
+                    if g.match(s,j,"+ ") or g.match(s,j,"- "):
+                        j += 2
+
+                    v.initHeadString(s[j:])
+                    bodyLines = 0
+                    index += 1 # Skip the headline.
+                    while index &lt; len(strings):
+                        s = strings[index]
+                        level, junk = self.moreHeadlineLevel(s)
+                        level -= firstLevel
+                        if level &gt;= 0:
+                            break
+                        # Remove first backslash of the body line.
+                        if g.match(s,0,'\\'):
+                            strings[index] = s[1:]
+                        bodyLines += 1
+                        index += 1
+                    if bodyLines &gt; 0:
+                        body = ""
+                        n = index - bodyLines
+                        while n &lt; index:
+                            body += strings[n]
+                            if n != index - 1:
+                                body += "\n"
+                            n += 1
+                        v.setTnodeText(body)
+                    v.setDirty()
+                else: index += 1
+                assert progress &lt; index
+            if theRoot:
+                theRoot.setDirty()
+                c.setChanged(True)
+        finally:
+            c.endUpdate()
+        return theRoot
+    def importFlattenedOutline (self,files): # Not a command, so no event arg.
+
+        c = self.c ; u = c.undoer ; current = c.currentPosition()
+        if current == None: return
+        if len(files) &lt; 1: return
+
+        self.setEncoding()
+        fileName = files[0] # files contains at most one file.
+        g.setGlobalOpenDir(fileName)
+        try:
+            theFile = open(fileName)
+            s = theFile.read()
+            s = string.replace(s,"\r","")
+            s = g.toUnicode(s,self.encoding)
+            array = string.split(s,"\n")
+            theFile.close()
+        except IOError:
+            g.es("Can not open " + fileName, color="blue")
+            leoTest.fail()
+            return
+
+        # Convert the string to an outline and insert it after the current node.
+        undoData = u.beforeInsertNode(current)
+        p = self.convertMoreStringsToOutlineAfter(array,current)
+        if p:
+            c.endEditing()
+            c.validateOutline()
+            c.editPosition(p)
+            p.setDirty()
+            c.setChanged(True)
+            u.afterInsertNode(p,'Import',undoData)
+        else:
+            g.es(fileName + " is not a valid MORE file.")
+    # return the headline level of s,or -1 if the string is not a MORE headline.
+    def moreHeadlineLevel (self,s):
+
+        level = 0 ; i = 0
+        while g.match(s,i,'\t'):
+            level += 1
+            i += 1
+        plusFlag = g.choose(g.match(s,i,"+"),True,False)
+        if g.match(s,i,"+ ") or g.match(s,i,"- "):
+            return level, plusFlag
+        else:
+            return -1, plusFlag
+    # Used by paste logic.
+
+    def stringIsValidMoreFile (self,s):
+
+        s = string.replace(s,"\r","")
+        strings = string.split(s,"\n")
+        return self.stringsAreValidMoreFile(strings)
+
+    def stringsAreValidMoreFile (self,strings):
+
+        if len(strings) &lt; 1: return False
+        level1, plusFlag = self.moreHeadlineLevel(strings[0])
+        if level1 == -1: return False
+        # Check the level of all headlines.
+        i = 0 ; lastLevel = level1
+        while i &lt; len(strings):
+            s = strings[i] ; i += 1
+            level, newFlag = self.moreHeadlineLevel(s)
+            if level &gt; 0:
+                if level &lt; level1 or level &gt; lastLevel + 1:
+                    return False # improper level.
+                elif level &gt; lastLevel and not plusFlag:
+                    return False # parent of this node has no children.
+                elif level == lastLevel and plusFlag:
+                    return False # last node has missing child.
+                else:
+                    lastLevel = level
+                    plusFlag = newFlag
+        return True
+    def createOutlineFromWeb (self,path,parent):
+
+        c = self.c ; u = c.undoer
+        junk,fileName = g.os_path_split(path)
+
+        undoData = u.beforeInsertNode(parent)
+
+        # Create the top-level headline.
+        p = parent.insertAsLastChild()
+        p.initHeadString(fileName)
+        if self.webType=="cweb":
+            c.setBodyString(p,"@ignore\n" + self.rootLine + "@language cweb")
+
+        # Scan the file, creating one section for each function definition.
+        self.scanWebFile(path,p)
+
+        u.afterInsertNode(p,'Import',undoData)
+
+        return p
+    def importWebCommand (self,files,webType):
+
+        c = self.c ; current = c.currentVnode()
+        if current == None: return
+        if not files: return
+        self.tab_width = self.getTabWidth() # New in 4.3.
+        self.webType = webType
+
+        c.beginUpdate()
+        try:
+            for fileName in files:
+                g.setGlobalOpenDir(fileName)
+                v = self.createOutlineFromWeb(fileName,current)
+                v.contract()
+                v.setDirty()
+                c.setChanged(True)
+            c.selectVnode(current)
+        finally:
+            c.endUpdate()
+    def findFunctionDef (self,s,i):
+
+        # Look at the next non-blank line for a function name.
+        i = g.skip_ws_and_nl(s,i)
+        k = g.skip_line(s,i)
+        name = None
+        while i &lt; k:
+            if g.is_c_id(s[i]):
+                j = i ; i = g.skip_c_id(s,i) ; name = s[j:i]
+            elif s[i] == '(':
+                if name: return name
+                else: break
+            else: i += 1
+        return None
+    # This method returns the proper headline text.
+    # 
+    # 1. If s contains a section def, return the section ref.
+    # 2. cweb only: if s contains @c, return the function name following the 
+    # @c.
+    # 3. cweb only: if s contains @d name, returns @d name.
+    # 4. Otherwise, returns "@"
+
+    def scanBodyForHeadline (self,s):
+
+        if self.webType == "cweb":
+            i = 0
+            while i &lt; len(s):
+                i = g.skip_ws_and_nl(s,i)
+                # line = g.get_line(s,i) ; g.trace(line)
+                # Allow constructs such as @ @c, or @ @&lt;.
+                if self.isDocStart(s,i):
+                    i += 2 ; i = g.skip_ws(s,i)
+                if g.match(s,i,"@d") or g.match(s,i,"@f"):
+                    # Look for a macro name.
+                    directive = s[i:i+2]
+                    i = g.skip_ws(s,i+2) # skip the @d or @f
+                    if i &lt; len(s) and g.is_c_id(s[i]):
+                        j = i ; g.skip_c_id(s,i) ; return s[j:i]
+                    else: return directive
+                elif g.match(s,i,"@c") or g.match(s,i,"@p"):
+                    # Look for a function def.
+                    name = self.findFunctionDef(s,i+2)
+                    return g.choose(name,name,"outer function")
+                elif g.match(s,i,"@&lt;"):
+                    # Look for a section def.
+                    # A small bug: the section def must end on this line.
+                    j = i ; k = g.find_on_line(s,i,"@&gt;")
+                    if k &gt; -1 and (g.match(s,k+2,"+=") or g.match(s,k+2,"=")):
+                        return s[j:k+2] # return the section ref.
+                i = g.skip_line(s,i)
+        else:
+            i = 0
+            while i &lt; len(s):
+                i = g.skip_ws_and_nl(s,i)
+                # line = g.get_line(s,i) ; g.trace(line)
+                if g.match(s,i,"&lt;&lt;"):
+                    k = g.find_on_line(s,i,"&gt;&gt;=")
+                    if k &gt; -1:
+                        ref = s[i:k+2]
+                        name = string.strip(s[i+2:k])
+                        if name != "@others":
+                            return ref
+                else:
+                    name = self.findFunctionDef(s,i)
+                    if name:
+                        return name
+                i = g.skip_line(s,i)
+        return "@" # default.
+    def scanWebFile (self,fileName,parent):
+
+        theType = self.webType
+        lb = g.choose(theType=="cweb","@&lt;","&lt;&lt;")
+        rb = g.choose(theType=="cweb","@&gt;","&gt;&gt;")
+
+        try: # Read the file into s.
+            f = open(fileName)
+            s = f.read()
+        except:
+            g.es("Can not import " + fileName, color="blue")
+            return
+
+        i = 0 ; self.web_st = []
+
+        while i &lt; len(s):
+            progress = i
+            i = g.skip_ws_and_nl(s,i)
+            # line = g.get_line(s,i) ; g.trace(line)
+            if self.isDocStart(s,i):
+                if theType == "cweb": i += 2
+                else: i = g.skip_line(s,i)
+            elif theType == "cweb" and g.match(s,i,"@@"):
+                i += 2
+            elif g.match(s,i,lb):
+                i += 2 ; j = i ; k = g.find_on_line(s,j,rb)
+                if k &gt; -1: self.cstEnter(s[j:k])
+            else: i += 1
+            assert (i &gt; progress)
+
+        # g.trace(self.cstDump())
+        i = 0
+        while i &lt; len(s):
+            progress = i
+            i = g.skip_ws_and_nl(s,i)
+            if self.isModuleStart(s,i) or g.match(s,i,lb):
+                break
+            else: i = g.skip_line(s,i)
+            assert(i &gt; progress)
+
+        j = g.skip_ws(s,0)
+        if j &lt; i:
+            self.createHeadline(parent,"@ " + s[j:i],"Limbo")
+
+        j = i
+        if g.match(s,i,lb):
+            while i &lt; len(s):
+                progress = i
+                i = g.skip_ws_and_nl(s,i)
+                if self.isModuleStart(s,i):
+                    break
+                else: i = g.skip_line(s,i)
+                assert(i &gt; progress)
+            self.createHeadline(parent,s[j:i],g.angleBrackets(" @ "))
+
+        # g.trace(g.get_line(s,i))
+        while i &lt; len(s):
+            outer_progress = i
+            if theType=="cweb":
+                assert(self.isModuleStart(s,i))
+                start = i
+                if self.isDocStart(s,i):
+                    i += 2
+                    while i &lt; len(s):
+                        progress = i
+                        i = g.skip_ws_and_nl(s,i)
+                        if self.isModuleStart(s,i): break
+                        else: i = g.skip_line(s,i)
+                        assert (i &gt; progress)
+                if g.match(s,i,"@d") or g.match(s,i,"@f"):
+                    i += 2 ; i = g.skip_line(s,i)
+                    # Place all @d and @f directives in the same node.
+                    while i &lt; len(s):
+                        progress = i
+                        i = g.skip_ws_and_nl(s,i)
+                        if g.match(s,i,"@d") or g.match(s,i,"@f"): i = g.skip_line(s,i)
+                        else: break
+                        assert (i &gt; progress)
+                    i = g.skip_ws_and_nl(s,i)
+
+                while i &lt; len(s) and not self.isModuleStart(s,i):
+                    progress = i
+                    i = g.skip_line(s,i)
+                    i = g.skip_ws_and_nl(s,i)
+                    assert (i &gt; progress)
+
+                if g.match(s,i,"@c") or g.match(s,i,"@p"):
+                    i += 2
+                    while i &lt; len(s):
+                        progress = i
+                        i = g.skip_line(s,i)
+                        i = g.skip_ws_and_nl(s,i)
+                        if self.isModuleStart(s,i):
+                            break
+                        assert (i &gt; progress)
+            else:
+                assert(self.isDocStart(s,i)) # isModuleStart == isDocStart for noweb.
+                start = i ; i = g.skip_line(s,i)
+                while i &lt; len(s):
+                    progress = i
+                    i = g.skip_ws_and_nl(s,i)
+                    if self.isDocStart(s,i): break
+                    else: i = g.skip_line(s,i)
+                    assert (i &gt; progress)
+
+            body = s[start:i]
+            body = self.massageWebBody(body)
+            headline = self.scanBodyForHeadline(body)
+            self.createHeadline(parent,body,headline)
+            assert(i &gt; outer_progress)
+    # We canonicalize strings before looking them up, but strings are entered in the form they are first encountered.
+
+    def cstCanonicalize (self,s,lower=True):
+
+        if lower:
+            s = string.lower(s)
+        s = string.replace(s,"\t"," ")
+        s = string.replace(s,"\r","")
+        s = string.replace(s,"\n"," ")
+        s = string.replace(s,"  "," ")
+        s = string.strip(s)
+        return s
+    def cstDump (self):
+
+        self.web_st.sort()
+        s = "Web Symbol Table...\n\n"
+        for name in self.web_st:
+            s += name + "\n"
+        return s
+    # We only enter the section name into the symbol table if the ... convention is not used.
+
+    def cstEnter (self,s):
+
+        # Don't enter names that end in "..."
+        s = string.rstrip(s)
+        if s.endswith("..."): return
+
+        # Put the section name in the symbol table, retaining capitalization.
+        lower = self.cstCanonicalize(s,True)  # do lower
+        upper = self.cstCanonicalize(s,False) # don't lower.
+        for name in self.web_st:
+            if string.lower(name) == lower:
+                return
+        self.web_st.append(upper)
+    # This method returns a string if the indicated string is a prefix of an entry in the web_st.
+
+    def cstLookup (self,target):
+
+        # Do nothing if the ... convention is not used.
+        target = string.strip(target)
+        if not target.endswith("..."): return target
+        # Canonicalize the target name, and remove the trailing "..."
+        ctarget = target[:-3]
+        ctarget = self.cstCanonicalize(ctarget)
+        ctarget = string.strip(ctarget)
+        found = False ; result = target
+        for s in self.web_st:
+            cs = self.cstCanonicalize(s)
+            if cs[:len(ctarget)] == ctarget:
+                if found:
+                    g.es("****** " + target + ": is also a prefix of: " + s)
+                else:
+                    found = True ; result = s
+                    # g.es("replacing: " + target + " with: " + s)
+        return result
+    def perfectImport (self,fileName,p,testing=False,verbose=False,convertBlankLines=True,verify=True):
+
+        __pychecker__ = 'maxlines=500'
+
+        # 
+        # This algorithm corrects the result of an Import To @file command so 
+        # that it is guaranteed that the result of writing the imported file 
+        # will be identical to the original file except for any sentinels that 
+        # have been inserted.
+        # 
+        # On entry, p points to the newly imported outline.
+        # 
+        # We correct the outline by applying Bernhard Mulder's algorithm.
+        # 
+        # 1.  We use the atFile.write code to write the newly imported outline 
+        # to a string s.  This string contains represents a thin derived file, 
+        # so it can be used to recreate then entire outline structure without 
+        # any other information.
+        # 
+        # Splitting s into lines creates the fat_lines argument to mu methods.
+        # 
+        # 2. We make corrections to fat_lines using Mulder's algorithm.  The 
+        # corrected fat_lines represents the corrected outline.  To do this, 
+        # we set the arguments as follows:
+        # 
+        # - i_lines: fat_lines stripped of sentinels
+        # - j_lines to the lines of the original imported file.
+        # 
+        # The algorithm updates fat_lines using diffs between i_lines and 
+        # j_lines.
+        # 
+        # 3. Mulder's algorithm doesn't specify which nodes have been 
+        # changed.  In fact, it Mulder's algorithm doesn't really understand 
+        # nodes at all.  Therefore, if we want to mark changed nodes we do so 
+        # by comparing the original version of the imported outline with the 
+        # corrected version of the outline.
+        c = self.c
+        root = p.copy()
+        at = c.atFileCommands
+        if testing:
+            for p2 in p.self_and_subtree_iter():
+                p2.clearDirty()
+        nodeIndices = g.app.nodeIndices
+
+        nodeIndices.setTimestamp()
+
+        for p2 in root.self_and_subtree_iter():
+            try: # Will fail for None or any pre 4.1 file index.
+                theId,time,n = p2.v.t.fileIndex
+            except TypeError:
+                p2.v.t.fileIndex = nodeIndices.getNewIndex()
+        at.write(root,thinFile=True,toString=True)
+        s = at.stringOutput
+        if not s: return
+
+        # Set up the data for the algorithm.
+        mu = g.mulderUpdateAlgorithm(testing=testing,verbose=verbose)
+        delims = g.comment_delims_from_extension(fileName)
+        fat_lines = g.splitLines(s) # Keep the line endings.
+        i_lines,mapping = mu.create_mapping(fat_lines,delims)
+        j_lines = file(fileName).readlines()
+
+        # Correct write_lines using the algorihm.
+        if i_lines != j_lines:
+            if verbose:
+                g.es("Running Perfect Import",color="blue")
+            write_lines = mu.propagateDiffsToSentinelsLines(i_lines,j_lines,fat_lines,mapping)
+            if 1: # For testing.
+                write_lines_node = root.insertAfter()
+                write_lines_node.initHeadString("write_lines")
+                s = ''.join(write_lines)
+                write_lines_node.scriptSetBodyString(s,encoding=g.app.tkEncoding)
+            # Notes:
+            # 1. This code must overwrite the newly-imported tree because the 
+            # gnx's in
+            # write_lines refer to those nodes.
+            # 
+            # 2. The code in readEndNode now reports when nodes change during 
+            # importing. This
+            # code also marks changed nodes.
+
+            try:
+                at.correctedLines = 0
+                at.targetFileName = "&lt;perfectImport string-file&gt;"
+                at.inputFile = fo = g.fileLikeObject()
+                at.file = fo # Strange, that this is needed.  Should be cleaned up.
+                for line in write_lines:
+                    fo.write(line)
+                firstLines,junk,junk = c.atFileCommands.scanHeader(fo,at.targetFileName)
+                # To do: pass params to readEndNode.
+                at.readOpenFile(root,fo,firstLines,perfectImportRoot=root)
+                n = at.correctedLines
+                if verbose:
+                    g.es("%d marked node%s corrected" % (n,g.choose(n==1,'','s')),color="blue")
+            except:
+                g.es("Exception in Perfect Import",color="red")
+                g.es_exception()
+                s = None
+        if verify:
+            try:
+                # Read the original file into before_lines.
+                before = file(fileName)
+                before_lines = before.readlines()
+                before.close()
+
+                # Write the tree into after_lines.
+                at.write(root,thinFile=True,toString=True)
+                after_lines1 = g.splitLines(at.stringOutput)
+
+                # Strip sentinels from after_lines and compare.
+                after_lines = mu.removeSentinelsFromLines(after_lines1,delims)
+
+                # A major kludge: Leo can not represent unindented blank lines in indented nodes!
+                # We ignore the problem here by stripping whitespace from blank lines.
+                # We shall need output options to handle such lines.
+                if convertBlankLines:
+                    mu.stripWhitespaceFromBlankLines(before_lines)
+                    mu.stripWhitespaceFromBlankLines(after_lines)
+                if before_lines == after_lines:
+                    if verbose:
+                        g.es("Perfect Import verified",color="blue")
+                else:
+                    leoTest.fail()
+                    if verbose:
+                        g.es("Perfect Import failed verification test!",color="red")
+                        print len(before_lines),len(after_lines)
+
+                        if len(before_lines)==len(after_lines):
+                            for i in xrange(len(before_lines)):
+                                extra = 3
+                                if before_lines[i] != after_lines[i]:
+                                    j = max(0,i-extra)
+                                    print '-' * 20
+                                    while j &lt; i + extra + 1:
+                                        leader = g.choose(i == j,"* ","  ")
+                                        print "%s%3d" % (leader,j), repr(before_lines[j])
+                                        print "%s%3d" % (leader,j), repr(after_lines[j])
+                                        j += 1
+                        else:
+                            for i in xrange(min(len(before_lines),len(after_lines))):
+                                if before_lines[i] != after_lines[i]:
+                                    extra = 5
+                                    print "first mismatch at line %d" % i
+                                    print "printing %d lines after mismatch" % extra
+                                    print "before..."
+                                    for j in xrange(i+1+extra):
+                                        print "%3d" % j, repr(before_lines[j])
+                                    print
+                                    print "after..."
+                                    for k in xrange(1+extra):
+                                        print "%3d" % (i+k), repr(after_lines[i+k])
+                                    print
+                                    print "with sentinels"
+                                    j = 0 ; k = 0
+                                    while k &lt; i + 1 + extra:
+                                        print "%3d" % k,repr(after_lines1[j])
+                                        if not g.is_sentinel(after_lines1[j],delims):
+                                            k += 1
+                                        j += 1
+                                    break
+            except IOError:
+                g.es("Can not reopen %s!" % fileName,color="red")
+                leoTest.fail()
+    class baseScannerClass:
+
+        '''
+        The base class for all import scanner classes.
+        This class contains common utility methods.
+        '''
+
+        def __init__ (self,importCommands,atAuto,language,strict):
+
+            # Copy arguments.
+            self.atAuto = atAuto
+            self.language = language
+            self.strict = strict
+
+            # Copy ivars from the importCommands class.
+            self.importCommands = ic = importCommands
+            self.c = ic.c
+            self.encoding = ic.encoding
+            self.fileName = ic.fileName
+            self.fileType = ic.fileType
+            # self._forcedGnxPositionList = []
+            self.methodName = ic.methodName
+            self.output_newline = ic.output_newline
+            self.root = None # The top-level node of the generated tree.
+            self.rootLine = ic.rootLine
+            self.tab_width = ic.getTabWidth()
+            self.treeType = ic.treeType
+            # self.web_st = []
+            self.webType = ic.webType
+
+            # Compute language ivars.
+            delim1,delim2,delim3 = g.set_delims_from_language(language)
+            self.comment_delim = delim1
+
+            # Create the ws equivalent to one tab.
+            if self.tab_width &lt; 0:
+                self.tab_ws = ' '*abs(self.tab_width)
+            else:
+                self.tab_ws = '\t'
+
+            # May be overridden in subclasses.
+            self.lineCommentDelim = None
+            self.blockCommentDelim1 = None
+            self.blockCommentDelim2 = None
+            self.signatureDelim = '{'
+        def run (self,s,parent):
+
+            scanner = self
+            scanner.root = parent
+            scanner.file_s = s
+
+            # Step 1: generate the nodes,
+            # including all directive and section references.
+            scanner.scan(s,parent)
+
+            # Step 2: check the generated nodes.
+            # Return True if the result is equivalent to the original file.
+            ok = scanner.check(parent)
+
+            # Step 3: insert an @ignore directive if there are any problems.
+            if not ok:
+                scanner.insertIgnoreDirectives(parent)
+        def check (self,parent):
+
+            '''
+            Make sure the generated nodes are equivalent to the original file.
+
+            1. Regularize and check leading whitespace.
+            2. Check that a trial write produces the original file.
+
+            Return True if the nodes are equivalent to the original file.
+            '''
+
+            return self.checkWhitespace(parent) and self.checkTrialWrite()
+        # Similar to c.tabNannyNode
+
+        def checkTab (self,p):
+
+            """Check indentation using tabnanny."""
+
+            h = p.headString() ; body = p.bodyString()
+
+            try:
+                readline = g.readLinesClass(body).next
+                tabnanny.process_tokens(tokenize.generate_tokens(readline))
+                return True
+
+            except IndentationError, err:
+                # Instances of this class have attributes filename, lineno, offset and text.
+                g.es_print("IndentationError in %s at line %d" % (h,err.lineno),color="blue")
+                # g.es_print(str(err)) # str(err.text))
+
+            except parser.ParserError, msg:
+                g.es_print("ParserError in %s" % h,color="blue")
+                g.es_print(str(msg))
+
+            except tokenize.TokenError, msg:
+                g.es_print("TokenError in %s" % h,color="blue")
+                g.es_print(str(msg))
+
+            except tabnanny.NannyNag, nag:
+                badline = nag.get_lineno()
+                line    = nag.get_line()
+                message = nag.get_msg()
+                g.es_print("Indentation error in %s, line %d" % (h, badline),color="blue")
+                g.es_print(message)
+                g.es_print("offending line:\n%s" % repr(str(line))[1:-1])
+
+            except:
+                g.trace("unexpected exception")
+                g.es_exception()
+
+            return False
+        def checkWhitespace(self,parent):
+
+            '''Check and normalize the leading whitespace of all nodes.
+
+            - The original sources may fail Python's tabNanny checks.  
+
+            - Leading whitespace in the original sources may be inconsistent with the
+              @tabwidth setting in effect in the @auto tree.
+
+            - The original sources may contain underindented comments. 
+
+            If an indentation problem is found, issue a warning and return False.
+            Otherwise, normalize the indentation of all pieces so that it is indeed
+            consistent with the indentation specified by the present @tabwidth setting.
+            Normalizing underindented comments means shifting the comments right.
+            '''
+
+            # Check that whitespace passes TabNanny.
+            # Check that whitespace is compatible with @tabwidth.
+            # Check for underindented lines.
+            g.trace(self.tab_width)
+            ok = True
+            for p in parent.self_and_subtree_iter():
+                ok = ok and self.checkTab(p)
+            return ok
+        def checkTrialWrite (self):
+
+            '''
+            Return True if a trial write produces the original file.
+            '''
+
+            # Probably not: For @auto, verify that no node contains any Leo directives or section references.
+
+            c = self.c ; at = c.atFileCommands
+
+            at.write(self.root,
+                nosentinels=True,thinFile=False,
+                scriptWrite=False,toString=True,
+                write_strips_blank_lines=False,
+            )
+            s1 = self.file_s
+            s2 = at.stringOutput
+            ok = s1 == s2
+            if ok:
+                pass
+                g.trace('***success***')
+            else:
+                lines1 = g.splitLines(s1)
+                lines2 = g.splitLines(s2)
+                if not self.strict: # ignore blank lines.
+                    lines1 = [z for z in lines1 if z.strip()]
+                    lines2 = [z for z in lines2 if z.strip()]
+                g.trace('***mismatch',
+                    'lines1',len(lines1),'lines2',len(lines2),
+                    'len(s1)',len(s1),'len(s2)',len(s2))
+                n = min(len(lines1),len(lines2))
+                for i in xrange(n):
+                    if lines1[i] != lines2[i]:
+                        print 'first mismatch at line %d' % (i)
+                        print 'original line: ', repr(lines1[i])
+                        print 'generated line:', repr(lines2[i])
+                        break
+                else:
+                    if len(lines2) &lt; len(lines1):
+                         print 'missing lines'
+                         i = n
+                         while i &lt; len(lines1):
+                             print repr(lines1[i])
+                             i += 1
+                    else:
+                        print 'extra lines'
+                        i = n
+                        while i &lt; len(lines2):
+                            print repr(lines1[2])
+                            i += 1
+                if 0:
+                    print
+                    for i in xrange(len(lines2)):
+                        print '%3d: %s' % (i,repr(lines2[i]))
+            return ok
+        def error (self,s):
+            g.es_print(s,color='red')
+
+        scanError = error
+        def getLeadingIndent (self,s,i):
+
+            """Return the leading whitespace of a line, ignoring blank and comment lines."""
+
+            width = 0 ; i = g.find_line_start(s,i)
+            while i &lt; len(s):
+                # g.trace(g.get_line(s,i))
+                j = g.skip_ws(s,i)
+                if g.is_nl(s,j) or g.match(s,j,self.comment_delim):
+                    i = g.skip_line(s,i) # ignore blank lines and comment lines.
+                else:
+                    i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+                    break
+
+            # g.trace("returns:",width)
+            return width
+        # The start of a document part or module in a noweb or cweb file.
+        # Exporters may have to test for @doc as well.
+
+        def isDocStart (self,s,i):
+
+            if not g.match(s,i,"@"):
+                return False
+
+            j = g.skip_ws(s,i+1)
+            if g.match(s,j,"%defs"):
+                return False
+            elif self.webType == "cweb" and g.match(s,i,"@*"):
+                return True
+            else:
+                return g.match(s,i,"@ ") or g.match(s,i,"@\t") or g.match(s,i,"@\n")
+
+        def isModuleStart (self,s,i):
+
+            if self.isDocStart(s,i):
+                return True
+            else:
+                return self.webType == "cweb" and (
+                    g.match(s,i,"@c") or g.match(s,i,"@p") or
+                    g.match(s,i,"@d") or g.match(s,i,"@f"))
+        def oops (self):
+            print ("baseScannerClass oops:",
+                g.callers(),
+                "must be overridden in subclass")
+        def setEncoding (self):
+
+            # scanDirectives checks the encoding: may return None.
+            theDict = g.scanDirectives(self.c)
+            encoding = theDict.get("encoding")
+            if encoding and g.isValidEncoding(encoding):
+                self.encoding = encoding
+            else:
+                self.encoding = g.app.tkEncoding # 2/25/03
+
+            # print self.encoding
+        def scan (self,s,parent):
+
+            '''A language independent scanner: it uses language-specific helpers.
+
+            Create a child of self.root for:
+            - Leading outer-level declarations.
+            - Outer-level classes.
+            - Outer-level functions.
+            '''
+            i = start = self.skipDecls(s,0,len(s))
+            decls = s[:i]
+            if decls: self.createDeclsNode(parent,decls)
+            needRef = False
+            while i &lt; len(s):
+                progress = i
+                if g.match(s,i,self.lineCommentDelim):
+                    i = g.skip_line(s,i)
+                elif g.match(s,i,self.blockCommentDelim1):
+                    i = self.skipBlockComment(s,i)
+                elif self.startsString(s,i):
+                    i = self.skipString(s,i)
+                elif self.startsClass(s,i):
+                    end2 = self.skipClass(s,i)
+                    self.putClass(s,i,end2,start,parent)
+                    i = start = end2
+                    needRef = True
+                elif self.startsFunction(s,i):
+                    end2 = self.skipFunction(s,i)
+                    self.putFunction(s,i,end2,start,parent)
+                    i = start = end2
+                elif self.startsId(s,i):
+                    i = self.skipId(s,i);
+                else: i += 1
+                assert(progress &lt; i)
+            self.addRef(parent)
+        def addRef (self,parent):
+
+            '''Create an unindented the @others or section reference in the parent node.'''
+
+            c = self.c
+
+            if self.treeType == "@file":
+                c.appendStringToBody(parent,"@others\n")
+
+            if self.treeType == "@root" and self.methodsSeen:
+                c.appendStringToBody(parent,
+                    g.angleBrackets(" " + self.methodName + " methods ") + "\n\n")
+        def skipDecls (self,s,i,end):
+
+            '''
+            Carefully skip everything until the start of the next class or function.
+            '''
+
+            while i &lt; end:
+                progress = i
+                if g.match(s,i,self.lineCommentDelim):
+                    i = g.skip_line(s,i)
+                elif g.match(s,i,self.blockCommentDelim1):
+                    i = self.skipBlockComment(s,i)
+                elif self.startsString(s,i):
+                    i = self.skipString(s,i)
+                elif self.startsClass(s,i):
+                    # Important: do not include leading ws in the decls.
+                    i = self.adjustClassOrFunctionStart(s,i,'class')
+                    break
+                elif self.startsFunction(s,i):
+                    # Important: do not include leading ws in the decls.
+                    i = self.adjustClassOrFunctionStart(s,i,'function')
+                    break
+                elif self.startsId(s,i):
+                    i = self.skipId(s,i);
+                else: i += 1
+                assert(progress &lt; i)
+
+            return min(i,end)
+        def adjustClassOrFunctionStart(self,s,i,tag):
+
+            '''
+            s[i:] starts a class or function.
+            Adjust i so it points at the start of the line.
+
+            Issue a warning if anything except whitespace appears.
+            '''
+
+            j = g.find_line_start(s,i)
+            if s[j:i].strip():
+                message = '% definition does not start a line. Leo must insert a newline.' % tag
+                self.error(message)
+                return i
+            else:
+                return j
+        def extendSignature(self,s,i,start):
+
+            '''
+            Extend the signature line if appropriate.
+            The text *must* end with a newline.
+
+            For example, the Python scanner appends docstrings if they exist.
+            '''
+
+            return i
+        def getClassID (self,s,i):
+
+            '''
+            Return the class id if s[i:] starts a class definition.
+            '''
+
+            return self.startsClass(s,i)
+
+        def getFunctionID (self,s,i):
+
+            '''
+            Return the function id if s[i:] starts a function definition.
+            '''
+
+            return self.startsFunction(s,i)
+        def skipBlock(self,s,i,delim1='{',delim2='}'):
+
+            """Skips from the opening delim to the matching closing delim.
+
+            If no matching is found i is set to len(s)"""
+
+            # start = g.get_line(s,i)
+            assert g.match(s,i,delim1)
+            level = 0 ; n = len(s)
+            while i &lt; n:
+                c = s[i]
+                if c == delim1:
+                    level += 1 ; i += 1
+                elif c == delim2:
+                    level -= 1 ; i += 1
+                    if level &lt;= 0: return i
+                elif g.match(s,i,self.lineCommentDelim):
+                    i = g.skip_line(s,i)
+                elif g.match(s,i,self.blockCommentDelim1):
+                    i = self.skipBlockComment(s,i)
+                elif self.startsString(s,i):
+                    i = self.skipString(s,i)
+                # Only for C++.
+                # elif g.match_word(s,i,"#if") or g.match_word(s,i,"#ifdef") or g.match_word(s,i,"#ifndef"):
+                    # i,delta = g.skip_pp_if(s,i)
+                    # level += delta
+                else: i += 1
+            return i
+        def skipBlockComment (self,s,i):
+
+            '''Skip past a block comment.'''
+
+            # Skip the opening delim.
+            assert(g.match(s,i,self.blockCommentDelim1))
+            start = i ; i += len(self.blockCommentDelim1)
+
+            # Find the closing delim.
+            k = string.find(s,self.blockCommentDelim2,i)
+            if k == -1:
+                self.scanError("Run on block comment: " + s[start:i])
+                return len(s)
+            else:
+                return k + len(self.blockCommentDelim2)
+        def skipId (self,s,i):
+
+            return g.skip_c_id(s,i)
+        def skipString (self,s,i):
+
+            # Returns len(s) on unterminated string.
+            return g.skip_string(s,i,verbose=False)
+        def startsId(self,s,i):
+
+            return g.is_c_id(s[i])
+        def startsString(self,s,i):
+
+            return g.match(s,i,'"') or g.match(s,i,"'")
+        def getClassId (self,s,i):
+            self.oops()
+
+        def getFunctionId (self,s,i):
+            self.oops()
+
+        def putClass (self,s,i,end,start,parent):
+            self.oops()
+
+        def putFunction (self,s,i,end,start,parent):
+            self.oops()
+
+        def skipClass (self,s,i):
+            self.oops()
+
+        def skipFunction (self,s,i):
+            self.oops()
+
+        def skipSignature (self,s,i):
+            self.oops()
+
+        def startsClass (self,s,i):
+            self.oops()
+
+        def startsFunction (self,s,i):
+            self.oops()
+        def createDeclsNode (self,parent,s):
+
+            '''Create a child node of parent containing s.'''
+
+            # Create the node for the decls.
+            headline = self.methodName + ' declarations'
+            body = self.undentBody(s)
+            self.createHeadline(parent,body,headline)
+        def createFunctionNode (self,headline,body,parent):
+
+            # Create the prefix line for @root trees.
+            if self.treeType == "@file":
+                prefix = ""
+            else:
+                prefix = g.angleBrackets(" " + headline + " methods ") + "=\n\n"
+                self.methodsSeen = True
+
+            body = self.undentBody(body)
+
+            # Create the node.
+            self.createHeadline(parent,prefix + body,headline)
+
+        def createHeadline (self,parent,body,headline):
+
+            # g.trace("parent,headline:",parent,headline)
+
+            # Create the vnode.
+            p = parent.insertAsLastChild()
+            p.initHeadString(headline,self.encoding)
+
+            # Set the body.
+            if body:
+                self.c.setBodyString(p,body,self.encoding)
+            return p
+        def insertIgnoreDirectives (self,parent):
+
+            g.trace(parent)
+        def massageComment (self,s):
+
+            """Returns s with all runs of whitespace and newlines converted to a single blank.
+
+            Also removes leading and trailing whitespace."""
+
+            s = s.strip()
+            s = s.replace("\n"," ")
+            s = s.replace("\r"," ")
+            s = s.replace("\t"," ")
+            s = s.replace("  "," ")
+            s = s.strip()
+            return s
+        def putClass (self,s,i,end,start,parent):
+
+            """Creates a child node c of parent for the class, and children of c for each def in the class."""
+
+            # g.trace('start',start,'i',i,g.get_line(s,i))
+
+            c = self.c
+            classStart = g.find_line_start(s,i)
+            class_name = self.getClassID(s,i)
+            headline = "class " + class_name
+
+            prefix = self.createClassNodePrefix()
+            j = self.skipSignature(s,i)
+            i = self.extendSignature(s,j)
+            body = s[start:j]
+            extend = s[j:i]
+            if extend:
+                extend = self.undentBody(extend)
+                extend = self.indentBody(extend)
+                g.trace(class_name,'extend',repr(extend))
+                body = body + extend
+
+            class_node = self.createHeadline(parent,prefix + body,headline)
+
+            savedMethodName = self.methodName
+            self.methodName = headline
+
+            self.putClassHelper(s,i,end,class_name,class_node)
+            self.methodName = savedMethodName
+        def appendRefToClassNode (self,class_name,class_node):
+
+            '''Insert the proper body text in the class_vnode.'''
+
+            if self.treeType == "@file":
+                s = '@others'
+            else:
+                s = g.angleBrackets(' class %s methods ' % (class_name))
+
+            self.appendTextToClassNode(class_node,'%s%s\n' % (self.tab_ws,s))
+        def appendTextToClassNode (self,class_node,s):
+
+            c = self.c
+            c.appendStringToBody(class_node,s) 
+        def createClassNodePrefix (self):
+
+            '''Create the class node prefix.'''
+
+            if  self.treeType == "@file":
+                prefix = ""
+            else:
+                prefix = g.angleBrackets(" " + self.methodName + " methods ") + "=\n\n"
+                self.methodsSeen = True
+
+            return prefix
+        def putClassHelper(self,s,i,end,class_name,class_node):
+
+            assert(i &lt;= end)
+            # Put any leading decls in the class node.
+            start = i
+            i = self.skipDecls(s,i,end)
+            decls = s[start:i]
+            if decls:
+                # We must regularize the indentation to match the @others
+                decls = self.undentBody(decls)
+                decls = self.indentBody(decls)
+                g.trace(class_name,'decls',repr(decls))
+                self.appendTextToClassNode(class_node,decls)
+            start = i ; putRef = False
+            while i &lt; end:
+                progress = i
+                if g.match(s,i,self.lineCommentDelim):
+                    i = g.skip_line(s,i)
+                elif g.match(s,i,self.blockCommentDelim1):
+                    i = self.skipBlockComment(s,i)
+                elif self.startsString(s,i):
+                    i = self.skipString(s,i)
+                elif self.startsClass(s,i):
+                    putRef = True
+                    end2 = self.skipClass(s,i)
+                    self.putClass(s,i,end2,start,class_node)
+                    i = start = end2
+                elif self.startsFunction(s,i):
+                    putRef = True
+                    end2 = self.skipFunction(s,i)
+                    self.putFunction(s,i,end2,start,class_node)
+                    i = start = end2
+                elif self.startsId(s,i):
+                    i = self.skipId(s,i);
+                else: i += 1
+                assert(progress &lt; i)
+
+            if putRef:
+                self.appendRefToClassNode(class_name,class_node)
+
+            if start &lt; end:
+                trailing = s[start:end]
+                self.appendTextToClassNode(class_node,trailing)
+        def putFunction (self,s,i,end,start,parent):
+
+            '''
+            Create a node of parent for a function defintion.
+            '''
+
+            headline = self.getFunctionID(s,i)
+            body = s[start:end]
+            self.createFunctionNode(headline,body,parent)
+        def putRootText (self,p):
+
+            c = self.c
+
+            if self.atAuto:
+                c.appendStringToBody(p,self.rootLine + '@language python\n')
+            else:
+                c.appendStringToBody(p,'@ignore\n' + self.rootLine + '@language python\n')
+        def undentBody (self,s):
+
+            '''Remove the leading indentation of line 1 from all lines of s.'''
+
+            i = 0 ; result = ''
+
+            # Copy an @code line as is.
+            if g.match(s,i,"@code"):
+                j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
+                result += s[j:i]
+
+            # Calculate the amount to be removed from each line.
+            undent = self.getLeadingIndent(s,i)
+            if undent == 0: return s
+
+            result = []
+            for line in g.splitLines(s):
+                line = g.removeLeadingWhitespace(line,undent,self.tab_width)
+                result.append(line)
+            return ''.join(result)
+        def indentBody (self,s):
+
+            '''Add whitespace equivalent to one tab for all non-blank lines of s.'''
+
+            result = []
+
+            for line in g.splitLines(s):
+                if line.strip():
+                    result.append(self.tab_ws + line)
+                elif line.endswith('\n'):
+                    result.append('\n')
+
+            return ''.join(result)
+    if g.unitTesting:
+
+        ic = c.importCommands
+        c,p = g.getTestVars()
+
+        if 1:
+            fileName = g.os_path_abspath(g.os_path_join(g.app.loadDir,'leoTest.py'))
+            # print '@test scanPythonText: path',path
+            f = file(fileName)
+            s = f.read()
+            f.close()
+        else:
+            s = '''\
+    def spam():
+        pass
+    '''
+
+        # Duplicate processing in ic command
+        junk,ic.fileName = g.os_path_split(fileName)
+        ic.methodName,ic.fileType = g.os_path_splitext(ic.fileName)
+        ic.setEncoding()
+
+        ic.scanPythonText (s=s,parent=p.copy(),atAuto=True)
+
+        if 1:
+            nodes = [z for z in p.subtree_iter()]
+            print 'Generated tree has %d nodes' % len(nodes)
+        else:
+            g.trace('***** generated tree...')
+            for z in p.subtree_iter():
+                print '.'*z.level(),z.headString()
+    if g.unitTesting:
+
+        c,p = g.getTestVars()
+        self = c.importCommands
+        scanner = pythonScanner(self,atAuto)
+
+        # global c # Get syntax warning if this is not first.
+        # if self: c = self.c             # Run from @test node: c not global
+        # else: self = c.importCommands   # Run from @suite: c *is* global
+        d = g.scanDirectives(c)
+        self.tab_width = d.get("tabwidth")
+        verbose = False
+        s = '''\
+        def test1():
+            aList = (a,
+        b,c)
+        # underindented comment.
+            return 1
+
+        def test2():
+        # underindented comment.
+            pass
+        '''
+
+        s = g.adjustTripleString(s,self.tab_width)
+        start = 0
+        i = self.skipPythonDef(s,i=0,start=start)
+        result = s[start:i].strip()
+        if verbose: g.trace(result)
+        assert result.startswith('def test1') and result.endswith('return 1'),'result:\n%s' % result
+        start = i
+        i = self.skipPythonDef(s,i=i,start=start)
+        result = s[start:i].strip()
+        if verbose: g.trace(result)
+        assert result.startswith('def test2') and result.endswith('pass'),'result:\n%s' % result
+    if g.unitTesting:
+
+        c,p = g.getTestVars()
+        self = c.importCommands
+        scanner = pythonScanner(self,atAuto)
+
+        # global c # Get syntax warning if this is not first.
+        # if self: c = self.c             # Run from @test node: c not global
+        # else: self = c.importCommands   # Run from @suite: c *is* global
+
+        d = g.scanDirectives(c)
+        self.tab_width = d.get("tabwidth")
+        verbose = False
+        s = '''\
+        def test1(
+                a=2):
+            return 1
+
+        def test2(
+        a=3):
+            return 2
+        '''
+
+        s = g.adjustTripleString(s,self.tab_width)
+        start = 0
+        i = self.skipPythonDef(s,i=0,start=start)
+        result = s[start:i].strip()
+        if verbose: g.trace(result)
+        assert result.startswith('def test1') and result.endswith('return 1'),'result:\n%s' % result
+        start = i
+        i = self.skipPythonDef(s,i=i,start=start)
+        result = s[start:i].strip()
+        if verbose: g.trace(result)
+        assert result.startswith('def test2') and result.endswith('return 2'),'result:\n%s' % result
+    if g.unitTesting:
+
+        c,p = g.getTestVars()
+        self = c.importCommands
+        scanner = pythonScanner(self,atAuto)
+
+        # global c # Get syntax warning if this is not first.
+        # if self: c = self.c             # Run from @test node: c not global
+        # else: self = c.importCommands   # Run from @suite: c *is* global
+
+        d = g.scanDirectives(c)
+        self.tab_width = d.get("tabwidth")
+        verbose = False
+        s = '''\
+        class aClass:
+            def spam():
+                return 'spam'
+        # underindented comment line
+            def eggs():
+                return 'eggs'
+
+        class aClass2:
+            def twit():
+                return 'twit'
+        '''
+
+        s = g.adjustTripleString(s,self.tab_width)
+        start = 0
+        i = self.skipPythonDef(s,i=0,start=start)
+        result = s[start:i].strip()
+        if verbose: g.trace(result)
+        assert result.startswith('class aClass') and result.endswith("'eggs'"),'result:\n%s' % result
+        start = i
+        i = self.skipPythonDef(s,i=i,start=start)
+        result = s[start:i].strip()
+        if verbose: g.trace(result)
+        assert result.startswith('class aClass2') and result.endswith("'twit'"),'result:\n%s' % result
+    def scanElispText(self,s,p):
+
+        c = self.c
+        c.appendStringToBody(p,"@ignore\n@language elisp\n")
+        i = 0 ; start = 0
+        while i &lt; len(s):
+            progress = i
+            ch = s[i] ; # g.trace(g.get_line(s,i))
+            if ch == ';':
+                i = g.skip_line(s,i)
+            elif ch == '(':
+                j = self.skipElispParens(s,i)
+                k = g.skip_ws(s,i+1)
+                if g.match_word(s,k,"defun") or g.match_word(s,k,"defconst") or g.match_word(s,k,"defvar"):
+                    data = s[start:i]
+                    if data.strip():
+                        self.createElispDataNode(p,data)
+                    self.createElispFunction(p,s[i:j+1])
+                    start = j+1
+                i = j
+            else:
+                i += 1
+            assert(progress &lt; i)
+        data = s[start:len(s)]
+        if data.strip():
+            self.createElispDataNode(p,data)
+    def skipElispParens (self,s,i):
+
+        level = 0 ; n = len(s)
+        assert(g.match(s,i,'('))
+
+        while i &lt; n:
+            c = s[i]
+            if c == '(':
+                level += 1 ; i += 1
+            elif c == ')':
+                level -= 1
+                if level &lt;= 0:
+                    return i
+                i += 1
+            elif c == '"': i = g.skip_string(s,i) # Single-quotes are not strings.
+            elif g.match(s,i,";"):  i = g.skip_line(s,i)
+            else: i += 1
+        return i
+    def skipElispId (self,s,i):
+
+        n = len(s)
+        while i &lt; n and g.isWordChar(s[i]):
+            i += 1
+        return i
+    def createElispFunction (self,p,s):
+
+        body = s
+        i = 1 # Skip the '('
+        i = g.skip_ws(s,i)
+
+        # Set the prefix in the headline.
+        assert(g.match(s,i,"defun") or g.match_word(s,i,"defconst") or g.match_word(s,i,"defvar"))
+        if g.match_word(s,i,"defconst"):
+            prefix = "const "
+        elif g.match_word(s,i,"defvar"):
+            prefix = "var "
+        else:
+            prefix = ""
+
+        # Skip the "defun" or "defconst" or "defvar"
+        i = self.skipElispId(s,i)
+
+        # Get the following id.
+        i = g.skip_ws(s,i)
+        j = self.skipElispId(s,i)
+        theId = prefix + s[i:j]
+
+        self.createHeadline(p,body,theId)
+    def createElispDataNode (self,p,s):
+
+        data = s
+        # g.trace(len(data))
+
+        # Skip blank lines and comment lines.
+        i = 0
+        while i &lt; len(s):
+            i = g.skip_ws_and_nl(s,i)
+            if g.match(s,i,';'):
+                i = g.skip_line(s,i)
+            else: break
+
+        # Find the next id, probably prefixed by an open paren.
+        if g.match(s,i,"("):
+            i = g.skip_ws(s,i+1)
+        j = self.skipElispId(s,i)
+        theId = s[i:j]
+        if not theId:
+            theId = "unnamed data"
+
+        self.createHeadline(p,data,theId)
+    def scanForthText (self,s,parent):
+
+        """Minimal forth scanner - leave it to user to create nodes as they see fit."""
+
+        self.c.setBodyString(parent,"@ignore\n" + "@language forth\n" + self.rootLine + s)
+    # Creates a child of parent for each Java function definition seen.
+
+    def scanJavaText (self,s,parent,outerFlag): # True if at outer level.
+
+        __pychecker__ = 'maxlines=500'
+
+        c = self.c
+        method_seen = False
+        class_seen = False # True: class keyword seen at outer level.
+        interface_seen = False # True: interface keyword seen at outer level.
+        lparen = None  # not None if '(' seen at outer level.
+        scan_start = 0
+        name = None
+        function_start = 0 # g.choose(outerFlag, None, 0)
+        i = 0
+        # if not outerFlag: g.trace("inner:",s)
+        while i &lt; len(s):
+            # g.trace(g.get_line(s,i))
+            ch = s[i]
+            # These cases skip tokens.
+            if ch == '/':
+                if g.match(s,i,"//"):
+                    i = g.skip_line(s,i)
+                elif g.match(s,i,"/*"):
+                    i = g.skip_block_comment(s,i)
+                else:
+                    i += 1
+            elif ch == '"' or ch == '\'': i = g.skip_string(s,i)
+            # These cases help determine where functions start.
+            elif ch == '=':
+                # We can not be seeing a function definition when we find an 
+                # equal sign at the top level. Equal signs inside parentheses 
+                # are handled by the open paren logic.
+
+                i += 1 # skip the '='
+                function_start = 0 # 3/23/03: (bug fix: was None) We can't be in a function.
+                lparen = None   # We have not seen an argument list yet.
+                if g.match(s,i,'='):
+                    i = g.skip_braces(s,i)
+            elif ch == '(':
+                lparen = i
+                # This will skip any equal signs inside the paren.
+                i = g.skip_parens(s,i)
+                if g.match(s,i,')'):
+                    i += 1
+                    i = g.skip_ws_and_nl(s,i)
+                    if g.match(s,i,';'):
+                        lparen = None # not a function definition.
+                else: lparen = None
+            elif ch == ';':
+                # A semicolon signals the end of a declaration, thereby 
+                # potentially starting the _next_ function defintion.   
+                # Declarations end a function definition unless we have 
+                # already seen a parenthesis, in which case we are seeing an 
+                # old-style function definition.
+
+                i += 1 # skip the semicolon.
+                if lparen == None:
+                    function_start = i + 1 # The semicolon ends the declaration.
+                class_seen = False
+            # These cases can create child nodes.
+            elif ch == '{':
+                brace_ip1 = i
+                i = g.skip_braces(s,i) # Skip all inner blocks.
+                brace_ip2 = i
+
+                if not g.match (s,i,'}'):
+                    g.es("unmatched '{'")
+                elif not name:
+                    i += 1
+                elif (outerFlag and (class_seen or interface_seen)) or (not outerFlag and lparen):
+                    # g.trace("starting:",name)
+                    # g.trace("outerFlag:",outerFlag)
+                    # g.trace("lparen:",lparen)
+                    # g.trace("class_seen:",class_seen)
+                    # g.trace("scan_start:",g.get_line_after(s,scan_start))
+                    # g.trace("func_start:",g.get_line_after(s,function_start))
+                    # g.trace("s:",g.get_line(s,i))
+
+                    # Point i _after_ the last character of the method.
+                    i += 1
+                    if g.is_nl(s,i):
+                        i = g.skip_nl(s,i)
+                    function_end = i
+                    headline = name
+                    if outerFlag:
+                        leader = "" ; decl_leader = ""
+                        if class_seen:
+                            headline = "class " + headline
+                            methodKind = "classes"
+                        else:
+                            headline = "interface " + headline
+                            methodKind = "interfaces"
+                    else:
+                        leader = "\t" # Indent only inner references.
+                        decl_leader = "\n"  # Declaration leader for inner references.
+                        methodKind = "methods"
+                    if method_seen:
+                        # Include everything after the last fucntion.
+                        function_start = scan_start
+                    else:
+                        save_ip = i
+                        i = scan_start
+                        while i &lt; function_start and g.is_ws_or_nl(s,i):
+                            i += 1
+
+                        if outerFlag:
+                            c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language java\n")
+
+                        if i &lt; function_start:
+                            decl_headline = g.angleBrackets(" " + self.methodName + " declarations ")
+
+                            # Append the headline to the parent's body.
+                            c.appendStringToBody(parent,decl_leader + leader + decl_headline + "\n")
+                            scan_start = g.find_line_start(s,scan_start) # Backtrack so we remove leading whitespace.
+                            decls = s[scan_start:function_start]
+                            decls = self.undentBody(decls)
+                            body = g.choose(self.treeType == "@file",decls,"@code\n\n" + decls)
+                            self.createHeadline(parent,body,decl_headline)
+
+                        i = save_ip
+                        scan_start = i
+                        if self.treeType == "@file":
+                            if outerFlag:
+                                c.appendStringToBody(parent,"\n@others\n")
+                            else:
+                                c.appendStringToBody(parent,"\n\t@others\n")
+                        else:
+                            kind = g.choose(outerFlag,"classes","methods")
+                            ref_name = g.angleBrackets(" " + self.methodName + " " + kind + " ")
+                            c.appendStringToBody(parent,leader + ref_name + "\n")
+                    if outerFlag: # Create a class.
+                        # Backtrack so we remove leading whitespace.
+                        function_start = g.find_line_start(s,function_start)
+                        body = s[function_start:brace_ip1+1]
+                        body = self.massageBody(body,methodKind)
+                        v = self.createHeadline(parent,body,headline)
+                        # These mark the points in the present function.
+                        # g.trace("recursive scan:",g.get_line(s,brace_ip1+ 1))
+                        oldMethodName = self.methodName
+                        self.methodName = headline
+                        self.scanJavaText(s[brace_ip1+1:brace_ip2], # Don't include either brace.
+                            v,False) # inner level
+                        self.methodName = oldMethodName
+                        # Append the brace to the parent.
+                        c.appendStringToBody(v,"}")
+                        i = brace_ip2 + 1 # Start after the closing brace.
+                    else: # Create a method.
+                        # Backtrack so we remove leading whitespace.
+                        function_start = g.find_line_start(s,function_start)
+                        body = s[function_start:function_end]
+                        body = self.massageBody(body,methodKind)
+                        self.createHeadline(parent,body,headline)
+                        i = function_end
+                    method_seen = True
+                    scan_start = function_start = i # Set the start of the _next_ function.
+                    lparen = None ; class_seen = False
+                else: i += 1
+            elif g.is_c_id(s[i]):
+                if g.match_c_word(s,i,"class") or g.match_c_word(s,i,"interface"):
+                    if g.match_c_word(s,i,"class"):
+                        class_seen = True
+                    else:
+                        interface_seen = True
+                    i = g.skip_c_id(s,i) # Skip the class or interface keyword.
+                    i = g.skip_ws_and_nl(s,i)
+                    if i &lt; len(s) and g.is_c_id(s[i]):
+                        # Remember the class or interface name.
+                        j = i ; i = g.skip_c_id(s,i) ; name = s[j:i]
+                else:
+                    j = i ; i = g.skip_c_id(s,i)
+                    if not lparen and not class_seen:
+                        name = s[j:i] # Remember the name.
+            else: i += 1
+        # Used by the Java and Pascal scanners.
+
+        i = g.skip_ws_and_nl(s,scan_start)
+        if i &lt; len(s):
+            c.appendStringToBody(parent,s[scan_start:])
+    def scanLuaText (self,s,parent):
+
+        """Minimal Lua scanner - leave it to user to create nodes as they see fit."""
+
+        self.c.setBodyString(parent,"@ignore\n" + "@language lua\n" + self.rootLine + s)
+    # Creates a child of parent for each Pascal function definition seen.
+
+    def scanPascalText (self,s,parent):
+
+        c = self.c
+        method_seen = False ; methodKind = "methods"
+        scan_start = function_start = i = 0
+        name = None
+        while i &lt; len(s):
+            # line = g.get_line(s,i) ; g.trace(line)
+            ch = s[i]
+            if ch == '{': i = g.skip_pascal_braces(s,i)
+            elif ch == '"' or ch == '\'': i = g.skip_pascal_string(s,i)
+            elif g.match(s,i,"//"): i = g.skip_to_end_of_line(s,i)
+            elif g.match(s,i,"(*"): i = g.skip_pascal_block_comment(s,i)
+            elif g.is_c_id(s[i]):
+                if g.match_c_word(s,i,"begin"):
+                    i = g.skip_pascal_begin_end(s,i)
+                    if g.match_c_word(s,i,"end"):
+                        i = g.skip_c_id(s,i)
+                elif (g.match_c_word(s,i,"function")  or g.match_c_word(s,i,"procedure") or
+                    g.match_c_word(s,i,"constructor") or g.match_c_word(s,i,"destructor")):
+
+                    # line = g.get_line(s,i) ; g.trace(line)
+
+                    start = i
+                    i = g.skip_c_id(s,i)
+                    i = g.skip_ws_and_nl(s,i)
+                    if i &lt; len(s) and g.is_c_id(s[i]):
+                        j = i ; i = g.skip_c_id(s,i)
+                        while i + 1 &lt; len(s) and s[i] == '.' and g.is_c_id(s[i+1]):
+                            i += 1 ; j = i
+                            i = g.skip_c_id(s,i)
+                        name = s[j:i]
+                    else: continue
+                    while i &lt; len(s) and s[i] != ';':
+                        # The paremeter list may contain "inner" semicolons.
+                        if s[i] == '(':
+                            i = g.skip_parens(s,i)
+                            if g.match(s,i,')'):
+                                i += 1
+                            else: break
+                        else: i += 1
+                    if g.match(s,i,';'):
+                        i += 1
+                    i = g.skip_ws_and_nl(s,i)
+
+                    if g.match_c_word(s,i,"var"):
+                        # Skip to the next begin.
+                        i = g.skip_c_id(s,i)
+                        done = False
+                        while i &lt; len(s) and not done:
+                            ch = s[i]
+                            if ch == '{': i = g.skip_pascal_braces(s,i)
+                            elif g.match(s,i,"//"): i = g.skip_to_end_of_line(s,i)
+                            elif g.match(s,i,"(*"): i = g.skip_pascal_block_comment(s,i)
+                            elif g.is_c_id(ch):
+                                if g.match_c_word(s,i,"begin"): done = True
+                                else: i = g.skip_c_id(s,i)
+                            elif ch == '"' or ch == '\'': i = g.skip_pascal_string(s,i)
+                            else: i += 1
+
+                    if not g.match_c_word(s,i,"begin"):
+                        continue
+                    # Skip to the matching end.
+                    i = g.skip_pascal_begin_end(s,i)
+                    if g.match_c_word(s,i,"end"):
+                        i = g.skip_c_id(s,i)
+                        i = g.skip_ws_and_nl(s,i)
+                        if g.match(s,i,';'):
+                            i += 1
+                        i = g.skip_ws(s,i)
+                        if g.is_nl(s,i):
+                            i = g.skip_nl(s,i)
+                    else: continue
+                    if not method_seen:
+                        method_seen = True
+                        save_ip = i
+                        i = scan_start
+                        while i &lt; start and g.is_ws_or_nl(s,i):
+                            i += 1
+                        if i &lt; start:
+                            c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language pascal\n")
+                            headline = g.angleBrackets(self.methodName + " declarations ")
+                            # Append the headline to the parent's body.
+                            c.appendStringToBody(parent,headline + "\n")
+                            if self.treeType == "@file":
+                                body = s[scan_start:start]
+                            else:
+                                body = "@code\n\n" + s[scan_start:start]
+                            body = self.undentBody(body)
+                            self.createHeadline(parent,body,headline)
+                        i = save_ip
+                        scan_start = i
+                        # Append the headline to the parent's body.
+                        if self.treeType == "@file":
+                            c.appendStringToBody(parent,"@others\n")
+                        else:
+                            c.appendStringToBody(parent,
+                                g.angleBrackets(" " + self.methodName + " methods ") + "\n")
+                        function_start = start
+                    else: function_start = scan_start
+                    # Point i _after_ the last character of the function.
+                    i = g.skip_ws(s,i)
+                    if g.is_nl(s,i):
+                        i = g.skip_nl(s,i)
+                    function_end = i
+                    headline = name
+                    body = s[function_start:function_end]
+                    body = self.massageBody(body,methodKind)
+                    self.createHeadline(parent,body,headline)
+                    scan_start = i
+                else: i = g.skip_c_id(s,i)
+            else: i += 1
+        # Used by the Java and Pascal scanners.
+
+        i = g.skip_ws_and_nl(s,scan_start)
+        if i &lt; len(s):
+            c.appendStringToBody(parent,s[scan_start:])
+    # 08-SEP-2002 DTHEIN: Added for PHP import support.
+    #
+    # PHP uses both # and // as line comments, and /* */ as block comments
+
+    def scanPHPText (self,s,parent):
+
+        __pychecker__ = 'maxlines=500'
+
+        """Creates a child of parent for each class and function definition seen."""
+
+        c = self.c
+        scan_start = 0
+        class_start = 0
+        function_start = 0
+        i = 0
+        class_body = ""
+        class_node = ""
+        phpClassName = re.compile("class\s+([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)")
+        phpFunctionName = re.compile("function\s+([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)")
+
+        # 14-SEP-2002 DTHEIN: added these 2 variables to allow use of @first/last
+        startOfCode = s.find("\n") + 1 # this should be the line containing the initial &lt;?php
+        endOfCode = s.rfind("?&gt;") # this should be the line containing the last ?&gt;
+        # If the file does not begin with &lt;?php or end with ?&gt; then
+        # it is simply appended like a generic import would do.
+
+        s.strip() # Remove inadvertent whitespace.
+
+        if (
+            not (
+                s.startswith("&lt;?P") or
+                s.startswith("&lt;?p") or
+                s.startswith("&lt;?=") or
+                s.startswith("&lt;?\n") or
+                s.startswith("&lt;?\r") or
+                s.startswith("&lt;? ") or
+                s.startswith("&lt;?\t")
+            ) or not (
+                s.endswith("?&gt;\n") or
+                s.endswith("?&gt;\r") or
+                s.endswith("?&gt;\r\n")
+            )
+        ):
+            g.es("File seems to be mixed HTML and PHP; importing as plain text file.")
+            c.setBodyString(parent,"@ignore\n" + self.rootLine + s)
+            return
+
+        # 14-SEP-2002 DTHEIN: Make leading &lt;?php use the @first directive
+        c.appendStringToBody(parent,"@first ")
+        c.appendStringToBody(parent,s[:startOfCode])
+        scan_start = i = startOfCode
+        while i &lt; endOfCode:
+            # line = g.get_line(s,i) ; g.trace(line)
+            ch = s[i]
+            # These cases skip tokens.
+            if ch == '/' or ch == '#':
+                if g.match(s,i,"//"):
+                    i = g.skip_line(s,i)
+                elif g.match(s,i,"#"):
+                    i = g.skip_line(s,i)
+                elif g.match(s,i,"/*"):
+                    i = g.skip_block_comment(s,i)
+                else:
+                    i += 1
+            elif ch == '&lt;':
+                if g.match(s,i,"&lt;&lt;&lt;"):
+                    i = g.skip_heredoc_string(s,i)
+                else:
+                    i += 1
+            elif ch == '"' or ch == '\'':
+                i = g.skip_string(s,i)
+            # These cases help determine where functions start.
+            # FIXME: probably want to capture 'var's as class member data
+            elif ch == 'f' or ch =='c':
+                # In PHP, all functions are typeless and start with the 
+                # keyword "function;  all classes start with the keyword 
+                # class.
+                # 
+                # Functions can be nested, but we don't handle that right now 
+                # (I don't think it is a common practice anyway).
+                if g.match(s,i,"function "):
+                    #we want to make the function a subnode of either the @file node or a class node
+                    # 1. get the function name
+                    # 2. make a reference in the parent
+                    # 3. create the child node, and dump the function in it.
+                    function_start = i
+                    m = phpFunctionName.match(s[i:])
+                    if (None == m): # function keyword without function name
+                        i += len("function ")
+                    else:
+                        headline = g.angleBrackets(" function " + m.group(1) + " ")
+                        # find the end of the function
+                        openingBrace = s.find('{',i)
+                        function_end = g.skip_php_braces(s,openingBrace)
+                        function_end = g.skip_to_end_of_line(s,function_end - 1) + 1 # include the line end
+                        # Insert skipped text into parent's body.
+                        if class_start:
+                            class_body += s[scan_start:function_start]
+                        else:
+                            c.appendStringToBody(parent,s[scan_start:function_start])
+                        # Append the headline to the parent's body.
+                        if class_start:
+                            class_body += (headline + "\n")
+                        else:
+                            c.appendStringToBody(parent,headline + "\n")
+                        # Backup to capture leading whitespace (for undent purposes)
+                        while (function_start &gt; 0) and (s[function_start - 1] in [" ", "\t"]):
+                            function_start -= 1
+                        # Get the body and undent it
+                        function_body = s[function_start:function_end]
+                        function_body = self.undentBody(function_body)
+                        if self.treeType != "@file":
+                            function_body = "@code\n\n" + function_body
+                        # Create the new node
+                        if class_start:
+                            self.createHeadline(class_node,function_body,headline)
+                        else:
+                            self.createHeadline(parent,function_body,headline)
+                        i = function_end
+                        scan_start = i
+                        function_end = 0
+                        function_start = 0 #done with this function
+                        function_body = ""
+
+                elif g.match(s,i,"class "):
+                    # we want to make the class a subnode of the @file node
+                    # 1. get the class name
+                    # 2. make a reference in the parent
+                    # 3. create the child node and dump the function in it
+                    class_start = i
+                    class_body = ""
+                    m = phpClassName.match(s[i:])
+                    if (None == m): # class keyword without class name
+                        i += len("class ")
+                    else:
+                        # Insert skipped text into parent's body.
+                        c.appendStringToBody(parent,s[scan_start:class_start])
+                        # create the headline name
+                        headline = g.angleBrackets(" class " + m.group(1) + " ")
+                        # find the place to start looking for methods (functions)
+                        openingBrace = s.find('{',i)
+                        # find the end of the class
+                        class_end = g.skip_php_braces(s,openingBrace)
+                        class_end = g.skip_to_end_of_line(s,class_end - 1) + 1 # include the line end
+                        # Append the headline to the parent's body.
+                        c.appendStringToBody(parent,headline + "\n")
+                        # Backup to capture leading whitespace (for undent purposes)
+                        while (class_start &gt; 0) and (s[class_start - 1] in [" ", "\t"]):
+                            class_start -= 1
+                        scan_start = class_start
+                        # Create the new node
+                        class_node = self.createHeadline(parent,"",headline)
+                        i = openingBrace
+
+                else:
+                    i += 1
+            elif class_start and (ch == '}'):
+                # Capture the rest of the body
+                class_body += s[scan_start:class_end]
+                # insert the class node's body
+                if self.treeType != "@file":
+                    class_body = "@code\n\n" + class_body
+                class_body = self.undentBody(class_body)
+                c.appendStringToBody(class_node,class_body)
+                # reset the indices
+                i = class_end
+                scan_start = i
+                class_end = 0
+                class_start = 0 #done with this class
+                class_body=""
+            else: i += 1
+        c.appendStringToBody(parent,s[scan_start:endOfCode])
+        # 14-SEP-2002 DTHEIN: Make leading &lt;?php use the @first directive
+        c.appendStringToBody(parent,"@last ")
+        c.appendStringToBody(parent,s[endOfCode:])
+ 
+    def pythonUnitTest (self,p,s,fileName,atAuto=False,strict=False):
+
+        '''
+        Run a unit test of the Python parser,
+        i.e., create a tree from string s at location p.
+        The caller is responsible for asserting properties of the tree.
+        '''
+
+        # Duplicate processing in ic command
+        ic = self ; c = ic.c
+        if fileName.startswith('@test'):
+            fileName = fileName[5:].strip()
+        junk,ic.fileName = g.os_path_split(fileName)
+        ic.methodName,ic.fileType = g.os_path_splitext(ic.fileName)
+        ic.setEncoding()
+
+        c.beginUpdate()
+        try:
+            # Create a child
+            child = p.insertAsLastChild()
+            assert child
+            h = g.choose(atAuto,'@auto ' + fileName,fileName)
+            child.initHeadString(h)
+            ic.scanPythonText (s=s,parent=child.copy(),atAuto=atAuto,strict=strict)
+        finally:
+            c.endUpdate()
+        if 0:
+            g.trace('***** generated tree...')
+            for z in p.subtree_iter():
+                print '.'*z.level(),z.headString()
+
+        return child
+    def scanPythonText (self,s,parent,atAuto=False,strict=False):
+
+        scanner = self.pythonScanner(importCommands=self,atAuto=atAuto,strict=strict)
+        scanner.run(s,parent)
+    class pythonScanner (baseScannerClass):
+
+        def __init__ (self,importCommands,atAuto,strict):
+
+            importCommands.baseScannerClass.__init__(self,importCommands,
+                atAuto=atAuto,
+                language='python',
+                strict=strict,
+            )
+
+            # Set the parser delims.
+            self.blockCommentDelim1 = None
+            self.blockCommentDelim2 = None
+            self.lineCommentDelim = '#'
+            self.signatureDelim = ':'
+        def extendSignature(self,s,i):
+
+            '''
+            Extend the text to added to the class node following the signature.
+
+            The text *must* end with a newline.
+            '''
+
+            # Add a docstring to the class node,
+            # And everything on the line following it
+            j = g.skip_ws_and_nl(s,i)
+            if g.match(s,j,'"""') or g.match(s,j,"'''"):
+                j = g.skip_python_string(s,j)
+                if j &lt; len(s): # No scanning error.
+                    # Return the docstring only if nothing but whitespace follows.
+                    j = g.skip_ws(s,j)
+                    if g.is_nl(s,j):
+                        return j + 1
+
+            return i
+        def skipClass (self,s,i):
+            return self.skipHelper(s,i)
+
+        def skipFunction (self,s,i):
+            return self.skipHelper(s,i)
+        def skipHelper (self,s,i):
+
+            # g.trace(g.get_line(s,i))
+
+            startIndent = self.getLeadingIndent(s,i)
+            i = self.skipSignature(s,i)
+            i = g.skip_ws_and_nl(s,i)
+            indent = self.getLeadingIndent(s,i)
+            parenCount = 0
+            while i &lt; len(s):
+                progress = i
+                ch = s[i]
+                if g.is_nl(s,i):
+                    backslashNewline = i &gt; 0 and g.match(s,i-1,"\\\n")
+                    i = g.skip_nl(s,i)
+                    if not backslashNewline:
+                        # Don't set indent for comment lines.
+                        j = g.skip_ws(s,i)
+                        if not g.match(s,j,'#'):
+                            indent = self.getLeadingIndent(s,i)
+                            if indent &lt;= startIndent and parenCount == 0:
+                                break
+                elif ch == '#':
+                    i = g.skip_to_end_of_line(s,i)
+                elif ch == '"' or ch == '\'':
+                    i = g.skip_python_string(s,i)
+                elif ch in '[{(':
+                    i += 1 ; parenCount += 1
+                    # g.trace('ch',ch,parenCount)
+                elif ch in ']})':
+                    i += 1 ; parenCount -= 1
+                    # g.trace('ch',ch,parenCount)
+                else: i += 1
+                assert(progress &lt; i)
+
+            return i
+        def skipSignature (self,s,i):
+
+            '''Skip the signature line of a class or function.
+            The text must end with a newline.'''
+
+            start = i
+            message = 'Warning: improper signature: %s' % g.get_line(s,start)
+
+            # g.trace(g.getLine(s,i))
+
+            # Skip the def or class.
+            for tag in ('def','class'):
+                if g.match_word(s,i,tag):
+                    i += len(tag)
+                    break
+            else:
+                self.error(message)
+                return start
+
+            # Skip the class or function name.
+            i = g.skip_ws_and_nl(s,i)
+            j = g.skip_c_id(s,i)
+            if j == i:
+                self.error(message)
+                return start
+
+            # Skip the optional argument or base-class list.
+            i = g.skip_ws_and_nl(s,j)
+            if g.match(s,i,'('):
+                i = self.skipBlock(s,i,delim1='(',delim2=')')
+                i = g.skip_ws_and_nl(s,i)
+
+            if g.match(s,i,self.signatureDelim):
+                return g.skip_line(s,i+1)
+            else:
+                self.error(message)
+                return start
+        def skipString (self,s,i):
+
+            # Returns len(s) on unterminated string.
+            return g.skip_python_string(s,i,verbose=False)
+        def startsClass (self,s,i):
+            '''Return the class id if s[i:] starts a class definition.'''
+            return self.startsHelper(s,i,'class')
+
+        def startsFunction (self,s,i):
+            '''Return the function id if s[i:] starts a function definition.'''
+            return self.startsHelper(s,i,'def')
+
+        def startsHelper(self,s,i,tag):
+
+            '''Return the id following the tag, or the empty string.'''
+
+            if g.match_word(s,i,tag):
+                i += len(tag)
+                i = g.skip_ws_and_nl(s,i)
+                j = g.skip_c_id(s,i)
+                return s[i:j]
+            else:
+                return ''
+    # Headlines not containing a section reference are ignored in noweb and generate index index in cweb.
+
+    def convertCodePartToWeb (self,s,i,v,result):
+
+        # g.trace(g.get_line(s,i))
+        c = self.c ; nl = self.output_newline
+        lb = g.choose(self.webType=="cweb","@&lt;","&lt;&lt;")
+        rb = g.choose(self.webType=="cweb","@&gt;","&gt;&gt;")
+        h = string.strip(v.headString())
+        # We look for either noweb or cweb brackets. head_ref does not include 
+        # these brackets.
+
+        head_ref = None
+        j = 0
+        if g.match(h,j,"&lt;&lt;"):
+            k = string.find(h,"&gt;&gt;",j)
+        elif g.match(h,j,"&lt;@"):
+            k = string.find(h,"@&gt;",j)
+        else:
+            k = -1
+
+        if k &gt; -1:
+            head_ref = string.strip(h[j+2:k])
+            if len(head_ref) == 0:
+                head_ref = None
+        if g.match(h,0,"@file") or g.match(h,0,"@root"):
+            line = h[5:]
+            line = string.strip(line)
+            # set j &amp; k so line[j:k] is the file name.
+            # g.trace(line)
+
+            if g.match(line,0,"&lt;"):
+                j = 1 ; k = string.find(line,"&gt;",1)
+            elif g.match(line,0,'"'):
+                j = 1 ; k = string.find(line,'"',1)
+            else:
+                j = 0 ; k = string.find(line," ",0)
+            if k == -1:
+                k = len(line)
+
+            file_name = string.strip(line[j:k])
+            if file_name and len(file_name) == 0:
+                file_name = None
+        else:
+            file_name = line = None
+        if g.match_word(s,i,"@root"):
+            i = g.skip_line(s,i)
+            if self.webType == "cweb":
+                if not file_name:
+                    result += "@&lt;root@&gt;=" + nl
+                else:
+                    result += "@(" + file_name + "@&gt;" + nl # @(...@&gt; denotes a file.
+            else:
+                if not file_name:
+                    file_name = "*"
+                result += lb + file_name + rb + "=" + nl
+        elif g.match_word(s,i,"@c") or g.match_word(s,i,"@code"):
+            i = g.skip_line(s,i)
+            if self.webType == "cweb":
+                if not head_ref:
+                    result += "@^" + h + "@&gt;" + nl # Convert the headline to an index entry.
+                    result += "@c" + nl # @c denotes a new section.
+                else: 
+                    escaped_head_ref = string.replace(head_ref,"@","@@")
+                    result += "@&lt;" + escaped_head_ref + "@&gt;=" + nl
+            else:
+                if not head_ref:
+                    if v == c.currentVnode():
+                        head_ref = g.choose(file_name,file_name,"*")
+                    else:
+                        head_ref = "@others"
+
+                result += lb + head_ref + rb + "=" + nl
+        elif g.match_word(h,0,"@file"):
+            # Only do this if nothing else matches.
+            if self.webType == "cweb":
+                if not file_name:
+                    result += "@&lt;root@&gt;=" + nl
+                else:
+                    result += "@(" + file_name + "@&gt;" + nl # @(...@&gt; denotes a file.
+            else:
+                if not file_name:
+                    file_name = "*"
+                result += lb + file_name + rb + "=" + nl
+            i = g.skip_line(s,i) # 4/28/02
+        else:
+            if self.webType == "cweb":
+                if not head_ref:
+                    result += "@^" + h + "@&gt;" + nl # Convert the headline to an index entry.
+                    result += "@c" + nl # @c denotes a new section.
+                else: 
+                    escaped_head_ref = string.replace(head_ref,"@","@@")
+                    result += "@&lt;" + escaped_head_ref + "@&gt;=" + nl
+            else:
+                if not head_ref:
+                    if v == c.currentVnode():
+                        head_ref = g.choose(file_name,file_name,"*")
+                    else:
+                        head_ref = "@others"
+
+                result += lb + head_ref + rb + "=" + nl
+        i,result = self.copyPart(s,i,result)
+        return i, string.strip(result) + nl
+
+    # %defs a b c
+    def convertDocPartToWeb (self,s,i,result):
+
+        nl = self.output_newline
+
+        # g.trace(g.get_line(s,i))
+        if g.match_word(s,i,"@doc"):
+            i = g.skip_line(s,i)
+        elif g.match(s,i,"@ ") or g.match(s,i,"@\t") or g.match(s,i,"@*"):
+            i += 2
+        elif g.match(s,i,"@\n"):
+            i += 1
+        i = g.skip_ws_and_nl(s,i)
+        i, result2 = self.copyPart(s,i,"")
+        if len(result2) &gt; 0:
+            # Break lines after periods.
+            result2 = string.replace(result2,".  ","." + nl)
+            result2 = string.replace(result2,". ","." + nl)
+            result += nl+"@"+nl+string.strip(result2)+nl+nl
+        else:
+            # All nodes should start with '@', even if the doc part is empty.
+            result += g.choose(self.webType=="cweb",nl+"@ ",nl+"@"+nl)
+        return i, result
+    # This code converts a vnode to noweb text as follows:
+    # 
+    # Convert @doc to @
+    # Convert @root or @code to &lt; &lt; name &gt; &gt;=, assuming the headline contains 
+    # &lt; &lt; name &gt; &gt;
+    # Ignore other directives
+    # Format doc parts so they fit in pagewidth columns.
+    # Output code parts as is.
+
+    def convertVnodeToWeb (self,v):
+
+        c = self.c
+        if not v or not c: return ""
+        startInCode = not c.config.at_root_bodies_start_in_doc_mode
+        nl = self.output_newline
+        s = v.bodyString()
+        lb = g.choose(self.webType=="cweb","@&lt;","&lt;&lt;")
+        i = 0 ; result = "" ; docSeen = False
+        while i &lt; len(s):
+            progress = i
+            # g.trace(g.get_line(s,i))
+            i = g.skip_ws_and_nl(s,i)
+            if self.isDocStart(s,i) or g.match_word(s,i,"@doc"):
+                i,result = self.convertDocPartToWeb(s,i,result)
+                docSeen = True
+            elif (g.match_word(s,i,"@code") or g.match_word(s,i,"@root") or
+                g.match_word(s,i,"@c") or g.match(s,i,lb)):
+                if not docSeen:
+                    docSeen = True
+                    result += g.choose(self.webType=="cweb",nl+"@ ",nl+"@"+nl)
+                i,result = self.convertCodePartToWeb(s,i,v,result)
+            elif self.treeType == "@file" or startInCode:
+                if not docSeen:
+                    docSeen = True
+                    result += g.choose(self.webType=="cweb",nl+"@ ",nl+"@"+nl)
+                i,result = self.convertCodePartToWeb(s,i,v,result)
+            else:
+                i,result = self.convertDocPartToWeb(s,i,result)
+                docSeen = True
+            assert(progress &lt; i)
+        result = string.strip(result)
+        if len(result) &gt; 0:
+            result += nl
+        return result
+    # Copies characters to result until the end of the present section is seen.
+
+    def copyPart (self,s,i,result):
+
+        # g.trace(g.get_line(s,i))
+        lb = g.choose(self.webType=="cweb","@&lt;","&lt;&lt;")
+        rb = g.choose(self.webType=="cweb","@&gt;","&gt;&gt;")
+        theType = self.webType
+        while i &lt; len(s):
+            progress = j = i # We should be at the start of a line here.
+            i = g.skip_nl(s,i) ; i = g.skip_ws(s,i)
+            if self.isDocStart(s,i):
+                return i, result
+            if (g.match_word(s,i,"@doc") or
+                g.match_word(s,i,"@c") or
+                g.match_word(s,i,"@root") or
+                g.match_word(s,i,"@code")): # 2/25/03
+                return i, result
+            elif (g.match(s,i,"&lt;&lt;") and # must be on separate lines.
+                g.find_on_line(s,i,"&gt;&gt;=") &gt; -1):
+                return i, result
+            else:
+                # Copy the entire line, escaping '@' and
+                # Converting @others to &lt; &lt; @ others &gt; &gt;
+                i = g.skip_line(s,j) ; line = s[j:i]
+                if theType == "cweb":
+                    line = string.replace(line,"@","@@")
+                else:
+                    j = g.skip_ws(line,0)
+                    if g.match(line,j,"@others"):
+                        line = string.replace(line,"@others",lb + "@others" + rb)
+                    elif g.match(line,0,"@"):
+                        # Special case: do not escape @ %defs.
+                        k = g.skip_ws(line,1)
+                        if not g.match(line,k,"%defs"):
+                            line = "@" + line
+                result += line
+            assert(progress &lt; i)
+        return i, string.rstrip(result)
+    def exportHeadlines (self,fileName):
+
+        c = self.c ; nl = self.output_newline
+        p = c.currentPosition()
+        if not p: return
+        self.setEncoding()
+        firstLevel = p.level()
+        mode = c.config.output_newline
+        mode = g.choose(mode=="platform",'w','wb')
+        try:
+            theFile = open(fileName,mode)
+        except IOError:
+            g.es("Can not open " + fileName,color="blue")
+            leoTest.fail()
+            return
+        for p in p.self_and_subtree_iter():
+            head = p.moreHead(firstLevel,useVerticalBar=True)
+            head = g.toEncodedString(head,self.encoding,reportErrors=True)
+            theFile.write(head + nl)
+        theFile.close()
+    def flattenOutline (self,fileName):
+
+        c = self.c ; nl = self.output_newline
+        p = c.currentVnode()
+        if not p: return
+        self.setEncoding()
+        firstLevel = p.level()
+
+        # 10/14/02: support for output_newline setting.
+        mode = c.config.output_newline
+        mode = g.choose(mode=="platform",'w','wb')
+        try:
+            theFile = open(fileName,mode)
+        except IOError:
+            g.es("Can not open " + fileName,color="blue")
+            leoTest.fail()
+            return
+
+        for p in p.self_and_subtree_iter():
+            head = p.moreHead(firstLevel)
+            head = g.toEncodedString(head,self.encoding,reportErrors=True)
+            theFile.write(head + nl)
+            body = p.moreBody() # Inserts escapes.
+            if len(body) &gt; 0:
+                body = g.toEncodedString(body,self.encoding,reportErrors=True)
+                theFile.write(body + nl)
+        theFile.close()
+    def outlineToWeb (self,fileName,webType):
+
+        c = self.c ; nl = self.output_newline
+        current = c.currentPosition()
+        if not current: return
+        self.setEncoding()
+        self.webType = webType
+        # 10/14/02: support for output_newline setting.
+        mode = c.config.output_newline
+        mode = g.choose(mode=="platform",'w','wb')
+        try:
+            theFile = open(fileName,mode)
+        except IOError:
+            g.es("Can not open " + fileName,color="blue")
+            leoTest.fail()
+            return
+
+        self.treeType = "@file"
+        # Set self.treeType to @root if p or an ancestor is an @root node.
+        for p in current.parents_iter():
+            flag,junk = g.is_special(p.bodyString(),0,"@root")
+            if flag:
+                self.treeType = "@root"
+                break
+        for p in current.self_and_subtree_iter():
+            s = self.convertVnodeToWeb(p)
+            if len(s) &gt; 0:
+                s = g.toEncodedString(s,self.encoding,reportErrors=True)
+                theFile.write(s)
+                if s[-1] != '\n': theFile.write(nl)
+        theFile.close()
+    def removeSentinelsCommand (self,paths):
+
+        c = self.c
+
+        self.setEncoding()
+
+        for fileName in paths:
+            g.setGlobalOpenDir(fileName)
+            path, self.fileName = g.os_path_split(fileName)
+            try:
+                theFile = open(fileName)
+                s = theFile.read()
+                s = g.toUnicode(s,self.encoding)
+                theFile.close()
+            except IOError:
+                g.es("can not open " + fileName, color="blue")
+                leoTest.fail()
+                return
+            # Skip any non @+leo lines.
+            i = 0
+            while i &lt; len(s) and not g.find_on_line(s,i,"@+leo"):
+                i = g.skip_line(s,i)
+
+            # Get the comment delims from the @+leo sentinel line.
+            at = self.c.atFileCommands
+            j = g.skip_line(s,i) ; line = s[i:j]
+
+            valid,new_df,start_delim,end_delim,derivedFileIsThin = at.parseLeoSentinel(line)
+            if not valid:
+                g.es("invalid @+leo sentinel in " + fileName)
+                return
+
+            if end_delim:
+                line_delim = None
+            else:
+                line_delim,start_delim = start_delim,None
+            # g.trace("line: '%s', start: '%s', end: '%s'" % (line_delim,start_delim,end_delim))
+            s = self.removeSentinelLines(s,line_delim,start_delim,end_delim)
+            ext = c.config.remove_sentinels_extension
+            if not ext:
+                ext = ".txt"
+            if ext[0] == '.':
+                newFileName = g.os_path_join(path,fileName+ext)
+            else:
+                head,ext2 = g.os_path_splitext(fileName) 
+                newFileName = g.os_path_join(path,head+ext+ext2)
+            try:
+                mode = c.config.output_newline
+                mode = g.choose(mode=="platform",'w','wb')
+                theFile = open(newFileName,mode)
+                s = g.toEncodedString(s,self.encoding,reportErrors=True)
+                theFile.write(s)
+                theFile.close()
+                if not g.unitTesting:
+                    g.es("created: " + newFileName)
+            except:
+                g.es("exception creating: " + newFileName)
+                g.es_exception()
+    # This does not handle @nonl properly, but that's a nit...
+
+    def removeSentinelLines(self,s,line_delim,start_delim,end_delim):
+
+        '''Properly remove all sentinle lines in s.'''
+
+        __pychecker__ = '--no-argsused' # end_delim.
+
+        delim = (line_delim or start_delim or '') + '@'
+        verbatim = delim + 'verbatim' ; verbatimFlag = False
+        result = [] ; lines = g.splitLines(s)
+        for line in lines:
+            i = g.skip_ws(line,0)
+            if not verbatimFlag and g.match(line,i,delim):
+                if g.match(line,i,verbatim):
+                    verbatimFlag = True # Force the next line to be in the result.
+                # g.trace(repr(line))
+            else:
+                result.append(line)
+                verbatimFlag = False
+        result = ''.join(result)
+        return result
+    def weave (self,filename):
+
+        c = self.c ; nl = self.output_newline
+        p = c.currentPosition()
+        if not p: return
+        self.setEncoding()
+        try:
+            # 10/14/02: support for output_newline setting.
+            mode = c.config.output_newline
+            mode = g.choose(mode=="platform",'w','wb')
+            f = open(filename,mode)
+            if not f: return
+        except:
+            g.es("exception opening:" + filename)
+            g.es_exception()
+            return
+        for p in p.self_and_subtree_iter():
+            s = p.bodyString()
+            s2 = string.strip(s)
+            if s2 and len(s2) &gt; 0:
+                f.write("-" * 60) ; f.write(nl)
+                # write the headlines of p, p's parent and p's grandparent.
+                context = [] ; p2 = p.copy() ; i = 0
+                while i &lt; 3:
+                    i += 1
+                    if not p2: break
+                    context.append(p2.headString())
+                    p2.moveToParent()
+
+                context.reverse()
+                indent = ""
+                for line in context:
+                    f.write(indent)
+                    indent += '\t'
+                    line = g.toEncodedString(line,self.encoding,reportErrors=True)
+                    f.write(line)
+                    f.write(nl)
+                f.write("-" * 60) ; f.write(nl)
+                s = g.toEncodedString(s,self.encoding,reportErrors=True)
+                f.write(string.rstrip(s) + nl)
+        f.flush()
+        f.close()
+    def createHeadline (self,parent,body,headline):
+
+        # g.trace("parent,headline:",parent,headline)
+        # Create the vnode.
+        v = parent.insertAsLastChild()
+        v.initHeadString(headline,self.encoding)
+        # Set the body.
+        if len(body) &gt; 0:
+            self.c.setBodyString(v,body,self.encoding)
+        return v
+    def error (self,s): g.es(s)
+    def getLeadingIndent (self,s,i):
+
+        """Return the leading whitespace of a line, ignoring blank and comment lines."""
+
+        i = g.find_line_start(s,i)
+        while i &lt; len(s):
+            # g.trace(g.get_line(s,i))
+            j = g.skip_ws(s,i) # Bug fix: 2/14/03
+            if g.is_nl(s,j) or g.match(s,j,"#"): # Bug fix: 2/14/03
+                i = g.skip_line(s,i) # ignore blank lines and comment lines.
+            else:
+                i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+                # g.trace("returns:",width)
+                return width
+        # g.trace("returns:0")
+        return 0
+    # The start of a document part or module in a noweb or cweb file.
+    # Exporters may have to test for @doc as well.
+
+    def isDocStart (self,s,i):
+
+        if not g.match(s,i,"@"):
+            return False
+
+        j = g.skip_ws(s,i+1)
+        if g.match(s,j,"%defs"):
+            return False
+        elif self.webType == "cweb" and g.match(s,i,"@*"):
+            return True
+        else:
+            return g.match(s,i,"@ ") or g.match(s,i,"@\t") or g.match(s,i,"@\n")
+
+    def isModuleStart (self,s,i):
+
+        if self.isDocStart(s,i):
+            return True
+        else:
+            return self.webType == "cweb" and (
+                g.match(s,i,"@c") or g.match(s,i,"@p") or
+                g.match(s,i,"@d") or g.match(s,i,"@f"))
+    def massageBody (self,s,methodKind):
+
+        # g.trace(s)
+        # g.trace(g.get_line(s,0))
+        c = self.c
+        if self.treeType == "@file":
+            if self.fileType == ".py": # 7/31/02: was "py"
+                return self.undentBody(s)
+            else:
+                newBody, comment = self.skipLeadingComments(s)
+                newBody = self.undentBody(newBody)
+                newLine = g.choose(g.is_nl(newBody,0),"\n","\n\n")
+                if len(comment) &gt; 0:
+                    return comment + "\n@c" + newLine + newBody
+                else:
+                    return newBody
+        else:
+            # Inserts &lt; &lt; self.methodName methodKind &gt; &gt; =
+            cweb = self.fileType == "c" and not c.use_noweb_flag
+            lb = g.choose(cweb,"@&lt;","&lt;&lt;")
+            rb = g.choose(cweb,"@&gt;=","&gt;&gt;=")
+            intro = lb + " " + self.methodName + " " + methodKind + " " + rb
+            if self.fileType == ".py": # 7/31/02: was "py"
+                newBody = self.undentBody(s)
+                newLine = g.choose(g.is_nl(newBody,0),"\n","\n\n")
+                return intro + newLine + newBody
+            else:
+                newBody, comment = self.skipLeadingComments(s)
+                newBody = self.undentBody(newBody)
+                newLine = g.choose(g.is_nl(newBody,0),"\n","\n\n")
+                if len(comment) &gt; 0:
+                    return comment + "\n" + intro + newLine + newBody
+                else:
+                    return intro + newLine + newBody
+    def skipLeadingComments (self,s):
+
+        """Skips all leading comments in s, returning the remaining body text and the massaged comment text.
+
+        Returns (body, comment)"""
+
+        # g.trace(g.get_line(s,0))
+        s_original = s
+        s = s.lstrip()
+        i = 0 ; comment = ""
+        if self.fileType in [".c", ".cpp"]: # 11/2/02: don't mess with java comments.
+            while i &lt; len(s):
+                if g.match(s,i,"//"): # Handle a C++ comment.
+                    while g.match(s,i,'/'):
+                        i += 1
+                    j = i ; i = g.skip_line(s,i)
+                    comment = comment + self.massageComment(s[j:i]) + "\n"
+                    # 8/2/02: Preserve leading whitespace for undentBody
+                    i = g.skip_ws(s,i)
+                    i = g.skip_blank_lines(s,i)
+                elif g.match(s,i,"/*"): # Handle a block C comment.
+                    j = i + 2 ; i = g.skip_block_comment (s,i)
+                    k = g.choose(g.match(s,i-2,"*/"),i-2,i)
+                    if self.fileType == ".java":
+                        # 8/2/02: a hack: add leading whitespace then remove it.
+                        comment = self.undentBody(comment)
+                        comment2 = ' ' * 2 + s[j:k]
+                        comment2 = self.undentBody(comment2)
+                        comment = comment + comment2 + "\n"
+                    else:
+                        comment = comment + self.massageComment(s[j:k]) + "\n"
+                    # 8/2/02: Preserve leading whitespace for undentBody
+                    i = g.skip_ws(s,i)
+                    i = g.skip_blank_lines(s,i)
+                else: break
+        elif self.fileType == ".lua":
+            while i &lt; len(s):
+                if g.match(s,i,"--"): # Handle a Lua line comment.
+                    while g.match(s,i,'/'):
+                        i += 1
+                    j = i ; i = g.skip_line(s,i)
+                    comment = comment + self.massageComment(s[j:i]) + "\n"
+                    # 8/2/02: Preserve leading whitespace for undentBody
+                    i = g.skip_ws(s,i)
+                    i = g.skip_blank_lines(s,i)
+                else: break
+        elif self.fileType == ".pas":
+            while i &lt; len(s):
+                if g.match(s,i,"//"): # Handle a Pascal line comment.
+                    while g.match(s,i,'/'):
+                        i += 1
+                    j = i ; i = g.skip_line(s,i)
+                    comment = comment + self.massageComment(s[j:i]) + "\n"
+                    # 8/2/02: Preserve leading whitespace for undentBody
+                    i = g.skip_ws(s,i)
+                    i = g.skip_blank_lines(s,i)
+                elif g.match(s,i,'(*'):
+                    j = i + 1 ; i = g.skip_pascal_block_comment(s,i)
+                    comment = comment + self.massageComment(s[j:i]) + "\n"
+                    # 8/2/02: Preserve leading whitespace for undentBody
+                    i = g.skip_ws(s,i)
+                    i = g.skip_blank_lines(s,i)
+                else: break
+        elif self.fileType == ".py":
+            while i &lt; len(s) and g.match(s,i,'#'):
+                j = i + 1 ; i = g.skip_line(s,i)
+                comment = self.undentBody(comment)
+                comment = comment + self.massageComment(s[j:i]) + "\n"
+                # 8/2/02: Preserve leading whitespace for undentBody
+                i = g.skip_ws(s,i)
+                i = g.skip_blank_lines(s,i)
+        comment = string.strip(comment)
+        if len(comment) == 0:
+            return s_original, "" # Bug fix: 11/2/02: don't skip leading whitespace!
+        elif self.treeType == "@file":
+            return s[i:], "@ " + comment
+        else:
+            return s[i:], "@ " + comment + "\n"
+    def massageComment (self,s):
+
+        """Returns s with all runs of whitespace and newlines converted to a single blank.
+
+        Also removes leading and trailing whitespace."""
+
+        # g.trace(g.get_line(s,0))
+        s = string.strip(s)
+        s = string.replace(s,"\n"," ")
+        s = string.replace(s,"\r"," ")
+        s = string.replace(s,"\t"," ")
+        s = string.replace(s,"  "," ")
+        s = string.strip(s)
+        return s
+    def massageWebBody (self,s):
+
+        theType = self.webType
+        lb = g.choose(theType=="cweb","@&lt;","&lt;&lt;")
+        rb = g.choose(theType=="cweb","@&gt;","&gt;&gt;")
+        i = 0
+        while i &lt; len(s):
+            progress = i
+            i = g.skip_ws_and_nl(s,i)
+            if self.isDocStart(s,i):
+                # Scan to end of the doc part.
+                if g.match(s,i,"@ %def"):
+                    # Don't remove the newline following %def
+                    i = g.skip_line(s,i) ; start = end = i
+                else:
+                    start = end = i ; i += 2
+                while i &lt; len(s):
+                    progress2 = i
+                    i = g.skip_ws_and_nl(s,i)
+                    if self.isModuleStart(s,i) or g.match(s,i,lb):
+                        end = i ; break
+                    elif theType == "cweb": i += 1
+                    else: i = g.skip_to_end_of_line(s,i)
+                    assert (i &gt; progress2)
+                # Remove newlines from start to end.
+                doc = s[start:end]
+                doc = string.replace(doc,"\n"," ")
+                doc = string.replace(doc,"\r","")
+                doc = string.strip(doc)
+                if doc and len(doc) &gt; 0:
+                    if doc == "@":
+                        doc = g.choose(self.webType=="cweb", "@ ","@\n")
+                    else:
+                        doc += "\n\n"
+                    # g.trace("new doc:",doc)
+                    s = s[:start] + doc + s[end:]
+                    i = start + len(doc)
+            else: i = g.skip_line(s,i)
+            assert (i &gt; progress)
+        i = 0
+        while i &lt; len(s):
+            progress = i
+            # g.trace(g.get_line(s,i))
+            if g.match(s,i,lb):
+                i += 2 ; j = i ; k = g.find_on_line(s,j,rb)
+                if k &gt; -1:
+                    name = s[j:k]
+                    name2 = self.cstLookup(name)
+                    if name != name2:
+                        # Replace name by name2 in s.
+                        # g.trace("replacing %s by %s" % (name,name2))
+                        s = s[:j] + name2 + s[k:]
+                        i = j + len(name2)
+            i = g.skip_line(s,i)
+            assert (i &gt; progress)
+        s = string.rstrip(s)
+        return s
+    def setEncoding (self):
+
+        # scanDirectives checks the encoding: may return None.
+        theDict = g.scanDirectives(self.c)
+        encoding = theDict.get("encoding")
+        if encoding and g.isValidEncoding(encoding):
+            self.encoding = encoding
+        else:
+            self.encoding = g.app.tkEncoding # 2/25/03
+
+        # print self.encoding
+    # We look at the first line to determine how much leading whitespace to delete.
+
+    def undentBody (self,s):
+
+        """Removes extra leading indentation from all lines."""
+
+        # g.trace(s)
+        i = 0 ; result = ""
+        # Copy an @code line as is.
+        if g.match(s,i,"@code"):
+            j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
+            result += s[j:i]
+        # Calculate the amount to be removed from each line.
+        undent = self.getLeadingIndent(s,i)
+        if undent == 0: return s
+        while i &lt; len(s):
+            j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
+            line = s[j:i]
+            # g.trace(line)
+            line = g.removeLeadingWhitespace(line,undent,self.tab_width)
+            result += line
+        return result
+
+class leoImportCommands (baseLeoImportCommands):
+    """A class that implements Leo's import commands."""
+    pass  # This is a test.
+</t>
+<t tx="ekr.20071105090148.115">def callers (n=8,excludeCaller=True,files=False):
+
+    '''Return a list containing the callers of the function that called g.callers.
+
+    If the files keyword argument is True, filenames are included in the list.
+    '''
+
+    # sys._getframe throws ValueError in both cpython and jython if there are less than i entries.
+    # The jython stack often has less than 8 entries,
+    # so we must be careful to call g._callerName with smaller values of i first.
+    result = []
+    i = g.choose(excludeCaller,3,2)
+    while 1:
+        s = g._callerName(i,files=files)
+        if s:
+            result.append(s)
+        if not s or len(result) &gt;= n: break
+        i += 1
+
+    result.reverse()
+    sep = g.choose(files,'\n',',')
+    return sep.join(result)
+    
+</t>
+<t tx="ekr.20071105090148.116">@language python
+
+# comment
+'string''abdd'
+    
+if a == b:
+    pass
+    
+a = []
+
+# </t>
+<t tx="ekr.20071105090148.117">@language csharp
+
+// csharpfriends.com c# community.
+
+// CLASS1.CS -- Syntax-at-a-Glance for the C# programming language.
+// A quick code reference for programmers who work in many languages.
+// Executable code, minimal comments document the essence of the language.
+// Copyright (C) 2001 StructureByDesign.  All Rights Reserved.
+
+using System;
+using System.Collections;
+using System.IO;
+
+namespace StructureByDesign.Syntax
+{
+/********************************************************************/
+public class Class1: Object
+{
+    public static int Main(string[] args)       // Entry point.
+    {
+        System.Console.WriteLine("Hello");
+        Class2 aclass2 = new Class2();
+        aclass2.run();
+        return 0;
+    }
+}
+
+/********************************************************************/
+interface Interface1
+{
+    void run();
+}
+
+/********************************************************************/
+class Class2: Class1, Interface1
+{
+    public const int CONSTANT = 1;          // Access not restricted, implicitly static.
+    private int m_intPrivateField;          // Access limited to containing type.
+    //////////////////////////////////////////////////////////////
+    public Class2() : base()                // Constructor.
+    {
+        initialize();
+    }
+    //////////////////////////////////////////////////////////////
+    protected void initialize()             // Object initialization.
+    {                                       // Access limited to containing class or types derived.
+        Number = 1;
+    }
+    //////////////////////////////////////////////////////////////
+    protected int Number                    // Language property feature.
+    {
+        get
+        {
+            return m_intPrivateField;
+        }
+        set
+        {
+            m_intPrivateField = value;      // Implicit parameter.
+        }
+    }
+    //////////////////////////////////////////////////////////////
+    public void run()
+    {
+        anonymousCode();
+        arrays();
+        collections();
+        comparison();
+        control();
+        filesStreamsAndExceptions();
+        numbersAndMath();
+        primitivesAndConstants();
+        runtimeTyping();
+        strings();
+    }
+    //////////////////////////////////////////////////////////////
+    void anonymousCode()
+    {
+        Delegate adelegate = new Delegate(Run);
+        adelegate();
+    }
+    delegate void Delegate();
+    void Run()
+    {
+        Console.WriteLine("Run");
+    }
+    //////////////////////////////////////////////////////////////
+    void arrays()
+    {
+        int[] arrayOfInts = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        arrayOfInts[0] = 9;
+        assert(arrayOfInts[0] == arrayOfInts[9]);
+
+        String[] arrayOfStrings = new String[10];
+        assert(arrayOfStrings[0] == null);
+        assert(arrayOfStrings.Length == 10);
+
+        arrayOfStrings = new String[] { "one", "two" };
+
+        byte[,] arrayOfBytes = { {0,0,0},
+                                 {0,1,2},
+                                 {0,2,4}};
+        assert(arrayOfBytes[2,2] == 4);
+    }
+    //////////////////////////////////////////////////////////////
+    void collections()
+    {
+        IList ailist = new ArrayList();
+        ailist.Add("zero"); ailist.Add("one"); ailist.Add("three");
+        ailist[2] = "two";
+        assert(ailist[2].Equals("two"));
+        ailist.Remove("two");
+        ((ArrayList)ailist).Sort();
+        for(IEnumerator aie = ((ArrayList)ailist).GetEnumerator(); aie.MoveNext(); )
+            ;
+        foreach(String astring in ailist)
+            ;
+
+        IDictionary aidictionary = new Hashtable();
+        aidictionary.Add("key", "value");
+        assert(aidictionary["key"].Equals("value"));
+
+        // Set not available.
+    }
+    //////////////////////////////////////////////////////////////
+    void comparison()
+    {
+        int aint1 = 1;
+        int aint2 = 2;
+        int aint = 1;
+        String astring1 = "one";
+        String astring2 = "two";
+        String astring = astring1;
+
+        assert(aint == aint1);
+        assert(aint1 != aint2);
+        assert(astring == astring1);
+        assert(astring1 == String.Copy("one"));         // For strings == is overloaded to compare values.
+        assert(!astring1.Equals(astring2));
+        assert(astring1.Equals(String.Copy("one")));
+
+        astring = null;
+        if (astring != null &amp;&amp; astring.Length &gt; 0)      // Conditional evaluation.
+            assert(false);
+
+        if (aint2 &lt; 0 || 1 &lt; aint2)
+            assert(true);
+    }
+    //////////////////////////////////////////////////////////////
+    void control()
+    {
+        if (true)
+            assert(true);
+        else
+            assert(false);
+        /////
+        switch ('b') {
+            case 'a':
+                assert(false);
+                break;
+            case 'b':
+                assert(true);
+                break;
+            default:
+                assert(false);
+                break;
+        }
+        /////
+        for (int ai1 = 0; ai1 &lt; 10; ai1++)
+            assert(true);
+        /////
+        int ai = 0;
+        while (ai &lt; 10) {
+            assert(true);
+            ai++;
+        }
+        /////
+        do
+            ai--;
+        while (ai &gt; 0);
+        /////
+        for (int x = 0; x &lt; 10; x++)        // Labeled break/continue not available.
+            for (int y = 0; y &lt; 10; y++)
+                if (x == 9)
+                    break;
+                else
+                    continue;
+    }
+    //////////////////////////////////////////////////////////////
+    void filesStreamsAndExceptions()
+    {
+        FileInfo afileinfo = new FileInfo("list.txt");
+        try {
+            StreamWriter asw = new StreamWriter("list.txt");
+            asw.WriteLine("line");
+            asw.WriteLine("line");
+            asw.Close();
+
+            assert(afileinfo.Exists);
+
+            StreamReader asr = new StreamReader("list.txt");
+            String astringLine;
+            while ((astringLine = asr.ReadLine()) != null)
+                assert(astringLine.Equals("line"));
+            asr.Close();
+        } catch (IOException aexception) {
+            System.Console.WriteLine(aexception.Message);
+            throw new NotSupportedException();
+        }
+        finally {
+            afileinfo.Delete();
+        }
+    }
+    //////////////////////////////////////////////////////////////
+    void numbersAndMath()
+    {
+        assert(Int32.Parse("123") == 123);
+        assert(123.ToString().Equals("123"));
+
+        assert(Math.PI.ToString("n3").Equals("3.142"));
+
+        assert(Int32.MaxValue &lt; Int64.MaxValue);
+
+        assert(Math.Abs(Math.Sin(0) - 0) &lt;= Double.Epsilon);
+        assert(Math.Abs(Math.Cos(0) - 1) &lt;= Double.Epsilon);
+        assert(Math.Abs(Math.Tan(0) - 0) &lt;= Double.Epsilon);
+
+        assert(Math.Abs(Math.Sqrt(4) - 2) &lt;= Double.Epsilon);
+        assert(Math.Abs(Math.Pow(3,3) - 27) &lt;= Double.Epsilon);
+
+        assert(Math.Max(0,1) == 1);
+        assert(Math.Min(0,1) == 0);
+
+        assert(Math.Abs(Math.Ceiling(9.87) - 10.0) &lt;= Double.Epsilon);
+        assert(Math.Abs(Math.Floor(9.87) - 9.0) &lt;= Double.Epsilon);
+        assert(Math.Round(9.87) == 10);
+
+        Random arandom = new Random();
+        double adouble = arandom.NextDouble();
+        assert(0.0 &lt;= adouble &amp;&amp; adouble &lt; 1.0);
+        int aint = arandom.Next(10);
+        assert(0 &lt;= aint &amp;&amp; aint &lt; 10);
+    }
+    //////////////////////////////////////////////////////////////
+    enum Season: byte { Spring=0, Summer, Fall, Winter };
+
+    void primitivesAndConstants()
+    {
+        bool abool = false;
+        char achar = 'A';           // 16 bits, Unicode
+
+        byte abyte = 0x0;           // 8 bits, unsigned, hex constant
+        sbyte asbyte = 0;           // 8 bits, signed
+
+        short ashort = 0;           // 16 bits, signed
+        ushort aushort = 0;         // 16 bits, unsigned
+
+        int aint = 0;               // 32 bits, signed
+        uint aunit = 0;             // 32 bits, unsigned
+
+        long along = 0L;            // 64 bits, signed
+        ulong aulong = 0;           // 64 bits, unsigned
+
+        float afloat = 0.0F;        // 32 bits
+        double adouble = 0.0;       // 64 bits
+
+        decimal adecimal = 0;       // 128 bits, financial calculations
+
+        Season aseason = Season.Fall;
+        assert((byte)aseason == 2);
+    }
+    //////////////////////////////////////////////////////////////
+    void runtimeTyping()
+    {
+        assert(new int[] { 1 } is int[]);
+        assert(new ArrayList() is ArrayList);
+
+        assert((new ArrayList()).GetType() == typeof(ArrayList));
+        assert(typeof(Int32) is Type);      // Type of primitive type.
+
+        assert(Type.GetType("System.Collections.ArrayList") == typeof(ArrayList));
+    }
+    //////////////////////////////////////////////////////////////
+    void strings()
+    {
+        String astring1 = "one";
+        String astring2 = "TWO";
+
+        assert((astring1 + "/" + astring2).Equals("one/TWO"));
+        assert(astring2.ToLower().Equals("two"));   // Equals ignoring case not available.
+        assert(astring1.Length == 3);
+        assert(astring1.Substring(0,2).Equals("on"));
+        assert(astring1[2] == 'e');
+        assert(astring1.ToUpper().Equals("ONE"));
+        assert(astring2.ToLower().Equals("two"));
+        assert(astring1.CompareTo("p") &lt; 0);
+        assert(astring1.IndexOf('e') == 2);
+        assert(astring1.IndexOf("ne") == 1);
+        assert(astring1.Trim().Length == astring1.Length);
+
+        assert(Char.IsDigit('1'));
+        assert(Char.IsLetter('a'));
+        assert(Char.IsWhiteSpace('\t'));
+        assert(Char.ToLower('A') == 'a');
+        assert(Char.ToUpper('a') == 'A');
+    }
+    //////////////////////////////////////////////////////////////
+    private void assert(bool abool)
+    {
+        if (!abool)
+            throw new Exception("assert failed");
+    }
+}
+// end of namespace.
+}
+
+// test</t>
+<t tx="ekr.20071105090148.118">print g.app.gui.runAskYesNoCancelDialog(c,'Crash and Burn?','Crash and burn for positive identification?')
+
+</t>
+<t tx="ekr.20071105090148.119">@nocolor
+
+A cool feature: In code mode, rST markup in ordinary doc parts will be rendered properly when the show_doc_parts_as_paragraphs option is in effect. Important: Regardless of the show_doc_parts_as_paragraphs option, doc parts have no special significance in rst mode. That is, the entire doc part from the opening '@' to the closing '@c and everything in between are treated normal rST markup.
+
+@color</t>
+<t tx="ekr.20071105090148.120">@language c
+
+@others</t>
+<t tx="ekr.20071105090148.121"></t>
+<t tx="ekr.20071105090148.122">@ @rst-markup
+
+This is my rst comment::
+
+    Literal line 1
+    Literal line 2
+
+This should be **bold** and *italic*.
+And this line should be part of the same paragraph,
+properly filled.
+@c
+
+import  sys
+</t>
+<t tx="ekr.20071105090148.123">@ @rst-options
+code_mode=False
+generate_rst=True
+http_server_support = False
+show_organizer_nodes=True
+show_headlines=True
+show_leo_directives=False
+strip_at_file_prefixes=True
+stylesheet_path=..\doc
+write_intermediate_file = False
+verbose=True
+show_doc_parts_as_paragraphs = True
+@c
+
+test</t>
+<t tx="ekr.20071105090148.124"></t>
+<t tx="ekr.20071105090148.125"># This is nosent_file_test.py</t>
+<t tx="ekr.20071105090148.126">@ @rst-options
+code_mode=True
+doc_only_mode=False
+default_path =
+generate_rst=True
+http_server_support = False
+show_organizer_nodes=True
+show_headlines=True
+show_leo_directives=False
+..stylesheet_path=./
+write_intermediate_file = True
+verbose=True
+show_doc_parts_as_paragraphs=True
+show_markup_doc_parts=True
+underline_characters = #=+*^~"'`-:&gt;&lt;_
+@c
+
+.. code-block::
+    
+    def spam():
+        pass</t>
+<t tx="ekr.20071105090148.127">@language c
+
+.. code-block::
+    
+    int foo ():
+        ;
+    
+    long bar ():
+        ;</t>
+<t tx="ekr.20071105090148.128">@markup wiki
+
+@
+__bold__
+
+~~#80ff00:~~~~#80ff80:this is a test~~
+
+The wiki text must be in the range of an @markup wiki directive **and** in a Leo
+doc part (starting with '@') **or** a Python triple-quoted string.
+
+Important: this plugin does not work with the threading colorizer (at present).</t>
+<t tx="ekr.20071105090148.129">This is a code block.
+
+.. code-block:: Python
+  
+  def hello( name ):
+    print "Hello,",name
+</t>
+<t tx="ekr.20071105090148.130"></t>
+<t tx="ekr.20071105090148.131">@language python
+@tabwidth -4
+@others
+#changed 2
+</t>
+<t tx="ekr.20071105090148.132">
+import leoGlobals as g
+import leoTest # Support for unit tests.
+
+import parser
+import re
+import string
+import tabnanny
+import tokenize
+
+</t>
+<t tx="ekr.20071105090148.133">class baseLeoImportCommands:
+    """The base class for Leo's import commands."""
+    @others
+</t>
+<t tx="ekr.20071105090148.134">def __init__ (self,c):
+
+    self.c = c
+    self._forcedGnxPositionList = []
+    self.encoding = g.app.tkEncoding # 2/25/03: was "utf-8"
+    self.fileName = None # The original file name, say x.cpp
+    self.fileType = None # ".py", ".c", etc.
+    self.methodName = None # x, as in &lt; &lt; x methods &gt; &gt; =
+    self.output_newline = g.getOutputNewline(c=c) # Value of @bool output_newline
+    self.rootLine = "" # Empty or @root + self.fileName
+    self.tabwidth = c.tab_width # The tab width in effect in the c.currentPosition.
+    self.trace = c.config.getBool('trace_import')
+    self.treeType = "@file" # "@root" or "@file"
+    self.webType = "@noweb" # "cweb" or "noweb"
+    self.web_st = [] # noweb symbol table.
+</t>
+<t tx="ekr.20071105090148.135"># Headlines not containing a section reference are ignored in noweb and generate index index in cweb.
+
+def convertCodePartToWeb (self,s,i,v,result):
+
+    # g.trace(g.get_line(s,i))
+    c = self.c ; nl = self.output_newline
+    lb = g.choose(self.webType=="cweb","@&lt;","&lt;&lt;")
+    rb = g.choose(self.webType=="cweb","@&gt;","&gt;&gt;")
+    h = string.strip(v.headString())
+    # We look for either noweb or cweb brackets. head_ref does not include 
+    # these brackets.
+
+    head_ref = None
+    j = 0
+    if g.match(h,j,"&lt;&lt;"):
+        k = string.find(h,"&gt;&gt;",j)
+    elif g.match(h,j,"&lt;@"):
+        k = string.find(h,"@&gt;",j)
+    else:
+        k = -1
+
+    if k &gt; -1:
+        head_ref = string.strip(h[j+2:k])
+        if len(head_ref) == 0:
+            head_ref = None
+    if g.match(h,0,"@file") or g.match(h,0,"@root"):
+        line = h[5:]
+        line = string.strip(line)
+        # set j &amp; k so line[j:k] is the file name.
+        # g.trace(line)
+
+        if g.match(line,0,"&lt;"):
+            j = 1 ; k = string.find(line,"&gt;",1)
+        elif g.match(line,0,'"'):
+            j = 1 ; k = string.find(line,'"',1)
+        else:
+            j = 0 ; k = string.find(line," ",0)
+        if k == -1:
+            k = len(line)
+
+        file_name = string.strip(line[j:k])
+        if file_name and len(file_name) == 0:
+            file_name = None
+    else:
+        file_name = line = None
+    if g.match_word(s,i,"@root"):
+        i = g.skip_line(s,i)
+        if self.webType == "cweb":
+            if not file_name:
+                result += "@&lt;root@&gt;=" + nl
+            else:
+                result += "@(" + file_name + "@&gt;" + nl # @(...@&gt; denotes a file.
+        else:
+            if not file_name:
+                file_name = "*"
+            result += lb + file_name + rb + "=" + nl
+    elif g.match_word(s,i,"@c") or g.match_word(s,i,"@code"):
+        i = g.skip_line(s,i)
+        if self.webType == "cweb":
+            if not head_ref:
+                result += "@^" + h + "@&gt;" + nl # Convert the headline to an index entry.
+                result += "@c" + nl # @c denotes a new section.
+            else: 
+                escaped_head_ref = string.replace(head_ref,"@","@@")
+                result += "@&lt;" + escaped_head_ref + "@&gt;=" + nl
+        else:
+            if not head_ref:
+                if v == c.currentVnode():
+                    head_ref = g.choose(file_name,file_name,"*")
+                else:
+                    head_ref = "@others"
+
+            result += lb + head_ref + rb + "=" + nl
+    elif g.match_word(h,0,"@file"):
+        # Only do this if nothing else matches.
+        if self.webType == "cweb":
+            if not file_name:
+                result += "@&lt;root@&gt;=" + nl
+            else:
+                result += "@(" + file_name + "@&gt;" + nl # @(...@&gt; denotes a file.
+        else:
+            if not file_name:
+                file_name = "*"
+            result += lb + file_name + rb + "=" + nl
+        i = g.skip_line(s,i) # 4/28/02
+    else:
+        if self.webType == "cweb":
+            if not head_ref:
+                result += "@^" + h + "@&gt;" + nl # Convert the headline to an index entry.
+                result += "@c" + nl # @c denotes a new section.
+            else: 
+                escaped_head_ref = string.replace(head_ref,"@","@@")
+                result += "@&lt;" + escaped_head_ref + "@&gt;=" + nl
+        else:
+            if not head_ref:
+                if v == c.currentVnode():
+                    head_ref = g.choose(file_name,file_name,"*")
+                else:
+                    head_ref = "@others"
+
+            result += lb + head_ref + rb + "=" + nl
+    i,result = self.copyPart(s,i,result)
+    return i, string.strip(result) + nl
+
+</t>
+<t tx="ekr.20071105090148.136"># %defs a b c
+def convertDocPartToWeb (self,s,i,result):
+
+    nl = self.output_newline
+
+    # g.trace(g.get_line(s,i))
+    if g.match_word(s,i,"@doc"):
+        i = g.skip_line(s,i)
+    elif g.match(s,i,"@ ") or g.match(s,i,"@\t") or g.match(s,i,"@*"):
+        i += 2
+    elif g.match(s,i,"@\n"):
+        i += 1
+    i = g.skip_ws_and_nl(s,i)
+    i, result2 = self.copyPart(s,i,"")
+    if len(result2) &gt; 0:
+        # Break lines after periods.
+        result2 = string.replace(result2,".  ","." + nl)
+        result2 = string.replace(result2,". ","." + nl)
+        result += nl+"@"+nl+string.strip(result2)+nl+nl
+    else:
+        # All nodes should start with '@', even if the doc part is empty.
+        result += g.choose(self.webType=="cweb",nl+"@ ",nl+"@"+nl)
+    return i, result
+</t>
+<t tx="ekr.20071105090148.137"># This code converts a vnode to noweb text as follows:
+# 
+# Convert @doc to @
+# Convert @root or @code to &lt; &lt; name &gt; &gt;=, assuming the headline contains 
+# &lt; &lt; name &gt; &gt;
+# Ignore other directives
+# Format doc parts so they fit in pagewidth columns.
+# Output code parts as is.
+
+def convertVnodeToWeb (self,v):
+
+    c = self.c
+    if not v or not c: return ""
+    startInCode = not c.config.at_root_bodies_start_in_doc_mode
+    nl = self.output_newline
+    s = v.bodyString()
+    lb = g.choose(self.webType=="cweb","@&lt;","&lt;&lt;")
+    i = 0 ; result = "" ; docSeen = False
+    while i &lt; len(s):
+        progress = i
+        # g.trace(g.get_line(s,i))
+        i = g.skip_ws_and_nl(s,i)
+        if self.isDocStart(s,i) or g.match_word(s,i,"@doc"):
+            i,result = self.convertDocPartToWeb(s,i,result)
+            docSeen = True
+        elif (g.match_word(s,i,"@code") or g.match_word(s,i,"@root") or
+            g.match_word(s,i,"@c") or g.match(s,i,lb)):
+            if not docSeen:
+                docSeen = True
+                result += g.choose(self.webType=="cweb",nl+"@ ",nl+"@"+nl)
+            i,result = self.convertCodePartToWeb(s,i,v,result)
+        elif self.treeType == "@file" or startInCode:
+            if not docSeen:
+                docSeen = True
+                result += g.choose(self.webType=="cweb",nl+"@ ",nl+"@"+nl)
+            i,result = self.convertCodePartToWeb(s,i,v,result)
+        else:
+            i,result = self.convertDocPartToWeb(s,i,result)
+            docSeen = True
+        assert(progress &lt; i)
+    result = string.strip(result)
+    if len(result) &gt; 0:
+        result += nl
+    return result
+</t>
+<t tx="ekr.20071105090148.138"># Copies characters to result until the end of the present section is seen.
+
+def copyPart (self,s,i,result):
+
+    # g.trace(g.get_line(s,i))
+    lb = g.choose(self.webType=="cweb","@&lt;","&lt;&lt;")
+    rb = g.choose(self.webType=="cweb","@&gt;","&gt;&gt;")
+    theType = self.webType
+    while i &lt; len(s):
+        progress = j = i # We should be at the start of a line here.
+        i = g.skip_nl(s,i) ; i = g.skip_ws(s,i)
+        if self.isDocStart(s,i):
+            return i, result
+        if (g.match_word(s,i,"@doc") or
+            g.match_word(s,i,"@c") or
+            g.match_word(s,i,"@root") or
+            g.match_word(s,i,"@code")): # 2/25/03
+            return i, result
+        elif (g.match(s,i,"&lt;&lt;") and # must be on separate lines.
+            g.find_on_line(s,i,"&gt;&gt;=") &gt; -1):
+            return i, result
+        else:
+            # Copy the entire line, escaping '@' and
+            # Converting @others to &lt; &lt; @ others &gt; &gt;
+            i = g.skip_line(s,j) ; line = s[j:i]
+            if theType == "cweb":
+                line = string.replace(line,"@","@@")
+            else:
+                j = g.skip_ws(line,0)
+                if g.match(line,j,"@others"):
+                    line = string.replace(line,"@others",lb + "@others" + rb)
+                elif g.match(line,0,"@"):
+                    # Special case: do not escape @ %defs.
+                    k = g.skip_ws(line,1)
+                    if not g.match(line,k,"%defs"):
+                        line = "@" + line
+            result += line
+        assert(progress &lt; i)
+    return i, string.rstrip(result)
+</t>
+<t tx="ekr.20071105090148.139">def exportHeadlines (self,fileName):
+
+    c = self.c ; nl = self.output_newline
+    p = c.currentPosition()
+    if not p: return
+    self.setEncoding()
+    firstLevel = p.level()
+    mode = c.config.output_newline
+    mode = g.choose(mode=="platform",'w','wb')
+    try:
+        theFile = open(fileName,mode)
+    except IOError:
+        g.es("Can not open " + fileName,color="blue")
+        leoTest.fail()
+        return
+    for p in p.self_and_subtree_iter():
+        head = p.moreHead(firstLevel,useVerticalBar=True)
+        head = g.toEncodedString(head,self.encoding,reportErrors=True)
+        theFile.write(head + nl)
+    theFile.close()
+</t>
+<t tx="ekr.20071105090148.140">def flattenOutline (self,fileName):
+
+    c = self.c ; nl = self.output_newline
+    p = c.currentVnode()
+    if not p: return
+    self.setEncoding()
+    firstLevel = p.level()
+
+    # 10/14/02: support for output_newline setting.
+    mode = c.config.output_newline
+    mode = g.choose(mode=="platform",'w','wb')
+    try:
+        theFile = open(fileName,mode)
+    except IOError:
+        g.es("Can not open " + fileName,color="blue")
+        leoTest.fail()
+        return
+
+    for p in p.self_and_subtree_iter():
+        head = p.moreHead(firstLevel)
+        head = g.toEncodedString(head,self.encoding,reportErrors=True)
+        theFile.write(head + nl)
+        body = p.moreBody() # Inserts escapes.
+        if len(body) &gt; 0:
+            body = g.toEncodedString(body,self.encoding,reportErrors=True)
+            theFile.write(body + nl)
+    theFile.close()
+</t>
+<t tx="ekr.20071105090148.141">def outlineToWeb (self,fileName,webType):
+
+    c = self.c ; nl = self.output_newline
+    current = c.currentPosition()
+    if not current: return
+    self.setEncoding()
+    self.webType = webType
+    # 10/14/02: support for output_newline setting.
+    mode = c.config.output_newline
+    mode = g.choose(mode=="platform",'w','wb')
+    try:
+        theFile = open(fileName,mode)
+    except IOError:
+        g.es("Can not open " + fileName,color="blue")
+        leoTest.fail()
+        return
+
+    self.treeType = "@file"
+    # Set self.treeType to @root if p or an ancestor is an @root node.
+    for p in current.parents_iter():
+        flag,junk = g.is_special(p.bodyString(),0,"@root")
+        if flag:
+            self.treeType = "@root"
+            break
+    for p in current.self_and_subtree_iter():
+        s = self.convertVnodeToWeb(p)
+        if len(s) &gt; 0:
+            s = g.toEncodedString(s,self.encoding,reportErrors=True)
+            theFile.write(s)
+            if s[-1] != '\n': theFile.write(nl)
+    theFile.close()
+</t>
+<t tx="ekr.20071105090148.142">def removeSentinelsCommand (self,paths,toString=False):
+
+    c = self.c
+
+    self.setEncoding()
+
+    for fileName in paths:
+        g.setGlobalOpenDir(fileName)
+        path, self.fileName = g.os_path_split(fileName)
+        try:
+            theFile = open(fileName)
+            s = theFile.read()
+            s = g.toUnicode(s,self.encoding)
+            theFile.close()
+        except IOError:
+            g.es("can not open " + fileName, color="blue")
+            leoTest.fail()
+            return
+        # Skip any non @+leo lines.
+        i = 0
+        while i &lt; len(s) and not g.find_on_line(s,i,"@+leo"):
+            i = g.skip_line(s,i)
+
+        # Get the comment delims from the @+leo sentinel line.
+        at = self.c.atFileCommands
+        j = g.skip_line(s,i) ; line = s[i:j]
+
+        valid,new_df,start_delim,end_delim,derivedFileIsThin = at.parseLeoSentinel(line)
+        if not valid:
+            g.es("invalid @+leo sentinel in " + fileName)
+            return
+
+        if end_delim:
+            line_delim = None
+        else:
+            line_delim,start_delim = start_delim,None
+        # g.trace("line: '%s', start: '%s', end: '%s'" % (line_delim,start_delim,end_delim))
+        s = self.removeSentinelLines(s,line_delim,start_delim,end_delim)
+        ext = c.config.remove_sentinels_extension
+        if not ext:
+            ext = ".txt"
+        if ext[0] == '.':
+            newFileName = g.os_path_join(path,fileName+ext)
+        else:
+            head,ext2 = g.os_path_splitext(fileName) 
+            newFileName = g.os_path_join(path,head+ext+ext2)
+        if toString:
+            return s
+        else:
+            try:
+                mode = c.config.output_newline
+                mode = g.choose(mode=="platform",'w','wb')
+                theFile = open(newFileName,mode)
+                s = g.toEncodedString(s,self.encoding,reportErrors=True)
+                theFile.write(s)
+                theFile.close()
+                if not g.unitTesting:
+                    g.es("created: " + newFileName)
+            except:
+                g.es("exception creating: " + newFileName)
+                g.es_exception()
+            return None
+</t>
+<t tx="ekr.20071105090148.143"># This does not handle @nonl properly, but that's a nit...
+
+def removeSentinelLines(self,s,line_delim,start_delim,end_delim):
+
+    '''Properly remove all sentinle lines in s.'''
+
+    __pychecker__ = '--no-argsused' # end_delim.
+
+    delim = (line_delim or start_delim or '') + '@'
+    verbatim = delim + 'verbatim' ; verbatimFlag = False
+    result = [] ; lines = g.splitLines(s)
+    for line in lines:
+        i = g.skip_ws(line,0)
+        if not verbatimFlag and g.match(line,i,delim):
+            if g.match(line,i,verbatim):
+                verbatimFlag = True # Force the next line to be in the result.
+            # g.trace(repr(line))
+        else:
+            result.append(line)
+            verbatimFlag = False
+    result = ''.join(result)
+    return result
+</t>
+<t tx="ekr.20071105090148.144">def weave (self,filename):
+
+    c = self.c ; nl = self.output_newline
+    p = c.currentPosition()
+    if not p: return
+    self.setEncoding()
+    try:
+        # 10/14/02: support for output_newline setting.
+        mode = c.config.output_newline
+        mode = g.choose(mode=="platform",'w','wb')
+        f = open(filename,mode)
+        if not f: return
+    except:
+        g.es("exception opening:" + filename)
+        g.es_exception()
+        return
+    for p in p.self_and_subtree_iter():
+        s = p.bodyString()
+        s2 = string.strip(s)
+        if s2 and len(s2) &gt; 0:
+            f.write("-" * 60) ; f.write(nl)
+            # write the headlines of p, p's parent and p's grandparent.
+            context = [] ; p2 = p.copy() ; i = 0
+            while i &lt; 3:
+                i += 1
+                if not p2: break
+                context.append(p2.headString())
+                p2.moveToParent()
+
+            context.reverse()
+            indent = ""
+            for line in context:
+                f.write(indent)
+                indent += '\t'
+                line = g.toEncodedString(line,self.encoding,reportErrors=True)
+                f.write(line)
+                f.write(nl)
+            f.write("-" * 60) ; f.write(nl)
+            s = g.toEncodedString(s,self.encoding,reportErrors=True)
+            f.write(string.rstrip(s) + nl)
+    f.flush()
+    f.close()
+</t>
+<t tx="ekr.20071105090148.145">def createHeadline (self,parent,body,headline):
+
+    # g.trace("parent,headline:",parent,headline)
+    # Create the vnode.
+    v = parent.insertAsLastChild()
+    v.initHeadString(headline,self.encoding)
+    # Set the body.
+    if len(body) &gt; 0:
+        self.c.setBodyString(v,body,self.encoding)
+    return v
+</t>
+<t tx="ekr.20071105090148.146">def error (self,s): g.es(s)
+</t>
+<t tx="ekr.20071105090148.147">def getTabWidth (self):
+
+    d = g.scanDirectives(self.c)
+    w = d.get("tabwidth")
+    if w not in (0,None):
+        return w
+    else:
+        return self.c.tab_width
+</t>
+<t tx="ekr.20071105090148.148"># The start of a document part or module in a noweb or cweb file.
+# Exporters may have to test for @doc as well.
+
+def isDocStart (self,s,i):
+
+    if not g.match(s,i,"@"):
+        return False
+
+    j = g.skip_ws(s,i+1)
+    if g.match(s,j,"%defs"):
+        return False
+    elif self.webType == "cweb" and g.match(s,i,"@*"):
+        return True
+    else:
+        return g.match(s,i,"@ ") or g.match(s,i,"@\t") or g.match(s,i,"@\n")
+
+</t>
+<t tx="ekr.20071105090148.149">def isModuleStart (self,s,i):
+
+    if self.isDocStart(s,i):
+        return True
+    else:
+        return self.webType == "cweb" and (
+            g.match(s,i,"@c") or g.match(s,i,"@p") or
+            g.match(s,i,"@d") or g.match(s,i,"@f"))
+</t>
+<t tx="ekr.20071105090148.150">def massageComment (self,s):
+
+    '''Returns s with all runs of whitespace and newlines converted to a single blank.
+
+    Also removes leading and trailing whitespace.'''
+
+    # g.trace(g.get_line(s,0))
+    s = string.strip(s)
+    s = string.replace(s,"\n"," ")
+    s = string.replace(s,"\r"," ")
+    s = string.replace(s,"\t"," ")
+    s = string.replace(s,"  "," ")
+    s = string.strip(s)
+    return s
+</t>
+<t tx="ekr.20071105090148.151">def massageWebBody (self,s):
+
+    theType = self.webType
+    lb = g.choose(theType=="cweb","@&lt;","&lt;&lt;")
+    rb = g.choose(theType=="cweb","@&gt;","&gt;&gt;")
+    i = 0
+    while i &lt; len(s):
+        progress = i
+        i = g.skip_ws_and_nl(s,i)
+        if self.isDocStart(s,i):
+            # Scan to end of the doc part.
+            if g.match(s,i,"@ %def"):
+                # Don't remove the newline following %def
+                i = g.skip_line(s,i) ; start = end = i
+            else:
+                start = end = i ; i += 2
+            while i &lt; len(s):
+                progress2 = i
+                i = g.skip_ws_and_nl(s,i)
+                if self.isModuleStart(s,i) or g.match(s,i,lb):
+                    end = i ; break
+                elif theType == "cweb": i += 1
+                else: i = g.skip_to_end_of_line(s,i)
+                assert (i &gt; progress2)
+            # Remove newlines from start to end.
+            doc = s[start:end]
+            doc = string.replace(doc,"\n"," ")
+            doc = string.replace(doc,"\r","")
+            doc = string.strip(doc)
+            if doc and len(doc) &gt; 0:
+                if doc == "@":
+                    doc = g.choose(self.webType=="cweb", "@ ","@\n")
+                else:
+                    doc += "\n\n"
+                # g.trace("new doc:",doc)
+                s = s[:start] + doc + s[end:]
+                i = start + len(doc)
+        else: i = g.skip_line(s,i)
+        assert (i &gt; progress)
+    i = 0
+    while i &lt; len(s):
+        progress = i
+        # g.trace(g.get_line(s,i))
+        if g.match(s,i,lb):
+            i += 2 ; j = i ; k = g.find_on_line(s,j,rb)
+            if k &gt; -1:
+                name = s[j:k]
+                name2 = self.cstLookup(name)
+                if name != name2:
+                    # Replace name by name2 in s.
+                    # g.trace("replacing %s by %s" % (name,name2))
+                    s = s[:j] + name2 + s[k:]
+                    i = j + len(name2)
+        i = g.skip_line(s,i)
+        assert (i &gt; progress)
+    s = string.rstrip(s)
+    return s
+</t>
+<t tx="ekr.20071105090148.152">def setEncoding (self):
+
+    # scanDirectives checks the encoding: may return None.
+    theDict = g.scanDirectives(self.c)
+    encoding = theDict.get("encoding")
+    if encoding and g.isValidEncoding(encoding):
+        self.encoding = encoding
+    else:
+        self.encoding = g.app.tkEncoding # 2/25/03
+
+    # print self.encoding
+</t>
+<t tx="ekr.20071105090148.153">def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
+
+    c = self.c ; u = c.undoer ; s1 = s
+    junk,self.fileName = g.os_path_split(fileName)
+    self.methodName,self.fileType = g.os_path_splitext(self.fileName)
+    self.setEncoding()
+    # g.trace(self.fileName,self.fileType)
+    # All file types except the following just get copied to the parent node.
+    if not ext: ext = self.fileType
+    ext = ext.lower()
+    if not s:
+        try:
+            theFile = open(fileName)
+            s = theFile.read()
+            s = g.toUnicode(s,self.encoding)
+            theFile.close()
+        except IOError:
+            g.es("can not open " + fileName)
+            leoTest.fail()
+            return None
+
+    # Create the top-level headline.
+    if atAuto:
+        p = parent.copy()
+        c.beginUpdate()
+        p.setTnodeText('')
+        # It is too dangerous not to write @auto trees to the .leo file,
+        # so we must delete all children here.
+        try:
+            while p.hasChildren():
+                # g.trace('deleting',p.headString())
+                p.firstChild().doDelete()
+        finally:
+            c.endUpdate(False)
+    else:
+        undoData = u.beforeInsertNode(parent)
+        p = parent.insertAsLastChild()
+        if self.treeType == "@file" and not s1:
+            p.initHeadString("@file " + fileName)
+        else:
+            p.initHeadString(fileName)
+        u.afterInsertNode(p,'Import',undoData)
+
+    self.rootLine = g.choose(self.treeType=="@file","","@root-code "+self.fileName+'\n')
+
+    if ext in (".c", ".cpp", ".cxx"):
+        self.scanCText(s,p,atAuto=atAuto)
+    elif ext == ".el":
+        self.scanElispText(s,p,atAuto=atAuto)
+    elif ext == ".java":
+        self.scanJavaText(s,p,atAuto=atAuto)
+    elif ext == ".pas":
+        self.scanPascalText(s,p,atAuto=atAuto)
+    elif ext in (".py", ".pyw"):
+        self.scanPythonText(s,p,atAuto=atAuto)
+    elif ext == ".php":
+        self.scanPHPText(s,p,atAuto=atAuto)
+    else:
+        self.scanUnknownFileType(s,p,ext)
+
+    if atAuto: p.contract()
+    return p
+</t>
+<t tx="ekr.20071105090148.154">def importDerivedFiles (self,parent=None,paths=None):
+    # Not a command.  It must *not* have an event arg.
+
+    c = self.c ; u = c.undoer ; command = 'Import'
+    at = c.atFileCommands ; current = c.currentPosition()
+    self.tab_width = self.getTabWidth()
+    if not paths: return
+    c.beginUpdate()
+    try:
+        u.beforeChangeGroup(current,command)
+        for fileName in paths:
+            g.setGlobalOpenDir(fileName)
+            fileName = g.os_path_normpath(fileName)
+
+            try:
+                theFile = open(fileName,'rb')
+                isThin = at.scanHeaderForThin(theFile,fileName)
+                theFile.close()
+            except IOError:
+                isThin = False
+            undoData = u.beforeInsertNode(parent)
+            p = parent.insertAfter()
+            if isThin:
+                at.forceGnxOnPosition(p)
+                p.initHeadString("@thin " + fileName)
+                at.read(p,thinFile=True)
+            else:
+                p.initHeadString("Imported @file " + fileName)
+                at.read(p,importFileName=fileName)
+            p.contract()
+            u.afterInsertNode(p,command,undoData)
+        current.expand()
+        c.selectPosition(current)
+        c.setChanged(True)
+        u.afterChangeGroup(p,command)
+    finally:
+        c.endUpdate()
+</t>
+<t tx="ekr.20071105090148.155">def forceGnxOnPosition (self,p):
+
+    self._forcedGnxPositionList.append(p.v)
+</t>
+<t tx="ekr.20071105090148.156">def importFilesCommand (self,files=None,treeType=None,
+    perfectImport=True,testing=False,verbose=False):
+        # Not a command.  It must *not* have an event arg.
+
+    c = self.c
+    if c == None: return
+    v = current = c.currentVnode()
+    if current == None: return
+    if len(files) &lt; 1: return
+    self.tab_width = self.getTabWidth() # New in 4.3.
+    self.treeType = treeType
+    c.beginUpdate()
+    try: # range of update...
+        if len(files) == 2:
+            # The two filenames have a common prefix everything before the 
+            # last period is the same.  For example, x.h and x.cpp.
+
+            name0 = files[0]
+            name1 = files[1]
+            prefix0, junk = g.os_path_splitext(name0)
+            prefix1, junk = g.os_path_splitext(name1)
+            if len(prefix0) &gt; 0 and prefix0 == prefix1:
+                current = current.insertAsLastChild()
+                junk, nameExt = g.os_path_split(prefix1)
+                name,ext = g.os_path_splitext(prefix1)
+                current.initHeadString(name)
+        for fileName in files:
+            g.setGlobalOpenDir(fileName)
+            v = self.createOutline(fileName,current)
+            if v: # createOutline may fail.
+                perfectImport = False ###
+                testing = True; verbose = True
+                if perfectImport and treeType == "@file": # Can't correct @root trees.
+                    self.perfectImport(fileName,v,testing=testing,verbose=verbose,verify=False)
+                else:
+                    if not g.unitTesting:
+                        g.es("imported " + fileName,color="blue")
+                v.contract()
+                v.setDirty()
+                c.setChanged(True)
+        c.validateOutline()
+        current.expand()
+    finally:
+        c.endUpdate()
+    c.selectVnode(current)
+</t>
+<t tx="ekr.20071105090148.157"># Used by paste logic.
+
+def convertMoreStringToOutlineAfter (self,s,firstVnode):
+    s = string.replace(s,"\r","")
+    strings = string.split(s,"\n")
+    return self.convertMoreStringsToOutlineAfter(strings,firstVnode)
+
+</t>
+<t tx="ekr.20071105090148.158"># Almost all the time spent in this command is spent here.
+
+def convertMoreStringsToOutlineAfter (self,strings,firstVnode):
+
+    __pychecker__ = '--no-objattrs' # suppress bad warnings re lastVnode.
+
+    c = self.c
+    if len(strings) == 0: return None
+    if not self.stringsAreValidMoreFile(strings): return None
+    c.beginUpdate()
+    try: # range of update...
+        firstLevel, junk = self.moreHeadlineLevel(strings[0])
+        lastLevel = -1 ; theRoot = lastVnode = None
+        index = 0
+        while index &lt; len(strings):
+            progress = index
+            s = strings[index]
+            level, newFlag = self.moreHeadlineLevel(s)
+            level -= firstLevel
+            if level &gt;= 0:
+                assert(level &gt;= 0)
+                if lastVnode is None:
+                    # g.trace(firstVnode)
+                    theRoot = v = firstVnode.insertAfter()
+                elif level == lastLevel:
+                    v = lastVnode.insertAfter()
+                elif level == lastLevel + 1:
+                    v = lastVnode.insertAsNthChild(0)
+                else:
+                    assert(level &lt; lastLevel)
+                    while level &lt; lastLevel:
+                        lastLevel -= 1
+                        lastVnode = lastVnode.parent()
+                        assert(lastVnode)
+                        assert(lastLevel &gt;= 0)
+                    v = lastVnode.insertAfter()
+                lastVnode = v
+                lastLevel = level
+                j = 0
+                while g.match(s,j,'\t'):
+                    j += 1
+                if g.match(s,j,"+ ") or g.match(s,j,"- "):
+                    j += 2
+
+                v.initHeadString(s[j:])
+                bodyLines = 0
+                index += 1 # Skip the headline.
+                while index &lt; len(strings):
+                    s = strings[index]
+                    level, junk = self.moreHeadlineLevel(s)
+                    level -= firstLevel
+                    if level &gt;= 0:
+                        break
+                    # Remove first backslash of the body line.
+                    if g.match(s,0,'\\'):
+                        strings[index] = s[1:]
+                    bodyLines += 1
+                    index += 1
+                if bodyLines &gt; 0:
+                    body = ""
+                    n = index - bodyLines
+                    while n &lt; index:
+                        body += strings[n]
+                        if n != index - 1:
+                            body += "\n"
+                        n += 1
+                    v.setTnodeText(body)
+                v.setDirty()
+            else: index += 1
+            assert progress &lt; index
+        if theRoot:
+            theRoot.setDirty()
+            c.setChanged(True)
+    finally:
+        c.endUpdate()
+    return theRoot
+</t>
+<t tx="ekr.20071105090148.159">def importFlattenedOutline (self,files): # Not a command, so no event arg.
+
+    c = self.c ; u = c.undoer ; current = c.currentPosition()
+    if current == None: return
+    if len(files) &lt; 1: return
+
+    self.setEncoding()
+    fileName = files[0] # files contains at most one file.
+    g.setGlobalOpenDir(fileName)
+    try:
+        theFile = open(fileName)
+        s = theFile.read()
+        s = string.replace(s,"\r","")
+        s = g.toUnicode(s,self.encoding)
+        array = string.split(s,"\n")
+        theFile.close()
+    except IOError:
+        g.es("Can not open " + fileName, color="blue")
+        leoTest.fail()
+        return
+
+    # Convert the string to an outline and insert it after the current node.
+    undoData = u.beforeInsertNode(current)
+    p = self.convertMoreStringsToOutlineAfter(array,current)
+    if p:
+        c.endEditing()
+        c.validateOutline()
+        c.editPosition(p)
+        p.setDirty()
+        c.setChanged(True)
+        u.afterInsertNode(p,'Import',undoData)
+    else:
+        g.es(fileName + " is not a valid MORE file.")
+</t>
+<t tx="ekr.20071105090148.160"># return the headline level of s,or -1 if the string is not a MORE headline.
+def moreHeadlineLevel (self,s):
+
+    level = 0 ; i = 0
+    while g.match(s,i,'\t'):
+        level += 1
+        i += 1
+    plusFlag = g.choose(g.match(s,i,"+"),True,False)
+    if g.match(s,i,"+ ") or g.match(s,i,"- "):
+        return level, plusFlag
+    else:
+        return -1, plusFlag
+</t>
+<t tx="ekr.20071105090148.161"># Used by paste logic.
+
+def stringIsValidMoreFile (self,s):
+
+    s = string.replace(s,"\r","")
+    strings = string.split(s,"\n")
+    return self.stringsAreValidMoreFile(strings)
+
+</t>
+<t tx="ekr.20071105090148.162">def stringsAreValidMoreFile (self,strings):
+
+    if len(strings) &lt; 1: return False
+    level1, plusFlag = self.moreHeadlineLevel(strings[0])
+    if level1 == -1: return False
+    # Check the level of all headlines.
+    i = 0 ; lastLevel = level1
+    while i &lt; len(strings):
+        s = strings[i] ; i += 1
+        level, newFlag = self.moreHeadlineLevel(s)
+        if level &gt; 0:
+            if level &lt; level1 or level &gt; lastLevel + 1:
+                return False # improper level.
+            elif level &gt; lastLevel and not plusFlag:
+                return False # parent of this node has no children.
+            elif level == lastLevel and plusFlag:
+                return False # last node has missing child.
+            else:
+                lastLevel = level
+                plusFlag = newFlag
+    return True
+</t>
+<t tx="ekr.20071105090148.163">def createOutlineFromWeb (self,path,parent):
+
+    c = self.c ; u = c.undoer
+    junk,fileName = g.os_path_split(path)
+
+    undoData = u.beforeInsertNode(parent)
+
+    # Create the top-level headline.
+    p = parent.insertAsLastChild()
+    p.initHeadString(fileName)
+    if self.webType=="cweb":
+        c.setBodyString(p,"@ignore\n" + self.rootLine + "@language cweb")
+
+    # Scan the file, creating one section for each function definition.
+    self.scanWebFile(path,p)
+
+    u.afterInsertNode(p,'Import',undoData)
+
+    return p
+</t>
+<t tx="ekr.20071105090148.164">def importWebCommand (self,files,webType):
+
+    c = self.c ; current = c.currentVnode()
+    if current == None: return
+    if not files: return
+    self.tab_width = self.getTabWidth() # New in 4.3.
+    self.webType = webType
+
+    c.beginUpdate()
+    try:
+        for fileName in files:
+            g.setGlobalOpenDir(fileName)
+            v = self.createOutlineFromWeb(fileName,current)
+            v.contract()
+            v.setDirty()
+            c.setChanged(True)
+        c.selectVnode(current)
+    finally:
+        c.endUpdate()
+</t>
+<t tx="ekr.20071105090148.165">def findFunctionDef (self,s,i):
+
+    # Look at the next non-blank line for a function name.
+    i = g.skip_ws_and_nl(s,i)
+    k = g.skip_line(s,i)
+    name = None
+    while i &lt; k:
+        if g.is_c_id(s[i]):
+            j = i ; i = g.skip_c_id(s,i) ; name = s[j:i]
+        elif s[i] == '(':
+            if name: return name
+            else: break
+        else: i += 1
+    return None
+</t>
+<t tx="ekr.20071105090148.166"># This method returns the proper headline text.
+# 
+# 1. If s contains a section def, return the section ref.
+# 2. cweb only: if s contains @c, return the function name following the 
+# @c.
+# 3. cweb only: if s contains @d name, returns @d name.
+# 4. Otherwise, returns "@"
+
+def scanBodyForHeadline (self,s):
+
+    if self.webType == "cweb":
+        i = 0
+        while i &lt; len(s):
+            i = g.skip_ws_and_nl(s,i)
+            # line = g.get_line(s,i) ; g.trace(line)
+            # Allow constructs such as @ @c, or @ @&lt;.
+            if self.isDocStart(s,i):
+                i += 2 ; i = g.skip_ws(s,i)
+            if g.match(s,i,"@d") or g.match(s,i,"@f"):
+                # Look for a macro name.
+                directive = s[i:i+2]
+                i = g.skip_ws(s,i+2) # skip the @d or @f
+                if i &lt; len(s) and g.is_c_id(s[i]):
+                    j = i ; g.skip_c_id(s,i) ; return s[j:i]
+                else: return directive
+            elif g.match(s,i,"@c") or g.match(s,i,"@p"):
+                # Look for a function def.
+                name = self.findFunctionDef(s,i+2)
+                return g.choose(name,name,"outer function")
+            elif g.match(s,i,"@&lt;"):
+                # Look for a section def.
+                # A small bug: the section def must end on this line.
+                j = i ; k = g.find_on_line(s,i,"@&gt;")
+                if k &gt; -1 and (g.match(s,k+2,"+=") or g.match(s,k+2,"=")):
+                    return s[j:k+2] # return the section ref.
+            i = g.skip_line(s,i)
+    else:
+        i = 0
+        while i &lt; len(s):
+            i = g.skip_ws_and_nl(s,i)
+            # line = g.get_line(s,i) ; g.trace(line)
+            if g.match(s,i,"&lt;&lt;"):
+                k = g.find_on_line(s,i,"&gt;&gt;=")
+                if k &gt; -1:
+                    ref = s[i:k+2]
+                    name = string.strip(s[i+2:k])
+                    if name != "@others":
+                        return ref
+            else:
+                name = self.findFunctionDef(s,i)
+                if name:
+                    return name
+            i = g.skip_line(s,i)
+    return "@" # default.
+</t>
+<t tx="ekr.20071105090148.167">def scanWebFile (self,fileName,parent):
+
+    theType = self.webType
+    lb = g.choose(theType=="cweb","@&lt;","&lt;&lt;")
+    rb = g.choose(theType=="cweb","@&gt;","&gt;&gt;")
+
+    try: # Read the file into s.
+        f = open(fileName)
+        s = f.read()
+    except:
+        g.es("Can not import " + fileName, color="blue")
+        return
+
+    i = 0 ; self.web_st = []
+
+    while i &lt; len(s):
+        progress = i
+        i = g.skip_ws_and_nl(s,i)
+        # line = g.get_line(s,i) ; g.trace(line)
+        if self.isDocStart(s,i):
+            if theType == "cweb": i += 2
+            else: i = g.skip_line(s,i)
+        elif theType == "cweb" and g.match(s,i,"@@"):
+            i += 2
+        elif g.match(s,i,lb):
+            i += 2 ; j = i ; k = g.find_on_line(s,j,rb)
+            if k &gt; -1: self.cstEnter(s[j:k])
+        else: i += 1
+        assert (i &gt; progress)
+
+    # g.trace(self.cstDump())
+    i = 0
+    while i &lt; len(s):
+        progress = i
+        i = g.skip_ws_and_nl(s,i)
+        if self.isModuleStart(s,i) or g.match(s,i,lb):
+            break
+        else: i = g.skip_line(s,i)
+        assert(i &gt; progress)
+
+    j = g.skip_ws(s,0)
+    if j &lt; i:
+        self.createHeadline(parent,"@ " + s[j:i],"Limbo")
+
+    j = i
+    if g.match(s,i,lb):
+        while i &lt; len(s):
+            progress = i
+            i = g.skip_ws_and_nl(s,i)
+            if self.isModuleStart(s,i):
+                break
+            else: i = g.skip_line(s,i)
+            assert(i &gt; progress)
+        self.createHeadline(parent,s[j:i],g.angleBrackets(" @ "))
+
+    # g.trace(g.get_line(s,i))
+    while i &lt; len(s):
+        outer_progress = i
+        if theType=="cweb":
+            assert(self.isModuleStart(s,i))
+            start = i
+            if self.isDocStart(s,i):
+                i += 2
+                while i &lt; len(s):
+                    progress = i
+                    i = g.skip_ws_and_nl(s,i)
+                    if self.isModuleStart(s,i): break
+                    else: i = g.skip_line(s,i)
+                    assert (i &gt; progress)
+            if g.match(s,i,"@d") or g.match(s,i,"@f"):
+                i += 2 ; i = g.skip_line(s,i)
+                # Place all @d and @f directives in the same node.
+                while i &lt; len(s):
+                    progress = i
+                    i = g.skip_ws_and_nl(s,i)
+                    if g.match(s,i,"@d") or g.match(s,i,"@f"): i = g.skip_line(s,i)
+                    else: break
+                    assert (i &gt; progress)
+                i = g.skip_ws_and_nl(s,i)
+
+            while i &lt; len(s) and not self.isModuleStart(s,i):
+                progress = i
+                i = g.skip_line(s,i)
+                i = g.skip_ws_and_nl(s,i)
+                assert (i &gt; progress)
+
+            if g.match(s,i,"@c") or g.match(s,i,"@p"):
+                i += 2
+                while i &lt; len(s):
+                    progress = i
+                    i = g.skip_line(s,i)
+                    i = g.skip_ws_and_nl(s,i)
+                    if self.isModuleStart(s,i):
+                        break
+                    assert (i &gt; progress)
+        else:
+            assert(self.isDocStart(s,i)) # isModuleStart == isDocStart for noweb.
+            start = i ; i = g.skip_line(s,i)
+            while i &lt; len(s):
+                progress = i
+                i = g.skip_ws_and_nl(s,i)
+                if self.isDocStart(s,i): break
+                else: i = g.skip_line(s,i)
+                assert (i &gt; progress)
+
+        body = s[start:i]
+        body = self.massageWebBody(body)
+        headline = self.scanBodyForHeadline(body)
+        self.createHeadline(parent,body,headline)
+        assert(i &gt; outer_progress)
+</t>
+<t tx="ekr.20071105090148.168"># We canonicalize strings before looking them up, but strings are entered in the form they are first encountered.
+
+def cstCanonicalize (self,s,lower=True):
+
+    if lower:
+        s = string.lower(s)
+    s = string.replace(s,"\t"," ")
+    s = string.replace(s,"\r","")
+    s = string.replace(s,"\n"," ")
+    s = string.replace(s,"  "," ")
+    s = string.strip(s)
+    return s
+</t>
+<t tx="ekr.20071105090148.169">def cstDump (self):
+
+    self.web_st.sort()
+    s = "Web Symbol Table...\n\n"
+    for name in self.web_st:
+        s += name + "\n"
+    return s
+</t>
+<t tx="ekr.20071105090148.170"># We only enter the section name into the symbol table if the ... convention is not used.
+
+def cstEnter (self,s):
+
+    # Don't enter names that end in "..."
+    s = string.rstrip(s)
+    if s.endswith("..."): return
+
+    # Put the section name in the symbol table, retaining capitalization.
+    lower = self.cstCanonicalize(s,True)  # do lower
+    upper = self.cstCanonicalize(s,False) # don't lower.
+    for name in self.web_st:
+        if string.lower(name) == lower:
+            return
+    self.web_st.append(upper)
+</t>
+<t tx="ekr.20071105090148.171"># This method returns a string if the indicated string is a prefix of an entry in the web_st.
+
+def cstLookup (self,target):
+
+    # Do nothing if the ... convention is not used.
+    target = string.strip(target)
+    if not target.endswith("..."): return target
+    # Canonicalize the target name, and remove the trailing "..."
+    ctarget = target[:-3]
+    ctarget = self.cstCanonicalize(ctarget)
+    ctarget = string.strip(ctarget)
+    found = False ; result = target
+    for s in self.web_st:
+        cs = self.cstCanonicalize(s)
+        if cs[:len(ctarget)] == ctarget:
+            if found:
+                g.es("****** " + target + ": is also a prefix of: " + s)
+            else:
+                found = True ; result = s
+                # g.es("replacing: " + target + " with: " + s)
+    return result
+</t>
+<t tx="ekr.20071105090148.172">def perfectImport (self,fileName,p,testing=False,verbose=False,convertBlankLines=True,verify=True):
+
+    __pychecker__ = 'maxlines=500'
+
+    # 
+    # This algorithm corrects the result of an Import To @file command so 
+    # that it is guaranteed that the result of writing the imported file 
+    # will be identical to the original file except for any sentinels that 
+    # have been inserted.
+    # 
+    # On entry, p points to the newly imported outline.
+    # 
+    # We correct the outline by applying Bernhard Mulder's algorithm.
+    # 
+    # 1.  We use the atFile.write code to write the newly imported outline 
+    # to a string s.  This string contains represents a thin derived file, 
+    # so it can be used to recreate then entire outline structure without 
+    # any other information.
+    # 
+    # Splitting s into lines creates the fat_lines argument to mu methods.
+    # 
+    # 2. We make corrections to fat_lines using Mulder's algorithm.  The 
+    # corrected fat_lines represents the corrected outline.  To do this, 
+    # we set the arguments as follows:
+    # 
+    # - i_lines: fat_lines stripped of sentinels
+    # - j_lines to the lines of the original imported file.
+    # 
+    # The algorithm updates fat_lines using diffs between i_lines and 
+    # j_lines.
+    # 
+    # 3. Mulder's algorithm doesn't specify which nodes have been 
+    # changed.  In fact, it Mulder's algorithm doesn't really understand 
+    # nodes at all.  Therefore, if we want to mark changed nodes we do so 
+    # by comparing the original version of the imported outline with the 
+    # corrected version of the outline.
+    c = self.c
+    root = p.copy()
+    at = c.atFileCommands
+    if testing:
+        for p2 in p.self_and_subtree_iter():
+            p2.clearDirty()
+    nodeIndices = g.app.nodeIndices
+
+    nodeIndices.setTimestamp()
+
+    for p2 in root.self_and_subtree_iter():
+        try: # Will fail for None or any pre 4.1 file index.
+            theId,time,n = p2.v.t.fileIndex
+        except TypeError:
+            p2.v.t.fileIndex = nodeIndices.getNewIndex()
+    at.write(root,thinFile=True,toString=True)
+    s = at.stringOutput
+    if not s: return
+
+    # Set up the data for the algorithm.
+    mu = g.mulderUpdateAlgorithm(testing=testing,verbose=verbose)
+    delims = g.comment_delims_from_extension(fileName)
+    fat_lines = g.splitLines(s) # Keep the line endings.
+    i_lines,mapping = mu.create_mapping(fat_lines,delims)
+    j_lines = file(fileName).readlines()
+
+    # Correct write_lines using the algorihm.
+    if i_lines != j_lines:
+        if verbose:
+            g.es("Running Perfect Import",color="blue")
+        write_lines = mu.propagateDiffsToSentinelsLines(i_lines,j_lines,fat_lines,mapping)
+        if 1: # For testing.
+            write_lines_node = root.insertAfter()
+            write_lines_node.initHeadString("write_lines")
+            s = ''.join(write_lines)
+            write_lines_node.scriptSetBodyString(s,encoding=g.app.tkEncoding)
+        # Notes:
+        # 1. This code must overwrite the newly-imported tree because the 
+        # gnx's in
+        # write_lines refer to those nodes.
+        # 
+        # 2. The code in readEndNode now reports when nodes change during 
+        # importing. This
+        # code also marks changed nodes.
+
+        try:
+            at.correctedLines = 0
+            at.targetFileName = "&lt;perfectImport string-file&gt;"
+            at.inputFile = fo = g.fileLikeObject()
+            at.file = fo # Strange, that this is needed.  Should be cleaned up.
+            for line in write_lines:
+                fo.write(line)
+            firstLines,junk,junk = c.atFileCommands.scanHeader(fo,at.targetFileName)
+            # To do: pass params to readEndNode.
+            at.readOpenFile(root,fo,firstLines,perfectImportRoot=root)
+            n = at.correctedLines
+            if verbose:
+                g.es("%d marked node%s corrected" % (n,g.choose(n==1,'','s')),color="blue")
+        except:
+            g.es("Exception in Perfect Import",color="red")
+            g.es_exception()
+            s = None
+    if verify:
+        try:
+            # Read the original file into before_lines.
+            before = file(fileName)
+            before_lines = before.readlines()
+            before.close()
+
+            # Write the tree into after_lines.
+            at.write(root,thinFile=True,toString=True)
+            after_lines1 = g.splitLines(at.stringOutput)
+
+            # Strip sentinels from after_lines and compare.
+            after_lines = mu.removeSentinelsFromLines(after_lines1,delims)
+
+            # A major kludge: Leo can not represent unindented blank lines in indented nodes!
+            # We ignore the problem here by stripping whitespace from blank lines.
+            # We shall need output options to handle such lines.
+            if convertBlankLines:
+                mu.stripWhitespaceFromBlankLines(before_lines)
+                mu.stripWhitespaceFromBlankLines(after_lines)
+            if before_lines == after_lines:
+                if verbose:
+                    g.es("Perfect Import verified",color="blue")
+            else:
+                leoTest.fail()
+                if verbose:
+                    g.es("Perfect Import failed verification test!",color="red")
+                    print len(before_lines),len(after_lines)
+
+                    if len(before_lines)==len(after_lines):
+                        for i in xrange(len(before_lines)):
+                            extra = 3
+                            if before_lines[i] != after_lines[i]:
+                                j = max(0,i-extra)
+                                print '-' * 20
+                                while j &lt; i + extra + 1:
+                                    leader = g.choose(i == j,"* ","  ")
+                                    print "%s%3d" % (leader,j), repr(before_lines[j])
+                                    print "%s%3d" % (leader,j), repr(after_lines[j])
+                                    j += 1
+                    else:
+                        for i in xrange(min(len(before_lines),len(after_lines))):
+                            if before_lines[i] != after_lines[i]:
+                                extra = 5
+                                print "first mismatch at line %d" % i
+                                print "printing %d lines after mismatch" % extra
+                                print "before..."
+                                for j in xrange(i+1+extra):
+                                    print "%3d" % j, repr(before_lines[j])
+                                print
+                                print "after..."
+                                for k in xrange(1+extra):
+                                    print "%3d" % (i+k), repr(after_lines[i+k])
+                                print
+                                print "with sentinels"
+                                j = 0 ; k = 0
+                                while k &lt; i + 1 + extra:
+                                    print "%3d" % k,repr(after_lines1[j])
+                                    if not g.is_sentinel(after_lines1[j],delims):
+                                        k += 1
+                                    j += 1
+                                break
+        except IOError:
+            g.es("Can not reopen %s!" % fileName,color="red")
+            leoTest.fail()
+</t>
+<t tx="ekr.20071105090148.173">class baseScannerClass:
+
+    '''The base class for all import scanner classes.
+    This class contains common utility methods.'''
+    @others
+</t>
+<t tx="ekr.20071105090148.174">
+def __init__ (self,importCommands,atAuto,language):
+
+    ic = importCommands
+
+    self.atAuto = atAuto
+    self.c = ic.c
+    self.codeEnd = None
+        # The character after the last character of the class, method or function.
+        # An error will be given if this is not a newline.
+    self.encoding = ic.encoding # g.app.tkEncoding
+    self.errors = 0
+    self.errorLines = []
+    self.extraIdChars = ''
+    self.fileName = ic.fileName # The original filename.
+    self.fileType = ic.fileType # The extension,  '.py', '.c', etc.
+    self.importCommands = ic
+    self.language = language
+    self.methodName = ic.methodName # x, as in &lt; &lt; x methods &gt; &gt; =
+    self.output_newline = ic.output_newline # = c.config.getBool('output_newline')
+    self.root = None # The top-level node of the generated tree.
+    self.rootLine = ic.rootLine # '' or @root + self.fileName
+    self.sigEnd = None # The index of the end of the signature.
+    self.sigID = None # The identifier contained in the signature, i.e., the function or method name.
+    self.sigStart = None
+        # The start of the line containing the signature.
+        # An error will be given if something other than whitespace precedes the signature.
+    self.startSigIndent = None
+    self.tab_width = ic.getTabWidth() # The tab width in effect in the c.currentPosition.
+    self.trace = False or ic.trace # = c.config.getBool('trace_import')
+    self.treeType = ic.treeType # '@root' or '@file'
+    self.webType = ic.webType # 'cweb' or 'noweb'  
+
+    # Compute language ivars.
+    delim1,delim2,delim3 = g.set_delims_from_language(language)
+    self.comment_delim = delim1
+
+    # Create the ws equivalent to one tab.
+    if self.tab_width &lt; 0:
+        self.tab_ws = ' '*abs(self.tab_width)
+    else:
+        self.tab_ws = '\t'
+
+    # May be overridden in subclasses.
+    self.lineCommentDelim = None
+    self.lineCommentDelim2 = None
+    self.blockCommentDelim1 = None
+    self.blockCommentDelim2 = None
+    self.blockDelim1 = '{'
+    self.blockDelim2 = '}'
+    self.classTags = ['class',]
+        # tags that start a tag.
+    self.functionTags = []
+    self.sigTailFailTokens = []
+        # A list of strings that abort a signature when seen in a tail.
+        # For example, ';' and '=' in C.
+    self.strict = False # True if leading whitespace is very significant.
+</t>
+<t tx="ekr.20071105090148.175">def check (self,s,parent):
+
+    '''Make sure the generated nodes are equivalent to the original file.
+
+    1. Regularize and check leading whitespace.
+    2. Check that a trial write produces the original file.
+
+    Return True if the nodes are equivalent to the original file.
+    '''
+
+    result = self.checkWhitespace(s,parent) and self.checkTrialWrite()
+    g.app.unitTestDict ['result'] = result
+    return result
+</t>
+<t tx="ekr.20071105090148.176"># Similar to c.tabNannyNode
+
+def checkTabWithTabNanny (self,p):
+
+    '''Check indentation using tabnanny.'''
+
+    h = p.headString() ; body = p.bodyString()
+
+    try:
+        readline = g.readLinesClass(body).next
+        tabnanny.process_tokens(tokenize.generate_tokens(readline))
+        return True
+
+    except IndentationError, err:
+        # Instances of this class have attributes filename, lineno, offset and text.
+        g.es_print('IndentationError in %s at line %d' % (h,err.lineno),color='blue')
+        # g.es_print(str(err)) # str(err.text))
+
+    except parser.ParserError, msg:
+        g.es_print('ParserError in %s' % h,color='blue')
+        g.es_print(str(msg))
+
+    except tokenize.TokenError, msg:
+        g.es_print('TokenError in %s' % h,color='blue')
+        g.es_print(str(msg))
+
+    except tabnanny.NannyNag, nag:
+        badline = nag.get_lineno()
+        line    = nag.get_line()
+        message = nag.get_msg()
+        g.es_print('Indentation error in %s, line %d' % (h, badline),color='blue')
+        g.es_print(message)
+        g.es_print('offending line:\n%s' % repr(str(line))[1:-1])
+
+    except:
+        g.trace('unexpected exception')
+        g.es_exception()
+
+    return False
+</t>
+<t tx="ekr.20071105090148.177">def checkWhitespace(self,s,parent):
+
+    '''Check and normalize the leading whitespace of all nodes.
+
+    - The original sources may fail Python's tabNanny checks.  
+
+    - Leading whitespace in the original sources may be inconsistent with the
+      @tabwidth setting in effect in the @auto tree.
+
+    - The original sources may contain underindented comments. 
+
+    If an indentation problem is found, issue a warning and return False.
+    Otherwise, normalize the indentation of all pieces so that it is indeed
+    consistent with the indentation specified by the present @tabwidth setting.
+    Normalizing underindented comments means shifting the comments right.
+    '''
+
+    if 1: # Do a quick check for mixed leading tabs/blanks.
+        blanks = tabs = 0
+        for line in g.splitLines(s):
+            lws = line[0:g.skip_ws(line,0)]
+            blanks += lws.count(' ')
+            tabs += lws.count('\t')
+        # g.trace('blanks',blanks,'tabs',tabs)
+        ok = blanks == 0 or tabs == 0
+        if not ok:
+            self.error('File contains intermixed blanks and tabs')
+        return ok
+    else:
+        # Check that whitespace passes TabNanny.
+        # Check that whitespace is compatible with @tabwidth.
+        # Check for underindented lines.
+        ok = True
+        for p in parent.self_and_subtree_iter():
+            ok = ok and self.checkTabWithTabNanny(p)
+        return ok
+</t>
+<t tx="ekr.20071105090148.178">def checkTrialWrite (self):
+
+    '''Return True if a trial write produces the original file.'''
+
+    c = self.c ; at = c.atFileCommands
+    at.write(self.root,
+        nosentinels=True,thinFile=False,
+        scriptWrite=False,toString=True,
+        write_strips_blank_lines=False,
+    )
+
+    ignoreBlankLines = True
+    s1,s2 = self.file_s, at.stringOutput
+    if s1 == s2: return True
+
+    lines1 = g.splitLines(s1) ; n1 = len(lines1)
+    lines2 = g.splitLines(s2) ; n2 = len(lines2)
+
+    ok = True
+    for i in xrange(max(n1,n2)):
+        ok = self.compareHelper(lines1,lines2,i,self.strict)
+        if not ok: break
+
+    d = g.app.unitTestDict
+    expectedMismatch =  d.get('expectedMismatchLine')
+    actualMismatch = d.get('actualMismatchLine')
+    ok = ok or (g.app.unitTesting and expectedMismatch == actualMismatch)
+    if not ok:
+        if g.app.unitTesting:
+            g.trace('expected mismatch line',expectedMismatch,'actualMismatch',actualMismatch)
+        if len(lines1) &lt; 30:
+            print 'input...'
+            for i in xrange(len(lines1)):
+                print '%3d' % (i),lines1[i],
+            print 'output...'
+            for i in xrange(len(lines2)):
+                print '%3d' % (i),lines2[i],
+    return ok
+</t>
+<t tx="ekr.20071105090148.179">def compareHelper (self,lines1,lines2,i,strict):
+
+    '''Compare lines1[i] and lines2[i].
+    strict is True if leading whitespace is very significant.'''
+
+    d = g.app.unitTestDict
+    expectedMismatch = g.app.unitTesting and d.get('expectedMismatchLine')
+
+    if i &gt;= len(lines1):
+        if i != expectedMismatch:
+            print 'extra lines'
+            for line in lines2[i:]:
+                print repr(line)
+        d ['actualMismatchLine'] = i
+        return False
+
+    if i &gt;= len(lines2):
+        if i != expectedMismatch:
+            print 'missing lines'
+            for line in lines2[i:]:
+                print repr(line)
+        d ['actualMismatchLine'] = i
+        return False
+
+    line1,line2 = lines1[i],lines2[i]
+    if line1 == line2:
+        return True # An exact match.
+    elif not line1.strip() and not line2.strip():
+        return True # All blank lines compare equal.
+    elif not strict and line1.lstrip() == line2.lstrip():
+        return True # A match excluding leading whitespace.
+    else:
+        if i+1 != expectedMismatch:
+            print '*** first mismatch at line %d' % (i+1)
+            print 'original line: ', repr(line1)
+            print 'generated line:', repr(line2)
+        d ['actualMismatchLine'] = i+1
+        return False
+</t>
+<t tx="ekr.20071105090148.180"># None of these methods should ever need to be overridden in 
+# subclasses.
+# 
+def addRef (self,parent):
+
+    '''Create an unindented @others or section reference in the parent node.'''
+
+    c = self.c
+
+    if self.treeType == '@file':
+        c.appendStringToBody(parent,'@others\n')
+
+    if self.treeType == '@root' and self.methodsSeen:
+        c.appendStringToBody(parent,
+            g.angleBrackets(' ' + self.methodName + ' methods ') + '\n\n')
+</t>
+<t tx="ekr.20071105090148.181">def createDeclsNode (self,parent,s):
+
+    '''Create a child node of parent containing s.'''
+
+    # Create the node for the decls.
+    headline = self.methodName + ' declarations'
+    body = self.undentBody(s)
+    self.createHeadline(parent,body,headline)
+</t>
+<t tx="ekr.20071105090148.182">def createFunctionNode (self,headline,body,parent):
+
+    # Create the prefix line for @root trees.
+    if self.treeType == '@file':
+        prefix = ''
+    else:
+        prefix = g.angleBrackets(' ' + headline + ' methods ') + '=\n\n'
+        self.methodsSeen = True
+
+    # Create the node.
+    self.createHeadline(parent,prefix + body,headline)
+
+</t>
+<t tx="ekr.20071105090148.183">def createHeadline (self,parent,body,headline):
+
+    # g.trace('parent,headline:',parent,headline)
+
+    # Create the node.
+    p = parent.insertAsLastChild()
+    p.initHeadString(headline,self.encoding)
+
+    # Set the body.
+    if body:
+        self.c.setBodyString(p,body,self.encoding)
+    return p
+</t>
+<t tx="ekr.20071105090148.184">def getLeadingIndent (self,s,i,ignoreComments=True):
+
+    '''Return the leading whitespace of a line.
+    Ignore blank and comment lines if ignoreComments is True'''
+
+    width = 0
+    i = g.find_line_start(s,i)
+    if ignoreComments:
+        while i &lt; len(s):
+            # g.trace(g.get_line(s,i))
+            j = g.skip_ws(s,i)
+            if g.is_nl(s,j) or g.match(s,j,self.comment_delim):
+                i = g.skip_line(s,i) # ignore blank lines and comment lines.
+            else:
+                i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+                break      
+    else:
+        i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+
+    # g.trace('returns:',width)
+    return width
+</t>
+<t tx="ekr.20071105090148.185">def indentBody (self,s,lws=None):
+
+    '''Add whitespace equivalent to one tab for all non-blank lines of s.'''
+
+    result = []
+    if not lws: lws = self.tab_ws
+
+    for line in g.splitLines(s):
+        if line.strip():
+            result.append(lws + line)
+        elif line.endswith('\n'):
+            result.append('\n')
+
+    result = ''.join(result)
+    return result
+</t>
+<t tx="ekr.20071105090148.186">def insertIgnoreDirective (self,parent):
+
+    self.c.appendStringToBody(parent,'@ignore')
+</t>
+<t tx="ekr.20071105090148.187">def massageComment (self,s):
+
+    '''Return s with leading and trailing whitespace removed and all other
+    runs of whitespace and newlines converted to a single blank.'''
+
+    s = s.strip()
+    s = s.replace('\n',' ')
+    s = s.replace('\r',' ')
+    s = s.replace('\t',' ')
+    s = s.replace('  ',' ')
+    s = s.strip()
+    return s
+</t>
+<t tx="ekr.20071105090148.188">def putClass (self,s,sigStart,sigEnd,codeEnd,start,parent):
+
+    '''Creates a child node c of parent for the class, and children of c for each def in the class.'''
+
+    prefix = self.createClassNodePrefix()
+    if not self.sigID:
+        g.trace('Can not happen: no sigID')
+        sigID = 'Unknown class name'
+    class_name = self.sigID
+    headline = 'class ' + class_name
+    body = s[start:sigEnd]
+    body = self.undentBody(body)
+    i = self.extendSignature(s,sigEnd)
+    extend = s[sigEnd:i]
+    if extend:
+        extend = self.undentBody(extend)
+        extend = self.indentBody(extend)
+        body = body + extend
+
+    class_node = self.createHeadline(parent,prefix + body,headline)
+    savedMethodName = self.methodName
+    self.methodName = headline
+    self.putClassHelper(s,i,codeEnd,class_name,class_node)
+    self.methodName = savedMethodName
+</t>
+<t tx="ekr.20071105090148.189">def appendRefToClassNode (self,class_name,class_node):
+
+    '''Insert the proper body text in the class_vnode.'''
+
+    if self.treeType == '@file':
+        s = '@others'
+    else:
+        s = g.angleBrackets(' class %s methods ' % (class_name))
+
+    self.appendTextToClassNode(class_node,'%s%s\n' % (self.tab_ws,s))
+</t>
+<t tx="ekr.20071105090148.190">def appendTextToClassNode (self,class_node,s):
+
+    c = self.c
+
+    c.appendStringToBody(class_node,s) 
+</t>
+<t tx="ekr.20071105090148.191">def createClassNodePrefix (self):
+
+    '''Create the class node prefix.'''
+
+    if  self.treeType == '@file':
+        prefix = ''
+    else:
+        prefix = g.angleBrackets(' ' + self.methodName + ' methods ') + '=\n\n'
+        self.methodsSeen = True
+
+    return prefix
+</t>
+<t tx="ekr.20071105090148.192">def putClassHelper(self,s,i,end,class_name,class_node):
+
+    '''s contains the body of a class, not including the signature.
+
+    Parse s for inner methods and classes, and create nodes.'''
+
+    # Put any leading decls in the class node.
+    trace = False
+    start = i
+    i = self.skipDecls(s,i,end)
+    decls = s[start:i]
+    if decls:
+        # We must regularize the indentation to match the @others
+        decls = self.undentBody(decls)
+        decls = self.indentBody(decls)
+        if self.trace: g.trace('decls\n%s' % decls)
+        # g.trace(class_name,'decls',repr(decls))
+        self.appendTextToClassNode(class_node,decls)
+    start = i ; putRef = False
+    while i &lt; end:
+        progress = i
+        if self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            i = self.skipString(s,i)
+        elif self.startsClass(s,i):  # Sets sigStart,sigEnd &amp; codeEnd ivars.
+            putRef = True
+            end2 = self.codeEnd # putClass may change codeEnd ivar.
+            self.putClass(s,self.sigStart,self.sigEnd,self.codeEnd,start,class_node)
+            i = start = end2
+        elif self.startsFunction(s,i): # Sets sigStart,sigEnd &amp; codeEnd ivars.
+            putRef = True
+            self.putFunction(s,self.sigStart,self.codeEnd,start,class_node)
+            i = start = self.codeEnd
+        elif self.startsId(s,i):
+            i = self.skipId(s,i);
+        else: i += 1
+        assert progress &lt; i,'i: %d, ch: %s' % (i,repr(s[i]))
+
+    if putRef:
+        self.appendRefToClassNode(class_name,class_node)
+
+    if start &lt; end:
+        trailing = s[start:end]
+        if trace or self.trace: g.trace('trailing\n%s' % trailing)
+        self.appendTextToClassNode(class_node,trailing)
+</t>
+<t tx="ekr.20071105090148.193">def putFunction (self,s,sigStart,codeEnd,start,parent):
+
+    '''Create a node of parent for a function defintion.'''
+
+    if self.sigID:
+        headline = self.sigID
+    else:
+        g.trace('Can not happen: no sigID')
+        headline = 'unknown function'
+
+    body1 = self.undentBody(s[start:sigStart],ignoreComments=False)
+
+    body2 = self.undentBody(s[sigStart:codeEnd])
+    body = body1 + body2
+    if self.trace:
+        g.trace('body\n%s' % repr(body))
+        g.trace('body\n%s' % body)
+
+    if not body.endswith('\n'):
+        self.error('function does not end with a newline.  A newline will be added.')
+        g.es(g.get_line(s,codeEnd),color='blue')
+
+    self.createFunctionNode(headline,body,parent)
+</t>
+<t tx="ekr.20071105090148.194">def putRootText (self,p):
+
+    c = self.c
+
+    line1 = g.choose(self.atAuto,'','@ignore\n')
+
+    c.appendStringToBody(p,'%s%s@language %s\n' % (
+        line1,self.rootLine,self.language))
+</t>
+<t tx="ekr.20071105090148.195">def undentBody (self,s,ignoreComments=True):
+
+    '''Remove the first line's leading indentation from all lines of s.'''
+
+    #g.trace('before',repr(s))
+
+    # Copy an @code line as is.
+    i = 0
+    if g.match(s,i,'@code'):
+        j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
+        result += s[j:i]
+
+    # Calculate the amount to be removed from each line.
+    undent = self.getLeadingIndent(s,i,ignoreComments=ignoreComments)
+    if undent == 0:
+        return s
+    else:
+        result = ''.join([
+            g.removeLeadingWhitespace(line,undent,self.tab_width)
+                for line in g.splitLines(s)])
+        #g.trace('after',repr(result))
+        return result
+</t>
+<t tx="ekr.20071105090148.196">def underindentedComment (self,line):
+
+    self.error('underindented python comments.\nExtra leading whitespace will be added')
+    g.es(line,color='blue')
+
+</t>
+<t tx="ekr.20071105090148.197">def underindentedLine (self,line):
+
+    self.error('underindented line.\nExtra leading whitespace will be added')
+    g.es(line,color='blue')
+
+</t>
+<t tx="ekr.20071105090148.198">def error (self,s):
+    g.es_print(s,color='red')
+    self.errors += 1
+    g.app.unitTestDict['actualErrors'] = self.errors
+
+</t>
+<t tx="ekr.20071105090148.199">def oops (self):
+    print 'baseScannerClass oops: %s must be overridden in subclass' % g.callers()
+</t>
+<t tx="ekr.20071105090148.200"># Scan and skipDecls would typically not be overridden.
+def extendSignature(self,s,i):
+
+    '''Extend the signature line if appropriate.
+    The text *must* end with a newline.
+
+    For example, the Python scanner appends docstrings if they exist.'''
+
+    return i
+</t>
+<t tx="ekr.20071105090148.201">def scan (self,s,parent):
+
+    '''A language independent scanner: it uses language-specific helpers.
+
+    Create a child of self.root for:
+    - Leading outer-level declarations.
+    - Outer-level classes.
+    - Outer-level functions.
+    '''
+    i = start = self.skipDecls(s,0,len(s))
+    decls = s[:i]
+    if decls: self.createDeclsNode(parent,decls)
+    needRef = False
+    while i &lt; len(s):
+        progress = i
+        if self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            i = self.skipString(s,i)
+        elif self.startsClass(s,i): # Sets sigStart,sigEnd &amp; codeEnd ivars.
+            end2 = self.codeEnd # putClass may change codeEnd ivar.
+            self.putClass(s,self.sigStart,self.sigEnd,self.codeEnd,start,parent)
+            i = start = end2
+            needRef = True
+        elif self.startsFunction(s,i): # Sets sigStart,sigEnd &amp; codeEnd ivars.
+            self.putFunction(s,self.sigStart,self.codeEnd,start,parent)
+            i = start = self.codeEnd
+        elif self.startsId(s,i):
+            i = self.skipId(s,i);
+        else: i += 1
+        assert progress &lt; i,'i: %d, ch: %s' % (i,repr(s[i]))
+    self.addRef(parent)
+</t>
+<t tx="ekr.20071105090148.202">def skipArgs (self,s,i,kind):
+
+    '''Skip the argument or class list.  Return i, ok
+
+    kind is in ('class','function')'''
+
+    start = i
+    i = g.skip_ws_and_nl(s,i)
+    if not g.match(s,i,'('):
+        return start,kind == 'class'
+
+    i = self.skipParens(s,i)
+    # skipParens skips the ')'
+    if i &gt;= len(s):
+        return start,False
+    else:
+        return i,True 
+</t>
+<t tx="ekr.20071105090148.203">def skipBlock(self,s,i,delim1=None,delim2=None):
+
+    '''Skip from the opening delim to *past* the matching closing delim.
+
+    If no matching is found i is set to len(s)'''
+
+    trace = False
+    if delim1 is None: delim1 = self.blockDelim1
+    if delim2 is None: delim2 = self.blockDelim2
+    match1 = g.choose(len(delim1)==1,g.match,g.match_word)
+    match2 = g.choose(len(delim2)==1,g.match,g.match_word)
+    assert match1(s,i,delim1)
+    level = 0 ; start = i
+    startIndent = self.startSigIndent
+    if trace: g.trace('***','startIndent',startIndent,g.callers())
+    while i &lt; len(s):
+        progress = i
+        if g.is_nl(s,i):
+            backslashNewline = i &gt; 0 and g.match(s,i-1,'\\\n')
+            i = g.skip_nl(s,i)
+            if not backslashNewline:
+                j, indent = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+                line = g.get_line(s,j)
+                if trace: g.trace('indent',indent,line)
+                if indent &lt; startIndent and line.strip():
+                    # An non-empty underindented line.
+                    # Issue an error unless it contains just the closing bracket.
+                    if level == 0 and match2(s,j,delim2):
+                        pass
+                    else:
+                        if j not in self.errorLines: # No error yet given.
+                            self.errorLines.append(j)
+                            self.underindentedLine(line)
+        elif self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            i = self.skipString(s,i)
+        elif match1(s,i,delim1):
+            level += 1 ; i += len(delim1)
+        elif match2(s,i,delim2):
+            level -= 1 ; i += len(delim2)
+            if level &lt;= 0: break
+        else: i += 1
+        assert progress &lt; i
+
+    if trace: g.trace('returns\n',s[start:i])
+    return i
+</t>
+<t tx="ekr.20071105090148.204">def skipCodeBlock (self,s,i,kind):
+
+    '''Skip the code block in a function or class definition.'''
+
+    i = self.skipBlock(s,i,delim1=None,delim2=None)
+    i = self.skipNewline(s,i,kind)
+
+    return i
+</t>
+<t tx="ekr.20071105090148.205">def skipComment (self,s,i):
+
+    '''Skip a comment and return the index of the following character.'''
+
+    if g.match(s,i,self.lineCommentDelim) or g.match(s,i,self.lineCommentDelim2):
+        return g.skip_to_end_of_line(s,i)
+    else:
+        return self.skipBlockComment(s,i)
+</t>
+<t tx="ekr.20071105090148.206">def skipBlockComment (self,s,i):
+
+    '''Skip past a block comment.'''
+
+    # Skip the opening delim.
+    assert(g.match(s,i,self.blockCommentDelim1))
+    start = i ; i += len(self.blockCommentDelim1)
+
+    # Find the closing delim.
+    k = string.find(s,self.blockCommentDelim2,i)
+    if k == -1:
+        self.error('Run on block comment: ' + s[start:i])
+        return len(s)
+    else:
+        return k + len(self.blockCommentDelim2)
+</t>
+<t tx="ekr.20071105090148.207">def skipDecls (self,s,i,end):
+
+    '''Skip everything until the start of the next class or function.'''
+
+    start = i
+    while i &lt; end:
+        progress = i
+        if self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            i = self.skipString(s,i)
+        elif self.startsClass(s,i,quick=True):
+            # Important: do not include leading ws in the decls.
+            i = self.adjustClassOrFunctionStart(s,i,'class')
+            break
+        elif self.startsFunction(s,i,quick=True):
+            # Important: do not include leading ws in the decls.
+            i = self.adjustClassOrFunctionStart(s,i,'function')
+            break
+        elif self.startsId(s,i):
+            i = self.skipId(s,i);
+        else: i += 1
+        assert(progress &lt; i)
+
+    # Ignore empty decls.
+    if s[start:i].strip():
+        if self.trace: g.trace('\n'+s[start:i])
+        return i
+    else:
+        return start
+</t>
+<t tx="ekr.20071105090148.208">def adjustClassOrFunctionStart(self,s,i,tag):
+
+    '''
+    s[i:] starts a class or function.
+    Adjust i so it points at the start of the line.
+
+    Issue a warning if anything except whitespace appears.
+    '''
+
+    j = g.find_line_start(s,i)
+    if s[j:i].strip():
+        message = '%s definition does not start a line. Leo must insert a newline.' % tag
+        self.error(message)
+        return i
+    else:
+        return j
+</t>
+<t tx="ekr.20071105090148.209">def skipId (self,s,i):
+
+    return g.skip_id(s,i,chars=self.extraIdChars)
+</t>
+<t tx="ekr.20071105090148.210">def skipNewline(self,s,i,kind):
+
+    '''Skip whitespace and comments up to a newline, then skip the newline.
+    Issue an error if no newline is found.'''
+
+    while 1:
+        i = g.skip_ws(s,i)
+        if self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        else: break
+
+    if g.match(s,i,'\n'):
+        i += 1
+    else:
+        self.error('%s does not end in a newline.  A newline will be added.' % kind)
+        g.es(g.get_line(s,i),color='blue')
+
+    return i
+</t>
+<t tx="ekr.20071105090148.211">def skipParens (self,s,i):
+
+    '''Skip a parenthisized list, that might contain strings or comments.'''
+
+    return self.skipBlock(s,i,delim1='(',delim2=')')
+</t>
+<t tx="ekr.20071105090148.212">def skipString (self,s,i):
+
+    # Returns len(s) on unterminated string.
+    return g.skip_string(s,i,verbose=False)
+</t>
+<t tx="ekr.20071105090148.213"># We don't expect to override this code, but subclasses may override the helpers.
+
+def startsClass (self,s,i,quick=False):
+    '''Return True if s[i:] starts a class definition.
+    Sets sigStart, sigEnd, sigID and codeEnd ivars.'''
+    i = self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
+    return i
+
+</t>
+<t tx="ekr.20071105090148.214">def startsFunction (self,s,i,quick=False):
+    '''Return True if s[i:] starts a function.
+    Sets sigStart, sigEnd, sigID and codeEnd ivars.'''
+    i = self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
+    return i
+</t>
+<t tx="ekr.20071105090148.215">def startsHelper(self,s,i,kind,quick,tags):
+    '''return True if s[i:] starts a class or function.
+    Sets sigStart, sigEnd, sigID and codeEnd ivars.'''
+
+    trace = False
+    self.codeEnd = self.sigEnd = self.sigID = None
+    self.sigStart = i
+
+    # Underindented lines can happen in any language, not just Python.
+    # The skipBlock method of the base class checks for such lines.
+    self.startSigIndent = self.getLeadingIndent(s,i)
+
+    # Get the tag that starts the class or function.
+    i, ids = self.skipSigStart(s,i,tags)
+    if tags:
+        for id in ids:
+            if id in tags:
+                break
+        else: return False
+
+    if quick: return True
+
+    if trace: g.trace('kind',kind)
+
+    # Get the class/function id
+    i, sigId = self.skipSigId(s,i,ids)
+    if not sigId:
+        if trace: g.trace('no sigId',g.get_line(s,i))
+        return False
+
+    # Skip the argument list.
+    i, ok = self.skipArgs(s,i,kind)
+    if not ok:
+        if trace: g.trace('no args',g.get_line(s,i))
+        return False
+    i = g.skip_ws_and_nl(s,i)
+
+    # Skip the tail of the signature
+    i, ok = self.skipSigTail(s,i)
+    if not ok:
+        if trace: g.trace('no tail',g.get_line(s,i))
+        return False
+    sigEnd = i
+
+    # A trick: make sure the signature ends in a newline,
+    # even if it overlaps the start of the block.
+    if not g.match(s,sigEnd,'\n') and not g.match(s,sigEnd-1,'\n'):
+        if trace: g.trace('extending sigEnd')
+        sigEnd = g.skip_line(s,sigEnd)
+
+    # Skip the block.
+    i = g.skip_ws_and_nl(s,i)
+    if self.blockDelim1 and not g.match(s,i,self.blockDelim1):
+        if trace: g.trace('no block',g.get_line(s,i))
+        return False
+
+    i = self.skipCodeBlock(s,i,kind)
+    # skipCodeBlock skips the trailing delim.
+
+    # Success: set the ivars.
+    self.codeEnd = i
+    self.sigEnd = sigEnd
+    self.sigID = sigId
+
+    # Note: backing up here is safe because
+    # we won't back up past scan's 'start' point.
+    # Thus, characters will never be output twice.
+    k = self.sigStart
+    if not g.match(s,k,'\n'):
+        self.sigStart = g.find_line_start(s,k)
+
+    # Isue this warning only if we have a real class or function.
+    if s[self.sigStart:k].strip():
+        self.error('%s definition does not start a line' % kind)
+        g.es(g.get_line(s,k),color='blue')
+
+    if trace or self.trace: g.trace(kind,'\n'+s[self.sigStart:i])
+    return True
+</t>
+<t tx="ekr.20071105090148.216">def skipSigStart (self,s,i,tags):
+
+    '''Skip over the start of a function/class signature.
+
+    tags is in (self.classTags,self.functionTags).
+
+    Return (i,ids) where ids is list of all ids found, in order.'''
+
+    __pychecker__ = '--no-argsused' # tags not used in the base class.
+
+    ids = []
+    while 1:
+        j = g.skip_ws_and_nl(s,i)
+        i = self.skipId(s,j)
+        id = s[j:i]
+        if id: ids.append(id)
+        else: break
+
+    # g.trace(ids)
+
+    return i, ids
+</t>
+<t tx="ekr.20071105090148.217">def skipSigId (self,s,i,ids):
+
+    '''Return (i, id) where id is the signature's id.
+
+    By default, this is the last id in the ids list.'''
+
+    return i, ids and ids[-1]
+</t>
+<t tx="ekr.20071105090148.218">def skipSigTail(self,s,i):
+
+    '''Skip from the end of the arg list to the start of the block.'''
+
+    while i &lt; len(s) and not g.match(s,i,self.blockDelim1):
+        if self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            i = self.skipString(s,i)
+        elif self.sigTailFailTokens:
+            for z in self.failTokens:
+                if g.match(s,i,z):
+                    return i,False
+            else:
+                i += 1
+        else:
+            i += 1
+
+    return i,True
+</t>
+<t tx="ekr.20071105090148.219">def startsComment (self,s,i):
+
+    return (
+        g.match(s,i,self.lineCommentDelim) or
+        g.match(s,i,self.lineCommentDelim2) or
+        g.match(s,i,self.blockCommentDelim1))
+</t>
+<t tx="ekr.20071105090148.220">def startsId(self,s,i):
+
+    return g.is_c_id(s[i:i+1])
+</t>
+<t tx="ekr.20071105090148.221">def startsString(self,s,i):
+
+    return g.match(s,i,'"') or g.match(s,i,"'")
+</t>
+<t tx="ekr.20071105090148.222">def run (self,s,parent):
+
+    scanner = self
+    scanner.root = parent
+    scanner.file_s = s
+
+    # Step 1: generate the nodes,
+    # including all directive and section references.
+    self.errors = 0
+    self.errorLines = []
+    scanner.scan(s,parent)
+
+    # Step 2: check the generated nodes.
+    # Return True if the result is equivalent to the original file.
+    ok = self.errors == 0 and scanner.check(s,parent)
+
+    # Step 3: insert an @ignore directive if there are any problems.
+    if not ok:
+        scanner.insertIgnoreDirective(parent)
+</t>
+<t tx="ekr.20071105090148.223">def scanCText (self,s,parent,atAuto=False):
+
+    scanner = self.cScanner(importCommands=self,atAuto=atAuto)
+
+    scanner.run(s,parent)
+</t>
+<t tx="ekr.20071105090148.224">class cScanner (baseScannerClass):
+    @others
+</t>
+<t tx="ekr.20071105090148.225">
+def __init__ (self,importCommands,atAuto):
+
+    # Init the base class.
+    importCommands.baseScannerClass.__init__(self,importCommands,
+        atAuto=atAuto,language='c')
+
+    # Set the parser delims.
+    self.blockCommentDelim1 = '/*'
+    self.blockCommentDelim2 = '*/'
+    self.lineCommentDelim = '//'
+    self.lineCommentDelim2 = None
+    self.blockDelim1 = '{'
+    self.blockDelim2 = '}'
+    self.classTags = ['class',]
+    self.extraIdChars = ':'
+    self.functionTags = []
+    sigTailFailTokens = [';','=']
+</t>
+<t tx="ekr.20071105090148.226">def scanElispText (self,s,parent,atAuto=False):
+
+    scanner = self.elispScanner(importCommands=self,atAuto=atAuto)
+
+    scanner.run(s,parent)
+</t>
+<t tx="ekr.20071105090148.227">class elispScanner (baseScannerClass):
+    @others
+</t>
+<t tx="ekr.20071105090148.228">
+def __init__ (self,importCommands,atAuto):
+
+    # Init the base class.
+    importCommands.baseScannerClass.__init__(self,importCommands,
+        atAuto=atAuto,language='elisp')
+
+    # Set the parser delims.
+    self.blockCommentDelim1 = None
+    self.blockCommentDelim2 = None
+    self.lineCommentDelim = ';'
+    self.lineCommentDelim2 = None
+    self.blockDelim1 = '('
+    self.blockDelim2 = ')'
+    self.extraIdChars = '-'
+
+</t>
+<t tx="ekr.20071105090148.229"># skipClass/Function/Signature are defined in the base class.
+def startsClass (self,s,i):
+    '''Return True if s[i:] starts a class definition.
+    Sets sigStart, sigEnd, sigID and codeEnd ivars.'''
+    return False
+
+</t>
+<t tx="ekr.20071105090148.230">def startsFunction(self,s,i):
+    '''Return True if s[i:] starts a function.
+    Sets sigStart, sigEnd, sigID and codeEnd ivars.'''
+
+    self.sigStart = i
+    self.codeEnd = self.sigEnd = self.sigID = None
+    if not g.match(s,i,'('): return False
+    end = self.skipBlock(s,i)
+    if not g.match(s,end,')'): return False
+
+    i = g.skip_ws(s,i+1)
+    if not g.match_word(s,i,'defun'): return False
+
+    i += len(key)
+    sigEnd = i = g.skip_ws_and_nl(s,i)
+    j = g.skip_id(s,i)
+    word = s[i:j]
+    if not word: return False
+
+    self.codeEnd = end + 1
+    self.sigEnd = sigEnd
+    self.sigId = word
+    return True
+</t>
+<t tx="ekr.20071105090148.231">def startsString(self,s,i):
+
+    # Single quotes are not strings.
+    return g.match(s,i,'"')
+</t>
+<t tx="ekr.20071105090148.232">def scanJavaText (self,s,parent,atAuto=False):
+
+    scanner = self.javaScanner(importCommands=self,atAuto=atAuto)
+
+    scanner.run(s,parent)
+</t>
+<t tx="ekr.20071105090148.233">class javaScanner (baseScannerClass):
+    @others
+</t>
+<t tx="ekr.20071105090148.234">
+def __init__ (self,importCommands,atAuto):
+
+    # Init the base class.
+    importCommands.baseScannerClass.__init__(self,importCommands,
+        atAuto=atAuto,language='java')
+
+    # Set the parser delims.
+    self.blockCommentDelim1 = '/*'
+    self.blockCommentDelim2 = '*/'
+    self.lineCommentDelim = '//'
+    self.lineCommentDelim2 = None
+    self.classTags = ['class','interface',]
+</t>
+<t tx="ekr.20071105090148.235">def scanPascalText (self,s,parent,atAuto=False):
+
+    scanner = self.pascalScanner(importCommands=self,atAuto=atAuto)
+
+    scanner.run(s,parent)
+</t>
+<t tx="ekr.20071105090148.236">class pascalScanner (baseScannerClass):
+    @others
+</t>
+<t tx="ekr.20071105090148.237">
+def __init__ (self,importCommands,atAuto):
+
+    # Init the base class.
+    importCommands.baseScannerClass.__init__(self,importCommands,
+        atAuto=atAuto,language='pascal')
+
+    # Set the parser delims.
+    self.blockCommentDelim1 = '(*'
+    self.blockCommentDelim2 = '*)'
+    self.lineCommentDelim = '//'
+    self.blockDelim1 = 'begin'
+    self.blockDelim2 = 'end'
+    self.classTags = []
+    self.functionTags = ['function','procedure','constructor','destructor',]
+</t>
+<t tx="ekr.20071105090148.238">def scanPHPText (self,s,parent,atAuto=False):
+
+    scanner = self.phpScanner(importCommands=self,atAuto=atAuto)
+
+    if scanner.isPurePHP(s):
+        scanner.run(s,parent)
+    else:
+        fileName = scanner.fileName
+        if not atAuto:
+            g.es_print('%s seems to be mixed HTML and PHP.' % fileName)
+        scanner.createHeadline(
+            parent,body=s,headline=fileName)
+</t>
+<t tx="ekr.20071105090148.239">class phpScanner (baseScannerClass):
+    @others
+</t>
+<t tx="ekr.20071105090148.240">
+def __init__ (self,importCommands,atAuto):
+
+    # Init the base class.
+    importCommands.baseScannerClass.__init__(self,importCommands,
+        atAuto=atAuto,language='php')
+
+    # Set the parser delims.
+    self.blockCommentDelim1 = '/*'
+    self.blockCommentDelim2 = '*/'
+    self.lineCommentDelim = '//'
+    self.lineCommentDelim2 = '#'
+
+    # The valid characters in an id
+    self.chars = list(string.ascii_letters + string.digits)
+    extra = [chr(z) for z in xrange(127,256)]
+    self.chars.extend(extra)
+</t>
+<t tx="ekr.20071105090148.241">def isPurePHP (self,s):
+
+    '''Return True if the file begins with &lt;?php or ends with ?&gt;'''
+
+    s = s.strip()
+
+    return (
+        s.startswith('&lt;?') and
+        s[2:3] in ('P','p','=','\n','\r',' ','\t') and
+        s.endswith('?&gt;'))
+
+</t>
+<t tx="ekr.20071105090148.242"># Does not create @first/@last nodes
+def startsString(self,s,i):
+    return g.match(s,i,'"') or g.match(s,i,"'") or g.match(s,i,'&lt;&lt;&lt;')
+
+</t>
+<t tx="ekr.20071105090148.243">def skipString (self,s,i):
+    if g.match(s,i,'"') or g.match(s,i,"'"):
+        return self.skipString()
+    else:
+        return g.skip_heredoc_string(s,i)
+</t>
+<t tx="ekr.20071105090148.244">def scanPythonText (self,s,parent,atAuto=False):
+
+    scanner = self.pythonScanner(importCommands=self,atAuto=atAuto)
+
+    scanner.run(s,parent)
+</t>
+<t tx="ekr.20071105090148.245">class pythonScanner (baseScannerClass):
+    @others
+</t>
+<t tx="ekr.20071105090148.246">
+def __init__ (self,importCommands,atAuto):
+
+    # Init the base class.
+    importCommands.baseScannerClass.__init__(self,importCommands,
+        atAuto=atAuto,language='python')
+
+    # Set the parser delims.
+    self.lineCommentDelim = '#'
+    self.classTags = ['class',]
+    self.functionTags = ['def',]
+    self.blockDelim1 = None
+        # Suppress the check for the block delim.
+        # The check is done in skipSigTail.
+    self.blockDelim2 = None
+    self.strict = True
+
+</t>
+<t tx="ekr.20071105090148.247">def extendSignature(self,s,i):
+
+    '''Extend the text to be added to the class node following the signature.
+
+    The text *must* end with a newline.'''
+
+    # Add a docstring to the class node,
+    # And everything on the line following it
+    j = g.skip_ws_and_nl(s,i)
+    if g.match(s,j,'"""') or g.match(s,j,"'''"):
+        j = g.skip_python_string(s,j)
+        if j &lt; len(s): # No scanning error.
+            # Return the docstring only if nothing but whitespace follows.
+            j = g.skip_ws(s,j)
+            if g.is_nl(s,j):
+                return j + 1
+
+    return i
+</t>
+<t tx="ekr.20071105090148.248">def skipString (self,s,i):
+
+    # Returns len(s) on unterminated string.
+    return g.skip_python_string(s,i,verbose=False)
+</t>
+<t tx="ekr.20071105090148.249">def skipCodeBlock (self,s,i,kind):
+
+    trace = False
+    if trace: g.trace('***',g.callers())
+    startIndent = self.startSigIndent
+    assert startIndent is not None
+    i = start = g.skip_ws_and_nl(s,i)
+    parenCount = 0
+    underIndentedStart = None # The start of trailing underindented blank or comment lines.
+    while i &lt; len(s):
+        progress = i
+        ch = s[i]
+        if g.is_nl(s,i):
+            backslashNewline = i &gt; 0 and g.match(s,i-1,'\\\n')
+            i = g.skip_nl(s,i)
+            if trace: g.trace(g.get_line(s,i))
+            if not backslashNewline:
+                i,underIndentedStart,breakFlag = self.pythonNewlineHelper(
+                    s,i,parenCount,startIndent,underIndentedStart)
+                if breakFlag: break
+        elif ch == '#':
+            i = g.skip_to_end_of_line(s,i)
+        elif ch == '"' or ch == '\'':
+            i = g.skip_python_string(s,i)
+        elif ch in '[{(':
+            i += 1 ; parenCount += 1
+            # g.trace('ch',ch,parenCount)
+        elif ch in ']})':
+            i += 1 ; parenCount -= 1
+            # g.trace('ch',ch,parenCount)
+        else: i += 1
+        assert(progress &lt; i)
+
+    # The actual end of the block.
+    if underIndentedStart is not None:
+        i = underIndentedStart
+        if trace: g.trace('***backtracking to underindent range')
+        if trace: g.trace(g.get_line(s,i))
+
+    if 0 &lt; i &lt; len(s) and not g.match(s,i-1,'\n'):
+        g.trace('Can not happen: Python block does not end in a newline.')
+        g.trace(g.get_line(s,i))
+    if (trace or self.trace) and s[start:i].strip():
+        g.trace(g.callers())
+        g.trace('\n'+s[start:i])
+    return i
+</t>
+<t tx="ekr.20071105090148.250">def pythonNewlineHelper (self,s,i,parenCount,startIndent,underIndentedStart):
+
+    trace = False
+    breakFlag = False
+    j, indent = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+    if indent &lt;= startIndent and parenCount == 0:
+        # An underindented line: it ends the block *unless*
+        # it is a blank or comment line.
+        if g.match(s,j,'#'):
+            if trace: g.trace('underindent: comment')
+            if underIndentedStart is None: underIndentedStart = i
+            i = j
+        elif g.match(s,j,'\n'):
+            if trace: g.trace('underindent: blank line')
+            # Blank lines never start the range of underindented lines.
+            i = j
+        else:
+            if trace: g.trace('underindent: end of block')
+            breakFlag = True # The actual end of the block.
+    else:
+        if underIndentedStart and g.match(s,j,'\n'):
+            # Add the blank line to the underindented range.
+            if trace: g.trace('properly indented blank line extends underindent range')
+        elif underIndentedStart and g.match(s,j,'#'):
+            # Add the (properly indented!) comment line to the underindented range.
+            if trace: g.trace('properly indented comment line extends underindent range')
+        elif underIndentedStart is None:
+            pass
+        else:
+            # A properly indented non-comment line.
+            # Give a message for all underindented comments in underindented range.
+            if trace: g.trace('properly indented line generates underindent errors')
+            s2 = s[underIndentedStart:i]
+            lines = g.splitlines(s2)
+            for line in lines:
+                if line.strip():
+                    junk, indent = g.skip_leading_ws_with_indent(line,0,self.tab_width)
+                    if indent &lt;= startIndent:
+                        self.underindentedComment(line)
+            underIndentedStart = None
+    return i,underIndentedStart,breakFlag
+</t>
+<t tx="ekr.20071105090148.251">def skipSigTail(self,s,i):
+
+    '''Skip from the end of the arg list to the start of the block.'''
+
+    # Must override so we can skip the ':' properly and issue better warnings.
+
+    start = i
+    while i &lt; len(s):
+        if self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            break
+        elif g.match(s,i,':'):
+            i = g.skip_line(s,i+1)
+            if self.trace and s[start:i].strip(): g.trace('\n'+s[start:i])
+            return i,True
+        else:
+            i += 1
+
+    self.error('Warning: improper signature: %s' % g.get_line(s,start))
+    return start,False
+</t>
+<t tx="ekr.20071105090148.252">def scanUnknownFileType (self,s,p,ext,atAuto=False):
+
+    c = self.c
+    body = g.choose(atAuto,'','@ignore\n')
+    if ext in ('.html','.htm'): body += '@language html\n'
+    if ext in ('.txt','.text'): body += '@nocolor\n'
+    c.setBodyString(p,body + self.rootLine + s)
+    g.app.unitTestDict = {'result':True}
+</t>
+<t tx="ekr.20071105090148.253">def cUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest(p,atAuto=atAuto,fileName=None,s=s,showTree=showTree,ext='.c')
+
+</t>
+<t tx="ekr.20071105090148.254">def elispUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.el')
+
+</t>
+<t tx="ekr.20071105090148.255">def htmlUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.htm')
+
+</t>
+<t tx="ekr.20071105090148.256">def javaUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.java')
+
+</t>
+<t tx="ekr.20071105090148.257">def pascalUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.pas')
+
+</t>
+<t tx="ekr.20071105090148.258">def phpUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.php')
+
+</t>
+<t tx="ekr.20071105090148.259">def pythonUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.py')
+
+</t>
+<t tx="ekr.20071105090148.260">def textUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.txt')
+
+</t>
+<t tx="ekr.20071105090148.261">def defaultImporterUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,ext='.xxx')
+</t>
+<t tx="ekr.20071105090148.262">def scannerUnitTest (self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+
+    '''Run a unit test of an import scanner,
+    i.e., create a tree from string s at location p.'''
+
+    c = self.c
+    oldChanged = c.changed
+    c.beginUpdate()
+    try:
+        expectedErrors = g.app.unitTestDict.get('expectedErrors')
+        expectedMismatchLine = g.app.unitTestDict.get('expectedMismatchLine')
+        g.app.unitTestDict = {
+            'expectedErrors':expectedErrors,
+            'expectedMismatchLine':expectedMismatchLine,
+        }
+        if not fileName: fileName = p.headString()
+        if not s: s = self.removeSentinelsCommand([fileName],toString=True)
+        self.createOutline(fileName,p.copy(),atAuto=False,s=s,ext=ext)
+        d = g.app.unitTestDict
+        ok = d.get('result') or (
+            d.get('actualErrors') == d.get('expectedErrors') and
+            d.get('actualMismatchLine') == d.get('expectedMismatchLine'))
+        if not ok:
+            g.trace('result',d.get('result'),
+                'actualErrors',d.get('actualErrors'),
+                'expectedErrors',d.get('expectedErrors'),
+                'actualMismatchLine',d.get('actualMismatchLine'),
+                'expectedMismatchLine', d.get('expectedMismatchLine'),)
+        if not showTree and ok:
+            while p.hasChildren():
+                p.firstChild().doDelete()
+            c.setChanged(oldChanged)
+    finally:
+        c.endUpdate()
+
+    if g.app.unitTesting:
+        d = g.app.unitTestDict
+        assert d.get('result') or (
+            d.get('actualErrors') == d.get('expectedErrors') and
+            d.get('actualMismatchLine') == d.get('expectedMismatchLine'))
+
+</t>
+<t tx="ekr.20071105090148.263">class leoImportCommands (baseLeoImportCommands):
+    """A class that implements Leo's import commands."""
+    pass
+</t>
+<t tx="ekr.20071105090148.264">@language c
+@tabwidth -4
+@others
+@ignore</t>
+<t tx="ekr.20071105090148.265">/* 
+ * tclDate.c --
+ *
+ *	This file is generated from a yacc grammar defined in
+ *	the file tclGetDate.y.  It should not be edited directly.
+ *
+ * Copyright (c) 1992-1995 Karl Lehenbauer and Mark Diekhans.
+ * Copyright (c) 1995-1997 Sun Microsystems, Inc.
+ *
+ * See the file "license.terms" for information on usage and redistribution
+ * of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+ *
+ * RCS: @(#) $Id$
+ */
+</t>
+<t tx="ekr.20071105090148.266">
+#include "tclInt.h"
+#include "tclPort.h"
+
+#if defined(MAC_TCL) &amp;&amp; !defined(TCL_MAC_USE_MSL_EPOCH)
+#   define EPOCH           1904
+#   define START_OF_TIME   1904
+#   define END_OF_TIME     2039
+#else
+#   define EPOCH           1970
+#   define START_OF_TIME   1902
+#   define END_OF_TIME     2037
+#endif
+
+/*
+ * The offset of tm_year of struct tm returned by localtime, gmtime, etc.
+ * I don't know how universal this is; K&amp;R II, the NetBSD manpages, and
+ * ../compat/strftime.c all agree that tm_year is the year-1900.  However,
+ * some systems may have a different value.  This #define should be the
+ * same as in ../compat/strftime.c.
+ */
+#define TM_YEAR_BASE 1900
+
+#define HOUR(x)         ((int) (60 * x))
+#define SECSPERDAY      (24L * 60L * 60L)
+#define IsLeapYear(x)   ((x % 4 == 0) &amp;&amp; (x % 100 != 0 || x % 400 == 0))
+
+/*
+ *  An entry in the lexical lookup table.
+ */
+typedef struct _TABLE {
+    char        *name;
+    int         type;
+    time_t      value;
+} TABLE;
+
+
+/*
+ *  Daylight-savings mode:  on, off, or not yet known.
+ */
+typedef enum _DSTMODE {
+    DSTon, DSToff, DSTmaybe
+} DSTMODE;
+
+/*
+ *  Meridian:  am, pm, or 24-hour style.
+ */
+typedef enum _MERIDIAN {
+    MERam, MERpm, MER24
+} MERIDIAN;
+
+
+/*
+ *  Global variables.  We could get rid of most of these by using a good
+ *  union as the yacc stack.  (This routine was originally written before
+ *  yacc had the %union construct.)  Maybe someday; right now we only use
+ *  the %union very rarely.
+ */
+static char     *TclDateInput;
+static DSTMODE  TclDateDSTmode;
+static time_t   TclDateDayOrdinal;
+static time_t   TclDateDayNumber;
+static time_t   TclDateMonthOrdinal;
+static int      TclDateHaveDate;
+static int      TclDateHaveDay;
+static int      TclDateHaveOrdinalMonth;
+static int      TclDateHaveRel;
+static int      TclDateHaveTime;
+static int      TclDateHaveZone;
+static time_t   TclDateTimezone;
+static time_t   TclDateDay;
+static time_t   TclDateHour;
+static time_t   TclDateMinutes;
+static time_t   TclDateMonth;
+static time_t   TclDateSeconds;
+static time_t   TclDateYear;
+static MERIDIAN TclDateMeridian;
+static time_t   TclDateRelMonth;
+static time_t   TclDateRelDay;
+static time_t   TclDateRelSeconds;
+static time_t  *TclDateRelPointer;
+
+/*
+ * Prototypes of internal functions.
+ */
+static void	TclDateerror _ANSI_ARGS_((char *s));
+static time_t	ToSeconds _ANSI_ARGS_((time_t Hours, time_t Minutes,
+		    time_t Seconds, MERIDIAN Meridian));
+static int	Convert _ANSI_ARGS_((time_t Month, time_t Day, time_t Year,
+		    time_t Hours, time_t Minutes, time_t Seconds,
+		    MERIDIAN Meridia, DSTMODE DSTmode, time_t *TimePtr));
+static time_t	DSTcorrect _ANSI_ARGS_((time_t Start, time_t Future));
+static time_t	NamedDay _ANSI_ARGS_((time_t Start, time_t DayOrdinal,
+		    time_t DayNumber));
+static time_t   NamedMonth _ANSI_ARGS_((time_t Start, time_t MonthOrdinal,
+                    time_t MonthNumber));
+static int	RelativeMonth _ANSI_ARGS_((time_t Start, time_t RelMonth,
+		    time_t *TimePtr));
+static int	RelativeDay _ANSI_ARGS_((time_t Start, time_t RelDay,
+		    time_t *TimePtr));
+static int	LookupWord _ANSI_ARGS_((char *buff));
+static int	TclDatelex _ANSI_ARGS_((void));
+
+int
+TclDateparse _ANSI_ARGS_((void));
+typedef union
+#ifdef __cplusplus
+	YYSTYPE
+#endif
+ {
+    time_t              Number;
+    enum _MERIDIAN      Meridian;
+} YYSTYPE;
+# define tAGO 257
+# define tDAY 258
+# define tDAYZONE 259
+# define tID 260
+# define tMERIDIAN 261
+# define tMINUTE_UNIT 262
+# define tMONTH 263
+# define tMONTH_UNIT 264
+# define tSTARDATE 265
+# define tSEC_UNIT 266
+# define tSNUMBER 267
+# define tUNUMBER 268
+# define tZONE 269
+# define tEPOCH 270
+# define tDST 271
+# define tISOBASE 272
+# define tDAY_UNIT 273
+# define tNEXT 274
+
+
+
+
+#if defined(__cplusplus) || defined(__STDC__)
+
+#if defined(__cplusplus) &amp;&amp; defined(__EXTERN_C__)
+extern "C" {
+#endif
+#ifndef TclDateerror
+#if defined(__cplusplus)
+	void TclDateerror(CONST char *);
+#endif
+#endif
+#ifndef TclDatelex
+	int TclDatelex(void);
+#endif
+	int TclDateparse(void);
+#if defined(__cplusplus) &amp;&amp; defined(__EXTERN_C__)
+}
+#endif
+
+#endif
+
+#define TclDateclearin TclDatechar = -1
+#define TclDateerrok TclDateerrflag = 0
+extern int TclDatechar;
+extern int TclDateerrflag;
+YYSTYPE TclDatelval;
+YYSTYPE TclDateval;
+typedef int TclDatetabelem;
+#ifndef YYMAXDEPTH
+#define YYMAXDEPTH 150
+#endif
+#if YYMAXDEPTH &gt; 0
+int TclDate_TclDates[YYMAXDEPTH], *TclDates = TclDate_TclDates;
+YYSTYPE TclDate_TclDatev[YYMAXDEPTH], *TclDatev = TclDate_TclDatev;
+#else	/* user does initial allocation */
+int *TclDates;
+YYSTYPE *TclDatev;
+#endif
+static int TclDatemaxdepth = YYMAXDEPTH;
+# define YYERRCODE 256
+
+
+/*
+ * Month and day table.
+ */
+static TABLE    MonthDayTable[] = {
+    { "january",        tMONTH,  1 },
+    { "february",       tMONTH,  2 },
+    { "march",          tMONTH,  3 },
+    { "april",          tMONTH,  4 },
+    { "may",            tMONTH,  5 },
+    { "june",           tMONTH,  6 },
+    { "july",           tMONTH,  7 },
+    { "august",         tMONTH,  8 },
+    { "september",      tMONTH,  9 },
+    { "sept",           tMONTH,  9 },
+    { "october",        tMONTH, 10 },
+    { "november",       tMONTH, 11 },
+    { "december",       tMONTH, 12 },
+    { "sunday",         tDAY, 0 },
+    { "monday",         tDAY, 1 },
+    { "tuesday",        tDAY, 2 },
+    { "tues",           tDAY, 2 },
+    { "wednesday",      tDAY, 3 },
+    { "wednes",         tDAY, 3 },
+    { "thursday",       tDAY, 4 },
+    { "thur",           tDAY, 4 },
+    { "thurs",          tDAY, 4 },
+    { "friday",         tDAY, 5 },
+    { "saturday",       tDAY, 6 },
+    { NULL }
+};
+
+/*
+ * Time units table.
+ */
+static TABLE    UnitsTable[] = {
+    { "year",           tMONTH_UNIT,    12 },
+    { "month",          tMONTH_UNIT,     1 },
+    { "fortnight",      tDAY_UNIT,      14 },
+    { "week",           tDAY_UNIT,       7 },
+    { "day",            tDAY_UNIT,       1 },
+    { "hour",           tSEC_UNIT, 60 * 60 },
+    { "minute",         tSEC_UNIT,      60 },
+    { "min",            tSEC_UNIT,      60 },
+    { "second",         tSEC_UNIT,       1 },
+    { "sec",            tSEC_UNIT,       1 },
+    { NULL }
+};
+
+/*
+ * Assorted relative-time words.
+ */
+static TABLE    OtherTable[] = {
+    { "tomorrow",       tDAY_UNIT,      1 },
+    { "yesterday",      tDAY_UNIT,     -1 },
+    { "today",          tDAY_UNIT,      0 },
+    { "now",            tSEC_UNIT,      0 },
+    { "last",           tUNUMBER,      -1 },
+    { "this",           tSEC_UNIT,      0 },
+    { "next",           tNEXT,          1 },
+#if 0
+    { "first",          tUNUMBER,       1 },
+    { "second",         tUNUMBER,       2 },
+    { "third",          tUNUMBER,       3 },
+    { "fourth",         tUNUMBER,       4 },
+    { "fifth",          tUNUMBER,       5 },
+    { "sixth",          tUNUMBER,       6 },
+    { "seventh",        tUNUMBER,       7 },
+    { "eighth",         tUNUMBER,       8 },
+    { "ninth",          tUNUMBER,       9 },
+    { "tenth",          tUNUMBER,       10 },
+    { "eleventh",       tUNUMBER,       11 },
+    { "twelfth",        tUNUMBER,       12 },
+#endif
+    { "ago",            tAGO,   1 },
+    { "epoch",          tEPOCH,   0 },
+    { "stardate",       tSTARDATE, 0},
+    { NULL }
+};
+
+/*
+ * The timezone table.  (Note: This table was modified to not use any floating
+ * point constants to work around an SGI compiler bug).
+ */
+static TABLE    TimezoneTable[] = {
+    { "gmt",    tZONE,     HOUR( 0) },      /* Greenwich Mean */
+    { "ut",     tZONE,     HOUR( 0) },      /* Universal (Coordinated) */
+    { "utc",    tZONE,     HOUR( 0) },
+    { "uct",    tZONE,     HOUR( 0) },      /* Universal Coordinated Time */
+    { "wet",    tZONE,     HOUR( 0) },      /* Western European */
+    { "bst",    tDAYZONE,  HOUR( 0) },      /* British Summer */
+    { "wat",    tZONE,     HOUR( 1) },      /* West Africa */
+    { "at",     tZONE,     HOUR( 2) },      /* Azores */
+#if     0
+    /* For completeness.  BST is also British Summer, and GST is
+     * also Guam Standard. */
+    { "bst",    tZONE,     HOUR( 3) },      /* Brazil Standard */
+    { "gst",    tZONE,     HOUR( 3) },      /* Greenland Standard */
+#endif
+    { "nft",    tZONE,     HOUR( 7/2) },    /* Newfoundland */
+    { "nst",    tZONE,     HOUR( 7/2) },    /* Newfoundland Standard */
+    { "ndt",    tDAYZONE,  HOUR( 7/2) },    /* Newfoundland Daylight */
+    { "ast",    tZONE,     HOUR( 4) },      /* Atlantic Standard */
+    { "adt",    tDAYZONE,  HOUR( 4) },      /* Atlantic Daylight */
+    { "est",    tZONE,     HOUR( 5) },      /* Eastern Standard */
+    { "edt",    tDAYZONE,  HOUR( 5) },      /* Eastern Daylight */
+    { "cst",    tZONE,     HOUR( 6) },      /* Central Standard */
+    { "cdt",    tDAYZONE,  HOUR( 6) },      /* Central Daylight */
+    { "mst",    tZONE,     HOUR( 7) },      /* Mountain Standard */
+    { "mdt",    tDAYZONE,  HOUR( 7) },      /* Mountain Daylight */
+    { "pst",    tZONE,     HOUR( 8) },      /* Pacific Standard */
+    { "pdt",    tDAYZONE,  HOUR( 8) },      /* Pacific Daylight */
+    { "yst",    tZONE,     HOUR( 9) },      /* Yukon Standard */
+    { "ydt",    tDAYZONE,  HOUR( 9) },      /* Yukon Daylight */
+    { "hst",    tZONE,     HOUR(10) },      /* Hawaii Standard */
+    { "hdt",    tDAYZONE,  HOUR(10) },      /* Hawaii Daylight */
+    { "cat",    tZONE,     HOUR(10) },      /* Central Alaska */
+    { "ahst",   tZONE,     HOUR(10) },      /* Alaska-Hawaii Standard */
+    { "nt",     tZONE,     HOUR(11) },      /* Nome */
+    { "idlw",   tZONE,     HOUR(12) },      /* International Date Line West */
+    { "cet",    tZONE,    -HOUR( 1) },      /* Central European */
+    { "cest",   tDAYZONE, -HOUR( 1) },      /* Central European Summer */
+    { "met",    tZONE,    -HOUR( 1) },      /* Middle European */
+    { "mewt",   tZONE,    -HOUR( 1) },      /* Middle European Winter */
+    { "mest",   tDAYZONE, -HOUR( 1) },      /* Middle European Summer */
+    { "swt",    tZONE,    -HOUR( 1) },      /* Swedish Winter */
+    { "sst",    tDAYZONE, -HOUR( 1) },      /* Swedish Summer */
+    { "fwt",    tZONE,    -HOUR( 1) },      /* French Winter */
+    { "fst",    tDAYZONE, -HOUR( 1) },      /* French Summer */
+    { "eet",    tZONE,    -HOUR( 2) },      /* Eastern Europe, USSR Zone 1 */
+    { "bt",     tZONE,    -HOUR( 3) },      /* Baghdad, USSR Zone 2 */
+    { "it",     tZONE,    -HOUR( 7/2) },    /* Iran */
+    { "zp4",    tZONE,    -HOUR( 4) },      /* USSR Zone 3 */
+    { "zp5",    tZONE,    -HOUR( 5) },      /* USSR Zone 4 */
+    { "ist",    tZONE,    -HOUR(11/2) },    /* Indian Standard */
+    { "zp6",    tZONE,    -HOUR( 6) },      /* USSR Zone 5 */
+#if     0
+    /* For completeness.  NST is also Newfoundland Stanard, nad SST is
+     * also Swedish Summer. */
+    { "nst",    tZONE,    -HOUR(13/2) },    /* North Sumatra */
+    { "sst",    tZONE,    -HOUR( 7) },      /* South Sumatra, USSR Zone 6 */
+#endif  /* 0 */
+    { "wast",   tZONE,    -HOUR( 7) },      /* West Australian Standard */
+    { "wadt",   tDAYZONE, -HOUR( 7) },      /* West Australian Daylight */
+    { "jt",     tZONE,    -HOUR(15/2) },    /* Java (3pm in Cronusland!) */
+    { "cct",    tZONE,    -HOUR( 8) },      /* China Coast, USSR Zone 7 */
+    { "jst",    tZONE,    -HOUR( 9) },      /* Japan Standard, USSR Zone 8 */
+    { "jdt",    tDAYZONE, -HOUR( 9) },      /* Japan Daylight */
+    { "kst",    tZONE,    -HOUR( 9) },      /* Korea Standard */
+    { "kdt",    tDAYZONE, -HOUR( 9) },      /* Korea Daylight */
+    { "cast",   tZONE,    -HOUR(19/2) },    /* Central Australian Standard */
+    { "cadt",   tDAYZONE, -HOUR(19/2) },    /* Central Australian Daylight */
+    { "east",   tZONE,    -HOUR(10) },      /* Eastern Australian Standard */
+    { "eadt",   tDAYZONE, -HOUR(10) },      /* Eastern Australian Daylight */
+    { "gst",    tZONE,    -HOUR(10) },      /* Guam Standard, USSR Zone 9 */
+    { "nzt",    tZONE,    -HOUR(12) },      /* New Zealand */
+    { "nzst",   tZONE,    -HOUR(12) },      /* New Zealand Standard */
+    { "nzdt",   tDAYZONE, -HOUR(12) },      /* New Zealand Daylight */
+    { "idle",   tZONE,    -HOUR(12) },      /* International Date Line East */
+    /* ADDED BY Marco Nijdam */
+    { "dst",    tDST,     HOUR( 0) },       /* DST on (hour is ignored) */
+    /* End ADDED */
+    {  NULL  }
+};
+
+/*
+ * Military timezone table.
+ */
+static TABLE    MilitaryTable[] = {
+    { "a",      tZONE,  HOUR(  1) },
+    { "b",      tZONE,  HOUR(  2) },
+    { "c",      tZONE,  HOUR(  3) },
+    { "d",      tZONE,  HOUR(  4) },
+    { "e",      tZONE,  HOUR(  5) },
+    { "f",      tZONE,  HOUR(  6) },
+    { "g",      tZONE,  HOUR(  7) },
+    { "h",      tZONE,  HOUR(  8) },
+    { "i",      tZONE,  HOUR(  9) },
+    { "k",      tZONE,  HOUR( 10) },
+    { "l",      tZONE,  HOUR( 11) },
+    { "m",      tZONE,  HOUR( 12) },
+    { "n",      tZONE,  HOUR(- 1) },
+    { "o",      tZONE,  HOUR(- 2) },
+    { "p",      tZONE,  HOUR(- 3) },
+    { "q",      tZONE,  HOUR(- 4) },
+    { "r",      tZONE,  HOUR(- 5) },
+    { "s",      tZONE,  HOUR(- 6) },
+    { "t",      tZONE,  HOUR(- 7) },
+    { "u",      tZONE,  HOUR(- 8) },
+    { "v",      tZONE,  HOUR(- 9) },
+    { "w",      tZONE,  HOUR(-10) },
+    { "x",      tZONE,  HOUR(-11) },
+    { "y",      tZONE,  HOUR(-12) },
+    { "z",      tZONE,  HOUR(  0) },
+    { NULL }
+};
+
+
+/*
+ * Dump error messages in the bit bucket.
+ */
+static void
+TclDateerror(s)
+    char  *s;
+{
+}
+
+
+static time_t
+ToSeconds(Hours, Minutes, Seconds, Meridian)
+    time_t      Hours;
+    time_t      Minutes;
+    time_t      Seconds;
+    MERIDIAN    Meridian;
+{
+    if (Minutes &lt; 0 || Minutes &gt; 59 || Seconds &lt; 0 || Seconds &gt; 59)
+        return -1;
+    switch (Meridian) {
+    case MER24:
+        if (Hours &lt; 0 || Hours &gt; 23)
+            return -1;
+        return (Hours * 60L + Minutes) * 60L + Seconds;
+    case MERam:
+        if (Hours &lt; 1 || Hours &gt; 12)
+            return -1;
+        return ((Hours % 12) * 60L + Minutes) * 60L + Seconds;
+    case MERpm:
+        if (Hours &lt; 1 || Hours &gt; 12)
+            return -1;
+        return (((Hours % 12) + 12) * 60L + Minutes) * 60L + Seconds;
+    }
+    return -1;  /* Should never be reached */
+}
+
+/*
+ *-----------------------------------------------------------------------------
+ *
+ * Convert --
+ *
+ *      Convert a {month, day, year, hours, minutes, seconds, meridian, dst}
+ *      tuple into a clock seconds value.
+ *
+ * Results:
+ *      0 or -1 indicating success or failure.
+ *
+ * Side effects:
+ *      Fills TimePtr with the computed value.
+ *
+ *-----------------------------------------------------------------------------
+ */
+static int
+Convert(Month, Day, Year, Hours, Minutes, Seconds, Meridian, DSTmode, TimePtr)
+    time_t      Month;
+    time_t      Day;
+    time_t      Year;
+    time_t      Hours;
+    time_t      Minutes;
+    time_t      Seconds;
+    MERIDIAN    Meridian;
+    DSTMODE     DSTmode;
+    time_t     *TimePtr;
+{
+    static int  DaysInMonth[12] = {
+        31, 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+    };
+    time_t tod;
+    time_t Julian;
+    int i;
+
+    /* Figure out how many days are in February for the given year.
+     * Every year divisible by 4 is a leap year.
+     * But, every year divisible by 100 is not a leap year.
+     * But, every year divisible by 400 is a leap year after all.
+     */
+    DaysInMonth[1] = IsLeapYear(Year) ? 29 : 28;
+
+    /* Check the inputs for validity */
+    if (Month &lt; 1 || Month &gt; 12
+	    || Year &lt; START_OF_TIME || Year &gt; END_OF_TIME
+	    || Day &lt; 1 || Day &gt; DaysInMonth[(int)--Month])
+        return -1;
+
+    /* Start computing the value.  First determine the number of days
+     * represented by the date, then multiply by the number of seconds/day.
+     */
+    for (Julian = Day - 1, i = 0; i &lt; Month; i++)
+        Julian += DaysInMonth[i];
+    if (Year &gt;= EPOCH) {
+        for (i = EPOCH; i &lt; Year; i++)
+            Julian += 365 + IsLeapYear(i);
+    } else {
+        for (i = (int)Year; i &lt; EPOCH; i++)
+            Julian -= 365 + IsLeapYear(i);
+    }
+    Julian *= SECSPERDAY;
+
+    /* Add the timezone offset ?? */
+    Julian += TclDateTimezone * 60L;
+
+    /* Add the number of seconds represented by the time component */
+    if ((tod = ToSeconds(Hours, Minutes, Seconds, Meridian)) &lt; 0)
+        return -1;
+    Julian += tod;
+
+    /* Perform a preliminary DST compensation ?? */
+    if (DSTmode == DSTon
+     || (DSTmode == DSTmaybe &amp;&amp; TclpGetDate((TclpTime_t)&amp;Julian, 0)-&gt;tm_isdst))
+        Julian -= 60 * 60;
+    *TimePtr = Julian;
+    return 0;
+}
+
+
+static time_t
+DSTcorrect(Start, Future)
+    time_t      Start;
+    time_t      Future;
+{
+    time_t      StartDay;
+    time_t      FutureDay;
+    StartDay = (TclpGetDate((TclpTime_t)&amp;Start, 0)-&gt;tm_hour + 1) % 24;
+    FutureDay = (TclpGetDate((TclpTime_t)&amp;Future, 0)-&gt;tm_hour + 1) % 24;
+    return (Future - Start) + (StartDay - FutureDay) * 60L * 60L;
+}
+
+
+static time_t
+NamedDay(Start, DayOrdinal, DayNumber)
+    time_t      Start;
+    time_t      DayOrdinal;
+    time_t      DayNumber;
+{
+    struct tm   *tm;
+    time_t      now;
+
+    now = Start;
+    tm = TclpGetDate((TclpTime_t)&amp;now, 0);
+    now += SECSPERDAY * ((DayNumber - tm-&gt;tm_wday + 7) % 7);
+    now += 7 * SECSPERDAY * (DayOrdinal &lt;= 0 ? DayOrdinal : DayOrdinal - 1);
+    return DSTcorrect(Start, now);
+}
+
+static time_t
+NamedMonth(Start, MonthOrdinal, MonthNumber)
+    time_t Start;
+    time_t MonthOrdinal;
+    time_t MonthNumber;
+{
+    struct tm *tm;
+    time_t now;
+    int result;
+    
+    now = Start;
+    tm = TclpGetDate((TclpTime_t)&amp;now, 0);
+    /* To compute the next n'th month, we use this alg:
+     * add n to year value
+     * if currentMonth &lt; requestedMonth decrement year value by 1 (so that
+     *  doing next february from january gives us february of the current year)
+     * set day to 1, time to 0
+     */
+    tm-&gt;tm_year += (int)MonthOrdinal;
+    if (tm-&gt;tm_mon &lt; MonthNumber - 1) {
+	tm-&gt;tm_year--;
+    }
+    result = Convert(MonthNumber, (time_t) 1, tm-&gt;tm_year + TM_YEAR_BASE,
+	    (time_t) 0, (time_t) 0, (time_t) 0, MER24, DSTmaybe, &amp;now);
+    if (result &lt; 0) {
+	return 0;
+    }
+    return DSTcorrect(Start, now);
+}
+
+static int
+RelativeMonth(Start, RelMonth, TimePtr)
+    time_t Start;
+    time_t RelMonth;
+    time_t *TimePtr;
+{
+    struct tm *tm;
+    time_t Month;
+    time_t Year;
+    time_t Julian;
+    int result;
+
+    if (RelMonth == 0) {
+        *TimePtr = 0;
+        return 0;
+    }
+    tm = TclpGetDate((TclpTime_t)&amp;Start, 0);
+    Month = 12 * (tm-&gt;tm_year + TM_YEAR_BASE) + tm-&gt;tm_mon + RelMonth;
+    Year = Month / 12;
+    Month = Month % 12 + 1;
+    result = Convert(Month, (time_t) tm-&gt;tm_mday, Year,
+	    (time_t) tm-&gt;tm_hour, (time_t) tm-&gt;tm_min, (time_t) tm-&gt;tm_sec,
+	    MER24, DSTmaybe, &amp;Julian);
+
+    /*
+     * The Julian time returned above is behind by one day, if "month" 
+     * or "year" is used to specify relative time and the GMT flag is true.
+     * This problem occurs only when the current time is closer to
+     * midnight, the difference being not more than its time difference
+     * with GMT. For example, in US/Pacific time zone, the problem occurs
+     * whenever the current time is between midnight to 8:00am or 7:00amDST.
+     * See Bug# 413397 for more details and sample script.
+     * To resolve this bug, we simply add the number of seconds corresponding
+     * to timezone difference with GMT to Julian time, if GMT flag is true.
+     */
+
+    if (TclDateTimezone == 0) {
+        Julian += TclpGetTimeZone((unsigned long) Start) * 60L;
+    }
+
+    /*
+     * The following iteration takes into account the case were we jump
+     * into a "short month".  Far example, "one month from Jan 31" will
+     * fail because there is no Feb 31.  The code below will reduce the
+     * day and try converting the date until we succed or the date equals
+     * 28 (which always works unless the date is bad in another way).
+     */
+
+    while ((result != 0) &amp;&amp; (tm-&gt;tm_mday &gt; 28)) {
+	tm-&gt;tm_mday--;
+	result = Convert(Month, (time_t) tm-&gt;tm_mday, Year,
+		(time_t) tm-&gt;tm_hour, (time_t) tm-&gt;tm_min, (time_t) tm-&gt;tm_sec,
+		MER24, DSTmaybe, &amp;Julian);
+    }
+    if (result != 0) {
+	return -1;
+    }
+    *TimePtr = DSTcorrect(Start, Julian);
+    return 0;
+}
+
+
+/*
+ *-----------------------------------------------------------------------------
+ *
+ * RelativeDay --
+ *
+ *      Given a starting time and a number of days before or after, compute the
+ *      DST corrected difference between those dates.
+ *
+ * Results:
+ *     1 or -1 indicating success or failure.
+ *
+ * Side effects:
+ *      Fills TimePtr with the computed value.
+ *
+ *-----------------------------------------------------------------------------
+ */
+
+static int
+RelativeDay(Start, RelDay, TimePtr)
+    time_t Start;
+    time_t RelDay;
+    time_t *TimePtr;
+{
+    time_t new;
+
+    new = Start + (RelDay * 60 * 60 * 24);
+    *TimePtr = DSTcorrect(Start, new);
+    return 1;
+}
+
+static int
+LookupWord(buff)
+    char                *buff;
+{
+    register char *p;
+    register char *q;
+    register TABLE *tp;
+    int i;
+    int abbrev;
+
+    /*
+     * Make it lowercase.
+     */
+
+    Tcl_UtfToLower(buff);
+
+    if (strcmp(buff, "am") == 0 || strcmp(buff, "a.m.") == 0) {
+        TclDatelval.Meridian = MERam;
+        return tMERIDIAN;
+    }
+    if (strcmp(buff, "pm") == 0 || strcmp(buff, "p.m.") == 0) {
+        TclDatelval.Meridian = MERpm;
+        return tMERIDIAN;
+    }
+
+    /*
+     * See if we have an abbreviation for a month.
+     */
+    if (strlen(buff) == 3) {
+        abbrev = 1;
+    } else if (strlen(buff) == 4 &amp;&amp; buff[3] == '.') {
+        abbrev = 1;
+        buff[3] = '\0';
+    } else {
+        abbrev = 0;
+    }
+
+    for (tp = MonthDayTable; tp-&gt;name; tp++) {
+        if (abbrev) {
+            if (strncmp(buff, tp-&gt;name, 3) == 0) {
+                TclDatelval.Number = tp-&gt;value;
+                return tp-&gt;type;
+            }
+        } else if (strcmp(buff, tp-&gt;name) == 0) {
+            TclDatelval.Number = tp-&gt;value;
+            return tp-&gt;type;
+        }
+    }
+
+    for (tp = TimezoneTable; tp-&gt;name; tp++) {
+        if (strcmp(buff, tp-&gt;name) == 0) {
+            TclDatelval.Number = tp-&gt;value;
+            return tp-&gt;type;
+        }
+    }
+
+    for (tp = UnitsTable; tp-&gt;name; tp++) {
+        if (strcmp(buff, tp-&gt;name) == 0) {
+            TclDatelval.Number = tp-&gt;value;
+            return tp-&gt;type;
+        }
+    }
+
+    /*
+     * Strip off any plural and try the units table again.
+     */
+    i = strlen(buff) - 1;
+    if (buff[i] == 's') {
+        buff[i] = '\0';
+        for (tp = UnitsTable; tp-&gt;name; tp++) {
+            if (strcmp(buff, tp-&gt;name) == 0) {
+                TclDatelval.Number = tp-&gt;value;
+                return tp-&gt;type;
+            }
+	}
+    }
+
+    for (tp = OtherTable; tp-&gt;name; tp++) {
+        if (strcmp(buff, tp-&gt;name) == 0) {
+            TclDatelval.Number = tp-&gt;value;
+            return tp-&gt;type;
+        }
+    }
+
+    /*
+     * Military timezones.
+     */
+    if (buff[1] == '\0' &amp;&amp; !(*buff &amp; 0x80)
+	    &amp;&amp; isalpha(UCHAR(*buff))) {	/* INTL: ISO only */
+        for (tp = MilitaryTable; tp-&gt;name; tp++) {
+            if (strcmp(buff, tp-&gt;name) == 0) {
+                TclDatelval.Number = tp-&gt;value;
+                return tp-&gt;type;
+            }
+	}
+    }
+
+    /*
+     * Drop out any periods and try the timezone table again.
+     */
+    for (i = 0, p = q = buff; *q; q++)
+        if (*q != '.') {
+            *p++ = *q;
+        } else {
+            i++;
+	}
+    *p = '\0';
+    if (i) {
+        for (tp = TimezoneTable; tp-&gt;name; tp++) {
+            if (strcmp(buff, tp-&gt;name) == 0) {
+                TclDatelval.Number = tp-&gt;value;
+                return tp-&gt;type;
+            }
+	}
+    }
+    
+    return tID;
+}
+
+
+static int
+TclDatelex()
+{
+    register char       c;
+    register char       *p;
+    char                buff[20];
+    int                 Count;
+
+    for ( ; ; ) {
+        while (isspace(UCHAR(*TclDateInput))) {
+            TclDateInput++;
+	}
+
+        if (isdigit(UCHAR(c = *TclDateInput))) { /* INTL: digit */
+	    /* convert the string into a number; count the number of digits */
+	    Count = 0;
+            for (TclDatelval.Number = 0;
+		    isdigit(UCHAR(c = *TclDateInput++)); ) { /* INTL: digit */
+                TclDatelval.Number = 10 * TclDatelval.Number + c - '0';
+		Count++;
+	    }
+            TclDateInput--;
+	    /* A number with 6 or more digits is considered an ISO 8601 base */
+	    if (Count &gt;= 6) {
+		return tISOBASE;
+	    } else {
+		return tUNUMBER;
+	    }
+        }
+        if (!(c &amp; 0x80) &amp;&amp; isalpha(UCHAR(c))) {	/* INTL: ISO only. */
+            for (p = buff; isalpha(UCHAR(c = *TclDateInput++)) /* INTL: ISO only. */
+		     || c == '.'; ) {
+                if (p &lt; &amp;buff[sizeof buff - 1]) {
+                    *p++ = c;
+		}
+	    }
+            *p = '\0';
+            TclDateInput--;
+            return LookupWord(buff);
+        }
+        if (c != '(') {
+            return *TclDateInput++;
+	}
+        Count = 0;
+        do {
+            c = *TclDateInput++;
+            if (c == '\0') {
+                return c;
+	    } else if (c == '(') {
+                Count++;
+	    } else if (c == ')') {
+                Count--;
+	    }
+        } while (Count &gt; 0);
+    }
+}
+</t>
+<t tx="ekr.20071105090148.267">
+/*
+ * Specify zone is of -50000 to force GMT.  (This allows BST to work).
+ */
+
+int
+TclGetDate(p, now, zone, timePtr)
+    char *p;
+    Tcl_WideInt now;
+    long zone;
+    Tcl_WideInt *timePtr;
+{
+    struct tm *tm;
+    time_t Start;
+    time_t Time;
+    time_t tod;
+    int thisyear;
+
+    TclDateInput = p;
+    /* now has to be cast to a time_t for 64bit compliance */
+    Start = (time_t) now;
+    tm = TclpGetDate((TclpTime_t) &amp;Start, (zone == -50000));
+    thisyear = tm-&gt;tm_year + TM_YEAR_BASE;
+    TclDateYear = thisyear;
+    TclDateMonth = tm-&gt;tm_mon + 1;
+    TclDateDay = tm-&gt;tm_mday;
+    TclDateTimezone = zone;
+    if (zone == -50000) {
+        TclDateDSTmode = DSToff;  /* assume GMT */
+        TclDateTimezone = 0;
+    } else {
+        TclDateDSTmode = DSTmaybe;
+    }
+    TclDateHour = 0;
+    TclDateMinutes = 0;
+    TclDateSeconds = 0;
+    TclDateMeridian = MER24;
+    TclDateRelSeconds = 0;
+    TclDateRelMonth = 0;
+    TclDateRelDay = 0;
+    TclDateRelPointer = NULL;
+
+    TclDateHaveDate = 0;
+    TclDateHaveDay = 0;
+    TclDateHaveOrdinalMonth = 0;
+    TclDateHaveRel = 0;
+    TclDateHaveTime = 0;
+    TclDateHaveZone = 0;
+
+    if (TclDateparse() || TclDateHaveTime &gt; 1 || TclDateHaveZone &gt; 1 || TclDateHaveDate &gt; 1 ||
+	    TclDateHaveDay &gt; 1 || TclDateHaveOrdinalMonth &gt; 1) {
+        return -1;
+    }
+    
+    if (TclDateHaveDate || TclDateHaveTime || TclDateHaveDay) {
+	if (TclDateYear &lt; 0) {
+	    TclDateYear = -TclDateYear;
+	}
+	/*
+	 * The following line handles years that are specified using
+	 * only two digits.  The line of code below implements a policy
+	 * defined by the X/Open workgroup on the millinium rollover.
+	 * Note: some of those dates may not actually be valid on some
+	 * platforms.  The POSIX standard startes that the dates 70-99
+	 * shall refer to 1970-1999 and 00-38 shall refer to 2000-2038.
+	 * This later definition should work on all platforms.
+	 */
+
+	if (TclDateYear &lt; 100) {
+	    if (TclDateYear &gt;= 69) {
+		TclDateYear += 1900;
+	    } else {
+		TclDateYear += 2000;
+	    }
+	}
+	if (Convert(TclDateMonth, TclDateDay, TclDateYear, TclDateHour, TclDateMinutes, TclDateSeconds,
+		TclDateMeridian, TclDateDSTmode, &amp;Start) &lt; 0) {
+            return -1;
+	}
+    } else {
+        Start = (time_t) now;
+        if (!TclDateHaveRel) {
+            Start -= ((tm-&gt;tm_hour * 60L * 60L) +
+		    tm-&gt;tm_min * 60L) +	tm-&gt;tm_sec;
+	}
+    }
+
+    Start += TclDateRelSeconds;
+    if (RelativeMonth(Start, TclDateRelMonth, &amp;Time) &lt; 0) {
+        return -1;
+    }
+    Start += Time;
+
+    if (RelativeDay(Start, TclDateRelDay, &amp;Time) &lt; 0) {
+	return -1;
+    }
+    Start += Time;
+    
+    if (TclDateHaveDay &amp;&amp; !TclDateHaveDate) {
+        tod = NamedDay(Start, TclDateDayOrdinal, TclDateDayNumber);
+        Start += tod;
+    }
+
+    if (TclDateHaveOrdinalMonth) {
+	tod = NamedMonth(Start, TclDateMonthOrdinal, TclDateMonth);
+	Start += tod;
+    }
+    
+    *timePtr = Start;
+    return 0;
+}
+static CONST TclDatetabelem TclDateexca[] ={
+-1, 1,
+	0, -1,
+	-2, 0,
+	};
+# define YYNPROD 56
+# define YYLAST 261
+static CONST TclDatetabelem TclDateact[]={
+
+    24,    40,    23,    36,    54,    81,    41,    28,    53,    26,
+    37,    42,    58,    38,    56,    28,    27,    26,    28,    33,
+    26,    32,    61,    50,    27,    80,    76,    27,    51,    75,
+    74,    73,    30,    72,    71,    70,    69,    52,    49,    48,
+    47,    45,    39,    62,    78,    46,    79,    68,    25,    65,
+    60,    67,    66,    55,    44,    21,    63,    11,    10,     9,
+     8,    35,     7,     6,     5,     4,     3,    43,     2,     1,
+    20,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+     0,    57,     0,     0,    59,    77,     0,     0,     0,     0,
+     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+     0,     0,     0,     0,     0,    19,    14,     0,     0,     0,
+    16,    28,    22,    26,     0,    12,    13,    17,     0,    15,
+    27,    18,    31,     0,     0,    29,     0,    34,    28,     0,
+    26,     0,     0,     0,     0,     0,     0,    27,     0,     0,
+     0,     0,     0,     0,     0,     0,     0,     0,     0,    64,
+    64 };
+static CONST TclDatetabelem TclDatepact[]={
+
+-10000000,   -43,-10000000,-10000000,-10000000,-10000000,-10000000,-10000000,-10000000,-10000000,
+-10000000,-10000000,   -26,  -268,-10000000,  -259,  -226,-10000000,  -257,    10,
+  -227,  -212,  -228,-10000000,-10000000,-10000000,-10000000,-10000000,-10000000,-10000000,
+  -229,-10000000,  -230,  -240,  -231,-10000000,-10000000,  -264,-10000000,     9,
+-10000000,-10000000,  -249,-10000000,-10000000,  -246,-10000000,     4,    -2,     2,
+     7,     6,-10000000,-10000000,   -11,  -232,-10000000,-10000000,-10000000,-10000000,
+  -233,-10000000,  -234,  -235,-10000000,  -237,  -238,  -239,  -242,-10000000,
+-10000000,-10000000,    -1,-10000000,-10000000,-10000000,   -12,-10000000,  -243,  -263,
+-10000000,-10000000 };
+static CONST TclDatetabelem TclDatepgo[]={
+
+     0,    48,    70,    22,    69,    68,    66,    65,    64,    63,
+    62,    60,    59,    58,    57,    55 };
+static CONST TclDatetabelem TclDater1[]={
+
+     0,     4,     4,     5,     5,     5,     5,     5,     5,     5,
+     5,     5,     6,     6,     6,     6,     6,     7,     7,     7,
+    10,    10,    10,    10,    10,     8,     8,     8,     8,     8,
+     8,     8,     8,     8,     8,     9,     9,    12,    12,    12,
+    13,    11,    11,    15,    15,    15,    15,    15,     2,     2,
+     1,     1,     1,    14,     3,     3 };
+static CONST TclDatetabelem TclDater2[]={
+
+     0,     0,     4,     3,     3,     3,     3,     3,     3,     3,
+     3,     2,     5,     9,    11,    13,    15,     5,     3,     3,
+     3,     5,     5,     7,     5,     7,    11,     3,    11,    11,
+     5,     9,     5,     3,     7,     5,     7,     7,    15,     5,
+     9,     5,     2,     7,     5,     5,     7,     3,     3,     3,
+     3,     3,     3,     3,     1,     3 };
+static CONST TclDatetabelem TclDatechk[]={
+
+-10000000,    -4,    -5,    -6,    -7,    -8,    -9,   -10,   -11,   -12,
+   -13,   -14,   268,   269,   259,   272,   263,   270,   274,   258,
+    -2,   -15,   265,    45,    43,    -1,   266,   273,   264,   261,
+    58,   258,    47,    45,   263,    -1,   271,   269,   272,   268,
+   258,   263,   268,    -1,    44,   268,   257,   268,   268,   268,
+   263,   268,   268,   272,   268,    44,   263,    -1,   258,    -1,
+    46,    -3,    45,    58,   261,    47,    45,    45,    58,   268,
+   268,   268,   268,   268,   268,   268,   268,    -3,    45,    58,
+   268,   268 };
+static CONST TclDatetabelem TclDatedef[]={
+
+     1,    -2,     2,     3,     4,     5,     6,     7,     8,     9,
+    10,    11,    53,    18,    19,    27,     0,    33,     0,    20,
+     0,    42,     0,    48,    49,    47,    50,    51,    52,    12,
+     0,    22,     0,     0,    32,    44,    17,     0,    39,    30,
+    24,    35,     0,    45,    21,     0,    41,     0,    54,    25,
+     0,     0,    34,    37,     0,     0,    36,    46,    23,    43,
+     0,    13,     0,     0,    55,     0,     0,     0,     0,    31,
+    40,    14,    54,    26,    28,    29,     0,    15,     0,     0,
+    16,    38 };
+typedef struct
+#ifdef __cplusplus
+	TclDatetoktype
+#endif
+{ char *t_name; int t_val; } TclDatetoktype;
+#ifndef YYDEBUG
+#	define YYDEBUG	0	/* don't allow debugging */
+#endif
+
+#if YYDEBUG
+
+TclDatetoktype TclDatetoks[] =
+{
+	"tAGO",	257,
+	"tDAY",	258,
+	"tDAYZONE",	259,
+	"tID",	260,
+	"tMERIDIAN",	261,
+	"tMINUTE_UNIT",	262,
+	"tMONTH",	263,
+	"tMONTH_UNIT",	264,
+	"tSTARDATE",	265,
+	"tSEC_UNIT",	266,
+	"tSNUMBER",	267,
+	"tUNUMBER",	268,
+	"tZONE",	269,
+	"tEPOCH",	270,
+	"tDST",	271,
+	"tISOBASE",	272,
+	"tDAY_UNIT",	273,
+	"tNEXT",	274,
+	"-unknown-",	-1	/* ends search */
+};
+
+char * TclDatereds[] =
+{
+	"-no such reduction-",
+	"spec : /* empty */",
+	"spec : spec item",
+	"item : time",
+	"item : zone",
+	"item : date",
+	"item : ordMonth",
+	"item : day",
+	"item : relspec",
+	"item : iso",
+	"item : trek",
+	"item : number",
+	"time : tUNUMBER tMERIDIAN",
+	"time : tUNUMBER ':' tUNUMBER o_merid",
+	"time : tUNUMBER ':' tUNUMBER '-' tUNUMBER",
+	"time : tUNUMBER ':' tUNUMBER ':' tUNUMBER o_merid",
+	"time : tUNUMBER ':' tUNUMBER ':' tUNUMBER '-' tUNUMBER",
+	"zone : tZONE tDST",
+	"zone : tZONE",
+	"zone : tDAYZONE",
+	"day : tDAY",
+	"day : tDAY ','",
+	"day : tUNUMBER tDAY",
+	"day : sign tUNUMBER tDAY",
+	"day : tNEXT tDAY",
+	"date : tUNUMBER '/' tUNUMBER",
+	"date : tUNUMBER '/' tUNUMBER '/' tUNUMBER",
+	"date : tISOBASE",
+	"date : tUNUMBER '-' tMONTH '-' tUNUMBER",
+	"date : tUNUMBER '-' tUNUMBER '-' tUNUMBER",
+	"date : tMONTH tUNUMBER",
+	"date : tMONTH tUNUMBER ',' tUNUMBER",
+	"date : tUNUMBER tMONTH",
+	"date : tEPOCH",
+	"date : tUNUMBER tMONTH tUNUMBER",
+	"ordMonth : tNEXT tMONTH",
+	"ordMonth : tNEXT tUNUMBER tMONTH",
+	"iso : tISOBASE tZONE tISOBASE",
+	"iso : tISOBASE tZONE tUNUMBER ':' tUNUMBER ':' tUNUMBER",
+	"iso : tISOBASE tISOBASE",
+	"trek : tSTARDATE tUNUMBER '.' tUNUMBER",
+	"relspec : relunits tAGO",
+	"relspec : relunits",
+	"relunits : sign tUNUMBER unit",
+	"relunits : tUNUMBER unit",
+	"relunits : tNEXT unit",
+	"relunits : tNEXT tUNUMBER unit",
+	"relunits : unit",
+	"sign : '-'",
+	"sign : '+'",
+	"unit : tSEC_UNIT",
+	"unit : tDAY_UNIT",
+	"unit : tMONTH_UNIT",
+	"number : tUNUMBER",
+	"o_merid : /* empty */",
+	"o_merid : tMERIDIAN",
+};
+#endif /* YYDEBUG */
+/*
+ * Copyright (c) 1993 by Sun Microsystems, Inc.
+ */
+
+
+/*
+** Skeleton parser driver for yacc output
+*/
+
+/*
+** yacc user known macros and defines
+*/
+#define YYERROR		goto TclDateerrlab
+#define YYACCEPT	return(0)
+#define YYABORT		return(1)
+#define YYBACKUP( newtoken, newvalue )\
+{\
+	if ( TclDatechar &gt;= 0 || ( TclDater2[ TclDatetmp ] &gt;&gt; 1 ) != 1 )\
+	{\
+		TclDateerror( "syntax error - cannot backup" );\
+		goto TclDateerrlab;\
+	}\
+	TclDatechar = newtoken;\
+	TclDatestate = *TclDateps;\
+	TclDatelval = newvalue;\
+	goto TclDatenewstate;\
+}
+#define YYRECOVERING()	(!!TclDateerrflag)
+#define YYNEW(type)	malloc(sizeof(type) * TclDatenewmax)
+#define YYCOPY(to, from, type) \
+	(type *) memcpy(to, (char *) from, TclDatemaxdepth * sizeof (type))
+#define YYENLARGE( from, type) \
+	(type *) realloc((char *) from, TclDatenewmax * sizeof(type))
+#ifndef YYDEBUG
+#	define YYDEBUG	1	/* make debugging available */
+#endif
+
+/*
+** user known globals
+*/
+int TclDatedebug;			/* set to 1 to get debugging */
+
+/*
+** driver internal defines
+*/
+#define YYFLAG		(-10000000)
+
+/*
+** global variables used by the parser
+*/
+YYSTYPE *TclDatepv;			/* top of value stack */
+int *TclDateps;			/* top of state stack */
+
+int TclDatestate;			/* current state */
+int TclDatetmp;			/* extra var (lasts between blocks) */
+
+int TclDatenerrs;			/* number of errors */
+int TclDateerrflag;			/* error recovery flag */
+int TclDatechar;			/* current input token number */
+
+
+
+#ifdef YYNMBCHARS
+#define YYLEX()		TclDatecvtok(TclDatelex())
+/*
+** TclDatecvtok - return a token if i is a wchar_t value that exceeds 255.
+**	If i&lt;255, i itself is the token.  If i&gt;255 but the neither 
+**	of the 30th or 31st bit is on, i is already a token.
+*/
+#if defined(__STDC__) || defined(__cplusplus)
+int TclDatecvtok(int i)
+#else
+int TclDatecvtok(i) int i;
+#endif
+{
+	int first = 0;
+	int last = YYNMBCHARS - 1;
+	int mid;
+	wchar_t j;
+
+	if(i&amp;0x60000000){/*Must convert to a token. */
+		if( TclDatembchars[last].character &lt; i ){
+			return i;/*Giving up*/
+		}
+		while ((last&gt;=first)&amp;&amp;(first&gt;=0)) {/*Binary search loop*/
+			mid = (first+last)/2;
+			j = TclDatembchars[mid].character;
+			if( j==i ){/*Found*/ 
+				return TclDatembchars[mid].tvalue;
+			}else if( j&lt;i ){
+				first = mid + 1;
+			}else{
+				last = mid -1;
+			}
+		}
+		/*No entry in the table.*/
+		return i;/* Giving up.*/
+	}else{/* i is already a token. */
+		return i;
+	}
+}
+#else/*!YYNMBCHARS*/
+#define YYLEX()		TclDatelex()
+#endif/*!YYNMBCHARS*/
+
+/*
+** TclDateparse - return 0 if worked, 1 if syntax error not recovered from
+*/
+#if defined(__STDC__) || defined(__cplusplus)
+int TclDateparse(void)
+#else
+int TclDateparse()
+#endif
+{
+	register YYSTYPE *TclDatepvt = 0;	/* top of value stack for $vars */
+
+#if defined(__cplusplus) || defined(lint)
+/*
+	hacks to please C++ and lint - goto's inside
+	switch should never be executed
+*/
+	static int __yaccpar_lint_hack__ = 0;
+	switch (__yaccpar_lint_hack__)
+	{
+		case 1: goto TclDateerrlab;
+		case 2: goto TclDatenewstate;
+	}
+#endif
+
+	/*
+	** Initialize externals - TclDateparse may be called more than once
+	*/
+	TclDatepv = &amp;TclDatev[-1];
+	TclDateps = &amp;TclDates[-1];
+	TclDatestate = 0;
+	TclDatetmp = 0;
+	TclDatenerrs = 0;
+	TclDateerrflag = 0;
+	TclDatechar = -1;
+
+#if YYMAXDEPTH &lt;= 0
+	if (TclDatemaxdepth &lt;= 0)
+	{
+		if ((TclDatemaxdepth = YYEXPAND(0)) &lt;= 0)
+		{
+			TclDateerror("yacc initialization error");
+			YYABORT;
+		}
+	}
+#endif
+
+	{
+		register YYSTYPE *TclDate_pv;	/* top of value stack */
+		register int *TclDate_ps;		/* top of state stack */
+		register int TclDate_state;		/* current state */
+		register int  TclDate_n;		/* internal state number info */
+	goto TclDatestack;	/* moved from 6 lines above to here to please C++ */
+
+		/*
+		** get globals into registers.
+		** branch to here only if YYBACKUP was called.
+		*/
+		TclDate_pv = TclDatepv;
+		TclDate_ps = TclDateps;
+		TclDate_state = TclDatestate;
+		goto TclDate_newstate;
+
+		/*
+		** get globals into registers.
+		** either we just started, or we just finished a reduction
+		*/
+	TclDatestack:
+		TclDate_pv = TclDatepv;
+		TclDate_ps = TclDateps;
+		TclDate_state = TclDatestate;
+
+		/*
+		** top of for (;;) loop while no reductions done
+		*/
+	TclDate_stack:
+		/*
+		** put a state and value onto the stacks
+		*/
+#if YYDEBUG
+		/*
+		** if debugging, look up token value in list of value vs.
+		** name pairs.  0 and negative (-1) are special values.
+		** Note: linear search is used since time is not a real
+		** consideration while debugging.
+		*/
+		if ( TclDatedebug )
+		{
+			register int TclDate_i;
+
+			printf( "State %d, token ", TclDate_state );
+			if ( TclDatechar == 0 )
+				printf( "end-of-file\n" );
+			else if ( TclDatechar &lt; 0 )
+				printf( "-none-\n" );
+			else
+			{
+				for ( TclDate_i = 0; TclDatetoks[TclDate_i].t_val &gt;= 0;
+					TclDate_i++ )
+				{
+					if ( TclDatetoks[TclDate_i].t_val == TclDatechar )
+						break;
+				}
+				printf( "%s\n", TclDatetoks[TclDate_i].t_name );
+			}
+		}
+#endif /* YYDEBUG */
+		if ( ++TclDate_ps &gt;= &amp;TclDates[ TclDatemaxdepth ] )	/* room on stack? */
+		{
+			/*
+			** reallocate and recover.  Note that pointers
+			** have to be reset, or bad things will happen
+			*/
+			long TclDateps_index = (TclDate_ps - TclDates);
+			long TclDatepv_index = (TclDate_pv - TclDatev);
+			long TclDatepvt_index = (TclDatepvt - TclDatev);
+			int TclDatenewmax;
+#ifdef YYEXPAND
+			TclDatenewmax = YYEXPAND(TclDatemaxdepth);
+#else
+			TclDatenewmax = 2 * TclDatemaxdepth;	/* double table size */
+			if (TclDatemaxdepth == YYMAXDEPTH)	/* first time growth */
+			{
+				char *newTclDates = (char *)YYNEW(int);
+				char *newTclDatev = (char *)YYNEW(YYSTYPE);
+				if (newTclDates != 0 &amp;&amp; newTclDatev != 0)
+				{
+					TclDates = YYCOPY(newTclDates, TclDates, int);
+					TclDatev = YYCOPY(newTclDatev, TclDatev, YYSTYPE);
+				}
+				else
+					TclDatenewmax = 0;	/* failed */
+			}
+			else				/* not first time */
+			{
+				TclDates = YYENLARGE(TclDates, int);
+				TclDatev = YYENLARGE(TclDatev, YYSTYPE);
+				if (TclDates == 0 || TclDatev == 0)
+					TclDatenewmax = 0;	/* failed */
+			}
+#endif
+			if (TclDatenewmax &lt;= TclDatemaxdepth)	/* tables not expanded */
+			{
+				TclDateerror( "yacc stack overflow" );
+				YYABORT;
+			}
+			TclDatemaxdepth = TclDatenewmax;
+
+			TclDate_ps = TclDates + TclDateps_index;
+			TclDate_pv = TclDatev + TclDatepv_index;
+			TclDatepvt = TclDatev + TclDatepvt_index;
+		}
+		*TclDate_ps = TclDate_state;
+		*++TclDate_pv = TclDateval;
+
+		/*
+		** we have a new state - find out what to do
+		*/
+	TclDate_newstate:
+		if ( ( TclDate_n = TclDatepact[ TclDate_state ] ) &lt;= YYFLAG )
+			goto TclDatedefault;		/* simple state */
+#if YYDEBUG
+		/*
+		** if debugging, need to mark whether new token grabbed
+		*/
+		TclDatetmp = TclDatechar &lt; 0;
+#endif
+		if ( ( TclDatechar &lt; 0 ) &amp;&amp; ( ( TclDatechar = YYLEX() ) &lt; 0 ) )
+			TclDatechar = 0;		/* reached EOF */
+#if YYDEBUG
+		if ( TclDatedebug &amp;&amp; TclDatetmp )
+		{
+			register int TclDate_i;
+
+			printf( "Received token " );
+			if ( TclDatechar == 0 )
+				printf( "end-of-file\n" );
+			else if ( TclDatechar &lt; 0 )
+				printf( "-none-\n" );
+			else
+			{
+				for ( TclDate_i = 0; TclDatetoks[TclDate_i].t_val &gt;= 0;
+					TclDate_i++ )
+				{
+					if ( TclDatetoks[TclDate_i].t_val == TclDatechar )
+						break;
+				}
+				printf( "%s\n", TclDatetoks[TclDate_i].t_name );
+			}
+		}
+#endif /* YYDEBUG */
+		if ( ( ( TclDate_n += TclDatechar ) &lt; 0 ) || ( TclDate_n &gt;= YYLAST ) )
+			goto TclDatedefault;
+		if ( TclDatechk[ TclDate_n = TclDateact[ TclDate_n ] ] == TclDatechar )	/*valid shift*/
+		{
+			TclDatechar = -1;
+			TclDateval = TclDatelval;
+			TclDate_state = TclDate_n;
+			if ( TclDateerrflag &gt; 0 )
+				TclDateerrflag--;
+			goto TclDate_stack;
+		}
+
+	TclDatedefault:
+		if ( ( TclDate_n = TclDatedef[ TclDate_state ] ) == -2 )
+		{
+#if YYDEBUG
+			TclDatetmp = TclDatechar &lt; 0;
+#endif
+			if ( ( TclDatechar &lt; 0 ) &amp;&amp; ( ( TclDatechar = YYLEX() ) &lt; 0 ) )
+				TclDatechar = 0;		/* reached EOF */
+#if YYDEBUG
+			if ( TclDatedebug &amp;&amp; TclDatetmp )
+			{
+				register int TclDate_i;
+
+				printf( "Received token " );
+				if ( TclDatechar == 0 )
+					printf( "end-of-file\n" );
+				else if ( TclDatechar &lt; 0 )
+					printf( "-none-\n" );
+				else
+				{
+					for ( TclDate_i = 0;
+						TclDatetoks[TclDate_i].t_val &gt;= 0;
+						TclDate_i++ )
+					{
+						if ( TclDatetoks[TclDate_i].t_val
+							== TclDatechar )
+						{
+							break;
+						}
+					}
+					printf( "%s\n", TclDatetoks[TclDate_i].t_name );
+				}
+			}
+#endif /* YYDEBUG */
+			/*
+			** look through exception table
+			*/
+			{
+				register CONST int *TclDatexi = TclDateexca;
+
+				while ( ( *TclDatexi != -1 ) ||
+					( TclDatexi[1] != TclDate_state ) )
+				{
+					TclDatexi += 2;
+				}
+				while ( ( *(TclDatexi += 2) &gt;= 0 ) &amp;&amp;
+					( *TclDatexi != TclDatechar ) )
+					;
+				if ( ( TclDate_n = TclDatexi[1] ) &lt; 0 )
+					YYACCEPT;
+			}
+		}
+
+		/*
+		** check for syntax error
+		*/
+		if ( TclDate_n == 0 )	/* have an error */
+		{
+			/* no worry about speed here! */
+			switch ( TclDateerrflag )
+			{
+			case 0:		/* new error */
+				TclDateerror( "syntax error" );
+				goto skip_init;
+				/*
+				** get globals into registers.
+				** we have a user generated syntax type error
+				*/
+				TclDate_pv = TclDatepv;
+				TclDate_ps = TclDateps;
+				TclDate_state = TclDatestate;
+			skip_init:
+				TclDatenerrs++;
+				/* FALLTHRU */
+			case 1:
+			case 2:		/* incompletely recovered error */
+					/* try again... */
+				TclDateerrflag = 3;
+				/*
+				** find state where "error" is a legal
+				** shift action
+				*/
+				while ( TclDate_ps &gt;= TclDates )
+				{
+					TclDate_n = TclDatepact[ *TclDate_ps ] + YYERRCODE;
+					if ( TclDate_n &gt;= 0 &amp;&amp; TclDate_n &lt; YYLAST &amp;&amp;
+						TclDatechk[TclDateact[TclDate_n]] == YYERRCODE)					{
+						/*
+						** simulate shift of "error"
+						*/
+						TclDate_state = TclDateact[ TclDate_n ];
+						goto TclDate_stack;
+					}
+					/*
+					** current state has no shift on
+					** "error", pop stack
+					*/
+#if YYDEBUG
+#	define _POP_ "Error recovery pops state %d, uncovers state %d\n"
+					if ( TclDatedebug )
+						printf( _POP_, *TclDate_ps,
+							TclDate_ps[-1] );
+#	undef _POP_
+#endif
+					TclDate_ps--;
+					TclDate_pv--;
+				}
+				/*
+				** there is no state on stack with "error" as
+				** a valid shift.  give up.
+				*/
+				YYABORT;
+			case 3:		/* no shift yet; eat a token */
+#if YYDEBUG
+				/*
+				** if debugging, look up token in list of
+				** pairs.  0 and negative shouldn't occur,
+				** but since timing doesn't matter when
+				** debugging, it doesn't hurt to leave the
+				** tests here.
+				*/
+				if ( TclDatedebug )
+				{
+					register int TclDate_i;
+
+					printf( "Error recovery discards " );
+					if ( TclDatechar == 0 )
+						printf( "token end-of-file\n" );
+					else if ( TclDatechar &lt; 0 )
+						printf( "token -none-\n" );
+					else
+					{
+						for ( TclDate_i = 0;
+							TclDatetoks[TclDate_i].t_val &gt;= 0;
+							TclDate_i++ )
+						{
+							if ( TclDatetoks[TclDate_i].t_val
+								== TclDatechar )
+							{
+								break;
+							}
+						}
+						printf( "token %s\n",
+							TclDatetoks[TclDate_i].t_name );
+					}
+				}
+#endif /* YYDEBUG */
+				if ( TclDatechar == 0 )	/* reached EOF. quit */
+					YYABORT;
+				TclDatechar = -1;
+				goto TclDate_newstate;
+			}
+		}/* end if ( TclDate_n == 0 ) */
+		/*
+		** reduction by production TclDate_n
+		** put stack tops, etc. so things right after switch
+		*/
+#if YYDEBUG
+		/*
+		** if debugging, print the string that is the user's
+		** specification of the reduction which is just about
+		** to be done.
+		*/
+		if ( TclDatedebug )
+			printf( "Reduce by (%d) \"%s\"\n",
+				TclDate_n, TclDatereds[ TclDate_n ] );
+#endif
+		TclDatetmp = TclDate_n;			/* value to switch over */
+		TclDatepvt = TclDate_pv;			/* $vars top of value stack */
+		/*
+		** Look in goto table for next state
+		** Sorry about using TclDate_state here as temporary
+		** register variable, but why not, if it works...
+		** If TclDater2[ TclDate_n ] doesn't have the low order bit
+		** set, then there is no action to be done for
+		** this reduction.  So, no saving &amp; unsaving of
+		** registers done.  The only difference between the
+		** code just after the if and the body of the if is
+		** the goto TclDate_stack in the body.  This way the test
+		** can be made before the choice of what to do is needed.
+		*/
+		{
+			/* length of production doubled with extra bit */
+			register int TclDate_len = TclDater2[ TclDate_n ];
+
+			if ( !( TclDate_len &amp; 01 ) )
+			{
+				TclDate_len &gt;&gt;= 1;
+				TclDateval = ( TclDate_pv -= TclDate_len )[1];	/* $$ = $1 */
+				TclDate_state = TclDatepgo[ TclDate_n = TclDater1[ TclDate_n ] ] +
+					*( TclDate_ps -= TclDate_len ) + 1;
+				if ( TclDate_state &gt;= YYLAST ||
+					TclDatechk[ TclDate_state =
+					TclDateact[ TclDate_state ] ] != -TclDate_n )
+				{
+					TclDate_state = TclDateact[ TclDatepgo[ TclDate_n ] ];
+				}
+				goto TclDate_stack;
+			}
+			TclDate_len &gt;&gt;= 1;
+			TclDateval = ( TclDate_pv -= TclDate_len )[1];	/* $$ = $1 */
+			TclDate_state = TclDatepgo[ TclDate_n = TclDater1[ TclDate_n ] ] +
+				*( TclDate_ps -= TclDate_len ) + 1;
+			if ( TclDate_state &gt;= YYLAST ||
+				TclDatechk[ TclDate_state = TclDateact[ TclDate_state ] ] != -TclDate_n )
+			{
+				TclDate_state = TclDateact[ TclDatepgo[ TclDate_n ] ];
+			}
+		}
+					/* save until reenter driver code */
+		TclDatestate = TclDate_state;
+		TclDateps = TclDate_ps;
+		TclDatepv = TclDate_pv;
+	}
+	/*
+	** code supplied by user is placed in this switch
+	*/
+	switch( TclDatetmp )
+	{
+		
+case 3:{
+            TclDateHaveTime++;
+        } break;
+case 4:{
+            TclDateHaveZone++;
+        } break;
+case 5:{
+            TclDateHaveDate++;
+        } break;
+case 6:{
+            TclDateHaveOrdinalMonth++;
+        } break;
+case 7:{
+            TclDateHaveDay++;
+        } break;
+case 8:{
+            TclDateHaveRel++;
+        } break;
+case 9:{
+	    TclDateHaveTime++;
+	    TclDateHaveDate++;
+	} break;
+case 10:{
+	    TclDateHaveTime++;
+	    TclDateHaveDate++;
+	    TclDateHaveRel++;
+        } break;
+case 12:{
+            TclDateHour = TclDatepvt[-1].Number;
+            TclDateMinutes = 0;
+            TclDateSeconds = 0;
+            TclDateMeridian = TclDatepvt[-0].Meridian;
+        } break;
+case 13:{
+            TclDateHour = TclDatepvt[-3].Number;
+            TclDateMinutes = TclDatepvt[-1].Number;
+            TclDateSeconds = 0;
+            TclDateMeridian = TclDatepvt[-0].Meridian;
+        } break;
+case 14:{
+            TclDateHour = TclDatepvt[-4].Number;
+            TclDateMinutes = TclDatepvt[-2].Number;
+            TclDateMeridian = MER24;
+            TclDateDSTmode = DSToff;
+            TclDateTimezone = (TclDatepvt[-0].Number % 100 + (TclDatepvt[-0].Number / 100) * 60);
+        } break;
+case 15:{
+            TclDateHour = TclDatepvt[-5].Number;
+            TclDateMinutes = TclDatepvt[-3].Number;
+            TclDateSeconds = TclDatepvt[-1].Number;
+            TclDateMeridian = TclDatepvt[-0].Meridian;
+        } break;
+case 16:{
+            TclDateHour = TclDatepvt[-6].Number;
+            TclDateMinutes = TclDatepvt[-4].Number;
+            TclDateSeconds = TclDatepvt[-2].Number;
+            TclDateMeridian = MER24;
+            TclDateDSTmode = DSToff;
+            TclDateTimezone = (TclDatepvt[-0].Number % 100 + (TclDatepvt[-0].Number / 100) * 60);
+        } break;
+case 17:{
+            TclDateTimezone = TclDatepvt[-1].Number;
+            TclDateDSTmode = DSTon;
+        } break;
+case 18:{
+            TclDateTimezone = TclDatepvt[-0].Number;
+            TclDateDSTmode = DSToff;
+        } break;
+case 19:{
+            TclDateTimezone = TclDatepvt[-0].Number;
+            TclDateDSTmode = DSTon;
+        } break;
+case 20:{
+            TclDateDayOrdinal = 1;
+            TclDateDayNumber = TclDatepvt[-0].Number;
+        } break;
+case 21:{
+            TclDateDayOrdinal = 1;
+            TclDateDayNumber = TclDatepvt[-1].Number;
+        } break;
+case 22:{
+            TclDateDayOrdinal = TclDatepvt[-1].Number;
+            TclDateDayNumber = TclDatepvt[-0].Number;
+        } break;
+case 23:{
+            TclDateDayOrdinal = TclDatepvt[-2].Number * TclDatepvt[-1].Number;
+            TclDateDayNumber = TclDatepvt[-0].Number;
+        } break;
+case 24:{
+            TclDateDayOrdinal = 2;
+            TclDateDayNumber = TclDatepvt[-0].Number;
+        } break;
+case 25:{
+            TclDateMonth = TclDatepvt[-2].Number;
+            TclDateDay = TclDatepvt[-0].Number;
+        } break;
+case 26:{
+            TclDateMonth = TclDatepvt[-4].Number;
+            TclDateDay = TclDatepvt[-2].Number;
+            TclDateYear = TclDatepvt[-0].Number;
+        } break;
+case 27:{
+	    TclDateYear = TclDatepvt[-0].Number / 10000;
+	    TclDateMonth = (TclDatepvt[-0].Number % 10000)/100;
+	    TclDateDay = TclDatepvt[-0].Number % 100;
+	} break;
+case 28:{
+	    TclDateDay = TclDatepvt[-4].Number;
+	    TclDateMonth = TclDatepvt[-2].Number;
+	    TclDateYear = TclDatepvt[-0].Number;
+	} break;
+case 29:{
+            TclDateMonth = TclDatepvt[-2].Number;
+            TclDateDay = TclDatepvt[-0].Number;
+            TclDateYear = TclDatepvt[-4].Number;
+        } break;
+case 30:{
+            TclDateMonth = TclDatepvt[-1].Number;
+            TclDateDay = TclDatepvt[-0].Number;
+        } break;
+case 31:{
+            TclDateMonth = TclDatepvt[-3].Number;
+            TclDateDay = TclDatepvt[-2].Number;
+            TclDateYear = TclDatepvt[-0].Number;
+        } break;
+case 32:{
+            TclDateMonth = TclDatepvt[-0].Number;
+            TclDateDay = TclDatepvt[-1].Number;
+        } break;
+case 33:{
+	    TclDateMonth = 1;
+	    TclDateDay = 1;
+	    TclDateYear = EPOCH;
+	} break;
+case 34:{
+            TclDateMonth = TclDatepvt[-1].Number;
+            TclDateDay = TclDatepvt[-2].Number;
+            TclDateYear = TclDatepvt[-0].Number;
+        } break;
+case 35:{
+	    TclDateMonthOrdinal = 1;
+	    TclDateMonth = TclDatepvt[-0].Number;
+	} break;
+case 36:{
+	    TclDateMonthOrdinal = TclDatepvt[-1].Number;
+	    TclDateMonth = TclDatepvt[-0].Number;
+	} break;
+case 37:{
+            if (TclDatepvt[-1].Number != HOUR(- 7)) YYABORT;
+	    TclDateYear = TclDatepvt[-2].Number / 10000;
+	    TclDateMonth = (TclDatepvt[-2].Number % 10000)/100;
+	    TclDateDay = TclDatepvt[-2].Number % 100;
+	    TclDateHour = TclDatepvt[-0].Number / 10000;
+	    TclDateMinutes = (TclDatepvt[-0].Number % 10000)/100;
+	    TclDateSeconds = TclDatepvt[-0].Number % 100;
+        } break;
+case 38:{
+            if (TclDatepvt[-5].Number != HOUR(- 7)) YYABORT;
+	    TclDateYear = TclDatepvt[-6].Number / 10000;
+	    TclDateMonth = (TclDatepvt[-6].Number % 10000)/100;
+	    TclDateDay = TclDatepvt[-6].Number % 100;
+	    TclDateHour = TclDatepvt[-4].Number;
+	    TclDateMinutes = TclDatepvt[-2].Number;
+	    TclDateSeconds = TclDatepvt[-0].Number;
+        } break;
+case 39:{
+	    TclDateYear = TclDatepvt[-1].Number / 10000;
+	    TclDateMonth = (TclDatepvt[-1].Number % 10000)/100;
+	    TclDateDay = TclDatepvt[-1].Number % 100;
+	    TclDateHour = TclDatepvt[-0].Number / 10000;
+	    TclDateMinutes = (TclDatepvt[-0].Number % 10000)/100;
+	    TclDateSeconds = TclDatepvt[-0].Number % 100;
+        } break;
+case 40:{
+            /*
+	     * Offset computed year by -377 so that the returned years will
+	     * be in a range accessible with a 32 bit clock seconds value
+	     */
+            TclDateYear = TclDatepvt[-2].Number/1000 + 2323 - 377;
+            TclDateDay  = 1;
+	    TclDateMonth = 1;
+	    TclDateRelDay += ((TclDatepvt[-2].Number%1000)*(365 + IsLeapYear(TclDateYear)))/1000;
+	    TclDateRelSeconds += TclDatepvt[-0].Number * 144 * 60;
+        } break;
+case 41:{
+	    TclDateRelSeconds *= -1;
+	    TclDateRelMonth *= -1;
+	    TclDateRelDay *= -1;
+	} break;
+case 43:{ *TclDateRelPointer += TclDatepvt[-2].Number * TclDatepvt[-1].Number * TclDatepvt[-0].Number; } break;
+case 44:{ *TclDateRelPointer += TclDatepvt[-1].Number * TclDatepvt[-0].Number; } break;
+case 45:{ *TclDateRelPointer += TclDatepvt[-0].Number; } break;
+case 46:{ *TclDateRelPointer += TclDatepvt[-1].Number * TclDatepvt[-0].Number; } break;
+case 47:{ *TclDateRelPointer += TclDatepvt[-0].Number; } break;
+case 48:{ TclDateval.Number = -1; } break;
+case 49:{ TclDateval.Number =  1; } break;
+case 50:{ TclDateval.Number = TclDatepvt[-0].Number; TclDateRelPointer = &amp;TclDateRelSeconds; } break;
+case 51:{ TclDateval.Number = TclDatepvt[-0].Number; TclDateRelPointer = &amp;TclDateRelDay; } break;
+case 52:{ TclDateval.Number = TclDatepvt[-0].Number; TclDateRelPointer = &amp;TclDateRelMonth; } break;
+case 53:{
+	if (TclDateHaveTime &amp;&amp; TclDateHaveDate &amp;&amp; !TclDateHaveRel) {
+	    TclDateYear = TclDatepvt[-0].Number;
+	} else {
+	    TclDateHaveTime++;
+	    if (TclDatepvt[-0].Number &lt; 100) {
+		TclDateHour = TclDatepvt[-0].Number;
+		TclDateMinutes = 0;
+	    } else {
+		TclDateHour = TclDatepvt[-0].Number / 100;
+		TclDateMinutes = TclDatepvt[-0].Number % 100;
+	    }
+	    TclDateSeconds = 0;
+	    TclDateMeridian = MER24;
+	}
+    } break;
+case 54:{
+            TclDateval.Meridian = MER24;
+        } break;
+case 55:{
+            TclDateval.Meridian = TclDatepvt[-0].Meridian;
+        } break;
+	}
+	goto TclDatestack;		/* reset registers in driver code */
+}
+</t>
+<t tx="ekr.20071105090148.268">@language python
+@tabwidth -4
+@others
+toAdd = set([])
+parseBox('/home/tbrown/mail/whitelistd', True, toAdd)
+parseBox('/home/tbrown/mail/whitelisti', False, toAdd)
+
+rcfile = '/home/tbrown/.procmailrc'
+if toAdd:
+    rc = file(rcfile).readlines()
+    newfile = file(rcfile, 'w')
+    while rc:
+        line = rc.pop(0)
+        newfile.write(line)
+        if 'WHITELIST_MARKER' in line: break
+    newfile.write(rc.pop(0)) # copy ':0:' line
+    for addr in toAdd:
+        newfile.write('* !^From:.*%s\n' % addr)
+    while rc:
+        line = rc.pop(0)
+        newfile.write(line)
+
+os.system("cp /home/tbrown/mail/empty /home/tbrown/mail/whitelistd")
+os.system("cp /home/tbrown/mail/empty /home/tbrown/mail/whitelisti")
+</t>
+<t tx="ekr.20071105090148.269">"""
+"""
+
+# mailPerDay.py $Id$
+# Author: Terry Brown
+# Created: Thu Jun 07 2007
+
+import os, os.path
+import email
+import mailbox
+import time, datetime
+from collections import defaultdict
+import sys
+</t>
+<t tx="ekr.20071105090148.270">
+def parseBox(box, domainMode, toAdd):
+
+    mbox = mailbox.UnixMailbox(file(box), email.message_from_file)
+
+    mbox.next() # skip control message
+
+    for msg in mbox:
+        f = msg.get('From')
+        if f:
+            f = email.utils.parseaddr(f)[1]
+            if domainMode:
+                f = f.split('@')[1]
+                f = '.'.join(f.split('.')[-2:])
+            toAdd.add(f)
+
+</t>
+<t tx="ekr.20071105090148.271">@path c:\prog\test</t>
+<t tx="ekr.20071105090148.272"># A test for missing files
+</t>
+<t tx="ekr.20071105090148.273">@path c:\prog\test</t>
+<t tx="ekr.20071105090148.274">
+import leoGlobals as g
+import leoTest # Support for unit tests.
+
+import parser
+import re
+import string
+import tabnanny
+import tokenize
+
+class baseLeoImportCommands:
+    """The base class for Leo's import commands."""
+    def __init__ (self,c):
+
+        self.c = c
+        self._forcedGnxPositionList = []
+        self.encoding = g.app.tkEncoding # 2/25/03: was "utf-8"
+        self.fileName = None # The original file name, say x.cpp
+        self.fileType = None # ".py", ".c", etc.
+        self.methodName = None # x, as in &lt; &lt; x methods &gt; &gt; =
+        self.output_newline = g.getOutputNewline(c=c) # Value of @bool output_newline
+        self.rootLine = "" # Empty or @root + self.fileName
+        self.tabwidth = c.tab_width # The tab width in effect in the c.currentPosition.
+        self.trace = c.config.getBool('trace_import')
+        self.treeType = "@file" # "@root" or "@file"
+        self.webType = "@noweb" # "cweb" or "noweb"
+        self.web_st = [] # noweb symbol table.
+    # Headlines not containing a section reference are ignored in noweb and generate index index in cweb.
+
+    def convertCodePartToWeb (self,s,i,v,result):
+
+        # g.trace(g.get_line(s,i))
+        c = self.c ; nl = self.output_newline
+        lb = g.choose(self.webType=="cweb","@&lt;","&lt;&lt;")
+        rb = g.choose(self.webType=="cweb","@&gt;","&gt;&gt;")
+        h = string.strip(v.headString())
+        # We look for either noweb or cweb brackets. head_ref does not include 
+        # these brackets.
+
+        head_ref = None
+        j = 0
+        if g.match(h,j,"&lt;&lt;"):
+            k = string.find(h,"&gt;&gt;",j)
+        elif g.match(h,j,"&lt;@"):
+            k = string.find(h,"@&gt;",j)
+        else:
+            k = -1
+
+        if k &gt; -1:
+            head_ref = string.strip(h[j+2:k])
+            if len(head_ref) == 0:
+                head_ref = None
+        if g.match(h,0,"@file") or g.match(h,0,"@root"):
+            line = h[5:]
+            line = string.strip(line)
+            # set j &amp; k so line[j:k] is the file name.
+            # g.trace(line)
+
+            if g.match(line,0,"&lt;"):
+                j = 1 ; k = string.find(line,"&gt;",1)
+            elif g.match(line,0,'"'):
+                j = 1 ; k = string.find(line,'"',1)
+            else:
+                j = 0 ; k = string.find(line," ",0)
+            if k == -1:
+                k = len(line)
+
+            file_name = string.strip(line[j:k])
+            if file_name and len(file_name) == 0:
+                file_name = None
+        else:
+            file_name = line = None
+        if g.match_word(s,i,"@root"):
+            i = g.skip_line(s,i)
+            if self.webType == "cweb":
+                if not file_name:
+                    result += "@&lt;root@&gt;=" + nl
+                else:
+                    result += "@(" + file_name + "@&gt;" + nl # @(...@&gt; denotes a file.
+            else:
+                if not file_name:
+                    file_name = "*"
+                result += lb + file_name + rb + "=" + nl
+        elif g.match_word(s,i,"@c") or g.match_word(s,i,"@code"):
+            i = g.skip_line(s,i)
+            if self.webType == "cweb":
+                if not head_ref:
+                    result += "@^" + h + "@&gt;" + nl # Convert the headline to an index entry.
+                    result += "@c" + nl # @c denotes a new section.
+                else: 
+                    escaped_head_ref = string.replace(head_ref,"@","@@")
+                    result += "@&lt;" + escaped_head_ref + "@&gt;=" + nl
+            else:
+                if not head_ref:
+                    if v == c.currentVnode():
+                        head_ref = g.choose(file_name,file_name,"*")
+                    else:
+                        head_ref = "@others"
+
+                result += lb + head_ref + rb + "=" + nl
+        elif g.match_word(h,0,"@file"):
+            # Only do this if nothing else matches.
+            if self.webType == "cweb":
+                if not file_name:
+                    result += "@&lt;root@&gt;=" + nl
+                else:
+                    result += "@(" + file_name + "@&gt;" + nl # @(...@&gt; denotes a file.
+            else:
+                if not file_name:
+                    file_name = "*"
+                result += lb + file_name + rb + "=" + nl
+            i = g.skip_line(s,i) # 4/28/02
+        else:
+            if self.webType == "cweb":
+                if not head_ref:
+                    result += "@^" + h + "@&gt;" + nl # Convert the headline to an index entry.
+                    result += "@c" + nl # @c denotes a new section.
+                else: 
+                    escaped_head_ref = string.replace(head_ref,"@","@@")
+                    result += "@&lt;" + escaped_head_ref + "@&gt;=" + nl
+            else:
+                if not head_ref:
+                    if v == c.currentVnode():
+                        head_ref = g.choose(file_name,file_name,"*")
+                    else:
+                        head_ref = "@others"
+
+                result += lb + head_ref + rb + "=" + nl
+        i,result = self.copyPart(s,i,result)
+        return i, string.strip(result) + nl
+
+    # %defs a b c
+    def convertDocPartToWeb (self,s,i,result):
+
+        nl = self.output_newline
+
+        # g.trace(g.get_line(s,i))
+        if g.match_word(s,i,"@doc"):
+            i = g.skip_line(s,i)
+        elif g.match(s,i,"@ ") or g.match(s,i,"@\t") or g.match(s,i,"@*"):
+            i += 2
+        elif g.match(s,i,"@\n"):
+            i += 1
+        i = g.skip_ws_and_nl(s,i)
+        i, result2 = self.copyPart(s,i,"")
+        if len(result2) &gt; 0:
+            # Break lines after periods.
+            result2 = string.replace(result2,".  ","." + nl)
+            result2 = string.replace(result2,". ","." + nl)
+            result += nl+"@"+nl+string.strip(result2)+nl+nl
+        else:
+            # All nodes should start with '@', even if the doc part is empty.
+            result += g.choose(self.webType=="cweb",nl+"@ ",nl+"@"+nl)
+        return i, result
+    # This code converts a vnode to noweb text as follows:
+    # 
+    # Convert @doc to @
+    # Convert @root or @code to &lt; &lt; name &gt; &gt;=, assuming the headline contains 
+    # &lt; &lt; name &gt; &gt;
+    # Ignore other directives
+    # Format doc parts so they fit in pagewidth columns.
+    # Output code parts as is.
+
+    def convertVnodeToWeb (self,v):
+
+        c = self.c
+        if not v or not c: return ""
+        startInCode = not c.config.at_root_bodies_start_in_doc_mode
+        nl = self.output_newline
+        s = v.bodyString()
+        lb = g.choose(self.webType=="cweb","@&lt;","&lt;&lt;")
+        i = 0 ; result = "" ; docSeen = False
+        while i &lt; len(s):
+            progress = i
+            # g.trace(g.get_line(s,i))
+            i = g.skip_ws_and_nl(s,i)
+            if self.isDocStart(s,i) or g.match_word(s,i,"@doc"):
+                i,result = self.convertDocPartToWeb(s,i,result)
+                docSeen = True
+            elif (g.match_word(s,i,"@code") or g.match_word(s,i,"@root") or
+                g.match_word(s,i,"@c") or g.match(s,i,lb)):
+                if not docSeen:
+                    docSeen = True
+                    result += g.choose(self.webType=="cweb",nl+"@ ",nl+"@"+nl)
+                i,result = self.convertCodePartToWeb(s,i,v,result)
+            elif self.treeType == "@file" or startInCode:
+                if not docSeen:
+                    docSeen = True
+                    result += g.choose(self.webType=="cweb",nl+"@ ",nl+"@"+nl)
+                i,result = self.convertCodePartToWeb(s,i,v,result)
+            else:
+                i,result = self.convertDocPartToWeb(s,i,result)
+                docSeen = True
+            assert(progress &lt; i)
+        result = string.strip(result)
+        if len(result) &gt; 0:
+            result += nl
+        return result
+    # Copies characters to result until the end of the present section is seen.
+
+    def copyPart (self,s,i,result):
+
+        # g.trace(g.get_line(s,i))
+        lb = g.choose(self.webType=="cweb","@&lt;","&lt;&lt;")
+        rb = g.choose(self.webType=="cweb","@&gt;","&gt;&gt;")
+        theType = self.webType
+        while i &lt; len(s):
+            progress = j = i # We should be at the start of a line here.
+            i = g.skip_nl(s,i) ; i = g.skip_ws(s,i)
+            if self.isDocStart(s,i):
+                return i, result
+            if (g.match_word(s,i,"@doc") or
+                g.match_word(s,i,"@c") or
+                g.match_word(s,i,"@root") or
+                g.match_word(s,i,"@code")): # 2/25/03
+                return i, result
+            elif (g.match(s,i,"&lt;&lt;") and # must be on separate lines.
+                g.find_on_line(s,i,"&gt;&gt;=") &gt; -1):
+                return i, result
+            else:
+                # Copy the entire line, escaping '@' and
+                # Converting @others to &lt; &lt; @ others &gt; &gt;
+                i = g.skip_line(s,j) ; line = s[j:i]
+                if theType == "cweb":
+                    line = string.replace(line,"@","@@")
+                else:
+                    j = g.skip_ws(line,0)
+                    if g.match(line,j,"@others"):
+                        line = string.replace(line,"@others",lb + "@others" + rb)
+                    elif g.match(line,0,"@"):
+                        # Special case: do not escape @ %defs.
+                        k = g.skip_ws(line,1)
+                        if not g.match(line,k,"%defs"):
+                            line = "@" + line
+                result += line
+            assert(progress &lt; i)
+        return i, string.rstrip(result)
+    def exportHeadlines (self,fileName):
+
+        c = self.c ; nl = self.output_newline
+        p = c.currentPosition()
+        if not p: return
+        self.setEncoding()
+        firstLevel = p.level()
+        mode = c.config.output_newline
+        mode = g.choose(mode=="platform",'w','wb')
+        try:
+            theFile = open(fileName,mode)
+        except IOError:
+            g.es("Can not open " + fileName,color="blue")
+            leoTest.fail()
+            return
+        for p in p.self_and_subtree_iter():
+            head = p.moreHead(firstLevel,useVerticalBar=True)
+            head = g.toEncodedString(head,self.encoding,reportErrors=True)
+            theFile.write(head + nl)
+        theFile.close()
+    def flattenOutline (self,fileName):
+
+        c = self.c ; nl = self.output_newline
+        p = c.currentVnode()
+        if not p: return
+        self.setEncoding()
+        firstLevel = p.level()
+
+        # 10/14/02: support for output_newline setting.
+        mode = c.config.output_newline
+        mode = g.choose(mode=="platform",'w','wb')
+        try:
+            theFile = open(fileName,mode)
+        except IOError:
+            g.es("Can not open " + fileName,color="blue")
+            leoTest.fail()
+            return
+
+        for p in p.self_and_subtree_iter():
+            head = p.moreHead(firstLevel)
+            head = g.toEncodedString(head,self.encoding,reportErrors=True)
+            theFile.write(head + nl)
+            body = p.moreBody() # Inserts escapes.
+            if len(body) &gt; 0:
+                body = g.toEncodedString(body,self.encoding,reportErrors=True)
+                theFile.write(body + nl)
+        theFile.close()
+    def outlineToWeb (self,fileName,webType):
+
+        c = self.c ; nl = self.output_newline
+        current = c.currentPosition()
+        if not current: return
+        self.setEncoding()
+        self.webType = webType
+        # 10/14/02: support for output_newline setting.
+        mode = c.config.output_newline
+        mode = g.choose(mode=="platform",'w','wb')
+        try:
+            theFile = open(fileName,mode)
+        except IOError:
+            g.es("Can not open " + fileName,color="blue")
+            leoTest.fail()
+            return
+
+        self.treeType = "@file"
+        # Set self.treeType to @root if p or an ancestor is an @root node.
+        for p in current.parents_iter():
+            flag,junk = g.is_special(p.bodyString(),0,"@root")
+            if flag:
+                self.treeType = "@root"
+                break
+        for p in current.self_and_subtree_iter():
+            s = self.convertVnodeToWeb(p)
+            if len(s) &gt; 0:
+                s = g.toEncodedString(s,self.encoding,reportErrors=True)
+                theFile.write(s)
+                if s[-1] != '\n': theFile.write(nl)
+        theFile.close()
+    def removeSentinelsCommand (self,paths,toString=False):
+
+        c = self.c
+
+        self.setEncoding()
+
+        for fileName in paths:
+            g.setGlobalOpenDir(fileName)
+            path, self.fileName = g.os_path_split(fileName)
+            try:
+                theFile = open(fileName)
+                s = theFile.read()
+                s = g.toUnicode(s,self.encoding)
+                theFile.close()
+            except IOError:
+                g.es("can not open " + fileName, color="blue")
+                leoTest.fail()
+                return
+            # Skip any non @+leo lines.
+            i = 0
+            while i &lt; len(s) and not g.find_on_line(s,i,"@+leo"):
+                i = g.skip_line(s,i)
+
+            # Get the comment delims from the @+leo sentinel line.
+            at = self.c.atFileCommands
+            j = g.skip_line(s,i) ; line = s[i:j]
+
+            valid,new_df,start_delim,end_delim,derivedFileIsThin = at.parseLeoSentinel(line)
+            if not valid:
+                g.es("invalid @+leo sentinel in " + fileName)
+                return
+
+            if end_delim:
+                line_delim = None
+            else:
+                line_delim,start_delim = start_delim,None
+            # g.trace("line: '%s', start: '%s', end: '%s'" % (line_delim,start_delim,end_delim))
+            s = self.removeSentinelLines(s,line_delim,start_delim,end_delim)
+            ext = c.config.remove_sentinels_extension
+            if not ext:
+                ext = ".txt"
+            if ext[0] == '.':
+                newFileName = g.os_path_join(path,fileName+ext)
+            else:
+                head,ext2 = g.os_path_splitext(fileName) 
+                newFileName = g.os_path_join(path,head+ext+ext2)
+            if toString:
+                return s
+            else:
+                try:
+                    mode = c.config.output_newline
+                    mode = g.choose(mode=="platform",'w','wb')
+                    theFile = open(newFileName,mode)
+                    s = g.toEncodedString(s,self.encoding,reportErrors=True)
+                    theFile.write(s)
+                    theFile.close()
+                    if not g.unitTesting:
+                        g.es("created: " + newFileName)
+                except:
+                    g.es("exception creating: " + newFileName)
+                    g.es_exception()
+                return None
+    # This does not handle @nonl properly, but that's a nit...
+
+    def removeSentinelLines(self,s,line_delim,start_delim,end_delim):
+
+        '''Properly remove all sentinle lines in s.'''
+
+        __pychecker__ = '--no-argsused' # end_delim.
+
+        delim = (line_delim or start_delim or '') + '@'
+        verbatim = delim + 'verbatim' ; verbatimFlag = False
+        result = [] ; lines = g.splitLines(s)
+        for line in lines:
+            i = g.skip_ws(line,0)
+            if not verbatimFlag and g.match(line,i,delim):
+                if g.match(line,i,verbatim):
+                    verbatimFlag = True # Force the next line to be in the result.
+                # g.trace(repr(line))
+            else:
+                result.append(line)
+                verbatimFlag = False
+        result = ''.join(result)
+        return result
+    def weave (self,filename):
+
+        c = self.c ; nl = self.output_newline
+        p = c.currentPosition()
+        if not p: return
+        self.setEncoding()
+        try:
+            # 10/14/02: support for output_newline setting.
+            mode = c.config.output_newline
+            mode = g.choose(mode=="platform",'w','wb')
+            f = open(filename,mode)
+            if not f: return
+        except:
+            g.es("exception opening:" + filename)
+            g.es_exception()
+            return
+        for p in p.self_and_subtree_iter():
+            s = p.bodyString()
+            s2 = string.strip(s)
+            if s2 and len(s2) &gt; 0:
+                f.write("-" * 60) ; f.write(nl)
+                # write the headlines of p, p's parent and p's grandparent.
+                context = [] ; p2 = p.copy() ; i = 0
+                while i &lt; 3:
+                    i += 1
+                    if not p2: break
+                    context.append(p2.headString())
+                    p2.moveToParent()
+
+                context.reverse()
+                indent = ""
+                for line in context:
+                    f.write(indent)
+                    indent += '\t'
+                    line = g.toEncodedString(line,self.encoding,reportErrors=True)
+                    f.write(line)
+                    f.write(nl)
+                f.write("-" * 60) ; f.write(nl)
+                s = g.toEncodedString(s,self.encoding,reportErrors=True)
+                f.write(string.rstrip(s) + nl)
+        f.flush()
+        f.close()
+    def createHeadline (self,parent,body,headline):
+
+        # g.trace("parent,headline:",parent,headline)
+        # Create the vnode.
+        v = parent.insertAsLastChild()
+        v.initHeadString(headline,self.encoding)
+        # Set the body.
+        if len(body) &gt; 0:
+            self.c.setBodyString(v,body,self.encoding)
+        return v
+    def error (self,s): g.es(s)
+    def getTabWidth (self):
+
+        d = g.scanDirectives(self.c)
+        w = d.get("tabwidth")
+        if w not in (0,None):
+            return w
+        else:
+            return self.c.tab_width
+    # The start of a document part or module in a noweb or cweb file.
+    # Exporters may have to test for @doc as well.
+
+    def isDocStart (self,s,i):
+
+        if not g.match(s,i,"@"):
+            return False
+
+        j = g.skip_ws(s,i+1)
+        if g.match(s,j,"%defs"):
+            return False
+        elif self.webType == "cweb" and g.match(s,i,"@*"):
+            return True
+        else:
+            return g.match(s,i,"@ ") or g.match(s,i,"@\t") or g.match(s,i,"@\n")
+
+    def isModuleStart (self,s,i):
+
+        if self.isDocStart(s,i):
+            return True
+        else:
+            return self.webType == "cweb" and (
+                g.match(s,i,"@c") or g.match(s,i,"@p") or
+                g.match(s,i,"@d") or g.match(s,i,"@f"))
+    def massageComment (self,s):
+
+        '''Returns s with all runs of whitespace and newlines converted to a single blank.
+
+        Also removes leading and trailing whitespace.'''
+
+        # g.trace(g.get_line(s,0))
+        s = string.strip(s)
+        s = string.replace(s,"\n"," ")
+        s = string.replace(s,"\r"," ")
+        s = string.replace(s,"\t"," ")
+        s = string.replace(s,"  "," ")
+        s = string.strip(s)
+        return s
+    def massageWebBody (self,s):
+
+        theType = self.webType
+        lb = g.choose(theType=="cweb","@&lt;","&lt;&lt;")
+        rb = g.choose(theType=="cweb","@&gt;","&gt;&gt;")
+        i = 0
+        while i &lt; len(s):
+            progress = i
+            i = g.skip_ws_and_nl(s,i)
+            if self.isDocStart(s,i):
+                # Scan to end of the doc part.
+                if g.match(s,i,"@ %def"):
+                    # Don't remove the newline following %def
+                    i = g.skip_line(s,i) ; start = end = i
+                else:
+                    start = end = i ; i += 2
+                while i &lt; len(s):
+                    progress2 = i
+                    i = g.skip_ws_and_nl(s,i)
+                    if self.isModuleStart(s,i) or g.match(s,i,lb):
+                        end = i ; break
+                    elif theType == "cweb": i += 1
+                    else: i = g.skip_to_end_of_line(s,i)
+                    assert (i &gt; progress2)
+                # Remove newlines from start to end.
+                doc = s[start:end]
+                doc = string.replace(doc,"\n"," ")
+                doc = string.replace(doc,"\r","")
+                doc = string.strip(doc)
+                if doc and len(doc) &gt; 0:
+                    if doc == "@":
+                        doc = g.choose(self.webType=="cweb", "@ ","@\n")
+                    else:
+                        doc += "\n\n"
+                    # g.trace("new doc:",doc)
+                    s = s[:start] + doc + s[end:]
+                    i = start + len(doc)
+            else: i = g.skip_line(s,i)
+            assert (i &gt; progress)
+        i = 0
+        while i &lt; len(s):
+            progress = i
+            # g.trace(g.get_line(s,i))
+            if g.match(s,i,lb):
+                i += 2 ; j = i ; k = g.find_on_line(s,j,rb)
+                if k &gt; -1:
+                    name = s[j:k]
+                    name2 = self.cstLookup(name)
+                    if name != name2:
+                        # Replace name by name2 in s.
+                        # g.trace("replacing %s by %s" % (name,name2))
+                        s = s[:j] + name2 + s[k:]
+                        i = j + len(name2)
+            i = g.skip_line(s,i)
+            assert (i &gt; progress)
+        s = string.rstrip(s)
+        return s
+    def setEncoding (self):
+
+        # scanDirectives checks the encoding: may return None.
+        theDict = g.scanDirectives(self.c)
+        encoding = theDict.get("encoding")
+        if encoding and g.isValidEncoding(encoding):
+            self.encoding = encoding
+        else:
+            self.encoding = g.app.tkEncoding # 2/25/03
+
+        # print self.encoding
+    def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
+
+        c = self.c ; u = c.undoer ; s1 = s
+        junk,self.fileName = g.os_path_split(fileName)
+        self.methodName,self.fileType = g.os_path_splitext(self.fileName)
+        self.setEncoding()
+        # g.trace(self.fileName,self.fileType)
+        # All file types except the following just get copied to the parent node.
+        if not ext: ext = self.fileType
+        ext = ext.lower()
+        if not s:
+            try:
+                theFile = open(fileName)
+                s = theFile.read()
+                s = g.toUnicode(s,self.encoding)
+                theFile.close()
+            except IOError:
+                g.es("can not open " + fileName)
+                leoTest.fail()
+                return None
+
+        # Create the top-level headline.
+        if atAuto:
+            p = parent.copy()
+            c.beginUpdate()
+            p.setTnodeText('')
+            # It is too dangerous not to write @auto trees to the .leo file,
+            # so we must delete all children here.
+            try:
+                while p.hasChildren():
+                    # g.trace('deleting',p.headString())
+                    p.firstChild().doDelete()
+            finally:
+                c.endUpdate(False)
+        else:
+            undoData = u.beforeInsertNode(parent)
+            p = parent.insertAsLastChild()
+            if self.treeType == "@file" and not s1:
+                p.initHeadString("@file " + fileName)
+            else:
+                p.initHeadString(fileName)
+            u.afterInsertNode(p,'Import',undoData)
+
+        self.rootLine = g.choose(self.treeType=="@file","","@root-code "+self.fileName+'\n')
+
+        if ext in (".c", ".cpp", ".cxx"):
+            self.scanCText(s,p,atAuto=atAuto)
+        elif ext == ".el":
+            self.scanElispText(s,p,atAuto=atAuto)
+        elif ext == ".java":
+            self.scanJavaText(s,p,atAuto=atAuto)
+        elif ext == ".pas":
+            self.scanPascalText(s,p,atAuto=atAuto)
+        elif ext in (".py", ".pyw"):
+            self.scanPythonText(s,p,atAuto=atAuto)
+        elif ext == ".php":
+            self.scanPHPText(s,p,atAuto=atAuto)
+        else:
+            self.scanUnknownFileType(s,p,ext)
+
+        if atAuto: p.contract()
+        return p
+    def importDerivedFiles (self,parent=None,paths=None):
+        # Not a command.  It must *not* have an event arg.
+
+        c = self.c ; u = c.undoer ; command = 'Import'
+        at = c.atFileCommands ; current = c.currentPosition()
+        self.tab_width = self.getTabWidth()
+        if not paths: return
+        c.beginUpdate()
+        try:
+            u.beforeChangeGroup(current,command)
+            for fileName in paths:
+                g.setGlobalOpenDir(fileName)
+                fileName = g.os_path_normpath(fileName)
+
+                try:
+                    theFile = open(fileName,'rb')
+                    isThin = at.scanHeaderForThin(theFile,fileName)
+                    theFile.close()
+                except IOError:
+                    isThin = False
+                undoData = u.beforeInsertNode(parent)
+                p = parent.insertAfter()
+                if isThin:
+                    at.forceGnxOnPosition(p)
+                    p.initHeadString("@thin " + fileName)
+                    at.read(p,thinFile=True)
+                else:
+                    p.initHeadString("Imported @file " + fileName)
+                    at.read(p,importFileName=fileName)
+                p.contract()
+                u.afterInsertNode(p,command,undoData)
+            current.expand()
+            c.selectPosition(current)
+            c.setChanged(True)
+            u.afterChangeGroup(p,command)
+        finally:
+            c.endUpdate()
+    def forceGnxOnPosition (self,p):
+
+        self._forcedGnxPositionList.append(p.v)
+    def importFilesCommand (self,files=None,treeType=None,
+        perfectImport=True,testing=False,verbose=False):
+            # Not a command.  It must *not* have an event arg.
+
+        c = self.c
+        if c == None: return
+        v = current = c.currentVnode()
+        if current == None: return
+        if len(files) &lt; 1: return
+        self.tab_width = self.getTabWidth() # New in 4.3.
+        self.treeType = treeType
+        c.beginUpdate()
+        try: # range of update...
+            if len(files) == 2:
+                # The two filenames have a common prefix everything before the 
+                # last period is the same.  For example, x.h and x.cpp.
+
+                name0 = files[0]
+                name1 = files[1]
+                prefix0, junk = g.os_path_splitext(name0)
+                prefix1, junk = g.os_path_splitext(name1)
+                if len(prefix0) &gt; 0 and prefix0 == prefix1:
+                    current = current.insertAsLastChild()
+                    junk, nameExt = g.os_path_split(prefix1)
+                    name,ext = g.os_path_splitext(prefix1)
+                    current.initHeadString(name)
+            for fileName in files:
+                g.setGlobalOpenDir(fileName)
+                v = self.createOutline(fileName,current)
+                if v: # createOutline may fail.
+                    perfectImport = False ###
+                    testing = True; verbose = True
+                    if perfectImport and treeType == "@file": # Can't correct @root trees.
+                        self.perfectImport(fileName,v,testing=testing,verbose=verbose,verify=False)
+                    else:
+                        if not g.unitTesting:
+                            g.es("imported " + fileName,color="blue")
+                    v.contract()
+                    v.setDirty()
+                    c.setChanged(True)
+            c.validateOutline()
+            current.expand()
+        finally:
+            c.endUpdate()
+        c.selectVnode(current)
+    # Used by paste logic.
+
+    def convertMoreStringToOutlineAfter (self,s,firstVnode):
+        s = string.replace(s,"\r","")
+        strings = string.split(s,"\n")
+        return self.convertMoreStringsToOutlineAfter(strings,firstVnode)
+
+    # Almost all the time spent in this command is spent here.
+
+    def convertMoreStringsToOutlineAfter (self,strings,firstVnode):
+
+        __pychecker__ = '--no-objattrs' # suppress bad warnings re lastVnode.
+
+        c = self.c
+        if len(strings) == 0: return None
+        if not self.stringsAreValidMoreFile(strings): return None
+        c.beginUpdate()
+        try: # range of update...
+            firstLevel, junk = self.moreHeadlineLevel(strings[0])
+            lastLevel = -1 ; theRoot = lastVnode = None
+            index = 0
+            while index &lt; len(strings):
+                progress = index
+                s = strings[index]
+                level, newFlag = self.moreHeadlineLevel(s)
+                level -= firstLevel
+                if level &gt;= 0:
+                    assert(level &gt;= 0)
+                    if lastVnode is None:
+                        # g.trace(firstVnode)
+                        theRoot = v = firstVnode.insertAfter()
+                    elif level == lastLevel:
+                        v = lastVnode.insertAfter()
+                    elif level == lastLevel + 1:
+                        v = lastVnode.insertAsNthChild(0)
+                    else:
+                        assert(level &lt; lastLevel)
+                        while level &lt; lastLevel:
+                            lastLevel -= 1
+                            lastVnode = lastVnode.parent()
+                            assert(lastVnode)
+                            assert(lastLevel &gt;= 0)
+                        v = lastVnode.insertAfter()
+                    lastVnode = v
+                    lastLevel = level
+                    j = 0
+                    while g.match(s,j,'\t'):
+                        j += 1
+                    if g.match(s,j,"+ ") or g.match(s,j,"- "):
+                        j += 2
+
+                    v.initHeadString(s[j:])
+                    bodyLines = 0
+                    index += 1 # Skip the headline.
+                    while index &lt; len(strings):
+                        s = strings[index]
+                        level, junk = self.moreHeadlineLevel(s)
+                        level -= firstLevel
+                        if level &gt;= 0:
+                            break
+                        # Remove first backslash of the body line.
+                        if g.match(s,0,'\\'):
+                            strings[index] = s[1:]
+                        bodyLines += 1
+                        index += 1
+                    if bodyLines &gt; 0:
+                        body = ""
+                        n = index - bodyLines
+                        while n &lt; index:
+                            body += strings[n]
+                            if n != index - 1:
+                                body += "\n"
+                            n += 1
+                        v.setTnodeText(body)
+                    v.setDirty()
+                else: index += 1
+                assert progress &lt; index
+            if theRoot:
+                theRoot.setDirty()
+                c.setChanged(True)
+        finally:
+            c.endUpdate()
+        return theRoot
+    def importFlattenedOutline (self,files): # Not a command, so no event arg.
+
+        c = self.c ; u = c.undoer ; current = c.currentPosition()
+        if current == None: return
+        if len(files) &lt; 1: return
+
+        self.setEncoding()
+        fileName = files[0] # files contains at most one file.
+        g.setGlobalOpenDir(fileName)
+        try:
+            theFile = open(fileName)
+            s = theFile.read()
+            s = string.replace(s,"\r","")
+            s = g.toUnicode(s,self.encoding)
+            array = string.split(s,"\n")
+            theFile.close()
+        except IOError:
+            g.es("Can not open " + fileName, color="blue")
+            leoTest.fail()
+            return
+
+        # Convert the string to an outline and insert it after the current node.
+        undoData = u.beforeInsertNode(current)
+        p = self.convertMoreStringsToOutlineAfter(array,current)
+        if p:
+            c.endEditing()
+            c.validateOutline()
+            c.editPosition(p)
+            p.setDirty()
+            c.setChanged(True)
+            u.afterInsertNode(p,'Import',undoData)
+        else:
+            g.es(fileName + " is not a valid MORE file.")
+    # return the headline level of s,or -1 if the string is not a MORE headline.
+    def moreHeadlineLevel (self,s):
+
+        level = 0 ; i = 0
+        while g.match(s,i,'\t'):
+            level += 1
+            i += 1
+        plusFlag = g.choose(g.match(s,i,"+"),True,False)
+        if g.match(s,i,"+ ") or g.match(s,i,"- "):
+            return level, plusFlag
+        else:
+            return -1, plusFlag
+    # Used by paste logic.
+
+    def stringIsValidMoreFile (self,s):
+
+        s = string.replace(s,"\r","")
+        strings = string.split(s,"\n")
+        return self.stringsAreValidMoreFile(strings)
+
+    def stringsAreValidMoreFile (self,strings):
+
+        if len(strings) &lt; 1: return False
+        level1, plusFlag = self.moreHeadlineLevel(strings[0])
+        if level1 == -1: return False
+        # Check the level of all headlines.
+        i = 0 ; lastLevel = level1
+        while i &lt; len(strings):
+            s = strings[i] ; i += 1
+            level, newFlag = self.moreHeadlineLevel(s)
+            if level &gt; 0:
+                if level &lt; level1 or level &gt; lastLevel + 1:
+                    return False # improper level.
+                elif level &gt; lastLevel and not plusFlag:
+                    return False # parent of this node has no children.
+                elif level == lastLevel and plusFlag:
+                    return False # last node has missing child.
+                else:
+                    lastLevel = level
+                    plusFlag = newFlag
+        return True
+    def createOutlineFromWeb (self,path,parent):
+
+        c = self.c ; u = c.undoer
+        junk,fileName = g.os_path_split(path)
+
+        undoData = u.beforeInsertNode(parent)
+
+        # Create the top-level headline.
+        p = parent.insertAsLastChild()
+        p.initHeadString(fileName)
+        if self.webType=="cweb":
+            c.setBodyString(p,"@ignore\n" + self.rootLine + "@language cweb")
+
+        # Scan the file, creating one section for each function definition.
+        self.scanWebFile(path,p)
+
+        u.afterInsertNode(p,'Import',undoData)
+
+        return p
+    def importWebCommand (self,files,webType):
+
+        c = self.c ; current = c.currentVnode()
+        if current == None: return
+        if not files: return
+        self.tab_width = self.getTabWidth() # New in 4.3.
+        self.webType = webType
+
+        c.beginUpdate()
+        try:
+            for fileName in files:
+                g.setGlobalOpenDir(fileName)
+                v = self.createOutlineFromWeb(fileName,current)
+                v.contract()
+                v.setDirty()
+                c.setChanged(True)
+            c.selectVnode(current)
+        finally:
+            c.endUpdate()
+    def findFunctionDef (self,s,i):
+
+        # Look at the next non-blank line for a function name.
+        i = g.skip_ws_and_nl(s,i)
+        k = g.skip_line(s,i)
+        name = None
+        while i &lt; k:
+            if g.is_c_id(s[i]):
+                j = i ; i = g.skip_c_id(s,i) ; name = s[j:i]
+            elif s[i] == '(':
+                if name: return name
+                else: break
+            else: i += 1
+        return None
+    # This method returns the proper headline text.
+    # 
+    # 1. If s contains a section def, return the section ref.
+    # 2. cweb only: if s contains @c, return the function name following the 
+    # @c.
+    # 3. cweb only: if s contains @d name, returns @d name.
+    # 4. Otherwise, returns "@"
+
+    def scanBodyForHeadline (self,s):
+
+        if self.webType == "cweb":
+            i = 0
+            while i &lt; len(s):
+                i = g.skip_ws_and_nl(s,i)
+                # line = g.get_line(s,i) ; g.trace(line)
+                # Allow constructs such as @ @c, or @ @&lt;.
+                if self.isDocStart(s,i):
+                    i += 2 ; i = g.skip_ws(s,i)
+                if g.match(s,i,"@d") or g.match(s,i,"@f"):
+                    # Look for a macro name.
+                    directive = s[i:i+2]
+                    i = g.skip_ws(s,i+2) # skip the @d or @f
+                    if i &lt; len(s) and g.is_c_id(s[i]):
+                        j = i ; g.skip_c_id(s,i) ; return s[j:i]
+                    else: return directive
+                elif g.match(s,i,"@c") or g.match(s,i,"@p"):
+                    # Look for a function def.
+                    name = self.findFunctionDef(s,i+2)
+                    return g.choose(name,name,"outer function")
+                elif g.match(s,i,"@&lt;"):
+                    # Look for a section def.
+                    # A small bug: the section def must end on this line.
+                    j = i ; k = g.find_on_line(s,i,"@&gt;")
+                    if k &gt; -1 and (g.match(s,k+2,"+=") or g.match(s,k+2,"=")):
+                        return s[j:k+2] # return the section ref.
+                i = g.skip_line(s,i)
+        else:
+            i = 0
+            while i &lt; len(s):
+                i = g.skip_ws_and_nl(s,i)
+                # line = g.get_line(s,i) ; g.trace(line)
+                if g.match(s,i,"&lt;&lt;"):
+                    k = g.find_on_line(s,i,"&gt;&gt;=")
+                    if k &gt; -1:
+                        ref = s[i:k+2]
+                        name = string.strip(s[i+2:k])
+                        if name != "@others":
+                            return ref
+                else:
+                    name = self.findFunctionDef(s,i)
+                    if name:
+                        return name
+                i = g.skip_line(s,i)
+        return "@" # default.
+    def scanWebFile (self,fileName,parent):
+
+        theType = self.webType
+        lb = g.choose(theType=="cweb","@&lt;","&lt;&lt;")
+        rb = g.choose(theType=="cweb","@&gt;","&gt;&gt;")
+
+        try: # Read the file into s.
+            f = open(fileName)
+            s = f.read()
+        except:
+            g.es("Can not import " + fileName, color="blue")
+            return
+
+        i = 0 ; self.web_st = []
+
+        while i &lt; len(s):
+            progress = i
+            i = g.skip_ws_and_nl(s,i)
+            # line = g.get_line(s,i) ; g.trace(line)
+            if self.isDocStart(s,i):
+                if theType == "cweb": i += 2
+                else: i = g.skip_line(s,i)
+            elif theType == "cweb" and g.match(s,i,"@@"):
+                i += 2
+            elif g.match(s,i,lb):
+                i += 2 ; j = i ; k = g.find_on_line(s,j,rb)
+                if k &gt; -1: self.cstEnter(s[j:k])
+            else: i += 1
+            assert (i &gt; progress)
+
+        # g.trace(self.cstDump())
+        i = 0
+        while i &lt; len(s):
+            progress = i
+            i = g.skip_ws_and_nl(s,i)
+            if self.isModuleStart(s,i) or g.match(s,i,lb):
+                break
+            else: i = g.skip_line(s,i)
+            assert(i &gt; progress)
+
+        j = g.skip_ws(s,0)
+        if j &lt; i:
+            self.createHeadline(parent,"@ " + s[j:i],"Limbo")
+
+        j = i
+        if g.match(s,i,lb):
+            while i &lt; len(s):
+                progress = i
+                i = g.skip_ws_and_nl(s,i)
+                if self.isModuleStart(s,i):
+                    break
+                else: i = g.skip_line(s,i)
+                assert(i &gt; progress)
+            self.createHeadline(parent,s[j:i],g.angleBrackets(" @ "))
+
+        # g.trace(g.get_line(s,i))
+        while i &lt; len(s):
+            outer_progress = i
+            if theType=="cweb":
+                assert(self.isModuleStart(s,i))
+                start = i
+                if self.isDocStart(s,i):
+                    i += 2
+                    while i &lt; len(s):
+                        progress = i
+                        i = g.skip_ws_and_nl(s,i)
+                        if self.isModuleStart(s,i): break
+                        else: i = g.skip_line(s,i)
+                        assert (i &gt; progress)
+                if g.match(s,i,"@d") or g.match(s,i,"@f"):
+                    i += 2 ; i = g.skip_line(s,i)
+                    # Place all @d and @f directives in the same node.
+                    while i &lt; len(s):
+                        progress = i
+                        i = g.skip_ws_and_nl(s,i)
+                        if g.match(s,i,"@d") or g.match(s,i,"@f"): i = g.skip_line(s,i)
+                        else: break
+                        assert (i &gt; progress)
+                    i = g.skip_ws_and_nl(s,i)
+
+                while i &lt; len(s) and not self.isModuleStart(s,i):
+                    progress = i
+                    i = g.skip_line(s,i)
+                    i = g.skip_ws_and_nl(s,i)
+                    assert (i &gt; progress)
+
+                if g.match(s,i,"@c") or g.match(s,i,"@p"):
+                    i += 2
+                    while i &lt; len(s):
+                        progress = i
+                        i = g.skip_line(s,i)
+                        i = g.skip_ws_and_nl(s,i)
+                        if self.isModuleStart(s,i):
+                            break
+                        assert (i &gt; progress)
+            else:
+                assert(self.isDocStart(s,i)) # isModuleStart == isDocStart for noweb.
+                start = i ; i = g.skip_line(s,i)
+                while i &lt; len(s):
+                    progress = i
+                    i = g.skip_ws_and_nl(s,i)
+                    if self.isDocStart(s,i): break
+                    else: i = g.skip_line(s,i)
+                    assert (i &gt; progress)
+
+            body = s[start:i]
+            body = self.massageWebBody(body)
+            headline = self.scanBodyForHeadline(body)
+            self.createHeadline(parent,body,headline)
+            assert(i &gt; outer_progress)
+    # We canonicalize strings before looking them up, but strings are entered in the form they are first encountered.
+
+    def cstCanonicalize (self,s,lower=True):
+
+        if lower:
+            s = string.lower(s)
+        s = string.replace(s,"\t"," ")
+        s = string.replace(s,"\r","")
+        s = string.replace(s,"\n"," ")
+        s = string.replace(s,"  "," ")
+        s = string.strip(s)
+        return s
+    def cstDump (self):
+
+        self.web_st.sort()
+        s = "Web Symbol Table...\n\n"
+        for name in self.web_st:
+            s += name + "\n"
+        return s
+    # We only enter the section name into the symbol table if the ... convention is not used.
+
+    def cstEnter (self,s):
+
+        # Don't enter names that end in "..."
+        s = string.rstrip(s)
+        if s.endswith("..."): return
+
+        # Put the section name in the symbol table, retaining capitalization.
+        lower = self.cstCanonicalize(s,True)  # do lower
+        upper = self.cstCanonicalize(s,False) # don't lower.
+        for name in self.web_st:
+            if string.lower(name) == lower:
+                return
+        self.web_st.append(upper)
+    # This method returns a string if the indicated string is a prefix of an entry in the web_st.
+
+    def cstLookup (self,target):
+
+        # Do nothing if the ... convention is not used.
+        target = string.strip(target)
+        if not target.endswith("..."): return target
+        # Canonicalize the target name, and remove the trailing "..."
+        ctarget = target[:-3]
+        ctarget = self.cstCanonicalize(ctarget)
+        ctarget = string.strip(ctarget)
+        found = False ; result = target
+        for s in self.web_st:
+            cs = self.cstCanonicalize(s)
+            if cs[:len(ctarget)] == ctarget:
+                if found:
+                    g.es("****** " + target + ": is also a prefix of: " + s)
+                else:
+                    found = True ; result = s
+                    # g.es("replacing: " + target + " with: " + s)
+        return result
+    def perfectImport (self,fileName,p,testing=False,verbose=False,convertBlankLines=True,verify=True):
+
+        __pychecker__ = 'maxlines=500'
+
+        # 
+        # This algorithm corrects the result of an Import To @file command so 
+        # that it is guaranteed that the result of writing the imported file 
+        # will be identical to the original file except for any sentinels that 
+        # have been inserted.
+        # 
+        # On entry, p points to the newly imported outline.
+        # 
+        # We correct the outline by applying Bernhard Mulder's algorithm.
+        # 
+        # 1.  We use the atFile.write code to write the newly imported outline 
+        # to a string s.  This string contains represents a thin derived file, 
+        # so it can be used to recreate then entire outline structure without 
+        # any other information.
+        # 
+        # Splitting s into lines creates the fat_lines argument to mu methods.
+        # 
+        # 2. We make corrections to fat_lines using Mulder's algorithm.  The 
+        # corrected fat_lines represents the corrected outline.  To do this, 
+        # we set the arguments as follows:
+        # 
+        # - i_lines: fat_lines stripped of sentinels
+        # - j_lines to the lines of the original imported file.
+        # 
+        # The algorithm updates fat_lines using diffs between i_lines and 
+        # j_lines.
+        # 
+        # 3. Mulder's algorithm doesn't specify which nodes have been 
+        # changed.  In fact, it Mulder's algorithm doesn't really understand 
+        # nodes at all.  Therefore, if we want to mark changed nodes we do so 
+        # by comparing the original version of the imported outline with the 
+        # corrected version of the outline.
+        c = self.c
+        root = p.copy()
+        at = c.atFileCommands
+        if testing:
+            for p2 in p.self_and_subtree_iter():
+                p2.clearDirty()
+        nodeIndices = g.app.nodeIndices
+
+        nodeIndices.setTimestamp()
+
+        for p2 in root.self_and_subtree_iter():
+            try: # Will fail for None or any pre 4.1 file index.
+                theId,time,n = p2.v.t.fileIndex
+            except TypeError:
+                p2.v.t.fileIndex = nodeIndices.getNewIndex()
+        at.write(root,thinFile=True,toString=True)
+        s = at.stringOutput
+        if not s: return
+
+        # Set up the data for the algorithm.
+        mu = g.mulderUpdateAlgorithm(testing=testing,verbose=verbose)
+        delims = g.comment_delims_from_extension(fileName)
+        fat_lines = g.splitLines(s) # Keep the line endings.
+        i_lines,mapping = mu.create_mapping(fat_lines,delims)
+        j_lines = file(fileName).readlines()
+
+        # Correct write_lines using the algorihm.
+        if i_lines != j_lines:
+            if verbose:
+                g.es("Running Perfect Import",color="blue")
+            write_lines = mu.propagateDiffsToSentinelsLines(i_lines,j_lines,fat_lines,mapping)
+            if 1: # For testing.
+                write_lines_node = root.insertAfter()
+                write_lines_node.initHeadString("write_lines")
+                s = ''.join(write_lines)
+                write_lines_node.scriptSetBodyString(s,encoding=g.app.tkEncoding)
+            # Notes:
+            # 1. This code must overwrite the newly-imported tree because the 
+            # gnx's in
+            # write_lines refer to those nodes.
+            # 
+            # 2. The code in readEndNode now reports when nodes change during 
+            # importing. This
+            # code also marks changed nodes.
+
+            try:
+                at.correctedLines = 0
+                at.targetFileName = "&lt;perfectImport string-file&gt;"
+                at.inputFile = fo = g.fileLikeObject()
+                at.file = fo # Strange, that this is needed.  Should be cleaned up.
+                for line in write_lines:
+                    fo.write(line)
+                firstLines,junk,junk = c.atFileCommands.scanHeader(fo,at.targetFileName)
+                # To do: pass params to readEndNode.
+                at.readOpenFile(root,fo,firstLines,perfectImportRoot=root)
+                n = at.correctedLines
+                if verbose:
+                    g.es("%d marked node%s corrected" % (n,g.choose(n==1,'','s')),color="blue")
+            except:
+                g.es("Exception in Perfect Import",color="red")
+                g.es_exception()
+                s = None
+        if verify:
+            try:
+                # Read the original file into before_lines.
+                before = file(fileName)
+                before_lines = before.readlines()
+                before.close()
+
+                # Write the tree into after_lines.
+                at.write(root,thinFile=True,toString=True)
+                after_lines1 = g.splitLines(at.stringOutput)
+
+                # Strip sentinels from after_lines and compare.
+                after_lines = mu.removeSentinelsFromLines(after_lines1,delims)
+
+                # A major kludge: Leo can not represent unindented blank lines in indented nodes!
+                # We ignore the problem here by stripping whitespace from blank lines.
+                # We shall need output options to handle such lines.
+                if convertBlankLines:
+                    mu.stripWhitespaceFromBlankLines(before_lines)
+                    mu.stripWhitespaceFromBlankLines(after_lines)
+                if before_lines == after_lines:
+                    if verbose:
+                        g.es("Perfect Import verified",color="blue")
+                else:
+                    leoTest.fail()
+                    if verbose:
+                        g.es("Perfect Import failed verification test!",color="red")
+                        print len(before_lines),len(after_lines)
+
+                        if len(before_lines)==len(after_lines):
+                            for i in xrange(len(before_lines)):
+                                extra = 3
+                                if before_lines[i] != after_lines[i]:
+                                    j = max(0,i-extra)
+                                    print '-' * 20
+                                    while j &lt; i + extra + 1:
+                                        leader = g.choose(i == j,"* ","  ")
+                                        print "%s%3d" % (leader,j), repr(before_lines[j])
+                                        print "%s%3d" % (leader,j), repr(after_lines[j])
+                                        j += 1
+                        else:
+                            for i in xrange(min(len(before_lines),len(after_lines))):
+                                if before_lines[i] != after_lines[i]:
+                                    extra = 5
+                                    print "first mismatch at line %d" % i
+                                    print "printing %d lines after mismatch" % extra
+                                    print "before..."
+                                    for j in xrange(i+1+extra):
+                                        print "%3d" % j, repr(before_lines[j])
+                                    print
+                                    print "after..."
+                                    for k in xrange(1+extra):
+                                        print "%3d" % (i+k), repr(after_lines[i+k])
+                                    print
+                                    print "with sentinels"
+                                    j = 0 ; k = 0
+                                    while k &lt; i + 1 + extra:
+                                        print "%3d" % k,repr(after_lines1[j])
+                                        if not g.is_sentinel(after_lines1[j],delims):
+                                            k += 1
+                                        j += 1
+                                    break
+            except IOError:
+                g.es("Can not reopen %s!" % fileName,color="red")
+                leoTest.fail()
+    class baseScannerClass:
+
+        '''The base class for all import scanner classes.
+        This class contains common utility methods.'''
+
+        def __init__ (self,importCommands,atAuto,language):
+
+            ic = importCommands
+
+            self.atAuto = atAuto
+            self.c = ic.c
+            self.codeEnd = None
+                # The character after the last character of the class, method or function.
+                # An error will be given if this is not a newline.
+            self.encoding = ic.encoding # g.app.tkEncoding
+            self.errors = 0
+            self.errorLines = []
+            self.extraIdChars = ''
+            self.fileName = ic.fileName # The original filename.
+            self.fileType = ic.fileType # The extension,  '.py', '.c', etc.
+            self.importCommands = ic
+            self.language = language
+            self.methodName = ic.methodName # x, as in &lt; &lt; x methods &gt; &gt; =
+            self.output_newline = ic.output_newline # = c.config.getBool('output_newline')
+            self.root = None # The top-level node of the generated tree.
+            self.rootLine = ic.rootLine # '' or @root + self.fileName
+            self.sigEnd = None # The index of the end of the signature.
+            self.sigID = None # The identifier contained in the signature, i.e., the function or method name.
+            self.sigStart = None
+                # The start of the line containing the signature.
+                # An error will be given if something other than whitespace precedes the signature.
+            self.startSigIndent = None
+            self.tab_width = ic.getTabWidth() # The tab width in effect in the c.currentPosition.
+            self.trace = False or ic.trace # = c.config.getBool('trace_import')
+            self.treeType = ic.treeType # '@root' or '@file'
+            self.webType = ic.webType # 'cweb' or 'noweb'  
+
+            # Compute language ivars.
+            delim1,delim2,delim3 = g.set_delims_from_language(language)
+            self.comment_delim = delim1
+
+            # Create the ws equivalent to one tab.
+            if self.tab_width &lt; 0:
+                self.tab_ws = ' '*abs(self.tab_width)
+            else:
+                self.tab_ws = '\t'
+
+            # May be overridden in subclasses.
+            self.lineCommentDelim = None
+            self.lineCommentDelim2 = None
+            self.blockCommentDelim1 = None
+            self.blockCommentDelim2 = None
+            self.blockDelim1 = '{'
+            self.blockDelim2 = '}'
+            self.classTags = ['class',]
+                # tags that start a tag.
+            self.functionTags = []
+            self.sigTailFailTokens = []
+                # A list of strings that abort a signature when seen in a tail.
+                # For example, ';' and '=' in C.
+            self.strict = False # True if leading whitespace is very significant.
+        def check (self,s,parent):
+
+            '''Make sure the generated nodes are equivalent to the original file.
+
+            1. Regularize and check leading whitespace.
+            2. Check that a trial write produces the original file.
+
+            Return True if the nodes are equivalent to the original file.
+            '''
+
+            result = self.checkWhitespace(s,parent) and self.checkTrialWrite()
+            g.app.unitTestDict ['result'] = result
+            return result
+        # Similar to c.tabNannyNode
+
+        def checkTabWithTabNanny (self,p):
+
+            '''Check indentation using tabnanny.'''
+
+            h = p.headString() ; body = p.bodyString()
+
+            try:
+                readline = g.readLinesClass(body).next
+                tabnanny.process_tokens(tokenize.generate_tokens(readline))
+                return True
+
+            except IndentationError, err:
+                # Instances of this class have attributes filename, lineno, offset and text.
+                g.es_print('IndentationError in %s at line %d' % (h,err.lineno),color='blue')
+                # g.es_print(str(err)) # str(err.text))
+
+            except parser.ParserError, msg:
+                g.es_print('ParserError in %s' % h,color='blue')
+                g.es_print(str(msg))
+
+            except tokenize.TokenError, msg:
+                g.es_print('TokenError in %s' % h,color='blue')
+                g.es_print(str(msg))
+
+            except tabnanny.NannyNag, nag:
+                badline = nag.get_lineno()
+                line    = nag.get_line()
+                message = nag.get_msg()
+                g.es_print('Indentation error in %s, line %d' % (h, badline),color='blue')
+                g.es_print(message)
+                g.es_print('offending line:\n%s' % repr(str(line))[1:-1])
+
+            except:
+                g.trace('unexpected exception')
+                g.es_exception()
+
+            return False
+        def checkWhitespace(self,s,parent):
+
+            '''Check and normalize the leading whitespace of all nodes.
+
+            - The original sources may fail Python's tabNanny checks.  
+
+            - Leading whitespace in the original sources may be inconsistent with the
+              @tabwidth setting in effect in the @auto tree.
+
+            - The original sources may contain underindented comments. 
+
+            If an indentation problem is found, issue a warning and return False.
+            Otherwise, normalize the indentation of all pieces so that it is indeed
+            consistent with the indentation specified by the present @tabwidth setting.
+            Normalizing underindented comments means shifting the comments right.
+            '''
+
+            if 1: # Do a quick check for mixed leading tabs/blanks.
+                blanks = tabs = 0
+                for line in g.splitLines(s):
+                    lws = line[0:g.skip_ws(line,0)]
+                    blanks += lws.count(' ')
+                    tabs += lws.count('\t')
+                # g.trace('blanks',blanks,'tabs',tabs)
+                ok = blanks == 0 or tabs == 0
+                if not ok:
+                    self.error('File contains intermixed blanks and tabs')
+                return ok
+            else:
+                # Check that whitespace passes TabNanny.
+                # Check that whitespace is compatible with @tabwidth.
+                # Check for underindented lines.
+                ok = True
+                for p in parent.self_and_subtree_iter():
+                    ok = ok and self.checkTabWithTabNanny(p)
+                return ok
+        def checkTrialWrite (self):
+
+            '''Return True if a trial write produces the original file.'''
+
+            c = self.c ; at = c.atFileCommands
+            at.write(self.root,
+                nosentinels=True,thinFile=False,
+                scriptWrite=False,toString=True,
+                write_strips_blank_lines=False,
+            )
+
+            ignoreBlankLines = True
+            s1,s2 = self.file_s, at.stringOutput
+            if s1 == s2: return True
+
+            lines1 = g.splitLines(s1) ; n1 = len(lines1)
+            lines2 = g.splitLines(s2) ; n2 = len(lines2)
+
+            ok = True
+            for i in xrange(max(n1,n2)):
+                ok = self.compareHelper(lines1,lines2,i,self.strict)
+                if not ok: break
+
+            d = g.app.unitTestDict
+            expectedMismatch =  d.get('expectedMismatchLine')
+            actualMismatch = d.get('actualMismatchLine')
+            ok = ok or (g.app.unitTesting and expectedMismatch == actualMismatch)
+            if not ok:
+                if g.app.unitTesting:
+                    g.trace('expected mismatch line',expectedMismatch,'actualMismatch',actualMismatch)
+                if len(lines1) &lt; 30:
+                    print 'input...'
+                    for i in xrange(len(lines1)):
+                        print '%3d' % (i),lines1[i],
+                    print 'output...'
+                    for i in xrange(len(lines2)):
+                        print '%3d' % (i),lines2[i],
+            return ok
+        def compareHelper (self,lines1,lines2,i,strict):
+
+            '''Compare lines1[i] and lines2[i].
+            strict is True if leading whitespace is very significant.'''
+
+            d = g.app.unitTestDict
+            expectedMismatch = g.app.unitTesting and d.get('expectedMismatchLine')
+
+            if i &gt;= len(lines1):
+                if i != expectedMismatch:
+                    print 'extra lines'
+                    for line in lines2[i:]:
+                        print repr(line)
+                d ['actualMismatchLine'] = i
+                return False
+
+            if i &gt;= len(lines2):
+                if i != expectedMismatch:
+                    print 'missing lines'
+                    for line in lines2[i:]:
+                        print repr(line)
+                d ['actualMismatchLine'] = i
+                return False
+
+            line1,line2 = lines1[i],lines2[i]
+            if line1 == line2:
+                return True # An exact match.
+            elif not line1.strip() and not line2.strip():
+                return True # All blank lines compare equal.
+            elif not strict and line1.lstrip() == line2.lstrip():
+                return True # A match excluding leading whitespace.
+            else:
+                if i+1 != expectedMismatch:
+                    print '*** first mismatch at line %d' % (i+1)
+                    print 'original line: ', repr(line1)
+                    print 'generated line:', repr(line2)
+                d ['actualMismatchLine'] = i+1
+                return False
+        # None of these methods should ever need to be overridden in 
+        # subclasses.
+        # 
+        def addRef (self,parent):
+
+            '''Create an unindented @others or section reference in the parent node.'''
+
+            c = self.c
+
+            if self.treeType == '@file':
+                c.appendStringToBody(parent,'@others\n')
+
+            if self.treeType == '@root' and self.methodsSeen:
+                c.appendStringToBody(parent,
+                    g.angleBrackets(' ' + self.methodName + ' methods ') + '\n\n')
+        def createDeclsNode (self,parent,s):
+
+            '''Create a child node of parent containing s.'''
+
+            # Create the node for the decls.
+            headline = self.methodName + ' declarations'
+            body = self.undentBody(s)
+            self.createHeadline(parent,body,headline)
+        def createFunctionNode (self,headline,body,parent):
+
+            # Create the prefix line for @root trees.
+            if self.treeType == '@file':
+                prefix = ''
+            else:
+                prefix = g.angleBrackets(' ' + headline + ' methods ') + '=\n\n'
+                self.methodsSeen = True
+
+            # Create the node.
+            self.createHeadline(parent,prefix + body,headline)
+
+        def createHeadline (self,parent,body,headline):
+
+            # g.trace('parent,headline:',parent,headline)
+
+            # Create the node.
+            p = parent.insertAsLastChild()
+            p.initHeadString(headline,self.encoding)
+
+            # Set the body.
+            if body:
+                self.c.setBodyString(p,body,self.encoding)
+            return p
+        def getLeadingIndent (self,s,i,ignoreComments=True):
+
+            '''Return the leading whitespace of a line.
+            Ignore blank and comment lines if ignoreComments is True'''
+
+            width = 0
+            i = g.find_line_start(s,i)
+            if ignoreComments:
+                while i &lt; len(s):
+                    # g.trace(g.get_line(s,i))
+                    j = g.skip_ws(s,i)
+                    if g.is_nl(s,j) or g.match(s,j,self.comment_delim):
+                        i = g.skip_line(s,i) # ignore blank lines and comment lines.
+                    else:
+                        i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+                        break      
+            else:
+                i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+
+            # g.trace('returns:',width)
+            return width
+        def indentBody (self,s,lws=None):
+
+            '''Add whitespace equivalent to one tab for all non-blank lines of s.'''
+
+            result = []
+            if not lws: lws = self.tab_ws
+
+            for line in g.splitLines(s):
+                if line.strip():
+                    result.append(lws + line)
+                elif line.endswith('\n'):
+                    result.append('\n')
+
+            result = ''.join(result)
+            return result
+        def insertIgnoreDirective (self,parent):
+
+            self.c.appendStringToBody(parent,'@ignore')
+        def massageComment (self,s):
+
+            '''Return s with leading and trailing whitespace removed and all other
+            runs of whitespace and newlines converted to a single blank.'''
+
+            s = s.strip()
+            s = s.replace('\n',' ')
+            s = s.replace('\r',' ')
+            s = s.replace('\t',' ')
+            s = s.replace('  ',' ')
+            s = s.strip()
+            return s
+        def putClass (self,s,sigStart,sigEnd,codeEnd,start,parent):
+
+            '''Creates a child node c of parent for the class, and children of c for each def in the class.'''
+
+            prefix = self.createClassNodePrefix()
+            if not self.sigID:
+                g.trace('Can not happen: no sigID')
+                sigID = 'Unknown class name'
+            class_name = self.sigID
+            headline = 'class ' + class_name
+            body = s[start:sigEnd]
+            body = self.undentBody(body)
+            i = self.extendSignature(s,sigEnd)
+            extend = s[sigEnd:i]
+            if extend:
+                extend = self.undentBody(extend)
+                extend = self.indentBody(extend)
+                body = body + extend
+
+            class_node = self.createHeadline(parent,prefix + body,headline)
+            savedMethodName = self.methodName
+            self.methodName = headline
+            self.putClassHelper(s,i,codeEnd,class_name,class_node)
+            self.methodName = savedMethodName
+        def appendRefToClassNode (self,class_name,class_node):
+
+            '''Insert the proper body text in the class_vnode.'''
+
+            if self.treeType == '@file':
+                s = '@others'
+            else:
+                s = g.angleBrackets(' class %s methods ' % (class_name))
+
+            self.appendTextToClassNode(class_node,'%s%s\n' % (self.tab_ws,s))
+        def appendTextToClassNode (self,class_node,s):
+
+            c = self.c
+
+            c.appendStringToBody(class_node,s) 
+        def createClassNodePrefix (self):
+
+            '''Create the class node prefix.'''
+
+            if  self.treeType == '@file':
+                prefix = ''
+            else:
+                prefix = g.angleBrackets(' ' + self.methodName + ' methods ') + '=\n\n'
+                self.methodsSeen = True
+
+            return prefix
+        def putClassHelper(self,s,i,end,class_name,class_node):
+
+            '''s contains the body of a class, not including the signature.
+
+            Parse s for inner methods and classes, and create nodes.'''
+
+            # Put any leading decls in the class node.
+            trace = False
+            start = i
+            i = self.skipDecls(s,i,end)
+            decls = s[start:i]
+            if decls:
+                # We must regularize the indentation to match the @others
+                decls = self.undentBody(decls)
+                decls = self.indentBody(decls)
+                if self.trace: g.trace('decls\n%s' % decls)
+                # g.trace(class_name,'decls',repr(decls))
+                self.appendTextToClassNode(class_node,decls)
+            start = i ; putRef = False
+            while i &lt; end:
+                progress = i
+                if self.startsComment(s,i):
+                    i = self.skipComment(s,i)
+                elif self.startsString(s,i):
+                    i = self.skipString(s,i)
+                elif self.startsClass(s,i):  # Sets sigStart,sigEnd &amp; codeEnd ivars.
+                    putRef = True
+                    end2 = self.codeEnd # putClass may change codeEnd ivar.
+                    self.putClass(s,self.sigStart,self.sigEnd,self.codeEnd,start,class_node)
+                    i = start = end2
+                elif self.startsFunction(s,i): # Sets sigStart,sigEnd &amp; codeEnd ivars.
+                    putRef = True
+                    self.putFunction(s,self.sigStart,self.codeEnd,start,class_node)
+                    i = start = self.codeEnd
+                elif self.startsId(s,i):
+                    i = self.skipId(s,i);
+                else: i += 1
+                assert progress &lt; i,'i: %d, ch: %s' % (i,repr(s[i]))
+
+            if putRef:
+                self.appendRefToClassNode(class_name,class_node)
+
+            if start &lt; end:
+                trailing = s[start:end]
+                if trace or self.trace: g.trace('trailing\n%s' % trailing)
+                self.appendTextToClassNode(class_node,trailing)
+        def putFunction (self,s,sigStart,codeEnd,start,parent):
+
+            '''Create a node of parent for a function defintion.'''
+
+            if self.sigID:
+                headline = self.sigID
+            else:
+                g.trace('Can not happen: no sigID')
+                headline = 'unknown function'
+
+            body1 = self.undentBody(s[start:sigStart],ignoreComments=False)
+
+            body2 = self.undentBody(s[sigStart:codeEnd])
+            body = body1 + body2
+            if self.trace:
+                g.trace('body\n%s' % repr(body))
+                g.trace('body\n%s' % body)
+
+            if not body.endswith('\n'):
+                self.error('function does not end with a newline.  A newline will be added.')
+                g.es(g.get_line(s,codeEnd),color='blue')
+
+            self.createFunctionNode(headline,body,parent)
+        def putRootText (self,p):
+
+            c = self.c
+
+            line1 = g.choose(self.atAuto,'','@ignore\n')
+
+            c.appendStringToBody(p,'%s%s@language %s\n' % (
+                line1,self.rootLine,self.language))
+        def undentBody (self,s,ignoreComments=True):
+
+            '''Remove the first line's leading indentation from all lines of s.'''
+
+            #g.trace('before',repr(s))
+
+            # Copy an @code line as is.
+            i = 0
+            if g.match(s,i,'@code'):
+                j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
+                result += s[j:i]
+
+            # Calculate the amount to be removed from each line.
+            undent = self.getLeadingIndent(s,i,ignoreComments=ignoreComments)
+            if undent == 0:
+                return s
+            else:
+                result = ''.join([
+                    g.removeLeadingWhitespace(line,undent,self.tab_width)
+                        for line in g.splitLines(s)])
+                #g.trace('after',repr(result))
+                return result
+        def underindentedComment (self,line):
+
+            self.error('underindented python comments.\nExtra leading whitespace will be added')
+            g.es(line,color='blue')
+
+        def underindentedLine (self,line):
+
+            self.error('underindented line.\nExtra leading whitespace will be added')
+            g.es(line,color='blue')
+
+        def error (self,s):
+            g.es_print(s,color='red')
+            self.errors += 1
+            g.app.unitTestDict['actualErrors'] = self.errors
+
+        def oops (self):
+            print 'baseScannerClass oops: %s must be overridden in subclass' % g.callers()
+        # Scan and skipDecls would typically not be overridden.
+        def extendSignature(self,s,i):
+
+            '''Extend the signature line if appropriate.
+            The text *must* end with a newline.
+
+            For example, the Python scanner appends docstrings if they exist.'''
+
+            return i
+        def scan (self,s,parent):
+
+            '''A language independent scanner: it uses language-specific helpers.
+
+            Create a child of self.root for:
+            - Leading outer-level declarations.
+            - Outer-level classes.
+            - Outer-level functions.
+            '''
+            i = start = self.skipDecls(s,0,len(s))
+            decls = s[:i]
+            if decls: self.createDeclsNode(parent,decls)
+            needRef = False
+            while i &lt; len(s):
+                progress = i
+                if self.startsComment(s,i):
+                    i = self.skipComment(s,i)
+                elif self.startsString(s,i):
+                    i = self.skipString(s,i)
+                elif self.startsClass(s,i): # Sets sigStart,sigEnd &amp; codeEnd ivars.
+                    end2 = self.codeEnd # putClass may change codeEnd ivar.
+                    self.putClass(s,self.sigStart,self.sigEnd,self.codeEnd,start,parent)
+                    i = start = end2
+                    needRef = True
+                elif self.startsFunction(s,i): # Sets sigStart,sigEnd &amp; codeEnd ivars.
+                    self.putFunction(s,self.sigStart,self.codeEnd,start,parent)
+                    i = start = self.codeEnd
+                elif self.startsId(s,i):
+                    i = self.skipId(s,i);
+                else: i += 1
+                assert progress &lt; i,'i: %d, ch: %s' % (i,repr(s[i]))
+            self.addRef(parent)
+        def skipArgs (self,s,i,kind):
+
+            '''Skip the argument or class list.  Return i, ok
+
+            kind is in ('class','function')'''
+
+            start = i
+            i = g.skip_ws_and_nl(s,i)
+            if not g.match(s,i,'('):
+                return start,kind == 'class'
+
+            i = self.skipParens(s,i)
+            # skipParens skips the ')'
+            if i &gt;= len(s):
+                return start,False
+            else:
+                return i,True 
+        def skipBlock(self,s,i,delim1=None,delim2=None):
+
+            '''Skip from the opening delim to *past* the matching closing delim.
+
+            If no matching is found i is set to len(s)'''
+
+            trace = False
+            if delim1 is None: delim1 = self.blockDelim1
+            if delim2 is None: delim2 = self.blockDelim2
+            match1 = g.choose(len(delim1)==1,g.match,g.match_word)
+            match2 = g.choose(len(delim2)==1,g.match,g.match_word)
+            assert match1(s,i,delim1)
+            level = 0 ; start = i
+            startIndent = self.startSigIndent
+            if trace: g.trace('***','startIndent',startIndent,g.callers())
+            while i &lt; len(s):
+                progress = i
+                if g.is_nl(s,i):
+                    backslashNewline = i &gt; 0 and g.match(s,i-1,'\\\n')
+                    i = g.skip_nl(s,i)
+                    if not backslashNewline:
+                        j, indent = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+                        line = g.get_line(s,j)
+                        if trace: g.trace('indent',indent,line)
+                        if indent &lt; startIndent and line.strip():
+                            # An non-empty underindented line.
+                            # Issue an error unless it contains just the closing bracket.
+                            if level == 0 and match2(s,j,delim2):
+                                pass
+                            else:
+                                if j not in self.errorLines: # No error yet given.
+                                    self.errorLines.append(j)
+                                    self.underindentedLine(line)
+                elif self.startsComment(s,i):
+                    i = self.skipComment(s,i)
+                elif self.startsString(s,i):
+                    i = self.skipString(s,i)
+                elif match1(s,i,delim1):
+                    level += 1 ; i += len(delim1)
+                elif match2(s,i,delim2):
+                    level -= 1 ; i += len(delim2)
+                    if level &lt;= 0: break
+                else: i += 1
+                assert progress &lt; i
+
+            if trace: g.trace('returns\n',s[start:i])
+            return i
+        def skipCodeBlock (self,s,i,kind):
+
+            '''Skip the code block in a function or class definition.'''
+
+            i = self.skipBlock(s,i,delim1=None,delim2=None)
+            i = self.skipNewline(s,i,kind)
+
+            return i
+        def skipComment (self,s,i):
+
+            '''Skip a comment and return the index of the following character.'''
+
+            if g.match(s,i,self.lineCommentDelim) or g.match(s,i,self.lineCommentDelim2):
+                return g.skip_to_end_of_line(s,i)
+            else:
+                return self.skipBlockComment(s,i)
+        def skipBlockComment (self,s,i):
+
+            '''Skip past a block comment.'''
+
+            # Skip the opening delim.
+            assert(g.match(s,i,self.blockCommentDelim1))
+            start = i ; i += len(self.blockCommentDelim1)
+
+            # Find the closing delim.
+            k = string.find(s,self.blockCommentDelim2,i)
+            if k == -1:
+                self.error('Run on block comment: ' + s[start:i])
+                return len(s)
+            else:
+                return k + len(self.blockCommentDelim2)
+        def skipDecls (self,s,i,end):
+
+            '''Skip everything until the start of the next class or function.'''
+
+            start = i
+            while i &lt; end:
+                progress = i
+                if self.startsComment(s,i):
+                    i = self.skipComment(s,i)
+                elif self.startsString(s,i):
+                    i = self.skipString(s,i)
+                elif self.startsClass(s,i,quick=True):
+                    # Important: do not include leading ws in the decls.
+                    i = self.adjustClassOrFunctionStart(s,i,'class')
+                    break
+                elif self.startsFunction(s,i,quick=True):
+                    # Important: do not include leading ws in the decls.
+                    i = self.adjustClassOrFunctionStart(s,i,'function')
+                    break
+                elif self.startsId(s,i):
+                    i = self.skipId(s,i);
+                else: i += 1
+                assert(progress &lt; i)
+
+            # Ignore empty decls.
+            if s[start:i].strip():
+                if self.trace: g.trace('\n'+s[start:i])
+                return i
+            else:
+                return start
+        def adjustClassOrFunctionStart(self,s,i,tag):
+
+            '''
+            s[i:] starts a class or function.
+            Adjust i so it points at the start of the line.
+
+            Issue a warning if anything except whitespace appears.
+            '''
+
+            j = g.find_line_start(s,i)
+            if s[j:i].strip():
+                message = '%s definition does not start a line. Leo must insert a newline.' % tag
+                self.error(message)
+                return i
+            else:
+                return j
+        def skipId (self,s,i):
+
+            return g.skip_id(s,i,chars=self.extraIdChars)
+        def skipNewline(self,s,i,kind):
+
+            '''Skip whitespace and comments up to a newline, then skip the newline.
+            Issue an error if no newline is found.'''
+
+            while 1:
+                i = g.skip_ws(s,i)
+                if self.startsComment(s,i):
+                    i = self.skipComment(s,i)
+                else: break
+
+            if g.match(s,i,'\n'):
+                i += 1
+            else:
+                self.error('%s does not end in a newline.  A newline will be added.' % kind)
+                g.es(g.get_line(s,i),color='blue')
+
+            return i
+        def skipParens (self,s,i):
+
+            '''Skip a parenthisized list, that might contain strings or comments.'''
+
+            return self.skipBlock(s,i,delim1='(',delim2=')')
+        def skipString (self,s,i):
+
+            # Returns len(s) on unterminated string.
+            return g.skip_string(s,i,verbose=False)
+        # We don't expect to override this code, but subclasses may override the helpers.
+
+        def startsClass (self,s,i,quick=False):
+            '''Return True if s[i:] starts a class definition.
+            Sets sigStart, sigEnd, sigID and codeEnd ivars.'''
+            i = self.startsHelper(s,i,kind='class',quick=quick,tags=self.classTags)
+            return i
+
+        def startsFunction (self,s,i,quick=False):
+            '''Return True if s[i:] starts a function.
+            Sets sigStart, sigEnd, sigID and codeEnd ivars.'''
+            i = self.startsHelper(s,i,kind='function',quick=quick,tags=self.functionTags)
+            return i
+        def startsHelper(self,s,i,kind,quick,tags):
+            '''return True if s[i:] starts a class or function.
+            Sets sigStart, sigEnd, sigID and codeEnd ivars.'''
+
+            trace = False
+            self.codeEnd = self.sigEnd = self.sigID = None
+            self.sigStart = i
+
+            # Underindented lines can happen in any language, not just Python.
+            # The skipBlock method of the base class checks for such lines.
+            self.startSigIndent = self.getLeadingIndent(s,i)
+
+            # Get the tag that starts the class or function.
+            i, ids = self.skipSigStart(s,i,tags)
+            if tags:
+                for id in ids:
+                    if id in tags:
+                        break
+                else: return False
+
+            if quick: return True
+
+            if trace: g.trace('kind',kind)
+
+            # Get the class/function id
+            i, sigId = self.skipSigId(s,i,ids)
+            if not sigId:
+                if trace: g.trace('no sigId',g.get_line(s,i))
+                return False
+
+            # Skip the argument list.
+            i, ok = self.skipArgs(s,i,kind)
+            if not ok:
+                if trace: g.trace('no args',g.get_line(s,i))
+                return False
+            i = g.skip_ws_and_nl(s,i)
+
+            # Skip the tail of the signature
+            i, ok = self.skipSigTail(s,i)
+            if not ok:
+                if trace: g.trace('no tail',g.get_line(s,i))
+                return False
+            sigEnd = i
+
+            # A trick: make sure the signature ends in a newline,
+            # even if it overlaps the start of the block.
+            if not g.match(s,sigEnd,'\n') and not g.match(s,sigEnd-1,'\n'):
+                if trace: g.trace('extending sigEnd')
+                sigEnd = g.skip_line(s,sigEnd)
+
+            # Skip the block.
+            i = g.skip_ws_and_nl(s,i)
+            if self.blockDelim1 and not g.match(s,i,self.blockDelim1):
+                if trace: g.trace('no block',g.get_line(s,i))
+                return False
+
+            i = self.skipCodeBlock(s,i,kind)
+            # skipCodeBlock skips the trailing delim.
+
+            # Success: set the ivars.
+            self.codeEnd = i
+            self.sigEnd = sigEnd
+            self.sigID = sigId
+
+            # Note: backing up here is safe because
+            # we won't back up past scan's 'start' point.
+            # Thus, characters will never be output twice.
+            k = self.sigStart
+            if not g.match(s,k,'\n'):
+                self.sigStart = g.find_line_start(s,k)
+
+            # Isue this warning only if we have a real class or function.
+            if s[self.sigStart:k].strip():
+                self.error('%s definition does not start a line' % kind)
+                g.es(g.get_line(s,k),color='blue')
+
+            if trace or self.trace: g.trace(kind,'\n'+s[self.sigStart:i])
+            return True
+        def skipSigStart (self,s,i,tags):
+
+            '''Skip over the start of a function/class signature.
+
+            tags is in (self.classTags,self.functionTags).
+
+            Return (i,ids) where ids is list of all ids found, in order.'''
+
+            __pychecker__ = '--no-argsused' # tags not used in the base class.
+
+            ids = []
+            while 1:
+                j = g.skip_ws_and_nl(s,i)
+                i = self.skipId(s,j)
+                id = s[j:i]
+                if id: ids.append(id)
+                else: break
+
+            # g.trace(ids)
+
+            return i, ids
+        def skipSigId (self,s,i,ids):
+
+            '''Return (i, id) where id is the signature's id.
+
+            By default, this is the last id in the ids list.'''
+
+            return i, ids and ids[-1]
+        def skipSigTail(self,s,i):
+
+            '''Skip from the end of the arg list to the start of the block.'''
+
+            while i &lt; len(s) and not g.match(s,i,self.blockDelim1):
+                if self.startsComment(s,i):
+                    i = self.skipComment(s,i)
+                elif self.startsString(s,i):
+                    i = self.skipString(s,i)
+                elif self.sigTailFailTokens:
+                    for z in self.failTokens:
+                        if g.match(s,i,z):
+                            return i,False
+                    else:
+                        i += 1
+                else:
+                    i += 1
+
+            return i,True
+        def startsComment (self,s,i):
+
+            return (
+                g.match(s,i,self.lineCommentDelim) or
+                g.match(s,i,self.lineCommentDelim2) or
+                g.match(s,i,self.blockCommentDelim1))
+        def startsId(self,s,i):
+
+            return g.is_c_id(s[i:i+1])
+        def startsString(self,s,i):
+
+            return g.match(s,i,'"') or g.match(s,i,"'")
+        def run (self,s,parent):
+
+            scanner = self
+            scanner.root = parent
+            scanner.file_s = s
+
+            # Step 1: generate the nodes,
+            # including all directive and section references.
+            self.errors = 0
+            self.errorLines = []
+            scanner.scan(s,parent)
+
+            # Step 2: check the generated nodes.
+            # Return True if the result is equivalent to the original file.
+            ok = self.errors == 0 and scanner.check(s,parent)
+
+            # Step 3: insert an @ignore directive if there are any problems.
+            if not ok:
+                scanner.insertIgnoreDirective(parent)
+    def scanCText (self,s,parent,atAuto=False):
+
+        scanner = self.cScanner(importCommands=self,atAuto=atAuto)
+
+        scanner.run(s,parent)
+    class cScanner (baseScannerClass):
+
+        def __init__ (self,importCommands,atAuto):
+
+            # Init the base class.
+            importCommands.baseScannerClass.__init__(self,importCommands,
+                atAuto=atAuto,language='c')
+
+            # Set the parser delims.
+            self.blockCommentDelim1 = '/*'
+            self.blockCommentDelim2 = '*/'
+            self.lineCommentDelim = '//'
+            self.lineCommentDelim2 = None
+            self.blockDelim1 = '{'
+            self.blockDelim2 = '}'
+            self.classTags = ['class',]
+            self.extraIdChars = ':'
+            self.functionTags = []
+            sigTailFailTokens = [';','=']
+    def scanElispText (self,s,parent,atAuto=False):
+
+        scanner = self.elispScanner(importCommands=self,atAuto=atAuto)
+
+        scanner.run(s,parent)
+    class elispScanner (baseScannerClass):
+
+        def __init__ (self,importCommands,atAuto):
+
+            # Init the base class.
+            importCommands.baseScannerClass.__init__(self,importCommands,
+                atAuto=atAuto,language='elisp')
+
+            # Set the parser delims.
+            self.blockCommentDelim1 = None
+            self.blockCommentDelim2 = None
+            self.lineCommentDelim = ';'
+            self.lineCommentDelim2 = None
+            self.blockDelim1 = '('
+            self.blockDelim2 = ')'
+            self.extraIdChars = '-'
+
+        # skipClass/Function/Signature are defined in the base class.
+        def startsClass (self,s,i):
+            '''Return True if s[i:] starts a class definition.
+            Sets sigStart, sigEnd, sigID and codeEnd ivars.'''
+            return False
+
+        def startsFunction(self,s,i):
+            '''Return True if s[i:] starts a function.
+            Sets sigStart, sigEnd, sigID and codeEnd ivars.'''
+
+            self.sigStart = i
+            self.codeEnd = self.sigEnd = self.sigID = None
+            if not g.match(s,i,'('): return False
+            end = self.skipBlock(s,i)
+            if not g.match(s,end,')'): return False
+
+            i = g.skip_ws(s,i+1)
+            if not g.match_word(s,i,'defun'): return False
+
+            i += len(key)
+            sigEnd = i = g.skip_ws_and_nl(s,i)
+            j = g.skip_id(s,i)
+            word = s[i:j]
+            if not word: return False
+
+            self.codeEnd = end + 1
+            self.sigEnd = sigEnd
+            self.sigId = word
+            return True
+        def startsString(self,s,i):
+
+            # Single quotes are not strings.
+            return g.match(s,i,'"')
+    def scanJavaText (self,s,parent,atAuto=False):
+
+        scanner = self.javaScanner(importCommands=self,atAuto=atAuto)
+
+        scanner.run(s,parent)
+    class javaScanner (baseScannerClass):
+
+        def __init__ (self,importCommands,atAuto):
+
+            # Init the base class.
+            importCommands.baseScannerClass.__init__(self,importCommands,
+                atAuto=atAuto,language='java')
+
+            # Set the parser delims.
+            self.blockCommentDelim1 = '/*'
+            self.blockCommentDelim2 = '*/'
+            self.lineCommentDelim = '//'
+            self.lineCommentDelim2 = None
+            self.classTags = ['class','interface',]
+    def scanPascalText (self,s,parent,atAuto=False):
+
+        scanner = self.pascalScanner(importCommands=self,atAuto=atAuto)
+
+        scanner.run(s,parent)
+    class pascalScanner (baseScannerClass):
+
+        def __init__ (self,importCommands,atAuto):
+
+            # Init the base class.
+            importCommands.baseScannerClass.__init__(self,importCommands,
+                atAuto=atAuto,language='pascal')
+
+            # Set the parser delims.
+            self.blockCommentDelim1 = '(*'
+            self.blockCommentDelim2 = '*)'
+            self.lineCommentDelim = '//'
+            self.blockDelim1 = 'begin'
+            self.blockDelim2 = 'end'
+            self.classTags = []
+            self.functionTags = ['function','procedure','constructor','destructor',]
+    def scanPHPText (self,s,parent,atAuto=False):
+
+        scanner = self.phpScanner(importCommands=self,atAuto=atAuto)
+
+        if scanner.isPurePHP(s):
+            scanner.run(s,parent)
+        else:
+            fileName = scanner.fileName
+            if not atAuto:
+                g.es_print('%s seems to be mixed HTML and PHP.' % fileName)
+            scanner.createHeadline(
+                parent,body=s,headline=fileName)
+    class phpScanner (baseScannerClass):
+
+        def __init__ (self,importCommands,atAuto):
+
+            # Init the base class.
+            importCommands.baseScannerClass.__init__(self,importCommands,
+                atAuto=atAuto,language='php')
+
+            # Set the parser delims.
+            self.blockCommentDelim1 = '/*'
+            self.blockCommentDelim2 = '*/'
+            self.lineCommentDelim = '//'
+            self.lineCommentDelim2 = '#'
+
+            # The valid characters in an id
+            self.chars = list(string.ascii_letters + string.digits)
+            extra = [chr(z) for z in xrange(127,256)]
+            self.chars.extend(extra)
+        def isPurePHP (self,s):
+
+            '''Return True if the file begins with &lt;?php or ends with ?&gt;'''
+
+            s = s.strip()
+
+            return (
+                s.startswith('&lt;?') and
+                s[2:3] in ('P','p','=','\n','\r',' ','\t') and
+                s.endswith('?&gt;'))
+
+        # Does not create @first/@last nodes
+        def startsString(self,s,i):
+            return g.match(s,i,'"') or g.match(s,i,"'") or g.match(s,i,'&lt;&lt;&lt;')
+
+        def skipString (self,s,i):
+            if g.match(s,i,'"') or g.match(s,i,"'"):
+                return self.skipString()
+            else:
+                return g.skip_heredoc_string(s,i)
+    def scanPythonText (self,s,parent,atAuto=False):
+
+        scanner = self.pythonScanner(importCommands=self,atAuto=atAuto)
+
+        scanner.run(s,parent)
+    class pythonScanner (baseScannerClass):
+
+        def __init__ (self,importCommands,atAuto):
+
+            # Init the base class.
+            importCommands.baseScannerClass.__init__(self,importCommands,
+                atAuto=atAuto,language='python')
+
+            # Set the parser delims.
+            self.lineCommentDelim = '#'
+            self.classTags = ['class',]
+            self.functionTags = ['def',]
+            self.blockDelim1 = None
+                # Suppress the check for the block delim.
+                # The check is done in skipSigTail.
+            self.blockDelim2 = None
+            self.strict = True
+
+        def extendSignature(self,s,i):
+
+            '''Extend the text to be added to the class node following the signature.
+
+            The text *must* end with a newline.'''
+
+            # Add a docstring to the class node,
+            # And everything on the line following it
+            j = g.skip_ws_and_nl(s,i)
+            if g.match(s,j,'"""') or g.match(s,j,"'''"):
+                j = g.skip_python_string(s,j)
+                if j &lt; len(s): # No scanning error.
+                    # Return the docstring only if nothing but whitespace follows.
+                    j = g.skip_ws(s,j)
+                    if g.is_nl(s,j):
+                        return j + 1
+
+            return i
+        def skipString (self,s,i):
+
+            # Returns len(s) on unterminated string.
+            return g.skip_python_string(s,i,verbose=False)
+        def skipCodeBlock (self,s,i,kind):
+
+            trace = False
+            if trace: g.trace('***',g.callers())
+            startIndent = self.startSigIndent
+            assert startIndent is not None
+            i = start = g.skip_ws_and_nl(s,i)
+            parenCount = 0
+            underIndentedStart = None # The start of trailing underindented blank or comment lines.
+            while i &lt; len(s):
+                progress = i
+                ch = s[i]
+                if g.is_nl(s,i):
+                    backslashNewline = i &gt; 0 and g.match(s,i-1,'\\\n')
+                    i = g.skip_nl(s,i)
+                    if trace: g.trace(g.get_line(s,i))
+                    if not backslashNewline:
+                        i,underIndentedStart,breakFlag = self.pythonNewlineHelper(
+                            s,i,parenCount,startIndent,underIndentedStart)
+                        if breakFlag: break
+                elif ch == '#':
+                    i = g.skip_to_end_of_line(s,i)
+                elif ch == '"' or ch == '\'':
+                    i = g.skip_python_string(s,i)
+                elif ch in '[{(':
+                    i += 1 ; parenCount += 1
+                    # g.trace('ch',ch,parenCount)
+                elif ch in ']})':
+                    i += 1 ; parenCount -= 1
+                    # g.trace('ch',ch,parenCount)
+                else: i += 1
+                assert(progress &lt; i)
+
+            # The actual end of the block.
+            if underIndentedStart is not None:
+                i = underIndentedStart
+                if trace: g.trace('***backtracking to underindent range')
+                if trace: g.trace(g.get_line(s,i))
+
+            if 0 &lt; i &lt; len(s) and not g.match(s,i-1,'\n'):
+                g.trace('Can not happen: Python block does not end in a newline.')
+                g.trace(g.get_line(s,i))
+            if (trace or self.trace) and s[start:i].strip():
+                g.trace(g.callers())
+                g.trace('\n'+s[start:i])
+            return i
+        def pythonNewlineHelper (self,s,i,parenCount,startIndent,underIndentedStart):
+
+            trace = False
+            breakFlag = False
+            j, indent = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+            if indent &lt;= startIndent and parenCount == 0:
+                # An underindented line: it ends the block *unless*
+                # it is a blank or comment line.
+                if g.match(s,j,'#'):
+                    if trace: g.trace('underindent: comment')
+                    if underIndentedStart is None: underIndentedStart = i
+                    i = j
+                elif g.match(s,j,'\n'):
+                    if trace: g.trace('underindent: blank line')
+                    # Blank lines never start the range of underindented lines.
+                    i = j
+                else:
+                    if trace: g.trace('underindent: end of block')
+                    breakFlag = True # The actual end of the block.
+            else:
+                if underIndentedStart and g.match(s,j,'\n'):
+                    # Add the blank line to the underindented range.
+                    if trace: g.trace('properly indented blank line extends underindent range')
+                elif underIndentedStart and g.match(s,j,'#'):
+                    # Add the (properly indented!) comment line to the underindented range.
+                    if trace: g.trace('properly indented comment line extends underindent range')
+                elif underIndentedStart is None:
+                    pass
+                else:
+                    # A properly indented non-comment line.
+                    # Give a message for all underindented comments in underindented range.
+                    if trace: g.trace('properly indented line generates underindent errors')
+                    s2 = s[underIndentedStart:i]
+                    lines = g.splitlines(s2)
+                    for line in lines:
+                        if line.strip():
+                            junk, indent = g.skip_leading_ws_with_indent(line,0,self.tab_width)
+                            if indent &lt;= startIndent:
+                                self.underindentedComment(line)
+                    underIndentedStart = None
+            return i,underIndentedStart,breakFlag
+        def skipSigTail(self,s,i):
+
+            '''Skip from the end of the arg list to the start of the block.'''
+
+            # Must override so we can skip the ':' properly and issue better warnings.
+
+            start = i
+            while i &lt; len(s):
+                if self.startsComment(s,i):
+                    i = self.skipComment(s,i)
+                elif self.startsString(s,i):
+                    break
+                elif g.match(s,i,':'):
+                    i = g.skip_line(s,i+1)
+                    if self.trace and s[start:i].strip(): g.trace('\n'+s[start:i])
+                    return i,True
+                else:
+                    i += 1
+
+            self.error('Warning: improper signature: %s' % g.get_line(s,start))
+            return start,False
+    def scanUnknownFileType (self,s,p,ext,atAuto=False):
+
+        c = self.c
+        body = g.choose(atAuto,'','@ignore\n')
+        if ext in ('.html','.htm'): body += '@language html\n'
+        if ext in ('.txt','.text'): body += '@nocolor\n'
+        c.setBodyString(p,body + self.rootLine + s)
+        g.app.unitTestDict = {'result':True}
+    def cUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest(p,atAuto=atAuto,fileName=None,s=s,showTree=showTree,ext='.c')
+
+    def elispUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.el')
+
+    def htmlUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.htm')
+
+    def javaUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.java')
+
+    def pascalUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.pas')
+
+    def phpUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.php')
+
+    def pythonUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.py')
+
+    def textUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,showTree=showTree,ext='.txt')
+
+    def defaultImporterUnitTest(self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=atAuto,fileName=fileName,s=s,ext='.xxx')
+    def scannerUnitTest (self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+
+        '''Run a unit test of an import scanner,
+        i.e., create a tree from string s at location p.'''
+
+        c = self.c
+        oldChanged = c.changed
+        c.beginUpdate()
+        try:
+            expectedErrors = g.app.unitTestDict.get('expectedErrors')
+            expectedMismatchLine = g.app.unitTestDict.get('expectedMismatchLine')
+            g.app.unitTestDict = {
+                'expectedErrors':expectedErrors,
+                'expectedMismatchLine':expectedMismatchLine,
+            }
+            if not fileName: fileName = p.headString()
+            if not s: s = self.removeSentinelsCommand([fileName],toString=True)
+            self.createOutline(fileName,p.copy(),atAuto=False,s=s,ext=ext)
+            d = g.app.unitTestDict
+            ok = d.get('result') or (
+                d.get('actualErrors') == d.get('expectedErrors') and
+                d.get('actualMismatchLine') == d.get('expectedMismatchLine'))
+            if not ok:
+                g.trace('result',d.get('result'),
+                    'actualErrors',d.get('actualErrors'),
+                    'expectedErrors',d.get('expectedErrors'),
+                    'actualMismatchLine',d.get('actualMismatchLine'),
+                    'expectedMismatchLine', d.get('expectedMismatchLine'),)
+            if not showTree and ok:
+                while p.hasChildren():
+                    p.firstChild().doDelete()
+                c.setChanged(oldChanged)
+        finally:
+            c.endUpdate()
+
+        if g.app.unitTesting:
+            d = g.app.unitTestDict
+            assert d.get('result') or (
+                d.get('actualErrors') == d.get('expectedErrors') and
+                d.get('actualMismatchLine') == d.get('expectedMismatchLine'))
+
+class leoImportCommands (baseLeoImportCommands):
+    """A class that implements Leo's import commands."""
+    pass
+</t>
+<t tx="ekr.20071105090148.275">@language c
+@tabwidth -4
+@others
+
+// changed 1
+</t>
+<t tx="ekr.20071105090148.276">/* changed 2
+ * tclScan.c --
+ *
+ *	This file contains the implementation of the "scan" command.
+ *
+ * Copyright (c) 1998 by Scriptics Corporation.
+ *
+ * See the file "license.terms" for information on usage and redistribution
+ * of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+ *
+ * RCS: @(#) $Id$
+ */
+
+#include "tclInt.h"
+/*
+ * For strtoll() and strtoull() declarations on some platforms...
+ */
+#include "tclPort.h"
+
+/*
+ * Flag values used by Tcl_ScanObjCmd.
+ */
+
+#define SCAN_NOSKIP	0x1		  /* Don't skip blanks. */
+#define SCAN_SUPPRESS	0x2		  /* Suppress assignment. */
+#define SCAN_UNSIGNED	0x4		  /* Read an unsigned value. */
+#define SCAN_WIDTH	0x8		  /* A width value was supplied. */
+
+#define SCAN_SIGNOK	0x10		  /* A +/- character is allowed. */
+#define SCAN_NODIGITS	0x20		  /* No digits have been scanned. */
+#define SCAN_NOZERO	0x40		  /* No zero digits have been scanned. */
+#define SCAN_XOK	0x80		  /* An 'x' is allowed. */
+#define SCAN_PTOK	0x100		  /* Decimal point is allowed. */
+#define SCAN_EXPOK	0x200		  /* An exponent is allowed. */
+
+#define SCAN_LONGER	0x400		  /* Asked for a wide value. */
+
+/*
+ * The following structure contains the information associated with
+ * a character set.
+ */
+
+typedef struct CharSet {
+    int exclude;		/* 1 if this is an exclusion set. */
+    int nchars;
+    Tcl_UniChar *chars;
+    int nranges;
+    struct Range {
+    Tcl_UniChar start;
+    Tcl_UniChar end;
+    } *ranges;
+} CharSet;
+
+/*
+ * Declarations for functions used only in this file.
+ */
+
+static char *	BuildCharSet _ANSI_ARGS_((CharSet *cset, char *format));
+static int	CharInSet _ANSI_ARGS_((CharSet *cset, int ch));
+static void	ReleaseCharSet _ANSI_ARGS_((CharSet *cset));
+static int	ValidateFormat _ANSI_ARGS_((Tcl_Interp *interp, char *format,
+            int numVars, int *totalVars));
+
+</t>
+<t tx="ekr.20071105090148.277">/*
+ *----------------------------------------------------------------------
+ *
+ * BuildCharSet --
+ *
+ *	This function examines a character set format specification
+ *	and builds a CharSet containing the individual characters and
+ *	character ranges specified.
+ *
+ * Results:
+ *	Returns the next format position.
+ *
+ * Side effects:
+ *	Initializes the charset.
+ *
+ *----------------------------------------------------------------------
+ */
+
+static char *
+BuildCharSet(cset, format)
+    CharSet *cset;
+    char *format;		/* Points to first char of set. */
+{
+    Tcl_UniChar ch, start;
+    int offset, nranges;
+    char *end;
+
+    memset(cset, 0, sizeof(CharSet));
+    
+    offset = Tcl_UtfToUniChar(format, &amp;ch);
+    if (ch == '^') {
+    cset-&gt;exclude = 1;
+    format += offset;
+    offset = Tcl_UtfToUniChar(format, &amp;ch);
+    }
+    end = format + offset;
+
+    /*
+     * Find the close bracket so we can overallocate the set.
+     */
+
+    if (ch == ']') {
+    end += Tcl_UtfToUniChar(end, &amp;ch);
+    }
+    nranges = 0;
+    while (ch != ']') {
+    if (ch == '-') {
+        nranges++;
+    }
+    end += Tcl_UtfToUniChar(end, &amp;ch);
+    }
+
+    cset-&gt;chars = (Tcl_UniChar *) ckalloc(sizeof(Tcl_UniChar)
+        * (end - format - 1));
+    if (nranges &gt; 0) {
+    cset-&gt;ranges = (struct Range *) ckalloc(sizeof(struct Range)*nranges);
+    } else {
+    cset-&gt;ranges = NULL;
+    }
+
+    /*
+     * Now build the character set.
+     */
+
+    cset-&gt;nchars = cset-&gt;nranges = 0;
+    format += Tcl_UtfToUniChar(format, &amp;ch);
+    start = ch;
+    if (ch == ']' || ch == '-') {
+    cset-&gt;chars[cset-&gt;nchars++] = ch;
+    format += Tcl_UtfToUniChar(format, &amp;ch);
+    }
+    while (ch != ']') {
+    if (*format == '-') {
+        /*
+         * This may be the first character of a range, so don't add
+         * it yet.
+         */
+
+        start = ch;
+    } else if (ch == '-') {
+        /*
+         * Check to see if this is the last character in the set, in which
+         * case it is not a range and we should add the previous character
+         * as well as the dash.
+         */
+
+        if (*format == ']') {
+        cset-&gt;chars[cset-&gt;nchars++] = start;
+        cset-&gt;chars[cset-&gt;nchars++] = ch;
+        } else {
+        format += Tcl_UtfToUniChar(format, &amp;ch);
+
+        /*
+         * Check to see if the range is in reverse order.
+         */
+
+        if (start &lt; ch) {
+            cset-&gt;ranges[cset-&gt;nranges].start = start;
+            cset-&gt;ranges[cset-&gt;nranges].end = ch;
+        } else {
+            cset-&gt;ranges[cset-&gt;nranges].start = ch;
+            cset-&gt;ranges[cset-&gt;nranges].end = start;
+        }		    
+        cset-&gt;nranges++;
+        }
+    } else {
+        cset-&gt;chars[cset-&gt;nchars++] = ch;
+    }
+    format += Tcl_UtfToUniChar(format, &amp;ch);
+    }
+    return format;
+}
+</t>
+<t tx="ekr.20071105090148.278">
+/*
+ *----------------------------------------------------------------------
+ *
+ * CharInSet --
+ *
+ *	Check to see if a character matches the given set.
+ *
+ * Results:
+ *	Returns non-zero if the character matches the given set.
+ *
+ * Side effects:
+ *	None.
+ *
+ *----------------------------------------------------------------------
+ */
+
+static int
+CharInSet(cset, c)
+    CharSet *cset;
+    int c;			/* Character to test, passed as int because
+                 * of non-ANSI prototypes. */
+{
+    Tcl_UniChar ch = (Tcl_UniChar) c;
+    int i, match = 0;
+    for (i = 0; i &lt; cset-&gt;nchars; i++) {
+    if (cset-&gt;chars[i] == ch) {
+        match = 1;
+        break;
+    }
+    }
+    if (!match) {
+    for (i = 0; i &lt; cset-&gt;nranges; i++) {
+        if ((cset-&gt;ranges[i].start &lt;= ch)
+            &amp;&amp; (ch &lt;= cset-&gt;ranges[i].end)) {
+        match = 1;
+        break;
+        }
+    }
+    }
+    return (cset-&gt;exclude ? !match : match);    
+}
+</t>
+<t tx="ekr.20071105090148.279">
+/*
+ *----------------------------------------------------------------------
+ *
+ * ReleaseCharSet --
+ *
+ *	Free the storage associated with a character set.
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	None.
+ *
+ *----------------------------------------------------------------------
+ */
+
+static void
+ReleaseCharSet(cset)
+    CharSet *cset;
+{
+    ckfree((char *)cset-&gt;chars);
+    if (cset-&gt;ranges) {
+    ckfree((char *)cset-&gt;ranges);
+    }
+}
+</t>
+<t tx="ekr.20071105090148.280">
+/*
+ *----------------------------------------------------------------------
+ *
+ * ValidateFormat --
+ *
+ *	Parse the format string and verify that it is properly formed
+ *	and that there are exactly enough variables on the command line.
+ *
+ * Results:
+ *	A standard Tcl result.
+ *
+ * Side effects:
+ *	May place an error in the interpreter result.
+ *
+ *----------------------------------------------------------------------
+ */
+
+static int
+ValidateFormat(interp, format, numVars, totalSubs)
+    Tcl_Interp *interp;		/* Current interpreter. */
+    char *format;		/* The format string. */
+    int numVars;		/* The number of variables passed to the
+                 * scan command. */
+    int *totalSubs;		/* The number of variables that will be
+                 * required. */
+{
+#define STATIC_LIST_SIZE 16
+    int gotXpg, gotSequential, value, i, flags;
+    char *end;
+    Tcl_UniChar ch;
+    int staticAssign[STATIC_LIST_SIZE];
+    int *nassign = staticAssign;
+    int objIndex, xpgSize, nspace = STATIC_LIST_SIZE;
+    char buf[TCL_UTF_MAX+1];
+
+    /*
+     * Initialize an array that records the number of times a variable
+     * is assigned to by the format string.  We use this to detect if
+     * a variable is multiply assigned or left unassigned.
+     */
+
+    if (numVars &gt; nspace) {
+    nassign = (int*)ckalloc(sizeof(int) * numVars);
+    nspace = numVars;
+    }
+    for (i = 0; i &lt; nspace; i++) {
+    nassign[i] = 0;
+    }
+
+    xpgSize = objIndex = gotXpg = gotSequential = 0;
+
+    while (*format != '\0') {
+    format += Tcl_UtfToUniChar(format, &amp;ch);
+
+    flags = 0;
+
+    if (ch != '%') {
+        continue;
+    }
+    format += Tcl_UtfToUniChar(format, &amp;ch);
+    if (ch == '%') {
+        continue;
+    }
+    if (ch == '*') {
+        flags |= SCAN_SUPPRESS;
+        format += Tcl_UtfToUniChar(format, &amp;ch);
+        goto xpgCheckDone;
+    }
+
+    if ((ch &lt; 0x80) &amp;&amp; isdigit(UCHAR(ch))) { /* INTL: "C" locale. */
+        /*
+         * Check for an XPG3-style %n$ specification.  Note: there
+         * must not be a mixture of XPG3 specs and non-XPG3 specs
+         * in the same format string.
+         */
+
+        value = strtoul(format-1, &amp;end, 10); /* INTL: "C" locale. */
+        if (*end != '$') {
+        goto notXpg;
+        }
+        format = end+1;
+        format += Tcl_UtfToUniChar(format, &amp;ch);
+        gotXpg = 1;
+        if (gotSequential) {
+        goto mixedXPG;
+        }
+        objIndex = value - 1;
+        if ((objIndex &lt; 0) || (numVars &amp;&amp; (objIndex &gt;= numVars))) {
+        goto badIndex;
+        } else if (numVars == 0) {
+        /*
+         * In the case where no vars are specified, the user can
+         * specify %9999$ legally, so we have to consider special
+         * rules for growing the assign array.  'value' is
+         * guaranteed to be &gt; 0.
+         */
+        xpgSize = (xpgSize &gt; value) ? xpgSize : value;
+        }
+        goto xpgCheckDone;
+    }
+
+    notXpg:
+    gotSequential = 1;
+    if (gotXpg) {
+        mixedXPG:
+        Tcl_SetResult(interp,
+            "cannot mix \"%\" and \"%n$\" conversion specifiers",
+            TCL_STATIC);
+        goto error;
+    }
+
+    xpgCheckDone:
+    /*
+     * Parse any width specifier.
+     */
+
+    if ((ch &lt; 0x80) &amp;&amp; isdigit(UCHAR(ch))) { /* INTL: "C" locale. */
+        value = strtoul(format-1, &amp;format, 10); /* INTL: "C" locale. */
+        flags |= SCAN_WIDTH;
+        format += Tcl_UtfToUniChar(format, &amp;ch);
+    }
+
+    /*
+     * Handle any size specifier.
+     */
+
+    switch (ch) {
+    case 'l':
+    case 'L':
+        flags |= SCAN_LONGER;
+    case 'h':
+        format += Tcl_UtfToUniChar(format, &amp;ch);
+    }
+
+    if (!(flags &amp; SCAN_SUPPRESS) &amp;&amp; numVars &amp;&amp; (objIndex &gt;= numVars)) {
+        goto badIndex;
+    }
+
+    /*
+     * Handle the various field types.
+     */
+
+    switch (ch) {
+        case 'c':
+                if (flags &amp; SCAN_WIDTH) {
+            Tcl_SetResult(interp,
+                "field width may not be specified in %c conversion",
+                TCL_STATIC);
+            goto error;
+                }
+        /*
+         * Fall through!
+         */
+        case 'n':
+        case 's':
+        if (flags &amp; SCAN_LONGER) {
+        invalidLonger:
+            buf[Tcl_UniCharToUtf(ch, buf)] = '\0';
+            Tcl_AppendStringsToObj(Tcl_GetObjResult(interp),
+               "'l' modifier may not be specified in %", buf,
+               " conversion", NULL);
+            goto error;
+        }
+        /*
+         * Fall through!
+         */
+        case 'd':
+        case 'e':
+        case 'f':
+        case 'g':
+        case 'i':
+        case 'o':
+        case 'u':
+        case 'x':
+        break;
+        /*
+         * Bracket terms need special checking
+         */
+        case '[':
+        if (flags &amp; SCAN_LONGER) {
+            goto invalidLonger;
+        }
+        if (*format == '\0') {
+            goto badSet;
+        }
+        format += Tcl_UtfToUniChar(format, &amp;ch);
+        if (ch == '^') {
+            if (*format == '\0') {
+            goto badSet;
+            }
+            format += Tcl_UtfToUniChar(format, &amp;ch);
+        }
+        if (ch == ']') {
+            if (*format == '\0') {
+            goto badSet;
+            }
+            format += Tcl_UtfToUniChar(format, &amp;ch);
+        }
+        while (ch != ']') {
+            if (*format == '\0') {
+            goto badSet;
+            }
+            format += Tcl_UtfToUniChar(format, &amp;ch);
+        }
+        break;
+        badSet:
+        Tcl_SetResult(interp, "unmatched [ in format string",
+            TCL_STATIC);
+        goto error;
+        default:
+        {
+        char buf[TCL_UTF_MAX+1];
+
+        buf[Tcl_UniCharToUtf(ch, buf)] = '\0';
+        Tcl_AppendStringsToObj(Tcl_GetObjResult(interp),
+            "bad scan conversion character \"", buf, "\"", NULL);
+        goto error;
+        }
+    }
+    if (!(flags &amp; SCAN_SUPPRESS)) {
+        if (objIndex &gt;= nspace) {
+        /*
+         * Expand the nassign buffer.  If we are using XPG specifiers,
+         * make sure that we grow to a large enough size.  xpgSize is
+         * guaranteed to be at least one larger than objIndex.
+         */
+        value = nspace;
+        if (xpgSize) {
+            nspace = xpgSize;
+        } else {
+            nspace += STATIC_LIST_SIZE;
+        }
+        if (nassign == staticAssign) {
+            nassign = (void *)ckalloc(nspace * sizeof(int));
+            for (i = 0; i &lt; STATIC_LIST_SIZE; ++i) {
+            nassign[i] = staticAssign[i];
+            }
+        } else {
+            nassign = (void *)ckrealloc((void *)nassign,
+                nspace * sizeof(int));
+        }
+        for (i = value; i &lt; nspace; i++) {
+            nassign[i] = 0;
+        }
+        }
+        nassign[objIndex]++;
+        objIndex++;
+    }
+    }
+
+    /*
+     * Verify that all of the variable were assigned exactly once.
+     */
+
+    if (numVars == 0) {
+    if (xpgSize) {
+        numVars = xpgSize;
+    } else {
+        numVars = objIndex;
+    }
+    }
+    if (totalSubs) {
+    *totalSubs = numVars;
+    }
+    for (i = 0; i &lt; numVars; i++) {
+    if (nassign[i] &gt; 1) {
+        Tcl_SetResult(interp, "variable is assigned by multiple \"%n$\" conversion specifiers", TCL_STATIC);
+        goto error;
+    } else if (!xpgSize &amp;&amp; (nassign[i] == 0)) {
+        /*
+         * If the space is empty, and xpgSize is 0 (means XPG wasn't
+         * used, and/or numVars != 0), then too many vars were given
+         */
+        Tcl_SetResult(interp, "variable is not assigned by any conversion specifiers", TCL_STATIC);
+        goto error;
+    }
+    }
+
+    if (nassign != staticAssign) {
+    ckfree((char *)nassign);
+    }
+    return TCL_OK;
+
+    badIndex:
+    if (gotXpg) {
+    Tcl_SetResult(interp, "\"%n$\" argument index out of range",
+        TCL_STATIC);
+    } else {
+    Tcl_SetResult(interp, 
+        "different numbers of variable names and field specifiers",
+        TCL_STATIC);
+    }
+
+    error:
+    if (nassign != staticAssign) {
+    ckfree((char *)nassign);
+    }
+    return TCL_ERROR;
+#undef STATIC_LIST_SIZE
+}
+</t>
+<t tx="ekr.20071105090148.281">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_ScanObjCmd --
+ *
+ *	This procedure is invoked to process the "scan" Tcl command.
+ *	See the user documentation for details on what it does.
+ *
+ * Results:
+ *	A standard Tcl result.
+ *
+ * Side effects:
+ *	See the user documentation.
+ *
+ *----------------------------------------------------------------------
+ */
+
+    /* ARGSUSED */
+int
+Tcl_ScanObjCmd(dummy, interp, objc, objv)
+    ClientData dummy;    	/* Not used. */
+    Tcl_Interp *interp;		/* Current interpreter. */
+    int objc;			/* Number of arguments. */
+    Tcl_Obj *CONST objv[];	/* Argument objects. */
+{
+    char *format;
+    int numVars, nconversions, totalVars = -1;
+    int objIndex, offset, i, result, code;
+    long value;
+    char *string, *end, *baseString;
+    char op = 0;
+    int base = 0;
+    int underflow = 0;
+    size_t width;
+    long (*fn)() = NULL;
+#ifndef TCL_WIDE_INT_IS_LONG
+    Tcl_WideInt (*lfn)() = NULL;
+    Tcl_WideInt wideValue;
+#endif
+    Tcl_UniChar ch, sch;
+    Tcl_Obj **objs = NULL, *objPtr = NULL;
+    int flags;
+    char buf[513];			  /* Temporary buffer to hold scanned
+                       * number strings before they are
+                       * passed to strtoul. */
+
+    if (objc &lt; 3) {
+        Tcl_WrongNumArgs(interp, 1, objv,
+        "string format ?varName varName ...?");
+    return TCL_ERROR;
+    }
+
+    format = Tcl_GetStringFromObj(objv[2], NULL);
+    numVars = objc-3;
+
+    /*
+     * Check for errors in the format string.
+     */
+    
+    if (ValidateFormat(interp, format, numVars, &amp;totalVars) == TCL_ERROR) {
+    return TCL_ERROR;
+    }
+
+    /*
+     * Allocate space for the result objects.
+     */
+
+    if (totalVars &gt; 0) {
+    objs = (Tcl_Obj **) ckalloc(sizeof(Tcl_Obj*) * totalVars);
+    for (i = 0; i &lt; totalVars; i++) {
+        objs[i] = NULL;
+    }
+    }
+
+    string = Tcl_GetStringFromObj(objv[1], NULL);
+    baseString = string;
+
+    /*
+     * Iterate over the format string filling in the result objects until
+     * we reach the end of input, the end of the format string, or there
+     * is a mismatch.
+     */
+
+    objIndex = 0;
+    nconversions = 0;
+    while (*format != '\0') {
+    format += Tcl_UtfToUniChar(format, &amp;ch);
+
+    flags = 0;
+
+    /*
+     * If we see whitespace in the format, skip whitespace in the string.
+     */
+
+    if (Tcl_UniCharIsSpace(ch)) {
+        offset = Tcl_UtfToUniChar(string, &amp;sch);
+        while (Tcl_UniCharIsSpace(sch)) {
+        if (*string == '\0') {
+            goto done;
+        }
+        string += offset;
+        offset = Tcl_UtfToUniChar(string, &amp;sch);
+        }
+        continue;
+    }
+        
+    if (ch != '%') {
+        literal:
+        if (*string == '\0') {
+        underflow = 1;
+        goto done;
+        }
+        string += Tcl_UtfToUniChar(string, &amp;sch);
+        if (ch != sch) {
+        goto done;
+        }
+        continue;
+    }
+
+    format += Tcl_UtfToUniChar(format, &amp;ch);
+    if (ch == '%') {
+        goto literal;
+    }
+
+    /*
+     * Check for assignment suppression ('*') or an XPG3-style
+     * assignment ('%n$').
+     */
+
+    if (ch == '*') {
+        flags |= SCAN_SUPPRESS;
+        format += Tcl_UtfToUniChar(format, &amp;ch);
+    } else if ((ch &lt; 0x80) &amp;&amp; isdigit(UCHAR(ch))) { /* INTL: "C" locale. */
+        value = strtoul(format-1, &amp;end, 10); /* INTL: "C" locale. */
+        if (*end == '$') {
+        format = end+1;
+        format += Tcl_UtfToUniChar(format, &amp;ch);
+        objIndex = (int) value - 1;
+        }
+    }
+
+    /*
+     * Parse any width specifier.
+     */
+
+    if ((ch &lt; 0x80) &amp;&amp; isdigit(UCHAR(ch))) { /* INTL: "C" locale. */
+        width = strtoul(format-1, &amp;format, 10); /* INTL: "C" locale. */
+        format += Tcl_UtfToUniChar(format, &amp;ch);
+    } else {
+        width = 0;
+    }
+
+    /*
+     * Handle any size specifier.
+     */
+
+    switch (ch) {
+    case 'l':
+    case 'L':
+        flags |= SCAN_LONGER;
+        /*
+         * Fall through so we skip to the next character.
+         */
+    case 'h':
+        format += Tcl_UtfToUniChar(format, &amp;ch);
+    }
+
+    /*
+     * Handle the various field types.
+     */
+
+    switch (ch) {
+        case 'n':
+        if (!(flags &amp; SCAN_SUPPRESS)) {
+            objPtr = Tcl_NewIntObj(string - baseString);
+            Tcl_IncrRefCount(objPtr);
+            objs[objIndex++] = objPtr;
+        }
+        nconversions++;
+        continue;
+
+        case 'd':
+        op = 'i';
+        base = 10;
+        fn = (long (*)())strtol;
+#ifndef TCL_WIDE_INT_IS_LONG
+        lfn = (Tcl_WideInt (*)())strtoll;
+#endif
+        break;
+        case 'i':
+        op = 'i';
+        base = 0;
+        fn = (long (*)())strtol;
+#ifndef TCL_WIDE_INT_IS_LONG
+        lfn = (Tcl_WideInt (*)())strtoll;
+#endif
+        break;
+        case 'o':
+        op = 'i';
+        base = 8;
+        fn = (long (*)())strtoul;
+#ifndef TCL_WIDE_INT_IS_LONG
+        lfn = (Tcl_WideInt (*)())strtoull;
+#endif
+        break;
+        case 'x':
+        op = 'i';
+        base = 16;
+        fn = (long (*)())strtoul;
+#ifndef TCL_WIDE_INT_IS_LONG
+        lfn = (Tcl_WideInt (*)())strtoull;
+#endif
+        break;
+        case 'u':
+        op = 'i';
+        base = 10;
+        flags |= SCAN_UNSIGNED;
+        fn = (long (*)())strtoul;
+#ifndef TCL_WIDE_INT_IS_LONG
+        lfn = (Tcl_WideInt (*)())strtoull;
+#endif
+        break;
+
+        case 'f':
+        case 'e':
+        case 'g':
+        op = 'f';
+        break;
+
+        case 's':
+        op = 's';
+        break;
+
+        case 'c':
+        op = 'c';
+        flags |= SCAN_NOSKIP;
+        break;
+        case '[':
+        op = '[';
+        flags |= SCAN_NOSKIP;
+        break;
+    }
+
+    /*
+     * At this point, we will need additional characters from the
+     * string to proceed.
+     */
+
+    if (*string == '\0') {
+        underflow = 1;
+        goto done;
+    }
+    
+    /*
+     * Skip any leading whitespace at the beginning of a field unless
+     * the format suppresses this behavior.
+     */
+
+    if (!(flags &amp; SCAN_NOSKIP)) {
+        while (*string != '\0') {
+        offset = Tcl_UtfToUniChar(string, &amp;sch);
+        if (!Tcl_UniCharIsSpace(sch)) {
+            break;
+        }
+        string += offset;
+        }
+        if (*string == '\0') {
+        underflow = 1;
+        goto done;
+        }
+    }
+
+    /*
+     * Perform the requested scanning operation.
+     */
+    
+    switch (op) {
+        case 's':
+        /*
+         * Scan a string up to width characters or whitespace.
+         */
+
+        if (width == 0) {
+            width = (size_t) ~0;
+        }
+        end = string;
+        while (*end != '\0') {
+            offset = Tcl_UtfToUniChar(end, &amp;sch);
+            if (Tcl_UniCharIsSpace(sch)) {
+            break;
+            }
+            end += offset;
+            if (--width == 0) {
+            break;
+            }
+        }
+        if (!(flags &amp; SCAN_SUPPRESS)) {
+            objPtr = Tcl_NewStringObj(string, end-string);
+            Tcl_IncrRefCount(objPtr);
+            objs[objIndex++] = objPtr;
+        }
+        string = end;
+        break;
+
+        case '[': {
+        CharSet cset;
+
+        if (width == 0) {
+            width = (size_t) ~0;
+        }
+        end = string;
+
+        format = BuildCharSet(&amp;cset, format);
+        while (*end != '\0') {
+            offset = Tcl_UtfToUniChar(end, &amp;sch);
+            if (!CharInSet(&amp;cset, (int)sch)) {
+            break;
+            }
+            end += offset;
+            if (--width == 0) {
+            break;
+            }
+        }
+        ReleaseCharSet(&amp;cset);
+
+        if (string == end) {
+            /*
+             * Nothing matched the range, stop processing
+             */
+            goto done;
+        }
+        if (!(flags &amp; SCAN_SUPPRESS)) {
+            objPtr = Tcl_NewStringObj(string, end-string);
+            Tcl_IncrRefCount(objPtr);
+            objs[objIndex++] = objPtr;
+        }
+        string = end;
+        
+        break;
+        }
+        case 'c':
+        /*
+         * Scan a single Unicode character.
+         */
+
+        string += Tcl_UtfToUniChar(string, &amp;sch);
+        if (!(flags &amp; SCAN_SUPPRESS)) {
+            objPtr = Tcl_NewIntObj((int)sch);
+            Tcl_IncrRefCount(objPtr);
+            objs[objIndex++] = objPtr;
+        }
+        break;
+
+        case 'i':
+        /*
+         * Scan an unsigned or signed integer.
+         */
+
+        if ((width == 0) || (width &gt; sizeof(buf) - 1)) {
+            width = sizeof(buf) - 1;
+        }
+        flags |= SCAN_SIGNOK | SCAN_NODIGITS | SCAN_NOZERO;
+        for (end = buf; width &gt; 0; width--) {
+            switch (*string) {
+            /*
+             * The 0 digit has special meaning at the beginning of
+             * a number.  If we are unsure of the base, it
+             * indicates that we are in base 8 or base 16 (if it is
+             * followed by an 'x').
+             *
+             * 8.1 - 8.3.4 incorrectly handled 0x... base-16
+             * cases for %x by not reading the 0x as the
+             * auto-prelude for base-16. [Bug #495213]
+             */
+            case '0':
+                if (base == 0) {
+                base = 8;
+                flags |= SCAN_XOK;
+                }
+                if (base == 16) {
+                flags |= SCAN_XOK;
+                }
+                if (flags &amp; SCAN_NOZERO) {
+                flags &amp;= ~(SCAN_SIGNOK | SCAN_NODIGITS
+                    | SCAN_NOZERO);
+                } else {
+                flags &amp;= ~(SCAN_SIGNOK | SCAN_XOK
+                    | SCAN_NODIGITS);
+                }
+                goto addToInt;
+
+            case '1': case '2': case '3': case '4':
+            case '5': case '6': case '7':
+                if (base == 0) {
+                base = 10;
+                }
+                flags &amp;= ~(SCAN_SIGNOK | SCAN_XOK | SCAN_NODIGITS);
+                goto addToInt;
+
+            case '8': case '9':
+                if (base == 0) {
+                base = 10;
+                }
+                if (base &lt;= 8) {
+                break;
+                }
+                flags &amp;= ~(SCAN_SIGNOK | SCAN_XOK | SCAN_NODIGITS);
+                goto addToInt;
+
+            case 'A': case 'B': case 'C':
+            case 'D': case 'E': case 'F': 
+            case 'a': case 'b': case 'c':
+            case 'd': case 'e': case 'f':
+                if (base &lt;= 10) {
+                break;
+                }
+                flags &amp;= ~(SCAN_SIGNOK | SCAN_XOK | SCAN_NODIGITS);
+                goto addToInt;
+
+            case '+': case '-':
+                if (flags &amp; SCAN_SIGNOK) {
+                flags &amp;= ~SCAN_SIGNOK;
+                goto addToInt;
+                }
+                break;
+
+            case 'x': case 'X':
+                if ((flags &amp; SCAN_XOK) &amp;&amp; (end == buf+1)) {
+                base = 16;
+                flags &amp;= ~SCAN_XOK;
+                goto addToInt;
+                }
+                break;
+            }
+
+            /*
+             * We got an illegal character so we are done accumulating.
+             */
+
+            break;
+
+            addToInt:
+            /*
+             * Add the character to the temporary buffer.
+             */
+
+            *end++ = *string++;
+            if (*string == '\0') {
+            break;
+            }
+        }
+
+        /*
+         * Check to see if we need to back up because we only got a
+         * sign or a trailing x after a 0.
+         */
+
+        if (flags &amp; SCAN_NODIGITS) {
+            if (*string == '\0') {
+            underflow = 1;
+            }
+            goto done;
+        } else if (end[-1] == 'x' || end[-1] == 'X') {
+            end--;
+            string--;
+        }
+
+
+        /*
+         * Scan the value from the temporary buffer.  If we are
+         * returning a large unsigned value, we have to convert it back
+         * to a string since Tcl only supports signed values.
+         */
+
+        if (!(flags &amp; SCAN_SUPPRESS)) {
+            *end = '\0';
+#ifndef TCL_WIDE_INT_IS_LONG
+            if (flags &amp; SCAN_LONGER) {
+            wideValue = (Tcl_WideInt) (*lfn)(buf, NULL, base);
+            if ((flags &amp; SCAN_UNSIGNED) &amp;&amp; (wideValue &lt; 0)) {
+                /* INTL: ISO digit */
+                sprintf(buf, "%" TCL_LL_MODIFIER "u",
+                    (Tcl_WideUInt)wideValue);
+                objPtr = Tcl_NewStringObj(buf, -1);
+            } else {
+                objPtr = Tcl_NewWideIntObj(wideValue);
+            }
+            } else {
+#endif /* !TCL_WIDE_INT_IS_LONG */
+            value = (long) (*fn)(buf, NULL, base);
+            if ((flags &amp; SCAN_UNSIGNED) &amp;&amp; (value &lt; 0)) {
+                sprintf(buf, "%lu", value); /* INTL: ISO digit */
+                objPtr = Tcl_NewStringObj(buf, -1);
+            } else if ((flags &amp; SCAN_LONGER)
+                || (unsigned long) value &gt; UINT_MAX) {
+                objPtr = Tcl_NewLongObj(value);
+            } else {
+                objPtr = Tcl_NewIntObj(value);
+            }
+#ifndef TCL_WIDE_INT_IS_LONG
+            }
+#endif
+            Tcl_IncrRefCount(objPtr);
+            objs[objIndex++] = objPtr;
+        }
+
+        break;
+
+        case 'f':
+        /*
+         * Scan a floating point number
+         */
+
+        if ((width == 0) || (width &gt; sizeof(buf) - 1)) {
+            width = sizeof(buf) - 1;
+        }
+        flags &amp;= ~SCAN_LONGER;
+        flags |= SCAN_SIGNOK | SCAN_NODIGITS | SCAN_PTOK | SCAN_EXPOK;
+        for (end = buf; width &gt; 0; width--) {
+            switch (*string) {
+            case '0': case '1': case '2': case '3':
+            case '4': case '5': case '6': case '7':
+            case '8': case '9':
+                flags &amp;= ~(SCAN_SIGNOK | SCAN_NODIGITS);
+                goto addToFloat;
+            case '+': case '-':
+                if (flags &amp; SCAN_SIGNOK) {
+                flags &amp;= ~SCAN_SIGNOK;
+                goto addToFloat;
+                }
+                break;
+            case '.':
+                if (flags &amp; SCAN_PTOK) {
+                flags &amp;= ~(SCAN_SIGNOK | SCAN_PTOK);
+                goto addToFloat;
+                }
+                break;
+            case 'e': case 'E':
+                /*
+                 * An exponent is not allowed until there has
+                 * been at least one digit.
+                 */
+
+                if ((flags &amp; (SCAN_NODIGITS | SCAN_EXPOK))
+                    == SCAN_EXPOK) {
+                flags = (flags &amp; ~(SCAN_EXPOK|SCAN_PTOK))
+                    | SCAN_SIGNOK | SCAN_NODIGITS;
+                goto addToFloat;
+                }
+                break;
+            }
+
+            /*
+             * We got an illegal character so we are done accumulating.
+             */
+
+            break;
+
+            addToFloat:
+            /*
+             * Add the character to the temporary buffer.
+             */
+
+            *end++ = *string++;
+            if (*string == '\0') {
+            break;
+            }
+        }
+
+        /*
+         * Check to see if we need to back up because we saw a
+         * trailing 'e' or sign.
+         */
+
+        if (flags &amp; SCAN_NODIGITS) {
+            if (flags &amp; SCAN_EXPOK) {
+            /*
+             * There were no digits at all so scanning has
+             * failed and we are done.
+             */
+            if (*string == '\0') {
+                underflow = 1;
+            }
+            goto done;
+            }
+
+            /*
+             * We got a bad exponent ('e' and maybe a sign).
+             */
+
+            end--;
+            string--;
+            if (*end != 'e' &amp;&amp; *end != 'E') {
+            end--;
+            string--;
+            }
+        }
+
+        /*
+         * Scan the value from the temporary buffer.
+         */
+
+        if (!(flags &amp; SCAN_SUPPRESS)) {
+            double dvalue;
+            *end = '\0';
+            dvalue = strtod(buf, NULL);
+            objPtr = Tcl_NewDoubleObj(dvalue);
+            Tcl_IncrRefCount(objPtr);
+            objs[objIndex++] = objPtr;
+        }
+        break;
+    }
+    nconversions++;
+    }
+
+    done:
+    result = 0;
+    code = TCL_OK;
+
+    if (numVars) {
+    /*
+     * In this case, variables were specified (classic scan)
+     */
+    for (i = 0; i &lt; totalVars; i++) {
+        if (objs[i] != NULL) {
+        Tcl_Obj *tmpPtr;
+        
+        result++;
+        tmpPtr = Tcl_ObjSetVar2(interp, objv[i+3], NULL, objs[i], 0);
+        Tcl_DecrRefCount(objs[i]);
+        if (tmpPtr == NULL) {
+            Tcl_AppendStringsToObj(Tcl_GetObjResult(interp),
+                "couldn't set variable \"",
+                Tcl_GetString(objv[i+3]), "\"", (char *) NULL);
+            code = TCL_ERROR;
+        }
+        }
+    }
+    } else {
+    /*
+     * Here no vars were specified, we want a list returned (inline scan)
+     */
+    objPtr = Tcl_NewObj();
+    for (i = 0; i &lt; totalVars; i++) {
+        if (objs[i] != NULL) {
+        Tcl_ListObjAppendElement(NULL, objPtr, objs[i]);
+        Tcl_DecrRefCount(objs[i]);
+        } else {
+        /*
+         * More %-specifiers than matching chars, so we
+         * just spit out empty strings for these
+         */
+        Tcl_ListObjAppendElement(NULL, objPtr, Tcl_NewObj());
+        }
+    }
+    }
+    if (objs != NULL) {
+    ckfree((char*) objs);
+    }
+    if (code == TCL_OK) {
+    if (underflow &amp;&amp; (nconversions == 0)) {
+        if (numVars) {
+        objPtr = Tcl_NewIntObj(-1);
+        } else {
+        if (objPtr) {
+            Tcl_SetListObj(objPtr, 0, NULL);
+        } else {
+            objPtr = Tcl_NewObj();
+        }
+        }
+    } else if (numVars) {
+        objPtr = Tcl_NewIntObj(result);
+    }
+    Tcl_SetObjResult(interp, objPtr);
+    }
+    return code;
+}
+</t>
+<t tx="ekr.20071105090148.282">@language c
+@tabwidth -4
+@others
+@ignore</t>
+<t tx="ekr.20071105090148.283">/* 
+ * tclObj.c --
+ *
+ *	This file contains Tcl object-related procedures that are used by
+ * 	many Tcl commands.
+ *
+ * Copyright (c) 1995-1997 Sun Microsystems, Inc.
+ * Copyright (c) 1999 by Scriptics Corporation.
+ * Copyright (c) 2001 by ActiveState Corporation.
+ *
+ * See the file "license.terms" for information on usage and redistribution
+ * of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+ *
+ * RCS: @(#) $Id$
+ */
+
+#include "tclInt.h"
+#include "tclCompile.h"
+#include "tclPort.h"
+
+/*
+ * Table of all object types.
+ */
+
+static Tcl_HashTable typeTable;
+static int typeTableInitialized = 0;    /* 0 means not yet initialized. */
+TCL_DECLARE_MUTEX(tableMutex)
+
+/*
+ * Head of the list of free Tcl_Obj structs we maintain.
+ */
+
+Tcl_Obj *tclFreeObjList = NULL;
+
+/*
+ * The object allocator is single threaded.  This mutex is referenced
+ * by the TclNewObj macro, however, so must be visible.
+ */
+
+#ifdef TCL_THREADS
+Tcl_Mutex tclObjMutex;
+#endif
+
+/*
+ * Pointer to a heap-allocated string of length zero that the Tcl core uses
+ * as the value of an empty string representation for an object. This value
+ * is shared by all new objects allocated by Tcl_NewObj.
+ */
+
+char tclEmptyString = '\0';
+char *tclEmptyStringRep = &amp;tclEmptyString;
+
+/*
+ * Prototypes for procedures defined later in this file:
+ */
+
+static int		SetBooleanFromAny _ANSI_ARGS_((Tcl_Interp *interp,
+			    Tcl_Obj *objPtr));
+static int		SetDoubleFromAny _ANSI_ARGS_((Tcl_Interp *interp,
+			    Tcl_Obj *objPtr));
+static int		SetIntFromAny _ANSI_ARGS_((Tcl_Interp *interp,
+			    Tcl_Obj *objPtr));
+static int		SetIntOrWideFromAny _ANSI_ARGS_((Tcl_Interp* interp,
+							 Tcl_Obj *objPtr));
+static void		UpdateStringOfBoolean _ANSI_ARGS_((Tcl_Obj *objPtr));
+static void		UpdateStringOfDouble _ANSI_ARGS_((Tcl_Obj *objPtr));
+static void		UpdateStringOfInt _ANSI_ARGS_((Tcl_Obj *objPtr));
+static int		SetWideIntFromAny _ANSI_ARGS_((Tcl_Interp *interp,
+			    Tcl_Obj *objPtr));
+
+#ifndef TCL_WIDE_INT_IS_LONG
+static void		UpdateStringOfWideInt _ANSI_ARGS_((Tcl_Obj *objPtr));
+#endif
+
+/*
+ * Prototypes for the array hash key methods.
+ */
+
+static Tcl_HashEntry *	AllocObjEntry _ANSI_ARGS_((
+			    Tcl_HashTable *tablePtr, VOID *keyPtr));
+static int		CompareObjKeys _ANSI_ARGS_((
+			    VOID *keyPtr, Tcl_HashEntry *hPtr));
+static void		FreeObjEntry _ANSI_ARGS_((
+			    Tcl_HashEntry *hPtr));
+static unsigned int	HashObjKey _ANSI_ARGS_((
+			    Tcl_HashTable *tablePtr,
+			    VOID *keyPtr));
+
+/*
+ * Prototypes for the CommandName object type.
+ */
+
+static void		DupCmdNameInternalRep _ANSI_ARGS_((Tcl_Obj *objPtr,
+			    Tcl_Obj *copyPtr));
+static void		FreeCmdNameInternalRep _ANSI_ARGS_((
+    			    Tcl_Obj *objPtr));
+static int		SetCmdNameFromAny _ANSI_ARGS_((Tcl_Interp *interp,
+			    Tcl_Obj *objPtr));
+
+
+/*
+ * The structures below defines the Tcl object types defined in this file by
+ * means of procedures that can be invoked by generic object code. See also
+ * tclStringObj.c, tclListObj.c, tclByteCode.c for other type manager
+ * implementations.
+ */
+
+Tcl_ObjType tclBooleanType = {
+    "boolean",				/* name */
+    (Tcl_FreeInternalRepProc *) NULL,   /* freeIntRepProc */
+    (Tcl_DupInternalRepProc *) NULL,	/* dupIntRepProc */
+    UpdateStringOfBoolean,		/* updateStringProc */
+    SetBooleanFromAny			/* setFromAnyProc */
+};
+
+Tcl_ObjType tclDoubleType = {
+    "double",				/* name */
+    (Tcl_FreeInternalRepProc *) NULL,   /* freeIntRepProc */
+    (Tcl_DupInternalRepProc *) NULL,	/* dupIntRepProc */
+    UpdateStringOfDouble,		/* updateStringProc */
+    SetDoubleFromAny			/* setFromAnyProc */
+};
+
+Tcl_ObjType tclIntType = {
+    "int",				/* name */
+    (Tcl_FreeInternalRepProc *) NULL,   /* freeIntRepProc */
+    (Tcl_DupInternalRepProc *) NULL,	/* dupIntRepProc */
+    UpdateStringOfInt,			/* updateStringProc */
+    SetIntFromAny			/* setFromAnyProc */
+};
+
+Tcl_ObjType tclWideIntType = {
+    "wideInt",				/* name */
+    (Tcl_FreeInternalRepProc *) NULL,   /* freeIntRepProc */
+    (Tcl_DupInternalRepProc *) NULL,	/* dupIntRepProc */
+#ifdef TCL_WIDE_INT_IS_LONG
+    UpdateStringOfInt,			/* updateStringProc */
+#else /* !TCL_WIDE_INT_IS_LONG */
+    UpdateStringOfWideInt,		/* updateStringProc */
+#endif
+    SetWideIntFromAny			/* setFromAnyProc */
+};
+
+/*
+ * The structure below defines the Tcl obj hash key type.
+ */
+Tcl_HashKeyType tclObjHashKeyType = {
+    TCL_HASH_KEY_TYPE_VERSION,		/* version */
+    0,					/* flags */
+    HashObjKey,				/* hashKeyProc */
+    CompareObjKeys,			/* compareKeysProc */
+    AllocObjEntry,			/* allocEntryProc */
+    FreeObjEntry			/* freeEntryProc */
+};
+
+/*
+ * The structure below defines the command name Tcl object type by means of
+ * procedures that can be invoked by generic object code. Objects of this
+ * type cache the Command pointer that results from looking up command names
+ * in the command hashtable. Such objects appear as the zeroth ("command
+ * name") argument in a Tcl command.
+ *
+ * NOTE: the ResolvedCmdName that gets cached is stored in the
+ * twoPtrValue.ptr1 field, and the twoPtrValue.ptr2 field is unused.
+ * You might think you could use the simpler otherValuePtr field to
+ * store the single ResolvedCmdName pointer, but DO NOT DO THIS.  It
+ * seems that some extensions use the second internal pointer field
+ * of the twoPtrValue field for their own purposes.
+ */
+
+static Tcl_ObjType tclCmdNameType = {
+    "cmdName",				/* name */
+    FreeCmdNameInternalRep,		/* freeIntRepProc */
+    DupCmdNameInternalRep,		/* dupIntRepProc */
+    (Tcl_UpdateStringProc *) NULL,	/* updateStringProc */
+    SetCmdNameFromAny			/* setFromAnyProc */
+};
+
+
+/*
+ * Structure containing a cached pointer to a command that is the result
+ * of resolving the command's name in some namespace. It is the internal
+ * representation for a cmdName object. It contains the pointer along
+ * with some information that is used to check the pointer's validity.
+ */
+
+typedef struct ResolvedCmdName {
+    Command *cmdPtr;		/* A cached Command pointer. */
+    Namespace *refNsPtr;	/* Points to the namespace containing the
+				 * reference (not the namespace that
+				 * contains the referenced command). */
+    long refNsId;		/* refNsPtr's unique namespace id. Used to
+				 * verify that refNsPtr is still valid
+				 * (e.g., it's possible that the cmd's
+				 * containing namespace was deleted and a
+				 * new one created at the same address). */
+    int refNsCmdEpoch;		/* Value of the referencing namespace's
+				 * cmdRefEpoch when the pointer was cached.
+				 * Before using the cached pointer, we check
+				 * if the namespace's epoch was incremented;
+				 * if so, this cached pointer is invalid. */
+    int cmdEpoch;		/* Value of the command's cmdEpoch when this
+				 * pointer was cached. Before using the
+				 * cached pointer, we check if the cmd's
+				 * epoch was incremented; if so, the cmd was
+				 * renamed, deleted, hidden, or exposed, and
+				 * so the pointer is invalid. */
+    int refCount;		/* Reference count: 1 for each cmdName
+				 * object that has a pointer to this
+				 * ResolvedCmdName structure as its internal
+				 * rep. This structure can be freed when
+				 * refCount becomes zero. */
+} ResolvedCmdName;
+
+
+</t>
+<t tx="ekr.20071105090148.284">/*
+ *-------------------------------------------------------------------------
+ *
+ * TclInitObjectSubsystem --
+ *
+ *	This procedure is invoked to perform once-only initialization of
+ *	the type table. It also registers the object types defined in 
+ *	this file.
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	Initializes the table of defined object types "typeTable" with
+ *	builtin object types defined in this file.  
+ *
+ *-------------------------------------------------------------------------
+ */
+
+void
+TclInitObjSubsystem()
+{
+    Tcl_MutexLock(&amp;tableMutex);
+    typeTableInitialized = 1;
+    Tcl_InitHashTable(&amp;typeTable, TCL_STRING_KEYS);
+    Tcl_MutexUnlock(&amp;tableMutex);
+
+    Tcl_RegisterObjType(&amp;tclBooleanType);
+    Tcl_RegisterObjType(&amp;tclByteArrayType);
+    Tcl_RegisterObjType(&amp;tclDoubleType);
+    Tcl_RegisterObjType(&amp;tclEndOffsetType);
+    Tcl_RegisterObjType(&amp;tclIntType);
+    Tcl_RegisterObjType(&amp;tclWideIntType);
+    Tcl_RegisterObjType(&amp;tclStringType);
+    Tcl_RegisterObjType(&amp;tclListType);
+    Tcl_RegisterObjType(&amp;tclByteCodeType);
+    Tcl_RegisterObjType(&amp;tclProcBodyType);
+    Tcl_RegisterObjType(&amp;tclArraySearchType);
+    Tcl_RegisterObjType(&amp;tclIndexType);
+    Tcl_RegisterObjType(&amp;tclNsNameType);
+    Tcl_RegisterObjType(&amp;tclCmdNameType);
+
+#ifdef TCL_COMPILE_STATS
+    Tcl_MutexLock(&amp;tclObjMutex);
+    tclObjsAlloced = 0;
+    tclObjsFreed = 0;
+    {
+	int i;
+	for (i = 0;  i &lt; TCL_MAX_SHARED_OBJ_STATS;  i++) {
+	    tclObjsShared[i] = 0;
+	}
+    }
+    Tcl_MutexUnlock(&amp;tclObjMutex);
+#endif
+}
+</t>
+<t tx="ekr.20071105090148.285">
+/*
+ *----------------------------------------------------------------------
+ *
+ * TclFinalizeObjects --
+ *
+ *	This procedure is called by Tcl_Finalize to clean up all
+ *	registered Tcl_ObjType's and to reset the tclFreeObjList.
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	None.
+ *
+ *----------------------------------------------------------------------
+ */
+
+void
+TclFinalizeObjects()
+{
+    Tcl_MutexLock(&amp;tableMutex);
+    if (typeTableInitialized) {
+        Tcl_DeleteHashTable(&amp;typeTable);
+        typeTableInitialized = 0;
+    }
+    Tcl_MutexUnlock(&amp;tableMutex);
+
+    /* 
+     * All we do here is reset the head pointer of the linked list of
+     * free Tcl_Obj's to NULL;  the memory finalization will take care
+     * of releasing memory for us.
+     */
+    Tcl_MutexLock(&amp;tclObjMutex);
+    tclFreeObjList = NULL;
+    Tcl_MutexUnlock(&amp;tclObjMutex);
+}
+</t>
+<t tx="ekr.20071105090148.286">
+/*
+ *--------------------------------------------------------------
+ *
+ * Tcl_RegisterObjType --
+ *
+ *	This procedure is called to register a new Tcl object type
+ *	in the table of all object types supported by Tcl.
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	The type is registered in the Tcl type table. If there was already
+ *	a type with the same name as in typePtr, it is replaced with the
+ *	new type.
+ *
+ *--------------------------------------------------------------
+ */
+
+void
+Tcl_RegisterObjType(typePtr)
+    Tcl_ObjType *typePtr;	/* Information about object type;
+				 * storage must be statically
+				 * allocated (must live forever). */
+{
+    int new;
+    Tcl_MutexLock(&amp;tableMutex);
+    Tcl_SetHashValue(
+	    Tcl_CreateHashEntry(&amp;typeTable, typePtr-&gt;name, &amp;new), typePtr);
+    Tcl_MutexUnlock(&amp;tableMutex);
+}
+</t>
+<t tx="ekr.20071105090148.287">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_AppendAllObjTypes --
+ *
+ *	This procedure appends onto the argument object the name of each
+ *	object type as a list element. This includes the builtin object
+ *	types (e.g. int, list) as well as those added using
+ *	Tcl_NewObj. These names can be used, for example, with
+ *	Tcl_GetObjType to get pointers to the corresponding Tcl_ObjType
+ *	structures.
+ *
+ * Results:
+ *	The return value is normally TCL_OK; in this case the object
+ *	referenced by objPtr has each type name appended to it. If an
+ *	error occurs, TCL_ERROR is returned and the interpreter's result
+ *	holds an error message.
+ *
+ * Side effects:
+ *	If necessary, the object referenced by objPtr is converted into
+ *	a list object.
+ *
+ *----------------------------------------------------------------------
+ */
+
+int
+Tcl_AppendAllObjTypes(interp, objPtr)
+    Tcl_Interp *interp;		/* Interpreter used for error reporting. */
+    Tcl_Obj *objPtr;		/* Points to the Tcl object onto which the
+				 * name of each registered type is appended
+				 * as a list element. */
+{
+    register Tcl_HashEntry *hPtr;
+    Tcl_HashSearch search;
+    int objc;
+    Tcl_Obj **objv;
+
+    /*
+     * Get the test for a valid list out of the way first.
+     */
+
+    if (Tcl_ListObjGetElements(interp, objPtr, &amp;objc, &amp;objv) != TCL_OK) {
+	return TCL_ERROR;
+    }
+
+    /*
+     * Type names are NUL-terminated, not counted strings.
+     * This code relies on that.
+     */
+
+    Tcl_MutexLock(&amp;tableMutex);
+    for (hPtr = Tcl_FirstHashEntry(&amp;typeTable, &amp;search);
+	    hPtr != NULL;  hPtr = Tcl_NextHashEntry(&amp;search)) {
+	Tcl_ListObjAppendElement(NULL, objPtr,
+	        Tcl_NewStringObj(Tcl_GetHashKey(&amp;typeTable, hPtr), -1));
+    }
+    Tcl_MutexUnlock(&amp;tableMutex);
+    return TCL_OK;
+}
+</t>
+<t tx="ekr.20071105090148.288">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_GetObjType --
+ *
+ *	This procedure looks up an object type by name.
+ *
+ * Results:
+ *	If an object type with name matching "typeName" is found, a pointer
+ *	to its Tcl_ObjType structure is returned; otherwise, NULL is
+ *	returned.
+ *
+ * Side effects:
+ *	None.
+ *
+ *----------------------------------------------------------------------
+ */
+
+Tcl_ObjType *
+Tcl_GetObjType(typeName)
+    CONST char *typeName;	/* Name of Tcl object type to look up. */
+{
+    register Tcl_HashEntry *hPtr;
+    Tcl_ObjType *typePtr = NULL;
+
+    Tcl_MutexLock(&amp;tableMutex);
+    hPtr = Tcl_FindHashEntry(&amp;typeTable, typeName);
+    if (hPtr != (Tcl_HashEntry *) NULL) {
+        typePtr = (Tcl_ObjType *) Tcl_GetHashValue(hPtr);
+    }
+    Tcl_MutexUnlock(&amp;tableMutex);
+    return typePtr;
+}
+</t>
+<t tx="ekr.20071105090148.289">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_ConvertToType --
+ *
+ *	Convert the Tcl object "objPtr" to have type "typePtr" if possible.
+ *
+ * Results:
+ *	The return value is TCL_OK on success and TCL_ERROR on failure. If
+ *	TCL_ERROR is returned, then the interpreter's result contains an
+ *	error message unless "interp" is NULL. Passing a NULL "interp"
+ *	allows this procedure to be used as a test whether the conversion
+ *	could be done (and in fact was done).
+ *
+ * Side effects:
+ *	Any internal representation for the old type is freed.
+ *
+ *----------------------------------------------------------------------
+ */
+
+int
+Tcl_ConvertToType(interp, objPtr, typePtr)
+    Tcl_Interp *interp;		/* Used for error reporting if not NULL. */
+    Tcl_Obj *objPtr;		/* The object to convert. */
+    Tcl_ObjType *typePtr;	/* The target type. */
+{
+    if (objPtr-&gt;typePtr == typePtr) {
+	return TCL_OK;
+    }
+
+    /*
+     * Use the target type's Tcl_SetFromAnyProc to set "objPtr"s internal
+     * form as appropriate for the target type. This frees the old internal
+     * representation.
+     */
+
+    return typePtr-&gt;setFromAnyProc(interp, objPtr);
+}
+</t>
+<t tx="ekr.20071105090148.290">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_NewObj --
+ *
+ *	This procedure is normally called when not debugging: i.e., when
+ *	TCL_MEM_DEBUG is not defined. It creates new Tcl objects that denote
+ *	the empty string. These objects have a NULL object type and NULL
+ *	string representation byte pointer. Type managers call this routine
+ *	to allocate new objects that they further initialize.
+ *
+ *	When TCL_MEM_DEBUG is defined, this procedure just returns the
+ *	result of calling the debugging version Tcl_DbNewObj.
+ *
+ * Results:
+ *	The result is a newly allocated object that represents the empty
+ *	string. The new object's typePtr is set NULL and its ref count
+ *	is set to 0.
+ *
+ * Side effects:
+ *	If compiling with TCL_COMPILE_STATS, this procedure increments
+ *	the global count of allocated objects (tclObjsAlloced).
+ *
+ *----------------------------------------------------------------------
+ */
+
+#ifdef TCL_MEM_DEBUG
+#undef Tcl_NewObj
+
+Tcl_Obj *
+Tcl_NewObj()
+{
+    return Tcl_DbNewObj("unknown", 0);
+}
+</t>
+<t tx="ekr.20071105090148.291">
+#else /* if not TCL_MEM_DEBUG */
+
+Tcl_Obj *
+Tcl_NewObj()
+{
+    register Tcl_Obj *objPtr;
+
+    /*
+     * Use the macro defined in tclInt.h - it will use the
+     * correct allocator.
+     */
+
+    TclNewObj(objPtr);
+    return objPtr;
+}
+</t>
+<t tx="ekr.20071105090148.292">#endif /* TCL_MEM_DEBUG */
+
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_DbNewObj --
+ *
+ *	This procedure is normally called when debugging: i.e., when
+ *	TCL_MEM_DEBUG is defined. It creates new Tcl objects that denote the
+ *	empty string. It is the same as the Tcl_NewObj procedure above
+ *	except that it calls Tcl_DbCkalloc directly with the file name and
+ *	line number from its caller. This simplifies debugging since then
+ *	the [memory active] command will report the correct file name and line
+ *	number when reporting objects that haven't been freed.
+ *
+ *	When TCL_MEM_DEBUG is not defined, this procedure just returns the
+ *	result of calling Tcl_NewObj.
+ *
+ * Results:
+ *	The result is a newly allocated that represents the empty string.
+ *	The new object's typePtr is set NULL and its ref count is set to 0.
+ *
+ * Side effects:
+ *	If compiling with TCL_COMPILE_STATS, this procedure increments
+ *	the global count of allocated objects (tclObjsAlloced).
+ *
+ *----------------------------------------------------------------------
+ */
+
+#ifdef TCL_MEM_DEBUG
+
+Tcl_Obj *
+Tcl_DbNewObj(file, line)
+    register CONST char *file;	/* The name of the source file calling this
+				 * procedure; used for debugging. */
+    register int line;		/* Line number in the source file; used
+				 * for debugging. */
+{
+    register Tcl_Obj *objPtr;
+
+    /*
+     * Use the macro defined in tclInt.h - it will use the
+     * correct allocator.
+     */
+
+    TclDbNewObj(objPtr, file, line);
+    return objPtr;
+}
+</t>
+<t tx="ekr.20071105090148.293">#else /* if not TCL_MEM_DEBUG */
+
+Tcl_Obj *
+Tcl_DbNewObj(file, line)
+    CONST char *file;		/* The name of the source file calling this
+				 * procedure; used for debugging. */
+    int line;			/* Line number in the source file; used
+				 * for debugging. */
+{
+    return Tcl_NewObj();
+}
+</t>
+<t tx="ekr.20071105090148.294">#endif /* TCL_MEM_DEBUG */
+
+/*
+ *----------------------------------------------------------------------
+ *
+ * TclAllocateFreeObjects --
+ *
+ *	Procedure to allocate a number of free Tcl_Objs. This is done using
+ *	a single ckalloc to reduce the overhead for Tcl_Obj allocation.
+ *
+ *	Assumes mutex is held.
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	tclFreeObjList, the head of the list of free Tcl_Objs, is set to the
+ *	first of a number of free Tcl_Obj's linked together by their
+ *	internalRep.otherValuePtrs.
+ *
+ *----------------------------------------------------------------------
+ */
+
+#define OBJS_TO_ALLOC_EACH_TIME 100
+
+void
+TclAllocateFreeObjects()
+{
+    size_t bytesToAlloc = (OBJS_TO_ALLOC_EACH_TIME * sizeof(Tcl_Obj));
+    char *basePtr;
+    register Tcl_Obj *prevPtr, *objPtr;
+    register int i;
+
+    /*
+     * This has been noted by Purify to be a potential leak.  The problem is
+     * that Tcl, when not TCL_MEM_DEBUG compiled, keeps around all allocated
+     * Tcl_Obj's, pointed to by tclFreeObjList, when freed instead of
+     * actually freeing the memory.  TclFinalizeObjects() does not ckfree()
+     * this memory, but leaves it to Tcl's memory subsystem finalziation to
+     * release it.  Purify apparently can't figure that out, and fires a
+     * false alarm.
+     */
+
+    basePtr = (char *) ckalloc(bytesToAlloc);
+    memset(basePtr, 0, bytesToAlloc);
+
+    prevPtr = NULL;
+    objPtr = (Tcl_Obj *) basePtr;
+    for (i = 0; i &lt; OBJS_TO_ALLOC_EACH_TIME; i++) {
+	objPtr-&gt;internalRep.otherValuePtr = (VOID *) prevPtr;
+	prevPtr = objPtr;
+	objPtr++;
+    }
+    tclFreeObjList = prevPtr;
+}
+</t>
+<t tx="ekr.20071105090148.295">#undef OBJS_TO_ALLOC_EACH_TIME
+
+/*
+ *----------------------------------------------------------------------
+ *
+ * TclFreeObj --
+ *
+ *	This procedure frees the memory associated with the argument
+ *	object. It is called by the tcl.h macro Tcl_DecrRefCount when an
+ *	object's ref count is zero. It is only "public" since it must
+ *	be callable by that macro wherever the macro is used. It should not
+ *	be directly called by clients.
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	Deallocates the storage for the object's Tcl_Obj structure
+ *	after deallocating the string representation and calling the
+ *	type-specific Tcl_FreeInternalRepProc to deallocate the object's
+ *	internal representation. If compiling with TCL_COMPILE_STATS,
+ *	this procedure increments the global count of freed objects
+ *	(tclObjsFreed).
+ *
+ *----------------------------------------------------------------------
+ */
+
+void
+TclFreeObj(objPtr)
+    register Tcl_Obj *objPtr;	/* The object to be freed. */
+{
+    register Tcl_ObjType *typePtr = objPtr-&gt;typePtr;
+    
+#ifdef TCL_MEM_DEBUG
+    if ((objPtr)-&gt;refCount &lt; -1) {
+	panic("Reference count for %lx was negative", objPtr);
+    }
+#endif /* TCL_MEM_DEBUG */
+
+    if ((typePtr != NULL) &amp;&amp; (typePtr-&gt;freeIntRepProc != NULL)) {
+	typePtr-&gt;freeIntRepProc(objPtr);
+    }
+    Tcl_InvalidateStringRep(objPtr);
+
+    /*
+     * If debugging Tcl's memory usage, deallocate the object using ckfree.
+     * Otherwise, deallocate it by adding it onto the list of free
+     * Tcl_Obj structs we maintain.
+     */
+
+#if defined(TCL_MEM_DEBUG) || defined(PURIFY)
+    Tcl_MutexLock(&amp;tclObjMutex);
+    ckfree((char *) objPtr);
+    Tcl_MutexUnlock(&amp;tclObjMutex);
+#elif defined(TCL_THREADS) &amp;&amp; defined(USE_THREAD_ALLOC) 
+    TclThreadFreeObj(objPtr); 
+#else 
+    Tcl_MutexLock(&amp;tclObjMutex);
+    objPtr-&gt;internalRep.otherValuePtr = (VOID *) tclFreeObjList;
+    tclFreeObjList = objPtr;
+    Tcl_MutexUnlock(&amp;tclObjMutex);
+#endif /* TCL_MEM_DEBUG */
+
+#ifdef TCL_COMPILE_STATS
+    tclObjsFreed++;
+#endif /* TCL_COMPILE_STATS */
+}
+</t>
+<t tx="ekr.20071105090148.296">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_DuplicateObj --
+ *
+ *	Create and return a new object that is a duplicate of the argument
+ *	object.
+ *
+ * Results:
+ *	The return value is a pointer to a newly created Tcl_Obj. This
+ *	object has reference count 0 and the same type, if any, as the
+ *	source object objPtr. Also:
+ *	  1) If the source object has a valid string rep, we copy it;
+ *	     otherwise, the duplicate's string rep is set NULL to mark
+ *	     it invalid.
+ *	  2) If the source object has an internal representation (i.e. its
+ *	     typePtr is non-NULL), the new object's internal rep is set to
+ *	     a copy; otherwise the new internal rep is marked invalid.
+ *
+ * Side effects:
+ *      What constitutes "copying" the internal representation depends on
+ *	the type. For example, if the argument object is a list,
+ *	the element objects it points to will not actually be copied but
+ *	will be shared with the duplicate list. That is, the ref counts of
+ *	the element objects will be incremented.
+ *
+ *----------------------------------------------------------------------
+ */
+
+Tcl_Obj *
+Tcl_DuplicateObj(objPtr)
+    register Tcl_Obj *objPtr;		/* The object to duplicate. */
+{
+    register Tcl_ObjType *typePtr = objPtr-&gt;typePtr;
+    register Tcl_Obj *dupPtr;
+
+    TclNewObj(dupPtr);
+
+    if (objPtr-&gt;bytes == NULL) {
+	dupPtr-&gt;bytes = NULL;
+    } else if (objPtr-&gt;bytes != tclEmptyStringRep) {
+	TclInitStringRep(dupPtr, objPtr-&gt;bytes, objPtr-&gt;length);
+    }
+    
+    if (typePtr != NULL) {
+	if (typePtr-&gt;dupIntRepProc == NULL) {
+	    dupPtr-&gt;internalRep = objPtr-&gt;internalRep;
+	    dupPtr-&gt;typePtr = typePtr;
+	} else {
+	    (*typePtr-&gt;dupIntRepProc)(objPtr, dupPtr);
+	}
+    }
+    return dupPtr;
+}
+</t>
+<t tx="ekr.20071105090148.297">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_GetString --
+ *
+ *	Returns the string representation byte array pointer for an object.
+ *
+ * Results:
+ *	Returns a pointer to the string representation of objPtr. The byte
+ *	array referenced by the returned pointer must not be modified by the
+ *	caller. Furthermore, the caller must copy the bytes if they need to
+ *	retain them since the object's string rep can change as a result of
+ *	other operations.
+ *
+ * Side effects:
+ *	May call the object's updateStringProc to update the string
+ *	representation from the internal representation.
+ *
+ *----------------------------------------------------------------------
+ */
+
+char *
+Tcl_GetString(objPtr)
+    register Tcl_Obj *objPtr;	/* Object whose string rep byte pointer
+				 * should be returned. */
+{
+    if (objPtr-&gt;bytes != NULL) {
+	return objPtr-&gt;bytes;
+    }
+
+    if (objPtr-&gt;typePtr-&gt;updateStringProc == NULL) {
+	panic("UpdateStringProc should not be invoked for type %s",
+		objPtr-&gt;typePtr-&gt;name);
+    }
+    (*objPtr-&gt;typePtr-&gt;updateStringProc)(objPtr);
+    return objPtr-&gt;bytes;
+}
+</t>
+<t tx="ekr.20071105090148.298">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_GetStringFromObj --
+ *
+ *	Returns the string representation's byte array pointer and length
+ *	for an object.
+ *
+ * Results:
+ *	Returns a pointer to the string representation of objPtr. If
+ *	lengthPtr isn't NULL, the length of the string representation is
+ *	stored at *lengthPtr. The byte array referenced by the returned
+ *	pointer must not be modified by the caller. Furthermore, the
+ *	caller must copy the bytes if they need to retain them since the
+ *	object's string rep can change as a result of other operations.
+ *
+ * Side effects:
+ *	May call the object's updateStringProc to update the string
+ *	representation from the internal representation.
+ *
+ *----------------------------------------------------------------------
+ */
+
+char *
+Tcl_GetStringFromObj(objPtr, lengthPtr)
+    register Tcl_Obj *objPtr;	/* Object whose string rep byte pointer should
+				 * be returned. */
+    register int *lengthPtr;	/* If non-NULL, the location where the string
+				 * rep's byte array length should * be stored.
+				 * If NULL, no length is stored. */
+{
+    if (objPtr-&gt;bytes == NULL) {
+	if (objPtr-&gt;typePtr-&gt;updateStringProc == NULL) {
+	    panic("UpdateStringProc should not be invoked for type %s",
+		    objPtr-&gt;typePtr-&gt;name);
+	}
+	(*objPtr-&gt;typePtr-&gt;updateStringProc)(objPtr);
+    }
+
+    if (lengthPtr != NULL) {
+	*lengthPtr = objPtr-&gt;length;
+    }
+    return objPtr-&gt;bytes;
+}
+</t>
+<t tx="ekr.20071105090148.299">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_InvalidateStringRep --
+ *
+ *	This procedure is called to invalidate an object's string
+ *	representation. 
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	Deallocates the storage for any old string representation, then
+ *	sets the string representation NULL to mark it invalid.
+ *
+ *----------------------------------------------------------------------
+ */
+
+void
+Tcl_InvalidateStringRep(objPtr)
+     register Tcl_Obj *objPtr;	/* Object whose string rep byte pointer
+				 * should be freed. */
+{
+    if (objPtr-&gt;bytes != NULL) {
+	if (objPtr-&gt;bytes != tclEmptyStringRep) {
+	    ckfree((char *) objPtr-&gt;bytes);
+	}
+	objPtr-&gt;bytes = NULL;
+    }
+}
+</t>
+<t tx="ekr.20071105090148.300">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_NewBooleanObj --
+ *
+ *	This procedure is normally called when not debugging: i.e., when
+ *	TCL_MEM_DEBUG is not defined. It creates a new Tcl_Obj and
+ *	initializes it from the argument boolean value. A nonzero
+ *	"boolValue" is coerced to 1.
+ *
+ *	When TCL_MEM_DEBUG is defined, this procedure just returns the
+ *	result of calling the debugging version Tcl_DbNewBooleanObj.
+ *
+ * Results:
+ *	The newly created object is returned. This object will have an
+ *	invalid string representation. The returned object has ref count 0.
+ *
+ * Side effects:
+ *	None.
+ *
+ *----------------------------------------------------------------------
+ */
+
+#ifdef TCL_MEM_DEBUG
+#undef Tcl_NewBooleanObj
+
+Tcl_Obj *
+Tcl_NewBooleanObj(boolValue)
+    register int boolValue;	/* Boolean used to initialize new object. */
+{
+    return Tcl_DbNewBooleanObj(boolValue, "unknown", 0);
+}
+</t>
+<t tx="ekr.20071105090148.301">
+#else /* if not TCL_MEM_DEBUG */
+
+Tcl_Obj *
+Tcl_NewBooleanObj(boolValue)
+    register int boolValue;	/* Boolean used to initialize new object. */
+{
+    register Tcl_Obj *objPtr;
+
+    TclNewObj(objPtr);
+    objPtr-&gt;bytes = NULL;
+    
+    objPtr-&gt;internalRep.longValue = (boolValue? 1 : 0);
+    objPtr-&gt;typePtr = &amp;tclBooleanType;
+    return objPtr;
+}
+</t>
+<t tx="ekr.20071105090148.302">#endif /* TCL_MEM_DEBUG */
+
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_DbNewBooleanObj --
+ *
+ *	This procedure is normally called when debugging: i.e., when
+ *	TCL_MEM_DEBUG is defined. It creates new boolean objects. It is the
+ *	same as the Tcl_NewBooleanObj procedure above except that it calls
+ *	Tcl_DbCkalloc directly with the file name and line number from its
+ *	caller. This simplifies debugging since then the [memory active]
+ *	command	will report the correct file name and line number when
+ *	reporting objects that haven't been freed.
+ *
+ *	When TCL_MEM_DEBUG is not defined, this procedure just returns the
+ *	result of calling Tcl_NewBooleanObj.
+ *
+ * Results:
+ *	The newly created object is returned. This object will have an
+ *	invalid string representation. The returned object has ref count 0.
+ *
+ * Side effects:
+ *	None.
+ *
+ *----------------------------------------------------------------------
+ */
+
+#ifdef TCL_MEM_DEBUG
+
+Tcl_Obj *
+Tcl_DbNewBooleanObj(boolValue, file, line)
+    register int boolValue;	/* Boolean used to initialize new object. */
+    CONST char *file;		/* The name of the source file calling this
+				 * procedure; used for debugging. */
+    int line;			/* Line number in the source file; used
+				 * for debugging. */
+{
+    register Tcl_Obj *objPtr;
+
+    TclDbNewObj(objPtr, file, line);
+    objPtr-&gt;bytes = NULL;
+    
+    objPtr-&gt;internalRep.longValue = (boolValue? 1 : 0);
+    objPtr-&gt;typePtr = &amp;tclBooleanType;
+    return objPtr;
+}
+</t>
+<t tx="ekr.20071105090148.303">
+#else /* if not TCL_MEM_DEBUG */
+
+Tcl_Obj *
+Tcl_DbNewBooleanObj(boolValue, file, line)
+    register int boolValue;	/* Boolean used to initialize new object. */
+    CONST char *file;		/* The name of the source file calling this
+				 * procedure; used for debugging. */
+    int line;			/* Line number in the source file; used
+				 * for debugging. */
+{
+    return Tcl_NewBooleanObj(boolValue);
+}
+</t>
+<t tx="ekr.20071105090148.304">#endif /* TCL_MEM_DEBUG */
+
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_SetBooleanObj --
+ *
+ *	Modify an object to be a boolean object and to have the specified
+ *	boolean value. A nonzero "boolValue" is coerced to 1.
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	The object's old string rep, if any, is freed. Also, any old
+ *	internal rep is freed.
+ *
+ *----------------------------------------------------------------------
+ */
+
+void
+Tcl_SetBooleanObj(objPtr, boolValue)
+    register Tcl_Obj *objPtr;	/* Object whose internal rep to init. */
+    register int boolValue;	/* Boolean used to set object's value. */
+{
+    register Tcl_ObjType *oldTypePtr = objPtr-&gt;typePtr;
+
+    if (Tcl_IsShared(objPtr)) {
+	panic("Tcl_SetBooleanObj called with shared object");
+    }
+    
+    if ((oldTypePtr != NULL) &amp;&amp; (oldTypePtr-&gt;freeIntRepProc != NULL)) {
+	oldTypePtr-&gt;freeIntRepProc(objPtr);
+    }
+    
+    objPtr-&gt;internalRep.longValue = (boolValue? 1 : 0);
+    objPtr-&gt;typePtr = &amp;tclBooleanType;
+    Tcl_InvalidateStringRep(objPtr);
+}
+</t>
+<t tx="ekr.20071105090148.305">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_GetBooleanFromObj --
+ *
+ *	Attempt to return a boolean from the Tcl object "objPtr". If the
+ *	object is not already a boolean, an attempt will be made to convert
+ *	it to one.
+ *
+ * Results:
+ *	The return value is a standard Tcl object result. If an error occurs
+ *	during conversion, an error message is left in the interpreter's
+ *	result unless "interp" is NULL.
+ *
+ * Side effects:
+ *	If the object is not already a boolean, the conversion will free
+ *	any old internal representation. 
+ *
+ *----------------------------------------------------------------------
+ */
+
+int
+Tcl_GetBooleanFromObj(interp, objPtr, boolPtr)
+    Tcl_Interp *interp; 	/* Used for error reporting if not NULL. */
+    register Tcl_Obj *objPtr;	/* The object from which to get boolean. */
+    register int *boolPtr;	/* Place to store resulting boolean. */
+{
+    register int result;
+
+    if (objPtr-&gt;typePtr == &amp;tclBooleanType) {
+	result = TCL_OK;
+    } else {
+	result = SetBooleanFromAny(interp, objPtr);
+    }
+
+    if (result == TCL_OK) {
+	*boolPtr = (int) objPtr-&gt;internalRep.longValue;
+    }
+    return result;
+}
+</t>
+<t tx="ekr.20071105090148.306">
+/*
+ *----------------------------------------------------------------------
+ *
+ * SetBooleanFromAny --
+ *
+ *	Attempt to generate a boolean internal form for the Tcl object
+ *	"objPtr".
+ *
+ * Results:
+ *	The return value is a standard Tcl result. If an error occurs during
+ *	conversion, an error message is left in the interpreter's result
+ *	unless "interp" is NULL.
+ *
+ * Side effects:
+ *	If no error occurs, an integer 1 or 0 is stored as "objPtr"s
+ *	internal representation and the type of "objPtr" is set to boolean.
+ *
+ *----------------------------------------------------------------------
+ */
+
+static int
+SetBooleanFromAny(interp, objPtr)
+    Tcl_Interp *interp;		/* Used for error reporting if not NULL. */
+    register Tcl_Obj *objPtr;	/* The object to convert. */
+{
+    Tcl_ObjType *oldTypePtr = objPtr-&gt;typePtr;
+    char *string, *end;
+    register char c;
+    char lowerCase[10];
+    int newBool, length;
+    register int i;
+
+    /*
+     * Get the string representation. Make it up-to-date if necessary.
+     */
+    
+    string = Tcl_GetStringFromObj(objPtr, &amp;length);
+
+    /*
+     * Use the obvious shortcuts for numerical values; if objPtr is not
+     * of numerical type, parse its string rep.
+     */
+	
+    if (objPtr-&gt;typePtr == &amp;tclIntType) {
+	newBool = (objPtr-&gt;internalRep.longValue != 0);
+    } else if (objPtr-&gt;typePtr == &amp;tclDoubleType) {
+	newBool = (objPtr-&gt;internalRep.doubleValue != 0.0);
+    } else if (objPtr-&gt;typePtr == &amp;tclWideIntType) {
+	newBool = (objPtr-&gt;internalRep.wideValue != 0);
+    } else {
+	/*
+	 * Copy the string converting its characters to lower case.
+	 */
+	
+	for (i = 0;  (i &lt; 9) &amp;&amp; (i &lt; length);  i++) {
+	    c = string[i];
+	    /*
+	     * Weed out international characters so we can safely operate
+	     * on single bytes.
+	     */
+	    
+	    if (c &amp; 0x80) {
+		goto badBoolean;
+	    }
+	    if (Tcl_UniCharIsUpper(UCHAR(c))) {
+		c = (char) Tcl_UniCharToLower(UCHAR(c));
+	    }
+	    lowerCase[i] = c;
+	}
+	lowerCase[i] = 0;
+	
+	/*
+	 * Parse the string as a boolean. We use an implementation here that
+	 * doesn't report errors in interp if interp is NULL.
+	 */
+	
+	c = lowerCase[0];
+	if ((c == '0') &amp;&amp; (lowerCase[1] == '\0')) {
+	    newBool = 0;
+	} else if ((c == '1') &amp;&amp; (lowerCase[1] == '\0')) {
+	    newBool = 1;
+	} else if ((c == 'y') &amp;&amp; (strncmp(lowerCase, "yes", (size_t) length) == 0)) {
+	    newBool = 1;
+	} else if ((c == 'n') &amp;&amp; (strncmp(lowerCase, "no", (size_t) length) == 0)) {
+	    newBool = 0;
+	} else if ((c == 't') &amp;&amp; (strncmp(lowerCase, "true", (size_t) length) == 0)) {
+	    newBool = 1;
+	} else if ((c == 'f') &amp;&amp; (strncmp(lowerCase, "false", (size_t) length) == 0)) {
+	    newBool = 0;
+	} else if ((c == 'o') &amp;&amp; (length &gt;= 2)) {
+	    if (strncmp(lowerCase, "on", (size_t) length) == 0) {
+		newBool = 1;
+	    } else if (strncmp(lowerCase, "off", (size_t) length) == 0) {
+		newBool = 0;
+	    } else {
+		goto badBoolean;
+	    }
+	} else {
+	    double dbl;
+	    /*
+	     * Boolean values can be extracted from ints or doubles.  Note
+	     * that we don't use strtoul or strtoull here because we don't
+	     * care about what the value is, just whether it is equal to
+	     * zero or not.
+	     */
+#ifdef TCL_WIDE_INT_IS_LONG
+	    newBool = strtol(string, &amp;end, 0);
+	    if (end != string) {
+		/*
+		 * Make sure the string has no garbage after the end of
+		 * the int.
+		 */
+		while ((end &lt; (string+length))
+		       &amp;&amp; isspace(UCHAR(*end))) { /* INTL: ISO only */
+		    end++;
+		}
+		if (end == (string+length)) {
+		    newBool = (newBool != 0);
+		    goto goodBoolean;
+		}
+	    }
+#else /* !TCL_WIDE_INT_IS_LONG */
+	    Tcl_WideInt wide = strtoll(string, &amp;end, 0);
+	    if (end != string) {
+		/*
+		 * Make sure the string has no garbage after the end of
+		 * the wide int.
+		 */
+		while ((end &lt; (string+length))
+		       &amp;&amp; isspace(UCHAR(*end))) { /* INTL: ISO only */
+		    end++;
+		}
+		if (end == (string+length)) {
+		    newBool = (wide != Tcl_LongAsWide(0));
+		    goto goodBoolean;
+		}
+	    }
+#endif /* TCL_WIDE_INT_IS_LONG */
+	    /*
+	     * Still might be a string containing the characters representing an
+	     * int or double that wasn't handled above. This would be a string
+	     * like "27" or "1.0" that is non-zero and not "1". Such a string
+	     * would result in the boolean value true. We try converting to
+	     * double. If that succeeds and the resulting double is non-zero, we
+	     * have a "true". Note that numbers can't have embedded NULLs.
+	     */
+	    
+	    dbl = strtod(string, &amp;end);
+	    if (end == string) {
+		goto badBoolean;
+	    }
+	    
+	    /*
+	     * Make sure the string has no garbage after the end of the double.
+	     */
+	    
+	    while ((end &lt; (string+length))
+		   &amp;&amp; isspace(UCHAR(*end))) { /* INTL: ISO only */
+		end++;
+	    }
+	    if (end != (string+length)) {
+		goto badBoolean;
+	    }
+	    newBool = (dbl != 0.0);
+	}
+    }
+
+    /*
+     * Free the old internalRep before setting the new one. We do this as
+     * late as possible to allow the conversion code, in particular
+     * Tcl_GetStringFromObj, to use that old internalRep.
+     */
+
+    goodBoolean:
+    if ((oldTypePtr != NULL) &amp;&amp;	(oldTypePtr-&gt;freeIntRepProc != NULL)) {
+	oldTypePtr-&gt;freeIntRepProc(objPtr);
+    }
+
+    objPtr-&gt;internalRep.longValue = newBool;
+    objPtr-&gt;typePtr = &amp;tclBooleanType;
+    return TCL_OK;
+
+    badBoolean:
+    if (interp != NULL) {
+	/*
+	 * Must copy string before resetting the result in case a caller
+	 * is trying to convert the interpreter's result to a boolean.
+	 */
+	
+	char buf[100];
+	sprintf(buf, "expected boolean value but got \"%.50s\"", string);
+	Tcl_ResetResult(interp);
+	Tcl_AppendToObj(Tcl_GetObjResult(interp), buf, -1);
+    }
+    return TCL_ERROR;
+}
+</t>
+<t tx="ekr.20071105090148.307">
+/*
+ *----------------------------------------------------------------------
+ *
+ * UpdateStringOfBoolean --
+ *
+ *	Update the string representation for a boolean object.
+ *	Note: This procedure does not free an existing old string rep
+ *	so storage will be lost if this has not already been done. 
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	The object's string is set to a valid string that results from
+ *	the boolean-to-string conversion.
+ *
+ *----------------------------------------------------------------------
+ */
+
+static void
+UpdateStringOfBoolean(objPtr)
+    register Tcl_Obj *objPtr;	/* Int object whose string rep to update. */
+{
+    char *s = ckalloc((unsigned) 2);
+    
+    s[0] = (char) (objPtr-&gt;internalRep.longValue? '1' : '0');
+    s[1] = '\0';
+    objPtr-&gt;bytes = s;
+    objPtr-&gt;length = 1;
+}
+</t>
+<t tx="ekr.20071105090148.308">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_NewDoubleObj --
+ *
+ *	This procedure is normally called when not debugging: i.e., when
+ *	TCL_MEM_DEBUG is not defined. It creates a new double object and
+ *	initializes it from the argument double value.
+ *
+ *	When TCL_MEM_DEBUG is defined, this procedure just returns the
+ *	result of calling the debugging version Tcl_DbNewDoubleObj.
+ *
+ * Results:
+ *	The newly created object is returned. This object will have an
+ *	invalid string representation. The returned object has ref count 0.
+ *
+ * Side effects:
+ *	None.
+ *
+ *----------------------------------------------------------------------
+ */
+
+#ifdef TCL_MEM_DEBUG
+#undef Tcl_NewDoubleObj
+
+Tcl_Obj *
+Tcl_NewDoubleObj(dblValue)
+    register double dblValue;	/* Double used to initialize the object. */
+{
+    return Tcl_DbNewDoubleObj(dblValue, "unknown", 0);
+}
+</t>
+<t tx="ekr.20071105090148.309">
+#else /* if not TCL_MEM_DEBUG */
+
+Tcl_Obj *
+Tcl_NewDoubleObj(dblValue)
+    register double dblValue;	/* Double used to initialize the object. */
+{
+    register Tcl_Obj *objPtr;
+
+    TclNewObj(objPtr);
+    objPtr-&gt;bytes = NULL;
+    
+    objPtr-&gt;internalRep.doubleValue = dblValue;
+    objPtr-&gt;typePtr = &amp;tclDoubleType;
+    return objPtr;
+}
+</t>
+<t tx="ekr.20071105090148.310">#endif /* if TCL_MEM_DEBUG */
+
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_DbNewDoubleObj --
+ *
+ *	This procedure is normally called when debugging: i.e., when
+ *	TCL_MEM_DEBUG is defined. It creates new double objects. It is the
+ *	same as the Tcl_NewDoubleObj procedure above except that it calls
+ *	Tcl_DbCkalloc directly with the file name and line number from its
+ *	caller. This simplifies debugging since then the [memory active]
+ *	command	will report the correct file name and line number when
+ *	reporting objects that haven't been freed.
+ *
+ *	When TCL_MEM_DEBUG is not defined, this procedure just returns the
+ *	result of calling Tcl_NewDoubleObj.
+ *
+ * Results:
+ *	The newly created object is returned. This object will have an
+ *	invalid string representation. The returned object has ref count 0.
+ *
+ * Side effects:
+ *	None.
+ *
+ *----------------------------------------------------------------------
+ */
+
+#ifdef TCL_MEM_DEBUG
+
+Tcl_Obj *
+Tcl_DbNewDoubleObj(dblValue, file, line)
+    register double dblValue;	/* Double used to initialize the object. */
+    CONST char *file;		/* The name of the source file calling this
+				 * procedure; used for debugging. */
+    int line;			/* Line number in the source file; used
+				 * for debugging. */
+{
+    register Tcl_Obj *objPtr;
+
+    TclDbNewObj(objPtr, file, line);
+    objPtr-&gt;bytes = NULL;
+    
+    objPtr-&gt;internalRep.doubleValue = dblValue;
+    objPtr-&gt;typePtr = &amp;tclDoubleType;
+    return objPtr;
+}
+</t>
+<t tx="ekr.20071105090148.311">
+#else /* if not TCL_MEM_DEBUG */
+
+Tcl_Obj *
+Tcl_DbNewDoubleObj(dblValue, file, line)
+    register double dblValue;	/* Double used to initialize the object. */
+    CONST char *file;		/* The name of the source file calling this
+				 * procedure; used for debugging. */
+    int line;			/* Line number in the source file; used
+				 * for debugging. */
+{
+    return Tcl_NewDoubleObj(dblValue);
+}
+</t>
+<t tx="ekr.20071105090148.312">#endif /* TCL_MEM_DEBUG */
+
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_SetDoubleObj --
+ *
+ *	Modify an object to be a double object and to have the specified
+ *	double value.
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	The object's old string rep, if any, is freed. Also, any old
+ *	internal rep is freed.
+ *
+ *----------------------------------------------------------------------
+ */
+
+void
+Tcl_SetDoubleObj(objPtr, dblValue)
+    register Tcl_Obj *objPtr;	/* Object whose internal rep to init. */
+    register double dblValue;	/* Double used to set the object's value. */
+{
+    register Tcl_ObjType *oldTypePtr = objPtr-&gt;typePtr;
+
+    if (Tcl_IsShared(objPtr)) {
+	panic("Tcl_SetDoubleObj called with shared object");
+    }
+
+    if ((oldTypePtr != NULL) &amp;&amp; (oldTypePtr-&gt;freeIntRepProc != NULL)) {
+	oldTypePtr-&gt;freeIntRepProc(objPtr);
+    }
+    
+    objPtr-&gt;internalRep.doubleValue = dblValue;
+    objPtr-&gt;typePtr = &amp;tclDoubleType;
+    Tcl_InvalidateStringRep(objPtr);
+}
+</t>
+<t tx="ekr.20071105090148.313">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_GetDoubleFromObj --
+ *
+ *	Attempt to return a double from the Tcl object "objPtr". If the
+ *	object is not already a double, an attempt will be made to convert
+ *	it to one.
+ *
+ * Results:
+ *	The return value is a standard Tcl object result. If an error occurs
+ *	during conversion, an error message is left in the interpreter's
+ *	result unless "interp" is NULL.
+ *
+ * Side effects:
+ *	If the object is not already a double, the conversion will free
+ *	any old internal representation.
+ *
+ *----------------------------------------------------------------------
+ */
+
+int
+Tcl_GetDoubleFromObj(interp, objPtr, dblPtr)
+    Tcl_Interp *interp; 	/* Used for error reporting if not NULL. */
+    register Tcl_Obj *objPtr;	/* The object from which to get a double. */
+    register double *dblPtr;	/* Place to store resulting double. */
+{
+    register int result;
+    
+    if (objPtr-&gt;typePtr == &amp;tclDoubleType) {
+	*dblPtr = objPtr-&gt;internalRep.doubleValue;
+	return TCL_OK;
+    }
+
+    result = SetDoubleFromAny(interp, objPtr);
+    if (result == TCL_OK) {
+	*dblPtr = objPtr-&gt;internalRep.doubleValue;
+    }
+    return result;
+}
+</t>
+<t tx="ekr.20071105090148.314">
+/*
+ *----------------------------------------------------------------------
+ *
+ * SetDoubleFromAny --
+ *
+ *	Attempt to generate an double-precision floating point internal form
+ *	for the Tcl object "objPtr".
+ *
+ * Results:
+ *	The return value is a standard Tcl object result. If an error occurs
+ *	during conversion, an error message is left in the interpreter's
+ *	result unless "interp" is NULL.
+ *
+ * Side effects:
+ *	If no error occurs, a double is stored as "objPtr"s internal
+ *	representation.
+ *
+ *----------------------------------------------------------------------
+ */
+
+static int
+SetDoubleFromAny(interp, objPtr)
+    Tcl_Interp *interp;		/* Used for error reporting if not NULL. */
+    register Tcl_Obj *objPtr;	/* The object to convert. */
+{
+    Tcl_ObjType *oldTypePtr = objPtr-&gt;typePtr;
+    char *string, *end;
+    double newDouble;
+    int length;
+
+    /*
+     * Get the string representation. Make it up-to-date if necessary.
+     */
+
+    string = Tcl_GetStringFromObj(objPtr, &amp;length);
+
+    /*
+     * Now parse "objPtr"s string as an double. Numbers can't have embedded
+     * NULLs. We use an implementation here that doesn't report errors in
+     * interp if interp is NULL.
+     */
+
+    errno = 0;
+    newDouble = strtod(string, &amp;end);
+    if (end == string) {
+	badDouble:
+	if (interp != NULL) {
+	    /*
+	     * Must copy string before resetting the result in case a caller
+	     * is trying to convert the interpreter's result to an int.
+	     */
+	    
+	    char buf[100];
+	    sprintf(buf, "expected floating-point number but got \"%.50s\"",
+	            string);
+	    Tcl_ResetResult(interp);
+	    Tcl_AppendToObj(Tcl_GetObjResult(interp), buf, -1);
+	}
+	return TCL_ERROR;
+    }
+    if (errno != 0) {
+	if (interp != NULL) {
+	    TclExprFloatError(interp, newDouble);
+	}
+	return TCL_ERROR;
+    }
+
+    /*
+     * Make sure that the string has no garbage after the end of the double.
+     */
+    
+    while ((end &lt; (string+length))
+	    &amp;&amp; isspace(UCHAR(*end))) { /* INTL: ISO space. */
+	end++;
+    }
+    if (end != (string+length)) {
+	goto badDouble;
+    }
+    
+    /*
+     * The conversion to double succeeded. Free the old internalRep before
+     * setting the new one. We do this as late as possible to allow the
+     * conversion code, in particular Tcl_GetStringFromObj, to use that old
+     * internalRep.
+     */
+    
+    if ((oldTypePtr != NULL) &amp;&amp;	(oldTypePtr-&gt;freeIntRepProc != NULL)) {
+	oldTypePtr-&gt;freeIntRepProc(objPtr);
+    }
+
+    objPtr-&gt;internalRep.doubleValue = newDouble;
+    objPtr-&gt;typePtr = &amp;tclDoubleType;
+    return TCL_OK;
+}
+</t>
+<t tx="ekr.20071105090148.315">
+/*
+ *----------------------------------------------------------------------
+ *
+ * UpdateStringOfDouble --
+ *
+ *	Update the string representation for a double-precision floating
+ *	point object. This must obey the current tcl_precision value for
+ *	double-to-string conversions. Note: This procedure does not free an
+ *	existing old string rep so storage will be lost if this has not
+ *	already been done.
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	The object's string is set to a valid string that results from
+ *	the double-to-string conversion.
+ *
+ *----------------------------------------------------------------------
+ */
+
+static void
+UpdateStringOfDouble(objPtr)
+    register Tcl_Obj *objPtr;	/* Double obj with string rep to update. */
+{
+    char buffer[TCL_DOUBLE_SPACE];
+    register int len;
+    
+    Tcl_PrintDouble((Tcl_Interp *) NULL, objPtr-&gt;internalRep.doubleValue,
+	    buffer);
+    len = strlen(buffer);
+    
+    objPtr-&gt;bytes = (char *) ckalloc((unsigned) len + 1);
+    strcpy(objPtr-&gt;bytes, buffer);
+    objPtr-&gt;length = len;
+}
+</t>
+<t tx="ekr.20071105090148.316">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_NewIntObj --
+ *
+ *	If a client is compiled with TCL_MEM_DEBUG defined, calls to
+ *	Tcl_NewIntObj to create a new integer object end up calling the
+ *	debugging procedure Tcl_DbNewLongObj instead.
+ *
+ *	Otherwise, if the client is compiled without TCL_MEM_DEBUG defined,
+ *	calls to Tcl_NewIntObj result in a call to one of the two
+ *	Tcl_NewIntObj implementations below. We provide two implementations
+ *	so that the Tcl core can be compiled to do memory debugging of the 
+ *	core even if a client does not request it for itself.
+ *
+ *	Integer and long integer objects share the same "integer" type
+ *	implementation. We store all integers as longs and Tcl_GetIntFromObj
+ *	checks whether the current value of the long can be represented by
+ *	an int.
+ *
+ * Results:
+ *	The newly created object is returned. This object will have an
+ *	invalid string representation. The returned object has ref count 0.
+ *
+ * Side effects:
+ *	None.
+ *
+ *----------------------------------------------------------------------
+ */
+
+#ifdef TCL_MEM_DEBUG
+#undef Tcl_NewIntObj
+
+Tcl_Obj *
+Tcl_NewIntObj(intValue)
+    register int intValue;	/* Int used to initialize the new object. */
+{
+    return Tcl_DbNewLongObj((long)intValue, "unknown", 0);
+}
+</t>
+<t tx="ekr.20071105090148.317">
+#else /* if not TCL_MEM_DEBUG */
+
+Tcl_Obj *
+Tcl_NewIntObj(intValue)
+    register int intValue;	/* Int used to initialize the new object. */
+{
+    register Tcl_Obj *objPtr;
+
+    TclNewObj(objPtr);
+    objPtr-&gt;bytes = NULL;
+    
+    objPtr-&gt;internalRep.longValue = (long)intValue;
+    objPtr-&gt;typePtr = &amp;tclIntType;
+    return objPtr;
+}
+</t>
+<t tx="ekr.20071105090148.318">#endif /* if TCL_MEM_DEBUG */
+
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_SetIntObj --
+ *
+ *	Modify an object to be an integer and to have the specified integer
+ *	value.
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	The object's old string rep, if any, is freed. Also, any old
+ *	internal rep is freed. 
+ *
+ *----------------------------------------------------------------------
+ */
+
+void
+Tcl_SetIntObj(objPtr, intValue)
+    register Tcl_Obj *objPtr;	/* Object whose internal rep to init. */
+    register int intValue;	/* Integer used to set object's value. */
+{
+    register Tcl_ObjType *oldTypePtr = objPtr-&gt;typePtr;
+
+    if (Tcl_IsShared(objPtr)) {
+	panic("Tcl_SetIntObj called with shared object");
+    }
+    
+    if ((oldTypePtr != NULL) &amp;&amp; (oldTypePtr-&gt;freeIntRepProc != NULL)) {
+	oldTypePtr-&gt;freeIntRepProc(objPtr);
+    }
+    
+    objPtr-&gt;internalRep.longValue = (long) intValue;
+    objPtr-&gt;typePtr = &amp;tclIntType;
+    Tcl_InvalidateStringRep(objPtr);
+}
+</t>
+<t tx="ekr.20071105090148.319">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_GetIntFromObj --
+ *
+ *	Attempt to return an int from the Tcl object "objPtr". If the object
+ *	is not already an int, an attempt will be made to convert it to one.
+ *
+ *	Integer and long integer objects share the same "integer" type
+ *	implementation. We store all integers as longs and Tcl_GetIntFromObj
+ *	checks whether the current value of the long can be represented by
+ *	an int.
+ *
+ * Results:
+ *	The return value is a standard Tcl object result. If an error occurs
+ *	during conversion or if the long integer held by the object
+ *	can not be represented by an int, an error message is left in
+ *	the interpreter's result unless "interp" is NULL.
+ *
+ * Side effects:
+ *	If the object is not already an int, the conversion will free
+ *	any old internal representation.
+ *
+ *----------------------------------------------------------------------
+ */
+
+int
+Tcl_GetIntFromObj(interp, objPtr, intPtr)
+    Tcl_Interp *interp; 	/* Used for error reporting if not NULL. */
+    register Tcl_Obj *objPtr;	/* The object from which to get a int. */
+    register int *intPtr;	/* Place to store resulting int. */
+{
+    int result;
+    Tcl_WideInt w = 0;
+
+    /*
+     * If the object isn't already an integer of any width, try to
+     * convert it to one.
+     */
+
+    if (objPtr-&gt;typePtr != &amp;tclIntType &amp;&amp; objPtr-&gt;typePtr != &amp;tclWideIntType) {
+	result = SetIntOrWideFromAny(interp, objPtr);
+	if (result != TCL_OK) {
+	    return result;
+	}
+    }
+
+    /*
+     * Object should now be either int or wide. Get its value.
+     */
+
+#ifndef TCL_WIDE_INT_IS_LONG
+    if (objPtr-&gt;typePtr == &amp;tclWideIntType) {
+	w = objPtr-&gt;internalRep.wideValue;
+    } else
+#endif
+    {
+	w = Tcl_LongAsWide(objPtr-&gt;internalRep.longValue);
+    }
+
+    if ((LLONG_MAX &gt; UINT_MAX)
+	    &amp;&amp; ((w &gt; UINT_MAX) || (w &lt; -(Tcl_WideInt)UINT_MAX))) {
+	if (interp != NULL) {
+	    Tcl_SetObjResult(interp, Tcl_NewStringObj(
+		"integer value too large to represent as non-long integer",
+		-1));
+	}
+	return TCL_ERROR;
+    }
+    *intPtr = (int)w;
+    return TCL_OK;
+}
+</t>
+<t tx="ekr.20071105090148.320">
+/*
+ *----------------------------------------------------------------------
+ *
+ * SetIntFromAny --
+ *
+ *	Attempts to force the internal representation for a Tcl object
+ *	to tclIntType, specifically.
+ *
+ * Results:
+ *	The return value is a standard object Tcl result.  If an
+ *	error occurs during conversion, an error message is left in
+ *	the interpreter's result unless "interp" is NULL.
+ *
+ *----------------------------------------------------------------------
+ */
+
+static int
+SetIntFromAny( Tcl_Interp* interp, 
+				/* Tcl interpreter */
+	       Tcl_Obj* objPtr )
+				/* Pointer to the object to convert */
+{
+    int result;
+
+    result = SetIntOrWideFromAny( interp, objPtr );
+    if ( result != TCL_OK ) {
+	return result;
+    }
+    if ( objPtr-&gt;typePtr != &amp;tclIntType ) {
+	if ( interp != NULL ) {
+	    char *s = "integer value too large to represent";
+	    Tcl_ResetResult(interp);
+	    Tcl_AppendToObj(Tcl_GetObjResult(interp), s, -1);
+	    Tcl_SetErrorCode(interp, "ARITH", "IOVERFLOW", s, (char *) NULL);
+	}
+	return TCL_ERROR;
+    }
+    return TCL_OK;
+}
+</t>
+<t tx="ekr.20071105090148.321">
+/*
+ *----------------------------------------------------------------------
+ *
+ * SetIntOrWideFromAny --
+ *
+ *	Attempt to generate an integer internal form for the Tcl object
+ *	"objPtr".
+ *
+ * Results:
+ *	The return value is a standard object Tcl result. If an error occurs
+ *	during conversion, an error message is left in the interpreter's
+ *	result unless "interp" is NULL.
+ *
+ * Side effects:
+ *	If no error occurs, an int is stored as "objPtr"s internal
+ *	representation. 
+ *
+ *----------------------------------------------------------------------
+ */
+
+static int
+SetIntOrWideFromAny(interp, objPtr)
+    Tcl_Interp *interp;		/* Used for error reporting if not NULL. */
+    register Tcl_Obj *objPtr;	/* The object to convert. */
+{
+    Tcl_ObjType *oldTypePtr = objPtr-&gt;typePtr;
+    char *string, *end;
+    int length;
+    register char *p;
+    unsigned long newLong;
+    int isNegative = 0;
+    int isWide = 0;
+
+    /*
+     * Get the string representation. Make it up-to-date if necessary.
+     */
+
+    p = string = Tcl_GetStringFromObj(objPtr, &amp;length);
+
+    /*
+     * Now parse "objPtr"s string as an int. We use an implementation here
+     * that doesn't report errors in interp if interp is NULL. Note: use
+     * strtoul instead of strtol for integer conversions to allow full-size
+     * unsigned numbers, but don't depend on strtoul to handle sign
+     * characters; it won't in some implementations.
+     */
+
+    errno = 0;
+    for ( ;  isspace(UCHAR(*p));  p++) { /* INTL: ISO space. */
+	/* Empty loop body. */
+    }
+    if (*p == '-') {
+	p++;
+	isNegative = 1;
+    } else if (*p == '+') {
+	p++;
+    }
+    if (!isdigit(UCHAR(*p))) {
+	badInteger:
+	if (interp != NULL) {
+	    /*
+	     * Must copy string before resetting the result in case a caller
+	     * is trying to convert the interpreter's result to an int.
+	     */
+	    
+	    char buf[100];
+	    sprintf(buf, "expected integer but got \"%.50s\"", string);
+	    Tcl_ResetResult(interp);
+	    Tcl_AppendToObj(Tcl_GetObjResult(interp), buf, -1);
+	    TclCheckBadOctal(interp, string);
+	}
+	return TCL_ERROR;
+    }
+    newLong = strtoul(p, &amp;end, 0);
+    if (end == p) {
+	goto badInteger;
+    }
+    if (errno == ERANGE) {
+	if (interp != NULL) {
+	    char *s = "integer value too large to represent";
+	    Tcl_ResetResult(interp);
+	    Tcl_AppendToObj(Tcl_GetObjResult(interp), s, -1);
+	    Tcl_SetErrorCode(interp, "ARITH", "IOVERFLOW", s, (char *) NULL);
+	}
+	return TCL_ERROR;
+    }
+
+    /*
+     * Make sure that the string has no garbage after the end of the int.
+     */
+    
+    while ((end &lt; (string+length))
+	    &amp;&amp; isspace(UCHAR(*end))) { /* INTL: ISO space. */
+	end++;
+    }
+    if (end != (string+length)) {
+	goto badInteger;
+    }
+
+    /*
+     * If the resulting integer will exceed the range of a long,
+     * put it into a wide instead.  (Tcl Bug #868489)
+     */
+
+#ifndef TCL_WIDE_INT_IS_LONG
+    if ((isNegative &amp;&amp; newLong &gt; (unsigned long) (LONG_MAX) + 1)
+	    || (!isNegative &amp;&amp; newLong &gt; LONG_MAX)) {
+	isWide = 1;
+    }
+#endif
+
+    /*
+     * The conversion to int succeeded. Free the old internalRep before
+     * setting the new one. We do this as late as possible to allow the
+     * conversion code, in particular Tcl_GetStringFromObj, to use that old
+     * internalRep.
+     */
+
+    if ((oldTypePtr != NULL) &amp;&amp;	(oldTypePtr-&gt;freeIntRepProc != NULL)) {
+	oldTypePtr-&gt;freeIntRepProc(objPtr);
+    }
+
+    if (isWide) {
+	objPtr-&gt;internalRep.wideValue =
+		(isNegative ? -(Tcl_WideInt)newLong : (Tcl_WideInt)newLong);
+	objPtr-&gt;typePtr = &amp;tclWideIntType;
+    } else {
+	objPtr-&gt;internalRep.longValue =
+		(isNegative ? -(long)newLong : (long)newLong);
+	objPtr-&gt;typePtr = &amp;tclIntType;
+    }
+    return TCL_OK;
+}
+</t>
+<t tx="ekr.20071105090148.322">
+/*
+ *----------------------------------------------------------------------
+ *
+ * UpdateStringOfInt --
+ *
+ *	Update the string representation for an integer object.
+ *	Note: This procedure does not free an existing old string rep
+ *	so storage will be lost if this has not already been done. 
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	The object's string is set to a valid string that results from
+ *	the int-to-string conversion.
+ *
+ *----------------------------------------------------------------------
+ */
+
+static void
+UpdateStringOfInt(objPtr)
+    register Tcl_Obj *objPtr;	/* Int object whose string rep to update. */
+{
+    char buffer[TCL_INTEGER_SPACE];
+    register int len;
+    
+    len = TclFormatInt(buffer, objPtr-&gt;internalRep.longValue);
+    
+    objPtr-&gt;bytes = ckalloc((unsigned) len + 1);
+    strcpy(objPtr-&gt;bytes, buffer);
+    objPtr-&gt;length = len;
+}
+</t>
+<t tx="ekr.20071105090148.323">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_NewLongObj --
+ *
+ *	If a client is compiled with TCL_MEM_DEBUG defined, calls to
+ *	Tcl_NewLongObj to create a new long integer object end up calling
+ *	the debugging procedure Tcl_DbNewLongObj instead.
+ *
+ *	Otherwise, if the client is compiled without TCL_MEM_DEBUG defined,
+ *	calls to Tcl_NewLongObj result in a call to one of the two
+ *	Tcl_NewLongObj implementations below. We provide two implementations
+ *	so that the Tcl core can be compiled to do memory debugging of the 
+ *	core even if a client does not request it for itself.
+ *
+ *	Integer and long integer objects share the same "integer" type
+ *	implementation. We store all integers as longs and Tcl_GetIntFromObj
+ *	checks whether the current value of the long can be represented by
+ *	an int.
+ *
+ * Results:
+ *	The newly created object is returned. This object will have an
+ *	invalid string representation. The returned object has ref count 0.
+ *
+ * Side effects:
+ *	None.
+ *
+ *----------------------------------------------------------------------
+ */
+
+#ifdef TCL_MEM_DEBUG
+#undef Tcl_NewLongObj
+
+Tcl_Obj *
+Tcl_NewLongObj(longValue)
+    register long longValue;	/* Long integer used to initialize the
+				 * new object. */
+{
+    return Tcl_DbNewLongObj(longValue, "unknown", 0);
+}
+</t>
+<t tx="ekr.20071105090148.324">
+#else /* if not TCL_MEM_DEBUG */
+
+Tcl_Obj *
+Tcl_NewLongObj(longValue)
+    register long longValue;	/* Long integer used to initialize the
+				 * new object. */
+{
+    register Tcl_Obj *objPtr;
+
+    TclNewObj(objPtr);
+    objPtr-&gt;bytes = NULL;
+    
+    objPtr-&gt;internalRep.longValue = longValue;
+    objPtr-&gt;typePtr = &amp;tclIntType;
+    return objPtr;
+}
+</t>
+<t tx="ekr.20071105090148.325">#endif /* if TCL_MEM_DEBUG */
+
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_DbNewLongObj --
+ *
+ *	If a client is compiled with TCL_MEM_DEBUG defined, calls to
+ *	Tcl_NewIntObj and Tcl_NewLongObj to create new integer or
+ *	long integer objects end up calling the debugging procedure
+ *	Tcl_DbNewLongObj instead. We provide two implementations of
+ *	Tcl_DbNewLongObj so that whether the Tcl core is compiled to do
+ *	memory debugging of the core is independent of whether a client
+ *	requests debugging for itself.
+ *
+ *	When the core is compiled with TCL_MEM_DEBUG defined,
+ *	Tcl_DbNewLongObj calls Tcl_DbCkalloc directly with the file name and
+ *	line number from its caller. This simplifies debugging since then
+ *	the [memory active] command will report the caller's file name and
+ *	line number when reporting objects that haven't been freed.
+ *
+ *	Otherwise, when the core is compiled without TCL_MEM_DEBUG defined,
+ *	this procedure just returns the result of calling Tcl_NewLongObj.
+ *
+ * Results:
+ *	The newly created long integer object is returned. This object
+ *	will have an invalid string representation. The returned object has
+ *	ref count 0.
+ *
+ * Side effects:
+ *	Allocates memory.
+ *
+ *----------------------------------------------------------------------
+ */
+
+#ifdef TCL_MEM_DEBUG
+
+Tcl_Obj *
+Tcl_DbNewLongObj(longValue, file, line)
+    register long longValue;	/* Long integer used to initialize the
+				 * new object. */
+    CONST char *file;		/* The name of the source file calling this
+				 * procedure; used for debugging. */
+    int line;			/* Line number in the source file; used
+				 * for debugging. */
+{
+    register Tcl_Obj *objPtr;
+
+    TclDbNewObj(objPtr, file, line);
+    objPtr-&gt;bytes = NULL;
+    
+    objPtr-&gt;internalRep.longValue = longValue;
+    objPtr-&gt;typePtr = &amp;tclIntType;
+    return objPtr;
+}
+</t>
+<t tx="ekr.20071105090148.326">
+#else /* if not TCL_MEM_DEBUG */
+
+Tcl_Obj *
+Tcl_DbNewLongObj(longValue, file, line)
+    register long longValue;	/* Long integer used to initialize the
+				 * new object. */
+    CONST char *file;		/* The name of the source file calling this
+				 * procedure; used for debugging. */
+    int line;			/* Line number in the source file; used
+				 * for debugging. */
+{
+    return Tcl_NewLongObj(longValue);
+}
+</t>
+<t tx="ekr.20071105090148.327">#endif /* TCL_MEM_DEBUG */
+
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_SetLongObj --
+ *
+ *	Modify an object to be an integer object and to have the specified
+ *	long integer value.
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	The object's old string rep, if any, is freed. Also, any old
+ *	internal rep is freed. 
+ *
+ *----------------------------------------------------------------------
+ */
+
+void
+Tcl_SetLongObj(objPtr, longValue)
+    register Tcl_Obj *objPtr;	/* Object whose internal rep to init. */
+    register long longValue;	/* Long integer used to initialize the
+				 * object's value. */
+{
+    register Tcl_ObjType *oldTypePtr = objPtr-&gt;typePtr;
+
+    if (Tcl_IsShared(objPtr)) {
+	panic("Tcl_SetLongObj called with shared object");
+    }
+
+    if ((oldTypePtr != NULL) &amp;&amp; (oldTypePtr-&gt;freeIntRepProc != NULL)) {
+	oldTypePtr-&gt;freeIntRepProc(objPtr);
+    }
+    
+    objPtr-&gt;internalRep.longValue = longValue;
+    objPtr-&gt;typePtr = &amp;tclIntType;
+    Tcl_InvalidateStringRep(objPtr);
+}
+</t>
+<t tx="ekr.20071105090148.328">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_GetLongFromObj --
+ *
+ *	Attempt to return an long integer from the Tcl object "objPtr". If
+ *	the object is not already an int object, an attempt will be made to
+ *	convert it to one.
+ *
+ * Results:
+ *	The return value is a standard Tcl object result. If an error occurs
+ *	during conversion, an error message is left in the interpreter's
+ *	result unless "interp" is NULL.
+ *
+ * Side effects:
+ *	If the object is not already an int object, the conversion will free
+ *	any old internal representation.
+ *
+ *----------------------------------------------------------------------
+ */
+
+int
+Tcl_GetLongFromObj(interp, objPtr, longPtr)
+    Tcl_Interp *interp; 	/* Used for error reporting if not NULL. */
+    register Tcl_Obj *objPtr;	/* The object from which to get a long. */
+    register long *longPtr;	/* Place to store resulting long. */
+{
+    register int result;
+    
+    if (objPtr-&gt;typePtr != &amp;tclIntType &amp;&amp; objPtr-&gt;typePtr != &amp;tclWideIntType) {
+	result = SetIntOrWideFromAny(interp, objPtr);
+	if (result != TCL_OK) {
+	    return result;
+	}
+    }
+
+#ifndef TCL_WIDE_INT_IS_LONG
+    if (objPtr-&gt;typePtr == &amp;tclWideIntType) {
+	/*
+	 * If the object is already a wide integer, don't convert it.
+	 * This code allows for any integer in the range -ULONG_MAX to
+	 * ULONG_MAX to be converted to a long, ignoring overflow.
+	 * The rule preserves existing semantics for conversion of
+	 * integers on input, but avoids inadvertent demotion of
+	 * wide integers to 32-bit ones in the internal rep.
+	 */
+
+	Tcl_WideInt w = objPtr-&gt;internalRep.wideValue;
+	if (w &gt;= -(Tcl_WideInt)(ULONG_MAX) &amp;&amp; w &lt;= (Tcl_WideInt)(ULONG_MAX)) {
+	    *longPtr = Tcl_WideAsLong(w);
+	    return TCL_OK;
+	} else {
+	    if (interp != NULL) {
+		Tcl_ResetResult(interp);
+		Tcl_AppendToObj(Tcl_GetObjResult(interp),
+			"integer value too large to represent", -1);
+	    }
+	    return TCL_ERROR;
+	}
+    }
+#endif
+
+    *longPtr = objPtr-&gt;internalRep.longValue;
+    return TCL_OK;
+}
+</t>
+<t tx="ekr.20071105090148.329">
+/*
+ *----------------------------------------------------------------------
+ *
+ * SetWideIntFromAny --
+ *
+ *	Attempt to generate an integer internal form for the Tcl object
+ *	"objPtr".
+ *
+ * Results:
+ *	The return value is a standard object Tcl result. If an error occurs
+ *	during conversion, an error message is left in the interpreter's
+ *	result unless "interp" is NULL.
+ *
+ * Side effects:
+ *	If no error occurs, an int is stored as "objPtr"s internal
+ *	representation. 
+ *
+ *----------------------------------------------------------------------
+ */
+
+static int
+SetWideIntFromAny(interp, objPtr)
+    Tcl_Interp *interp;		/* Used for error reporting if not NULL. */
+    register Tcl_Obj *objPtr;	/* The object to convert. */
+{
+#ifndef TCL_WIDE_INT_IS_LONG
+    Tcl_ObjType *oldTypePtr = objPtr-&gt;typePtr;
+    char *string, *end;
+    int length;
+    register char *p;
+    Tcl_WideInt newWide;
+
+    /*
+     * Get the string representation. Make it up-to-date if necessary.
+     */
+
+    p = string = Tcl_GetStringFromObj(objPtr, &amp;length);
+
+    /*
+     * Now parse "objPtr"s string as an int. We use an implementation here
+     * that doesn't report errors in interp if interp is NULL. Note: use
+     * strtoull instead of strtoll for integer conversions to allow full-size
+     * unsigned numbers, but don't depend on strtoull to handle sign
+     * characters; it won't in some implementations.
+     */
+
+    errno = 0;
+#ifdef TCL_STRTOUL_SIGN_CHECK
+    for ( ;  isspace(UCHAR(*p));  p++) { /* INTL: ISO space. */
+	/* Empty loop body. */
+    }
+    if (*p == '-') {
+	p++;
+	newWide = -((Tcl_WideInt)strtoull(p, &amp;end, 0));
+    } else if (*p == '+') {
+	p++;
+	newWide = strtoull(p, &amp;end, 0);
+    } else
+#else
+	newWide = strtoull(p, &amp;end, 0);
+#endif
+    if (end == p) {
+	badInteger:
+	if (interp != NULL) {
+	    /*
+	     * Must copy string before resetting the result in case a caller
+	     * is trying to convert the interpreter's result to an int.
+	     */
+	    
+	    char buf[100];
+	    sprintf(buf, "expected integer but got \"%.50s\"", string);
+	    Tcl_ResetResult(interp);
+	    Tcl_AppendToObj(Tcl_GetObjResult(interp), buf, -1);
+	    TclCheckBadOctal(interp, string);
+	}
+	return TCL_ERROR;
+    }
+    if (errno == ERANGE) {
+	if (interp != NULL) {
+	    char *s = "integer value too large to represent";
+	    Tcl_ResetResult(interp);
+	    Tcl_AppendToObj(Tcl_GetObjResult(interp), s, -1);
+	    Tcl_SetErrorCode(interp, "ARITH", "IOVERFLOW", s, (char *) NULL);
+	}
+	return TCL_ERROR;
+    }
+
+    /*
+     * Make sure that the string has no garbage after the end of the int.
+     */
+    
+    while ((end &lt; (string+length))
+	    &amp;&amp; isspace(UCHAR(*end))) { /* INTL: ISO space. */
+	end++;
+    }
+    if (end != (string+length)) {
+	goto badInteger;
+    }
+
+    /*
+     * The conversion to int succeeded. Free the old internalRep before
+     * setting the new one. We do this as late as possible to allow the
+     * conversion code, in particular Tcl_GetStringFromObj, to use that old
+     * internalRep.
+     */
+
+    if ((oldTypePtr != NULL) &amp;&amp;	(oldTypePtr-&gt;freeIntRepProc != NULL)) {
+	oldTypePtr-&gt;freeIntRepProc(objPtr);
+    }
+    
+    objPtr-&gt;internalRep.wideValue = newWide;
+#else 
+    if (TCL_ERROR == SetIntFromAny(interp, objPtr)) {
+	return TCL_ERROR;
+    }
+#endif
+    objPtr-&gt;typePtr = &amp;tclWideIntType;
+    return TCL_OK;
+}
+</t>
+<t tx="ekr.20071105090148.330">
+/*
+ *----------------------------------------------------------------------
+ *
+ * UpdateStringOfWideInt --
+ *
+ *	Update the string representation for a wide integer object.
+ *	Note: This procedure does not free an existing old string rep
+ *	so storage will be lost if this has not already been done. 
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	The object's string is set to a valid string that results from
+ *	the wideInt-to-string conversion.
+ *
+ *----------------------------------------------------------------------
+ */
+
+#ifndef TCL_WIDE_INT_IS_LONG
+static void
+UpdateStringOfWideInt(objPtr)
+    register Tcl_Obj *objPtr;	/* Int object whose string rep to update. */
+{
+    char buffer[TCL_INTEGER_SPACE+2];
+    register unsigned len;
+    register Tcl_WideInt wideVal = objPtr-&gt;internalRep.wideValue;
+
+    /*
+     * Note that sprintf will generate a compiler warning under
+     * Mingw claiming %I64 is an unknown format specifier.
+     * Just ignore this warning. We can't use %L as the format
+     * specifier since that gets printed as a 32 bit value.
+     */
+    sprintf(buffer, "%" TCL_LL_MODIFIER "d", wideVal);
+    len = strlen(buffer);
+    objPtr-&gt;bytes = ckalloc((unsigned) len + 1);
+    memcpy(objPtr-&gt;bytes, buffer, len + 1);
+    objPtr-&gt;length = len;
+}
+</t>
+<t tx="ekr.20071105090148.331">#endif /* TCL_WIDE_INT_IS_LONG */
+
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_NewWideIntObj --
+ *
+ *	If a client is compiled with TCL_MEM_DEBUG defined, calls to
+ *	Tcl_NewWideIntObj to create a new 64-bit integer object end up calling
+ *	the debugging procedure Tcl_DbNewWideIntObj instead.
+ *
+ *	Otherwise, if the client is compiled without TCL_MEM_DEBUG defined,
+ *	calls to Tcl_NewWideIntObj result in a call to one of the two
+ *	Tcl_NewWideIntObj implementations below. We provide two implementations
+ *	so that the Tcl core can be compiled to do memory debugging of the 
+ *	core even if a client does not request it for itself.
+ *
+ * Results:
+ *	The newly created object is returned. This object will have an
+ *	invalid string representation. The returned object has ref count 0.
+ *
+ * Side effects:
+ *	None.
+ *
+ *----------------------------------------------------------------------
+ */
+
+#ifdef TCL_MEM_DEBUG
+#undef Tcl_NewWideIntObj
+
+Tcl_Obj *
+Tcl_NewWideIntObj(wideValue)
+    register Tcl_WideInt wideValue;	/* Wide integer used to initialize
+					 * the new object. */
+{
+    return Tcl_DbNewWideIntObj(wideValue, "unknown", 0);
+}
+</t>
+<t tx="ekr.20071105090148.332">
+#else /* if not TCL_MEM_DEBUG */
+
+Tcl_Obj *
+Tcl_NewWideIntObj(wideValue)
+    register Tcl_WideInt wideValue;	/* Wide integer used to initialize
+					 * the new object. */
+{
+    register Tcl_Obj *objPtr;
+
+    TclNewObj(objPtr);
+    objPtr-&gt;bytes = NULL;
+    
+    objPtr-&gt;internalRep.wideValue = wideValue;
+    objPtr-&gt;typePtr = &amp;tclWideIntType;
+    return objPtr;
+}
+</t>
+<t tx="ekr.20071105090148.333">#endif /* if TCL_MEM_DEBUG */
+
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_DbNewWideIntObj --
+ *
+ *	If a client is compiled with TCL_MEM_DEBUG defined, calls to
+ *	Tcl_NewWideIntObj to create new wide integer end up calling
+ *	the debugging procedure Tcl_DbNewWideIntObj instead. We
+ *	provide two implementations of Tcl_DbNewWideIntObj so that
+ *	whether the Tcl core is compiled to do memory debugging of the
+ *	core is independent of whether a client requests debugging for
+ *	itself.
+ *
+ *	When the core is compiled with TCL_MEM_DEBUG defined,
+ *	Tcl_DbNewWideIntObj calls Tcl_DbCkalloc directly with the file
+ *	name and line number from its caller. This simplifies
+ *	debugging since then the checkmem command will report the
+ *	caller's file name and line number when reporting objects that
+ *	haven't been freed.
+ *
+ *	Otherwise, when the core is compiled without TCL_MEM_DEBUG defined,
+ *	this procedure just returns the result of calling Tcl_NewWideIntObj.
+ *
+ * Results:
+ *	The newly created wide integer object is returned. This object
+ *	will have an invalid string representation. The returned object has
+ *	ref count 0.
+ *
+ * Side effects:
+ *	Allocates memory.
+ *
+ *----------------------------------------------------------------------
+ */
+
+#ifdef TCL_MEM_DEBUG
+
+Tcl_Obj *
+Tcl_DbNewWideIntObj(wideValue, file, line)
+    register Tcl_WideInt wideValue;	/* Wide integer used to initialize
+					 * the new object. */
+    CONST char *file;			/* The name of the source file
+					 * calling this procedure; used for
+					 * debugging. */
+    int line;				/* Line number in the source file;
+					 * used for debugging. */
+{
+    register Tcl_Obj *objPtr;
+
+    TclDbNewObj(objPtr, file, line);
+    objPtr-&gt;bytes = NULL;
+    
+    objPtr-&gt;internalRep.wideValue = wideValue;
+    objPtr-&gt;typePtr = &amp;tclWideIntType;
+    return objPtr;
+}
+</t>
+<t tx="ekr.20071105090148.334">
+#else /* if not TCL_MEM_DEBUG */
+
+Tcl_Obj *
+Tcl_DbNewWideIntObj(wideValue, file, line)
+    register Tcl_WideInt wideValue;	/* Long integer used to initialize
+					 * the new object. */
+    CONST char *file;			/* The name of the source file
+					 * calling this procedure; used for
+					 * debugging. */
+    int line;				/* Line number in the source file;
+					 * used for debugging. */
+{
+    return Tcl_NewWideIntObj(wideValue);
+}
+</t>
+<t tx="ekr.20071105090148.335">#endif /* TCL_MEM_DEBUG */
+
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_SetWideIntObj --
+ *
+ *	Modify an object to be a wide integer object and to have the
+ *	specified wide integer value.
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	The object's old string rep, if any, is freed. Also, any old
+ *	internal rep is freed. 
+ *
+ *----------------------------------------------------------------------
+ */
+
+void
+Tcl_SetWideIntObj(objPtr, wideValue)
+    register Tcl_Obj *objPtr;		/* Object w. internal rep to init. */
+    register Tcl_WideInt wideValue;	/* Wide integer used to initialize
+					 * the object's value. */
+{
+    register Tcl_ObjType *oldTypePtr = objPtr-&gt;typePtr;
+
+    if (Tcl_IsShared(objPtr)) {
+	panic("Tcl_SetWideIntObj called with shared object");
+    }
+
+    if ((oldTypePtr != NULL) &amp;&amp; (oldTypePtr-&gt;freeIntRepProc != NULL)) {
+	oldTypePtr-&gt;freeIntRepProc(objPtr);
+    }
+    
+    objPtr-&gt;internalRep.wideValue = wideValue;
+    objPtr-&gt;typePtr = &amp;tclWideIntType;
+    Tcl_InvalidateStringRep(objPtr);
+}
+</t>
+<t tx="ekr.20071105090148.336">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_GetWideIntFromObj --
+ *
+ *	Attempt to return a wide integer from the Tcl object "objPtr". If
+ *	the object is not already a wide int object, an attempt will be made
+ *	to convert it to one.
+ *
+ * Results:
+ *	The return value is a standard Tcl object result. If an error occurs
+ *	during conversion, an error message is left in the interpreter's
+ *	result unless "interp" is NULL.
+ *
+ * Side effects:
+ *	If the object is not already an int object, the conversion will free
+ *	any old internal representation.
+ *
+ *----------------------------------------------------------------------
+ */
+
+int
+Tcl_GetWideIntFromObj(interp, objPtr, wideIntPtr)
+    Tcl_Interp *interp; 	/* Used for error reporting if not NULL. */
+    register Tcl_Obj *objPtr;	/* Object from which to get a wide int. */
+    register Tcl_WideInt *wideIntPtr; /* Place to store resulting long. */
+{
+    register int result;
+
+    if (objPtr-&gt;typePtr == &amp;tclWideIntType) {
+    gotWide:
+	*wideIntPtr = objPtr-&gt;internalRep.wideValue;
+	return TCL_OK;
+    }
+    if (objPtr-&gt;typePtr == &amp;tclIntType) {
+	/*
+	 * This cast is safe; all valid ints/longs are wides.
+	 */
+
+	objPtr-&gt;internalRep.wideValue =
+		Tcl_LongAsWide(objPtr-&gt;internalRep.longValue);
+	objPtr-&gt;typePtr = &amp;tclWideIntType;
+	goto gotWide;
+    }
+    result = SetWideIntFromAny(interp, objPtr);
+    if (result == TCL_OK) {
+	*wideIntPtr = objPtr-&gt;internalRep.wideValue;
+    }
+    return result;
+}
+</t>
+<t tx="ekr.20071105090148.337">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_DbIncrRefCount --
+ *
+ *	This procedure is normally called when debugging: i.e., when
+ *	TCL_MEM_DEBUG is defined. This checks to see whether or not
+ *	the memory has been freed before incrementing the ref count.
+ *
+ *	When TCL_MEM_DEBUG is not defined, this procedure just increments
+ *	the reference count of the object.
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	The object's ref count is incremented.
+ *
+ *----------------------------------------------------------------------
+ */
+
+void
+Tcl_DbIncrRefCount(objPtr, file, line)
+    register Tcl_Obj *objPtr;	/* The object we are registering a
+				 * reference to. */
+    CONST char *file;		/* The name of the source file calling this
+				 * procedure; used for debugging. */
+    int line;			/* Line number in the source file; used
+				 * for debugging. */
+{
+#ifdef TCL_MEM_DEBUG
+    if (objPtr-&gt;refCount == 0x61616161) {
+	fprintf(stderr, "file = %s, line = %d\n", file, line);
+	fflush(stderr);
+	panic("Trying to increment refCount of previously disposed object.");
+    }
+#endif
+    ++(objPtr)-&gt;refCount;
+}
+</t>
+<t tx="ekr.20071105090148.338">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_DbDecrRefCount --
+ *
+ *	This procedure is normally called when debugging: i.e., when
+ *	TCL_MEM_DEBUG is defined. This checks to see whether or not
+ *	the memory has been freed before decrementing the ref count.
+ *
+ *	When TCL_MEM_DEBUG is not defined, this procedure just decrements
+ *	the reference count of the object.
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	The object's ref count is incremented.
+ *
+ *----------------------------------------------------------------------
+ */
+
+void
+Tcl_DbDecrRefCount(objPtr, file, line)
+    register Tcl_Obj *objPtr;	/* The object we are releasing a reference
+				 * to. */
+    CONST char *file;		/* The name of the source file calling this
+				 * procedure; used for debugging. */
+    int line;			/* Line number in the source file; used
+				 * for debugging. */
+{
+#ifdef TCL_MEM_DEBUG
+    if (objPtr-&gt;refCount == 0x61616161) {
+	fprintf(stderr, "file = %s, line = %d\n", file, line);
+	fflush(stderr);
+	panic("Trying to decrement refCount of previously disposed object.");
+    }
+#endif
+    if (--(objPtr)-&gt;refCount &lt;= 0) {
+	TclFreeObj(objPtr);
+    }
+}
+</t>
+<t tx="ekr.20071105090148.339">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_DbIsShared --
+ *
+ *	This procedure is normally called when debugging: i.e., when
+ *	TCL_MEM_DEBUG is defined. It tests whether the object has a ref
+ *	count greater than one.
+ *
+ *	When TCL_MEM_DEBUG is not defined, this procedure just tests
+ *	if the object has a ref count greater than one.
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	None.
+ *
+ *----------------------------------------------------------------------
+ */
+
+int
+Tcl_DbIsShared(objPtr, file, line)
+    register Tcl_Obj *objPtr;	/* The object to test for being shared. */
+    CONST char *file;		/* The name of the source file calling this
+				 * procedure; used for debugging. */
+    int line;			/* Line number in the source file; used
+				 * for debugging. */
+{
+#ifdef TCL_MEM_DEBUG
+    if (objPtr-&gt;refCount == 0x61616161) {
+	fprintf(stderr, "file = %s, line = %d\n", file, line);
+	fflush(stderr);
+	panic("Trying to check whether previously disposed object is shared.");
+    }
+#endif
+#ifdef TCL_COMPILE_STATS
+    Tcl_MutexLock(&amp;tclObjMutex);
+    if ((objPtr)-&gt;refCount &lt;= 1) {
+	tclObjsShared[1]++;
+    } else if ((objPtr)-&gt;refCount &lt; TCL_MAX_SHARED_OBJ_STATS) {
+	tclObjsShared[(objPtr)-&gt;refCount]++;
+    } else {
+	tclObjsShared[0]++;
+    }
+    Tcl_MutexUnlock(&amp;tclObjMutex);
+#endif
+    return ((objPtr)-&gt;refCount &gt; 1);
+}
+</t>
+<t tx="ekr.20071105090148.340">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_InitObjHashTable --
+ *
+ *	Given storage for a hash table, set up the fields to prepare
+ *	the hash table for use, the keys are Tcl_Obj *.
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	TablePtr is now ready to be passed to Tcl_FindHashEntry and
+ *	Tcl_CreateHashEntry.
+ *
+ *----------------------------------------------------------------------
+ */
+
+void
+Tcl_InitObjHashTable(tablePtr)
+    register Tcl_HashTable *tablePtr;	/* Pointer to table record, which
+					 * is supplied by the caller. */
+{
+    Tcl_InitCustomHashTable(tablePtr, TCL_CUSTOM_PTR_KEYS,
+	    &amp;tclObjHashKeyType);
+}
+</t>
+<t tx="ekr.20071105090148.341">
+/*
+ *----------------------------------------------------------------------
+ *
+ * AllocObjEntry --
+ *
+ *	Allocate space for a Tcl_HashEntry containing the Tcl_Obj * key.
+ *
+ * Results:
+ *	The return value is a pointer to the created entry.
+ *
+ * Side effects:
+ *	Increments the reference count on the object.
+ *
+ *----------------------------------------------------------------------
+ */
+
+static Tcl_HashEntry *
+AllocObjEntry(tablePtr, keyPtr)
+    Tcl_HashTable *tablePtr;	/* Hash table. */
+    VOID *keyPtr;		/* Key to store in the hash table entry. */
+{
+    Tcl_Obj *objPtr = (Tcl_Obj *) keyPtr;
+    Tcl_HashEntry *hPtr;
+
+    hPtr = (Tcl_HashEntry *) ckalloc((unsigned) (sizeof(Tcl_HashEntry)));
+    hPtr-&gt;key.oneWordValue = (char *) objPtr;
+    Tcl_IncrRefCount (objPtr);
+
+    return hPtr;
+}
+</t>
+<t tx="ekr.20071105090148.342">
+/*
+ *----------------------------------------------------------------------
+ *
+ * CompareObjKeys --
+ *
+ *	Compares two Tcl_Obj * keys.
+ *
+ * Results:
+ *	The return value is 0 if they are different and 1 if they are
+ *	the same.
+ *
+ * Side effects:
+ *	None.
+ *
+ *----------------------------------------------------------------------
+ */
+
+static int
+CompareObjKeys(keyPtr, hPtr)
+    VOID *keyPtr;		/* New key to compare. */
+    Tcl_HashEntry *hPtr;		/* Existing key to compare. */
+{
+    Tcl_Obj *objPtr1 = (Tcl_Obj *) keyPtr;
+    Tcl_Obj *objPtr2 = (Tcl_Obj *) hPtr-&gt;key.oneWordValue;
+    register CONST char *p1, *p2;
+    register int l1, l2;
+
+    /*
+     * If the object pointers are the same then they match.
+     */
+    if (objPtr1 == objPtr2) {
+	return 1;
+    }
+
+    /*
+     * Don't use Tcl_GetStringFromObj as it would prevent l1 and l2 being
+     * in a register.
+     */
+    p1 = TclGetString(objPtr1);
+    l1 = objPtr1-&gt;length;
+    p2 = TclGetString(objPtr2);
+    l2 = objPtr2-&gt;length;
+    
+    /*
+     * Only compare if the string representations are of the same length.
+     */
+    if (l1 == l2) {
+	for (;; p1++, p2++, l1--) {
+	    if (*p1 != *p2) {
+		break;
+	    }
+	    if (l1 == 0) {
+		return 1;
+	    }
+	}
+    }
+
+    return 0;
+}
+</t>
+<t tx="ekr.20071105090148.343">
+/*
+ *----------------------------------------------------------------------
+ *
+ * FreeObjEntry --
+ *
+ *	Frees space for a Tcl_HashEntry containing the Tcl_Obj * key.
+ *
+ * Results:
+ *	The return value is a pointer to the created entry.
+ *
+ * Side effects:
+ *	Decrements the reference count of the object.
+ *
+ *----------------------------------------------------------------------
+ */
+
+static void
+FreeObjEntry(hPtr)
+    Tcl_HashEntry *hPtr;	/* Hash entry to free. */
+{
+    Tcl_Obj *objPtr = (Tcl_Obj *) hPtr-&gt;key.oneWordValue;
+
+    Tcl_DecrRefCount (objPtr);
+    ckfree ((char *) hPtr);
+}
+</t>
+<t tx="ekr.20071105090148.344">
+/*
+ *----------------------------------------------------------------------
+ *
+ * HashObjKey --
+ *
+ *	Compute a one-word summary of the string representation of the
+ *	Tcl_Obj, which can be used to generate a hash index.
+ *
+ * Results:
+ *	The return value is a one-word summary of the information in
+ *	the string representation of the Tcl_Obj.
+ *
+ * Side effects:
+ *	None.
+ *
+ *----------------------------------------------------------------------
+ */
+
+static unsigned int
+HashObjKey(tablePtr, keyPtr)
+    Tcl_HashTable *tablePtr;	/* Hash table. */
+    VOID *keyPtr;		/* Key from which to compute hash value. */
+{
+    Tcl_Obj *objPtr = (Tcl_Obj *) keyPtr;
+    CONST char *string = TclGetString(objPtr);
+    int length = objPtr-&gt;length;
+    unsigned int result;
+    int i;
+
+    /*
+     * I tried a zillion different hash functions and asked many other
+     * people for advice.  Many people had their own favorite functions,
+     * all different, but no-one had much idea why they were good ones.
+     * I chose the one below (multiply by 9 and add new character)
+     * because of the following reasons:
+     *
+     * 1. Multiplying by 10 is perfect for keys that are decimal strings,
+     *    and multiplying by 9 is just about as good.
+     * 2. Times-9 is (shift-left-3) plus (old).  This means that each
+     *    character's bits hang around in the low-order bits of the
+     *    hash value for ever, plus they spread fairly rapidly up to
+     *    the high-order bits to fill out the hash value.  This seems
+     *    works well both for decimal and non-decimal strings.
+     */
+
+    result = 0;
+    for (i=0 ; i&lt;length ; i++) {
+	result += (result&lt;&lt;3) + string[i];
+    }
+    return result;
+}
+</t>
+<t tx="ekr.20071105090148.345">
+/*
+ *----------------------------------------------------------------------
+ *
+ * Tcl_GetCommandFromObj --
+ *
+ *      Returns the command specified by the name in a Tcl_Obj.
+ *
+ * Results:
+ *	Returns a token for the command if it is found. Otherwise, if it
+ *	can't be found or there is an error, returns NULL.
+ *
+ * Side effects:
+ *      May update the internal representation for the object, caching
+ *      the command reference so that the next time this procedure is
+ *	called with the same object, the command can be found quickly.
+ *
+ *----------------------------------------------------------------------
+ */
+
+Tcl_Command
+Tcl_GetCommandFromObj(interp, objPtr)
+    Tcl_Interp *interp;		/* The interpreter in which to resolve the
+				 * command and to report errors. */
+    register Tcl_Obj *objPtr;	/* The object containing the command's
+				 * name. If the name starts with "::", will
+				 * be looked up in global namespace. Else,
+				 * looked up first in the current namespace,
+				 * then in global namespace. */
+{
+    Interp *iPtr = (Interp *) interp;
+    register ResolvedCmdName *resPtr;
+    register Command *cmdPtr;
+    Namespace *currNsPtr;
+    int result;
+    CallFrame *savedFramePtr;
+    char *name;
+
+    /*
+     * If the variable name is fully qualified, do as if the lookup were
+     * done from the global namespace; this helps avoid repeated lookups 
+     * of fully qualified names. It costs close to nothing, and may be very
+     * helpful for OO applications which pass along a command name ("this"),
+     * [Patch 456668]
+     */
+
+    savedFramePtr = iPtr-&gt;varFramePtr;
+    name = Tcl_GetString(objPtr);
+    if ((*name++ == ':') &amp;&amp; (*name == ':')) {
+	iPtr-&gt;varFramePtr = NULL;
+    }
+
+    /*
+     * Get the internal representation, converting to a command type if
+     * needed. The internal representation is a ResolvedCmdName that points
+     * to the actual command.
+     */
+    
+    if (objPtr-&gt;typePtr != &amp;tclCmdNameType) {
+        result = tclCmdNameType.setFromAnyProc(interp, objPtr);
+        if (result != TCL_OK) {
+	    iPtr-&gt;varFramePtr = savedFramePtr;
+            return (Tcl_Command) NULL;
+        }
+    }
+    resPtr = (ResolvedCmdName *) objPtr-&gt;internalRep.twoPtrValue.ptr1;
+
+    /*
+     * Get the current namespace.
+     */
+    
+    if (iPtr-&gt;varFramePtr != NULL) {
+	currNsPtr = iPtr-&gt;varFramePtr-&gt;nsPtr;
+    } else {
+	currNsPtr = iPtr-&gt;globalNsPtr;
+    }
+
+    /*
+     * Check the context namespace and the namespace epoch of the resolved
+     * symbol to make sure that it is fresh. If not, then force another
+     * conversion to the command type, to discard the old rep and create a
+     * new one. Note that we verify that the namespace id of the context
+     * namespace is the same as the one we cached; this insures that the
+     * namespace wasn't deleted and a new one created at the same address
+     * with the same command epoch.
+     */
+    
+    cmdPtr = NULL;
+    if ((resPtr != NULL)
+	    &amp;&amp; (resPtr-&gt;refNsPtr == currNsPtr)
+	    &amp;&amp; (resPtr-&gt;refNsId == currNsPtr-&gt;nsId)
+	    &amp;&amp; (resPtr-&gt;refNsCmdEpoch == currNsPtr-&gt;cmdRefEpoch)) {
+        cmdPtr = resPtr-&gt;cmdPtr;
+        if (cmdPtr-&gt;cmdEpoch != resPtr-&gt;cmdEpoch) {
+            cmdPtr = NULL;
+        }
+    }
+
+    if (cmdPtr == NULL) {
+        result = tclCmdNameType.setFromAnyProc(interp, objPtr);
+        if (result != TCL_OK) {
+	    iPtr-&gt;varFramePtr = savedFramePtr;
+            return (Tcl_Command) NULL;
+        }
+        resPtr = (ResolvedCmdName *) objPtr-&gt;internalRep.twoPtrValue.ptr1;
+        if (resPtr != NULL) {
+            cmdPtr = resPtr-&gt;cmdPtr;
+        }
+    }
+    iPtr-&gt;varFramePtr = savedFramePtr;
+    return (Tcl_Command) cmdPtr;
+}
+</t>
+<t tx="ekr.20071105090148.346">
+/*
+ *----------------------------------------------------------------------
+ *
+ * TclSetCmdNameObj --
+ *
+ *	Modify an object to be an CmdName object that refers to the argument
+ *	Command structure.
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	The object's old internal rep is freed. It's string rep is not
+ *	changed. The refcount in the Command structure is incremented to
+ *	keep it from being freed if the command is later deleted until
+ *	TclExecuteByteCode has a chance to recognize that it was deleted.
+ *
+ *----------------------------------------------------------------------
+ */
+
+void
+TclSetCmdNameObj(interp, objPtr, cmdPtr)
+    Tcl_Interp *interp;		/* Points to interpreter containing command
+				 * that should be cached in objPtr. */
+    register Tcl_Obj *objPtr;	/* Points to Tcl object to be changed to
+				 * a CmdName object. */
+    Command *cmdPtr;		/* Points to Command structure that the
+				 * CmdName object should refer to. */
+{
+    Interp *iPtr = (Interp *) interp;
+    register ResolvedCmdName *resPtr;
+    Tcl_ObjType *oldTypePtr = objPtr-&gt;typePtr;
+    register Namespace *currNsPtr;
+
+    if (oldTypePtr == &amp;tclCmdNameType) {
+	return;
+    }
+    
+    /*
+     * Get the current namespace.
+     */
+    
+    if (iPtr-&gt;varFramePtr != NULL) {
+	currNsPtr = iPtr-&gt;varFramePtr-&gt;nsPtr;
+    } else {
+	currNsPtr = iPtr-&gt;globalNsPtr;
+    }
+    
+    cmdPtr-&gt;refCount++;
+    resPtr = (ResolvedCmdName *) ckalloc(sizeof(ResolvedCmdName));
+    resPtr-&gt;cmdPtr = cmdPtr;
+    resPtr-&gt;refNsPtr = currNsPtr;
+    resPtr-&gt;refNsId  = currNsPtr-&gt;nsId;
+    resPtr-&gt;refNsCmdEpoch = currNsPtr-&gt;cmdRefEpoch;
+    resPtr-&gt;cmdEpoch = cmdPtr-&gt;cmdEpoch;
+    resPtr-&gt;refCount = 1;
+    
+    if ((oldTypePtr != NULL) &amp;&amp; (oldTypePtr-&gt;freeIntRepProc != NULL)) {
+	oldTypePtr-&gt;freeIntRepProc(objPtr);
+    }
+    objPtr-&gt;internalRep.twoPtrValue.ptr1 = (VOID *) resPtr;
+    objPtr-&gt;internalRep.twoPtrValue.ptr2 = NULL;
+    objPtr-&gt;typePtr = &amp;tclCmdNameType;
+}
+</t>
+<t tx="ekr.20071105090148.347">
+/*
+ *----------------------------------------------------------------------
+ *
+ * FreeCmdNameInternalRep --
+ *
+ *	Frees the resources associated with a cmdName object's internal
+ *	representation.
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	Decrements the ref count of any cached ResolvedCmdName structure
+ *	pointed to by the cmdName's internal representation. If this is 
+ *	the last use of the ResolvedCmdName, it is freed. This in turn
+ *	decrements the ref count of the Command structure pointed to by 
+ *	the ResolvedSymbol, which may free the Command structure.
+ *
+ *----------------------------------------------------------------------
+ */
+
+static void
+FreeCmdNameInternalRep(objPtr)
+    register Tcl_Obj *objPtr;	/* CmdName object with internal
+				 * representation to free. */
+{
+    register ResolvedCmdName *resPtr =
+	(ResolvedCmdName *) objPtr-&gt;internalRep.twoPtrValue.ptr1;
+
+    if (resPtr != NULL) {
+	/*
+	 * Decrement the reference count of the ResolvedCmdName structure.
+	 * If there are no more uses, free the ResolvedCmdName structure.
+	 */
+    
+        resPtr-&gt;refCount--;
+        if (resPtr-&gt;refCount == 0) {
+            /*
+	     * Now free the cached command, unless it is still in its
+             * hash table or if there are other references to it
+             * from other cmdName objects.
+	     */
+	    
+            Command *cmdPtr = resPtr-&gt;cmdPtr;
+            TclCleanupCommand(cmdPtr);
+            ckfree((char *) resPtr);
+        }
+    }
+}
+</t>
+<t tx="ekr.20071105090148.348">
+/*
+ *----------------------------------------------------------------------
+ *
+ * DupCmdNameInternalRep --
+ *
+ *	Initialize the internal representation of an cmdName Tcl_Obj to a
+ *	copy of the internal representation of an existing cmdName object. 
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	"copyPtr"s internal rep is set to point to the ResolvedCmdName
+ *	structure corresponding to "srcPtr"s internal rep. Increments the
+ *	ref count of the ResolvedCmdName structure pointed to by the
+ *	cmdName's internal representation.
+ *
+ *----------------------------------------------------------------------
+ */
+
+static void
+DupCmdNameInternalRep(srcPtr, copyPtr)
+    Tcl_Obj *srcPtr;		/* Object with internal rep to copy. */
+    register Tcl_Obj *copyPtr;	/* Object with internal rep to set. */
+{
+    register ResolvedCmdName *resPtr =
+        (ResolvedCmdName *) srcPtr-&gt;internalRep.twoPtrValue.ptr1;
+
+    copyPtr-&gt;internalRep.twoPtrValue.ptr1 = (VOID *) resPtr;
+    copyPtr-&gt;internalRep.twoPtrValue.ptr2 = NULL;
+    if (resPtr != NULL) {
+        resPtr-&gt;refCount++;
+    }
+    copyPtr-&gt;typePtr = &amp;tclCmdNameType;
+}
+</t>
+<t tx="ekr.20071105090148.349">
+/*
+ *----------------------------------------------------------------------
+ *
+ * SetCmdNameFromAny --
+ *
+ *	Generate an cmdName internal form for the Tcl object "objPtr".
+ *
+ * Results:
+ *	The return value is a standard Tcl result. The conversion always
+ *	succeeds and TCL_OK is returned.
+ *
+ * Side effects:
+ *	A pointer to a ResolvedCmdName structure that holds a cached pointer
+ *	to the command with a name that matches objPtr's string rep is
+ *	stored as objPtr's internal representation. This ResolvedCmdName
+ *	pointer will be NULL if no matching command was found. The ref count
+ *	of the cached Command's structure (if any) is also incremented.
+ *
+ *----------------------------------------------------------------------
+ */
+
+static int
+SetCmdNameFromAny(interp, objPtr)
+    Tcl_Interp *interp;		/* Used for error reporting if not NULL. */
+    register Tcl_Obj *objPtr;	/* The object to convert. */
+{
+    Interp *iPtr = (Interp *) interp;
+    char *name;
+    Tcl_Command cmd;
+    register Command *cmdPtr;
+    Namespace *currNsPtr;
+    register ResolvedCmdName *resPtr;
+
+    /*
+     * Get "objPtr"s string representation. Make it up-to-date if necessary.
+     */
+
+    name = objPtr-&gt;bytes;
+    if (name == NULL) {
+	name = Tcl_GetString(objPtr);
+    }
+
+    /*
+     * Find the Command structure, if any, that describes the command called
+     * "name". Build a ResolvedCmdName that holds a cached pointer to this
+     * Command, and bump the reference count in the referenced Command
+     * structure. A Command structure will not be deleted as long as it is
+     * referenced from a CmdName object.
+     */
+
+    cmd = Tcl_FindCommand(interp, name, (Tcl_Namespace *) NULL,
+	    /*flags*/ 0);
+    cmdPtr = (Command *) cmd;
+    if (cmdPtr != NULL) {
+	/*
+	 * Get the current namespace.
+	 */
+	
+	if (iPtr-&gt;varFramePtr != NULL) {
+	    currNsPtr = iPtr-&gt;varFramePtr-&gt;nsPtr;
+	} else {
+	    currNsPtr = iPtr-&gt;globalNsPtr;
+	}
+	
+	cmdPtr-&gt;refCount++;
+        resPtr = (ResolvedCmdName *) ckalloc(sizeof(ResolvedCmdName));
+        resPtr-&gt;cmdPtr        = cmdPtr;
+        resPtr-&gt;refNsPtr      = currNsPtr;
+        resPtr-&gt;refNsId       = currNsPtr-&gt;nsId;
+        resPtr-&gt;refNsCmdEpoch = currNsPtr-&gt;cmdRefEpoch;
+        resPtr-&gt;cmdEpoch      = cmdPtr-&gt;cmdEpoch;
+        resPtr-&gt;refCount      = 1;
+    } else {
+	resPtr = NULL;	/* no command named "name" was found */
+    }
+
+    /*
+     * Free the old internalRep before setting the new one. We do this as
+     * late as possible to allow the conversion code, in particular
+     * GetStringFromObj, to use that old internalRep. If no Command
+     * structure was found, leave NULL as the cached value.
+     */
+
+    if ((objPtr-&gt;typePtr != NULL)
+	    &amp;&amp; (objPtr-&gt;typePtr-&gt;freeIntRepProc != NULL)) {
+	objPtr-&gt;typePtr-&gt;freeIntRepProc(objPtr);
+    }
+    
+    objPtr-&gt;internalRep.twoPtrValue.ptr1 = (VOID *) resPtr;
+    objPtr-&gt;internalRep.twoPtrValue.ptr2 = NULL;
+    objPtr-&gt;typePtr = &amp;tclCmdNameType;
+    return TCL_OK;
+}
+</t>
+<t tx="ekr.20071105090148.350">@nocolor
+# -*- coding: utf-8 -*-
+#@+leo-ver=4-thin
+#@+node:ekr.20031218072017.2608:@thin leoApp.py
+#@@first
+
+#@@language python
+#@@tabwidth -4
+#@@pagewidth 80
+
+import leoGlobals as g
+import os
+import sys
+
+class LeoApp:
+
+    """A class representing the Leo application itself.
+
+    Ivars of this class are Leo's global variables."""
+
+    #@    @+others
+    #@+node:ekr.20031218072017.1416:app.__init__
+    def __init__(self):
+
+        # These ivars are the global vars of this program.
+        self.afterHandler = None
+        self.batchMode = False # True: run in batch mode.
+        self.commandName = None # The name of the command being executed.
+        self.config = None # The leoConfig instance.
+        self.count = 0 # General purpose debugging count.
+        self.debug = False # True: enable extra debugging tests (not used at present).
+            # WARNING: this could greatly slow things down.
+        self.debugSwitch = 0
+            # 0: default behavior
+            # 1: full traces in g.es_exception.
+            # 2: call pdb.set_trace in g.es_exception, etc.
+        self.disableSave = False
+        self.globalConfigDir = None # The directory that is assumed to contain the global configuration files.
+        self.globalOpenDir = None # The directory last used to open a file.
+        self.gui = None # The gui class.
+        self.hasOpenWithMenu = False # True: open with plugin has been loaded.
+        self.hookError = False # True: suppress further calls to hooks.
+        self.hookFunction = None # Application wide hook function.
+        self.homeDir = None # The user's home directory.
+        self.idle_imported = False # True: we have done an import idle
+        self.idleTimeDelay = 100 # Delay in msec between calls to "idle time" hook.
+        self.idleTimeHook = False # True: the global idleTimeHookHandler will reshedule itself.
+        self.initing = True # True: we are initiing the app.
+        self.killed = False # True: we are about to destroy the root window.
+        self.leoID = None # The id part of gnx's.
+        self.loadDir = None # The directory from which Leo was loaded.
+        self.loadedPlugins = [] # List of loaded plugins that have signed on.
+        self.log = None # The LeoFrame containing the present log.
+        self.logIsLocked = False # True: no changes to log are allowed.
+        self.logWaiting = [] # List of messages waiting to go to a log.
+        self.menuWarningsGiven = False # True: supress warnings in menu code.
+        self.nodeIndices = None # Singleton node indices instance.
+        self.numberOfWindows = 0 # Number of opened windows.
+        self.openWithFiles = [] # List of data used by Open With command.
+        self.openWithFileNum = 0 # Used to generate temp file names for Open With command.
+        self.openWithTable = None # The table passed to createOpenWithMenuFromTable.
+        self.positions = 0 # Count of the number of positions generated.
+        self.quitting = False # True if quitting.  Locks out some events.
+        self.realMenuNameDict = {} # Contains translations of menu names and menu item names.
+        self.root = None # The hidden main window. Set later.
+        self.searchDict = {} # For communication between find/change scripts.
+        self.scanErrors = 0 # The number of errors seen by g.scanError.
+        self.scriptDict = {} # For communication between Execute Script command and scripts.
+        self.silentMode = False # True if signon is more silent.
+        self.statsDict = {} # Statistics dict used by g.stat, g.clear_stats, g.print_stats.
+        self.trace = False # True: enable debugging traces.
+        self.trace_gc = False # defined in run()
+        self.trace_gc_calls = False # defined in run()
+        self.trace_gc_verbose = False # defined in run()
+        self.trace_gc_inited = False
+        self.tracePositions = False
+        self.trace_list = [] # "Sherlock" argument list for tracing().
+        self.tkEncoding = "utf-8"
+        self.unicodeErrorGiven = True # True: suppres unicode tracebacks.
+        self.unitTestDict = {} # For communication between unit tests and code.
+        self.unitTesting = False # True if unit testing.
+        self.use_psyco = False # Can't be a config param because it is used before config module can be inited.
+        self.user_xresources_path = None # Resource file for Tk/tcl.
+        self.windowList = [] # Global list of all frames.  Does not include hidden root window.
+
+        # Global panels.  Destroyed when Leo ends.
+        self.pythonFrame = None
+
+        #@    &lt;&lt; Define global constants &gt;&gt;
+        #@+node:ekr.20031218072017.1417:&lt;&lt; define global constants &gt;&gt;
+        self.prolog_string = "&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;"
+
+        # New in leo.py 3.0
+        self.prolog_prefix_string = "&lt;?xml version=\"1.0\" encoding="
+        self.prolog_postfix_string = "?&gt;"
+
+        # leo.py 3.11
+        self.use_unicode = True # True: use new unicode logic.
+        #@-node:ekr.20031218072017.1417:&lt;&lt; define global constants &gt;&gt;
+        #@nl
+        #@    &lt;&lt; Define global data structures &gt;&gt;
+        #@+node:ekr.20031218072017.368:&lt;&lt; define global data structures &gt;&gt; app
+        # Internally, lower case is used for all language names.
+        self.language_delims_dict = {
+            "ada" : "--",
+            "actionscript" : "// /* */", #jason 2003-07-03
+            "c" : "// /* */", # C, C++ or objective C.
+            "csharp" : "// /* */", # C#
+            "cpp" : "// /* */",# C++.
+            "css" : "/* */", # 4/1/04
+            "cweb" : "@q@ @&gt;", # Use the "cweb hack"
+            "elisp" : ";",
+            "forth" : "\\_ _(_ _)", # Use the "REM hack"
+            "fortran" : "C",
+            "fortran90" : "!",
+            "html" : "&lt;!-- --&gt;",
+            "java" : "// /* */",
+            "latex" : "%",
+            "lua" : "--",  # ddm 13/02/06
+            "pascal" : "// { }",
+            "perl" : "#",
+            "perlpod" : "# __=pod__ __=cut__", # 9/25/02: The perlpod hack.
+            "php" : "// /* */", # 6/23/07: was "//",
+            "plain" : "#", # We must pick something.
+            "plsql" : "-- /* */", # SQL scripts qt02537 2005-05-27
+            "python" : "#",
+            "rapidq" : "'", # fil 2004-march-11
+            "rebol" : ";",  # jason 2003-07-03
+            "shell" : "#",  # shell scripts
+            "tcltk" : "#",
+            "unknown" : "#" } # Set when @comment is seen.
+
+        self.language_extension_dict = {
+            "ada" : "ads",
+            "actionscript" : "as", #jason 2003-07-03
+            "c" : "c",
+            "cpp" : "cpp",
+            "css" : "css", # 4/1/04
+            "cweb" : "w",
+            "elisp" : "el",
+            "forth" : "forth",
+            "fortran" : "f",
+            "fortran90" : "f",
+            "html" : "html",
+            "java" : "java",
+            "latex" : "tex", # 1/8/04
+            "lua" : "lua",  # ddm 13/02/06
+            "noweb" : "nw",
+            "pascal" : "p",
+            # "perl" : "perl",
+            # "perlpod" : "perl",
+            "perl" : "pl",      # 11/7/05
+            "perlpod" : "pod",  # 11/7/05
+            "php" : "php",
+            "plain" : "txt",
+            "python" : "py",
+            "plsql" : "sql", # qt02537 2005-05-27
+            "rapidq" : "bas", # fil 2004-march-11
+            "rebol" : "r",    # jason 2003-07-03
+            "shell" : "sh",   # DS 4/1/04
+            "tex" : "tex",
+            "tcltk" : "tcl",
+            "unknown" : "txt" } # Set when @comment is seen.
+
+        self.extension_dict = {
+            "ads"   : "ada",
+            "adb"   : "ada",
+            "as"    : "actionscript",
+            "bas"   : "rapidq",
+            "c"     : "c",
+            "cpp"   : "cpp",
+            "css"   : "css",
+            "el"    : "elisp",
+            "forth" : "forth",
+            "f"     : "fortran90", # or fortran ?
+            "html"  : "html",
+            "java"  : "java",
+            "lua" : "lua",  # ddm 13/02/06
+            "noweb" : "nw",
+            "p"     : "pascal",
+            # "perl"  : "perl",
+            "pl"    : "perl",   # 11/7/05
+            "pod"   : "perlpod", # 11/7/05
+            "php"   : "php",
+            "py"    : "python",
+            "sql"   : "plsql", # qt02537 2005-05-27
+            "r"     : "rebol",
+            "sh"    : "shell",
+            "tex"   : "tex",
+            "txt"   : "plain",
+            "tcl"   : "tcltk",
+            "w"     : "cweb" }
+        #@-node:ekr.20031218072017.368:&lt;&lt; define global data structures &gt;&gt; app
+        #@nl
+    #@-node:ekr.20031218072017.1416:app.__init__
+    #@+node:ekr.20031218072017.2609:app.closeLeoWindow
+    def closeLeoWindow (self,frame):
+
+        """Attempt to close a Leo window.
+
+        Return False if the user veto's the close."""
+
+        c = frame.c
+
+        if c.promptingForClose:
+            # There is already a dialog open asking what to do.
+            return False
+
+        g.app.config.writeRecentFilesFile(c) # Make sure .leoRecentFiles.txt is written.
+
+        if c.changed:
+            c.promptingForClose = True
+            veto = frame.promptForSave()
+            c.promptingForClose = False
+            if veto: return False
+
+        g.app.setLog(None) # no log until we reactive a window.
+
+        g.doHook("close-frame",c=c) # This may remove frame from the window list.
+
+        if frame in g.app.windowList:
+            g.app.destroyWindow(frame)
+
+        if g.app.windowList:
+            # Pick a window to activate so we can set the log.
+            frame = g.app.windowList[0]
+            frame.deiconify()
+            frame.lift()
+            frame.c.setLog()
+            frame.c.bodyWantsFocusNow()
+        elif not g.app.unitTesting:
+            g.app.finishQuit()
+
+        return True # The window has been closed.
+    #@-node:ekr.20031218072017.2609:app.closeLeoWindow
+    #@+node:ekr.20031218072017.2610:app.createTkGui
+    def createTkGui (self,fileName=None):
+
+        # Do NOT omit fileName param: it is used in plugin code.
+        __pychecker__ = '--no-argsused'
+
+        """A convenience routines for plugins to create the default Tk gui class."""
+
+        import leoTkinterGui # Do this import after app module is fully imported.
+
+        g.app.gui = leoTkinterGui.tkinterGui()
+        g.app.root = g.app.gui.createRootWindow()
+
+        # Show a dialog and exit immediately if Pmw can not be imported.
+        g.importExtension("Pmw",pluginName="Leo's core",verbose=False,required=True)
+        g.app.gui.finishCreate()
+
+        if 0:
+            if fileName:
+                print "Tk gui created in", g.shortFileName(fileName)
+    #@-node:ekr.20031218072017.2610:app.createTkGui
+    #@+node:ekr.20031218072017.2612:app.destroyAllOpenWithFiles
+    def destroyAllOpenWithFiles (self):
+
+        """Try to remove temp files created with the Open With command.
+
+        This may fail if the files are still open."""
+
+        # We can't use g.es here because the log stream no longer exists.
+
+        for theDict in self.openWithFiles[:]: # 7/10/03.
+            g.app.destroyOpenWithFileWithDict(theDict)
+
+        # Delete the list so the gc can recycle Leo windows!
+        g.app.openWithFiles = []
+    #@-node:ekr.20031218072017.2612:app.destroyAllOpenWithFiles
+    #@+node:ekr.20031218072017.2613:app.destroyOpenWithFilesForFrame
+    def destroyOpenWithFilesForFrame (self,frame):
+
+        """Close all "Open With" files associated with frame"""
+
+        # Make a copy of the list: it may change in the loop.
+        openWithFiles = g.app.openWithFiles
+
+        for theDict in openWithFiles[:]: # 6/30/03
+            c = theDict.get("c")
+            if c.frame == frame:
+                g.app.destroyOpenWithFileWithDict(theDict)
+    #@-node:ekr.20031218072017.2613:app.destroyOpenWithFilesForFrame
+    #@+node:ekr.20031218072017.2614:app.destroyOpenWithFileWithDict
+    def destroyOpenWithFileWithDict (self,theDict):
+
+        path = theDict.get("path")
+        if path and g.os_path_exists(path):
+            try:
+                os.remove(path)
+                print "deleting temp file:", g.shortFileName(path)
+            except:
+                print "can not delete temp file:", path
+
+        # Remove theDict from the list so the gc can recycle the Leo window!
+        g.app.openWithFiles.remove(theDict)
+    #@-node:ekr.20031218072017.2614:app.destroyOpenWithFileWithDict
+    #@+node:ekr.20031218072017.2615:app.destroyWindow
+    def destroyWindow (self,frame):
+
+        # g.trace(frame in g.app.windowList,frame)
+
+        g.app.destroyOpenWithFilesForFrame(frame)
+
+        if frame in g.app.windowList:
+            g.app.windowList.remove(frame)
+            # g.trace(g.app.windowList)
+
+        # force the window to go away now.
+        # Important: this also destroys all the objects of the commander.
+        frame.destroySelf()
+    #@-node:ekr.20031218072017.2615:app.destroyWindow
+    #@+node:ekr.20031218072017.1732:app.finishQuit
+    def finishQuit(self):
+
+        # forceShutdown may already have fired the "end1" hook.
+        if not g.app.killed:
+            g.doHook("end1")
+
+        self.destroyAllOpenWithFiles()
+
+        if g.app.gui:
+            g.app.gui.destroySelf()
+
+        # Don't use g.trace!
+        # print 'app.finishQuit: setting g.app.killed',g.callers()
+
+        g.app.killed = True
+            # Disable all further hooks and events.
+            # Alas, "idle" events can still be called even after the following code.
+
+        if g.app.afterHandler:
+            # TK bug: This appears to have no effect, at least on Windows.
+            # print "finishQuit: cancelling",g.app.afterHandler
+            if g.app.gui and g.app.gui.guiName() == "tkinter":
+                self.root.after_cancel(g.app.afterHandler)
+            g.app.afterHandler = None
+    #@-node:ekr.20031218072017.1732:app.finishQuit
+    #@+node:ekr.20031218072017.2616:app.forceShutdown
+    def forceShutdown (self):
+
+        """Forces an immediate shutdown of Leo at any time.
+
+        In particular, may be called from plugins during startup."""
+
+        # Wait until everything is quiet before really quitting.
+        g.doHook("end1")
+
+        self.log = None # Disable writeWaitingLog
+        self.killed = True # Disable all further hooks.
+
+        for w in self.windowList[:]:
+            self.destroyWindow(w)
+
+        self.finishQuit()
+    #@-node:ekr.20031218072017.2616:app.forceShutdown
+    #@+node:ekr.20031218072017.2617:app.onQuit
+    def onQuit (self,event=None):
+
+        '''Exit Leo, prompting to save unsaved outlines first.'''
+
+        g.app.quitting = True
+
+        while g.app.windowList:
+            w = g.app.windowList[0]
+            if not g.app.closeLeoWindow(w):
+                break
+
+        if g.app.windowList:
+            g.app.quitting = False # If we get here the quit has been disabled.
+    #@-node:ekr.20031218072017.2617:app.onQuit
+    #@+node:ekr.20031218072017.2618:app.setEncoding
+    #@+at 
+    #@nonl
+    # According to Martin v. Löwis, getdefaultlocale() is broken, and cannot 
+    # be fixed. The workaround is to copy the g.getpreferredencoding() 
+    # function from locale.py in Python 2.3a2.  This function is now in 
+    # leoGlobals.py.
+    #@-at
+    #@@c
+
+    def setEncoding (self):
+
+        """Set g.app.tkEncoding."""
+
+        try: locale_encoding = g.getpreferredencoding()
+        except Exception: locale_encoding = None
+
+        try: sys_encoding = sys.getdefaultencoding()
+        except Exception: sys_encoding = None
+
+        for (encoding,src) in (
+            (self.config.tkEncoding,"config"),
+            (locale_encoding,"locale"),
+            (sys_encoding,"sys"),
+            ("utf-8","default")):
+
+            if g.isValidEncoding (encoding):
+                self.tkEncoding = encoding
+                # g.trace(self.tkEncoding,src)
+                break
+            elif encoding:
+                color = g.choose(self.tkEncoding=="ascii","red","blue")
+                g.trace("ignoring invalid %s encoding: %s" % (src,encoding),color=color)
+    #@-node:ekr.20031218072017.2618:app.setEncoding
+    #@+node:ekr.20031218072017.1978:app.setLeoID
+    def setLeoID (self,verbose=True):
+
+        tag = ".leoID.txt"
+        homeDir = g.app.homeDir
+        globalConfigDir = g.app.globalConfigDir
+        loadDir = g.app.loadDir
+
+        verbose = not g.app.unitTesting
+        #@    &lt;&lt; return if we can set leoID from sys.leoID &gt;&gt;
+        #@+node:ekr.20031218072017.1979:&lt;&lt; return if we can set leoID from sys.leoID&gt;&gt;
+        # This would be set by in Python's sitecustomize.py file.
+
+        # 7/2/04: Use hasattr &amp; getattr to suppress pychecker warning.
+        # We also have to use a "non-constant" attribute to suppress another warning!
+
+        nonConstantAttr = "leoID"
+
+        if hasattr(sys,nonConstantAttr):
+            g.app.leoID = getattr(sys,nonConstantAttr)
+            if verbose and not g.app.unitTesting:
+                g.es_print("leoID = " + g.app.leoID, color='red')
+            return
+        else:
+            g.app.leoID = None
+        #@-node:ekr.20031218072017.1979:&lt;&lt; return if we can set leoID from sys.leoID&gt;&gt;
+        #@nl
+        #@    &lt;&lt; return if we can set leoID from "leoID.txt" &gt;&gt;
+        #@+node:ekr.20031218072017.1980:&lt;&lt; return if we can set leoID from "leoID.txt" &gt;&gt;
+        for theDir in (homeDir,globalConfigDir,loadDir):
+            # N.B. We would use the _working_ directory if theDir is None!
+            if theDir:
+                try:
+                    fn = g.os_path_join(theDir,tag)
+                    f = open(fn,'r')
+                    s = f.readline()
+                    f.close()
+                    if s and len(s) &gt; 0:
+                        g.app.leoID = s.strip()
+                        if verbose and not g.app.unitTesting:
+                            g.es("leoID = %s (in %s)" % (g.app.leoID,theDir), color="red")
+                        return
+                    elif verbose and not g.app.unitTesting:
+                        g.es("empty %s (in %s)" % (tag,theDir), color = "red")
+                except IOError:
+                    g.app.leoID = None
+                    # g.es("%s not found in %s" % (tag,theDir),color="red")
+                except Exception:
+                    g.app.leoID = None
+                    g.es_print('Unexpected exception in app.setLeoID',color='red')
+                    g.es_exception()
+        #@-node:ekr.20031218072017.1980:&lt;&lt; return if we can set leoID from "leoID.txt" &gt;&gt;
+        #@nl
+        #@    &lt;&lt; return if we can set leoID from os.getenv('USER') &gt;&gt;
+        #@+node:ekr.20060211140947.1:&lt;&lt; return if we can set leoID from os.getenv('USER') &gt;&gt;
+        try:
+            theId = os.getenv('USER')
+            if theId:
+                if verbose and not g.app.unitTesting:
+                    g.es("using os.getenv('USER'): %s " % (repr(theId)),color='red')
+                g.app.leoID = theId
+                return
+
+        except Exception:
+            pass
+        #@-node:ekr.20060211140947.1:&lt;&lt; return if we can set leoID from os.getenv('USER') &gt;&gt;
+        #@nl
+        #@    &lt;&lt; put up a dialog requiring a valid id &gt;&gt;
+        #@+node:ekr.20031218072017.1981:&lt;&lt; put up a dialog requiring a valid id &gt;&gt;
+        # New in 4.1: get an id for gnx's.  Plugins may set g.app.leoID.
+
+        # Create an emergency gui and a Tk root window.
+        g.app.createTkGui("startup")
+
+        # Bug fix: 2/6/05: put result in g.app.leoID.
+        g.app.leoID = g.app.gui.runAskLeoIDDialog()
+
+        # g.trace(g.app.leoID)
+        g.es("leoID = %s" % (repr(g.app.leoID)),color="blue")
+        #@-node:ekr.20031218072017.1981:&lt;&lt; put up a dialog requiring a valid id &gt;&gt;
+        #@nl
+        #@    &lt;&lt; attempt to create leoID.txt &gt;&gt;
+        #@+node:ekr.20031218072017.1982:&lt;&lt; attempt to create leoID.txt &gt;&gt;
+        for theDir in (homeDir,globalConfigDir,loadDir):
+            # N.B. We would use the _working_ directory if theDir is None!
+            if theDir:
+                cant = "can not create %s in %s" % (tag,theDir)
+                try:
+                    fn = g.os_path_join(theDir,tag)
+                    f = open(fn,'w')
+                    f.write(g.app.leoID)
+                    f.close()
+                    if g.os_path_exists(fn):
+                        s = "%s created in %s" % (tag,theDir)
+                        g.es_print(s, color="red")
+                        return
+                    else:
+                        g.es(cant,color='red')
+                except IOError:
+                    g.es(cant,color='red')
+        #@-node:ekr.20031218072017.1982:&lt;&lt; attempt to create leoID.txt &gt;&gt;
+        #@nl
+    #@-node:ekr.20031218072017.1978:app.setLeoID
+    #@+node:ekr.20031218072017.1847:app.setLog, lockLog, unlocklog
+    def setLog (self,log):
+
+        """set the frame to which log messages will go"""
+
+        # print "setLog:",tag,"locked:",self.logIsLocked,log
+        if not self.logIsLocked:
+            self.log = log
+
+    def lockLog(self):
+        """Disable changes to the log"""
+        self.logIsLocked = True
+
+    def unlockLog(self):
+        """Enable changes to the log"""
+        self.logIsLocked = False
+    #@-node:ekr.20031218072017.1847:app.setLog, lockLog, unlocklog
+    #@+node:ekr.20031218072017.2619:app.writeWaitingLog
+    def writeWaitingLog (self):
+
+        # g.trace(g.app.gui,self.log)
+
+        if self.log:
+            if 1: # not self.log.isNull: # The test for isNull would probably interfere with batch mode.
+                for s,color in self.logWaiting:
+                    g.es(s,color=color,newline=0) # The caller must write the newlines.
+                self.logWaiting = []
+        else:
+            print 'writeWaitingLog: still no log!'
+    #@-node:ekr.20031218072017.2619:app.writeWaitingLog
+    #@+node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
+    def newLeoCommanderAndFrame(self,fileName=None,gui=None,initEditCommanders=True,updateRecentFiles=True):
+
+        """Create a commander and its view frame for the Leo main window."""
+
+        app = self
+
+        import leoCommands
+
+        if not fileName: fileName = ""
+        if not gui: gui = g.app.gui
+        #@    &lt;&lt; compute the window title &gt;&gt;
+        #@+node:ekr.20031218072017.2189:&lt;&lt; compute the window title &gt;&gt;
+        # Set the window title and fileName
+        if fileName:
+            title = g.computeWindowTitle(fileName)
+        else:
+            s = "untitled"
+            n = g.app.numberOfWindows
+            if n &gt; 0:
+                s += str(n)
+            title = g.computeWindowTitle(s)
+            g.app.numberOfWindows = n+1
+        #@-node:ekr.20031218072017.2189:&lt;&lt; compute the window title &gt;&gt;
+        #@nl
+
+        # Create an unfinished frame to pass to the commanders.
+        frame = gui.createLeoFrame(title)
+
+        # Create the commander and its subcommanders.
+        c = leoCommands.Commands(frame,fileName)
+
+        if not app.initing:
+            g.doHook("before-create-leo-frame",c=c) # Was 'onCreate': too confusing.
+
+        frame.finishCreate(c)
+        c.finishCreate(initEditCommanders)
+
+        # Finish initing the subcommanders.
+        c.undoer.clearUndoState() # Menus must exist at this point.
+
+        if updateRecentFiles:
+            c.updateRecentFiles(fileName)
+
+        if not g.app.initing:
+            g.doHook("after-create-leo-frame",c=c)
+
+        return c,frame
+    #@-node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
+    #@-others
+#@-node:ekr.20031218072017.2608:@thin leoApp.py
+#@-leo
+</t>
+<t tx="ekr.20071105090148.351">@nocolor
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;?xml-stylesheet ekr_test?&gt;
+&lt;leo_file&gt;
+&lt;leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/&gt;
+&lt;globals body_outline_ratio="0.490613266583"&gt;
+	&lt;global_window_position top="61" left="237" height="799" width="927"/&gt;
+	&lt;global_log_window_position top="0" left="0" height="0" width="0"/&gt;
+&lt;/globals&gt;
+&lt;preferences/&gt;
+&lt;find_panel_settings/&gt;
+&lt;vnodes&gt;
+&lt;v t="ekr.20060301122644"&gt;&lt;vh&gt;Buttons&lt;/vh&gt;
+&lt;v t="ekr.20060301122618"&gt;&lt;vh&gt;@button Unit Test @key=Alt-4&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060301122644.1"&gt;&lt;vh&gt;@button Save&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103"&gt;&lt;vh&gt;Disabled buttons&lt;/vh&gt;
+&lt;v t="ekr.20060626085103.1"&gt;&lt;vh&gt;Run tcl script&lt;/vh&gt;
+&lt;v t="ekr.20060626085103.2"&gt;&lt;vh&gt;@@button Run tcl  script&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.3"&gt;&lt;vh&gt;My first tcl script&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.4"&gt;&lt;vh&gt;My second tcl scrip, organized with noweb markup&lt;/vh&gt;
+&lt;v t="ekr.20060626085103.5"&gt;&lt;vh&gt;the actual script&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20060626085103.6"&gt;&lt;vh&gt;@@ button pydoc&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.7"&gt;&lt;vh&gt;@@ button jython&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.8"&gt;&lt;vh&gt;@@button Ipython&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.9"&gt;&lt;vh&gt;@@button Lines Up&lt;/vh&gt;
+&lt;v t="ekr.20060626085103.10"&gt;&lt;vh&gt;moveLinesUp&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20060626085103.11"&gt;&lt;vh&gt;@@button Lines Down&lt;/vh&gt;
+&lt;v t="ekr.20060626085103.12"&gt;&lt;vh&gt;moveLinesDown&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20060626085103.13"&gt;&lt;vh&gt;@@button outlineToClipboard&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.14"&gt;&lt;vh&gt;@@command dbl-click @key = Alt-Shift-C&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.15"&gt;&lt;vh&gt;@@button shorten-lines&lt;/vh&gt;
+&lt;v t="ekr.20060626085103.16"&gt;&lt;vh&gt;to do&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.17"&gt;&lt;vh&gt;splitLongLine&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.18"&gt;&lt;vh&gt;chooseBreakPoint&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20060626085103.19"&gt;&lt;vh&gt;@@button file-mode&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.20"&gt;&lt;vh&gt;@@button Free-Tree&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.21"&gt;&lt;vh&gt;@@button *new-obj&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.22"&gt;&lt;vh&gt;@@button New-obj&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.23"&gt;&lt;vh&gt;@@button Gc&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.24"&gt;&lt;vh&gt;@@button No-Gc&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.25"&gt;&lt;vh&gt;@@button All-obj&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.26"&gt;&lt;vh&gt;@@button run timer&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.27"&gt;&lt;vh&gt;@@button Stats&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.28"&gt;&lt;vh&gt;@@button scripts.leo&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.29"&gt;&lt;vh&gt;@@button updateSettings&lt;/vh&gt;
+&lt;v t="ekr.20060626085103.30"&gt;&lt;vh&gt;&amp;lt;&amp;lt;docstring&amp;gt;&amp;gt;&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.31"&gt;&lt;vh&gt;class updateParser (parserBaseClass)&lt;/vh&gt;
+&lt;v t="ekr.20060626085103.32"&gt;&lt;vh&gt;ctor&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.33"&gt;&lt;vh&gt;visitNode&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.34"&gt;&lt;vh&gt;kind handlers (overrides only)&lt;/vh&gt;
+&lt;v t="ekr.20060626085103.35"&gt;&lt;vh&gt;doFont&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.36"&gt;&lt;vh&gt;doShortcut&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.37"&gt;&lt;vh&gt;doShortcuts&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20060626085103.38"&gt;&lt;vh&gt;set&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20060626085103.39"&gt;&lt;vh&gt;class updateClass&lt;/vh&gt;
+&lt;v t="ekr.20060626085103.40"&gt;&lt;vh&gt; ctor&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.41"&gt;&lt;vh&gt;add&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.42"&gt;&lt;vh&gt;change&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.43"&gt;&lt;vh&gt;error, message &amp;amp; warning&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.44"&gt;&lt;vh&gt;open&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.45"&gt;&lt;vh&gt;update&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20060626085103.46"&gt;&lt;vh&gt;@@button open-outline-by-name&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.47"&gt;&lt;vh&gt;@@button Show other clones&lt;/vh&gt;
+&lt;v t="ekr.20060626085103.48"&gt;&lt;vh&gt;class cloneNavigator&lt;/vh&gt;
+&lt;v t="ekr.20060626085103.49"&gt;&lt;vh&gt;init&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.50"&gt;&lt;vh&gt;getAllClones&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.51"&gt;&lt;vh&gt;displayClones&lt;/vh&gt;
+&lt;v t="ekr.20060626085103.52"&gt;&lt;vh&gt;&amp;lt;&amp;lt;Fill listbox with clone parent headlines&amp;gt;&amp;gt;&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.53"&gt;&lt;vh&gt;&amp;lt;&amp;lt;Goto selected position when listbox selection changes&amp;gt;&amp;gt;&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20060626085246"&gt;&lt;vh&gt;@@button Unit Test&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.55"&gt;&lt;vh&gt;@@button dt&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.56"&gt;&lt;vh&gt;@@button debug-leo&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.57"&gt;&lt;vh&gt;@@button debug&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.58"&gt;&lt;vh&gt;@@button del-ed&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.59"&gt;&lt;vh&gt;@@button cycle-ed&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.60"&gt;&lt;vh&gt;@@button add-ed&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626085103.61"&gt;&lt;vh&gt;@@button rst3&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20051208082927"&gt;&lt;vh&gt;ut.leo&lt;/vh&gt;
+&lt;v t="ekr.20051208083135"&gt;&lt;vh&gt;@asis ut.bat&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060124103819"&gt;&lt;vh&gt;@asis utw.bat&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20051208084010"&gt;&lt;vh&gt;@thin ut.py&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20060129090836"&gt;&lt;vh&gt;@ignore&lt;/vh&gt;
+&lt;v t="ekr.20051208085841.1"&gt;&lt;vh&gt;@test assert False&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060129185431"&gt;&lt;vh&gt;@test k.strokeFromEvent and k.strokeFromSetting&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20051208085841"&gt;&lt;vh&gt;@test 1&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060208071636"&gt;&lt;vh&gt;Test headline abc&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20060914121042"&gt;&lt;vh&gt;Plugin-specific unit tests&lt;/vh&gt;
+&lt;v t="ekr.20060914121042.1"&gt;&lt;vh&gt;@test leo_to_html&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060914123717"&gt;&lt;vh&gt;@test leo_to_rtf&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060914123949"&gt;&lt;vh&gt;@test chapter_hoist&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060914125424"&gt;&lt;vh&gt;@test mod_scripting&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060914125710"&gt;&lt;vh&gt;@test open_with&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060914130213"&gt;&lt;vh&gt;@test rst3&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060914130545"&gt;&lt;vh&gt;@test UNL&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060914130924"&gt;&lt;vh&gt;@test paste_as_headlines&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20060626084629"&gt;&lt;vh&gt;To do: convert to unit tests&lt;/vh&gt;
+&lt;v t="ekr.20060626084629.11"&gt;&lt;vh&gt;remove-blank-lines&lt;/vh&gt;
+&lt;v t="ekr.20060626084629.13"&gt;&lt;vh&gt;data&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20060626084629.12"&gt;&lt;vh&gt;indent-relative&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.15"&gt;&lt;vh&gt;autocompleter test&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.17"&gt;&lt;vh&gt;testClass (for test of self completion)&lt;/vh&gt;
+&lt;v t="ekr.20060626084629.18"&gt;&lt;vh&gt;ctor&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.19"&gt;&lt;vh&gt;spam&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.20"&gt;&lt;vh&gt;eggs&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.21"&gt;&lt;vh&gt;bad&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.22"&gt;&lt;vh&gt;test of self&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20060626084629.49"&gt;&lt;vh&gt;test g.cantImportDialog&lt;/vh&gt;
+&lt;v t="ekr.20060626084629.50"&gt;&lt;vh&gt;createFrame&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.51"&gt;&lt;vh&gt;createButtons&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20060626084629.52"&gt;&lt;vh&gt;test of clear-selected-text&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.53"&gt;&lt;vh&gt;test of clean-lines&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.55"&gt;&lt;vh&gt;Move lines up/down&lt;/vh&gt;
+&lt;v t="ekr.20060626084629.56"&gt;&lt;vh&gt;add/remove tests&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.57"&gt;&lt;vh&gt;@@button move-lines-down&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.58"&gt;&lt;vh&gt;@@button move-lines-up&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.59"&gt;&lt;vh&gt;@@button toggle-show-invisibles&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.60"&gt;&lt;vh&gt;before&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.61"&gt;&lt;vh&gt;move test&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.62"&gt;&lt;vh&gt;after&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20060626084629.63"&gt;&lt;vh&gt;Incremental searches&lt;/vh&gt;
+&lt;v t="ekr.20060626084629.64"&gt;&lt;vh&gt;@@button isearch-forward&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.65"&gt;&lt;vh&gt;@@button isearch-backward&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.66"&gt;&lt;vh&gt;Node 1&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.67"&gt;&lt;vh&gt;Node 2&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20060626084629.69"&gt;&lt;vh&gt;open-name &lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.75"&gt;&lt;vh&gt;@image c:/prog/test/PythonPowered.gif&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.89"&gt;&lt;vh&gt;call g.makeScriptButton&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.90"&gt;&lt;vh&gt;Indentation error&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.91"&gt;&lt;vh&gt;Test removeSentinelLines&lt;/vh&gt;
+&lt;v t="ekr.20060626084629.92"&gt;&lt;vh&gt;@@file testRemoveSentinels.py&lt;/vh&gt;
+&lt;v t="ekr.20060626084629.93"&gt;&lt;vh&gt;&amp;lt;&amp;lt; imports &amp;gt;&amp;gt;&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20060626084629.94"&gt;&lt;vh&gt;spam&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20061023080533" a="V"&gt;&lt;vh&gt;Scripts that make unit tests&lt;/vh&gt;
+&lt;v t="ekr.20061023080533.1"&gt;&lt;vh&gt;@command make-test @key=Ctrl-1&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20061023080533.2"&gt;&lt;vh&gt;@command do-before @key=Ctrl-2&lt;/vh&gt;
+&lt;v t="ekr.20061023080533.3"&gt;&lt;vh&gt;getSel&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20061023080533.4"&gt;&lt;vh&gt;findNodes&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20061023080533.5"&gt;&lt;vh&gt;putSelectionInHeadline&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20061023080533.6"&gt;&lt;vh&gt;@command do-after @key=Ctrl-3&lt;/vh&gt;
+&lt;v t="ekr.20061023080533.7"&gt;&lt;vh&gt;getSel&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20061023080533.8"&gt;&lt;vh&gt;findNodes&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20061023080533.9"&gt;&lt;vh&gt;putSelectionInHeadline&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20061023080533.10"&gt;&lt;vh&gt;@test kill-line&lt;/vh&gt;
+&lt;v t="ekr.20061023080533.11"&gt;&lt;vh&gt;work&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20061023080533.12"&gt;&lt;vh&gt;before sel=2.0,2.6&lt;/vh&gt;&lt;/v&gt;
+&lt;v t="ekr.20061023080533.13"&gt;&lt;vh&gt;after sel=2.0,2.0&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;v t="ekr.20061023111426"&gt;&lt;vh&gt;create test buttons from list&lt;/vh&gt;
+&lt;v t="ekr.20061023111426.1"&gt;&lt;vh&gt;&amp;lt;&amp;lt; define aList &amp;gt;&amp;gt;&lt;/vh&gt;&lt;/v&gt;
+&lt;/v&gt;
+&lt;/v&gt;
+&lt;/vnodes&gt;
+&lt;tnodes&gt;
+&lt;t tx="ekr.20051208082927"&gt;@ This file is called from ut.batch.
+
+It should contain quick unit tests to be run in Leo's batch mode.
+
+It also defines ut.bat itself.&lt;/t&gt;
+&lt;t tx="ekr.20051208083135"&gt;cd c:\prog\leoCVS\leo\test
+python ..\src\leo.py -script ..\test\ut.py&lt;/t&gt;
+&lt;t tx="ekr.20051208085841"&gt;assert True&lt;/t&gt;
+&lt;t tx="ekr.20051208085841.1"&gt;assert False,'This should fail'&lt;/t&gt;
+&lt;t tx="ekr.20060124103819"&gt;cd c:\prog\leoCVS\leo\test
+python ..\src\leo.py -script-window ..\test\ut.py&lt;/t&gt;
+&lt;t tx="ekr.20060129090836"&gt;&lt;/t&gt;
+&lt;t tx="ekr.20060129185431"&gt;import string
+k = c.k ; key = 0 ; shift = 1 ; ctrl = 4 ; alt = 0x20000
+
+prefixes = (
+    ('',0),('Alt-',alt),('Ctrl-',ctrl),
+    ('Shift-',shift),('Alt-Shift-',alt+shift),('Alt-Ctrl-',alt+ctrl),
+)
+
+for prefix,state in prefixes:
+    for ch in string.printable:
+        if prefix.find('Shift-') &amp;gt; -1 and ch not in string.letters:
+            continue # The shift would be ignored.
+        ch2 = k.tkBindNamesDict.get(ch) or ch
+        setting = prefix + ch2
+        stroke = k.strokeFromSetting(setting)
+        if not stroke: continue
+        if (shift &amp;amp; state) != 0: ch = ch.upper()
+        event = g.Bunch(char=ch,keysym=ch,state=state)
+        stroke2 = k.strokeFromEvent(event)
+        assert stroke2==stroke,\
+            'strokefromSetting: %s, strokeFromEvent: %s' % (repr(stroke),repr(stroke2))&lt;/t&gt;
+&lt;t tx="ekr.20060208071636"&gt;&lt;/t&gt;
+&lt;t tx="ekr.20060301122618"&gt;# You can run unit tests by selecting an outline containing unit tests.
+
+import leoTest
+
+leoTest.doTests(c,all=False)&lt;/t&gt;
+&lt;t tx="ekr.20060301122644"&gt;&lt;/t&gt;
+&lt;t tx="ekr.20060301122644.1"&gt;c.save()
+c.redraw_now() # Must be done here.&lt;/t&gt;
+&lt;t tx="ekr.20060626084629"&gt;&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.11"&gt;c.executeMinibufferCommand('remove-blank-lines')&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.12"&gt;c.executeMinibufferCommand('indent-relative')&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.13"&gt;a
+ 
+b
+
+c
+d
+
+e
+
+This is a test of navigation.
+&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.15"&gt;@others
+
+print '-' * 20
+
+for s in (
+    'a bc',
+    'a.bc',
+    'abc ',
+    ' abc',
+):
+    print 's',repr(s), repr(reverseFindWhitespace(s))&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.17"&gt;class testClass:
+    
+    '''A class to test the forgiving parser.'''
+    
+    @others&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.18"&gt;def __init__ (self,c):
+    self.c = c
+    self.d = '1'
+    self.e = '2'&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.19"&gt;def spam (self,s,p,a,m=[]):
+    pass&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.20"&gt;def eggs(self,e,g,s):
+    pass&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.21"&gt;def bad (self):
+    self = &lt;/t&gt;
+&lt;t tx="ekr.20060626084629.22"&gt;self.&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.49"&gt;g.cantImportDialog("Leo's core",'xyzzy')&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.50"&gt;def createFrame(root,title,message):
+    
+    """Create the Tk.Toplevel widget for a leoTkinterDialog."""
+
+    top = Tk.Toplevel(root)
+    top.title(title)
+    
+    def onKey(event,top=top):
+        if event.char.lower() in ('\n','\r'):
+            top.destroy()
+    top.bind("&amp;lt;Key&amp;gt;",onKey)
+
+    f = Tk.Frame(top)
+    f.pack(side="top",expand=1,fill="both")
+    
+    label = Tk.Label(f,text=message)
+    label.pack(pady=10)
+    
+    def okButton(top=top):
+        top.destroy()
+    
+    buttons = {"text":'OK',"command":okButton,"default":True}, # Singleton tuple.
+    createButtons(top,buttons)
+    
+    # top.protocol("WM_DELETE_WINDOW",onClose)
+    
+    # Attach the icon at idle time.
+    def attachIconCallback(top=top):
+        g.app.gui.attachLeoIcon(top)
+    top.after_idle(attachIconCallback)
+    return top&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.51"&gt;def createButtons (top,buttons):
+    
+    """Create a row of buttons.
+    
+    buttons is a list of dictionaries containing the properties of each button."""
+    
+    f = Tk.Frame(top)
+    f.pack(side="top",padx=30)
+
+    buttonList = []
+    for d in buttons:
+        text = d.get("text","&amp;lt;missing button name&amp;gt;")
+        isDefault = d.get("default",False)
+        underline = d.get("underline",0)
+        command = d.get("command",None)
+        bd = g.choose(isDefault,4,2)
+
+        b = Tk.Button(f,width=6,text=text,bd=bd,underline=underline,command=command)
+        b.pack(side="left",padx=5,pady=10)&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.52"&gt;abc
+xyz
+pdq&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.53"&gt;before
+first
+    
+b   
+    c
+        
+last
+after&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.55"&gt;&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.56"&gt;a
+   b
+c
+ abcde
+e
+f&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.57"&gt;event = g.Bunch(widget = g.app.gui.get_focus(c))
+c.editCommands.moveLinesDown(event)&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.58"&gt;event = g.Bunch(widget = g.app.gui.get_focus(c))
+c.editCommands.moveLinesUp(event)&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.59"&gt;c.viewAllCharacters()&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.60"&gt;before1
+before2&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.61"&gt;start1
+start2
+line a   xxx
+line b   y
+line c      z
+end
+end2&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.62"&gt;after1
+after2&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.63"&gt;&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.64"&gt;event = g.Bunch(widget=g.app.gui.get_focus(c),char='',keysym='')
+
+c.searchCommands.isearchForward(event)&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.65"&gt;event = g.Bunch(widget=g.app.gui.get_focus(c),char='',keysym='')
+
+c.searchCommands.isearchBackward(event)&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.66"&gt;abcde&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.67"&gt;abzde&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.69"&gt;c.editFileCommands.openOutlineByName(event=None)&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.75"&gt;&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.89"&gt;# g.makeScriptButton(c,p=p)
+
+g.makeScriptButton(c,buttonText='HelloWorld',script="g.es_print('Hello World',color='red')")&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.90"&gt;if 1:
+    print c.k.mb_history
+  #indentation error
+  print 'oops'&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.91"&gt;f = file('testRemoveSentinels.py')
+s = f.read()
+f.close()
+
+result = c.importCommands.removeSentinelLines(s,'#',None,None)
+print '-' * 40
+print s
+print '-' * 40
+print result&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.92"&gt;# Important: the execute-script command will insert @verbatim sentinels
+# before anything that looks like a sentinel, so the test requires an external file.
+'''docstring'''
+&amp;lt;&amp;lt; imports &amp;gt;&amp;gt;
+@others
+# end&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.93"&gt;import sys&lt;/t&gt;
+&lt;t tx="ekr.20060626084629.94"&gt;def spam ():
+    pass&lt;/t&gt;
+&lt;t tx="ekr.20060626085103"&gt;&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.1"&gt;@language tcltk&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.2"&gt;# To use this script, you must make this a script button, either with the
+# 'Script Button' button or by making this an @button node.
+
+# Executes body text of selected node as a tcl script.
+# For more information, see http://wiki.tcl.tk/6878
+
+# This statement allows you to organize your scripts using noweb markup.
+s = g.getScript(c,p,forcePythonSentinels=False)
+g.es(g.app.root.tk.eval(s))&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.3"&gt;# This is a comment
+set x 50
+return [expr $x*10]&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.4"&gt;@others&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.5"&gt;# This is a comment
+set x 50 +
+return [expr $x*10]&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.6"&gt;import os, sys, threading
+
+python = sys.executable
+pythonDir,junk = g.os_path_split(python)
+pydoc = g.os_path_join(pythonDir,'Lib','pydoc.py')
+command = '%s %s -g' % (python,pydoc)
+
+# Execute the command in a separate thread.
+def go():
+    os.system(command)
+    
+threading.Thread(target=go).start()&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.7"&gt;# **** Change these as needed ***
+import os, sys
+
+tempFileName = g.os_path_abspath(
+    g.os_path_join(g.app.testDir,'jythonScript.py'))
+
+if sys.platform == 'win32':
+    jython = r'C:\Jython-21\jython.bat'
+    command = '%s "%s"' % (jython,tempFileName) 
+else:
+    jython = r'cd ~/jython-2.1 ; ./jython'
+    command = '%s "%s" &amp;amp;' % (jython,tempFileName)
+
+script = g.getScript(c,p).strip()
+if not script:
+    s = "no script in %s" % p.headString()
+    g.es(s) ; print s
+else:
+    f = file(tempFileName,'w')
+    f.write(script + '\n')
+    f.close()
+    print command
+    os.system(command)
+&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.8"&gt;from IPython.Shell import IPShellEmbed
+
+ipshell = IPShellEmbed()
+ipshell()&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.9"&gt;# Move selected text of the body up one line.
+
+@others
+
+moveLinesUp(c,p)&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.10"&gt;def moveLinesUp(c,p):
+    
+    undoType = 'Move Lines Up'
+    head,lines,tail,oldSel,oldYview = c.getBodyLines()
+    if not head or not lines: return
+    # A slight adjustment: lines doesn't end in '\n'.
+    head = g.splitLines(head)
+    lines = '\n'.join(lines) + '\n'
+    lines = g.splitLines(lines)
+    # Move the lines up.
+    lines.append(head[-1])
+    head = head[:-1]
+    # Convert back to strings.
+    head = ''.join(head)
+    lines = ''.join(lines)[:-1] # Undo the adjustment above.
+    # Adjust selection.
+    sel1,sel2 = oldSel
+    row,col = sel1.split('.') ; sel1 = '%d.%s' % (int(row)-1,col)
+    row,col = sel2.split('.') ; sel2 = '%d.%s' % (int(row)-1,col)
+    newSel = sel1,sel2
+    c.updateBodyPane(head,lines,tail,undoType,newSel,oldYview)&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.11"&gt;# Move selected text of the body down one line.
+
+@others
+
+moveLinesDown(c,p)&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.12"&gt;def moveLinesDown(c,p):
+    
+    undoType = 'Move Lines Down'
+    head,lines,tail,oldSel,oldYview = c.getBodyLines()
+    if not tail or not lines: return
+    tail = g.splitLines(tail)[1:]
+    lines = '\n'.join(lines) + '\n'
+    lines = g.splitLines(lines)
+    # Move the lines down.
+    lines.insert(0,tail[0])
+    tail = tail[1:]
+    if not tail: lines.insert(1,'\n')
+    # Convert back to strings.
+    tail = ''.join(tail)
+    lines = ''.join(lines)
+    # Adjust selection.
+    sel1,sel2 = oldSel
+    row,col = sel1.split('.') ; sel1 = '%d.%s' % (int(row)+1,col)
+    row,col = sel2.split('.') ; sel2 = '%d.%s' % (int(row)+1,col)
+    newSel = sel1,sel2
+    c.updateBodyPane(head,lines,tail,undoType,newSel,oldYview)&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.13"&gt;result = []
+firstLevel = p.level()
+
+for p in p.self_and_subtree_iter():
+    head = p.moreHead(firstLevel)
+    head = g.toEncodedString(head,'ascii',reportErrors=True)
+    result.append(head)
+    body = p.moreBody() # Inserts escapes for '+' and '-' characters.
+    if body:
+        body = g.toEncodedString(body,'ascii',reportErrors=True)
+        result.append(body)
+
+result = '\n'.join(result) + '\n'
+# print result
+w = c.frame.body.bodyCtrl
+w.clipboard_clear()
+w.clipboard_append(result)&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.14"&gt;c.frame.tree.OnIconDoubleClick(p)
+&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.15"&gt;@others
+
+d = g.scanDirectives(c,p)
+w = d.get('pagewidth',100)
+tab_width = d.get('tabwidth',4)
+
+print '*' * 60
+
+if d.get('language','').lower() == 'python':
+    result = [] ; inComment = False ; inString = False
+    for line in g.splitlines(p.bodyString()):
+        i,junk = g.skip_leading_ws_with_indent(line,0,tab_width)
+        lws = line[:i]
+        # g.trace('lws',repr(lws))
+        result.extend(splitLongLine(line,lws,w,tab_width,inComment,inString))
+    
+    print ''.join(result)
+else:
+    print 'Not Python code'&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.16"&gt;@
+
+Bug: can't split after opening quote.
+* Handle-triple-quote strings properly.
+** Skip @doc parts.
+- Handle tabs properly when splitting.&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.17"&gt;def splitLongLine(s,lws,w,tab_width,inComment,inString):
+
+    if not s or g.computeWidth (s,tab_width) &amp;lt; w:
+        return [s]
+        
+    i,inComment,inString,backslash = chooseBreakPoint(s,w,tab_width,inComment,inString)
+    if i is None: return [s]
+
+    if inComment:
+        tab = ''
+    else:
+        tab = g.choose(tab_width &amp;lt; 0,' ' * abs(tab_width),'\t')
+    comment = g.choose(inComment,'# ','')
+    list1 = [s[:i+1]]
+    list2 = splitLongLine(s[i+1:],lws+tab,w,tab_width,inComment,inString)
+    list1.append('%s\n%s%s%s' % (backslash,lws,comment,tab))
+    list1.extend(list2)
+    return list1&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.18"&gt;def chooseBreakPoint (s,w,tab_width,inComment,inString):
+    
+    '''Return (i,inComment,inString,backSlash) where::
+    - i is the index at which to break the line.
+    - inComment is True if we are in a comment.
+    - inString is True if we are in a string.
+    - backslash is '\\' if the broken line must end in a backslash'''
+
+    i, i2 = -1,-1 # The index of the rightmost valid breakpoint.
+    for k in xrange(len(s)):
+        ch = s[k]
+        if k &amp;gt;= w and i &amp;gt; -1:
+            break
+        elif inComment:
+            if ch in (' ','\t'): i = k
+        elif ch in ('"',"'"):
+            inString = not inString
+            if not inString:
+                i = max(0,k-1) ; i2 = -1
+        elif inString:
+            if ch in (' ','\t'): i = k
+        else:
+            if ch in ('(','[')  and g.skip_ws(s,k+1) &amp;gt; abs(tab_width):
+                i = k ;  g.trace(k,repr(ch),repr(s))
+            if ch in (' ','\t') and g.skip_ws(s,k) &amp;gt; abs(tab_width):
+                i2 = k ;  g.trace(k,repr(ch),repr(s))
+            if ch == '#':
+                inComment = True ; inString = False; i = k ; i2 = -1
+
+    if i == -1 and i2 == -1:
+        return None,inComment,inString,'' # No break is possible.
+    elif i == -1:
+        # Break at a blank.
+        i2 = max(i2,g.skip_ws(s,i2)-1)
+        return i2,inComment,inString,'\\'
+    elif inComment:
+        i = max(i,g.skip_ws(s,i)-1)
+        return i,True,False,''
+    elif inString:
+        i = max(i,g.skip_ws(s,i)-1)
+        return i,False,True,'\\'
+    else:
+        # Break at a bracket.
+        i = max(i,g.skip_ws(s,i+1)-1)
+        return i,False,False,''&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.19"&gt;c.keyHandler.simulateCommand('enter-file-mode')&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.20"&gt;c.debugCommands.freeTreeWidgets()&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.21"&gt;c.debugCommands.verboseDumpObjects()&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.22"&gt;c.debugCommands.dumpNewObjects()&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.23"&gt;c.debugCommands.enableGcTrace()
+g.collectGarbage()&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.24"&gt;g.app.trace_gc = False&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.25"&gt;c.debugCommands.dumpAllObjects()&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.26"&gt;import leoTest
+leoTest.runTimerOnNode(c,p,count=100)&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.27"&gt;c.debugCommands.printStats()&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.28"&gt;name = "scripts.leo"
+fileName = g.os_path_join(g.app.loadDir,"..","scripts",name)
+ok,frame = g.openWithFileName(fileName,c)
+if not ok:
+    g.es("not found: %s" % name)&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.29"&gt;&amp;lt;&amp;lt; docstring &amp;gt;&amp;gt;
+
+import leoConfig
+
+# The user's previous (and preferred) leoSettings.leo file.
+path1 = r'c:\prog\leoCVS\leo\config\leoSettings.leo'
+
+# The new distribution leoSettings.leo file.
+path2 = r'c:\prog\leoCVS\leo\config\leoSettings2.leo'
+
+@others
+
+# print '*' * 40
+
+updateClass(c,path1,path2).update()&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.30"&gt;'''Here is a **preliminary** script that updates a new leoSettings.leo file
+(path2) from the settings in a previous leoSettings.leo file (path1).
+Presumably, the path2 file is the leoSettings.leo file from a new distribution,
+and the path1 file a leoSettings.leo file containing settings that you have
+modified.  You must specify the full path of both files in the top-level @button node.
+
+**Warning**: This script modifies the path2 file. Make sure that you don't mind
+modifying this file.
+
+**Warning**: This script is unsophisticated in its update algorithm. If if finds
+corresponding nodes (node with the same settings name) in both outlines it simply
+replaces the node in the path2 file with the node in the path1 file. In
+particular, it does not keep track of individual shortcuts: it repaces the body
+of one @shortcuts node with the body of the corresponding @shortcuts node.
+
+**Note**: If the path1 file contains a settings node not in the path2 file it
+attempts to create a new node in the corresponding place in the path2 file. If
+this is not possible, say because the structures of the files are different, the
+script places the new node as the last child of the @settings node in the path2
+file. '''&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.31"&gt;class updateParser (leoConfig.parserBaseClass):
+    
+    '''A settings parser that returns bunches used for updates.'''
+    
+    @others&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.32"&gt;def __init__ (self,c,tag):
+
+    # Init the base class.
+    leoConfig.parserBaseClass.__init__(self,c)
+    self.tag = tag&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.33"&gt;def visitNode (self,p):
+    
+        """Init any settings found in node p."""
+        
+        munge = g.app.config.munge
+    
+        kind,name,val = self.parseHeadline(p.headString())
+        kind = munge(kind)
+    
+        if kind == "settings":
+            pass
+        elif kind not in self.control_types and val in (u'None',u'none','None','none','',None):
+            # None is valid for all data types.
+            self.set(p.copy(),kind,name,None)
+        elif kind in self.control_types or kind in self.basic_types:
+            kindHandler = self.dispatchDict.get(kind)
+            try:
+                return kindHandler(p.copy(),kind,name,val)
+            except TypeError:
+                g.es_exception()
+                print "*** no handler",kind
+        elif name:
+            # self.error("unknown type %s for setting %s" % (kind,name))
+            # Just assume the type is a string.
+            self.set(p.copy(),kind,name,val)
+        
+        return None&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.34"&gt;&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.35"&gt;def doFont (self,p,kind,name,val):
+    
+    self.set(p,kind,name,val)&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.36"&gt;def doShortcut(self,p,kind,name,val):
+
+    self.set(p,kind,name,val)&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.37"&gt;def doShortcuts(self,p,kind,name,val):
+    
+    self.set(p,kind,name,val)&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.38"&gt;# Unlike in Leo's core, p and p.c are stable.
+
+def set (self,p,kind,name,val):
+    
+    """Init the setting for name to val."""
+
+    c = self.c ; d = self.settingsDict 
+    if not kind: return
+    
+    key = self.munge(name)
+    if d.get(key):
+        # This is a user error, and should be corrected before merging.
+        g.es('*** ignoring duplicate setting for %s in %s' % (
+            name,c.fileName()))
+    else:
+        d[key] = g.Bunch(p=p,kind=kind,name=name,val=val)
+        if 0:
+            if kind.startswith('strings'): kind = 'strings[]'
+            g.trace('%s %10s %45s %s' %(self.tag,kind,name,val))
+&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.39"&gt;class updateClass:
+    
+    '''Update path2 (distribution) leoSettings.leo from path1 (user's) leoSettings.leo file.'''
+    
+    @others&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.40"&gt;def __init__ (self,c,path1,path2):
+    
+    self.c = c
+    self.path1 = path1 # The user's previous (and preferred) leoSettings.leo file.
+    self.path2 = path2 # The new distribution leoSettings.leo file.&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.41"&gt;def add (self,bunch1,c1,c2):
+
+    '''Add a node to c2 in the same position as bunch.p in c1.
+    
+    If this is not possible, put the node at the end of @settings tree.'''
+
+    p1 = bunch1.p
+    parent1 = p1.parent() # Must exist because p is in an @settings tree.
+    n = p1.childIndex()
+    h = parent1.headString()
+    settings2 = g.findNodeAnywhere(c2,'@settings') 
+    assert (settings2) # This has already been checked.
+
+    # Create the node.
+    if h.startswith('@settings'):
+        p2 = parent2 = settings2.insertAsLastChild()
+    else:
+        parent2 = g.findNodeInTree(c2,settings2,h)
+        if parent2:
+            p2 = parent2.insertAsNthChild(n)
+        else:
+            self.warning('no corresponding parent node for %s' % h)
+            p2 = settings2.insertAsLastChild()
+            
+    # Copy the head and body strings.
+    p2.setBodyString(p1.bodyString())
+    p2.setHeadString(p1.headString())&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.42"&gt;def change (self,bunch1,bunch2):
+    
+    '''Change the bunch2.p to match bunch1.p.'''
+
+    p1 = bunch1.p ; p2 = bunch2.p
+    p2.setBodyString(p1.bodyString())
+    p2.setHeadString(p1.headString())&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.43"&gt;def error (self,s):
+    
+    g.es_print(s, color='red')
+    
+def message (self,s):
+    
+    g.es_print(s, color='blue')
+
+def warning (self,s):
+    
+    g.es_print(s, color='red')&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.44"&gt;def open (self, path):
+    
+    if not g.os_path_exists(path):
+        self.error('does not exist: %s' % s)
+        return None
+    
+    c = g.app.config.openSettingsFile(path)
+
+    if not c:
+        return None
+    elif g.findNodeAnywhere(c,'@settings'):
+        return c
+    else:
+        self.error('no @settings node in %s' % path)
+        return None&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.45"&gt;def update (self):
+
+    c = self.c
+    c1 = self.open(self.path1)
+    c2 = self.open(self.path2)
+    g.app.log = c.frame.log
+    if not c1 or not c2: return
+    # Update c2 from settings in c1.
+    d1 = updateParser(c1,'1').traverse()
+    d2 = updateParser(c2,'2').traverse()
+    changed = False
+    for key in d1.keys():
+        b1 = d1.get(key) # A bunch created by set or None.
+        b2 = d2.get(key) # A bunch created by set or None.
+        if key not in d2.keys():
+            self.message('%7s %s = %s' % ('added',b1.name,b1.val))
+            self.add(b1,c1,c2) ; changed = True
+        elif b1.val == b2.val:
+            pass # ; self.message('%7s %40s %s' % ('equal',b1.name,b1.val))
+        else:
+            self.message('%7s %s from %s to %s' % ('changed',b1.name,b2.val,b1.val))
+            self.change(b1,b2) ; changed = True
+    if changed:
+        c2.save()
+    self.message('update settings done')&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.46"&gt;event = g.Bunch(widget=g.app.gui.get_focus(c),char='',keysym='')
+
+c.editFileCommands.openOutlineByName(event)&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.47"&gt;import Tkinter as Tk
+@others
+c.cn = cloneNavigator(c)
+c.cn.displayClones(c)&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.48"&gt;class cloneNavigator:
+    '''
+       Displays the headline of the current node plus the headlines of
+       all the parents of all the clones of the current node.  Selecting
+       a displayed parent headline moves the current node to the
+       corresponding clone in the outline.
+       
+       The idea is to be able to quickly see the context of all the clones
+       of the current node and to be able to easily navigate from one clone
+       instance to the next.
+    '''
+    @others&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.49"&gt;def __init__ (self,c):
+    self.c = c
+    
+    if 0:
+        f = Tk.Toplevel()
+    else:
+        log = c.frame.log
+        log.selectTab('Clones')
+        f = log.tabFrame
+        for w in f.winfo_children():
+            w.destroy()
+    
+    # Create and pack empty label and listbox
+    self.title = Tk.Label(f)
+    self.title.pack(anchor="nw")
+    self.lb = Tk.Listbox(f)
+    self.lb.pack(expand=1,fill="both")&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.50"&gt;def getAllClones(self,p):
+
+    return [p2.copy() for p2 in self.c.allNodes_iter() if p2.v.t == p.v.t]&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.51"&gt;def displayClones(self,c):
+    '''Displays the parent headline for all the clones of the current position'''
+    cp = c.currentPosition()
+    
+    # "Title" is the headline of the current node
+    self.title.configure(text=cp.headString())
+    
+    # Initialize listbox and clone list
+    clones = self.getAllClones(cp)
+    self.lb.delete(0,self.lb.size()-1)
+    
+    &amp;lt;&amp;lt;Fill listbox with clone parent headlines&amp;gt;&amp;gt;    
+    &amp;lt;&amp;lt;Goto selected position when listbox selection changes&amp;gt;&amp;gt;
+&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.52"&gt;# Add the headlines of all the clone parents to the listbox
+for p in clones:
+    if p.parent():
+        text = p.parent().headString()
+    else:
+        text = "&amp;lt;top level&amp;gt;"
+    self.lb.insert(self.lb.size(),text)
+    
+    # Initial listbox selection corresponds to current position
+    if p.v == cp.v:
+        self.lb.selection_set(self.lb.size()-1)&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.53"&gt;# Callback for when a listbox entry is selected            
+def gotoSelectedPosition(event,lb=self.lb,c=c,positions=clones):
+
+    idx = int(lb.curselection()[0])
+    p = positions[idx]
+    c.frame.tree.expandAllAncestors(p)
+    c.selectPosition(p)
+    return
+
+self.lb.bind(g.angleBrackets("ListboxSelect"), gotoSelectedPosition)&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.55"&gt;import doctest
+import os
+
+# create temporary file and write this node subtree to it
+file, filename = g.create_temp_file()
+c.importCommands.flattenOutline(filename)
+# the file is now created and closed
+
+# prepare content for testing
+# strip trailing whitespace, an annoying source of doctest failures
+text = open(filename).readlines()
+text = [line.strip() for line in text]
+text = "\n".join(text)
+
+# run doctest on temporary file
+file.write(text)
+file.close()
+# g.es(filename)
+failures, tests = doctest.testfile(filename, module_relative = False)
+os.remove(filename)
+
+# report summary of results in Leo
+if failures == 0:
+    g.es("%s tests run successfully" % tests, color="blue")
+if failures == 1:
+    g.es("There was one failure in %s tests" % tests, color="red")    
+if failures &amp;gt; 1:
+    g.es("%s failures in %s tests" % (failures, tests), color="red")&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.56"&gt;target = r'c:\prog\tigris-cvs\leo\src\leo.py'
+
+c.debugCommands.debug(target=target)&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.57"&gt;c.debugCommands.debug()&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.58"&gt;# Delete a body pane editor.
+
+c.frame.body.deleteEditor()&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.59"&gt;# Cycle focus through body pane editors.
+
+c.frame.body.cycleEditorFocus()
+g.app.gui.set_focus(c,c.frame.body.bodyCtrl)&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.60"&gt;# Add a body editor.
+
+c.frame.body.addEditor()
+g.app.gui.set_focus(c,c.frame.body.bodyCtrl)&lt;/t&gt;
+&lt;t tx="ekr.20060626085103.61"&gt;import leoPlugins
+
+rst3 = leoPlugins.getPluginModule('rst3')
+
+if rst3:
+    controller = rst3.controllers.get(c)
+    if controller:
+        controller.processTopTree(p)
+else:
+    rst3 = leoPlugins.loadOnePlugin('rst3',verbose=True)
+    if rst3:
+        g.es('rst3 loaded')
+        rst3.onCreate('tag',{'c':c})
+    else:
+        # Ask to be removed.
+        g.app.scriptDict['removeMe'] = True&lt;/t&gt;
+&lt;t tx="ekr.20060626085246"&gt;# You can run all tests by selecting the Unit Test headline.
+
+import leoTest
+
+leoTest.doTests(c,all=False)&lt;/t&gt;
+&lt;t tx="ekr.20060914121042"&gt;chapter_hoist.py
+cleo.py
+vim.py
+word_export.py
+xemacs.py&lt;/t&gt;
+&lt;t tx="ekr.20060914121042.1"&gt;import leoPlugins
+
+plugin = leoPlugins.loadOnePlugin ('leo_to_html')
+
+plugin.export_html(c)&lt;/t&gt;
+&lt;t tx="ekr.20060914123717"&gt;import leoPlugins
+
+plugin = leoPlugins.loadOnePlugin ('leo_to_rtf')
+
+plugin.export_rtf(c)&lt;/t&gt;
+&lt;t tx="ekr.20060914123949"&gt;import leoPlugins
+
+if not leoPlugins.isLoaded('chapter_hoist'):
+
+    plugin = leoPlugins.loadOnePlugin ('chapter_hoist',verbose=True)
+    plugin.onCreate(tag='unit-test',keys={'c':c})
+&lt;/t&gt;
+&lt;t tx="ekr.20060914125424"&gt;import leoPlugins
+
+if not leoPlugins.isLoaded('mod_scripting'):
+
+    plugin = leoPlugins.loadOnePlugin ('mod_scripting',verbose=True)
+    plugin.onCreate(tag='unit-test',keys={'c':c})&lt;/t&gt;
+&lt;t tx="ekr.20060914125710"&gt;import leoPlugins
+
+if not leoPlugins.isLoaded('open_with'):
+
+    plugin = leoPlugins.loadOnePlugin ('open_with',verbose=True)
+    plugin.create_open_with_menu(tag='unit-test',keyswords={'c':c})&lt;/t&gt;
+&lt;t tx="ekr.20060914130213"&gt;import leoPlugins
+
+if not leoPlugins.isLoaded('rst3'):
+
+    plugin = leoPlugins.loadOnePlugin ('rst3',verbose=True)
+    plugin.onCreate(tag='unit-test',keywords={'c':c})&lt;/t&gt;
+&lt;t tx="ekr.20060914130545"&gt;import leoPlugins
+
+if not leoPlugins.isLoaded('UNL'):
+
+    plugin = leoPlugins.loadOnePlugin ('UNL',verbose=True)
+    plugin.createStatusLine(tag='unit-test',keywords={'c':c})&lt;/t&gt;
+&lt;t tx="ekr.20060914130924"&gt;import leoPlugins
+
+if not leoPlugins.isLoaded('paste_as_headlines'):
+
+    plugin = leoPlugins.loadOnePlugin ('paste_as_headlines',verbose=True)
+    plugin.createPasteAsHeadlinesMenu(tag='unit-test',keywords={'c':c})&lt;/t&gt;
+&lt;t tx="ekr.20061023080533"&gt;&lt;/t&gt;
+&lt;t tx="ekr.20061023080533.1"&gt;workBody = '''first line
+line 1
+    line a
+        line b
+line c
+last line
+'''
+
+c.beginUpdate()
+try:
+    p1 = p.insertAfter()
+    c.setHeadString(p1,'@test ')
+    body = 'import leoTest\nleoTest.runEditCommandTest(c,p)'
+    c.setBodyString(p1,body)
+    for s in ('work','before','after'):
+        p2 = p1.insertAsLastChild()
+        c.setHeadString(p2,s)
+        if s == 'work':
+            c.setBodyString(p2,workBody)
+    p1.expand()
+finally:
+    c.endUpdate()
+    c.editPosition(p1)&lt;/t&gt;
+&lt;t tx="ekr.20061023080533.2"&gt;@
+p should be in tree whose root is a @test node containing 'work', 'before' and
+'after' children. The work node should have body text. If all is as expected,
+copy the body text the work node to the before node, and represent the selection
+range of the work in the headline of the before node.
+@c
+
+@others
+
+sel = getSel(c)
+top,work,before,after = findNodes(p)
+if top and work.bodyString():
+    c.beginUpdate()
+    try:
+        c.setBodyString(before,work.bodyString())
+        c.setBodyString(after,'')
+        putSelectionInHeadline(c,before,'before',sel)
+    finally:
+        c.endUpdate()
+else:
+    g.es_print('do-before: not in a proper @test tree')&lt;/t&gt;
+&lt;t tx="ekr.20061023080533.3"&gt;def getSel(c):
+    
+    w = c.frame.body.bodyCtrl
+    sel = g.app.gui.getSelectionRange(w)
+    if not sel:
+        i = g.app.gui.getInsertPoint(w)
+        sel = (i,i)
+    return sel&lt;/t&gt;
+&lt;t tx="ekr.20061023080533.4"&gt;def findNodes(p):
+    
+    '''Find the top, work, before and after nodes.
+    p should be in tree whose root is a @test node containing
+    'work', 'before' and 'after' children.'''
+    
+    for p in p.self_and_parents_iter():
+        if p.headString().startswith('@test '):
+            break
+    top    = p and p.copy()
+    work   = top and top.firstChild() 
+    before = work and work.next()     
+    after  = before and before.next()
+    if (
+        work   and work.headString().startswith('work') and
+        before and before.headString().startswith('before') and
+        after  and after.headString().startswith('after')
+    ):
+        return top,work,before,after
+    else:
+        return None,None,None,None&lt;/t&gt;
+&lt;t tx="ekr.20061023080533.5"&gt;def putSelectionInHeadline (c,p,prefix,sel):
+    
+    # g.trace(p.headString(),repr(sel))
+    
+    if not sel:
+        sel = ('1.0','1.0')
+
+    s = '%s sel=%s,%s' % (prefix,sel[0],sel[1])
+
+    c.setHeadString(p,s)
+    
+    &lt;/t&gt;
+&lt;t tx="ekr.20061023080533.6"&gt;@
+p should be in tree whose root is a @test node containing 'work', 'before' and
+'after' children. If all is as expected, copy the work node to the after node,
+and represent the selection range of the work node in the headline of the after node.
+@c
+
+@others
+
+sel = getSel(c)
+top,work,before,after = findNodes(p)
+if top:
+    c.beginUpdate()
+    try:
+        c.setBodyString(after,work.bodyString())
+        putSelectionInHeadline(c,after,'after',sel)
+    finally:
+        c.endUpdate()
+else:
+    g.es_print('do-after: not in @test tree')&lt;/t&gt;
+&lt;t tx="ekr.20061023080533.7"&gt;def getSel(c):
+    
+    w = c.frame.body.bodyCtrl
+    sel = g.app.gui.getSelectionRange(w)
+    if not sel:
+        i = g.app.gui.getInsertPoint(w)
+        sel = (i,i)
+    return sel&lt;/t&gt;
+&lt;t tx="ekr.20061023080533.8"&gt;def findNodes(p):
+    
+    '''Find the top, work, before and after nodes.
+    p should be in tree whose root is a @test node containing
+    'work', 'before' and 'after' children.'''
+    
+    for p in p.self_and_parents_iter():
+        if p.headString().startswith('@test '):
+            break
+    top    = p and p.copy()
+    work   = top and top.firstChild()
+    before = work and work.next()
+    after  = before and before.next()
+    if (
+        work   and work.headString().startswith('work') and
+        before and before.headString().startswith('before') and
+        after  and after.headString().startswith('after')
+    ):
+        return top,work,before,after
+    else:
+        return None,None,None,None&lt;/t&gt;
+&lt;t tx="ekr.20061023080533.9"&gt;def putSelectionInHeadline (c,p,prefix,sel):
+    
+    # g.trace(p.headString(),repr(sel))
+    
+    if not sel:
+        sel = ('1.0','1.0')
+
+    s = '%s sel=%s,%s' % (prefix,sel[0],sel[1])
+
+    c.setHeadString(p,s)
+    
+    &lt;/t&gt;
+&lt;t tx="ekr.20061023080533.10"&gt;import leoTest
+leoTest.runEditCommandTest(c,p)&lt;/t&gt;
+&lt;t tx="ekr.20061023080533.11"&gt;line 1
+line 3&lt;/t&gt;
+&lt;t tx="ekr.20061023080533.12"&gt;line 1
+line 2
+line 3&lt;/t&gt;
+&lt;t tx="ekr.20061023080533.13"&gt;line 1
+line 3&lt;/t&gt;
+&lt;t tx="ekr.20061023111426"&gt;&amp;lt;&amp;lt; define aList &amp;gt;&amp;gt;
+
+workBody = '''first line
+line 1
+    line a
+        line b
+line c
+last line
+'''
+
+c.beginUpdate()
+try:
+    for h in aList:
+        p1 = p.insertAfter()
+        c.setHeadString(p1,'@test %s' % (h))
+        body = 'import leoTest\nleoTest.runEditCommandTest(c,p)'
+        c.setBodyString(p1,body)
+        for s in ('work','before','after'):
+            p2 = p1.insertAsLastChild()
+            c.setHeadString(p2,s)
+            if s == 'work':
+                c.setBodyString(p2,workBody)
+        # p1.expand()
+finally:
+    c.endUpdate()
+    # c.editPosition(p1)&lt;/t&gt;
+&lt;t tx="ekr.20061023111426.1"&gt;aList = (
+    'back-char',
+    'back-char-extend-selection',
+    'back-paragraph',
+    'back-paragraph-extend-selection',
+    'back-sentence',
+    'back-sentence-extend-selection',
+    'back-word',
+    'back-word-extend-selection',
+    'backward-delete-char',
+    'backward-kill-paragraph',
+    'backward-find-character',
+    'backward-find-character-extend-selection',
+    'beginning-of-buffer',
+    'beginning-of-buffer-extend-selection',
+    'beginning-of-line',
+    'beginning-of-line-extend-selection',
+    'capitalize-word',
+    'center-line',
+    'center-region',
+    'clean-lines',
+    'clear-selected-text',
+    'count-region',
+    'dabbrev-completion',
+    'dabbrev-expands',
+    'delete-char',
+    'delete-editor',
+    'delete-indentation',
+    'delete-spaces',
+    'do-nothing',
+    'downcase-region',
+    'downcase-word',
+    'end-of-buffer',
+    'end-of-buffer-extend-selection',
+    'end-of-line',
+    'end-of-line-extend-selection',
+    'exchange-point-mark',
+    'extend-to-line',
+    'extend-to-paragraph',
+    'extend-to-sentence',
+    'extend-to-word',
+    'fill-paragraph',
+    'fill-region',
+    'fill-region-as-paragraph',
+    'flush-lines',
+    'forward-char',
+    'forward-char-extend-selection',
+    'forward-paragraph',
+    'forward-paragraph-extend-selection',
+    'forward-sentence',
+    'forward-sentence-extend-selection',
+    'forward-word',
+    'forward-word-extend-selection',
+    'goto-char',
+    'how-many',
+    'indent-relative',
+    'indent-rigidly',
+    'indent-to-comment-column',
+    'insert-newline',
+    'insert-parentheses',
+    'keep-lines',
+    'kill-paragraph',
+    'move-lines-down',
+    'move-lines-up',
+    'move-past-close',
+    'move-past-close-extend-selection',
+    'newline-and-indent',
+    'next-line',
+    'next-line-extend-selection',
+    'previous-line',
+    'previous-line-extend-selection',
+    'remove-blank-lines',
+    'remove-space-from-lines',
+    'remove-tab-from-lines',
+    'reverse-region',
+    'sort-columns',
+    'sort-fields',
+    'sort-lines',
+    'split-line',
+    'tabify',
+    'transpose-chars',
+    'transpose-lines',
+    'transpose-words',
+    'untabify',
+    'upcase-region',
+    'upcase-word',
+)&lt;/t&gt;
+&lt;/tnodes&gt;
+&lt;/leo_file&gt;
+</t>
+<t tx="ekr.20071105090148.352">@language python
+@tabwidth -4
+@encoding utf-8</t>
+<t tx="ekr.20071105090148.353">@language python
+@tabwidth -4
+@others
+
+
+</t>
+<t tx="ekr.20071105090148.354">﻿# A test of unicode characters  Ä, ڱ,  궯, 奠 end.
+</t>
+<t tx="ekr.20071105090148.355"></t>
 </tnodes>
 </leo_file>
