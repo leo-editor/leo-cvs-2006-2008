@@ -431,6 +431,7 @@ class atFile:
     #@-node:bwmulder.20050101094804:openForWrite
     #@+node:ekr.20041005105605.21:read
     # The caller must enclose this code in beginUpdate/endUpdate.
+    # Reads @thin, @file and @noref trees.
 
     def read(self,root,importFileName=None,thinFile=False,fromString=None):
 
@@ -470,45 +471,26 @@ class atFile:
             g.trace('2',p,p.v._parent,p.v._parent and p.v._parent.t.vnodeList)
         at.inputFile.close()
         root.clearDirty() # May be set dirty below.
-        if at.errors == 0 and not at.thinFile:
-            #@        << warn about non-empty unvisited nodes >>
-            #@+node:ekr.20041005105605.23:<< warn about non-empty unvisited nodes >>
+        if at.errors == 0:
+            #@        << advise user to delete all unvisited nodes >>
+            #@+node:ekr.20071105164407:<< advise user to delete all unvisited nodes >>
+            resurrected = 0
             for p in root.self_and_subtree_iter():
 
-                # g.trace(p)
-                try: s = p.v.t.tempBodyString
-                except: s = ""
-                if s and not p.v.t.isVisited():
-                    at.error("Not in derived file: %s" % p.headString())
-                    p.v.t.setVisited() # One message is enough.
-            #@-node:ekr.20041005105605.23:<< warn about non-empty unvisited nodes >>
+                if not p.v.t.isVisited():
+                    g.es('resurrected node: %s' % (p.headString()),color='blue')
+                    g.es('in file: %s' % (fileName),color='blue')
+                    resurrected += 1
+
+            if resurrected:
+                g.es('you may want to delete ressurected nodes')
+
+            #@-node:ekr.20071105164407:<< advise user to delete all unvisited nodes >>
             #@nl
         if at.errors == 0 and not at.importing:
-            if 1: # Package this as a method for use by mod_labels plugin.
-                self.copyAllTempBodyStringsToTnodes(root,thinFile)
-            else:
-                #@            << copy all tempBodyStrings to tnodes >>
-                #@+node:ekr.20041005105605.24:<< copy all tempBodyStrings to tnodes >>
-                for p in root.self_and_subtree_iter():
-                    try: s = p.v.t.tempBodyString
-                    except: s = ""
-                    if s != p.bodyString():
-                        if 0: # For debugging.
-                            print ; print "changed: " + p.headString()
-                            print ; print "new:",s
-                            print ; print "old:",p.bodyString()
-                        if thinFile:
-                            p.v.setTnodeText(s)
-                            if p.v.isDirty():
-                                p.setAllAncestorAtFileNodesDirty()
-                        else:
-                            c.setBodyString(p,s) # Sets c and p dirty.
+            # Package this as a method for use by mod_labels plugin.
+            self.copyAllTempBodyStringsToTnodes(root,thinFile)
 
-                        if not thinFile or (thinFile and p.v.isDirty()):
-                            g.es("changed: " + p.headString(),color="blue")
-                            p.setMarked()
-                #@-node:ekr.20041005105605.24:<< copy all tempBodyStrings to tnodes >>
-                #@nl
         #@    << delete all tempBodyStrings >>
         #@+node:ekr.20041005105605.25:<< delete all tempBodyStrings >>
         for p in c.allNodes_iter():
@@ -1410,7 +1392,7 @@ class atFile:
     #@+node:ekr.20041005105605.72:createThinChild4
     def createThinChild4 (self,gnxString,headline):
 
-        """Find or create a new vnode whose parent is at.lastThinNode."""
+        """Find or create a new *vnode* whose parent (also a vnode) is at.lastThinNode."""
 
         at = self ; c = at.c ; indices = g.app.nodeIndices
         last = at.lastThinNode ; lastIndex = last.t.fileIndex
@@ -1438,8 +1420,10 @@ class atFile:
             # g.trace(copies,headline)
         else:
             if indices.areEqual(gnx,lastIndex):
+                last.t.setVisited() # Supress warning/deletion of unvisited nodes.
                 return last
             if child:
+                child.t.setVisited() # Supress warning/deletion of unvisited nodes.
                 return child
             copies = 1 # Create exactly one copy.
 
@@ -1461,6 +1445,7 @@ class atFile:
             child.linkAsNthChild(parent,parent.numberOfChildren())
             # g.trace('creating last child %s\nof parent%s\n' % (child,parent))
 
+        child.t.setVisited() # Supress warning/deletion of unvisited nodes.
         return child
     #@-node:ekr.20041005105605.72:createThinChild4
     #@+node:ekr.20041005105605.73:findChild4
@@ -1499,7 +1484,7 @@ class atFile:
             return None
 
         # Don't check the headline.  It simply causes problems.
-        t.setVisited() # Supress warning about unvisited node.
+        t.setVisited() # Supress warning/deletion of unvisited nodes.
         return t
     #@-node:ekr.20041005105605.73:findChild4
     #@+node:ekr.20041005105605.74:scanText4 & allies
