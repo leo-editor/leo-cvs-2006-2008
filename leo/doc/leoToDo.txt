@@ -1,68 +1,6 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20071102200038:Exploration
-#@+node:ekr.20071102191642.1:xemacs/pymacs install notes
-@nocolor
-
-Added the following line to setup.py and setup files.
-
-# -*- coding: utf-8 -*-
-
-The second installation script installs the Emacs Lisp part only.
-[snip]
-I couldn't get this script to work.  Instead, I just created a pymacs folder at::
-
-    C:\XEmacs\xemacs-packages\lisp\pymacs
-
-For Win32 systems, I created create c:\Windows\pymacs-services.bat containing::
-
-    c:\Python25\python C:\prog\Pymacs-0.22\scripts\pymacs-services
-
-To check that pymacs.el is properly installed, start Emacs and do::
-
-    M-x load-library RET pymacs
-
-You should not receive any error.
-(works)
-
-To check that pymacs.py is properly installed, start an interactive Python session and type::
-
-    from Pymacs import lisp
-
-you should not receive any error.
-(works)
-
-To check that pymacs-services is properly installed, type the following in a console::
-
-    pymacs-services </dev/null
-
-You should then get a line ending with (pymacs-version version), and another saying : Protocol error : `>' expected..
-(works, mostly: I omitted the </dev/null
-
-The rest is from Leo's Chapter 18::
-
-    ; Step 1: load leoPymacs if it has not already been loaded.
-    (setq reload nil)
-    (if (or reload (not (boundp 'leoPymacs)))
-        (setq leoPymacs (pymacs-load "leoPymacs" "leo-"))
-        (message "leoPymacs already loaded")
-    )
-
-    ; Step 2: compute the path to leo/test/ut.leo using a Leo script.
-    (setq script
-        "g.app.scriptResult = g.os_path_abspath(
-            g.os_path_join(g.app.loadDir,'..','test','ut.leo'))"
-    )
-    (setq fileName (leo-run-script nil script))
-
-    ; Step 3: execute a script in ut.leo.
-    (setq c (leo-open fileName))
-    (setq script "print 'c',c.shortFileName() ,'current:',c.currentPosition().headString()")
-    (leo-run-script c script)
-#@nonl
-#@-node:ekr.20071102191642.1:xemacs/pymacs install notes
-#@-node:ekr.20071102200038:Exploration
 #@+node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
 # Leo 4.4.5 will complete several projects that are long overdue.
 
@@ -4443,8 +4381,6 @@ You are receiving this email because you elected to monitor this forum.
 To stop monitoring this forum, login to SourceForge.net and visit:
 https://sourceforge.net/forum/unmonitor.php?forum_id=10226
 #@-node:ekr.20070905072809.1:Mulder post re svn
-#@+node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
-#@-node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
 #@+node:ekr.20061028065955.2:Fix binding nits
 #@+node:ekr.20061014050154.2:Binding to None clears all bindings
 #@-node:ekr.20061014050154.2:Binding to None clears all bindings
