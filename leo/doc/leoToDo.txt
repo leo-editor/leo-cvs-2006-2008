@@ -5,95 +5,125 @@
 # Leo 4.4.5 will complete several projects that are long overdue.
 
 #@+node:ekr.20070814070312:First
-#@+node:ekr.20071102093502:Fix bugs
-#@+node:ekr.20060116173818:Fix vampire nodes
-@nocolor
-
-Vampire nodes from cvs
-
-I've just discovered a major problem with cvs updates.  It is a subtle consequence of how Leo writes outlines and reads derived files.  This is a big bug in Leo, not cvs.  The effect of the bug is that nodes can appear in derived files that were never written to them!
-
-The discovery of this 'big bug' came about as the result of the following Aha:
-
-**@thin files that contain @all directives should be a cvs binary (-kb) files.**
-
-The reason is straightforward:  cvs doesn't know enough to merge such files.  Maybe all @thin derived files should be -kb files, but Leo's users will never agree to that!
-
-Anyway, leoProjects.txt is now a binary file as far as cvs is concerned.  Other .txt files, like leoScripts.txt, should also be binary files.  As we shall see, the fact that leoProjects.txt is now a -kb file means that we can not possibly blame the cvs merge algorithm for what is about to happen.
-
-Ok, back to the 'big bug'.  Here is how I got bitten:
-
-- I changed leoProjects.txt in two sandboxes 1 and 2.  In sandbox 1 I added a node called 'changed in the main line'.  In sandbox 2 I added a node called 'changed2'.
-
-- I changed LeoPyRef.leo in sandbox 2, but *not* in sandbox 1.
-
-- I did a update in sandbox 2.
-
-As expected (now that leoProjects.txt is a binary file) I got the following from cvs:
-
-M src/LeoPyRef.leo
-...
-cvs update: nonmergeable file needs merge
-cvs update: revision 1.448 from repository is now in src/leoProjects.txt
-cvs update: file from working directory is now in .#leoProjects.txt.1.447
-
-To summarize the update:
-
-- LeoPyRef.leo has been marked as modified (M), but it has **not** been changed by cvs.
-
-- As expected, leoProjects.txt contains the version from sandbox **1**.
-
-So far, so good.  But when I opened LeoPyRef.leo I got a huge surprise: the outline contains **both** the node 'changed in main-line' and the node 'changed2'.  Whoa Nellie!
-
-How did this happen?  Well, obviously the 'changed in main-line' node came from the cvs update.  I expected that.  The 'changed2' line must have come from the local copy of LeoPyRef.leo.
-
-Once I knew what to look for it wasn't too hard to discover what had happened.  The 'changed2' is a descendent of a cloned node called '4.4 projects'.
-
-- One clone of '4.4 projects' node is a descendent of the @thin leoProjects.txt node.
-
-- Another clone of the '4.4 project' is in the LeoPyRef.leo file but outside of any @thin node.
-
-So the 'resurrection' of the 'changed2' node happened while Leo was reading leoProjects.txt into LeoPyRef.leo.  The '4.4 projects' node **already existed in the outline** before Leo read leoProjects.txt, and the present atFile read logic only **adds** nodes, it never deletes nodes.  Thus, the 'changed2' node 'survived' the atFile read logic.  The 'changed2' node became a 'vampire' node that couldn't be killed.
-
-The problem is far from benign.  Because of clones, the vampire node became an orphan node in **another** file, namely leoKeys.py.  I tried two or three times to remove the vampire/orphan node before realizing what had happened.
-
-The fix (there is *always* a fix) will require some care.  The present atFile.read logic is robust because it *doesn't* delete nodes.  It is essential that the read logic remain robust.  I suspect the solutions will be as follows:
-
-A. The atFile.read code can not delete the subtree of @thin nodes initially, because it doesn't know whether there will be read errors later.  If there are read errors absolutely nothing must change.  This ensures that read errors never destroy information.
-
-B. A new post-pass will look for vampire nodes: nodes that were not actually read from the derived file.  I think (but haven't proven) that all descendents of vampire nodes are also vampire nodes.  If that is so the post-pass will simply delete vampire nodes without worrying about whether they have descendents.
-
-Warning: the new scheme will mean that cvs update can destroy information that previously existed in the outline.  I believe this is correct: we assume that derived files are the 'truly meaningful' files.  Hey, if we are wrong we can always get the old info from cvs :-)
-
-Edward
-#@-node:ekr.20060116173818:Fix vampire nodes
-#@+node:ekr.20071105145643:Clean up config mess
-#@-node:ekr.20071105145643:Clean up config mess
 #@+node:ekr.20070814144804:Incorrect conversion of paths to absolute paths
 @nocolor
-https://sourceforge.net/forum/message.php?msg_id=4464649
+
+http://sourceforge.net/forum/message.php?msg_id=4464649
 By: terry_n_brown
 
-Maybe it's not related to these other path issues, but an argument I'm always
-having with leo has to do with its conversion of file paths to 'absolute' forms.
-In the file browser I select '/home/tbrown/misc/foo.leo'.  Leo reinterprets
-this as '/media/hda2/usr1/home/tbrown/misc/foo.leo'  Then I switch machines,
-and while '/home/tbrown/misc/foo.leo' would still be valid,
-'/media/hda2/usr1/home/tbrown/misc/foo.leo' isn't - on the other machine it
-would be '/media/hdb1/home/tbrown/misc/foo.leo'.  I end up with the two entries
-in recent files, having to identify the right one.
+An argument I'm always having with leo has to do with its conversion of file
+paths to 'absolute' forms.
 
-I haven't tested it, but if the Tk dialog is returning '/home/tbrown/misc/foo.leo',
-which I assume it is because that's what it's displaying, I wish leo would use
-and store that.
+In the file browser I select '/home/tbrown/misc/foo.leo'.
+Leo reinterprets this as '/media/hda2/usr1/home/tbrown/misc/foo.leo'
+
+Then I switch machines, and while
+'/home/tbrown/misc/foo.leo' would still be valid,
+'/media/hda2/usr1/home/tbrown/misc/foo.leo' isn't - on the other machine it
+would be '/media/hdb1/home/tbrown/misc/foo.leo'.
+
+I end up with the two entries in recent files, having to identify the right one.
+
+If the Tk dialog is returning '/home/tbrown/misc/foo.leo', which I assume it is
+because that's what it's displaying, I wish leo would use and store that.
 
 @color
 #@nonl
 #@-node:ekr.20070814144804:Incorrect conversion of paths to absolute paths
-#@-node:ekr.20071102093502:Fix bugs
+#@+node:ekr.20071105171900:Remove all references to pluginsManager.txt
+#@+node:ekr.20031218072017.3440:loadHandlers & helper
+def loadHandlers(tag):
+
+    """Load all enabled plugins from the plugins directory"""
+
+    def pr (*args,**keys):
+        if not g.app.unitTesting:
+            g.es_print(*args,**keys)
+
+    fileName = "pluginsManager.txt"
+    plugins_path = g.os_path_abspath(g.os_path_join(g.app.loadDir,"..","plugins"))
+    files = glob.glob(g.os_path_join(plugins_path,"*.py"))
+    files = [g.os_path_abspath(theFile) for theFile in files]
+    s = g.app.config.getEnabledPlugins()
+    theConfigFile = g.app.config.enabledPluginsFileName
+    # g.trace('len(s)',s and len(s) or 0)
+    if s:
+        if not g.app.silentMode:
+            pr('@enabled-plugins found in %s' % (theConfigFile),color='blue')
+        enabled_files = getEnabledFiles(s,plugins_path)
+    else:
+        for theDir,place in (
+            (g.app.homeDir,'HOME'),
+            (plugins_path,'leo/config')
+        ):
+            manager_path = g.os_path_join(theDir,fileName)
+            if g.os_path_exists(manager_path):
+                g.es_print('%s: %s' % (fileName,theDir),color='blue')
+                break
+        else: pr('%s not found. No plugins will be loaded' % fileName)
+        if g.os_path_exists(manager_path):
+            << set enabled_files from pluginsManager.txt >>
+        else:  return
+
+    # Load plugins in the order they appear in the enabled_files list.
+    if files and enabled_files:
+        for theFile in enabled_files:
+            if theFile in files:
+                loadOnePlugin(theFile)
+
+    # Note: g.plugin_signon adds module names to g.app.loadedPlugins
+    if 0:
+        if g.app.loadedPlugins:
+            pr("%d plugins loaded" % (len(g.app.loadedPlugins)), color="blue")
+#@+node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
+try:
+    # New in 4.3: The first reference to a plugin in pluginsManager.txt controls.
+    theFile = open(manager_path)
+    s = theFile.read()
+    pr('Using settings in pluginsManager.txt')
+    enabled_files = getEnabledFiles(s,plugins_path)
+    theFile.close()
+except IOError:
+    pr("Can not open: %s"  % manager_path)
+    # Don't import leoTest initially.  It causes problems.
+    import leoTest ; leoTest.fail()
+    return
+#@-node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
+#@+node:ekr.20070224082131:getEnabledFiles
+def getEnabledFiles (s,plugins_path):
+
+    enabled_files = []
+    disabled_files = []
+    for s in g.splitLines(s):
+        s = s.strip()
+        if s:
+            if g.match(s,0,"#"):
+                s = s[1:].strip()
+                # Kludge: ignore comment lines containing a blank or not ending in '.py'.
+                if s and s.find(' ') == -1 and s[-3:] == '.py':
+                    path = g.os_path_abspath(g.os_path_join(plugins_path,s))
+                    if path not in enabled_files and path not in disabled_files:
+                        # print 'disabled',path
+                        disabled_files.append(path)
+            else:
+                path = g.os_path_abspath(g.os_path_join(plugins_path,s))
+                if path not in enabled_files and path not in disabled_files:
+                    # print 'enabled',path
+                    enabled_files.append(path)
+
+    return enabled_files
+#@nonl
+#@-node:ekr.20070224082131:getEnabledFiles
+#@-node:ekr.20031218072017.3440:loadHandlers & helper
+#@-node:ekr.20071105171900:Remove all references to pluginsManager.txt
+#@+node:ekr.20071105145643:Clean up config mess
+#@-node:ekr.20071105145643:Clean up config mess
 #@+node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
 #@-node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
 #@+node:ekr.20071031113657:Remove Leo's hand-written parser: use sax or lxml
+# Are there proper unit tests?
+# Do global settings and find-panel settings get set properly.
+#@nonl
 #@-node:ekr.20071031113657:Remove Leo's hand-written parser: use sax or lxml
 #@+node:ekr.20070803115653:Support @path and other directives in headlines
 #@-node:ekr.20070803115653:Support @path and other directives in headlines
@@ -290,6 +320,18 @@ def recycleWidgets (self):
 #@-node:ekr.20060914090030:add sort-lines-ignoring-case commad
 #@+node:ekr.20071024090626:Support @bool diagnose-aspell-installation
 #@-node:ekr.20071024090626:Support @bool diagnose-aspell-installation
+#@+node:ekr.20071105160956:*** auto-change panes
+@nocolor
+
+The idea: if a key binding is only in effect for one pane, and we get the
+binding, maybe we should change to the pane first!
+
+Examples:
+
+copy-node: auto-select tree pane.
+copy_text (when not editing a headline): auto-select body text.
+#@nonl
+#@-node:ekr.20071105160956:*** auto-change panes
 #@-node:ekr.20071105155631:High impact
 #@+node:ekr.20070703111455.1:Most important
 #@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree
@@ -957,7 +999,7 @@ def revert (self,event=None):
 #@-node:ekr.20070630143345:Other
 #@+node:ekr.20071105155631.1:Plugins
 #@+node:ekr.20071021125124:Revise plugins manager plugin
-Expunge leoPluginsManager.txt.
+Removed all references to pluginsManager.txt.
 #@nonl
 #@-node:ekr.20071021125124:Revise plugins manager plugin
 #@+node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus

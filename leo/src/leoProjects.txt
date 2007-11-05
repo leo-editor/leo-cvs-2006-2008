@@ -28,6 +28,7 @@
 
 #@-node:ekr.20070809131638:Pychecker report
 #@+node:ekr.20071105150738:Leo 4.4.5 a1
+#@+node:ekr.20071105171301:Fixed bugs
 #@+node:ekr.20060609070148:Fixed hung windows
 @nocolor
 
@@ -158,6 +159,269 @@ def runSaveFileDialog(self,initialfile,title,filetypes,defaultextension):
 #@-node:ekr.20060212061804.1:runSaveFileDialog
 #@-node:ekr.20031218072017.4057:tkGui file dialogs
 #@-node:ekr.20060609070148:Fixed hung windows
+#@+node:ekr.20060116173818:Warn on resurrected (vampire) nodes
+#@+node:ekr.20071105160956.1:original post (long)
+@nocolor
+
+Vampire nodes from cvs
+
+I've just discovered a major problem with cvs updates.  It is a subtle consequence of how Leo writes outlines and reads derived files.  This is a big bug in Leo, not cvs.  The effect of the bug is that nodes can appear in derived files that were never written to them!
+
+The discovery of this 'big bug' came about as the result of the following Aha:
+
+**@thin files that contain @all directives should be a cvs binary (-kb) files.**
+
+The reason is straightforward:  cvs doesn't know enough to merge such files.  Maybe all @thin derived files should be -kb files, but Leo's users will never agree to that!
+
+Anyway, leoProjects.txt is now a binary file as far as cvs is concerned.  Other .txt files, like leoScripts.txt, should also be binary files.  As we shall see, the fact that leoProjects.txt is now a -kb file means that we can not possibly blame the cvs merge algorithm for what is about to happen.
+
+Ok, back to the 'big bug'.  Here is how I got bitten:
+
+- I changed leoProjects.txt in two sandboxes 1 and 2.  In sandbox 1 I added a node called 'changed in the main line'.  In sandbox 2 I added a node called 'changed2'.
+
+- I changed LeoPyRef.leo in sandbox 2, but *not* in sandbox 1.
+
+- I did a update in sandbox 2.
+
+As expected (now that leoProjects.txt is a binary file) I got the following from cvs:
+
+M src/LeoPyRef.leo
+...
+cvs update: nonmergeable file needs merge
+cvs update: revision 1.448 from repository is now in src/leoProjects.txt
+cvs update: file from working directory is now in .#leoProjects.txt.1.447
+
+To summarize the update:
+
+- LeoPyRef.leo has been marked as modified (M), but it has **not** been changed by cvs.
+
+- As expected, leoProjects.txt contains the version from sandbox **1**.
+
+So far, so good.  But when I opened LeoPyRef.leo I got a huge surprise: the outline contains **both** the node 'changed in main-line' and the node 'changed2'.  Whoa Nellie!
+
+How did this happen?  Well, obviously the 'changed in main-line' node came from the cvs update.  I expected that.  The 'changed2' line must have come from the local copy of LeoPyRef.leo.
+
+Once I knew what to look for it wasn't too hard to discover what had happened.  The 'changed2' is a descendent of a cloned node called '4.4 projects'.
+
+- One clone of '4.4 projects' node is a descendent of the @thin leoProjects.txt node.
+
+- Another clone of the '4.4 project' is in the LeoPyRef.leo file but outside of any @thin node.
+
+So the 'resurrection' of the 'changed2' node happened while Leo was reading leoProjects.txt into LeoPyRef.leo.  The '4.4 projects' node **already existed in the outline** before Leo read leoProjects.txt, and the present atFile read logic only **adds** nodes, it never deletes nodes.  Thus, the 'changed2' node 'survived' the atFile read logic.  The 'changed2' node became a 'vampire' node that couldn't be killed.
+
+The problem is far from benign.  Because of clones, the vampire node became an orphan node in **another** file, namely leoKeys.py.  I tried two or three times to remove the vampire/orphan node before realizing what had happened.
+
+The fix (there is *always* a fix) will require some care.  The present atFile.read logic is robust because it *doesn't* delete nodes.  It is essential that the read logic remain robust.  I suspect the solutions will be as follows:
+
+A. The atFile.read code can not delete the subtree of @thin nodes initially, because it doesn't know whether there will be read errors later.  If there are read errors absolutely nothing must change.  This ensures that read errors never destroy information.
+
+B. A new post-pass will look for vampire nodes: nodes that were not actually read from the derived file.  I think (but haven't proven) that all descendents of vampire nodes are also vampire nodes.  If that is so the post-pass will simply delete vampire nodes without worrying about whether they have descendents.
+
+Warning: the new scheme will mean that cvs update can destroy information that previously existed in the outline.  I believe this is correct: we assume that derived files are the 'truly meaningful' files.  Hey, if we are wrong we can always get the old info from cvs :-)
+
+Edward
+#@-node:ekr.20071105160956.1:original post (long)
+#@+node:ekr.20071105160400:short summary
+@nocolor
+
+The present atFile read logic only **adds** nodes, it never deletes nodes. Thus,
+the 'changed2' node 'survived' the atFile read logic. The 'changed2' node became
+a 'vampire' node that couldn't be killed.
+
+The fix will require some care. The present atFile.read logic is robust because
+it *doesn't* delete nodes. I suspect the solutions will be as follows:
+
+A. The atFile.read code can not delete the subtree of @thin nodes initially,
+because it doesn't know whether there will be read errors later. If there are
+read errors absolutely nothing must change. This ensures that read errors never
+destroy information.
+
+B. A new post-pass will look for vampire nodes: nodes that were not actually
+read from the derived file. I think (but haven't proven) that all descendents of
+vampire nodes are also vampire nodes. If that is so the post-pass will simply
+delete vampire nodes without worrying about whether they have descendents.
+#@-node:ekr.20071105160400:short summary
+#@+node:ekr.20071105171231.1:what I did
+@nocolor
+
+1. createThinChild4 and findChild4 now set the visited bits for all found or
+created nodes.
+
+2. read now warns about 'ressurected' nodes for all the file types that read
+handles, namely @file, @thin and @noref.
+
+This should be a safe solution.  The user can choose at leisure what to do.
+#@nonl
+#@-node:ekr.20071105171231.1:what I did
+#@+node:ekr.20041005105605.21:read
+# The caller must enclose this code in beginUpdate/endUpdate.
+# Reads @thin, @file and @noref trees.
+
+def read(self,root,importFileName=None,thinFile=False,fromString=None):
+
+    """Read any derived file."""
+
+    at = self ; c = at.c
+    if 0:
+        p = c.currentPosition()
+        g.trace('1',p,p.v._parent,p.v._parent and p.v._parent.t.vnodeList)
+    << set fileName >>
+    at.initReadIvars(root,fileName,importFileName=importFileName,thinFile=thinFile)
+    if at.errors: return False
+    at.openFileForReading(fileName,fromString=fromString)
+    if not at.inputFile: return False
+    if not g.unitTesting:
+        g.es("reading: " + root.headString())
+    root.clearVisitedInTree()
+    at.scanAllDirectives(root,importing=at.importing,reading=True)
+    at.readOpenFile(root,at.inputFile,fileName)
+    if 0:
+        p = c.currentPosition()
+        g.trace('2',p,p.v._parent,p.v._parent and p.v._parent.t.vnodeList)
+    at.inputFile.close()
+    root.clearDirty() # May be set dirty below.
+    if at.errors == 0:
+        << advise user to delete all unvisited nodes >>
+    if at.errors == 0 and not at.importing:
+        # Package this as a method for use by mod_labels plugin.
+        self.copyAllTempBodyStringsToTnodes(root,thinFile)
+
+    << delete all tempBodyStrings >>
+    return at.errors == 0
+#@+node:ekr.20041005105605.22:<< set fileName >>
+if fromString:
+    fileName = "<string-file>"
+elif importFileName:
+    fileName = importFileName
+elif root.isAnyAtFileNode():
+    fileName = root.anyAtFileNodeName()
+else:
+    fileName = None
+
+if not fileName:
+    at.error("Missing file name.  Restoring @file tree from .leo file.")
+    return False
+#@-node:ekr.20041005105605.22:<< set fileName >>
+#@+node:ekr.20041005105605.25:<< delete all tempBodyStrings >>
+for p in c.allNodes_iter():
+
+    if hasattr(p.v.t,"tempBodyString"):
+        delattr(p.v.t,"tempBodyString")
+#@-node:ekr.20041005105605.25:<< delete all tempBodyStrings >>
+#@+node:ekr.20071105164407:<< advise user to delete all unvisited nodes >>
+resurrected = 0
+for p in root.self_and_subtree_iter():
+
+    if not p.v.t.isVisited():
+        g.es('resurrected node: %s' % (p.headString()),color='blue')
+        g.es('in file: %s' % (fileName),color='blue')
+        resurrected += 1
+
+if resurrected:
+    g.es('you may want to delete ressurected nodes')
+
+#@-node:ekr.20071105164407:<< advise user to delete all unvisited nodes >>
+#@-node:ekr.20041005105605.21:read
+#@+node:ekr.20041005105605.72:createThinChild4
+def createThinChild4 (self,gnxString,headline):
+
+    """Find or create a new *vnode* whose parent (also a vnode) is at.lastThinNode."""
+
+    at = self ; c = at.c ; indices = g.app.nodeIndices
+    last = at.lastThinNode ; lastIndex = last.t.fileIndex
+    gnx = indices.scanGnx(gnxString,0)
+
+    # New in Leo 4.4a5: Solve Read @file nodes problem (by LeoUser)
+    if self._forcedGnxPositionList and last in self._forcedGnxPositionList:
+        last.fileIndex = lastIndex=  gnx
+        self._forcedGnxPositionList.remove(last)
+
+    if 0:
+        g.trace("last",last,last.t.fileIndex)
+        g.trace("args",indices.areEqual(gnx,last.t.fileIndex),gnxString,headline)
+
+    # See if there is already a child with the proper index.
+    child = at.lastThinNode.firstChild()
+    while child and not indices.areEqual(gnx,child.t.fileIndex):
+        child = child.next()
+
+    if at.cloneSibCount > 1:
+        n = at.cloneSibCount ; at.cloneSibCount = 0
+        if child: clonedSibs,junk = at.scanForClonedSibs(child)
+        else: clonedSibs = 0
+        copies = n - clonedSibs
+        # g.trace(copies,headline)
+    else:
+        if indices.areEqual(gnx,lastIndex):
+            last.t.setVisited() # Supress warning/deletion of unvisited nodes.
+            return last
+        if child:
+            child.t.setVisited() # Supress warning/deletion of unvisited nodes.
+            return child
+        copies = 1 # Create exactly one copy.
+
+    while copies > 0:
+        copies -= 1
+        # Create the tnode only if it does not already exist.
+        tnodesDict = c.fileCommands.tnodesDict
+        t = tnodesDict.get(gnxString)
+        if t:
+            assert indices.areEqual(t.fileIndex,gnx), 't.fileIndex: %s gnx: %s' % (t.fileIndex,gnx)
+            # g.trace('not created, should already exist',gnxString)
+        else:
+            t = leoNodes.tnode(bodyString=None,headString=headline)
+            t.fileIndex = gnx
+            tnodesDict[gnxString] = t
+        parent = at.lastThinNode
+        child = leoNodes.vnode(t)
+        t.vnodeList.append(child)
+        child.linkAsNthChild(parent,parent.numberOfChildren())
+        # g.trace('creating last child %s\nof parent%s\n' % (child,parent))
+
+    child.t.setVisited() # Supress warning/deletion of unvisited nodes.
+    return child
+#@-node:ekr.20041005105605.72:createThinChild4
+#@+node:ekr.20041005105605.73:findChild4
+def findChild4 (self,headline):
+
+    """Return the next tnode in at.root.t.tnodeList."""
+
+    __pychecker__ = '--no-argsused' # headline might be used for debugging.
+
+    # Note: tnodeLists are used _only_ when reading @file (not @thin) nodes.
+    # tnodeLists compensate (a hack) for not having gnx's in derived files! 
+
+    at = self ; v = at.root.v
+
+    if not hasattr(v.t,"tnodeList"):
+        at.readError("no tnodeList for " + repr(v))
+        g.es("Write the @file node or use the Import Derived File command")
+        g.trace("no tnodeList for ",v)
+        return None
+
+    if at.tnodeListIndex >= len(v.t.tnodeList):
+        at.readError("bad tnodeList index: %d, %s" % (at.tnodeListIndex,repr(v)))
+        g.trace("bad tnodeList index",at.tnodeListIndex,len(v.t.tnodeList),v)
+        return None
+
+    t = v.t.tnodeList[at.tnodeListIndex]
+    assert(t)
+    at.tnodeListIndex += 1
+
+    # Get any vnode joined to t.
+    try:
+        v = t.vnodeList[0]
+    except:
+        at.readError("No vnodeList for tnode: %s" % repr(t))
+        g.trace(at.tnodeListIndex)
+        return None
+
+    # Don't check the headline.  It simply causes problems.
+    t.setVisited() # Supress warning/deletion of unvisited nodes.
+    return t
+#@-node:ekr.20041005105605.73:findChild4
+#@-node:ekr.20060116173818:Warn on resurrected (vampire) nodes
+#@-node:ekr.20071105171301:Fixed bugs
 #@-node:ekr.20071105150738:Leo 4.4.5 a1
 #@-all
 #@nonl

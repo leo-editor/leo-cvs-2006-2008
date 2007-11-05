@@ -4156,6 +4156,18 @@ Brian Theado
 @language python
 @color
 #@nonl
+#@+node:ekr.20071105171231:from atFile.read
+#@+node:ekr.20041005105605.23:<< warn about non-empty unvisited nodes >>
+for p in root.self_and_subtree_iter():
+
+    # g.trace(p)
+    try: s = p.v.t.tempBodyString
+    except: s = ""
+    if s and not p.v.t.isVisited():
+        at.error("Not in derived file: %s" % p.headString())
+        p.v.t.setVisited() # One message is enough.
+#@-node:ekr.20041005105605.23:<< warn about non-empty unvisited nodes >>
+#@-node:ekr.20071105171231:from atFile.read
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl
