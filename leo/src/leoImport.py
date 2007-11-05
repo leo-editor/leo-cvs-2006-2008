@@ -2206,6 +2206,9 @@ class baseLeoImportCommands:
                 assert progress < i
 
             self.error('no block')
+            if 1:
+                i,j = g.getLine(s,start)
+                g.trace(s[max(0,i-20):i+20])
             if trace: g.trace('** no block')
             return start
         #@-node:ekr.20070707073859:skipBlock
@@ -2849,7 +2852,9 @@ class baseLeoImportCommands:
         #@-others
     #@-node:edreamleo.20070710085115:class javaScanner (baseScannerClass)
     #@-node:edreamleo.20070710110114:Java scanner
-    #@+node:ekr.20071027111225:JavaScript scanner
+    #@+node:ekr.20071027111225:JavaScript scanner (not ready yet)
+    # The syntax for patterns causes all kinds of problems...
+    #@nonl
     #@+node:ekr.20071027111225.1:scanJavaScriptText
     def scanJavaScriptText (self,s,parent,atAuto=False):
 
@@ -2883,9 +2888,48 @@ class baseLeoImportCommands:
             self.functionTags = ['function']
             self.sigFailTokens = [';',] # ','=',] # Just like Java.
         #@-node:ekr.20071027111225.3:javaScriptScanner.__init__
+        #@+node:ekr.20071102150937:startsString
+        def startsString(self,s,i):
+
+            if g.match(s,i,'"') or g.match(s,i,"'"):
+                # Count the number of preceding backslashes:
+                n = 0 ; j = i-1
+                while j >= 0 and s[j] == '\\':
+                    n += 1
+                    j -= 1
+                return (n % 2) == 0
+            # elif g.match(s,i,'/'):
+                # return i == 0 or s[i-1] != '/'
+            else:
+                return False
+        #@-node:ekr.20071102150937:startsString
+        #@+node:ekr.20071102161115:skipString
+        # Not ready: '/' is also the division operator!
+
+
+        # def skipString (self,s,i):
+
+            # # Returns len(s) on unterminated string.
+            # if s[i] in ('"',"'"):
+                # return g.skip_string(s,i,verbose=False)
+            # else:
+                # # Match a pattern.
+                # delim = '/'
+                # g.pdb()
+                # assert(s[i] == delim)
+                # i += 1
+                # n = len(s)
+                # while i < n:
+                    # if s[i] == delim and s[i-1] != '\\':
+                        # return i + 1
+                    # else:
+                        # i += 1
+                # return i
+        #@nonl
+        #@-node:ekr.20071102161115:skipString
         #@-others
     #@-node:ekr.20071027111225.2:class javaScriptScanner (baseScannerClass)
-    #@-node:ekr.20071027111225:JavaScript scanner
+    #@-node:ekr.20071027111225:JavaScript scanner (not ready yet)
     #@+node:ekr.20070711104241:Pascal scanner
     #@+node:ekr.20070711104241.2:scanPascalText
     def scanPascalText (self,s,parent,atAuto=False):
