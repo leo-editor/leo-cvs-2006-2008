@@ -27,6 +27,138 @@
 # leoGlobals.py:4693: No module attribute (mtime) found
 
 #@-node:ekr.20070809131638:Pychecker report
+#@+node:ekr.20071105150738:Leo 4.4.5 a1
+#@+node:ekr.20060609070148:Fixed hung windows
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3768494
+By: ktenney
+
+I'm using current CVS, W2k
+
+1 open a Leo file (I'm using a batch file / console)
+
+2 click Edit->Open   <-- Having this dialog open is the problem.
+
+3 return focus to the Leo window
+
+4 click Help->Open leoDocs.leo
+
+Zombie!
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.2817: doCommand
+command_count = 0
+
+def doCommand (self,command,label,event=None):
+
+    """Execute the given command, invoking hooks and catching exceptions.
+
+    The code assumes that the "command1" hook has completely handled the command if
+    g.doHook("command1") returns False.
+    This provides a simple mechanism for overriding commands."""
+
+    c = self ; p = c.currentPosition()
+    commandName = command and command.__name__
+    c.setLog()
+
+    self.command_count += 1
+    if not g.app.unitTesting and c.config.getBool('trace_doCommand'):
+        g.trace(commandName)
+
+    # The presence of this message disables all commands.
+    if c.disableCommandsMessage:
+        g.es(c.disableCommandsMessage,color='blue')
+        return 'break' # Inhibit all other handlers.
+
+    if c.inCommand and not g.unitTesting:
+        g.es('Ignoring command: already executing a command.',color='red')
+        return 'break'
+
+    if label and event is None: # Do this only for legacy commands.
+        if label == "cantredo": label = "redo"
+        if label == "cantundo": label = "undo"
+        g.app.commandName = label
+
+    if not g.doHook("command1",c=c,p=p,v=p,label=label):
+        try:
+            c.inCommand = True
+            val = command(event)
+            if c and c.exists: # Be careful: the command could destroy c.
+                c.inCommand = False
+                c.k.funcReturn = val
+        except:
+            c.inCommand = False
+            if g.app.unitTesting:
+                raise
+            else:
+                g.es("exception executing command")
+                print "exception executing command"
+                g.es_exception(c=c)
+                if c and c.exists and hasattr(c,'frame'):
+                    c.redraw_now()
+
+        if c and c.exists and c.requestCloseWindow:
+            g.trace('Closing window after command')
+            c.requestCloseWindow = False
+            g.app.closeLeoWindow(c.frame)
+
+    # Be careful: the command could destroy c.
+    if c and c.exists:
+        p = c.currentPosition()
+        g.doHook("command2",c=c,p=p,v=p,label=label)
+
+    return "break" # Inhibit all other handlers.
+#@-node:ekr.20031218072017.2817: doCommand
+#@+node:ekr.20031218072017.4057:tkGui file dialogs
+# We no longer specify default extensions so that we can open and save files without extensions.
+#@+node:ekr.20060212061804:runOpenFileDialog
+def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
+
+    """Create and run an Tkinter open file dialog ."""
+
+    __pychecker__ = '--no-argsused' # defaultextension not used.
+
+    initialdir = g.app.globalOpenDir or g.os_path_abspath(os.getcwd())
+
+    if multiple:
+        # askopenfilenames requires Python 2.3 and Tk 8.4.
+        version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
+        if (
+            g.CheckVersion(version,"2.3") and
+            g.CheckVersion(self.root.getvar("tk_patchLevel"),"8.4")
+        ):
+            files = tkFileDialog.askopenfilenames(
+                title=title,filetypes=filetypes,initialdir=initialdir)
+            # g.trace(files)
+            return list(files)
+        else:
+            # Get one file and return it as a list.
+            theFile = tkFileDialog.askopenfilename(
+                title=title,filetypes=filetypes,initialdir=initialdir)
+            return [theFile]
+    else:
+        # Return a single file name as a string.
+        return tkFileDialog.askopenfilename(
+            title=title,filetypes=filetypes,initialdir=initialdir)
+#@-node:ekr.20060212061804:runOpenFileDialog
+#@+node:ekr.20060212061804.1:runSaveFileDialog
+def runSaveFileDialog(self,initialfile,title,filetypes,defaultextension):
+
+    """Create and run an Tkinter save file dialog ."""
+
+    __pychecker__ = '--no-argsused' # defaultextension not used.
+
+    initialdir=g.app.globalOpenDir or g.os_path_abspath(os.getcwd()),
+
+    return tkFileDialog.asksaveasfilename(
+        initialdir=initialdir,initialfile=initialfile,
+        title=title,filetypes=filetypes)
+#@-node:ekr.20060212061804.1:runSaveFileDialog
+#@-node:ekr.20031218072017.4057:tkGui file dialogs
+#@-node:ekr.20060609070148:Fixed hung windows
+#@-node:ekr.20071105150738:Leo 4.4.5 a1
 #@-all
 #@nonl
 #@-node:EKR.20040429143933:@thin leoProjects.txt

@@ -4,7 +4,8 @@
 #@+node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
 # Leo 4.4.5 will complete several projects that are long overdue.
 
-#@+node:ekr.20071102093502:Fix bugs first
+#@+node:ekr.20070814070312:First
+#@+node:ekr.20071102093502:Fix bugs
 #@+node:ekr.20060116173818:Fix vampire nodes
 @nocolor
 
@@ -66,24 +67,1027 @@ Warning: the new scheme will mean that cvs update can destroy information that p
 
 Edward
 #@-node:ekr.20060116173818:Fix vampire nodes
-#@+node:ekr.20060609070148:Fix hung windows
+#@+node:ekr.20071105145643:Clean up config mess
+#@-node:ekr.20071105145643:Clean up config mess
+#@+node:ekr.20070814144804:Incorrect conversion of paths to absolute paths
+@nocolor
+https://sourceforge.net/forum/message.php?msg_id=4464649
+By: terry_n_brown
+
+Maybe it's not related to these other path issues, but an argument I'm always
+having with leo has to do with its conversion of file paths to 'absolute' forms.
+In the file browser I select '/home/tbrown/misc/foo.leo'.  Leo reinterprets
+this as '/media/hda2/usr1/home/tbrown/misc/foo.leo'  Then I switch machines,
+and while '/home/tbrown/misc/foo.leo' would still be valid,
+'/media/hda2/usr1/home/tbrown/misc/foo.leo' isn't - on the other machine it
+would be '/media/hdb1/home/tbrown/misc/foo.leo'.  I end up with the two entries
+in recent files, having to identify the right one.
+
+I haven't tested it, but if the Tk dialog is returning '/home/tbrown/misc/foo.leo',
+which I assume it is because that's what it's displaying, I wish leo would use
+and store that.
+
+@color
+#@nonl
+#@-node:ekr.20070814144804:Incorrect conversion of paths to absolute paths
+#@-node:ekr.20071102093502:Fix bugs
+#@+node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
+#@-node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
+#@+node:ekr.20071031113657:Remove Leo's hand-written parser: use sax or lxml
+#@-node:ekr.20071031113657:Remove Leo's hand-written parser: use sax or lxml
+#@+node:ekr.20070803115653:Support @path and other directives in headlines
+#@-node:ekr.20070803115653:Support @path and other directives in headlines
+#@-node:ekr.20070814070312:First
+#@+node:ekr.20071105155631:High impact
+#@+node:ekr.20071025160653.2:Commands to add/remove icons
+#@+node:ekr.20071026092640:To do
 @nocolor
 
-https://sourceforge.net/forum/message.php?msg_id=3768494
+To do:
+
+* Define standard event handlers:
+    - on-left-click (deletes icon)
+    - on-click
+
+* Adjust location depending on icon size.
+
+- Define standard icons in a subfolder of Icons folder?
+
+insert-icon
+append-icon
+delete-first-icon
+delete-nth-icon
+delete-all-node-icons
+delete-all-icons-in-tree
+#@-node:ekr.20071026092640:To do
+#@+node:ekr.20040803072955.46:drawUserIcons & helper
+def drawUserIcons(self,p,where,x,y):
+
+    """Draw any icons specified by p.v.t.unknownAttributes["icons"]."""
+
+    h,w = 0,0 ; t = p.v.t
+
+    if not hasattr(t,"unknownAttributes"):
+        return h,w
+
+    iconsList = t.unknownAttributes.get("icons")
+    if not iconsList:
+        return h,w
+
+    try:
+        for theDict in iconsList:
+            h2,w2 = self.drawUserIcon(p,where,x,y,w,theDict)
+            h = max(h,h2) ; w += w2
+    except:
+        g.es_exception()
+
+    # g.trace(where,h,w)
+
+    return h,w
+#@+node:ekr.20040803072955.47:drawUserIcon
+def drawUserIcon (self,p,where,x,y,w2,theDict):
+
+    h,w = 0,0
+
+    if where != theDict.get("where","beforeHeadline"):
+        return h,w
+
+    # if self.trace_gc: g.printNewObjects(tag='userIcon 1')
+
+    # g.trace(where,x,y,theDict)
+
+    << set offsets and pads >>
+    theType = theDict.get("type")
+    if theType == "icon":
+        if 0: # not ready yet.
+            s = theDict.get("icon")
+            << draw the icon in string s >>
+    elif theType == "file":
+        theFile = theDict.get("file")
+        << draw the icon at file >>
+    elif theType == "url":
+        ## url = theDict.get("url")
+        << draw the icon at url >>
+
+    # Allow user to specify height, width explicitly.
+    h = theDict.get("height",h)
+    w = theDict.get("width",w)
+
+    # if self.trace_gc: g.printNewObjects(tag='userIcon 2')
+
+    return h,w
+#@+node:ekr.20040803072955.48:<< set offsets and pads >>
+xoffset = theDict.get("xoffset")
+try:    xoffset = int(xoffset)
+except: xoffset = 0
+
+yoffset = theDict.get("yoffset")
+try:    yoffset = int(yoffset)
+except: yoffset = 0
+
+xpad = theDict.get("xpad")
+try:    xpad = int(xpad)
+except: xpad = 0
+
+ypad = theDict.get("ypad")
+try:    ypad = int(ypad)
+except: ypad = 0
+#@-node:ekr.20040803072955.48:<< set offsets and pads >>
+#@+node:ekr.20040803072955.49:<< draw the icon in string s >>
+pass
+#@-node:ekr.20040803072955.49:<< draw the icon in string s >>
+#@+node:ekr.20040803072955.50:<< draw the icon at file >>
+fullname = g.os_path_join(g.app.loadDir,"..","Icons",theFile)
+fullname = g.os_path_normpath(fullname)
+
+# Bug fix: the key must include distinguish nodes.
+key = (fullname,p.v.t)
+image = self.iconimages.get(key)
+
+if not image:
+    try:
+        from PIL import Image, ImageTk
+        image1 = Image.open(fullname)
+        image = ImageTk.PhotoImage(image1)
+        self.iconimages[key] = image
+    except Exception:
+        #g.es_exception()
+        image = None
+
+if not image:
+    try:
+        image = Tk.PhotoImage(master=self.canvas,file=fullname)
+        self.iconimages[key] = image
+    except Exception:
+        #g.es_exception()
+        image = None
+
+if image:
+    theId = self.canvas.create_image(
+        x+xoffset+w2,y+yoffset,
+        anchor="nw",image=image,tag="userIcon")
+    self.ids[theId] = p.copy()
+    # g.trace('id',theId,p.headString(),theFile,image)
+
+    # assert(theId not in self.visibleIcons)
+    self.visibleUserIcons.append(theId)
+
+    h = image.height() + yoffset + ypad
+    w = image.width()  + xoffset + xpad
+#@-node:ekr.20040803072955.50:<< draw the icon at file >>
+#@+node:ekr.20040803072955.51:<< draw the icon at url >>
+pass
+#@-node:ekr.20040803072955.51:<< draw the icon at url >>
+#@-node:ekr.20040803072955.47:drawUserIcon
+#@-node:ekr.20040803072955.46:drawUserIcons & helper
+#@+node:ekr.20040803072955.12:recycleWidgets
+def recycleWidgets (self):
+
+    canvas = self.canvas
+
+    for theId in self.visibleBoxes:
+        if theId not in self.freeBoxes:
+            self.freeBoxes.append(theId)
+        canvas.coords(theId,-100,-100)
+    self.visibleBoxes = []
+
+    for theId in self.visibleClickBoxes:
+        if theId not in self.freeClickBoxes:
+            self.freeClickBoxes.append(theId)
+        canvas.coords(theId,-100,-100,-100,-100)
+    self.visibleClickBoxes = []
+
+    for theId in self.visibleIcons:
+        if theId not in self.freeIcons:
+            self.freeIcons.append(theId)
+        canvas.coords(theId,-100,-100)
+    self.visibleIcons = []
+
+    for theId in self.visibleLines:
+        if theId not in self.freeLines:
+            self.freeLines.append(theId)
+        canvas.coords(theId,-100,-100,-100,-100)
+    self.visibleLines = []
+
+    aList = self.visibleText.values()
+    for data in aList:
+        w,theId = data
+        # assert theId == w.leo_window_id
+        canvas.coords(theId,-100,-100)
+        w.leo_position = None # Allow the position to be freed.
+        if data not in self.freeText:
+            self.freeText.append(data)
+    self.visibleText = {}
+
+    # g.trace('deleting visible user icons!')
+    for theId in self.visibleUserIcons:
+        # The present code does not recycle user Icons.
+        self.canvas.delete(theId)
+    self.visibleUserIcons = []
+#@-node:ekr.20040803072955.12:recycleWidgets
+#@-node:ekr.20071025160653.2:Commands to add/remove icons
+#@+node:ekr.20060914090030:add sort-lines-ignoring-case commad
+#@-node:ekr.20060914090030:add sort-lines-ignoring-case commad
+#@+node:ekr.20071024090626:Support @bool diagnose-aspell-installation
+#@-node:ekr.20071024090626:Support @bool diagnose-aspell-installation
+#@-node:ekr.20071105155631:High impact
+#@+node:ekr.20070703111455.1:Most important
+#@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree
+#@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree
+#@+node:ekr.20070623144302:vim-like bindings
+#@+node:ekr.20070824094005:Requests
+@nocolor
+
+> Some of the features I've grown to like with VIM are search-and-replace within the current selection, easy keyboard navigation, and to some extent macro recording and running.
+
+Thanks for these comments.  I'll keep them in mind as I design the vim-like code.
+
+Edward
+#@nonl
+#@-node:ekr.20070824094005:Requests
+#@+node:ekr.20070814083528.1:Design post
+@nocolor
+
+http://sourceforge.net/forum/forum.php?thread_id=1800079&forum_id=10226
+
+Recent posts have discussed @menu trees and resolving cvs conflicts. The third of my recent ruminations concerns adding support for vim-like key bindings. 
+
+Earlier work involving input modes (@mode nodes in settings file) probably is not completely sufficient to implement plain-key key bindings in a way that would truly be vim-like. 
+
+Most of the issues are implementation issues: Leo's key-handling code is very complicated. The trick is to handle both vim and emacs styles compatibly. 
+
+The user must be able to specify vim-like key bindings without using @mode nodes. That is, top-level vim key bindings must always be available. Vim has an enormous number of key bindings: the user must be able to specify which are in effect. 
+
+My strategy will be as follows: 
+
+1. Create enter-vim-mode and exit-vim-mode commands, and create the setting: 
+
+@bool vim-mode-by-default = False 
+
+This will allow the user to specify vim mode as the default mode if desired. 
+
+2. Create **vim-edit** commands as needed in order to handler user interaction. For example, dd deletes the present line while d5 deletes 5 lines. Rather than trying to simulate this effect using the present mechanisms, the vim-delete command will prompt for the number of characters or lines to delete. 
+
+Give the complex nature of vims c and d commands (and others) it will probably be necessary to create a vim-edit class in leoEditCommands.py. This class will handle all the ways of specifying a range of characters to which the various commands will apply. It's not clear exactly how much work will be needed, but my guess is that it will, in fact, be easiest to handle vim-like interactions with new code. 
+
+3. Vim's ':' command will simply invoke Leo's minibuffer. This isn't precisely the same as Vim's status line: it is significantly better. Otoh, we will want a way to simulate the actual spelling of vim's ':' commands. Possible @abbreviation nodes can be pressed into service. 
+
+4. Internally, it will be quite a trick to allow top-level vim-like plain-key bindings in all text widgets. I'm not sure how to do this, but it is essential. 
+
+I am quite eager to get something truly vim-like working. It promises to increase my editing speed substantially. It also should appeal strongly to present vim users. 
+#@nonl
+#@-node:ekr.20070814083528.1:Design post
+#@+node:ekr.20071026140857:Posting re vim bindings
+@nocolor
+
+> I'm looking forward to this.
+
+Excellent.  You can help with the testing :-)
+
+Leo looks like a perfect match for the vim approach.  Indeed, vim typically uses a 1 or 2 level concatenation scheme (preceded by a repeat count).  This is kinda like a utf-8 encoding :-)  That is, it is a variable-length encoding of the command.
+
+This is a very powerful approach, one that vim doesn't really exploit (because it doesn't need to). But Leo absolutely needs this power of some extra levels.  Something like this:
+
+i input mode
+
+f focus commands
+..fb focus to body
+..fo focus to outline
+..fl focus to log
+..ft toggle body pane focus
+
+o outline commands
+..om outline move, i.e., actually move the nodes.
+..og outline go, i.e., select nodes without changing the outline
+..od outline delete
+..oh outline edit headline
+
+s search commands
+..so search options
+...soi toggle ignore-case checkbox
+...sow toggle word checkbox
+...etc!
+..st search using search tab
+..sf forward incremental search
+..sb backward incremental search
+
+x minibuffer commands
+
+w file commands
+..ws save outline
+..wq quit
+
+escape: universal escape, like ctrl-g now.
+
+Do you see?  Just one extra level allows 10+ times the number of key bindings.  This is a perfect match for Leo's complex environment.
+
+Naturally, Leo will allow the user to specify these bindings using nodes in the @settings tree. Indeed, this is truly an exciting prospect.
+
+Edward
+
+P.S.  I've glossed over the details of which single characters (like d for delete character) should be reserved for common editing and cursor-movement commands.  That's the beauty of creating these bindings with user settings: no need to argue :-)  And that's the beauty of arbitrarily deep key binding trees: there are plenty of keys to go around.
+
+EKR
+#@-node:ekr.20071026140857:Posting re vim bindings
+#@-node:ekr.20070623144302:vim-like bindings
+#@+node:ekr.20070625091423:Add translation services
+@nocolor
+
+*Many* calls to g.es and g.es_print have a mix of translated and untranslated items.
+Untranslated items should include file names, directories, gnx's, leo_id's etc.
+
+**Don't bother to do clone-find-all: there are 666 many matches!**
+
+Regardless of the chosen scheme:
+
+- g.translate will do the actual translation.
+
+- Some simple string, like tr, will be an abbreviation for g.translate.
+  The typical import will be::
+
+    import leoGlobals as g ; tr = g.translate
+
+The easiest scheme seems to be:
+
+- g.es and g.es_print translate all arguments.
+- g.esx and g.es_printx do no translation.
+
+g.esx and g.es_printx allow a mix on translated and untranslated arguments::
+
+    g.esx(tr('abc'),fileName)
+#@-node:ekr.20070625091423:Add translation services
+#@+node:ekr.20071001052501:Versioning for nodes
+@nocolor
+
+One feature I have not seen in SCS system is something which might be called
+"history compression": I might be interested in having both version 5 and 6
+in my source tree, when the current version is 7, but I am not really interested
+in the 2000 steps which transformed 5 into 6 (just suggested this feature to
+the bazaar people). This happens actually quite often to me, since I use the
+SCS as a back-up system, saving many (uninteresting) intermediate steps while
+implementing a new feature.
+#@nonl
+#@-node:ekr.20071001052501:Versioning for nodes
+#@-node:ekr.20070703111455.1:Most important
+#@+node:ekr.20070630143345:Other
+#@+node:ekr.20070521105645:Improve api docs with epidoc?
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4319363
 By: ktenney
 
-I'm using current CVS, W2k
+I think there is room for improvement in documenting Leo's
+API, making it easier to write these kind of scripts.
+I'm not sure of the best way to do that.
 
-1 open a Leo file (I'm using a batch file / console)
+Epydoc seems to be the most active project in this realm.
+http://epydoc.sourceforge.net/epydoc.html
+#@-node:ekr.20070521105645:Improve api docs with epidoc?
+#@+node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
+val = c.config.getBool('collapse_nodes_during_finds')
+c.config.set(p,'collapse_nodes_during_finds',not val)
+g.es_print('collapse_nodes_during_finds',c.config.getBool('collapse_nodes_during_finds'))
+#@nonl
+#@-node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
+#@+node:ekr.20061116054917.6:Remove blanks in calltips
+#@-node:ekr.20061116054917.6:Remove blanks in calltips
+#@+node:ekr.20070627151457:--runCommand option
+@ --runCommand "leo-command-name" runs the command at idle-time after loading the file.
+#@nonl
+#@-node:ekr.20070627151457:--runCommand option
+#@+node:ekr.20061002093442:Add opml support to new,open, save commands
+#@+node:ekr.20031218072017.2820:top level (file menu)
+#@+node:ekr.20031218072017.1623:new
+def new (self,event=None,gui=None):
 
-2 click Edit->Open   <-- Having this dialog open is the problem.
+    '''Create a new Leo window.'''
 
-3 return focus to the Leo window
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=None,gui=gui)
 
-4 click Help->Open leoDocs.leo
+    # Needed for plugins.
+    g.doHook("new",old_c=self,c=c,new_c=c)
+    # Use the config params to set the size and location of the window.
+    c.beginUpdate()
+    try:
+        frame.setInitialWindowGeometry()
+        frame.deiconify()
+        frame.lift()
+        frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio) # Resize the _new_ frame.
+        t = leoNodes.tnode()
+        v = leoNodes.vnode(t)
+        p = leoNodes.position(v,[])
+        v.initHeadString("NewHeadline")
+        v.moveToRoot(oldRoot=None)
+        c.setRootVnode(v) # New in Leo 4.4.2.
+        c.editPosition(p)
+    finally:
+        c.endUpdate()
+        # chapterController.finishCreate must be called after the first real redraw
+        # because it requires a valid value for c.rootPosition().
+        if c.config.getBool('use_chapters') and c.chapterController:
+            c.chapterController.finishCreate()
+            frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+    return c # For unit test.
+#@-node:ekr.20031218072017.1623:new
+#@+node:ekr.20031218072017.2821:open
+def open (self,event=None):
 
-Zombie!
-#@-node:ekr.20060609070148:Fix hung windows
+    '''Open a Leo window containing the contents of a .leo file.'''
+
+    c = self
+    << Set closeFlag if the only open window is empty >>
+
+    fileName = g.app.gui.runOpenFileDialog(
+        title = "Open",
+        filetypes = [("Leo files","*.leo"), ("All files","*")],
+        defaultextension = ".leo")
+    c.bringToFront()
+
+    ok = False
+    if fileName and len(fileName) > 0:
+        ok, frame = g.openWithFileName(fileName,c)
+        if ok:
+            g.setGlobalOpenDir(fileName)
+        if ok and closeFlag:
+            g.app.destroyWindow(c.frame)
+
+    # openWithFileName sets focus if ok.
+    if not ok:
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+#@nonl
+#@+node:ekr.20031218072017.2822:<< Set closeFlag if the only open window is empty >>
+@ If this is the only open window was opened when the app started, and the window has never been written to or saved, then we will automatically close that window if this open command completes successfully.
+@c
+
+closeFlag = (
+    c.frame.startupWindow and # The window was open on startup
+    not c.changed and not c.frame.saved and # The window has never been changed
+    g.app.numberOfWindows == 1) # Only one untitled window has ever been opened
+#@-node:ekr.20031218072017.2822:<< Set closeFlag if the only open window is empty >>
+#@-node:ekr.20031218072017.2821:open
+#@+node:ekr.20031218072017.2823:openWith and allies
+def openWith(self,event=None,data=None):
+
+    """This routine handles the items in the Open With... menu.
+
+    These items can only be created by createOpenWithMenuFromTable().
+    Typically this would be done from the "open2" hook.
+
+    New in 4.3: The "os.spawnv" now works. You may specify arguments to spawnv
+    using a list, e.g.:
+
+    openWith("os.spawnv", ["c:/prog.exe","--parm1","frog","--switch2"], None)
+    """
+
+    c = self ; p = c.currentPosition()
+    n = data and len(data) or 0
+    if n != 3:
+        g.trace('bad data, length must be 3, got %d' % n)
+        return
+    try:
+        openType,arg,ext=data
+        if not g.doHook("openwith1",c=c,p=p,v=p.v,openType=openType,arg=arg,ext=ext):
+            g.enableIdleTimeHook(idleTimeDelay=100)
+            << set ext based on the present language >>
+            << create or reopen temp file, testing for conflicting changes >>
+            << execute a command to open path in external editor >>
+        g.doHook("openwith2",c=c,p=p,v=p.v,openType=openType,arg=arg,ext=ext)
+    except Exception:
+        g.es("unexpected exception in c.openWith")
+        g.es_exception()
+
+    return "break"
+#@+node:ekr.20031218072017.2824:<< set ext based on the present language >>
+if not ext:
+    theDict = g.scanDirectives(c)
+    language = theDict.get("language")
+    ext = g.app.language_extension_dict.get(language)
+    # print language,ext
+    if ext == None:
+        ext = "txt"
+
+if ext[0] != ".":
+    ext = "."+ext
+
+# print "ext",ext
+#@-node:ekr.20031218072017.2824:<< set ext based on the present language >>
+#@+node:ekr.20031218072017.2825:<< create or reopen temp file, testing for conflicting changes >>
+theDict = None ; path = None
+<< set dict and path if a temp file already refers to p.v.t >>
+if path:
+    << create or recreate temp file as needed >>
+else:
+    path = c.createOpenWithTempFile(p,ext)
+
+if not path:
+    return # An error has occured.
+#@+node:ekr.20031218072017.2826:<<set dict and path if a temp file already refers to p.v.t >>
+searchPath = c.openWithTempFilePath(p,ext)
+
+if g.os_path_exists(searchPath):
+    for theDict in g.app.openWithFiles:
+        if p.v == theDict.get('v') and searchPath == theDict.get("path"):
+            path = searchPath
+            break
+#@-node:ekr.20031218072017.2826:<<set dict and path if a temp file already refers to p.v.t >>
+#@+node:ekr.20031218072017.2827:<< create or recreate temp file as needed >>
+@ We test for changes in both p and the temp file:
+
+- If only p's body text has changed, we recreate the temp file.
+- If only the temp file has changed, do nothing here.
+- If both have changed we must prompt the user to see which code to use.
+@c
+
+encoding = theDict.get("encoding")
+old_body = theDict.get("body")
+new_body = p.bodyString()
+new_body = g.toEncodedString(new_body,encoding,reportErrors=True)
+
+old_time = theDict.get("time")
+try:
+    new_time = g.os_path_getmtime(path)
+except:
+    new_time = None
+
+body_changed = old_body != new_body
+temp_changed = old_time != new_time
+
+if body_changed and temp_changed:
+    << Raise dialog about conflict and set result >>
+    if result == "cancel": return
+    rewrite = result == "outline"
+else:
+    rewrite = body_changed
+
+if rewrite:
+    path = c.createOpenWithTempFile(p,ext)
+else:
+    g.es("reopening: " + g.shortFileName(path),color="blue")
+#@+node:ekr.20031218072017.2828:<< Raise dialog about conflict and set result >>
+message = (
+    "Conflicting changes in outline and temp file\n\n" +
+    "Do you want to use the code in the outline or the temp file?\n\n")
+
+result = g.app.gui.runAskYesNoCancelDialog(c,
+    "Conflict!", message,
+    yesMessage = "Outline",
+    noMessage = "File",
+    defaultButton = "Cancel")
+#@-node:ekr.20031218072017.2828:<< Raise dialog about conflict and set result >>
+#@-node:ekr.20031218072017.2827:<< create or recreate temp file as needed >>
+#@-node:ekr.20031218072017.2825:<< create or reopen temp file, testing for conflicting changes >>
+#@+node:ekr.20031218072017.2829:<< execute a command to open path in external editor >>
+try:
+    if arg == None: arg = ""
+    shortPath = path # g.shortFileName(path)
+    if openType == "os.system":
+        if 1:
+            # This works, _provided_ that arg does not contain blanks.  Sheesh.
+            command = 'os.system(%s)' % (arg+shortPath)
+            os.system(arg+shortPath)
+        else:
+            # XP does not like this format!
+            command = 'os.system("%s" "%s")' % (arg,shortPath)
+            os.system('"%s" "%s"' % (arg,shortPath))
+    elif openType == "os.startfile":
+        command = "os.startfile(%s)" % (arg+shortPath)
+        os.startfile(arg+path)
+    elif openType == "exec":
+        command = "exec(%s)" % (arg+shortPath)
+        exec arg+path in {}
+    elif openType == "os.spawnl":
+        filename = g.os_path_basename(arg)
+        command = "os.spawnl(%s,%s,%s)" % (arg,filename,path)
+        apply(os.spawnl,(os.P_NOWAIT,arg,filename,path))
+    elif openType == "os.spawnv":
+        filename = os.path.basename(arg[0]) 
+        vtuple = arg[1:]
+        vtuple.insert(0, filename)
+            # add the name of the program as the first argument.
+            # Change suggested by Jim Sizelove.
+        vtuple.append(path)
+        command = "os.spawnv(%s,%s)" % (arg[0],repr(vtuple))
+        apply(os.spawnv,(os.P_NOWAIT,arg[0],vtuple))
+    # This clause by Jim Sizelove.
+    elif openType == "subprocess.Popen":
+        if isinstance(arg, basestring):
+            vtuple = arg + " " + path
+        elif isinstance(arg, (list, tuple)):
+            vtuple = arg[:]
+            vtuple.append(path)
+        command = "subprocess.Popen(%s)" % repr(vtuple)
+        if subprocess:
+            subprocess.Popen(vtuple)
+        else:
+            g.grace('Can not import subprocess.  Skipping: "%s"' % command)
+    else:
+        command="bad command:"+str(openType)
+        g.trace(command)
+except Exception:
+    g.es("exception executing: "+command)
+    g.es_exception()
+#@-node:ekr.20031218072017.2829:<< execute a command to open path in external editor >>
+#@+node:ekr.20031218072017.2830:createOpenWithTempFile
+def createOpenWithTempFile (self,p,ext):
+
+    c = self
+    path = c.openWithTempFilePath(p,ext)
+    try:
+        if g.os_path_exists(path):
+            g.es("recreating:  " + g.shortFileName(path),color="red")
+        else:
+            g.es("creating:  " + g.shortFileName(path),color="blue")
+        theFile = open(path,"w")
+        # Convert s to whatever encoding is in effect.
+        s = p.bodyString()
+        theDict = g.scanDirectives(c,p=p)
+        encoding = theDict.get("encoding",None)
+        if encoding == None:
+            encoding = c.config.default_derived_file_encoding
+        s = g.toEncodedString(s,encoding,reportErrors=True) 
+        theFile.write(s)
+        theFile.flush()
+        theFile.close()
+        try:    time = g.os_path_getmtime(path)
+        except: time = None
+        # g.es("time: " + str(time))
+        # New in 4.3: theDict now contains both 'p' and 'v' entries, of the expected type.
+        theDict = {
+            "body":s, "c":c, "encoding":encoding,
+            "f":theFile, "path":path, "time":time,
+            "p":p, "v":p.v }
+        << remove previous entry from app.openWithFiles if it exists >>
+        g.app.openWithFiles.append(theDict)
+        return path
+    except:
+        if theFile:
+            theFile.close()
+        theFile = None
+        g.es("exception creating temp file",color="red")
+        g.es_exception()
+        return None
+#@+node:ekr.20031218072017.2831:<< remove previous entry from app.openWithFiles if it exists >>
+for d in g.app.openWithFiles[:]:
+    p2 = d.get("p")
+    if p.v.t == p2.v.t:
+        # print "removing previous entry in g.app.openWithFiles for",p.headString()
+        g.app.openWithFiles.remove(d)
+#@-node:ekr.20031218072017.2831:<< remove previous entry from app.openWithFiles if it exists >>
+#@-node:ekr.20031218072017.2830:createOpenWithTempFile
+#@+node:ekr.20031218072017.2832:c.openWithTempFilePath
+def openWithTempFilePath (self,p,ext):
+
+    """Return the path to the temp file corresponding to p and ext."""
+
+    if 0: # new code: similar to code in mod_tempfname.py plugin.
+        try:
+            # At least in Windows, user name may contain special characters
+            # which would require escaping quotes.
+            leoTempDir = g.sanitize_filename(getpass.getuser()) + "_" + "Leo"
+        except:
+            leoTempDir = "LeoTemp"
+            g.es("Could not retrieve your user name.")
+            g.es("Temporary files will be stored in: %s" % leoTempDir)
+
+        td = os.path.join(g.os_path_abspath(tempfile.gettempdir()),leoTempDir)
+        if not os.path.exists(td):
+            os.mkdir(td)
+
+        name = g.sanitize_filename(v.headString()) + '_' + str(id(v.t))  + ext
+        path = os.path.join(td,name)
+        return path
+    else: # Original code.
+        name = "LeoTemp_%s_%s%s" % (
+            str(id(p.v.t)),
+            g.sanitize_filename(p.headString()),
+            ext)
+
+        name = g.toUnicode(name,g.app.tkEncoding)
+
+        if 1:
+            td = g.os_path_abspath(tempfile.gettempdir())
+        else:
+            td = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','temp'))
+
+        path = g.os_path_join(td,name)
+
+        return path
+#@-node:ekr.20031218072017.2832:c.openWithTempFilePath
+#@-node:ekr.20031218072017.2823:openWith and allies
+#@+node:ekr.20031218072017.2833:close
+def close (self,event=None):
+
+    '''Close the Leo window, prompting to save it if it has been changed.'''
+
+    g.app.closeLeoWindow(self.frame)
+#@-node:ekr.20031218072017.2833:close
+#@+node:ekr.20031218072017.2834:save (commands)
+def save (self,event=None):
+
+    '''Save a Leo outline to a file.'''
+
+    c = self ; w = g.app.gui.get_focus(c)
+
+    if g.app.disableSave:
+        g.es("Save commands disabled",color="purple")
+        return
+
+    # Make sure we never pass None to the ctor.
+    if not c.mFileName:
+        c.frame.title = ""
+        c.mFileName = ""
+
+    c.beginUpdate()
+    try:
+        if c.mFileName != "":
+            # Calls c.setChanged(False) if no error.
+            c.fileCommands.save(c.mFileName)
+        else:
+            fileName = g.app.gui.runSaveFileDialog(
+                initialfile = c.mFileName,
+                title="Save",
+                filetypes=[("Leo files", "*.leo")],
+                defaultextension=".leo")
+            c.bringToFront()
+
+            if fileName:
+                # Don't change mFileName until the dialog has suceeded.
+                c.mFileName = g.ensure_extension(fileName, ".leo")
+                c.frame.title = c.mFileName
+                c.frame.setTitle(g.computeWindowTitle(c.mFileName))
+                c.frame.openDirectory = g.os_path_dirname(c.mFileName) # Bug fix in 4.4b2.
+                c.fileCommands.save(c.mFileName)
+                c.updateRecentFiles(c.mFileName)
+    finally:
+        c.endUpdate()
+        c.widgetWantsFocus(w)
+#@nonl
+#@-node:ekr.20031218072017.2834:save (commands)
+#@+node:ekr.20031218072017.2835:saveAs
+def saveAs (self,event=None):
+
+    '''Save a Leo outline to a file with a new filename.'''
+
+    c = self ;  w = g.app.gui.get_focus(c)
+
+    if g.app.disableSave:
+        g.es("Save commands disabled",color="purple")
+        return
+
+    c.beginUpdate()
+    try:
+        # Make sure we never pass None to the ctor.
+        if not c.mFileName:
+            c.frame.title = ""
+
+        fileName = g.app.gui.runSaveFileDialog(
+            initialfile = c.mFileName,
+            title="Save As",
+            filetypes=[("Leo files", "*.leo")],
+            defaultextension=".leo")
+        c.bringToFront()
+
+        if fileName:
+            # 7/2/02: don't change mFileName until the dialog has suceeded.
+            c.mFileName = g.ensure_extension(fileName, ".leo")
+            c.frame.title = c.mFileName
+            c.frame.setTitle(g.computeWindowTitle(c.mFileName))
+            c.frame.openDirectory = g.os_path_dirname(c.mFileName) # Bug fix in 4.4b2.
+            # Calls c.setChanged(False) if no error.
+            c.fileCommands.saveAs(c.mFileName)
+            c.updateRecentFiles(c.mFileName)
+    finally:
+        c.endUpdate()
+        c.widgetWantsFocus(w)
+#@-node:ekr.20031218072017.2835:saveAs
+#@+node:ekr.20070413045221:saveAsUnzipped & saveAsZipped
+def saveAsUnzipped (self,event=None):
+
+    '''Save a Leo outline to a file with a new filename,
+    ensuring that the file is not compressed.'''
+    self.saveAsZippedHelper(False)
+
+def saveAsZipped (self,event=None):
+
+    '''Save a Leo outline to a file with a new filename,
+    ensuring that the file is compressed.'''
+    self.saveAsZippedHelper(True)
+
+def saveAsZippedHelper (self,isZipped):
+
+    c = self
+    oldZipped = c.isZipped
+    c.isZipped = isZipped
+    try:
+        c.saveAs()
+    finally:
+        c.isZipped = oldZipped
+#@-node:ekr.20070413045221:saveAsUnzipped & saveAsZipped
+#@+node:ekr.20031218072017.2836:saveTo
+def saveTo (self,event=None):
+
+    '''Save a Leo outline to a file, leaving the file associated with the Leo outline unchanged.'''
+
+    c = self ; w = g.app.gui.get_focus(c)
+
+    if g.app.disableSave:
+        g.es("Save commands disabled",color="purple")
+        return
+
+    c.beginUpdate()
+    try:
+        # Make sure we never pass None to the ctor.
+        if not c.mFileName:
+            c.frame.title = ""
+
+        # set local fileName, _not_ c.mFileName
+        fileName = g.app.gui.runSaveFileDialog(
+            initialfile = c.mFileName,
+            title="Save To",
+            filetypes=[("Leo files", "*.leo")],
+            defaultextension=".leo")
+        c.bringToFront()
+
+        if fileName:
+            fileName = g.ensure_extension(fileName, ".leo")
+            c.fileCommands.saveTo(fileName)
+            c.updateRecentFiles(fileName)
+
+    finally:
+        c.endUpdate()
+        c.widgetWantsFocus(w)
+#@-node:ekr.20031218072017.2836:saveTo
+#@+node:ekr.20031218072017.2837:revert
+def revert (self,event=None):
+
+    '''Revert the contents of a Leo outline to last saved contents.'''
+
+    c = self
+
+    # Make sure the user wants to Revert.
+    if not c.mFileName:
+        return
+
+    reply = g.app.gui.runAskYesNoDialog(c,"Revert",
+        "Revert to previous version of " + c.mFileName + "?")
+    c.bringToFront()
+
+    if reply=="no":
+        return
+
+    # Kludge: rename this frame so openWithFileName won't think it is open.
+    fileName = c.mFileName ; c.mFileName = ""
+
+    # Create a new frame before deleting this frame.
+    ok, frame = g.openWithFileName(fileName,c)
+    if ok:
+        frame.deiconify()
+        g.app.destroyWindow(c.frame)
+    else:
+        c.mFileName = fileName
+#@-node:ekr.20031218072017.2837:revert
+#@-node:ekr.20031218072017.2820:top level (file menu)
+#@-node:ekr.20061002093442:Add opml support to new,open, save commands
+#@-node:ekr.20070630143345:Other
+#@+node:ekr.20071105155631.1:Plugins
+#@+node:ekr.20071021125124:Revise plugins manager plugin
+Expunge leoPluginsManager.txt.
+#@nonl
+#@-node:ekr.20071021125124:Revise plugins manager plugin
+#@+node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4562648
+By: rogererens
+
+Maybe I may use this thread to make another suggestion for Leo 4.4.5, related
+to @menus: have the menu-options for right-clicking in the various panes also
+in the @settings-tree.
+
+Regards, Roger
+#@nonl
+#@-node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
+#@+node:ekr.20071026052111:Fix cursesGui  plugin
+#@+node:ekr.20071026051956:crash in cursesGui.py
+reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo
+reading settings in C:\Documents and Settings\HP_Administrator\My Documents\Edward\myLeoSettings.leo
+reading settings in C:\prog\tigris-cvs\leo\test\test.leo
+reading C:\Documents and Settings\HP_Administrator\My Documents\Edward\.leoRecentFiles.txt
+reading C:\prog\tigris-cvs\leo\config\.leoRecentFiles.txt
+@enabled-plugins found in test.leo
+textGui oops <module>,run,createFrame,openWithFileName,newLeoCommanderAndFrame,finishCreate,createKeyHandlerClass should be implem
+ented
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 401, in <module>
+    run(fileName)
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 144, in run
+    c,frame = createFrame(fileName)
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 213, in createFrame
+    ok, frame = g.openWithFileName(fileName,None)
+  File "C:\prog\tigris-cvs\leo\src\leoGlobals.py", line 1908, in openWithFileName
+    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
+  File "C:\prog\tigris-cvs\leo\src\leoApp.py", line 577, in newLeoCommanderAndFrame
+    c.finishCreate(initEditCommanders)
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 216, in finishCreate
+    c.commandsDict = leoEditCommands.finishCreateEditCommanders(c)
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 247, in finishCreateEditCommanders
+    d2 = theInstance.getPublicCommands()
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 1022, in getPublicCommands
+    'keyboard-quit':                k.keyboardQuit,
+AttributeError: 'NoneType' object has no attribute 'keyboardQuit'
+>>>
+#@nonl
+#@-node:ekr.20071026051956:crash in cursesGui.py
+#@-node:ekr.20071026052111:Fix cursesGui  plugin
+#@+node:ekr.20071105155631.2:Fix script_io_to_body plugin
+#@-node:ekr.20071105155631.2:Fix script_io_to_body plugin
+#@-node:ekr.20071105155631.1:Plugins
+#@+node:ekr.20071105155631.3:Testing
+#@+node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
+@nocolor
+
+From email from Terry Brown
+
+python /home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py /home/tbrown/.tnb.leo
+
+(should be all on one line, i.e. run and open /home/tbrown/.tnb.leo)
+
+gives the traceback below.  Opening the file from within Leo works fine.
+
+Bah - I just now looked at it closely enough to realize it's the evil
+pickled Tk classes in cleo uAs.  So I don't know whether you want to
+fix that or not, it makes sense Leo would read the file specified on
+the command line before Tk is initialized - if it's just scanning for
+settings maybe it could catch and ignore failed uA reads at that time?
+
+At some point I want to take pickled Tk vars out of cleo, I was
+thinking when that guy was working on the wx gui would be a good time,
+too bad he got sick.
+
+Cheers -Terry
+
+reading settings in /mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/config/leoSettings.leo
+reading settings in /home/tbrown/leoSettings.leo
+reading settings in /home/tbrown/myLeoSettings.leo
+reading settings in /home/tbrown/.tnb.leo
+Traceback (most recent call last):
+  File "/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py", line 398, in <module>
+    run(fileName)
+  File "/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py", line 118, in run
+    g.app.config.readSettingsFiles(fileName,verbose)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoConfig.py", line 1649, in readSettingsFiles
+    c = self.openSettingsFile(path)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoConfig.py", line 1674, in openSettingsFile
+    theFile,path,readAtFileNodesFlag=False,silent=True) # closes theFile.
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 892, in open
+    silent=silent)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 779, in getLeoFile
+    self.getAllLeoElements(fileName,silent)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1317, in getAllLeoElements
+    self.getVnodes()
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1898, in getVnodes
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1738, in getVnode
+    attr,val = self.getUa("vnode")
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1658, in getUa
+    val2 = pickle.loads(binString)
+  File "/usr/lib/python2.5/pickle.py", line 1374, in loads
+    return Unpickler(file).load()
+  File "/usr/lib/python2.5/pickle.py", line 858, in load
+    dispatch[key](self)
+  File "/usr/lib/python2.5/pickle.py", line 1217, in load_build
+    setstate(state)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/plugins/cleo.py", line 130, in __setstate__
+    Tk.Variable.__init__(self)
+  File "/usr/lib/python2.5/lib-tk/Tkinter.py", line 188, in __init__
+    self._tk = master.tk
+AttributeError: 'NoneType' object has no attribute 'tk'
+Exception exceptions.AttributeError: "TkPickleVar instance has no attribute '_tk'" in <bound method TkPickleVar.__del__ of <cleo.TkPickleVar instance at 0xb73a876c>> ignored
+#@-node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
 #@+node:ekr.20071024172428:Failed unit tests when running externally
 #@+node:ekr.20071024184325:4 leoEditCommands tests fail when run externally
 creating: dynamicUnitTest.leo
@@ -1221,1022 +2225,10 @@ The new scheme:
 #@nonl
 #@-node:ekr.20071025143956:Posting: document unit test bug & describe coming new scheme
 #@-node:ekr.20071024172428:Failed unit tests when running externally
-#@+node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
-@nocolor
-
-From email from Terry Brown
-
-python /home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py /home/tbrown/.tnb.leo
-
-(should be all on one line, i.e. run and open /home/tbrown/.tnb.leo)
-
-gives the traceback below.  Opening the file from within Leo works fine.
-
-Bah - I just now looked at it closely enough to realize it's the evil
-pickled Tk classes in cleo uAs.  So I don't know whether you want to
-fix that or not, it makes sense Leo would read the file specified on
-the command line before Tk is initialized - if it's just scanning for
-settings maybe it could catch and ignore failed uA reads at that time?
-
-At some point I want to take pickled Tk vars out of cleo, I was
-thinking when that guy was working on the wx gui would be a good time,
-too bad he got sick.
-
-Cheers -Terry
-
-reading settings in /mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/config/leoSettings.leo
-reading settings in /home/tbrown/leoSettings.leo
-reading settings in /home/tbrown/myLeoSettings.leo
-reading settings in /home/tbrown/.tnb.leo
-Traceback (most recent call last):
-  File "/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py", line 398, in <module>
-    run(fileName)
-  File "/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py", line 118, in run
-    g.app.config.readSettingsFiles(fileName,verbose)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoConfig.py", line 1649, in readSettingsFiles
-    c = self.openSettingsFile(path)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoConfig.py", line 1674, in openSettingsFile
-    theFile,path,readAtFileNodesFlag=False,silent=True) # closes theFile.
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 892, in open
-    silent=silent)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 779, in getLeoFile
-    self.getAllLeoElements(fileName,silent)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1317, in getAllLeoElements
-    self.getVnodes()
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1898, in getVnodes
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1738, in getVnode
-    attr,val = self.getUa("vnode")
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1658, in getUa
-    val2 = pickle.loads(binString)
-  File "/usr/lib/python2.5/pickle.py", line 1374, in loads
-    return Unpickler(file).load()
-  File "/usr/lib/python2.5/pickle.py", line 858, in load
-    dispatch[key](self)
-  File "/usr/lib/python2.5/pickle.py", line 1217, in load_build
-    setstate(state)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/plugins/cleo.py", line 130, in __setstate__
-    Tk.Variable.__init__(self)
-  File "/usr/lib/python2.5/lib-tk/Tkinter.py", line 188, in __init__
-    self._tk = master.tk
-AttributeError: 'NoneType' object has no attribute 'tk'
-Exception exceptions.AttributeError: "TkPickleVar instance has no attribute '_tk'" in <bound method TkPickleVar.__del__ of <cleo.TkPickleVar instance at 0xb73a876c>> ignored
-#@-node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
-#@+node:ekr.20071026052111:Fix cursesGui and script_io_to_body plugins
-#@+node:ekr.20071026051956:crash in cursesGui.py
-reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo
-reading settings in C:\Documents and Settings\HP_Administrator\My Documents\Edward\myLeoSettings.leo
-reading settings in C:\prog\tigris-cvs\leo\test\test.leo
-reading C:\Documents and Settings\HP_Administrator\My Documents\Edward\.leoRecentFiles.txt
-reading C:\prog\tigris-cvs\leo\config\.leoRecentFiles.txt
-@enabled-plugins found in test.leo
-textGui oops <module>,run,createFrame,openWithFileName,newLeoCommanderAndFrame,finishCreate,createKeyHandlerClass should be implem
-ented
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leo.py", line 401, in <module>
-    run(fileName)
-  File "c:\prog\tigris-cvs\leo\src\leo.py", line 144, in run
-    c,frame = createFrame(fileName)
-  File "c:\prog\tigris-cvs\leo\src\leo.py", line 213, in createFrame
-    ok, frame = g.openWithFileName(fileName,None)
-  File "C:\prog\tigris-cvs\leo\src\leoGlobals.py", line 1908, in openWithFileName
-    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
-  File "C:\prog\tigris-cvs\leo\src\leoApp.py", line 577, in newLeoCommanderAndFrame
-    c.finishCreate(initEditCommanders)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 216, in finishCreate
-    c.commandsDict = leoEditCommands.finishCreateEditCommanders(c)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 247, in finishCreateEditCommanders
-    d2 = theInstance.getPublicCommands()
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 1022, in getPublicCommands
-    'keyboard-quit':                k.keyboardQuit,
-AttributeError: 'NoneType' object has no attribute 'keyboardQuit'
->>>
-#@nonl
-#@-node:ekr.20071026051956:crash in cursesGui.py
-#@-node:ekr.20071026052111:Fix cursesGui and script_io_to_body plugins
-#@-node:ekr.20071102093502:Fix bugs first
-#@+node:ekr.20070814070312:First
-#@+node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
-#@-node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
-#@+node:ekr.20071031113657:Remove Leo's hand-written parser: use sax or lxml
-#@-node:ekr.20071031113657:Remove Leo's hand-written parser: use sax or lxml
-#@+node:ekr.20070814144804:Incorrect conversion of paths to absolute paths
-@nocolor
-https://sourceforge.net/forum/message.php?msg_id=4464649
-By: terry_n_brown
-
-Maybe it's not related to these other path issues, but an argument I'm always
-having with leo has to do with its conversion of file paths to 'absolute' forms.
-In the file browser I select '/home/tbrown/misc/foo.leo'.  Leo reinterprets
-this as '/media/hda2/usr1/home/tbrown/misc/foo.leo'  Then I switch machines,
-and while '/home/tbrown/misc/foo.leo' would still be valid,
-'/media/hda2/usr1/home/tbrown/misc/foo.leo' isn't - on the other machine it
-would be '/media/hdb1/home/tbrown/misc/foo.leo'.  I end up with the two entries
-in recent files, having to identify the right one.
-
-I haven't tested it, but if the Tk dialog is returning '/home/tbrown/misc/foo.leo',
-which I assume it is because that's what it's displaying, I wish leo would use
-and store that.
-
-@color
-#@nonl
-#@-node:ekr.20070814144804:Incorrect conversion of paths to absolute paths
-#@+node:ekr.20070803115653:Support @path and other directives in headlines
-#@-node:ekr.20070803115653:Support @path and other directives in headlines
-#@-node:ekr.20070814070312:First
-#@+node:ekr.20070703111455.1:Most important
-#@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree
-#@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree
-#@+node:ekr.20070623144302:vim-like bindings
-#@+node:ekr.20070824094005:Requests
-@nocolor
-
-> Some of the features I've grown to like with VIM are search-and-replace within the current selection, easy keyboard navigation, and to some extent macro recording and running.
-
-Thanks for these comments.  I'll keep them in mind as I design the vim-like code.
-
-Edward
-#@nonl
-#@-node:ekr.20070824094005:Requests
-#@+node:ekr.20070814083528.1:Design post
-@nocolor
-
-http://sourceforge.net/forum/forum.php?thread_id=1800079&forum_id=10226
-
-Recent posts have discussed @menu trees and resolving cvs conflicts. The third of my recent ruminations concerns adding support for vim-like key bindings. 
-
-Earlier work involving input modes (@mode nodes in settings file) probably is not completely sufficient to implement plain-key key bindings in a way that would truly be vim-like. 
-
-Most of the issues are implementation issues: Leo's key-handling code is very complicated. The trick is to handle both vim and emacs styles compatibly. 
-
-The user must be able to specify vim-like key bindings without using @mode nodes. That is, top-level vim key bindings must always be available. Vim has an enormous number of key bindings: the user must be able to specify which are in effect. 
-
-My strategy will be as follows: 
-
-1. Create enter-vim-mode and exit-vim-mode commands, and create the setting: 
-
-@bool vim-mode-by-default = False 
-
-This will allow the user to specify vim mode as the default mode if desired. 
-
-2. Create **vim-edit** commands as needed in order to handler user interaction. For example, dd deletes the present line while d5 deletes 5 lines. Rather than trying to simulate this effect using the present mechanisms, the vim-delete command will prompt for the number of characters or lines to delete. 
-
-Give the complex nature of vims c and d commands (and others) it will probably be necessary to create a vim-edit class in leoEditCommands.py. This class will handle all the ways of specifying a range of characters to which the various commands will apply. It's not clear exactly how much work will be needed, but my guess is that it will, in fact, be easiest to handle vim-like interactions with new code. 
-
-3. Vim's ':' command will simply invoke Leo's minibuffer. This isn't precisely the same as Vim's status line: it is significantly better. Otoh, we will want a way to simulate the actual spelling of vim's ':' commands. Possible @abbreviation nodes can be pressed into service. 
-
-4. Internally, it will be quite a trick to allow top-level vim-like plain-key bindings in all text widgets. I'm not sure how to do this, but it is essential. 
-
-I am quite eager to get something truly vim-like working. It promises to increase my editing speed substantially. It also should appeal strongly to present vim users. 
-#@nonl
-#@-node:ekr.20070814083528.1:Design post
-#@+node:ekr.20071026140857:Posting re vim bindings
-@nocolor
-
-> I'm looking forward to this.
-
-Excellent.  You can help with the testing :-)
-
-Leo looks like a perfect match for the vim approach.  Indeed, vim typically uses a 1 or 2 level concatenation scheme (preceded by a repeat count).  This is kinda like a utf-8 encoding :-)  That is, it is a variable-length encoding of the command.
-
-This is a very powerful approach, one that vim doesn't really exploit (because it doesn't need to). But Leo absolutely needs this power of some extra levels.  Something like this:
-
-i input mode
-
-f focus commands
-..fb focus to body
-..fo focus to outline
-..fl focus to log
-..ft toggle body pane focus
-
-o outline commands
-..om outline move, i.e., actually move the nodes.
-..og outline go, i.e., select nodes without changing the outline
-..od outline delete
-..oh outline edit headline
-
-s search commands
-..so search options
-...soi toggle ignore-case checkbox
-...sow toggle word checkbox
-...etc!
-..st search using search tab
-..sf forward incremental search
-..sb backward incremental search
-
-x minibuffer commands
-
-w file commands
-..ws save outline
-..wq quit
-
-escape: universal escape, like ctrl-g now.
-
-Do you see?  Just one extra level allows 10+ times the number of key bindings.  This is a perfect match for Leo's complex environment.
-
-Naturally, Leo will allow the user to specify these bindings using nodes in the @settings tree. Indeed, this is truly an exciting prospect.
-
-Edward
-
-P.S.  I've glossed over the details of which single characters (like d for delete character) should be reserved for common editing and cursor-movement commands.  That's the beauty of creating these bindings with user settings: no need to argue :-)  And that's the beauty of arbitrarily deep key binding trees: there are plenty of keys to go around.
-
-EKR
-#@-node:ekr.20071026140857:Posting re vim bindings
-#@-node:ekr.20070623144302:vim-like bindings
-#@+node:ekr.20070625091423:Add translation services
-@nocolor
-
-*Many* calls to g.es and g.es_print have a mix of translated and untranslated items.
-Untranslated items should include file names, directories, gnx's, leo_id's etc.
-
-**Don't bother to do clone-find-all: there are 666 many matches!**
-
-Regardless of the chosen scheme:
-
-- g.translate will do the actual translation.
-
-- Some simple string, like tr, will be an abbreviation for g.translate.
-  The typical import will be::
-
-    import leoGlobals as g ; tr = g.translate
-
-The easiest scheme seems to be:
-
-- g.es and g.es_print translate all arguments.
-- g.esx and g.es_printx do no translation.
-
-g.esx and g.es_printx allow a mix on translated and untranslated arguments::
-
-    g.esx(tr('abc'),fileName)
-#@-node:ekr.20070625091423:Add translation services
-#@+node:ekr.20071001052501:Versioning for nodes
-@nocolor
-
-One feature I have not seen in SCS system is something which might be called
-"history compression": I might be interested in having both version 5 and 6
-in my source tree, when the current version is 7, but I am not really interested
-in the 2000 steps which transformed 5 into 6 (just suggested this feature to
-the bazaar people). This happens actually quite often to me, since I use the
-SCS as a back-up system, saving many (uninteresting) intermediate steps while
-implementing a new feature.
-#@nonl
-#@-node:ekr.20071001052501:Versioning for nodes
-#@+node:ekr.20071021125124:Revise plugins manager plugin
-Expunge leoPluginsManager.txt.
-#@nonl
-#@-node:ekr.20071021125124:Revise plugins manager plugin
-#@-node:ekr.20070703111455.1:Most important
-#@+node:ekr.20070630143345:Easy and useful
-#@+node:ekr.20071024090626:Support @bool diagnose-aspell-installation
-#@-node:ekr.20071024090626:Support @bool diagnose-aspell-installation
-#@+node:ekr.20071025160653.2:Commands to add/remove icons
-#@+node:ekr.20071026092640:To do
-@nocolor
-
-To do:
-
-* Define standard event handlers:
-    - on-left-click (deletes icon)
-    - on-click
-
-* Adjust location depending on icon size.
-
-- Define standard icons in a subfolder of Icons folder?
-
-insert-icon
-append-icon
-delete-first-icon
-delete-nth-icon
-delete-all-node-icons
-delete-all-icons-in-tree
-#@-node:ekr.20071026092640:To do
-#@+node:ekr.20040803072955.46:drawUserIcons & helper
-def drawUserIcons(self,p,where,x,y):
-
-    """Draw any icons specified by p.v.t.unknownAttributes["icons"]."""
-
-    h,w = 0,0 ; t = p.v.t
-
-    if not hasattr(t,"unknownAttributes"):
-        return h,w
-
-    iconsList = t.unknownAttributes.get("icons")
-    if not iconsList:
-        return h,w
-
-    try:
-        for theDict in iconsList:
-            h2,w2 = self.drawUserIcon(p,where,x,y,w,theDict)
-            h = max(h,h2) ; w += w2
-    except:
-        g.es_exception()
-
-    # g.trace(where,h,w)
-
-    return h,w
-#@+node:ekr.20040803072955.47:drawUserIcon
-def drawUserIcon (self,p,where,x,y,w2,theDict):
-
-    h,w = 0,0
-
-    if where != theDict.get("where","beforeHeadline"):
-        return h,w
-
-    # if self.trace_gc: g.printNewObjects(tag='userIcon 1')
-
-    # g.trace(where,x,y,theDict)
-
-    << set offsets and pads >>
-    theType = theDict.get("type")
-    if theType == "icon":
-        if 0: # not ready yet.
-            s = theDict.get("icon")
-            << draw the icon in string s >>
-    elif theType == "file":
-        theFile = theDict.get("file")
-        << draw the icon at file >>
-    elif theType == "url":
-        ## url = theDict.get("url")
-        << draw the icon at url >>
-
-    # Allow user to specify height, width explicitly.
-    h = theDict.get("height",h)
-    w = theDict.get("width",w)
-
-    # if self.trace_gc: g.printNewObjects(tag='userIcon 2')
-
-    return h,w
-#@+node:ekr.20040803072955.48:<< set offsets and pads >>
-xoffset = theDict.get("xoffset")
-try:    xoffset = int(xoffset)
-except: xoffset = 0
-
-yoffset = theDict.get("yoffset")
-try:    yoffset = int(yoffset)
-except: yoffset = 0
-
-xpad = theDict.get("xpad")
-try:    xpad = int(xpad)
-except: xpad = 0
-
-ypad = theDict.get("ypad")
-try:    ypad = int(ypad)
-except: ypad = 0
-#@-node:ekr.20040803072955.48:<< set offsets and pads >>
-#@+node:ekr.20040803072955.49:<< draw the icon in string s >>
-pass
-#@-node:ekr.20040803072955.49:<< draw the icon in string s >>
-#@+node:ekr.20040803072955.50:<< draw the icon at file >>
-fullname = g.os_path_join(g.app.loadDir,"..","Icons",theFile)
-fullname = g.os_path_normpath(fullname)
-
-# Bug fix: the key must include distinguish nodes.
-key = (fullname,p.v.t)
-image = self.iconimages.get(key)
-
-if not image:
-    try:
-        from PIL import Image, ImageTk
-        image1 = Image.open(fullname)
-        image = ImageTk.PhotoImage(image1)
-        self.iconimages[key] = image
-    except Exception:
-        #g.es_exception()
-        image = None
-
-if not image:
-    try:
-        image = Tk.PhotoImage(master=self.canvas,file=fullname)
-        self.iconimages[key] = image
-    except Exception:
-        #g.es_exception()
-        image = None
-
-if image:
-    theId = self.canvas.create_image(
-        x+xoffset+w2,y+yoffset,
-        anchor="nw",image=image,tag="userIcon")
-    self.ids[theId] = p.copy()
-    # g.trace('id',theId,p.headString(),theFile,image)
-
-    # assert(theId not in self.visibleIcons)
-    self.visibleUserIcons.append(theId)
-
-    h = image.height() + yoffset + ypad
-    w = image.width()  + xoffset + xpad
-#@-node:ekr.20040803072955.50:<< draw the icon at file >>
-#@+node:ekr.20040803072955.51:<< draw the icon at url >>
-pass
-#@-node:ekr.20040803072955.51:<< draw the icon at url >>
-#@-node:ekr.20040803072955.47:drawUserIcon
-#@-node:ekr.20040803072955.46:drawUserIcons & helper
-#@+node:ekr.20040803072955.12:recycleWidgets
-def recycleWidgets (self):
-
-    canvas = self.canvas
-
-    for theId in self.visibleBoxes:
-        if theId not in self.freeBoxes:
-            self.freeBoxes.append(theId)
-        canvas.coords(theId,-100,-100)
-    self.visibleBoxes = []
-
-    for theId in self.visibleClickBoxes:
-        if theId not in self.freeClickBoxes:
-            self.freeClickBoxes.append(theId)
-        canvas.coords(theId,-100,-100,-100,-100)
-    self.visibleClickBoxes = []
-
-    for theId in self.visibleIcons:
-        if theId not in self.freeIcons:
-            self.freeIcons.append(theId)
-        canvas.coords(theId,-100,-100)
-    self.visibleIcons = []
-
-    for theId in self.visibleLines:
-        if theId not in self.freeLines:
-            self.freeLines.append(theId)
-        canvas.coords(theId,-100,-100,-100,-100)
-    self.visibleLines = []
-
-    aList = self.visibleText.values()
-    for data in aList:
-        w,theId = data
-        # assert theId == w.leo_window_id
-        canvas.coords(theId,-100,-100)
-        w.leo_position = None # Allow the position to be freed.
-        if data not in self.freeText:
-            self.freeText.append(data)
-    self.visibleText = {}
-
-    # g.trace('deleting visible user icons!')
-    for theId in self.visibleUserIcons:
-        # The present code does not recycle user Icons.
-        self.canvas.delete(theId)
-    self.visibleUserIcons = []
-#@-node:ekr.20040803072955.12:recycleWidgets
-#@-node:ekr.20071025160653.2:Commands to add/remove icons
-#@+node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4562648
-By: rogererens
-
-Maybe I may use this thread to make another suggestion for Leo 4.4.5, related
-to @menus: have the menu-options for right-clicking in the various panes also
-in the @settings-tree.
-
-Regards, Roger
-#@nonl
-#@-node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
 #@+node:ekr.20070220082124:Make sure Leo can generate Latex
 #@-node:ekr.20070220082124:Make sure Leo can generate Latex
-#@+node:ekr.20070521105645:Improve api docs with epidoc?
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=4319363
-By: ktenney
-
-I think there is room for improvement in documenting Leo's
-API, making it easier to write these kind of scripts.
-I'm not sure of the best way to do that.
-
-Epydoc seems to be the most active project in this realm.
-http://epydoc.sourceforge.net/epydoc.html
-#@-node:ekr.20070521105645:Improve api docs with epidoc?
-#@+node:ekr.20060914090030:add sort-lines-ignoring-case commad
-#@-node:ekr.20060914090030:add sort-lines-ignoring-case commad
-#@+node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
-val = c.config.getBool('collapse_nodes_during_finds')
-c.config.set(p,'collapse_nodes_during_finds',not val)
-g.es_print('collapse_nodes_during_finds',c.config.getBool('collapse_nodes_during_finds'))
-#@nonl
-#@-node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
-#@+node:ekr.20061116054917.6:Remove blanks in calltips
-#@-node:ekr.20061116054917.6:Remove blanks in calltips
-#@+node:ekr.20070627151457:--runCommand option
-@ --runCommand "leo-command-name" runs the command at idle-time after loading the file.
-#@nonl
-#@-node:ekr.20070627151457:--runCommand option
-#@+node:ekr.20061002093442:Add opml support to new,open, save commands
-#@+node:ekr.20031218072017.2820:top level (file menu)
-#@+node:ekr.20031218072017.1623:new
-def new (self,event=None,gui=None):
-
-    '''Create a new Leo window.'''
-
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=None,gui=gui)
-
-    # Needed for plugins.
-    g.doHook("new",old_c=self,c=c,new_c=c)
-    # Use the config params to set the size and location of the window.
-    c.beginUpdate()
-    try:
-        frame.setInitialWindowGeometry()
-        frame.deiconify()
-        frame.lift()
-        frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio) # Resize the _new_ frame.
-        t = leoNodes.tnode()
-        v = leoNodes.vnode(t)
-        p = leoNodes.position(v,[])
-        v.initHeadString("NewHeadline")
-        v.moveToRoot(oldRoot=None)
-        c.setRootVnode(v) # New in Leo 4.4.2.
-        c.editPosition(p)
-    finally:
-        c.endUpdate()
-        # chapterController.finishCreate must be called after the first real redraw
-        # because it requires a valid value for c.rootPosition().
-        if c.config.getBool('use_chapters') and c.chapterController:
-            c.chapterController.finishCreate()
-            frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
-        if c.config.getBool('outline_pane_has_initial_focus'):
-            c.treeWantsFocusNow()
-        else:
-            c.bodyWantsFocusNow()
-    return c # For unit test.
-#@-node:ekr.20031218072017.1623:new
-#@+node:ekr.20031218072017.2821:open
-def open (self,event=None):
-
-    '''Open a Leo window containing the contents of a .leo file.'''
-
-    c = self
-    << Set closeFlag if the only open window is empty >>
-
-    fileName = g.app.gui.runOpenFileDialog(
-        title = "Open",
-        filetypes = [("Leo files","*.leo"), ("All files","*")],
-        defaultextension = ".leo")
-    c.bringToFront()
-
-    ok = False
-    if fileName and len(fileName) > 0:
-        ok, frame = g.openWithFileName(fileName,c)
-        if ok:
-            g.setGlobalOpenDir(fileName)
-        if ok and closeFlag:
-            g.app.destroyWindow(c.frame)
-
-    # openWithFileName sets focus if ok.
-    if not ok:
-        if c.config.getBool('outline_pane_has_initial_focus'):
-            c.treeWantsFocusNow()
-        else:
-            c.bodyWantsFocusNow()
-#@nonl
-#@+node:ekr.20031218072017.2822:<< Set closeFlag if the only open window is empty >>
-@ If this is the only open window was opened when the app started, and the window has never been written to or saved, then we will automatically close that window if this open command completes successfully.
-@c
-
-closeFlag = (
-    c.frame.startupWindow and # The window was open on startup
-    not c.changed and not c.frame.saved and # The window has never been changed
-    g.app.numberOfWindows == 1) # Only one untitled window has ever been opened
-#@-node:ekr.20031218072017.2822:<< Set closeFlag if the only open window is empty >>
-#@-node:ekr.20031218072017.2821:open
-#@+node:ekr.20031218072017.2823:openWith and allies
-def openWith(self,event=None,data=None):
-
-    """This routine handles the items in the Open With... menu.
-
-    These items can only be created by createOpenWithMenuFromTable().
-    Typically this would be done from the "open2" hook.
-
-    New in 4.3: The "os.spawnv" now works. You may specify arguments to spawnv
-    using a list, e.g.:
-
-    openWith("os.spawnv", ["c:/prog.exe","--parm1","frog","--switch2"], None)
-    """
-
-    c = self ; p = c.currentPosition()
-    n = data and len(data) or 0
-    if n != 3:
-        g.trace('bad data, length must be 3, got %d' % n)
-        return
-    try:
-        openType,arg,ext=data
-        if not g.doHook("openwith1",c=c,p=p,v=p.v,openType=openType,arg=arg,ext=ext):
-            g.enableIdleTimeHook(idleTimeDelay=100)
-            << set ext based on the present language >>
-            << create or reopen temp file, testing for conflicting changes >>
-            << execute a command to open path in external editor >>
-        g.doHook("openwith2",c=c,p=p,v=p.v,openType=openType,arg=arg,ext=ext)
-    except Exception:
-        g.es("unexpected exception in c.openWith")
-        g.es_exception()
-
-    return "break"
-#@+node:ekr.20031218072017.2824:<< set ext based on the present language >>
-if not ext:
-    theDict = g.scanDirectives(c)
-    language = theDict.get("language")
-    ext = g.app.language_extension_dict.get(language)
-    # print language,ext
-    if ext == None:
-        ext = "txt"
-
-if ext[0] != ".":
-    ext = "."+ext
-
-# print "ext",ext
-#@-node:ekr.20031218072017.2824:<< set ext based on the present language >>
-#@+node:ekr.20031218072017.2825:<< create or reopen temp file, testing for conflicting changes >>
-theDict = None ; path = None
-<< set dict and path if a temp file already refers to p.v.t >>
-if path:
-    << create or recreate temp file as needed >>
-else:
-    path = c.createOpenWithTempFile(p,ext)
-
-if not path:
-    return # An error has occured.
-#@+node:ekr.20031218072017.2826:<<set dict and path if a temp file already refers to p.v.t >>
-searchPath = c.openWithTempFilePath(p,ext)
-
-if g.os_path_exists(searchPath):
-    for theDict in g.app.openWithFiles:
-        if p.v == theDict.get('v') and searchPath == theDict.get("path"):
-            path = searchPath
-            break
-#@-node:ekr.20031218072017.2826:<<set dict and path if a temp file already refers to p.v.t >>
-#@+node:ekr.20031218072017.2827:<< create or recreate temp file as needed >>
-@ We test for changes in both p and the temp file:
-
-- If only p's body text has changed, we recreate the temp file.
-- If only the temp file has changed, do nothing here.
-- If both have changed we must prompt the user to see which code to use.
-@c
-
-encoding = theDict.get("encoding")
-old_body = theDict.get("body")
-new_body = p.bodyString()
-new_body = g.toEncodedString(new_body,encoding,reportErrors=True)
-
-old_time = theDict.get("time")
-try:
-    new_time = g.os_path_getmtime(path)
-except:
-    new_time = None
-
-body_changed = old_body != new_body
-temp_changed = old_time != new_time
-
-if body_changed and temp_changed:
-    << Raise dialog about conflict and set result >>
-    if result == "cancel": return
-    rewrite = result == "outline"
-else:
-    rewrite = body_changed
-
-if rewrite:
-    path = c.createOpenWithTempFile(p,ext)
-else:
-    g.es("reopening: " + g.shortFileName(path),color="blue")
-#@+node:ekr.20031218072017.2828:<< Raise dialog about conflict and set result >>
-message = (
-    "Conflicting changes in outline and temp file\n\n" +
-    "Do you want to use the code in the outline or the temp file?\n\n")
-
-result = g.app.gui.runAskYesNoCancelDialog(c,
-    "Conflict!", message,
-    yesMessage = "Outline",
-    noMessage = "File",
-    defaultButton = "Cancel")
-#@-node:ekr.20031218072017.2828:<< Raise dialog about conflict and set result >>
-#@-node:ekr.20031218072017.2827:<< create or recreate temp file as needed >>
-#@-node:ekr.20031218072017.2825:<< create or reopen temp file, testing for conflicting changes >>
-#@+node:ekr.20031218072017.2829:<< execute a command to open path in external editor >>
-try:
-    if arg == None: arg = ""
-    shortPath = path # g.shortFileName(path)
-    if openType == "os.system":
-        if 1:
-            # This works, _provided_ that arg does not contain blanks.  Sheesh.
-            command = 'os.system(%s)' % (arg+shortPath)
-            os.system(arg+shortPath)
-        else:
-            # XP does not like this format!
-            command = 'os.system("%s" "%s")' % (arg,shortPath)
-            os.system('"%s" "%s"' % (arg,shortPath))
-    elif openType == "os.startfile":
-        command = "os.startfile(%s)" % (arg+shortPath)
-        os.startfile(arg+path)
-    elif openType == "exec":
-        command = "exec(%s)" % (arg+shortPath)
-        exec arg+path in {}
-    elif openType == "os.spawnl":
-        filename = g.os_path_basename(arg)
-        command = "os.spawnl(%s,%s,%s)" % (arg,filename,path)
-        apply(os.spawnl,(os.P_NOWAIT,arg,filename,path))
-    elif openType == "os.spawnv":
-        filename = os.path.basename(arg[0]) 
-        vtuple = arg[1:]
-        vtuple.insert(0, filename)
-            # add the name of the program as the first argument.
-            # Change suggested by Jim Sizelove.
-        vtuple.append(path)
-        command = "os.spawnv(%s,%s)" % (arg[0],repr(vtuple))
-        apply(os.spawnv,(os.P_NOWAIT,arg[0],vtuple))
-    # This clause by Jim Sizelove.
-    elif openType == "subprocess.Popen":
-        if isinstance(arg, basestring):
-            vtuple = arg + " " + path
-        elif isinstance(arg, (list, tuple)):
-            vtuple = arg[:]
-            vtuple.append(path)
-        command = "subprocess.Popen(%s)" % repr(vtuple)
-        if subprocess:
-            subprocess.Popen(vtuple)
-        else:
-            g.grace('Can not import subprocess.  Skipping: "%s"' % command)
-    else:
-        command="bad command:"+str(openType)
-        g.trace(command)
-except Exception:
-    g.es("exception executing: "+command)
-    g.es_exception()
-#@-node:ekr.20031218072017.2829:<< execute a command to open path in external editor >>
-#@+node:ekr.20031218072017.2830:createOpenWithTempFile
-def createOpenWithTempFile (self,p,ext):
-
-    c = self
-    path = c.openWithTempFilePath(p,ext)
-    try:
-        if g.os_path_exists(path):
-            g.es("recreating:  " + g.shortFileName(path),color="red")
-        else:
-            g.es("creating:  " + g.shortFileName(path),color="blue")
-        theFile = open(path,"w")
-        # Convert s to whatever encoding is in effect.
-        s = p.bodyString()
-        theDict = g.scanDirectives(c,p=p)
-        encoding = theDict.get("encoding",None)
-        if encoding == None:
-            encoding = c.config.default_derived_file_encoding
-        s = g.toEncodedString(s,encoding,reportErrors=True) 
-        theFile.write(s)
-        theFile.flush()
-        theFile.close()
-        try:    time = g.os_path_getmtime(path)
-        except: time = None
-        # g.es("time: " + str(time))
-        # New in 4.3: theDict now contains both 'p' and 'v' entries, of the expected type.
-        theDict = {
-            "body":s, "c":c, "encoding":encoding,
-            "f":theFile, "path":path, "time":time,
-            "p":p, "v":p.v }
-        << remove previous entry from app.openWithFiles if it exists >>
-        g.app.openWithFiles.append(theDict)
-        return path
-    except:
-        if theFile:
-            theFile.close()
-        theFile = None
-        g.es("exception creating temp file",color="red")
-        g.es_exception()
-        return None
-#@+node:ekr.20031218072017.2831:<< remove previous entry from app.openWithFiles if it exists >>
-for d in g.app.openWithFiles[:]:
-    p2 = d.get("p")
-    if p.v.t == p2.v.t:
-        # print "removing previous entry in g.app.openWithFiles for",p.headString()
-        g.app.openWithFiles.remove(d)
-#@-node:ekr.20031218072017.2831:<< remove previous entry from app.openWithFiles if it exists >>
-#@-node:ekr.20031218072017.2830:createOpenWithTempFile
-#@+node:ekr.20031218072017.2832:c.openWithTempFilePath
-def openWithTempFilePath (self,p,ext):
-
-    """Return the path to the temp file corresponding to p and ext."""
-
-    if 0: # new code: similar to code in mod_tempfname.py plugin.
-        try:
-            # At least in Windows, user name may contain special characters
-            # which would require escaping quotes.
-            leoTempDir = g.sanitize_filename(getpass.getuser()) + "_" + "Leo"
-        except:
-            leoTempDir = "LeoTemp"
-            g.es("Could not retrieve your user name.")
-            g.es("Temporary files will be stored in: %s" % leoTempDir)
-
-        td = os.path.join(g.os_path_abspath(tempfile.gettempdir()),leoTempDir)
-        if not os.path.exists(td):
-            os.mkdir(td)
-
-        name = g.sanitize_filename(v.headString()) + '_' + str(id(v.t))  + ext
-        path = os.path.join(td,name)
-        return path
-    else: # Original code.
-        name = "LeoTemp_%s_%s%s" % (
-            str(id(p.v.t)),
-            g.sanitize_filename(p.headString()),
-            ext)
-
-        name = g.toUnicode(name,g.app.tkEncoding)
-
-        if 1:
-            td = g.os_path_abspath(tempfile.gettempdir())
-        else:
-            td = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','temp'))
-
-        path = g.os_path_join(td,name)
-
-        return path
-#@-node:ekr.20031218072017.2832:c.openWithTempFilePath
-#@-node:ekr.20031218072017.2823:openWith and allies
-#@+node:ekr.20031218072017.2833:close
-def close (self,event=None):
-
-    '''Close the Leo window, prompting to save it if it has been changed.'''
-
-    g.app.closeLeoWindow(self.frame)
-#@-node:ekr.20031218072017.2833:close
-#@+node:ekr.20031218072017.2834:save (commands)
-def save (self,event=None):
-
-    '''Save a Leo outline to a file.'''
-
-    c = self ; w = g.app.gui.get_focus(c)
-
-    if g.app.disableSave:
-        g.es("Save commands disabled",color="purple")
-        return
-
-    # Make sure we never pass None to the ctor.
-    if not c.mFileName:
-        c.frame.title = ""
-        c.mFileName = ""
-
-    c.beginUpdate()
-    try:
-        if c.mFileName != "":
-            # Calls c.setChanged(False) if no error.
-            c.fileCommands.save(c.mFileName)
-        else:
-            fileName = g.app.gui.runSaveFileDialog(
-                initialfile = c.mFileName,
-                title="Save",
-                filetypes=[("Leo files", "*.leo")],
-                defaultextension=".leo")
-            c.bringToFront()
-
-            if fileName:
-                # Don't change mFileName until the dialog has suceeded.
-                c.mFileName = g.ensure_extension(fileName, ".leo")
-                c.frame.title = c.mFileName
-                c.frame.setTitle(g.computeWindowTitle(c.mFileName))
-                c.frame.openDirectory = g.os_path_dirname(c.mFileName) # Bug fix in 4.4b2.
-                c.fileCommands.save(c.mFileName)
-                c.updateRecentFiles(c.mFileName)
-    finally:
-        c.endUpdate()
-        c.widgetWantsFocus(w)
-#@nonl
-#@-node:ekr.20031218072017.2834:save (commands)
-#@+node:ekr.20031218072017.2835:saveAs
-def saveAs (self,event=None):
-
-    '''Save a Leo outline to a file with a new filename.'''
-
-    c = self ;  w = g.app.gui.get_focus(c)
-
-    if g.app.disableSave:
-        g.es("Save commands disabled",color="purple")
-        return
-
-    c.beginUpdate()
-    try:
-        # Make sure we never pass None to the ctor.
-        if not c.mFileName:
-            c.frame.title = ""
-
-        fileName = g.app.gui.runSaveFileDialog(
-            initialfile = c.mFileName,
-            title="Save As",
-            filetypes=[("Leo files", "*.leo")],
-            defaultextension=".leo")
-        c.bringToFront()
-
-        if fileName:
-            # 7/2/02: don't change mFileName until the dialog has suceeded.
-            c.mFileName = g.ensure_extension(fileName, ".leo")
-            c.frame.title = c.mFileName
-            c.frame.setTitle(g.computeWindowTitle(c.mFileName))
-            c.frame.openDirectory = g.os_path_dirname(c.mFileName) # Bug fix in 4.4b2.
-            # Calls c.setChanged(False) if no error.
-            c.fileCommands.saveAs(c.mFileName)
-            c.updateRecentFiles(c.mFileName)
-    finally:
-        c.endUpdate()
-        c.widgetWantsFocus(w)
-#@-node:ekr.20031218072017.2835:saveAs
-#@+node:ekr.20070413045221:saveAsUnzipped & saveAsZipped
-def saveAsUnzipped (self,event=None):
-
-    '''Save a Leo outline to a file with a new filename,
-    ensuring that the file is not compressed.'''
-    self.saveAsZippedHelper(False)
-
-def saveAsZipped (self,event=None):
-
-    '''Save a Leo outline to a file with a new filename,
-    ensuring that the file is compressed.'''
-    self.saveAsZippedHelper(True)
-
-def saveAsZippedHelper (self,isZipped):
-
-    c = self
-    oldZipped = c.isZipped
-    c.isZipped = isZipped
-    try:
-        c.saveAs()
-    finally:
-        c.isZipped = oldZipped
-#@-node:ekr.20070413045221:saveAsUnzipped & saveAsZipped
-#@+node:ekr.20031218072017.2836:saveTo
-def saveTo (self,event=None):
-
-    '''Save a Leo outline to a file, leaving the file associated with the Leo outline unchanged.'''
-
-    c = self ; w = g.app.gui.get_focus(c)
-
-    if g.app.disableSave:
-        g.es("Save commands disabled",color="purple")
-        return
-
-    c.beginUpdate()
-    try:
-        # Make sure we never pass None to the ctor.
-        if not c.mFileName:
-            c.frame.title = ""
-
-        # set local fileName, _not_ c.mFileName
-        fileName = g.app.gui.runSaveFileDialog(
-            initialfile = c.mFileName,
-            title="Save To",
-            filetypes=[("Leo files", "*.leo")],
-            defaultextension=".leo")
-        c.bringToFront()
-
-        if fileName:
-            fileName = g.ensure_extension(fileName, ".leo")
-            c.fileCommands.saveTo(fileName)
-            c.updateRecentFiles(fileName)
-
-    finally:
-        c.endUpdate()
-        c.widgetWantsFocus(w)
-#@-node:ekr.20031218072017.2836:saveTo
-#@+node:ekr.20031218072017.2837:revert
-def revert (self,event=None):
-
-    '''Revert the contents of a Leo outline to last saved contents.'''
-
-    c = self
-
-    # Make sure the user wants to Revert.
-    if not c.mFileName:
-        return
-
-    reply = g.app.gui.runAskYesNoDialog(c,"Revert",
-        "Revert to previous version of " + c.mFileName + "?")
-    c.bringToFront()
-
-    if reply=="no":
-        return
-
-    # Kludge: rename this frame so openWithFileName won't think it is open.
-    fileName = c.mFileName ; c.mFileName = ""
-
-    # Create a new frame before deleting this frame.
-    ok, frame = g.openWithFileName(fileName,c)
-    if ok:
-        frame.deiconify()
-        g.app.destroyWindow(c.frame)
-    else:
-        c.mFileName = fileName
-#@-node:ekr.20031218072017.2837:revert
-#@-node:ekr.20031218072017.2820:top level (file menu)
-#@-node:ekr.20061002093442:Add opml support to new,open, save commands
-#@-node:ekr.20070630143345:Easy and useful
-#@+node:ekr.20070703111455.3:Other/Maybe
+#@-node:ekr.20071105155631.3:Testing
+#@+node:ekr.20070703111455.3:Maybe
 # some of these can wait till much later.
 #@nonl
 #@+node:ekr.20071027121956:Fix javaScript scanner
@@ -4774,7 +4766,7 @@ their own section, like the NodeBar plugin did/does?
 add-new-icon-row command?
 #@nonl
 #@-node:ekr.20061127170002.1:Allow multiple lines on the button bar
-#@-node:ekr.20070703111455.3:Other/Maybe
+#@-node:ekr.20070703111455.3:Maybe
 #@-node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
 #@+node:ekr.20070923103337:Not associated with any release
 #@+node:ekr.20060306194040:Video and more screen shots on Leo's web site
