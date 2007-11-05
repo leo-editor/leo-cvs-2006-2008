@@ -265,6 +265,10 @@ class baseCommands:
             g.es(c.disableCommandsMessage,color='blue')
             return 'break' # Inhibit all other handlers.
 
+        if c.inCommand and not g.unitTesting:
+            g.es('Ignoring command: already executing a command.',color='red')
+            return 'break'
+
         if label and event is None: # Do this only for legacy commands.
             if label == "cantredo": label = "redo"
             if label == "cantundo": label = "undo"
@@ -274,8 +278,8 @@ class baseCommands:
             try:
                 c.inCommand = True
                 val = command(event)
-                c.inCommand = False
                 if c and c.exists: # Be careful: the command could destroy c.
+                    c.inCommand = False
                     c.k.funcReturn = val
             except:
                 c.inCommand = False
