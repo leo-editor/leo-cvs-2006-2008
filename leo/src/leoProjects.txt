@@ -28,6 +28,68 @@
 
 #@-node:ekr.20070809131638:Pychecker report
 #@+node:ekr.20071105150738:Leo 4.4.5 a1
+#@+node:ekr.20071105202808:Distribution
+#@+node:ekr.20071105171900:Removed all references to pluginsManager.txt
+#@+node:ekr.20031218072017.3440:loadHandlers & helper
+def loadHandlers(tag):
+
+    """Load all enabled plugins from the plugins directory"""
+
+    def pr (*args,**keys):
+        if not g.app.unitTesting:
+            g.es_print(*args,**keys)
+
+    plugins_path = g.os_path_abspath(g.os_path_join(g.app.loadDir,"..","plugins"))
+    files = glob.glob(g.os_path_join(plugins_path,"*.py"))
+    files = [g.os_path_abspath(theFile) for theFile in files]
+
+    s = g.app.config.getEnabledPlugins()
+    if not s: return
+
+    if not g.app.silentMode:
+        pr('@enabled-plugins found in %s' % (
+            g.app.config.enabledPluginsFileName),color='blue')
+
+    enabled_files = getEnabledFiles(s,plugins_path)
+
+    # Load plugins in the order they appear in the enabled_files list.
+    if files and enabled_files:
+        for theFile in enabled_files:
+            if theFile in files:
+                loadOnePlugin(theFile)
+
+    # Note: g.plugin_signon adds module names to g.app.loadedPlugins
+    if 0:
+        if g.app.loadedPlugins:
+            pr("%d plugins loaded" % (len(g.app.loadedPlugins)), color="blue")
+#@+node:ekr.20070224082131:getEnabledFiles
+def getEnabledFiles (s,plugins_path):
+
+    enabled_files = []
+    disabled_files = []
+    for s in g.splitLines(s):
+        s = s.strip()
+        if s:
+            if g.match(s,0,"#"):
+                s = s[1:].strip()
+                # Kludge: ignore comment lines containing a blank or not ending in '.py'.
+                if s and s.find(' ') == -1 and s[-3:] == '.py':
+                    path = g.os_path_abspath(g.os_path_join(plugins_path,s))
+                    if path not in enabled_files and path not in disabled_files:
+                        # print 'disabled',path
+                        disabled_files.append(path)
+            else:
+                path = g.os_path_abspath(g.os_path_join(plugins_path,s))
+                if path not in enabled_files and path not in disabled_files:
+                    # print 'enabled',path
+                    enabled_files.append(path)
+
+    return enabled_files
+#@nonl
+#@-node:ekr.20070224082131:getEnabledFiles
+#@-node:ekr.20031218072017.3440:loadHandlers & helper
+#@-node:ekr.20071105171900:Removed all references to pluginsManager.txt
+#@-node:ekr.20071105202808:Distribution
 #@+node:ekr.20071105171301:Fixed bugs
 #@+node:ekr.20060609070148:Fixed hung windows
 @nocolor
