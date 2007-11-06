@@ -147,45 +147,18 @@ def loadHandlers(tag):
         if not g.app.unitTesting:
             g.es_print(*args,**keys)
 
-    fileName = "pluginsManager.txt"
     plugins_path = g.os_path_abspath(g.os_path_join(g.app.loadDir,"..","plugins"))
     files = glob.glob(g.os_path_join(plugins_path,"*.py"))
     files = [g.os_path_abspath(theFile) for theFile in files]
+
     s = g.app.config.getEnabledPlugins()
-    theConfigFile = g.app.config.enabledPluginsFileName
-    # g.trace('len(s)',s and len(s) or 0)
-    if s:
-        if not g.app.silentMode:
-            pr('@enabled-plugins found in %s' % (theConfigFile),color='blue')
-        enabled_files = getEnabledFiles(s,plugins_path)
-    else:
-        for theDir,place in (
-            (g.app.homeDir,'HOME'),
-            (plugins_path,'leo/config')
-        ):
-            manager_path = g.os_path_join(theDir,fileName)
-            if g.os_path_exists(manager_path):
-                g.es_print('%s: %s' % (fileName,theDir),color='blue')
-                break
-        else: pr('%s not found. No plugins will be loaded' % fileName)
-        if g.os_path_exists(manager_path):
-            #@            << set enabled_files from pluginsManager.txt >>
-            #@+node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
-            try:
-                # New in 4.3: The first reference to a plugin in pluginsManager.txt controls.
-                theFile = open(manager_path)
-                s = theFile.read()
-                pr('Using settings in pluginsManager.txt')
-                enabled_files = getEnabledFiles(s,plugins_path)
-                theFile.close()
-            except IOError:
-                pr("Can not open: %s"  % manager_path)
-                # Don't import leoTest initially.  It causes problems.
-                import leoTest ; leoTest.fail()
-                return
-            #@-node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
-            #@nl
-        else:  return
+    if not s: return
+
+    if not g.app.silentMode:
+        pr('@enabled-plugins found in %s' % (
+            g.app.config.enabledPluginsFileName),color='blue')
+
+    enabled_files = getEnabledFiles(s,plugins_path)
 
     # Load plugins in the order they appear in the enabled_files list.
     if files and enabled_files:
