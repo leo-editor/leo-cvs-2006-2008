@@ -1425,7 +1425,6 @@ class baseLeoImportCommands:
             self.atAuto = atAuto
             self.c = c = ic.c
             self.classId = None # The identifier containing the class tag: 'class', 'interface', 'namespace', etc.
-            self.classIndent = 0 # The indentation of the start of the class.
             self.codeEnd = None
                 # The character after the last character of the class, method or function.
                 # An error will be given if this is not a newline.
@@ -1692,6 +1691,8 @@ class baseLeoImportCommands:
 
             c = self.c
 
+            # g.trace(parent.headString())
+
             if self.treeType == '@file':
                 c.appendStringToBody(parent,'@others\n')
 
@@ -1726,7 +1727,7 @@ class baseLeoImportCommands:
         #@+node:ekr.20070703122141.77:createHeadline
         def createHeadline (self,parent,body,headline):
 
-            # g.trace('parent,headline:',parent,headline)
+            # g.trace('parent,headline:',parent.headString(),headline)
 
             # Create the node.
             p = parent.insertAsLastChild()
@@ -1805,12 +1806,10 @@ class baseLeoImportCommands:
             '''Creates a child node c of parent for the class, and a child of c for each def in the class.'''
 
             # Enter a new class 1: save the old class info.
-            oldClassIndent = self.classIndent
             oldMethodName = self.methodName
             oldStartSigIndent = self.startSigIndent
 
             # Enter a new class 2: init the new class info.
-            self.classIndent = self.getIndent(s,i)
             self.classLines = []
             self.indentRefFlag = None
 
@@ -1833,52 +1832,36 @@ class baseLeoImportCommands:
             # Create the class node.
             class_node = self.createHeadline(parent,'',headline)
 
+            # Remember the indentation of the class line.
             undentVal = self.getLeadingIndent(classHead,0)
 
             # Call the helper to parse the inner part of the class.
-            putRef,indentFlag,classDelim,decls,trailing = self.putClassHelper(s,i,codeEnd,class_name,class_node)
-
-            declsUndentVal = self.getLeadingIndent(decls,0)
-
-            # g.trace(class_name,'indent',self.classIndent,'indentFlag',indentFlag,'declsIndent',declsUndentVal)
+            putRef,bodyIndent,classDelim,decls,trailing = self.putClassHelper(s,i,codeEnd,class_name,class_node)
+            # g.trace('bodyIndent',bodyIndent,'undentVal',undentVal)
 
             # Set the body of the class node.
-            ref = putRef and self.getClassNodeRef(class_name,indentFlag) or ''
+            ref = putRef and self.getClassNodeRef(class_name) or ''
 
-            # Remove the leading whitespace in various ways from each part.
+            # Give ref the same indentation as the body of the class.
+            if ref:
+                bodyWs = g.computeLeadingWhitespace (bodyIndent,self.tab_width)
+                ref = '%s%s' % (bodyWs,ref)
+
+            # Remove the leading whitespace.
             result = (
                 prefix +
                 self.undentBy(classHead,undentVal) +
                 self.undentBy(classDelim,undentVal) +
                 self.undentBy(decls,undentVal) +
-                self.undentBy(ref,declsUndentVal) +
+                self.undentBy(ref,undentVal) +
                 self.undentBy(trailing,undentVal))
 
             # Append the result to the class node.
             self.appendTextToClassNode(class_node,result)
 
             # Exit the new class: restore the previous class info.
-            self.classIndent = oldClassIndent
             self.methodName = oldMethodName
             self.startSigIndent = oldStartSigIndent
-        #@+node:ekr.20070703122141.106:getClassNodeRef
-        def getClassNodeRef (self,class_name,indentFlag):
-
-            '''Insert the proper body text in the class_vnode.'''
-
-            if self.treeType == '@file':
-                s = '@others'
-            else:
-                s = g.angleBrackets(' class %s methods ' % (class_name))
-
-            # Increase effective indentation by the width of self.tab_ws.
-            # g.trace('class_name',class_name,indentFlag)
-
-            if indentFlag:
-                return '%s%s\n' % (self.tab_ws,s)
-            else:
-                return '%s\n' % (s)
-        #@-node:ekr.20070703122141.106:getClassNodeRef
         #@+node:ekr.20070707190351:appendTextToClassNode
         def appendTextToClassNode (self,class_node,s):
 
@@ -1899,6 +1882,18 @@ class baseLeoImportCommands:
 
             return prefix
         #@-node:ekr.20070703122141.105:createClassNodePrefix
+        #@+node:ekr.20070703122141.106:getClassNodeRef
+        def getClassNodeRef (self,class_name):
+
+            '''Insert the proper body text in the class_vnode.'''
+
+            if self.treeType == '@file':
+                s = '@others'
+            else:
+                s = g.angleBrackets(' class %s methods ' % (class_name))
+
+            return '%s\n' % (s)
+        #@-node:ekr.20070703122141.106:getClassNodeRef
         #@+node:ekr.20070707171329:putClassHelper
         def putClassHelper(self,s,i,end,class_name,class_node):
 
@@ -1915,6 +1910,9 @@ class baseLeoImportCommands:
             j = i ; i = self.skipDecls(s,i,end,inClass=True)
             decls = s[j:i]
 
+            # Set the body indent if there are real decls.
+            bodyIndent = decls.strip() and self.getIndent(s,i) or None
+
             # Parse the rest of the class.
             delim1, delim2 = self.outerBlockDelim1, self.outerBlockDelim2
             if g.match(s,i,delim1):
@@ -1923,17 +1921,19 @@ class baseLeoImportCommands:
                 if g.is_nl(s,j): j = g.skip_nl(s,j)
                 classDelim = s[i:j]
                 end2 = self.skipBlock(s,i,delim1=delim1,delim2=delim2)
-                start,putRef,indentFlag = self.scanHelper(s,j,end=end2,parent=class_node,kind='class')
+                start,putRef,bodyIndent2 = self.scanHelper(s,j,end=end2,parent=class_node,kind='class')
             else:
                 classDelim = ''
-                start,putRef,indentFlag = self.scanHelper(s,i,end=end,parent=class_node,kind='class')
+                start,putRef,bodyIndent2 = self.scanHelper(s,i,end=end,parent=class_node,kind='class')
+
+            if bodyIndent is None: bodyIndent = bodyIndent2
 
             # Restore the output indentation.
             self.output_indent = old_output_indent
 
             # Return the results.
             trailing = s[start:end]
-            return putRef,indentFlag,classDelim,decls,trailing
+            return putRef,bodyIndent,classDelim,decls,trailing
         #@-node:ekr.20070707171329:putClassHelper
         #@-node:ekr.20070707113832.1:putClass & helpers
         #@+node:ekr.20070707082432:putFunction
@@ -2101,8 +2101,10 @@ class baseLeoImportCommands:
 
             '''Common scanning code used by both scan and putClassHelper.'''
 
+            # g.trace(g.callers())
+            # g.trace('i',i,g.get_line(s,i))
             assert kind in ('class','outer')
-            start = i ; putRef = False ; indentFlag = None
+            start = i ; putRef = False ; bodyIndent = None
             while i < end:
                 progress = i
                 if s[i] in (' ','\t','\n'):
@@ -2113,13 +2115,13 @@ class baseLeoImportCommands:
                     i = self.skipString(s,i)
                 elif self.startsClass(s,i):  # Sets sigStart,sigEnd & codeEnd ivars.
                     putRef = True
-                    if indentFlag is None: indentFlag = self.getIndent(s,i) > self.classIndent
+                    if bodyIndent is None: bodyIndent = self.getIndent(s,i)
                     end2 = self.codeEnd # putClass may change codeEnd ivar.
                     self.putClass(s,i,self.sigStart,self.sigEnd,self.codeEnd,start,parent)
                     i = start = end2
                 elif self.startsFunction(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
-                    putRef = True ; indent = self.getIndent(s,i)
-                    if indentFlag is None: indentFlag = indent > self.classIndent
+                    putRef = True
+                    if bodyIndent is None: bodyIndent = self.getIndent(s,i)
                     self.putFunction(s,self.sigStart,self.codeEnd,start,parent)
                     i = start = self.codeEnd
                 elif self.startsId(s,i):
@@ -2131,7 +2133,7 @@ class baseLeoImportCommands:
                 # if progress == i: g.pdb()
                 assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
 
-            return start,putRef,indentFlag
+            return start,putRef,bodyIndent
         #@-node:ekr.20071018084830:scanHelper
         #@-node:ekr.20070706101600:scan & scanHelper
         #@+node:ekr.20070712075148:skipArgs
@@ -2264,10 +2266,12 @@ class baseLeoImportCommands:
                 return k + len(self.blockCommentDelim2)
         #@-node:ekr.20070707074541:skipBlockComment
         #@-node:ekr.20070711104014:skipComment & helper
-        #@+node:ekr.20070707080042:skipDecls & helper
+        #@+node:ekr.20070707080042:skipDecls
         def skipDecls (self,s,i,end,inClass):
 
-            '''Skip everything until the start of the next class or function.'''
+            '''Skip everything until the start of the next class or function.
+
+            The decls *must* end in a newline.'''
 
             trace = False or self.trace
             start = i ; prefix = None
@@ -2290,12 +2294,12 @@ class baseLeoImportCommands:
                 elif self.startsClass(s,i):
                     # Important: do not include leading ws in the decls.
                     classOrFunc = True
-                    i = self.adjustClassOrFunctionStart(s,i,self.classId) # 'class')
+                    i = g.find_line_start(s,i)
                     break
                 elif self.startsFunction(s,i):
                     # Important: do not include leading ws in the decls.
                     classOrFunc = True
-                    i = self.adjustClassOrFunctionStart(s,i,'function')
+                    i = g.find_line_start(s,i)
                     break
                 elif self.startsId(s,i):
                     i = self.skipId(s,i)
@@ -2308,7 +2312,8 @@ class baseLeoImportCommands:
                 # if progress == i: g.pdb()
                 assert(progress < i)
 
-            if prefix is not None: i = prefix
+            if prefix is not None:
+                i = g.find_line_start(s,prefix) # i = prefix
             decls = s[start:i]
             if inClass and not classOrFunc:
                 # Don't return decls if a class contains nothing but decls.
@@ -2319,28 +2324,7 @@ class baseLeoImportCommands:
                 return i
             else: # Ignore empty decls.
                 return start
-        #@+node:ekr.20070709084313:adjustClassOrFunctionStart
-        def adjustClassOrFunctionStart(self,s,i,tag):
-
-            '''
-            s[i:] starts a class or function.
-            Adjust i so it points at the start of the line.
-
-            Issue a warning if anything except whitespace appears.
-            '''
-
-            j = g.find_line_start(s,i)
-            return j
-
-            # if s[j:i].strip():
-                # self.error(
-                    # '%s %s does not start a line. Leo must insert a newline\n%s' % (
-                        # tag,self.sigId,g.get_line(s,j)))
-                # return i
-            # else:
-                # return j
-        #@-node:ekr.20070709084313:adjustClassOrFunctionStart
-        #@-node:ekr.20070707080042:skipDecls & helper
+        #@-node:ekr.20070707080042:skipDecls
         #@+node:ekr.20070707094858.1:skipId
         def skipId (self,s,i):
 
