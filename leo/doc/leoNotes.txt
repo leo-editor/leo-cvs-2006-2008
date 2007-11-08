@@ -4252,6 +4252,36 @@ def getEnabledFiles (s,plugins_path):
 #@nonl
 #@-node:ekr.20071105202106.2:getEnabledFiles
 #@-node:ekr.20071105202106:loadHandlers & helper
+#@+node:ekr.20071107082258:computeDeclsIndent (not used)
+def computeDeclsIndent(self,s):
+
+    i = 0
+    while i < len(s):
+        i = g.skip_ws(s,i)
+        if g.is_nl(s,i): i += 1
+        else: break
+
+    i,junk = g.getLine(s,i)
+    lineIndent = self.getIndent(s,i)
+    indentFlag = lineIndent >= self.classIndent + abs(self.tab_width)
+
+    g.trace('indentFlag',indentFlag,'lineIndent',lineIndent,'classIndent',self.classIndent)
+
+    return indentFlag
+#@-node:ekr.20071107082258:computeDeclsIndent (not used)
+#@+node:ekr.20070709084313:adjustClassOrFunctionStart
+def adjustClassOrFunctionStart(self,s,i,tag):
+
+    '''
+    s[i:] starts a class or function.
+    Adjust i so it points at the start of the line.
+
+    Issue a warning if anything except whitespace appears.
+    '''
+
+    j = g.find_line_start(s,i)
+    return j
+#@-node:ekr.20070709084313:adjustClassOrFunctionStart
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

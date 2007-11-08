@@ -5,6 +5,8 @@
 # Leo 4.4.5 will complete several projects that are long overdue.
 
 #@+node:ekr.20070814070312:First
+#@+node:ekr.20071106135136:Add option: warn if plugins fail to load
+#@-node:ekr.20071106135136:Add option: warn if plugins fail to load
 #@+node:ekr.20070814144804:Incorrect conversion of paths to absolute paths
 @nocolor
 
@@ -384,6 +386,107 @@ SCS as a back-up system, saving many (uninteresting) intermediate steps while
 implementing a new feature.
 #@nonl
 #@-node:ekr.20071001052501:Versioning for nodes
+#@+node:ekr.20060530085844:Improve autocompletion
+# Study rope:  http://rope.sourceforge.net/
+#@nonl
+#@+node:ekr.20060927173836.1:Make calltips and autocompleter 'stateless'
+@nocolor
+
+Disabled these binding:
+
+auto-complete-force         = None # This command needs work before it is useful. Ctrl-period
+show-calltips-force         = None # This command needs work before it is useful. Alt-parenleft
+
+The problem is that autocompletion depends on state: self.leadinWord,
+prevObjects, etc. Thus, it's not presently possible to start the proces
+anywhere. Similar remarks apply to calltips, which relies on autocompleter
+state.
+
+This is a complex problem, and not very serious now that there is an easy way of
+toggling autocompleter and calltips on and off.
+
+@color
+#@nonl
+#@-node:ekr.20060927173836.1:Make calltips and autocompleter 'stateless'
+#@+node:ekr.20071106083149:Recent posts
+@killcolor
+
+I'm a little confused about the intended behaviour of autocomplete. I tried to test it using: 
+
+@language python  
+
+s = [1,2] 
+
+I expected s. to yield a list of methods one might apply to a list (like append
+etc...) instead it seems to give me a list of methods for a string. If one
+replaces s with l, you don't get much of anything.
+
+My responses 
+
+The present autocompletion code is mostly a hack for working on Leo's own source
+code. If your var is called s, the autocompleter assumes s is a string.
+
+For the conventions used, see this node in leoPy.leo:
+
+Code-->Gui Base classes-->@thin leoKeys.py-->class autoCompleterClass--> ctor
+(autocompleter)-->defineObjectDict
+
+Clearly, this is not good in general. I may generalize the code this week. Leo
+will scan an @file tree (in a separate thread?) the first time you asked for
+autocompletion in that tree.
+
+-----
+
+The issues involving autocompletion are coming back to my memory. In general,
+this is a tricky problem. Consider:
+
+- There may be no 'clean' version of the source code that you want to
+auto-complete: you may be creating a new node, or a new file, and the source
+code, being incomplete, will not parse correctly.
+
+- Except in special circumstances, there is no 'real' object corresponding to s,
+so there is no way to use Python's inspect module on s. Modules are an
+exception: the autocompleter can handle existing modules fairly well. Try "os."
+or "os.path." for example.
+
+So I was a bit hasty in condemning the present approach. If your var is called
+aList instead of s, Leo will suggest autocompletions for a list. Similarly for
+s, s2 for strings, d, d1 and d2 for dictionaries, etc.
+
+I'll look at the pyxides project for discussion of autocompleter code that might
+be useful, but there are no guarantees that something better is coming soon.
+
+-----
+
+Scanning the pyxides thread about autocompletion, it seems the most promising tool is called rope: http://rope.sourceforge.net/ 
+
+But to repeat: autocompletion is not easy. I have some long-delayed bugs to fix before turning my attention to an improved autocompleter. So probably not this week... 
+
+----- 
+
+1. It might be possible to generalize c.k.defineObjectDict so that the user
+could specify autocompleter conventions, say in an @autocompleter node in an
+@settings tree.
+
+However, Python is not lisp, to actually specifying the object to use as the
+base of the completion may not be trivial. See the code for
+c.k.defineObjectDict.
+
+2. Brian (LeoUser) used another kind of autocompleter scheme in his now-defunct
+emacs plugin. When an outline was opened a scan (in a separate thread) found all
+pairs x.y in the code. Typing x. would then give you all the y's associated with
+x. It's clever, but it has obvious problems: it does not suggest completions
+that are not in the file, and it suggests too much for 'self.'.
+
+BTW, I actually did a lot of work on autocompletion that is not presently
+active. In particular, leoKeys.py contains a 'forgiving' parser that attempts to
+understand what 'self' means. Iirc, I disabled this code because it was too slow.
+#@-node:ekr.20071106083149:Recent posts
+#@+node:ekr.20071106135937:Study the pydev code in c:\prog\pydev
+#@-node:ekr.20071106135937:Study the pydev code in c:\prog\pydev
+#@+node:ekr.20071106135937.1:Study the rope code in c:\prog\rope
+#@-node:ekr.20071106135937.1:Study the rope code in c:\prog\rope
+#@-node:ekr.20060530085844:Improve autocompletion
 #@-node:ekr.20070703111455.1:Most important
 #@+node:ekr.20071105155631.1:Plugins
 #@+node:ekr.20071021125124:Revise plugins manager plugin
@@ -2364,7 +2467,6 @@ def __init__ (self,importCommands,atAuto,language):
     self.atAuto = atAuto
     self.c = c = ic.c
     self.classId = None # The identifier containing the class tag: 'class', 'interface', 'namespace', etc.
-    self.classIndent = 0 # The indentation of the start of the class.
     self.codeEnd = None
         # The character after the last character of the class, method or function.
         # An error will be given if this is not a newline.
@@ -2627,6 +2729,8 @@ def addRef (self,parent):
 
     c = self.c
 
+    # g.trace(parent.headString())
+
     if self.treeType == '@file':
         c.appendStringToBody(parent,'@others\n')
 
@@ -2661,7 +2765,7 @@ def createFunctionNode (self,headline,body,parent):
 #@+node:ekr.20070703122141.77:createHeadline
 def createHeadline (self,parent,body,headline):
 
-    # g.trace('parent,headline:',parent,headline)
+    # g.trace('parent,headline:',parent.headString(),headline)
 
     # Create the node.
     p = parent.insertAsLastChild()
@@ -2740,12 +2844,10 @@ def putClass (self,s,i,sigStart,sigEnd,codeEnd,start,parent):
     '''Creates a child node c of parent for the class, and a child of c for each def in the class.'''
 
     # Enter a new class 1: save the old class info.
-    oldClassIndent = self.classIndent
     oldMethodName = self.methodName
     oldStartSigIndent = self.startSigIndent
 
     # Enter a new class 2: init the new class info.
-    self.classIndent = self.getIndent(s,i)
     self.classLines = []
     self.indentRefFlag = None
 
@@ -2768,52 +2870,36 @@ def putClass (self,s,i,sigStart,sigEnd,codeEnd,start,parent):
     # Create the class node.
     class_node = self.createHeadline(parent,'',headline)
 
+    # Remember the indentation of the class line.
     undentVal = self.getLeadingIndent(classHead,0)
 
     # Call the helper to parse the inner part of the class.
-    putRef,indentFlag,classDelim,decls,trailing = self.putClassHelper(s,i,codeEnd,class_name,class_node)
-
-    declsUndentVal = self.getLeadingIndent(decls,0)
-
-    # g.trace(class_name,'indent',self.classIndent,'indentFlag',indentFlag,'declsIndent',declsUndentVal)
+    putRef,bodyIndent,classDelim,decls,trailing = self.putClassHelper(s,i,codeEnd,class_name,class_node)
+    # g.trace('bodyIndent',bodyIndent,'undentVal',undentVal)
 
     # Set the body of the class node.
-    ref = putRef and self.getClassNodeRef(class_name,indentFlag) or ''
+    ref = putRef and self.getClassNodeRef(class_name) or ''
 
-    # Remove the leading whitespace in various ways from each part.
+    # Give ref the same indentation as the body of the class.
+    if ref:
+        bodyWs = g.computeLeadingWhitespace (bodyIndent,self.tab_width)
+        ref = '%s%s' % (bodyWs,ref)
+
+    # Remove the leading whitespace.
     result = (
         prefix +
         self.undentBy(classHead,undentVal) +
         self.undentBy(classDelim,undentVal) +
         self.undentBy(decls,undentVal) +
-        self.undentBy(ref,declsUndentVal) +
+        self.undentBy(ref,undentVal) +
         self.undentBy(trailing,undentVal))
 
     # Append the result to the class node.
     self.appendTextToClassNode(class_node,result)
 
     # Exit the new class: restore the previous class info.
-    self.classIndent = oldClassIndent
     self.methodName = oldMethodName
     self.startSigIndent = oldStartSigIndent
-#@+node:ekr.20070703122141.106:getClassNodeRef
-def getClassNodeRef (self,class_name,indentFlag):
-
-    '''Insert the proper body text in the class_vnode.'''
-
-    if self.treeType == '@file':
-        s = '@others'
-    else:
-        s = g.angleBrackets(' class %s methods ' % (class_name))
-
-    # Increase effective indentation by the width of self.tab_ws.
-    # g.trace('class_name',class_name,indentFlag)
-
-    if indentFlag:
-        return '%s%s\n' % (self.tab_ws,s)
-    else:
-        return '%s\n' % (s)
-#@-node:ekr.20070703122141.106:getClassNodeRef
 #@+node:ekr.20070707190351:appendTextToClassNode
 def appendTextToClassNode (self,class_node,s):
 
@@ -2834,6 +2920,18 @@ def createClassNodePrefix (self):
 
     return prefix
 #@-node:ekr.20070703122141.105:createClassNodePrefix
+#@+node:ekr.20070703122141.106:getClassNodeRef
+def getClassNodeRef (self,class_name):
+
+    '''Insert the proper body text in the class_vnode.'''
+
+    if self.treeType == '@file':
+        s = '@others'
+    else:
+        s = g.angleBrackets(' class %s methods ' % (class_name))
+
+    return '%s\n' % (s)
+#@-node:ekr.20070703122141.106:getClassNodeRef
 #@+node:ekr.20070707171329:putClassHelper
 def putClassHelper(self,s,i,end,class_name,class_node):
 
@@ -2850,6 +2948,9 @@ def putClassHelper(self,s,i,end,class_name,class_node):
     j = i ; i = self.skipDecls(s,i,end,inClass=True)
     decls = s[j:i]
 
+    # Set the body indent if there are real decls.
+    bodyIndent = decls.strip() and self.getIndent(s,i) or None
+
     # Parse the rest of the class.
     delim1, delim2 = self.outerBlockDelim1, self.outerBlockDelim2
     if g.match(s,i,delim1):
@@ -2858,17 +2959,19 @@ def putClassHelper(self,s,i,end,class_name,class_node):
         if g.is_nl(s,j): j = g.skip_nl(s,j)
         classDelim = s[i:j]
         end2 = self.skipBlock(s,i,delim1=delim1,delim2=delim2)
-        start,putRef,indentFlag = self.scanHelper(s,j,end=end2,parent=class_node,kind='class')
+        start,putRef,bodyIndent2 = self.scanHelper(s,j,end=end2,parent=class_node,kind='class')
     else:
         classDelim = ''
-        start,putRef,indentFlag = self.scanHelper(s,i,end=end,parent=class_node,kind='class')
+        start,putRef,bodyIndent2 = self.scanHelper(s,i,end=end,parent=class_node,kind='class')
+
+    if bodyIndent is None: bodyIndent = bodyIndent2
 
     # Restore the output indentation.
     self.output_indent = old_output_indent
 
     # Return the results.
     trailing = s[start:end]
-    return putRef,indentFlag,classDelim,decls,trailing
+    return putRef,bodyIndent,classDelim,decls,trailing
 #@-node:ekr.20070707171329:putClassHelper
 #@-node:ekr.20070707113832.1:putClass & helpers
 #@+node:ekr.20070707082432:putFunction
@@ -3033,8 +3136,10 @@ def scanHelper(self,s,i,end,parent,kind):
 
     '''Common scanning code used by both scan and putClassHelper.'''
 
+    # g.trace(g.callers())
+    # g.trace('i',i,g.get_line(s,i))
     assert kind in ('class','outer')
-    start = i ; putRef = False ; indentFlag = None
+    start = i ; putRef = False ; bodyIndent = None
     while i < end:
         progress = i
         if s[i] in (' ','\t','\n'):
@@ -3045,13 +3150,13 @@ def scanHelper(self,s,i,end,parent,kind):
             i = self.skipString(s,i)
         elif self.startsClass(s,i):  # Sets sigStart,sigEnd & codeEnd ivars.
             putRef = True
-            if indentFlag is None: indentFlag = self.getIndent(s,i) > self.classIndent
+            if bodyIndent is None: bodyIndent = self.getIndent(s,i)
             end2 = self.codeEnd # putClass may change codeEnd ivar.
             self.putClass(s,i,self.sigStart,self.sigEnd,self.codeEnd,start,parent)
             i = start = end2
         elif self.startsFunction(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
-            putRef = True ; indent = self.getIndent(s,i)
-            if indentFlag is None: indentFlag = indent > self.classIndent
+            putRef = True
+            if bodyIndent is None: bodyIndent = self.getIndent(s,i)
             self.putFunction(s,self.sigStart,self.codeEnd,start,parent)
             i = start = self.codeEnd
         elif self.startsId(s,i):
@@ -3063,7 +3168,7 @@ def scanHelper(self,s,i,end,parent,kind):
         # if progress == i: g.pdb()
         assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
 
-    return start,putRef,indentFlag
+    return start,putRef,bodyIndent
 #@-node:ekr.20071018084830:scanHelper
 #@-node:ekr.20070706101600:scan & scanHelper
 #@+node:ekr.20070712075148:skipArgs
@@ -3196,10 +3301,12 @@ def skipBlockComment (self,s,i):
         return k + len(self.blockCommentDelim2)
 #@-node:ekr.20070707074541:skipBlockComment
 #@-node:ekr.20070711104014:skipComment & helper
-#@+node:ekr.20070707080042:skipDecls & helper
+#@+node:ekr.20070707080042:skipDecls
 def skipDecls (self,s,i,end,inClass):
 
-    '''Skip everything until the start of the next class or function.'''
+    '''Skip everything until the start of the next class or function.
+
+    The decls *must* end in a newline.'''
 
     trace = False or self.trace
     start = i ; prefix = None
@@ -3222,12 +3329,12 @@ def skipDecls (self,s,i,end,inClass):
         elif self.startsClass(s,i):
             # Important: do not include leading ws in the decls.
             classOrFunc = True
-            i = self.adjustClassOrFunctionStart(s,i,self.classId) # 'class')
+            i = g.find_line_start(s,i)
             break
         elif self.startsFunction(s,i):
             # Important: do not include leading ws in the decls.
             classOrFunc = True
-            i = self.adjustClassOrFunctionStart(s,i,'function')
+            i = g.find_line_start(s,i)
             break
         elif self.startsId(s,i):
             i = self.skipId(s,i)
@@ -3240,7 +3347,8 @@ def skipDecls (self,s,i,end,inClass):
         # if progress == i: g.pdb()
         assert(progress < i)
 
-    if prefix is not None: i = prefix
+    if prefix is not None:
+        i = g.find_line_start(s,prefix) # i = prefix
     decls = s[start:i]
     if inClass and not classOrFunc:
         # Don't return decls if a class contains nothing but decls.
@@ -3251,28 +3359,7 @@ def skipDecls (self,s,i,end,inClass):
         return i
     else: # Ignore empty decls.
         return start
-#@+node:ekr.20070709084313:adjustClassOrFunctionStart
-def adjustClassOrFunctionStart(self,s,i,tag):
-
-    '''
-    s[i:] starts a class or function.
-    Adjust i so it points at the start of the line.
-
-    Issue a warning if anything except whitespace appears.
-    '''
-
-    j = g.find_line_start(s,i)
-    return j
-
-    # if s[j:i].strip():
-        # self.error(
-            # '%s %s does not start a line. Leo must insert a newline\n%s' % (
-                # tag,self.sigId,g.get_line(s,j)))
-        # return i
-    # else:
-        # return j
-#@-node:ekr.20070709084313:adjustClassOrFunctionStart
-#@-node:ekr.20070707080042:skipDecls & helper
+#@-node:ekr.20070707080042:skipDecls
 #@+node:ekr.20070707094858.1:skipId
 def skipId (self,s,i):
 
@@ -4352,27 +4439,6 @@ the recent files link is wrong.
 If it would be trivial for Leo to not do this, I'd like that feature.  If it's
 a big deal, then not to worry, I can always navigate to the file of course.
 #@-node:ekr.20070605114358:Improve how recent files works?
-#@+node:ekr.20060530085844:Improve autocompletion
-#@+node:ekr.20060927173836.1:Make calltips and autocompleter 'stateless'
-@nocolor
-
-Disabled these binding:
-
-auto-complete-force         = None # This command needs work before it is useful. Ctrl-period
-show-calltips-force         = None # This command needs work before it is useful. Alt-parenleft
-
-The problem is that autocompletion depends on state: self.leadinWord,
-prevObjects, etc. Thus, it's not presently possible to start the proces
-anywhere. Similar remarks apply to calltips, which relies on autocompleter
-state.
-
-This is a complex problem, and not very serious now that there is an easy way of
-toggling autocompleter and calltips on and off.
-
-@color
-#@nonl
-#@-node:ekr.20060927173836.1:Make calltips and autocompleter 'stateless'
-#@-node:ekr.20060530085844:Improve autocompletion
 #@+node:ekr.20070619161413:Finish support for hidden windows
 @
 
