@@ -5,8 +5,17 @@
 # Leo 4.4.5 will complete several projects that are long overdue.
 
 #@+node:ekr.20070814070312:First
-#@+node:ekr.20071106135136:Add option: warn if plugins fail to load
-#@-node:ekr.20071106135136:Add option: warn if plugins fail to load
+#@+node:ekr.20071107074857:What should @auto do about irregular leading whitespace?
+@nocolor
+
+> Adding a blank in front of the braces in the above test changes the results. 
+
+Thanks for this report.  I've made a note to check your example.
+
+In general, adding leading whitespace will make it difficult or impossible for Leo to reproduce the original file exactly.  There are several cases to consider, and I don't remember what I intended to happen in each case.  For so-called strict languages (Python), the importer will generate errors.  For non-strict languages (like C), a case could be made for a warning, an error, or for silently accepting a slightly changed output file.
+
+To repeat, I don't remember what I indented in the first place, but I'll review what actually happens and see if it makes sense.  Perhaps a new setting would make sense telling the import code how to handle leading whitespace issues for non-strict languages.
+#@-node:ekr.20071107074857:What should @auto do about irregular leading whitespace?
 #@+node:ekr.20070814144804:Incorrect conversion of paths to absolute paths
 @nocolor
 
@@ -2286,6 +2295,8 @@ def revert (self,event=None):
 #@-node:ekr.20031218072017.2837:revert
 #@-node:ekr.20031218072017.2820:top level (file menu)
 #@-node:ekr.20061002093442:Add opml support to new,open, save commands
+#@+node:ekr.20071106135136:Add option: warn if plugins fail to load
+#@-node:ekr.20071106135136:Add option: warn if plugins fail to load
 #@-node:ekr.20070630143345:Other
 #@+node:ekr.20070703111455.3:Maybe
 # some of these can wait till much later.
@@ -2516,6 +2527,7 @@ def __init__ (self,importCommands,atAuto,language):
     self.lineCommentDelim2 = None
     self.outerBlockDelim1 = None
     self.outerBlockDelim2 = None
+    self.outerBlockEndsDecls = True
     self.sigHeadExtraTokens = [] # Extra tokens valid in head of signature.
     self.sigFailTokens = []
         # A list of strings that abort a signature when seen in a tail.
@@ -3162,10 +3174,9 @@ def scanHelper(self,s,i,end,parent,kind):
         elif self.startsId(s,i):
             i = self.skipId(s,i);
         elif kind == 'outer' and g.match(s,i,self.outerBlockDelim1): # Do this after testing for classes.
-            i = start = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+            i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+            # Bug fix: 2007/11/8: do *not* set start: we are just skipping the block.
         else: i += 1
-
-        # if progress == i: g.pdb()
         assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
 
     return start,putRef,bodyIndent
@@ -3341,10 +3352,12 @@ def skipDecls (self,s,i,end,inClass):
             prefix = None
         # Don't skip outer blocks: they may contain classes.
         elif g.match(s,i,self.outerBlockDelim1):
-            break
+            if self.outerBlockEndsDecls:
+                break
+            else:
+                i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
         else:
             i += 1 ;  prefix = None
-        # if progress == i: g.pdb()
         assert(progress < i)
 
     if prefix is not None:
@@ -3711,6 +3724,7 @@ class cScanner (baseScannerClass):
         self.lineCommentDelim2 = '#' # A hack: treat preprocess directives as comments(!)
         self.outerBlockDelim1 = '{'
         self.outerBlockDelim2 = '}'
+        self.outerBlockEndsDecls = False # To handle extern statement.
         self.sigHeadExtraTokens = ['*']
         self.sigFailTokens = [';','=']
 #@-node:edreamleo.20070710093042:class cScanner (baseScannerClass)
