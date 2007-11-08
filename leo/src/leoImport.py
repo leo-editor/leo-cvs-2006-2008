@@ -1474,6 +1474,7 @@ class baseLeoImportCommands:
             self.lineCommentDelim2 = None
             self.outerBlockDelim1 = None
             self.outerBlockDelim2 = None
+            self.outerBlockEndsDecls = True
             self.sigHeadExtraTokens = [] # Extra tokens valid in head of signature.
             self.sigFailTokens = []
                 # A list of strings that abort a signature when seen in a tail.
@@ -2127,10 +2128,9 @@ class baseLeoImportCommands:
                 elif self.startsId(s,i):
                     i = self.skipId(s,i);
                 elif kind == 'outer' and g.match(s,i,self.outerBlockDelim1): # Do this after testing for classes.
-                    i = start = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+                    i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+                    # Bug fix: 2007/11/8: do *not* set start: we are just skipping the block.
                 else: i += 1
-
-                # if progress == i: g.pdb()
                 assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
 
             return start,putRef,bodyIndent
@@ -2306,10 +2306,12 @@ class baseLeoImportCommands:
                     prefix = None
                 # Don't skip outer blocks: they may contain classes.
                 elif g.match(s,i,self.outerBlockDelim1):
-                    break
+                    if self.outerBlockEndsDecls:
+                        break
+                    else:
+                        i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
                 else:
                     i += 1 ;  prefix = None
-                # if progress == i: g.pdb()
                 assert(progress < i)
 
             if prefix is not None:
@@ -2677,6 +2679,7 @@ class baseLeoImportCommands:
             self.lineCommentDelim2 = '#' # A hack: treat preprocess directives as comments(!)
             self.outerBlockDelim1 = '{'
             self.outerBlockDelim2 = '}'
+            self.outerBlockEndsDecls = False # To handle extern statement.
             self.sigHeadExtraTokens = ['*']
             self.sigFailTokens = [';','=']
     #@-node:edreamleo.20070710093042:class cScanner (baseScannerClass)
