@@ -570,7 +570,7 @@ class atFile:
             g.es_print('Errors inhibited read @auto %s' % (fileName),color='red')
 
         if ic.errors or not g.os_path_exists(fileName):
-            c.setBodyString(p,'')
+            #c.setBodyString(p,'')
             p.clearDirty()
             c.setChanged(oldChanged)
     #@nonl
