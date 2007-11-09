@@ -5,6 +5,25 @@
 # Leo 4.4.5 will complete several projects that are long overdue.
 
 #@+node:ekr.20070814070312:First
+#@+node:ekr.20071109080424:Add @rst-preformat
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4614081
+
+> I simply want to mark the headline of that sub-node in a special way to tell it:
+
+> Do the same with the text in content automatically, what could have been done manually 
+with the following (rST) commands 
+
+* Insert "::", <NL>, <NL>, <TAB> before textline 1 
+* Insert <TAB> before textline 2 
+* ...
+
+Thanks for the clarification.  Imo, this is a good idea, because there seems to be no way at present to get the effect you want without actually changing the body text as you describe.  There are situations in which changing the body text is either infeasible or clumsy.
+#@nonl
+#@-node:ekr.20071109080424:Add @rst-preformat
+#@+node:ekr.20070803115653:Support @path and other directives in headlines
+#@-node:ekr.20070803115653:Support @path and other directives in headlines
 #@+node:ekr.20071107074857:What should @auto do about irregular leading whitespace?
 @nocolor
 
@@ -16,33 +35,6 @@ In general, adding leading whitespace will make it difficult or impossible for L
 
 To repeat, I don't remember what I indented in the first place, but I'll review what actually happens and see if it makes sense.  Perhaps a new setting would make sense telling the import code how to handle leading whitespace issues for non-strict languages.
 #@-node:ekr.20071107074857:What should @auto do about irregular leading whitespace?
-#@+node:ekr.20070814144804:Incorrect conversion of paths to absolute paths
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4464649
-By: terry_n_brown
-
-An argument I'm always having with leo has to do with its conversion of file
-paths to 'absolute' forms.
-
-In the file browser I select '/home/tbrown/misc/foo.leo'.
-Leo reinterprets this as '/media/hda2/usr1/home/tbrown/misc/foo.leo'
-
-Then I switch machines, and while
-'/home/tbrown/misc/foo.leo' would still be valid,
-'/media/hda2/usr1/home/tbrown/misc/foo.leo' isn't - on the other machine it
-would be '/media/hdb1/home/tbrown/misc/foo.leo'.
-
-I end up with the two entries in recent files, having to identify the right one.
-
-If the Tk dialog is returning '/home/tbrown/misc/foo.leo', which I assume it is
-because that's what it's displaying, I wish leo would use and store that.
-
-@color
-#@nonl
-#@-node:ekr.20070814144804:Incorrect conversion of paths to absolute paths
-#@+node:ekr.20070803115653:Support @path and other directives in headlines
-#@-node:ekr.20070803115653:Support @path and other directives in headlines
 #@+node:ekr.20071105145643:Clean up config mess
 #@-node:ekr.20071105145643:Clean up config mess
 #@+node:ekr.20071031113657:Remove Leo's hand-written parser: use sax or lxml
@@ -1802,7 +1794,7 @@ def new (self,event=None,gui=None):
 
     '''Create a new Leo window.'''
 
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=None,gui=gui)
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=None,relativeFileName=None,gui=gui)
 
     # Needed for plugins.
     g.doHook("new",old_c=self,c=c,new_c=c)
@@ -4591,7 +4583,9 @@ def openWithFileName(fileName,old_c,
         return g.os_path_normpath(name or '').lower()
 
     # Create a full, normalized, Unicode path name, preserving case.
+    relativeFileName = g.os_path_normpath(fileName)
     fileName = g.os_path_normpath(g.os_path_abspath(fileName))
+    # g.trace(relativeFileName,'-->',fileName)
 
     # If the file is already open just bring its window to the front.
     theList = app.windowList
@@ -4611,7 +4605,10 @@ def openWithFileName(fileName,old_c,
     # Open the file in binary mode to allow 0x1a in bodies & headlines.
     theFile,isZipped = g.openLeoOrZipFile(fileName)
     if not theFile: return False, None
-    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
+    c,frame = app.newLeoCommanderAndFrame(
+        fileName=fileName,
+        relativeFileName=relativeFileName,
+        gui=gui)
     c.isZipped = isZipped
     frame.log.enable(enableLog)
     g.app.writeWaitingLog() # New in 4.3: write queued log first.
@@ -4646,7 +4643,10 @@ def openWithFileName(fileName,old_c,
 #@nonl
 #@-node:ekr.20031218072017.2052:g.openWithFileName
 #@+node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
-def newLeoCommanderAndFrame(self,fileName=None,gui=None,initEditCommanders=True,updateRecentFiles=True):
+def newLeoCommanderAndFrame(self,
+    fileName=None,
+    relativeFileName=None,
+    gui=None,initEditCommanders=True,updateRecentFiles=True):
 
     """Create a commander and its view frame for the Leo main window."""
 
@@ -4654,15 +4654,18 @@ def newLeoCommanderAndFrame(self,fileName=None,gui=None,initEditCommanders=True,
 
     import leoCommands
 
-    if not fileName: fileName = ""
+    if not fileName: fileName = ''
+    if not relativeFileName: relativeFileName = ''
     if not gui: gui = g.app.gui
     << compute the window title >>
+
+    # g.trace(fileName,relativeFileName)
 
     # Create an unfinished frame to pass to the commanders.
     frame = gui.createLeoFrame(title)
 
     # Create the commander and its subcommanders.
-    c = leoCommands.Commands(frame,fileName)
+    c = leoCommands.Commands(frame,fileName,relativeFileName=relativeFileName)
 
     if not app.initing:
         g.doHook("before-create-leo-frame",c=c) # Was 'onCreate': too confusing.
@@ -4674,7 +4677,7 @@ def newLeoCommanderAndFrame(self,fileName=None,gui=None,initEditCommanders=True,
     c.undoer.clearUndoState() # Menus must exist at this point.
 
     if updateRecentFiles:
-        c.updateRecentFiles(fileName)
+        c.updateRecentFiles(relativeFileName or fileName)
 
     if not g.app.initing:
         g.doHook("after-create-leo-frame",c=c)
@@ -4698,7 +4701,7 @@ def new (self,event=None,gui=None):
 
     '''Create a new Leo window.'''
 
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=None,gui=gui)
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=None,relativeFileName=None,gui=gui)
 
     # Needed for plugins.
     g.doHook("new",old_c=self,c=c,new_c=c)
