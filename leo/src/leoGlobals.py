@@ -1885,7 +1885,9 @@ def openWithFileName(fileName,old_c,
         return g.os_path_normpath(name or '').lower()
 
     # Create a full, normalized, Unicode path name, preserving case.
+    relativeFileName = g.os_path_normpath(fileName)
     fileName = g.os_path_normpath(g.os_path_abspath(fileName))
+    # g.trace(relativeFileName,'-->',fileName)
 
     # If the file is already open just bring its window to the front.
     theList = app.windowList
@@ -1905,7 +1907,10 @@ def openWithFileName(fileName,old_c,
     # Open the file in binary mode to allow 0x1a in bodies & headlines.
     theFile,isZipped = g.openLeoOrZipFile(fileName)
     if not theFile: return False, None
-    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
+    c,frame = app.newLeoCommanderAndFrame(
+        fileName=fileName,
+        relativeFileName=relativeFileName,
+        gui=gui)
     c.isZipped = isZipped
     frame.log.enable(enableLog)
     g.app.writeWaitingLog() # New in 4.3: write queued log first.

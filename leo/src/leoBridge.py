@@ -354,7 +354,7 @@ class bridgeController:
 
         return fileName
     #@-node:ekr.20070227093629.5:completeFileName
-    #@+node:ekr.20070227093629.6:createFrame
+    #@+node:ekr.20070227093629.6:createFrame (leoBridge)
     def createFrame (self,fileName):
 
         '''Create a commander and frame for the given file.
@@ -375,8 +375,7 @@ class bridgeController:
         # Call the 'new' hook for compatibility with plugins.
         g.doHook("new",old_c=None,c=c,new_c=c)
         return c
-    #@nonl
-    #@-node:ekr.20070227093629.6:createFrame
+    #@-node:ekr.20070227093629.6:createFrame (leoBridge)
     #@-node:ekr.20070227092442.5:openLeoFile & helpers
     #@-others
 #@-node:ekr.20070227092442.2:class bridgeController

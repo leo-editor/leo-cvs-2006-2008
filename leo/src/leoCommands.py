@@ -66,7 +66,7 @@ class baseCommands:
     #@    @+others
     #@+node:ekr.20031218072017.2811: c.Birth & death
     #@+node:ekr.20031218072017.2812:c.__init__
-    def __init__(self,frame,fileName):
+    def __init__(self,frame,fileName,relativeFileName=None):
 
         c = self
 
@@ -81,6 +81,7 @@ class baseCommands:
         self.isZipped = False # May be set to True by g.openWithFileName.
         self.mFileName = fileName
             # Do _not_ use os_path_norm: it converts an empty path to '.' (!!)
+        self.mRelativeFileName = relativeFileName
 
         # g.trace(c) # Do this after setting c.mFileName.
         c.initIvars()
@@ -313,7 +314,7 @@ class baseCommands:
     #@+node:ekr.20040629121554.1:getSignOnLine (Contains hard-coded version info)
     def getSignOnLine (self):
         c = self
-        return "Leo 4.4.4 final, build %s, November 2, 2007" % c.getBuildNumber()
+        return "Leo 4.4.5 beta 1, build %s, November 9, 2007" % c.getBuildNumber()
     #@-node:ekr.20040629121554.1:getSignOnLine (Contains hard-coded version info)
     #@+node:ekr.20040629121554.2:initVersion
     def initVersion (self):
@@ -665,7 +666,7 @@ class baseCommands:
 
         '''Create a new Leo window.'''
 
-        c,frame = g.app.newLeoCommanderAndFrame(fileName=None,gui=gui)
+        c,frame = g.app.newLeoCommanderAndFrame(fileName=None,relativeFileName=None,gui=gui)
 
         # Needed for plugins.
         g.doHook("new",old_c=self,c=c,new_c=c)
@@ -1192,11 +1193,16 @@ class baseCommands:
         c.recentFiles = []
         g.app.config.recentFiles = [] # New in Leo 4.3.
         f.menu.createRecentFilesMenuItems()
-        c.updateRecentFiles(c.fileName())
+        c.updateRecentFiles(c.relativeFileName())
 
         g.app.config.appendToRecentFiles(c.recentFiles)
 
+        # g.trace(c.recentFiles)
+
         u.afterClearRecentFiles(bunch)
+
+        # New in Leo 4.4.5: write the file immediately.
+        g.app.config.writeRecentFilesFile(c)
     #@-node:ekr.20031218072017.2080:clearRecentFiles
     #@+node:ekr.20031218072017.2081:openRecentFile
     def openRecentFile(self,name=None):
@@ -1240,8 +1246,9 @@ class baseCommands:
         if g.app.unitTesting: return
 
         def munge(name):
-            name = name or ''
-            return g.os_path_normpath(name).lower()
+            return g.os_path_normpath(name or '').lower()
+        def munge2(name):
+            return g.os_path_abspath(g.os_path_join(g.app.loadDir,name or ''))
 
         # Update the recent files list in all windows.
         if fileName:
@@ -1251,10 +1258,10 @@ class baseCommands:
                 c = frame.c
                 # Remove all versions of the file name.
                 for name in c.recentFiles:
-                    if compareFileName == munge(name):
+                    if munge(fileName) == munge(name) or munge2(fileName) == munge2(name):
                         c.recentFiles.remove(name)
                 c.recentFiles.insert(0,fileName)
-                # g.trace(fileName)
+                # g.trace('adding',fileName)
                 # Recreate the Recent Files menu.
                 frame.menu.createRecentFilesMenuItems()
         else:
@@ -6828,19 +6835,23 @@ class baseCommands:
         return p and c.frame.tree.edit_widget(p)
     #@nonl
     #@-node:ekr.20040306220230.1:c.edit_widget
-    #@+node:ekr.20031218072017.2986:c.fileName & shortFileName
+    #@+node:ekr.20031218072017.2986:c.fileName & relativeFileName & shortFileName
     # Compatibility with scripts
 
     def fileName (self):
 
         return self.mFileName
 
+    def relativeFileName (self):
+
+        return self.mRelativeFileName or self.mFileName
+
     def shortFileName (self):
 
         return g.shortFileName(self.mFileName)
 
     shortFilename = shortFileName
-    #@-node:ekr.20031218072017.2986:c.fileName & shortFileName
+    #@-node:ekr.20031218072017.2986:c.fileName & relativeFileName & shortFileName
     #@+node:ekr.20060906134053:c.findRootPosition New in 4.4.2
     #@+at 
     #@nonl

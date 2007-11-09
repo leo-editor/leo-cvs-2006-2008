@@ -47,6 +47,7 @@ def run(fileName=None,pymacs=None,jyLeo=False,*args,**keywords):
 
     __pychecker__ = '--no-argsused' # keywords not used.
 
+    # print 'leo.py:run','fileName',fileName
     if not jyLeo and not isValidPython(): return
     #@    << import leoGlobals and leoApp >>
     #@+node:ekr.20041219072112:<< import leoGlobals and leoApp >>
@@ -111,7 +112,7 @@ def run(fileName=None,pymacs=None,jyLeo=False,*args,**keywords):
     #@nl
     g.app.nodeIndices = leoNodes.nodeIndices(g.app.leoID)
     g.app.config = leoConfig.configClass()
-    fileName = completeFileName(fileName)
+    fileName,relativeFileName = completeFileName(fileName)
     reportDirectories(verbose)
     # Read settings *after* setting g.app.config.
     # Read settings *before* opening plugins.  This means if-gui has effect only in per-file settings.
@@ -141,7 +142,7 @@ def run(fileName=None,pymacs=None,jyLeo=False,*args,**keywords):
     # Clear g.app.initing _before_ creating the frame.
     g.app.initing = False # "idle" hooks may now call g.app.forceShutdown.
     # Create the main frame.  Show it and all queued messages.
-    c,frame = createFrame(fileName)
+    c,frame = createFrame(fileName,relativeFileName)
     if not frame: return
     g.app.trace_gc          = c.config.getBool('trace_gc')
     g.app.trace_gc_calls    = c.config.getBool('trace_gc_calls')
@@ -193,16 +194,18 @@ def completeFileName (fileName):
             fileName = g.toUnicode(fileName,'utf-8')
     except Exception: pass
 
+    relativeFileName = fileName
     fileName = g.os_path_join(os.getcwd(),fileName)
-    head,ext = g.os_path_splitext(fileName)
 
+    head,ext = g.os_path_splitext(fileName)
     if not ext:
         fileName = fileName + ".leo"
+        relativeFileName = relativeFileName + ".leo"
 
-    return fileName
+    return fileName,relativeFileName
 #@-node:ekr.20041124083125:completeFileName (leo.py)
 #@+node:ekr.20031218072017.1624:createFrame (leo.py)
-def createFrame (fileName):
+def createFrame (fileName,relativeFileName):
 
     """Create a LeoFrame during Leo's startup process."""
 
@@ -210,11 +213,14 @@ def createFrame (fileName):
 
     # Try to create a frame for the file.
     if fileName and g.os_path_exists(fileName):
-        ok, frame = g.openWithFileName(fileName,None)
+        ok, frame = g.openWithFileName(relativeFileName or fileName,None)
         if ok: return frame.c,frame
 
     # Create a _new_ frame & indicate it is the startup window.
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName,initEditCommanders=True)
+    c,frame = g.app.newLeoCommanderAndFrame(
+        fileName=fileName,
+        relativeFileName=relativeFileName,
+        initEditCommanders=True)
     frame.setInitialWindowGeometry()
     frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
     frame.startupWindow = True

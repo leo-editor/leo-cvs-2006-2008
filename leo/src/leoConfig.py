@@ -1667,7 +1667,9 @@ class configClass:
         # Changing g.app.gui here is a major hack.
         oldGui = g.app.gui
         g.app.gui = leoGui.nullGui("nullGui")
-        c,frame = g.app.newLeoCommanderAndFrame(fileName=path,initEditCommanders=False,updateRecentFiles=False)
+        c,frame = g.app.newLeoCommanderAndFrame(
+            fileName=path,relativeFileName=None,
+            initEditCommanders=False,updateRecentFiles=False)
         frame.log.enable(False)
         c.setLog()
         g.app.lockLog()
@@ -1828,6 +1830,7 @@ class configClass:
             if self.recentFiles:
                 lines = [g.toEncodedString(line,'utf-8') for line in self.recentFiles]
                 theFile.write('\n'.join(lines))
+                # g.trace(fileName,'lines\n%s' % lines)
             else:
                 theFile.write('\n')
 

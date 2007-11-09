@@ -539,7 +539,10 @@ class LeoApp:
             print 'writeWaitingLog: still no log!'
     #@-node:ekr.20031218072017.2619:app.writeWaitingLog
     #@+node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
-    def newLeoCommanderAndFrame(self,fileName=None,gui=None,initEditCommanders=True,updateRecentFiles=True):
+    def newLeoCommanderAndFrame(self,
+        fileName=None,
+        relativeFileName=None,
+        gui=None,initEditCommanders=True,updateRecentFiles=True):
 
         """Create a commander and its view frame for the Leo main window."""
 
@@ -547,7 +550,8 @@ class LeoApp:
 
         import leoCommands
 
-        if not fileName: fileName = ""
+        if not fileName: fileName = ''
+        if not relativeFileName: relativeFileName = ''
         if not gui: gui = g.app.gui
         #@    << compute the window title >>
         #@+node:ekr.20031218072017.2189:<< compute the window title >>
@@ -564,11 +568,13 @@ class LeoApp:
         #@-node:ekr.20031218072017.2189:<< compute the window title >>
         #@nl
 
+        # g.trace(fileName,relativeFileName)
+
         # Create an unfinished frame to pass to the commanders.
         frame = gui.createLeoFrame(title)
 
         # Create the commander and its subcommanders.
-        c = leoCommands.Commands(frame,fileName)
+        c = leoCommands.Commands(frame,fileName,relativeFileName=relativeFileName)
 
         if not app.initing:
             g.doHook("before-create-leo-frame",c=c) # Was 'onCreate': too confusing.
@@ -580,7 +586,7 @@ class LeoApp:
         c.undoer.clearUndoState() # Menus must exist at this point.
 
         if updateRecentFiles:
-            c.updateRecentFiles(fileName)
+            c.updateRecentFiles(relativeFileName or fileName)
 
         if not g.app.initing:
             g.doHook("after-create-leo-frame",c=c)
