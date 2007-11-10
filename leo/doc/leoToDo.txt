@@ -5,25 +5,6 @@
 # Leo 4.4.5 will complete several projects that are long overdue.
 
 #@+node:ekr.20070814070312:First
-#@+node:ekr.20071109080424:Add @rst-preformat
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4614081
-
-> I simply want to mark the headline of that sub-node in a special way to tell it:
-
-> Do the same with the text in content automatically, what could have been done manually 
-with the following (rST) commands 
-
-* Insert "::", <NL>, <NL>, <TAB> before textline 1 
-* Insert <TAB> before textline 2 
-* ...
-
-Thanks for the clarification.  Imo, this is a good idea, because there seems to be no way at present to get the effect you want without actually changing the body text as you describe.  There are situations in which changing the body text is either infeasible or clumsy.
-#@nonl
-#@-node:ekr.20071109080424:Add @rst-preformat
-#@+node:ekr.20070803115653:Support @path and other directives in headlines
-#@-node:ekr.20070803115653:Support @path and other directives in headlines
 #@+node:ekr.20071107074857:What should @auto do about irregular leading whitespace?
 @nocolor
 
@@ -35,6 +16,20 @@ In general, adding leading whitespace will make it difficult or impossible for L
 
 To repeat, I don't remember what I indented in the first place, but I'll review what actually happens and see if it makes sense.  Perhaps a new setting would make sense telling the import code how to handle leading whitespace issues for non-strict languages.
 #@-node:ekr.20071107074857:What should @auto do about irregular leading whitespace?
+#@+node:ekr.20071110070242:How to run unit tests in leoPy.leo??
+@nocolor
+
+Option 1:
+
+- Move all 'completed' unit tests to unitTest.leo
+
+Option 2:
+
+- Find some way of running external tests with tkinter gui.
+#@nonl
+#@-node:ekr.20071110070242:How to run unit tests in leoPy.leo??
+#@+node:ekr.20071110072608:Support pylint
+#@-node:ekr.20071110072608:Support pylint
 #@+node:ekr.20071105145643:Clean up config mess
 #@-node:ekr.20071105145643:Clean up config mess
 #@+node:ekr.20071031113657:Remove Leo's hand-written parser: use sax or lxml
@@ -44,8 +39,39 @@ To repeat, I don't remember what I indented in the first place, but I'll review 
 #@+node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
 #@-node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
 #@-node:ekr.20071031113657:Remove Leo's hand-written parser: use sax or lxml
+#@+node:ekr.20071110073450.1:New crash
+TclError Exception in Tk callback
+  Function: <function masterBindKeyCallback at 0x021B59B0> (type: <type 'function'>)
+  Args: (<Tkinter.Event instance at 0x04ADD968>,)
+  Event type: KeyPress (type num: 2)
+Traceback (innermost last):
+  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
+    return apply(self.func, args)
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 2154, in masterBindKeyCallback
+    return k.masterKeyHandler(event,stroke=stroke)
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 3020, in masterKeyHandler
+    return k.masterCommand(event,k.keyboardQuit,stroke,'keyboard-quit')
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 2238, in masterCommand
+    k.keyboardQuit(event)
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 2868, in keyboardQuit
+    k.autoCompleter.exit()
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 403, in exit
+    i,j = w.getSelectionRange()
+  File "C:\prog\tigris-cvs\leo\src\leoTkinterFrame.py", line 3297, in getSelectionRange
+    sel = Tk.Text.tag_ranges(w,"sel")
+  File "c:\python25\lib\lib-tk\Tkinter.py", line 3099, in tag_ranges
+    self._w, 'tag', 'ranges', tagName))
+TclError: invalid command name ".34541736.34542496.34542816.34542896.34716008.34716328.body-pane"
+#@nonl
+#@-node:ekr.20071110073450.1:New crash
 #@-node:ekr.20070814070312:First
 #@+node:ekr.20071105155631:High impact
+#@+node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
+val = c.config.getBool('collapse_nodes_during_finds')
+c.config.set(p,'collapse_nodes_during_finds',not val)
+g.es_print('collapse_nodes_during_finds',c.config.getBool('collapse_nodes_during_finds'))
+#@nonl
+#@-node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
 #@+node:ekr.20071025160653.2:Commands to add/remove icons
 #@+node:ekr.20071026092640:To do
 @nocolor
@@ -488,6 +514,14 @@ understand what 'self' means. Iirc, I disabled this code because it was too slow
 #@+node:ekr.20071106135937.1:Study the rope code in c:\prog\rope
 #@-node:ekr.20071106135937.1:Study the rope code in c:\prog\rope
 #@-node:ekr.20060530085844:Improve autocompletion
+#@+node:ekr.20071110071126:Better searching
+#@+node:ekr.20071110071126.1:Force the insert point to beginning (or end) of text when selecting during finds?
+Something not-quite-right is happening presently.
+#@nonl
+#@-node:ekr.20071110071126.1:Force the insert point to beginning (or end) of text when selecting during finds?
+#@+node:ekr.20071110071126.2:Better isearch
+#@-node:ekr.20071110071126.2:Better isearch
+#@-node:ekr.20071110071126:Better searching
 #@-node:ekr.20070703111455.1:Most important
 #@+node:ekr.20071105155631.1:Plugins
 #@+node:ekr.20071021125124:Revise plugins manager plugin
@@ -1763,6 +1797,8 @@ The new scheme:
 #@-node:ekr.20070220082124:Make sure Leo can generate Latex
 #@-node:ekr.20071105155631.3:Testing
 #@+node:ekr.20070630143345:Other
+#@+node:ekr.20071106135136:Add option: warn if plugins fail to load
+#@-node:ekr.20071106135136:Add option: warn if plugins fail to load
 #@+node:ekr.20070521105645:Improve api docs with epidoc?
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=4319363
@@ -1775,12 +1811,6 @@ I'm not sure of the best way to do that.
 Epydoc seems to be the most active project in this realm.
 http://epydoc.sourceforge.net/epydoc.html
 #@-node:ekr.20070521105645:Improve api docs with epidoc?
-#@+node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
-val = c.config.getBool('collapse_nodes_during_finds')
-c.config.set(p,'collapse_nodes_during_finds',not val)
-g.es_print('collapse_nodes_during_finds',c.config.getBool('collapse_nodes_during_finds'))
-#@nonl
-#@-node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
 #@+node:ekr.20061116054917.6:Remove blanks in calltips
 #@-node:ekr.20061116054917.6:Remove blanks in calltips
 #@+node:ekr.20070627151457:--runCommand option
@@ -2287,8 +2317,6 @@ def revert (self,event=None):
 #@-node:ekr.20031218072017.2837:revert
 #@-node:ekr.20031218072017.2820:top level (file menu)
 #@-node:ekr.20061002093442:Add opml support to new,open, save commands
-#@+node:ekr.20071106135136:Add option: warn if plugins fail to load
-#@-node:ekr.20071106135136:Add option: warn if plugins fail to load
 #@-node:ekr.20070630143345:Other
 #@+node:ekr.20070703111455.3:Maybe
 # some of these can wait till much later.
