@@ -339,12 +339,12 @@ class bridgeController:
             return c
         else:
             return None
-    #@+node:ekr.20070227093629.5:completeFileName
+    #@+node:ekr.20070227093629.5:completeFileName (leoBridge)
     def completeFileName (self,fileName):
 
         g = self.g
 
-        if not fileName.strip(): return ''
+        if not (fileName and fileName.strip()): return ''
 
         import os
 
@@ -353,7 +353,7 @@ class bridgeController:
         if not ext: fileName = fileName + ".leo"
 
         return fileName
-    #@-node:ekr.20070227093629.5:completeFileName
+    #@-node:ekr.20070227093629.5:completeFileName (leoBridge)
     #@+node:ekr.20070227093629.6:createFrame (leoBridge)
     def createFrame (self,fileName):
 

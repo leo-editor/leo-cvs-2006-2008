@@ -182,8 +182,8 @@ def completeFileName (fileName):
 
     import leoGlobals as g
 
-    if not fileName:
-        return None
+    if not (fileName and fileName.strip()):
+        return None,None
 
     # This does not depend on config settings.
     try:
