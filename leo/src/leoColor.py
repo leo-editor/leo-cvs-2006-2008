@@ -2410,7 +2410,7 @@ class baseColorizer:
 
         self.image_references = []
     #@-node:ekr.20031218072017.1944:removeAllImages (leoColor)
-    #@+node:ekr.20031218072017.1377:scanColorDirectives
+    #@+node:ekr.20031218072017.1377:scanColorDirectives (leoColor) & test
     def scanColorDirectives(self,p):
 
         """Scan position p and p's ancestors looking for @comment, @language and @root directives,
@@ -2427,20 +2427,17 @@ class baseColorizer:
         self.rootMode = None # None, "code" or "doc"
 
         for p in p.self_and_parents_iter():
-            # g.trace(p)
-            s = p.v.t.bodyString
-            theDict = g.get_directives_dict(s)
+            theDict = g.get_directives_dict(p)
             #@        << Test for @comment or @language >>
             #@+node:ekr.20031218072017.1378:<< Test for @comment or @language >>
-            # 10/17/02: @comment and @language may coexist in the same node.
+            # @comment and @language may coexist in the same node.
 
             if theDict.has_key("comment"):
-                k = theDict["comment"]
-                self.comment_string = s[k:]
+                self.comment_string = theDict["comment"]
 
             if theDict.has_key("language"):
-                i = theDict["language"]
-                language,junk,junk,junk = g.set_language(s,i)
+                z = theDict["language"]
+                language,junk,junk,junk = g.set_language(z,0)
                 self.language = language
 
             if theDict.has_key("comment") or theDict.has_key("language"):
@@ -2451,10 +2448,10 @@ class baseColorizer:
             #@+node:ekr.20031218072017.1379:<< Test for @root, @root-doc or @root-code >>
             if theDict.has_key("root") and not self.rootMode:
 
-                k = theDict["root"]
-                if g.match_word(s,k,"@root-code"):
+                root = theDict["root"]
+                if g.match_word(root,0,"@root-code"):
                     self.rootMode = "code"
-                elif g.match_word(s,k,"@root-doc"):
+                elif g.match_word(root,0,"@root-doc"):
                     self.rootMode = "doc"
                 else:
                     doc = c.config.at_root_bodies_start_in_doc_mode
@@ -2463,7 +2460,18 @@ class baseColorizer:
             #@nl
 
         return self.language # For use by external routines.
-    #@-node:ekr.20031218072017.1377:scanColorDirectives
+    #@+node:ekr.20071109180120:@test scanColorDirectives
+    # This will work regardless of where this method is.
+    #@@language python
+
+    # Does not work when run externally with null colorizer.
+    if g.unitTesting:
+
+        c,p = g.getTestVars()
+        language = c.frame.body.colorizer.scanColorDirectives(p)
+        assert language == 'python','got:%s' % language
+    #@-node:ekr.20071109180120:@test scanColorDirectives
+    #@-node:ekr.20031218072017.1377:scanColorDirectives (leoColor) & test
     #@+node:ekr.20041217041016:setFontFromConfig (colorizer)
     def setFontFromConfig (self):
 
@@ -2511,27 +2519,26 @@ class baseColorizer:
         """Return True unless p is unambiguously under the control of @nocolor."""
 
         p = p.copy() ; first = p.copy()
-        val = True ; self.killFlag = False
+        self.killFlag = False
         for p in p.self_and_parents_iter():
-            # g.trace(p)
-            s = p.v.t.bodyString
-            theDict = g.get_directives_dict(s)
+            theDict = g.get_directives_dict(p)
             no_color = theDict.has_key("nocolor")
             color = theDict.has_key("color")
             kill_color = theDict.has_key("killcolor")
             # A killcolor anywhere disables coloring.
             if kill_color:
-                val = False ; self.killFlag = True ; break
+                self.killFlag = True
+                return False
             # A color anywhere in the target enables coloring.
-            if color and p == first:
-                val = True ; break
+            elif color and p == first:
+                return True
             # Otherwise, the @nocolor specification must be unambiguous.
             elif no_color and not color:
-                val = False ; break
+                return False
             elif color and not no_color:
-                val = True ; break
+                return True
 
-        return val
+        return True
     #@-node:ekr.20031218072017.2805:useSyntaxColoring
     #@+node:ekr.20031218072017.2806:Utils
     #@+at 

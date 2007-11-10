@@ -4709,7 +4709,7 @@ class atFile:
             "test of printError: Ᾱ(U+1FB9: Greek Capital Letter Alpha With Macron)")
     #@-node:ekr.20070621091727:@@test printError
     #@-node:ekr.20050206085258:atFile.printError & test
-    #@+node:ekr.20041005105605.222:atFile.scanAllDirectives
+    #@+node:ekr.20041005105605.222:atFile.scanAllDirectives & test
     #@+at 
     #@nonl
     # Once a directive is seen, no other related directives in nodes further 
@@ -4768,33 +4768,15 @@ class atFile:
         #@nl
         old = {}
         for p in p.self_and_parents_iter():
-            s = p.v.t.bodyString
-            theDict = g.get_directives_dict(s)
+            theDict = g.get_directives_dict(p)
             #@        << Test for @path >>
-            #@+node:ekr.20041005105605.225:<< Test for @path >>
+            #@+node:ekr.20041005105605.225:<< Test for @path >> (atFile.scanAllDirectives)
             # We set the current director to a path so future writes will go to that directory.
 
             if not self.default_directory and not old.has_key("path") and theDict.has_key("path"):
 
-                k = theDict["path"]
-                #@    << compute relative path from s[k:] >>
-                #@+node:ekr.20041005105605.226:<< compute relative path from s[k:] >>
-                j = i = k + len("@path")
-                i = g.skip_to_end_of_line(s,i)
-                path = s[j:i].strip()
-
-                # Remove leading and trailing delims if they exist.
-                if len(path) > 2 and (
-                    (path[0]=='<' and path[-1] == '>') or
-                    (path[0]=='"' and path[-1] == '"') or
-                    (path[0]=="'" and path[-1] == "'")
-                ):
-                    path = path[1:-1].strip()
-
-                if 0: # 11/14/02: we want a _relative_ path, not an absolute path.
-                    path = g.os_path_join(g.app.loadDir,path)
-                #@-node:ekr.20041005105605.226:<< compute relative path from s[k:] >>
-                #@nl
+                path = theDict["path"]
+                path = g.computeRelativePath(path)
                 if path and len(path) > 0:
                     base = g.getBaseDirectory(c) # returns "" on error.
                     path = g.os_path_join(base,path)
@@ -4805,7 +4787,7 @@ class atFile:
 
                         if g.os_path_exists(path):
                             self.default_directory = path
-                        else: # 9/25/02
+                        else:
                             self.default_directory = g.makeAllNonExistentDirectories(path,c=c)
                             if not self.default_directory:
                                 self.error("invalid @path: %s" % path)
@@ -4815,13 +4797,13 @@ class atFile:
                         self.error("ignoring bad @path: %s" % path)
                 else:
                     self.error("ignoring empty @path")
-            #@-node:ekr.20041005105605.225:<< Test for @path >>
+            #@-node:ekr.20041005105605.225:<< Test for @path >> (atFile.scanAllDirectives)
             #@nl
             #@        << Test for @encoding >>
             #@+node:ekr.20041005105605.228:<< Test for @encoding >>
             if not old.has_key("encoding") and theDict.has_key("encoding"):
 
-                e = g.scanAtEncodingDirective(s,theDict)
+                e = g.scanAtEncodingDirective(theDict)
                 if e:
                     self.encoding = e
             #@-node:ekr.20041005105605.228:<< Test for @encoding >>
@@ -4838,12 +4820,12 @@ class atFile:
                  pass # Do nothing more.
 
             elif theDict.has_key("comment"):
-                k = theDict["comment"]
-                delim1, delim2, delim3 = g.set_delims_from_string(s[k:])
+                z = theDict["comment"]
+                delim1, delim2, delim3 = g.set_delims_from_string(z)
 
             elif theDict.has_key("language"):
-                k = theDict["language"]
-                self.language,delim1,delim2,delim3 = g.set_language(s,k)
+                z = theDict["language"]
+                self.language,delim1,delim2,delim3 = g.set_language(z,0)
             #@-node:ekr.20041005105605.229:<< Test for @comment and @language >>
             #@nl
             #@        << Test for @header and @noheader >>
@@ -4857,7 +4839,7 @@ class atFile:
             #@+node:ekr.20041005105605.231:<< Test for @lineending >>
             if not old.has_key("lineending") and theDict.has_key("lineending"):
 
-                lineending = g.scanAtLineendingDirective(s,theDict)
+                lineending = g.scanAtLineendingDirective(theDict)
                 if lineending:
                     self.explicitLineEnding = True
                     self.output_newline = lineending
@@ -4867,7 +4849,7 @@ class atFile:
             #@+node:ekr.20041005105605.232:<< Test for @pagewidth >>
             if theDict.has_key("pagewidth") and not old.has_key("pagewidth"):
 
-                w = g.scanAtPagewidthDirective(s,theDict,issue_error_flag=True)
+                w = g.scanAtPagewidthDirective(theDict,issue_error_flag=True)
                 if w and w > 0:
                     self.page_width = w
             #@-node:ekr.20041005105605.232:<< Test for @pagewidth >>
@@ -4876,14 +4858,14 @@ class atFile:
             #@+node:ekr.20041005105605.233:<< Test for @tabwidth >>
             if theDict.has_key("tabwidth") and not old.has_key("tabwidth"):
 
-                w = g.scanAtTabwidthDirective(s,theDict,issue_error_flag=True)
+                w = g.scanAtTabwidthDirective(theDict,issue_error_flag=True)
                 if w and w != 0:
                     self.tab_width = w
             #@-node:ekr.20041005105605.233:<< Test for @tabwidth >>
             #@nl
             old.update(theDict)
         #@    << Set current directory >>
-        #@+node:ekr.20041005105605.234:<< Set current directory >>
+        #@+node:ekr.20041005105605.234:<< Set current directory >> (atFile.scanAllDirectives)
         # This code is executed if no valid absolute path was specified in the @file node or in an @path directive.
 
         if c.frame and not self.default_directory:
@@ -4902,7 +4884,7 @@ class atFile:
             g.trace()
             self.error("No absolute directory specified anywhere.")
             self.default_directory = ""
-        #@-node:ekr.20041005105605.234:<< Set current directory >>
+        #@-node:ekr.20041005105605.234:<< Set current directory >> (atFile.scanAllDirectives)
         #@nl
         if not importing and not reading:
             # 5/19/04: don't override comment delims when reading!
@@ -4932,7 +4914,34 @@ class atFile:
             # g.trace(repr(self.startSentinelComment),repr(self.endSentinelComment))
             #@-node:ekr.20041005105605.235:<< Set comment strings from delims >>
             #@nl
-    #@-node:ekr.20041005105605.222:atFile.scanAllDirectives
+        # For unit testing.
+        return {
+            "encoding"  : self.encoding,
+            "language"  : self.language,
+            "lineending": self.output_newline,
+            "pagewidth" : self.page_width,
+            "path"      : self.default_directory,
+            "tabwidth"  : self.tab_width,
+        }
+    #@+node:ekr.20071109223354:@test at.scanAllDirectives
+    # This will work regardless of where this method is.
+    #@@language python
+    #@@tabwidth -4
+    # @path xyzzy
+    #@@pagewidth 120
+
+    # Does not work when run externally with null colorizer.
+    if g.unitTesting:
+
+        c,p = g.getTestVars()
+        d = c.atFileCommands.scanAllDirectives(p)
+
+        assert d.get('language') == 'python'
+        assert d.get('tabwidth') == -4
+        # assert d.get('path').endswith('xyzzy')
+        assert d.get('pagewidth') == 120
+    #@-node:ekr.20071109223354:@test at.scanAllDirectives
+    #@-node:ekr.20041005105605.222:atFile.scanAllDirectives & test
     #@+node:ekr.20041005105605.236:atFile.scanDefaultDirectory
     def scanDefaultDirectory(self,p,importing=False):
 
@@ -4965,30 +4974,14 @@ class atFile:
             return
 
         for p in p.self_and_parents_iter():
-            s = p.v.t.bodyString
-            theDict = g.get_directives_dict(s)
+            theDict = g.get_directives_dict(p)
             if theDict.has_key("path"):
                 #@            << handle @path >>
                 #@+node:ekr.20041005105605.238:<< handle @path >>
                 # We set the current director to a path so future writes will go to that directory.
 
-                k = theDict["path"]
-                #@<< compute relative path from s[k:] >>
-                #@+node:ekr.20041005105605.239:<< compute relative path from s[k:] >>
-                j = i = k + len("@path")
-                i = g.skip_to_end_of_line(s,i)
-                path = s[j:i].strip()
-
-                # Remove leading and trailing delims if they exist.
-                if len(path) > 2 and (
-                    (path[0]=='<' and path[-1] == '>') or
-                    (path[0]=='"' and path[-1] == '"') or
-                    (path[0]=="'" and path[-1] == "'")
-                ):
-                    path = path[1:-1].strip()
-                #@nonl
-                #@-node:ekr.20041005105605.239:<< compute relative path from s[k:] >>
-                #@nl
+                path = theDict["path"]
+                path = g.computeRelativePath (path)
 
                 if path:
                     base = g.getBaseDirectory(c) # returns "" on error.

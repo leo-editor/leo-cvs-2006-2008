@@ -944,8 +944,7 @@ class colorizer:
         p = p.copy() ; first = p.copy()
         val = True ; self.killcolorFlag = False
         for p in p.self_and_parents_iter():
-            s = p.v.t.bodyString
-            theDict = g.get_directives_dict(s)
+            theDict = g.get_directives_dict(p)
             no_color = theDict.has_key("nocolor")
             color = theDict.has_key("color")
             kill_color = theDict.has_key("killcolor")
@@ -1903,22 +1902,20 @@ class colorizer:
         self.rootMode = None # None, "code" or "doc"
 
         for p in p.self_and_parents_iter():
-            # g.trace(p)
-            s = p.v.t.bodyString
-            theDict = g.get_directives_dict(s)
+            theDict = g.get_directives_dict(p)
             #@        << Test for @comment or @language >>
             #@+node:ekr.20071010193720.75:<< Test for @comment or @language >>
             # @comment and @language may coexist in the same node.
 
             if theDict.has_key("comment"):
-                k = theDict["comment"]
-                self.comment_string = s[k:]
+                self.comment_string = theDict["comment"]
 
             if theDict.has_key("language"):
-                i = theDict["language"]
-                tag = "@language"
-                assert(g.match_word(s,i,tag))
-                i = g.skip_ws(s,i+len(tag))
+                s = theDict["language"]
+                # tag = "@language"
+                # assert(g.match_word(s,i,tag))
+                #i = g.skip_ws(s,i+len(tag))
+                i = g.skip_ws(s,0)
                 j = g.skip_c_id(s,i)
                 self.language = s[i:j].lower()
 
@@ -1931,10 +1928,10 @@ class colorizer:
             #@+node:ekr.20071010193720.76:<< Test for @root, @root-doc or @root-code >>
             if theDict.has_key("root") and not self.rootMode:
 
-                k = theDict["root"]
-                if g.match_word(s,k,"@root-code"):
+                s = theDict["root"]
+                if g.match_word(s,0,"@root-code"):
                     self.rootMode = "code"
-                elif g.match_word(s,k,"@root-doc"):
+                elif g.match_word(s,0,"@root-doc"):
                     self.rootMode = "doc"
                 else:
                     doc = c.config.at_root_bodies_start_in_doc_mode

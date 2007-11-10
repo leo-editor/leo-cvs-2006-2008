@@ -308,6 +308,21 @@ def comment_delims_from_extension(filename):
         g.trace("unknown extension %s" % ext)
         return None,None,None
 #@-node:EKR.20040504150046.4:g.comment_delims_from_extension
+#@+node:ekr.20071109165315:g.computeRelativePath
+def computeRelativePath (path):
+
+    if len(path) > 2 and (
+        (path[0]=='<' and path[-1] == '>') or
+        (path[0]=='"' and path[-1] == '"') or
+        (path[0]=="'" and path[-1] == "'")
+    ):
+        path = path[1:-1].strip()
+
+    # 11/14/02: we want a _relative_ path, not an absolute path.
+    # path = g.os_path_join(g.app.loadDir,path)
+
+    return path
+#@-node:ekr.20071109165315:g.computeRelativePath
 #@+node:ekr.20031218072017.1381:@language and @comment directives (leoUtils)
 #@+node:ekr.20031218072017.1382:set_delims_from_language
 # Returns a tuple (single,start,end) of comment delims
@@ -368,15 +383,19 @@ def set_language(s,i,issue_errors_flag=False):
 
     """Scan the @language directive that appears at s[i:].
 
+    The @language may have been stripped away.
+
     Returns (language, delim1, delim2, delim3)
     """
 
     tag = "@language"
     # g.trace(g.get_line(s,i))
     assert(i != None)
-    assert(g.match_word(s,i,tag))
-    i += len(tag) ; i = g.skip_ws(s, i)
+    # assert(g.match_word(s,i,tag))
+    if g.match_word(s,i,tag):
+        i += len(tag)
     # Get the argument.
+    i = g.skip_ws(s, i)
     j = i ; i = g.skip_c_id(s,i)
     # Allow tcl/tk.
     arg = string.lower(s[j:i])
@@ -411,10 +430,10 @@ def findReference(c,name,root):
     # g.trace("not found:",name,root)
     return c.nullPosition()
 #@-node:ekr.20031218072017.1385:g.findReference
-#@+node:ekr.20031218072017.1260:get_directives_dict & globalDirectiveList
+#@+node:ekr.20031218072017.1260:g.get_directives_dict & test
 # The caller passes [root_node] or None as the second arg.  This allows us to distinguish between None and [None].
 
-def get_directives_dict(s,root=None):
+def get_directives_dict(p,root=None):
 
     """Scans root for @directives found in globalDirectiveList.
 
@@ -422,51 +441,80 @@ def get_directives_dict(s,root=None):
 
     if root: root_node = root[0]
     theDict = {}
-    i = 0 ; n = len(s)
-    while i < n:
-        if s[i] == '@' and i+1 < n:
-            #@            << set theDict for @ directives >>
-            #@+node:ekr.20031218072017.1261:<< set theDict for @ directives >>
-            j = g.skip_c_id(s,i+1)
-            word = s[i+1:j]
 
-            global globalDirectiveList
+    # The headline has higher precedence because it is more visible.
+    for kind,s in (
+        ('body',p.v.t.headString),
+        ('head',p.v.t.bodyString),
+    ):
+        i = 0 ; n = len(s)
+        while i < n:
+            if s[i] == '@' and i+1 < n:
+                #@                << set theDict for @ directives >>
+                #@+node:ekr.20031218072017.1261:<< set theDict for @ directives >>
+                j = g.skip_c_id(s,i+1)
+                word = s[i+1:j]
 
-            if word in globalDirectiveList:
-                if theDict.has_key(word):
-                    # Ignore second value.
-                    pass
-                    # g.es("Warning: conflicting values for %s" % (word), color="blue")
-                else:
-                    theDict [word] = i
-            #@-node:ekr.20031218072017.1261:<< set theDict for @ directives >>
-            #@nl
-        elif root and g.match(s,i,"<<"):
-            #@            << set theDict["root"] for noweb * chunks >>
-            #@+node:ekr.20031218072017.1262:<< set theDict["root"] for noweb * chunks >>
-            #@+at 
-            #@nonl
-            # The following looks for chunk definitions of the form < < * > > 
-            # =. If found, we take this to be equivalent to @root filename if 
-            # the headline has the form @root filename.
-            #@-at
-            #@@c
+                global globalDirectiveList
 
-            i = g.skip_ws(s,i+2)
-            if i < n and s[i] == '*' :
-                i = g.skip_ws(s,i+1) # Skip the '*'
-                if g.match(s,i,">>="):
-                    # < < * > > = implies that @root should appear in the headline.
-                    i += 3
-                    if root_node:
-                        theDict["root"]=0 # value not immportant
+                if word in globalDirectiveList:
+                    if theDict.has_key(word):
+                        # Ignore second value.
+                        pass
+                        # g.es("Warning: conflicting values for %s" % (word), color="blue")
                     else:
-                        g.es(g.angleBrackets("*") + "= requires @root in the headline")
-            #@-node:ekr.20031218072017.1262:<< set theDict["root"] for noweb * chunks >>
-            #@nl
-        i = g.skip_line(s,i)
+                        # theDict [word] = i
+                        k = g.skip_line(s,j)
+                        theDict[word] = s[j:k].strip()
+                #@nonl
+                #@-node:ekr.20031218072017.1261:<< set theDict for @ directives >>
+                #@nl
+            elif kind == 'body' and root and g.match(s,i,"<<"):
+                #@                << set theDict["root"] for noweb * chunks >>
+                #@+node:ekr.20031218072017.1262:<< set theDict["root"] for noweb * chunks >>
+                #@+at 
+                #@nonl
+                # The following looks for chunk definitions of the form < < * 
+                # > > =. If found, we take this to be equivalent to @root 
+                # filename if the headline has the form @root filename.
+                #@-at
+                #@@c
+
+                i = g.skip_ws(s,i+2)
+
+                if i < n and s[i] == '*' :
+                    i = g.skip_ws(s,i+1) # Skip the '*'
+                    if g.match(s,i,">>="):
+                        # < < * > > = implies that @root should appear in the headline.
+                        i += 3
+                        if root_node:
+                            theDict["root"]=0 # value not immportant
+                        else:
+                            g.es(g.angleBrackets("*") + "= requires @root in the headline")
+                #@-node:ekr.20031218072017.1262:<< set theDict["root"] for noweb * chunks >>
+                #@nl
+            i = g.skip_line(s,i)
     return theDict
-#@-node:ekr.20031218072017.1260:get_directives_dict & globalDirectiveList
+#@+node:ekr.20071109224138:@test g.get_directives_dict
+# This will work regardless of where this method is.
+#@@language python
+#@@tabwidth -4
+#@verbatim
+#@path xyzzy
+#@@pagewidth 120
+
+# Does not work when run externally with null colorizer.
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    d = c.atFileCommands.scanAllDirectives(p)
+
+    assert d.get('language') == 'python'
+    assert d.get('tabwidth') == -4
+    # assert d.get('path').endswith('xyzzy')
+    assert d.get('pagewidth') == 120
+#@-node:ekr.20071109224138:@test g.get_directives_dict
+#@-node:ekr.20031218072017.1260:g.get_directives_dict & test
 #@+node:ekr.20031218072017.1386:getOutputNewline
 def getOutputNewline (c=None,name=None):
 
@@ -491,38 +539,43 @@ def getOutputNewline (c=None,name=None):
     else: s = '\n' # Default for erroneous values.
     return s
 #@-node:ekr.20031218072017.1386:getOutputNewline
-#@+node:ekr.20031218072017.1387:scanAtEncodingDirective
-def scanAtEncodingDirective(s,theDict):
+#@+node:ekr.20031218072017.1387:g.scanAtEncodingDirective
+def scanAtEncodingDirective(theDict):
 
     """Scan the @encoding directive at s[theDict["encoding"]:].
 
     Returns the encoding name or None if the encoding name is invalid.
     """
 
-    k = theDict["encoding"]
-    i = g.skip_to_end_of_line(s,k)
-    j = len("@encoding")
-    encoding = s[k+j:i].strip()
+    # k = theDict["encoding"]
+    # i = g.skip_to_end_of_line(s,k)
+    # j = len("@encoding")
+    # encoding = s[k+j:i].strip()
+
+    encoding = theDict.get('encoding')
+
     if g.isValidEncoding(encoding):
         # g.trace(encoding)
         return encoding
     else:
-        g.es("invalid @encoding:"+encoding,color="red")
+        g.es("invalid @encoding: "+encoding,color="red")
         return None
-#@-node:ekr.20031218072017.1387:scanAtEncodingDirective
-#@+node:ekr.20031218072017.1388:scanAtLineendingDirective
-def scanAtLineendingDirective(s,theDict):
+#@-node:ekr.20031218072017.1387:g.scanAtEncodingDirective
+#@+node:ekr.20031218072017.1388:g.scanAtLineendingDirective
+def scanAtLineendingDirective(theDict):
 
     """Scan the @lineending directive at s[theDict["lineending"]:].
 
     Returns the actual lineending or None if the name of the lineending is invalid.
     """
 
-    k = theDict["lineending"]
-    i = g.skip_to_end_of_line(s,k)
-    j = len("@lineending")
-    j = g.skip_ws(s,j)
-    e = s[k+j:i].strip()
+    # k = theDict["lineending"]
+    # i = g.skip_to_end_of_line(s,k)
+    # j = len("@lineending")
+    # j = g.skip_ws(s,j)
+    # e = s[k+j:i].strip()
+
+    e = theDict.get('encoding')
 
     if e in ("cr","crlf","lf","nl","platform"):
         lineending = g.getOutputNewline(name=e)
@@ -531,48 +584,56 @@ def scanAtLineendingDirective(s,theDict):
     else:
         # g.es("invalid @lineending directive:"+e,color="red")
         return None
-#@-node:ekr.20031218072017.1388:scanAtLineendingDirective
-#@+node:ekr.20031218072017.1389:scanAtPagewidthDirective
-def scanAtPagewidthDirective(s,theDict,issue_error_flag=False):
+#@-node:ekr.20031218072017.1388:g.scanAtLineendingDirective
+#@+node:ekr.20031218072017.1389:g.scanAtPagewidthDirective
+def scanAtPagewidthDirective(theDict,issue_error_flag=False):
 
     """Scan the @pagewidth directive at s[theDict["pagewidth"]:].
 
     Returns the value of the width or None if the width is invalid.
     """
 
-    k = theDict["pagewidth"]
-    j = i = k + len("@pagewidth")
-    i, val = g.skip_long(s,i)
+    # k = theDict["pagewidth"]
+    # j = i = k + len("@pagewidth")
+    # i, val = g.skip_long(s,i)
+
+    s = theDict.get('pagewidth')
+    i, val = g.skip_long(s,0)
+
     if val != None and val > 0:
         # g.trace(val)
         return val
     else:
         if issue_error_flag:
             j = g.skip_to_end_of_line(s,k)
-            g.es("ignoring " + s[k:j],color="red")
+            g.es("ignoring " + s,color="red")
         return None
-#@-node:ekr.20031218072017.1389:scanAtPagewidthDirective
-#@+node:ekr.20031218072017.1390:scanAtTabwidthDirective
-def scanAtTabwidthDirective(s,theDict,issue_error_flag=False):
+#@-node:ekr.20031218072017.1389:g.scanAtPagewidthDirective
+#@+node:ekr.20031218072017.1390:g.scanAtTabwidthDirective
+def scanAtTabwidthDirective(theDict,issue_error_flag=False):
 
     """Scan the @tabwidth directive at s[theDict["tabwidth"]:].
 
     Returns the value of the width or None if the width is invalid.
     """
 
-    k = theDict["tabwidth"]
-    i = k + len("@tabwidth")
-    i, val = g.skip_long(s, i)
+    # k = theDict["tabwidth"]
+    # i = k + len("@tabwidth")
+    # i, val = g.skip_long(s, i)
+
+    s = theDict.get('tabwidth')
+    i,val = g.skip_long(s,0)
+
     if val != None and val != 0:
         # g.trace(val)
         return val
     else:
         if issue_error_flag:
             i = g.skip_to_end_of_line(s,k)
-            g.es("Ignoring " + s[k:i],color="red")
+            g.es("Ignoring " + s,color="red")
         return None
-#@-node:ekr.20031218072017.1390:scanAtTabwidthDirective
-#@+node:ekr.20070302160802:scanColorDirectives (new in Leo 4.4.3)
+#@-node:ekr.20031218072017.1390:g.scanAtTabwidthDirective
+#@+node:ekr.20070302160802:g.scanColorDirectives
 def scanColorDirectives(c,p):
 
     '''Return the language in effect at position p.'''
@@ -580,18 +641,18 @@ def scanColorDirectives(c,p):
     if c is None: return # c may be None for testing.
 
     language = c.target_language and c.target_language.lower() or 'python'
+
     p = p.copy()
     for p in p.self_and_parents_iter():
-        s = p.v.t.bodyString
-        d = g.get_directives_dict(s)
-        i = d.get('language')
-        if i is not None:
-            language,junk,junk,junk = g.set_language(s,i)
-            break
+        d = g.get_directives_dict(p)
+        z = d.get('language')
+        if z is not None:
+            language,junk,junk,junk = g.set_language(z,0)
+            return language
 
     return language
-#@-node:ekr.20070302160802:scanColorDirectives (new in Leo 4.4.3)
-#@+node:ekr.20040715155607:scanForAtIgnore
+#@-node:ekr.20070302160802:g.scanColorDirectives
+#@+node:ekr.20040715155607:g.scanForAtIgnore
 def scanForAtIgnore(c,p):
 
     """Scan position p and its ancestors looking for @ignore directives."""
@@ -600,13 +661,12 @@ def scanForAtIgnore(c,p):
         return False # For unit tests.
 
     for p in p.self_and_parents_iter():
-        s = p.bodyString()
-        d = g.get_directives_dict(s)
+        d = g.get_directives_dict(p)
         if d.has_key("ignore"):
             return True
 
     return False
-#@-node:ekr.20040715155607:scanForAtIgnore
+#@-node:ekr.20040715155607:g.scanForAtIgnore
 #@+node:ekr.20041123094807:g.scanForAtSettings
 def scanForAtSettings(p):
 
@@ -620,7 +680,7 @@ def scanForAtSettings(p):
 
     return False
 #@-node:ekr.20041123094807:g.scanForAtSettings
-#@+node:ekr.20040712084911.1:scanForAtLanguage
+#@+node:ekr.20040712084911.1:g.scanForAtLanguage & test
 def scanForAtLanguage(c,p):
 
     """Scan position p and p's ancestors looking only for @language and @ignore directives.
@@ -631,16 +691,26 @@ def scanForAtLanguage(c,p):
 
     if c and p:
         for p in p.self_and_parents_iter():
-            s = p.bodyString()
-            d = g.get_directives_dict(s)
+            d = g.get_directives_dict(p)
             if d.has_key("language"):
-                k = d["language"]
-                language,delim1,delim2,delim3 = g.set_language(s,k)
-                return language # Continue looking for @ignore
+                z = d["language"]
+                language,delim1,delim2,delim3 = g.set_language(z,0)
+                return language
 
     return c.target_language
-#@-node:ekr.20040712084911.1:scanForAtLanguage
-#@+node:ekr.20031218072017.1391:g.scanDirectives
+#@+node:ekr.20071109221215:@test scanColorDirectives
+# This will work regardless of where this method is.
+#@@language python
+
+# Does not work when run externally with null colorizer.
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    language = g.scanForAtLanguage(c,p)
+    assert language == 'python','got:%s' % language
+#@-node:ekr.20071109221215:@test scanColorDirectives
+#@-node:ekr.20040712084911.1:g.scanForAtLanguage & test
+#@+node:ekr.20031218072017.1391:g.scanDirectives & test
 #@+at 
 #@nonl
 # Perhaps this routine should be the basis of atFile.scanAllDirectives and 
@@ -676,8 +746,7 @@ def scanDirectives(c,p=None):
     old = {}
     pluginsList = [] # 5/17/03: a list of items for use by plugins.
     for p in p.self_and_parents_iter():
-        s = p.v.t.bodyString
-        theDict = g.get_directives_dict(s)
+        theDict = g.get_directives_dict(p)
         #@        << Test for @comment and @language >>
         #@+node:ekr.20031218072017.1393:<< Test for @comment and @language >>
         # 1/23/05: Any previous @language or @comment prevents processing up the tree.
@@ -687,19 +756,19 @@ def scanDirectives(c,p=None):
             pass
 
         elif theDict.has_key("comment"):
-            k = theDict["comment"]
-            delim1,delim2,delim3 = g.set_delims_from_string(s[k:])
+            z = theDict["comment"]
+            delim1,delim2,delim3 = g.set_delims_from_string(z)
 
         elif theDict.has_key("language"):
-            k = theDict["language"]
-            language,delim1,delim2,delim3 = g.set_language(s,k)
+            z = theDict["language"]
+            language,delim1,delim2,delim3 = g.set_language(z,0)
         #@-node:ekr.20031218072017.1393:<< Test for @comment and @language >>
         #@nl
         #@        << Test for @encoding >>
         #@+node:ekr.20031218072017.1394:<< Test for @encoding >>
         if not old.has_key("encoding") and theDict.has_key("encoding"):
 
-            e = g.scanAtEncodingDirective(s,theDict)
+            e = g.scanAtEncodingDirective(theDict)
             if e:
                 encoding = e
         #@-node:ekr.20031218072017.1394:<< Test for @encoding >>
@@ -708,7 +777,7 @@ def scanDirectives(c,p=None):
         #@+node:ekr.20031218072017.1395:<< Test for @lineending >>
         if not old.has_key("lineending") and theDict.has_key("lineending"):
 
-            e = g.scanAtLineendingDirective(s,theDict)
+            e = g.scanAtLineendingDirective(theDict)
             if e:
                 lineending = e
         #@-node:ekr.20031218072017.1395:<< Test for @lineending >>
@@ -717,43 +786,28 @@ def scanDirectives(c,p=None):
         #@+node:ekr.20031218072017.1396:<< Test for @pagewidth >>
         if theDict.has_key("pagewidth") and not old.has_key("pagewidth"):
 
-            w = g.scanAtPagewidthDirective(s,theDict)
+            w = g.scanAtPagewidthDirective(theDict)
             if w and w > 0:
                 page_width = w
         #@-node:ekr.20031218072017.1396:<< Test for @pagewidth >>
         #@nl
         #@        << Test for @path >>
-        #@+node:ekr.20031218072017.1397:<< Test for @path >>
+        #@+node:ekr.20031218072017.1397:<< Test for @path >> (g.scanDirectives)
         if not path and not old.has_key("path") and theDict.has_key("path"):
 
-            k = theDict["path"]
-            #@    << compute relative path from s[k:] >>
-            #@+node:ekr.20031218072017.1398:<< compute relative path from s[k:] >>
-            j = i = k + len("@path")
-            i = g.skip_to_end_of_line(s,i)
-            path = string.strip(s[j:i])
+            path = theDict["path"]
+            path = g.computeRelativePath(path)
 
-            # Remove leading and trailing delims if they exist.
-            if len(path) > 2 and (
-                (path[0]=='<' and path[-1] == '>') or
-                (path[0]=='"' and path[-1] == '"') ):
-                path = path[1:-1]
-
-            path = string.strip(path)
-            if 0: # 11/14/02: we want a _relative_ path, not an absolute path.
-                path = g.os_path_join(app.loadDir,path)
-            #@-node:ekr.20031218072017.1398:<< compute relative path from s[k:] >>
-            #@nl
             if path and len(path) > 0:
                 base = g.getBaseDirectory(c) # returns "" on error.
                 path = g.os_path_join(base,path)
-        #@-node:ekr.20031218072017.1397:<< Test for @path >>
+        #@-node:ekr.20031218072017.1397:<< Test for @path >> (g.scanDirectives)
         #@nl
         #@        << Test for @tabwidth >>
         #@+node:ekr.20031218072017.1399:<< Test for @tabwidth >>
         if theDict.has_key("tabwidth") and not old.has_key("tabwidth"):
 
-            w = g.scanAtTabwidthDirective(s,theDict)
+            w = g.scanAtTabwidthDirective(theDict)
             if w and w != 0:
                 tab_width = w
         #@-node:ekr.20031218072017.1399:<< Test for @tabwidth >>
@@ -768,11 +822,13 @@ def scanDirectives(c,p=None):
                 wrap = False
         #@-node:ekr.20031218072017.1400:<< Test for @wrap and @nowrap >>
         #@nl
-        g.doHook("scan-directives",c=c,p=p,v=p,s=s,
+        g.doHook("scan-directives",c=c,p=p,v=p,s=p.bodyString(),
             old_dict=old,dict=theDict,pluginsList=pluginsList)
         old.update(theDict)
 
     if path == None: path = g.getBaseDirectory(c)
+
+    # g.trace('tabwidth',tab_width)
 
     return {
         "delims"    : (delim1,delim2,delim3),
@@ -784,7 +840,23 @@ def scanDirectives(c,p=None):
         "tabwidth"  : tab_width,
         "pluginsList": pluginsList,
         "wrap"      : wrap }
-#@-node:ekr.20031218072017.1391:g.scanDirectives
+#@+node:ekr.20071109221337:@test g.scanDirectives
+# This will work regardless of where this method is.
+#@@language python
+#@@tabwidth -4
+# @path xyzzy # Creates a folder called xyzzy, interfering with another unit test.
+
+# Does not work when run externally with null colorizer.
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    d = g.scanDirectives(c,p)
+
+    assert d.get('language') == 'python'
+    assert d.get('tabwidth') == -4
+    # assert d.get('path').endswith('xyzzy')
+#@-node:ekr.20071109221337:@test g.scanDirectives
+#@-node:ekr.20031218072017.1391:g.scanDirectives & test
 #@-node:ekr.20031218072017.1380:Directive utils...
 #@+node:ekr.20031218072017.3100:wrap_lines
 #@+at 

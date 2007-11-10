@@ -1709,13 +1709,12 @@ class leoFrame:
         c = self.c ; w = c.tab_width
 
         for p in p.self_and_parents_iter():
-            s = p.v.t.bodyString
-            theDict = g.get_directives_dict(s)
+            theDict = g.get_directives_dict(p)
             #@        << set w and break on @tabwidth >>
             #@+node:ekr.20031218072017.1376:<< set w and break on @tabwidth >>
             if theDict.has_key("tabwidth"):
 
-                val = g.scanAtTabwidthDirective(s,theDict,issue_error_flag=False)
+                val = g.scanAtTabwidthDirective(theDict,issue_error_flag=False)
                 if val and val != 0:
                     w = val
                     break
@@ -2421,6 +2420,10 @@ class leoTree:
             if changed:
                 undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
                 if not c.changed: c.setChanged(True)
+                # New in Leo 4.4.5: we must recolor the body because
+                # the headline may contain directives.
+                c.frame.scanForTabWidth(p)
+                c.frame.body.recolor(p,incremental=True)
                 dirtyVnodeList = p.setDirty()
                 u.afterChangeNodeContents(p,undoType,undoData,
                     dirtyVnodeList=dirtyVnodeList)
