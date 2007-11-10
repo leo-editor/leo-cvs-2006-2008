@@ -1424,6 +1424,8 @@ class baseLeoImportCommands:
 
             self.atAuto = atAuto
             self.c = c = ic.c
+
+            self.atAutoWarnsAboutLeadingWhitespace = c.config.getBool('at_auto_warns_about_leading_whitespace')
             self.classId = None # The identifier containing the class tag: 'class', 'interface', 'namespace', etc.
             self.codeEnd = None
                 # The character after the last character of the class, method or function.
@@ -1597,16 +1599,17 @@ class baseLeoImportCommands:
             elif not line1.strip() and not line2.strip():
                 return True # Blank lines compare equal.
             elif (not strict and not g.unitTesting) and line1.lstrip() == line2.lstrip():
-                if not self.mismatchWarningGiven:
+                if not self.mismatchWarningGiven and self.atAutoWarnsAboutLeadingWhitespace:
                     self.mismatchWarningGiven = True
-                    g.es_print('Warning: leading whitespace does not match')
-                    g.es_print('First mismatched line at line %d % (i+1)')
+                    self.checkLeadingWhitespace(line1)
+                    self.warning('mismatch in leading whitespace')
+                    g.es_print('first mismatched line at line %d' % (i+1))
                     g.es_print('original line:  %s' % line1)
                     g.es_print('generated line: %s' % line2)
                 return True # A match excluding leading whitespace.
             else:
-                if not g.app.unitTesting or i+1 != expectedMismatch:
-                    # g.es_print('compareHelper')
+                if not g.unitTesting or i+1 != expectedMismatch:
+                    # g.trace('unitTesting',g.unitTesting)
                     g.es_print('*** first mismatch at line %d' % (i+1))
                     g.es_print('original line:  %s' % line1)
                     g.es_print('generated line: %s' % line2)
@@ -1644,6 +1647,20 @@ class baseLeoImportCommands:
             runner.compareHelper(lines1,lines2,i,strict=False)
         #@-node:ekr.20071030115446.1:@test compareHelper-warning
         #@-node:ekr.20070730093735:compareHelper & tests
+        #@+node:ekr.20071110144948:checkLeadingWhitespace
+        def checkLeadingWhitespace (self,line):
+
+            tab_width = self.tab_width
+            lws = line[0:g.skip_ws(line,0)]
+            w = g.computeWidth(lws,tab_width)
+            ok = (w % abs(tab_width)) == 0
+
+            if not ok:
+                report('leading whitespace not consistent with @tabwidth %d' % tab_width)
+                g.es_print('line: %s' % (repr(line)),color='red')
+
+            return ok
+        #@-node:ekr.20071110144948:checkLeadingWhitespace
         #@+node:ekr.20070911110507:reportMismatch & test
         def reportMismatch (self,lines1,lines2,bad_i):
 
@@ -2027,24 +2044,31 @@ class baseLeoImportCommands:
                 'underindented line.\nExtra leading whitespace will be added\n' + line)
         #@-node:ekr.20070801074524:underindentedComment & underindentedLine
         #@-node:ekr.20070706084535:Code generation
-        #@+node:ekr.20070703122141.78:error & oops
+        #@+node:ekr.20070703122141.78:error, oops, report and warning
         def error (self,s):
-
             self.errors += 1
             self.importCommands.errors += 1
-            if g.app.unitTesting:
+            if g.unitTesting:
                 if self.errors == 1:
-                    g.app.unitTestDict['actualErrorMessage'] = s
-                g.app.unitTestDict['actualErrors'] = self.errors
+                    g.app.unitTestDict ['actualErrorMessage'] = s
+                g.app.unitTestDict ['actualErrors'] = self.errors
                 if 0: # For debugging unit tests.
                     g.trace(g.callers())
                     g.es_print(s,color='red')
             else:
-                g.es_print(s,color='red')
+                g.es_print('error: %s' % (s),color='red')
 
         def oops (self):
             print 'baseScannerClass oops: %s must be overridden in subclass' % g.callers()
-        #@-node:ekr.20070703122141.78:error & oops
+
+        def report (self,message):
+            if self.strict: self.error(message)
+            else:           self.warning(message)
+
+        def warning (self,s):
+            if not g.unitTesting:
+                g.es_print('warning: %s' % (s),color='red')
+        #@-node:ekr.20070703122141.78:error, oops, report and warning
         #@+node:ekr.20070706084535.1:Parsing
         #@+at 
         #@nonl
@@ -2584,9 +2608,12 @@ class baseLeoImportCommands:
             self.mismatchWarningGiven = False
             changed = c.isChanged()
 
+            # Check for intermixed blanks and tabs.
+            if self.strict or self.atAutoWarnsAboutLeadingWhitespace:
+                self.checkBlanksAndTabs(s)
+
             # Regularize leading whitespace for strict languages only.
-            if self.strict:
-                s = self.regularizeWhitespace(s)
+            if self.strict: s = self.regularizeWhitespace(s) 
 
             # Generate the nodes, including directive and section references.
             self.scan(s,parent)
@@ -2606,6 +2633,26 @@ class baseLeoImportCommands:
             else:
                 root.setDirty(setDescendentsDirty=False)
                 c.setChanged(True)
+        #@+node:ekr.20071110105107:checkBlanksAndTabs
+        def checkBlanksAndTabs(self,s):
+
+            '''Check for intermixed blank & tabs.'''
+
+            # Do a quick check for mixed leading tabs/blanks.
+            blanks = tabs = 0
+
+            for line in g.splitLines(s):
+                lws = line[0:g.skip_ws(line,0)]
+                blanks += lws.count(' ')
+                tabs += lws.count('\t')
+
+            ok = blanks == 0 or tabs == 0
+
+            if not ok:
+                self.report('intermixed blanks and tabs')
+
+            return ok
+        #@-node:ekr.20071110105107:checkBlanksAndTabs
         #@+node:ekr.20070808115837.1:regularizeWhitespace
         def regularizeWhitespace (self,s):
 
@@ -2627,25 +2674,12 @@ class baseLeoImportCommands:
                     if s != line: changed = True
                     result.append(s)
 
-            if changed: self.regularizeError()
+            if changed:
+                s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
+                message = '%s: inconsistent leading whitespace. %s' % (kind,s)
+                self.report(message)
 
             return ''.join(result)
-        #@+node:ekr.20070808121958:regularizeError
-        def regularizeError (self):
-
-            # Create the message.
-            kind = g.choose(self.strict,'error','warning')
-            s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
-            message = '%s: inconsistent leading whitespace. %s' % (kind,s)
-
-            # Issue an error or warning.
-            if self.strict:
-                self.error(message)
-            else:
-                print message
-                g.es(message,color='red')
-
-        #@-node:ekr.20070808121958:regularizeError
         #@-node:ekr.20070808115837.1:regularizeWhitespace
         #@-node:ekr.20070707072749:run (baseScannerClass)
         #@-others
