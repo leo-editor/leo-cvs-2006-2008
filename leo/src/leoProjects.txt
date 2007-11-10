@@ -591,6 +591,8 @@ def __init__ (self,importCommands,atAuto,language):
 
     self.atAuto = atAuto
     self.c = c = ic.c
+
+    self.atAutoWarnsAboutLeadingWhitespace = c.config.getBool('at_auto_warns_about_leading_whitespace')
     self.classId = None # The identifier containing the class tag: 'class', 'interface', 'namespace', etc.
     self.codeEnd = None
         # The character after the last character of the class, method or function.
@@ -764,16 +766,17 @@ def compareHelper (self,lines1,lines2,i,strict):
     elif not line1.strip() and not line2.strip():
         return True # Blank lines compare equal.
     elif (not strict and not g.unitTesting) and line1.lstrip() == line2.lstrip():
-        if not self.mismatchWarningGiven:
+        if not self.mismatchWarningGiven and self.atAutoWarnsAboutLeadingWhitespace:
             self.mismatchWarningGiven = True
-            g.es_print('Warning: leading whitespace does not match')
-            g.es_print('First mismatched line at line %d % (i+1)')
+            self.checkLeadingWhitespace(line1)
+            self.warning('mismatch in leading whitespace')
+            g.es_print('first mismatched line at line %d' % (i+1))
             g.es_print('original line:  %s' % line1)
             g.es_print('generated line: %s' % line2)
         return True # A match excluding leading whitespace.
     else:
-        if not g.app.unitTesting or i+1 != expectedMismatch:
-            # g.es_print('compareHelper')
+        if not g.unitTesting or i+1 != expectedMismatch:
+            # g.trace('unitTesting',g.unitTesting)
             g.es_print('*** first mismatch at line %d' % (i+1))
             g.es_print('original line:  %s' % line1)
             g.es_print('generated line: %s' % line2)
@@ -811,6 +814,20 @@ if g.unitTesting:
     runner.compareHelper(lines1,lines2,i,strict=False)
 #@-node:ekr.20071030115446.1:@test compareHelper-warning
 #@-node:ekr.20070730093735:compareHelper & tests
+#@+node:ekr.20071110144948:checkLeadingWhitespace
+def checkLeadingWhitespace (self,line):
+
+    tab_width = self.tab_width
+    lws = line[0:g.skip_ws(line,0)]
+    w = g.computeWidth(lws,tab_width)
+    ok = (w % abs(tab_width)) == 0
+
+    if not ok:
+        report('leading whitespace not consistent with @tabwidth %d' % tab_width)
+        g.es_print('line: %s' % (repr(line)),color='red')
+
+    return ok
+#@-node:ekr.20071110144948:checkLeadingWhitespace
 #@+node:ekr.20070911110507:reportMismatch & test
 def reportMismatch (self,lines1,lines2,bad_i):
 
@@ -1190,24 +1207,31 @@ def underindentedLine (self,line):
         'underindented line.\nExtra leading whitespace will be added\n' + line)
 #@-node:ekr.20070801074524:underindentedComment & underindentedLine
 #@-node:ekr.20070706084535:Code generation
-#@+node:ekr.20070703122141.78:error & oops
+#@+node:ekr.20070703122141.78:error, oops, report and warning
 def error (self,s):
-
     self.errors += 1
     self.importCommands.errors += 1
-    if g.app.unitTesting:
+    if g.unitTesting:
         if self.errors == 1:
-            g.app.unitTestDict['actualErrorMessage'] = s
-        g.app.unitTestDict['actualErrors'] = self.errors
+            g.app.unitTestDict ['actualErrorMessage'] = s
+        g.app.unitTestDict ['actualErrors'] = self.errors
         if 0: # For debugging unit tests.
             g.trace(g.callers())
             g.es_print(s,color='red')
     else:
-        g.es_print(s,color='red')
+        g.es_print('error: %s' % (s),color='red')
 
 def oops (self):
     print 'baseScannerClass oops: %s must be overridden in subclass' % g.callers()
-#@-node:ekr.20070703122141.78:error & oops
+
+def report (self,message):
+    if self.strict: self.error(message)
+    else:           self.warning(message)
+
+def warning (self,s):
+    if not g.unitTesting:
+        g.es_print('warning: %s' % (s),color='red')
+#@-node:ekr.20070703122141.78:error, oops, report and warning
 #@+node:ekr.20070706084535.1:Parsing
 @ Scan and skipDecls would typically not be overridden.
 #@+node:ekr.20070707150022:extendSignature
@@ -1744,9 +1768,12 @@ def run (self,s,parent):
     self.mismatchWarningGiven = False
     changed = c.isChanged()
 
+    # Check for intermixed blanks and tabs.
+    if self.strict or self.atAutoWarnsAboutLeadingWhitespace:
+        self.checkBlanksAndTabs(s)
+
     # Regularize leading whitespace for strict languages only.
-    if self.strict:
-        s = self.regularizeWhitespace(s)
+    if self.strict: s = self.regularizeWhitespace(s) 
 
     # Generate the nodes, including directive and section references.
     self.scan(s,parent)
@@ -1766,6 +1793,26 @@ def run (self,s,parent):
     else:
         root.setDirty(setDescendentsDirty=False)
         c.setChanged(True)
+#@+node:ekr.20071110105107:checkBlanksAndTabs
+def checkBlanksAndTabs(self,s):
+
+    '''Check for intermixed blank & tabs.'''
+
+    # Do a quick check for mixed leading tabs/blanks.
+    blanks = tabs = 0
+
+    for line in g.splitLines(s):
+        lws = line[0:g.skip_ws(line,0)]
+        blanks += lws.count(' ')
+        tabs += lws.count('\t')
+
+    ok = blanks == 0 or tabs == 0
+
+    if not ok:
+        self.report('intermixed blanks and tabs')
+
+    return ok
+#@-node:ekr.20071110105107:checkBlanksAndTabs
 #@+node:ekr.20070808115837.1:regularizeWhitespace
 def regularizeWhitespace (self,s):
 
@@ -1787,25 +1834,12 @@ def regularizeWhitespace (self,s):
             if s != line: changed = True
             result.append(s)
 
-    if changed: self.regularizeError()
+    if changed:
+        s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
+        message = '%s: inconsistent leading whitespace. %s' % (kind,s)
+        self.report(message)
 
     return ''.join(result)
-#@+node:ekr.20070808121958:regularizeError
-def regularizeError (self):
-
-    # Create the message.
-    kind = g.choose(self.strict,'error','warning')
-    s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
-    message = '%s: inconsistent leading whitespace. %s' % (kind,s)
-
-    # Issue an error or warning.
-    if self.strict:
-        self.error(message)
-    else:
-        print message
-        g.es(message,color='red')
-
-#@-node:ekr.20070808121958:regularizeError
 #@-node:ekr.20070808115837.1:regularizeWhitespace
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@-node:ekr.20070703122141.65: class baseScannerClass
@@ -2103,6 +2137,8 @@ def __init__ (self,importCommands,atAuto,language):
 
     self.atAuto = atAuto
     self.c = c = ic.c
+
+    self.atAutoWarnsAboutLeadingWhitespace = c.config.getBool('at_auto_warns_about_leading_whitespace')
     self.classId = None # The identifier containing the class tag: 'class', 'interface', 'namespace', etc.
     self.codeEnd = None
         # The character after the last character of the class, method or function.
@@ -2276,16 +2312,17 @@ def compareHelper (self,lines1,lines2,i,strict):
     elif not line1.strip() and not line2.strip():
         return True # Blank lines compare equal.
     elif (not strict and not g.unitTesting) and line1.lstrip() == line2.lstrip():
-        if not self.mismatchWarningGiven:
+        if not self.mismatchWarningGiven and self.atAutoWarnsAboutLeadingWhitespace:
             self.mismatchWarningGiven = True
-            g.es_print('Warning: leading whitespace does not match')
-            g.es_print('First mismatched line at line %d % (i+1)')
+            self.checkLeadingWhitespace(line1)
+            self.warning('mismatch in leading whitespace')
+            g.es_print('first mismatched line at line %d' % (i+1))
             g.es_print('original line:  %s' % line1)
             g.es_print('generated line: %s' % line2)
         return True # A match excluding leading whitespace.
     else:
-        if not g.app.unitTesting or i+1 != expectedMismatch:
-            # g.es_print('compareHelper')
+        if not g.unitTesting or i+1 != expectedMismatch:
+            # g.trace('unitTesting',g.unitTesting)
             g.es_print('*** first mismatch at line %d' % (i+1))
             g.es_print('original line:  %s' % line1)
             g.es_print('generated line: %s' % line2)
@@ -2323,6 +2360,20 @@ if g.unitTesting:
     runner.compareHelper(lines1,lines2,i,strict=False)
 #@-node:ekr.20071030115446.1:@test compareHelper-warning
 #@-node:ekr.20070730093735:compareHelper & tests
+#@+node:ekr.20071110144948:checkLeadingWhitespace
+def checkLeadingWhitespace (self,line):
+
+    tab_width = self.tab_width
+    lws = line[0:g.skip_ws(line,0)]
+    w = g.computeWidth(lws,tab_width)
+    ok = (w % abs(tab_width)) == 0
+
+    if not ok:
+        report('leading whitespace not consistent with @tabwidth %d' % tab_width)
+        g.es_print('line: %s' % (repr(line)),color='red')
+
+    return ok
+#@-node:ekr.20071110144948:checkLeadingWhitespace
 #@+node:ekr.20070911110507:reportMismatch & test
 def reportMismatch (self,lines1,lines2,bad_i):
 
@@ -2702,24 +2753,31 @@ def underindentedLine (self,line):
         'underindented line.\nExtra leading whitespace will be added\n' + line)
 #@-node:ekr.20070801074524:underindentedComment & underindentedLine
 #@-node:ekr.20070706084535:Code generation
-#@+node:ekr.20070703122141.78:error & oops
+#@+node:ekr.20070703122141.78:error, oops, report and warning
 def error (self,s):
-
     self.errors += 1
     self.importCommands.errors += 1
-    if g.app.unitTesting:
+    if g.unitTesting:
         if self.errors == 1:
-            g.app.unitTestDict['actualErrorMessage'] = s
-        g.app.unitTestDict['actualErrors'] = self.errors
+            g.app.unitTestDict ['actualErrorMessage'] = s
+        g.app.unitTestDict ['actualErrors'] = self.errors
         if 0: # For debugging unit tests.
             g.trace(g.callers())
             g.es_print(s,color='red')
     else:
-        g.es_print(s,color='red')
+        g.es_print('error: %s' % (s),color='red')
 
 def oops (self):
     print 'baseScannerClass oops: %s must be overridden in subclass' % g.callers()
-#@-node:ekr.20070703122141.78:error & oops
+
+def report (self,message):
+    if self.strict: self.error(message)
+    else:           self.warning(message)
+
+def warning (self,s):
+    if not g.unitTesting:
+        g.es_print('warning: %s' % (s),color='red')
+#@-node:ekr.20070703122141.78:error, oops, report and warning
 #@+node:ekr.20070706084535.1:Parsing
 @ Scan and skipDecls would typically not be overridden.
 #@+node:ekr.20070707150022:extendSignature
@@ -3256,9 +3314,12 @@ def run (self,s,parent):
     self.mismatchWarningGiven = False
     changed = c.isChanged()
 
+    # Check for intermixed blanks and tabs.
+    if self.strict or self.atAutoWarnsAboutLeadingWhitespace:
+        self.checkBlanksAndTabs(s)
+
     # Regularize leading whitespace for strict languages only.
-    if self.strict:
-        s = self.regularizeWhitespace(s)
+    if self.strict: s = self.regularizeWhitespace(s) 
 
     # Generate the nodes, including directive and section references.
     self.scan(s,parent)
@@ -3278,6 +3339,26 @@ def run (self,s,parent):
     else:
         root.setDirty(setDescendentsDirty=False)
         c.setChanged(True)
+#@+node:ekr.20071110105107:checkBlanksAndTabs
+def checkBlanksAndTabs(self,s):
+
+    '''Check for intermixed blank & tabs.'''
+
+    # Do a quick check for mixed leading tabs/blanks.
+    blanks = tabs = 0
+
+    for line in g.splitLines(s):
+        lws = line[0:g.skip_ws(line,0)]
+        blanks += lws.count(' ')
+        tabs += lws.count('\t')
+
+    ok = blanks == 0 or tabs == 0
+
+    if not ok:
+        self.report('intermixed blanks and tabs')
+
+    return ok
+#@-node:ekr.20071110105107:checkBlanksAndTabs
 #@+node:ekr.20070808115837.1:regularizeWhitespace
 def regularizeWhitespace (self,s):
 
@@ -3299,25 +3380,12 @@ def regularizeWhitespace (self,s):
             if s != line: changed = True
             result.append(s)
 
-    if changed: self.regularizeError()
+    if changed:
+        s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
+        message = '%s: inconsistent leading whitespace. %s' % (kind,s)
+        self.report(message)
 
     return ''.join(result)
-#@+node:ekr.20070808121958:regularizeError
-def regularizeError (self):
-
-    # Create the message.
-    kind = g.choose(self.strict,'error','warning')
-    s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
-    message = '%s: inconsistent leading whitespace. %s' % (kind,s)
-
-    # Issue an error or warning.
-    if self.strict:
-        self.error(message)
-    else:
-        print message
-        g.es(message,color='red')
-
-#@-node:ekr.20070808121958:regularizeError
 #@-node:ekr.20070808115837.1:regularizeWhitespace
 #@-node:ekr.20070707072749:run (baseScannerClass)
 #@-node:ekr.20070703122141.65: class baseScannerClass
@@ -3509,1209 +3577,3518 @@ def skipDecls (self,s,i,end,inClass):
         return start
 #@-node:ekr.20070707080042:skipDecls
 #@-node:ekr.20071106142249:Fixed new @auto bug: c++
-#@+node:ekr.20070814144804:Retain relative paths in recent files menu
-#@+node:ekr.20071109111941:Report
+#@+node:ekr.20071110092039:Fixed various @auto comparison problems
 @nocolor
 
-http://sourceforge.net/forum/message.php?msg_id=4464649
-By: terry_n_brown
+http://sourceforge.net/forum/forum.php?thread_id=1865290&forum_id=10226
 
-An argument I'm always having with leo has to do with its conversion of file
-paths to 'absolute' forms.
+@bool at_auto_warns_about_leading_whitespace
 
-In the file browser I select '/home/tbrown/misc/foo.leo'.
-Leo reinterprets this as '/media/hda2/usr1/home/tbrown/misc/foo.leo'
-
-Then I switch machines, and while
-'/home/tbrown/misc/foo.leo' would still be valid,
-'/media/hda2/usr1/home/tbrown/misc/foo.leo' isn't - on the other machine it
-would be '/media/hdb1/home/tbrown/misc/foo.leo'.
-
-I end up with the two entries in recent files, having to identify the right one.
-
-If the Tk dialog is returning '/home/tbrown/misc/foo.leo', which I assume it is
-because that's what it's displaying, I wish leo would use and store that.
-#@-node:ekr.20071109111941:Report
-#@+node:ekr.20071109111941.1:What I did
-@nocolor
-
-What I did:
-
-- Added relativeFileName keyword arg to newLeoCommanderAndFrame
-- Added c.mRelativeFileName ivar.
-- Added c.relativeFileName() method.
-- clear-recent-files now writes .leoRecentFiles.txt immediately.
-- updateRecentFiles now clears both the relative and absolute version of the path.
-#@-node:ekr.20071109111941.1:What I did
-#@+node:ekr.20031218072017.2821:open
-def open (self,event=None):
-
-    '''Open a Leo window containing the contents of a .leo file.'''
-
-    c = self
-    << Set closeFlag if the only open window is empty >>
-
-    fileName = g.app.gui.runOpenFileDialog(
-        title = "Open",
-        filetypes = [("Leo files","*.leo"), ("All files","*")],
-        defaultextension = ".leo")
-    c.bringToFront()
-
-    ok = False
-    if fileName and len(fileName) > 0:
-        ok, frame = g.openWithFileName(fileName,c)
-        if ok:
-            g.setGlobalOpenDir(fileName)
-        if ok and closeFlag:
-            g.app.destroyWindow(c.frame)
-
-    # openWithFileName sets focus if ok.
-    if not ok:
-        if c.config.getBool('outline_pane_has_initial_focus'):
-            c.treeWantsFocusNow()
-        else:
-            c.bodyWantsFocusNow()
+@color
 #@nonl
-#@+node:ekr.20031218072017.2822:<< Set closeFlag if the only open window is empty >>
-@ If this is the only open window was opened when the app started, and the window has never been written to or saved, then we will automatically close that window if this open command completes successfully.
-@c
+#@+node:ekr.20070703122141.65: class baseScannerClass
+class baseScannerClass:
 
-closeFlag = (
-    c.frame.startupWindow and # The window was open on startup
-    not c.changed and not c.frame.saved and # The window has never been changed
-    g.app.numberOfWindows == 1) # Only one untitled window has ever been opened
-#@-node:ekr.20031218072017.2822:<< Set closeFlag if the only open window is empty >>
-#@-node:ekr.20031218072017.2821:open
-#@+node:ekr.20031218072017.2052:g.openWithFileName
-def openWithFileName(fileName,old_c,
-    enableLog=True,gui=None,readAtFileNodesFlag=True):
+    '''The base class for all import scanner classes.
+    This class contains common utility methods.'''
 
-    """Create a Leo Frame for the indicated fileName if the file exists."""
+    @others
+#@+node:ekr.20070703122141.66:baseScannerClass.__init__
+def __init__ (self,importCommands,atAuto,language):
 
-    if not fileName or len(fileName) == 0:
-        return False, None
+    ic = importCommands
 
-    def munge(name):
-        return g.os_path_normpath(name or '').lower()
+    self.atAuto = atAuto
+    self.c = c = ic.c
 
-    # Create a full, normalized, Unicode path name, preserving case.
-    relativeFileName = g.os_path_normpath(fileName)
-    fileName = g.os_path_normpath(g.os_path_abspath(fileName))
-    # g.trace(relativeFileName,'-->',fileName)
+    self.atAutoWarnsAboutLeadingWhitespace = c.config.getBool('at_auto_warns_about_leading_whitespace')
+    self.classId = None # The identifier containing the class tag: 'class', 'interface', 'namespace', etc.
+    self.codeEnd = None
+        # The character after the last character of the class, method or function.
+        # An error will be given if this is not a newline.
+    self.encoding = ic.encoding # g.app.tkEncoding
+    self.errors = 0
+    ic.errors = 0
+    self.errorLines = []
+    self.extraIdChars = ''
+    self.fileName = ic.fileName # The original filename.
+    self.fileType = ic.fileType # The extension,  '.py', '.c', etc.
+    self.fullChecks = c.config.getBool('full_import_checks')
+    self.importCommands = ic
+    self.indentRefFlag = None # None, True or False.
+    self.language = language
+    self.methodName = ic.methodName # x, as in < < x methods > > =
+    self.mismatchWarningGiven = False
+    self.output_newline = ic.output_newline # = c.config.getBool('output_newline')
+    self.output_indent = 0 # The minimum indentation presently in effect.
+    self.root = None # The top-level node of the generated tree.
+    self.rootLine = ic.rootLine # '' or @root + self.fileName
+    self.sigEnd = None # The index of the end of the signature.
+    self.sigId = None # The identifier contained in the signature, i.e., the function or method name.
+    self.sigStart = None
+        # The start of the line containing the signature.
+        # An error will be given if something other than whitespace precedes the signature.
+    self.startSigIndent = None
+    self.tab_width = None # Set in run: the tab width in effect in the c.currentPosition.
+    self.tab_ws = '' # Set in run: the whitespace equivalent to one tab.
+    self.trace = False or ic.trace # = c.config.getBool('trace_import')
+    self.treeType = ic.treeType # '@root' or '@file'
+    self.webType = ic.webType # 'cweb' or 'noweb'  
 
-    # If the file is already open just bring its window to the front.
-    theList = app.windowList
-    for frame in theList:
-        if munge(fileName) == munge(frame.c.mFileName):
-            frame.bringToFront()
-            frame.c.setLog()
-            return True, frame
-    if old_c:
-        # New in 4.4: We must read the file *twice*.
-        # The first time sets settings for the later call to c.finishCreate.
-        # g.trace('***** prereading',fileName)
-        c2 = g.app.config.openSettingsFile(fileName)
-        if c2: g.app.config.updateSettings(c2,localFlag=True)
-        g.doHook('open0')
+    # Compute language ivars.
+    delim1,delim2,delim3 = g.set_delims_from_language(language)
+    self.comment_delim = delim1
 
-    # Open the file in binary mode to allow 0x1a in bodies & headlines.
-    theFile,isZipped = g.openLeoOrZipFile(fileName)
-    if not theFile: return False, None
-    c,frame = app.newLeoCommanderAndFrame(
-        fileName=fileName,
-        relativeFileName=relativeFileName,
-        gui=gui)
-    c.isZipped = isZipped
-    frame.log.enable(enableLog)
-    g.app.writeWaitingLog() # New in 4.3: write queued log first.
-    c.beginUpdate()
-    try:
-        if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
-            c.setLog()
-            app.lockLog()
-            frame.c.fileCommands.open(
-                theFile,fileName,
-                readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
-            app.unlockLog()
-            for frame in g.app.windowList:
-                # The recent files list has been updated by menu.updateRecentFiles.
-                frame.c.config.setRecentFiles(g.app.config.recentFiles)
-        # Bug fix in 4.4.
-        frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
-        g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
-    finally:
-        c.endUpdate()
-        # chapterController.finishCreate must be called after the first real redraw
-        # because it requires a valid value for c.rootPosition().
-        if frame.c.chapterController:
-            frame.c.chapterController.finishCreate()
-        k = c.k
-        k and k.setInputState(k.unboundKeyAction)
-        if c.config.getBool('outline_pane_has_initial_focus'):
-            c.treeWantsFocusNow()
-        else:
-            c.bodyWantsFocusNow()
-    return True, frame
-#@nonl
-#@-node:ekr.20031218072017.2052:g.openWithFileName
-#@+node:ekr.20031218072017.2083:c.updateRecentFiles
-def updateRecentFiles (self,fileName):
+    # May be overridden in subclasses.
+    self.blockCommentDelim1 = None
+    self.blockCommentDelim2 = None
+    self.blockDelim1 = '{'
+    self.blockDelim2 = '}'
+    self.classTags = ['class',] # tags that start a tag.
+    self.functionTags = []
+    self.hasClasses = True
+    self.hasFunctions = True
+    self.lineCommentDelim = None
+    self.lineCommentDelim2 = None
+    self.outerBlockDelim1 = None
+    self.outerBlockDelim2 = None
+    self.outerBlockEndsDecls = True
+    self.sigHeadExtraTokens = [] # Extra tokens valid in head of signature.
+    self.sigFailTokens = []
+        # A list of strings that abort a signature when seen in a tail.
+        # For example, ';' and '=' in C.
 
-    """Create the RecentFiles menu.  May be called with Null fileName."""
+    self.strict = False # True if leading whitespace is very significant.
+#@-node:ekr.20070703122141.66:baseScannerClass.__init__
+#@+node:ekr.20070808115837:Checking
+#@+node:ekr.20070703122141.102:check
+def check (self,s,parent):
 
-    if g.app.unitTesting: return
+    '''Make sure the generated nodes are equivalent to the original file.
 
-    def munge(name):
-        return g.os_path_normpath(name or '').lower()
-    def munge2(name):
-        return g.os_path_abspath(g.os_path_join(g.app.loadDir,name or ''))
+    1. Regularize and check leading whitespace.
+    2. Check that a trial write produces the original file.
 
-    # Update the recent files list in all windows.
-    if fileName:
-        compareFileName = munge(fileName)
-        # g.trace(fileName)
-        for frame in g.app.windowList:
-            c = frame.c
-            # Remove all versions of the file name.
-            for name in c.recentFiles:
-                if munge(fileName) == munge(name) or munge2(fileName) == munge2(name):
-                    c.recentFiles.remove(name)
-            c.recentFiles.insert(0,fileName)
-            # g.trace('adding',fileName)
-            # Recreate the Recent Files menu.
-            frame.menu.createRecentFilesMenuItems()
+    Return True if the nodes are equivalent to the original file.
+    '''
+
+    if self.fullChecks and self.treeType == '@file':
+        return self.checkTrialWrite()
     else:
-        for frame in g.app.windowList:
-            frame.menu.createRecentFilesMenuItems()
-#@-node:ekr.20031218072017.2083:c.updateRecentFiles
-#@+node:ekr.20031218072017.1934:run
-def run(fileName=None,pymacs=None,jyLeo=False,*args,**keywords):
+        return True
+#@-node:ekr.20070703122141.102:check
+#@+node:ekr.20070703122141.104:checkTrialWrite & tests
+def checkTrialWrite (self,s1=None,s2=None):
 
-    """Initialize and run Leo"""
+    '''Return True if a trial write produces the original file.'''
 
-    __pychecker__ = '--no-argsused' # keywords not used.
+    # s1 and s2 are for unit testing.
 
-    # print 'leo.py:run','fileName',fileName
-    if not jyLeo and not isValidPython(): return
-    << import leoGlobals and leoApp >>
-    g.computeStandardDirectories()
-    adjustSysPath(g)
-    if pymacs:
-        script = windowFlag = False
-    else:
-        script, windowFlag = getBatchScript() # Do early so we can compute verbose next.
-    verbose = script is None
-    g.app.batchMode = script is not None
-    g.app.silentMode = '-silent' in sys.argv or '--silent' in sys.argv
-    g.app.setLeoID(verbose=verbose) # Force the user to set g.app.leoID.
-    << import leoNodes and leoConfig >>
-    g.app.nodeIndices = leoNodes.nodeIndices(g.app.leoID)
-    g.app.config = leoConfig.configClass()
-    fileName,relativeFileName = completeFileName(fileName)
-    reportDirectories(verbose)
-    # Read settings *after* setting g.app.config.
-    # Read settings *before* opening plugins.  This means if-gui has effect only in per-file settings.
-    g.app.config.readSettingsFiles(fileName,verbose)
-    g.app.setEncoding()
-    if pymacs:
-        createNullGuiWithScript(None)
-    elif jyLeo:
-        import leoSwingGui
-        g.app.gui = leoSwingGui.swingGui()
-    elif script:
-        if windowFlag:
-            g.app.createTkGui() # Creates global windows.
-            g.app.gui.setScript(script)
-            sys.args = []
-        else:
-            createNullGuiWithScript(script)
-        fileName = None
-    # Load plugins. Plugins may create g.app.gui.
-    g.doHook("start1")
-    if g.app.killed: return # Support for g.app.forceShutdown.
-    # Create the default gui if needed.
-    if g.app.gui == None: g.app.createTkGui() # Creates global windows.
-    # Initialize tracing and statistics.
-    g.init_sherlock(args)
-    if g.app and g.app.use_psyco: startPsyco()
-    # Clear g.app.initing _before_ creating the frame.
-    g.app.initing = False # "idle" hooks may now call g.app.forceShutdown.
-    # Create the main frame.  Show it and all queued messages.
-    c,frame = createFrame(fileName,relativeFileName)
-    if not frame: return
-    g.app.trace_gc          = c.config.getBool('trace_gc')
-    g.app.trace_gc_calls    = c.config.getBool('trace_gc_calls')
-    g.app.trace_gc_verbose  = c.config.getBool('trace_gc_verbose')
-    if g.app.disableSave:
-        g.es("disabling save commands",color="red")
-    g.app.writeWaitingLog()
-    p = c.currentPosition()
-    g.doHook("start2",c=c,p=p,v=p,fileName=fileName)
-    if c.config.getBool('allow_idle_time_hook'):
-        g.enableIdleTimeHook()
-    if not fileName:
-        c.redraw_now()
-    c.bodyWantsFocus()
-    g.app.gui.runMainLoop()
-#@+node:ekr.20041219072112:<< import leoGlobals and leoApp >>
-if jyLeo:
+    c = self.c ; at = c.atFileCommands
 
-    print '*** starting jyLeo',sys.platform # will be something like java1.6.0_02
+    if s1 is None and s2 is None:
+        at.write(self.root,
+            nosentinels=True,thinFile=False,
+            scriptWrite=False,toString=True,
+            write_strips_blank_lines=False)
+        s1,s2 = self.file_s, at.stringOutput
 
-    ### This is a hack.
-    ### The jyleo script in test.leo sets the cwd to g.app.loadDir
-    ### Eventually, we will have to compute the equivalent here.
+    s1 = g.toUnicode(s1,self.encoding)
+    s2 = g.toUnicode(s2,self.encoding)
 
-    path = os.path.join(os.getcwd()) ### ,'..','src')
-    if path not in sys.path:
-        print 'appending %s to sys.path' % path
-        sys.path.append(path)
-    if 0:
-        print 'sys.path...'
-        for s in sys.path: print s
+    # Make sure we have a trailing newline in both strings.
+    s1 = s1.replace('\r','')
+    s2 = s2.replace('\r','')
+    if not s1.endswith('\n'): s1 = s1 + '\n'
+    if not s2.endswith('\n'): s2 = s2 + '\n'
 
-# Import leoGlobals, but do NOT set g.
-import leoGlobals
-import leoApp
+    if s1 == s2: return True
 
-# Create the app.
-leoGlobals.app = leoApp.LeoApp()
+    lines1 = g.splitLines(s1) ; n1 = len(lines1)
+    lines2 = g.splitLines(s2) ; n2 = len(lines2)
 
-# **now** we can set g.
-g = leoGlobals
-assert(g.app)
+    # g.trace('lines1',lines1)
+    # g.trace('lines2',lines2)
 
-if jyLeo:
-    startJyleo(g)
-#@-node:ekr.20041219072112:<< import leoGlobals and leoApp >>
-#@+node:ekr.20041219072416.1:<< import leoNodes and leoConfig >>
-import leoNodes
-import leoConfig
-
-# try:
-    # import leoNodes
-# except ImportError:
-    # print "Error importing leoNodes.py"
-    # import traceback ; traceback.print_exc()
-
-# try:
-    # import leoConfig
-# except ImportError:
-    # print "Error importing leoConfig.py"
-    # import traceback ; traceback.print_exc()
-#@-node:ekr.20041219072416.1:<< import leoNodes and leoConfig >>
-#@-node:ekr.20031218072017.1934:run
-#@+node:ekr.20071109094717:Found: newLeoCommanderAndFrame
-#@+node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
-def newLeoCommanderAndFrame(self,
-    fileName=None,
-    relativeFileName=None,
-    gui=None,initEditCommanders=True,updateRecentFiles=True):
-
-    """Create a commander and its view frame for the Leo main window."""
-
-    app = self
-
-    import leoCommands
-
-    if not fileName: fileName = ''
-    if not relativeFileName: relativeFileName = ''
-    if not gui: gui = g.app.gui
-    << compute the window title >>
-
-    # g.trace(fileName,relativeFileName)
-
-    # Create an unfinished frame to pass to the commanders.
-    frame = gui.createLeoFrame(title)
-
-    # Create the commander and its subcommanders.
-    c = leoCommands.Commands(frame,fileName,relativeFileName=relativeFileName)
-
-    if not app.initing:
-        g.doHook("before-create-leo-frame",c=c) # Was 'onCreate': too confusing.
-
-    frame.finishCreate(c)
-    c.finishCreate(initEditCommanders)
-
-    # Finish initing the subcommanders.
-    c.undoer.clearUndoState() # Menus must exist at this point.
-
-    if updateRecentFiles:
-        c.updateRecentFiles(relativeFileName or fileName)
-
-    if not g.app.initing:
-        g.doHook("after-create-leo-frame",c=c)
-
-    return c,frame
-#@+node:ekr.20031218072017.2189:<< compute the window title >>
-# Set the window title and fileName
-if fileName:
-    title = g.computeWindowTitle(fileName)
-else:
-    s = "untitled"
-    n = g.app.numberOfWindows
-    if n > 0:
-        s += str(n)
-    title = g.computeWindowTitle(s)
-    g.app.numberOfWindows = n+1
-#@-node:ekr.20031218072017.2189:<< compute the window title >>
-#@-node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
-#@+node:ekr.20041124083125:completeFileName (leo.py)
-def completeFileName (fileName):
-
-    import leoGlobals as g
-
-    if not fileName:
-        return None
-
-    # This does not depend on config settings.
-    try:
-        import sys
-        if sys.platform.lower().startswith('win'):
-            fileName = g.toUnicode(fileName,'mbcs')
-        else:
-            fileName = g.toUnicode(fileName,'utf-8')
-    except Exception: pass
-
-    relativeFileName = fileName
-    fileName = g.os_path_join(os.getcwd(),fileName)
-
-    head,ext = g.os_path_splitext(fileName)
-    if not ext:
-        fileName = fileName + ".leo"
-        relativeFileName = relativeFileName + ".leo"
-
-    return fileName,relativeFileName
-#@-node:ekr.20041124083125:completeFileName (leo.py)
-#@+node:ekr.20031218072017.1624:createFrame (leo.py)
-def createFrame (fileName,relativeFileName):
-
-    """Create a LeoFrame during Leo's startup process."""
-
-    import leoGlobals as g
-
-    # Try to create a frame for the file.
-    if fileName and g.os_path_exists(fileName):
-        ok, frame = g.openWithFileName(relativeFileName or fileName,None)
-        if ok: return frame.c,frame
-
-    # Create a _new_ frame & indicate it is the startup window.
-    c,frame = g.app.newLeoCommanderAndFrame(
-        fileName=fileName,
-        relativeFileName=relativeFileName,
-        initEditCommanders=True)
-    frame.setInitialWindowGeometry()
-    frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
-    frame.startupWindow = True
-    if frame.c.chapterController:
-        frame.c.chapterController.finishCreate()
-        frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
-    # Call the 'new' hook for compatibility with plugins.
-    g.doHook("new",old_c=None,c=c,new_c=c)
-
-    # Report the failure to open the file.
-    if fileName:
-        g.es("File not found: " + fileName)
-
-    return c,frame
-#@-node:ekr.20031218072017.1624:createFrame (leo.py)
-#@+node:ekr.20070227093629.6:createFrame (leoBridge)
-def createFrame (self,fileName):
-
-    '''Create a commander and frame for the given file.
-    Create a new frame if the fileName is empty or non-exisent.'''
-
-    g = self.g
-
-    if fileName.strip():
-        if g.os_path_exists(fileName):
-            ok, frame = g.openWithFileName(fileName,None)
-            if ok: return frame.c
-        else: g.es("File not found %s, creating new window: " % fileName)
-
-    # Create a new frame. Unlike leo.run, this is not a startup window.
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName)
-    frame.setInitialWindowGeometry()
-    frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
-    # Call the 'new' hook for compatibility with plugins.
-    g.doHook("new",old_c=None,c=c,new_c=c)
-    return c
-#@-node:ekr.20070227093629.6:createFrame (leoBridge)
-#@+node:ekr.20041117085625:g.app.config.openSettingsFile
-def openSettingsFile (self,path):
-
-    theFile,isZipped = g.openLeoOrZipFile(path)
-    if not theFile: return None
-
-    # Similar to g.openWithFileName except it uses a null gui.
-    # Changing g.app.gui here is a major hack.
-    oldGui = g.app.gui
-    g.app.gui = leoGui.nullGui("nullGui")
-    c,frame = g.app.newLeoCommanderAndFrame(
-        fileName=path,relativeFileName=None,
-        initEditCommanders=False,updateRecentFiles=False)
-    frame.log.enable(False)
-    c.setLog()
-    g.app.lockLog()
-    ok = frame.c.fileCommands.open(
-        theFile,path,readAtFileNodesFlag=False,silent=True) # closes theFile.
-    g.app.unlockLog()
-    frame.openDirectory = g.os_path_dirname(path)
-    g.app.gui = oldGui
-    return ok and c
-#@-node:ekr.20041117085625:g.app.config.openSettingsFile
-#@+node:ekr.20031218072017.2052:g.openWithFileName
-def openWithFileName(fileName,old_c,
-    enableLog=True,gui=None,readAtFileNodesFlag=True):
-
-    """Create a Leo Frame for the indicated fileName if the file exists."""
-
-    if not fileName or len(fileName) == 0:
-        return False, None
-
-    def munge(name):
-        return g.os_path_normpath(name or '').lower()
-
-    # Create a full, normalized, Unicode path name, preserving case.
-    relativeFileName = g.os_path_normpath(fileName)
-    fileName = g.os_path_normpath(g.os_path_abspath(fileName))
-    # g.trace(relativeFileName,'-->',fileName)
-
-    # If the file is already open just bring its window to the front.
-    theList = app.windowList
-    for frame in theList:
-        if munge(fileName) == munge(frame.c.mFileName):
-            frame.bringToFront()
-            frame.c.setLog()
-            return True, frame
-    if old_c:
-        # New in 4.4: We must read the file *twice*.
-        # The first time sets settings for the later call to c.finishCreate.
-        # g.trace('***** prereading',fileName)
-        c2 = g.app.config.openSettingsFile(fileName)
-        if c2: g.app.config.updateSettings(c2,localFlag=True)
-        g.doHook('open0')
-
-    # Open the file in binary mode to allow 0x1a in bodies & headlines.
-    theFile,isZipped = g.openLeoOrZipFile(fileName)
-    if not theFile: return False, None
-    c,frame = app.newLeoCommanderAndFrame(
-        fileName=fileName,
-        relativeFileName=relativeFileName,
-        gui=gui)
-    c.isZipped = isZipped
-    frame.log.enable(enableLog)
-    g.app.writeWaitingLog() # New in 4.3: write queued log first.
-    c.beginUpdate()
-    try:
-        if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
-            c.setLog()
-            app.lockLog()
-            frame.c.fileCommands.open(
-                theFile,fileName,
-                readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
-            app.unlockLog()
-            for frame in g.app.windowList:
-                # The recent files list has been updated by menu.updateRecentFiles.
-                frame.c.config.setRecentFiles(g.app.config.recentFiles)
-        # Bug fix in 4.4.
-        frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
-        g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
-    finally:
-        c.endUpdate()
-        # chapterController.finishCreate must be called after the first real redraw
-        # because it requires a valid value for c.rootPosition().
-        if frame.c.chapterController:
-            frame.c.chapterController.finishCreate()
-        k = c.k
-        k and k.setInputState(k.unboundKeyAction)
-        if c.config.getBool('outline_pane_has_initial_focus'):
-            c.treeWantsFocusNow()
-        else:
-            c.bodyWantsFocusNow()
-    return True, frame
-#@nonl
-#@-node:ekr.20031218072017.2052:g.openWithFileName
-#@+node:ekr.20031218072017.1623:new
-def new (self,event=None,gui=None):
-
-    '''Create a new Leo window.'''
-
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=None,relativeFileName=None,gui=gui)
-
-    # Needed for plugins.
-    g.doHook("new",old_c=self,c=c,new_c=c)
-    # Use the config params to set the size and location of the window.
-    c.beginUpdate()
-    try:
-        frame.setInitialWindowGeometry()
-        frame.deiconify()
-        frame.lift()
-        frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio) # Resize the _new_ frame.
-        t = leoNodes.tnode()
-        v = leoNodes.vnode(t)
-        p = leoNodes.position(v,[])
-        v.initHeadString("NewHeadline")
-        v.moveToRoot(oldRoot=None)
-        c.setRootVnode(v) # New in Leo 4.4.2.
-        c.editPosition(p)
-    finally:
-        c.endUpdate()
-        # chapterController.finishCreate must be called after the first real redraw
-        # because it requires a valid value for c.rootPosition().
-        if c.config.getBool('use_chapters') and c.chapterController:
-            c.chapterController.finishCreate()
-            frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
-        if c.config.getBool('outline_pane_has_initial_focus'):
-            c.treeWantsFocusNow()
-        else:
-            c.bodyWantsFocusNow()
-    return c # For unit test.
-#@-node:ekr.20031218072017.1623:new
-#@+node:ekr.20031218072017.2839:readOutlineOnly
-def readOutlineOnly (self,event=None):
-
-    '''Open a Leo outline from a .leo file, but do not read any derived files.'''
-
-    fileName = g.app.gui.runOpenFileDialog(
-        title="Read Outline Only",
-        filetypes=[("Leo files", "*.leo"), ("All files", "*")],
-        defaultextension=".leo")
-
-    if not fileName:
-        return
-
-    try:
-        theFile = open(fileName,'r')
-        c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName)
-        frame.deiconify()
-        frame.lift()
-        g.app.root.update() # Force a screen redraw immediately.
-        c.fileCommands.readOutlineOnly(theFile,fileName) # closes file.
-    except:
-        g.es("can not open:" + fileName)
-#@-node:ekr.20031218072017.2839:readOutlineOnly
-#@+node:ekr.20061024084200:run-script
-def run_script(c,script,p=None):
-
-    # It is possible to use script=None, in which case p must be defined.
-
-    init()
-
-    if c is None:
-        c,frame = g.app.newLeoCommanderAndFrame(fileName='dummy script file')
-
-    g.app.scriptResult = None
-
-    c.executeScript(
-        event=None,
-        p=p,
-        script=script,
-        useSelectedText=False,
-        define_g=True,
-        define_name='__main__',
-        silent=True,  # Don't write to the log.
-    )
-
-    # g.trace('script returns: ',repr(g.app.scriptResult))
-    return g.app.scriptResult
-#@nonl
-#@-node:ekr.20061024084200:run-script
-#@-node:ekr.20071109094717:Found: newLeoCommanderAndFrame
-#@+node:ekr.20071109102935:Found: openWithFileName
-#@+node:ekr.20031218072017.2052:g.openWithFileName
-def openWithFileName(fileName,old_c,
-    enableLog=True,gui=None,readAtFileNodesFlag=True):
-
-    """Create a Leo Frame for the indicated fileName if the file exists."""
-
-    if not fileName or len(fileName) == 0:
-        return False, None
-
-    def munge(name):
-        return g.os_path_normpath(name or '').lower()
-
-    # Create a full, normalized, Unicode path name, preserving case.
-    relativeFileName = g.os_path_normpath(fileName)
-    fileName = g.os_path_normpath(g.os_path_abspath(fileName))
-    # g.trace(relativeFileName,'-->',fileName)
-
-    # If the file is already open just bring its window to the front.
-    theList = app.windowList
-    for frame in theList:
-        if munge(fileName) == munge(frame.c.mFileName):
-            frame.bringToFront()
-            frame.c.setLog()
-            return True, frame
-    if old_c:
-        # New in 4.4: We must read the file *twice*.
-        # The first time sets settings for the later call to c.finishCreate.
-        # g.trace('***** prereading',fileName)
-        c2 = g.app.config.openSettingsFile(fileName)
-        if c2: g.app.config.updateSettings(c2,localFlag=True)
-        g.doHook('open0')
-
-    # Open the file in binary mode to allow 0x1a in bodies & headlines.
-    theFile,isZipped = g.openLeoOrZipFile(fileName)
-    if not theFile: return False, None
-    c,frame = app.newLeoCommanderAndFrame(
-        fileName=fileName,
-        relativeFileName=relativeFileName,
-        gui=gui)
-    c.isZipped = isZipped
-    frame.log.enable(enableLog)
-    g.app.writeWaitingLog() # New in 4.3: write queued log first.
-    c.beginUpdate()
-    try:
-        if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
-            c.setLog()
-            app.lockLog()
-            frame.c.fileCommands.open(
-                theFile,fileName,
-                readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
-            app.unlockLog()
-            for frame in g.app.windowList:
-                # The recent files list has been updated by menu.updateRecentFiles.
-                frame.c.config.setRecentFiles(g.app.config.recentFiles)
-        # Bug fix in 4.4.
-        frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
-        g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
-    finally:
-        c.endUpdate()
-        # chapterController.finishCreate must be called after the first real redraw
-        # because it requires a valid value for c.rootPosition().
-        if frame.c.chapterController:
-            frame.c.chapterController.finishCreate()
-        k = c.k
-        k and k.setInputState(k.unboundKeyAction)
-        if c.config.getBool('outline_pane_has_initial_focus'):
-            c.treeWantsFocusNow()
-        else:
-            c.bodyWantsFocusNow()
-    return True, frame
-#@nonl
-#@-node:ekr.20031218072017.2052:g.openWithFileName
-#@+node:ekr.20031218072017.1624:createFrame (leo.py)
-def createFrame (fileName,relativeFileName):
-
-    """Create a LeoFrame during Leo's startup process."""
-
-    import leoGlobals as g
-
-    # Try to create a frame for the file.
-    if fileName and g.os_path_exists(fileName):
-        ok, frame = g.openWithFileName(relativeFileName or fileName,None)
-        if ok: return frame.c,frame
-
-    # Create a _new_ frame & indicate it is the startup window.
-    c,frame = g.app.newLeoCommanderAndFrame(
-        fileName=fileName,
-        relativeFileName=relativeFileName,
-        initEditCommanders=True)
-    frame.setInitialWindowGeometry()
-    frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
-    frame.startupWindow = True
-    if frame.c.chapterController:
-        frame.c.chapterController.finishCreate()
-        frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
-    # Call the 'new' hook for compatibility with plugins.
-    g.doHook("new",old_c=None,c=c,new_c=c)
-
-    # Report the failure to open the file.
-    if fileName:
-        g.es("File not found: " + fileName)
-
-    return c,frame
-#@-node:ekr.20031218072017.1624:createFrame (leo.py)
-#@+node:ekr.20070227093629.6:createFrame (leoBridge)
-def createFrame (self,fileName):
-
-    '''Create a commander and frame for the given file.
-    Create a new frame if the fileName is empty or non-exisent.'''
-
-    g = self.g
-
-    if fileName.strip():
-        if g.os_path_exists(fileName):
-            ok, frame = g.openWithFileName(fileName,None)
-            if ok: return frame.c
-        else: g.es("File not found %s, creating new window: " % fileName)
-
-    # Create a new frame. Unlike leo.run, this is not a startup window.
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName)
-    frame.setInitialWindowGeometry()
-    frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
-    # Call the 'new' hook for compatibility with plugins.
-    g.doHook("new",old_c=None,c=c,new_c=c)
-    return c
-#@-node:ekr.20070227093629.6:createFrame (leoBridge)
-#@+node:ekr.20031218072017.2821:open
-def open (self,event=None):
-
-    '''Open a Leo window containing the contents of a .leo file.'''
-
-    c = self
-    << Set closeFlag if the only open window is empty >>
-
-    fileName = g.app.gui.runOpenFileDialog(
-        title = "Open",
-        filetypes = [("Leo files","*.leo"), ("All files","*")],
-        defaultextension = ".leo")
-    c.bringToFront()
-
-    ok = False
-    if fileName and len(fileName) > 0:
-        ok, frame = g.openWithFileName(fileName,c)
-        if ok:
-            g.setGlobalOpenDir(fileName)
-        if ok and closeFlag:
-            g.app.destroyWindow(c.frame)
-
-    # openWithFileName sets focus if ok.
-    if not ok:
-        if c.config.getBool('outline_pane_has_initial_focus'):
-            c.treeWantsFocusNow()
-        else:
-            c.bodyWantsFocusNow()
-#@nonl
-#@+node:ekr.20031218072017.2822:<< Set closeFlag if the only open window is empty >>
-@ If this is the only open window was opened when the app started, and the window has never been written to or saved, then we will automatically close that window if this open command completes successfully.
-@c
-
-closeFlag = (
-    c.frame.startupWindow and # The window was open on startup
-    not c.changed and not c.frame.saved and # The window has never been changed
-    g.app.numberOfWindows == 1) # Only one untitled window has ever been opened
-#@-node:ekr.20031218072017.2822:<< Set closeFlag if the only open window is empty >>
-#@-node:ekr.20031218072017.2821:open
-#@+node:ekr.20031218072017.2837:revert
-def revert (self,event=None):
-
-    '''Revert the contents of a Leo outline to last saved contents.'''
-
-    c = self
-
-    # Make sure the user wants to Revert.
-    if not c.mFileName:
-        return
-
-    reply = g.app.gui.runAskYesNoDialog(c,"Revert",
-        "Revert to previous version of " + c.mFileName + "?")
-    c.bringToFront()
-
-    if reply=="no":
-        return
-
-    # Kludge: rename this frame so openWithFileName won't think it is open.
-    fileName = c.mFileName ; c.mFileName = ""
-
-    # Create a new frame before deleting this frame.
-    ok, frame = g.openWithFileName(fileName,c)
-    if ok:
-        frame.deiconify()
-        g.app.destroyWindow(c.frame)
-    else:
-        c.mFileName = fileName
-#@-node:ekr.20031218072017.2837:revert
-#@+node:ekr.20031218072017.2081:openRecentFile
-def openRecentFile(self,name=None):
-
-    if not name: return
-
-    c = self ; v = c.currentVnode()
-    << Set closeFlag if the only open window is empty >>
-
-    fileName = name
-    if not g.doHook("recentfiles1",c=c,p=v,v=v,fileName=fileName,closeFlag=closeFlag):
-        ok, frame = g.openWithFileName(fileName,c)
-        if ok and closeFlag:
-            g.app.destroyWindow(c.frame) # 12/12/03
-            c = frame.c # Switch to the new commander so the "recentfiles2" hook doesn't crash.
-            c.setLog() # Sets the log stream for g.es()
-
-    g.doHook("recentfiles2",c=c,p=v,v=v,fileName=fileName,closeFlag=closeFlag)
-#@+node:ekr.20031218072017.2082:<< Set closeFlag if the only open window is empty >>
-@ If this is the only open window was opened when the app started, and the window has never been written to or saved, then we will automatically close that window if this open command completes successfully.
-@c
-
-closeFlag = (
-    c.frame.startupWindow and # The window was open on startup
-    not c.changed and not c.frame.saved and # The window has never been changed
-    g.app.numberOfWindows == 1) # Only one untitled window has ever been opened
-#@-node:ekr.20031218072017.2082:<< Set closeFlag if the only open window is empty >>
-#@-node:ekr.20031218072017.2081:openRecentFile
-#@+node:ekr.20031218072017.2943:openLeoSettings and openMyLeoSettings
-def openLeoSettings (self,event=None):
-    '''Open leoSettings.leo in a new Leo window.'''
-    self.openSettingsHelper('leoSettings.leo')
-
-def openMyLeoSettings (self,event=None):
-    '''Open myLeoSettings.leo in a new Leo window.'''
-    self.openSettingsHelper('myLeoSettings.leo')
-
-def openSettingsHelper(self,name):
-    c = self
-    homeDir = g.app.homeDir
-    loadDir = g.app.loadDir
-    configDir = g.app.globalConfigDir
-
-    # Look in configDir first.
-    fileName = g.os_path_join(configDir,name)
-    ok = g.os_path_exists(fileName)
-    if ok:
-        ok, frame = g.openWithFileName(fileName,c)
-        if ok: return
-
-    # Look in homeDir second.
-    if configDir == loadDir:
-        g.es("%s not found in %s" % (name,configDir))
-    else:
-        fileName = g.os_path_join(homeDir,name)
-        ok = g.os_path_exists(fileName)
-        if ok:
-            ok, frame = g.openWithFileName(fileName,c)
+    ok = True ; bad_i = 0
+    for i in xrange(max(n1,n2)):
+        ok = self.compareHelper(lines1,lines2,i,self.strict)
         if not ok:
-            g.es("%s not found in %s or %s" % (name,configDir,homeDir))
-#@-node:ekr.20031218072017.2943:openLeoSettings and openMyLeoSettings
-#@+node:ekr.20061018094539:openLeoScripts
-def openLeoScripts (self,event=None):
-
-    c = self
-    fileName = g.os_path_join(g.app.loadDir,'..','scripts','scripts.leo')
-
-    ok, frame = g.openWithFileName(fileName,c)
-    if not ok:
-        g.es('not found: %s' % fileName)
-#@-node:ekr.20061018094539:openLeoScripts
-#@+node:ekr.20031218072017.2940:leoDocumentation
-def leoDocumentation (self,event=None):
-
-    '''Open LeoDocs.leo in a new Leo window.'''
-
-    c = self ; name = "LeoDocs.leo"
-
-    fileName = g.os_path_join(g.app.loadDir,"..","doc",name)
-    ok,frame = g.openWithFileName(fileName,c)
-    if not ok:
-        g.es("not found: %s" % name)
-#@-node:ekr.20031218072017.2940:leoDocumentation
-#@+node:ekr.20050130152008:leoPlugins
-def openLeoPlugins (self,event=None):
-
-    '''Open leoPlugins.leo in a new Leo window.'''
-
-    c = self ; name = "leoPlugins.leo"
-    fileName = g.os_path_join(g.app.loadDir,"..","plugins",name)
-    ok,frame = g.openWithFileName(fileName,c)
-    if not ok:
-        g.es("not found: %s" % name)
-#@-node:ekr.20050130152008:leoPlugins
-#@+node:ekr.20060419123128:open-outline-by-name
-def openOutlineByName (self,event):
-
-    '''Prompt for the name of a Leo outline and open it.'''
-
-    k = self.k
-    k.setLabelBlue('Open Leo Outline: ',protect=True)
-    k.getFileName(event,handler=self.openOutlineByNameFinisher)
-
-def openOutlineByNameFinisher (self,event):
-
-    c = self.c ; k = self.k ; fileName = k.arg
-
-    k.resetLabel()
-    if fileName and g.os_path_exists(fileName) and not g.os_path_isdir(fileName):
-        g.openWithFileName(fileName,c)
-#@-node:ekr.20060419123128:open-outline-by-name
-#@+node:ekr.20061024075542.1:open
-def open (fileName=None):
-
-    init()
+            bad_i = i + 1
+            break
 
     if g.app.unitTesting:
-        return
+        d = g.app.unitTestDict
+        ok = d.get('expectedMismatchLine') == d.get('actualMismatchLine')
+        # Unit tests do not generate errors unless the mismatch line does not match.
 
-    if not fileName:
-        g.es_print('leoPymacs.open: no file name')
-        return None
-
-    # openWithFileName checks to see if the file is already open.
-    ok, frame = g.openWithFileName(
-        fileName,
-        old_c=None,
-        enableLog=False,
-        readAtFileNodesFlag=True)
-
-    c = ok and frame.c or None
-    if c:
-        g.es_print('leoPymacs.open: %s' % c)
-    else:
-        g.es_print('leoPymacs.open: Can not open %s' % fileName)
-
-    return c
-#@nonl
-#@-node:ekr.20061024075542.1:open
-#@+node:ekr.20051104075904.42:runLeoTest
-def runLeoTest(c,path,verbose=False,full=False):
-
-    frame = None ; ok = False ; old_gui = g.app.gui
-
-    # Do not set or clear g.app.unitTesting: that is only done in leoTest.runTest.
-
-    try:
-        ok, frame = g.openWithFileName(path,c,enableLog=False)
-        assert(ok and frame)
-        errors = frame.c.checkOutline(verbose=verbose,unittest=True,full=full)
-        assert(errors == 0)
-        ok = True
-    finally:
-        g.app.gui = old_gui
-        if frame and frame.c != c:
-            frame.c.setChanged(False)
-            g.app.closeLeoWindow(frame.c.frame)
-        ### c.frame.update()
-#@nonl
-#@-node:ekr.20051104075904.42:runLeoTest
-#@+node:ekr.20031218072017.2315:<< pass the url to the web browser >>
-@ Most browsers should handle the following urls:
-  ftp://ftp.uu.net/public/whatever.
-  http://localhost/MySiteUnderDevelopment/index.html
-  file://home/me/todolist.html
-@c
-
-try:
-    import os
-    os.chdir(g.app.loadDir)
-    if g.match(url,0,"file:") and url[-4:]==".leo":
-        ok,frame = g.openWithFileName(url[5:],c)
-    else:
-        import webbrowser
-        # Mozilla throws a weird exception, then opens the file!
-        try: webbrowser.open(url)
-        except: pass
-except:
-    g.es("exception opening " + url)
-    g.es_exception()
-#@-node:ekr.20031218072017.2315:<< pass the url to the web browser >>
-#@-node:ekr.20071109102935:Found: openWithFileName
-#@+node:ekr.20071109104554:clear-recent-files must write immediately
-#@+node:ekr.20050424114937.1:Reading and writing .leoRecentFiles.txt (g.app.config)
-#@+node:ekr.20070224115832:readRecentFiles & helpers
-def readRecentFiles (self,localConfigFile):
-
-    '''Read all .leoRecentFiles.txt files.'''
-
-    # The order of files in this list affects the order of the recent files list.
-    seen = [] 
-    localConfigPath = g.os_path_dirname(localConfigFile)
-    for path in (
-        g.app.homeDir,
-        g.app.globalConfigDir,
-        localConfigPath,
-    ):
-        if path and path not in seen:
-            ok = self.readRecentFilesFile(path)
-            if ok: seen.append(path)
-    if not seen and self.write_recent_files_as_needed:
-        self.createRecentFiles()
-#@nonl
-#@+node:ekr.20061010121944:createRecentFiles
-def createRecentFiles (self):
-
-    '''Trye to reate .leoRecentFiles.txt in
-    - the users home directory first,
-    - Leo's config directory second.'''
-
-    for theDir in (g.app.homeDir,g.app.globalConfigDir):
-        if theDir:
-            try:
-                fileName = g.os_path_join(theDir,'.leoRecentFiles.txt')
-                f = file(fileName,'w')
-                f.close()
-                g.es_print('created %s' % (fileName),color='red')
-                return
-            except Exception:
-                g.es_print('can not create %s' % (fileName),color='red')
-                g.es_exception()
-#@nonl
-#@-node:ekr.20061010121944:createRecentFiles
-#@+node:ekr.20050424115658:readRecentFilesFile
-def readRecentFilesFile (self,path):
-
-    fileName = g.os_path_join(path,'.leoRecentFiles.txt')
-    ok = g.os_path_exists(fileName)
-    if ok:
-        if not g.unitTesting and not self.silent:
-            print ('reading %s' % fileName)
-        lines = file(fileName).readlines()
-        if lines and self.munge(lines[0])=='readonly':
-            lines = lines[1:]
-        if lines:
-            lines = [g.toUnicode(g.os_path_normpath(line),'utf-8') for line in lines]
-            self.appendToRecentFiles(lines)
+    if not ok:
+        self.reportMismatch(lines1,lines2,bad_i)
 
     return ok
+#@+node:ekr.20070816103348:@test checkTriailWrite
+if g.unitTesting:
+
+    ic = c.importCommands
+    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+    runner.root = p.copy()
+
+    g.app.unitTestDict ['expectedErrors'] = 1
+    g.app.unitTestDict ['expectedMismatchLine'] = 2
+
+    s1 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2\n',encoding='utf-8')
+    s2 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2a\n',encoding='utf-8')
+    runner.checkTrialWrite(s1=s1,s2=s2)
+#@-node:ekr.20070816103348:@test checkTriailWrite
+#@-node:ekr.20070703122141.104:checkTrialWrite & tests
+#@+node:ekr.20070730093735:compareHelper & tests
+def compareHelper (self,lines1,lines2,i,strict):
+
+    '''Compare lines1[i] and lines2[i].
+    strict is True if leading whitespace is very significant.'''
+
+    def pr(*args,**keys): #compareHelper
+        g.es_print(color='blue',*args,**keys)
+
+    d = g.app.unitTestDict
+    expectedMismatch = g.app.unitTesting and d.get('expectedMismatchLine')
+
+    if i >= len(lines1):
+        if i != expectedMismatch or not g.unitTesting:
+            pr('extra lines')
+            for line in lines2[i:]:
+                pr(repr(line))
+        d ['actualMismatchLine'] = i
+        return False
+
+    if i >= len(lines2):
+        if i != expectedMismatch or not g.unitTesting:
+            g.es_print('missing lines')
+            for line in lines2[i:]:
+                g.es_print(repr(line))
+        d ['actualMismatchLine'] = i
+        return False
+
+    line1,line2 = lines1[i],lines2[i]
+    if line1 == line2:
+        return True # An exact match.
+    elif not line1.strip() and not line2.strip():
+        return True # Blank lines compare equal.
+    elif (not strict and not g.unitTesting) and line1.lstrip() == line2.lstrip():
+        if not self.mismatchWarningGiven and self.atAutoWarnsAboutLeadingWhitespace:
+            self.mismatchWarningGiven = True
+            self.checkLeadingWhitespace(line1)
+            self.warning('mismatch in leading whitespace')
+            g.es_print('first mismatched line at line %d' % (i+1))
+            g.es_print('original line:  %s' % line1)
+            g.es_print('generated line: %s' % line2)
+        return True # A match excluding leading whitespace.
+    else:
+        if not g.unitTesting or i+1 != expectedMismatch:
+            # g.trace('unitTesting',g.unitTesting)
+            g.es_print('*** first mismatch at line %d' % (i+1))
+            g.es_print('original line:  %s' % line1)
+            g.es_print('generated line: %s' % line2)
+        d ['actualMismatchLine'] = i+1
+        # g.trace('lines 1...\n',repr(lines1),'\nlines2...\n',repr(lines2))
+        return False
+#@+node:ekr.20070816101019:@test compareHelper
+if g.unitTesting:
+
+    ic = c.importCommands
+    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
+    i = 0
+    lines1 = ['abc',]
+    lines2 = ['xyz',]
+
+    g.app.unitTestDict ['expectedErrors'] = 1
+    g.app.unitTestDict ['expectedMismatchLine'] = 1
+
+    runner.compareHelper(lines1,lines2,i,strict=True)
+#@-node:ekr.20070816101019:@test compareHelper
+#@+node:ekr.20071030115446.1:@test compareHelper-warning
+if g.unitTesting:
+
+    ic = c.importCommands
+    runner = ic.baseScannerClass(ic,atAuto=True,language='java')
+    i = 0
+    lines1 = ['abc',]
+    lines2 = [' abc',]
+
+    g.unitTesting = False # force the warning.
+
+    g.app.unitTestDict ['expectedErrors'] = 0
+    g.app.unitTestDict ['expectedMismatchLine'] = 0
+
+    runner.compareHelper(lines1,lines2,i,strict=False)
+#@-node:ekr.20071030115446.1:@test compareHelper-warning
+#@-node:ekr.20070730093735:compareHelper & tests
+#@+node:ekr.20071110144948:checkLeadingWhitespace
+def checkLeadingWhitespace (self,line):
+
+    tab_width = self.tab_width
+    lws = line[0:g.skip_ws(line,0)]
+    w = g.computeWidth(lws,tab_width)
+    ok = (w % abs(tab_width)) == 0
+
+    if not ok:
+        report('leading whitespace not consistent with @tabwidth %d' % tab_width)
+        g.es_print('line: %s' % (repr(line)),color='red')
+
+    return ok
+#@-node:ekr.20071110144948:checkLeadingWhitespace
+#@+node:ekr.20070911110507:reportMismatch & test
+def reportMismatch (self,lines1,lines2,bad_i):
+
+    def pr(*args,**keys): # reportMismatch
+        g.es_print(color='blue',*args,**keys)
+
+    kind = g.choose(self.atAuto,'@auto','import command')
+
+    self.error(
+        '%s did not import the file perfectly\nfirst mismatched line: %d\n%s' % (
+            kind,bad_i,repr(lines2[bad_i-1])))
+
+    if len(lines1) < 100:
+        pr('input...')
+        for i in xrange(len(lines1)):
+            pr('%3d %s' % (i,lines1[i]),newline=False)
+        pr('output...')
+        for i in xrange(len(lines2)):
+            pr('%3d %s' % (i,lines2[i]),newline=False)
+
+    return False
+#@+node:ekr.20070913084008:minitest of pr
+if False: # Don't clutter the unit tests.
+
+    def pr(*args,**keys): # reportMismatch test
+        g.es_print(color='blue',*args,**keys)
+
+    pr('input...')
+    pr('newline=False:',newline=False)
+    pr('after')
+    pr('done')
+#@-node:ekr.20070913084008:minitest of pr
+#@-node:ekr.20070911110507:reportMismatch & test
+#@-node:ekr.20070808115837:Checking
+#@+node:ekr.20070706084535:Code generation
+@ None of these methods should ever need to be overridden in subclasses.
+
+#@+node:ekr.20070707073044.1:addRef
+def addRef (self,parent):
+
+    '''Create an unindented @others or section reference in the parent node.'''
+
+    c = self.c
+
+    # g.trace(parent.headString())
+
+    if self.treeType == '@file':
+        c.appendStringToBody(parent,'@others\n')
+
+    if self.treeType == '@root' and self.methodsSeen:
+        c.appendStringToBody(parent,
+            g.angleBrackets(' ' + self.methodName + ' methods ') + '\n\n')
+#@-node:ekr.20070707073044.1:addRef
+#@+node:ekr.20070705144309:createDeclsNode
+def createDeclsNode (self,parent,s):
+
+    '''Create a child node of parent containing s.'''
+
+    # Create the node for the decls.
+    headline = self.methodName + ' declarations'
+    body = self.undentBody(s)
+    self.createHeadline(parent,body,headline)
+#@-node:ekr.20070705144309:createDeclsNode
+#@+node:ekr.20070707085612:createFunctionNode
+def createFunctionNode (self,headline,body,parent):
+
+    # Create the prefix line for @root trees.
+    if self.treeType == '@file':
+        prefix = ''
+    else:
+        prefix = g.angleBrackets(' ' + headline + ' methods ') + '=\n\n'
+        self.methodsSeen = True
+
+    # Create the node.
+    self.createHeadline(parent,prefix + body,headline)
+
+#@-node:ekr.20070707085612:createFunctionNode
+#@+node:ekr.20070703122141.77:createHeadline
+def createHeadline (self,parent,body,headline):
+
+    # g.trace('parent,headline:',parent.headString(),headline)
+
+    # Create the node.
+    p = parent.insertAsLastChild()
+    p.initHeadString(headline,self.encoding)
+
+    # Set the body.
+    if body:
+        self.c.setBodyString(p,body,self.encoding)
+    return p
+#@-node:ekr.20070703122141.77:createHeadline
+#@+node:ekr.20070703122141.79:getLeadingIndent
+def getLeadingIndent (self,s,i,ignoreComments=True):
+
+    '''Return the leading whitespace of a line.
+    Ignore blank and comment lines if ignoreComments is True'''
+
+    width = 0
+    i = g.find_line_start(s,i)
+    if ignoreComments:
+        while i < len(s):
+            # g.trace(g.get_line(s,i))
+            j = g.skip_ws(s,i)
+            if g.is_nl(s,j) or g.match(s,j,self.comment_delim):
+                i = g.skip_line(s,i) # ignore blank lines and comment lines.
+            else:
+                i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+                break      
+    else:
+        i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+
+    # g.trace('returns:',width)
+    return width
+#@-node:ekr.20070703122141.79:getLeadingIndent
+#@+node:ekr.20070709094002:indentBody
+def indentBody (self,s,lws=None):
+
+    '''Add whitespace equivalent to one tab for all non-blank lines of s.'''
+
+    result = []
+    if not lws: lws = self.tab_ws
+
+    for line in g.splitLines(s):
+        if line.strip():
+            result.append(lws + line)
+        elif line.endswith('\n'):
+            result.append('\n')
+
+    result = ''.join(result)
+    return result
+#@-node:ekr.20070709094002:indentBody
+#@+node:ekr.20070705085335:insertIgnoreDirective
+def insertIgnoreDirective (self,parent):
+
+    self.c.appendStringToBody(parent,'@ignore')
+
+    if not g.unitTesting:
+        g.es_print('inserting @ignore',color='blue')
+#@-node:ekr.20070705085335:insertIgnoreDirective
+#@+node:ekr.20070703122141.81:massageComment
+def massageComment (self,s):
+
+    '''Return s with leading and trailing whitespace removed and all other
+    runs of whitespace and newlines converted to a single blank.'''
+
+    s = s.strip()
+    s = s.replace('\n',' ')
+    s = s.replace('\r',' ')
+    s = s.replace('\t',' ')
+    s = s.replace('  ',' ')
+    s = s.strip()
+    return s
+#@-node:ekr.20070703122141.81:massageComment
+#@+node:ekr.20070707113832.1:putClass & helpers
+def putClass (self,s,i,sigStart,sigEnd,codeEnd,start,parent):
+
+    '''Creates a child node c of parent for the class, and a child of c for each def in the class.'''
+
+    # Enter a new class 1: save the old class info.
+    oldMethodName = self.methodName
+    oldStartSigIndent = self.startSigIndent
+
+    # Enter a new class 2: init the new class info.
+    self.classLines = []
+    self.indentRefFlag = None
+
+    class_kind = self.classId
+    class_name = self.sigId
+    headline = '%s %s' % (class_kind,class_name)
+    self.methodName = headline
+
+    # Compute the starting lines of the class.
+    prefix = self.createClassNodePrefix()
+    if not self.sigId:
+        g.trace('Can not happen: no sigId')
+        sigId = 'Unknown class name'
+    classHead = s[start:sigEnd]
+    i = self.extendSignature(s,sigEnd)
+    extend = s[sigEnd:i]
+    if extend:
+        classHead = classHead + extend
+
+    # Create the class node.
+    class_node = self.createHeadline(parent,'',headline)
+
+    # Remember the indentation of the class line.
+    undentVal = self.getLeadingIndent(classHead,0)
+
+    # Call the helper to parse the inner part of the class.
+    putRef,bodyIndent,classDelim,decls,trailing = self.putClassHelper(s,i,codeEnd,class_name,class_node)
+    # g.trace('bodyIndent',bodyIndent,'undentVal',undentVal)
+
+    # Set the body of the class node.
+    ref = putRef and self.getClassNodeRef(class_name) or ''
+
+    # Give ref the same indentation as the body of the class.
+    if ref:
+        bodyWs = g.computeLeadingWhitespace (bodyIndent,self.tab_width)
+        ref = '%s%s' % (bodyWs,ref)
+
+    # Remove the leading whitespace.
+    result = (
+        prefix +
+        self.undentBy(classHead,undentVal) +
+        self.undentBy(classDelim,undentVal) +
+        self.undentBy(decls,undentVal) +
+        self.undentBy(ref,undentVal) +
+        self.undentBy(trailing,undentVal))
+
+    # Append the result to the class node.
+    self.appendTextToClassNode(class_node,result)
+
+    # Exit the new class: restore the previous class info.
+    self.methodName = oldMethodName
+    self.startSigIndent = oldStartSigIndent
+#@+node:ekr.20070707190351:appendTextToClassNode
+def appendTextToClassNode (self,class_node,s):
+
+    c = self.c
+
+    c.appendStringToBody(class_node,s) 
+#@-node:ekr.20070707190351:appendTextToClassNode
+#@+node:ekr.20070703122141.105:createClassNodePrefix
+def createClassNodePrefix (self):
+
+    '''Create the class node prefix.'''
+
+    if  self.treeType == '@file':
+        prefix = ''
+    else:
+        prefix = g.angleBrackets(' ' + self.methodName + ' methods ') + '=\n\n'
+        self.methodsSeen = True
+
+    return prefix
+#@-node:ekr.20070703122141.105:createClassNodePrefix
+#@+node:ekr.20070703122141.106:getClassNodeRef
+def getClassNodeRef (self,class_name):
+
+    '''Insert the proper body text in the class_vnode.'''
+
+    if self.treeType == '@file':
+        s = '@others'
+    else:
+        s = g.angleBrackets(' class %s methods ' % (class_name))
+
+    return '%s\n' % (s)
+#@-node:ekr.20070703122141.106:getClassNodeRef
+#@+node:ekr.20070707171329:putClassHelper
+def putClassHelper(self,s,i,end,class_name,class_node):
+
+    '''s contains the body of a class, not including the signature.
+
+    Parse s for inner methods and classes, and create nodes.'''
+
+    # Increase the output indentation (used only in startsHelper).
+    # This allows us to detect over-indented classes and functions.
+    old_output_indent = self.output_indent
+    self.output_indent += abs(self.tab_width)
+
+    # Parse the decls.
+    j = i ; i = self.skipDecls(s,i,end,inClass=True)
+    decls = s[j:i]
+
+    # Set the body indent if there are real decls.
+    bodyIndent = decls.strip() and self.getIndent(s,i) or None
+
+    # Parse the rest of the class.
+    delim1, delim2 = self.outerBlockDelim1, self.outerBlockDelim2
+    if g.match(s,i,delim1):
+        # Do *not* use g.skip_ws_and_nl here!
+        j = g.skip_ws(s,i + len(delim1))
+        if g.is_nl(s,j): j = g.skip_nl(s,j)
+        classDelim = s[i:j]
+        end2 = self.skipBlock(s,i,delim1=delim1,delim2=delim2)
+        start,putRef,bodyIndent2 = self.scanHelper(s,j,end=end2,parent=class_node,kind='class')
+    else:
+        classDelim = ''
+        start,putRef,bodyIndent2 = self.scanHelper(s,i,end=end,parent=class_node,kind='class')
+
+    if bodyIndent is None: bodyIndent = bodyIndent2
+
+    # Restore the output indentation.
+    self.output_indent = old_output_indent
+
+    # Return the results.
+    trailing = s[start:end]
+    return putRef,bodyIndent,classDelim,decls,trailing
+#@-node:ekr.20070707171329:putClassHelper
+#@-node:ekr.20070707113832.1:putClass & helpers
+#@+node:ekr.20070707082432:putFunction
+def putFunction (self,s,sigStart,codeEnd,start,parent):
+
+    '''Create a node of parent for a function defintion.'''
+
+    trace = False and self.trace
+
+    # Enter a new function: save the old function info.
+    oldStartSigIndent = self.startSigIndent
+
+    if self.sigId:
+        headline = self.sigId
+    else:
+        g.trace('Can not happen: no sigId')
+        headline = 'unknown function'
+
+    body1 = s[start:sigStart]
+    # Bug fix: 2007/20/31: adjust start backwards to get a better undent.
+    if body1.strip():
+        while start > 0 and s[start-1] in (' ','\t'):
+            start -= 1
+
+    body1 = self.undentBody(s[start:sigStart],ignoreComments=False)
+
+    body2 = self.undentBody(s[sigStart:codeEnd])
+    body = body1 + body2
+    if trace: g.trace('body\n%s' % body)
+
+    if not body.endswith('\n'):
+        self.error(
+            'function %s does not end with a newline; one will be added\n%s' % (
+                self.sigId,g.get_line(s,codeEnd)))
+        g.trace(g.callers())
+
+    self.createFunctionNode(headline,body,parent)
+
+    # Exit the function: restore the function info.
+    self.startSigIndent = oldStartSigIndent
+#@-node:ekr.20070707082432:putFunction
+#@+node:ekr.20070705094630:putRootText
+def putRootText (self,p):
+
+    c = self.c
+
+    c.appendStringToBody(p,'%s@language %s\n@tabwidth %d\n' % (
+        self.rootLine,self.language,self.tab_width))
+#@-node:ekr.20070705094630:putRootText
+#@+node:ekr.20070703122141.88:undentBody & undentBy
+def undentBody (self,s,ignoreComments=True):
+
+    '''Remove the first line's leading indentation from all lines of s.'''
+
+    trace = False
+    if trace: g.trace('before...\n',g.listToString(g.splitLines(s)))
+
+    # Copy an @code line as is.
+    # i = 0
+    # if g.match(s,i,'@code'):
+        # j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
+        # result += s[j:i]
+
+    # Calculate the amount to be removed from each line.
+    undentVal = self.getLeadingIndent(s,0,ignoreComments=ignoreComments)
+    if undentVal == 0:
+        return s
+    else:
+        result = self.undentBy(s,undentVal)
+        # result = ''.join([
+            # g.removeLeadingWhitespace(line,undent,self.tab_width)
+                # for line in g.splitLines(s)])
+        if trace: g.trace('after...\n',g.listToString(g.splitLines(result)))
+        return result
+
+def undentBy (self,s,undentVal):
+    return ''.join(
+        [g.removeLeadingWhitespace(line,undentVal,self.tab_width)
+            for line in g.splitLines(s)])
+#@-node:ekr.20070703122141.88:undentBody & undentBy
+#@+node:ekr.20070801074524:underindentedComment & underindentedLine
+def underindentedComment (self,line):
+
+    self.error(
+        'underindented python comments.\nExtra leading whitespace will be added\n' + line)
+
+def underindentedLine (self,line):
+
+    self.error(
+        'underindented line.\nExtra leading whitespace will be added\n' + line)
+#@-node:ekr.20070801074524:underindentedComment & underindentedLine
+#@-node:ekr.20070706084535:Code generation
+#@+node:ekr.20070703122141.78:error, oops, report and warning
+def error (self,s):
+    self.errors += 1
+    self.importCommands.errors += 1
+    if g.unitTesting:
+        if self.errors == 1:
+            g.app.unitTestDict ['actualErrorMessage'] = s
+        g.app.unitTestDict ['actualErrors'] = self.errors
+        if 0: # For debugging unit tests.
+            g.trace(g.callers())
+            g.es_print(s,color='red')
+    else:
+        g.es_print('error: %s' % (s),color='red')
+
+def oops (self):
+    print 'baseScannerClass oops: %s must be overridden in subclass' % g.callers()
+
+def report (self,message):
+    if self.strict: self.error(message)
+    else:           self.warning(message)
+
+def warning (self,s):
+    if not g.unitTesting:
+        g.es_print('warning: %s' % (s),color='red')
+#@-node:ekr.20070703122141.78:error, oops, report and warning
+#@+node:ekr.20070706084535.1:Parsing
+@ Scan and skipDecls would typically not be overridden.
+#@+node:ekr.20070707150022:extendSignature
+def extendSignature(self,s,i):
+
+    '''Extend the signature line if appropriate.
+    The text *must* end with a newline.
+
+    For example, the Python scanner appends docstrings if they exist.'''
+
+    return i
+#@-node:ekr.20070707150022:extendSignature
+#@+node:ekr.20071017132056:getIndent
+def getIndent (self,s,i):
+
+    j,j2 = g.getLine(s,i)
+    junk,indent = g.skip_leading_ws_with_indent(s,j,self.tab_width)
+    # g.trace('%d %s' % (indent,s[j:j2]))
+    return indent
 #@nonl
-#@-node:ekr.20050424115658:readRecentFilesFile
-#@-node:ekr.20070224115832:readRecentFiles & helpers
-#@+node:ekr.20050424114937.2:writeRecentFilesFile & helper
-recentFileMessageWritten = False
+#@-node:ekr.20071017132056:getIndent
+#@+node:ekr.20070706101600:scan & scanHelper
+def scan (self,s,parent):
 
-def writeRecentFilesFile (self,c):
+    '''A language independent scanner: it uses language-specific helpers.
 
-    '''Write the appropriate .leoRecentFiles.txt file.'''
+    Create a child of self.root for:
+    - Leading outer-level declarations.
+    - Outer-level classes.
+    - Outer-level functions.
+    '''
 
-    tag = '.leoRecentFiles.txt'
+    # Create the initial body text in the root.
+    self.putRootText(parent)
 
-    if g.app.unitTesting:
-        return
+    # Parse the decls.
+    i = self.skipDecls(s,0,len(s),inClass=False)
+    decls = s[:i]
 
-    localFileName = c.fileName()
-    if localFileName:
-        localPath,junk = g.os_path_split(localFileName)
+    # Create the decls node.
+    if decls: self.createDeclsNode(parent,decls)
+
+    # Scan the rest of the file.
+    start,junk,junk = self.scanHelper(s,i,end=len(s),parent=parent,kind='outer')
+
+    # Finish adding to the parent's body text.
+    self.addRef(parent)
+    if start < len(s):
+        self.c.appendStringToBody(parent,s[start:]) 
+#@+node:ekr.20071018084830:scanHelper
+def scanHelper(self,s,i,end,parent,kind):
+
+    '''Common scanning code used by both scan and putClassHelper.'''
+
+    # g.trace(g.callers())
+    # g.trace('i',i,g.get_line(s,i))
+    assert kind in ('class','outer')
+    start = i ; putRef = False ; bodyIndent = None
+    while i < end:
+        progress = i
+        if s[i] in (' ','\t','\n'):
+            i += 1 # Prevent lookahead below, and speed up the scan.
+        elif self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            i = self.skipString(s,i)
+        elif self.startsClass(s,i):  # Sets sigStart,sigEnd & codeEnd ivars.
+            putRef = True
+            if bodyIndent is None: bodyIndent = self.getIndent(s,i)
+            end2 = self.codeEnd # putClass may change codeEnd ivar.
+            self.putClass(s,i,self.sigStart,self.sigEnd,self.codeEnd,start,parent)
+            i = start = end2
+        elif self.startsFunction(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
+            putRef = True
+            if bodyIndent is None: bodyIndent = self.getIndent(s,i)
+            self.putFunction(s,self.sigStart,self.codeEnd,start,parent)
+            i = start = self.codeEnd
+        elif self.startsId(s,i):
+            i = self.skipId(s,i);
+        elif kind == 'outer' and g.match(s,i,self.outerBlockDelim1): # Do this after testing for classes.
+            i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+            # Bug fix: 2007/11/8: do *not* set start: we are just skipping the block.
+        else: i += 1
+        assert progress < i,'i: %d, ch: %s' % (i,repr(s[i]))
+
+    return start,putRef,bodyIndent
+#@-node:ekr.20071018084830:scanHelper
+#@-node:ekr.20070706101600:scan & scanHelper
+#@+node:ekr.20070712075148:skipArgs
+def skipArgs (self,s,i,kind):
+
+    '''Skip the argument or class list.  Return i, ok
+
+    kind is in ('class','function')'''
+
+    start = i
+    i = g.skip_ws_and_nl(s,i)
+    if not g.match(s,i,'('):
+        return start,kind == 'class'
+
+    i = self.skipParens(s,i)
+    # skipParens skips the ')'
+    if i >= len(s):
+        return start,False
     else:
-        localPath = None
+        return i,True 
+#@-node:ekr.20070712075148:skipArgs
+#@+node:ekr.20070707073859:skipBlock
+def skipBlock(self,s,i,delim1=None,delim2=None):
 
-    for path in (localPath,g.app.globalConfigDir,g.app.homeDir):
-        if path:
-            fileName = g.os_path_join(path,tag)
-            if g.os_path_exists(fileName):
-                if not self.recentFileMessageWritten:
-                    self.recentFileMessageWritten = True
-                    print ('wrote %s' % fileName)
-                self.writeRecentFilesFileHelper(fileName)
-                return
+    '''Skip from the opening delim to *past* the matching closing delim.
+
+    If no matching is found i is set to len(s)'''
+
+    trace = False
+    start = i
+    if delim1 is None: delim1 = self.blockDelim1
+    if delim2 is None: delim2 = self.blockDelim2
+    match1 = g.choose(len(delim1)==1,g.match,g.match_word)
+    match2 = g.choose(len(delim2)==1,g.match,g.match_word)
+    assert match1(s,i,delim1)
+    level = 0 ; start = i
+    startIndent = self.startSigIndent
+    if trace: g.trace('***','startIndent',startIndent,g.callers())
+    while i < len(s):
+        progress = i
+        if g.is_nl(s,i):
+            backslashNewline = i > 0 and g.match(s,i-1,'\\\n')
+            i = g.skip_nl(s,i)
+            if not backslashNewline and not g.is_nl(s,i):
+                j, indent = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+                line = g.get_line(s,j)
+                if trace: g.trace('indent',indent,line)
+                if indent < startIndent and line.strip():
+                    # An non-empty underindented line.
+                    # Issue an error unless it contains just the closing bracket.
+                    if level == 1 and match2(s,j,delim2):
+                        pass
+                    else:
+                        if j not in self.errorLines: # No error yet given.
+                            self.errorLines.append(j)
+                            self.underindentedLine(line)
+        elif s[i] in (' ','\t',):
+            i += 1 # speed up the scan.
+        elif self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            i = self.skipString(s,i)
+        elif match1(s,i,delim1):
+            level += 1 ; i += len(delim1)
+        elif match2(s,i,delim2):
+            level -= 1 ; i += len(delim2)
+            if level <= 0:
+                if trace: g.trace('returns\n',repr(s[start:i]))
+                return i
+
+        else: i += 1
+        assert progress < i
+
+    self.error('no block')
+    if 1:
+        i,j = g.getLine(s,start)
+        g.trace(s[max(0,i-20):i+20])
+    if trace: g.trace('** no block')
+    return start
+#@-node:ekr.20070707073859:skipBlock
+#@+node:ekr.20070712091019:skipCodeBlock
+def skipCodeBlock (self,s,i,kind):
+
+    '''Skip the code block in a function or class definition.'''
+
+    trace = False
+    start = i
+    i = self.skipBlock(s,i,delim1=None,delim2=None)
+
+    if self.sigFailTokens:
+        i = g.skip_ws(s,i)
+        for z in self.sigFailTokens:
+            if g.match(s,i,z):
+                if trace: g.trace('failtoken',z)
+                return start,False
+
+    if i > start:
+        i = self.skipNewline(s,i,kind)
+
+    if trace:
+        g.trace(g.callers())
+        g.trace('returns...\n',g.listToString(g.splitLines(s[start:i])))
+
+    return i,True
+#@-node:ekr.20070712091019:skipCodeBlock
+#@+node:ekr.20070711104014:skipComment & helper
+def skipComment (self,s,i):
+
+    '''Skip a comment and return the index of the following character.'''
+
+    if g.match(s,i,self.lineCommentDelim) or g.match(s,i,self.lineCommentDelim2):
+        return g.skip_to_end_of_line(s,i)
     else:
-        # g.trace('----- not found: %s' % g.os_path_join(localPath,tag))
-        return
-#@+node:ekr.20050424131051:writeRecentFilesFileHelper
-def writeRecentFilesFileHelper (self,fileName):
-    # g.trace(fileName)
+        return self.skipBlockComment(s,i)
+#@+node:ekr.20070707074541:skipBlockComment
+def skipBlockComment (self,s,i):
 
-    # Don't update the file if it begins with read-only.
-    theFile = None
-    try:
-        theFile = file(fileName)
-        lines = theFile.readlines()
-        if lines and self.munge(lines[0])=='readonly':
-            # g.trace('read-only: %s' %fileName)
-            return
-    except IOError:
-        # The user may have erased a file.  Not an error.
-        if theFile: theFile.close()
+    '''Skip past a block comment.'''
 
-    theFile = None
-    try:
-        # g.trace('writing',fileName)
-        theFile = file(fileName,'w')
-        if self.recentFiles:
-            lines = [g.toEncodedString(line,'utf-8') for line in self.recentFiles]
-            theFile.write('\n'.join(lines))
-            # g.trace(fileName,'lines\n%s' % lines)
+    # Skip the opening delim.
+    assert(g.match(s,i,self.blockCommentDelim1))
+    start = i ; i += len(self.blockCommentDelim1)
+
+    # Find the closing delim.
+    k = string.find(s,self.blockCommentDelim2,i)
+    if k == -1:
+        self.error('Run on block comment: ' + s[start:i])
+        return len(s)
+    else:
+        return k + len(self.blockCommentDelim2)
+#@-node:ekr.20070707074541:skipBlockComment
+#@-node:ekr.20070711104014:skipComment & helper
+#@+node:ekr.20070707080042:skipDecls
+def skipDecls (self,s,i,end,inClass):
+
+    '''Skip everything until the start of the next class or function.
+
+    The decls *must* end in a newline.'''
+
+    trace = False or self.trace
+    start = i ; prefix = None
+    classOrFunc = False
+    if trace: g.trace(g.callers())
+    while i < end:
+        progress = i
+        if s[i] in (' ','\t','\n'):
+            i += 1 # Prevent lookahead below, and speed up the scan.
+        elif self.startsComment(s,i):
+            # Add the comment to the decl if it *doesn't* start the line.
+            i2,junk = g.getLine(s,i)
+            i2 = g.skip_ws(s,i2)
+            if i2 == i and prefix is None:
+                prefix = i2 # Bug fix: must include leading whitespace in the comment.
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            i = self.skipString(s,i)
+            prefix = None
+        elif self.startsClass(s,i):
+            # Important: do not include leading ws in the decls.
+            classOrFunc = True
+            i = g.find_line_start(s,i)
+            break
+        elif self.startsFunction(s,i):
+            # Important: do not include leading ws in the decls.
+            classOrFunc = True
+            i = g.find_line_start(s,i)
+            break
+        elif self.startsId(s,i):
+            i = self.skipId(s,i)
+            prefix = None
+        # Don't skip outer blocks: they may contain classes.
+        elif g.match(s,i,self.outerBlockDelim1):
+            if self.outerBlockEndsDecls:
+                break
+            else:
+                i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
         else:
-            theFile.write('\n')
+            i += 1 ;  prefix = None
+        assert(progress < i)
 
-    except IOError:
-        # The user may have erased a file.  Not an error.
+    if prefix is not None:
+        i = g.find_line_start(s,prefix) # i = prefix
+    decls = s[start:i]
+    if inClass and not classOrFunc:
+        # Don't return decls if a class contains nothing but decls.
+        if trace and decls.strip(): g.trace('**class is all decls...\n',decls)
+        return start
+    elif decls.strip(): 
+        if trace or self.trace: g.trace('\n'+decls)
+        return i
+    else: # Ignore empty decls.
+        return start
+#@-node:ekr.20070707080042:skipDecls
+#@+node:ekr.20070707094858.1:skipId
+def skipId (self,s,i):
+
+    return g.skip_id(s,i,chars=self.extraIdChars)
+#@nonl
+#@-node:ekr.20070707094858.1:skipId
+#@+node:ekr.20070730134936:skipNewline
+def skipNewline(self,s,i,kind):
+
+    '''Skip whitespace and comments up to a newline, then skip the newline.
+    Issue an error if no newline is found.'''
+
+    while i < len(s):
+        i = g.skip_ws(s,i)
+        if self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        else: break
+
+    if i >= len(s):
+        return len(s)
+
+    if g.match(s,i,'\n'):
+        i += 1
+    else:
+        self.error(
+            '%s %s does not end in a newline; one will be added\n%s' % (
+                kind,self.sigId,g.get_line(s,i)))
+        # g.trace(g.callers())
+
+    return i
+#@-node:ekr.20070730134936:skipNewline
+#@+node:ekr.20070712081451:skipParens
+def skipParens (self,s,i):
+
+    '''Skip a parenthisized list, that might contain strings or comments.'''
+
+    return self.skipBlock(s,i,delim1='(',delim2=')')
+#@-node:ekr.20070712081451:skipParens
+#@+node:ekr.20070707073627.2:skipString
+def skipString (self,s,i):
+
+    # Returns len(s) on unterminated string.
+    return g.skip_string(s,i,verbose=False)
+#@-node:ekr.20070707073627.2:skipString
+#@+node:ekr.20070711132314:startsClass/Function (baseClass) & helpers
+# We don't expect to override this code, but subclasses may override the helpers.
+
+def startsClass (self,s,i):
+    '''Return True if s[i:] starts a class definition.
+    Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
+    val = self.hasClasses and self.startsHelper(s,i,kind='class',tags=self.classTags)
+    return val
+
+def startsFunction (self,s,i):
+    '''Return True if s[i:] starts a function.
+    Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
+    val = self.hasFunctions and self.startsHelper(s,i,kind='function',tags=self.functionTags)
+    return val
+#@+node:ekr.20070712112008:startsHelper
+def startsHelper(self,s,i,kind,tags):
+    '''return True if s[i:] starts a class or function.
+    Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
+
+    # if not tags: return False
+
+    trace = self.trace
+    verbose = False # kind=='function'
+    self.codeEnd = self.sigEnd = self.sigId = None
+    self.sigStart = i
+
+    # Underindented lines can happen in any language, not just Python.
+    # The skipBlock method of the base class checks for such lines.
+    self.startSigIndent = self.getLeadingIndent(s,i)
+
+    # Get the tag that starts the class or function.
+    j = g.skip_ws_and_nl(s,i)
+    i = self.skipId(s,j)
+    self.sigId = theId = s[j:i] # Set sigId ivar 'early' for error messages.
+    if not theId: return False
+
+    if tags:
+        if theId not in tags:
+            if trace and verbose: g.trace('**** %s theId: %s not in tags: %s' % (kind,theId,tags))
+            return False
+
+    if trace and verbose: g.trace('kind',kind,'id',theId)
+
+    # Get the class/function id.
+    i, ids, classId = self.skipSigStart(s,j,kind,tags) # Rescan the first id.
+    i, sigId = self.skipSigId(s,i,ids)
+    if not sigId:
+        if trace and verbose: g.trace('**no sigId',g.get_line(s,i))
+        return False
+
+    if self.output_indent < self.startSigIndent:
+        if trace: g.trace('**over-indent',sigId)
+            #,'output_indent',self.output_indent,'startSigIndent',self.startSigIndent)
+        return False
+
+    # Skip the argument list.
+    i, ok = self.skipArgs(s,i,kind)
+    if not ok:
+        if trace and verbose: g.trace('no args',g.get_line(s,i))
+        return False
+    i = g.skip_ws_and_nl(s,i)
+
+    # Skip the tail of the signature
+    i, ok = self.skipSigTail(s,i)
+    if not ok:
+        if trace and verbose: g.trace('no tail',g.get_line(s,i))
+        return False
+    sigEnd = i
+
+    # A trick: make sure the signature ends in a newline,
+    # even if it overlaps the start of the block.
+    if not g.match(s,sigEnd,'\n') and not g.match(s,sigEnd-1,'\n'):
+        if trace and verbose: g.trace('extending sigEnd')
+        sigEnd = g.skip_line(s,sigEnd)
+
+    if self.blockDelim1:
+        i = g.skip_ws_and_nl(s,i)
+        if not g.match(s,i,self.blockDelim1):
+            if trace and verbose: g.trace('no block',g.get_line(s,i))
+            return False
+
+    i,ok = self.skipCodeBlock(s,i,kind)
+    if not ok: return False
+        # skipCodeBlock skips the trailing delim.
+
+    # Success: set the ivars.
+    self.codeEnd = i
+    self.sigEnd = sigEnd
+    self.sigId = sigId
+    self.classId = classId
+
+    # Note: backing up here is safe because
+    # we won't back up past scan's 'start' point.
+    # Thus, characters will never be output twice.
+    k = self.sigStart
+    if not g.match(s,k,'\n'):
+        self.sigStart = g.find_line_start(s,k)
+
+    # Isue this warning only if we have a real class or function.
+    if 0: ### wrong.
+        if s[self.sigStart:k].strip():
+            self.error('%s definition does not start a line\n%s' % (
+                kind,g.get_line(s,k)))
+
+    if trace: g.trace(kind,'returns\n'+s[self.sigStart:i])
+    return True
+#@-node:ekr.20070712112008:startsHelper
+#@+node:ekr.20070711140703:skipSigStart
+def skipSigStart (self,s,i,kind,tags):
+
+    '''Skip over the start of a function/class signature.
+
+    tags is in (self.classTags,self.functionTags).
+
+    Return (i,ids) where ids is list of all ids found, in order.'''
+
+    # __pychecker__ = '--no-argsused' # tags not used in the base class.
+
+    trace = False and self.trace # or kind =='function'
+    ids = [] ; classId = None
+    if trace: g.trace('*entry',kind,i,s[i:i+20])
+    start = i
+    while i < len(s):
+        j = g.skip_ws_and_nl(s,i)
+        for z in self.sigFailTokens:
+            if g.match(s,j,z):
+                if trace: g.trace('failtoken',z,'ids',ids)
+                return start, [], None
+        for z in self.sigHeadExtraTokens:
+            if g.match(s,j,z):
+                i += len(z) ; break
+        else:
+            i = self.skipId(s,j)
+            theId = s[j:i]
+            if theId and theId in tags: classId = theId
+            if theId: ids.append(theId)
+            else: break
+
+    if trace: g.trace('*exit ',kind,i,i < len(s) and s[i],ids,classId)
+    return i, ids, classId
+#@-node:ekr.20070711140703:skipSigStart
+#@+node:ekr.20070712082913:skipSigTail
+def skipSigTail(self,s,i):
+
+    '''Skip from the end of the arg list to the start of the block.'''
+
+    trace = False and self.trace
+    start = i
+    i = g.skip_ws(s,i)
+    for z in self.sigFailTokens:
+        if g.match(s,i,z):
+            if trace: g.trace('failToken',z,'line',g.skip_line(s,i))
+            return i,False
+    while i < len(s):
+        if self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        elif g.match(s,i,self.blockDelim1):
+            if trace: g.trace(repr(s[start:i]))
+            return i,True
+        else:
+            i += 1
+    if trace: g.trace('no block delim')
+    return i,False
+#@-node:ekr.20070712082913:skipSigTail
+#@+node:ekr.20070711134534:skipSigId
+def skipSigId (self,s,i,ids):
+
+    '''Return (i, id) where id is the signature's id.
+
+    By default, this is the last id in the ids list.'''
+
+    return i, ids and ids[-1]
+#@-node:ekr.20070711134534:skipSigId
+#@-node:ekr.20070711132314:startsClass/Function (baseClass) & helpers
+#@+node:ekr.20070711104014.1:startsComment
+def startsComment (self,s,i):
+
+    return (
+        g.match(s,i,self.lineCommentDelim) or
+        g.match(s,i,self.lineCommentDelim2) or
+        g.match(s,i,self.blockCommentDelim1))
+#@-node:ekr.20070711104014.1:startsComment
+#@+node:ekr.20070707094858.2:startsId
+def startsId(self,s,i):
+
+    return g.is_c_id(s[i:i+1])
+#@-node:ekr.20070707094858.2:startsId
+#@+node:ekr.20070707172732.1:startsString
+def startsString(self,s,i):
+
+    return g.match(s,i,'"') or g.match(s,i,"'")
+#@-node:ekr.20070707172732.1:startsString
+#@-node:ekr.20070706084535.1:Parsing
+#@+node:ekr.20070707072749:run (baseScannerClass)
+def run (self,s,parent):
+
+    c = self.c
+    self.root = root = parent.copy()
+    self.file_s = s
+    self.tab_width = self.importCommands.getTabWidth(p=root)
+    # g.trace('tab_width',self.tab_width)
+    # Create the ws equivalent to one tab.
+    if self.tab_width < 0:
+        self.tab_ws = ' '*abs(self.tab_width)
+    else:
+        self.tab_ws = '\t'
+
+    # Init the error/status info.
+    self.errors = 0
+    self.errorLines = []
+    self.mismatchWarningGiven = False
+    changed = c.isChanged()
+
+    # Check for intermixed blanks and tabs.
+    if self.strict or self.atAutoWarnsAboutLeadingWhitespace:
+        self.checkBlanksAndTabs(s)
+
+    # Regularize leading whitespace for strict languages only.
+    if self.strict: s = self.regularizeWhitespace(s) 
+
+    # Generate the nodes, including directive and section references.
+    self.scan(s,parent)
+
+    # Check the generated nodes.
+    # Return True if the result is equivalent to the original file.
+    ok = self.errors == 0 and self.check(s,parent)
+    g.app.unitTestDict ['result'] = ok
+
+    # Insert an @ignore directive if there were any serious problems.
+    if not ok: self.insertIgnoreDirective(parent)
+
+    if self.atAuto and ok:
+        for p in root.self_and_subtree_iter():
+            p.clearDirty()
+        c.setChanged(changed)
+    else:
+        root.setDirty(setDescendentsDirty=False)
+        c.setChanged(True)
+#@+node:ekr.20071110105107:checkBlanksAndTabs
+def checkBlanksAndTabs(self,s):
+
+    '''Check for intermixed blank & tabs.'''
+
+    # Do a quick check for mixed leading tabs/blanks.
+    blanks = tabs = 0
+
+    for line in g.splitLines(s):
+        lws = line[0:g.skip_ws(line,0)]
+        blanks += lws.count(' ')
+        tabs += lws.count('\t')
+
+    ok = blanks == 0 or tabs == 0
+
+    if not ok:
+        self.report('intermixed blanks and tabs')
+
+    return ok
+#@-node:ekr.20071110105107:checkBlanksAndTabs
+#@+node:ekr.20070808115837.1:regularizeWhitespace
+def regularizeWhitespace (self,s):
+
+    '''Regularize leading whitespace in s:
+    Convert tabs to blanks or vice versa depending on the @tabwidth in effect.
+    This is only called for strict languages.'''
+
+    changed = False ; lines = g.splitLines(s) ; result = [] ; tab_width = self.tab_width
+
+    if tab_width < 0: # Convert tabs to blanks.
+        for line in lines:
+            i, w = g.skip_leading_ws_with_indent(line,0,tab_width)
+            s = g.computeLeadingWhitespace(w,-abs(tab_width)) + line [i:] # Use negative width.
+            if s != line: changed = True
+            result.append(s)
+    elif tab_width > 0: # Convert blanks to tabs.
+        for line in lines:
+            s = g.optimizeLeadingWhitespace(line,abs(tab_width)) # Use positive width.
+            if s != line: changed = True
+            result.append(s)
+
+    if changed:
+        s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
+        message = '%s: inconsistent leading whitespace. %s' % (kind,s)
+        self.report(message)
+
+    return ''.join(result)
+#@-node:ekr.20070808115837.1:regularizeWhitespace
+#@-node:ekr.20070707072749:run (baseScannerClass)
+#@-node:ekr.20070703122141.65: class baseScannerClass
+#@-node:ekr.20071110092039:Fixed various @auto comparison problems
+#@-node:ekr.20071105171301:Fixed bugs
+#@+node:ekr.20071110081315:New features
+#@+node:ekr.20070803115653:Support directives in headlines
+#@+node:ekr.20071109171700:What I did
+@nocolor
+
+1. The dict returned by get_directives_dict contains values that are strings,
+not indices. The string will be the line after the directive (with whitespace
+stripped off).
+
+This was a major change: all the various code sections that sets values from this
+dict had to change.
+
+2. Eliminated the s arg from the g.scanXDirective functions.
+
+3. Refactored common code into g.computeRelativePath().
+#@nonl
+#@-node:ekr.20071109171700:What I did
+#@+node:ekr.20031218072017.1260:g.get_directives_dict & test
+# The caller passes [root_node] or None as the second arg.  This allows us to distinguish between None and [None].
+
+def get_directives_dict(p,root=None):
+
+    """Scans root for @directives found in globalDirectiveList.
+
+    Returns a dict containing pointers to the start of each directive"""
+
+    if root: root_node = root[0]
+    theDict = {}
+
+    # The headline has higher precedence because it is more visible.
+    for kind,s in (
+        ('body',p.v.t.headString),
+        ('head',p.v.t.bodyString),
+    ):
+        i = 0 ; n = len(s)
+        while i < n:
+            if s[i] == '@' and i+1 < n:
+                << set theDict for @ directives >>
+            elif kind == 'body' and root and g.match(s,i,"<<"):
+                << set theDict["root"] for noweb * chunks >>
+            i = g.skip_line(s,i)
+    return theDict
+#@+node:ekr.20031218072017.1261:<< set theDict for @ directives >>
+j = g.skip_c_id(s,i+1)
+word = s[i+1:j]
+
+global globalDirectiveList
+
+if word in globalDirectiveList:
+    if theDict.has_key(word):
+        # Ignore second value.
         pass
-
-    except Exception:
-        g.es('unexpected exception writing %s' % fileName,color='red')
-        g.es_exception()
-
-    if theFile:
-        theFile.close()
-#@-node:ekr.20050424131051:writeRecentFilesFileHelper
-#@-node:ekr.20050424114937.2:writeRecentFilesFile & helper
-#@-node:ekr.20050424114937.1:Reading and writing .leoRecentFiles.txt (g.app.config)
-#@+node:ekr.20031218072017.2079:Recent Files submenu & allies
-#@+node:ekr.20031218072017.2080:clearRecentFiles
-def clearRecentFiles (self,event=None):
-
-    """Clear the recent files list, then add the present file."""
-
-    c = self ; f = c.frame ; u = c.undoer
-
-    bunch = u.beforeClearRecentFiles()
-
-    recentFilesMenu = f.menu.getMenu("Recent Files...")
-    f.menu.delete_range(recentFilesMenu,0,len(c.recentFiles))
-
-    c.recentFiles = []
-    g.app.config.recentFiles = [] # New in Leo 4.3.
-    f.menu.createRecentFilesMenuItems()
-    c.updateRecentFiles(c.relativeFileName())
-
-    g.app.config.appendToRecentFiles(c.recentFiles)
-
-    # g.trace(c.recentFiles)
-
-    u.afterClearRecentFiles(bunch)
-
-    # New in Leo 4.4.5: write the file immediately.
-    g.app.config.writeRecentFilesFile(c)
-#@-node:ekr.20031218072017.2080:clearRecentFiles
-#@+node:ekr.20031218072017.2081:openRecentFile
-def openRecentFile(self,name=None):
-
-    if not name: return
-
-    c = self ; v = c.currentVnode()
-    << Set closeFlag if the only open window is empty >>
-
-    fileName = name
-    if not g.doHook("recentfiles1",c=c,p=v,v=v,fileName=fileName,closeFlag=closeFlag):
-        ok, frame = g.openWithFileName(fileName,c)
-        if ok and closeFlag:
-            g.app.destroyWindow(c.frame) # 12/12/03
-            c = frame.c # Switch to the new commander so the "recentfiles2" hook doesn't crash.
-            c.setLog() # Sets the log stream for g.es()
-
-    g.doHook("recentfiles2",c=c,p=v,v=v,fileName=fileName,closeFlag=closeFlag)
-#@+node:ekr.20031218072017.2082:<< Set closeFlag if the only open window is empty >>
-@ If this is the only open window was opened when the app started, and the window has never been written to or saved, then we will automatically close that window if this open command completes successfully.
+        # g.es("Warning: conflicting values for %s" % (word), color="blue")
+    else:
+        # theDict [word] = i
+        k = g.skip_line(s,j)
+        theDict[word] = s[j:k].strip()
+#@nonl
+#@-node:ekr.20031218072017.1261:<< set theDict for @ directives >>
+#@+node:ekr.20031218072017.1262:<< set theDict["root"] for noweb * chunks >>
+@ The following looks for chunk definitions of the form < < * > > =. If found, we take this to be equivalent to @root filename if the headline has the form @root filename.
 @c
 
-closeFlag = (
-    c.frame.startupWindow and # The window was open on startup
-    not c.changed and not c.frame.saved and # The window has never been changed
-    g.app.numberOfWindows == 1) # Only one untitled window has ever been opened
-#@-node:ekr.20031218072017.2082:<< Set closeFlag if the only open window is empty >>
-#@-node:ekr.20031218072017.2081:openRecentFile
-#@+node:ekr.20031218072017.2083:c.updateRecentFiles
-def updateRecentFiles (self,fileName):
+i = g.skip_ws(s,i+2)
 
-    """Create the RecentFiles menu.  May be called with Null fileName."""
+if i < n and s[i] == '*' :
+    i = g.skip_ws(s,i+1) # Skip the '*'
+    if g.match(s,i,">>="):
+        # < < * > > = implies that @root should appear in the headline.
+        i += 3
+        if root_node:
+            theDict["root"]=0 # value not immportant
+        else:
+            g.es(g.angleBrackets("*") + "= requires @root in the headline")
+#@-node:ekr.20031218072017.1262:<< set theDict["root"] for noweb * chunks >>
+#@+node:ekr.20071109224138:@test g.get_directives_dict
+# This will work regardless of where this method is.
+@language python
+@tabwidth -4
+#@verbatim
+#@path xyzzy
+@pagewidth 120
 
-    if g.app.unitTesting: return
+# Does not work when run externally with null colorizer.
+if g.unitTesting:
 
-    def munge(name):
-        return g.os_path_normpath(name or '').lower()
-    def munge2(name):
-        return g.os_path_abspath(g.os_path_join(g.app.loadDir,name or ''))
+    c,p = g.getTestVars()
+    d = c.atFileCommands.scanAllDirectives(p)
 
-    # Update the recent files list in all windows.
-    if fileName:
-        compareFileName = munge(fileName)
-        # g.trace(fileName)
-        for frame in g.app.windowList:
-            c = frame.c
-            # Remove all versions of the file name.
-            for name in c.recentFiles:
-                if munge(fileName) == munge(name) or munge2(fileName) == munge2(name):
-                    c.recentFiles.remove(name)
-            c.recentFiles.insert(0,fileName)
-            # g.trace('adding',fileName)
-            # Recreate the Recent Files menu.
-            frame.menu.createRecentFilesMenuItems()
+    assert d.get('language') == 'python'
+    assert d.get('tabwidth') == -4
+    # assert d.get('path').endswith('xyzzy')
+    assert d.get('pagewidth') == 120
+#@-node:ekr.20071109224138:@test g.get_directives_dict
+#@-node:ekr.20031218072017.1260:g.get_directives_dict & test
+#@+node:ekr.20071109165315:g.computeRelativePath
+def computeRelativePath (path):
+
+    if len(path) > 2 and (
+        (path[0]=='<' and path[-1] == '>') or
+        (path[0]=='"' and path[-1] == '"') or
+        (path[0]=="'" and path[-1] == "'")
+    ):
+        path = path[1:-1].strip()
+
+    # 11/14/02: we want a _relative_ path, not an absolute path.
+    # path = g.os_path_join(g.app.loadDir,path)
+
+    return path
+#@-node:ekr.20071109165315:g.computeRelativePath
+#@+node:ekr.20031218072017.1380:Directive utils...
+#@+node:EKR.20040504150046.4:g.comment_delims_from_extension
+def comment_delims_from_extension(filename):
+
+    """
+    Return the comment delims corresponding to the filename's extension.
+
+    >>> g.comment_delims_from_extension(".py")
+    ('#', None, None)
+
+    >>> g.comment_delims_from_extension(".c")
+    ('//', '/*', '*/')
+
+    >>> g.comment_delims_from_extension(".html")
+    (None, '<!--', '-->')
+
+    """
+
+    root, ext = os.path.splitext(filename)
+    if ext == '.tmp':
+        root, ext = os.path.splitext(root)
+
+    language = g.app.extension_dict.get(ext[1:])
+    if ext:
+
+        return g.set_delims_from_language(language)
     else:
-        for frame in g.app.windowList:
-            frame.menu.createRecentFilesMenuItems()
-#@-node:ekr.20031218072017.2083:c.updateRecentFiles
-#@-node:ekr.20031218072017.2079:Recent Files submenu & allies
-#@-node:ekr.20071109104554:clear-recent-files must write immediately
-#@-node:ekr.20070814144804:Retain relative paths in recent files menu
-#@-node:ekr.20071105171301:Fixed bugs
+        g.trace("unknown extension %s" % ext)
+        return None,None,None
+#@-node:EKR.20040504150046.4:g.comment_delims_from_extension
+#@+node:ekr.20071109165315:g.computeRelativePath
+def computeRelativePath (path):
+
+    if len(path) > 2 and (
+        (path[0]=='<' and path[-1] == '>') or
+        (path[0]=='"' and path[-1] == '"') or
+        (path[0]=="'" and path[-1] == "'")
+    ):
+        path = path[1:-1].strip()
+
+    # 11/14/02: we want a _relative_ path, not an absolute path.
+    # path = g.os_path_join(g.app.loadDir,path)
+
+    return path
+#@-node:ekr.20071109165315:g.computeRelativePath
+#@+node:ekr.20031218072017.1381:@language and @comment directives (leoUtils)
+#@+node:ekr.20031218072017.1382:set_delims_from_language
+# Returns a tuple (single,start,end) of comment delims
+
+def set_delims_from_language(language):
+
+    # g.trace(g.callers())
+
+    val = app.language_delims_dict.get(language)
+    if val:
+        delim1,delim2,delim3 = g.set_delims_from_string(val)
+        if delim2 and not delim3:
+            return None,delim1,delim2
+        else: # 0,1 or 3 params.
+            return delim1,delim2,delim3
+    else:
+        return None, None, None # Indicate that no change should be made
+#@-node:ekr.20031218072017.1382:set_delims_from_language
+#@+node:ekr.20031218072017.1383:set_delims_from_string
+def set_delims_from_string(s):
+
+    """Returns (delim1, delim2, delim2), the delims following the @comment directive.
+
+    This code can be called from @language logic, in which case s can point at @comment"""
+
+    # Skip an optional @comment
+    tag = "@comment"
+    i = 0
+    if g.match_word(s,i,tag):
+        i += len(tag)
+
+    count = 0 ; delims = [None, None, None]
+    while count < 3 and i < len(s):
+        i = j = g.skip_ws(s,i)
+        while i < len(s) and not g.is_ws(s[i]) and not g.is_nl(s,i):
+            i += 1
+        if j == i: break
+        delims[count] = s[j:i]
+        count += 1
+
+    # 'rr 09/25/02
+    if count == 2: # delims[0] is always the single-line delim.
+        delims[2] = delims[1]
+        delims[1] = delims[0]
+        delims[0] = None
+
+    # 7/8/02: The "REM hack": replace underscores by blanks.
+    # 9/25/02: The "perlpod hack": replace double underscores by newlines.
+    for i in xrange(0,3):
+        if delims[i]:
+            delims[i] = string.replace(delims[i],"__",'\n') 
+            delims[i] = string.replace(delims[i],'_',' ')
+
+    return delims[0], delims[1], delims[2]
+#@-node:ekr.20031218072017.1383:set_delims_from_string
+#@+node:ekr.20031218072017.1384:set_language
+def set_language(s,i,issue_errors_flag=False):
+
+    """Scan the @language directive that appears at s[i:].
+
+    The @language may have been stripped away.
+
+    Returns (language, delim1, delim2, delim3)
+    """
+
+    tag = "@language"
+    # g.trace(g.get_line(s,i))
+    assert(i != None)
+    # assert(g.match_word(s,i,tag))
+    if g.match_word(s,i,tag):
+        i += len(tag)
+    # Get the argument.
+    i = g.skip_ws(s, i)
+    j = i ; i = g.skip_c_id(s,i)
+    # Allow tcl/tk.
+    arg = string.lower(s[j:i])
+    if app.language_delims_dict.get(arg):
+        language = arg
+        delim1, delim2, delim3 = g.set_delims_from_language(language)
+        return language, delim1, delim2, delim3
+
+    if issue_errors_flag:
+        g.es("ignoring: " + g.get_line(s,i))
+
+    return None, None, None, None,
+#@-node:ekr.20031218072017.1384:set_language
+#@-node:ekr.20031218072017.1381:@language and @comment directives (leoUtils)
+#@+node:ekr.20031218072017.1385:g.findReference
+@ We search the descendents of v looking for the definition node matching name.
+There should be exactly one such node (descendents of other definition nodes are not searched).
+@c
+
+def findReference(c,name,root):
+
+    for p in root.subtree_iter():
+        assert(p!=root)
+        if p.matchHeadline(name) and not p.isAtIgnoreNode():
+            return p
+
+    # g.trace("not found:",name,root)
+    return c.nullPosition()
+#@-node:ekr.20031218072017.1385:g.findReference
+#@+node:ekr.20031218072017.1260:g.get_directives_dict & test
+# The caller passes [root_node] or None as the second arg.  This allows us to distinguish between None and [None].
+
+def get_directives_dict(p,root=None):
+
+    """Scans root for @directives found in globalDirectiveList.
+
+    Returns a dict containing pointers to the start of each directive"""
+
+    if root: root_node = root[0]
+    theDict = {}
+
+    # The headline has higher precedence because it is more visible.
+    for kind,s in (
+        ('body',p.v.t.headString),
+        ('head',p.v.t.bodyString),
+    ):
+        i = 0 ; n = len(s)
+        while i < n:
+            if s[i] == '@' and i+1 < n:
+                << set theDict for @ directives >>
+            elif kind == 'body' and root and g.match(s,i,"<<"):
+                << set theDict["root"] for noweb * chunks >>
+            i = g.skip_line(s,i)
+    return theDict
+#@+node:ekr.20031218072017.1261:<< set theDict for @ directives >>
+j = g.skip_c_id(s,i+1)
+word = s[i+1:j]
+
+global globalDirectiveList
+
+if word in globalDirectiveList:
+    if theDict.has_key(word):
+        # Ignore second value.
+        pass
+        # g.es("Warning: conflicting values for %s" % (word), color="blue")
+    else:
+        # theDict [word] = i
+        k = g.skip_line(s,j)
+        theDict[word] = s[j:k].strip()
+#@nonl
+#@-node:ekr.20031218072017.1261:<< set theDict for @ directives >>
+#@+node:ekr.20031218072017.1262:<< set theDict["root"] for noweb * chunks >>
+@ The following looks for chunk definitions of the form < < * > > =. If found, we take this to be equivalent to @root filename if the headline has the form @root filename.
+@c
+
+i = g.skip_ws(s,i+2)
+
+if i < n and s[i] == '*' :
+    i = g.skip_ws(s,i+1) # Skip the '*'
+    if g.match(s,i,">>="):
+        # < < * > > = implies that @root should appear in the headline.
+        i += 3
+        if root_node:
+            theDict["root"]=0 # value not immportant
+        else:
+            g.es(g.angleBrackets("*") + "= requires @root in the headline")
+#@-node:ekr.20031218072017.1262:<< set theDict["root"] for noweb * chunks >>
+#@+node:ekr.20071109224138:@test g.get_directives_dict
+# This will work regardless of where this method is.
+@language python
+@tabwidth -4
+#@verbatim
+#@path xyzzy
+@pagewidth 120
+
+# Does not work when run externally with null colorizer.
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    d = c.atFileCommands.scanAllDirectives(p)
+
+    assert d.get('language') == 'python'
+    assert d.get('tabwidth') == -4
+    # assert d.get('path').endswith('xyzzy')
+    assert d.get('pagewidth') == 120
+#@-node:ekr.20071109224138:@test g.get_directives_dict
+#@-node:ekr.20031218072017.1260:g.get_directives_dict & test
+#@+node:ekr.20031218072017.1386:getOutputNewline
+def getOutputNewline (c=None,name=None):
+
+    '''Convert the name of a line ending to the line ending itself.
+
+    Priority:
+    - Use name if name given
+    - Use c.config.output_newline if c given,
+    - Otherwise use g.app.config.output_newline.'''
+
+    # g.trace(c,name,c.config.output_newline)
+    if name: s = name
+    elif c:  s = c.config.output_newline
+    else:    s = app.config.output_newline
+
+    if not s: s = ''
+    s = s.lower()
+    if s in ( "nl","lf"): s = '\n'
+    elif s == "cr": s = '\r'
+    elif s == "platform": s = os.linesep  # 12/2/03: emakital
+    elif s == "crlf": s = "\r\n"
+    else: s = '\n' # Default for erroneous values.
+    return s
+#@-node:ekr.20031218072017.1386:getOutputNewline
+#@+node:ekr.20031218072017.1387:g.scanAtEncodingDirective
+def scanAtEncodingDirective(theDict):
+
+    """Scan the @encoding directive at s[theDict["encoding"]:].
+
+    Returns the encoding name or None if the encoding name is invalid.
+    """
+
+    # k = theDict["encoding"]
+    # i = g.skip_to_end_of_line(s,k)
+    # j = len("@encoding")
+    # encoding = s[k+j:i].strip()
+
+    encoding = theDict.get('encoding')
+
+    if g.isValidEncoding(encoding):
+        # g.trace(encoding)
+        return encoding
+    else:
+        g.es("invalid @encoding: "+encoding,color="red")
+        return None
+#@-node:ekr.20031218072017.1387:g.scanAtEncodingDirective
+#@+node:ekr.20031218072017.1388:g.scanAtLineendingDirective
+def scanAtLineendingDirective(theDict):
+
+    """Scan the @lineending directive at s[theDict["lineending"]:].
+
+    Returns the actual lineending or None if the name of the lineending is invalid.
+    """
+
+    # k = theDict["lineending"]
+    # i = g.skip_to_end_of_line(s,k)
+    # j = len("@lineending")
+    # j = g.skip_ws(s,j)
+    # e = s[k+j:i].strip()
+
+    e = theDict.get('encoding')
+
+    if e in ("cr","crlf","lf","nl","platform"):
+        lineending = g.getOutputNewline(name=e)
+        # g.trace(e,lineending)
+        return lineending
+    else:
+        # g.es("invalid @lineending directive:"+e,color="red")
+        return None
+#@-node:ekr.20031218072017.1388:g.scanAtLineendingDirective
+#@+node:ekr.20031218072017.1389:g.scanAtPagewidthDirective
+def scanAtPagewidthDirective(theDict,issue_error_flag=False):
+
+    """Scan the @pagewidth directive at s[theDict["pagewidth"]:].
+
+    Returns the value of the width or None if the width is invalid.
+    """
+
+    # k = theDict["pagewidth"]
+    # j = i = k + len("@pagewidth")
+    # i, val = g.skip_long(s,i)
+
+    s = theDict.get('pagewidth')
+    i, val = g.skip_long(s,0)
+
+    if val != None and val > 0:
+        # g.trace(val)
+        return val
+    else:
+        if issue_error_flag:
+            j = g.skip_to_end_of_line(s,k)
+            g.es("ignoring " + s,color="red")
+        return None
+#@-node:ekr.20031218072017.1389:g.scanAtPagewidthDirective
+#@+node:ekr.20031218072017.1390:g.scanAtTabwidthDirective
+def scanAtTabwidthDirective(theDict,issue_error_flag=False):
+
+    """Scan the @tabwidth directive at s[theDict["tabwidth"]:].
+
+    Returns the value of the width or None if the width is invalid.
+    """
+
+    # k = theDict["tabwidth"]
+    # i = k + len("@tabwidth")
+    # i, val = g.skip_long(s, i)
+
+    s = theDict.get('tabwidth')
+    i,val = g.skip_long(s,0)
+
+    if val != None and val != 0:
+        # g.trace(val)
+        return val
+    else:
+        if issue_error_flag:
+            i = g.skip_to_end_of_line(s,k)
+            g.es("Ignoring " + s,color="red")
+        return None
+#@-node:ekr.20031218072017.1390:g.scanAtTabwidthDirective
+#@+node:ekr.20070302160802:g.scanColorDirectives
+def scanColorDirectives(c,p):
+
+    '''Return the language in effect at position p.'''
+
+    if c is None: return # c may be None for testing.
+
+    language = c.target_language and c.target_language.lower() or 'python'
+
+    p = p.copy()
+    for p in p.self_and_parents_iter():
+        d = g.get_directives_dict(p)
+        z = d.get('language')
+        if z is not None:
+            language,junk,junk,junk = g.set_language(z,0)
+            return language
+
+    return language
+#@-node:ekr.20070302160802:g.scanColorDirectives
+#@+node:ekr.20040715155607:g.scanForAtIgnore
+def scanForAtIgnore(c,p):
+
+    """Scan position p and its ancestors looking for @ignore directives."""
+
+    if g.app.unitTesting:
+        return False # For unit tests.
+
+    for p in p.self_and_parents_iter():
+        d = g.get_directives_dict(p)
+        if d.has_key("ignore"):
+            return True
+
+    return False
+#@-node:ekr.20040715155607:g.scanForAtIgnore
+#@+node:ekr.20041123094807:g.scanForAtSettings
+def scanForAtSettings(p):
+
+    """Scan position p and its ancestors looking for @settings nodes."""
+
+    for p in p.self_and_parents_iter():
+        h = p.headString()
+        h = g.app.config.canonicalizeSettingName(h)
+        if h.startswith("@settings"):
+            return True
+
+    return False
+#@-node:ekr.20041123094807:g.scanForAtSettings
+#@+node:ekr.20040712084911.1:g.scanForAtLanguage & test
+def scanForAtLanguage(c,p):
+
+    """Scan position p and p's ancestors looking only for @language and @ignore directives.
+
+    Returns the language found, or c.target_language."""
+
+    # Unlike the code in x.scanAllDirectives, this code ignores @comment directives.
+
+    if c and p:
+        for p in p.self_and_parents_iter():
+            d = g.get_directives_dict(p)
+            if d.has_key("language"):
+                z = d["language"]
+                language,delim1,delim2,delim3 = g.set_language(z,0)
+                return language
+
+    return c.target_language
+#@+node:ekr.20071109221215:@test scanColorDirectives
+# This will work regardless of where this method is.
+@language python
+
+# Does not work when run externally with null colorizer.
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    language = g.scanForAtLanguage(c,p)
+    assert language == 'python','got:%s' % language
+#@-node:ekr.20071109221215:@test scanColorDirectives
+#@-node:ekr.20040712084911.1:g.scanForAtLanguage & test
+#@+node:ekr.20031218072017.1391:g.scanDirectives & test
+@ Perhaps this routine should be the basis of atFile.scanAllDirectives and tangle.scanAllDirectives, but I am loath to make any further to these two already-infamous routines.  Also, this code does not check for @color and @nocolor directives: leoColor.useSyntaxColoring does that.
+@c
+
+def scanDirectives(c,p=None):
+
+    """Scan vnode v and v's ancestors looking for directives.
+
+    Returns a dict containing the results, including defaults."""
+
+    if p is None:
+        p = c.currentPosition()
+
+    << Set local vars >>
+    old = {}
+    pluginsList = [] # 5/17/03: a list of items for use by plugins.
+    for p in p.self_and_parents_iter():
+        theDict = g.get_directives_dict(p)
+        << Test for @comment and @language >>
+        << Test for @encoding >>
+        << Test for @lineending >>
+        << Test for @pagewidth >>
+        << Test for @path >>
+        << Test for @tabwidth >>
+        << Test for @wrap and @nowrap >>
+        g.doHook("scan-directives",c=c,p=p,v=p,s=p.bodyString(),
+            old_dict=old,dict=theDict,pluginsList=pluginsList)
+        old.update(theDict)
+
+    if path == None: path = g.getBaseDirectory(c)
+
+    # g.trace('tabwidth',tab_width)
+
+    return {
+        "delims"    : (delim1,delim2,delim3),
+        "encoding"  : encoding,
+        "language"  : language,
+        "lineending": lineending,
+        "pagewidth" : page_width,
+        "path"      : path,
+        "tabwidth"  : tab_width,
+        "pluginsList": pluginsList,
+        "wrap"      : wrap }
+#@+node:ekr.20031218072017.1392:<< Set local vars >>
+page_width = c.page_width
+tab_width  = c.tab_width
+language = c.target_language
+if c.target_language:
+    c.target_language = c.target_language.lower()
+delim1, delim2, delim3 = g.set_delims_from_language(c.target_language)
+path = None
+encoding = None # 2/25/03: This must be none so that the caller can set a proper default.
+lineending = g.getOutputNewline(c=c) # Init from config settings.
+wrap = c.config.getBool("body_pane_wraps")
+#@-node:ekr.20031218072017.1392:<< Set local vars >>
+#@+node:ekr.20031218072017.1393:<< Test for @comment and @language >>
+# 1/23/05: Any previous @language or @comment prevents processing up the tree.
+# This code is now like the code in tangle.scanAlldirectives.
+
+if old.has_key("comment") or old.has_key("language"):
+    pass
+
+elif theDict.has_key("comment"):
+    z = theDict["comment"]
+    delim1,delim2,delim3 = g.set_delims_from_string(z)
+
+elif theDict.has_key("language"):
+    z = theDict["language"]
+    language,delim1,delim2,delim3 = g.set_language(z,0)
+#@-node:ekr.20031218072017.1393:<< Test for @comment and @language >>
+#@+node:ekr.20031218072017.1394:<< Test for @encoding >>
+if not old.has_key("encoding") and theDict.has_key("encoding"):
+
+    e = g.scanAtEncodingDirective(theDict)
+    if e:
+        encoding = e
+#@-node:ekr.20031218072017.1394:<< Test for @encoding >>
+#@+node:ekr.20031218072017.1395:<< Test for @lineending >>
+if not old.has_key("lineending") and theDict.has_key("lineending"):
+
+    e = g.scanAtLineendingDirective(theDict)
+    if e:
+        lineending = e
+#@-node:ekr.20031218072017.1395:<< Test for @lineending >>
+#@+node:ekr.20031218072017.1396:<< Test for @pagewidth >>
+if theDict.has_key("pagewidth") and not old.has_key("pagewidth"):
+
+    w = g.scanAtPagewidthDirective(theDict)
+    if w and w > 0:
+        page_width = w
+#@-node:ekr.20031218072017.1396:<< Test for @pagewidth >>
+#@+node:ekr.20031218072017.1397:<< Test for @path >> (g.scanDirectives)
+if not path and not old.has_key("path") and theDict.has_key("path"):
+
+    path = theDict["path"]
+    path = g.computeRelativePath(path)
+
+    if path and len(path) > 0:
+        base = g.getBaseDirectory(c) # returns "" on error.
+        path = g.os_path_join(base,path)
+#@-node:ekr.20031218072017.1397:<< Test for @path >> (g.scanDirectives)
+#@+node:ekr.20031218072017.1399:<< Test for @tabwidth >>
+if theDict.has_key("tabwidth") and not old.has_key("tabwidth"):
+
+    w = g.scanAtTabwidthDirective(theDict)
+    if w and w != 0:
+        tab_width = w
+#@-node:ekr.20031218072017.1399:<< Test for @tabwidth >>
+#@+node:ekr.20031218072017.1400:<< Test for @wrap and @nowrap >>
+if not old.has_key("wrap") and not old.has_key("nowrap"):
+
+    if theDict.has_key("wrap"):
+        wrap = True
+    elif theDict.has_key("nowrap"):
+        wrap = False
+#@-node:ekr.20031218072017.1400:<< Test for @wrap and @nowrap >>
+#@+node:ekr.20071109221337:@test g.scanDirectives
+# This will work regardless of where this method is.
+@language python
+@tabwidth -4
+# @path xyzzy # Creates a folder called xyzzy, interfering with another unit test.
+
+# Does not work when run externally with null colorizer.
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    d = g.scanDirectives(c,p)
+
+    assert d.get('language') == 'python'
+    assert d.get('tabwidth') == -4
+    # assert d.get('path').endswith('xyzzy')
+#@-node:ekr.20071109221337:@test g.scanDirectives
+#@-node:ekr.20031218072017.1391:g.scanDirectives & test
+#@-node:ekr.20031218072017.1380:Directive utils...
+#@+node:ekr.20071109124553:Found: get_directives_dict
+#@+node:ekr.20041005105605.222:atFile.scanAllDirectives & test
+@ Once a directive is seen, no other related directives in nodes further up the tree have any effect.  For example, if an @color directive is seen in node p, no @color or @nocolor directives are examined in any ancestor of p.
+
+This code is similar to Commands.scanAllDirectives, but it has been modified for use by the atFile class.
+@c
+
+def scanAllDirectives(self,p,scripting=False,importing=False,reading=False,forcePythonSentinels=False):
+
+    """Scan position p and p's ancestors looking for directives,
+    setting corresponding atFile ivars.
+    """
+
+    __pychecker__ = '--maxlines=400'
+    # g.stat()
+
+    c = self.c
+    << Set ivars >>
+    << Set path from @file node >>
+    old = {}
+    for p in p.self_and_parents_iter():
+        theDict = g.get_directives_dict(p)
+        << Test for @path >>
+        << Test for @encoding >>
+        << Test for @comment and @language >>
+        << Test for @header and @noheader >>
+        << Test for @lineending >>
+        << Test for @pagewidth >>
+        << Test for @tabwidth >>
+        old.update(theDict)
+    << Set current directory >>
+    if not importing and not reading:
+        # 5/19/04: don't override comment delims when reading!
+        << Set comment strings from delims >>
+    # For unit testing.
+    return {
+        "encoding"  : self.encoding,
+        "language"  : self.language,
+        "lineending": self.output_newline,
+        "pagewidth" : self.page_width,
+        "path"      : self.default_directory,
+        "tabwidth"  : self.tab_width,
+    }
+#@+node:ekr.20041005105605.223:<< Set ivars >>
+self.page_width = self.c.page_width
+self.tab_width  = self.c.tab_width
+
+self.default_directory = None # 8/2: will be set later.
+
+if c.target_language:
+    c.target_language = c.target_language.lower() # 6/20/05
+delim1, delim2, delim3 = g.set_delims_from_language(c.target_language)
+self.language = c.target_language
+
+self.encoding = c.config.default_derived_file_encoding
+self.output_newline = g.getOutputNewline(c=self.c) # Init from config settings.
+#@-node:ekr.20041005105605.223:<< Set ivars >>
+#@+node:ekr.20041005105605.224:<< Set path from @file node >> in scanDirectory in leoGlobals.py
+# An absolute path in an @file node over-rides everything else.
+# A relative path gets appended to the relative path by the open logic.
+
+name = p.anyAtFileNodeName() # 4/28/04
+
+theDir = g.choose(name,g.os_path_dirname(name),None)
+
+if theDir and len(theDir) > 0 and g.os_path_isabs(theDir):
+    if g.os_path_exists(theDir):
+        self.default_directory = theDir
+    else: # 9/25/02
+        self.default_directory = g.makeAllNonExistentDirectories(theDir,c=c)
+        if not self.default_directory:
+            self.error("Directory \"%s\" does not exist" % theDir)
+#@-node:ekr.20041005105605.224:<< Set path from @file node >> in scanDirectory in leoGlobals.py
+#@+node:ekr.20041005105605.225:<< Test for @path >> (atFile.scanAllDirectives)
+# We set the current director to a path so future writes will go to that directory.
+
+if not self.default_directory and not old.has_key("path") and theDict.has_key("path"):
+
+    path = theDict["path"]
+    path = g.computeRelativePath(path)
+    if path and len(path) > 0:
+        base = g.getBaseDirectory(c) # returns "" on error.
+        path = g.os_path_join(base,path)
+        if g.os_path_isabs(path):
+            << handle absolute path >>
+        else:
+            self.error("ignoring bad @path: %s" % path)
+    else:
+        self.error("ignoring empty @path")
+#@+node:ekr.20041005105605.227:<< handle absolute path >>
+# path is an absolute path.
+
+if g.os_path_exists(path):
+    self.default_directory = path
+else:
+    self.default_directory = g.makeAllNonExistentDirectories(path,c=c)
+    if not self.default_directory:
+        self.error("invalid @path: %s" % path)
+#@-node:ekr.20041005105605.227:<< handle absolute path >>
+#@-node:ekr.20041005105605.225:<< Test for @path >> (atFile.scanAllDirectives)
+#@+node:ekr.20041005105605.228:<< Test for @encoding >>
+if not old.has_key("encoding") and theDict.has_key("encoding"):
+
+    e = g.scanAtEncodingDirective(theDict)
+    if e:
+        self.encoding = e
+#@-node:ekr.20041005105605.228:<< Test for @encoding >>
+#@+node:ekr.20041005105605.229:<< Test for @comment and @language >>
+# 10/17/02: @language and @comment may coexist in @file trees.
+# For this to be effective the @comment directive should follow the @language directive.
+
+# 1/23/05: Any previous @language or @comment prevents processing up the tree.
+# This code is now like the code in tangle.scanAlldirectives.
+
+if old.has_key("comment") or old.has_key("language"):
+     pass # Do nothing more.
+
+elif theDict.has_key("comment"):
+    z = theDict["comment"]
+    delim1, delim2, delim3 = g.set_delims_from_string(z)
+
+elif theDict.has_key("language"):
+    z = theDict["language"]
+    self.language,delim1,delim2,delim3 = g.set_language(z,0)
+#@-node:ekr.20041005105605.229:<< Test for @comment and @language >>
+#@+node:ekr.20041005105605.230:<< Test for @header and @noheader >>
+# EKR: 10/10/02: perform the sames checks done by tangle.scanAllDirectives.
+if theDict.has_key("header") and theDict.has_key("noheader"):
+    g.es("conflicting @header and @noheader directives")
+#@-node:ekr.20041005105605.230:<< Test for @header and @noheader >>
+#@+node:ekr.20041005105605.231:<< Test for @lineending >>
+if not old.has_key("lineending") and theDict.has_key("lineending"):
+
+    lineending = g.scanAtLineendingDirective(theDict)
+    if lineending:
+        self.explicitLineEnding = True
+        self.output_newline = lineending
+#@-node:ekr.20041005105605.231:<< Test for @lineending >>
+#@+node:ekr.20041005105605.232:<< Test for @pagewidth >>
+if theDict.has_key("pagewidth") and not old.has_key("pagewidth"):
+
+    w = g.scanAtPagewidthDirective(theDict,issue_error_flag=True)
+    if w and w > 0:
+        self.page_width = w
+#@-node:ekr.20041005105605.232:<< Test for @pagewidth >>
+#@+node:ekr.20041005105605.233:<< Test for @tabwidth >>
+if theDict.has_key("tabwidth") and not old.has_key("tabwidth"):
+
+    w = g.scanAtTabwidthDirective(theDict,issue_error_flag=True)
+    if w and w != 0:
+        self.tab_width = w
+#@-node:ekr.20041005105605.233:<< Test for @tabwidth >>
+#@+node:ekr.20041005105605.234:<< Set current directory >> (atFile.scanAllDirectives)
+# This code is executed if no valid absolute path was specified in the @file node or in an @path directive.
+
+if c.frame and not self.default_directory:
+    base = g.getBaseDirectory(c) # returns "" on error.
+    for theDir in (c.tangle_directory,c.frame.openDirectory,c.openDirectory):
+        if theDir and len(theDir) > 0:
+            theDir = g.os_path_join(base,theDir)
+            if g.os_path_isabs(theDir): # Errors may result in relative or invalid path.
+                if g.os_path_exists(theDir):
+                    self.default_directory = theDir ; break
+                else: # 9/25/02
+                    self.default_directory = g.makeAllNonExistentDirectories(theDir,c=c)
+
+if not self.default_directory and not scripting and not importing:
+    # This should never happen: c.openDirectory should be a good last resort.
+    g.trace()
+    self.error("No absolute directory specified anywhere.")
+    self.default_directory = ""
+#@-node:ekr.20041005105605.234:<< Set current directory >> (atFile.scanAllDirectives)
+#@+node:ekr.20041005105605.235:<< Set comment strings from delims >>
+if forcePythonSentinels:
+    # Force Python language.
+    delim1,delim2,delim3 = g.set_delims_from_language("python")
+    self.language = "python"
+
+# Use single-line comments if we have a choice.
+# delim1,delim2,delim3 now correspond to line,start,end
+if delim1:
+    self.startSentinelComment = delim1
+    self.endSentinelComment = "" # Must not be None.
+elif delim2 and delim3:
+    self.startSentinelComment = delim2
+    self.endSentinelComment = delim3
+else: # Emergency!
+    # assert(0)
+    g.es("Unknown language: using Python comment delimiters")
+    g.es("c.target_language:",c.target_language)
+    g.es("delim1,delim2,delim3:",delim1,delim2,delim3)
+    self.startSentinelComment = "#" # This should never happen!
+    self.endSentinelComment = ""
+
+# g.trace(repr(self.startSentinelComment),repr(self.endSentinelComment))
+#@-node:ekr.20041005105605.235:<< Set comment strings from delims >>
+#@+node:ekr.20071109223354:@test at.scanAllDirectives
+# This will work regardless of where this method is.
+@language python
+@tabwidth -4
+# @path xyzzy
+@pagewidth 120
+
+# Does not work when run externally with null colorizer.
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    d = c.atFileCommands.scanAllDirectives(p)
+
+    assert d.get('language') == 'python'
+    assert d.get('tabwidth') == -4
+    # assert d.get('path').endswith('xyzzy')
+    assert d.get('pagewidth') == 120
+#@-node:ekr.20071109223354:@test at.scanAllDirectives
+#@-node:ekr.20041005105605.222:atFile.scanAllDirectives & test
+#@+node:ekr.20041005105605.236:atFile.scanDefaultDirectory
+def scanDefaultDirectory(self,p,importing=False):
+
+    """Set default_directory ivar by looking for @path directives."""
+
+    at = self ; c = at.c
+    at.default_directory = None
+    << Set path from @file node >>
+    if at.default_directory:
+        return
+
+    for p in p.self_and_parents_iter():
+        theDict = g.get_directives_dict(p)
+        if theDict.has_key("path"):
+            << handle @path >>
+            return
+
+    << Set current directory >>
+    if not at.default_directory and not importing:
+        # This should never happen: c.openDirectory should be a good last resort.
+        at.error("No absolute directory specified anywhere.")
+        at.default_directory = ""
+#@+node:ekr.20041005105605.237:<< Set path from @file node >>
+# An absolute path in an @file node over-rides everything else.
+# A relative path gets appended to the relative path by the open logic.
+
+name = p.anyAtFileNodeName()
+
+theDir = g.choose(name,g.os_path_dirname(name),None)
+
+# g.trace('at.default_directory',at.default_directory)
+# g.trace('theDir',theDir)
+
+if theDir and g.os_path_isabs(theDir):
+    if g.os_path_exists(theDir):
+        at.default_directory = theDir
+    else:
+        at.default_directory = g.makeAllNonExistentDirectories(theDir,c=c)
+        if not at.default_directory:
+            at.error("Directory \"%s\" does not exist" % theDir)
+#@-node:ekr.20041005105605.237:<< Set path from @file node >>
+#@+node:ekr.20041005105605.238:<< handle @path >>
+# We set the current director to a path so future writes will go to that directory.
+
+path = theDict["path"]
+path = g.computeRelativePath (path)
+
+if path:
+    base = g.getBaseDirectory(c) # returns "" on error.
+    path = g.os_path_join(base,path)
+
+    if g.os_path_isabs(path):
+        << handle absolute path >>
+    else:
+        at.error("ignoring bad @path: %s" % path)
+else:
+    at.error("ignoring empty @path")
+#@+node:ekr.20041005105605.240:<< handle absolute path >>
+# path is an absolute path.
+
+if g.os_path_exists(path):
+    at.default_directory = path
+else:
+    at.default_directory = g.makeAllNonExistentDirectories(path,c=c)
+    if not at.default_directory:
+        at.error("invalid @path: %s" % path)
+#@-node:ekr.20041005105605.240:<< handle absolute path >>
+#@-node:ekr.20041005105605.238:<< handle @path >>
+#@+node:ekr.20041005105605.241:<< Set current directory >>
+# This code is executed if no valid absolute path was specified in the @file node or in an @path directive.
+
+assert(not at.default_directory)
+
+if c.frame :
+    base = g.getBaseDirectory(c) # returns "" on error.
+    for theDir in (c.tangle_directory,c.frame.openDirectory,c.openDirectory):
+        if theDir and len(theDir) > 0:
+            theDir = g.os_path_join(base,theDir)
+            if g.os_path_isabs(theDir): # Errors may result in relative or invalid path.
+                if g.os_path_exists(theDir):
+                    at.default_directory = theDir ; break
+                else:
+                    at.default_directory = g.makeAllNonExistentDirectories(theDir,c=c)
+#@-node:ekr.20041005105605.241:<< Set current directory >>
+#@-node:ekr.20041005105605.236:atFile.scanDefaultDirectory
+#@+node:ekr.20070302160802:g.scanColorDirectives
+def scanColorDirectives(c,p):
+
+    '''Return the language in effect at position p.'''
+
+    if c is None: return # c may be None for testing.
+
+    language = c.target_language and c.target_language.lower() or 'python'
+
+    p = p.copy()
+    for p in p.self_and_parents_iter():
+        d = g.get_directives_dict(p)
+        z = d.get('language')
+        if z is not None:
+            language,junk,junk,junk = g.set_language(z,0)
+            return language
+
+    return language
+#@-node:ekr.20070302160802:g.scanColorDirectives
+#@+node:ekr.20031218072017.1391:g.scanDirectives & test
+@ Perhaps this routine should be the basis of atFile.scanAllDirectives and tangle.scanAllDirectives, but I am loath to make any further to these two already-infamous routines.  Also, this code does not check for @color and @nocolor directives: leoColor.useSyntaxColoring does that.
+@c
+
+def scanDirectives(c,p=None):
+
+    """Scan vnode v and v's ancestors looking for directives.
+
+    Returns a dict containing the results, including defaults."""
+
+    if p is None:
+        p = c.currentPosition()
+
+    << Set local vars >>
+    old = {}
+    pluginsList = [] # 5/17/03: a list of items for use by plugins.
+    for p in p.self_and_parents_iter():
+        theDict = g.get_directives_dict(p)
+        << Test for @comment and @language >>
+        << Test for @encoding >>
+        << Test for @lineending >>
+        << Test for @pagewidth >>
+        << Test for @path >>
+        << Test for @tabwidth >>
+        << Test for @wrap and @nowrap >>
+        g.doHook("scan-directives",c=c,p=p,v=p,s=p.bodyString(),
+            old_dict=old,dict=theDict,pluginsList=pluginsList)
+        old.update(theDict)
+
+    if path == None: path = g.getBaseDirectory(c)
+
+    # g.trace('tabwidth',tab_width)
+
+    return {
+        "delims"    : (delim1,delim2,delim3),
+        "encoding"  : encoding,
+        "language"  : language,
+        "lineending": lineending,
+        "pagewidth" : page_width,
+        "path"      : path,
+        "tabwidth"  : tab_width,
+        "pluginsList": pluginsList,
+        "wrap"      : wrap }
+#@+node:ekr.20031218072017.1392:<< Set local vars >>
+page_width = c.page_width
+tab_width  = c.tab_width
+language = c.target_language
+if c.target_language:
+    c.target_language = c.target_language.lower()
+delim1, delim2, delim3 = g.set_delims_from_language(c.target_language)
+path = None
+encoding = None # 2/25/03: This must be none so that the caller can set a proper default.
+lineending = g.getOutputNewline(c=c) # Init from config settings.
+wrap = c.config.getBool("body_pane_wraps")
+#@-node:ekr.20031218072017.1392:<< Set local vars >>
+#@+node:ekr.20031218072017.1393:<< Test for @comment and @language >>
+# 1/23/05: Any previous @language or @comment prevents processing up the tree.
+# This code is now like the code in tangle.scanAlldirectives.
+
+if old.has_key("comment") or old.has_key("language"):
+    pass
+
+elif theDict.has_key("comment"):
+    z = theDict["comment"]
+    delim1,delim2,delim3 = g.set_delims_from_string(z)
+
+elif theDict.has_key("language"):
+    z = theDict["language"]
+    language,delim1,delim2,delim3 = g.set_language(z,0)
+#@-node:ekr.20031218072017.1393:<< Test for @comment and @language >>
+#@+node:ekr.20031218072017.1394:<< Test for @encoding >>
+if not old.has_key("encoding") and theDict.has_key("encoding"):
+
+    e = g.scanAtEncodingDirective(theDict)
+    if e:
+        encoding = e
+#@-node:ekr.20031218072017.1394:<< Test for @encoding >>
+#@+node:ekr.20031218072017.1395:<< Test for @lineending >>
+if not old.has_key("lineending") and theDict.has_key("lineending"):
+
+    e = g.scanAtLineendingDirective(theDict)
+    if e:
+        lineending = e
+#@-node:ekr.20031218072017.1395:<< Test for @lineending >>
+#@+node:ekr.20031218072017.1396:<< Test for @pagewidth >>
+if theDict.has_key("pagewidth") and not old.has_key("pagewidth"):
+
+    w = g.scanAtPagewidthDirective(theDict)
+    if w and w > 0:
+        page_width = w
+#@-node:ekr.20031218072017.1396:<< Test for @pagewidth >>
+#@+node:ekr.20031218072017.1397:<< Test for @path >> (g.scanDirectives)
+if not path and not old.has_key("path") and theDict.has_key("path"):
+
+    path = theDict["path"]
+    path = g.computeRelativePath(path)
+
+    if path and len(path) > 0:
+        base = g.getBaseDirectory(c) # returns "" on error.
+        path = g.os_path_join(base,path)
+#@-node:ekr.20031218072017.1397:<< Test for @path >> (g.scanDirectives)
+#@+node:ekr.20031218072017.1399:<< Test for @tabwidth >>
+if theDict.has_key("tabwidth") and not old.has_key("tabwidth"):
+
+    w = g.scanAtTabwidthDirective(theDict)
+    if w and w != 0:
+        tab_width = w
+#@-node:ekr.20031218072017.1399:<< Test for @tabwidth >>
+#@+node:ekr.20031218072017.1400:<< Test for @wrap and @nowrap >>
+if not old.has_key("wrap") and not old.has_key("nowrap"):
+
+    if theDict.has_key("wrap"):
+        wrap = True
+    elif theDict.has_key("nowrap"):
+        wrap = False
+#@-node:ekr.20031218072017.1400:<< Test for @wrap and @nowrap >>
+#@+node:ekr.20071109221337:@test g.scanDirectives
+# This will work regardless of where this method is.
+@language python
+@tabwidth -4
+# @path xyzzy # Creates a folder called xyzzy, interfering with another unit test.
+
+# Does not work when run externally with null colorizer.
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    d = g.scanDirectives(c,p)
+
+    assert d.get('language') == 'python'
+    assert d.get('tabwidth') == -4
+    # assert d.get('path').endswith('xyzzy')
+#@-node:ekr.20071109221337:@test g.scanDirectives
+#@-node:ekr.20031218072017.1391:g.scanDirectives & test
+#@+node:ekr.20040715155607:g.scanForAtIgnore
+def scanForAtIgnore(c,p):
+
+    """Scan position p and its ancestors looking for @ignore directives."""
+
+    if g.app.unitTesting:
+        return False # For unit tests.
+
+    for p in p.self_and_parents_iter():
+        d = g.get_directives_dict(p)
+        if d.has_key("ignore"):
+            return True
+
+    return False
+#@-node:ekr.20040715155607:g.scanForAtIgnore
+#@+node:ekr.20040712084911.1:g.scanForAtLanguage & test
+def scanForAtLanguage(c,p):
+
+    """Scan position p and p's ancestors looking only for @language and @ignore directives.
+
+    Returns the language found, or c.target_language."""
+
+    # Unlike the code in x.scanAllDirectives, this code ignores @comment directives.
+
+    if c and p:
+        for p in p.self_and_parents_iter():
+            d = g.get_directives_dict(p)
+            if d.has_key("language"):
+                z = d["language"]
+                language,delim1,delim2,delim3 = g.set_language(z,0)
+                return language
+
+    return c.target_language
+#@+node:ekr.20071109221215:@test scanColorDirectives
+# This will work regardless of where this method is.
+@language python
+
+# Does not work when run externally with null colorizer.
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    language = g.scanForAtLanguage(c,p)
+    assert language == 'python','got:%s' % language
+#@-node:ekr.20071109221215:@test scanColorDirectives
+#@-node:ekr.20040712084911.1:g.scanForAtLanguage & test
+#@+node:ekr.20031218072017.1377:scanColorDirectives (leoColor) & test
+def scanColorDirectives(self,p):
+
+    """Scan position p and p's ancestors looking for @comment, @language and @root directives,
+    setting corresponding colorizer ivars.
+    """
+
+    p = p.copy() ; c = self.c
+    if c == None: return # self.c may be None for testing.
+
+    if c.target_language:
+        c.target_language = c.target_language.lower()
+    self.language = language = c.target_language
+    self.comment_string = None
+    self.rootMode = None # None, "code" or "doc"
+
+    for p in p.self_and_parents_iter():
+        theDict = g.get_directives_dict(p)
+        << Test for @comment or @language >>
+        << Test for @root, @root-doc or @root-code >>
+
+    return self.language # For use by external routines.
+#@+node:ekr.20031218072017.1378:<< Test for @comment or @language >>
+# @comment and @language may coexist in the same node.
+
+if theDict.has_key("comment"):
+    self.comment_string = theDict["comment"]
+
+if theDict.has_key("language"):
+    z = theDict["language"]
+    language,junk,junk,junk = g.set_language(z,0)
+    self.language = language
+
+if theDict.has_key("comment") or theDict.has_key("language"):
+    break
+#@-node:ekr.20031218072017.1378:<< Test for @comment or @language >>
+#@+node:ekr.20031218072017.1379:<< Test for @root, @root-doc or @root-code >>
+if theDict.has_key("root") and not self.rootMode:
+
+    root = theDict["root"]
+    if g.match_word(root,0,"@root-code"):
+        self.rootMode = "code"
+    elif g.match_word(root,0,"@root-doc"):
+        self.rootMode = "doc"
+    else:
+        doc = c.config.at_root_bodies_start_in_doc_mode
+        self.rootMode = g.choose(doc,"doc","code")
+#@-node:ekr.20031218072017.1379:<< Test for @root, @root-doc or @root-code >>
+#@+node:ekr.20071109180120:@test scanColorDirectives
+# This will work regardless of where this method is.
+@language python
+
+# Does not work when run externally with null colorizer.
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    language = c.frame.body.colorizer.scanColorDirectives(p)
+    assert language == 'python','got:%s' % language
+#@-node:ekr.20071109180120:@test scanColorDirectives
+#@-node:ekr.20031218072017.1377:scanColorDirectives (leoColor) & test
+#@+node:ekr.20031218072017.1375:scanForTabWidth
+# Similar to code in scanAllDirectives.
+
+def scanForTabWidth (self,p):
+
+    c = self.c ; w = c.tab_width
+
+    for p in p.self_and_parents_iter():
+        theDict = g.get_directives_dict(p)
+        << set w and break on @tabwidth >>
+
+    c.frame.setTabWidth(w)
+#@+node:ekr.20031218072017.1376:<< set w and break on @tabwidth >>
+if theDict.has_key("tabwidth"):
+
+    val = g.scanAtTabwidthDirective(theDict,issue_error_flag=False)
+    if val and val != 0:
+        w = val
+        break
+#@-node:ekr.20031218072017.1376:<< set w and break on @tabwidth >>
+#@-node:ekr.20031218072017.1375:scanForTabWidth
+#@+node:ekr.20031218072017.3472:tangle (test)
+def tangle(self,event=None):
+
+    c = self.c ; p = c.currentPosition()
+    self.initTangleCommand()
+
+    # Paul Paterson's patch.
+    if not self.tangleTree(p,report_errors):
+        g.es("looking for a parent to tangle...")
+        while p:
+            d = g.get_directives_dict(p,[self.head_root])
+            if d.has_key("root"):
+                g.es("tangling parent")
+                self.tangleTree(p,report_errors)
+                break
+            p.moveToParent()
+
+    g.es("tangle complete")
+#@-node:ekr.20031218072017.3472:tangle (test)
+#@+node:ekr.20031218072017.1360:tangle.scanAllDirectives & test
+@ Once a directive is seen, related directives in ancesors have no effect.  For example, if an @color directive is seen in node x, no @color or @nocolor directives are examined in any ancestor of x.
+@c
+
+def scanAllDirectives(self,p,require_path_flag,issue_error_flag):
+
+    """Scan vnode p and p's ancestors looking for directives,
+    setting corresponding tangle ivars and globals.
+    """
+
+    __pychecker__ = 'maxlines=500 maxbranches=100'
+
+    c = self.c
+    # g.trace(p)
+    old = {} ; print_mode_changed = False
+    self.init_directive_ivars()
+    if p:
+        s = p.bodyString()
+        << Collect @first attributes >>
+    for p in p.self_and_parents_iter():
+        theDict = g.get_directives_dict(p)
+        << Test for @comment and @language >>
+        << Test for @encoding >>
+        << Test for @lineending >>
+        << Test for print modes directives >>
+        << Test for @path >>
+        << Test for @pagewidth >>
+        << Test for @root >>
+        << Test for @tabwidth >>
+        << Test for @header and @noheader >>
+        old.update(theDict)
+    << Set self.tangle_directory >>
+    # For unit testing.
+    return {
+        "encoding"  : self.encoding,
+        "language"  : self.language,
+        "lineending": self.output_newline,
+        "pagewidth" : self.page_width,
+        "path"      : self.tangle_directory,
+        "tabwidth"  : self.tab_width,
+    }
+#@+node:ekr.20031218072017.1361:<< Collect @first attributes >>
+@ Stephen P. Schaefer 9/13/2002: Add support for @first.
+Unlike other root attributes, does *NOT* inherit from parent nodes.
+@c
+tag = "@first"
+sizeString = len(s) # DTHEIN 13-OCT-2002: use to detect end-of-string
+i = 0
+while 1:
+    # DTHEIN 13-OCT-2002: directives must start at beginning of a line
+    if not g.match_word(s,i,tag):
+        i = g.skip_line(s,i)
+    else:
+        i = i + len(tag)
+        j = i = g.skip_ws(s,i)
+        i = g.skip_to_end_of_line(s,i)
+        if i>j:
+            self.first_lines += s[j:i] + '\n'
+        i = g.skip_nl(s,i)
+    if i >= sizeString:  # DTHEIN 13-OCT-2002: get out when end of string reached
+        break
+#@-node:ekr.20031218072017.1361:<< Collect @first attributes >>
+#@+node:ekr.20031218072017.1362:<< Test for @comment and @language >>
+if old.has_key("comment") or old.has_key("language"):
+     pass # Do nothing more.
+
+elif theDict.has_key("comment"):
+
+    z = theDict["comment"]
+    delim1,delim2,delim3 = g.set_delims_from_string(z)
+    if delim1 or delim2:
+        self.single_comment_string = delim1
+        self.start_comment_string = delim2
+        self.end_comment_string = delim3
+        # @comment effectively disables Untangle.
+        self.language = "unknown"
+    else:
+        if issue_error_flag:
+            g.es("ignoring: @comment " + z)
+
+elif theDict.has_key("language"):
+
+    z = theDict["language"]
+    language,delim1,delim2,delim3 = g.set_language(z,0)
+    self.language = language
+    self.single_comment_string = delim1
+    self.start_comment_string = delim2
+    self.end_comment_string = delim3
+    if 0:
+        g.trace(self.single_comment_string,
+            self.start_comment_string,
+            self.end_comment_string)
+
+    # 10/30/02: These ivars must be updated here!
+    # g.trace(self.language)
+    self.use_noweb_flag = True
+    self.use_cweb_flag = False # Only raw cweb mode is ever used.
+    self.raw_cweb_flag = self.language == "cweb" # A new ivar.
+#@-node:ekr.20031218072017.1362:<< Test for @comment and @language >>
+#@+node:ekr.20031218072017.1363:<< Test for @encoding >>
+if not old.has_key("encoding") and theDict.has_key("encoding"):
+
+    e = g.scanAtEncodingDirective(theDict)
+    if e:
+        self.encoding = e
+#@-node:ekr.20031218072017.1363:<< Test for @encoding >>
+#@+node:ekr.20031218072017.1364:<< Test for @lineending >>
+if not old.has_key("lineending") and theDict.has_key("lineending"):
+
+    lineending = g.scanAtLineendingDirective(theDict)
+    if lineending:
+        self.output_newline = lineending
+#@-node:ekr.20031218072017.1364:<< Test for @lineending >>
+#@+node:ekr.20031218072017.1365:<< Test for print modes directives >>
+@ It is valid to have more than one of these directives in the same body text: the more verbose directive takes precedence.
+@c
+
+if not print_mode_changed:
+    for name in ("verbose","terse","quiet","silent"):
+        if theDict.has_key(name):
+            self.print_mode = name
+            print_mode_changed = True
+            break
+#@-node:ekr.20031218072017.1365:<< Test for print modes directives >>
+#@+node:ekr.20031218072017.1366:<< Test for @path >> (tangle.scanAllDirectives)
+if require_path_flag and not old.has_key("path") and theDict.has_key("path"):
+
+    path = theDict["path"]
+    theDir = relative_path = g.computeRelativePath(path)
+
+    if len(theDir) > 0:
+        base = g.getBaseDirectory(c=c) # May return "".
+        if theDir and len(theDir) > 0:
+            theDir = g.os_path_join(base,theDir)
+            if g.os_path_isabs(theDir):
+                << handle absolute @path >>
+            elif issue_error_flag and not self.path_warning_given:
+                self.path_warning_given = True # supress future warnings
+                self.error("ignoring relative path in @path:" + theDir)
+    elif issue_error_flag and not self.path_warning_given:
+        self.path_warning_given = True # supress future warnings
+        self.error("ignoring empty @path")
+#@+node:ekr.20031218072017.1368:<< handle absolute @path >>
+if g.os_path_exists(theDir):
+    self.tangle_directory = theDir
+else: # 11/19/02
+    self.tangle_directory = g.makeAllNonExistentDirectories(theDir,c=c)
+    if not self.tangle_directory:
+        if issue_error_flag and not self.path_warning_given:
+            self.path_warning_given = True # supress future warnings
+            self.error("@path directory does not exist: " + theDir)
+            if base and len(base) > 0:
+                g.es("relative_path_base_directory: " + base)
+            if relative_path and len(relative_path) > 0:
+                g.es("relative path in @path directive: " + relative_path)
+#@-node:ekr.20031218072017.1368:<< handle absolute @path >>
+#@-node:ekr.20031218072017.1366:<< Test for @path >> (tangle.scanAllDirectives)
+#@+node:ekr.20031218072017.1369:<< Test for @pagewidth >>
+if not old.has_key("pagewidth") and theDict.has_key("pagewidth"):
+
+    w = g.scanAtPagewidthDirective(theDict,issue_error_flag)
+    if w and w > 0:
+        self.page_width = w
+#@-node:ekr.20031218072017.1369:<< Test for @pagewidth >>
+#@+node:ekr.20031218072017.1370:<< Test for @root >>
+@ 10/27/02: new code:  self.root may not be defined here, so any relative directory specified in the @root node will have no effect unless we have this code.
+
+@c
+if self.root_name == None and theDict.has_key("root"):
+    z = theDict["root"]
+    self.setRootFromText(z,issue_error_flag)
+#@-node:ekr.20031218072017.1370:<< Test for @root >>
+#@+node:ekr.20031218072017.1371:<< Test for @tabwidth >>
+if not old.has_key("tabwidth") and theDict.has_key("tabwidth"):
+
+    w = g.scanAtTabwidthDirective(theDict,issue_error_flag)
+    if w and w != 0:
+        self.tab_width = w
+#@-node:ekr.20031218072017.1371:<< Test for @tabwidth >>
+#@+node:ekr.20031218072017.1372:<< Test for @header and @noheader >>
+if old.has_key("header") or old.has_key("noheader"):
+    pass # Do nothing more.
+
+elif theDict.has_key("header") and theDict.has_key("noheader"):
+    if issue_error_flag:
+        g.es("conflicting @header and @noheader directives")
+
+elif theDict.has_key("header"):
+    self.use_header_flag = True
+
+elif theDict.has_key("noheader"):
+    self.use_header_flag = False
+#@-node:ekr.20031218072017.1372:<< Test for @header and @noheader >>
+#@+node:ekr.20031218072017.1373:<< Set self.tangle_directory >>
+@ This code sets self.tangle_directory if it has not already been set by an @path directive.
+
+An absolute file name in an @root directive will override the directory set here.
+A relative file name gets appended later to the default directory.
+That is, the final file name will be g.os_path_join(self.tangle_directory,fileName)
+@c
+
+if c.frame and require_path_flag and not self.tangle_directory:
+    if self.root_name and len(self.root_name) > 0:
+        root_dir = g.os_path_dirname(self.root_name)
+    else:
+        root_dir = None
+    # print "root_dir:", root_dir
+
+    table = ( # This is a precedence table.
+        (root_dir,"@root"), 
+        (c.tangle_directory,"default tangle"), # Probably should be eliminated.
+        (c.frame.openDirectory,"open"))
+
+    base = g.getBaseDirectory(c=c) # May return ""
+
+    for dir2, kind in table:
+        if dir2 and len(dir2) > 0:
+            # print "base,theDir:",base,theDir
+            theDir = g.os_path_join(base,dir2)
+            if g.os_path_isabs(theDir): # Errors may result in relative or invalid path.
+                << handle absolute path >>
+
+if not self.tangle_directory and require_path_flag: # issue_error_flag:
+    self.pathError("No absolute directory specified by @root, @path or Preferences.")
+#@+node:ekr.20031218072017.1374:<< handle absolute path >>
+if g.os_path_exists(theDir):
+    if kind == "@root" and not g.os_path_isabs(root_dir):
+        self.tangle_directory = base
+    else:
+        self.tangle_directory = theDir 
+    break
+else: # 9/25/02
+    self.tangle_directory = g.makeAllNonExistentDirectories(theDir,c=c)
+    if not self.tangle_directory:
+        # 10/27/02: It is an error for this not to exist now.
+        self.error("@root directory does not exist:" + theDir)
+        if base and len(base) > 0:
+            g.es("relative_path_base_directory: " + base)
+        if dir2 and len(dir2) > 0:
+            g.es(kind + " directory: " + dir2)
+#@-node:ekr.20031218072017.1374:<< handle absolute path >>
+#@-node:ekr.20031218072017.1373:<< Set self.tangle_directory >>
+#@+node:ekr.20071109220650:@test tangle.scanAllDirectives
+# This will work regardless of where this method is.
+@language python
+@tabwidth -4
+
+# Does not work when run externally with null colorizer.
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    d = c.tangleCommands.scanAllDirectives(
+        p,require_path_flag=False,issue_error_flag=False)
+
+    assert d.get('language') == 'python'
+    assert d.get('tabwidth') == -4
+#@-node:ekr.20071109220650:@test tangle.scanAllDirectives
+#@-node:ekr.20031218072017.1360:tangle.scanAllDirectives & test
+#@+node:ekr.20031218072017.3475:tanglePass1 (test)
+# Traverses the tree whose root is given, handling each headline and associated body text.
+
+def tanglePass1(self,p):
+
+    """The main routine of tangle pass 1"""
+
+    p = p.copy() # 9/14/04
+    next = p.nodeAfterTree()
+    while p and p != next:
+        self.p = p
+        self.setRootFromHeadline(p)
+        theDict = g.get_directives_dict(p,[self.head_root])
+        is_ignore = theDict.has_key("ignore")
+        if is_ignore:
+            p.moveToNodeAfterTree()
+            continue
+        # This must be called after root_name has been set.
+        if self.tangling:
+            self.scanAllDirectives(p,require_path,report_errors) # calls init_directive_ivars.
+        # Scan the headline and body text.
+        self.skip_headline(p)
+        self.skip_body(p)
+        p.moveToThreadNext()
+        if self.errors + g.app.scanErrors >= max_errors:
+            self.warning("----- Halting Tangle: too many errors")
+            break
+
+    if self.tangling:
+        self.st_check()
+        # g.trace(self.st_dump(verbose_flag=True))
+#@-node:ekr.20031218072017.3475:tanglePass1 (test)
+#@+node:ekr.20031218072017.3477:tangleTree (calls cleanup)
+# This function is called only from the top level, so there is no need to initialize globals.
+
+def tangleTree(self,p,report_flag):
+
+    """Tangles all nodes in the tree whose root is p.
+
+    Reports on its results if report_flag is True."""
+
+    p = p.copy() # 9/14/04
+    assert(p)
+    any_root_flag = False
+    next = p.nodeAfterTree()
+    self.path_warning_given = False
+
+    while p and p != next:
+        self.setRootFromHeadline(p)
+        theDict = g.get_directives_dict(p,[self.head_root])
+        is_ignore = theDict.has_key("ignore")
+        is_root = theDict.has_key("root")
+        is_unit = theDict.has_key("unit")
+        if is_ignore:
+            p.moveToNodeAfterTree()
+        elif not is_root and not is_unit:
+            p.moveToThreadNext()
+        else:
+            self.tanglePass1(p) # sets self.p
+            if self.root_list and self.tangling:
+                any_root_flag = True
+                self.tanglePass2() # self.p invalid in pass 2.
+            self.cleanup()
+            p.moveToNodeAfterTree()
+            if self.path_warning_given: break # Fatal error.
+
+    if self.tangling and report_flag and not any_root_flag:
+        # This is done by Untangle if we are untangling.
+        self.warning("----- The outline contains no roots")
+    return any_root_flag
+#@-node:ekr.20031218072017.3477:tangleTree (calls cleanup)
+#@+node:ekr.20031218072017.3486:untangleTree
+# This funtion is called when the user selects any "Untangle" command.
+
+def untangleTree(self,p,report_flag):
+
+    p = p.copy() # 9/14/04
+    c = self.c
+    any_root_flag = False
+    afterEntireTree = p.nodeAfterTree()
+    # Initialize these globals here: they can't be cleared later.
+    self.head_root = None
+    self.errors = 0 ; g.app.scanErrors = 0
+    c.clearAllVisited() # Used by untangle code.
+
+    while p and p != afterEntireTree and self.errors + g.app.scanErrors == 0:
+        self.setRootFromHeadline(p)
+        theDict = g.get_directives_dict(p,[self.head_root])
+        ignore = theDict.has_key("ignore")
+        root = theDict.has_key("root")
+        unit = theDict.has_key("unit")
+        if ignore:
+            p.moveToNodeAfterTree()
+        elif unit:
+            # Expand the context to the @unit directive.
+            unitNode = p   # 9/27/99
+            afterUnit = p.nodeAfterTree()
+            p.moveToThreadNext()
+            while p and p != afterUnit and self.errors + g.app.scanErrors== 0:
+                self.setRootFromHeadline(p)
+                theDict = g.get_directives_dict(p,[self.head_root])
+                root = theDict.has_key("root")
+                if root:
+                    any_root_flag = True
+                    end = None
+                    << set end to the next root in the unit >>
+                    # g.trace("end:",end)
+                    self.scanAllDirectives(p,require_path,report_errors)
+                    self.untangleRoot(p,unitNode,afterUnit)
+                    p = end.copy()
+                else: p.moveToThreadNext()
+        elif root:
+            # Limit the range of the @root to its own tree.
+            afterRoot = p.nodeAfterTree()
+            any_root_flag = True
+            self.scanAllDirectives(p,require_path,report_errors)
+            self.untangleRoot(p,p,afterRoot) # 9/27/99
+            p = afterRoot.copy()
+        else:
+            p.moveToThreadNext()
+
+    self.errors += g.app.scanErrors
+
+    if report_flag:
+        if not any_root_flag:
+            self.warning("----- The outline contains no roots")
+        elif self.errors > 0:
+            self.warning("----- Untangle command halted because of errors")
+    return any_root_flag
+#@+node:ekr.20031218072017.3487:<< set end to the next root in the unit >>
+@ The untangle_root function will untangle an entire tree by calling untangleTree, so the following code ensures that the next @root node will not be an offspring of p.
+@c
+
+end = p.threadNext()
+while end and end != afterUnit:
+    flag, i = g.is_special(end.bodyString(),0,"@root")
+    if flag and not p.isAncestorOf(end):
+        break
+    end.moveToThreadNext()
+#@-node:ekr.20031218072017.3487:<< set end to the next root in the unit >>
+#@-node:ekr.20031218072017.3486:untangleTree
+#@+node:ekr.20031218072017.2805:useSyntaxColoring
+def useSyntaxColoring (self,p):
+
+    """Return True unless p is unambiguously under the control of @nocolor."""
+
+    p = p.copy() ; first = p.copy()
+    self.killFlag = False
+    for p in p.self_and_parents_iter():
+        theDict = g.get_directives_dict(p)
+        no_color = theDict.has_key("nocolor")
+        color = theDict.has_key("color")
+        kill_color = theDict.has_key("killcolor")
+        # A killcolor anywhere disables coloring.
+        if kill_color:
+            self.killFlag = True
+            return False
+        # A color anywhere in the target enables coloring.
+        elif color and p == first:
+            return True
+        # Otherwise, the @nocolor specification must be unambiguous.
+        elif no_color and not color:
+            return False
+        elif color and not no_color:
+            return True
+
+    return True
+#@-node:ekr.20031218072017.2805:useSyntaxColoring
+#@-node:ekr.20071109124553:Found: get_directives_dict
+#@+node:ekr.20051125080855:selfInsertCommand, helpers & tests
+def selfInsertCommand(self,event,action='insert'):
+
+    '''Insert a character in the body pane.
+    This is the default binding for all keys in the body pane.'''
+
+    w = self.editWidget(event)
+    if not w: return 'break'
+    << set local vars >>
+    #g.trace('ch',repr(ch))
+    if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
+        return "break" # The hook claims to have handled the event.
+    if ch == '\t':
+        self.updateTab(p,w)
+    elif ch == '\b':
+        # This is correct: we only come here if there no bindngs for this key. 
+        self.backwardDeleteCharacter(event)
+    elif ch in ('\r','\n'):
+        ch = '\n'
+        self.insertNewlineHelper(w,oldSel,undoType)
+    elif inBrackets and self.autocompleteBrackets:
+        self.updateAutomatchBracket(p,w,ch,oldSel)
+    elif ch: # Null chars must not delete the selection.
+        i,j = oldSel
+        if i > j: i,j = j,i
+        # Use raw insert/delete to retain the coloring.
+        if i != j:                  w.delete(i,j)
+        elif action == 'overwrite': w.delete(i)
+        w.insert(i,ch)
+        w.setInsertPoint(i+1)
+        if inBrackets and self.flashMatchingBrackets:
+
+            self.flashMatchingBracketsHelper(w,i,ch)               
+    else:
+        return 'break' # This method *always* returns 'break'
+
+    # Set the column for up and down keys.
+    spot = w.getInsertPoint()
+    c.editCommands.setMoveCol(w,spot)
+
+    # Update the text and handle undo.
+    newText = w.getAllText()
+    changed = newText != oldText
+    # g.trace('ch',repr(ch),'changed',changed,'newText',repr(newText[-10:]))
+    if changed:
+        # g.trace('ins',w.getInsertPoint())
+        c.frame.body.onBodyChanged(undoType=undoType,
+            oldSel=oldSel,oldText=oldText,oldYview=None)
+
+    g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
+    return 'break'
+#@+node:ekr.20061103114242:<< set local vars >>
+c = self.c
+p = c.currentPosition()
+gui = g.app.gui
+ch = gui.eventChar(event)
+keysym = gui.eventKeysym(event)
+if keysym == 'Return':
+    ch = '\n' # This fixes the MacOS return bug.
+if keysym == 'Tab': # Support for wx_alt_gui plugin.
+    ch = '\t'
+name = c.widget_name(w)
+oldSel =  name.startswith('body') and w.getSelectionRange() or (None,None)
+oldText = name.startswith('body') and p.bodyString() or ''
+undoType = 'Typing'
+trace = c.config.getBool('trace_masterCommand')
+brackets = self.openBracketsList + self.closeBracketsList
+inBrackets = ch and g.toUnicode(ch,g.app.tkEncoding) in brackets
+if trace: g.trace(name,repr(ch),ch and ch in brackets)
+#@nonl
+#@-node:ekr.20061103114242:<< set local vars >>
+#@+node:ekr.20051026171121:insertNewlineHelper
+def insertNewlineHelper (self,w,oldSel,undoType):
+
+    c = self.c ; p = c.currentPosition()
+    i,j = oldSel ; ch = '\n'
+
+    if i != j:
+        # No auto-indent if there is selected text.
+        w.delete(i,j)
+        w.insert(i,ch)
+        w.setInsertPoint(i+1)
+    else:
+        w.insert(i,ch)
+        w.setInsertPoint(i+1)
+
+        allow_in_nocolor = c.config.getBool('autoindent_in_nocolor_mode')
+        if (
+            (allow_in_nocolor or c.frame.body.colorizer.useSyntaxColoring(p)) and
+            undoType != "Change"
+        ):
+            # No auto-indent if in @nocolor mode or after a Change command.
+            self.updateAutoIndent(p,w)
+
+    w.seeInsertPoint()
+#@nonl
+#@-node:ekr.20051026171121:insertNewlineHelper
+#@+node:ekr.20060804095512:initBracketMatcher
+def initBracketMatcher (self,c):
+
+    self.openBracketsList  = c.config.getString('open_flash_brackets')  or '([{'
+    self.closeBracketsList = c.config.getString('close_flash_brackets') or ')]}'
+
+    if len(self.openBracketsList) != len(self.closeBracketsList):
+        g.es_print('bad open/close_flash_brackets setting: using defaults')
+        self.openBracketsList  = '([{'
+        self.closeBracketsList = ')]}'
+
+    # g.trace('self.openBrackets',openBrackets)
+    # g.trace('self.closeBrackets',closeBrackets)
+#@-node:ekr.20060804095512:initBracketMatcher
+#@+node:ekr.20060627083506:flashMatchingBracketsHelper
+def flashMatchingBracketsHelper (self,w,i,ch):
+
+    d = {}
+    if ch in self.openBracketsList:
+        for z in xrange(len(self.openBracketsList)):
+            d [self.openBracketsList[z]] = self.closeBracketsList[z]
+        reverse = False # Search forward
+    else:
+        for z in xrange(len(self.openBracketsList)):
+            d [self.closeBracketsList[z]] = self.openBracketsList[z]
+        reverse = True # Search backward
+
+    delim2 = d.get(ch)
+
+    s = w.getAllText()
+    j = g.skip_matching_python_delims(s,i,ch,delim2,reverse=reverse)
+    if j != -1:
+        self.flashCharacter(w,j)
+#@-node:ekr.20060627083506:flashMatchingBracketsHelper
+#@+node:ekr.20060627091557:flashCharacter
+def flashCharacter(self,w,i):
+
+    bg      = self.bracketsFlashBg or 'DodgerBlue1'
+    fg      = self.bracketsFlashFg or 'white'
+    flashes = self.bracketsFlashCount or 2
+    delay   = self.bracketsFlashDelay or 75
+
+    w.flashCharacter(i,bg,fg,flashes,delay)
+#@-node:ekr.20060627091557:flashCharacter
+#@+node:ekr.20051027172949:updateAutomatchBracket
+def updateAutomatchBracket (self,p,w,ch,oldSel):
+
+    # assert ch in ('(',')','[',']','{','}')
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    i,j = oldSel
+    language = d.get('language')
+    s = w.getAllText()
+
+    if ch in ('(','[','{',):
+        automatch = language not in ('plain',)
+        if automatch:
+            ch = ch + {'(':')','[':']','{':'}'}.get(ch)
+        if i != j: w.delete(i,j)
+        w.insert(i,ch)
+        if automatch:
+            ins = w.getInsertPoint()
+            w.setInsertPoint(ins-1)
+    else:
+        ins = w.getInsertPoint()
+        ch2 = ins<len(s) and s[ins] or ''
+        if ch2 in (')',']','}'):
+            ins = w.getInsertPoint()
+            w.setInsertPoint(ins+1)
+        else:
+            if i != j: w.delete(i,j)
+            w.insert(i,ch)
+            w.setInsertPoint(i+1)
+#@-node:ekr.20051027172949:updateAutomatchBracket
+#@+node:ekr.20051026171121.1:udpateAutoIndent
+def updateAutoIndent (self,p,w):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width)
+    # Get the previous line.
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i = g.skip_to_start_of_line(s,ins)
+    i,j = g.getLine(s,i-1)
+    s = s[i:j-1]
+    # g.trace(i,j,repr(s))
+
+    # Add the leading whitespace to the present line.
+    junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
+    # g.trace('width',width,'tab_width',tab_width)
+
+    if s and s [-1] == ':':
+        # For Python: increase auto-indent after colons.
+        if g.scanColorDirectives(c,p) == 'python':
+            width += abs(tab_width)
+    if self.smartAutoIndent:
+        # Determine if prev line has unclosed parens/brackets/braces
+        bracketWidths = [width] ; tabex = 0
+        for i in range(0,len(s)):
+            if s [i] == '\t':
+                tabex += tab_width-1
+            if s [i] in '([{':
+                bracketWidths.append(i+tabex+1)
+            elif s [i] in '}])' and len(bracketWidths) > 1:
+                bracketWidths.pop()
+        width = bracketWidths.pop()
+    ws = g.computeLeadingWhitespace(width,tab_width)
+    if ws:
+        i = w.getInsertPoint()
+        w.insert(i,ws)
+        w.setInsertPoint(i+len(ws))
+#@-node:ekr.20051026171121.1:udpateAutoIndent
+#@+node:ekr.20051026092433:updateTab
+def updateTab (self,p,w):
+
+    c = self.c
+    d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width)
+    i,j = w.getSelectionRange()
+        # Returns insert point if no selection, with i <= j.
+
+    if i != j:
+        w.delete(i,j)
+
+    if tab_width > 0:
+        w.insert(i,'\t')
+        ins = i+1
+    else:
+        # Get the preceeding characters.
+        s = w.getAllText()
+        start = g.skip_to_start_of_line(s,i)
+        s2 = s[start:i]
+
+        # Compute n, the number of spaces to insert.
+        width = g.computeWidth(s2,tab_width)
+        n = abs(tab_width) - (width % abs(tab_width))
+        # g.trace('n',n)
+        w.insert(i,' ' * n)
+        ins = i+n
+
+    w.setSelectionRange(ins,ins,insert=ins)
+#@nonl
+#@-node:ekr.20051026092433:updateTab
+#@+node:ekr.20070627082044.274:@test selfInsertCommand-1
+if g.unitTesting:
+    c.beginUpdate()
+    try:
+        ec = c.editCommands ; w = c.frame.body.bodyCtrl
+        s = w.getAllText()
+
+        # This strings tests unicode, paren matching, and auto-indentation.
+        u = u'(a\u00c9\u03a9B\u3045\u4e7cz):\n' # '(aÉΩBぅ乼cz):\n'
+        u = u'(pdq):\n'
+        w.setInsertPoint(len(s))
+        for char in u:
+            event = g.Bunch(widget=w,char=char,keysym=None)
+            ec.selfInsertCommand(event)
+        result = w.getAllText()
+        #g.trace('result',repr(result))
+        assert result.endswith('    '),'result:%s' % repr(result) # Test of autocompleter.
+    finally:
+        w.setAllText(s)
+        p.v.t.bodyString = s
+        # g.trace(repr(s))
+        c.recolor()
+        c.endUpdate(False)
+
+# end:
+#@-node:ekr.20070627082044.274:@test selfInsertCommand-1
+#@+node:ekr.20070627082044.275:@test selfInsertCommand-2 (replacing tabs)
+if g.unitTesting:
+    c.beginUpdate()
+    try:
+        ec = c.editCommands ; w = c.frame.body.bodyCtrl
+        s = w.getAllText()
+        w.setSelectionRange(len(s)-9,len(s)-6)
+        event = g.Bunch(widget=w,char='\t',keysym=None)
+        ec.selfInsertCommand(event)
+        result = w.getAllText()
+        # g.trace('result',repr(result))
+        assert result.endswith('\n    abcdef'),'last line:%s' % repr(result.split('\n')[-1])
+    finally:
+        w.setAllText(s)
+        p.v.t.bodyString = s
+        # g.trace(repr(s))
+        c.recolor()
+        c.endUpdate(False)
+###abcdef
+#@nonl
+#@-node:ekr.20070627082044.275:@test selfInsertCommand-2 (replacing tabs)
+#@-node:ekr.20051125080855:selfInsertCommand, helpers & tests
+#@+node:ekr.20040803072955.91:onHeadChanged
+# Tricky code: do not change without careful thought and testing.
+
+def onHeadChanged (self,p,undoType='Typing',s=None):
+
+    '''Officially change a headline.
+    Set the old undo text to the previous revert point.'''
+
+    c = self.c ; u = c.undoer ; w = c.edit_widget(p)
+    if c.suppressHeadChanged: return
+    if not w: return
+
+    ch = '\n' # New in 4.4: we only report the final keystroke.
+    if g.doHook("headkey1",c=c,p=p,v=p,ch=ch):
+        return # The hook claims to have handled the event.
+
+    if s is None: s = w.getAllText()
+    << truncate s if it has multiple lines >>
+    c.beginUpdate()
+    try:
+        # Make the change official, but undo to the *old* revert point.
+        oldRevert = self.revertHeadline
+        changed = s != oldRevert
+        self.revertHeadline = s
+        p.initHeadString(s)
+        # g.trace('changed',changed,'old',repr(oldRevert),'new',repr(s))
+        if changed:
+            undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
+            if not c.changed: c.setChanged(True)
+            # New in Leo 4.4.5: we must recolor the body because
+            # the headline may contain directives.
+            c.frame.scanForTabWidth(p)
+            c.frame.body.recolor(p,incremental=True)
+            dirtyVnodeList = p.setDirty()
+            u.afterChangeNodeContents(p,undoType,undoData,
+                dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate(flag=changed,scroll=False)
+            # scroll=False in 4.4.1; flag = changed in 4.4.3.
+        if changed:
+            if self.stayInTree:
+                c.treeWantsFocus()
+            else:
+                c.bodyWantsFocus()
+        else:
+            c.frame.tree.setSelectedLabelState(p)
+
+    g.doHook("headkey2",c=c,p=p,v=p,ch=ch)
+#@+node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
+# Remove one or two trailing newlines before warning of truncation.
+for i in (0,1):
+    if s and s[-1] == '\n':
+        if len(s) > 1: s = s[:-1]
+        else: s = ''
+
+# Warn if there are multiple lines.
+i = s.find('\n')
+if i > -1:
+    # g.trace(i,len(s),repr(s))
+    g.es("Truncating headline to one line",color="blue")
+    s = s[:i]
+
+limit = 1000
+if len(s) > limit:
+    g.es("Truncating headline to %d characters" % (limit),color="blue")
+    s = s[:limit]
+
+s = g.toUnicode(s or '',g.app.tkEncoding)
+#@-node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
+#@-node:ekr.20040803072955.91:onHeadChanged
+#@+node:ekr.20071110074253:Will not refactor @path logic
+# There are many similarities, but there are subtle differences as well.
+# It does not appear to be worth the risk, or benefit.
+#@nonl
+#@+node:ekr.20041005105605.234:<< Set current directory >> (atFile.scanAllDirectives)
+# This code is executed if no valid absolute path was specified in the @file node or in an @path directive.
+
+if c.frame and not self.default_directory:
+    base = g.getBaseDirectory(c) # returns "" on error.
+    for theDir in (c.tangle_directory,c.frame.openDirectory,c.openDirectory):
+        if theDir and len(theDir) > 0:
+            theDir = g.os_path_join(base,theDir)
+            if g.os_path_isabs(theDir): # Errors may result in relative or invalid path.
+                if g.os_path_exists(theDir):
+                    self.default_directory = theDir ; break
+                else: # 9/25/02
+                    self.default_directory = g.makeAllNonExistentDirectories(theDir,c=c)
+
+if not self.default_directory and not scripting and not importing:
+    # This should never happen: c.openDirectory should be a good last resort.
+    g.trace()
+    self.error("No absolute directory specified anywhere.")
+    self.default_directory = ""
+#@-node:ekr.20041005105605.234:<< Set current directory >> (atFile.scanAllDirectives)
+#@+node:ekr.20041005105605.225:<< Test for @path >> (atFile.scanAllDirectives)
+# We set the current director to a path so future writes will go to that directory.
+
+if not self.default_directory and not old.has_key("path") and theDict.has_key("path"):
+
+    path = theDict["path"]
+    path = g.computeRelativePath(path)
+    if path and len(path) > 0:
+        base = g.getBaseDirectory(c) # returns "" on error.
+        path = g.os_path_join(base,path)
+        if g.os_path_isabs(path):
+            << handle absolute path >>
+        else:
+            self.error("ignoring bad @path: %s" % path)
+    else:
+        self.error("ignoring empty @path")
+#@+node:ekr.20041005105605.227:<< handle absolute path >>
+# path is an absolute path.
+
+if g.os_path_exists(path):
+    self.default_directory = path
+else:
+    self.default_directory = g.makeAllNonExistentDirectories(path,c=c)
+    if not self.default_directory:
+        self.error("invalid @path: %s" % path)
+#@-node:ekr.20041005105605.227:<< handle absolute path >>
+#@-node:ekr.20041005105605.225:<< Test for @path >> (atFile.scanAllDirectives)
+#@+node:ekr.20031218072017.1397:<< Test for @path >> (g.scanDirectives)
+if not path and not old.has_key("path") and theDict.has_key("path"):
+
+    path = theDict["path"]
+    path = g.computeRelativePath(path)
+
+    if path and len(path) > 0:
+        base = g.getBaseDirectory(c) # returns "" on error.
+        path = g.os_path_join(base,path)
+#@-node:ekr.20031218072017.1397:<< Test for @path >> (g.scanDirectives)
+#@+node:ekr.20031218072017.1366:<< Test for @path >> (tangle.scanAllDirectives)
+if require_path_flag and not old.has_key("path") and theDict.has_key("path"):
+
+    path = theDict["path"]
+    theDir = relative_path = g.computeRelativePath(path)
+
+    if len(theDir) > 0:
+        base = g.getBaseDirectory(c=c) # May return "".
+        if theDir and len(theDir) > 0:
+            theDir = g.os_path_join(base,theDir)
+            if g.os_path_isabs(theDir):
+                << handle absolute @path >>
+            elif issue_error_flag and not self.path_warning_given:
+                self.path_warning_given = True # supress future warnings
+                self.error("ignoring relative path in @path:" + theDir)
+    elif issue_error_flag and not self.path_warning_given:
+        self.path_warning_given = True # supress future warnings
+        self.error("ignoring empty @path")
+#@+node:ekr.20031218072017.1368:<< handle absolute @path >>
+if g.os_path_exists(theDir):
+    self.tangle_directory = theDir
+else: # 11/19/02
+    self.tangle_directory = g.makeAllNonExistentDirectories(theDir,c=c)
+    if not self.tangle_directory:
+        if issue_error_flag and not self.path_warning_given:
+            self.path_warning_given = True # supress future warnings
+            self.error("@path directory does not exist: " + theDir)
+            if base and len(base) > 0:
+                g.es("relative_path_base_directory: " + base)
+            if relative_path and len(relative_path) > 0:
+                g.es("relative path in @path directive: " + relative_path)
+#@-node:ekr.20031218072017.1368:<< handle absolute @path >>
+#@-node:ekr.20031218072017.1366:<< Test for @path >> (tangle.scanAllDirectives)
+#@-node:ekr.20071110074253:Will not refactor @path logic
+#@+node:ekr.20071109180120.1:New unit tests
+#@+node:ekr.20071109224138:@test g.get_directives_dict
+# This will work regardless of where this method is.
+@language python
+@tabwidth -4
+#@verbatim
+#@path xyzzy
+@pagewidth 120
+
+# Does not work when run externally with null colorizer.
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    d = c.atFileCommands.scanAllDirectives(p)
+
+    assert d.get('language') == 'python'
+    assert d.get('tabwidth') == -4
+    # assert d.get('path').endswith('xyzzy')
+    assert d.get('pagewidth') == 120
+#@-node:ekr.20071109224138:@test g.get_directives_dict
+#@+node:ekr.20071109223354:@test at.scanAllDirectives
+# This will work regardless of where this method is.
+@language python
+@tabwidth -4
+# @path xyzzy
+@pagewidth 120
+
+# Does not work when run externally with null colorizer.
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    d = c.atFileCommands.scanAllDirectives(p)
+
+    assert d.get('language') == 'python'
+    assert d.get('tabwidth') == -4
+    # assert d.get('path').endswith('xyzzy')
+    assert d.get('pagewidth') == 120
+#@-node:ekr.20071109223354:@test at.scanAllDirectives
+#@+node:ekr.20071109221337:@test g.scanDirectives
+# This will work regardless of where this method is.
+@language python
+@tabwidth -4
+# @path xyzzy # Creates a folder called xyzzy, interfering with another unit test.
+
+# Does not work when run externally with null colorizer.
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    d = g.scanDirectives(c,p)
+
+    assert d.get('language') == 'python'
+    assert d.get('tabwidth') == -4
+    # assert d.get('path').endswith('xyzzy')
+#@-node:ekr.20071109221337:@test g.scanDirectives
+#@+node:ekr.20071109221215:@test scanColorDirectives
+# This will work regardless of where this method is.
+@language python
+
+# Does not work when run externally with null colorizer.
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    language = g.scanForAtLanguage(c,p)
+    assert language == 'python','got:%s' % language
+#@-node:ekr.20071109221215:@test scanColorDirectives
+#@+node:ekr.20071109180120:@test scanColorDirectives
+# This will work regardless of where this method is.
+@language python
+
+# Does not work when run externally with null colorizer.
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    language = c.frame.body.colorizer.scanColorDirectives(p)
+    assert language == 'python','got:%s' % language
+#@-node:ekr.20071109180120:@test scanColorDirectives
+#@+node:ekr.20071109220650:@test tangle.scanAllDirectives
+# This will work regardless of where this method is.
+@language python
+@tabwidth -4
+
+# Does not work when run externally with null colorizer.
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    d = c.tangleCommands.scanAllDirectives(
+        p,require_path_flag=False,issue_error_flag=False)
+
+    assert d.get('language') == 'python'
+    assert d.get('tabwidth') == -4
+#@-node:ekr.20071109220650:@test tangle.scanAllDirectives
+#@-node:ekr.20071109180120.1:New unit tests
+#@-node:ekr.20070803115653:Support directives in headlines
+#@-node:ekr.20071110081315:New features
 #@-node:ekr.20071105150738:Leo 4.4.5 a1
 #@-all
 #@nonl
