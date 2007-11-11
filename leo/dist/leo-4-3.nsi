@@ -18,7 +18,7 @@
 ;@+node:ekr.20050118092706.1:<< defines >>
 ;@<< 4.3 nsi installer version >>
 ;@+node:ekr.20050118124408:<< 4.3 nsi installer version >>
-!define PRODUCT_VERSION "4.4.4-final"
+!define PRODUCT_VERSION "4.4.5-b1"
 ;@nonl
 ;@-node:ekr.20050118124408:<< 4.3 nsi installer version >>
 ;@nl
@@ -73,7 +73,7 @@ WindowIcon off
 
 ; settings from HM NIS Edit Wizard
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "LeoSetup-4-4-4-final.exe"
+OutFile "LeoSetup-4-4-5-b1.exe"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 InstallDir "$PROGRAMFILES\Leo"
 Icon "..\Icons\leo_inst.ico"
@@ -462,7 +462,7 @@ Label1:
 ;  WriteRegStr HKCR "LeoFile\DefaultIcon" "" $INSTDIR\Icons\LeoDoc.ico,0
 ; which does not work under Windows XP Professional SP2.
   WriteRegStr HKCR "LeoFile\DefaultIcon" "" $INSTDIR\Icons\LeoDoc.ico
-  WriteRegStr HKCR "LeoFile\shell\open\command" "" '"$PythonExecutable" "$INSTDIR\src\leo.py" %1'
+  WriteRegStr HKCR "LeoFile\shell\open\command" "" '"$PythonExecutable" "$INSTDIR\src\leo.py" "%1"'
 
 SectionEnd
 ;@nonl

@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.624838292367">
-	<global_window_position top="16" left="349" height="907" width="849"/>
+	<global_window_position top="16" left="349" height="887" width="849"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -220,7 +220,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846" a="E"><vh>Distribution files</vh>
+<v t="EKR.20040519090846"><vh>Distribution files</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
@@ -233,13 +233,13 @@
 <v t="EKR.20040519090846.7"><vh>Shell &amp; batch scripts</vh></v>
 </v>
 <v t="EKR.20040519090846.1"><vh>@asis ../doc/LICENSE.TXT</vh></v>
-<v t="ekr.20070622074708" a="TV"><vh>@asis../manifest.in</vh></v>
+<v t="ekr.20070622074708"><vh>@asis../manifest.in</vh></v>
 <v t="EKR.20040519082027.32"><vh>Linux install/uninstall scripts</vh>
 <v t="EKR.20040519082027.33"><vh>@file-thin ../install</vh></v>
 <v t="EKR.20040519082027.34"><vh>@file-thin ../uninstall</vh></v>
 </v>
 </v>
-<v t="ekr.20051205102401"><vh>Update these for each release</vh>
+<v t="ekr.20051205102401" a="TV"><vh>Update these for each release</vh>
 <v t="EKR.20040519090846.9"><vh>@asis ../doc/README.TXT</vh></v>
 <v t="EKR.20040519090846.8"><vh>@asis ../doc/PKG-INFO.TXT</vh></v>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings for leo-4.3.nsi &gt;&gt;</vh></v>
@@ -569,16 +569,16 @@ Installing the leo.py on Linux
 Download the latest version of Leo (a .zip file) from: http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 Unzip the downloaded .zip file into a folder in your home directory.
-The folder will be called something like leo-4-4-3-final.
+The folder will be called something like leo-4-4-5-final.
 
 You now have two choices:
 
 1. You can run Leo from your home directory.
-Just add  ~/leo-4-4-3-final to your path.
+Just add  ~/leo-4-4-5-final to your path.
 
 2. You can install leo into \usr\local\lib and \usr\local\bin by running Leo's install script as follows::
 
-    cd ~/leo-4-4-3-final
+    cd ~/leo-4-4-5-final
     chmod u+x install
     sudo ./install
 
@@ -689,12 +689,12 @@ where &lt;leopath&gt; is replaced with the path to the leo directory.
 
 On Windows, the equivalent batch file would be:
 
-c:\python22\python &lt;leopath&gt;leo.py %1
+c:\python22\python &lt;leopath&gt;leo.py "%1"
 
 </t>
 <t tx="EKR.20040519090846.8">Metadata-Version: 1.0
 Name: leo
-Version: 4.4.4-final
+Version: 4.4.5-b1
 Summary: Leo: Literate Editor with Outlines
 Home-page: http://webpages.charter.net/edreamleo/front.html
 Author: Edward K. Ream
@@ -2909,7 +2909,7 @@ WindowIcon off
 
 ; settings from HM NIS Edit Wizard
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "LeoSetup-4-4-4-final.exe"
+OutFile "LeoSetup-4-4-5-b1.exe"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 InstallDir "$PROGRAMFILES\Leo"
 Icon "..\Icons\leo_inst.ico"
@@ -3134,7 +3134,7 @@ Delete "$INSTDIR\test\test.leo"
 Delete "$INSTDIR\test\unitTest.leo"
 Delete "$INSTDIR\test\leoBridgeTest.py"
 Delete "$INSTDIR\test\leoDynamicTest.py"</t>
-<t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4.4-final"</t>
+<t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4.5-b1"</t>
 <t tx="ekr.20050124083006">Leo 4.3 alpha 1 is now available at http://sourceforge.net/projects/leo/
 
 Leo 4.3 is the culmination of more than four months of work. In spite
@@ -5408,7 +5408,7 @@ print ; print '='*30,'setup.py complete','='*30 ; print
 </t>
 <t tx="ekr.20070622081640"># These can't be used at present.</t>
 <t tx="ekr.20070622084133"></t>
-<t tx="ekr.20070622084634">version='4.4.4-final' # No spaces and no trailing comma.</t>
+<t tx="ekr.20070622084634">version='4.4.5-b1' # No spaces and no trailing comma.</t>
 <t tx="ekr.20070622091049">Leo 4.4.3 beta 3                                June 23, 2006
 
 Leo 4.4.3 beta 3 is available at:

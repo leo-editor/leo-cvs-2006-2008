@@ -863,6 +863,7 @@ src\leo_Shell.py
 src\leo_run.py
 src\oldLeoProjects.leo
 src\unitTests.txt
+test\test-2007-11-7.py
 test\test.leo
 test\unitTest.leo
 test\unittest\at-file-thin-test2.txt
