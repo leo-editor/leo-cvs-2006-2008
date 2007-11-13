@@ -1683,7 +1683,9 @@ def runEditCommandTest (c,p):
         # Convert both selection ranges to gui indices.
         sel2_orig = sel2
         # g.trace(w)
+        assert len(sel2) == 2,'Bad headline index.  Expected index,index.  got: %s' % sel2
         i,j = sel2 ; sel2 = w.toGuiIndex(i),w.toGuiIndex(j)
+        assert len(sel3) == 2,'Bad headline index.  Expected index,index.  got: %s' % sel3
         i,j = sel3 ; sel3 = w.toGuiIndex(i),w.toGuiIndex(j)
         assert sel2 == sel3, 'mismatch in sel\nexpected: %s = %s, got: %s' % (sel2_orig,sel2,sel3)
         c.selectPosition(atTest)
