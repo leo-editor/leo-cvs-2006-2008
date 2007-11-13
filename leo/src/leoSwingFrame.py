@@ -5653,24 +5653,28 @@ class leoSwingTree (leoFrame.leoTree):
 
     def yoffset(self,p1):
         # if not p1.isVisible(): print "yoffset not visible:",p1
+        if not p1: return 0
         if c.hoistStack:
             bunch = c.hoistStack[-1]
             root = bunch.p.copy()
         else:
             root = self.c.rootPosition()
-        h,flag = self.yoffsetTree(root,p1)
-        # flag can be False during initialization.
-        # if not flag: print "yoffset fails:",h,v1
-        return h
+        if root:
+            h,flag = self.yoffsetTree(root,p1)
+            # flag can be False during initialization.
+            # if not flag: print "yoffset fails:",h,v1
+            return h
+        else:
+            return 0
 
     def yoffsetTree(self,p,p1):
-        h = 0 ; trace = True
+        h = 0 ; trace = False
         if not self.c.positionExists(p):
             if trace: g.trace('does not exist',p.headString())
             return h,False # An extra precaution.
         p = p.copy()
         for p2 in p.self_and_siblings_iter():  # was p.siblings_iter
-            # print "yoffsetTree:", p2
+            print "yoffsetTree:", p2
             if p2 == p1:
                 if trace: g.trace(p.headString(),p1.headString(),h)
                 return h, True
