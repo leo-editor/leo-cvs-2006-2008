@@ -1397,7 +1397,7 @@ class leoTkinterTree (leoFrame.leoTree):
     idle_scrollTo = scrollTo # For compatibility.
     #@nonl
     #@-node:ekr.20040803072955.65:scrollTo
-    #@+node:ekr.20040803072955.70:yoffset
+    #@+node:ekr.20040803072955.70:yoffset (tkTree)
     #@+at 
     #@nonl
     # We can't just return icony because the tree hasn't been redrawn yet.
@@ -1407,16 +1407,20 @@ class leoTkinterTree (leoFrame.leoTree):
 
     def yoffset(self,p1):
         # if not p1.isVisible(): print "yoffset not visible:",p1
+        if not p1: return 0
         c = self.c
         if c.hoistStack:
             bunch = c.hoistStack[-1]
             root = bunch.p.copy()
         else:
             root = self.c.rootPosition()
-        h,flag = self.yoffsetTree(root,p1,isTop=True)
-        # flag can be False during initialization.
-        # if not flag: print "yoffset fails:",h,v1
-        return h
+        if root:
+            h,flag = self.yoffsetTree(root,p1,isTop=True)
+            # flag can be False during initialization.
+            # if not flag: print "yoffset fails:",h,v1
+            return h
+        else:
+            return 0
 
     def yoffsetTree(self,p,p1,isTop):
         c = self.c ; h = 0 ; trace = False ; verbose = False
@@ -1426,9 +1430,11 @@ class leoTkinterTree (leoFrame.leoTree):
         p = p.copy()
         if trace and verbose and isTop and c.hoistStack:
             g.trace('c.hoistStack',c.hoistStack[-1].p.headString())
-        if isTop and c.hoistStack: theIter = [p.firstChild()]
+        if isTop and c.hoistStack:
+            if p.firstChild():  theIter = [p.firstChild()]
+            else:               theIter = []
         else: theIter = p.self_and_siblings_iter() # Bug fix 10/27/07: was p.siblings_iter()
-        for p2 in theIter: 
+        for p2 in theIter:
             if p2 == p1:
                 if trace and verbose: g.trace(h,p1.headString())
                 return h, True
@@ -1443,7 +1449,7 @@ class leoTkinterTree (leoFrame.leoTree):
 
         if trace: g.trace('not found',p1.headString())
         return h, False
-    #@-node:ekr.20040803072955.70:yoffset
+    #@-node:ekr.20040803072955.70:yoffset (tkTree)
     #@-node:ekr.20040803072955.62:Helpers...
     #@-node:ekr.20040803072955.35:Drawing... (tkTree)
     #@+node:ekr.20040803072955.71:Event handlers (tkTree)
