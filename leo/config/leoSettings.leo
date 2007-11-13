@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.653566229985">
-	<global_window_position top="83" left="243" height="658" width="864"/>
+	<global_window_position top="83" left="243" height="618" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -1057,7 +1057,9 @@
 </v>
 </v>
 <v t="ekr.20051123100536" annotate="7d71002e"><vh>Plugins</vh>
+<v t="ekr.20070417071249"><vh>@bool trace_plugins = False</vh></v>
 <v t="ekr.20041119034357.13"><vh>@bool use_plugins = True</vh></v>
+<v t="ekr.20071113084330"><vh>@bool warn_when_plugins_fail_to_load = True</vh></v>
 <v t="ekr.20070224073109.1"><vh>@enabled-plugins</vh></v>
 <v t="ekr.20060807103220"><vh>datenodes plugin</vh>
 <v t="ekr.20060807103220.1"><vh>@string datenodes_body_text = To do...</vh></v>
@@ -8406,5 +8408,6 @@ True: Top pane contains only outline.  Bottom pane contains body and log panes.<
 for which leading whitespace is not terribly significant.
 
 True: @auto warns about mismatches that occur solely in leading whitespace.</t>
+<t tx="ekr.20071113084330"></t>
 </tnodes>
 </leo_file>
