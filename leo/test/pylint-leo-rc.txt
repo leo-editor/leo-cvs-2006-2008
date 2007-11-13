@@ -231,8 +231,8 @@ additional-builtins=
 ignore-iface-methods=isImplementedBy,deferred,extends,names,namesAndDescriptions,queryDescriptionFor,getBases,getDescriptionFor,getDoc,getName,getTaggedValue,getTaggedValueTags,isEqualOrExtendedBy,setTaggedValue,isImplementedByInstancesOf,adaptWith,is_implemented_by
 
 # List of method names used to declare (i.e. assign) instance attributes.
-defining-attr-methods=__init__,__new__,setUp,init,finishCreate,initReadIvars,initWriteIvars,initCommonIvars
-	### added init,finishCreate
+# EKR: the last item in the list does not work properly: I added a dummy.
+defining-attr-methods=__init__,__new__,setUp,init,finishCreate,initReadIvars,initWriteIvars,initCommonIvars,initIvars,dummy_init
 
 # DESIGN...
 # checks for sign of poor/misdesign:

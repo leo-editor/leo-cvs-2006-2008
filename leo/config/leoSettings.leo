@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.653566229985">
-	<global_window_position top="83" left="243" height="698" width="864"/>
+	<global_window_position top="83" left="243" height="658" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -8401,7 +8401,7 @@ else:
 <t tx="ekr.20071010123223.1">打开</t>
 <t tx="ekr.20071024145953">False (legacy): Top pane contains outline and log panes.
 True: Top pane contains only outline.  Bottom pane contains body and log panes.</t>
-<t tx="ekr.20071025161551"></t>
+<t tx="ekr.20071025161551">True: a message will be printed if aspell fails to load.</t>
 <t tx="ekr.20071110153046">This option has effect only when importing so-called non-strict languages,
 for which leading whitespace is not terribly significant.
 

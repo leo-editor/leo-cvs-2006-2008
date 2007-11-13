@@ -4,237 +4,9 @@
 #@+node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
 # Leo 4.4.5 will complete several projects that are long overdue.
 
-#@+node:ekr.20070814070312:First
-#@+node:ekr.20071109080424:Add @rst-preformat
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4614081
-
-> I simply want to mark the headline of that sub-node in a special way to tell it:
-
-> Do the same with the text in content automatically, what could have been done manually 
-with the following (rST) commands 
-
-* Insert "::", <NL>, <NL>, <TAB> before textline 1 
-* Insert <TAB> before textline 2 
-* ...
-
-Thanks for the clarification.  Imo, this is a good idea, because there seems to be no way at present to get the effect you want without actually changing the body text as you describe.  There are situations in which changing the body text is either infeasible or clumsy.
-#@nonl
-#@-node:ekr.20071109080424:Add @rst-preformat
-#@-node:ekr.20070814070312:First
-#@+node:ekr.20071105155631:High impact
-#@+node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
-val = c.config.getBool('collapse_nodes_during_finds')
-c.config.set(p,'collapse_nodes_during_finds',not val)
-g.es_print('collapse_nodes_during_finds',c.config.getBool('collapse_nodes_during_finds'))
-#@nonl
-#@-node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
-#@+node:ekr.20071025160653.2:Commands to add/remove icons
-#@+node:ekr.20071026092640:To do
-@nocolor
-
-To do:
-
-* Define standard event handlers:
-    - on-left-click (deletes icon)
-    - on-click
-
-* Adjust location depending on icon size.
-
-- Define standard icons in a subfolder of Icons folder?
-
-insert-icon
-append-icon
-delete-first-icon
-delete-nth-icon
-delete-all-node-icons
-delete-all-icons-in-tree
-#@-node:ekr.20071026092640:To do
-#@+node:ekr.20040803072955.46:drawUserIcons & helper
-def drawUserIcons(self,p,where,x,y):
-
-    """Draw any icons specified by p.v.t.unknownAttributes["icons"]."""
-
-    h,w = 0,0 ; t = p.v.t
-
-    if not hasattr(t,"unknownAttributes"):
-        return h,w
-
-    iconsList = t.unknownAttributes.get("icons")
-    if not iconsList:
-        return h,w
-
-    try:
-        for theDict in iconsList:
-            h2,w2 = self.drawUserIcon(p,where,x,y,w,theDict)
-            h = max(h,h2) ; w += w2
-    except:
-        g.es_exception()
-
-    # g.trace(where,h,w)
-
-    return h,w
-#@+node:ekr.20040803072955.47:drawUserIcon
-def drawUserIcon (self,p,where,x,y,w2,theDict):
-
-    h,w = 0,0
-
-    if where != theDict.get("where","beforeHeadline"):
-        return h,w
-
-    # if self.trace_gc: g.printNewObjects(tag='userIcon 1')
-
-    # g.trace(where,x,y,theDict)
-
-    << set offsets and pads >>
-    theType = theDict.get("type")
-    if theType == "icon":
-        if 0: # not ready yet.
-            s = theDict.get("icon")
-            << draw the icon in string s >>
-    elif theType == "file":
-        theFile = theDict.get("file")
-        << draw the icon at file >>
-    elif theType == "url":
-        ## url = theDict.get("url")
-        << draw the icon at url >>
-
-    # Allow user to specify height, width explicitly.
-    h = theDict.get("height",h)
-    w = theDict.get("width",w)
-
-    # if self.trace_gc: g.printNewObjects(tag='userIcon 2')
-
-    return h,w
-#@+node:ekr.20040803072955.48:<< set offsets and pads >>
-xoffset = theDict.get("xoffset")
-try:    xoffset = int(xoffset)
-except: xoffset = 0
-
-yoffset = theDict.get("yoffset")
-try:    yoffset = int(yoffset)
-except: yoffset = 0
-
-xpad = theDict.get("xpad")
-try:    xpad = int(xpad)
-except: xpad = 0
-
-ypad = theDict.get("ypad")
-try:    ypad = int(ypad)
-except: ypad = 0
-#@-node:ekr.20040803072955.48:<< set offsets and pads >>
-#@+node:ekr.20040803072955.49:<< draw the icon in string s >>
-pass
-#@-node:ekr.20040803072955.49:<< draw the icon in string s >>
-#@+node:ekr.20040803072955.50:<< draw the icon at file >>
-fullname = g.os_path_join(g.app.loadDir,"..","Icons",theFile)
-fullname = g.os_path_normpath(fullname)
-
-# Bug fix: the key must include distinguish nodes.
-key = (fullname,p.v.t)
-image = self.iconimages.get(key)
-
-if not image:
-    try:
-        from PIL import Image, ImageTk
-        image1 = Image.open(fullname)
-        image = ImageTk.PhotoImage(image1)
-        self.iconimages[key] = image
-    except Exception:
-        #g.es_exception()
-        image = None
-
-if not image:
-    try:
-        image = Tk.PhotoImage(master=self.canvas,file=fullname)
-        self.iconimages[key] = image
-    except Exception:
-        #g.es_exception()
-        image = None
-
-if image:
-    theId = self.canvas.create_image(
-        x+xoffset+w2,y+yoffset,
-        anchor="nw",image=image,tag="userIcon")
-    self.ids[theId] = p.copy()
-    # g.trace('id',theId,p.headString(),theFile,image)
-
-    # assert(theId not in self.visibleIcons)
-    self.visibleUserIcons.append(theId)
-
-    h = image.height() + yoffset + ypad
-    w = image.width()  + xoffset + xpad
-#@-node:ekr.20040803072955.50:<< draw the icon at file >>
-#@+node:ekr.20040803072955.51:<< draw the icon at url >>
-pass
-#@-node:ekr.20040803072955.51:<< draw the icon at url >>
-#@-node:ekr.20040803072955.47:drawUserIcon
-#@-node:ekr.20040803072955.46:drawUserIcons & helper
-#@+node:ekr.20040803072955.12:recycleWidgets
-def recycleWidgets (self):
-
-    canvas = self.canvas
-
-    for theId in self.visibleBoxes:
-        if theId not in self.freeBoxes:
-            self.freeBoxes.append(theId)
-        canvas.coords(theId,-100,-100)
-    self.visibleBoxes = []
-
-    for theId in self.visibleClickBoxes:
-        if theId not in self.freeClickBoxes:
-            self.freeClickBoxes.append(theId)
-        canvas.coords(theId,-100,-100,-100,-100)
-    self.visibleClickBoxes = []
-
-    for theId in self.visibleIcons:
-        if theId not in self.freeIcons:
-            self.freeIcons.append(theId)
-        canvas.coords(theId,-100,-100)
-    self.visibleIcons = []
-
-    for theId in self.visibleLines:
-        if theId not in self.freeLines:
-            self.freeLines.append(theId)
-        canvas.coords(theId,-100,-100,-100,-100)
-    self.visibleLines = []
-
-    aList = self.visibleText.values()
-    for data in aList:
-        w,theId = data
-        # assert theId == w.leo_window_id
-        canvas.coords(theId,-100,-100)
-        w.leo_position = None # Allow the position to be freed.
-        if data not in self.freeText:
-            self.freeText.append(data)
-    self.visibleText = {}
-
-    # g.trace('deleting visible user icons!')
-    for theId in self.visibleUserIcons:
-        # The present code does not recycle user Icons.
-        self.canvas.delete(theId)
-    self.visibleUserIcons = []
-#@-node:ekr.20040803072955.12:recycleWidgets
-#@-node:ekr.20071025160653.2:Commands to add/remove icons
-#@+node:ekr.20060914090030:add sort-lines-ignoring-case commad
-#@-node:ekr.20060914090030:add sort-lines-ignoring-case commad
-#@+node:ekr.20071024090626:Support @bool diagnose-aspell-installation
-#@-node:ekr.20071024090626:Support @bool diagnose-aspell-installation
-#@+node:ekr.20071105160956:*** auto-change panes
-@nocolor
-
-The idea: if a key binding is only in effect for one pane, and we get the
-binding, maybe we should change to the pane first!
-
-Examples:
-
-copy-node: auto-select tree pane.
-copy_text (when not editing a headline): auto-select body text.
-#@nonl
-#@-node:ekr.20071105160956:*** auto-change panes
-#@-node:ekr.20071105155631:High impact
-#@+node:ekr.20070703111455.1:Most important
+#@+node:ekr.20071112064808:First
+#@+node:ekr.20071111163415:Unit tests for new sort commands
+#@-node:ekr.20071111163415:Unit tests for new sort commands
 #@+node:ekr.20071110070242:How to run unit tests in leoPy.leo?
 @nocolor
 
@@ -246,397 +18,6 @@ Option 2:
 
 - Find some way of running external tests with tkinter gui.
 #@nonl
-#@-node:ekr.20071110070242:How to run unit tests in leoPy.leo?
-#@+node:ekr.20071105145643:Clean up config mess
-#@-node:ekr.20071105145643:Clean up config mess
-#@+node:ekr.20071031113657:Remove Leo's hand-written parser: use sax or lxml
-# Are there proper unit tests?
-# Do global settings and find-panel settings get set properly.
-#@nonl
-#@+node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
-#@-node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
-#@-node:ekr.20071031113657:Remove Leo's hand-written parser: use sax or lxml
-#@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree
-#@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree
-#@+node:ekr.20070623144302:vim-like bindings
-#@+node:ekr.20070824094005:Requests
-@nocolor
-
-> Some of the features I've grown to like with VIM are search-and-replace within the current selection, easy keyboard navigation, and to some extent macro recording and running.
-
-Thanks for these comments.  I'll keep them in mind as I design the vim-like code.
-
-Edward
-#@nonl
-#@-node:ekr.20070824094005:Requests
-#@+node:ekr.20070814083528.1:Design post
-@nocolor
-
-http://sourceforge.net/forum/forum.php?thread_id=1800079&forum_id=10226
-
-Recent posts have discussed @menu trees and resolving cvs conflicts. The third of my recent ruminations concerns adding support for vim-like key bindings. 
-
-Earlier work involving input modes (@mode nodes in settings file) probably is not completely sufficient to implement plain-key key bindings in a way that would truly be vim-like. 
-
-Most of the issues are implementation issues: Leo's key-handling code is very complicated. The trick is to handle both vim and emacs styles compatibly. 
-
-The user must be able to specify vim-like key bindings without using @mode nodes. That is, top-level vim key bindings must always be available. Vim has an enormous number of key bindings: the user must be able to specify which are in effect. 
-
-My strategy will be as follows: 
-
-1. Create enter-vim-mode and exit-vim-mode commands, and create the setting: 
-
-@bool vim-mode-by-default = False 
-
-This will allow the user to specify vim mode as the default mode if desired. 
-
-2. Create **vim-edit** commands as needed in order to handler user interaction. For example, dd deletes the present line while d5 deletes 5 lines. Rather than trying to simulate this effect using the present mechanisms, the vim-delete command will prompt for the number of characters or lines to delete. 
-
-Give the complex nature of vims c and d commands (and others) it will probably be necessary to create a vim-edit class in leoEditCommands.py. This class will handle all the ways of specifying a range of characters to which the various commands will apply. It's not clear exactly how much work will be needed, but my guess is that it will, in fact, be easiest to handle vim-like interactions with new code. 
-
-3. Vim's ':' command will simply invoke Leo's minibuffer. This isn't precisely the same as Vim's status line: it is significantly better. Otoh, we will want a way to simulate the actual spelling of vim's ':' commands. Possible @abbreviation nodes can be pressed into service. 
-
-4. Internally, it will be quite a trick to allow top-level vim-like plain-key bindings in all text widgets. I'm not sure how to do this, but it is essential. 
-
-I am quite eager to get something truly vim-like working. It promises to increase my editing speed substantially. It also should appeal strongly to present vim users. 
-#@nonl
-#@-node:ekr.20070814083528.1:Design post
-#@+node:ekr.20071026140857:Posting re vim bindings
-@nocolor
-
-> I'm looking forward to this.
-
-Excellent.  You can help with the testing :-)
-
-Leo looks like a perfect match for the vim approach.  Indeed, vim typically uses a 1 or 2 level concatenation scheme (preceded by a repeat count).  This is kinda like a utf-8 encoding :-)  That is, it is a variable-length encoding of the command.
-
-This is a very powerful approach, one that vim doesn't really exploit (because it doesn't need to). But Leo absolutely needs this power of some extra levels.  Something like this:
-
-i input mode
-
-f focus commands
-..fb focus to body
-..fo focus to outline
-..fl focus to log
-..ft toggle body pane focus
-
-o outline commands
-..om outline move, i.e., actually move the nodes.
-..og outline go, i.e., select nodes without changing the outline
-..od outline delete
-..oh outline edit headline
-
-s search commands
-..so search options
-...soi toggle ignore-case checkbox
-...sow toggle word checkbox
-...etc!
-..st search using search tab
-..sf forward incremental search
-..sb backward incremental search
-
-x minibuffer commands
-
-w file commands
-..ws save outline
-..wq quit
-
-escape: universal escape, like ctrl-g now.
-
-Do you see?  Just one extra level allows 10+ times the number of key bindings.  This is a perfect match for Leo's complex environment.
-
-Naturally, Leo will allow the user to specify these bindings using nodes in the @settings tree. Indeed, this is truly an exciting prospect.
-
-Edward
-
-P.S.  I've glossed over the details of which single characters (like d for delete character) should be reserved for common editing and cursor-movement commands.  That's the beauty of creating these bindings with user settings: no need to argue :-)  And that's the beauty of arbitrarily deep key binding trees: there are plenty of keys to go around.
-
-EKR
-#@-node:ekr.20071026140857:Posting re vim bindings
-#@-node:ekr.20070623144302:vim-like bindings
-#@+node:ekr.20070625091423:Add translation services
-@nocolor
-
-*Many* calls to g.es and g.es_print have a mix of translated and untranslated items.
-Untranslated items should include file names, directories, gnx's, leo_id's etc.
-
-**Don't bother to do clone-find-all: there are 666 many matches!**
-
-Regardless of the chosen scheme:
-
-- g.translate will do the actual translation.
-
-- Some simple string, like tr, will be an abbreviation for g.translate.
-  The typical import will be::
-
-    import leoGlobals as g ; tr = g.translate
-
-The easiest scheme seems to be:
-
-- g.es and g.es_print translate all arguments.
-- g.esx and g.es_printx do no translation.
-
-g.esx and g.es_printx allow a mix on translated and untranslated arguments::
-
-    g.esx(tr('abc'),fileName)
-#@-node:ekr.20070625091423:Add translation services
-#@+node:ekr.20071001052501:Versioning for nodes
-@nocolor
-
-One feature I have not seen in SCS system is something which might be called
-"history compression": I might be interested in having both version 5 and 6
-in my source tree, when the current version is 7, but I am not really interested
-in the 2000 steps which transformed 5 into 6 (just suggested this feature to
-the bazaar people). This happens actually quite often to me, since I use the
-SCS as a back-up system, saving many (uninteresting) intermediate steps while
-implementing a new feature.
-#@nonl
-#@-node:ekr.20071001052501:Versioning for nodes
-#@+node:ekr.20060530085844:Improve autocompletion
-# Study rope:  http://rope.sourceforge.net/
-#@nonl
-#@+node:ekr.20060927173836.1:Make calltips and autocompleter 'stateless'
-@nocolor
-
-Disabled these binding:
-
-auto-complete-force         = None # This command needs work before it is useful. Ctrl-period
-show-calltips-force         = None # This command needs work before it is useful. Alt-parenleft
-
-The problem is that autocompletion depends on state: self.leadinWord,
-prevObjects, etc. Thus, it's not presently possible to start the proces
-anywhere. Similar remarks apply to calltips, which relies on autocompleter
-state.
-
-This is a complex problem, and not very serious now that there is an easy way of
-toggling autocompleter and calltips on and off.
-
-@color
-#@nonl
-#@-node:ekr.20060927173836.1:Make calltips and autocompleter 'stateless'
-#@+node:ekr.20071106083149:Recent posts
-@killcolor
-
-I'm a little confused about the intended behaviour of autocomplete. I tried to test it using: 
-
-@language python  
-
-s = [1,2] 
-
-I expected s. to yield a list of methods one might apply to a list (like append
-etc...) instead it seems to give me a list of methods for a string. If one
-replaces s with l, you don't get much of anything.
-
-My responses 
-
-The present autocompletion code is mostly a hack for working on Leo's own source
-code. If your var is called s, the autocompleter assumes s is a string.
-
-For the conventions used, see this node in leoPy.leo:
-
-Code-->Gui Base classes-->@thin leoKeys.py-->class autoCompleterClass--> ctor
-(autocompleter)-->defineObjectDict
-
-Clearly, this is not good in general. I may generalize the code this week. Leo
-will scan an @file tree (in a separate thread?) the first time you asked for
-autocompletion in that tree.
-
------
-
-The issues involving autocompletion are coming back to my memory. In general,
-this is a tricky problem. Consider:
-
-- There may be no 'clean' version of the source code that you want to
-auto-complete: you may be creating a new node, or a new file, and the source
-code, being incomplete, will not parse correctly.
-
-- Except in special circumstances, there is no 'real' object corresponding to s,
-so there is no way to use Python's inspect module on s. Modules are an
-exception: the autocompleter can handle existing modules fairly well. Try "os."
-or "os.path." for example.
-
-So I was a bit hasty in condemning the present approach. If your var is called
-aList instead of s, Leo will suggest autocompletions for a list. Similarly for
-s, s2 for strings, d, d1 and d2 for dictionaries, etc.
-
-I'll look at the pyxides project for discussion of autocompleter code that might
-be useful, but there are no guarantees that something better is coming soon.
-
------
-
-Scanning the pyxides thread about autocompletion, it seems the most promising tool is called rope: http://rope.sourceforge.net/ 
-
-But to repeat: autocompletion is not easy. I have some long-delayed bugs to fix before turning my attention to an improved autocompleter. So probably not this week... 
-
------ 
-
-1. It might be possible to generalize c.k.defineObjectDict so that the user
-could specify autocompleter conventions, say in an @autocompleter node in an
-@settings tree.
-
-However, Python is not lisp, to actually specifying the object to use as the
-base of the completion may not be trivial. See the code for
-c.k.defineObjectDict.
-
-2. Brian (LeoUser) used another kind of autocompleter scheme in his now-defunct
-emacs plugin. When an outline was opened a scan (in a separate thread) found all
-pairs x.y in the code. Typing x. would then give you all the y's associated with
-x. It's clever, but it has obvious problems: it does not suggest completions
-that are not in the file, and it suggests too much for 'self.'.
-
-BTW, I actually did a lot of work on autocompletion that is not presently
-active. In particular, leoKeys.py contains a 'forgiving' parser that attempts to
-understand what 'self' means. Iirc, I disabled this code because it was too slow.
-#@-node:ekr.20071106083149:Recent posts
-#@+node:ekr.20071106135937:Study the pydev code in c:\prog\pydev
-#@-node:ekr.20071106135937:Study the pydev code in c:\prog\pydev
-#@+node:ekr.20071106135937.1:Study the rope code in c:\prog\rope
-#@-node:ekr.20071106135937.1:Study the rope code in c:\prog\rope
-#@-node:ekr.20060530085844:Improve autocompletion
-#@+node:ekr.20071110071126:Better searching
-#@+node:ekr.20071110071126.1:Force the insert point to beginning (or end) of text when selecting during finds?
-Something not-quite-right is happening presently.
-#@nonl
-#@-node:ekr.20071110071126.1:Force the insert point to beginning (or end) of text when selecting during finds?
-#@+node:ekr.20071110071126.2:Better isearch
-#@-node:ekr.20071110071126.2:Better isearch
-#@-node:ekr.20071110071126:Better searching
-#@-node:ekr.20070703111455.1:Most important
-#@+node:ekr.20071105155631.1:Plugins
-#@+node:ekr.20071021125124:Revise plugins manager plugin
-Remove all references to pluginsManager.txt.
-#@nonl
-#@-node:ekr.20071021125124:Revise plugins manager plugin
-#@+node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4562648
-By: rogererens
-
-Maybe I may use this thread to make another suggestion for Leo 4.4.5, related
-to @menus: have the menu-options for right-clicking in the various panes also
-in the @settings-tree.
-
-Regards, Roger
-#@nonl
-#@-node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
-#@+node:ekr.20071026052111:Fix cursesGui  plugin
-#@+node:ekr.20071026051956:crash in cursesGui.py
-reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo
-reading settings in C:\Documents and Settings\HP_Administrator\My Documents\Edward\myLeoSettings.leo
-reading settings in C:\prog\tigris-cvs\leo\test\test.leo
-reading C:\Documents and Settings\HP_Administrator\My Documents\Edward\.leoRecentFiles.txt
-reading C:\prog\tigris-cvs\leo\config\.leoRecentFiles.txt
-@enabled-plugins found in test.leo
-textGui oops <module>,run,createFrame,openWithFileName,newLeoCommanderAndFrame,finishCreate,createKeyHandlerClass should be implem
-ented
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leo.py", line 401, in <module>
-    run(fileName)
-  File "c:\prog\tigris-cvs\leo\src\leo.py", line 144, in run
-    c,frame = createFrame(fileName)
-  File "c:\prog\tigris-cvs\leo\src\leo.py", line 213, in createFrame
-    ok, frame = g.openWithFileName(fileName,None)
-  File "C:\prog\tigris-cvs\leo\src\leoGlobals.py", line 1908, in openWithFileName
-    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
-  File "C:\prog\tigris-cvs\leo\src\leoApp.py", line 577, in newLeoCommanderAndFrame
-    c.finishCreate(initEditCommanders)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 216, in finishCreate
-    c.commandsDict = leoEditCommands.finishCreateEditCommanders(c)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 247, in finishCreateEditCommanders
-    d2 = theInstance.getPublicCommands()
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 1022, in getPublicCommands
-    'keyboard-quit':                k.keyboardQuit,
-AttributeError: 'NoneType' object has no attribute 'keyboardQuit'
->>>
-#@nonl
-#@-node:ekr.20071026051956:crash in cursesGui.py
-#@-node:ekr.20071026052111:Fix cursesGui  plugin
-#@+node:ekr.20071105155631.2:Fix script_io_to_body plugin
-#@-node:ekr.20071105155631.2:Fix script_io_to_body plugin
-#@-node:ekr.20071105155631.1:Plugins
-#@+node:ekr.20071105155631.3:Testing
-#@+node:ekr.20071110072608:Support pylint
-#@-node:ekr.20071110072608:Support pylint
-#@+node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
-@nocolor
-
-From email from Terry Brown
-
-python /home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py /home/tbrown/.tnb.leo
-
-(should be all on one line, i.e. run and open /home/tbrown/.tnb.leo)
-
-gives the traceback below.  Opening the file from within Leo works fine.
-
-Bah - I just now looked at it closely enough to realize it's the evil
-pickled Tk classes in cleo uAs.  So I don't know whether you want to
-fix that or not, it makes sense Leo would read the file specified on
-the command line before Tk is initialized - if it's just scanning for
-settings maybe it could catch and ignore failed uA reads at that time?
-
-At some point I want to take pickled Tk vars out of cleo, I was
-thinking when that guy was working on the wx gui would be a good time,
-too bad he got sick.
-
-Cheers -Terry
-
-reading settings in /mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/config/leoSettings.leo
-reading settings in /home/tbrown/leoSettings.leo
-reading settings in /home/tbrown/myLeoSettings.leo
-reading settings in /home/tbrown/.tnb.leo
-Traceback (most recent call last):
-  File "/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py", line 398, in <module>
-    run(fileName)
-  File "/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py", line 118, in run
-    g.app.config.readSettingsFiles(fileName,verbose)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoConfig.py", line 1649, in readSettingsFiles
-    c = self.openSettingsFile(path)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoConfig.py", line 1674, in openSettingsFile
-    theFile,path,readAtFileNodesFlag=False,silent=True) # closes theFile.
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 892, in open
-    silent=silent)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 779, in getLeoFile
-    self.getAllLeoElements(fileName,silent)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1317, in getAllLeoElements
-    self.getVnodes()
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1898, in getVnodes
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1738, in getVnode
-    attr,val = self.getUa("vnode")
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1658, in getUa
-    val2 = pickle.loads(binString)
-  File "/usr/lib/python2.5/pickle.py", line 1374, in loads
-    return Unpickler(file).load()
-  File "/usr/lib/python2.5/pickle.py", line 858, in load
-    dispatch[key](self)
-  File "/usr/lib/python2.5/pickle.py", line 1217, in load_build
-    setstate(state)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/plugins/cleo.py", line 130, in __setstate__
-    Tk.Variable.__init__(self)
-  File "/usr/lib/python2.5/lib-tk/Tkinter.py", line 188, in __init__
-    self._tk = master.tk
-AttributeError: 'NoneType' object has no attribute 'tk'
-Exception exceptions.AttributeError: "TkPickleVar instance has no attribute '_tk'" in <bound method TkPickleVar.__del__ of <cleo.TkPickleVar instance at 0xb73a876c>> ignored
-#@-node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
 #@+node:ekr.20071024172428:Failed unit tests when running externally
 #@+node:ekr.20071024184325:4 leoEditCommands tests fail when run externally
 creating: dynamicUnitTest.leo
@@ -1774,12 +1155,632 @@ The new scheme:
 #@nonl
 #@-node:ekr.20071025143956:Posting: document unit test bug & describe coming new scheme
 #@-node:ekr.20071024172428:Failed unit tests when running externally
-#@+node:ekr.20070220082124:Make sure Leo can generate Latex
-#@-node:ekr.20070220082124:Make sure Leo can generate Latex
-#@-node:ekr.20071105155631.3:Testing
-#@+node:ekr.20070630143345:Other
+#@-node:ekr.20071110070242:How to run unit tests in leoPy.leo?
 #@+node:ekr.20071106135136:Add option: warn if plugins fail to load
 #@-node:ekr.20071106135136:Add option: warn if plugins fail to load
+#@+node:ekr.20071109080424:Add @rst-preformat
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4614081
+
+> I simply want to mark the headline of that sub-node in a special way to tell it:
+
+> Do the same with the text in content automatically, what could have been done manually 
+with the following (rST) commands 
+
+* Insert "::", <NL>, <NL>, <TAB> before textline 1 
+* Insert <TAB> before textline 2 
+* ...
+
+Thanks for the clarification.  Imo, this is a good idea, because there seems to be no way at present to get the effect you want without actually changing the body text as you describe.  There are situations in which changing the body text is either infeasible or clumsy.
+#@nonl
+#@-node:ekr.20071109080424:Add @rst-preformat
+#@+node:ekr.20071025160653.2:Commands to add/remove icons
+#@+node:ekr.20071026092640:To do
+@nocolor
+
+To do:
+
+* Define standard event handlers:
+    - on-left-click (deletes icon)
+    - on-click
+
+* Adjust location depending on icon size.
+
+- Define standard icons in a subfolder of Icons folder?
+
+insert-icon
+append-icon
+delete-first-icon
+delete-nth-icon
+delete-all-node-icons
+delete-all-icons-in-tree
+#@-node:ekr.20071026092640:To do
+#@+node:ekr.20040803072955.46:drawUserIcons & helper
+def drawUserIcons(self,p,where,x,y):
+
+    """Draw any icons specified by p.v.t.unknownAttributes["icons"]."""
+
+    h,w = 0,0 ; t = p.v.t
+
+    if not hasattr(t,"unknownAttributes"):
+        return h,w
+
+    iconsList = t.unknownAttributes.get("icons")
+    if not iconsList:
+        return h,w
+
+    try:
+        for theDict in iconsList:
+            h2,w2 = self.drawUserIcon(p,where,x,y,w,theDict)
+            h = max(h,h2) ; w += w2
+    except:
+        g.es_exception()
+
+    # g.trace(where,h,w)
+
+    return h,w
+#@+node:ekr.20040803072955.47:drawUserIcon
+def drawUserIcon (self,p,where,x,y,w2,theDict):
+
+    h,w = 0,0
+
+    if where != theDict.get("where","beforeHeadline"):
+        return h,w
+
+    # if self.trace_gc: g.printNewObjects(tag='userIcon 1')
+
+    # g.trace(where,x,y,theDict)
+
+    << set offsets and pads >>
+    theType = theDict.get("type")
+    if theType == "icon":
+        if 0: # not ready yet.
+            s = theDict.get("icon")
+            << draw the icon in string s >>
+    elif theType == "file":
+        theFile = theDict.get("file")
+        << draw the icon at file >>
+    elif theType == "url":
+        ## url = theDict.get("url")
+        << draw the icon at url >>
+
+    # Allow user to specify height, width explicitly.
+    h = theDict.get("height",h)
+    w = theDict.get("width",w)
+
+    # if self.trace_gc: g.printNewObjects(tag='userIcon 2')
+
+    return h,w
+#@+node:ekr.20040803072955.48:<< set offsets and pads >>
+xoffset = theDict.get("xoffset")
+try:    xoffset = int(xoffset)
+except: xoffset = 0
+
+yoffset = theDict.get("yoffset")
+try:    yoffset = int(yoffset)
+except: yoffset = 0
+
+xpad = theDict.get("xpad")
+try:    xpad = int(xpad)
+except: xpad = 0
+
+ypad = theDict.get("ypad")
+try:    ypad = int(ypad)
+except: ypad = 0
+#@-node:ekr.20040803072955.48:<< set offsets and pads >>
+#@+node:ekr.20040803072955.49:<< draw the icon in string s >>
+pass
+#@-node:ekr.20040803072955.49:<< draw the icon in string s >>
+#@+node:ekr.20040803072955.50:<< draw the icon at file >>
+fullname = g.os_path_join(g.app.loadDir,"..","Icons",theFile)
+fullname = g.os_path_normpath(fullname)
+
+# Bug fix: the key must include distinguish nodes.
+key = (fullname,p.v.t)
+image = self.iconimages.get(key)
+
+if not image:
+    try:
+        from PIL import Image, ImageTk
+        image1 = Image.open(fullname)
+        image = ImageTk.PhotoImage(image1)
+        self.iconimages[key] = image
+    except Exception:
+        #g.es_exception()
+        image = None
+
+if not image:
+    try:
+        image = Tk.PhotoImage(master=self.canvas,file=fullname)
+        self.iconimages[key] = image
+    except Exception:
+        #g.es_exception()
+        image = None
+
+if image:
+    theId = self.canvas.create_image(
+        x+xoffset+w2,y+yoffset,
+        anchor="nw",image=image,tag="userIcon")
+    self.ids[theId] = p.copy()
+    # g.trace('id',theId,p.headString(),theFile,image)
+
+    # assert(theId not in self.visibleIcons)
+    self.visibleUserIcons.append(theId)
+
+    h = image.height() + yoffset + ypad
+    w = image.width()  + xoffset + xpad
+#@-node:ekr.20040803072955.50:<< draw the icon at file >>
+#@+node:ekr.20040803072955.51:<< draw the icon at url >>
+pass
+#@-node:ekr.20040803072955.51:<< draw the icon at url >>
+#@-node:ekr.20040803072955.47:drawUserIcon
+#@-node:ekr.20040803072955.46:drawUserIcons & helper
+#@+node:ekr.20040803072955.12:recycleWidgets
+def recycleWidgets (self):
+
+    canvas = self.canvas
+
+    for theId in self.visibleBoxes:
+        if theId not in self.freeBoxes:
+            self.freeBoxes.append(theId)
+        canvas.coords(theId,-100,-100)
+    self.visibleBoxes = []
+
+    for theId in self.visibleClickBoxes:
+        if theId not in self.freeClickBoxes:
+            self.freeClickBoxes.append(theId)
+        canvas.coords(theId,-100,-100,-100,-100)
+    self.visibleClickBoxes = []
+
+    for theId in self.visibleIcons:
+        if theId not in self.freeIcons:
+            self.freeIcons.append(theId)
+        canvas.coords(theId,-100,-100)
+    self.visibleIcons = []
+
+    for theId in self.visibleLines:
+        if theId not in self.freeLines:
+            self.freeLines.append(theId)
+        canvas.coords(theId,-100,-100,-100,-100)
+    self.visibleLines = []
+
+    aList = self.visibleText.values()
+    for data in aList:
+        w,theId = data
+        # assert theId == w.leo_window_id
+        canvas.coords(theId,-100,-100)
+        w.leo_position = None # Allow the position to be freed.
+        if data not in self.freeText:
+            self.freeText.append(data)
+    self.visibleText = {}
+
+    # g.trace('deleting visible user icons!')
+    for theId in self.visibleUserIcons:
+        # The present code does not recycle user Icons.
+        self.canvas.delete(theId)
+    self.visibleUserIcons = []
+#@-node:ekr.20040803072955.12:recycleWidgets
+#@-node:ekr.20071025160653.2:Commands to add/remove icons
+#@+node:ekr.20071111053028:Move to svn
+@nocolor
+
+http://subversion.tigris.org/faq.html#cvs2svn
+#@nonl
+#@-node:ekr.20071111053028:Move to svn
+#@+node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
+@nocolor
+
+From email from Terry Brown
+
+python /home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py /home/tbrown/.tnb.leo
+
+(should be all on one line, i.e. run and open /home/tbrown/.tnb.leo)
+
+gives the traceback below.  Opening the file from within Leo works fine.
+
+Bah - I just now looked at it closely enough to realize it's the evil
+pickled Tk classes in cleo uAs.  So I don't know whether you want to
+fix that or not, it makes sense Leo would read the file specified on
+the command line before Tk is initialized - if it's just scanning for
+settings maybe it could catch and ignore failed uA reads at that time?
+
+At some point I want to take pickled Tk vars out of cleo, I was
+thinking when that guy was working on the wx gui would be a good time,
+too bad he got sick.
+
+Cheers -Terry
+
+reading settings in /mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/config/leoSettings.leo
+reading settings in /home/tbrown/leoSettings.leo
+reading settings in /home/tbrown/myLeoSettings.leo
+reading settings in /home/tbrown/.tnb.leo
+Traceback (most recent call last):
+  File "/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py", line 398, in <module>
+    run(fileName)
+  File "/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py", line 118, in run
+    g.app.config.readSettingsFiles(fileName,verbose)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoConfig.py", line 1649, in readSettingsFiles
+    c = self.openSettingsFile(path)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoConfig.py", line 1674, in openSettingsFile
+    theFile,path,readAtFileNodesFlag=False,silent=True) # closes theFile.
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 892, in open
+    silent=silent)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 779, in getLeoFile
+    self.getAllLeoElements(fileName,silent)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1317, in getAllLeoElements
+    self.getVnodes()
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1898, in getVnodes
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1738, in getVnode
+    attr,val = self.getUa("vnode")
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1658, in getUa
+    val2 = pickle.loads(binString)
+  File "/usr/lib/python2.5/pickle.py", line 1374, in loads
+    return Unpickler(file).load()
+  File "/usr/lib/python2.5/pickle.py", line 858, in load
+    dispatch[key](self)
+  File "/usr/lib/python2.5/pickle.py", line 1217, in load_build
+    setstate(state)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/plugins/cleo.py", line 130, in __setstate__
+    Tk.Variable.__init__(self)
+  File "/usr/lib/python2.5/lib-tk/Tkinter.py", line 188, in __init__
+    self._tk = master.tk
+AttributeError: 'NoneType' object has no attribute 'tk'
+Exception exceptions.AttributeError: "TkPickleVar instance has no attribute '_tk'" in <bound method TkPickleVar.__del__ of <cleo.TkPickleVar instance at 0xb73a876c>> ignored
+#@-node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
+#@-node:ekr.20071112064808:First
+#@+node:ekr.20071105155631.1:Plugins
+#@+node:ekr.20071021125124:Revise plugins manager plugin
+Remove all references to pluginsManager.txt.
+#@nonl
+#@-node:ekr.20071021125124:Revise plugins manager plugin
+#@+node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4562648
+By: rogererens
+
+Maybe I may use this thread to make another suggestion for Leo 4.4.5, related
+to @menus: have the menu-options for right-clicking in the various panes also
+in the @settings-tree.
+
+Regards, Roger
+#@nonl
+#@-node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
+#@+node:ekr.20071026052111:Fix cursesGui  plugin
+#@+node:ekr.20071026051956:crash in cursesGui.py
+reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo
+reading settings in C:\Documents and Settings\HP_Administrator\My Documents\Edward\myLeoSettings.leo
+reading settings in C:\prog\tigris-cvs\leo\test\test.leo
+reading C:\Documents and Settings\HP_Administrator\My Documents\Edward\.leoRecentFiles.txt
+reading C:\prog\tigris-cvs\leo\config\.leoRecentFiles.txt
+@enabled-plugins found in test.leo
+textGui oops <module>,run,createFrame,openWithFileName,newLeoCommanderAndFrame,finishCreate,createKeyHandlerClass should be implem
+ented
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 401, in <module>
+    run(fileName)
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 144, in run
+    c,frame = createFrame(fileName)
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 213, in createFrame
+    ok, frame = g.openWithFileName(fileName,None)
+  File "C:\prog\tigris-cvs\leo\src\leoGlobals.py", line 1908, in openWithFileName
+    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
+  File "C:\prog\tigris-cvs\leo\src\leoApp.py", line 577, in newLeoCommanderAndFrame
+    c.finishCreate(initEditCommanders)
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 216, in finishCreate
+    c.commandsDict = leoEditCommands.finishCreateEditCommanders(c)
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 247, in finishCreateEditCommanders
+    d2 = theInstance.getPublicCommands()
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 1022, in getPublicCommands
+    'keyboard-quit':                k.keyboardQuit,
+AttributeError: 'NoneType' object has no attribute 'keyboardQuit'
+>>>
+#@nonl
+#@-node:ekr.20071026051956:crash in cursesGui.py
+#@-node:ekr.20071026052111:Fix cursesGui  plugin
+#@+node:ekr.20071105155631.2:Fix script_io_to_body plugin
+#@-node:ekr.20071105155631.2:Fix script_io_to_body plugin
+#@+node:ekr.20070613103409:Improve marks/recent buttons
+- Arrow keys must move up/down.
+- Should be commands to show the marks/recent dialogs.
+#@nonl
+#@-node:ekr.20070613103409:Improve marks/recent buttons
+#@-node:ekr.20071105155631.1:Plugins
+#@-node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
+#@+node:ekr.20071112070038:To do: 5.0 (standard xml parser)
+#@+node:ekr.20070703111455.1:Most important
+#@+node:ekr.20071031113657:1. Remove Leo's hand-written parser: use sax or lxml
+# Are there proper unit tests?
+# Do global settings and find-panel settings get set properly.
+#@nonl
+#@-node:ekr.20071031113657:1. Remove Leo's hand-written parser: use sax or lxml
+#@+node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
+xmlns:leo="http://edreamleo.org/namespaces/leo-python-editor/1.1"
+#@nonl
+#@-node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
+#@+node:ekr.20071105160956:*** auto-change panes
+@nocolor
+
+The idea: if a key binding is only in effect for one pane, and we get the
+binding, maybe we should change to the pane first!
+
+Examples:
+
+copy-node: auto-select tree pane.
+copy_text (when not editing a headline): auto-select body text.
+#@nonl
+#@-node:ekr.20071105160956:*** auto-change panes
+#@+node:ekr.20071105145643:Clean up config mess
+#@-node:ekr.20071105145643:Clean up config mess
+#@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree
+#@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree
+#@+node:ekr.20070623144302:vim-like bindings
+#@+node:ekr.20070824094005:Requests
+@nocolor
+
+> Some of the features I've grown to like with VIM are search-and-replace within the current selection, easy keyboard navigation, and to some extent macro recording and running.
+
+Thanks for these comments.  I'll keep them in mind as I design the vim-like code.
+
+Edward
+#@nonl
+#@-node:ekr.20070824094005:Requests
+#@+node:ekr.20070814083528.1:Design post
+@nocolor
+
+http://sourceforge.net/forum/forum.php?thread_id=1800079&forum_id=10226
+
+Recent posts have discussed @menu trees and resolving cvs conflicts. The third of my recent ruminations concerns adding support for vim-like key bindings. 
+
+Earlier work involving input modes (@mode nodes in settings file) probably is not completely sufficient to implement plain-key key bindings in a way that would truly be vim-like. 
+
+Most of the issues are implementation issues: Leo's key-handling code is very complicated. The trick is to handle both vim and emacs styles compatibly. 
+
+The user must be able to specify vim-like key bindings without using @mode nodes. That is, top-level vim key bindings must always be available. Vim has an enormous number of key bindings: the user must be able to specify which are in effect. 
+
+My strategy will be as follows: 
+
+1. Create enter-vim-mode and exit-vim-mode commands, and create the setting: 
+
+@bool vim-mode-by-default = False 
+
+This will allow the user to specify vim mode as the default mode if desired. 
+
+2. Create **vim-edit** commands as needed in order to handler user interaction. For example, dd deletes the present line while d5 deletes 5 lines. Rather than trying to simulate this effect using the present mechanisms, the vim-delete command will prompt for the number of characters or lines to delete. 
+
+Give the complex nature of vims c and d commands (and others) it will probably be necessary to create a vim-edit class in leoEditCommands.py. This class will handle all the ways of specifying a range of characters to which the various commands will apply. It's not clear exactly how much work will be needed, but my guess is that it will, in fact, be easiest to handle vim-like interactions with new code. 
+
+3. Vim's ':' command will simply invoke Leo's minibuffer. This isn't precisely the same as Vim's status line: it is significantly better. Otoh, we will want a way to simulate the actual spelling of vim's ':' commands. Possible @abbreviation nodes can be pressed into service. 
+
+4. Internally, it will be quite a trick to allow top-level vim-like plain-key bindings in all text widgets. I'm not sure how to do this, but it is essential. 
+
+I am quite eager to get something truly vim-like working. It promises to increase my editing speed substantially. It also should appeal strongly to present vim users. 
+#@nonl
+#@-node:ekr.20070814083528.1:Design post
+#@+node:ekr.20071026140857:Posting re vim bindings
+@nocolor
+
+> I'm looking forward to this.
+
+Excellent.  You can help with the testing :-)
+
+Leo looks like a perfect match for the vim approach.  Indeed, vim typically uses a 1 or 2 level concatenation scheme (preceded by a repeat count).  This is kinda like a utf-8 encoding :-)  That is, it is a variable-length encoding of the command.
+
+This is a very powerful approach, one that vim doesn't really exploit (because it doesn't need to). But Leo absolutely needs this power of some extra levels.  Something like this:
+
+i input mode
+
+f focus commands
+..fb focus to body
+..fo focus to outline
+..fl focus to log
+..ft toggle body pane focus
+
+o outline commands
+..om outline move, i.e., actually move the nodes.
+..og outline go, i.e., select nodes without changing the outline
+..od outline delete
+..oh outline edit headline
+
+s search commands
+..so search options
+...soi toggle ignore-case checkbox
+...sow toggle word checkbox
+...etc!
+..st search using search tab
+..sf forward incremental search
+..sb backward incremental search
+
+x minibuffer commands
+
+w file commands
+..ws save outline
+..wq quit
+
+escape: universal escape, like ctrl-g now.
+
+Do you see?  Just one extra level allows 10+ times the number of key bindings.  This is a perfect match for Leo's complex environment.
+
+Naturally, Leo will allow the user to specify these bindings using nodes in the @settings tree. Indeed, this is truly an exciting prospect.
+
+Edward
+
+P.S.  I've glossed over the details of which single characters (like d for delete character) should be reserved for common editing and cursor-movement commands.  That's the beauty of creating these bindings with user settings: no need to argue :-)  And that's the beauty of arbitrarily deep key binding trees: there are plenty of keys to go around.
+
+EKR
+#@-node:ekr.20071026140857:Posting re vim bindings
+#@-node:ekr.20070623144302:vim-like bindings
+#@+node:ekr.20070625091423:Add translation services
+@nocolor
+
+*Many* calls to g.es and g.es_print have a mix of translated and untranslated items.
+Untranslated items should include file names, directories, gnx's, leo_id's etc.
+
+**Don't bother to do clone-find-all: there are 666 many matches!**
+
+Regardless of the chosen scheme:
+
+- g.translate will do the actual translation.
+
+- Some simple string, like tr, will be an abbreviation for g.translate.
+  The typical import will be::
+
+    import leoGlobals as g ; tr = g.translate
+
+The easiest scheme seems to be:
+
+- g.es and g.es_print translate all arguments.
+- g.esx and g.es_printx do no translation.
+
+g.esx and g.es_printx allow a mix on translated and untranslated arguments::
+
+    g.esx(tr('abc'),fileName)
+#@-node:ekr.20070625091423:Add translation services
+#@+node:ekr.20071001052501:Versioning for nodes
+@nocolor
+
+One feature I have not seen in SCS system is something which might be called
+"history compression": I might be interested in having both version 5 and 6
+in my source tree, when the current version is 7, but I am not really interested
+in the 2000 steps which transformed 5 into 6 (just suggested this feature to
+the bazaar people). This happens actually quite often to me, since I use the
+SCS as a back-up system, saving many (uninteresting) intermediate steps while
+implementing a new feature.
+#@nonl
+#@-node:ekr.20071001052501:Versioning for nodes
+#@+node:ekr.20060530085844:Improve autocompletion
+# Study rope:  http://rope.sourceforge.net/
+#@nonl
+#@+node:ekr.20060927173836.1:Make calltips and autocompleter 'stateless'
+@nocolor
+
+Disabled these binding:
+
+auto-complete-force         = None # This command needs work before it is useful. Ctrl-period
+show-calltips-force         = None # This command needs work before it is useful. Alt-parenleft
+
+The problem is that autocompletion depends on state: self.leadinWord,
+prevObjects, etc. Thus, it's not presently possible to start the proces
+anywhere. Similar remarks apply to calltips, which relies on autocompleter
+state.
+
+This is a complex problem, and not very serious now that there is an easy way of
+toggling autocompleter and calltips on and off.
+
+@color
+#@nonl
+#@-node:ekr.20060927173836.1:Make calltips and autocompleter 'stateless'
+#@+node:ekr.20071106083149:Recent posts
+@killcolor
+
+I'm a little confused about the intended behaviour of autocomplete. I tried to test it using: 
+
+@language python  
+
+s = [1,2] 
+
+I expected s. to yield a list of methods one might apply to a list (like append
+etc...) instead it seems to give me a list of methods for a string. If one
+replaces s with l, you don't get much of anything.
+
+My responses 
+
+The present autocompletion code is mostly a hack for working on Leo's own source
+code. If your var is called s, the autocompleter assumes s is a string.
+
+For the conventions used, see this node in leoPy.leo:
+
+Code-->Gui Base classes-->@thin leoKeys.py-->class autoCompleterClass--> ctor
+(autocompleter)-->defineObjectDict
+
+Clearly, this is not good in general. I may generalize the code this week. Leo
+will scan an @file tree (in a separate thread?) the first time you asked for
+autocompletion in that tree.
+
+-----
+
+The issues involving autocompletion are coming back to my memory. In general,
+this is a tricky problem. Consider:
+
+- There may be no 'clean' version of the source code that you want to
+auto-complete: you may be creating a new node, or a new file, and the source
+code, being incomplete, will not parse correctly.
+
+- Except in special circumstances, there is no 'real' object corresponding to s,
+so there is no way to use Python's inspect module on s. Modules are an
+exception: the autocompleter can handle existing modules fairly well. Try "os."
+or "os.path." for example.
+
+So I was a bit hasty in condemning the present approach. If your var is called
+aList instead of s, Leo will suggest autocompletions for a list. Similarly for
+s, s2 for strings, d, d1 and d2 for dictionaries, etc.
+
+I'll look at the pyxides project for discussion of autocompleter code that might
+be useful, but there are no guarantees that something better is coming soon.
+
+-----
+
+Scanning the pyxides thread about autocompletion, it seems the most promising tool is called rope: http://rope.sourceforge.net/ 
+
+But to repeat: autocompletion is not easy. I have some long-delayed bugs to fix before turning my attention to an improved autocompleter. So probably not this week... 
+
+----- 
+
+1. It might be possible to generalize c.k.defineObjectDict so that the user
+could specify autocompleter conventions, say in an @autocompleter node in an
+@settings tree.
+
+However, Python is not lisp, to actually specifying the object to use as the
+base of the completion may not be trivial. See the code for
+c.k.defineObjectDict.
+
+2. Brian (LeoUser) used another kind of autocompleter scheme in his now-defunct
+emacs plugin. When an outline was opened a scan (in a separate thread) found all
+pairs x.y in the code. Typing x. would then give you all the y's associated with
+x. It's clever, but it has obvious problems: it does not suggest completions
+that are not in the file, and it suggests too much for 'self.'.
+
+BTW, I actually did a lot of work on autocompletion that is not presently
+active. In particular, leoKeys.py contains a 'forgiving' parser that attempts to
+understand what 'self' means. Iirc, I disabled this code because it was too slow.
+#@-node:ekr.20071106083149:Recent posts
+#@+node:ekr.20071106135937:Study the pydev code in c:\prog\pydev
+#@-node:ekr.20071106135937:Study the pydev code in c:\prog\pydev
+#@+node:ekr.20071106135937.1:Study the rope code in c:\prog\rope
+#@-node:ekr.20071106135937.1:Study the rope code in c:\prog\rope
+#@-node:ekr.20060530085844:Improve autocompletion
+#@+node:ekr.20071110071126:Better searching
+#@+node:ekr.20071110071126.1:Force the insert point to beginning (or end) of text when selecting during finds?
+Something not-quite-right is happening presently.
+#@nonl
+#@-node:ekr.20071110071126.1:Force the insert point to beginning (or end) of text when selecting during finds?
+#@+node:ekr.20071110071126.2:Better isearch
+#@-node:ekr.20071110071126.2:Better isearch
+#@-node:ekr.20071110071126:Better searching
+#@-node:ekr.20070703111455.1:Most important
+#@+node:ekr.20070703111455.3:Minor
+# some of these can wait till much later.
+#@nonl
 #@+node:ekr.20070521105645:Improve api docs with epidoc?
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=4319363
@@ -1794,10 +1795,6 @@ http://epydoc.sourceforge.net/epydoc.html
 #@-node:ekr.20070521105645:Improve api docs with epidoc?
 #@+node:ekr.20061116054917.6:Remove blanks in calltips
 #@-node:ekr.20061116054917.6:Remove blanks in calltips
-#@+node:ekr.20070627151457:--runCommand option
-@ --runCommand "leo-command-name" runs the command at idle-time after loading the file.
-#@nonl
-#@-node:ekr.20070627151457:--runCommand option
 #@+node:ekr.20061002093442:Add opml support to new,open, save commands
 #@+node:ekr.20031218072017.2820:top level (file menu)
 #@+node:ekr.20031218072017.1623:new
@@ -2298,10 +2295,6 @@ def revert (self,event=None):
 #@-node:ekr.20031218072017.2837:revert
 #@-node:ekr.20031218072017.2820:top level (file menu)
 #@-node:ekr.20061002093442:Add opml support to new,open, save commands
-#@-node:ekr.20070630143345:Other
-#@+node:ekr.20070703111455.3:Maybe
-# some of these can wait till much later.
-#@nonl
 #@+node:ekr.20071027121956:Fix javaScript scanner
 # Javascript syntax is truly bizarre.
 #@nonl
@@ -4808,11 +4801,6 @@ def __init__ (self,c,parentFrame):
     c.frame.statusText  = self.textWidget
 #@-node:ekr.20070302171509.2: nullStatusLineClass.ctor
 #@-node:ekr.20070619161413:Finish support for hidden windows
-#@+node:ekr.20070613103409:Improve marks/recent buttons
-- Arrow keys must move up/down.
-- Should be commands to show the marks/recent dialogs.
-#@nonl
-#@-node:ekr.20070613103409:Improve marks/recent buttons
 #@+node:ekr.20070613181147:(maybe) Improve key handling
 # The idea is to use a single <Key binding> and
 # use w.event_generate(key) to create a table
@@ -4848,8 +4836,10 @@ their own section, like the NodeBar plugin did/does?
 add-new-icon-row command?
 #@nonl
 #@-node:ekr.20061127170002.1:Allow multiple lines on the button bar
-#@-node:ekr.20070703111455.3:Maybe
-#@-node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
+#@-node:ekr.20070703111455.3:Minor
+#@+node:ekr.20070220082124:Make sure Leo can generate Latex
+#@-node:ekr.20070220082124:Make sure Leo can generate Latex
+#@-node:ekr.20071112070038:To do: 5.0 (standard xml parser)
 #@+node:ekr.20070923103337:Not associated with any release
 #@+node:ekr.20060306194040:Video and more screen shots on Leo's web site
 @nocolor

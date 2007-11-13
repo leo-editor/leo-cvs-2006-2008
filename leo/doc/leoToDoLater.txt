@@ -2342,7 +2342,7 @@ def add(self,event=None):
 def change(self,event=None):
     """Make the selected change to the text"""
 
-    __pychecker__ = '--no-override --no-argsused'
+    # __pychecker__ = '--no-override --no-argsused'
          # event param is not used, required, and different from base class.
 
     c = self.c ; body = self.body ; w = body.bodyCtrl
@@ -2525,6 +2525,7 @@ def __init__ (self,c,local_dictionary_file,local_language_code):
 
     self.aspell_dir = g.os_path_abspath(c.config.getString('aspell_dir'))
     self.aspell_bin_dir = g.os_path_abspath(c.config.getString('aspell_bin_dir'))
+    self.diagnose = c.config.getBool('diagnose-aspell-installation')
 
     self.local_language_code = local_language_code or 'en'
     self.local_dictionary_file = g.os_path_abspath(local_dictionary_file)
@@ -2556,6 +2557,9 @@ def getAspell (self):
         theDir = g.choose(sys.platform=='darwin',self.aspell_dir,self.aspell_bin_dir)
         aspell = g.importFromPath('aspell',theDir,pluginName=None,verbose=False)
 
+    if not aspell:
+        self.report('can not import aspell')
+
     self.aspell = aspell
     self.sc = aspell and aspell.spell_checker(prefix=self.aspell_dir,lang=self.local_language_code)
 #@-node:ekr.20061017125710:getAspell
@@ -2576,14 +2580,14 @@ def getAspellWithCtypes (self):
             assert(libname)
             self.aspell = aspell = ctypes.CDLL(libname)
     except Exception:
-        print 'Can not load %s' % (path)
+        self.report('Can not load %s' % (path))
         self.aspell = self.check = self.sc = None
         return
 
     try:
         << define and configure aspell entry points >>
     except Exception:
-        print 'aspell checker not enabled'
+        self.report('aspell checker not enabled')
         self.aspell = self.check = self.sc = None
         return
 
@@ -2627,7 +2631,7 @@ aspell.delete_aspell_config(c_int(sc))
 
 # Rudimentary error checking, needs more.  
 if aspell.aspell_error_number(possible_err) != 0:
-    print 'err', aspell_error_message(possible_err)
+    self.report(aspell_error_message(possible_err))
     spell_checker = None
 else: 
     spell_checker = aspell.to_aspell_speller(possible_err)
@@ -2661,6 +2665,12 @@ suggest.argtypes = [c_int, c_char_p, c_int]
 #@nonl
 #@-node:ekr.20061018111933:<< define and configure aspell entry points >>
 #@-node:ekr.20061018111331:getAspellWithCtypes
+#@+node:ekr.20071111153009:report
+def report (self,message):
+
+    if self.diagnose:
+        g.es_print(message,color='blue')
+#@-node:ekr.20071111153009:report
 #@-node:ekr.20051025071455.7:Birth & death
 #@+node:ekr.20051025071455.10:processWord
 def processWord(self, word):
@@ -6598,6 +6608,16 @@ Tree traversals will be tree traversals.
 Hope that did not muddy the waters even more ... 
 #@-node:ekr.20060329102951.2:Reply
 #@-node:ekr.20060329102951:@ref
+#@+node:ekr.20070627151457:--runCommand option
+@
+
+--runCommand "leo-command-name" runs the command at idle-time after loading the file.
+
+I am not going to do this: this, in conjunction with @command nodes, is a big security hole, equivalent to @script.
+
+The only safe thing would be to disallow user-defined commands from being executed by --runCommand, but then what is the point of --runCommand.
+#@nonl
+#@-node:ekr.20070627151457:--runCommand option
 #@+node:ekr.20040220110030:Change cursor when caps lock is down
 @nocolor
 

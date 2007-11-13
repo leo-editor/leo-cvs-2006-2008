@@ -7363,7 +7363,7 @@ IF
 if g.unitTesting:
     # @language python 
 
-    __pychecker__ = '--no-reimport'
+    # __pychecker__ = '--no-reimport'
     import leoTest
 
     u = leoTest.testUtils(c)
