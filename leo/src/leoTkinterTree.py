@@ -563,7 +563,7 @@ class leoTkinterTree (leoFrame.leoTree):
 
         """All changes to text widgets should come here."""
 
-        __pychecker__ = '--no-argsused' # theId not used.
+        # __pychecker__ = '--no-argsused' # theId not used.
 
         # if self.trace_alloc: g.trace('%4d %6s %s' % (theId,self.textAddr(w),s),align=-20)
 
@@ -1299,8 +1299,8 @@ class leoTkinterTree (leoFrame.leoTree):
 
         """Scrolls the canvas so that p is in view."""
 
-        __pychecker__ = '--no-argsused' # event not used.
-        __pychecker__ = '--no-intdivide' # suppress warning about integer division.
+        # __pychecker__ = '--no-argsused' # event not used.
+        # __pychecker__ = '--no-intdivide' # suppress warning about integer division.
 
         c = self.c ; frame = c.frame ; trace = False
         if not p or not c.positionExists(p):
@@ -1990,7 +1990,7 @@ class leoTkinterTree (leoFrame.leoTree):
 
         """Deactivate the tree pane, dimming any headline being edited."""
 
-        __pychecker__ = '--no-argsused' # event not used.
+        # __pychecker__ = '--no-argsused' # event not used.
 
         tree = self ; c = self.c
 
@@ -2044,14 +2044,14 @@ class leoTkinterTree (leoFrame.leoTree):
 
     def OnPopupFocusLost(self,event=None):
 
-        __pychecker__ = '--no-argsused' # event not used.
+        # __pychecker__ = '--no-argsused' # event not used.
 
         self.popupMenu.unpost()
     #@-node:ekr.20040803072955.111:OnPopupFocusLost
     #@+node:ekr.20040803072955.112:createPopupMenu
     def createPopupMenu (self,event):
 
-        __pychecker__ = '--no-argsused' # event not used.
+        # __pychecker__ = '--no-argsused' # event not used.
 
         c = self.c ; frame = c.frame
 
@@ -2103,7 +2103,7 @@ class leoTkinterTree (leoFrame.leoTree):
 
         """Enable and disable items in the popup menu."""
 
-        __pychecker__ = '--no-argsused' # event not used.
+        # __pychecker__ = '--no-argsused' # event not used.
 
         c = self.c ; menu = self.popupMenu
 

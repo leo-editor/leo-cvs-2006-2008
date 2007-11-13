@@ -391,7 +391,7 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
     #@+node:ekr.20031218072017.3906:onCloseWindow
     def onCloseWindow(self,event=None):
 
-        __pychecker__ = '--no-argsused' # the event param must be present.
+        # __pychecker__ = '--no-argsused' # the event param must be present.
 
         self.top.withdraw()
     #@-node:ekr.20031218072017.3906:onCloseWindow

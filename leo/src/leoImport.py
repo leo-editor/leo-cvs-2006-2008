@@ -472,7 +472,7 @@ class baseLeoImportCommands:
 
         '''Properly remove all sentinle lines in s.'''
 
-        __pychecker__ = '--no-argsused' # end_delim.
+        # __pychecker__ = '--no-argsused' # end_delim.
 
         delim = (line_delim or start_delim or '') + '@'
         verbatim = delim + 'verbatim' ; verbatimFlag = False
@@ -913,7 +913,7 @@ class baseLeoImportCommands:
 
     def convertMoreStringsToOutlineAfter (self,strings,firstVnode):
 
-        __pychecker__ = '--no-objattrs' # suppress bad warnings re lastVnode.
+        # __pychecker__ = '--no-objattrs' # suppress bad warnings re lastVnode.
 
         c = self.c
         if len(strings) == 0: return None

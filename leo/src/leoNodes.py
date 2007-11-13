@@ -4,7 +4,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__pychecker__ = '--no-reuseattr' # Suppress warnings about redefining vnode and tnode classes.
+# __pychecker__ = '--no-reuseattr' # Suppress warnings about redefining vnode and tnode classes.
 
 use_zodb = False
 
@@ -1175,7 +1175,7 @@ class basePosition (object):
 
         """Create a new position."""
 
-        __pychecker__ = '--no-argsused' # trace not used.
+        # __pychecker__ = '--no-argsused' # trace not used.
 
         # To support ZODB the code must set vort._p_changed = 1 whenever
         # t.vnodeList (or any mutable tnode or vnode object) changes.
@@ -1772,7 +1772,7 @@ class basePosition (object):
         """Return the headline string in MORE format."""
 
         # useVerticalBar is unused, but it would be useful in over-ridden methods.
-        __pychecker__ = '--no-argsused'
+        # __pychecker__ = '--no-argsused'
 
         p = self
         level = self.level() - firstLevel

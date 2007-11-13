@@ -2324,7 +2324,7 @@ class baseTangleCommands:
 
     def forgiving_compare (self,name,part,s1,s2):
 
-        __pychecker__ = 'maxlines=500 maxbranches=100 --no-argsused'
+        # __pychecker__ = 'maxlines=500 maxbranches=100 --no-argsused'
             # name and part are good for debugging.
 
         if 0:
@@ -2649,7 +2649,7 @@ class baseTangleCommands:
 
     def scan_derived_file (self,s):
 
-        __pychecker__ = 'maxlines=500'
+        # __pychecker__ = 'maxlines=500'
 
         c = self.c
         self.def_stack = []
@@ -3096,7 +3096,7 @@ class baseTangleCommands:
 
     def is_sentinel_line_with_data (self,s,i):
 
-        __pychecker__ = 'maxreturns=50'
+        # __pychecker__ = 'maxreturns=50'
 
         start_sentinel = self.sentinel
         end_sentinel = self.sentinel_end
@@ -3427,7 +3427,7 @@ class baseTangleCommands:
         setting corresponding tangle ivars and globals.
         """
 
-        __pychecker__ = 'maxlines=500 maxbranches=100'
+        # __pychecker__ = 'maxlines=500 maxbranches=100'
 
         c = self.c
         # g.trace(p)

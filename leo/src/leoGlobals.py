@@ -9,8 +9,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__pychecker__ = '--no-import --no-reimportself --no-reimport\
-     --no-constCond --no-constant1'
+# __pychecker__ = '--no-import --no-reimportself --no-reimport --no-constCond --no-constant1'
     # Disable all import warnings: This module must do strange things with imports. 
     # Disable checks for constant conditionals.
 
@@ -501,7 +500,7 @@ def get_directives_dict(p,root=None):
 #@@tabwidth -4
 #@verbatim
 #@path xyzzy
-#@@pagewidth 120
+#@@pagewidth 80
 
 # Does not work when run externally with null colorizer.
 if g.unitTesting:
@@ -512,7 +511,7 @@ if g.unitTesting:
     assert d.get('language') == 'python'
     assert d.get('tabwidth') == -4
     # assert d.get('path').endswith('xyzzy')
-    assert d.get('pagewidth') == 120
+    assert d.get('pagewidth') == 80
 #@-node:ekr.20071109224138:@test g.get_directives_dict
 #@-node:ekr.20031218072017.1260:g.get_directives_dict & test
 #@+node:ekr.20031218072017.1386:getOutputNewline
@@ -998,7 +997,7 @@ def pdb ():
 #@+node:ekr.20050221092824:@test g.pdb
 if g.unitTesting:
 
-    __pychecker__ = '--no-reimport'
+    # __pychecker__ = '--no-reimport'
     import sys
     c,p = g.getTestVars()
 
@@ -1090,7 +1089,7 @@ def es_event_exception (eventName,full=False):
 #@+node:ekr.20031218072017.3112:es_exception & test
 def es_exception (full=True,c=None,color="red"):
 
-    __pychecker__ = '--no-argsused' # c not used. retained for compatibility.
+    # __pychecker__ = '--no-argsused' # c not used. retained for compatibility.
 
     typ,val,tb = sys.exc_info()
 
@@ -1463,7 +1462,7 @@ def toString (obj,tag=None,sort=False,verbose=True,indent=''):
 #@+node:ekr.20041224080039:print_dict & dictToString
 def print_dict(d,tag='',verbose=True,indent=''):
 
-    __pychecker__ = '--no-argsused'
+    # __pychecker__ = '--no-argsused'
         # verbose unused, but present for compatibility with similar methods.
 
     if not d:
@@ -1486,7 +1485,7 @@ printDict = print_dict
 
 def dictToString(d,tag=None,verbose=True,indent=''):
 
-    __pychecker__ = '--no-argsused'
+    # __pychecker__ = '--no-argsused'
         # verbose unused, but present for compatibility with similar methods.
 
     if not d:
@@ -1787,7 +1786,7 @@ def create_temp_file (textMode=False):
 
     # mktemp is deprecated, but we can't get rid of it
     # because mkstemp does not exist in Python 2.2.1.
-    __pychecker__ = '--no-deprecate'
+    # __pychecker__ = '--no-deprecate'
     try:
         # fd is an handle to an open file as would be returned by os.open()
         fd,theFileName = tempfile.mkstemp(text=textMode)
@@ -1811,7 +1810,7 @@ def create_temp_file (textMode=False):
 #@+node:ekr.20050216052031:@test g.create_temp_file
 if g.unitTesting:
 
-    __pychecker__ = '--no-reimport'
+    # __pychecker__ = '--no-reimport'
     import types
 
     c,p = g.getTestVars() # Optional: prevents pychecker warnings.
@@ -2135,7 +2134,7 @@ def utils_remove (fileName,verbose=True):
 #@+node:ekr.20050107084901:@test g.utils_remove
 if g.unitTesting:
 
-    __pychecker__ = '--no-reimport'
+    # __pychecker__ = '--no-reimport'
     import os
 
     c,p = g.getTestVars() # Optional: prevents pychecker warnings.
@@ -2220,7 +2219,7 @@ def utils_rename (c,src,dst,mode=None,verbose=True):
 #@+node:ekr.20050107085710.1:@test g.utils_rename
 if g.unitTesting:
 
-    __pychecker__ = '--no-reimport'
+    # __pychecker__ = '--no-reimport'
     import os
     exists = g.os_path_exists
 
@@ -2575,7 +2574,7 @@ trace_count = 0
 
 def idleTimeHookHandler(*args,**keys):
 
-    __pychecker__ = '--no-argsused' # args & keys not used.
+    # __pychecker__ = '--no-argsused' # args & keys not used.
 
     if 0: # Do not use g.trace here!
         global trace_count ; trace_count += 1
@@ -2820,7 +2819,7 @@ if g.unitTesting:
 #@-node:ekr.20070621092938.1:@test g.es_trace
 #@-node:ekr.20050707065530:es_trace & test
 #@+node:ekr.20060810095921:et, et_* and _ (underscore)
-__pychecker__ = 'no-reuseattr'
+# __pychecker__ = 'no-reuseattr'
 
 if 1: # Do nothing
     et = es
@@ -2841,7 +2840,7 @@ else: # Use the gettext module to translate arguments.
         '''Return the translated text of s.'''
         return gettext.gettext(s)
 
-__pychecker__ = 'reuseattr'
+# __pychecker__ = 'reuseattr'
 #@nonl
 #@-node:ekr.20060810095921:et, et_* and _ (underscore)
 #@+node:ekr.20031218072017.3148:top
@@ -3917,7 +3916,7 @@ joinlines = joinLines
 def initScriptFind(c,findHeadline,changeHeadline=None,firstNode=None,
     script_search=True,script_change=True):
 
-    __pychecker__ = '--no-argsused' # firstNode is not used.
+    # __pychecker__ = '--no-argsused' # firstNode is not used.
 
     import leoTest
     import leoGlobals as g
@@ -4104,7 +4103,7 @@ if 0:
 #@-node:ekr.20060216115304.2:g.safeStringCompare & test (Do not use)
 #@+node:ekr.20031218072017.1503:getpreferredencoding from 2.3a2
 # Suppress warning about redefining getpreferredencoding
-__pychecker__ = '--no-reuseattr'
+# __pychecker__ = '--no-reuseattr'
 
 try:
     # Use Python's version of getpreferredencoding if it exists.
@@ -4163,7 +4162,7 @@ except Exception:
         #@-node:ekr.20031218072017.1505:<< define getpreferredencoding for *nix >>
         #@nl
 
-__pychecker__ = '--reuseattr'
+# __pychecker__ = '--reuseattr'
 #@-node:ekr.20031218072017.1503:getpreferredencoding from 2.3a2
 #@+node:ekr.20031218072017.1499:isUnicode
 def isUnicode(s):
@@ -4301,7 +4300,7 @@ if g.unitTesting:
         ('炰',   'utf-8'),
     ]
 
-    __pychecker__ = '--no-reimport'
+    # __pychecker__ = '--no-reimport'
     import sys
 
     if sys.platform.startswith('win'):
@@ -4615,8 +4614,7 @@ if g.unitTesting:
 
 def oldCheckVersion( version, againstVersion, condition=">=", stringCompare="0.0.0.0", delimiter='.' ):
 
-    __pychecker__ = 'maxreturns=20'
-
+    # __pychecker__ = 'maxreturns=20'
 
     # tokenize the stringCompare flags
     compareFlag = string.split( stringCompare, '.' )
@@ -5155,7 +5153,7 @@ class mulderUpdateAlgorithm:
         Generate a report when something goes wrong.
         """
 
-        __pychecker__ = '--no-argsused' # Most args are presently unused.
+        # __pychecker__ = '--no-argsused' # Most args are presently unused.
 
         print '='*20
         print message
@@ -5256,7 +5254,7 @@ class nullObject:
 
     """An object that does nothing, and does it very well."""
 
-    __pychecker__ = '--no-argsused'
+    # __pychecker__ = '--no-argsused'
 
     def __init__   (self,*args,**keys): pass
     def __call__   (self,*args,**keys): return self

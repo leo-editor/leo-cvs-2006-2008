@@ -31,7 +31,7 @@ except Exception:
     pass
 
 # The following is sometimes used.
-__pychecker__ = '--no-import'
+# __pychecker__ = '--no-import'
 import time
 #@nonl
 #@-node:ekr.20050405141130:<< imports >>
@@ -117,22 +117,22 @@ if sys.platform != 'cli':
         #@-node:ekr.20060919110638.20: __init__ & helpers
         #@+node:ekr.20060919110638.29: Do nothing
         def endElementNS(self,name,qname):
-            __pychecker__ = '--no-argsused'
+            # __pychecker__ = '--no-argsused'
             g.trace(name)
 
         def endDocument(self):
             pass
 
         def ignorableWhitespace(self,whitespace):
-            __pychecker__ = '--no-argsused'
+            # __pychecker__ = '--no-argsused'
             pass
 
         def skippedEntity(self,name):
-            __pychecker__ = '--no-argsused'
+            # __pychecker__ = '--no-argsused'
             g.trace(name)
 
         def startElementNS(self,name,qname,attrs):
-            __pychecker__ = '--no-argsused'
+            # __pychecker__ = '--no-argsused'
             g.trace(name)
 
         def startDocument(self):
@@ -367,13 +367,13 @@ if sys.platform != 'cli':
         #@-node:ekr.20060919110638.38:startWinPos
         #@+node:ekr.20060919110638.39:startLeoHeader
         def startLeoHeader (self,attrs):
-            __pychecker__ = '--no-argsused'
+            # __pychecker__ = '--no-argsused'
             self.tnxToListDict = {}
         #@-node:ekr.20060919110638.39:startLeoHeader
         #@+node:ekr.20060919110638.40:startVH
         def startVH (self,attrs):
 
-            __pychecker__ = '--no-argsused'
+            # __pychecker__ = '--no-argsused'
 
             self.content = []
         #@nonl
@@ -381,7 +381,7 @@ if sys.platform != 'cli':
         #@+node:ekr.20060919112118:startVnodes
         def startVnodes (self,attrs):
 
-            __pychecker__ = '--no-argsused'
+            # __pychecker__ = '--no-argsused'
 
             c = self.c ; d = self.global_window_position
 
@@ -966,7 +966,7 @@ class baseFileCommands:
         This is used to record marked and expanded nodes.
         '''
 
-        __pychecker__ = '--no-argsused' # tag used only for debugging.
+        # __pychecker__ = '--no-argsused' # tag used only for debugging.
 
         gnxs = s.split(',')
         result = [gnx for gnx in gnxs if len(gnx) > 0]
@@ -1628,7 +1628,7 @@ class baseFileCommands:
 
         """Parse an unknown attribute in a <v> or <t> element."""
 
-        __pychecker__ = '--no-argsused' # nodeType not used: good for debugging.
+        # __pychecker__ = '--no-argsused' # nodeType not used: good for debugging.
 
         # New in 4.2.  The unknown tag has been pickled and hexlify'd.
         attr,val = self.getUnknownTag()
@@ -2403,7 +2403,7 @@ class baseFileCommands:
     #@+node:ekr.20050404190914.2:deleteFileWithMessage
     def deleteFileWithMessage(self,fileName,kind):
 
-        __pychecker__ = '--no-argsused' # kind unused: retained for debugging.
+        # __pychecker__ = '--no-argsused' # kind unused: retained for debugging.
 
         try:
             os.remove(fileName)

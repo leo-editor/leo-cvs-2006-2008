@@ -88,7 +88,7 @@ class baseLeoCompare:
 
         outputFileName = None ):
 
-        __pychecker__ = 'maxargs=50'
+        # __pychecker__ = 'maxargs=50'
 
         # It is more convenient for the leoComparePanel to set these directly.
         self.c = commands

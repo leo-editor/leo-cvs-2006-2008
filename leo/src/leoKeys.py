@@ -20,7 +20,7 @@ import sys
 import types
 
 # The following imports _are_ used.
-__pychecker__ = '--no-import'
+# __pychecker__ = '--no-import'
 
 try:
     # These do not exist in IronPython or Python 2.4
@@ -1073,7 +1073,7 @@ class autoCompleterClass:
     #@+node:ekr.20061031131434.49:scan
     def scan (self,event=None,verbose=True,thread=True):
 
-        __pychecker__ = '--no-argsused' # thread arg not used at present.
+        # __pychecker__ = '--no-argsused' # thread arg not used at present.
 
         c = self.c
         if not c or not c.exists or c.frame.isNullFrame: return
@@ -2452,7 +2452,7 @@ class keyHandlerClass:
         if commandName:
             bodyCtrl = c.frame.body.bodyCtrl
             if not k.inState():
-                __pychecker__ = '--no-classattr --no-objattrs'
+                # __pychecker__ = '--no-classattr --no-objattrs'
                     # initAllEditCommanders *does* exist.
                 k.commandName = None
                 leoEditCommands.initAllEditCommanders(c)
@@ -2944,7 +2944,7 @@ class keyHandlerClass:
                         break
     #@+node:ekr.20070627082044.831:@test k.registerCommand
     if g.unitTesting:
-        __pychecker__ = '--no-reimport'
+        # __pychecker__ = '--no-reimport'
         import leoTest
         u = leoTest.testUtils(c)
         k = c.k ; p = c.currentPosition() ; w = c.edit_widget(p)
@@ -3424,7 +3424,7 @@ class keyHandlerClass:
 
         '''Create mode bindings for the named mode using dictionary d for w, a text widget.'''
 
-        __pychecker__ = '--no-argsused' # w not used (except for debugging).
+        # __pychecker__ = '--no-argsused' # w not used (except for debugging).
 
         k = self ; c = k.c
 
@@ -3994,7 +3994,7 @@ class keyHandlerClass:
     #@+node:ekr.20061031131434.183:@test isPlainKey
     if g.unitTesting:
 
-        __pychecker__ = '--no-reimport'
+        # __pychecker__ = '--no-reimport'
         import string
 
         c,p = g.getTestVars() # Optional: prevents pychecker warnings.
@@ -4384,7 +4384,7 @@ class keyHandlerClass:
     #@+node:ekr.20061031131434.202:executeNTimes
     def executeNTimes (self,event,n):
 
-        __pychecker__ = '--no-local' # z is used just for a repeat count.
+        # __pychecker__ = '--no-local' # z is used just for a repeat count.
 
         k = self ; stroke = k.stroke ; w = event.widget
         # g.trace('stroke',stroke,'keycode',event.keycode,'n',n)

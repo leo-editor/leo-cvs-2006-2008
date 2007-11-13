@@ -266,7 +266,7 @@ class tkinterAboutLeo (leoTkinterDialog):
 
         """Handle clicks in the email link in an About Leo dialog."""
 
-        __pychecker__ = '--no-argsused' # the event param must be present.
+        # __pychecker__ = '--no-argsused' # the event param must be present.
 
         try:
             import webbrowser
@@ -279,7 +279,7 @@ class tkinterAboutLeo (leoTkinterDialog):
 
         """Handle clicks in the url link in an About Leo dialog."""
 
-        __pychecker__ = '--no-argsused' # the event param must be present.
+        # __pychecker__ = '--no-argsused' # the event param must be present.
 
         try:
             import webbrowser
@@ -292,7 +292,7 @@ class tkinterAboutLeo (leoTkinterDialog):
 
         """Set the cursor to an arrow in an About Leo dialog."""
 
-        __pychecker__ = '--no-argsused' # the event param must be present.
+        # __pychecker__ = '--no-argsused' # the event param must be present.
 
         self.text.configure(cursor="arrow")
 
@@ -300,7 +300,7 @@ class tkinterAboutLeo (leoTkinterDialog):
 
         """Set the cursor to the default cursor in an About Leo dialog."""
 
-        __pychecker__ = '--no-argsused' # the event param must be present.
+        # __pychecker__ = '--no-argsused' # the event param must be present.
 
         self.text.configure(cursor="xterm")
     #@-node:ekr.20031218072017.3872:tkinterAboutLeo: setArrowCursor, setDefaultCursor
@@ -819,7 +819,7 @@ class tkinterListBoxDialog (leoTkinterDialog):
 
         subclasses may override to really destroy the window"""
 
-        __pychecker__ = '--no-argsused' # event not used, but must be present.
+        # __pychecker__ = '--no-argsused' # event not used, but must be present.
 
         self.top.withdraw() # Don't allow this window to be destroyed.
     #@-node:ekr.20031218072017.3893:destroy
@@ -837,7 +837,7 @@ class tkinterListBoxDialog (leoTkinterDialog):
 
         Overridden by subclasses"""
 
-        __pychecker__ = '--no-argsused' # the event param must be present.
+        # __pychecker__ = '--no-argsused' # the event param must be present.
 
         pass
     #@-node:ekr.20031218072017.3895:fillbox
@@ -846,7 +846,7 @@ class tkinterListBoxDialog (leoTkinterDialog):
 
         """Handle clicks in the "go" button in a list box dialog."""
 
-        __pychecker__ = '--no-argsused' # the event param must be present.
+        # __pychecker__ = '--no-argsused' # the event param must be present.
 
         c = self.c ; box = self.box
 

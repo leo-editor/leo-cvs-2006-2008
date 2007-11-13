@@ -128,7 +128,7 @@ class parserBaseClass:
     #@+node:ekr.20070925144337:doButtons
     def doButtons (self,p,kind,name,val):
 
-        __pychecker__ = '--no-argsused' # kind,name,val not used.
+        # __pychecker__ = '--no-argsused' # kind,name,val not used.
 
         aList = [] ; c = self.c ; tag = '@button'
         for p in p.subtree_iter():
@@ -166,7 +166,7 @@ class parserBaseClass:
     #@+node:ekr.20070224075914:doEnabledPlugins
     def doEnabledPlugins (self,p,kind,name,val):
 
-        __pychecker__ = '--no-argsused' # kind,name,val not used.
+        # __pychecker__ = '--no-argsused' # kind,name,val not used.
 
         c = self.c
         s = p.bodyString()
@@ -192,7 +192,7 @@ class parserBaseClass:
     #@+node:ekr.20041120094940.4:doFont
     def doFont (self,p,kind,name,val):
 
-        __pychecker__ = '--no-argsused' # kind not used.
+        # __pychecker__ = '--no-argsused' # kind not used.
 
         d = self.parseFont(p)
 
@@ -207,7 +207,7 @@ class parserBaseClass:
     #@+node:ekr.20041120103933:doIf
     def doIf(self,p,kind,name,val):
 
-        __pychecker__ = '--no-argsused' # args not used.
+        # __pychecker__ = '--no-argsused' # args not used.
 
         g.trace("'if' not supported yet")
         return None
@@ -226,7 +226,7 @@ class parserBaseClass:
 
         def doIfGui (self,p,kind,name,val):
 
-            __pychecker__ = '--no-argsused' # args not used.
+            # __pychecker__ = '--no-argsused' # args not used.
 
             # g.trace(repr(name))
 
@@ -242,7 +242,7 @@ class parserBaseClass:
     #@+node:ekr.20041120104215:doIfPlatform
     def doIfPlatform (self,p,kind,name,val):
 
-        __pychecker__ = '--no-argsused' # args not used.
+        # __pychecker__ = '--no-argsused' # args not used.
 
         # g.trace(sys.platform,repr(name))
 
@@ -307,7 +307,7 @@ class parserBaseClass:
     #@+node:ekr.20070925144337.2:doMenus & helper
     def doMenus (self,p,kind,name,val):
 
-        __pychecker__ = '--no-argsused' # kind,name,val not used.
+        # __pychecker__ = '--no-argsused' # kind,name,val not used.
 
         c = self.c ; aList = [] ; tag = '@menu'
         p = p.copy() ; after = p.nodeAfterTree()
@@ -387,7 +387,7 @@ class parserBaseClass:
 
         '''Parse an @mode node and create the enter-<name>-mode command.'''
 
-        __pychecker__ = '--no-argsused' # val not used.
+        # __pychecker__ = '--no-argsused' # val not used.
 
         c = self.c ; k = c.k
 
@@ -474,7 +474,7 @@ class parserBaseClass:
     #@+node:ekr.20041120105609:doShortcuts (ParserBaseClass)
     def doShortcuts(self,p,kind,name,val,s=None):
 
-        __pychecker__ = '--no-argsused' # kind,val.
+        # __pychecker__ = '--no-argsused' # kind,val.
 
         # g.trace(self.c.fileName(),name)
 
@@ -738,7 +738,7 @@ class parserBaseClass:
 
         """Init the setting for name to val."""
 
-        __pychecker__ = '--no-argsused' # p used in subclasses, not here.
+        # __pychecker__ = '--no-argsused' # p used in subclasses, not here.
 
         c = self.c ; key = self.munge(name)
         # if kind and kind.startswith('setting'): g.trace("settingsParser %10s %15s %s" %(kind,val,name))
@@ -797,14 +797,14 @@ class parserBaseClass:
 
         """Give an error: val is not valid for kind."""
 
-        __pychecker__ = '--no-argsused' # p not used, but needed.
+        # __pychecker__ = '--no-argsused' # p not used, but needed.
 
         self.error("%s is not a valid %s for %s" % (val,kind,name))
     #@-node:ekr.20041120094940.10:valueError
     #@+node:ekr.20041119204700.3:visitNode (must be overwritten in subclasses)
     def visitNode (self,p):
 
-        __pychecker__ = '--no-argsused' # p not used, but needed.
+        # __pychecker__ = '--no-argsused' # p not used, but needed.
 
         self.oops()
     #@-node:ekr.20041119204700.3:visitNode (must be overwritten in subclasses)
@@ -911,7 +911,7 @@ class configSettings:
     #@+node:ekr.20041118195812.2:set & setString
     def set (self,p,setting,val):
 
-        __pychecker__ = '--no-argsused' # p not used.
+        # __pychecker__ = '--no-argsused' # p not used.
 
         return g.app.config.setString(self.c,setting,val)
 
@@ -1975,7 +1975,7 @@ if g.unitTesting:
 #@+node:ekr.20070627082044.902:@test ifplatform
 if g.unitTesting:
 
-    __pychecker__ = '--no-reimport'
+    # __pychecker__ = '--no-reimport'
     import sys
 
     win32  = c.config.getBool('test_win32_setting')

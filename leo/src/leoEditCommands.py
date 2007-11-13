@@ -28,7 +28,7 @@ import sys
 subprocess     = g.importExtension('subprocess',    pluginName=None,verbose=False)
 
 # The following imports is sometimes used.
-__pychecker__ = '--no-import'
+# __pychecker__ = '--no-import'
 import threading
 #@-node:ekr.20050710151017:<< imports >>
 #@nl
@@ -1536,6 +1536,8 @@ class editCommandsClass (baseEditCommandsClass):
             'remove-space-from-lines':              self.removeSpaceFromLines,
             'remove-tab-from-lines':                self.removeTabFromLines,
             'reverse-region':                       self.reverseRegion,
+            'reverse-sort-lines':                   self.reverseSortLines,
+            'reverse-sort-lines-ignoring-case':     self.reverseSortLinesIgnoringCase,                 
             'scroll-down':                          self.scrollDown,
             'scroll-down-extend-selection':         self.scrollDownExtendSelection,
             'scroll-outline-down-line':             self.scrollOutlineDownLine,
@@ -1561,6 +1563,7 @@ class editCommandsClass (baseEditCommandsClass):
             'sort-columns':                         self.sortColumns,
             'sort-fields':                          self.sortFields,
             'sort-lines':                           self.sortLines,
+            'sort-lines-ignoring-case':             self.sortLinesIgnoringCase,
             'split-line':                           self.splitLine,
             'tabify':                               self.tabify,
             'toggle-extend-mode':                   self.toggleExtendMode,
@@ -4351,33 +4354,44 @@ class editCommandsClass (baseEditCommandsClass):
     Rectangles::.
 
     '''
-    #@+node:ekr.20050920084036.118:sortLines
-    def sortLines (self,event,which=None):
+    #@+node:ekr.20050920084036.118:sortLines commands
+    def reverseSortLinesIgnoringCase(self,event):
+        return self.sortLines(event,ignoreCase=True,reverse=True)
 
-        '''Sort lines of the selected text by comparing the entire text of a line.
-        A prefix argument means sort in descending order.'''
+    def reverseSortLines(self,event):
+        return self.sortLines(event,reverse=True)
 
-        c = self.c ; k = c.k
-        w = self.editWidget(event)
+    def sortLinesIgnoringCase(self,event):
+        return self.sortLines(event,ignoreCase=True)
+
+    def sortLines (self,event,ignoreCase=False,reverse=False):
+
+        '''Sort lines of the selected text by comparing the entire text of a line.'''
+
+        c = self.c ; k = c.k ; w = self.editWidget(event)
         if not self._chckSel(event): return
 
-        self.beginCommand(undoType='sort-lines')
+        undoType = g.choose(reverse,'reverse-sort-lines','sort-lines')
+        self.beginCommand(undoType=undoType)
         try:
             s = w.getAllText()
             sel_1,sel_2 = w.getSelectionRange()
             ins = w.getInsertPoint()
             i,junk = g.getLine(s,sel_1)
             junk,j = g.getLine(s,sel_2)
-            aList = g.splitLines(s[i:j])
-            aList.sort()
-            if which: aList.reverse()
+            s2 = s[i:j]
+            if not s2.endswith('\n'): s2 = s2+'\n'
+            aList = g.splitLines(s2)
+            if ignoreCase:  aList.sort(key=string.lower)
+            else:           aList.sort()
+            if reverse:     aList.reverse()
             s = g.joinLines(aList)
             w.delete(i,j)
             w.insert(i,s)
             w.setSelectionRange(sel_1,sel_2,insert=ins)
         finally:
             self.endCommand(changed=True,setLabel=True)
-    #@-node:ekr.20050920084036.118:sortLines
+    #@-node:ekr.20050920084036.118:sortLines commands
     #@+node:ekr.20050920084036.119:sortColumns
     def sortColumns (self,event):
 
@@ -5534,7 +5548,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
 
         '''Return the contents of the clipboard.'''
 
-        __pychecker__ = '--no-argsused' # w not used.
+        # __pychecker__ = '--no-argsused' # w not used.
 
         try:
             ctxt = g.app.gui.getTextFromClipboard()
@@ -7556,6 +7570,8 @@ class searchCommandsClass (baseEditCommandsClass):
 
             'show-find-options':                    self.showFindOptions,
 
+            'toggle-find-collapses_nodes':          self.toggleFindCollapesNodes,
+
             'toggle-find-ignore-case-option':       self.toggleIgnoreCaseOption,
             'toggle-find-in-body-option':           self.toggleSearchBodyOption,
             'toggle-find-in-headline-option':       self.toggleSearchHeadlineOption,
@@ -7670,6 +7686,14 @@ class searchCommandsClass (baseEditCommandsClass):
     def showFindOptions (self,event):
         '''Show all Find options in the minibuffer label area.'''
         self.getHandler().showFindOptions()
+
+    def toggleFindCollapesNodes(self,event):
+        '''Toggle the 'Collapse Nodes' checkbox in the find tab.'''
+        # return self.toggleOption('collapse_nodes')
+        c = self.c ; p = c.currentPosition()
+        val = c.config.getBool('collapse_nodes_during_finds')
+        c.config.set(p,'collapse_nodes_during_finds',not val)
+        g.es('collapse_nodes_during_finds',c.config.getBool('collapse_nodes_during_finds'))
 
     def toggleIgnoreCaseOption     (self, event):
         '''Toggle the 'Ignore Case' checkbox in the Find tab.'''
@@ -7979,7 +8003,7 @@ class searchCommandsClass (baseEditCommandsClass):
 #@+node:ekr.20070627082044.634:@test Find keeps focus in body & shows selected text
 if g.unitTesting:
 
-    __pychecker__ = '--no-reimport'
+    # __pychecker__ = '--no-reimport'
     import leoEditCommands
 
     c,p = g.getTestVars()
@@ -8285,7 +8309,7 @@ class spellTabHandler (leoFind.leoFind):
     def change(self,event=None):
         """Make the selected change to the text"""
 
-        __pychecker__ = '--no-override --no-argsused'
+        # __pychecker__ = '--no-override --no-argsused'
              # event param is not used, required, and different from base class.
 
         c = self.c ; body = self.body ; w = body.bodyCtrl
@@ -8479,6 +8503,7 @@ class AspellClass:
 
         self.aspell_dir = g.os_path_abspath(c.config.getString('aspell_dir'))
         self.aspell_bin_dir = g.os_path_abspath(c.config.getString('aspell_bin_dir'))
+        self.diagnose = c.config.getBool('diagnose-aspell-installation')
 
         self.local_language_code = local_language_code or 'en'
         self.local_dictionary_file = g.os_path_abspath(local_dictionary_file)
@@ -8510,6 +8535,9 @@ class AspellClass:
             theDir = g.choose(sys.platform=='darwin',self.aspell_dir,self.aspell_bin_dir)
             aspell = g.importFromPath('aspell',theDir,pluginName=None,verbose=False)
 
+        if not aspell:
+            self.report('can not import aspell')
+
         self.aspell = aspell
         self.sc = aspell and aspell.spell_checker(prefix=self.aspell_dir,lang=self.local_language_code)
     #@-node:ekr.20061017125710:getAspell
@@ -8530,7 +8558,7 @@ class AspellClass:
                 assert(libname)
                 self.aspell = aspell = ctypes.CDLL(libname)
         except Exception:
-            print 'Can not load %s' % (path)
+            self.report('Can not load %s' % (path))
             self.aspell = self.check = self.sc = None
             return
 
@@ -8568,7 +8596,7 @@ class AspellClass:
 
             # Rudimentary error checking, needs more.  
             if aspell.aspell_error_number(possible_err) != 0:
-                print 'err', aspell_error_message(possible_err)
+                self.report(aspell_error_message(possible_err))
                 spell_checker = None
             else: 
                 spell_checker = aspell.to_aspell_speller(possible_err)
@@ -8603,7 +8631,7 @@ class AspellClass:
             #@-node:ekr.20061018111933:<< define and configure aspell entry points >>
             #@nl
         except Exception:
-            print 'aspell checker not enabled'
+            self.report('aspell checker not enabled')
             self.aspell = self.check = self.sc = None
             return
 
@@ -8616,6 +8644,12 @@ class AspellClass:
         self.word_list_elements = word_list_elements
         self.word_list_size = word_list_size
     #@-node:ekr.20061018111331:getAspellWithCtypes
+    #@+node:ekr.20071111153009:report
+    def report (self,message):
+
+        if self.diagnose:
+            g.es_print(message,color='blue')
+    #@-node:ekr.20071111153009:report
     #@-node:ekr.20051025071455.7:Birth & death
     #@+node:ekr.20051025071455.10:processWord
     def processWord(self, word):

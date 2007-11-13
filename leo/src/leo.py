@@ -16,27 +16,28 @@
 
 # See pycheckrc file in leoDist.leo for a list of erroneous warnings to be suppressed.
 
-if 0: # Set to 1 for lint-like testing.
-      # Use t23.bat: only on Python 2.3.
+# New in Leo 4.4.5: use pylint instead of pychecker.
 
-    try:
-        import pychecker.checker
-        # This works.  We may want to set options here...
-        # from pychecker import Config 
-        # print pychecker
-        print ; print "Warning (in leo.py): pychecker.checker running..." ; print
-    except:
-        print ; print 'Can not import pychecker' ; print
+# if 0: # Set to 1 for lint-like testing.
+      # # Use t23.bat: only on Python 2.3.
+
+    # try:
+        # import pychecker.checker
+        # # This works.  We may want to set options here...
+        # # from pychecker import Config 
+        # # print pychecker
+        # print ; print "Warning (in leo.py): pychecker.checker running..." ; print
+    # except Exception:
+        # print ; print 'Can not import pychecker' ; print
 #@-node:ekr.20031218072017.2606:<< Import pychecker >>
 #@nl
 
-__pychecker__ = '--no-import --no-reimportself --no-reimport'
+# __pychecker__ = '--no-import --no-reimportself --no-reimport'
     # Suppress import errors: this module must do strange things with imports.
 
 # Warning: do not import any Leo modules here!
 # Doing so would make g.app invalid in the imported files.
 import os
-import string
 import sys
 
 #@+others
@@ -45,7 +46,7 @@ def run(fileName=None,pymacs=None,jyLeo=False,*args,**keywords):
 
     """Initialize and run Leo"""
 
-    __pychecker__ = '--no-argsused' # keywords not used.
+    # __pychecker__ = '--no-argsused' # keywords not used.
 
     # print 'leo.py:run','fileName',fileName
     if not jyLeo and not isValidPython(): return
@@ -165,8 +166,6 @@ def adjustSysPath (g):
 
     '''Adjust sys.path to enable imports as usual with Leo.'''
 
-    import sys
-
     #g.trace('loadDir',g.app.loadDir)
 
     leoDirs = ('config','doc','extensions','modes','plugins','src','test')
@@ -187,7 +186,6 @@ def completeFileName (fileName):
 
     # This does not depend on config settings.
     try:
-        import sys
         if sys.platform.lower().startswith('win'):
             fileName = g.toUnicode(fileName,'mbcs')
         else:
@@ -197,7 +195,7 @@ def completeFileName (fileName):
     relativeFileName = fileName
     fileName = g.os_path_join(os.getcwd(),fileName)
 
-    head,ext = g.os_path_splitext(fileName)
+    junk,ext = g.os_path_splitext(fileName)
     if not ext:
         fileName = fileName + ".leo"
         relativeFileName = relativeFileName + ".leo"
@@ -285,6 +283,8 @@ def getBatchScript ():
 #@+node:ekr.20031218072017.1936:isValidPython
 def isValidPython():
 
+    import traceback
+
     if sys.platform == 'cli':
         return True
 
@@ -300,7 +300,7 @@ You may download Python from http://python.org/download/
         return 0
     except:
         print "isValidPytyhon: unexpected exception: import leoGlobals.py as g"
-        import traceback ; traceback.print_exc()
+        traceback.print_exc()
         return 0
     try:
         version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
@@ -309,29 +309,29 @@ You may download Python from http://python.org/download/
             print message
             g.app.gui.runAskOkDialog(None,"Python version error",message=message,text="Exit")
         return ok
-    except:
+    except Exception:
         print "isValidPython: unexpected exception: g.CheckVersion"
-        import traceback ; traceback.print_exc()
+        traceback.print_exc()
         return 0
-#@nonl
 #@-node:ekr.20031218072017.1936:isValidPython
-#@+node:ekr.20031218072017.2607:profile
+#@+node:ekr.20031218072017.2607:profile_leo
 #@+at 
 #@nonl
 # To gather statistics, do the following in a Python window, not idle:
 # 
 #     import leo
-#     leo.profile()  (this runs leo)
+#     leo.profile_leo()  (this runs leo)
 #     load leoDocs.leo (it is very slow)
 #     quit Leo.
 #@-at
 #@@c
 
-def profile ():
+def profile_leo ():
 
     """Gather and print statistics about Leo"""
 
     import profile, pstats
+    import leoGlobals as g
 
     # name = "c:/prog/test/leoProfile.txt"
     name = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test','leoProfile.txt'))
@@ -342,7 +342,7 @@ def profile ():
     p.strip_dirs()
     p.sort_stats('cum','file','name')
     p.print_stats()
-#@-node:ekr.20031218072017.2607:profile
+#@-node:ekr.20031218072017.2607:profile_leo
 #@+node:ekr.20041130093254:reportDirectories
 def reportDirectories(verbose):
 
@@ -369,7 +369,7 @@ def startJyleo (g):
         awt.EventQueue.invokeAndWait(splash)
 
     gct = leoSwingUtils.GCEveryOneMinute()
-    gct.start()
+    gct.run()
 
     tk = awt.Toolkit.getDefaultToolkit()
     tk.setDynamicLayout(True)
@@ -401,10 +401,10 @@ def startPsyco ():
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         if sys.platform=="win32": # Windows
-            fileName = string.join(sys.argv[1:],' ')
+            fileNameArg = ' '.join(sys.argv[1:])
         else:
-            fileName = sys.argv[1]
-        run(fileName)
+            fileNameArg = sys.argv[1]
+        run(fileNameArg)
     else:
         run()
 #@-node:ekr.20031218072017.2605:@thin leo.py 

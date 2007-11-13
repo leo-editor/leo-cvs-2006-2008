@@ -10,7 +10,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__pychecker__ = '--no-reimport --no-constCond -- no-constant1'
+# __pychecker__ = '--no-reimport --no-constCond -- no-constant1'
     # Reimports needed in test methods.
     # Disable checks for if 0, if 1.
 
@@ -31,6 +31,8 @@ import time
 #@nl
 
 class atFile:
+
+    """The class implementing the atFile subcommander."""
 
     #@    << define class constants >>
     #@+node:ekr.20041005105605.5:<< define class constants >>
@@ -118,8 +120,6 @@ class atFile:
     }
     #@-node:ekr.20041005105605.6:<< define sentinelDict >>
     #@nl
-
-    """The class implementing the atFile subcommander."""
 
     #@    @+others
     #@+node:ekr.20041005105605.7:Birth & init
@@ -582,7 +582,7 @@ class atFile:
 
         at = self
 
-        firstLines,read_new,isThinDerivedFile = at.scanHeader(theFile,fileName)
+        firstLines,read_new,junk = at.scanHeader(theFile,fileName)
 
         if read_new:
             lastLines = at.scanText4(theFile,fileName,root)
@@ -596,7 +596,7 @@ class atFile:
         #@+node:ekr.20041005105605.28:<< handle first and last lines >>
         try:
             body = root.v.t.tempBodyString
-        except:
+        except Exception:
             body = ""
 
         lines = body.split('\n')
@@ -891,7 +891,7 @@ class atFile:
 
         """Scan a 3.x derived file recursively."""
 
-        __pychecker__ = '--maxbranches=100 --maxlines=500'
+        # __pychecker__ = '--maxbranches=100 --maxlines=500'
 
         at = self
         lastLines = [] # The lines after @-leo
@@ -987,31 +987,31 @@ class atFile:
             #@<< handle common sentinels >>
             #@+node:ekr.20041005105605.48:<< handle common sentinels >>
             elif kind in (at.endAt, at.endBody,at.endDoc,at.endLeo,at.endNode,at.endOthers):
-                    #@        << handle an ending sentinel >>
-                    #@+node:ekr.20041005105605.49:<< handle an ending sentinel >>
-                    # g.trace("end sentinel:", at.sentinelName(kind))
+                #@    << handle an ending sentinel >>
+                #@+node:ekr.20041005105605.49:<< handle an ending sentinel >>
+                # g.trace("end sentinel:", at.sentinelName(kind))
 
-                    if kind == endSentinelKind:
-                        if kind == at.endLeo:
-                            # Ignore everything after @-leo.
-                            # Such lines were presumably written by @last.
-                            while 1:
-                                s = at.readLine(theFile)
-                                if len(s) == 0: break
-                                lastLines.append(s) # Capture all trailing lines, even if empty.
-                        elif kind == at.endBody:
-                            at.raw = False
-                        # nextLine != None only if we have a non-sentinel line.
-                        # Therefore, nextLine == None whenever scanText3 returns.
-                        assert(nextLine==None)
-                        return lastLines # End the call to scanText3.
-                    else:
-                        # Tell of the structure error.
-                        name = at.sentinelName(kind)
-                        expect = at.sentinelName(endSentinelKind)
-                        at.readError("Ignoring " + name + " sentinel.  Expecting " + expect)
-                    #@-node:ekr.20041005105605.49:<< handle an ending sentinel >>
-                    #@nl
+                if kind == endSentinelKind:
+                    if kind == at.endLeo:
+                        # Ignore everything after @-leo.
+                        # Such lines were presumably written by @last.
+                        while 1:
+                            s = at.readLine(theFile)
+                            if len(s) == 0: break
+                            lastLines.append(s) # Capture all trailing lines, even if empty.
+                    elif kind == at.endBody:
+                        at.raw = False
+                    # nextLine != None only if we have a non-sentinel line.
+                    # Therefore, nextLine == None whenever scanText3 returns.
+                    assert(nextLine==None)
+                    return lastLines # End the call to scanText3.
+                else:
+                    # Tell of the structure error.
+                    name = at.sentinelName(kind)
+                    expect = at.sentinelName(endSentinelKind)
+                    at.readError("Ignoring " + name + " sentinel.  Expecting " + expect)
+                #@-node:ekr.20041005105605.49:<< handle an ending sentinel >>
+                #@nl
             elif kind == at.startBody:
                 #@    << scan @+body >>
                 #@+node:ekr.20041005105605.50:<< scan @+body >> 3.x
@@ -1096,11 +1096,7 @@ class atFile:
 
                 # Set reference if it exists.
                 i = g.skip_ws(s,i)
-
-                if 0: # no longer used
-                    if g.match(s,i,"<<"):
-                        k = s.find(">>",i)
-                        if k != -1: ref = s[i:k+2]
+                #@nonl
                 #@-node:ekr.20041005105605.54:<< Set headline and ref >>
                 #@nl
 
@@ -1221,7 +1217,7 @@ class atFile:
             elif kind == at.startDelims:
                 #@    << scan @delims >>
                 #@+node:ekr.20041005105605.63:<< scan @delims >>
-                assert(g.match(s,i-1,"@delims"));
+                assert(g.match(s,i-1,"@delims"))
 
                 # Skip the keyword and whitespace.
                 i0 = i-1
@@ -1453,7 +1449,7 @@ class atFile:
 
         """Return the next tnode in at.root.t.tnodeList."""
 
-        __pychecker__ = '--no-argsused' # headline might be used for debugging.
+        # __pychecker__ = '--no-argsused' # headline might be used for debugging.
 
         # Note: tnodeLists are used _only_ when reading @file (not @thin) nodes.
         # tnodeLists compensate (a hack) for not having gnx's in derived files! 
@@ -1478,7 +1474,7 @@ class atFile:
         # Get any vnode joined to t.
         try:
             v = t.vnodeList[0]
-        except:
+        except Exception:
             at.readError("No vnodeList for tnode: %s" % repr(t))
             g.trace(at.tnodeListIndex)
             return None
@@ -1492,7 +1488,7 @@ class atFile:
 
         """Scan a 4.x derived file non-recursively."""
 
-        __pychecker__ = '--no-argsused' # fileName,verbose might be used for debugging.
+        # __pychecker__ = '--no-argsused' # fileName,verbose might be used for debugging.
 
         at = self
         #@    << init ivars for scanText4 >>
@@ -1761,32 +1757,32 @@ class atFile:
     #@-node:ekr.20041005105605.80:start sentinels
     #@+node:ekr.20041005105605.90:end sentinels
     #@+node:ekr.20041005105605.91:readEndAll (4.2)
-    def readEndAll (self,s,i):
+    def readEndAll (self,unused_s,unused_i):
 
         """Read an @-all sentinel."""
 
-        __pychecker__ = '--no-argsused' # s,i not used, but must be present.
+        # __pychecker__ = '--no-argsused' # s,i not used, but must be present.
 
         at = self
         at.popSentinelStack(at.endAll)
     #@-node:ekr.20041005105605.91:readEndAll (4.2)
     #@+node:ekr.20041005105605.92:readEndAt & readEndDoc
-    def readEndAt (self,s,i):
+    def readEndAt (self,unused_s,unused_i):
 
         """Read an @-at sentinel."""
 
-        __pychecker__ = '--no-argsused' # s,i not used, but must be present.
+        # __pychecker__ = '--no-argsused' # s,i not used, but must be present.
 
         at = self
         at.readLastDocLine("@")
         at.popSentinelStack(at.endAt)
         at.inCode = True
 
-    def readEndDoc (self,s,i):
+    def readEndDoc (self,unused_s,unused_i):
 
         """Read an @-doc sentinel."""
 
-        __pychecker__ = '--no-argsused' # s,i not used, but must be present.
+        # __pychecker__ = '--no-argsused' # s,i not used, but must be present.
 
         at = self
         at.readLastDocLine("@doc")
@@ -1794,11 +1790,11 @@ class atFile:
         at.inCode = True
     #@-node:ekr.20041005105605.92:readEndAt & readEndDoc
     #@+node:ekr.20041005105605.93:readEndLeo
-    def readEndLeo (self,s,i):
+    def readEndLeo (self,unused_s,unused_i):
 
         """Read an @-leo sentinel."""
 
-        __pychecker__ = '--no-argsused' # i not used, but must be present.
+        # __pychecker__ = '--no-argsused' # i not used, but must be present.
 
         at = self
 
@@ -1821,11 +1817,11 @@ class atFile:
         at.readEndNode(s,i,middle=True)
     #@-node:ekr.20041005105605.94:readEndMiddle
     #@+node:ekr.20041005105605.95:readEndNode (4.x)
-    def readEndNode (self,s,i,middle=False):
+    def readEndNode (self,unused_s,unused_i,middle=False):
 
         """Handle end-of-node processing for @-others and @-ref sentinels."""
 
-        __pychecker__ = '--no-argsused' # i not used, but must be present.
+        # __pychecker__ = '--no-argsused' # s,i not used, but must be present.
 
         at = self ; c = at.c
 
@@ -1863,8 +1859,9 @@ class atFile:
                             found = True ; break
 
                     if found:
-                        if 0: # Not needed: we mark all corrected nodes.
-                            g.es("Correcting %s" % p.headString(),color="blue")
+                        # Not needed: we mark all corrected nodes.
+                        # g.es("Correcting %s" % p and p.headString() or '<no p>',color="blue")
+
                         if 0: # For debugging.
                             print ; print '-' * 40
                             print "old",len(old)
@@ -1919,11 +1916,11 @@ class atFile:
         at.popSentinelStack(at.endNode)
     #@-node:ekr.20041005105605.95:readEndNode (4.x)
     #@+node:ekr.20041005105605.98:readEndOthers
-    def readEndOthers (self,s,i):
+    def readEndOthers (self,unused_s,unused_i):
 
         """Read an @-others sentinel."""
 
-        __pychecker__ = '--no-argsused' # s,i unused, but must be present.
+        # __pychecker__ = '--no-argsused' # s,i unused, but must be present.
 
         at = self
         at.popSentinelStack(at.endOthers)
@@ -1978,11 +1975,11 @@ class atFile:
     #@-node:ekr.20041005105605.90:end sentinels
     #@+node:ekr.20041005105605.100:Unpaired sentinels
     #@+node:ekr.20041005105605.101:ignoreOldSentinel
-    def  ignoreOldSentinel (self,s,i):
+    def  ignoreOldSentinel (self,s,unused_i):
 
         """Ignore an 3.x sentinel."""
 
-        __pychecker__ = '--no-argsused' # i unused, but must be present.
+        # __pychecker__ = '--no-argsused' # i unused, but must be present.
 
         g.es("Ignoring 3.x sentinel: " + s.strip(), color="blue")
     #@-node:ekr.20041005105605.101:ignoreOldSentinel
@@ -2031,7 +2028,7 @@ class atFile:
         """Read an @delims sentinel."""
 
         at = self
-        assert(g.match(s,i-1,"@delims"));
+        assert(g.match(s,i-1,"@delims"))
 
         # Skip the keyword and whitespace.
         i0 = i-1
@@ -2340,7 +2337,7 @@ class atFile:
             if (not foundAtFirstYet) and (len(out[k].strip()) == 0): continue
             # quit if something other than @first directive
             i = 0
-            if not g.match(out[k],i,tag): break;
+            if not g.match(out[k],i,tag): break
             foundAtFirstYet = 1
             # quit if no leading lines to apply
             if j >= len(firstLines): break
@@ -2368,7 +2365,7 @@ class atFile:
             if (not foundAtLastYet) and (len(out[k].strip()) == 0): continue
             # quit if something other than @last directive
             i = 0
-            if not g.match(out[k],i,tag): break;
+            if not g.match(out[k],i,tag): break
             foundAtLastYet = 1
             # quit if no trailing lines to apply
             if j < -len(lastLines): break
@@ -2384,7 +2381,7 @@ class atFile:
         c = self.c
         for p in root.self_and_subtree_iter():
             try: s = p.v.t.tempBodyString
-            except: s = ""
+            except Exception: s = ""
             old_body = p.bodyString()
             if s != old_body:
                 if 0: # For debugging.
@@ -2561,8 +2558,6 @@ class atFile:
     #@+node:ekr.20041005105605.127:readError
     def readError(self,message):
 
-        c = self.c
-
         # This is useful now that we don't print the actual messages.
         if self.errors == 0:
             self.printError("----- error reading @file: %s" % self.targetFileName)
@@ -2573,7 +2568,6 @@ class atFile:
 
         # Bug fix: 12/10/05: Delete all of root's tree.
         self.root.v.t._firstChild = None
-
         self.root.setOrphan()
         self.root.setDirty()
     #@-node:ekr.20041005105605.127:readError
@@ -2778,7 +2772,7 @@ class atFile:
             at.closeWriteFile()
             at.replaceTargetFileIfDifferent()
             root.clearOrphan() ; root.clearDirty()
-        except:
+        except Exception:
             at.writeException(root)
 
     rawWrite = norefWrite
@@ -2786,7 +2780,7 @@ class atFile:
     #@+node:ekr.20041005105605.142:openFileForWriting & openFileForWritingHelper
     def openFileForWriting (self,root,fileName,toString):
 
-        at = self ; c = at.c
+        at = self
         at.outputFile = None
 
         if toString:
@@ -2839,14 +2833,17 @@ class atFile:
             at.outputFile = self.openForWrite(at.outputFileName,'wb') # bwm
             if not at.outputFile:
                 at.writeError("can not create " + at.outputFileName)
-        except:
+        except Exception:
             at.exception("exception creating:" + at.outputFileName)
     #@-node:ekr.20041005105605.143:openFileForWritingHelper
     #@-node:ekr.20041005105605.142:openFileForWriting & openFileForWritingHelper
     #@+node:ekr.20041005105605.144:write
     # This is the entry point to the write code.  root should be an @file vnode.
 
-    def write(self,root,nosentinels=False,thinFile=False,scriptWrite=False,toString=False,write_strips_blank_lines=None):
+    def write(self,root,
+        nosentinels=False,thinFile=False,scriptWrite=False,
+        toString=False,write_strips_blank_lines=None
+    ):
 
         """Write a 4.x derived file."""
 
@@ -2896,7 +2893,7 @@ class atFile:
                     at.replaceTargetFileIfDifferent()
                 #@-node:ekr.20041005105605.146:<< set dirty and orphan bits on error >>
                 #@nl
-        except:
+        except Exception:
             if toString:
                 at.exception("exception preprocessing script")
                 at.root.v.t.tnodeList = []
@@ -3098,7 +3095,8 @@ class atFile:
         elif not p.isDirty(): # There is nothing new to write.
             return False
         elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
-            g.es_print('@auto node not written:\nno children and less than 10 characters (excluding directives)',color='red')
+            g.es_print('@auto node not written:\n\
+    no children and less than 10 characters (excluding directives)',color='red')
             return False
         else: # The @auto tree is dirty and contains significant info.
             return True
@@ -3162,7 +3160,7 @@ class atFile:
             if root:
                 root.v.t.tnodeList = []
                 root.v.t._p_changed = True
-        except:
+        except Exception:
             at.exception("exception preprocessing script")
 
         return at.stringOutput
@@ -3266,7 +3264,7 @@ class atFile:
             at.closeWriteFile()
             at.replaceTargetFileIfDifferent()
             root.clearOrphan() ; root.clearDirty()
-        except:
+        except Exception:
             at.writeException(root)
 
     silentWrite = asisWrite # Compatibility with old scripts.
@@ -4235,7 +4233,7 @@ class atFile:
             try:
                 s = g.toEncodedString(s,at.encoding,reportErrors=True)
                 at.outputFile.write(s)
-            except:
+            except Exception:
                 at.exception("exception writing:" + s)
     #@-node:ekr.20041005105605.204:os
     #@-node:ekr.20041005105605.201:os and allies
@@ -4487,7 +4485,7 @@ class atFile:
     #@+node:ekr.20070627082044.80:@test atFile.replaceTargetFileIfDifferent (different)
     if g.unitTesting:
 
-        __pychecker__ = '--no-reimport'
+        # __pychecker__ = '--no-reimport'
         import os
         at = c.atFileCommands
         exists = g.os_path_exists
@@ -4525,7 +4523,7 @@ class atFile:
     #@+node:ekr.20070627082044.81:@test atFile.replaceTargetFileIfDifferent (identical)
     if g.unitTesting:
 
-        __pychecker__ = '--no-reimport'
+        # __pychecker__ = '--no-reimport'
         import os
 
         at = c.atFileCommands
@@ -4564,7 +4562,7 @@ class atFile:
     #@+node:ekr.20070627082044.82:@test atFile.replaceTargetFileIfDifferent (no target file)
     if g.unitTesting:
 
-        __pychecker__ = '--no-reimport'
+        # __pychecker__ = '--no-reimport'
         import os
 
         at = c.atFileCommands
@@ -4630,20 +4628,15 @@ class atFile:
     #@+node:ekr.20041005105605.217:writeError
     def writeError(self,message=None):
 
-        c = self.c
-
         if self.errors == 0:
             g.es_error("errors writing: " + self.targetFileName)
 
         self.error(message)
-
         self.root.setOrphan()
         self.root.setDirty()
     #@-node:ekr.20041005105605.217:writeError
     #@+node:ekr.20041005105605.218:writeException
     def writeException (self,root=None):
-
-        c = self.c
 
         g.es("exception writing:" + self.targetFileName,color="red")
         g.es_exception()
@@ -4656,7 +4649,7 @@ class atFile:
         if self.outputFileName != None:
             try: # Just delete the temp file.
                 os.remove(self.outputFileName)
-            except:
+            except Exception:
                 g.es("exception deleting:" + self.outputFileName,color="red")
                 g.es_exception()
 
@@ -4728,7 +4721,7 @@ class atFile:
         setting corresponding atFile ivars.
         """
 
-        __pychecker__ = '--maxlines=400'
+        # __pychecker__ = '--maxlines=400'
         # g.stat()
 
         c = self.c
@@ -4817,7 +4810,7 @@ class atFile:
             # This code is now like the code in tangle.scanAlldirectives.
 
             if old.has_key("comment") or old.has_key("language"):
-                 pass # Do nothing more.
+                pass # Do nothing more.
 
             elif theDict.has_key("comment"):
                 z = theDict["comment"]
@@ -4928,7 +4921,7 @@ class atFile:
     #@@language python
     #@@tabwidth -4
     # @path xyzzy
-    #@@pagewidth 120
+    #@@pagewidth 80
 
     # Does not work when run externally with null colorizer.
     if g.unitTesting:
@@ -4939,7 +4932,7 @@ class atFile:
         assert d.get('language') == 'python'
         assert d.get('tabwidth') == -4
         # assert d.get('path').endswith('xyzzy')
-        assert d.get('pagewidth') == 120
+        assert d.get('pagewidth') == 80
     #@-node:ekr.20071109223354:@test at.scanAllDirectives
     #@-node:ekr.20041005105605.222:atFile.scanAllDirectives & test
     #@+node:ekr.20041005105605.236:atFile.scanDefaultDirectory
@@ -5112,7 +5105,7 @@ class atFile:
         Return True if all went well.'''
 
         c = self.c
-        head,tail=g.os_path_split(dst)
+        head,junk=g.os_path_split(dst)
         if head and len(head) > 0:
             g.makeAllNonExistentDirectories(head,c=c)
 
@@ -5134,7 +5127,7 @@ class atFile:
     #@+node:ekr.20050107085710:@test atFile_rename
     if g.unitTesting:
 
-        __pychecker__ = '--no-reimport'
+        # __pychecker__ = '--no-reimport'
         import os
         c,p = g.getTestVars() # Optional: prevents pychecker warnings.
         at = c.atFileCommands
@@ -5170,7 +5163,7 @@ class atFile:
         try:
             os.remove(fileName)
             return True
-        except:
+        except Exception:
             if verbose:
                 self.error("exception removing: %s" % fileName)
                 g.es_exception()
@@ -5178,7 +5171,7 @@ class atFile:
     #@+node:ekr.20050107090156:@test atFile_remove
     if g.unitTesting:
 
-        __pychecker__ = '--no-reimport'
+        # __pychecker__ = '--no-reimport'
         import os
         c,p = g.getTestVars() # Optional: prevents pychecker warnings.
         at = c.atFileCommands
@@ -5265,6 +5258,5 @@ class atFile:
     #@-node:ekr.20041005105605.243:sentinelName
     #@-node:ekr.20041005105605.219:Uilites... (atFile)
     #@-others
-#@nonl
 #@-node:ekr.20041005105605.1:@thin leoAtFile.py
 #@-leo

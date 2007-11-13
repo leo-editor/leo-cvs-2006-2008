@@ -27,7 +27,7 @@
 # leoGlobals.py:4693: No module attribute (mtime) found
 
 #@-node:ekr.20070809131638:Pychecker report
-#@+node:ekr.20071105150738:Leo 4.4.5 a1
+#@+node:ekr.20071105150738:Leo 4.4.5 b1
 #@+node:ekr.20071105202808:Distribution
 #@+node:ekr.20071105171900:Removed all references to pluginsManager.txt
 #@+node:ekr.20031218072017.3440:loadHandlers & helper
@@ -181,7 +181,7 @@ def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
 
     """Create and run an Tkinter open file dialog ."""
 
-    __pychecker__ = '--no-argsused' # defaultextension not used.
+    # __pychecker__ = '--no-argsused' # defaultextension not used.
 
     initialdir = g.app.globalOpenDir or g.os_path_abspath(os.getcwd())
 
@@ -211,7 +211,7 @@ def runSaveFileDialog(self,initialfile,title,filetypes,defaultextension):
 
     """Create and run an Tkinter save file dialog ."""
 
-    __pychecker__ = '--no-argsused' # defaultextension not used.
+    # __pychecker__ = '--no-argsused' # defaultextension not used.
 
     initialdir=g.app.globalOpenDir or g.os_path_abspath(os.getcwd()),
 
@@ -451,7 +451,7 @@ def findChild4 (self,headline):
 
     """Return the next tnode in at.root.t.tnodeList."""
 
-    __pychecker__ = '--no-argsused' # headline might be used for debugging.
+    # __pychecker__ = '--no-argsused' # headline might be used for debugging.
 
     # Note: tnodeLists are used _only_ when reading @file (not @thin) nodes.
     # tnodeLists compensate (a hack) for not having gnx's in derived files! 
@@ -476,7 +476,7 @@ def findChild4 (self,headline):
     # Get any vnode joined to t.
     try:
         v = t.vnodeList[0]
-    except:
+    except Exception:
         at.readError("No vnodeList for tnode: %s" % repr(t))
         g.trace(at.tnodeListIndex)
         return None
@@ -5068,7 +5068,7 @@ def run(fileName=None,pymacs=None,jyLeo=False,*args,**keywords):
 
     """Initialize and run Leo"""
 
-    __pychecker__ = '--no-argsused' # keywords not used.
+    # __pychecker__ = '--no-argsused' # keywords not used.
 
     # print 'leo.py:run','fileName',fileName
     if not jyLeo and not isValidPython(): return
@@ -5245,7 +5245,6 @@ def completeFileName (fileName):
 
     # This does not depend on config settings.
     try:
-        import sys
         if sys.platform.lower().startswith('win'):
             fileName = g.toUnicode(fileName,'mbcs')
         else:
@@ -5255,7 +5254,7 @@ def completeFileName (fileName):
     relativeFileName = fileName
     fileName = g.os_path_join(os.getcwd(),fileName)
 
-    head,ext = g.os_path_splitext(fileName)
+    junk,ext = g.os_path_splitext(fileName)
     if not ext:
         fileName = fileName + ".leo"
         relativeFileName = relativeFileName + ".leo"
@@ -6202,7 +6201,7 @@ if i < n and s[i] == '*' :
 @tabwidth -4
 #@verbatim
 #@path xyzzy
-@pagewidth 120
+@pagewidth 80
 
 # Does not work when run externally with null colorizer.
 if g.unitTesting:
@@ -6213,7 +6212,7 @@ if g.unitTesting:
     assert d.get('language') == 'python'
     assert d.get('tabwidth') == -4
     # assert d.get('path').endswith('xyzzy')
-    assert d.get('pagewidth') == 120
+    assert d.get('pagewidth') == 80
 #@-node:ekr.20071109224138:@test g.get_directives_dict
 #@-node:ekr.20031218072017.1260:g.get_directives_dict & test
 #@+node:ekr.20071109165315:g.computeRelativePath
@@ -6442,7 +6441,7 @@ if i < n and s[i] == '*' :
 @tabwidth -4
 #@verbatim
 #@path xyzzy
-@pagewidth 120
+@pagewidth 80
 
 # Does not work when run externally with null colorizer.
 if g.unitTesting:
@@ -6453,7 +6452,7 @@ if g.unitTesting:
     assert d.get('language') == 'python'
     assert d.get('tabwidth') == -4
     # assert d.get('path').endswith('xyzzy')
-    assert d.get('pagewidth') == 120
+    assert d.get('pagewidth') == 80
 #@-node:ekr.20071109224138:@test g.get_directives_dict
 #@-node:ekr.20031218072017.1260:g.get_directives_dict & test
 #@+node:ekr.20031218072017.1386:getOutputNewline
@@ -6798,7 +6797,7 @@ def scanAllDirectives(self,p,scripting=False,importing=False,reading=False,force
     setting corresponding atFile ivars.
     """
 
-    __pychecker__ = '--maxlines=400'
+    # __pychecker__ = '--maxlines=400'
     # g.stat()
 
     c = self.c
@@ -6900,7 +6899,7 @@ if not old.has_key("encoding") and theDict.has_key("encoding"):
 # This code is now like the code in tangle.scanAlldirectives.
 
 if old.has_key("comment") or old.has_key("language"):
-     pass # Do nothing more.
+    pass # Do nothing more.
 
 elif theDict.has_key("comment"):
     z = theDict["comment"]
@@ -6986,7 +6985,7 @@ else: # Emergency!
 @language python
 @tabwidth -4
 # @path xyzzy
-@pagewidth 120
+@pagewidth 80
 
 # Does not work when run externally with null colorizer.
 if g.unitTesting:
@@ -6997,7 +6996,7 @@ if g.unitTesting:
     assert d.get('language') == 'python'
     assert d.get('tabwidth') == -4
     # assert d.get('path').endswith('xyzzy')
-    assert d.get('pagewidth') == 120
+    assert d.get('pagewidth') == 80
 #@-node:ekr.20071109223354:@test at.scanAllDirectives
 #@-node:ekr.20041005105605.222:atFile.scanAllDirectives & test
 #@+node:ekr.20041005105605.236:atFile.scanDefaultDirectory
@@ -7392,7 +7391,7 @@ def scanAllDirectives(self,p,require_path_flag,issue_error_flag):
     setting corresponding tangle ivars and globals.
     """
 
-    __pychecker__ = 'maxlines=500 maxbranches=100'
+    # __pychecker__ = 'maxlines=500 maxbranches=100'
 
     c = self.c
     # g.trace(p)
@@ -8269,7 +8268,7 @@ else: # 11/19/02
 @tabwidth -4
 #@verbatim
 #@path xyzzy
-@pagewidth 120
+@pagewidth 80
 
 # Does not work when run externally with null colorizer.
 if g.unitTesting:
@@ -8280,14 +8279,14 @@ if g.unitTesting:
     assert d.get('language') == 'python'
     assert d.get('tabwidth') == -4
     # assert d.get('path').endswith('xyzzy')
-    assert d.get('pagewidth') == 120
+    assert d.get('pagewidth') == 80
 #@-node:ekr.20071109224138:@test g.get_directives_dict
 #@+node:ekr.20071109223354:@test at.scanAllDirectives
 # This will work regardless of where this method is.
 @language python
 @tabwidth -4
 # @path xyzzy
-@pagewidth 120
+@pagewidth 80
 
 # Does not work when run externally with null colorizer.
 if g.unitTesting:
@@ -8298,7 +8297,7 @@ if g.unitTesting:
     assert d.get('language') == 'python'
     assert d.get('tabwidth') == -4
     # assert d.get('path').endswith('xyzzy')
-    assert d.get('pagewidth') == 120
+    assert d.get('pagewidth') == 80
 #@-node:ekr.20071109223354:@test at.scanAllDirectives
 #@+node:ekr.20071109221337:@test g.scanDirectives
 # This will work regardless of where this method is.
@@ -8355,8 +8354,1190 @@ if g.unitTesting:
 #@-node:ekr.20071109220650:@test tangle.scanAllDirectives
 #@-node:ekr.20071109180120.1:New unit tests
 #@-node:ekr.20070803115653:Support directives in headlines
+#@+node:ekr.20071111052012:Added @bool at_auto_warns_about_leading_whitespace setting
+@nocolor
+
+This option has effect only when importing so-called non-strict languages,
+for which leading whitespace is not terribly significant.
+
+True: @auto warns about mismatches that occur solely in leading whitespace.
+#@nonl
+#@-node:ekr.20071111052012:Added @bool at_auto_warns_about_leading_whitespace setting
+#@+node:ekr.20070629070639:Added command: toggle-collapse_nodes_during_finds
+val = c.config.getBool('collapse_nodes_during_finds')
+c.config.set(p,'collapse_nodes_during_finds',not val)
+g.es_print('collapse_nodes_during_finds',c.config.getBool('collapse_nodes_during_finds'))
+#@nonl
+#@+node:ekr.20050920084036.257:class searchCommandsClass
+class searchCommandsClass (baseEditCommandsClass):
+
+    '''Implements many kinds of searches.'''
+
+    @others
+#@+node:ekr.20050920084036.258: ctor (searchCommandsClass)
+def __init__ (self,c):
+
+    # g.trace('searchCommandsClass')
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+
+    self.findTabHandler = None
+    self.minibufferFindHandler = None
+    self.inited = False
+
+    try:
+        self.w = c.frame.body.bodyCtrl
+    except AttributeError:
+        self.w = None
+
+    # For isearch commands.
+    self.ifinder = leoFind.leoFind(c,title='ifinder')
+    self.isearch_v = None # vnode of last isearch.
+    self.isearch_stack = [] # A stack of previous matches: entries are: (sel,insert)
+    self.ignoreCase = None
+    self.forward = None
+    self.regexp = None
+#@-node:ekr.20050920084036.258: ctor (searchCommandsClass)
+#@+node:ekr.20050920084036.259:getPublicCommands (searchCommandsClass)
+def getPublicCommands (self):
+
+    return {
+        'clone-find-all':                       self.cloneFindAll,
+
+        'find-all':                             self.findAll,
+        'change-all':                           self.changeAll,
+
+        # Thin wrappers on Find tab
+        'change':                               self.findTabChange,
+        'change-then-find':                     self.findTabChangeThenFind,
+        'find-next':                            self.findTabFindNext,
+        'find-prev':                            self.findTabFindPrev,
+
+        'hide-find-tab':                        self.hideFindTab,
+
+        'isearch-forward':                      self.isearchForward,
+        'isearch-backward':                     self.isearchBackward,
+        'isearch-forward-regexp':               self.isearchForwardRegexp,
+        'isearch-backward-regexp':              self.isearchBackwardRegexp,
+        'isearch-with-present-options':         self.isearchWithPresentOptions,
+
+        'open-find-tab':                        self.openFindTab,
+
+        'replace-string':                       self.replaceString,
+
+        're-search-forward':                    self.reSearchForward,
+        're-search-backward':                   self.reSearchBackward,
+
+        'search-again':                         self.findAgain,
+        # Uses existing search pattern.
+
+        'search-forward':                       self.searchForward,
+        'search-backward':                      self.searchBackward,
+        'search-with-present-options':          self.searchWithPresentOptions,
+        # Prompts for search pattern.
+
+        'set-find-everywhere':                  self.setFindScopeEveryWhere,
+        'set-find-node-only':                   self.setFindScopeNodeOnly,
+        'set-find-suboutline-only':             self.setFindScopeSuboutlineOnly,
+
+        'show-find-options':                    self.showFindOptions,
+
+        'toggle-find-collapses_nodes':          self.toggleFindCollapesNodes,
+
+        'toggle-find-ignore-case-option':       self.toggleIgnoreCaseOption,
+        'toggle-find-in-body-option':           self.toggleSearchBodyOption,
+        'toggle-find-in-headline-option':       self.toggleSearchHeadlineOption,
+        'toggle-find-mark-changes-option':      self.toggleMarkChangesOption,
+        'toggle-find-mark-finds-option':        self.toggleMarkFindsOption,
+        'toggle-find-regex-option':             self.toggleRegexOption,
+        'toggle-find-reverse-option':           self.toggleReverseOption,
+        'toggle-find-word-option':              self.toggleWholeWordOption,
+        'toggle-find-wrap-around-option':       self.toggleWrapSearchOption,
+
+        'word-search-forward':                  self.wordSearchForward,
+        'word-search-backward':                 self.wordSearchBackward,
+    }
+#@-node:ekr.20050920084036.259:getPublicCommands (searchCommandsClass)
+#@+node:ekr.20060123131421:Top-level methods
+#@+node:ekr.20051020120306:openFindTab
+def openFindTab (self,event=None,show=True):
+
+    '''Open the Find tab in the log pane.'''
+
+    c = self.c ; log = c.frame.log ; tabName = 'Find'
+
+    wasOpen = self.inited
+
+    if self.inited:
+        log.selectTab(tabName)
+    else:
+        self.inited = True
+        log.selectTab(tabName,createText=False)
+        f = log.frameDict.get(tabName)
+        self.findTabHandler = g.app.gui.createFindTab(c,f)
+
+    if show or wasOpen or c.config.getBool('minibufferSearchesShowFindTab'):
+        pass # self.findTabHandler.bringToFront()
+    else:
+        log.hideTab(tabName)
+#@-node:ekr.20051020120306:openFindTab
+#@+node:ekr.20051022212004:Find Tab commands
+# Just open the Find tab if it has never been opened.
+# For minibuffer commands, it would be good to force the Find tab to be visible.
+# However, this leads to unfortunate confusion when executed from a shortcut.
+
+def findTabChange(self,event=None):
+    '''Execute the 'Change' command with the settings shown in the Find tab.'''
+    if self.findTabHandler:
+        self.findTabHandler.changeCommand()
+    else:
+        self.openFindTab()
+
+def findTabChangeThenFind(self,event=None):
+    '''Execute the 'Replace, Find' command with the settings shown in the Find tab.'''
+    if self.findTabHandler:
+        self.findTabHandler.changeThenFindCommand()
+    else:
+        self.openFindTab()
+
+def findTabFindAll(self,event=None):
+    '''Execute the 'Find All' command with the settings shown in the Find tab.'''
+    if self.findTabHandler:
+        self.findTabHandler.findAllCommand()
+    else:
+        self.openFindTab()
+
+def findTabFindNext (self,event=None):
+    '''Execute the 'Find Next' command with the settings shown in the Find tab.'''
+    if self.findTabHandler:
+        self.findTabHandler.findNextCommand()
+    else:
+        self.openFindTab()
+
+def findTabFindPrev (self,event=None):
+    '''Execute the 'Find Previous' command with the settings shown in the Find tab.'''
+    if self.findTabHandler:
+        self.findTabHandler.findPrevCommand()
+    else:
+        self.openFindTab()
+
+def hideFindTab (self,event=None):
+    '''Hide the Find tab.'''
+    if self.findTabHandler:
+        self.c.frame.log.selectTab('Log')
+#@-node:ekr.20051022212004:Find Tab commands
+#@+node:ekr.20060124115801:getHandler
+def getHandler(self,show=False):
+
+    '''Return the minibuffer handler, creating it if necessary.'''
+
+    c = self.c
+
+    self.openFindTab(show=show)
+        # sets self.findTabHandler,
+        # but *not* minibufferFindHandler.
+
+    if not self.minibufferFindHandler:
+        self.minibufferFindHandler = minibufferFind(c,self.findTabHandler)
+
+    return self.minibufferFindHandler
+#@-node:ekr.20060124115801:getHandler
+#@+node:ekr.20060123115459:Find options wrappers
+def setFindScopeEveryWhere (self, event):
+    '''Set the 'Entire Outline' radio button in the Find tab.'''
+    return self.setFindScope('entire-outline')
+
+def setFindScopeNodeOnly  (self, event):
+    '''Set the 'Node Only' radio button in the Find tab.'''
+    return self.setFindScope('node-only')
+
+def setFindScopeSuboutlineOnly (self, event):
+    '''Set the 'Suboutline Only' radio button in the Find tab.'''
+    return self.setFindScope('suboutline-only')
+
+def showFindOptions (self,event):
+    '''Show all Find options in the minibuffer label area.'''
+    self.getHandler().showFindOptions()
+
+def toggleFindCollapesNodes(self,event):
+    '''Toggle the 'Collapse Nodes' checkbox in the find tab.'''
+    # return self.toggleOption('collapse_nodes')
+    c = self.c ; p = c.currentPosition()
+    val = c.config.getBool('collapse_nodes_during_finds')
+    c.config.set(p,'collapse_nodes_during_finds',not val)
+    g.es('collapse_nodes_during_finds',c.config.getBool('collapse_nodes_during_finds'))
+
+def toggleIgnoreCaseOption     (self, event):
+    '''Toggle the 'Ignore Case' checkbox in the Find tab.'''
+    return self.toggleOption('ignore_case')
+
+def toggleMarkChangesOption (self, event):
+    '''Toggle the 'Mark Changes' checkbox in the Find tab.'''
+    return self.toggleOption('mark_changes')
+def toggleMarkFindsOption (self, event):
+    '''Toggle the 'Mark Finds' checkbox in the Find tab.'''
+    return self.toggleOption('mark_finds')
+def toggleRegexOption (self, event):
+    '''Toggle the 'Regexp' checkbox in the Find tab.'''
+    return self.toggleOption('pattern_match')
+def toggleReverseOption        (self, event):
+    '''Toggle the 'Reverse' checkbox in the Find tab.'''
+    return self.toggleOption('reverse')
+
+def toggleSearchBodyOption (self, event):
+    '''Set the 'Search Body' checkbox in the Find tab.'''
+    return self.toggleOption('search_body')
+
+def toggleSearchHeadlineOption (self, event):
+    '''Toggle the 'Search Headline' checkbox in the Find tab.'''
+    return self.toggleOption('search_headline')
+
+def toggleWholeWordOption (self, event):
+    '''Toggle the 'Whole Word' checkbox in the Find tab.'''
+    return self.toggleOption('whole_word')
+
+def toggleWrapSearchOption (self, event):
+    '''Toggle the 'Wrap Around' checkbox in the Find tab.'''
+    return self.toggleOption('wrap')
+
+def setFindScope (self, where):  self.getHandler().setFindScope(where)
+def toggleOption (self, ivar):   self.getHandler().toggleOption(ivar)
+#@-node:ekr.20060123115459:Find options wrappers
+#@+node:ekr.20060124093828:Find wrappers
+def changeAll(self,event=None):
+    '''Execute the 'Change All' command with the settings shown in the Find tab.'''
+    self.getHandler().changeAll(event)
+
+def cloneFindAll (self,event):
+    '''Do search-with-present-options and print all matches in the log pane. It
+    also creates a node at the beginning of the outline containing clones of all
+    nodes containing the 'find' string. Only one clone is made of each node,
+    regardless of how many clones the node has, or of how many matches are found
+    in each node.'''
+    self.getHandler().cloneFindAll(event)
+
+def findAll            (self,event):
+    '''Do search-with-present-options and print all matches in the log pane.'''
+    self.getHandler().findAll(event)
+
+def replaceString      (self,event):
+    '''Prompts for a search string. Type <Return> to end the search string. The
+    command will then prompt for the replacement string. Typing a second
+    <Return> key will place both strings in the Find tab and executes a **find**
+    command, that is, the search-with-present-options command.'''
+    self.getHandler().replaceString(event)
+
+def reSearchBackward   (self,event):
+    '''Set the 'Regexp' checkbox to True and the 'Reverse' checkbox to True,
+    then do search-with-present-options.'''
+    self.getHandler().reSearchBackward(event)
+
+def reSearchForward    (self,event):
+    '''Set the 'Regexp' checkbox to True, then do search-with-present-options.'''
+    self.getHandler().reSearchForward(event)
+
+def searchBackward     (self,event):
+    '''Set the 'Word Search' checkbox to False and the 'Reverse' checkbox to True,
+    then do search-with-present-options.'''
+    self.getHandler().searchBackward(event)
+
+def searchForward      (self,event):
+    '''Set the 'Word Search' checkbox to False, then do search-with-present-options.'''
+    self.getHandler().searchForward(event)
+
+def wordSearchBackward (self,event):
+    '''Set the 'Word Search' checkbox to True, then do search-with-present-options.'''
+    self.getHandler().wordSearchBackward(event)
+
+def wordSearchForward  (self,event):
+    '''Set the Word Search' checkbox to True and the 'Reverse' checkbox to True,
+    then do search-with-present-options.'''
+    self.getHandler().wordSearchForward(event)
+
+def searchWithPresentOptions (self,event):
+    '''Prompts for a search string. Typing the <Return> key puts the search
+    string in the Find tab and executes a search based on all the settings in
+    the Find tab. Recommended as the default search command.'''
+    self.getHandler().searchWithPresentOptions(event)
+#@-node:ekr.20060124093828:Find wrappers
+#@+node:ekr.20060204120158.2:findAgain
+def findAgain (self,event):
+
+    '''The find-again command is the same as the find-next command
+    if the search pattern in the Find tab is not '<find pattern here>'
+    Otherwise, the find-again is the same as the search-with-present-options command.'''
+
+    h = self.getHandler()
+
+    # h.findAgain returns False if there is no search pattern.
+    # In that case, we revert to search-with-present-options.
+    if not h.findAgain(event):
+        h.searchWithPresentOptions(event)
+#@-node:ekr.20060204120158.2:findAgain
+#@-node:ekr.20060123131421:Top-level methods
+#@+node:ekr.20050920084036.261:incremental search...
+def isearchForward (self,event):
+    '''Begin a forward incremental search.'''
+    self.startIncremental(event,forward=True,ignoreCase=False,regexp=False)
+
+def isearchBackward (self,event):
+    '''Begin a backward incremental search.'''
+    self.startIncremental(event,forward=False,ignoreCase=False,regexp=False)
+
+def isearchForwardRegexp (self,event):
+    '''Begin a forward incremental regexp search.'''
+    self.startIncremental(event,forward=True,ignoreCase=False,regexp=True)
+
+def isearchBackwardRegexp (self,event):
+    '''Begin a backard incremental regexp search.'''
+    self.startIncremental(event,forward=False,ignoreCase=False,regexp=True)
+
+def isearchWithPresentOptions (self,event):
+    '''Begin an incremental regexp search using the regexp and reverse options from the find panel.'''
+    self.startIncremental(event,forward=None,ignoreCase=None,regexp=None)
+#@+node:ekr.20060420144640:iSearchBackspace
+def iSearchBackspace (self):
+
+    c = self.c ; k = self.k ; gui = g.app.gui ; w = self.w
+
+    if not self.isearch_stack:
+        ins = w.getInsertPoint()
+        self.endSearch(ins,ins)
+        return 
+
+    gui.set_focus(c,w)
+    pattern = k.getLabel(ignorePrompt=True)
+    self.scolorizer(event=None,pattern=pattern)
+
+    sel,ins = self.isearch_stack.pop()
+
+    if sel:
+        i,j = sel
+        w.setSelectionRange(i,j,insert=ins)
+    else:
+        w.setInsertPoint(ins)
+
+    w.seeInsertPoint()
+
+    if not self.isearch_stack:
+        self.endSearch(ins,ins)
+#@-node:ekr.20060420144640:iSearchBackspace
+#@+node:ekr.20050920084036.262:startIncremental
+def startIncremental (self,event,forward,ignoreCase,regexp):
+
+    c = self.c ; k = self.k ; w = self.w
+
+    # None is a signal to get the option from the find tab.
+    if forward is None or regexp is None:
+        self.openFindTab(show=False)
+        if not self.minibufferFindHandler:
+            self.minibufferFindHandler = minibufferFind(c,self.findTabHandler)
+        getOption = self.minibufferFindHandler.getOption
+        # g.trace('reverse',getOption('reverse'))
+        # g.trace('pattern',getOption('pattern_match'))
+    else:
+        getOption = lambda a: False # The value isn't used.
+
+    self.event = event
+    self.forward    = g.choose(forward is None,not getOption('reverse'),forward)
+    self.ignoreCase = g.choose(ignoreCase is None,getOption('ignore_case'),ignoreCase)
+    self.regexp     = g.choose(regexp  is None,getOption('pattern_match'),regexp)
+    # Note: the word option can't be used with isearches!
+
+    self.ins1 = ins = w.getInsertPoint()
+    sel = w.getSelectionRange() or (ins,ins),
+    self.isearch_stack = [(sel,ins),]
+
+    k.setLabelBlue('Isearch%s%s%s: ' % (
+            g.choose(self.forward,'',' Backward'),
+            g.choose(self.regexp,' Regexp',''),
+            g.choose(self.ignoreCase,' NoCase',''),
+        ),protect=True)
+    k.setState('isearch',1,handler=self.iSearchStateHandler)
+    c.minibufferWantsFocusNow()
+#@-node:ekr.20050920084036.262:startIncremental
+#@+node:ekr.20050920084036.264:iSearchStateHandler
+# Called when from the state manager when the state is 'isearch'
+
+def iSearchStateHandler (self,event):
+
+    c = self.c ; k = self.k ; w = self.w
+
+    if not event:
+        g.trace('no event',g.callers())
+        return
+    keysym = event.keysym
+    ch = event.char
+    if keysym == 'Control_L': return
+
+    c.bodyWantsFocusNow()
+    if keysym == 'Return':
+        i,j = w.getSelectionRange()
+        if not self.forward: i,j = j,i
+        self.endSearch(i,j)
+    elif keysym == 'BackSpace':
+        k.updateLabel(event)
+        self.iSearchBackspace()
+    elif ch:
+        k.updateLabel(event)
+        self.iSearchHelper(event)
+        self.scolorizer(event)
+#@-node:ekr.20050920084036.264:iSearchStateHandler
+#@+node:ekr.20050920084036.265:scolorizer LATER
+def scolorizer (self,event,pattern=None):
+
+    '''Colorizer for incremental searches.'''
+
+    k = self.k ; w = self.w
+    s = pattern or k.getLabel(ignorePrompt=True)
+    # g.trace(repr(s))
+    w.tag_delete('color','color1')
+    if not s: return
+    if g.app.gui.guiName() != 'tkinter':
+        return g.es('command not ready yet',color='blue')
+
+    ind = 0
+    index = w.getInsertPoint()
+    index2 = index + len(s)
+    # g.trace(index,index2)
+    # Colorize in the forward direction, regardless of the kind of search.
+    while ind:
+        try:
+            ind = w.search(s,ind,stopindex='end',regexp=self.regexp)
+        except: break
+        if ind:
+            i, d = ind.split('.')
+            d = str(int(d)+len(s))
+            # g.trace(ind)
+            if ind in (index,index2):
+                w.tag_add('color1',ind,'%s.%s' % (i,d))
+            w.tag_add('color',ind,'%s.%s' % (i,d))
+            ind = i + '.' + d
+
+    w.tag_config('color',foreground='red')
+    w.tag_config('color1',background='lightblue')
+#@-node:ekr.20050920084036.265:scolorizer LATER
+#@+node:ekr.20050920084036.263:iSearchHelper
+def iSearchHelper (self,event):
+
+    '''Move the cursor to position that matches the pattern in the miniBuffer.
+    isearches do not cross node boundaries.'''
+
+    c = self.c ; gui = g.app.gui ; k = self.k ; w = self.w
+    p = c.currentPosition() ;
+    self.searchString = pattern = k.getLabel(ignorePrompt=True)
+    if not pattern: return
+    s = w.getAllText()
+
+    if self.isearch_v != p.v:
+        self.isearch_v = p.v
+        self.isearch_stack = []
+
+    sel = w.getSelectionRange()
+    startindex = insert = w.getInsertPoint()
+
+    if self.forward:
+        i1 = startindex
+        j1 = len(s)
+    else:
+        i1 = 0
+        j1 = min(len(s),startindex + len(pattern))
+
+    i,j = self.ifinder.searchHelper(s,i1,j1,pattern,
+        backwards=not self.forward,
+        nocase=self.ignoreCase,
+        regexp=self.regexp,
+        word=False, # Incremental word-matches are not possible!
+        swapij=False)
+
+    if i != -1:
+        self.isearch_stack.append((sel,insert),)
+        # g.trace(i1,j1,i,j,pos,newpos)
+        gui.set_focus(c,w)
+        w.setSelectionRange(i,j,insert=i)
+#@-node:ekr.20050920084036.263:iSearchHelper
+#@+node:ekr.20060203072636:endSearch
+def endSearch (self,i,j):
+
+    w = self.w
+    w.tag_delete('color','color1')
+
+    insert = g.choose(self.forward,'sel.end','sel.start')
+    w.setSelectionRange(i,j,insert=insert)
+
+    self.k.keyboardQuit(event=None)
+#@nonl
+#@-node:ekr.20060203072636:endSearch
+#@-node:ekr.20050920084036.261:incremental search...
+#@-node:ekr.20050920084036.257:class searchCommandsClass
+#@-node:ekr.20070629070639:Added command: toggle-collapse_nodes_during_finds
+#@+node:ekr.20060914090030:Added 3 new sort-lines commands
+@
+Also added sort-lines-ignoring-case, reverse-sort-lines and reverse-sort-lines-ignoring-case.
+#@nonl
+#@+node:ekr.20050920084036.118:sortLines commands
+def reverseSortLinesIgnoringCase(self,event):
+    return self.sortLines(event,ignoreCase=True,reverse=True)
+
+def reverseSortLines(self,event):
+    return self.sortLines(event,reverse=True)
+
+def sortLinesIgnoringCase(self,event):
+    return self.sortLines(event,ignoreCase=True)
+
+def sortLines (self,event,ignoreCase=False,reverse=False):
+
+    '''Sort lines of the selected text by comparing the entire text of a line.'''
+
+    c = self.c ; k = c.k ; w = self.editWidget(event)
+    if not self._chckSel(event): return
+
+    undoType = g.choose(reverse,'reverse-sort-lines','sort-lines')
+    self.beginCommand(undoType=undoType)
+    try:
+        s = w.getAllText()
+        sel_1,sel_2 = w.getSelectionRange()
+        ins = w.getInsertPoint()
+        i,junk = g.getLine(s,sel_1)
+        junk,j = g.getLine(s,sel_2)
+        s2 = s[i:j]
+        if not s2.endswith('\n'): s2 = s2+'\n'
+        aList = g.splitLines(s2)
+        if ignoreCase:  aList.sort(key=string.lower)
+        else:           aList.sort()
+        if reverse:     aList.reverse()
+        s = g.joinLines(aList)
+        w.delete(i,j)
+        w.insert(i,s)
+        w.setSelectionRange(sel_1,sel_2,insert=ins)
+    finally:
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.118:sortLines commands
+#@-node:ekr.20060914090030:Added 3 new sort-lines commands
+#@+node:ekr.20071024090626:Added support for @bool diagnose-aspell-installation
+#@+node:ekr.20051025071455:Spell classes
+@others
+#@+node:ekr.20051025071455.1:class spellCommandsClass
+class spellCommandsClass (baseEditCommandsClass):
+
+    '''Commands to support the Spell Tab.'''
+
+    @others
+#@+node:ekr.20051025080056:ctor
+def __init__ (self,c):
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+
+    self.handler = None
+
+    # All the work happens when we first open the frame.
+#@-node:ekr.20051025080056:ctor
+#@+node:ekr.20051025080420:getPublicCommands (searchCommandsClass)
+def getPublicCommands (self):
+
+    return {
+        'open-spell-tab':           self.openSpellTab,
+        'spell-find':               self.find,
+        'spell-change':             self.change,
+        'spell-change-then-find':   self.changeThenFind,
+        'spell-ignore':             self.ignore,
+        'hide-spell-tab':           self.hide,
+    }
+#@-node:ekr.20051025080420:getPublicCommands (searchCommandsClass)
+#@+node:ekr.20051025080633:openSpellTab
+def openSpellTab (self,event=None):
+
+    '''Open the Spell Checker tab in the log pane.'''
+
+    c = self.c ; log = c.frame.log ; tabName = 'Spell'
+
+    if log.frameDict.get(tabName):
+        log.selectTab(tabName)
+    elif self.handler:
+        if self.handler.loaded:
+            self.handler.bringToFront()
+    else:
+        log.selectTab(tabName)
+        self.handler = spellTabHandler(c,tabName)
+        if not self.handler.loaded:
+            log.deleteTab(tabName,force=True)
+#@+node:ekr.20051025080420.1:commands...
+# Just open the Spell tab if it has never been opened.
+# For minibuffer commands, we must also force the Spell tab to be visible.
+
+def find (self,event=None):
+    '''Simulate pressing the 'Find' button in the Spell tab.'''
+    if self.handler:
+        self.openSpellTab()
+        self.handler.find()
+    else:
+        self.openSpellTab()
+
+def change(self,event=None):
+    '''Simulate pressing the 'Change' button in the Spell tab.'''
+    if self.handler:
+        self.openSpellTab()
+        self.handler.change()
+    else:
+        self.openSpellTab()
+
+def changeAll(self,event=None):
+
+    if self.handler:
+        self.openSpellTab()
+        self.handler.changeAll()
+    else:
+        self.openSpellTab()
+
+def changeThenFind (self,event=None):
+    '''Simulate pressing the 'Change, Find' button in the Spell tab.'''
+    if self.handler:
+        self.openSpellTab()
+        self.handler.changeThenFind()
+    else:
+        self.openSpellTab()
+
+def hide (self,event=None):
+    '''Hide the Spell tab.'''
+    if self.handler:
+        self.c.frame.log.selectTab('Log')
+        self.c.bodyWantsFocus()
+
+def ignore (self,event=None):
+    '''Simulate pressing the 'Ignore' button in the Spell tab.'''
+    if self.handler:
+        self.openSpellTab()
+        self.handler.ignore()
+    else:
+        self.openSpellTab()
+#@-node:ekr.20051025080420.1:commands...
+#@-node:ekr.20051025080633:openSpellTab
+#@-node:ekr.20051025071455.1:class spellCommandsClass
+#@+node:ekr.20051025071455.18:class spellTabHandler (leoFind.leoFind)
+class spellTabHandler (leoFind.leoFind):
+
+    """A class to create and manage Leo's Spell Check dialog."""
+
+    @others
+#@+node:ekr.20051025071455.19:Birth & death
+#@+node:ekr.20051025071455.20:spellTabHandler.__init__
+def __init__(self,c,tabName):
+
+    """Ctor for the Leo Spelling dialog."""
+
+    leoFind.leoFind.__init__(self,c) # Call the base ctor.
+
+    self.c = c
+    self.body = c.frame.body
+    self.currentWord = None
+    self.suggestions = []
+    self.messages = [] # List of message to be displayed when hiding the tab.
+    self.outerScrolledFrame = None
+    self.workCtrl = g.app.gui.plainTextWidget(c.frame.top)
+        # A text widget for scanning.
+        # Must have a parent frame even though it is not packed.
+
+    self.loaded = self.init_aspell(c)
+    if self.loaded:
+        self.tab = g.app.gui.createSpellTab(c,self,tabName)
+#@-node:ekr.20051025071455.20:spellTabHandler.__init__
+#@+node:ekr.20051025094004:init_aspell
+def init_aspell (self,c):
+
+    '''Init aspell and related ivars.  Return True if all went well.'''
+
+    self.local_language_code = c.config.getString('spell_local_language_code') or 'en'
+
+    self.dictionaryFileName = dictionaryFileName = (
+        c.config.getString('spell_local_dictionary') or
+        os.path.join(g.app.loadDir,"..","plugins",'spellpyx.txt'))
+
+    if not dictionaryFileName or not g.os_path_exists(dictionaryFileName):
+        g.es_print('Can not open dictionary file: %s' % (
+            dictionaryFileName), color='red')
+        return False
+
+    self.aspell = AspellClass(c,dictionaryFileName,self.local_language_code)
+
+    if self.aspell.aspell:
+        self.dictionary = self.readDictionary(dictionaryFileName)
+    else:
+        self.dictionary = False
+        # g.es_print('Can not open Aspell',color='red')
+
+    return self.aspell.aspell
+#@-node:ekr.20051025094004:init_aspell
+#@+node:ekr.20051025071455.16:readDictionary
+def readDictionary (self,fileName):
+
+    """Read the dictionary of words which we use as a local dictionary
+
+    Although Aspell itself has the functionality to handle this kind of things
+    we duplicate it here so that we can also use it for the "ignore" functionality
+    and so that in future a Python only solution could be developed."""
+
+    d = {}
+
+    try:
+        f = open(fileName,"r")
+    except IOError:
+        g.es("Unable to open local dictionary '%s' - using a blank one instead" % fileName)
+        return d
+
+    try:
+        # Create the dictionary - there are better ways to do this
+        # in later Python's but we stick with this method for compatibility
+        for word in f.readlines():
+            d [word.strip().lower()] = 0
+    finally:
+        f.close()
+
+    return d
+#@-node:ekr.20051025071455.16:readDictionary
+#@-node:ekr.20051025071455.19:Birth & death
+#@+node:ekr.20051025071455.36:Commands
+#@+node:ekr.20051025071455.37:add
+def add(self,event=None):
+    """Add the selected suggestion to the dictionary."""
+
+    if not self.currentWord: return
+
+    # g.trace(self.currentWord)
+
+    try:
+        f = None
+        try:
+            # Rewrite the dictionary in alphabetical order.
+            f = open(self.dictionaryFileName, "r")
+            words = f.readlines()
+            f.close()
+            words = [word.strip() for word in words]
+            words.append(self.currentWord)
+            words.sort()
+            f = open(self.dictionaryFileName, "w")
+            for word in words:
+                f.write("%s\n" % word)
+            f.flush()
+            f.close()
+            if 1:
+                s = 'Spell: added %s' % self.currentWord
+                self.messages.append(s)
+            else: # Too distracting.
+                g.es("Adding ", color= "blue", newline= False) 
+                g.es('%s' % self.currentWord)
+        except IOError:
+            g.es("Can not add %s to dictionary" % self.currentWord, color="red")
+    finally:
+        if f: f.close()
+
+    self.dictionary[self.currentWord.lower()] = 0
+    self.tab.onFindButton()
+#@-node:ekr.20051025071455.37:add
+#@+node:ekr.20051025071455.38:change (spellTab)
+def change(self,event=None):
+    """Make the selected change to the text"""
+
+    # __pychecker__ = '--no-override --no-argsused'
+         # event param is not used, required, and different from base class.
+
+    c = self.c ; body = self.body ; w = body.bodyCtrl
+
+    selection = self.tab.getSuggestion()
+    if selection:
+        if hasattr(self.tab,'change_i') and self.tab.change_i is not None:
+            start,end = oldSel = self.tab.change_i,self.tab.change_j
+            # g.trace('using',start,end)
+        else:
+            start,end = oldSel = w.getSelectionRange()
+        if start:
+            if start > end: start,end = end,start
+            w.delete(start,end)
+            w.insert(start,selection)
+            w.setSelectionRange(start,start+len(selection))
+            c.frame.body.onBodyChanged("Change",oldSel=oldSel)
+            c.invalidateFocus()
+            c.bodyWantsFocusNow()
+            return True
+
+    # The focus must never leave the body pane.
+    c.invalidateFocus()
+    c.bodyWantsFocusNow()
+    return False
+#@-node:ekr.20051025071455.38:change (spellTab)
+#@+node:ekr.20051025071455.40:find & helpers
+def find (self,event=None):
+    """Find the next unknown word."""
+
+    c = self.c ; body = c.frame.body ; w = body.bodyCtrl
+
+    # Reload the work pane from the present node.
+    s = w.getAllText().rstrip()
+    self.workCtrl.delete(0,"end")
+    self.workCtrl.insert("end",s)
+
+    # Reset the insertion point of the work widget.
+    ins = w.getInsertPoint()
+    self.workCtrl.setInsertPoint(ins)
+
+    alts, word = self.findNextMisspelledWord()
+    self.currentWord = word # Need to remember this for 'add' and 'ignore'
+
+    if alts:
+        # Save the selection range.
+        ins = w.getInsertPoint()
+        i,j = w.getSelectionRange()
+        self.tab.fillbox(alts,word)
+        c.invalidateFocus()
+        c.bodyWantsFocusNow()
+        # Restore the selection range.
+        w.setSelectionRange(i,j,insert=ins)
+        w.see(ins)
+        ### w.update() ###
+    else:
+        g.es("no more misspellings")
+        self.tab.fillbox([])
+        c.invalidateFocus()
+        c.bodyWantsFocusNow()
+#@+node:ekr.20051025071455.45:findNextMisspelledWord
+def findNextMisspelledWord(self):
+    """Find the next unknown word."""
+
+    c = self.c ; p = c.currentPosition()
+    w = c.frame.body.bodyCtrl
+    aspell = self.aspell ; alts = None ; word = None
+    trace = False
+    try:
+        while 1:
+            i,j,p,word = self.findNextWord(p)
+            if not p or not word:
+                alts = None
+                break
+            << Skip word if ignored or in local dictionary >>
+            alts = aspell.processWord(word)
+            if trace: g.trace('alts',alts and len(alts) or 0,i,j,word,p and p.headString() or 'None')
+            if alts:
+                c.beginUpdate()
+                try:
+                    c.frame.tree.expandAllAncestors(p)
+                    c.selectPosition(p)
+                finally:
+                    c.endUpdate()
+                    w.setSelectionRange(i,j,insert=j)
+                break
+    except:
+        g.es_exception()
+    return alts, word
+#@+node:ekr.20051025071455.46:<< Skip word if ignored or in local dictionary >>
+@ We don't bother to call apell if the word is in our dictionary. The dictionary contains both locally 'allowed' words and 'ignored' words. We put the test before aspell rather than after aspell because the cost of checking aspell is higher than the cost of checking our local dictionary. For small local dictionaries this is probably not True and this code could easily be located after the aspell call
+@c
+
+if self.dictionary.has_key(word.lower()):
+    continue
+#@-node:ekr.20051025071455.46:<< Skip word if ignored or in local dictionary >>
+#@-node:ekr.20051025071455.45:findNextMisspelledWord
+#@+node:ekr.20051025071455.47:findNextWord (tkSpell)
+def findNextWord(self,p):
+    """Scan for the next word, leaving the result in the work widget"""
+
+    c = self.c ; p = p.copy() ; trace = False
+    while 1:
+        s = self.workCtrl.getAllText()
+        i = self.workCtrl.getInsertPoint()
+        while i < len(s) and not g.isWordChar1(s[i]):
+            i += 1
+        # g.trace('p',p and p.headString(),'i',i,'len(s)',len(s))
+        if i < len(s):
+            # A non-empty word has been found.
+            j = i
+            while j < len(s) and g.isWordChar(s[j]):
+                j += 1
+            word = s[i:j]
+            # This trace verifies that all words have been checked.
+            # g.trace(repr(word))
+            for w in (self.workCtrl,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w)
+                w.setSelectionRange(i,j,insert=j)
+            if trace: g.trace(i,j,word,p.headString())
+            return i,j,p,word
+        else:
+            # End of the body text.
+            p.moveToThreadNext()
+            if not p: break
+            self.workCtrl.delete(0,'end')
+            self.workCtrl.insert(0,p.bodyString())
+            for w in (self.workCtrl,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w)
+                w.setSelectionRange(0,0,insert=0)
+            if trace: g.trace(0,0,'-->',p.headString())
+
+    return None,None,None,None
+#@nonl
+#@-node:ekr.20051025071455.47:findNextWord (tkSpell)
+#@-node:ekr.20051025071455.40:find & helpers
+#@+node:ekr.20051025121408:hide
+def hide (self,event=None):
+
+    self.c.frame.log.selectTab('Log')
+
+    for message in self.messages:
+        g.es(message,color='blue')
+
+    self.messages = []
+#@-node:ekr.20051025121408:hide
+#@+node:ekr.20051025071455.41:ignore
+def ignore(self,event=None):
+
+    """Ignore the incorrect word for the duration of this spell check session."""
+
+    if not self.currentWord: return
+
+    if 1: # Somewhat helpful: applies until the tab is destroyed.
+        s = 'Spell: ignore %s' % self.currentWord
+        self.messages.append(s)
+
+    if 0: # Too distracting
+        g.es("Ignoring ", color= "blue", newline= False)
+        g.es('%s' % self.currentWord)
+
+    self.dictionary[self.currentWord.lower()] = 0
+    self.tab.onFindButton()
+#@-node:ekr.20051025071455.41:ignore
+#@-node:ekr.20051025071455.36:Commands
+#@-node:ekr.20051025071455.18:class spellTabHandler (leoFind.leoFind)
+#@+node:ekr.20051025071455.6:class AspellClass
+class AspellClass:
+
+    """A wrapper class for Aspell spell checker"""
+
+    @others
+#@+node:ekr.20051025071455.7:Birth & death
+#@+node:ekr.20051025071455.8:__init__
+def __init__ (self,c,local_dictionary_file,local_language_code):
+
+    """Ctor for the Aspell class."""
+
+    self.c = c
+
+    self.aspell_dir = g.os_path_abspath(c.config.getString('aspell_dir'))
+    self.aspell_bin_dir = g.os_path_abspath(c.config.getString('aspell_bin_dir'))
+    self.diagnose = c.config.getBool('diagnose-aspell-installation')
+
+    self.local_language_code = local_language_code or 'en'
+    self.local_dictionary_file = g.os_path_abspath(local_dictionary_file)
+    self.local_dictionary = "%s.wl" % os.path.splitext(self.local_dictionary_file) [0]
+
+    # g.trace('code',self.local_language_code,'dict',self.local_dictionary_file)
+    # g.trace('dir',self.aspell_dir,'bin_dir',self.aspell_bin_dir)
+
+    try:
+        import ctypes
+        import ctypes.util
+        self.use_ctypes = True
+    except ImportError:
+        self.use_ctypes = False
+    self.aspell = self.sc = None
+
+    if self.use_ctypes:
+        self.getAspellWithCtypes()
+    else:
+        self.getAspell()
+#@-node:ekr.20051025071455.8:__init__
+#@+node:ekr.20061017125710:getAspell
+def getAspell (self):
+
+    try:
+        import aspell
+    except ImportError:
+        # Specify the path to the top-level Aspell directory.
+        theDir = g.choose(sys.platform=='darwin',self.aspell_dir,self.aspell_bin_dir)
+        aspell = g.importFromPath('aspell',theDir,pluginName=None,verbose=False)
+
+    if not aspell:
+        self.report('can not import aspell')
+
+    self.aspell = aspell
+    self.sc = aspell and aspell.spell_checker(prefix=self.aspell_dir,lang=self.local_language_code)
+#@-node:ekr.20061017125710:getAspell
+#@+node:ekr.20061018111331:getAspellWithCtypes
+def getAspellWithCtypes (self):
+
+    import ctypes
+    import ctypes.util
+    c_int, c_char_p = ctypes.c_int, ctypes.c_char_p
+
+    try:
+        if sys.platform.startswith('win'):
+            path = g.os_path_join(self.aspell_bin_dir, "aspell-15.dll")
+            self.aspell = aspell = ctypes.CDLL(path)
+        else:
+            path = 'aspell'
+            libname = ctypes.util.find_library(path)
+            assert(libname)
+            self.aspell = aspell = ctypes.CDLL(libname)
+    except Exception:
+        self.report('Can not load %s' % (path))
+        self.aspell = self.check = self.sc = None
+        return
+
+    try:
+        << define and configure aspell entry points >>
+    except Exception:
+        self.report('aspell checker not enabled')
+        self.aspell = self.check = self.sc = None
+        return
+
+    # Remember these functions (bound methods).
+    # No other ctypes data is known outside this method.
+    self.check = check
+    self.spell_checker = spell_checker
+    self.string_enumeration_next = string_enumeration_next
+    self.suggest = suggest
+    self.word_list_elements = word_list_elements
+    self.word_list_size = word_list_size
+#@+node:ekr.20061018111933:<< define and configure aspell entry points >>
+# new_aspell_config
+new_aspell_config = aspell.new_aspell_config 
+new_aspell_config.restype = c_int
+
+# aspell_config_replace
+aspell_config_replace = aspell.aspell_config_replace 
+aspell_config_replace.argtypes = [c_int, c_char_p, c_char_p] 
+
+# aspell_config_retrieve
+aspell_config_retrieve = aspell.aspell_config_retrieve 
+aspell_config_retrieve.restype = c_char_p  
+aspell_config_retrieve.argtypes = [c_int, c_char_p] 
+
+# aspell_error_message
+aspell_error_message = aspell.aspell_error_message 
+aspell_error_message.restype = c_char_p  
+
+sc = new_aspell_config()
+if 0:
+    print sc 
+    print aspell_config_replace(sc, "prefix", aspell_dir) #1/0 
+    print 'prefix', aspell_dir, `aspell_config_retrieve(sc, "prefix")`
+    print aspell_config_retrieve(sc, "lang")
+    print aspell_config_replace(sc, "lang",self.local_language_code)
+    print aspell_config_retrieve(sc, "lang")
+
+possible_err = aspell.new_aspell_speller(sc)
+aspell.delete_aspell_config(c_int(sc))
+
+# Rudimentary error checking, needs more.  
+if aspell.aspell_error_number(possible_err) != 0:
+    self.report(aspell_error_message(possible_err))
+    spell_checker = None
+else: 
+    spell_checker = aspell.to_aspell_speller(possible_err)
+
+if not spell_checker:
+    raise Exception('aspell checker not enabled')
+
+word_list_size = aspell.aspell_word_list_size
+word_list_size.restype = c_int
+word_list_size.argtypes = [c_int,]
+
+# word_list_elements
+word_list_elements = aspell.aspell_word_list_elements
+word_list_elements.restype = c_int
+word_list_elements.argtypes = [c_int,]
+
+# string_enumeration_next
+string_enumeration_next = aspell.aspell_string_enumeration_next
+string_enumeration_next.restype = c_char_p
+string_enumeration_next.argtypes = [c_int,]
+
+# check
+check = aspell.aspell_speller_check
+check.restype = c_int 
+check.argtypes = [c_int, c_char_p, c_int]
+
+# suggest
+suggest = aspell.aspell_speller_suggest
+suggest.restype = c_int 
+suggest.argtypes = [c_int, c_char_p, c_int]
+#@nonl
+#@-node:ekr.20061018111933:<< define and configure aspell entry points >>
+#@-node:ekr.20061018111331:getAspellWithCtypes
+#@+node:ekr.20071111153009:report
+def report (self,message):
+
+    if self.diagnose:
+        g.es_print(message,color='blue')
+#@-node:ekr.20071111153009:report
+#@-node:ekr.20051025071455.7:Birth & death
+#@+node:ekr.20051025071455.10:processWord
+def processWord(self, word):
+    """Pass a word to aspell and return the list of alternatives.
+    OK: 
+    * 
+    Suggestions: 
+    & «original» «count» «offset»: «miss», «miss», ... 
+    None: 
+    # «original» «offset» 
+    simplifyed to not create the string then make a list from it
+    """
+
+    # g.trace('word',word)
+
+    if not self.aspell:
+        g.trace('aspell not installed')
+        return None
+    elif self.use_ctypes:
+        if self.check(self.spell_checker,word,len(word)):
+            return None
+        else:
+            return self.suggestions(word)
+    else:
+        if self.sc.check(word):
+            return None
+        else:
+            return self.sc.suggest(word)
+#@-node:ekr.20051025071455.10:processWord
+#@+node:ekr.20061018101455.4:suggestions
+def suggestions(self,word):
+
+    "return list of words found"
+
+    aList = []
+    sw = self.suggest(self.spell_checker, word, len(word))
+
+    if self.word_list_size(sw):
+        ewords = self.word_list_elements(sw)
+        while 1: 
+            x = self.string_enumeration_next(ewords)
+            if x is None: break
+            aList.append(x)
+    return aList
+#@nonl
+#@-node:ekr.20061018101455.4:suggestions
+#@+node:ekr.20051025071455.11:updateDictionary
+def updateDictionary(self):
+
+    """Update the aspell dictionary from a list of words.
+
+    Return True if the dictionary was updated correctly."""
+
+    try:
+        # Create master list
+        basename = os.path.splitext(self.local_dictionary)[0]
+        cmd = (
+            "%s --lang=%s create master %s.wl < %s.txt" %
+            (self.aspell_bin_dir, self.local_language_code, basename,basename))
+        os.popen(cmd)
+        return True
+
+    except Exception, err:
+        # g.es_print("Unable to update local aspell dictionary: %s" % err)
+        print "Unable to update local aspell dictionary: %s" % (err)
+        return False
+#@-node:ekr.20051025071455.11:updateDictionary
+#@-node:ekr.20051025071455.6:class AspellClass
+#@-node:ekr.20051025071455:Spell classes
+#@-node:ekr.20071024090626:Added support for @bool diagnose-aspell-installation
 #@-node:ekr.20071110081315:New features
-#@-node:ekr.20071105150738:Leo 4.4.5 a1
+#@-node:ekr.20071105150738:Leo 4.4.5 b1
 #@-all
 #@nonl
 #@-node:EKR.20040429143933:@thin leoProjects.txt

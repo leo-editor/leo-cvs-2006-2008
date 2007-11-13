@@ -202,7 +202,7 @@ class swingGui(leoGui.leoGui):
 
         """Create and run an swing open file dialog ."""
 
-        __pychecker__ = '--no-argsused' # defaultextension not used.
+        # __pychecker__ = '--no-argsused' # defaultextension not used.
 
         initialdir = g.app.globalOpenDir or g.os_path_abspath(os.getcwd())
 
@@ -232,7 +232,7 @@ class swingGui(leoGui.leoGui):
 
         """Create and run an swing save file dialog ."""
 
-        __pychecker__ = '--no-argsused' # defaultextension not used.
+        # __pychecker__ = '--no-argsused' # defaultextension not used.
 
         initialdir=g.app.globalOpenDir or g.os_path_abspath(os.getcwd()),
 
@@ -434,7 +434,7 @@ class swingGui(leoGui.leoGui):
 
     def set_focus(self,c,w):
 
-        __pychecker__ = '--no-argsused' # c not used at present.
+        # __pychecker__ = '--no-argsused' # c not used at present.
 
         """Put the focus on the widget."""
 
@@ -464,7 +464,7 @@ class swingGui(leoGui.leoGui):
     #@+node:ekr.20070930102228.35:swingGui.getFontFromParams
     def getFontFromParams(self,family,size,slant,weight,defaultSize=12):
 
-        __pychecker__ = '--no-argsused' # defaultSize not used.
+        # __pychecker__ = '--no-argsused' # defaultSize not used.
 
         family_name = family
 

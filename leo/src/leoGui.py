@@ -26,7 +26,7 @@ class leoGui:
 
     Subclasses are expected to override all do-nothing methods of this class."""
 
-    __pychecker__ = '--no-argsused' # base classes have many unused args.
+    # __pychecker__ = '--no-argsused' # base classes have many unused args.
 
     #@    << define leoGui file types >>
     #@+node:ekr.20040131103531:<< define leoGui file types >> (not used yet)
@@ -467,7 +467,7 @@ class nullGui(leoGui):
 
     """Null gui class."""
 
-    __pychecker__ = '--no-argsused' # This class has many unused args.
+    # __pychecker__ = '--no-argsused' # This class has many unused args.
 
     #@    @+others
     #@+node:ekr.20031218072017.2224:Birth & death
@@ -657,7 +657,7 @@ class unitTestGui(nullGui):
 
 if g.unitTesting:
     oldGui = g.app.gui ; guis = [g.app.gui]
-    __pychecker__ = '--no-reimport'
+    # __pychecker__ = '--no-reimport'
     import leoGui
     guis.append(leoGui.unitTestGui())
 

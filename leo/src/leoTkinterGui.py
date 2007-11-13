@@ -242,7 +242,7 @@ class tkinterGui(leoGui.leoGui):
 
         """Create and run an Tkinter open file dialog ."""
 
-        __pychecker__ = '--no-argsused' # defaultextension not used.
+        # __pychecker__ = '--no-argsused' # defaultextension not used.
 
         initialdir = g.app.globalOpenDir or g.os_path_abspath(os.getcwd())
 
@@ -272,7 +272,7 @@ class tkinterGui(leoGui.leoGui):
 
         """Create and run an Tkinter save file dialog ."""
 
-        __pychecker__ = '--no-argsused' # defaultextension not used.
+        # __pychecker__ = '--no-argsused' # defaultextension not used.
 
         initialdir=g.app.globalOpenDir or g.os_path_abspath(os.getcwd()),
 
@@ -474,7 +474,7 @@ class tkinterGui(leoGui.leoGui):
 
     def set_focus(self,c,w):
 
-        __pychecker__ = '--no-argsused' # c not used at present.
+        # __pychecker__ = '--no-argsused' # c not used at present.
 
         """Put the focus on the widget."""
 
@@ -504,7 +504,7 @@ class tkinterGui(leoGui.leoGui):
     #@+node:ekr.20031218072017.2187:tkGui.getFontFromParams
     def getFontFromParams(self,family,size,slant,weight,defaultSize=12):
 
-        __pychecker__ = '--no-argsused' # defaultSize not used.
+        # __pychecker__ = '--no-argsused' # defaultSize not used.
 
         family_name = family
 

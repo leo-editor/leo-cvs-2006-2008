@@ -1261,7 +1261,7 @@ class baseColorizer:
 
         """Color the body pane either incrementally or non-incrementally"""
 
-        __pychecker__ = 'maxlines=500'
+        # __pychecker__ = 'maxlines=500'
 
         # g.trace(p and p.headString())
 
@@ -1947,7 +1947,7 @@ class baseColorizer:
     #@+node:ekr.20031218072017.1896:doNormalState
     def doNormalState (self,s,i):
 
-        __pychecker__ = 'maxlines=500'
+        # __pychecker__ = 'maxlines=500'
 
         ch = s[i] ; state = "normal"
         assert(type(ch)==type(u""))

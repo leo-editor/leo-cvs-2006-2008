@@ -1176,20 +1176,20 @@ class leoSwingFrame (leoFrame.leoFrame):
     #@+node:ekr.20071001091231.89:frame.OnControlKeyUp/Down
     def OnControlKeyDown (self,event=None):
 
-        __pychecker__ = '--no-argsused' # event not used.
+        # __pychecker__ = '--no-argsused' # event not used.
 
         self.controlKeyIsDown = True
 
     def OnControlKeyUp (self,event=None):
 
-        __pychecker__ = '--no-argsused' # event not used.
+        # __pychecker__ = '--no-argsused' # event not used.
 
         self.controlKeyIsDown = False
     #@-node:ekr.20071001091231.89:frame.OnControlKeyUp/Down
     #@+node:ekr.20071001091231.90:OnActivateBody (swingFrame)
     def OnActivateBody (self,event=None):
 
-        __pychecker__ = '--no-argsused' # event not used.
+        # __pychecker__ = '--no-argsused' # event not used.
 
         try:
             frame = self ; c = frame.c
@@ -1208,7 +1208,7 @@ class leoSwingFrame (leoFrame.leoFrame):
 
         '''Handle a click anywhere in the Leo window.'''
 
-        __pychecker__ = '--no-argsused' # event.
+        # __pychecker__ = '--no-argsused' # event.
 
         self.c.setLog()
 
@@ -3287,7 +3287,7 @@ class leoSwingLog (leoFrame.leoLog):
     #@+node:ekr.20071001091231.148:hideTab
     def hideTab (self,tabName):
 
-        __pychecker__ = '--no-argsused' # tabName
+        # __pychecker__ = '--no-argsused' # tabName
 
         self.selectTab('Log')
     #@-node:ekr.20071001091231.148:hideTab
@@ -3840,7 +3840,7 @@ class leoSwingTextWidget: ### (leoFrame.baseTextWidget):
     This class inherits almost all swingText methods: you call use them as usual.'''
 
     # The signatures of tag_add and insert are different from the Tk.Text signatures.
-    __pychecker__ = '--no-override' # suppress warning about changed signature.
+    # __pychecker__ = '--no-override' # suppress warning about changed signature.
 
     def __repr__(self):
         name = hasattr(self,'_name') and self._name or '<no name>'
@@ -4820,7 +4820,7 @@ class leoSwingTree (leoFrame.leoTree):
 
         """All changes to text widgets should come here."""
 
-        __pychecker__ = '--no-argsused' # theId not used.
+        # __pychecker__ = '--no-argsused' # theId not used.
 
         # if self.trace_alloc: g.trace('%4d %6s %s' % (theId,self.textAddr(w),s),align=-20)
 
@@ -5545,8 +5545,8 @@ class leoSwingTree (leoFrame.leoTree):
 
         """Scrolls the canvas so that p is in view."""
 
-        __pychecker__ = '--no-argsused' # event not used.
-        __pychecker__ = '--no-intdivide' # suppress warning about integer division.
+        # __pychecker__ = '--no-argsused' # event not used.
+        # __pychecker__ = '--no-intdivide' # suppress warning about integer division.
 
         c = self.c ; frame = c.frame ; trace = True
         if not p or not c.positionExists(p):
@@ -6232,7 +6232,7 @@ class leoSwingTree (leoFrame.leoTree):
 
         """Deactivate the tree pane, dimming any headline being edited."""
 
-        __pychecker__ = '--no-argsused' # event not used.
+        # __pychecker__ = '--no-argsused' # event not used.
 
         tree = self ; c = self.c
 
@@ -6286,14 +6286,14 @@ class leoSwingTree (leoFrame.leoTree):
 
     def OnPopupFocusLost(self,event=None):
 
-        __pychecker__ = '--no-argsused' # event not used.
+        # __pychecker__ = '--no-argsused' # event not used.
 
         self.popupMenu.unpost()
     #@-node:ekr.20071001092453.98:OnPopupFocusLost
     #@+node:ekr.20071001092453.99:createPopupMenu
     def createPopupMenu (self,event):
 
-        __pychecker__ = '--no-argsused' # event not used.
+        # __pychecker__ = '--no-argsused' # event not used.
 
         c = self.c ; frame = c.frame
 
@@ -6345,7 +6345,7 @@ class leoSwingTree (leoFrame.leoTree):
 
         """Enable and disable items in the popup menu."""
 
-        __pychecker__ = '--no-argsused' # event not used.
+        # __pychecker__ = '--no-argsused' # event not used.
 
         c = self.c ; menu = self.popupMenu
 

@@ -7,7 +7,7 @@ Run the unit tests in test.leo using the Execute Script command.'''
 #@@language python
 #@@tabwidth -4
 
-__pychecker__ = '--no-import --no-reimportself --no-reimport --no-constCond --no-constant1'
+# __pychecker__ = '--no-import --no-reimportself --no-reimport --no-constCond --no-constant1'
     # Disable all import warnings.
     # Disable warnings about if 1 and if 0.
 
@@ -117,7 +117,7 @@ class generalTestCase(unittest.TestCase):
 
         """Mark a unit test as having failed."""
 
-        __pychecker__ = '--no-argsused'
+        # __pychecker__ = '--no-argsused'
             #  msg needed so signature matches base class.
 
         import leoGlobals as g
@@ -610,7 +610,7 @@ def fail ():
 
     """Mark a unit test as having failed."""
 
-    __pychecker__ = '--no-argsused'
+    # __pychecker__ = '--no-argsused'
         #  msg needed so signature matches base class.
 
     import leoGlobals as g
@@ -1227,7 +1227,7 @@ class editBodyTestCase(unittest.TestCase):
 
         """Mark a unit test as having failed."""
 
-        __pychecker__ = '--no-argsused'
+        # __pychecker__ = '--no-argsused'
             #  msg needed so signature matches base class.
 
         import leoGlobals as g
@@ -1376,7 +1376,7 @@ class importExportTestCase(unittest.TestCase):
 
         """Mark a unit test as having failed."""
 
-        __pychecker__ = '--no-argsused'
+        # __pychecker__ = '--no-argsused'
             #  msg needed so signature matches base class.
 
         import leoGlobals as g
@@ -1508,7 +1508,7 @@ def runPerfectImportTest(c,p,
     testing=False,verbose=False,
     ignoreSentinelsInCompare=False):
 
-    __pychecker__ = '--no-shadowbuiltin' # input is a builtin.
+    # __pychecker__ = '--no-shadowbuiltin' # input is a builtin.
 
     # The contents of the "-input" and "-input-after" nodes define the changes.
 
