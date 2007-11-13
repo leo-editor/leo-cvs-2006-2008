@@ -80,7 +80,7 @@ except ImportError:
 try:
     import SilverCity
 except ImportError:
-    if '--silent' not in sys.argv:
+    if '--silent' not in sys.argv and not g.unitTesting and not g.app.batchMode:
         print 'rst3 plugin: SilverCity not loaded'
     SilverCity = None
 #@-node:ekr.20050805162550.2:<< imports >>
