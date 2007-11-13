@@ -5,6 +5,193 @@
 # Leo 4.4.5 will complete several projects that are long overdue.
 
 #@+node:ekr.20071112064808:First
+#@+node:ekr.20071025160653.2:Commands to add/remove icons
+#@+node:ekr.20071026092640:To do
+@nocolor
+
+To do:
+
+* Define standard event handlers:
+    - on-left-click (deletes icon)
+    - on-click
+
+* Adjust location depending on icon size.
+
+- Define standard icons in a subfolder of Icons folder?
+
+insert-icon
+append-icon
+delete-first-icon
+delete-nth-icon
+delete-all-node-icons
+delete-all-icons-in-tree
+#@-node:ekr.20071026092640:To do
+#@+node:ekr.20040803072955.46:drawUserIcons & helper
+def drawUserIcons(self,p,where,x,y):
+
+    """Draw any icons specified by p.v.t.unknownAttributes["icons"]."""
+
+    h,w = 0,0 ; t = p.v.t
+
+    if not hasattr(t,"unknownAttributes"):
+        return h,w
+
+    iconsList = t.unknownAttributes.get("icons")
+    if not iconsList:
+        return h,w
+
+    try:
+        for theDict in iconsList:
+            h2,w2 = self.drawUserIcon(p,where,x,y,w,theDict)
+            h = max(h,h2) ; w += w2
+    except:
+        g.es_exception()
+
+    # g.trace(where,h,w)
+
+    return h,w
+#@+node:ekr.20040803072955.47:drawUserIcon
+def drawUserIcon (self,p,where,x,y,w2,theDict):
+
+    h,w = 0,0
+
+    if where != theDict.get("where","beforeHeadline"):
+        return h,w
+
+    # if self.trace_gc: g.printNewObjects(tag='userIcon 1')
+
+    # g.trace(where,x,y,theDict)
+
+    << set offsets and pads >>
+    theType = theDict.get("type")
+    if theType == "icon":
+        if 0: # not ready yet.
+            s = theDict.get("icon")
+            << draw the icon in string s >>
+    elif theType == "file":
+        theFile = theDict.get("file")
+        << draw the icon at file >>
+    elif theType == "url":
+        ## url = theDict.get("url")
+        << draw the icon at url >>
+
+    # Allow user to specify height, width explicitly.
+    h = theDict.get("height",h)
+    w = theDict.get("width",w)
+
+    # if self.trace_gc: g.printNewObjects(tag='userIcon 2')
+
+    return h,w
+#@+node:ekr.20040803072955.48:<< set offsets and pads >>
+xoffset = theDict.get("xoffset")
+try:    xoffset = int(xoffset)
+except: xoffset = 0
+
+yoffset = theDict.get("yoffset")
+try:    yoffset = int(yoffset)
+except: yoffset = 0
+
+xpad = theDict.get("xpad")
+try:    xpad = int(xpad)
+except: xpad = 0
+
+ypad = theDict.get("ypad")
+try:    ypad = int(ypad)
+except: ypad = 0
+#@-node:ekr.20040803072955.48:<< set offsets and pads >>
+#@+node:ekr.20040803072955.49:<< draw the icon in string s >>
+pass
+#@-node:ekr.20040803072955.49:<< draw the icon in string s >>
+#@+node:ekr.20040803072955.50:<< draw the icon at file >>
+fullname = g.os_path_join(g.app.loadDir,"..","Icons",theFile)
+fullname = g.os_path_normpath(fullname)
+
+# Bug fix: the key must include distinguish nodes.
+key = (fullname,p.v.t)
+image = self.iconimages.get(key)
+
+if not image:
+    try:
+        from PIL import Image, ImageTk
+        image1 = Image.open(fullname)
+        image = ImageTk.PhotoImage(image1)
+        self.iconimages[key] = image
+    except Exception:
+        #g.es_exception()
+        image = None
+
+if not image:
+    try:
+        image = Tk.PhotoImage(master=self.canvas,file=fullname)
+        self.iconimages[key] = image
+    except Exception:
+        #g.es_exception()
+        image = None
+
+if image:
+    theId = self.canvas.create_image(
+        x+xoffset+w2,y+yoffset,
+        anchor="nw",image=image,tag="userIcon")
+    self.ids[theId] = p.copy()
+    # g.trace('id',theId,p.headString(),theFile,image)
+
+    # assert(theId not in self.visibleIcons)
+    self.visibleUserIcons.append(theId)
+
+    h = image.height() + yoffset + ypad
+    w = image.width()  + xoffset + xpad
+#@-node:ekr.20040803072955.50:<< draw the icon at file >>
+#@+node:ekr.20040803072955.51:<< draw the icon at url >>
+pass
+#@-node:ekr.20040803072955.51:<< draw the icon at url >>
+#@-node:ekr.20040803072955.47:drawUserIcon
+#@-node:ekr.20040803072955.46:drawUserIcons & helper
+#@+node:ekr.20040803072955.12:recycleWidgets
+def recycleWidgets (self):
+
+    canvas = self.canvas
+
+    for theId in self.visibleBoxes:
+        if theId not in self.freeBoxes:
+            self.freeBoxes.append(theId)
+        canvas.coords(theId,-100,-100)
+    self.visibleBoxes = []
+
+    for theId in self.visibleClickBoxes:
+        if theId not in self.freeClickBoxes:
+            self.freeClickBoxes.append(theId)
+        canvas.coords(theId,-100,-100,-100,-100)
+    self.visibleClickBoxes = []
+
+    for theId in self.visibleIcons:
+        if theId not in self.freeIcons:
+            self.freeIcons.append(theId)
+        canvas.coords(theId,-100,-100)
+    self.visibleIcons = []
+
+    for theId in self.visibleLines:
+        if theId not in self.freeLines:
+            self.freeLines.append(theId)
+        canvas.coords(theId,-100,-100,-100,-100)
+    self.visibleLines = []
+
+    aList = self.visibleText.values()
+    for data in aList:
+        w,theId = data
+        # assert theId == w.leo_window_id
+        canvas.coords(theId,-100,-100)
+        w.leo_position = None # Allow the position to be freed.
+        if data not in self.freeText:
+            self.freeText.append(data)
+    self.visibleText = {}
+
+    # g.trace('deleting visible user icons!')
+    for theId in self.visibleUserIcons:
+        # The present code does not recycle user Icons.
+        self.canvas.delete(theId)
+    self.visibleUserIcons = []
+#@-node:ekr.20040803072955.12:recycleWidgets
+#@-node:ekr.20071025160653.2:Commands to add/remove icons
 #@+node:ekr.20071110070242:How to run unit tests in leoPy.leo?
 @nocolor
 
@@ -1171,193 +1358,7 @@ with the following (rST) commands
 Thanks for the clarification.  Imo, this is a good idea, because there seems to be no way at present to get the effect you want without actually changing the body text as you describe.  There are situations in which changing the body text is either infeasible or clumsy.
 #@nonl
 #@-node:ekr.20071109080424:Add @rst-preformat
-#@+node:ekr.20071025160653.2:Commands to add/remove icons
-#@+node:ekr.20071026092640:To do
-@nocolor
-
-To do:
-
-* Define standard event handlers:
-    - on-left-click (deletes icon)
-    - on-click
-
-* Adjust location depending on icon size.
-
-- Define standard icons in a subfolder of Icons folder?
-
-insert-icon
-append-icon
-delete-first-icon
-delete-nth-icon
-delete-all-node-icons
-delete-all-icons-in-tree
-#@-node:ekr.20071026092640:To do
-#@+node:ekr.20040803072955.46:drawUserIcons & helper
-def drawUserIcons(self,p,where,x,y):
-
-    """Draw any icons specified by p.v.t.unknownAttributes["icons"]."""
-
-    h,w = 0,0 ; t = p.v.t
-
-    if not hasattr(t,"unknownAttributes"):
-        return h,w
-
-    iconsList = t.unknownAttributes.get("icons")
-    if not iconsList:
-        return h,w
-
-    try:
-        for theDict in iconsList:
-            h2,w2 = self.drawUserIcon(p,where,x,y,w,theDict)
-            h = max(h,h2) ; w += w2
-    except:
-        g.es_exception()
-
-    # g.trace(where,h,w)
-
-    return h,w
-#@+node:ekr.20040803072955.47:drawUserIcon
-def drawUserIcon (self,p,where,x,y,w2,theDict):
-
-    h,w = 0,0
-
-    if where != theDict.get("where","beforeHeadline"):
-        return h,w
-
-    # if self.trace_gc: g.printNewObjects(tag='userIcon 1')
-
-    # g.trace(where,x,y,theDict)
-
-    << set offsets and pads >>
-    theType = theDict.get("type")
-    if theType == "icon":
-        if 0: # not ready yet.
-            s = theDict.get("icon")
-            << draw the icon in string s >>
-    elif theType == "file":
-        theFile = theDict.get("file")
-        << draw the icon at file >>
-    elif theType == "url":
-        ## url = theDict.get("url")
-        << draw the icon at url >>
-
-    # Allow user to specify height, width explicitly.
-    h = theDict.get("height",h)
-    w = theDict.get("width",w)
-
-    # if self.trace_gc: g.printNewObjects(tag='userIcon 2')
-
-    return h,w
-#@+node:ekr.20040803072955.48:<< set offsets and pads >>
-xoffset = theDict.get("xoffset")
-try:    xoffset = int(xoffset)
-except: xoffset = 0
-
-yoffset = theDict.get("yoffset")
-try:    yoffset = int(yoffset)
-except: yoffset = 0
-
-xpad = theDict.get("xpad")
-try:    xpad = int(xpad)
-except: xpad = 0
-
-ypad = theDict.get("ypad")
-try:    ypad = int(ypad)
-except: ypad = 0
-#@-node:ekr.20040803072955.48:<< set offsets and pads >>
-#@+node:ekr.20040803072955.49:<< draw the icon in string s >>
-pass
-#@-node:ekr.20040803072955.49:<< draw the icon in string s >>
-#@+node:ekr.20040803072955.50:<< draw the icon at file >>
-fullname = g.os_path_join(g.app.loadDir,"..","Icons",theFile)
-fullname = g.os_path_normpath(fullname)
-
-# Bug fix: the key must include distinguish nodes.
-key = (fullname,p.v.t)
-image = self.iconimages.get(key)
-
-if not image:
-    try:
-        from PIL import Image, ImageTk
-        image1 = Image.open(fullname)
-        image = ImageTk.PhotoImage(image1)
-        self.iconimages[key] = image
-    except Exception:
-        #g.es_exception()
-        image = None
-
-if not image:
-    try:
-        image = Tk.PhotoImage(master=self.canvas,file=fullname)
-        self.iconimages[key] = image
-    except Exception:
-        #g.es_exception()
-        image = None
-
-if image:
-    theId = self.canvas.create_image(
-        x+xoffset+w2,y+yoffset,
-        anchor="nw",image=image,tag="userIcon")
-    self.ids[theId] = p.copy()
-    # g.trace('id',theId,p.headString(),theFile,image)
-
-    # assert(theId not in self.visibleIcons)
-    self.visibleUserIcons.append(theId)
-
-    h = image.height() + yoffset + ypad
-    w = image.width()  + xoffset + xpad
-#@-node:ekr.20040803072955.50:<< draw the icon at file >>
-#@+node:ekr.20040803072955.51:<< draw the icon at url >>
-pass
-#@-node:ekr.20040803072955.51:<< draw the icon at url >>
-#@-node:ekr.20040803072955.47:drawUserIcon
-#@-node:ekr.20040803072955.46:drawUserIcons & helper
-#@+node:ekr.20040803072955.12:recycleWidgets
-def recycleWidgets (self):
-
-    canvas = self.canvas
-
-    for theId in self.visibleBoxes:
-        if theId not in self.freeBoxes:
-            self.freeBoxes.append(theId)
-        canvas.coords(theId,-100,-100)
-    self.visibleBoxes = []
-
-    for theId in self.visibleClickBoxes:
-        if theId not in self.freeClickBoxes:
-            self.freeClickBoxes.append(theId)
-        canvas.coords(theId,-100,-100,-100,-100)
-    self.visibleClickBoxes = []
-
-    for theId in self.visibleIcons:
-        if theId not in self.freeIcons:
-            self.freeIcons.append(theId)
-        canvas.coords(theId,-100,-100)
-    self.visibleIcons = []
-
-    for theId in self.visibleLines:
-        if theId not in self.freeLines:
-            self.freeLines.append(theId)
-        canvas.coords(theId,-100,-100,-100,-100)
-    self.visibleLines = []
-
-    aList = self.visibleText.values()
-    for data in aList:
-        w,theId = data
-        # assert theId == w.leo_window_id
-        canvas.coords(theId,-100,-100)
-        w.leo_position = None # Allow the position to be freed.
-        if data not in self.freeText:
-            self.freeText.append(data)
-    self.visibleText = {}
-
-    # g.trace('deleting visible user icons!')
-    for theId in self.visibleUserIcons:
-        # The present code does not recycle user Icons.
-        self.canvas.delete(theId)
-    self.visibleUserIcons = []
-#@-node:ekr.20040803072955.12:recycleWidgets
-#@-node:ekr.20071025160653.2:Commands to add/remove icons
+#@-node:ekr.20071112064808:First
 #@+node:ekr.20071111053028:Move to svn
 @nocolor
 
@@ -1443,67 +1444,8 @@ Traceback (most recent call last):
 AttributeError: 'NoneType' object has no attribute 'tk'
 Exception exceptions.AttributeError: "TkPickleVar instance has no attribute '_tk'" in <bound method TkPickleVar.__del__ of <cleo.TkPickleVar instance at 0xb73a876c>> ignored
 #@-node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
-#@-node:ekr.20071112064808:First
-#@+node:ekr.20071105155631.1:Plugins
-#@+node:ekr.20071021125124:Revise plugins manager plugin
-Remove all references to pluginsManager.txt.
-#@nonl
-#@-node:ekr.20071021125124:Revise plugins manager plugin
-#@+node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4562648
-By: rogererens
-
-Maybe I may use this thread to make another suggestion for Leo 4.4.5, related
-to @menus: have the menu-options for right-clicking in the various panes also
-in the @settings-tree.
-
-Regards, Roger
-#@nonl
-#@-node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
-#@+node:ekr.20071026052111:Fix cursesGui  plugin
-#@+node:ekr.20071026051956:crash in cursesGui.py
-reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo
-reading settings in C:\Documents and Settings\HP_Administrator\My Documents\Edward\myLeoSettings.leo
-reading settings in C:\prog\tigris-cvs\leo\test\test.leo
-reading C:\Documents and Settings\HP_Administrator\My Documents\Edward\.leoRecentFiles.txt
-reading C:\prog\tigris-cvs\leo\config\.leoRecentFiles.txt
-@enabled-plugins found in test.leo
-textGui oops <module>,run,createFrame,openWithFileName,newLeoCommanderAndFrame,finishCreate,createKeyHandlerClass should be implem
-ented
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leo.py", line 401, in <module>
-    run(fileName)
-  File "c:\prog\tigris-cvs\leo\src\leo.py", line 144, in run
-    c,frame = createFrame(fileName)
-  File "c:\prog\tigris-cvs\leo\src\leo.py", line 213, in createFrame
-    ok, frame = g.openWithFileName(fileName,None)
-  File "C:\prog\tigris-cvs\leo\src\leoGlobals.py", line 1908, in openWithFileName
-    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
-  File "C:\prog\tigris-cvs\leo\src\leoApp.py", line 577, in newLeoCommanderAndFrame
-    c.finishCreate(initEditCommanders)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 216, in finishCreate
-    c.commandsDict = leoEditCommands.finishCreateEditCommanders(c)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 247, in finishCreateEditCommanders
-    d2 = theInstance.getPublicCommands()
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 1022, in getPublicCommands
-    'keyboard-quit':                k.keyboardQuit,
-AttributeError: 'NoneType' object has no attribute 'keyboardQuit'
->>>
-#@nonl
-#@-node:ekr.20071026051956:crash in cursesGui.py
-#@-node:ekr.20071026052111:Fix cursesGui  plugin
-#@+node:ekr.20071105155631.2:Fix script_io_to_body plugin
-#@-node:ekr.20071105155631.2:Fix script_io_to_body plugin
-#@+node:ekr.20070613103409:Improve marks/recent buttons
-- Arrow keys must move up/down.
-- Should be commands to show the marks/recent dialogs.
-#@nonl
-#@-node:ekr.20070613103409:Improve marks/recent buttons
-#@-node:ekr.20071105155631.1:Plugins
 #@-node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
-#@+node:ekr.20071112070038:To do: 5.0 (standard xml parser)
+#@+node:ekr.20071113093057:To do: 4.4.6: last major projects
 #@+node:ekr.20070703111455.1:Most important
 #@+node:ekr.20071031113657:1. Remove Leo's hand-written parser: use sax or lxml
 # Are there proper unit tests?
@@ -4833,8 +4775,68 @@ add-new-icon-row command?
 #@nonl
 #@-node:ekr.20061127170002.1:Allow multiple lines on the button bar
 #@-node:ekr.20070703111455.3:Minor
+#@+node:ekr.20071105155631.1:Plugins
+#@+node:ekr.20071021125124:Revise plugins manager plugin
+Remove all references to pluginsManager.txt.
+#@nonl
+#@-node:ekr.20071021125124:Revise plugins manager plugin
+#@+node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4562648
+By: rogererens
+
+Maybe I may use this thread to make another suggestion for Leo 4.4.5, related
+to @menus: have the menu-options for right-clicking in the various panes also
+in the @settings-tree.
+
+Regards, Roger
+#@nonl
+#@-node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
+#@+node:ekr.20071026052111:Fix cursesGui  plugin
+#@+node:ekr.20071026051956:crash in cursesGui.py
+reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo
+reading settings in C:\Documents and Settings\HP_Administrator\My Documents\Edward\myLeoSettings.leo
+reading settings in C:\prog\tigris-cvs\leo\test\test.leo
+reading C:\Documents and Settings\HP_Administrator\My Documents\Edward\.leoRecentFiles.txt
+reading C:\prog\tigris-cvs\leo\config\.leoRecentFiles.txt
+@enabled-plugins found in test.leo
+textGui oops <module>,run,createFrame,openWithFileName,newLeoCommanderAndFrame,finishCreate,createKeyHandlerClass should be implem
+ented
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 401, in <module>
+    run(fileName)
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 144, in run
+    c,frame = createFrame(fileName)
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 213, in createFrame
+    ok, frame = g.openWithFileName(fileName,None)
+  File "C:\prog\tigris-cvs\leo\src\leoGlobals.py", line 1908, in openWithFileName
+    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
+  File "C:\prog\tigris-cvs\leo\src\leoApp.py", line 577, in newLeoCommanderAndFrame
+    c.finishCreate(initEditCommanders)
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 216, in finishCreate
+    c.commandsDict = leoEditCommands.finishCreateEditCommanders(c)
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 247, in finishCreateEditCommanders
+    d2 = theInstance.getPublicCommands()
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 1022, in getPublicCommands
+    'keyboard-quit':                k.keyboardQuit,
+AttributeError: 'NoneType' object has no attribute 'keyboardQuit'
+>>>
+#@nonl
+#@-node:ekr.20071026051956:crash in cursesGui.py
+#@-node:ekr.20071026052111:Fix cursesGui  plugin
+#@+node:ekr.20071105155631.2:Fix script_io_to_body plugin
+#@-node:ekr.20071105155631.2:Fix script_io_to_body plugin
+#@+node:ekr.20070613103409:Improve marks/recent buttons
+- Arrow keys must move up/down.
+- Should be commands to show the marks/recent dialogs.
+#@nonl
+#@-node:ekr.20070613103409:Improve marks/recent buttons
+#@-node:ekr.20071105155631.1:Plugins
 #@+node:ekr.20070220082124:Make sure Leo can generate Latex
 #@-node:ekr.20070220082124:Make sure Leo can generate Latex
+#@-node:ekr.20071113093057:To do: 4.4.6: last major projects
+#@+node:ekr.20071112070038:To do: 5.0 (standard xml parser)
 #@-node:ekr.20071112070038:To do: 5.0 (standard xml parser)
 #@+node:ekr.20070923103337:Not associated with any release
 #@+node:ekr.20060306194040:Video and more screen shots on Leo's web site
