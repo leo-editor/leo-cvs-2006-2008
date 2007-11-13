@@ -5581,20 +5581,18 @@ def cantImport (moduleName,pluginName=None,verbose=True):
 
     """Print a "Can't Import" message and return None."""
 
-    # g.trace(verbose,moduleName,repr(pluginName))
-    # if not pluginName: g.printStack()
+    s = "Can not import %s" % moduleName
+    if pluginName: s = s + " from plugin %s" % pluginName
 
-    if verbose and not (app and g.app.unitTesting):
-        # g.trace('guiName',g.app.gui.guiName())
-        if g.app.gui.guiName() != 'tkinter' and moduleName in ('Tkinter','Pmw'):
-            pass
-            # g.trace('ignore import',moduleName)
-        else:
-            s = "Can not import %s" % moduleName
-            if pluginName: s += " from plugin %s" % pluginName
-            g.es_print(s,color="blue")
+    if not g.app or not g.app.gui:
+        print s
+    elif g.unitTesting:
+        return
+    elif g.app.gui.guiName() == 'tkinter' and moduleName in ('Tkinter','Pmw'):
+        return
+    else:
+        g.es_print(s,color="blue")
 
-    return None
 #@+node:ekr.20070627082044.850:@test g.cantImport returns None
 if g.unitTesting:
     assert(g.cantImport("xyzzy","during unit testing") is None)

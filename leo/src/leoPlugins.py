@@ -202,6 +202,7 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
     global loadedModules,loadingModuleNameStack
 
     verbose = verbose or g.app.config.getBool(c=None,setting='trace_plugins')
+    warn_on_failure = g.app.config.getBool(c=None,setting='warn_when_plugins_fail_to_load')
 
     if moduleOrFileName.endswith('.py'):
         moduleName = moduleOrFileName [:-3]
@@ -222,7 +223,7 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
     # This import will typically result in calls to registerHandler.
     # if the plugin does _not_ use the init top-level function.
     loadingModuleNameStack.append(moduleName)
-    result = g.importFromPath(moduleName,plugins_path)
+    result = g.importFromPath(moduleName,plugins_path,pluginName=moduleName,verbose=True)
     loadingModuleNameStack.pop()
 
     if result:
@@ -253,8 +254,10 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
                 loadedModules[moduleName] = result
         loadingModuleNameStack.pop()
 
-    if result is None:
-        if verbose and not g.app.initing: # or not g.app.unitTesting:
+    if g.unitTesting or g.app.batchMode:
+        pass
+    elif result is None:
+        if warn_on_failure or (verbose and not g.app.initing): # or not g.app.unitTesting:
             s = 'can not load enabled %s plugin' % moduleName
             g.es_print(s,color="red")
     elif verbose:
@@ -262,7 +265,6 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
         g.es_print(s,color="blue")
 
     return result
-#@nonl
 #@-node:ekr.20041113113140:loadOnePlugin
 #@+node:ekr.20050110191444:printHandlers
 def printHandlers (moduleName=None):
