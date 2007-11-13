@@ -1837,10 +1837,11 @@ nodeIndices = g.app.nodeIndices
 self.tnodesDict = {}
 
 for t in self.c.all_unique_tnodes_iter():
-    tref = t.fileIndex
-    if nodeIndices.isGnx(tref):
-        tref = nodeIndices.toString(tref)
-    self.tnodesDict[tref] = t
+    if hasattr(t,'fileIndex'):
+        tref = t.fileIndex
+        if nodeIndices.isGnx(tref):
+            tref = nodeIndices.toString(tref)
+        self.tnodesDict[tref] = t
 
 if 0:
     print '-'*40

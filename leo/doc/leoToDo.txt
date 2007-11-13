@@ -5,8 +5,6 @@
 # Leo 4.4.5 will complete several projects that are long overdue.
 
 #@+node:ekr.20071112064808:First
-#@+node:ekr.20071111163415:Unit tests for new sort commands
-#@-node:ekr.20071111163415:Unit tests for new sort commands
 #@+node:ekr.20071110070242:How to run unit tests in leoPy.leo?
 @nocolor
 
@@ -1156,8 +1154,6 @@ The new scheme:
 #@-node:ekr.20071025143956:Posting: document unit test bug & describe coming new scheme
 #@-node:ekr.20071024172428:Failed unit tests when running externally
 #@-node:ekr.20071110070242:How to run unit tests in leoPy.leo?
-#@+node:ekr.20071106135136:Add option: warn if plugins fail to load
-#@-node:ekr.20071106135136:Add option: warn if plugins fail to load
 #@+node:ekr.20071109080424:Add @rst-preformat
 @nocolor
 

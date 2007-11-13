@@ -19,14 +19,74 @@
 #@@tabwidth -4
 
 #@+all
-#@+node:ekr.20070809131638:Pychecker report
-# Invalid warnings...
-# leoGlobals.py:136: No module attribute (leo_config_directory) found
-# leoGlobals.py:4015: Statement appears to have no effect
-# leoGlobals.py:4015: No module attribute (CODESET) found
-# leoGlobals.py:4693: No module attribute (mtime) found
+#@+node:ekr.20071113081155:Pylint reports
+#@+node:ekr.20071112110249:pylint: leoAtFile
+************* Module leoAtFile
 
-#@-node:ekr.20070809131638:Pychecker report
+# These might crash @noref.
+
+E1101:1877:atFile.readEndNode: Instance of 'atFile' has no 'correctedLines' member
+E1101:2725:atFile.norefWrite: Instance of 'atFile' has no 'putBuffered' member
+E1101:2789:atFile.norefWrite: Instance of 'atFile' has no 'putBuffered' member
+#@-node:ekr.20071112110249:pylint: leoAtFile
+#@+node:ekr.20071112115854:pyline: leoFileCommands
+************* Module leoFileCommands
+W0311:1620: Bad indentation. Found 16 spaces, expected 12
+W0311:2940: Bad indentation. Found 17 spaces, expected 16
+W0401: 13: Wildcard import psyco.classes
+W0402: 22: Uses of a deprecated module 'string'
+W0621:120:saxContentHandler.endElementNS: Redefining name '__pychecker__' from outer scope (line 34)
+W0613:119:saxContentHandler.endElementNS: Unused argument 'qname'
+W0621:127:saxContentHandler.ignorableWhitespace: Redefining name '__pychecker__' from outer scope (line 34)
+W0107:128:saxContentHandler.ignorableWhitespace: Unnecessary pass statement
+W0613:126:saxContentHandler.ignorableWhitespace: Unused argument 'whitespace'
+W0621:131:saxContentHandler.skippedEntity: Redefining name '__pychecker__' from outer scope (line 34)
+W0621:135:saxContentHandler.startElementNS: Redefining name '__pychecker__' from outer scope (line 34)
+W0613:134:saxContentHandler.startElementNS: Unused argument 'qname'
+W0613:134:saxContentHandler.startElementNS: Unused argument 'attrs'
+W0621:370:saxContentHandler.startLeoHeader: Redefining name '__pychecker__' from outer scope (line 34)
+W0613:369:saxContentHandler.startLeoHeader: Unused argument 'attrs'
+W0621:376:saxContentHandler.startVH: Redefining name '__pychecker__' from outer scope (line 34)
+W0613:374:saxContentHandler.startVH: Unused argument 'attrs'
+W0621:384:saxContentHandler.startVnodes: Redefining name '__pychecker__' from outer scope (line 34)
+W0613:382:saxContentHandler.startVnodes: Unused argument 'attrs'
+W0621:831:baseFileCommands.newTnode: Redefining name 'time' from outer scope (line 35)
+W0612:831:baseFileCommands.newTnode: Unused variable 'theId'
+W0612:831:baseFileCommands.newTnode: Unused variable 'n'
+W0612:932:baseFileCommands.readOutlineOnly: Unused variable 'vflag'
+W0621:953:baseFileCommands.canonicalTnodeIndex: Redefining name 'time' from outer scope (line 35)
+W0612:953:baseFileCommands.canonicalTnodeIndex: Unused variable 'n'
+W0612:953:baseFileCommands.canonicalTnodeIndex: Unused variable 'theId'
+W0621:969:baseFileCommands.getDescendentAttributes: Redefining name '__pychecker__' from outer scope (line 34)
+W0613:961:baseFileCommands.getDescendentAttributes: Unused argument 'tag'
+W0101:1200:baseFileCommands.getStringToTag: Unreachable code
+W0621:1561:baseFileCommands.getTnode: Redefining name 'time' from outer scope (line 35)
+W0612:1561:baseFileCommands.getTnode: Unused variable 'theId'
+W0612:1561:baseFileCommands.getTnode: Unused variable 'n'
+W0106:1596:baseFileCommands.getTnodeList: Unnecessary semicolon
+W0621:1631:baseFileCommands.getUa: Redefining name '__pychecker__' from outer scope (line 34)
+W0613:1627:baseFileCommands.getUa: Unused argument 'nodeType'
+W0621:1705:baseFileCommands.getVnode: Redefining name 'time' from outer scope (line 35)
+W0612:1705:baseFileCommands.getVnode: Unused variable 'theId'
+W0612:1705:baseFileCommands.getVnode: Unused variable 'n'
+W0612:2229:baseFileCommands.readSaxFile: Unused variable 'c'
+W0621:2391:baseFileCommands.assignFileIndices: Redefining name 'time' from outer scope (line 35)
+W0612:2391:baseFileCommands.assignFileIndices: Unused variable 'theId'
+W0612:2391:baseFileCommands.assignFileIndices: Unused variable 'time'
+W0612:2391:baseFileCommands.assignFileIndices: Unused variable 'n'
+W0621:2406:baseFileCommands.deleteFileWithMessage: Redefining name '__pychecker__' from outer scope (line 34)
+W0613:2404:baseFileCommands.deleteFileWithMessage: Unused argument 'kind'
+W0621:2855:baseFileCommands.putTnodeList: Redefining name 'time' from outer scope (line 35)
+W0702:2857:baseFileCommands.putTnodeList: No exception's type specified
+W0612:2855:baseFileCommands.putTnodeList: Unused variable 'theId'
+W0612:2855:baseFileCommands.putTnodeList: Unused variable 'n'
+W0612:2855:baseFileCommands.putTnodeList: Unused variable 'time'
+W0702:3096:baseFileCommands.write_Leo_file: No exception's type specified
+W0201:2706:baseFileCommands.putVnodes: Attribute 'rootPosition' defined outside __init__
+W0201:2232:baseFileCommands.readSaxFile: Attribute 'dummyRoot' defined outside __init__
+W0611: 35: Unused import time
+#@-node:ekr.20071112115854:pyline: leoFileCommands
+#@-node:ekr.20071113081155:Pylint reports
 #@+node:ekr.20071105150738:Leo 4.4.5 b1
 #@+node:ekr.20071105202808:Distribution
 #@+node:ekr.20071105171900:Removed all references to pluginsManager.txt
@@ -6119,6 +6179,165 @@ Eventually I updated the registry paths to point to my CVS snapshot - which
 is when I caught this.
 #@nonl
 #@-node:ekr.20071110092152:Fixed windows registry problem
+#@+node:ekr.20071112201953:Fixed paste node as clone crasher
+#@+node:ekr.20071113063715:Report
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4618014
+By: billp9619
+
+I am not able to use Paste Node As Clone in recent install of leo
+Using Windows XP
+
+Here is the log pane output. Line "exception executing command" is beginning
+of error message part.:
+=================================================================
+Leo Log Window...
+Leo 4.4.4 final, build  1.216 , November 2, 2007
+Python 2.5.1, Tk 8.4.12, Pmw 1.2
+Windows 5, 1, 2600, 2, Service Pack 2
+
+leoID = id9619 (in E:\Program Files\Leo\config)
+global config dir: E:\Program Files\Leo\config
+home dir: None
+reading settings in E:\Program Files\Leo\config\leoSettings.leo
+exception executing command
+exception executing command
+Traceback (most recent call last):
+  File "E:\Program Files\Leo\src\leoCommands.py", line 276, in doCommand
+    val = command(event)
+  File "E:\Program Files\Leo\src\leoCommands.py", line 3439,
+in pasteOutlineRetainingClones
+    return c.pasteOutline(reassignIndices=False)
+  File "E:\Program Files\Leo\src\leoCommands.py", line 3387, in pasteOutline
+    pasted = c.fileCommands.getLeoOutline(s,reassignIndices)
+  File "E:\Program Files\Leo\src\leoFileCommands.py", line 623, in
+getLeoOutlineFromClipboard
+    v = self.getLeoOutlineHelper(s,reassignIndices,checking=True)
+  File "E:\Program Files\Leo\src\leoFileCommands.py", line 692, in
+getLeoOutlineHelper
+    tref = t.fileIndex
+AttributeError: 'NoneType' object has no attribute 'fileIndex'
+#@-node:ekr.20071113063715:Report
+#@+node:ekr.20031218072017.1559:getLeoOutlineFromClipboard & helpers
+def getLeoOutlineFromClipboard (self,s,reassignIndices=True):
+
+    '''Read a Leo outline from string s in clipboard format.'''
+
+    try:
+        v = self.getLeoOutlineHelper(s,reassignIndices,checking=True)
+        v = self.getLeoOutlineHelper(s,reassignIndices,checking=False)
+    except invalidPaste:
+        v = None
+        g.es("Invalid Paste As Clone",color="blue")
+    except BadLeoFile:
+        v = None
+        g.es("The clipboard is not valid ",color="blue")
+
+    return v
+
+getLeoOutline = getLeoOutlineFromClipboard # for compatibility
+#@nonl
+#@+node:ekr.20031218072017.1557:finishPaste
+def finishPaste(self,reassignIndices=True):
+
+    """Finish pasting an outline from the clipboard.
+
+    Retain clone links if reassignIndices is False."""
+
+    c = self.c
+    current = c.currentPosition()
+    if reassignIndices:
+        << reassign tnode indices >>
+    c.selectPosition(current)
+    return current
+#@+node:ekr.20031218072017.1558:<< reassign tnode indices >>
+@ putLeoOutline calls assignFileIndices (when copying nodes) so that vnode can be associated with tnodes.
+However, we must _reassign_ the indices here so that no "False clones" are created.
+@c
+
+nodeIndices = g.app.nodeIndices
+
+current.clearVisitedInTree()
+
+for p in current.self_and_subtree_iter():
+    t = p.v.t
+    if not t.isVisited():
+        t.setVisited()
+        # New in Leo 4.4.2 b2: use gnx's.  maxTnodeIndex is no longer used.
+        t.fileIndex = nodeIndices.getNewIndex()
+        # g.trace(t.fileIndex)
+#@nonl
+#@-node:ekr.20031218072017.1558:<< reassign tnode indices >>
+#@-node:ekr.20031218072017.1557:finishPaste
+#@+node:ekr.20060826052453.1:getLeoOutlineHelper
+def getLeoOutlineHelper (self,s,reassignIndices,checking):
+
+    self.checking = checking
+    self.usingClipboard = True
+    self.fileBuffer = s ; self.fileIndex = 0
+    self.descendentUnknownAttributesDictList = []
+    v = None
+
+    self.tnodesDict = {}
+    if not reassignIndices:
+        << recreate tnodesDict >>
+    try:
+        self.getXmlVersionTag()
+        self.getXmlStylesheetTag()
+        self.getTag("<leo_file>")
+        self.getClipboardHeader()
+        self.getDummyElements()
+        self.getVnodes(reassignIndices)
+        self.getTnodes()
+        self.getTag("</leo_file>")
+        if not checking:
+            v = self.finishPaste(reassignIndices)
+    finally:
+        self.fileBuffer = None ; self.fileIndex = 0
+        self.usingClipboard = False
+        self.tnodesDict = {}
+    return v
+#@+node:EKR.20040610134756:<< recreate tnodesDict >>
+nodeIndices = g.app.nodeIndices
+
+self.tnodesDict = {}
+
+for t in self.c.all_unique_tnodes_iter():
+    if hasattr(t,'fileIndex'):
+        tref = t.fileIndex
+        if nodeIndices.isGnx(tref):
+            tref = nodeIndices.toString(tref)
+        self.tnodesDict[tref] = t
+
+if 0:
+    print '-'*40
+    for key in self.tnodesDict.keys():
+        print key,self.tnodesDict[key]
+#@-node:EKR.20040610134756:<< recreate tnodesDict >>
+#@-node:ekr.20060826052453.1:getLeoOutlineHelper
+#@+node:ekr.20031218072017.3022:getClipboardHeader
+def getClipboardHeader (self):
+
+    if self.getOpenTag("<leo_header"):
+        return # <leo_header> or <leo_header/> has been seen.
+
+    while 1:
+        if self.matchTag("file_format="):
+            self.getDquote() ; self.getLong() ; self.getDquote()
+        elif self.matchTag("tnodes="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
+        elif self.matchTag("max_tnode_index="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
+        elif self.matchTag("></leo_header>"): # new in 4.2: allow this form.
+            break
+        else:
+            self.getTag("/>")
+            break
+#@nonl
+#@-node:ekr.20031218072017.3022:getClipboardHeader
+#@-node:ekr.20031218072017.1559:getLeoOutlineFromClipboard & helpers
+#@-node:ekr.20071112201953:Fixed paste node as clone crasher
 #@-node:ekr.20071105171301:Fixed bugs
 #@+node:ekr.20071110081315:New features
 #@+node:ekr.20070803115653:Support directives in headlines
