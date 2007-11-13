@@ -689,10 +689,11 @@ class baseFileCommands:
             self.tnodesDict = {}
 
             for t in self.c.all_unique_tnodes_iter():
-                tref = t.fileIndex
-                if nodeIndices.isGnx(tref):
-                    tref = nodeIndices.toString(tref)
-                self.tnodesDict[tref] = t
+                if hasattr(t,'fileIndex'):
+                    tref = t.fileIndex
+                    if nodeIndices.isGnx(tref):
+                        tref = nodeIndices.toString(tref)
+                    self.tnodesDict[tref] = t
 
             if 0:
                 print '-'*40
@@ -1565,21 +1566,21 @@ class baseFileCommands:
 
         index = self.canonicalTnodeIndex(index)
         t = self.tnodesDict.get(index)
-        #@    << handle unknown attributes >>
-        #@+node:ekr.20031218072017.1564:<< handle unknown attributes >>
-        keys = attrDict.keys()
-        if keys:
-            t.unknownAttributes = attrDict
-            t._p_changed = 1
-            if 0: # For debugging.
-                s = "unknown attributes for tnode"
-                g.es_print(s, color = "blue")
-                for key in keys:
-                    s = "%s = %s" % (key,attrDict.get(key))
-                    g.es_print(s)
-        #@-node:ekr.20031218072017.1564:<< handle unknown attributes >>
-        #@nl
         if t:
+            #@        << handle unknown attributes >>
+            #@+node:ekr.20031218072017.1564:<< handle unknown attributes >>
+            keys = attrDict.keys()
+            if keys:
+                t.unknownAttributes = attrDict
+                t._p_changed = 1
+                if 0: # For debugging.
+                    s = "unknown attributes for tnode"
+                    g.es_print(s, color = "blue")
+                    for key in keys:
+                        s = "%s = %s" % (key,attrDict.get(key))
+                        g.es_print(s)
+            #@-node:ekr.20031218072017.1564:<< handle unknown attributes >>
+            #@nl
             s = self.getEscapedString()
             t.setTnodeText(s,encoding=self.leo_file_encoding)
         else:
