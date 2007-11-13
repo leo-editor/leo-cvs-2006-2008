@@ -11,10 +11,8 @@ echo on
 
 cd c:\prog\pylint-0.13.2\bin
 
-pylint.bat c:\prog\tigris-cvs\leo\src\leoFileCommands.py --rcfile=c:\prog\tigris-cvs\leo\test\pylint-leo-rc.txt
-
-rem for %%file in (leoFileCommands) do: pylint.bat c:\prog\tigris-cvs\leo\src\%file.py --rcfile=pylint-leo-rc.txt
+call pylint.bat ^
+c:\prog\tigris-cvs\leo\src\leoFileCommands.py ^
+--rcfile=c:\prog\tigris-cvs\leo\test\pylint-leo-rc.txt
 
 pause
-
-cd c:\prog\tigris-cvs\leo\test
