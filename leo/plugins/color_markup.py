@@ -164,12 +164,10 @@ def initAnyMarkup (tag,keywords):
     pluginsList = dict.get("pluginsList")
 
     if pluginsList:
-        for d,v,s,k in pluginsList:
-            if d == "markup":
-                kind = s[k:]
-                if kind:
-                    colorer.markup_string = kind
-                    return
+        for kind,v,s in pluginsList:
+            if kind == "markup" and s:
+                colorer.markup_string = s
+                return
 
     colorer.markup_string = "unknown" # default
 #@-node:edream.110403140857.9:initAnyMarkup
@@ -285,11 +283,10 @@ def colorWikiMarkup (tag,keywords):
     pluginsList = dict.get("pluginsList")
 
     if pluginsList:
-        for d,v,s2,k in pluginsList:
-            if d == "markup":
-                if g.match_word(s2,k,"wiki"):
-                    doWikiText(colorer,s,i,j,colortag)
-                    return True # We have colored the text.
+        for kind,v,s2 in pluginsList:
+            if kind == "markup" and s2 == 'wiki':
+                doWikiText(colorer,s,i,j,colortag)
+                return True # We have colored the text.
 
     # g.trace('**not colored')
     colorer.removeAllImages()

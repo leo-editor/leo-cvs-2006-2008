@@ -53,11 +53,9 @@ def scanPluginDirectives (tag, keywords):
     for d in directives:
         if not old_dict.has_key(d) and dict.has_key(d):
             # Point k at whatever follows the directive.
-            k = dict[d]
-            k += 1 + len(d) # Skip @directive
-            k = g.skip_ws(s,k) # Skip whitespace
-            # g.trace(`d`,`k`)
-            pluginsList.append((d,v,s,k),)
+            s = dict.get(d)
+            kind = d
+            pluginsList.append((kind,v,s),)
 #@-node:edream.110203113231.743:scanPluginDirectives
 #@-others
 #@-node:edream.110203113231.741:@thin add_directives.py
