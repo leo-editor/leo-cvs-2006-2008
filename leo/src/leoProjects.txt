@@ -6536,6 +6536,135 @@ def scanPluginDirectives (tag, keywords):
 #@-node:ekr.20071113101615.7:scanPluginDirectives
 #@-node:ekr.20071113101615:Found: pluginsList (in leoPlugins.leo)
 #@-node:ekr.20071113094525:Fixed new crasher involving directory scanning
+#@+node:ekr.20071113103258:Fixed hoist crasher
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4620890
+By: tokidokix
+
+Hi,
+I have a (very) small bug on Leo 4.4.4 (linux); I am not sure where to report
+it, so I'll do it here.
+
+When doing a "hoist" on a childless node (on linux, at least), the following
+trackback is displayed on the log windows:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/leo/src/leoTkinterTree.py", line 1315, in scrollTo
+    h1 = self.yoffset(p)
+  File "/usr/local/lib/leo/src/leoTkinterTree.py", line 1416, in yoffset
+    h,flag = self.yoffsetTree(root,p1,isTop=True)
+  File "/usr/local/lib/leo/src/leoTkinterTree.py", line 1436, in yoffsetTree
+    if p2.isExpanded() and p2.hasChildren():
+  File "/usr/local/lib/leo/src/leoNodes.py", line 1349, in isExpanded
+    def isExpanded  (self): return self.v.isExpanded()
+AttributeError: 'NoneType' object has no attribute 'isExpanded'
+
+@color
+#@nonl
+#@+node:ekr.20040305173343:p.siblings_iter
+class siblings_iter_class:
+
+    '''Returns a list of siblings of a position, including the position itself!'''
+
+    @others
+
+def siblings_iter (self,copy=False,following=False):
+
+    return self.siblings_iter_class(self,copy,following)
+
+self_and_siblings_iter = siblings_iter
+
+def following_siblings_iter (self,copy=False):
+
+    return self.siblings_iter_class(self,copy,following=True)
+#@+node:ekr.20040305173343.1:__init__ & __iter__
+def __init__(self,p,copy,following):
+
+    # We always include p, even if following is True.
+
+    if following:
+        self.first = p.copy()
+    else:
+        p = p.copy()
+        while p.hasBack():
+            p.moveToBack()
+        self.first = p
+
+    self.p = None
+    self.copy = copy
+
+def __iter__(self):
+
+    return self
+#@-node:ekr.20040305173343.1:__init__ & __iter__
+#@+node:ekr.20040305173343.2:next
+def next(self):
+
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    elif self.p:
+        self.p.moveToNext()
+
+    if self.p:
+        if self.copy: return self.p.copy()
+        else:         return self.p
+    else: raise StopIteration
+#@-node:ekr.20040305173343.2:next
+#@-node:ekr.20040305173343:p.siblings_iter
+#@+node:ekr.20040803072955.70:yoffset (tkTree)
+@ We can't just return icony because the tree hasn't been redrawn yet.
+For the same reason we can't rely on any TK canvas methods here.
+@c
+
+def yoffset(self,p1):
+    # if not p1.isVisible(): print "yoffset not visible:",p1
+    if not p1: return 0
+    c = self.c
+    if c.hoistStack:
+        bunch = c.hoistStack[-1]
+        root = bunch.p.copy()
+    else:
+        root = self.c.rootPosition()
+    if root:
+        h,flag = self.yoffsetTree(root,p1,isTop=True)
+        # flag can be False during initialization.
+        # if not flag: print "yoffset fails:",h,v1
+        return h
+    else:
+        return 0
+
+def yoffsetTree(self,p,p1,isTop):
+    c = self.c ; h = 0 ; trace = False ; verbose = False
+    if not c.positionExists(p):
+        if trace: g.trace('does not exist',p.headString())
+        return h,False # An extra precaution.
+    p = p.copy()
+    if trace and verbose and isTop and c.hoistStack:
+        g.trace('c.hoistStack',c.hoistStack[-1].p.headString())
+    if isTop and c.hoistStack:
+        if p.firstChild():  theIter = [p.firstChild()]
+        else:               theIter = []
+    else: theIter = p.self_and_siblings_iter() # Bug fix 10/27/07: was p.siblings_iter()
+    for p2 in theIter:
+        if p2 == p1:
+            if trace and verbose: g.trace(h,p1.headString())
+            return h, True
+        h += self.line_height
+        if p2.isExpanded() and p2.hasChildren():
+            child = p2.firstChild()
+            h2, flag = self.yoffsetTree(child,p1,isTop=False)
+            h += h2
+            if flag:
+                if trace and verbose: g.trace(h,p1.headString())
+                return h, True
+
+    if trace: g.trace('not found',p1.headString())
+    return h, False
+#@-node:ekr.20040803072955.70:yoffset (tkTree)
+#@-node:ekr.20071113103258:Fixed hoist crasher
 #@-node:ekr.20071105171301:Fixed bugs
 #@+node:ekr.20071110081315:New features
 #@+node:ekr.20070803115653:Support directives in headlines

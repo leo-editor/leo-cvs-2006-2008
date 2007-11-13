@@ -5,6 +5,430 @@
 # Leo 4.4.5 will complete several projects that are long overdue.
 
 #@+node:ekr.20071112064808:First
+#@+node:ekr.20071025160653.2:Commands to add/remove icons
+#@+node:ekr.20071026092640:To do
+@nocolor
+
+To do:
+
+* Define standard event handlers:
+    - on-left-click (deletes icon)
+    - on-click
+
+* Adjust location depending on icon size.
+
+- Define standard icons in a subfolder of Icons folder?
+
+insert-icon
+append-icon
+delete-first-icon
+delete-nth-icon
+delete-all-node-icons
+delete-all-icons-in-tree
+#@-node:ekr.20071026092640:To do
+#@+node:ekr.20040803072955.46:drawUserIcons & helper
+def drawUserIcons(self,p,where,x,y):
+
+    """Draw any icons specified by p.v.t.unknownAttributes["icons"]."""
+
+    h,w = 0,0 ; t = p.v.t
+
+    if not hasattr(t,"unknownAttributes"):
+        return h,w
+
+    iconsList = t.unknownAttributes.get("icons")
+    if not iconsList:
+        return h,w
+
+    try:
+        for theDict in iconsList:
+            h2,w2 = self.drawUserIcon(p,where,x,y,w,theDict)
+            h = max(h,h2) ; w += w2
+    except:
+        g.es_exception()
+
+    # g.trace(where,h,w)
+
+    return h,w
+#@+node:ekr.20040803072955.47:drawUserIcon
+def drawUserIcon (self,p,where,x,y,w2,theDict):
+
+    h,w = 0,0
+
+    if where != theDict.get("where","beforeHeadline"):
+        return h,w
+
+    # if self.trace_gc: g.printNewObjects(tag='userIcon 1')
+
+    # g.trace(where,x,y,theDict)
+
+    << set offsets and pads >>
+    theType = theDict.get("type")
+    if theType == "icon":
+        if 0: # not ready yet.
+            s = theDict.get("icon")
+            << draw the icon in string s >>
+    elif theType == "file":
+        theFile = theDict.get("file")
+        << draw the icon at file >>
+    elif theType == "url":
+        ## url = theDict.get("url")
+        << draw the icon at url >>
+
+    # Allow user to specify height, width explicitly.
+    h = theDict.get("height",h)
+    w = theDict.get("width",w)
+
+    # if self.trace_gc: g.printNewObjects(tag='userIcon 2')
+
+    return h,w
+#@+node:ekr.20040803072955.48:<< set offsets and pads >>
+xoffset = theDict.get("xoffset")
+try:    xoffset = int(xoffset)
+except: xoffset = 0
+
+yoffset = theDict.get("yoffset")
+try:    yoffset = int(yoffset)
+except: yoffset = 0
+
+xpad = theDict.get("xpad")
+try:    xpad = int(xpad)
+except: xpad = 0
+
+ypad = theDict.get("ypad")
+try:    ypad = int(ypad)
+except: ypad = 0
+#@-node:ekr.20040803072955.48:<< set offsets and pads >>
+#@+node:ekr.20040803072955.49:<< draw the icon in string s >>
+pass
+#@-node:ekr.20040803072955.49:<< draw the icon in string s >>
+#@+node:ekr.20040803072955.50:<< draw the icon at file >>
+fullname = g.os_path_join(g.app.loadDir,"..","Icons",theFile)
+fullname = g.os_path_normpath(fullname)
+
+# Bug fix: the key must include distinguish nodes.
+key = (fullname,p.v.t)
+image = self.iconimages.get(key)
+
+if not image:
+    try:
+        from PIL import Image, ImageTk
+        image1 = Image.open(fullname)
+        image = ImageTk.PhotoImage(image1)
+        self.iconimages[key] = image
+    except Exception:
+        #g.es_exception()
+        image = None
+
+if not image:
+    try:
+        image = Tk.PhotoImage(master=self.canvas,file=fullname)
+        self.iconimages[key] = image
+    except Exception:
+        #g.es_exception()
+        image = None
+
+if image:
+    theId = self.canvas.create_image(
+        x+xoffset+w2,y+yoffset,
+        anchor="nw",image=image,tag="userIcon")
+    self.ids[theId] = p.copy()
+    # g.trace('id',theId,p.headString(),theFile,image)
+
+    # assert(theId not in self.visibleIcons)
+    self.visibleUserIcons.append(theId)
+
+    h = image.height() + yoffset + ypad
+    w = image.width()  + xoffset + xpad
+#@-node:ekr.20040803072955.50:<< draw the icon at file >>
+#@+node:ekr.20040803072955.51:<< draw the icon at url >>
+pass
+#@-node:ekr.20040803072955.51:<< draw the icon at url >>
+#@-node:ekr.20040803072955.47:drawUserIcon
+#@-node:ekr.20040803072955.46:drawUserIcons & helper
+#@+node:ekr.20040803072955.12:recycleWidgets
+def recycleWidgets (self):
+
+    canvas = self.canvas
+
+    for theId in self.visibleBoxes:
+        if theId not in self.freeBoxes:
+            self.freeBoxes.append(theId)
+        canvas.coords(theId,-100,-100)
+    self.visibleBoxes = []
+
+    for theId in self.visibleClickBoxes:
+        if theId not in self.freeClickBoxes:
+            self.freeClickBoxes.append(theId)
+        canvas.coords(theId,-100,-100,-100,-100)
+    self.visibleClickBoxes = []
+
+    for theId in self.visibleIcons:
+        if theId not in self.freeIcons:
+            self.freeIcons.append(theId)
+        canvas.coords(theId,-100,-100)
+    self.visibleIcons = []
+
+    for theId in self.visibleLines:
+        if theId not in self.freeLines:
+            self.freeLines.append(theId)
+        canvas.coords(theId,-100,-100,-100,-100)
+    self.visibleLines = []
+
+    aList = self.visibleText.values()
+    for data in aList:
+        w,theId = data
+        # assert theId == w.leo_window_id
+        canvas.coords(theId,-100,-100)
+        w.leo_position = None # Allow the position to be freed.
+        if data not in self.freeText:
+            self.freeText.append(data)
+    self.visibleText = {}
+
+    # g.trace('deleting visible user icons!')
+    for theId in self.visibleUserIcons:
+        # The present code does not recycle user Icons.
+        self.canvas.delete(theId)
+    self.visibleUserIcons = []
+#@-node:ekr.20040803072955.12:recycleWidgets
+#@+node:ekr.20071113094525.1:Prototype of user icons
+@
+
+** Note **: icons will appear only if they are found on your system.
+
+To do:
+
+- Icon menu.
+- Left click to delete icons.
+- Tree control recomputes height of each line.
+#@nonl
+#@+node:ekr.20071113094525.2:Arrow target
+#@-node:ekr.20071113094525.2:Arrow target
+#@+node:ekr.20071113094525.3:Icon target
+#@-node:ekr.20071113094525.3:Icon target
+#@+node:ekr.20071113094525.4:Small icons
+#@+node:ekr.20071113094525.5:small icons
+#@-node:ekr.20071113094525.5:small icons
+#@-node:ekr.20071113094525.4:Small icons
+#@+node:ekr.20071113094525.6:Medium icons
+#@+node:ekr.20071113094525.7:medium icons 1
+#@-node:ekr.20071113094525.7:medium icons 1
+#@+node:ekr.20071113094525.8:
+#@-node:ekr.20071113094525.8:
+#@+node:ekr.20071113094525.9:medium icons 2
+#@-node:ekr.20071113094525.9:medium icons 2
+#@-node:ekr.20071113094525.6:Medium icons
+#@+node:ekr.20071113094525.10:Large icons
+#@+node:ekr.20071113094525.11:
+#@-node:ekr.20071113094525.11:
+#@+node:ekr.20071113094525.12:
+#@-node:ekr.20071113094525.12:
+#@+node:ekr.20071113094525.13:large icons 1
+#@-node:ekr.20071113094525.13:large icons 1
+#@-node:ekr.20071113094525.10:Large icons
+#@+node:ekr.20071113094525.14:@@button delete all icons
+for p in c.allNodes_iter():
+
+    if hasattr(p.v.t,"unknownAttributes"):
+        a = p.v.t.unknownAttributes
+        iconsList = a.get("icons")
+        if dict:
+            a["icons"] = []
+            a["lineYOffset"] = 0
+
+c.redraw()
+#@-node:ekr.20071113094525.14:@@button delete all icons
+#@+node:ekr.20071113094525.15:@@button delete icons
+if hasattr(p.v.t,"unknownAttributes"):
+    a = p.v.t.unknownAttributes
+    iconsList = a.get("icons")
+    if dict:
+        a["icons"] = []
+        a["lineYOffset"] = 0
+        c.redraw()
+#@nonl
+#@-node:ekr.20071113094525.15:@@button delete icons
+#@+node:ekr.20071113094525.16:@@button insert arrows
+p.v.t.unknownAttributes = {}
+a = p.v.t.unknownAttributes
+
+<< define event callbacks >>
+
+path = g.os_path_join(g.app.loadDir,"..","Icons")
+icon1 = g.os_path_join(path,"lt_arrow_enabled.gif")
+icon2 = g.os_path_join(path,"rt_arrow_enabled.gif")
+
+d1 = {
+    "type" : "file", "file" : icon1,
+    "where" : "beforeIcon",
+    "yoffset" : -3,
+    # "yoffset" : 5, "ypad" : -5,
+    # "height" : 40, # automatically adjust headline y position.
+    "xpad": 2
+}
+
+# Classes and functions can only be pickled if they are at the top level of a module.
+    #"onClick" : onClick,
+    #"onRightClick" : onRightClick,
+    #"onDoubleClick" : onDoubleClick }
+
+d2 = {
+    "type" : "file", "file" : icon2,
+    "where" : "beforeHeadline",
+    "yoffset" : -3,
+    "xoffset" : 2, "xpad" : -2 }
+
+a["icons"] = [d1,d2]
+a["lineYOffset"] = 3
+
+c.redraw()
+#@+node:ekr.20071113094525.17:<< define event callbacks >>
+def onClick(p=p):
+
+    g.trace(p)
+
+def onRightClick(p=p):
+
+    g.trace(p)
+
+def onDoubleClick(p=p):
+
+    g.trace(p)
+#@-node:ekr.20071113094525.17:<< define event callbacks >>
+#@-node:ekr.20071113094525.16:@@button insert arrows
+#@+node:ekr.20071113094525.18:@@button insert icons @key=Alt+5
+import Tkinter as Tk
+import os, sys
+
+tree = c.frame.tree
+
+@others
+
+os.chdir(g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons")))
+
+paths = g.app.gui.runOpenFileDialog(
+    title='Get Icons',
+    filetypes=[('All files','*'),('Gif','*.gif'), ('Bitmap','*.bmp'),('Icon','*.ico'),],
+    defaultextension=None,
+    multiple=True)
+
+aList = [] ; xoffset = 2
+for path in paths:
+    path = g.os_path_abspath(g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons",path)))
+    image_height = getImageHeight(path)
+    if image_height is None:
+        yoffset = 0
+    else:
+        yoffset = (tree.line_height-image_height)/2
+
+    aList.append ({
+        'type' : 'file', 'file' : path,
+        'where' : 'beforeHeadline',
+        'yoffset' : yoffset, 'xoffset' : xoffset, 'xpad' : -2,
+    })
+    xoffset += 2
+
+# aList.reverse()
+
+if not hasattr(p.v.t,'unknownAttributes'):
+    p.v.t.unknownAttributes = {}
+
+aList2 = p.v.t.unknownAttributes.get('icons',[])
+aList2.extend(aList)
+p.v.t.unknownAttributes ['icons'] = aList2
+p.v.t.unknownAttributes ['lineYOffset'] = 3
+c.redraw()
+
+# Classes and functions can only be pickled if they are at the top level of a module.
+#"onClick" : onClick,
+#"onRightClick" : onRightClick,
+#"onDoubleClick" : onDoubleClick }
+#@+node:ekr.20071113094525.19:getImageHeight
+def getImageHeight (path):
+
+    try:
+        from PIL import Image, ImageTk
+    except ImportError:
+        Image = None
+
+    try:
+        if Image:
+            image1 = Image.open(path)
+            image = ImageTk.PhotoImage(image1)
+        else:
+            image = Tk.PhotoImage(master=tree.canvas,file=path)
+        return image.height()
+    except Exception:
+        return None
+#@-node:ekr.20071113094525.19:getImageHeight
+#@-node:ekr.20071113094525.18:@@button insert icons @key=Alt+5
+#@+node:ekr.20071113094525.20:print sizes of all icons in various directories
+# A script to get the proper height of icons.
+# The XP file browser doesn't show or report the correct values.
+
+import glob
+
+@others
+
+for z in ('LargeIcons','MediumIcons','SmallIcons'):
+    theDir = g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons",'UserIcons',z))
+    for name in glob.glob(g.os_path_join(theDir,'*.*')):
+        h,w = getImageStats(name)
+        if h is not None:
+            print h,w,name
+#@+node:ekr.20071113094525.21:getImageStats
+def getImageStats (path):
+
+    try:
+        from PIL import Image, ImageTk
+    except ImportError:
+        Image = None
+
+    try:
+        if Image:
+            image1 = Image.open(path)
+            image = ImageTk.PhotoImage(image1)
+        else:
+            image = Tk.PhotoImage(master=c.frame.tree.canvas,file=path)
+        return image.height(),image.width()
+
+    except Exception:
+        #g.es_exception()
+        return None,None
+#@-node:ekr.20071113094525.21:getImageStats
+#@-node:ekr.20071113094525.20:print sizes of all icons in various directories
+#@+node:ekr.20071113094525.22:print icon paths
+seen = {}
+print '----'
+for p in c.allNodes_iter():
+    if p.v.t not in seen:
+        seen[p.v.t] = True
+        if hasattr(p.v.t,'unknownAttributes'):
+            aList = p.v.t.unknownAttributes.get('icons',[])
+            for d in aList:
+                name = d.get('file')
+                if name: print 'p: %-20s icon: %s' % (p.headString(),g.os_path_abspath(name))
+#@nonl
+#@-node:ekr.20071113094525.22:print icon paths
+#@-node:ekr.20071113094525.1:Prototype of user icons
+#@-node:ekr.20071025160653.2:Commands to add/remove icons
+#@+node:ekr.20071109080424:Add @rst-preformat
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4614081
+
+> I simply want to mark the headline of that sub-node in a special way to tell it:
+
+> Do the same with the text in content automatically, what could have been done manually 
+with the following (rST) commands 
+
+* Insert "::", <NL>, <NL>, <TAB> before textline 1 
+* Insert <TAB> before textline 2 
+* ...
+
+Thanks for the clarification.  Imo, this is a good idea, because there seems to be no way at present to get the effect you want without actually changing the body text as you describe.  There are situations in which changing the body text is either infeasible or clumsy.
+#@nonl
+#@-node:ekr.20071109080424:Add @rst-preformat
 #@+node:ekr.20071110070242:How to run unit tests in leoPy.leo?
 @nocolor
 
@@ -1154,430 +1578,6 @@ The new scheme:
 #@-node:ekr.20071025143956:Posting: document unit test bug & describe coming new scheme
 #@-node:ekr.20071024172428:Failed unit tests when running externally
 #@-node:ekr.20071110070242:How to run unit tests in leoPy.leo?
-#@+node:ekr.20071025160653.2:Commands to add/remove icons
-#@+node:ekr.20071026092640:To do
-@nocolor
-
-To do:
-
-* Define standard event handlers:
-    - on-left-click (deletes icon)
-    - on-click
-
-* Adjust location depending on icon size.
-
-- Define standard icons in a subfolder of Icons folder?
-
-insert-icon
-append-icon
-delete-first-icon
-delete-nth-icon
-delete-all-node-icons
-delete-all-icons-in-tree
-#@-node:ekr.20071026092640:To do
-#@+node:ekr.20040803072955.46:drawUserIcons & helper
-def drawUserIcons(self,p,where,x,y):
-
-    """Draw any icons specified by p.v.t.unknownAttributes["icons"]."""
-
-    h,w = 0,0 ; t = p.v.t
-
-    if not hasattr(t,"unknownAttributes"):
-        return h,w
-
-    iconsList = t.unknownAttributes.get("icons")
-    if not iconsList:
-        return h,w
-
-    try:
-        for theDict in iconsList:
-            h2,w2 = self.drawUserIcon(p,where,x,y,w,theDict)
-            h = max(h,h2) ; w += w2
-    except:
-        g.es_exception()
-
-    # g.trace(where,h,w)
-
-    return h,w
-#@+node:ekr.20040803072955.47:drawUserIcon
-def drawUserIcon (self,p,where,x,y,w2,theDict):
-
-    h,w = 0,0
-
-    if where != theDict.get("where","beforeHeadline"):
-        return h,w
-
-    # if self.trace_gc: g.printNewObjects(tag='userIcon 1')
-
-    # g.trace(where,x,y,theDict)
-
-    << set offsets and pads >>
-    theType = theDict.get("type")
-    if theType == "icon":
-        if 0: # not ready yet.
-            s = theDict.get("icon")
-            << draw the icon in string s >>
-    elif theType == "file":
-        theFile = theDict.get("file")
-        << draw the icon at file >>
-    elif theType == "url":
-        ## url = theDict.get("url")
-        << draw the icon at url >>
-
-    # Allow user to specify height, width explicitly.
-    h = theDict.get("height",h)
-    w = theDict.get("width",w)
-
-    # if self.trace_gc: g.printNewObjects(tag='userIcon 2')
-
-    return h,w
-#@+node:ekr.20040803072955.48:<< set offsets and pads >>
-xoffset = theDict.get("xoffset")
-try:    xoffset = int(xoffset)
-except: xoffset = 0
-
-yoffset = theDict.get("yoffset")
-try:    yoffset = int(yoffset)
-except: yoffset = 0
-
-xpad = theDict.get("xpad")
-try:    xpad = int(xpad)
-except: xpad = 0
-
-ypad = theDict.get("ypad")
-try:    ypad = int(ypad)
-except: ypad = 0
-#@-node:ekr.20040803072955.48:<< set offsets and pads >>
-#@+node:ekr.20040803072955.49:<< draw the icon in string s >>
-pass
-#@-node:ekr.20040803072955.49:<< draw the icon in string s >>
-#@+node:ekr.20040803072955.50:<< draw the icon at file >>
-fullname = g.os_path_join(g.app.loadDir,"..","Icons",theFile)
-fullname = g.os_path_normpath(fullname)
-
-# Bug fix: the key must include distinguish nodes.
-key = (fullname,p.v.t)
-image = self.iconimages.get(key)
-
-if not image:
-    try:
-        from PIL import Image, ImageTk
-        image1 = Image.open(fullname)
-        image = ImageTk.PhotoImage(image1)
-        self.iconimages[key] = image
-    except Exception:
-        #g.es_exception()
-        image = None
-
-if not image:
-    try:
-        image = Tk.PhotoImage(master=self.canvas,file=fullname)
-        self.iconimages[key] = image
-    except Exception:
-        #g.es_exception()
-        image = None
-
-if image:
-    theId = self.canvas.create_image(
-        x+xoffset+w2,y+yoffset,
-        anchor="nw",image=image,tag="userIcon")
-    self.ids[theId] = p.copy()
-    # g.trace('id',theId,p.headString(),theFile,image)
-
-    # assert(theId not in self.visibleIcons)
-    self.visibleUserIcons.append(theId)
-
-    h = image.height() + yoffset + ypad
-    w = image.width()  + xoffset + xpad
-#@-node:ekr.20040803072955.50:<< draw the icon at file >>
-#@+node:ekr.20040803072955.51:<< draw the icon at url >>
-pass
-#@-node:ekr.20040803072955.51:<< draw the icon at url >>
-#@-node:ekr.20040803072955.47:drawUserIcon
-#@-node:ekr.20040803072955.46:drawUserIcons & helper
-#@+node:ekr.20040803072955.12:recycleWidgets
-def recycleWidgets (self):
-
-    canvas = self.canvas
-
-    for theId in self.visibleBoxes:
-        if theId not in self.freeBoxes:
-            self.freeBoxes.append(theId)
-        canvas.coords(theId,-100,-100)
-    self.visibleBoxes = []
-
-    for theId in self.visibleClickBoxes:
-        if theId not in self.freeClickBoxes:
-            self.freeClickBoxes.append(theId)
-        canvas.coords(theId,-100,-100,-100,-100)
-    self.visibleClickBoxes = []
-
-    for theId in self.visibleIcons:
-        if theId not in self.freeIcons:
-            self.freeIcons.append(theId)
-        canvas.coords(theId,-100,-100)
-    self.visibleIcons = []
-
-    for theId in self.visibleLines:
-        if theId not in self.freeLines:
-            self.freeLines.append(theId)
-        canvas.coords(theId,-100,-100,-100,-100)
-    self.visibleLines = []
-
-    aList = self.visibleText.values()
-    for data in aList:
-        w,theId = data
-        # assert theId == w.leo_window_id
-        canvas.coords(theId,-100,-100)
-        w.leo_position = None # Allow the position to be freed.
-        if data not in self.freeText:
-            self.freeText.append(data)
-    self.visibleText = {}
-
-    # g.trace('deleting visible user icons!')
-    for theId in self.visibleUserIcons:
-        # The present code does not recycle user Icons.
-        self.canvas.delete(theId)
-    self.visibleUserIcons = []
-#@-node:ekr.20040803072955.12:recycleWidgets
-#@+node:ekr.20071113094525.1:Prototype of user icons
-@
-
-** Note **: icons will appear only if they are found on your system.
-
-To do:
-
-- Icon menu.
-- Left click to delete icons.
-- Tree control recomputes height of each line.
-#@nonl
-#@+node:ekr.20071113094525.2:Arrow target
-#@-node:ekr.20071113094525.2:Arrow target
-#@+node:ekr.20071113094525.3:Icon target
-#@-node:ekr.20071113094525.3:Icon target
-#@+node:ekr.20071113094525.4:Small icons
-#@+node:ekr.20071113094525.5:small icons
-#@-node:ekr.20071113094525.5:small icons
-#@-node:ekr.20071113094525.4:Small icons
-#@+node:ekr.20071113094525.6:Medium icons
-#@+node:ekr.20071113094525.7:medium icons 1
-#@-node:ekr.20071113094525.7:medium icons 1
-#@+node:ekr.20071113094525.8:
-#@-node:ekr.20071113094525.8:
-#@+node:ekr.20071113094525.9:medium icons 2
-#@-node:ekr.20071113094525.9:medium icons 2
-#@-node:ekr.20071113094525.6:Medium icons
-#@+node:ekr.20071113094525.10:Large icons
-#@+node:ekr.20071113094525.11:
-#@-node:ekr.20071113094525.11:
-#@+node:ekr.20071113094525.12:
-#@-node:ekr.20071113094525.12:
-#@+node:ekr.20071113094525.13:large icons 1
-#@-node:ekr.20071113094525.13:large icons 1
-#@-node:ekr.20071113094525.10:Large icons
-#@+node:ekr.20071113094525.14:@@button delete all icons
-for p in c.allNodes_iter():
-
-    if hasattr(p.v.t,"unknownAttributes"):
-        a = p.v.t.unknownAttributes
-        iconsList = a.get("icons")
-        if dict:
-            a["icons"] = []
-            a["lineYOffset"] = 0
-
-c.redraw()
-#@-node:ekr.20071113094525.14:@@button delete all icons
-#@+node:ekr.20071113094525.15:@@button delete icons
-if hasattr(p.v.t,"unknownAttributes"):
-    a = p.v.t.unknownAttributes
-    iconsList = a.get("icons")
-    if dict:
-        a["icons"] = []
-        a["lineYOffset"] = 0
-        c.redraw()
-#@nonl
-#@-node:ekr.20071113094525.15:@@button delete icons
-#@+node:ekr.20071113094525.16:@@button insert arrows
-p.v.t.unknownAttributes = {}
-a = p.v.t.unknownAttributes
-
-<< define event callbacks >>
-
-path = g.os_path_join(g.app.loadDir,"..","Icons")
-icon1 = g.os_path_join(path,"lt_arrow_enabled.gif")
-icon2 = g.os_path_join(path,"rt_arrow_enabled.gif")
-
-d1 = {
-    "type" : "file", "file" : icon1,
-    "where" : "beforeIcon",
-    "yoffset" : -3,
-    # "yoffset" : 5, "ypad" : -5,
-    # "height" : 40, # automatically adjust headline y position.
-    "xpad": 2
-}
-
-# Classes and functions can only be pickled if they are at the top level of a module.
-    #"onClick" : onClick,
-    #"onRightClick" : onRightClick,
-    #"onDoubleClick" : onDoubleClick }
-
-d2 = {
-    "type" : "file", "file" : icon2,
-    "where" : "beforeHeadline",
-    "yoffset" : -3,
-    "xoffset" : 2, "xpad" : -2 }
-
-a["icons"] = [d1,d2]
-a["lineYOffset"] = 3
-
-c.redraw()
-#@+node:ekr.20071113094525.17:<< define event callbacks >>
-def onClick(p=p):
-
-    g.trace(p)
-
-def onRightClick(p=p):
-
-    g.trace(p)
-
-def onDoubleClick(p=p):
-
-    g.trace(p)
-#@-node:ekr.20071113094525.17:<< define event callbacks >>
-#@-node:ekr.20071113094525.16:@@button insert arrows
-#@+node:ekr.20071113094525.18:@@button insert icons @key=Alt+5
-import Tkinter as Tk
-import os, sys
-
-tree = c.frame.tree
-
-@others
-
-os.chdir(g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons")))
-
-paths = g.app.gui.runOpenFileDialog(
-    title='Get Icons',
-    filetypes=[('All files','*'),('Gif','*.gif'), ('Bitmap','*.bmp'),('Icon','*.ico'),],
-    defaultextension=None,
-    multiple=True)
-
-aList = [] ; xoffset = 2
-for path in paths:
-    path = g.os_path_abspath(g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons",path)))
-    image_height = getImageHeight(path)
-    if image_height is None:
-        yoffset = 0
-    else:
-        yoffset = (tree.line_height-image_height)/2
-
-    aList.append ({
-        'type' : 'file', 'file' : path,
-        'where' : 'beforeHeadline',
-        'yoffset' : yoffset, 'xoffset' : xoffset, 'xpad' : -2,
-    })
-    xoffset += 2
-
-# aList.reverse()
-
-if not hasattr(p.v.t,'unknownAttributes'):
-    p.v.t.unknownAttributes = {}
-
-aList2 = p.v.t.unknownAttributes.get('icons',[])
-aList2.extend(aList)
-p.v.t.unknownAttributes ['icons'] = aList2
-p.v.t.unknownAttributes ['lineYOffset'] = 3
-c.redraw()
-
-# Classes and functions can only be pickled if they are at the top level of a module.
-#"onClick" : onClick,
-#"onRightClick" : onRightClick,
-#"onDoubleClick" : onDoubleClick }
-#@+node:ekr.20071113094525.19:getImageHeight
-def getImageHeight (path):
-
-    try:
-        from PIL import Image, ImageTk
-    except ImportError:
-        Image = None
-
-    try:
-        if Image:
-            image1 = Image.open(path)
-            image = ImageTk.PhotoImage(image1)
-        else:
-            image = Tk.PhotoImage(master=tree.canvas,file=path)
-        return image.height()
-    except Exception:
-        return None
-#@-node:ekr.20071113094525.19:getImageHeight
-#@-node:ekr.20071113094525.18:@@button insert icons @key=Alt+5
-#@+node:ekr.20071113094525.20:print sizes of all icons in various directories
-# A script to get the proper height of icons.
-# The XP file browser doesn't show or report the correct values.
-
-import glob
-
-@others
-
-for z in ('LargeIcons','MediumIcons','SmallIcons'):
-    theDir = g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons",'UserIcons',z))
-    for name in glob.glob(g.os_path_join(theDir,'*.*')):
-        h,w = getImageStats(name)
-        if h is not None:
-            print h,w,name
-#@+node:ekr.20071113094525.21:getImageStats
-def getImageStats (path):
-
-    try:
-        from PIL import Image, ImageTk
-    except ImportError:
-        Image = None
-
-    try:
-        if Image:
-            image1 = Image.open(path)
-            image = ImageTk.PhotoImage(image1)
-        else:
-            image = Tk.PhotoImage(master=c.frame.tree.canvas,file=path)
-        return image.height(),image.width()
-
-    except Exception:
-        #g.es_exception()
-        return None,None
-#@-node:ekr.20071113094525.21:getImageStats
-#@-node:ekr.20071113094525.20:print sizes of all icons in various directories
-#@+node:ekr.20071113094525.22:print icon paths
-seen = {}
-print '----'
-for p in c.allNodes_iter():
-    if p.v.t not in seen:
-        seen[p.v.t] = True
-        if hasattr(p.v.t,'unknownAttributes'):
-            aList = p.v.t.unknownAttributes.get('icons',[])
-            for d in aList:
-                name = d.get('file')
-                if name: print 'p: %-20s icon: %s' % (p.headString(),g.os_path_abspath(name))
-#@nonl
-#@-node:ekr.20071113094525.22:print icon paths
-#@-node:ekr.20071113094525.1:Prototype of user icons
-#@-node:ekr.20071025160653.2:Commands to add/remove icons
-#@+node:ekr.20071109080424:Add @rst-preformat
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4614081
-
-> I simply want to mark the headline of that sub-node in a special way to tell it:
-
-> Do the same with the text in content automatically, what could have been done manually 
-with the following (rST) commands 
-
-* Insert "::", <NL>, <NL>, <TAB> before textline 1 
-* Insert <TAB> before textline 2 
-* ...
-
-Thanks for the clarification.  Imo, this is a good idea, because there seems to be no way at present to get the effect you want without actually changing the body text as you describe.  There are situations in which changing the body text is either infeasible or clumsy.
-#@nonl
-#@-node:ekr.20071109080424:Add @rst-preformat
 #@-node:ekr.20071112064808:First
 #@+node:ekr.20071111053028:Move to svn
 @nocolor
