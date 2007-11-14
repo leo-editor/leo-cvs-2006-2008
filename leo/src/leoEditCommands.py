@@ -2333,7 +2333,7 @@ class editCommandsClass (baseEditCommandsClass):
             name2 = d.get('file')
             name2 = g.os_path_abspath(name2)
             if name == name2 or absRelPath == name2:
-                # g.trace('name',name,'\nrelPath',relPath,'\nabsRelPath',absRelPath,'\nname2',name2)
+                g.trace('name',name,'\nrelPath',relPath,'\nabsRelPath',absRelPath,'\nname2',name2)
                 aList.remove(d)
                 t.unknownAttributes ['icons'] = aList
                 c.redraw()
@@ -2415,11 +2415,7 @@ class editCommandsClass (baseEditCommandsClass):
         p.v.t.unknownAttributes ['icons'] = aList2
         p.v.t.unknownAttributes ['lineYOffset'] = 3
         c.redraw()
-
-        # Classes and functions can only be pickled if they are at the top level of a module.
-        #"onClick" : onClick,
-        #"onRightClick" : onRightClick,
-        #"onDoubleClick" : onDoubleClick }
+    #@nonl
     #@+node:ekr.20071114083142:getImage
     def getImage (self,path):
 
