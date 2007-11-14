@@ -433,7 +433,8 @@ class baseCommands:
             if self.p:
                 return self.p.v.t
 
-            else: raise StopIteration
+            else:
+                raise StopIteration
         #@-node:ekr.20070930185603:next
         #@-others
 
@@ -486,7 +487,7 @@ class baseCommands:
                     self.d [self.p.v.t] = True
                     return self.p.v.t
 
-            else: raise StopIteration
+            raise StopIteration
         #@-node:ekr.20070930190229:next
         #@-others
 
@@ -585,7 +586,7 @@ class baseCommands:
                     self.d [self.p.v.t] = True
                     return self.p.v
 
-            else: raise StopIteration
+            raise StopIteration
         #@-node:ekr.20070930190835:next
         #@-others
 
