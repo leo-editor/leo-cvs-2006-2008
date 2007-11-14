@@ -1661,6 +1661,8 @@ class baseFileCommands:
             return attr,val2
         except (pickle.UnpicklingError,ImportError):
             return attr,val
+        except Exception:
+            return attr,val # New in Leo 4.4.5.
     #@-node:EKR.20040526204036.1:getUa (non-sax)
     #@+node:ekr.20031218072017.1566:getVnode & helpers
     # changed for 4.2 & 4.4
