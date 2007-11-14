@@ -843,36 +843,6 @@ def compareHelper (self,lines1,lines2,i,strict):
         d ['actualMismatchLine'] = i+1
         # g.trace('lines 1...\n',repr(lines1),'\nlines2...\n',repr(lines2))
         return False
-#@+node:ekr.20070816101019:@test compareHelper
-if g.unitTesting:
-
-    ic = c.importCommands
-    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
-    i = 0
-    lines1 = ['abc',]
-    lines2 = ['xyz',]
-
-    g.app.unitTestDict ['expectedErrors'] = 1
-    g.app.unitTestDict ['expectedMismatchLine'] = 1
-
-    runner.compareHelper(lines1,lines2,i,strict=True)
-#@-node:ekr.20070816101019:@test compareHelper
-#@+node:ekr.20071030115446.1:@test compareHelper-warning
-if g.unitTesting:
-
-    ic = c.importCommands
-    runner = ic.baseScannerClass(ic,atAuto=True,language='java')
-    i = 0
-    lines1 = ['abc',]
-    lines2 = [' abc',]
-
-    g.unitTesting = False # force the warning.
-
-    g.app.unitTestDict ['expectedErrors'] = 0
-    g.app.unitTestDict ['expectedMismatchLine'] = 0
-
-    runner.compareHelper(lines1,lines2,i,strict=False)
-#@-node:ekr.20071030115446.1:@test compareHelper-warning
 #@-node:ekr.20070730093735:compareHelper & tests
 #@+node:ekr.20071110144948:checkLeadingWhitespace
 def checkLeadingWhitespace (self,line):
@@ -2389,36 +2359,6 @@ def compareHelper (self,lines1,lines2,i,strict):
         d ['actualMismatchLine'] = i+1
         # g.trace('lines 1...\n',repr(lines1),'\nlines2...\n',repr(lines2))
         return False
-#@+node:ekr.20070816101019:@test compareHelper
-if g.unitTesting:
-
-    ic = c.importCommands
-    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
-    i = 0
-    lines1 = ['abc',]
-    lines2 = ['xyz',]
-
-    g.app.unitTestDict ['expectedErrors'] = 1
-    g.app.unitTestDict ['expectedMismatchLine'] = 1
-
-    runner.compareHelper(lines1,lines2,i,strict=True)
-#@-node:ekr.20070816101019:@test compareHelper
-#@+node:ekr.20071030115446.1:@test compareHelper-warning
-if g.unitTesting:
-
-    ic = c.importCommands
-    runner = ic.baseScannerClass(ic,atAuto=True,language='java')
-    i = 0
-    lines1 = ['abc',]
-    lines2 = [' abc',]
-
-    g.unitTesting = False # force the warning.
-
-    g.app.unitTestDict ['expectedErrors'] = 0
-    g.app.unitTestDict ['expectedMismatchLine'] = 0
-
-    runner.compareHelper(lines1,lines2,i,strict=False)
-#@-node:ekr.20071030115446.1:@test compareHelper-warning
 #@-node:ekr.20070730093735:compareHelper & tests
 #@+node:ekr.20071110144948:checkLeadingWhitespace
 def checkLeadingWhitespace (self,line):
@@ -3852,36 +3792,6 @@ def compareHelper (self,lines1,lines2,i,strict):
         d ['actualMismatchLine'] = i+1
         # g.trace('lines 1...\n',repr(lines1),'\nlines2...\n',repr(lines2))
         return False
-#@+node:ekr.20070816101019:@test compareHelper
-if g.unitTesting:
-
-    ic = c.importCommands
-    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
-    i = 0
-    lines1 = ['abc',]
-    lines2 = ['xyz',]
-
-    g.app.unitTestDict ['expectedErrors'] = 1
-    g.app.unitTestDict ['expectedMismatchLine'] = 1
-
-    runner.compareHelper(lines1,lines2,i,strict=True)
-#@-node:ekr.20070816101019:@test compareHelper
-#@+node:ekr.20071030115446.1:@test compareHelper-warning
-if g.unitTesting:
-
-    ic = c.importCommands
-    runner = ic.baseScannerClass(ic,atAuto=True,language='java')
-    i = 0
-    lines1 = ['abc',]
-    lines2 = [' abc',]
-
-    g.unitTesting = False # force the warning.
-
-    g.app.unitTestDict ['expectedErrors'] = 0
-    g.app.unitTestDict ['expectedMismatchLine'] = 0
-
-    runner.compareHelper(lines1,lines2,i,strict=False)
-#@-node:ekr.20071030115446.1:@test compareHelper-warning
 #@-node:ekr.20070730093735:compareHelper & tests
 #@+node:ekr.20071110144948:checkLeadingWhitespace
 def checkLeadingWhitespace (self,line):
@@ -10393,6 +10303,8 @@ def importFromPath (name,path,pluginName=None,verbose=False):
 #@-node:ekr.20031218072017.2278:g.importFromPath
 #@-node:ekr.20041219095213:import wrappers
 #@-node:ekr.20071106135136:Added @bool warn_when_plugins_fail_to_load setting
+#@+node:ekr.20071113143742:Moved all unit tests to unitTest.leo
+#@-node:ekr.20071113143742:Moved all unit tests to unitTest.leo
 #@-node:ekr.20071110081315:New features
 #@-node:ekr.20071105150738:Leo 4.4.5 b1
 #@-all

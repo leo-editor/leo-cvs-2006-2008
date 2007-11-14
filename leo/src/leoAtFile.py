@@ -3125,12 +3125,12 @@ class atFile:
         # g.trace('s2',s2)
 
         return p.hasChildren() or len(s2.strip()) >= 10
-    #@+node:ekr.20071020082208:@test test isSignificantAtAutoTree
+    #@+node:ekr.20071020082208:@test isSignificantAtAutoTree
     if g.unitTesting:
 
         assert c.atFileCommands.isSignificantAtAutoTree(p)
 
-    #@-node:ekr.20071020082208:@test test isSignificantAtAutoTree
+    #@-node:ekr.20071020082208:@test isSignificantAtAutoTree
     #@-node:ekr.20070909103844:isSignificantAtAutoTree & test
     #@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
     #@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
