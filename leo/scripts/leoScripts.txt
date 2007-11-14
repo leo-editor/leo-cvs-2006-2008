@@ -17696,42 +17696,107 @@ def checkTopologiesOfLinkedNodes(c=c):
 #@-node:@path xyz
 #@-node:Tests
 #@+node:Text editing scripts
-#@+node:split defs in body text to child nodes
-# script to split node containing multiple def's into child nodes
-
-def createChild (parent,body,line):
-    p = parent.insertAsLastChild()
-    h = line [3:].strip()
-    i = h.find('(')
-    if i > -1:
-        func = h [: i].strip()
-    h2 = g.choose(func,func,h)
-    p.setHeadString(h2)
-    p.setTnodeText(''.join(body))
+#@+node:add tab after each :
+@color
 
 s = p.bodyString()
-if s.strip():
-    b = c.undoer.beforeChangeTree(p)
-    c.beginUpdate()
-    try:
-        lines = g.splitLines(s) ; body = [] ; changed = False ; lastDefLine = ''
-        for line in lines:
-            if g.match_word(line,0,'def'):
-                if body and lastDefLine:
-                    createChild(p,body,lastDefLine)
-                    body = [] ; changed = True
-                lastDefLine = line
-            body.append(line)
-        if body and lastDefLine:
-            createChild(p,body,lastDefLine)
-            changed = True
-        if changed:
-            c.setChanged(True) ; c.setBodyString(p,'')
-    finally:
-        c.undoer.afterChangeTree(p,'split-defs',b)
-        c.endUpdate()
+
+result = []
+lines = g.splitLines(s)
+for line in lines:
+    i = line.find(':')
+    if i > -1:
+        result.append(line[:i+1] + ' '*4 + line[i+1:])
+    else:
+        result.append(line)
+
+s = ''.join(result)
+g.trace(s)
+c.setBodyString(p,s)
+#@-node:add tab after each :
+#@+node:add tab before each =
+@color
+
+s = p.bodyString()
+
+result = []
+lines = g.splitLines(s)
+for line in lines:
+    i = line.find('=')
+    if i > -1:
+        result.append(line[:i] + ' '*4 + line[i:])
+    else:
+        result.append(line)
+
+s = ''.join(result)
+g.trace(s)
+# c.setBodyString(p,s)
 #@nonl
-#@-node:split defs in body text to child nodes
+#@-node:add tab before each =
+#@+node:Clone all nodes child node
+# Clone all nodes specified in the child node called 'to be cloned'
+root = p.copy()
+child = p.firstChild()
+assert(child.headString().lower().strip() == 'to be cloned')
+s = child.bodyString()
+lines = g.splitLines(s)
+
+seen = {}
+c.beginUpdate()
+try:
+    for p in c.allNodes_iter():
+        if not seen.get(p.v.t):
+            seen[p.v.t] = True
+            h = p.headString().strip()
+            for line in lines:
+                if h == line.strip():
+                    print 'found',h
+                    clone = p.clone()
+                    clone.moveToLastChildOf(root)
+finally:
+    c.endUpdate()
+
+
+
+#@+node:To be cloned
+@test getHandlersForTag
+@test unit testing with embedded class
+@test move-lines-up
+@test helpForMinibuffer
+@test g.pdb
+@test g.es_exception
+@test g.es_trace
+@test pasteText
+@test g.getScript strips crlf
+@test forward-end-word (start of word)
+@test moveToHelper
+@test scrollHelper
+@test c.contractAllHeadlines
+@test g.create_temp_file
+@test fc.deleteFileWithMessage
+@test compareHelper
+@test apropos_bindings
+@test apropos_find_commands
+@test atFile_rename
+@test g.removeExtraLws
+@test moveUpOrDownHelper
+@test compareHelper-warning
+@test directiveKind4
+@test isPlainKey
+@test g.convertPythonIndexToRowCol
+@test setMoveCol
+@test leoBody.getSelectionAreas & test
+@test parseLeoSentinel
+@test selfInsertCommand-2 (replacing tabs)
+@test extendHelper
+@test onClick
+@test selfInsertCommand-1
+@test g.convertRowColToPythonIndex
+@test round trip toUnicode toEncodedString
+@test that all @test nodes in derived files start with if g.unitTesting
+@test g.reportBadChars
+#@-node:To be cloned
+#@-node:Clone all nodes child node
 #@+node:delete from ':' to end (script)
 @color
 
@@ -17772,94 +17837,6 @@ s = ''.join(result)
 c.setBodyString(p,s)
 #@nonl
 #@-node:delete from first blank
-#@+node:replace =.* with = None
-@color
-
-s = p.bodyString()
-
-result = []
-lines = g.splitLines(s)
-for line in lines:
-    i = line.find('=')
-    if i > -1:
-        result.append(line[:i] + '= None')
-        if line and line[-1] == '\n':
-            result.append('\n')
-    else:
-        result.append(line)
-
-s = ''.join(result)
-c.setBodyString(p,s)
-#@nonl
-#@-node:replace =.* with = None
-#@+node:stripBlankLines
-print '-' * 60
-
-# Tag the start of the command.
-c.undoer.setUndoParams("Change All",c.currentPosition())
-
-n = 0 ; total = 0
-for p in c.currentPosition().self_and_subtree_iter():
-    total += 1
-    body = p.bodyString()
-    s = g.stripBlankLines(body)
-    if s != body:
-        n += 1
-        c.setBodyString(p,s,g.app.tkEncoding)
-        c.undoer.setUndoParams("Change",p,
-            oldText=body,newText=s,oldSel=None, newSel=None)
-
-# Tag the end of the command.
-c.undoer.setUndoParams("Change All",c.currentPosition()) 
-
-print "%d nodes changed (%d total)" % (n,total)
-#@+node:Test
-@ignore
-a
-  b
-
-c  
-
-last
-#@-node:Test
-#@-node:stripBlankLines
-#@+node:add tab before each =
-@color
-
-s = p.bodyString()
-
-result = []
-lines = g.splitLines(s)
-for line in lines:
-    i = line.find('=')
-    if i > -1:
-        result.append(line[:i] + ' '*4 + line[i:])
-    else:
-        result.append(line)
-
-s = ''.join(result)
-g.trace(s)
-# c.setBodyString(p,s)
-#@nonl
-#@-node:add tab before each =
-#@+node:add tab after each :
-@color
-
-s = p.bodyString()
-
-result = []
-lines = g.splitLines(s)
-for line in lines:
-    i = line.find(':')
-    if i > -1:
-        result.append(line[:i+1] + ' '*4 + line[i+1:])
-    else:
-        result.append(line)
-
-s = ''.join(result)
-g.trace(s)
-c.setBodyString(p,s)
-#@-node:add tab after each :
 #@+node:insert begin/endUpdate
 u = c.undoer ; w = c.frame.body.bodyCtrl
 
@@ -17900,6 +17877,26 @@ for p in p.self_and_subtree_iter():
         g.es(p.headString())
 #@nonl
 #@-node:Remove blank trailing lines
+#@+node:replace =.* with = None
+@color
+
+s = p.bodyString()
+
+result = []
+lines = g.splitLines(s)
+for line in lines:
+    i = line.find('=')
+    if i > -1:
+        result.append(line[:i] + '= None')
+        if line and line[-1] == '\n':
+            result.append('\n')
+    else:
+        result.append(line)
+
+s = ''.join(result)
+c.setBodyString(p,s)
+#@nonl
+#@-node:replace =.* with = None
 #@+node:Set trailing ws script
 '''This script quickly ends all nodes in the selected tree with exactly one
 newline and marks all @thin/@file nodes dirty if any of their descendents have
@@ -17956,6 +17953,73 @@ def pass2():
     g.es_print("pass 2: %d @file/@thin nodes set dirty" % count)
 #@-node:pass2
 #@-node:Set trailing ws script
+#@+node:split defs in body text to child nodes
+# script to split node containing multiple def's into child nodes
+
+def createChild (parent,body,line):
+    p = parent.insertAsLastChild()
+    h = line [3:].strip()
+    i = h.find('(')
+    if i > -1:
+        func = h [: i].strip()
+    h2 = g.choose(func,func,h)
+    p.setHeadString(h2)
+    p.setTnodeText(''.join(body))
+
+s = p.bodyString()
+if s.strip():
+    b = c.undoer.beforeChangeTree(p)
+    c.beginUpdate()
+    try:
+        lines = g.splitLines(s) ; body = [] ; changed = False ; lastDefLine = ''
+        for line in lines:
+            if g.match_word(line,0,'def'):
+                if body and lastDefLine:
+                    createChild(p,body,lastDefLine)
+                    body = [] ; changed = True
+                lastDefLine = line
+            body.append(line)
+        if body and lastDefLine:
+            createChild(p,body,lastDefLine)
+            changed = True
+        if changed:
+            c.setChanged(True) ; c.setBodyString(p,'')
+    finally:
+        c.undoer.afterChangeTree(p,'split-defs',b)
+        c.endUpdate()
+#@nonl
+#@-node:split defs in body text to child nodes
+#@+node:stripBlankLines
+print '-' * 60
+
+# Tag the start of the command.
+c.undoer.setUndoParams("Change All",c.currentPosition())
+
+n = 0 ; total = 0
+for p in c.currentPosition().self_and_subtree_iter():
+    total += 1
+    body = p.bodyString()
+    s = g.stripBlankLines(body)
+    if s != body:
+        n += 1
+        c.setBodyString(p,s,g.app.tkEncoding)
+        c.undoer.setUndoParams("Change",p,
+            oldText=body,newText=s,oldSel=None, newSel=None)
+
+# Tag the end of the command.
+c.undoer.setUndoParams("Change All",c.currentPosition()) 
+
+print "%d nodes changed (%d total)" % (n,total)
+#@+node:Test
+@ignore
+a
+  b
+
+c  
+
+last
+#@-node:Test
+#@-node:stripBlankLines
 #@-node:Text editing scripts
 #@-all
 #@nonl
