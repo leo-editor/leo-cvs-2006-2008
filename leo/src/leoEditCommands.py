@@ -2332,8 +2332,8 @@ class editCommandsClass (baseEditCommandsClass):
         for d in aList:
             name2 = d.get('file')
             name2 = g.os_path_abspath(name2)
+            g.trace('name',name,'\nrelPath',relPath,'\nabsRelPath',absRelPath,'\nname2',name2)
             if name == name2 or absRelPath == name2:
-                g.trace('name',name,'\nrelPath',relPath,'\nabsRelPath',absRelPath,'\nname2',name2)
                 aList.remove(d)
                 t.unknownAttributes ['icons'] = aList
                 c.redraw()

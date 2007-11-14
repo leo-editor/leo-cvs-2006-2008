@@ -1141,7 +1141,7 @@ class leoTkinterTree (leoFrame.leoTree):
                 self.canvas.itemconfigure(theId,tag=tag)
                 self.ids[theId] = p.copy()
 
-                def deleteButtonCallback(event=None,c=c,t=p.v.t,fullname=fullname):
+                def deleteButtonCallback(event=None,c=c,t=p.v.t,fullname=fullname,relPath=relPath):
                     c.editCommands.deleteIconByName(t,fullname,relPath)
 
                 self.canvas.tag_bind(tag,'<3>',deleteButtonCallback)
