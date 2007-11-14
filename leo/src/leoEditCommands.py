@@ -2390,7 +2390,9 @@ class editCommandsClass (baseEditCommandsClass):
             path = g.os_path_abspath(g.os_path_join(basePath,path))
             relPath = g.makePathRelativeTo(path,basePath)
             image,image_height = self.getImage(path)
-            if not image: return
+            if not image:
+                g.es('can not load image: %s' % (path))
+                return
             if image_height is None:
                 yoffset = 0
             else:
@@ -2424,15 +2426,24 @@ class editCommandsClass (baseEditCommandsClass):
         c = self.c
 
         try:
-            from PIL import Image, ImageTk
+            from PIL import Image
         except ImportError:
             Image = None
 
         try:
-            if Image:
+            from PIL import ImageTk
+        except ImportError:
+            try:
+                import ImageTk
+            except ImportError:
+                ImageTk = None
+
+        try:
+            if Image and ImageTk:
                 image1 = Image.open(path)
                 image = ImageTk.PhotoImage(image1)
             else:
+                import Tkinter as Tk
                 image = Tk.PhotoImage(master=c.frame.tree.canvas,file=path)
             return image,image.height()
         except Exception:
