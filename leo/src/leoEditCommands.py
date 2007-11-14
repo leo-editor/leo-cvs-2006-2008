@@ -1623,7 +1623,7 @@ class editCommandsClass (baseEditCommandsClass):
 
         self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.145:changePreviousWord (not used)
-    #@+node:ekr.20051015114221.1:capitalizeHelper & test
+    #@+node:ekr.20051015114221.1:capitalizeHelper
     def capitalizeHelper (self,event,which,undoType):
 
         w = self.editWidget(event)
@@ -1652,7 +1652,7 @@ class editCommandsClass (baseEditCommandsClass):
             w.setSelectionRange(ins,ins,insert=ins)
 
         self.endCommand(changed=changed,setLabel=True)
-    #@-node:ekr.20051015114221.1:capitalizeHelper & test
+    #@-node:ekr.20051015114221.1:capitalizeHelper
     #@-node:ekr.20050920084036.57:capitalization & case
     #@+node:ekr.20051022142249:clicks and focus (editCommandsClass)
     #@+node:ekr.20060211100905:activate-x-menu & activateMenu (editCommandsClass)
@@ -2178,7 +2178,7 @@ class editCommandsClass (baseEditCommandsClass):
     #@nonl
     #@-node:ekr.20060417194232.1:findCharacterHelper
     #@-node:ekr.20060925151926:backward/findCharacter & helper
-    #@+node:ekr.20060417194232.2:findWord & test
+    #@+node:ekr.20060417194232.2:findWord
     def findWord (self,event):
 
         '''Put the cursor at the next word (on a line) that starts with a character.'''
@@ -2205,7 +2205,7 @@ class editCommandsClass (baseEditCommandsClass):
                         i += 1
             k.resetLabel()
             k.clearState()
-    #@-node:ekr.20060417194232.2:findWord & test
+    #@-node:ekr.20060417194232.2:findWord
     #@-node:ekr.20060417194232:find (quick)
     #@+node:ekr.20050920084036.72:goto...
     #@+node:ekr.20050929115226:gotoCharacter
@@ -2687,7 +2687,7 @@ class editCommandsClass (baseEditCommandsClass):
             oldSel = None ; undoType = 'remove-blank-lines'
             c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
     #@-node:ekr.20050920084036.141:removeBlankLines
-    #@+node:ekr.20051125080855:selfInsertCommand, helpers & tests
+    #@+node:ekr.20051125080855:selfInsertCommand, helpers
     def selfInsertCommand(self,event,action='insert'):
 
         '''Insert a character in the body pane.
@@ -2928,7 +2928,7 @@ class editCommandsClass (baseEditCommandsClass):
         w.setSelectionRange(ins,ins,insert=ins)
     #@nonl
     #@-node:ekr.20051026092433:updateTab
-    #@-node:ekr.20051125080855:selfInsertCommand, helpers & tests
+    #@-node:ekr.20051125080855:selfInsertCommand, helpers
     #@-node:ekr.20050920084036.85:insert & delete...
     #@+node:ekr.20050920084036.79:info...
     #@+node:ekr.20050920084036.80:howMany
@@ -3093,7 +3093,7 @@ class editCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.88:line...
     #@+node:ekr.20050929114218:move cursor... (leoEditCommands)
     #@+node:ekr.20051218170358: helpers
-    #@+node:ekr.20060113130510:extendHelper & test
+    #@+node:ekr.20060113130510:extendHelper
     def extendHelper (self,w,extend,spot,upOrDown=False):
         '''Handle the details of extending the selection.
         This method is called for all cursor moves.
@@ -3142,8 +3142,8 @@ class editCommandsClass (baseEditCommandsClass):
         w.seeInsertPoint()
         c.frame.updateStatusLine()
     #@nonl
-    #@-node:ekr.20060113130510:extendHelper & test
-    #@+node:ekr.20060113105246.1:moveUpOrDownHelper & test
+    #@-node:ekr.20060113130510:extendHelper
+    #@+node:ekr.20060113105246.1:moveUpOrDownHelper
     def moveUpOrDownHelper (self,event,direction,extend):
 
         c = self.c ; w = self.editWidget(event)
@@ -3171,8 +3171,8 @@ class editCommandsClass (baseEditCommandsClass):
 
         self.extendHelper(w,extend,spot,upOrDown=True)
     #@nonl
-    #@-node:ekr.20060113105246.1:moveUpOrDownHelper & test
-    #@+node:ekr.20051218122116:moveToHelper & test
+    #@-node:ekr.20060113105246.1:moveUpOrDownHelper
+    #@+node:ekr.20051218122116:moveToHelper
     def moveToHelper (self,event,spot,extend):
 
         '''Common helper method for commands the move the cursor
@@ -3191,7 +3191,7 @@ class editCommandsClass (baseEditCommandsClass):
 
         self.extendHelper(w,extend,spot,upOrDown=False)
     #@nonl
-    #@-node:ekr.20051218122116:moveToHelper & test
+    #@-node:ekr.20051218122116:moveToHelper
     #@+node:ekr.20051218171457:movePastCloseHelper
     def movePastCloseHelper (self,event,extend):
 
@@ -3363,7 +3363,7 @@ class editCommandsClass (baseEditCommandsClass):
         self.moveToHelper(event,i,extend)
     #@nonl
     #@-node:ekr.20051218133207:backwardParagraphHelper
-    #@+node:ekr.20060209095101:setMoveCol & test
+    #@+node:ekr.20060209095101:setMoveCol
     def setMoveCol (self,w,spot):
 
         '''Set the column to which an up or down arrow will attempt to move.'''
@@ -3378,7 +3378,7 @@ class editCommandsClass (baseEditCommandsClass):
         self.moveCol = col
         self.moveSpotNode = p.v.t
     #@nonl
-    #@-node:ekr.20060209095101:setMoveCol & test
+    #@-node:ekr.20060209095101:setMoveCol
     #@-node:ekr.20051218170358: helpers
     #@+node:ekr.20050920084036.148:buffers
     def beginningOfBuffer (self,event):
@@ -4002,7 +4002,7 @@ class editCommandsClass (baseEditCommandsClass):
     def scrollUpExtendSelection (self,event):
         '''Extend the text selection by scrolling the body text up one page.'''
         self.scrollHelper(event,'up',extend=True)
-    #@+node:ekr.20060113082917:scrollHelper & test
+    #@+node:ekr.20060113082917:scrollHelper
     def scrollHelper (self,event,direction,extend):
 
         k = self.k ; c = k.c ; gui = g.app.gui
@@ -4028,7 +4028,7 @@ class editCommandsClass (baseEditCommandsClass):
                 self.scrollOutlineDownPage()
             else:
                 self.scrollOutlineUpPage()
-    #@-node:ekr.20060113082917:scrollHelper & test
+    #@-node:ekr.20060113082917:scrollHelper
     #@+node:ekr.20050920084036.147:measure
     def measure (self,w):
 

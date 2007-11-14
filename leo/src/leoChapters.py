@@ -403,7 +403,7 @@ class chapterController:
         finally:
             c.endUpdate()
     #@-node:ekr.20070606075434:cc.removeChapterByName
-    #@+node:ekr.20070317085437.41:cc.renameChapter & testHelper
+    #@+node:ekr.20070317085437.41:cc.renameChapter
     # newName is for unitTesting.
 
     def renameChapter (self,event=None,newName=None):
@@ -440,7 +440,7 @@ class chapterController:
                     tt.destroyTab(oldChapterName)
                     tt.createTab(k.arg)
                 c.redraw_now()
-    #@-node:ekr.20070317085437.41:cc.renameChapter & testHelper
+    #@-node:ekr.20070317085437.41:cc.renameChapter
     #@+node:ekr.20070604165126:cc.selectChapter
     def selectChapter (self,event=None):
 

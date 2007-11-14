@@ -1286,7 +1286,7 @@ class leoBody:
         g.trace("leoBody oops:", g.callers(), "should be overridden in subclass")
     #@-node:ekr.20031218072017.3658:oops
     #@+node:ekr.20031218072017.4018:Text (leoBody)
-    #@+node:ekr.20031218072017.4030:getInsertLines & test (changed)
+    #@+node:ekr.20031218072017.4030:getInsertLines
     def getInsertLines (self):
 
         """Return before,after where:
@@ -1310,8 +1310,8 @@ class leoBody:
         after  = g.toUnicode(after ,g.app.tkEncoding)
 
         return before,ins,after
-    #@-node:ekr.20031218072017.4030:getInsertLines & test (changed)
-    #@+node:ekr.20031218072017.4031:getSelectionAreas (changed)
+    #@-node:ekr.20031218072017.4030:getInsertLines
+    #@+node:ekr.20031218072017.4031:getSelectionAreas
     def getSelectionAreas (self):
 
         """Return before,sel,after where:
@@ -1336,8 +1336,8 @@ class leoBody:
         after  = g.toUnicode(after ,g.app.tkEncoding)
         return before,sel,after
     #@nonl
-    #@-node:ekr.20031218072017.4031:getSelectionAreas (changed)
-    #@+node:ekr.20031218072017.2377:getSelectionLines (changed)
+    #@-node:ekr.20031218072017.4031:getSelectionAreas
+    #@+node:ekr.20031218072017.2377:getSelectionLines
     def getSelectionLines (self):
 
         """Return before,sel,after where:
@@ -1369,8 +1369,8 @@ class leoBody:
 
         # g.trace(i,j,'sel',repr(s[i:j]),'after',repr(after))
         return before,sel,after # 3 strings.
-    #@-node:ekr.20031218072017.2377:getSelectionLines (changed)
-    #@+node:ekr.20031218072017.4037:setSelectionAreas (changed)
+    #@-node:ekr.20031218072017.2377:getSelectionLines
+    #@+node:ekr.20031218072017.4037:setSelectionAreas
     def setSelectionAreas (self,before,sel,after):
 
         """Replace the body text by before + sel + after and
@@ -1388,7 +1388,7 @@ class leoBody:
         # g.trace(i,j,repr(sel))
         w.setSelectionRange(i,j,insert=j)
         return i,j
-    #@-node:ekr.20031218072017.4037:setSelectionAreas (changed)
+    #@-node:ekr.20031218072017.4037:setSelectionAreas
     #@+node:ekr.20031218072017.4038:get/setYScrollPosition
     def getYScrollPosition (self):
         return self.bodyCtrl.getYScrollPosition()
@@ -1752,7 +1752,7 @@ class leoFrame:
 
     OnCutFromMenu = cutText
     #@-node:ekr.20070130115927.6:leoFrame.cutText
-    #@+node:ekr.20070130115927.7:leoFrame.pasteText & test
+    #@+node:ekr.20070130115927.7:leoFrame.pasteText
     def pasteText (self,event=None,middleButton=False):
 
         '''Paste the clipboard into a widget.
@@ -1808,7 +1808,7 @@ class leoFrame:
         return 'break' # Essential
 
     OnPasteFromMenu = pasteText
-    #@-node:ekr.20070130115927.7:leoFrame.pasteText & test
+    #@-node:ekr.20070130115927.7:leoFrame.pasteText
     #@+node:ekr.20061016071937:OnPaste (To support middle-button paste)
     def OnPaste (self,event=None):
 
@@ -2447,7 +2447,7 @@ class leoTree:
         # N.B. These vnode methods are entitled to know about details of the leoTkinterTree class.
 
         #@+others
-        #@+node:ekr.20040803072955.23:OnHyperLinkControlClick (changed)
+        #@+node:ekr.20040803072955.23:OnHyperLinkControlClick
         def OnHyperLinkControlClick (self,event=None,c=c):
 
             """Callback injected into position class."""
@@ -2464,8 +2464,8 @@ class leoTree:
                 g.doHook("hypercclick2",c=c,p=p,v=p,event=event)
             except:
                 g.es_event_exception("hypercclick")
-        #@-node:ekr.20040803072955.23:OnHyperLinkControlClick (changed)
-        #@+node:ekr.20040803072955.24:OnHyperLinkEnter (changed)
+        #@-node:ekr.20040803072955.23:OnHyperLinkControlClick
+        #@+node:ekr.20040803072955.24:OnHyperLinkEnter
         def OnHyperLinkEnter (self,event=None,c=c):
 
             """Callback injected into position class."""
@@ -2478,8 +2478,8 @@ class leoTree:
                 g.doHook("hyperenter2",c=c,p=p,v=p,event=event)
             except:
                 g.es_event_exception("hyperenter")
-        #@-node:ekr.20040803072955.24:OnHyperLinkEnter (changed)
-        #@+node:ekr.20040803072955.25:OnHyperLinkLeave (changed)
+        #@-node:ekr.20040803072955.24:OnHyperLinkEnter
+        #@+node:ekr.20040803072955.25:OnHyperLinkLeave
         def OnHyperLinkLeave (self,event=None,c=c):
 
             """Callback injected into position class."""
@@ -2493,7 +2493,7 @@ class leoTree:
                 g.doHook("hyperleave2",c=c,p=p,v=p,event=event)
             except:
                 g.es_event_exception("hyperleave")
-        #@-node:ekr.20040803072955.25:OnHyperLinkLeave (changed)
+        #@-node:ekr.20040803072955.25:OnHyperLinkLeave
         #@-others
         #@-node:ekr.20040803072955.22:<< define callbacks to be injected in the position class >>
         #@nl

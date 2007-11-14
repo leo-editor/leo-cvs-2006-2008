@@ -3412,7 +3412,7 @@ class baseTangleCommands:
         # g.trace(name)
         return name
     #@-node:ekr.20031218072017.3598:standardize_name
-    #@+node:ekr.20031218072017.1360:tangle.scanAllDirectives & test
+    #@+node:ekr.20031218072017.1360:tangle.scanAllDirectives
     #@+at 
     #@nonl
     # Once a directive is seen, related directives in ancesors have no 
@@ -3691,7 +3691,7 @@ class baseTangleCommands:
             "path"      : self.tangle_directory,
             "tabwidth"  : self.tab_width,
         }
-    #@-node:ekr.20031218072017.1360:tangle.scanAllDirectives & test
+    #@-node:ekr.20031218072017.1360:tangle.scanAllDirectives
     #@+node:ekr.20031218072017.3599:token_type
     def token_type(self,s,i,err_flag):
 

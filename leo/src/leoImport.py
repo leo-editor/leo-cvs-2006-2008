@@ -1501,7 +1501,7 @@ class baseLeoImportCommands:
             else:
                 return True
         #@-node:ekr.20070703122141.102:check
-        #@+node:ekr.20070703122141.104:checkTrialWrite & tests
+        #@+node:ekr.20070703122141.104:checkTrialWrite
         def checkTrialWrite (self,s1=None,s2=None):
 
             '''Return True if a trial write produces the original file.'''
@@ -1550,8 +1550,8 @@ class baseLeoImportCommands:
                 self.reportMismatch(lines1,lines2,bad_i)
 
             return ok
-        #@-node:ekr.20070703122141.104:checkTrialWrite & tests
-        #@+node:ekr.20070730093735:compareHelper & tests
+        #@-node:ekr.20070703122141.104:checkTrialWrite
+        #@+node:ekr.20070730093735:compareHelper
         def compareHelper (self,lines1,lines2,i,strict):
 
             '''Compare lines1[i] and lines2[i].
@@ -1602,7 +1602,7 @@ class baseLeoImportCommands:
                 d ['actualMismatchLine'] = i+1
                 # g.trace('lines 1...\n',repr(lines1),'\nlines2...\n',repr(lines2))
                 return False
-        #@-node:ekr.20070730093735:compareHelper & tests
+        #@-node:ekr.20070730093735:compareHelper
         #@+node:ekr.20071110144948:checkLeadingWhitespace
         def checkLeadingWhitespace (self,line):
 
@@ -1617,7 +1617,7 @@ class baseLeoImportCommands:
 
             return ok
         #@-node:ekr.20071110144948:checkLeadingWhitespace
-        #@+node:ekr.20070911110507:reportMismatch & test
+        #@+node:ekr.20070911110507:reportMismatch
         def reportMismatch (self,lines1,lines2,bad_i):
 
             def pr(*args,**keys): # reportMismatch
@@ -1649,7 +1649,7 @@ class baseLeoImportCommands:
             pr('after')
             pr('done')
         #@-node:ekr.20070913084008:minitest of pr
-        #@-node:ekr.20070911110507:reportMismatch & test
+        #@-node:ekr.20070911110507:reportMismatch
         #@-node:ekr.20070808115837:Checking
         #@+node:ekr.20070706084535:Code generation
         #@+at 

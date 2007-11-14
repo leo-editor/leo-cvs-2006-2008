@@ -1427,7 +1427,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         if h and w and x and y:
             self.setTopGeometry(w,h,x,y)
     #@-node:ekr.20031218072017.1625:setInitialWindowGeometry (tkFrame)
-    #@+node:ekr.20031218072017.722:setTabWidth (tkFrame) (changed)
+    #@+node:ekr.20031218072017.722:setTabWidth (tkFrame)
     def setTabWidth (self, w):
 
         try: # This can fail when called from scripts
@@ -1442,7 +1442,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         except:
             g.es_exception()
             pass
-    #@-node:ekr.20031218072017.722:setTabWidth (tkFrame) (changed)
+    #@-node:ekr.20031218072017.722:setTabWidth (tkFrame)
     #@+node:ekr.20031218072017.1540:setWrap (tkFrame)
     def setWrap (self,p):
 
@@ -1490,7 +1490,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
 
         self.top.geometry(geom)
     #@-node:ekr.20031218072017.2307:setTopGeometry (tkFrame)
-    #@+node:ekr.20031218072017.3970:reconfigurePanes (use config bar_width) (tkFrame) (changed)
+    #@+node:ekr.20031218072017.3970:reconfigurePanes (use config bar_width) (tkFrame)
     def reconfigurePanes (self):
 
         c = self.c
@@ -1505,7 +1505,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         # The log pane needs a slightly bigger border when tiling vertically.
         border = g.choose(self.splitVerticalFlag,4,2) 
         self.log.configureBorder(border)
-    #@-node:ekr.20031218072017.3970:reconfigurePanes (use config bar_width) (tkFrame) (changed)
+    #@-node:ekr.20031218072017.3970:reconfigurePanes (use config bar_width) (tkFrame)
     #@+node:ekr.20060915124834:resizePanesToRatio (tkFrame)
     def resizePanesToRatio(self,ratio,ratio2):
 
@@ -1789,7 +1789,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20060210123852.1:fullyExpand/hide...Pane
     #@-node:ekr.20060209110128:Minibuffer commands... (tkFrame)
     #@+node:ekr.20031218072017.3984:Window Menu...
-    #@+node:ekr.20031218072017.3985:toggleActivePane (tkFrame) (changed)
+    #@+node:ekr.20031218072017.3985:toggleActivePane (tkFrame)
     def toggleActivePane (self,event=None):
 
         '''Toggle the focus between the outline and body panes.'''
@@ -1801,7 +1801,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         else:
             c.endEditing()
             c.bodyWantsFocusNow()
-    #@-node:ekr.20031218072017.3985:toggleActivePane (tkFrame) (changed)
+    #@-node:ekr.20031218072017.3985:toggleActivePane (tkFrame)
     #@+node:ekr.20031218072017.3986:cascade
     def cascade (self,event=None):
 
@@ -1982,7 +1982,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
     # that alters text improperly.
     #@-at
     #@-node:ekr.20050120083053:Delayed Focus (tkFrame)
-    #@+node:ekr.20031218072017.3995:Tk bindings... (tkFrame) (changed)
+    #@+node:ekr.20031218072017.3995:Tk bindings... (tkFrame)
     def bringToFront (self):
         # g.trace(g.callers())
         self.top.deiconify()
@@ -2022,7 +2022,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
 
     def update (self):
         self.top.update()
-    #@-node:ekr.20031218072017.3995:Tk bindings... (tkFrame) (changed)
+    #@-node:ekr.20031218072017.3995:Tk bindings... (tkFrame)
     #@-others
 #@-node:ekr.20031218072017.3940:class leoTkinterFrame
 #@+node:ekr.20031218072017.4039:class leoTkinterLog

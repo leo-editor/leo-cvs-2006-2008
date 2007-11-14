@@ -509,11 +509,11 @@ class vnode (baseVnode):
             v = v._back
         return n
     #@-node:ekr.20040303212445:v.childIndex
-    #@+node:ekr.20031218072017.3362:v.firstChild (changed for 4.2)
+    #@+node:ekr.20031218072017.3362:v.firstChild
     def firstChild (self):
 
         return self.t._firstChild
-    #@-node:ekr.20031218072017.3362:v.firstChild (changed for 4.2)
+    #@-node:ekr.20031218072017.3362:v.firstChild
     #@+node:ekr.20040307085922:v.hasChildren & hasFirstChild
     def hasChildren (self):
 

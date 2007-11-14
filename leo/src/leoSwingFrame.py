@@ -1431,7 +1431,7 @@ class leoSwingFrame (leoFrame.leoFrame):
     #@-node:ekr.20071001091231.103:fullyExpand/hide...Pane
     #@-node:ekr.20071001091231.97:Minibuffer commands... (swingFrame)
     #@+node:ekr.20071001091231.104:Window Menu...
-    #@+node:ekr.20071001091231.105:toggleActivePane (changed)
+    #@+node:ekr.20071001091231.105:toggleActivePane
     def toggleActivePane (self,event=None):
 
         '''Toggle the focus between the outline and body panes.'''
@@ -1443,7 +1443,7 @@ class leoSwingFrame (leoFrame.leoFrame):
         else:
             c.endEditing()
             c.bodyWantsFocusNow()
-    #@-node:ekr.20071001091231.105:toggleActivePane (changed)
+    #@-node:ekr.20071001091231.105:toggleActivePane
     #@+node:ekr.20071001091231.106:cascade
     def cascade (self,event=None):
 

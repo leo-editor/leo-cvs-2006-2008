@@ -522,7 +522,7 @@ class leoFind:
             c.endUpdate()
             self.restore(saveData)
     #@-node:ekr.20031218072017.3069:changeAll
-    #@+node:ekr.20031218072017.3070:changeSelection (changed)
+    #@+node:ekr.20031218072017.3070:changeSelection
     # Replace selection with self.change_text.
     # If no selection, insert self.change_text at the cursor.
 
@@ -599,7 +599,7 @@ class leoFind:
         result.append(s[i:])
         return ''.join(result)
     #@-node:ekr.20060526201951:makeRegexSubs
-    #@-node:ekr.20031218072017.3070:changeSelection (changed)
+    #@-node:ekr.20031218072017.3070:changeSelection
     #@+node:ekr.20031218072017.3071:changeThenFind
     def changeThenFind(self):
 

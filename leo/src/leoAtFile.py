@@ -3082,7 +3082,7 @@ class atFile:
         else: # The @auto tree is dirty and contains significant info.
             return True
     #@-node:ekr.20071019141745:shouldWriteAtAutoNode
-    #@+node:ekr.20070909103844:isSignificantAtAutoTree & test
+    #@+node:ekr.20070909103844:isSignificantAtAutoTree
     def isSignificantAtAutoTree (self,p):
 
         '''Return True if p's tree has a significant amount of information.'''
@@ -3106,7 +3106,7 @@ class atFile:
         # g.trace('s2',s2)
 
         return p.hasChildren() or len(s2.strip()) >= 10
-    #@-node:ekr.20070909103844:isSignificantAtAutoTree & test
+    #@-node:ekr.20070909103844:isSignificantAtAutoTree
     #@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
     #@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
     #@+node:ekr.20050506084734:writeFromString
@@ -4057,7 +4057,7 @@ class atFile:
         except IOError:
             return False # Should never happen
     #@-node:ekr.20041005105605.197:compareFiles
-    #@+node:ekr.20041005105605.198:directiveKind4 & test
+    #@+node:ekr.20041005105605.198:directiveKind4
     def directiveKind4(self,s,i):
 
         """Return the kind of at-directive or noDirective."""
@@ -4101,7 +4101,7 @@ class atFile:
                 return at.miscDirective
 
         return at.noDirective
-    #@-node:ekr.20041005105605.198:directiveKind4 & test
+    #@-node:ekr.20041005105605.198:directiveKind4
     #@+node:ekr.20041005105605.199:hasSectionName
     def findSectionName(self,s,i):
 
@@ -4504,7 +4504,7 @@ class atFile:
 
         self._forcedGnxPositionList.append(p.v)
     #@-node:ekr.20051219122720:atFile.forceGnxOnPosition
-    #@+node:ekr.20050206085258:atFile.printError & test
+    #@+node:ekr.20050206085258:atFile.printError
     def printError (self,message):
 
         '''Print an error message that may contain non-ascii characters.'''
@@ -4527,8 +4527,8 @@ class atFile:
         at.printError(
             "test of printError: Ᾱ(U+1FB9: Greek Capital Letter Alpha With Macron)")
     #@-node:ekr.20070621091727:@@test printError
-    #@-node:ekr.20050206085258:atFile.printError & test
-    #@+node:ekr.20041005105605.222:atFile.scanAllDirectives & test
+    #@-node:ekr.20050206085258:atFile.printError
+    #@+node:ekr.20041005105605.222:atFile.scanAllDirectives
     #@+at 
     #@nonl
     # Once a directive is seen, no other related directives in nodes further 
@@ -4742,7 +4742,7 @@ class atFile:
             "path"      : self.default_directory,
             "tabwidth"  : self.tab_width,
         }
-    #@-node:ekr.20041005105605.222:atFile.scanAllDirectives & test
+    #@-node:ekr.20041005105605.222:atFile.scanAllDirectives
     #@+node:ekr.20041005105605.236:atFile.scanDefaultDirectory
     def scanDefaultDirectory(self,p,importing=False):
 
@@ -4878,7 +4878,7 @@ class atFile:
         # Do _not_ call self.error here.
         return g.utils_chmod(fileName,mode)
     #@-node:ekr.20050104131820:chmod
-    #@+node:ekr.20050104131929.1:atFile.rename & test
+    #@+node:ekr.20050104131929.1:atFile.rename
     #@<< about os.rename >>
     #@+node:ekr.20050104131929.2:<< about os.rename >>
     #@+at 
@@ -4932,8 +4932,8 @@ class atFile:
                     self.outputFileName,self.targetFileName))
                 g.es_exception()
             return False
-    #@-node:ekr.20050104131929.1:atFile.rename & test
-    #@+node:ekr.20050104132018:remove & test
+    #@-node:ekr.20050104131929.1:atFile.rename
+    #@+node:ekr.20050104132018:remove
     def remove (self,fileName,verbose=True):
 
         try:
@@ -4944,7 +4944,7 @@ class atFile:
                 self.error("exception removing: %s" % fileName)
                 g.es_exception()
             return False
-    #@-node:ekr.20050104132018:remove & test
+    #@-node:ekr.20050104132018:remove
     #@+node:ekr.20050104132026:stat
     def stat (self,fileName):
 

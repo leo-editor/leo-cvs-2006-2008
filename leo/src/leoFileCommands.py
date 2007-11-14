@@ -1535,7 +1535,7 @@ class baseFileCommands:
             else: break
         return height, width
     #@-node:ekr.20031218072017.3026:getSize (not used!)
-    #@+node:ekr.20031218072017.1561:getTnode (changed for 4.4)
+    #@+node:ekr.20031218072017.1561:getTnode
     def getTnode (self):
 
         # we have already matched <t.
@@ -1586,7 +1586,7 @@ class baseFileCommands:
         else:
             g.es("no tnode with index: %s.  The text will be discarded" % str(index))
         self.getTag("</t>")
-    #@-node:ekr.20031218072017.1561:getTnode (changed for 4.4)
+    #@-node:ekr.20031218072017.1561:getTnode
     #@+node:ekr.20031218072017.2008:getTnodeList (4.0,4.2)
     def getTnodeList (self,s):
 

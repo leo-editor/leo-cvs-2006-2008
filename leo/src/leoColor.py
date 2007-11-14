@@ -2410,7 +2410,7 @@ class baseColorizer:
 
         self.image_references = []
     #@-node:ekr.20031218072017.1944:removeAllImages (leoColor)
-    #@+node:ekr.20031218072017.1377:scanColorDirectives (leoColor) & test
+    #@+node:ekr.20031218072017.1377:scanColorDirectives (leoColor)
     def scanColorDirectives(self,p):
 
         """Scan position p and p's ancestors looking for @comment, @language and @root directives,
@@ -2460,7 +2460,7 @@ class baseColorizer:
             #@nl
 
         return self.language # For use by external routines.
-    #@-node:ekr.20031218072017.1377:scanColorDirectives (leoColor) & test
+    #@-node:ekr.20031218072017.1377:scanColorDirectives (leoColor)
     #@+node:ekr.20041217041016:setFontFromConfig (colorizer)
     def setFontFromConfig (self):
 

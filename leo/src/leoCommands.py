@@ -2946,7 +2946,7 @@ class baseCommands:
         c.updateBodyPane(head,result,tail,undoType='Delete Comments',oldSel=None,oldYview=oldYview)
     #@-node:ekr.20050312114529.2:deleteComments (test)
     #@-node:ekr.20050312114529:insert/removeComments
-    #@+node:ekr.20031218072017.1833:reformatParagraph & tests
+    #@+node:ekr.20031218072017.1833:reformatParagraph
     def reformatParagraph (self,event=None,undoType='Reformat Paragraph'):
 
         """Reformat a text paragraph in a Tk.Text widget
@@ -3049,7 +3049,7 @@ class baseCommands:
             #@-node:ekr.20031218072017.1837:<< update the body, selection & undo state >>
             #@nl
     #@nonl
-    #@-node:ekr.20031218072017.1833:reformatParagraph & tests
+    #@-node:ekr.20031218072017.1833:reformatParagraph
     #@+node:ekr.20031218072017.1838:updateBodyPane (handles changeNodeContents)
     def updateBodyPane (self,head,middle,tail,undoType,oldSel,oldYview):
 
@@ -3669,7 +3669,7 @@ class baseCommands:
     #@-node:ekr.20031218072017.2896:c.sortTopLevel
     #@-node:ekr.20031218072017.2895: Top Level... (Commands)
     #@+node:ekr.20040711135959.2:Check Outline submenu...
-    #@+node:ekr.20031218072017.2072:c.checkOutline & test
+    #@+node:ekr.20031218072017.2072:c.checkOutline
     def checkOutline (self,event=None,verbose=True,unittest=False,full=True):
 
         """Report any possible clone errors in the outline.
@@ -3836,7 +3836,7 @@ class baseCommands:
             #@-node:ekr.20040314043900:<<print summary message >>
             #@nl
         return errors
-    #@-node:ekr.20031218072017.2072:c.checkOutline & test
+    #@-node:ekr.20031218072017.2072:c.checkOutline
     #@+node:ekr.20040723094220:Check Outline commands & allies
     #@+node:ekr.20040723094220.1:checkAllPythonCode
     def checkAllPythonCode(self,event=None,unittest=False,ignoreAtIgnore=True):
@@ -3993,7 +3993,7 @@ class baseCommands:
         for p in c.allNodes_iter():
             p.dump()
     #@-node:ekr.20040412060927:c.dumpOutline
-    #@+node:ekr.20040711135959.1:Pretty Print commands & tests
+    #@+node:ekr.20040711135959.1:Pretty Print commands
     #@+node:ekr.20040712053025:prettyPrintAllPythonCode
     def prettyPrintAllPythonCode (self,event=None,dump=False):
 
@@ -4454,11 +4454,11 @@ class baseCommands:
         #@-node:ekr.20040713070356:replaceBody
         #@-others
     #@-node:ekr.20040711135244.5:class prettyPrinter
-    #@-node:ekr.20040711135959.1:Pretty Print commands & tests
+    #@-node:ekr.20040711135959.1:Pretty Print commands
     #@-node:ekr.20040711135959.2:Check Outline submenu...
     #@+node:ekr.20031218072017.2898:Expand & Contract...
     #@+node:ekr.20031218072017.2899:Commands (outline menu)
-    #@+node:ekr.20031218072017.2900:contractAllHeadlines & test
+    #@+node:ekr.20031218072017.2900:contractAllHeadlines
     def contractAllHeadlines (self,event=None):
 
         '''Contract all nodes in the outline.'''
@@ -4480,7 +4480,7 @@ class baseCommands:
         c.treeFocusHelper()
 
         c.expansionLevel = 1 # Reset expansion level.
-    #@-node:ekr.20031218072017.2900:contractAllHeadlines & test
+    #@-node:ekr.20031218072017.2900:contractAllHeadlines
     #@+node:ekr.20031218072017.2901:contractNode
     def contractNode (self,event=None):
 
@@ -4753,7 +4753,7 @@ class baseCommands:
     #@-node:ekr.20031218072017.2909:Utilities
     #@-node:ekr.20031218072017.2898:Expand & Contract...
     #@+node:ekr.20031218072017.2922:Mark...
-    #@+node:ekr.20031218072017.2923:markChangedHeadlines & test
+    #@+node:ekr.20031218072017.2923:markChangedHeadlines
     def markChangedHeadlines (self,event=None):
 
         '''Mark all nodes that have been changed.'''
@@ -4775,8 +4775,8 @@ class baseCommands:
                 g.es("done",color="blue")
         finally:
             c.endUpdate()
-    #@-node:ekr.20031218072017.2923:markChangedHeadlines & test
-    #@+node:ekr.20031218072017.2924:markChangedRoots & test
+    #@-node:ekr.20031218072017.2923:markChangedHeadlines
+    #@+node:ekr.20031218072017.2924:markChangedRoots
     def markChangedRoots (self,event=None):
 
         '''Mark all changed @root nodes.'''
@@ -4801,8 +4801,8 @@ class baseCommands:
                 g.es("done",color="blue")
         finally:
             c.endUpdate()
-    #@-node:ekr.20031218072017.2924:markChangedRoots & test
-    #@+node:ekr.20031218072017.2925:markAllAtFileNodesDirty & test
+    #@-node:ekr.20031218072017.2924:markChangedRoots
+    #@+node:ekr.20031218072017.2925:markAllAtFileNodesDirty
     def markAllAtFileNodesDirty (self,event=None):
 
         '''Mark all @file nodes as changed.'''
@@ -4820,8 +4820,8 @@ class baseCommands:
                     p.moveToThreadNext()
         finally:
             c.endUpdate()
-    #@-node:ekr.20031218072017.2925:markAllAtFileNodesDirty & test
-    #@+node:ekr.20031218072017.2926:markAtFileNodesDirty & test
+    #@-node:ekr.20031218072017.2925:markAllAtFileNodesDirty
+    #@+node:ekr.20031218072017.2926:markAtFileNodesDirty
     def markAtFileNodesDirty (self,event=None):
 
         '''Mark all @file nodes in the selected tree as changed.'''
@@ -4842,7 +4842,7 @@ class baseCommands:
                     p.moveToThreadNext()
         finally:
             c.endUpdate()
-    #@-node:ekr.20031218072017.2926:markAtFileNodesDirty & test
+    #@-node:ekr.20031218072017.2926:markAtFileNodesDirty
     #@+node:ekr.20031218072017.2927:markClones
     def markClones (self,event=None):
 
@@ -4892,7 +4892,7 @@ class baseCommands:
         finally:
             c.endUpdate()
     #@-node:ekr.20031218072017.2928:markHeadline & est
-    #@+node:ekr.20031218072017.2929:markSubheads & test
+    #@+node:ekr.20031218072017.2929:markSubheads
     def markSubheads (self,event=None):
 
         '''Mark all children of the selected node as changed.'''
@@ -4916,7 +4916,7 @@ class baseCommands:
         finally:
             u.afterChangeGroup(current,undoType,dirtyVnodeList=dirtyVnodeList)
             c.endUpdate()
-    #@-node:ekr.20031218072017.2929:markSubheads & test
+    #@-node:ekr.20031218072017.2929:markSubheads
     #@+node:ekr.20031218072017.2930:unmarkAll
     def unmarkAll (self,event=None):
 
@@ -4955,7 +4955,7 @@ class baseCommands:
         kind = g.choose(h.startswith('@chapter'),'chapter','hoist')
         g.es("Can't move node out of %s" % (kind),color="blue")
     #@-node:ekr.20070420092425:cantMoveMessage
-    #@+node:ekr.20031218072017.1767:demote & test
+    #@+node:ekr.20031218072017.1767:demote
     def demote (self,event=None):
 
         '''Make all following siblings children of the selected node.'''
@@ -4994,7 +4994,7 @@ class baseCommands:
             # c.treeWantsFocusNow()
             c.treeFocusHelper()
         c.updateSyntaxColorer(current) # Moving can change syntax coloring.
-    #@-node:ekr.20031218072017.1767:demote & test
+    #@-node:ekr.20031218072017.1767:demote
     #@+node:ekr.20031218072017.1768:moveOutlineDown
     #@+at 
     #@nonl

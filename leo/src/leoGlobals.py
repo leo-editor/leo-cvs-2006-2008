@@ -429,7 +429,7 @@ def findReference(c,name,root):
     # g.trace("not found:",name,root)
     return c.nullPosition()
 #@-node:ekr.20031218072017.1385:g.findReference
-#@+node:ekr.20031218072017.1260:g.get_directives_dict & test
+#@+node:ekr.20031218072017.1260:g.get_directives_dict
 # The caller passes [root_node] or None as the second arg.  This allows us to distinguish between None and [None].
 
 def get_directives_dict(p,root=None):
@@ -494,7 +494,7 @@ def get_directives_dict(p,root=None):
                 #@nl
             i = g.skip_line(s,i)
     return theDict
-#@-node:ekr.20031218072017.1260:g.get_directives_dict & test
+#@-node:ekr.20031218072017.1260:g.get_directives_dict
 #@+node:ekr.20031218072017.1386:getOutputNewline
 def getOutputNewline (c=None,name=None):
 
@@ -660,7 +660,7 @@ def scanForAtSettings(p):
 
     return False
 #@-node:ekr.20041123094807:g.scanForAtSettings
-#@+node:ekr.20040712084911.1:g.scanForAtLanguage & test
+#@+node:ekr.20040712084911.1:g.scanForAtLanguage
 def scanForAtLanguage(c,p):
 
     """Scan position p and p's ancestors looking only for @language and @ignore directives.
@@ -678,8 +678,8 @@ def scanForAtLanguage(c,p):
                 return language
 
     return c.target_language
-#@-node:ekr.20040712084911.1:g.scanForAtLanguage & test
-#@+node:ekr.20031218072017.1391:g.scanDirectives & test
+#@-node:ekr.20040712084911.1:g.scanForAtLanguage
+#@+node:ekr.20031218072017.1391:g.scanDirectives
 #@+at 
 #@nonl
 # Perhaps this routine should be the basis of atFile.scanAllDirectives and 
@@ -809,7 +809,7 @@ def scanDirectives(c,p=None):
         "tabwidth"  : tab_width,
         "pluginsList": pluginsList,
         "wrap"      : wrap }
-#@-node:ekr.20031218072017.1391:g.scanDirectives & test
+#@-node:ekr.20031218072017.1391:g.scanDirectives
 #@-node:ekr.20031218072017.1380:Directive utils...
 #@+node:ekr.20031218072017.3100:wrap_lines
 #@+at 
@@ -940,7 +940,7 @@ def _callerName (n=1,files=False):
         return '' # "<no caller name>"
 #@-node:ekr.20031218072017.3107:_callerName
 #@-node:ekr.20051023083258:callers & _callerName
-#@+node:ekr.20041105091148:g.pdb & test
+#@+node:ekr.20041105091148:g.pdb
 def pdb ():
 
     """Fall into pdb."""
@@ -948,7 +948,7 @@ def pdb ():
     import pdb # Required: we have just defined pdb as a function!
 
     pdb.set_trace()
-#@-node:ekr.20041105091148:g.pdb & test
+#@-node:ekr.20041105091148:g.pdb
 #@+node:ekr.20031218072017.3108:Dumps
 #@+node:ekr.20031218072017.3109:dump
 def dump(s):
@@ -1008,7 +1008,7 @@ def es_event_exception (eventName,full=False):
     if not g.stdErrIsRedirected(): # 2/16/04
         traceback.print_exc()
 #@-node:ekr.20031218072017.3111:es_event_exception
-#@+node:ekr.20031218072017.3112:es_exception & test
+#@+node:ekr.20031218072017.3112:es_exception
 def es_exception (full=True,c=None,color="red"):
 
     # __pychecker__ = '--no-argsused' # c not used. retained for compatibility.
@@ -1039,7 +1039,7 @@ def es_exception (full=True,c=None,color="red"):
         pdb.set_trace()
 
     return fileName,n
-#@-node:ekr.20031218072017.3112:es_exception & test
+#@-node:ekr.20031218072017.3112:es_exception
 #@+node:ekr.20061015090538:es_exception_type
 def es_exception_type (c=None,color="red"):
 
@@ -1673,7 +1673,7 @@ def printDiffTime(message, start):
 #@-node:ekr.20031218072017.3137:Timing
 #@-node:ekr.20031218072017.3104:Debugging, Dumping, Timing, Tracing & Sherlock
 #@+node:ekr.20031218072017.3116:Files & Directories...
-#@+node:ekr.20031218072017.3117:g.create_temp_file & test
+#@+node:ekr.20031218072017.3117:g.create_temp_file
 def create_temp_file (textMode=False):
     '''Return a tuple (theFile,theFileName)
 
@@ -1703,7 +1703,7 @@ def create_temp_file (textMode=False):
         theFile,theFileName = None,''
 
     return theFile,theFileName
-#@-node:ekr.20031218072017.3117:g.create_temp_file & test
+#@-node:ekr.20031218072017.3117:g.create_temp_file
 #@+node:ekr.20031218072017.3118:g.ensure_extension
 def ensure_extension (name, ext):
 
@@ -2003,7 +2003,7 @@ def update_file_if_changed(c,file_name,temp_name):
         g.es("rename failed: no file created!",color="red")
         g.es(file_name," may be read-only or in use")
 #@-node:ekr.20031218072017.1241:g.update_file_if_changed
-#@+node:ekr.20050104123726.3:g.utils_remove & test
+#@+node:ekr.20050104123726.3:g.utils_remove
 def utils_remove (fileName,verbose=True):
 
     try:
@@ -2014,8 +2014,8 @@ def utils_remove (fileName,verbose=True):
             g.es("exception removing:" + fileName)
             g.es_exception()
         return False
-#@-node:ekr.20050104123726.3:g.utils_remove & test
-#@+node:ekr.20031218072017.1263:g.utils_rename & test
+#@-node:ekr.20050104123726.3:g.utils_remove
+#@+node:ekr.20031218072017.1263:g.utils_rename
 #@<< about os.rename >>
 #@+node:ekr.20050104123726.1:<< about os.rename >>
 #@+at 
@@ -2075,7 +2075,7 @@ def utils_rename (c,src,dst,mode=None,verbose=True):
             g.es('Exception renaming %s to %s' % (src,dst),color='red')
             g.es_exception(full=False)
         return False
-#@-node:ekr.20031218072017.1263:g.utils_rename & test
+#@-node:ekr.20031218072017.1263:g.utils_rename
 #@+node:ekr.20050104124903:g.utils_chmod
 def utils_chmod (fileName,mode,verbose=True):
 
@@ -2641,13 +2641,13 @@ if g.unitTesting:
     g.es_print('done')
 #@-node:ekr.20070621092938:@@test g.es_print
 #@-node:ekr.20050707064040:es_print
-#@+node:ekr.20050707065530:es_trace & test
+#@+node:ekr.20050707065530:es_trace
 def es_trace(s,*args,**keys):
 
     g.trace(g.toEncodedString(s,'ascii'))
     g.es(s,*args,**keys)
 #@nonl
-#@-node:ekr.20050707065530:es_trace & test
+#@-node:ekr.20050707065530:es_trace
 #@+node:ekr.20060810095921:et, et_* and _ (underscore)
 # __pychecker__ = 'no-reuseattr'
 
@@ -3519,7 +3519,7 @@ def skip_id(s,i,chars=None):
     return i
 #@nonl
 #@-node:ekr.20040705195048:skip_id
-#@+node:ekr.20031218072017.3187:skip_line, skip_to_start/end_of_line & tests
+#@+node:ekr.20031218072017.3187:skip_line, skip_to_start/end_of_line
 #@+at 
 #@nonl
 # These methods skip to the next newline, regardless of whether the newline 
@@ -3551,7 +3551,7 @@ def skip_to_start_of_line (s,i):
     i = s.rfind('\n',0,i) # Don't find s[i], so it doesn't matter if s[i] is a newline.
     if i == -1: return 0
     else:       return i + 1
-#@-node:ekr.20031218072017.3187:skip_line, skip_to_start/end_of_line & tests
+#@-node:ekr.20031218072017.3187:skip_line, skip_to_start/end_of_line
 #@+node:ekr.20031218072017.3188:skip_long
 def skip_long(s,i):
 
@@ -3857,34 +3857,6 @@ def isWordChar1 (ch):
     return ch and (ch.isalpha() or ch == u'_')
 #@nonl
 #@-node:ekr.20061006152327:g.isWordChar & g.isWordChar1
-#@+node:ekr.20060216115304.2:g.safeStringCompare & test (Do not use)
-#@+at 
-#@nonl
-# Important: Leo is supposed to convert all characters to unicode,
-# so there should never be a need for safeStringCompare.
-# 
-# The proper way to avoid UnicodeError's is to call 
-# g.toUnicode(s,g.app.tkEncoding)
-# 
-#@-at
-#@@c
-
-if 0:
-    def safeStringCompare (s1,s2):
-
-        s1 = g.toUnicode(s1,'utf-8')
-        s2 = g.toUnicode(s2,'utf-8')
-        return s1 == s2
-
-    def xxx_test_g_safeStringCompare ():
-
-        assert g.safeStringCompare('a','á') is False
-        assert g.safeStringCompare('','á') is False
-        assert g.safeStringCompare('',u'á') is False
-        assert g.safeStringCompare('a','a') is True
-        assert g.safeStringCompare('á','á') is True
-        assert g.safeStringCompare(u'á',u'á') is True
-#@-node:ekr.20060216115304.2:g.safeStringCompare & test (Do not use)
 #@+node:ekr.20031218072017.1503:getpreferredencoding from 2.3a2
 # Suppress warning about redefining getpreferredencoding
 # __pychecker__ = '--no-reuseattr'
@@ -4070,7 +4042,7 @@ def getTestVars ():
 #@-node:ekr.20070524083513:Unit testing (leoGlobals.py)
 #@+node:EKR.20040612114220:Utility classes, functions & objects...
 #@+node:ekr.20050315073003: Index utilities... (leoGlobals) (passed)
-#@+node:ekr.20050314140957:g.convertPythonIndexToRowCol & test
+#@+node:ekr.20050314140957:g.convertPythonIndexToRowCol
 def convertPythonIndexToRowCol (s,i):
 
     '''Convert index i into string s into zero-based row/col indices.'''
@@ -4088,8 +4060,8 @@ def convertPythonIndexToRowCol (s,i):
         prevNL = s.rfind('\n',0,i) # Don't include i
         # g.trace('prevNL',prevNL,'i',i,g.callers())
         return row,i-prevNL-1
-#@-node:ekr.20050314140957:g.convertPythonIndexToRowCol & test
-#@+node:ekr.20050315071727:g.convertRowColToPythonIndex & test
+#@-node:ekr.20050314140957:g.convertPythonIndexToRowCol
+#@+node:ekr.20050315071727:g.convertRowColToPythonIndex
 def convertRowColToPythonIndex (s,row,col,lines=None):
 
     '''Convert zero-based row/col indices into a python index into string s.'''
@@ -4110,7 +4082,7 @@ def convertRowColToPythonIndex (s,row,col,lines=None):
         prev += len(line)
 
     return prev + col
-#@-node:ekr.20050315071727:g.convertRowColToPythonIndex & test
+#@-node:ekr.20050315071727:g.convertRowColToPythonIndex
 #@-node:ekr.20050315073003: Index utilities... (leoGlobals) (passed)
 #@+node:ekr.20031218072017.3140: List utilities...
 #@+node:ekr.20031218072017.3141:appendToList
@@ -4154,7 +4126,7 @@ def angleBrackets(s):
 virtual_event_name = angleBrackets
 #@-node:ekr.20031218072017.3106:angleBrackets & virtual_event_name
 #@+node:ekr.20031218072017.3097:CheckVersion
-#@+node:ekr.20060921100435:CheckVersion, helper & tests
+#@+node:ekr.20060921100435:CheckVersion, helper
 # Simplified version by EKR: stringCompare not used.
 
 def CheckVersion (s1,s2,condition=">=",stringCompare=None,delimiter='.',trace=False):
@@ -4196,7 +4168,7 @@ def CheckVersionToInt (s):
             return 0
 #@nonl
 #@-node:ekr.20070120123930:CheckVersionToInt
-#@-node:ekr.20060921100435:CheckVersion, helper & tests
+#@-node:ekr.20060921100435:CheckVersion, helper
 #@+node:ekr.20060921100435.1:oldCheckVersion (Dave Hein)
 #@+at
 # g.CheckVersion() is a generic version checker.  Assumes a
@@ -5011,7 +4983,7 @@ def funcToMethod(f,theClass,name=None):
     setattr(theClass,name or f.__name__,f)
     # g.trace(name)
 #@-node:ekr.20031218072017.3126:g.funcToMethod
-#@+node:EKR.20040614071102.1:g.getScript & tests
+#@+node:EKR.20040614071102.1:g.getScript
 def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=True):
 
     '''Return the expansion of the selected text of node p.
@@ -5050,7 +5022,7 @@ def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=T
 
     # g.trace(type(script),repr(script))
     return script
-#@-node:EKR.20040614071102.1:g.getScript & tests
+#@-node:EKR.20040614071102.1:g.getScript
 #@+node:ekr.20050920084036.4:g.longestCommonPrefix & g.itemsMatchingPrefixInList
 def longestCommonPrefix (s1,s2):
 
@@ -5125,7 +5097,7 @@ def stripBrackets (s):
         s = s[:-1]
     return s
 #@-node:ekr.20060410112600:g.stripBrackets
-#@+node:ekr.20061031102333.2:g.getWord & getLine & tests
+#@+node:ekr.20061031102333.2:g.getWord & getLine
 def getWord (s,i):
 
     '''Return i,j such that s[i:j] is the word surrounding s[i].'''
@@ -5160,7 +5132,7 @@ def getLine (s,i):
     # g.trace('i,j,k',i,j,k,repr(s[j:k]))
     return j,k
 #@nonl
-#@-node:ekr.20061031102333.2:g.getWord & getLine & tests
+#@-node:ekr.20061031102333.2:g.getWord & getLine
 #@+node:ekr.20041219095213:import wrappers
 #@+at 
 #@nonl
@@ -5170,7 +5142,7 @@ def getLine (s,i):
 # The solutions is easy: simply return sys.modules.get(moduleName) if 
 # moduleName is in sys.modules!
 #@-at
-#@+node:ekr.20040917061619:g.cantImport & test
+#@+node:ekr.20040917061619:g.cantImport
 def cantImport (moduleName,pluginName=None,verbose=True):
 
     """Print a "Can't Import" message and return None."""
@@ -5187,7 +5159,7 @@ def cantImport (moduleName,pluginName=None,verbose=True):
     else:
         g.es_print(s,color="blue")
 
-#@-node:ekr.20040917061619:g.cantImport & test
+#@-node:ekr.20040917061619:g.cantImport
 #@+node:ekr.20041219095213.1:g.importModule
 def importModule (moduleName,pluginName=None,verbose=False):
 
@@ -5540,7 +5512,7 @@ def removeLeadingWhitespace (s,first_ws,tab_width):
         s = s[j:]
     return s
 #@-node:ekr.20031218072017.3202:removeLeadingWhitespace
-#@+node:ekr.20050211120242.2:g.removeExtraLws & tests
+#@+node:ekr.20050211120242.2:g.removeExtraLws
 def removeExtraLws (s,tab_width):
 
     '''Remove extra indentation from one or more lines.
@@ -5568,7 +5540,7 @@ def removeExtraLws (s,tab_width):
             print repr(line)
 
     return result
-#@-node:ekr.20050211120242.2:g.removeExtraLws & tests
+#@-node:ekr.20050211120242.2:g.removeExtraLws
 #@+node:ekr.20031218072017.3203:removeTrailingWs
 # Warning: string.rstrip also removes newlines!
 

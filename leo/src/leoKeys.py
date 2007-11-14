@@ -2885,7 +2885,7 @@ class keyHandlerClass:
         c.endEditing()
         c.bodyWantsFocus()
     #@-node:ekr.20061031131434.130:keyboardQuit
-    #@+node:ekr.20061031131434.131:k.registerCommand & test
+    #@+node:ekr.20061031131434.131:k.registerCommand
     def registerCommand (self,commandName,shortcut,func,pane='all',verbose=False):
 
         '''Make the function available as a minibuffer command,
@@ -2942,7 +2942,7 @@ class keyHandlerClass:
                     if d.get(key) == commandName:
                         c.commandsDict [key] = c.commandsDict.get(commandName)
                         break
-    #@-node:ekr.20061031131434.131:k.registerCommand & test
+    #@-node:ekr.20061031131434.131:k.registerCommand
     #@-node:ekr.20061031131434.125:Externally visible helpers
     #@+node:ekr.20061031131434.145:Master event handlers (keyHandler)
     #@+node:ekr.20061031131434.146:masterKeyHandler
@@ -3944,7 +3944,7 @@ class keyHandlerClass:
     #@nonl
     #@-node:ekr.20061031131434.133:setInputState
     #@+node:ekr.20061031131434.181:Shortcuts (keyHandler)
-    #@+node:ekr.20061031131434.182:isPlainKey & test
+    #@+node:ekr.20061031131434.182:isPlainKey
     def isPlainKey (self,shortcut):
 
         '''Return true if the shortcut refers to a plain (non-Alt,non-Ctl) key.'''
@@ -3968,7 +3968,7 @@ class keyHandlerClass:
 
             # g.trace(isPlain,repr(shortcut))
             return isPlain
-    #@-node:ekr.20061031131434.182:isPlainKey & test
+    #@-node:ekr.20061031131434.182:isPlainKey
     #@+node:ekr.20061031131434.184:shortcutFromSetting (uses k.guiBindNamesDict)
     def shortcutFromSetting (self,setting):
 
