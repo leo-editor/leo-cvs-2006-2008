@@ -728,7 +728,7 @@ def check (self,s,parent):
     else:
         return True
 #@-node:ekr.20070703122141.102:check
-#@+node:ekr.20070703122141.104:checkTrialWrite & tests
+#@+node:ekr.20070703122141.104:checkTrialWrite
 def checkTrialWrite (self,s1=None,s2=None):
 
     '''Return True if a trial write produces the original file.'''
@@ -777,8 +777,8 @@ def checkTrialWrite (self,s1=None,s2=None):
         self.reportMismatch(lines1,lines2,bad_i)
 
     return ok
-#@-node:ekr.20070703122141.104:checkTrialWrite & tests
-#@+node:ekr.20070730093735:compareHelper & tests
+#@-node:ekr.20070703122141.104:checkTrialWrite
+#@+node:ekr.20070730093735:compareHelper
 def compareHelper (self,lines1,lines2,i,strict):
 
     '''Compare lines1[i] and lines2[i].
@@ -829,7 +829,7 @@ def compareHelper (self,lines1,lines2,i,strict):
         d ['actualMismatchLine'] = i+1
         # g.trace('lines 1...\n',repr(lines1),'\nlines2...\n',repr(lines2))
         return False
-#@-node:ekr.20070730093735:compareHelper & tests
+#@-node:ekr.20070730093735:compareHelper
 #@+node:ekr.20071110144948:checkLeadingWhitespace
 def checkLeadingWhitespace (self,line):
 
@@ -844,7 +844,7 @@ def checkLeadingWhitespace (self,line):
 
     return ok
 #@-node:ekr.20071110144948:checkLeadingWhitespace
-#@+node:ekr.20070911110507:reportMismatch & test
+#@+node:ekr.20070911110507:reportMismatch
 def reportMismatch (self,lines1,lines2,bad_i):
 
     def pr(*args,**keys): # reportMismatch
@@ -876,7 +876,7 @@ if False: # Don't clutter the unit tests.
     pr('after')
     pr('done')
 #@-node:ekr.20070913084008:minitest of pr
-#@-node:ekr.20070911110507:reportMismatch & test
+#@-node:ekr.20070911110507:reportMismatch
 #@-node:ekr.20070808115837:Checking
 #@+node:ekr.20070706084535:Code generation
 @ None of these methods should ever need to be overridden in subclasses.
@@ -2230,7 +2230,7 @@ def check (self,s,parent):
     else:
         return True
 #@-node:ekr.20070703122141.102:check
-#@+node:ekr.20070703122141.104:checkTrialWrite & tests
+#@+node:ekr.20070703122141.104:checkTrialWrite
 def checkTrialWrite (self,s1=None,s2=None):
 
     '''Return True if a trial write produces the original file.'''
@@ -2279,8 +2279,8 @@ def checkTrialWrite (self,s1=None,s2=None):
         self.reportMismatch(lines1,lines2,bad_i)
 
     return ok
-#@-node:ekr.20070703122141.104:checkTrialWrite & tests
-#@+node:ekr.20070730093735:compareHelper & tests
+#@-node:ekr.20070703122141.104:checkTrialWrite
+#@+node:ekr.20070730093735:compareHelper
 def compareHelper (self,lines1,lines2,i,strict):
 
     '''Compare lines1[i] and lines2[i].
@@ -2331,7 +2331,7 @@ def compareHelper (self,lines1,lines2,i,strict):
         d ['actualMismatchLine'] = i+1
         # g.trace('lines 1...\n',repr(lines1),'\nlines2...\n',repr(lines2))
         return False
-#@-node:ekr.20070730093735:compareHelper & tests
+#@-node:ekr.20070730093735:compareHelper
 #@+node:ekr.20071110144948:checkLeadingWhitespace
 def checkLeadingWhitespace (self,line):
 
@@ -2346,7 +2346,7 @@ def checkLeadingWhitespace (self,line):
 
     return ok
 #@-node:ekr.20071110144948:checkLeadingWhitespace
-#@+node:ekr.20070911110507:reportMismatch & test
+#@+node:ekr.20070911110507:reportMismatch
 def reportMismatch (self,lines1,lines2,bad_i):
 
     def pr(*args,**keys): # reportMismatch
@@ -2378,7 +2378,7 @@ if False: # Don't clutter the unit tests.
     pr('after')
     pr('done')
 #@-node:ekr.20070913084008:minitest of pr
-#@-node:ekr.20070911110507:reportMismatch & test
+#@-node:ekr.20070911110507:reportMismatch
 #@-node:ekr.20070808115837:Checking
 #@+node:ekr.20070706084535:Code generation
 @ None of these methods should ever need to be overridden in subclasses.
@@ -3649,7 +3649,7 @@ def check (self,s,parent):
     else:
         return True
 #@-node:ekr.20070703122141.102:check
-#@+node:ekr.20070703122141.104:checkTrialWrite & tests
+#@+node:ekr.20070703122141.104:checkTrialWrite
 def checkTrialWrite (self,s1=None,s2=None):
 
     '''Return True if a trial write produces the original file.'''
@@ -3698,8 +3698,8 @@ def checkTrialWrite (self,s1=None,s2=None):
         self.reportMismatch(lines1,lines2,bad_i)
 
     return ok
-#@-node:ekr.20070703122141.104:checkTrialWrite & tests
-#@+node:ekr.20070730093735:compareHelper & tests
+#@-node:ekr.20070703122141.104:checkTrialWrite
+#@+node:ekr.20070730093735:compareHelper
 def compareHelper (self,lines1,lines2,i,strict):
 
     '''Compare lines1[i] and lines2[i].
@@ -3750,7 +3750,7 @@ def compareHelper (self,lines1,lines2,i,strict):
         d ['actualMismatchLine'] = i+1
         # g.trace('lines 1...\n',repr(lines1),'\nlines2...\n',repr(lines2))
         return False
-#@-node:ekr.20070730093735:compareHelper & tests
+#@-node:ekr.20070730093735:compareHelper
 #@+node:ekr.20071110144948:checkLeadingWhitespace
 def checkLeadingWhitespace (self,line):
 
@@ -3765,7 +3765,7 @@ def checkLeadingWhitespace (self,line):
 
     return ok
 #@-node:ekr.20071110144948:checkLeadingWhitespace
-#@+node:ekr.20070911110507:reportMismatch & test
+#@+node:ekr.20070911110507:reportMismatch
 def reportMismatch (self,lines1,lines2,bad_i):
 
     def pr(*args,**keys): # reportMismatch
@@ -3797,7 +3797,7 @@ if False: # Don't clutter the unit tests.
     pr('after')
     pr('done')
 #@-node:ekr.20070913084008:minitest of pr
-#@-node:ekr.20070911110507:reportMismatch & test
+#@-node:ekr.20070911110507:reportMismatch
 #@-node:ekr.20070808115837:Checking
 #@+node:ekr.20070706084535:Code generation
 @ None of these methods should ever need to be overridden in subclasses.
@@ -6551,7 +6551,7 @@ dict had to change.
 3. Refactored common code into g.computeRelativePath().
 #@nonl
 #@-node:ekr.20071109171700:What I did
-#@+node:ekr.20031218072017.1260:g.get_directives_dict & test
+#@+node:ekr.20031218072017.1260:g.get_directives_dict
 # The caller passes [root_node] or None as the second arg.  This allows us to distinguish between None and [None].
 
 def get_directives_dict(p,root=None):
@@ -6609,7 +6609,7 @@ if i < n and s[i] == '*' :
         else:
             g.es(g.angleBrackets("*") + "= requires @root in the headline")
 #@-node:ekr.20031218072017.1262:<< set theDict["root"] for noweb * chunks >>
-#@-node:ekr.20031218072017.1260:g.get_directives_dict & test
+#@-node:ekr.20031218072017.1260:g.get_directives_dict
 #@+node:ekr.20071109165315:g.computeRelativePath
 def computeRelativePath (path):
 
@@ -6772,7 +6772,7 @@ def findReference(c,name,root):
     # g.trace("not found:",name,root)
     return c.nullPosition()
 #@-node:ekr.20031218072017.1385:g.findReference
-#@+node:ekr.20031218072017.1260:g.get_directives_dict & test
+#@+node:ekr.20031218072017.1260:g.get_directives_dict
 # The caller passes [root_node] or None as the second arg.  This allows us to distinguish between None and [None].
 
 def get_directives_dict(p,root=None):
@@ -6830,7 +6830,7 @@ if i < n and s[i] == '*' :
         else:
             g.es(g.angleBrackets("*") + "= requires @root in the headline")
 #@-node:ekr.20031218072017.1262:<< set theDict["root"] for noweb * chunks >>
-#@-node:ekr.20031218072017.1260:g.get_directives_dict & test
+#@-node:ekr.20031218072017.1260:g.get_directives_dict
 #@+node:ekr.20031218072017.1386:getOutputNewline
 def getOutputNewline (c=None,name=None):
 
@@ -6996,7 +6996,7 @@ def scanForAtSettings(p):
 
     return False
 #@-node:ekr.20041123094807:g.scanForAtSettings
-#@+node:ekr.20040712084911.1:g.scanForAtLanguage & test
+#@+node:ekr.20040712084911.1:g.scanForAtLanguage
 def scanForAtLanguage(c,p):
 
     """Scan position p and p's ancestors looking only for @language and @ignore directives.
@@ -7014,8 +7014,8 @@ def scanForAtLanguage(c,p):
                 return language
 
     return c.target_language
-#@-node:ekr.20040712084911.1:g.scanForAtLanguage & test
-#@+node:ekr.20031218072017.1391:g.scanDirectives & test
+#@-node:ekr.20040712084911.1:g.scanForAtLanguage
+#@+node:ekr.20031218072017.1391:g.scanDirectives
 @ Perhaps this routine should be the basis of atFile.scanAllDirectives and tangle.scanAllDirectives, but I am loath to make any further to these two already-infamous routines.  Also, this code does not check for @color and @nocolor directives: leoColor.useSyntaxColoring does that.
 @c
 
@@ -7131,10 +7131,10 @@ if not old.has_key("wrap") and not old.has_key("nowrap"):
     elif theDict.has_key("nowrap"):
         wrap = False
 #@-node:ekr.20031218072017.1400:<< Test for @wrap and @nowrap >>
-#@-node:ekr.20031218072017.1391:g.scanDirectives & test
+#@-node:ekr.20031218072017.1391:g.scanDirectives
 #@-node:ekr.20031218072017.1380:Directive utils...
 #@+node:ekr.20071109124553:Found: get_directives_dict
-#@+node:ekr.20041005105605.222:atFile.scanAllDirectives & test
+#@+node:ekr.20041005105605.222:atFile.scanAllDirectives
 @ Once a directive is seen, no other related directives in nodes further up the tree have any effect.  For example, if an @color directive is seen in node p, no @color or @nocolor directives are examined in any ancestor of p.
 
 This code is similar to Commands.scanAllDirectives, but it has been modified for use by the atFile class.
@@ -7329,7 +7329,7 @@ else: # Emergency!
 
 # g.trace(repr(self.startSentinelComment),repr(self.endSentinelComment))
 #@-node:ekr.20041005105605.235:<< Set comment strings from delims >>
-#@-node:ekr.20041005105605.222:atFile.scanAllDirectives & test
+#@-node:ekr.20041005105605.222:atFile.scanAllDirectives
 #@+node:ekr.20041005105605.236:atFile.scanDefaultDirectory
 def scanDefaultDirectory(self,p,importing=False):
 
@@ -7434,7 +7434,7 @@ def scanColorDirectives(c,p):
 
     return language
 #@-node:ekr.20070302160802:g.scanColorDirectives
-#@+node:ekr.20031218072017.1391:g.scanDirectives & test
+#@+node:ekr.20031218072017.1391:g.scanDirectives
 @ Perhaps this routine should be the basis of atFile.scanAllDirectives and tangle.scanAllDirectives, but I am loath to make any further to these two already-infamous routines.  Also, this code does not check for @color and @nocolor directives: leoColor.useSyntaxColoring does that.
 @c
 
@@ -7550,7 +7550,7 @@ if not old.has_key("wrap") and not old.has_key("nowrap"):
     elif theDict.has_key("nowrap"):
         wrap = False
 #@-node:ekr.20031218072017.1400:<< Test for @wrap and @nowrap >>
-#@-node:ekr.20031218072017.1391:g.scanDirectives & test
+#@-node:ekr.20031218072017.1391:g.scanDirectives
 #@+node:ekr.20040715155607:g.scanForAtIgnore
 def scanForAtIgnore(c,p):
 
@@ -7566,7 +7566,7 @@ def scanForAtIgnore(c,p):
 
     return False
 #@-node:ekr.20040715155607:g.scanForAtIgnore
-#@+node:ekr.20040712084911.1:g.scanForAtLanguage & test
+#@+node:ekr.20040712084911.1:g.scanForAtLanguage
 def scanForAtLanguage(c,p):
 
     """Scan position p and p's ancestors looking only for @language and @ignore directives.
@@ -7584,8 +7584,8 @@ def scanForAtLanguage(c,p):
                 return language
 
     return c.target_language
-#@-node:ekr.20040712084911.1:g.scanForAtLanguage & test
-#@+node:ekr.20031218072017.1377:scanColorDirectives (leoColor) & test
+#@-node:ekr.20040712084911.1:g.scanForAtLanguage
+#@+node:ekr.20031218072017.1377:scanColorDirectives (leoColor)
 def scanColorDirectives(self,p):
 
     """Scan position p and p's ancestors looking for @comment, @language and @root directives,
@@ -7633,7 +7633,7 @@ if theDict.has_key("root") and not self.rootMode:
         doc = c.config.at_root_bodies_start_in_doc_mode
         self.rootMode = g.choose(doc,"doc","code")
 #@-node:ekr.20031218072017.1379:<< Test for @root, @root-doc or @root-code >>
-#@-node:ekr.20031218072017.1377:scanColorDirectives (leoColor) & test
+#@-node:ekr.20031218072017.1377:scanColorDirectives (leoColor)
 #@+node:ekr.20031218072017.1375:scanForTabWidth
 # Similar to code in scanAllDirectives.
 
@@ -7674,7 +7674,7 @@ def tangle(self,event=None):
 
     g.es("tangle complete")
 #@-node:ekr.20031218072017.3472:tangle (test)
-#@+node:ekr.20031218072017.1360:tangle.scanAllDirectives & test
+#@+node:ekr.20031218072017.1360:tangle.scanAllDirectives
 @ Once a directive is seen, related directives in ancesors have no effect.  For example, if an @color directive is seen in node x, no @color or @nocolor directives are examined in any ancestor of x.
 @c
 
@@ -7916,7 +7916,7 @@ else: # 9/25/02
             g.es(kind + " directory: " + dir2)
 #@-node:ekr.20031218072017.1374:<< handle absolute path >>
 #@-node:ekr.20031218072017.1373:<< Set self.tangle_directory >>
-#@-node:ekr.20031218072017.1360:tangle.scanAllDirectives & test
+#@-node:ekr.20031218072017.1360:tangle.scanAllDirectives
 #@+node:ekr.20031218072017.3475:tanglePass1 (test)
 # Traverses the tree whose root is given, handling each headline and associated body text.
 
@@ -8086,7 +8086,7 @@ def useSyntaxColoring (self,p):
     return True
 #@-node:ekr.20031218072017.2805:useSyntaxColoring
 #@-node:ekr.20071109124553:Found: get_directives_dict
-#@+node:ekr.20051125080855:selfInsertCommand, helpers & tests
+#@+node:ekr.20051125080855:selfInsertCommand, helpers
 def selfInsertCommand(self,event,action='insert'):
 
     '''Insert a character in the body pane.
@@ -8326,7 +8326,7 @@ def updateTab (self,p,w):
     w.setSelectionRange(ins,ins,insert=ins)
 #@nonl
 #@-node:ekr.20051026092433:updateTab
-#@-node:ekr.20051125080855:selfInsertCommand, helpers & tests
+#@-node:ekr.20051125080855:selfInsertCommand, helpers
 #@+node:ekr.20040803072955.91:onHeadChanged
 # Tricky code: do not change without careful thought and testing.
 
@@ -9754,7 +9754,7 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
 @ 1/6/05: The problem with Tkinter is that imp.load_module is equivalent to reload.
 
 The solutions is easy: simply return sys.modules.get(moduleName) if moduleName is in sys.modules!
-#@+node:ekr.20040917061619:g.cantImport & test
+#@+node:ekr.20040917061619:g.cantImport
 def cantImport (moduleName,pluginName=None,verbose=True):
 
     """Print a "Can't Import" message and return None."""
@@ -9771,7 +9771,7 @@ def cantImport (moduleName,pluginName=None,verbose=True):
     else:
         g.es_print(s,color="blue")
 
-#@-node:ekr.20040917061619:g.cantImport & test
+#@-node:ekr.20040917061619:g.cantImport
 #@+node:ekr.20041219095213.1:g.importModule
 def importModule (moduleName,pluginName=None,verbose=False):
 

@@ -3469,7 +3469,7 @@ def scrollUp (self,event):
 def scrollUpExtendSelection (self,event):
     '''Extend the text selection by scrolling the body text up one page.'''
     self.scrollHelper(event,'up',extend=True)
-#@+node:ekr.20060113082917:scrollHelper & test
+#@+node:ekr.20060113082917:scrollHelper
 def scrollHelper (self,event,direction,extend):
 
     k = self.k ; c = k.c ; gui = g.app.gui
@@ -3495,7 +3495,7 @@ def scrollHelper (self,event,direction,extend):
             self.scrollOutlineDownPage()
         else:
             self.scrollOutlineUpPage()
-#@-node:ekr.20060113082917:scrollHelper & test
+#@-node:ekr.20060113082917:scrollHelper
 #@+node:ekr.20050920084036.147:measure
 def measure (self,w):
 
@@ -7151,7 +7151,7 @@ reading d:\test.leo
 
 
 #@-node:ekr.20031218072017.721:Test File for Non Expanding Tabs
-#@+node:ekr.20031218072017.722:setTabWidth (tkFrame) (changed)
+#@+node:ekr.20031218072017.722:setTabWidth (tkFrame)
 def setTabWidth (self, w):
 
     try: # This can fail when called from scripts
@@ -7166,7 +7166,7 @@ def setTabWidth (self, w):
     except:
         g.es_exception()
         pass
-#@-node:ekr.20031218072017.722:setTabWidth (tkFrame) (changed)
+#@-node:ekr.20031218072017.722:setTabWidth (tkFrame)
 #@-node:ekr.20031218072017.718:(tab bug)
 #@-node:ekr.20031218072017.673:Tk bugs
 #@+node:ekr.20040129133809.8:top node not saved
