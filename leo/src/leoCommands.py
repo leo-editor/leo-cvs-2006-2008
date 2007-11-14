@@ -595,53 +595,6 @@ class baseCommands:
         c = self
         return self.all_unique_vnodes_iter_class(c)
     #@-node:EKR.20040529091232.4:c.all_unique_vnodes_iter
-    #@+node:ekr.20070627082044.866:@test c iters
-    if g.unitTesting:
-        #@    << coverage tests >>
-        #@+node:ekr.20070627082044.867:<< coverage tests >>
-        v1 = [p.v for p in c.all_positions_iter()]
-        v2 = [v for v in c.all_vnodes_iter()]
-        for v in v2: assert(v in v1)
-        for v in v1: assert(v in v2)
-
-        t1 = [p.v.t for p in c.all_positions_iter()]
-        t2 = [t for t in c.all_tnodes_iter()]
-        for t in t2: assert(t in t1)
-        for t in t1: assert(t in t2)
-
-        # print "coverage tests pass"
-        #@nonl
-        #@-node:ekr.20070627082044.867:<< coverage tests >>
-        #@nl
-        #@    << duplicate tests >>
-        #@+node:ekr.20070627082044.868:<< duplicate tests >>
-        nodes = []
-        for v in c.all_unique_vnodes_iter():
-            assert v not in nodes
-            nodes.append(v)
-
-        nodes = []
-        for t in c.all_unique_tnodes_iter():
-            assert t not in nodes
-            nodes.append(t)
-
-        # print "duplicate tests pass"
-        #@nonl
-        #@-node:ekr.20070627082044.868:<< duplicate tests >>
-        #@nl
-
-        if 0:
-            print "vnodes",len([v for v in c.all_vnodes_iter()]),len([v for v in c.all_unique_vnodes_iter()])
-            print "tnodes",len([t for t in c.all_tnodes_iter()]),len([t for t in c.all_unique_tnodes_iter()])
-
-        if 0: # all nodes
-            for v in c.all_vnodes_iter(): print v
-            for t in c.all_tnodes_iter(): print t
-
-        if 0: # unique nodes
-            for v in c.all_unique_vnodes_iter(): print v
-            for t in c.all_unique_tnodes_iter(): print t
-    #@-node:ekr.20070627082044.866:@test c iters
     #@-node:ekr.20040312090934:c.iterators
     #@+node:ekr.20051106040126:c.executeMinibufferCommand
     def executeMinibufferCommand (self,commandName):
@@ -1820,15 +1773,6 @@ class baseCommands:
         return path
     #@nonl
     #@-node:ekr.20070115135502:writeScriptFile
-    #@+node:ekr.20070627082044.855:@test pre-definition of g in scripts
-    if g.unitTesting:
-        # print g.listToString(dir())
-
-        for ivar in ('c','g','p'):
-            assert ivar in dir()
-
-        assert hasattr(g.app,'tkEncoding')
-    #@-node:ekr.20070627082044.855:@test pre-definition of g in scripts
     #@-node:ekr.20031218072017.2140:c.executeScript & helpers
     #@+node:ekr.20031218072017.2864:goToLineNumber & allies
     def goToLineNumber (self,event=None,root=None,lines=None,n=None,scriptFind=False):
@@ -2812,35 +2756,6 @@ class baseCommands:
     # ([(x){y}]))
     # Test  ((x)(unmatched
     #@-node:ekr.20061113221414:findMatchingBracketHelper
-    #@+node:ekr.20070627082044.277:@test c.findMatchingBracket
-    if g.unitTesting:
-        w = c.frame.body.bodyCtrl
-        s = w.getAllText()
-
-        c.beginUpdate()
-        try:
-            pattern = '(abc)'
-            for index,result in (
-                (len(s)+len(pattern),'('),
-                (len(s)+len(pattern)-4,')'),
-            ):
-                w.setAllText(s)
-                p.v.t.bodyString = s
-                w.setInsertPoint('end')
-                w.insert('end',pattern)
-                w.setInsertPoint(index)
-                c.findMatchingBracket()
-                ins = w.getInsertPoint()
-                s2 = w.getAllText()
-                ins = min(ins,len(s2)-1)
-                assert s2[ins] == result,'Expected: %s, got: %s' % (repr(result),repr(s2[ins]))
-        finally:
-            w.setAllText(s)
-            p.v.t.bodyString = s
-            c.recolor()
-            c.endUpdate(False)
-    # end:
-    #@-node:ekr.20070627082044.277:@test c.findMatchingBracket
     #@-node:ekr.20031218072017.1827:c.findMatchingBracket, helper and test
     #@+node:ekr.20031218072017.1829:getBodyLines
     def getBodyLines (self,expandSelection=False):
@@ -2947,27 +2862,6 @@ class baseCommands:
             s = time.strftime(default_format,time.gmtime())
         return s
     #@-node:ekr.20031218072017.1832:getTime
-    #@+node:ekr.20070627082044.843:@test c.getTime
-    if g.unitTesting:
-
-        assert type(c.getTime()) == type('')
-    #@-node:ekr.20070627082044.843:@test c.getTime
-    #@+node:ekr.20070627082044.278:@test c.insertBodyTime
-    if g.unitTesting:
-        w = c.frame.body.bodyCtrl
-        s = w.getAllText()
-
-        c.beginUpdate()
-        try:
-            w.setInsertPoint(len(s))
-            c.insertBodyTime()
-        finally:
-            w.setAllText(s)
-            p.v.t.bodyString = s
-            # c.recolor()
-            c.endUpdate(False)
-    # end:
-    #@-node:ekr.20070627082044.278:@test c.insertBodyTime
     #@-node:ekr.20031218072017.1831:insertBodyTime, helpers and tests
     #@+node:ekr.20050312114529:insert/removeComments
     #@+node:ekr.20050312114529.1:addComments (test)
@@ -3942,12 +3836,6 @@ class baseCommands:
             #@-node:ekr.20040314043900:<<print summary message >>
             #@nl
         return errors
-    #@+node:ekr.20070627082044.815:@test CheckOutline
-    if g.unitTesting:
-        errors = c.checkOutline(verbose=False,unittest=True,full=True) # Run full check.
-
-        assert errors == 0, "Check Outline reported %d errors" % errors
-    #@-node:ekr.20070627082044.815:@test CheckOutline
     #@-node:ekr.20031218072017.2072:c.checkOutline & test
     #@+node:ekr.20040723094220:Check Outline commands & allies
     #@+node:ekr.20040723094220.1:checkAllPythonCode
@@ -4566,31 +4454,6 @@ class baseCommands:
         #@-node:ekr.20040713070356:replaceBody
         #@-others
     #@-node:ekr.20040711135244.5:class prettyPrinter
-    #@+node:ekr.20070627082044.816:@test pretty printing a docstring
-    if g.unitTesting:
-        test1 = p.firstChild()
-        test2 = p.firstChild().next()
-
-        c.prettyPrintPythonCode(p=test2,dump=False)
-
-        assert(test2.bodyString()==test1.bodyString())
-    #@+node:ekr.20070627082044.817:Original
-    """
-    line 1
-    line 2
-    line 3
-    """
-    #@nonl
-    #@-node:ekr.20070627082044.817:Original
-    #@+node:ekr.20070627082044.818:Test
-    """
-    line 1
-    line 2
-    line 3
-    """
-    #@nonl
-    #@-node:ekr.20070627082044.818:Test
-    #@-node:ekr.20070627082044.816:@test pretty printing a docstring
     #@-node:ekr.20040711135959.1:Pretty Print commands & tests
     #@-node:ekr.20040711135959.2:Check Outline submenu...
     #@+node:ekr.20031218072017.2898:Expand & Contract...
@@ -4617,14 +4480,6 @@ class baseCommands:
         c.treeFocusHelper()
 
         c.expansionLevel = 1 # Reset expansion level.
-    #@+node:ekr.20070627082044.942:@test c.contractAllHeadlines
-    if g.unitTesting:
-        c.contractAllHeadlines()
-        p = c.rootPosition()
-        while p.hasNext():
-            p.moveToNext()
-        c.selectPosition(p)
-    #@-node:ekr.20070627082044.942:@test c.contractAllHeadlines
     #@-node:ekr.20031218072017.2900:contractAllHeadlines & test
     #@+node:ekr.20031218072017.2901:contractNode
     def contractNode (self,event=None):
@@ -4920,26 +4775,6 @@ class baseCommands:
                 g.es("done",color="blue")
         finally:
             c.endUpdate()
-    #@+node:ekr.20070627082044.673:@test markChangedHeadlines
-    if g.unitTesting:
-        marks = [p.v for p in c.allNodes_iter() if p.isMarked()]
-        try:
-            ok = True
-            try:
-                c.markChangedHeadlines()
-            except Exception:
-                ok = False
-        finally:
-            for p in c.allNodes_iter():
-                if p.v in marks:
-                    if not p.isMarked():
-                        c.setMarked(p)
-                else:
-                    if p.isMarked():
-                        c.clearMarked(p)
-
-        if not ok: raise
-    #@-node:ekr.20070627082044.673:@test markChangedHeadlines
     #@-node:ekr.20031218072017.2923:markChangedHeadlines & test
     #@+node:ekr.20031218072017.2924:markChangedRoots & test
     def markChangedRoots (self,event=None):
@@ -4966,26 +4801,6 @@ class baseCommands:
                 g.es("done",color="blue")
         finally:
             c.endUpdate()
-    #@+node:ekr.20070627082044.674:@test markChangedRoots
-    if g.unitTesting:
-        marks = [p.v for p in c.allNodes_iter() if p.isMarked()]
-        try:
-            ok = True
-            try:
-                c.markChangedRoots()
-            except Exception:
-                ok = False
-        finally:
-            for p in c.allNodes_iter():
-                if p.v in marks:
-                    if not p.isMarked():
-                        c.setMarked(p)
-                else:
-                    if p.isMarked():
-                        c.clearMarked(p)
-
-        if not ok: raise
-    #@-node:ekr.20070627082044.674:@test markChangedRoots
     #@-node:ekr.20031218072017.2924:markChangedRoots & test
     #@+node:ekr.20031218072017.2925:markAllAtFileNodesDirty & test
     def markAllAtFileNodesDirty (self,event=None):
@@ -5005,26 +4820,6 @@ class baseCommands:
                     p.moveToThreadNext()
         finally:
             c.endUpdate()
-    #@+node:ekr.20070627082044.675:@test markAllAtFileNodesDirty
-    if g.unitTesting:
-        marks = [p.v for p in c.allNodes_iter() if p.isMarked()]
-        try:
-            ok = True
-            try:
-                c.markAllAtFileNodesDirty()
-            except Exception:
-                ok = False
-        finally:
-            for p in c.allNodes_iter():
-                if p.v in marks:
-                    if not p.isMarked():
-                        c.setMarked(p)
-                else:
-                    if p.isMarked():
-                        c.clearMarked(p)
-
-        if not ok: raise
-    #@-node:ekr.20070627082044.675:@test markAllAtFileNodesDirty
     #@-node:ekr.20031218072017.2925:markAllAtFileNodesDirty & test
     #@+node:ekr.20031218072017.2926:markAtFileNodesDirty & test
     def markAtFileNodesDirty (self,event=None):
@@ -5047,26 +4842,6 @@ class baseCommands:
                     p.moveToThreadNext()
         finally:
             c.endUpdate()
-    #@+node:ekr.20070627082044.676:@test markAtFileNodesDirty
-    if g.unitTesting:
-        marks = [p.v for p in c.allNodes_iter() if p.isMarked()]
-        try:
-            ok = True
-            try:
-                c.markAtFileNodesDirty()
-            except Exception:
-                ok = False
-        finally:
-            for p in c.allNodes_iter():
-                if p.v in marks:
-                    if not p.isMarked():
-                        c.setMarked(p)
-                else:
-                    if p.isMarked():
-                        c.clearMarked(p)
-
-        if not ok: raise
-    #@-node:ekr.20070627082044.676:@test markAtFileNodesDirty
     #@-node:ekr.20031218072017.2926:markAtFileNodesDirty & test
     #@+node:ekr.20031218072017.2927:markClones
     def markClones (self,event=None):
@@ -5116,26 +4891,6 @@ class baseCommands:
             u.afterMark(p,undoType,bunch,dirtyVnodeList=dirtyVnodeList)
         finally:
             c.endUpdate()
-    #@+node:ekr.20070627082044.678:@test markHeadline
-    if g.unitTesting:
-        marks = [p.v for p in c.allNodes_iter() if p.isMarked()]
-        try:
-            ok = True
-            try:
-                c.markHeadline()
-            except Exception:
-                ok = False
-        finally:
-            for p in c.allNodes_iter():
-                if p.v in marks:
-                    if not p.isMarked():
-                        c.setMarked(p)
-                else:
-                    if p.isMarked():
-                        c.clearMarked(p)
-
-        if not ok: raise
-    #@-node:ekr.20070627082044.678:@test markHeadline
     #@-node:ekr.20031218072017.2928:markHeadline & est
     #@+node:ekr.20031218072017.2929:markSubheads & test
     def markSubheads (self,event=None):
@@ -5161,34 +4916,6 @@ class baseCommands:
         finally:
             u.afterChangeGroup(current,undoType,dirtyVnodeList=dirtyVnodeList)
             c.endUpdate()
-    #@+node:ekr.20070627082044.679:@test markSubheads
-    if g.unitTesting:
-        marks = [p.v for p in c.allNodes_iter() if p.isMarked()]
-        try:
-            ok = True
-            try:
-                c.markSubheads()
-            except Exception:
-                ok = False
-        finally:
-            for p in c.allNodes_iter():
-                if p.v in marks:
-                    if not p.isMarked():
-                        c.setMarked(p)
-                else:
-                    if p.isMarked():
-                        c.clearMarked(p)
-
-        if not ok: raise
-    #@+node:ekr.20070627082044.680:child 1
-    pass
-    #@nonl
-    #@-node:ekr.20070627082044.680:child 1
-    #@+node:ekr.20070627082044.681:child 2
-    pass
-    #@nonl
-    #@-node:ekr.20070627082044.681:child 2
-    #@-node:ekr.20070627082044.679:@test markSubheads
     #@-node:ekr.20031218072017.2929:markSubheads & test
     #@+node:ekr.20031218072017.2930:unmarkAll
     def unmarkAll (self,event=None):
@@ -5218,26 +4945,6 @@ class baseCommands:
             u.afterChangeGroup(current,undoType,dirtyVnodeList=dirtyVnodeList)
             c.endUpdate()
     #@nonl
-    #@+node:ekr.20070627082044.682:@test unmarkAll
-    if g.unitTesting:
-        marks = [p.v for p in c.allNodes_iter() if p.isMarked()]
-        try:
-            ok = True
-            try:
-                c.unmarkAll()
-            except Exception:
-                ok = False
-        finally:
-            for p in c.allNodes_iter():
-                if p.v in marks:
-                    if not p.isMarked():
-                        c.setMarked(p)
-                else:
-                    if p.isMarked():
-                        c.clearMarked(p)
-
-        if not ok: raise
-    #@-node:ekr.20070627082044.682:@test unmarkAll
     #@-node:ekr.20031218072017.2930:unmarkAll
     #@-node:ekr.20031218072017.2922:Mark...
     #@+node:ekr.20031218072017.1766:Move... (Commands)
@@ -5287,34 +4994,6 @@ class baseCommands:
             # c.treeWantsFocusNow()
             c.treeFocusHelper()
         c.updateSyntaxColorer(current) # Moving can change syntax coloring.
-    #@+node:ekr.20070627082044.941:@test illegal clone demote
-    if g.unitTesting:
-        # Remove any previous children.
-        while p.hasChildren():
-            p.firstChild().doDelete()
-        # Create two cloned children.
-        c.selectPosition(p)
-        c.insertHeadline()
-        p2 = c.currentPosition()
-        p2.moveToFirstChildOf(p)
-        p2.setHeadString('aClone')
-        c.clone()
-        assert 2 == p.numberOfChildren()
-
-        c.beginUpdate()
-        try:
-            # Select the first clone and demote (it should be illegal)
-            c.selectPosition(p2)
-            c.demote() # This should do nothing.
-            assert g.app.unitTestDict.get('checkMoveWithParentWithWarning')
-            assert 0 == c.checkOutline(event=None,verbose=False,unittest=True,full=True)
-            assert 2 == p.numberOfChildren()
-            # Delete the children, but only if there are no errors.
-            while p.hasChildren():
-                p.firstChild().doDelete()
-        finally:
-            c.endUpdate()
-    #@-node:ekr.20070627082044.941:@test illegal clone demote
     #@-node:ekr.20031218072017.1767:demote & test
     #@+node:ekr.20031218072017.1768:moveOutlineDown
     #@+at 

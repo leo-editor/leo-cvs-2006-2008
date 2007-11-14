@@ -1550,20 +1550,6 @@ class baseLeoImportCommands:
                 self.reportMismatch(lines1,lines2,bad_i)
 
             return ok
-        #@+node:ekr.20070816103348:@test checkTriailWrite
-        if g.unitTesting:
-
-            ic = c.importCommands
-            runner = ic.baseScannerClass(ic,atAuto=True,language='python')
-            runner.root = p.copy()
-
-            g.app.unitTestDict ['expectedErrors'] = 1
-            g.app.unitTestDict ['expectedMismatchLine'] = 2
-
-            s1 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2\n',encoding='utf-8')
-            s2 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2a\n',encoding='utf-8')
-            runner.checkTrialWrite(s1=s1,s2=s2)
-        #@-node:ekr.20070816103348:@test checkTriailWrite
         #@-node:ekr.20070703122141.104:checkTrialWrite & tests
         #@+node:ekr.20070730093735:compareHelper & tests
         def compareHelper (self,lines1,lines2,i,strict):

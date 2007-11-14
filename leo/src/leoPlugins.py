@@ -111,18 +111,6 @@ def getHandlersForOneTag (tag):
     aList = handlers.get(tag,[])
     return aList
     # return [bunch.fn for bunch in aList]
-#@+node:ekr.20071022154209:@test getHandlersForTag
-if g.unitTesting:
-
-    import leoPlugins
-
-    aList1 = leoPlugins.getHandlersForTag('select1')
-    aList2 = leoPlugins.getHandlersForOneTag('select1')
-
-    assert type(aList1) == type([])
-    assert type(aList2) == type([])
-    assert aList1 == aList2
-#@-node:ekr.20071022154209:@test getHandlersForTag
 #@-node:ekr.20041111124831:getHandlersForTag
 #@+node:ekr.20041114113029:getPluginModule
 def getPluginModule (moduleName):

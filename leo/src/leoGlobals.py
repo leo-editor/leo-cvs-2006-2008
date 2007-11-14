@@ -494,25 +494,6 @@ def get_directives_dict(p,root=None):
                 #@nl
             i = g.skip_line(s,i)
     return theDict
-#@+node:ekr.20071109224138:@test g.get_directives_dict
-# This will work regardless of where this method is.
-#@@language python
-#@@tabwidth -4
-#@verbatim
-#@path xyzzy
-#@@pagewidth 80
-
-# Does not work when run externally with null colorizer.
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    d = c.atFileCommands.scanAllDirectives(p)
-
-    assert d.get('language') == 'python'
-    assert d.get('tabwidth') == -4
-    # assert d.get('path').endswith('xyzzy')
-    assert d.get('pagewidth') == 80
-#@-node:ekr.20071109224138:@test g.get_directives_dict
 #@-node:ekr.20031218072017.1260:g.get_directives_dict & test
 #@+node:ekr.20031218072017.1386:getOutputNewline
 def getOutputNewline (c=None,name=None):
@@ -697,17 +678,6 @@ def scanForAtLanguage(c,p):
                 return language
 
     return c.target_language
-#@+node:ekr.20071109221215:@test scanColorDirectives
-# This will work regardless of where this method is.
-#@@language python
-
-# Does not work when run externally with null colorizer.
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    language = g.scanForAtLanguage(c,p)
-    assert language == 'python','got:%s' % language
-#@-node:ekr.20071109221215:@test scanColorDirectives
 #@-node:ekr.20040712084911.1:g.scanForAtLanguage & test
 #@+node:ekr.20031218072017.1391:g.scanDirectives & test
 #@+at 
@@ -839,22 +809,6 @@ def scanDirectives(c,p=None):
         "tabwidth"  : tab_width,
         "pluginsList": pluginsList,
         "wrap"      : wrap }
-#@+node:ekr.20071109221337:@test g.scanDirectives
-# This will work regardless of where this method is.
-#@@language python
-#@@tabwidth -4
-# @path xyzzy # Creates a folder called xyzzy, interfering with another unit test.
-
-# Does not work when run externally with null colorizer.
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    d = g.scanDirectives(c,p)
-
-    assert d.get('language') == 'python'
-    assert d.get('tabwidth') == -4
-    # assert d.get('path').endswith('xyzzy')
-#@-node:ekr.20071109221337:@test g.scanDirectives
 #@-node:ekr.20031218072017.1391:g.scanDirectives & test
 #@-node:ekr.20031218072017.1380:Directive utils...
 #@+node:ekr.20031218072017.3100:wrap_lines
@@ -994,38 +948,6 @@ def pdb ():
     import pdb # Required: we have just defined pdb as a function!
 
     pdb.set_trace()
-#@+node:ekr.20050221092824:@test g.pdb
-if g.unitTesting:
-
-    # __pychecker__ = '--no-reimport'
-    import sys
-    c,p = g.getTestVars()
-
-    # Not a good unit test; it probably will never fail.
-    def aFunction(): pass
-    assert type(g.pdb)==type(aFunction), 'wrong type for g.pdb: %s' % type(g.pdb)
-
-    class myStdout:
-        def write(self,s):
-            pass # g.es('From pdb:',s)
-
-    class myStdin:
-        def readline (self):
-            return 'c' # Return 'c' (continue) for all requests for input.
-
-    def restore():
-        sys.stdout,sys.stdin = sys.__stdout__,sys.__stdin__
-
-    try:
-        sys.stdin = myStdin() # Essential
-        sys.stdout=myStdout() # Optional
-        g.pdb()
-        restore()
-        # assert False,'test of reraising'
-    except Exception:
-        restore()
-        raise
-#@-node:ekr.20050221092824:@test g.pdb
 #@-node:ekr.20041105091148:g.pdb & test
 #@+node:ekr.20031218072017.3108:Dumps
 #@+node:ekr.20031218072017.3109:dump
@@ -1117,32 +1039,6 @@ def es_exception (full=True,c=None,color="red"):
         pdb.set_trace()
 
     return fileName,n
-#@+node:ekr.20050220030850:@test g.es_exception
-if g.unitTesting:
-
-    c,p = g.getTestVars() # Optional: prevents pychecker warnings.
-
-    if c.config.redirect_execute_script_output_to_log_pane:
-        pass # Test doesn't work when redirection is on.
-    else:
-        try:
-            import sys
-            # Catch the output of g.es_exception.
-            # We catch the AssertionError, so nothing gets written to stderr.
-            sys.stdout = fo = g.fileLikeObject()
-            try: # Create an exception to catch.
-                assert False, 'Assert False in test_g_es_exception'
-            except AssertionError:
-                g.es_exception(color='suppress')
-                result = fo.get()
-                s1 = 'Traceback (most recent call last):'
-                s2 = 'AssertionError: Assert False in test_g_es_exception'
-                assert result.find(s1) > -1, 'No traceback line: %s' % repr(result)
-                assert result.find(s2) > -1, 'No AssertionError line: %s' % repr(result)
-        finally:
-            # Not needed unless we execute this script as selected text.
-            sys.stdout = sys.__stdout__
-#@-node:ekr.20050220030850:@test g.es_exception
 #@-node:ekr.20031218072017.3112:es_exception & test
 #@+node:ekr.20061015090538:es_exception_type
 def es_exception_type (c=None,color="red"):
@@ -1807,19 +1703,6 @@ def create_temp_file (textMode=False):
         theFile,theFileName = None,''
 
     return theFile,theFileName
-#@+node:ekr.20050216052031:@test g.create_temp_file
-if g.unitTesting:
-
-    # __pychecker__ = '--no-reimport'
-    import types
-
-    c,p = g.getTestVars() # Optional: prevents pychecker warnings.
-
-    theFile,theFileName = g.create_temp_file()
-
-    assert type(theFile) == types.FileType, 'not file type'
-    assert type(theFileName) in (types.StringType, types.UnicodeType), 'not string type'
-#@-node:ekr.20050216052031:@test g.create_temp_file
 #@-node:ekr.20031218072017.3117:g.create_temp_file & test
 #@+node:ekr.20031218072017.3118:g.ensure_extension
 def ensure_extension (name, ext):
@@ -2131,30 +2014,6 @@ def utils_remove (fileName,verbose=True):
             g.es("exception removing:" + fileName)
             g.es_exception()
         return False
-#@+node:ekr.20050107084901:@test g.utils_remove
-if g.unitTesting:
-
-    # __pychecker__ = '--no-reimport'
-    import os
-
-    c,p = g.getTestVars() # Optional: prevents pychecker warnings.
-    exists = g.os_path_exists
-
-    path = g.os_path_join(g.app.testDir,'xyzzy')
-    if exists(path):
-        os.remove(path)
-
-    assert not exists(path)
-    assert not g.utils_remove(path,verbose=False)
-
-    f = file(path,'w')
-    f.write('test')
-    f.close()
-
-    assert exists(path)
-    assert g.utils_remove(path,verbose=True)
-    assert not exists(path)
-#@-node:ekr.20050107084901:@test g.utils_remove
 #@-node:ekr.20050104123726.3:g.utils_remove & test
 #@+node:ekr.20031218072017.1263:g.utils_rename & test
 #@<< about os.rename >>
@@ -2216,30 +2075,6 @@ def utils_rename (c,src,dst,mode=None,verbose=True):
             g.es('Exception renaming %s to %s' % (src,dst),color='red')
             g.es_exception(full=False)
         return False
-#@+node:ekr.20050107085710.1:@test g.utils_rename
-if g.unitTesting:
-
-    # __pychecker__ = '--no-reimport'
-    import os
-    exists = g.os_path_exists
-
-    c,p = g.getTestVars() # Optional: prevents pychecker warnings.
-
-    path = g.os_path_join(g.app.testDir,'xyzzy')
-    if exists(path):
-        os.remove(path)
-
-    assert not exists(path)
-    assert not g.utils_remove(path,verbose=False)
-
-    f = file(path,'w')
-    f.write('test')
-    f.close()
-
-    assert exists(path)
-    assert g.utils_remove(path,verbose=True)
-    assert not exists(path)
-#@-node:ekr.20050107085710.1:@test g.utils_rename
 #@-node:ekr.20031218072017.1263:g.utils_rename & test
 #@+node:ekr.20050104124903:g.utils_chmod
 def utils_chmod (fileName,mode,verbose=True):
@@ -2812,11 +2647,6 @@ def es_trace(s,*args,**keys):
     g.trace(g.toEncodedString(s,'ascii'))
     g.es(s,*args,**keys)
 #@nonl
-#@+node:ekr.20070621092938.1:@test g.es_trace
-if g.unitTesting:
-    if 0: # Not usually enabled.
-        g.es_trace('\ntest of es_trace: Ă',color='red')
-#@-node:ekr.20070621092938.1:@test g.es_trace
 #@-node:ekr.20050707065530:es_trace & test
 #@+node:ekr.20060810095921:et, et_* and _ (underscore)
 # __pychecker__ = 'no-reuseattr'
@@ -3721,52 +3551,6 @@ def skip_to_start_of_line (s,i):
     i = s.rfind('\n',0,i) # Don't find s[i], so it doesn't matter if s[i] is a newline.
     if i == -1: return 0
     else:       return i + 1
-#@+node:ekr.20070627082044.836:@test g.skip_line
-if g.unitTesting:
-    s = 'a\n\nc'
-    for i,result in (
-        (-1,2), # One too few.
-        (0,2),(1,2),
-        (2,3),
-        (3,4),
-        (4,4), # One too many.
-    ):
-        j = g.skip_line(s,i)
-        assert j == result, 'i: %d, expected %d, got %d' % (i,result,j)
-#@nonl
-#@-node:ekr.20070627082044.836:@test g.skip_line
-#@+node:ekr.20070627082044.837:@test g.skip_to_end_of_line
-if g.unitTesting:
-    s = 'a\n\nc'
-    for i,result in (
-        (-1,1), # One too few.
-        (0,1),(1,1),
-        (2,2),
-        (3,4),
-        (4,4), # One too many.
-    ):
-        j = g.skip_to_end_of_line(s,i)
-        assert j == result, 'i: %d, expected %d, got %d' % (i,result,j)
-#@nonl
-#@-node:ekr.20070627082044.837:@test g.skip_to_end_of_line
-#@+node:ekr.20070627082044.838:@test g.skip_to_start_of_line
-if g.unitTesting:
-    s1 = 'a\n\nc'
-    table1 = (
-        (-1,0), # One too few.
-        (0,0),(1,0),
-        (2,2),
-        (3,3),
-        (4,4), # One too many.
-    )
-    s2 = 'a\n'
-    table2 = ((1,0),(2,2)) # A special case at end.
-
-    for s,table in ((s1,table1),(s2,table2)):
-        for i,result in table:
-            j = g.skip_to_start_of_line(s,i)
-            assert j == result, 'i: %d, expected %d, got %d' % (i,result,j)
-#@-node:ekr.20070627082044.838:@test g.skip_to_start_of_line
 #@-node:ekr.20031218072017.3187:skip_line, skip_to_start/end_of_line & tests
 #@+node:ekr.20031218072017.3188:skip_long
 def skip_long(s,i):
@@ -4214,23 +3998,6 @@ def reportBadChars (s,encoding):
                 encoding.encode('ascii','replace'))
             if not g.unitTesting:
                 g.es(s2,color='red')
-#@+node:ekr.20050825092149:@test g.reportBadChars
-if g.unitTesting:
-
-    for s,encoding in (
-        ('aĂbĂ',  'ascii'),
-        (u'aĂbĂ', 'ascii'),
-        ('炰',    'ascii'),
-        (u'炰',   'ascii'),
-
-        ('aĂbĂ',  'utf-8'),
-        (u'aĂbĂ', 'utf-8'),
-        ('炰',    'utf-8'),
-        (u'炰',   'utf-8'),
-    ):
-
-        g.reportBadChars(s,encoding)
-#@-node:ekr.20050825092149:@test g.reportBadChars
 #@-node:ekr.20031218072017.1501:reportBadChars
 #@+node:ekr.20031218072017.1502:toUnicode & toEncodedString (and tests)
 #@+node:ekr.20050208093800:toEncodedString
@@ -4289,65 +4056,9 @@ def toUnicodeWithErrorCode (s,encoding):
 
     return s,ok
 #@-node:ekr.20050208095723:toUnicodeWithErrorCode
-#@+node:ekr.20050208104358:@test round trip toUnicode toEncodedString
-if g.unitTesting:
-
-    table = [
-        ('a',    'utf-8'),
-        ('a',    'ascii'),
-        ('äöü',  'utf-8'),
-        ('äöü',  'mbcs'),
-        ('炰',   'utf-8'),
-    ]
-
-    # __pychecker__ = '--no-reimport'
-    import sys
-
-    if sys.platform.startswith('win'):
-        data = '炰','mbcs'
-        table.append(data)
-
-    for s,encoding in table:
-        if g.isValidEncoding(encoding):
-            s2,ok = g.toUnicodeWithErrorCode(s,encoding)
-            assert ok, 'toUnicodeWithErrorCode fails for %s' %s
-            s3,ok = g.toEncodedStringWithErrorCode(s2,encoding)
-            assert ok, 'toEncodedStringWithErrorCode fails for %s' % s2
-            assert s3 == s, 'Round-trip one failed for %s' %s
-
-            s2 = g.toUnicode(s,encoding)
-            s3 = g.toEncodedString(s2,encoding)
-            assert s3 == s, 'Round-trip two failed for %s' %s
-#@nonl
-#@-node:ekr.20050208104358:@test round trip toUnicode toEncodedString
-#@+node:ekr.20050208112123:@test failure with ascii encodings
-if g.unitTesting:
-
-    encoding = 'ascii'
-
-    s = '炰'
-    s2,ok = g.toUnicodeWithErrorCode(s,encoding)
-    assert not ok, 'toUnicodeWithErrorCode returns True for %s with ascii encoding' % s
-
-    s = u'炰'
-    s3,ok = g.toEncodedStringWithErrorCode(s,encoding)
-    assert not ok, 'toEncodedStringWithErrorCode returns True for %s with ascii encoding' % s
-#@-node:ekr.20050208112123:@test failure with ascii encodings
 #@-node:ekr.20031218072017.1502:toUnicode & toEncodedString (and tests)
 #@-node:ekr.20031218072017.1498:Unicode utils...
 #@+node:ekr.20070524083513:Unit testing (leoGlobals.py)
-#@+node:ekr.20070524083726:@test unit testing with embedded class
-if g.unitTesting:
-
-    def sendEmail(self):
-        pass # g.trace('self2',self)
-
-    class test:
-        pass
-
-    X = test()
-    sendEmail(X)
-#@-node:ekr.20070524083726:@test unit testing with embedded class
 #@+node:ekr.20070619173330:g.getTestVars
 def getTestVars ():
 
@@ -4377,44 +4088,6 @@ def convertPythonIndexToRowCol (s,i):
         prevNL = s.rfind('\n',0,i) # Don't include i
         # g.trace('prevNL',prevNL,'i',i,g.callers())
         return row,i-prevNL-1
-#@+node:ekr.20070627082044.835:@test g.convertPythonIndexToRowCol
-if g.unitTesting:
-    s1 = 'abc\n\np\nxy'
-    table1 = (
-        (-1,(0,0)), # One too small.
-        (0,(0,0)),
-        (1,(0,1)),
-        (2,(0,2)),
-        (3,(0,3)), # The newline ends a row.
-        (4,(1,0)),
-        (5,(2,0)),
-        (6,(2,1)),
-        (7,(3,0)),
-        (8,(3,1)),
-        (9,(3,2)), # One too many.
-        (10,(3,2)), # Two too many.
-    )
-    s2 = 'abc\n\np\nxy\n'
-    table2 = (
-        (9,(3,2)),
-        (10,(4,0)), # One too many.
-        (11,(4,0)), # Two too many.
-    )
-    s3 = 'ab' # Test special case.  This was the cause of off-by-one problems.
-    table3 = (
-        (-1,(0,0)), # One too small.
-        (0,(0,0)),
-        (1,(0,1)),
-        (2,(0,2)), # One too many.
-        (3,(0,3)), # Two too many.
-    )
-
-    for s,table in ((s1,table1),(s2,table2)):
-        for i,result in table:
-            row,col = g.convertPythonIndexToRowCol(s,i)
-            assert row == result[0], 'i: %d, expected row %d, got %d' % (i,result[0],row)
-            assert col == result[1], 'i: %d, expected col %d, got %d' % (i,result[1],col)
-#@-node:ekr.20070627082044.835:@test g.convertPythonIndexToRowCol
 #@-node:ekr.20050314140957:g.convertPythonIndexToRowCol & test
 #@+node:ekr.20050315071727:g.convertRowColToPythonIndex & test
 def convertRowColToPythonIndex (s,row,col,lines=None):
@@ -4437,34 +4110,6 @@ def convertRowColToPythonIndex (s,row,col,lines=None):
         prev += len(line)
 
     return prev + col
-#@+node:ekr.20070627082044.833:@test g.convertRowColToPythonIndex
-if g.unitTesting:
-    s1 = 'abc\n\np\nxy'
-    s2 = 'abc\n\np\nxy\n'
-    table1 = (
-        (0,(-1,0)), # One too small.
-        (0,(0,0)),
-        (1,(0,1)),
-        (2,(0,2)),
-        (3,(0,3)), # The newline ends a row.
-        (4,(1,0)),
-        (5,(2,0)),
-        (6,(2,1)),
-        (7,(3,0)),
-        (8,(3,1)),
-        (9,(3,2)), # One too large.
-    )
-    table2 = (
-        (9,(3,2)),
-        (10,(4,0)), # One two many.
-    )
-    for s,table in ((s1,table1),(s2,table2)):
-        for i,data in table:
-            row,col = data
-            result = g.convertRowColToPythonIndex(s,row,col)
-            assert i == result, 'row: %d, col: %d, expected: %d, got: %s' % (row,col,i,result)
-#@nonl
-#@-node:ekr.20070627082044.833:@test g.convertRowColToPythonIndex
 #@-node:ekr.20050315071727:g.convertRowColToPythonIndex & test
 #@-node:ekr.20050315073003: Index utilities... (leoGlobals) (passed)
 #@+node:ekr.20031218072017.3140: List utilities...
@@ -4551,29 +4196,6 @@ def CheckVersionToInt (s):
             return 0
 #@nonl
 #@-node:ekr.20070120123930:CheckVersionToInt
-#@+node:ekr.20070120125007:@test CheckVersionToInt
-if g.unitTesting:
-
-    assert g.CheckVersionToInt('12') == 12,'fail 1'
-    assert g.CheckVersionToInt('2a5') == 2, 'fail 2'
-    assert g.CheckVersionToInt('b2') == 0, 'fail 3'
-#@nonl
-#@-node:ekr.20070120125007:@test CheckVersionToInt
-#@+node:ekr.20070627082044.844:@test g.checkVersion
-if g.unitTesting:
-    # for condition in ('<','<=','>','>='):
-    for v1,condition,v2 in (
-        ('8.4.12','>','8.4.3'),
-        ('1','==','1.0'),
-        ('2','>','1'),
-        ('1.2','>','1'),
-        ('2','>','1.2.3'),
-        ('1.2.3','<','2'),
-        ('1','<','1.1'),
-    ):
-        assert g.CheckVersion(v1,v2,condition=condition,trace=False)
-#@nonl
-#@-node:ekr.20070627082044.844:@test g.checkVersion
 #@-node:ekr.20060921100435:CheckVersion, helper & tests
 #@+node:ekr.20060921100435.1:oldCheckVersion (Dave Hein)
 #@+at
@@ -5428,13 +5050,6 @@ def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=T
 
     # g.trace(type(script),repr(script))
     return script
-#@+node:ekr.20050211100535:@test g.getScript strips crlf
-if g.unitTesting:
-
-    c,p = g.getTestVars() # Optional: prevents pychecker warnings.
-    script = g.getScript(c,p) # This will get the text of this node.
-    assert script.find('\r\n') == -1, repr(script)
-#@-node:ekr.20050211100535:@test g.getScript strips crlf
 #@-node:EKR.20040614071102.1:g.getScript & tests
 #@+node:ekr.20050920084036.4:g.longestCommonPrefix & g.itemsMatchingPrefixInList
 def longestCommonPrefix (s1,s2):
@@ -5545,27 +5160,6 @@ def getLine (s,i):
     # g.trace('i,j,k',i,j,k,repr(s[j:k]))
     return j,k
 #@nonl
-#@+node:ekr.20070627082044.839:@test g.getLine
-if g.unitTesting:
-    s = 'a\ncd\n\ne'
-    for i,result in (
-        (-1,(0,2)), # One too few.
-        (0,(0,2)),(1,(0,2)),
-        (2,(2,5)),(3,(2,5)),(4,(2,5)),
-        (5,(5,6)),
-        (6,(6,7)),
-        (7,(6,7)), # One too many.
-    ):
-        j,k = g.getLine(s,i)
-        assert (j,k) == result, 'i: %d, expected %d,%d, got %d,%d' % (i,result[0],result[1],j,k)
-#@nonl
-#@-node:ekr.20070627082044.839:@test g.getLine
-#@+node:ekr.20070627082044.834:@test g.getWord
-if g.unitTesting:
-    s = 'abc xy_z5 pdq'
-    i,j = g.getWord(s,5)
-    assert s[i:j] == 'xy_z5','got %s' % s[i:j]
-#@-node:ekr.20070627082044.834:@test g.getWord
 #@-node:ekr.20061031102333.2:g.getWord & getLine & tests
 #@+node:ekr.20041219095213:import wrappers
 #@+at 
@@ -5593,11 +5187,6 @@ def cantImport (moduleName,pluginName=None,verbose=True):
     else:
         g.es_print(s,color="blue")
 
-#@+node:ekr.20070627082044.850:@test g.cantImport returns None
-if g.unitTesting:
-    assert(g.cantImport("xyzzy","during unit testing") is None)
-#@nonl
-#@-node:ekr.20070627082044.850:@test g.cantImport returns None
 #@-node:ekr.20040917061619:g.cantImport & test
 #@+node:ekr.20041219095213.1:g.importModule
 def importModule (moduleName,pluginName=None,verbose=False):
@@ -5979,19 +5568,6 @@ def removeExtraLws (s,tab_width):
             print repr(line)
 
     return result
-#@+node:ekr.20050211120837:@test g.removeExtraLws
-if g.unitTesting:
-
-    c,p = g.getTestVars() # Optional: prevents pychecker warnings.
-
-    for s,expected in (
-        (' a\n b\n c', 'a\nb\nc'),
-        (' \n  A\n    B\n  C\n', '\nA\n  B\nC\n'),
-    ):
-        result = g.removeExtraLws(s,c.tab_width)
-        assert result == expected, '\ns: %s\nexpected: %s\nresult:   %s' % (
-            repr(s),repr(expected),repr(result))
-#@-node:ekr.20050211120837:@test g.removeExtraLws
 #@-node:ekr.20050211120242.2:g.removeExtraLws & tests
 #@+node:ekr.20031218072017.3203:removeTrailingWs
 # Warning: string.rstrip also removes newlines!

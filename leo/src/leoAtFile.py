@@ -2535,25 +2535,6 @@ class atFile:
         #@-node:ekr.20041005105605.126:<< set the closing comment delim >>
         #@nl
         return valid,new_df,start,end,isThinDerivedFile
-    #@+node:ekr.20050211111552:@test parseLeoSentinel
-    if g.unitTesting:
-
-        c,p = g.getTestVars() # Optional: prevents pychecker warnings.
-
-        s1 = '#@+leo-ver=4-thin-encoding=utf-8,.'  # 4.2 format.
-        s2 = '#@+leo-ver=4-thin-encoding=utf-8.' # pre-4.2 format.
-
-        at=c.atFileCommands # Self is a dummy argument.
-
-        for s in (s1,s2):
-            valid,new_df,start,end,isThinDerivedFile = at.parseLeoSentinel(s)
-            # g.trace('start',start,'end',repr(end),'len(s)',len(s))
-            assert valid, 'not valid'
-            assert new_df, 'not new_df'
-            assert isThinDerivedFile, 'not thin'
-            assert end == '', 'invalid end: %s' % repr(end)
-            assert at.encoding == 'utf-8', 'bad encoding: %s' % repr(at.encoding)
-    #@-node:ekr.20050211111552:@test parseLeoSentinel
     #@-node:ekr.20041005105605.120:parseLeoSentinel
     #@+node:ekr.20041005105605.127:readError
     def readError(self,message):
@@ -3125,12 +3106,6 @@ class atFile:
         # g.trace('s2',s2)
 
         return p.hasChildren() or len(s2.strip()) >= 10
-    #@+node:ekr.20071020082208:@test isSignificantAtAutoTree
-    if g.unitTesting:
-
-        assert c.atFileCommands.isSignificantAtAutoTree(p)
-
-    #@-node:ekr.20071020082208:@test isSignificantAtAutoTree
     #@-node:ekr.20070909103844:isSignificantAtAutoTree & test
     #@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
     #@-node:ekr.20070806105859:writeAtAutoNodes & writeDirtyAtFileNodes (atFile) & helpers
@@ -4126,37 +4101,6 @@ class atFile:
                 return at.miscDirective
 
         return at.noDirective
-    #@+node:ekr.20050608103755:@test directiveKind4
-    if g.unitTesting:
-
-        c,p = g.getTestVars() # Optional: prevents pychecker warnings.
-        at=c.atFileCommands # Self is a dummy argument.
-        table = [
-            ('@=',0,at.noDirective),
-            ('@',0,at.atDirective),
-            ('@ ',0,at.atDirective),
-            ('@\t',0,at.atDirective),
-            ('@\n',0,at.atDirective),
-            ('@all',0,at.allDirective),
-            ('    @all',4,at.allDirective),
-            ("@c",0,at.cDirective),
-            ("@code",0,at.codeDirective),
-            ("@doc",0,at.docDirective),
-            ("@end_raw",0,at.endRawDirective),
-            ('@others',0,at.othersDirective),
-            ('    @others',4,at.othersDirective),
-            ("@raw",0,at.rawDirective),
-        ]
-        for name in g.globalDirectiveList:
-            # Note: entries in g.globalDirectiveList do not start with '@'
-            if name not in ('all','c','code','doc','end_raw','others','raw',):
-                table.append(('@' + name,0,at.miscDirective),)
-
-        for s,i,expected in table:
-            result = at.directiveKind4(s,i)
-            assert result == expected, '%d %s result: %s expected: %s' % (
-                i,repr(s),at.sentinelName(result),at.sentinelName(expected))
-    #@-node:ekr.20050608103755:@test directiveKind4
     #@-node:ekr.20041005105605.198:directiveKind4 & test
     #@+node:ekr.20041005105605.199:hasSectionName
     def findSectionName(self,s,i):
@@ -4482,124 +4426,6 @@ class atFile:
                 g.es('%-10s %s' % ('created:',self.targetFileName))
                 self.fileChangedFlag = True
             return False
-    #@+node:ekr.20070627082044.80:@test atFile.replaceTargetFileIfDifferent (different)
-    if g.unitTesting:
-
-        # __pychecker__ = '--no-reimport'
-        import os
-        at = c.atFileCommands
-        exists = g.os_path_exists
-
-        at.outputFileName = g.os_path_join(g.app.testDir,'xyzzy1')
-        at.targetFileName = g.os_path_join(g.app.testDir,'xyzzy2')
-
-        # Create both paths (different contents)
-        for p in (at.outputFileName,at.targetFileName):
-            if exists(p):
-                os.remove(p)
-            assert not exists(p)
-            f = file(p,'w')
-            s = 'test %s' % p
-            # print repr(p),repr(s)
-            f.write(s)
-            f.close()
-            assert exists(p) # , '%s does not exist' % repr(p)
-
-        at.toString = False # Set by execute script stuff.
-        at.shortFileName = at.targetFileName
-        assert at.replaceTargetFileIfDifferent(), 'replaceTargetFileIfDifferent returns False'
-        if 0:
-            print '%s exists %s' % (at.outputFileName,exists(at.outputFileName))
-            print '%s exists %s' % (at.targetFileName,exists(at.targetFileName))
-        assert not exists(at.outputFileName), 'oops, output file exists'
-        assert exists(at.targetFileName), 'oops, target file does not exist'
-        f = file(at.targetFileName)
-        s = f.read()
-        f.close()
-        # print 'Contents of %s: %s' % (at.targetFileName,s)
-        assert s == 'test %s' % at.outputFileName, 'unexpected contents of target file'
-        os.remove(at.targetFileName)
-    #@-node:ekr.20070627082044.80:@test atFile.replaceTargetFileIfDifferent (different)
-    #@+node:ekr.20070627082044.81:@test atFile.replaceTargetFileIfDifferent (identical)
-    if g.unitTesting:
-
-        # __pychecker__ = '--no-reimport'
-        import os
-
-        at = c.atFileCommands
-        exists = g.os_path_exists
-
-        at.outputFileName = g.os_path_join(g.app.testDir,'xyzzy1')
-        at.targetFileName = g.os_path_join(g.app.testDir,'xyzzy2')
-
-        # Create both paths (identical contents)
-        for p in (at.outputFileName,at.targetFileName):
-            if exists(p):
-                os.remove(p)
-            assert not exists(p)
-            f = file(p,'w')
-            s = 'test %s' % at.outputFileName
-            # print repr(p),repr(s)
-            f.write(s)
-            f.close()
-            assert exists(p)
-
-        at.toString = False # Set by execute script stuff.
-        at.shortFileName = at.targetFileName
-        assert not at.replaceTargetFileIfDifferent(), 'replaceTargetFileIfDifferent returns True'
-        if 0:
-            print '%s exists %s' % (at.outputFileName,exists(at.outputFileName))
-            print '%s exists %s' % (at.targetFileName,exists(at.targetFileName))
-        assert not exists(at.outputFileName), 'oops, output file exists'
-        assert exists(at.targetFileName), 'oops, target file does not exist'
-        f = file(at.targetFileName)
-        s = f.read()
-        f.close()
-        # print 'Contents of %s: %s' % (at.targetFileName,s)
-        assert s == 'test %s' % at.outputFileName, 'unexpected contents of target file'
-        os.remove(at.targetFileName)
-    #@-node:ekr.20070627082044.81:@test atFile.replaceTargetFileIfDifferent (identical)
-    #@+node:ekr.20070627082044.82:@test atFile.replaceTargetFileIfDifferent (no target file)
-    if g.unitTesting:
-
-        # __pychecker__ = '--no-reimport'
-        import os
-
-        at = c.atFileCommands
-        exists = g.os_path_exists
-
-        at.outputFileName = g.os_path_join(g.app.testDir,'xyzzy1')
-        at.targetFileName = g.os_path_join(g.app.testDir,'xyzzy2')
-
-        # Remove both files, then create only the output file
-        for p in (at.outputFileName,at.targetFileName):
-            if exists(p):
-                os.remove(p)
-
-        for p in (at.outputFileName,):
-            assert not exists(p)
-            f = file(p,'w')
-            s = 'test %s' % at.outputFileName
-            # print repr(p),repr(s)
-            f.write(s)
-            f.close()
-            assert exists(p)
-
-        at.toString = False # Set by execute script stuff.
-        at.shortFileName = at.targetFileName
-        assert not at.replaceTargetFileIfDifferent(), 'replaceTargetFileIfDifferent returns True'
-        if 0:
-            print '%s exists %s' % (at.outputFileName,exists(at.outputFileName))
-            print '%s exists %s' % (at.targetFileName,exists(at.targetFileName))
-        assert not exists(at.outputFileName), 'oops, output file exists'
-        assert exists(at.targetFileName), 'oops, target file does not exist'
-        f = file(at.targetFileName)
-        s = f.read()
-        f.close()
-        # print 'Contents of %s: %s' % (at.targetFileName,s)
-        assert s == 'test %s' % at.outputFileName, 'unexpected contents of target file'
-        os.remove(at.targetFileName)
-    #@-node:ekr.20070627082044.82:@test atFile.replaceTargetFileIfDifferent (no target file)
     #@-node:ekr.20041005105605.212:replaceTargetFileIfDifferent
     #@+node:ekr.20041005105605.216:warnAboutOrpanAndIgnoredNodes
     def warnAboutOrphandAndIgnoredNodes (self):
@@ -4916,24 +4742,6 @@ class atFile:
             "path"      : self.default_directory,
             "tabwidth"  : self.tab_width,
         }
-    #@+node:ekr.20071109223354:@test at.scanAllDirectives
-    # This will work regardless of where this method is.
-    #@@language python
-    #@@tabwidth -4
-    # @path xyzzy
-    #@@pagewidth 80
-
-    # Does not work when run externally with null colorizer.
-    if g.unitTesting:
-
-        c,p = g.getTestVars()
-        d = c.atFileCommands.scanAllDirectives(p)
-
-        assert d.get('language') == 'python'
-        assert d.get('tabwidth') == -4
-        # assert d.get('path').endswith('xyzzy')
-        assert d.get('pagewidth') == 80
-    #@-node:ekr.20071109223354:@test at.scanAllDirectives
     #@-node:ekr.20041005105605.222:atFile.scanAllDirectives & test
     #@+node:ekr.20041005105605.236:atFile.scanDefaultDirectory
     def scanDefaultDirectory(self,p,importing=False):
@@ -5124,38 +4932,6 @@ class atFile:
                     self.outputFileName,self.targetFileName))
                 g.es_exception()
             return False
-    #@+node:ekr.20050107085710:@test atFile_rename
-    if g.unitTesting:
-
-        # __pychecker__ = '--no-reimport'
-        import os
-        c,p = g.getTestVars() # Optional: prevents pychecker warnings.
-        at = c.atFileCommands
-
-        exists = g.os_path_exists
-        path = g.os_path_join(g.app.testDir,'xyzzy')
-        path2 = g.os_path_join(g.app.testDir,'xyzzy2')
-
-        # Create both paths.
-        for p in (path,path2):
-            if exists(p):
-                os.remove(p)
-            assert not exists(p)
-            f = file(p,'w')
-            f.write('test %s' % p)
-            f.close()
-            assert exists(p)
-
-        assert at.rename(path,path2,verbose=True)
-        assert exists(path2)
-        f = file(path2)
-        s = f.read()
-        f.close()
-        # print 'Contents of %s: %s' % (path2,s)
-        assert s == 'test %s' % path
-        os.remove(path2)
-        assert not exists(path)
-    #@-node:ekr.20050107085710:@test atFile_rename
     #@-node:ekr.20050104131929.1:atFile.rename & test
     #@+node:ekr.20050104132018:remove & test
     def remove (self,fileName,verbose=True):
@@ -5168,30 +4944,6 @@ class atFile:
                 self.error("exception removing: %s" % fileName)
                 g.es_exception()
             return False
-    #@+node:ekr.20050107090156:@test atFile_remove
-    if g.unitTesting:
-
-        # __pychecker__ = '--no-reimport'
-        import os
-        c,p = g.getTestVars() # Optional: prevents pychecker warnings.
-        at = c.atFileCommands
-        exists = g.os_path_exists
-
-        path = g.os_path_join(g.app.testDir,'xyzzy')
-        if exists(path):
-            os.remove(path)
-
-        assert not exists(path)
-        assert not at.remove(path,verbose=False)
-
-        f = file(path,'w')
-        f.write('test')
-        f.close()
-
-        assert exists(path)
-        assert at.remove(path)
-        assert not exists(path)
-    #@-node:ekr.20050107090156:@test atFile_remove
     #@-node:ekr.20050104132018:remove & test
     #@+node:ekr.20050104132026:stat
     def stat (self,fileName):

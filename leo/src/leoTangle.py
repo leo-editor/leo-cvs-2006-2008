@@ -3691,21 +3691,6 @@ class baseTangleCommands:
             "path"      : self.tangle_directory,
             "tabwidth"  : self.tab_width,
         }
-    #@+node:ekr.20071109220650:@test tangle.scanAllDirectives
-    # This will work regardless of where this method is.
-    #@@language python
-    #@@tabwidth -4
-
-    # Does not work when run externally with null colorizer.
-    if g.unitTesting:
-
-        c,p = g.getTestVars()
-        d = c.tangleCommands.scanAllDirectives(
-            p,require_path_flag=False,issue_error_flag=False)
-
-        assert d.get('language') == 'python'
-        assert d.get('tabwidth') == -4
-    #@-node:ekr.20071109220650:@test tangle.scanAllDirectives
     #@-node:ekr.20031218072017.1360:tangle.scanAllDirectives & test
     #@+node:ekr.20031218072017.3599:token_type
     def token_type(self,s,i,err_flag):

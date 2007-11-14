@@ -2460,17 +2460,6 @@ class baseColorizer:
             #@nl
 
         return self.language # For use by external routines.
-    #@+node:ekr.20071109180120:@test scanColorDirectives
-    # This will work regardless of where this method is.
-    #@@language python
-
-    # Does not work when run externally with null colorizer.
-    if g.unitTesting:
-
-        c,p = g.getTestVars()
-        language = c.frame.body.colorizer.scanColorDirectives(p)
-        assert language == 'python','got:%s' % language
-    #@-node:ekr.20071109180120:@test scanColorDirectives
     #@-node:ekr.20031218072017.1377:scanColorDirectives (leoColor) & test
     #@+node:ekr.20041217041016:setFontFromConfig (colorizer)
     def setFontFromConfig (self):

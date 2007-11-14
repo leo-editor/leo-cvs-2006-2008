@@ -1958,37 +1958,6 @@ class settingsTreeParser (parserBaseClass):
     #@-others
 #@-node:ekr.20041119203941.3:class settingsTreeParser (parserBaseClass)
 #@+node:ekr.20070627082044.906:Unit tests
-#@+node:ekr.20070627082044.907:@test local settings (c.page_width)
-if g.unitTesting:
-
-    c,p = g.getTestVars() # Optional: prevents pychecker warnings.
-    # g.es(c.page_width)
-
-    assert c.page_width == 80
-#@-node:ekr.20070627082044.907:@test local settings (c.page_width)
-#@+node:ekr.20070627082044.908:@test global settings
-if g.unitTesting:
-    w = g.app.config.get(None,'global_setting_for_unit_tests','int')
-
-    assert w == 132
-#@-node:ekr.20070627082044.908:@test global settings
-#@+node:ekr.20070627082044.902:@test ifplatform
-if g.unitTesting:
-
-    # __pychecker__ = '--no-reimport'
-    import sys
-
-    win32  = c.config.getBool('test_win32_setting')
-    darwin = c.config.getBool('test_darwin_setting')
-
-    if sys.platform == 'win32':
-        assert(win32)
-        assert(not darwin)
-
-    elif sys.platform== 'darwin':
-        assert(win32)
-        assert(not darwin)
-#@-node:ekr.20070627082044.902:@test ifplatform
 #@+node:ekr.20070627082044.903:@@test ifgui
 if g.unitTesting:
     guiname = g.app.gui.guiName()
