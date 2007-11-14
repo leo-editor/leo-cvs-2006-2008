@@ -17877,6 +17877,27 @@ for p in p.self_and_subtree_iter():
         g.es(p.headString())
 #@nonl
 #@-node:Remove blank trailing lines
+#@+node:Remove all @test nodes
+count = 0
+c.beginUpdate()
+try:
+    p = c.rootVnode()
+    while p:
+        h = p.headString()
+        if h.startswith('@test '):
+            next = p.nodeAfterTree()
+            print 'deleting',h
+            count += 1
+            p.doDelete()
+            p = next
+        else:
+            if h.startswith('@thin'): print h
+            p.moveToThreadNext()
+finally:
+    c.endUpdate()
+print '%d @test nodes deleted' % count
+#@nonl
+#@-node:Remove all @test nodes
 #@+node:replace =.* with = None
 @color
 
