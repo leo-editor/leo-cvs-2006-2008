@@ -1,10 +1,24 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
+#@+node:ekr.20070703111455:To do: 4.4.5
 # Leo 4.4.5 will complete several projects that are long overdue.
 
-#@+node:ekr.20071112064808:First
+#@+node:ekr.20071114061648:Find a way to avoid invoking vim plugin on @url nodes
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4622384
+By: indrajith-k
+
+I have enabled the vim plug in in my Leo settings file. Now I can double click
+on a node and have it opened in vim. But this has a side effect. The behavior
+is retained for @url nodes also. This is a issue. Other than changing the vim
+even handler, is there a smarter way to avoid vim popping up at a @url node?
+
+----
+
+The question of clashes of click bindings has been around for a long time.  Clicking in headlines is pretty much deprecated.  The vim plugin should define a command that can be bound to a key.  That should eliminate the conflict.  Ditto for @url handling.
+#@-node:ekr.20071114061648:Find a way to avoid invoking vim plugin on @url nodes
 #@+node:ekr.20071025160653.2:Commands to add/remove icons
 #@+node:ekr.20071026092640:To do
 @nocolor
@@ -429,13 +443,6 @@ with the following (rST) commands
 Thanks for the clarification.  Imo, this is a good idea, because there seems to be no way at present to get the effect you want without actually changing the body text as you describe.  There are situations in which changing the body text is either infeasible or clumsy.
 #@nonl
 #@-node:ekr.20071109080424:Add @rst-preformat
-#@-node:ekr.20071112064808:First
-#@+node:ekr.20071111053028:Move to svn
-@nocolor
-
-http://subversion.tigris.org/faq.html#cvs2svn
-#@nonl
-#@-node:ekr.20071111053028:Move to svn
 #@+node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
 @nocolor
 
@@ -515,18 +522,20 @@ Traceback (most recent call last):
 AttributeError: 'NoneType' object has no attribute 'tk'
 Exception exceptions.AttributeError: "TkPickleVar instance has no attribute '_tk'" in <bound method TkPickleVar.__del__ of <cleo.TkPickleVar instance at 0xb73a876c>> ignored
 #@-node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
-#@-node:ekr.20070703111455:To do: 4.4.5 Useful odds & ends
+#@-node:ekr.20070703111455:To do: 4.4.5
 #@+node:ekr.20071113093057:To do: 4.4.6: last major projects
-#@+node:ekr.20070703111455.1:Most important
-#@+node:ekr.20071031113657:1. Remove Leo's hand-written parser: use sax or lxml
+#@+node:ekr.20071114063047:First
+#@+node:ekr.20071031113657:Always use sax parser to read .leo files
 # Are there proper unit tests?
 # Do global settings and find-panel settings get set properly.
 #@nonl
-#@-node:ekr.20071031113657:1. Remove Leo's hand-written parser: use sax or lxml
+#@-node:ekr.20071031113657:Always use sax parser to read .leo files
 #@+node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
 xmlns:leo="http://edreamleo.org/namespaces/leo-python-editor/1.1"
 #@nonl
 #@-node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
+#@-node:ekr.20071114063047:First
+#@+node:ekr.20070703111455.1:Most important
 #@+node:ekr.20071105160956:*** auto-change panes
 @nocolor
 
@@ -3863,9 +3872,13 @@ AttributeError: 'NoneType' object has no attribute 'keyboardQuit'
 #@+node:ekr.20070220082124:Make sure Leo can generate Latex
 #@-node:ekr.20070220082124:Make sure Leo can generate Latex
 #@-node:ekr.20071113093057:To do: 4.4.6: last major projects
-#@+node:ekr.20071112070038:To do: 5.0 (standard xml parser)
-#@-node:ekr.20071112070038:To do: 5.0 (standard xml parser)
 #@+node:ekr.20070923103337:Not associated with any release
+#@+node:ekr.20071111053028:Move to svn
+@nocolor
+
+http://subversion.tigris.org/faq.html#cvs2svn
+#@nonl
+#@-node:ekr.20071111053028:Move to svn
 #@+node:ekr.20060306194040:Video and more screen shots on Leo's web site
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3615177
