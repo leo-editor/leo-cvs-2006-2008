@@ -1001,7 +1001,7 @@ class baseFileCommands:
     #@+node:EKR.20040627120120:restoreDescendentAttributes
     def restoreDescendentAttributes (self):
 
-        c = self.c ; verbose = True 
+        c = self.c ; verbose = False 
 
         for resultDict in self.descendentUnknownAttributesDictList:
             for gnx in resultDict.keys():
