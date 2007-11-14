@@ -1457,9 +1457,13 @@ class editCommandsClass (baseEditCommandsClass):
             'cycle-focus':                          self.cycleFocus,
             'cycle-all-focus':                      self.cycleAllFocus,
             'cycle-editor-focus':                   c.frame.body.cycleEditorFocus,
+            'delete-all-icons':                     self.deleteAllIcons,
             'delete-char':                          self.deleteNextChar,
             'delete-editor':                        c.frame.body.deleteEditor,
+            'delete-first-icon':                    self.deleteFirstIcon,
             'delete-indentation':                   self.deleteIndentation,
+            'delete-last-icon':                     self.deleteLastIcon,
+            'delete-node-icons':                    self.deleteNodeIcons,
             'delete-spaces':                        self.deleteSpaces,
             'do-nothing':                           self.doNothing,
             'downcase-region':                      self.downCaseRegion,
@@ -1518,6 +1522,7 @@ class editCommandsClass (baseEditCommandsClass):
             'indent-relative':                      self.indentRelative,
             'indent-rigidly':                       self.tabIndentRegion,
             'indent-to-comment-column':             self.indentToCommentColumn,
+            'insert-icon':                          self.insertIcon,
             'insert-newline':                       self.insertNewline,
             'insert-parentheses':                   self.insertParentheses,
             'keep-lines':                           self.keepLines,
@@ -2271,6 +2276,170 @@ class editCommandsClass (baseEditCommandsClass):
             k.clearState()
     #@-node:ekr.20050929124234:gotoLine
     #@-node:ekr.20050920084036.72:goto...
+    #@+node:ekr.20071114081313:icons...
+    #@+at
+    # 
+    # To do:
+    # 
+    # - Define standard icons in a subfolder of Icons folder?
+    # - Tree control recomputes height of each line.
+    #@-at
+    #@+node:ekr.20071114082418.2:deleteAllIcons
+    def deleteAllIcons (self,event):
+
+        c = self.c
+
+        for p in c.allNodes_iter():
+
+            if hasattr(p.v.t,"unknownAttributes"):
+                a = p.v.t.unknownAttributes
+                iconsList = a.get("icons")
+                if dict:
+                    a["icons"] = []
+                    a["lineYOffset"] = 0
+
+        c.redraw()
+    #@-node:ekr.20071114082418.2:deleteAllIcons
+    #@+node:ekr.20071114082418:deleteFirstIcon
+    def deleteFirstIcon (self,event):
+
+        c = self.c ; p = c.currentPosition()
+
+        if not hasattr(p.v.t,'unknownAttributes'):
+            return
+
+        aList = p.v.t.unknownAttributes.get('icons',[])
+
+        if aList:
+            p.v.t.unknownAttributes ['icons'] = aList[1:]
+            c.redraw()
+    #@nonl
+    #@-node:ekr.20071114082418:deleteFirstIcon
+    #@+node:ekr.20071114092622:deleteIconByName
+    def deleteIconByName (self,t,name,relPath):
+
+        c = self.c
+
+        if not hasattr(t,'unknownAttributes'):
+            return
+
+        aList = t.unknownAttributes.get('icons',[])
+
+        basePath = g.os_path_abspath(g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons")))
+        absRelPath = g.os_path_abspath(g.os_path_normpath(g.os_path_join(basePath,relPath)))
+        name = g.os_path_abspath(name)
+
+        for d in aList:
+            name2 = d.get('file')
+            name2 = g.os_path_abspath(name2)
+            if name == name2 or absRelPath == name2:
+                # g.trace('name',name,'\nrelPath',relPath,'\nabsRelPath',absRelPath,'\nname2',name2)
+                aList.remove(d)
+                t.unknownAttributes ['icons'] = aList
+                c.redraw()
+                break
+        else:
+            g.trace('not found',name)
+
+
+
+    #@-node:ekr.20071114092622:deleteIconByName
+    #@+node:ekr.20071114085054:deleteLastIcon
+    def deleteLastIcon (self,event):
+
+        c = self.c ;  p = c.currentPosition()
+
+        if not hasattr(p.v.t,'unknownAttributes'):
+            return
+
+        aList = p.v.t.unknownAttributes.get('icons',[])
+
+        if aList:
+            p.v.t.unknownAttributes ['icons'] = aList[:-1]
+            c.redraw()
+    #@-node:ekr.20071114085054:deleteLastIcon
+    #@+node:ekr.20071114082418.1:deleteNodeIcons
+    def deleteNodeIcons (self,event):
+
+        c = self.c ; p = c.currentPosition()
+
+        if hasattr(p.v.t,"unknownAttributes"):
+            a = p.v.t.unknownAttributes
+            iconsList = a.get("icons")
+            if dict:
+                a["icons"] = []
+                a["lineYOffset"] = 0
+                c.redraw()
+    #@-node:ekr.20071114082418.1:deleteNodeIcons
+    #@+node:ekr.20071114081313.1:insertIcon & helper
+    def insertIcon (self,event):
+
+        c = self.c ; p = c.currentPosition()
+
+        os.chdir(g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons")))
+
+        paths = g.app.gui.runOpenFileDialog(
+            title='Get Icons',
+            filetypes=[('All files','*'),('Gif','*.gif'), ('Bitmap','*.bmp'),('Icon','*.ico'),],
+            defaultextension=None,
+            multiple=True)
+
+        aList = [] ; xoffset = 2
+        basePath = g.os_path_abspath(g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons")))
+        for path in paths:
+            path = g.os_path_abspath(g.os_path_join(basePath,path))
+            relPath = g.makePathRelativeTo(path,basePath)
+            image,image_height = self.getImage(path)
+            if not image: return
+            if image_height is None:
+                yoffset = 0
+            else:
+                yoffset = (c.frame.tree.line_height-image_height)/2
+
+            aList.append ({
+                'type' : 'file',
+                'file' : path,
+                'relPath': relPath,
+                'where' : 'beforeHeadline',
+                'yoffset' : yoffset, 'xoffset' : xoffset, 'xpad' : -2,
+            })
+            xoffset += 2
+
+        if not hasattr(p.v.t,'unknownAttributes'):
+            p.v.t.unknownAttributes = {}
+
+        aList2 = p.v.t.unknownAttributes.get('icons',[])
+        aList2.extend(aList)
+        p.v.t.unknownAttributes ['icons'] = aList2
+        p.v.t.unknownAttributes ['lineYOffset'] = 3
+        c.redraw()
+
+        # Classes and functions can only be pickled if they are at the top level of a module.
+        #"onClick" : onClick,
+        #"onRightClick" : onRightClick,
+        #"onDoubleClick" : onDoubleClick }
+    #@+node:ekr.20071114083142:getImage
+    def getImage (self,path):
+
+        c = self.c
+
+        try:
+            from PIL import Image, ImageTk
+        except ImportError:
+            Image = None
+
+        try:
+            if Image:
+                image1 = Image.open(path)
+                image = ImageTk.PhotoImage(image1)
+            else:
+                image = Tk.PhotoImage(master=c.frame.tree.canvas,file=path)
+            return image,image.height()
+        except Exception:
+            return None,None
+    #@-node:ekr.20071114083142:getImage
+    #@-node:ekr.20071114081313.1:insertIcon & helper
+    #@-node:ekr.20071114081313:icons...
     #@+node:ekr.20050920084036.74:indent...
     #@+node:ekr.20050920084036.75:backToIndentation
     def backToIndentation (self,event):

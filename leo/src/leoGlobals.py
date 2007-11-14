@@ -1785,6 +1785,17 @@ def is_sentinel (line,delims):
         g.es("Can't happen: is_sentinel",color="red")
         return False
 #@-node:EKR.20040504154039:g.is_sentinel
+#@+node:ekr.20071114113736:g.makePathRelativeTo
+def makePathRelativeTo (fullPath,basePath):
+
+    if fullPath.startswith(basePath):
+        s = fullPath[len(basePath):]
+        if s.startswith(os.path.sep):
+            s = s[len(os.path.sep):]
+        return s
+    else:
+        return fullPath
+#@-node:ekr.20071114113736:g.makePathRelativeTo
 #@+node:ekr.20031218072017.3119:g.makeAllNonExistentDirectories
 # This is a generalization of os.makedir.
 

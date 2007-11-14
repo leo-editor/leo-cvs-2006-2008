@@ -10122,6 +10122,492 @@ is False (or does not exist).
 @color
 #@nonl
 #@-node:ekr.20071114061648:vim plugin now supports @bool vim_plugin_opens_url_nodes setting
+#@+node:ekr.20071025160653.2:Added Cmd:Icons menu and commands
+# The code now remembers the relative file name as well as the full path name.
+# This may help find the icon when multiple machines are involved.
+#@nonl
+#@+node:ekr.20071114113736:g.makePathRelativeTo
+def makePathRelativeTo (fullPath,basePath):
+
+    if fullPath.startswith(basePath):
+        s = fullPath[len(basePath):]
+        if s.startswith(os.path.sep):
+            s = s[len(os.path.sep):]
+        return s
+    else:
+        return fullPath
+#@-node:ekr.20071114113736:g.makePathRelativeTo
+#@+node:ekr.20050920084036.55: getPublicCommands (editCommandsClass)
+def getPublicCommands (self):        
+
+    c = self.c ; k = self.k 
+
+    return {
+        'activate-cmds-menu':                   self.activateCmdsMenu,
+        'activate-edit-menu':                   self.activateEditMenu,
+        'activate-file-menu':                   self.activateFileMenu,
+        'activate-help-menu':                   self.activateHelpMenu,
+        'activate-outline-menu':                self.activateOutlineMenu,
+        'activate-plugins-menu':                self.activatePluginsMenu,
+        'activate-window-menu':                 self.activateWindowMenu,
+        'add-editor':                           c.frame.body.addEditor,
+        'add-space-to-lines':                   self.addSpaceToLines,
+        'add-tab-to-lines':                     self.addTabToLines, 
+        'back-to-indentation':                  self.backToIndentation,
+        'back-char':                            self.backCharacter,
+        'back-char-extend-selection':           self.backCharacterExtendSelection,
+        'back-paragraph':                       self.backwardParagraph,
+        'back-paragraph-extend-selection':      self.backwardParagraphExtendSelection,
+        'back-sentence':                        self.backSentence,
+        'back-sentence-extend-selection':       self.backSentenceExtendSelection,
+        'back-word':                            self.backwardWord,
+        'back-word-extend-selection':           self.backwardWordExtendSelection,
+        'backward-delete-char':                 self.backwardDeleteCharacter,
+        'backward-kill-paragraph':              self.backwardKillParagraph,
+        'backward-find-character':              self.backwardFindCharacter,
+        'backward-find-character-extend-selection': self.backwardFindCharacterExtendSelection,
+        'beginning-of-buffer':                  self.beginningOfBuffer,
+        'beginning-of-buffer-extend-selection': self.beginningOfBufferExtendSelection,
+        'beginning-of-line':                    self.beginningOfLine,
+        'beginning-of-line-extend-selection':   self.beginningOfLineExtendSelection,
+        'capitalize-word':                      self.capitalizeWord,
+        'center-line':                          self.centerLine,
+        'center-region':                        self.centerRegion,
+        'clean-all-lines':                      self.cleanAllLines,
+        'clean-lines':                          self.cleanLines,
+        'clear-extend-mode':                    self.clearExtendMode,
+        'clear-selected-text':                  self.clearSelectedText,
+        'click-click-box':                      self.clickClickBox,
+        'click-headline':                       self.clickHeadline,
+        'click-icon-box':                       self.clickIconBox,
+        'contract-body-pane':                   c.frame.contractBodyPane,
+        'contract-log-pane':                    c.frame.contractLogPane,
+        'contract-outline-pane':                c.frame.contractOutlinePane,
+        'contract-pane':                        c.frame.contractPane,
+        'count-region':                         self.countRegion,
+        'cycle-focus':                          self.cycleFocus,
+        'cycle-all-focus':                      self.cycleAllFocus,
+        'cycle-editor-focus':                   c.frame.body.cycleEditorFocus,
+        'delete-all-icons':                     self.deleteAllIcons,
+        'delete-char':                          self.deleteNextChar,
+        'delete-editor':                        c.frame.body.deleteEditor,
+        'delete-first-icon':                    self.deleteFirstIcon,
+        'delete-indentation':                   self.deleteIndentation,
+        'delete-last-icon':                     self.deleteLastIcon,
+        'delete-node-icons':                    self.deleteNodeIcons,
+        'delete-spaces':                        self.deleteSpaces,
+        'do-nothing':                           self.doNothing,
+        'downcase-region':                      self.downCaseRegion,
+        'downcase-word':                        self.downCaseWord,
+        'double-click-headline':                self.doubleClickHeadline,
+        'double-click-icon-box':                self.doubleClickIconBox,
+        'end-of-buffer':                        self.endOfBuffer,
+        'end-of-buffer-extend-selection':       self.endOfBufferExtendSelection,
+        'end-of-line':                          self.endOfLine,
+        'end-of-line-extend-selection':         self.endOfLineExtendSelection,
+        'escape':                               self.watchEscape,
+        'eval-expression':                      self.evalExpression,
+        'exchange-point-mark':                  self.exchangePointMark,
+        'expand-body-pane':                     c.frame.expandBodyPane,
+        'expand-log-pane':                      c.frame.expandLogPane,
+        'expand-outline-pane':                  c.frame.expandOutlinePane,
+        'expand-pane':                          c.frame.expandPane,
+        'extend-to-line':                       self.extendToLine,
+        'extend-to-paragraph':                  self.extendToParagraph,
+        'extend-to-sentence':                   self.extendToSentence,
+        'extend-to-word':                       self.extendToWord,
+        'fill-paragraph':                       self.fillParagraph,
+        'fill-region':                          self.fillRegion,
+        'fill-region-as-paragraph':             self.fillRegionAsParagraph,
+        'find-character':                       self.findCharacter,
+        'find-character-extend-selection':      self.findCharacterExtendSelection,
+        'find-word':                            self.findWord,
+        'flush-lines':                          self.flushLines,
+        'focus-to-body':                        self.focusToBody,
+        'focus-to-log':                         self.focusToLog,
+        'focus-to-minibuffer':                  self.focusToMinibuffer,
+        'focus-to-tree':                        self.focusToTree,
+        'forward-char':                         self.forwardCharacter,
+        'forward-char-extend-selection':        self.forwardCharacterExtendSelection,
+        'forward-paragraph':                    self.forwardParagraph,
+        'forward-paragraph-extend-selection':   self.forwardParagraphExtendSelection,
+        'forward-sentence':                     self.forwardSentence,
+        'forward-sentence-extend-selection':    self.forwardSentenceExtendSelection,
+        'forward-end-word':                     self.forwardEndWord, # New in Leo 4.4.2.
+        'forward-end-word-extend-selection':    self.forwardEndWordExtendSelection, # New in Leo 4.4.2.
+        'forward-word':                         self.forwardWord,
+        'forward-word-extend-selection':        self.forwardWordExtendSelection,
+        'fully-expand-body-pane':               c.frame.fullyExpandBodyPane,
+        'fully-expand-log-pane':                c.frame.fullyExpandLogPane,
+        'fully-expand-pane':                    c.frame.fullyExpandPane,
+        'fully-expand-outline-pane':            c.frame.fullyExpandOutlinePane,
+        'goto-char':                            self.gotoCharacter,
+        'goto-global-line':                     self.gotoGlobalLine,
+        'goto-line':                            self.gotoLine,
+        'hide-body-pane':                       c.frame.hideBodyPane,
+        'hide-log-pane':                        c.frame.hideLogPane,
+        'hide-pane':                            c.frame.hidePane,
+        'hide-outline-pane':                    c.frame.hideOutlinePane,
+        'how-many':                             self.howMany,
+        # Use indentBody in leoCommands.py
+        'indent-relative':                      self.indentRelative,
+        'indent-rigidly':                       self.tabIndentRegion,
+        'indent-to-comment-column':             self.indentToCommentColumn,
+        'insert-icon':                          self.insertIcon,
+        'insert-newline':                       self.insertNewline,
+        'insert-parentheses':                   self.insertParentheses,
+        'keep-lines':                           self.keepLines,
+        'kill-paragraph':                       self.killParagraph,
+        'line-number':                          self.lineNumber,
+        'move-lines-down':                      self.moveLinesDown,
+        'move-lines-up':                        self.moveLinesUp,
+        'move-past-close':                      self.movePastClose,
+        'move-past-close-extend-selection':     self.movePastCloseExtendSelection,
+        'newline-and-indent':                   self.insertNewLineAndTab,
+        'next-line':                            self.nextLine,
+        'next-line-extend-selection':           self.nextLineExtendSelection,
+        'previous-line':                        self.prevLine,
+        'previous-line-extend-selection':       self.prevLineExtendSelection,
+        'remove-blank-lines':                   self.removeBlankLines,
+        'remove-space-from-lines':              self.removeSpaceFromLines,
+        'remove-tab-from-lines':                self.removeTabFromLines,
+        'reverse-region':                       self.reverseRegion,
+        'reverse-sort-lines':                   self.reverseSortLines,
+        'reverse-sort-lines-ignoring-case':     self.reverseSortLinesIgnoringCase,                 
+        'scroll-down':                          self.scrollDown,
+        'scroll-down-extend-selection':         self.scrollDownExtendSelection,
+        'scroll-outline-down-line':             self.scrollOutlineDownLine,
+        'scroll-outline-down-page':             self.scrollOutlineDownPage,
+        'scroll-outline-left':                  self.scrollOutlineLeft,
+        'scroll-outline-right':                 self.scrollOutlineRight,
+        'scroll-outline-up-line':               self.scrollOutlineUpLine,
+        'scroll-outline-up-page':               self.scrollOutlineUpPage,
+        'scroll-up':                            self.scrollUp,
+        'scroll-up-extend-selection':           self.scrollUpExtendSelection,
+        'select-all':                           self.selectAllText,
+        # Exists, but can not be executed via the minibuffer.
+        # 'self-insert-command':                self.selfInsertCommand,
+        'set-comment-column':                   self.setCommentColumn,
+        'set-extend-mode':                      self.setExtendMode,
+        'set-fill-column':                      self.setFillColumn,
+        'set-fill-prefix':                      self.setFillPrefix,
+        #'set-mark-command':                    self.setRegion,
+        'show-colors':                          self.showColors,
+        'show-fonts':                           self.showFonts,
+        'simulate-begin-drag':                  self.simulateBeginDrag,
+        'simulate-end-drag':                    self.simulateEndDrag,
+        'sort-columns':                         self.sortColumns,
+        'sort-fields':                          self.sortFields,
+        'sort-lines':                           self.sortLines,
+        'sort-lines-ignoring-case':             self.sortLinesIgnoringCase,
+        'split-line':                           self.splitLine,
+        'tabify':                               self.tabify,
+        'toggle-extend-mode':                   self.toggleExtendMode,
+        'transpose-chars':                      self.transposeCharacters,
+        'transpose-lines':                      self.transposeLines,
+        'transpose-words':                      self.transposeWords,
+        'untabify':                             self.untabify,
+        'upcase-region':                        self.upCaseRegion,
+        'upcase-word':                          self.upCaseWord,
+        'view-lossage':                         self.viewLossage,
+        'what-line':                            self.whatLine,
+    }
+#@-node:ekr.20050920084036.55: getPublicCommands (editCommandsClass)
+#@+node:ekr.20040803072955.46:drawUserIcons & helper
+def drawUserIcons(self,p,where,x,y):
+
+    """Draw any icons specified by p.v.t.unknownAttributes["icons"]."""
+
+    h,w = 0,0 ; t = p.v.t
+
+    if not hasattr(t,"unknownAttributes"):
+        return h,w
+
+    iconsList = t.unknownAttributes.get("icons")
+    if not iconsList:
+        return h,w
+
+    try:
+        for theDict in iconsList:
+            h2,w2 = self.drawUserIcon(p,where,x,y,w,theDict)
+            h = max(h,h2) ; w += w2
+    except:
+        g.es_exception()
+
+    # g.trace(where,h,w)
+
+    return h,w
+#@+node:ekr.20040803072955.47:drawUserIcon
+def drawUserIcon (self,p,where,x,y,w2,theDict):
+
+    c = self.c ; h,w = 0,0
+
+    if where != theDict.get("where","beforeHeadline"):
+        return h,w
+
+    # if self.trace_gc: g.printNewObjects(tag='userIcon 1')
+
+    # g.trace(where,x,y,theDict)
+
+    << set offsets and pads >>
+    theType = theDict.get("type")
+    if theType == "icon":
+        if 0: # not ready yet.
+            s = theDict.get("icon")
+            << draw the icon in string s >>
+    elif theType == "file":
+        theFile = theDict.get("file")
+        relPath = theDict.get('relPath')
+        << draw the icon at file >>
+    elif theType == "url":
+        ## url = theDict.get("url")
+        << draw the icon at url >>
+
+    # Allow user to specify height, width explicitly.
+    h = theDict.get("height",h)
+    w = theDict.get("width",w)
+
+    # if self.trace_gc: g.printNewObjects(tag='userIcon 2')
+
+    return h,w
+#@+node:ekr.20040803072955.48:<< set offsets and pads >>
+xoffset = theDict.get("xoffset")
+try:    xoffset = int(xoffset)
+except: xoffset = 0
+
+yoffset = theDict.get("yoffset")
+try:    yoffset = int(yoffset)
+except: yoffset = 0
+
+xpad = theDict.get("xpad")
+try:    xpad = int(xpad)
+except: xpad = 0
+
+ypad = theDict.get("ypad")
+try:    ypad = int(ypad)
+except: ypad = 0
+#@-node:ekr.20040803072955.48:<< set offsets and pads >>
+#@+node:ekr.20040803072955.49:<< draw the icon in string s >>
+pass
+#@-node:ekr.20040803072955.49:<< draw the icon in string s >>
+#@+node:ekr.20040803072955.50:<< draw the icon at file >>
+if relPath:
+    fullname = g.os_path_join(g.app.loadDir,"..","Icons",relPath)
+else:
+    fullname = g.os_path_join(g.app.loadDir,"..","Icons",theFile)
+fullname = g.os_path_normpath(fullname)
+
+# Bug fix: the key must include distinguish nodes.
+key = (fullname,p.v.t)
+image = self.iconimages.get(key)
+
+if not image:
+    try:
+        from PIL import Image, ImageTk
+        image1 = Image.open(fullname)
+        image = ImageTk.PhotoImage(image1)
+        self.iconimages[key] = image
+    except Exception:
+        #g.es_exception()
+        image = None
+
+if not image:
+    try:
+        image = Tk.PhotoImage(master=self.canvas,file=fullname)
+        self.iconimages[key] = image
+    except Exception:
+        #g.es_exception()
+        image = None
+
+if image:
+    theId = self.canvas.create_image(
+        x+xoffset+w2,y+yoffset,
+        anchor="nw",image=image)
+
+    tag='userIcon-%s' % theId
+    self.canvas.itemconfigure(theId,tag=tag)
+    self.ids[theId] = p.copy()
+
+    def deleteButtonCallback(event=None,c=c,t=p.v.t,fullname=fullname):
+        c.editCommands.deleteIconByName(t,fullname,relPath)
+
+    self.canvas.tag_bind(tag,'<3>',deleteButtonCallback)
+
+    # assert(theId not in self.visibleIcons)
+    self.visibleUserIcons.append(theId)
+
+    h = image.height() + yoffset + ypad
+    w = image.width()  + xoffset + xpad
+#@-node:ekr.20040803072955.50:<< draw the icon at file >>
+#@+node:ekr.20040803072955.51:<< draw the icon at url >>
+pass
+#@-node:ekr.20040803072955.51:<< draw the icon at url >>
+#@-node:ekr.20040803072955.47:drawUserIcon
+#@-node:ekr.20040803072955.46:drawUserIcons & helper
+#@+node:ekr.20071114081313:icons...
+@
+
+To do:
+
+- Define standard icons in a subfolder of Icons folder?
+- Tree control recomputes height of each line.
+#@+node:ekr.20071114082418.2:deleteAllIcons
+def deleteAllIcons (self,event):
+
+    c = self.c
+
+    for p in c.allNodes_iter():
+
+        if hasattr(p.v.t,"unknownAttributes"):
+            a = p.v.t.unknownAttributes
+            iconsList = a.get("icons")
+            if dict:
+                a["icons"] = []
+                a["lineYOffset"] = 0
+
+    c.redraw()
+#@-node:ekr.20071114082418.2:deleteAllIcons
+#@+node:ekr.20071114082418:deleteFirstIcon
+def deleteFirstIcon (self,event):
+
+    c = self.c ; p = c.currentPosition()
+
+    if not hasattr(p.v.t,'unknownAttributes'):
+        return
+
+    aList = p.v.t.unknownAttributes.get('icons',[])
+
+    if aList:
+        p.v.t.unknownAttributes ['icons'] = aList[1:]
+        c.redraw()
+#@nonl
+#@-node:ekr.20071114082418:deleteFirstIcon
+#@+node:ekr.20071114092622:deleteIconByName
+def deleteIconByName (self,t,name,relPath):
+
+    c = self.c
+
+    if not hasattr(t,'unknownAttributes'):
+        return
+
+    aList = t.unknownAttributes.get('icons',[])
+
+    basePath = g.os_path_abspath(g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons")))
+    absRelPath = g.os_path_abspath(g.os_path_normpath(g.os_path_join(basePath,relPath)))
+    name = g.os_path_abspath(name)
+
+    for d in aList:
+        name2 = d.get('file')
+        name2 = g.os_path_abspath(name2)
+        if name == name2 or absRelPath == name2:
+            # g.trace('name',name,'\nrelPath',relPath,'\nabsRelPath',absRelPath,'\nname2',name2)
+            aList.remove(d)
+            t.unknownAttributes ['icons'] = aList
+            c.redraw()
+            break
+    else:
+        g.trace('not found',name)
+
+
+
+#@-node:ekr.20071114092622:deleteIconByName
+#@+node:ekr.20071114085054:deleteLastIcon
+def deleteLastIcon (self,event):
+
+    c = self.c ;  p = c.currentPosition()
+
+    if not hasattr(p.v.t,'unknownAttributes'):
+        return
+
+    aList = p.v.t.unknownAttributes.get('icons',[])
+
+    if aList:
+        p.v.t.unknownAttributes ['icons'] = aList[:-1]
+        c.redraw()
+#@-node:ekr.20071114085054:deleteLastIcon
+#@+node:ekr.20071114082418.1:deleteNodeIcons
+def deleteNodeIcons (self,event):
+
+    c = self.c ; p = c.currentPosition()
+
+    if hasattr(p.v.t,"unknownAttributes"):
+        a = p.v.t.unknownAttributes
+        iconsList = a.get("icons")
+        if dict:
+            a["icons"] = []
+            a["lineYOffset"] = 0
+            c.redraw()
+#@-node:ekr.20071114082418.1:deleteNodeIcons
+#@+node:ekr.20071114081313.1:insertIcon & helper
+def insertIcon (self,event):
+
+    c = self.c ; p = c.currentPosition()
+
+    os.chdir(g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons")))
+
+    paths = g.app.gui.runOpenFileDialog(
+        title='Get Icons',
+        filetypes=[('All files','*'),('Gif','*.gif'), ('Bitmap','*.bmp'),('Icon','*.ico'),],
+        defaultextension=None,
+        multiple=True)
+
+    aList = [] ; xoffset = 2
+    basePath = g.os_path_abspath(g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons")))
+    for path in paths:
+        path = g.os_path_abspath(g.os_path_join(basePath,path))
+        relPath = g.makePathRelativeTo(path,basePath)
+        image,image_height = self.getImage(path)
+        if not image: return
+        if image_height is None:
+            yoffset = 0
+        else:
+            yoffset = (c.frame.tree.line_height-image_height)/2
+
+        aList.append ({
+            'type' : 'file',
+            'file' : path,
+            'relPath': relPath,
+            'where' : 'beforeHeadline',
+            'yoffset' : yoffset, 'xoffset' : xoffset, 'xpad' : -2,
+        })
+        xoffset += 2
+
+    if not hasattr(p.v.t,'unknownAttributes'):
+        p.v.t.unknownAttributes = {}
+
+    aList2 = p.v.t.unknownAttributes.get('icons',[])
+    aList2.extend(aList)
+    p.v.t.unknownAttributes ['icons'] = aList2
+    p.v.t.unknownAttributes ['lineYOffset'] = 3
+    c.redraw()
+
+    # Classes and functions can only be pickled if they are at the top level of a module.
+    #"onClick" : onClick,
+    #"onRightClick" : onRightClick,
+    #"onDoubleClick" : onDoubleClick }
+#@+node:ekr.20071114083142:getImage
+def getImage (self,path):
+
+    c = self.c
+
+    try:
+        from PIL import Image, ImageTk
+    except ImportError:
+        Image = None
+
+    try:
+        if Image:
+            image1 = Image.open(path)
+            image = ImageTk.PhotoImage(image1)
+        else:
+            image = Tk.PhotoImage(master=c.frame.tree.canvas,file=path)
+        return image,image.height()
+    except Exception:
+        return None,None
+#@-node:ekr.20071114083142:getImage
+#@-node:ekr.20071114081313.1:insertIcon & helper
+#@-node:ekr.20071114081313:icons...
+#@-node:ekr.20071025160653.2:Added Cmd:Icons menu and commands
 #@-node:ekr.20071110081315:New features
 #@-node:ekr.20071105150738:Leo 4.4.5 b1
 #@-all

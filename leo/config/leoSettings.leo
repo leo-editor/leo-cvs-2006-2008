@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.653566229985">
-	<global_window_position top="83" left="243" height="598" width="864"/>
+	<global_window_position top="83" left="243" height="558" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -556,8 +556,8 @@
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
 </v>
-<v t="ekr.20070925144552"><vh>Menus</vh>
-<v t="ekr.20070925144534"><vh>@menus</vh>
+<v t="ekr.20070925144552" a="E"><vh>Menus</vh>
+<v t="ekr.20070925144534" a="E"><vh>@menus</vh>
 <v t="ekr.20070925144534.1"><vh>@menu &amp;File</vh>
 <v t="ekr.20070925144534.2"><vh>@item *&amp;new</vh></v>
 <v t="ekr.20070925144534.3"><vh>@item open-outline</vh></v>
@@ -775,7 +775,7 @@
 </v>
 </v>
 <v t="ekr.20070925144534.190"><vh>@menu &amp;Plugins</vh></v>
-<v t="ekr.20070925144534.191"><vh>@menu &amp;Cmds</vh>
+<v t="ekr.20070925144534.191" a="E"><vh>@menu &amp;Cmds</vh>
 <v t="ekr.20070925144534.192"><vh>@menu &amp;Abbrev...</vh>
 <v t="ekr.20070925144534.193"><vh>@item abbre&amp;v-mode</vh></v>
 <v t="ekr.20070925144534.194"><vh>@item -</vh></v>
@@ -789,12 +789,12 @@
 <v t="ekr.20070925144534.202"><vh>@@item -</vh></v>
 <v t="ekr.20070925144534.203"><vh>@@item &amp;expand-region-abbrevs</vh></v>
 </v>
-<v t="ekr.20070925144534.204"><vh>@menu Body E&amp;ditors...</vh>
+<v t="ekr.20070925144534.204"><vh>@menu &amp;Body Editors...</vh>
 <v t="ekr.20070925144534.205"><vh>@item &amp;add-editor</vh></v>
 <v t="ekr.20070925144534.206"><vh>@item &amp;cycle-editor-focus</vh></v>
 <v t="ekr.20070925144534.207"><vh>@item &amp;delete-editor</vh></v>
 </v>
-<v t="ekr.20070925144534.208"><vh>@menu &amp;Buffers...</vh>
+<v t="ekr.20070925144534.208"><vh>@menu Buffers...</vh>
 <v t="ekr.20070925144534.209"><vh>@item &amp;append-to-buffer</vh></v>
 <v t="ekr.20070925144534.210"><vh>@item &amp;kill-buffer</vh></v>
 <v t="ekr.20070925144534.211"><vh>@item list-&amp;buffers</vh></v>
@@ -811,7 +811,7 @@
 <v t="ekr.20070925144534.221"><vh>@item &amp;remove-chapter</vh></v>
 <v t="ekr.20070925144534.222"><vh>@item &amp;select-chapter</vh></v>
 </v>
-<v t="ekr.20070925144534.223"><vh>@menu C&amp;ursor/Selection...</vh>
+<v t="ekr.20070925144534.223"><vh>@menu Cursor/Selection...</vh>
 <v t="ekr.20070925144534.224"><vh>@menu Cursor &amp;Back...</vh>
 <v t="ekr.20070925144534.225"><vh>@item back-&amp;char</vh></v>
 <v t="ekr.20070925144534.226"><vh>@item back-&amp;paragraph</vh></v>
@@ -872,6 +872,14 @@
 <v t="ekr.20070925144534.275"><vh>@item focus-to-&amp;minibuffer</vh></v>
 <v t="ekr.20070925144534.276"><vh>@item focus-to-&amp;tree</vh></v>
 </v>
+<v t="ekr.20071114081712" a="TV"><vh>@menu &amp;Icons...</vh>
+<v t="ekr.20071114081712.2"><vh>@item delete-&amp;all-icons</vh></v>
+<v t="ekr.20071114084709"><vh>@item delete-&amp;first-icon</vh></v>
+<v t="ekr.20071114084709.1"><vh>@item delete-&amp;last-icon</vh></v>
+<v t="ekr.20071114081712.3"><vh>@item delete-&amp;node-icons</vh></v>
+<v t="ekr.20071114081712.4"><vh>@item -</vh></v>
+<v t="ekr.20071114081712.5"><vh>@item &amp;insert-icon</vh></v>
+</v>
 <v t="ekr.20070925144534.277"><vh>@menu &amp;Macro...</vh>
 <v t="ekr.20070925144534.278"><vh>@item &amp;load-file</vh></v>
 <v t="ekr.20070925144534.279"><vh>@item -</vh></v>
@@ -882,7 +890,7 @@
 <v t="ekr.20070925144534.284"><vh>@item &amp;call-last-keyboard-macro</vh></v>
 <v t="ekr.20070925144534.285"><vh>@item &amp;insert-keyboard-macro</vh></v>
 </v>
-<v t="ekr.20070925144534.286"><vh>@menu M&amp;inibuffer...</vh>
+<v t="ekr.20070925144534.286"><vh>@menu Minibuffer...</vh>
 <v t="ekr.20070925144534.287"><vh>@item &amp;full-command</vh></v>
 <v t="ekr.20070925144534.288"><vh>@item keyboard-&amp;quit</vh></v>
 <v t="ekr.20070925144534.289"><vh>@item &amp;repeat-complex-command</vh></v>
@@ -907,7 +915,7 @@
 <v t="ekr.20070925144534.306"><vh>@item &amp;string-rectangle</vh></v>
 <v t="ekr.20070925144534.307"><vh>@item &amp;yank-rectangle</vh></v>
 </v>
-<v t="ekr.20070925144534.308"><vh>@menu Re&amp;gisters...</vh>
+<v t="ekr.20070925144534.308"><vh>@menu Registers...</vh>
 <v t="ekr.20070925144534.309"><vh>@item &amp;append-to-register</vh></v>
 <v t="ekr.20070925144534.310"><vh>@item copy-r&amp;ectangle-to-register</vh></v>
 <v t="ekr.20070925144534.311"><vh>@item &amp;copy-to-register</vh></v>
@@ -918,11 +926,11 @@
 <v t="ekr.20070925144534.316"><vh>@item p&amp;repend-to-register</vh></v>
 <v t="ekr.20070925144534.317"><vh>@item &amp;view-register</vh></v>
 </v>
-<v t="ekr.20070925144534.318"><vh>@menu R&amp;un Script/Tests...</vh>
+<v t="ekr.20070925144534.318"><vh>@menu Run Script/Tests...</vh>
 <v t="ekr.20070925144534.319"><vh>@item &amp;execute-script</vh></v>
 <v t="ekr.20070925144534.320"><vh>@item &amp;run-unit-tests</vh></v>
 </v>
-<v t="ekr.20070925144534.321"><vh>@menu Scr&amp;olling...</vh>
+<v t="ekr.20070925144534.321"><vh>@menu &amp;Scrolling...</vh>
 <v t="ekr.20070925144534.322"><vh>@item scroll-outline-down-&amp;line</vh></v>
 <v t="ekr.20070925144534.323"><vh>@item scroll-outline-down-&amp;page</vh></v>
 <v t="ekr.20070925144534.324"><vh>@item scroll-outline-le&amp;ft</vh></v>
@@ -966,7 +974,7 @@
 <v t="ekr.20070925144534.360"><vh>@item sort-&amp;fields</vh></v>
 <v t="ekr.20070925144534.361"><vh>@item &amp;sort-lines</vh></v>
 </v>
-<v t="ekr.20070925144534.362"><vh>@menu Toggle Setti&amp;ngs...</vh>
+<v t="ekr.20070925144534.362"><vh>@menu Toggle Settings...</vh>
 <v t="ekr.20070925144534.363"><vh>@item toggle-a&amp;utocompleter</vh></v>
 <v t="ekr.20070925144534.364"><vh>@item toggle-call&amp;tips</vh></v>
 <v t="ekr.20070925144534.365"><vh>@item toggle-&amp;extend-mode</vh></v>
@@ -1056,7 +1064,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20051123100536" a="E" annotate="7d71002e"><vh>Plugins</vh>
+<v t="ekr.20051123100536" annotate="7d71002e"><vh>Plugins</vh>
 <v t="ekr.20070417071249"><vh>@bool trace_plugins = False</vh></v>
 <v t="ekr.20041119034357.13"><vh>@bool use_plugins = True</vh></v>
 <v t="ekr.20071113084330"><vh>@bool warn_when_plugins_fail_to_load = True</vh></v>
@@ -1119,10 +1127,10 @@
 <v t="ekr.20060730101451.6"><vh>@bool shadow_testing = True</vh></v>
 <v t="ekr.20060730101451.7"><vh>@int shadow_verbose = 3</vh></v>
 </v>
-<v t="ekr.20051123100536.1" a="E"><vh>vim plugin</vh>
+<v t="ekr.20051123100536.1"><vh>vim plugin</vh>
 <v t="ekr.20051123100536.2"><vh>@string vim_cmd = c:\Program Files\vim\vim63\gvim --servername LEO</vh></v>
 <v t="ekr.20051123100536.3"><vh>@string vim_exe = c:\Program Files\vim\vim63\gvim</vh></v>
-<v t="ekr.20071114072753" a="TV"><vh>@bool vim_plugin_opens_url_nodes = False</vh></v>
+<v t="ekr.20071114072753"><vh>@bool vim_plugin_opens_url_nodes = False</vh></v>
 </v>
 <v t="ekr.20060904211808"><vh>zodb plugin</vh>
 <v t="ekr.20060904211808.1"><vh>@string zodb_storage_file = c:\prog\zopeTemp\leo.fs</vh></v>
@@ -8411,5 +8419,15 @@ for which leading whitespace is not terribly significant.
 True: @auto warns about mismatches that occur solely in leading whitespace.</t>
 <t tx="ekr.20071113084330"></t>
 <t tx="ekr.20071114072753">True: the vim plugin will open @url nodes when they are double clicked.</t>
+<t tx="ekr.20071114081712">insert-icon
+delete-icon-by-name
+delete-node-icons
+delete-all-icons</t>
+<t tx="ekr.20071114081712.2"></t>
+<t tx="ekr.20071114081712.3"></t>
+<t tx="ekr.20071114081712.4"></t>
+<t tx="ekr.20071114081712.5"></t>
+<t tx="ekr.20071114084709"></t>
+<t tx="ekr.20071114084709.1"></t>
 </tnodes>
 </leo_file>

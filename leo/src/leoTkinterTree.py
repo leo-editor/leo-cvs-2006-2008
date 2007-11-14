@@ -1062,7 +1062,7 @@ class leoTkinterTree (leoFrame.leoTree):
     #@+node:ekr.20040803072955.47:drawUserIcon
     def drawUserIcon (self,p,where,x,y,w2,theDict):
 
-        h,w = 0,0
+        c = self.c ; h,w = 0,0
 
         if where != theDict.get("where","beforeHeadline"):
             return h,w
@@ -1101,9 +1101,13 @@ class leoTkinterTree (leoFrame.leoTree):
                 #@nl
         elif theType == "file":
             theFile = theDict.get("file")
+            relPath = theDict.get('relPath')
             #@        << draw the icon at file >>
             #@+node:ekr.20040803072955.50:<< draw the icon at file >>
-            fullname = g.os_path_join(g.app.loadDir,"..","Icons",theFile)
+            if relPath:
+                fullname = g.os_path_join(g.app.loadDir,"..","Icons",relPath)
+            else:
+                fullname = g.os_path_join(g.app.loadDir,"..","Icons",theFile)
             fullname = g.os_path_normpath(fullname)
 
             # Bug fix: the key must include distinguish nodes.
@@ -1131,9 +1135,16 @@ class leoTkinterTree (leoFrame.leoTree):
             if image:
                 theId = self.canvas.create_image(
                     x+xoffset+w2,y+yoffset,
-                    anchor="nw",image=image,tag="userIcon")
+                    anchor="nw",image=image)
+
+                tag='userIcon-%s' % theId
+                self.canvas.itemconfigure(theId,tag=tag)
                 self.ids[theId] = p.copy()
-                # g.trace('id',theId,p.headString(),theFile,image)
+
+                def deleteButtonCallback(event=None,c=c,t=p.v.t,fullname=fullname):
+                    c.editCommands.deleteIconByName(t,fullname,relPath)
+
+                self.canvas.tag_bind(tag,'<3>',deleteButtonCallback)
 
                 # assert(theId not in self.visibleIcons)
                 self.visibleUserIcons.append(theId)
