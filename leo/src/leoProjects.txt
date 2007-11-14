@@ -777,20 +777,6 @@ def checkTrialWrite (self,s1=None,s2=None):
         self.reportMismatch(lines1,lines2,bad_i)
 
     return ok
-#@+node:ekr.20070816103348:@test checkTriailWrite
-if g.unitTesting:
-
-    ic = c.importCommands
-    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
-    runner.root = p.copy()
-
-    g.app.unitTestDict ['expectedErrors'] = 1
-    g.app.unitTestDict ['expectedMismatchLine'] = 2
-
-    s1 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2\n',encoding='utf-8')
-    s2 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2a\n',encoding='utf-8')
-    runner.checkTrialWrite(s1=s1,s2=s2)
-#@-node:ekr.20070816103348:@test checkTriailWrite
 #@-node:ekr.20070703122141.104:checkTrialWrite & tests
 #@+node:ekr.20070730093735:compareHelper & tests
 def compareHelper (self,lines1,lines2,i,strict):
@@ -2293,20 +2279,6 @@ def checkTrialWrite (self,s1=None,s2=None):
         self.reportMismatch(lines1,lines2,bad_i)
 
     return ok
-#@+node:ekr.20070816103348:@test checkTriailWrite
-if g.unitTesting:
-
-    ic = c.importCommands
-    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
-    runner.root = p.copy()
-
-    g.app.unitTestDict ['expectedErrors'] = 1
-    g.app.unitTestDict ['expectedMismatchLine'] = 2
-
-    s1 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2\n',encoding='utf-8')
-    s2 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2a\n',encoding='utf-8')
-    runner.checkTrialWrite(s1=s1,s2=s2)
-#@-node:ekr.20070816103348:@test checkTriailWrite
 #@-node:ekr.20070703122141.104:checkTrialWrite & tests
 #@+node:ekr.20070730093735:compareHelper & tests
 def compareHelper (self,lines1,lines2,i,strict):
@@ -3726,20 +3698,6 @@ def checkTrialWrite (self,s1=None,s2=None):
         self.reportMismatch(lines1,lines2,bad_i)
 
     return ok
-#@+node:ekr.20070816103348:@test checkTriailWrite
-if g.unitTesting:
-
-    ic = c.importCommands
-    runner = ic.baseScannerClass(ic,atAuto=True,language='python')
-    runner.root = p.copy()
-
-    g.app.unitTestDict ['expectedErrors'] = 1
-    g.app.unitTestDict ['expectedMismatchLine'] = 2
-
-    s1 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2\n',encoding='utf-8')
-    s2 = g.toUnicode('line1 Ä, ڱ,  궯, 奠\nline2a\n',encoding='utf-8')
-    runner.checkTrialWrite(s1=s1,s2=s2)
-#@-node:ekr.20070816103348:@test checkTriailWrite
 #@-node:ekr.20070703122141.104:checkTrialWrite & tests
 #@+node:ekr.20070730093735:compareHelper & tests
 def compareHelper (self,lines1,lines2,i,strict):
@@ -6651,25 +6609,6 @@ if i < n and s[i] == '*' :
         else:
             g.es(g.angleBrackets("*") + "= requires @root in the headline")
 #@-node:ekr.20031218072017.1262:<< set theDict["root"] for noweb * chunks >>
-#@+node:ekr.20071109224138:@test g.get_directives_dict
-# This will work regardless of where this method is.
-@language python
-@tabwidth -4
-#@verbatim
-#@path xyzzy
-@pagewidth 80
-
-# Does not work when run externally with null colorizer.
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    d = c.atFileCommands.scanAllDirectives(p)
-
-    assert d.get('language') == 'python'
-    assert d.get('tabwidth') == -4
-    # assert d.get('path').endswith('xyzzy')
-    assert d.get('pagewidth') == 80
-#@-node:ekr.20071109224138:@test g.get_directives_dict
 #@-node:ekr.20031218072017.1260:g.get_directives_dict & test
 #@+node:ekr.20071109165315:g.computeRelativePath
 def computeRelativePath (path):
@@ -6891,25 +6830,6 @@ if i < n and s[i] == '*' :
         else:
             g.es(g.angleBrackets("*") + "= requires @root in the headline")
 #@-node:ekr.20031218072017.1262:<< set theDict["root"] for noweb * chunks >>
-#@+node:ekr.20071109224138:@test g.get_directives_dict
-# This will work regardless of where this method is.
-@language python
-@tabwidth -4
-#@verbatim
-#@path xyzzy
-@pagewidth 80
-
-# Does not work when run externally with null colorizer.
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    d = c.atFileCommands.scanAllDirectives(p)
-
-    assert d.get('language') == 'python'
-    assert d.get('tabwidth') == -4
-    # assert d.get('path').endswith('xyzzy')
-    assert d.get('pagewidth') == 80
-#@-node:ekr.20071109224138:@test g.get_directives_dict
 #@-node:ekr.20031218072017.1260:g.get_directives_dict & test
 #@+node:ekr.20031218072017.1386:getOutputNewline
 def getOutputNewline (c=None,name=None):
@@ -7094,17 +7014,6 @@ def scanForAtLanguage(c,p):
                 return language
 
     return c.target_language
-#@+node:ekr.20071109221215:@test scanColorDirectives
-# This will work regardless of where this method is.
-@language python
-
-# Does not work when run externally with null colorizer.
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    language = g.scanForAtLanguage(c,p)
-    assert language == 'python','got:%s' % language
-#@-node:ekr.20071109221215:@test scanColorDirectives
 #@-node:ekr.20040712084911.1:g.scanForAtLanguage & test
 #@+node:ekr.20031218072017.1391:g.scanDirectives & test
 @ Perhaps this routine should be the basis of atFile.scanAllDirectives and tangle.scanAllDirectives, but I am loath to make any further to these two already-infamous routines.  Also, this code does not check for @color and @nocolor directives: leoColor.useSyntaxColoring does that.
@@ -7222,22 +7131,6 @@ if not old.has_key("wrap") and not old.has_key("nowrap"):
     elif theDict.has_key("nowrap"):
         wrap = False
 #@-node:ekr.20031218072017.1400:<< Test for @wrap and @nowrap >>
-#@+node:ekr.20071109221337:@test g.scanDirectives
-# This will work regardless of where this method is.
-@language python
-@tabwidth -4
-# @path xyzzy # Creates a folder called xyzzy, interfering with another unit test.
-
-# Does not work when run externally with null colorizer.
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    d = g.scanDirectives(c,p)
-
-    assert d.get('language') == 'python'
-    assert d.get('tabwidth') == -4
-    # assert d.get('path').endswith('xyzzy')
-#@-node:ekr.20071109221337:@test g.scanDirectives
 #@-node:ekr.20031218072017.1391:g.scanDirectives & test
 #@-node:ekr.20031218072017.1380:Directive utils...
 #@+node:ekr.20071109124553:Found: get_directives_dict
@@ -7436,24 +7329,6 @@ else: # Emergency!
 
 # g.trace(repr(self.startSentinelComment),repr(self.endSentinelComment))
 #@-node:ekr.20041005105605.235:<< Set comment strings from delims >>
-#@+node:ekr.20071109223354:@test at.scanAllDirectives
-# This will work regardless of where this method is.
-@language python
-@tabwidth -4
-# @path xyzzy
-@pagewidth 80
-
-# Does not work when run externally with null colorizer.
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    d = c.atFileCommands.scanAllDirectives(p)
-
-    assert d.get('language') == 'python'
-    assert d.get('tabwidth') == -4
-    # assert d.get('path').endswith('xyzzy')
-    assert d.get('pagewidth') == 80
-#@-node:ekr.20071109223354:@test at.scanAllDirectives
 #@-node:ekr.20041005105605.222:atFile.scanAllDirectives & test
 #@+node:ekr.20041005105605.236:atFile.scanDefaultDirectory
 def scanDefaultDirectory(self,p,importing=False):
@@ -7675,22 +7550,6 @@ if not old.has_key("wrap") and not old.has_key("nowrap"):
     elif theDict.has_key("nowrap"):
         wrap = False
 #@-node:ekr.20031218072017.1400:<< Test for @wrap and @nowrap >>
-#@+node:ekr.20071109221337:@test g.scanDirectives
-# This will work regardless of where this method is.
-@language python
-@tabwidth -4
-# @path xyzzy # Creates a folder called xyzzy, interfering with another unit test.
-
-# Does not work when run externally with null colorizer.
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    d = g.scanDirectives(c,p)
-
-    assert d.get('language') == 'python'
-    assert d.get('tabwidth') == -4
-    # assert d.get('path').endswith('xyzzy')
-#@-node:ekr.20071109221337:@test g.scanDirectives
 #@-node:ekr.20031218072017.1391:g.scanDirectives & test
 #@+node:ekr.20040715155607:g.scanForAtIgnore
 def scanForAtIgnore(c,p):
@@ -7725,17 +7584,6 @@ def scanForAtLanguage(c,p):
                 return language
 
     return c.target_language
-#@+node:ekr.20071109221215:@test scanColorDirectives
-# This will work regardless of where this method is.
-@language python
-
-# Does not work when run externally with null colorizer.
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    language = g.scanForAtLanguage(c,p)
-    assert language == 'python','got:%s' % language
-#@-node:ekr.20071109221215:@test scanColorDirectives
 #@-node:ekr.20040712084911.1:g.scanForAtLanguage & test
 #@+node:ekr.20031218072017.1377:scanColorDirectives (leoColor) & test
 def scanColorDirectives(self,p):
@@ -7785,17 +7633,6 @@ if theDict.has_key("root") and not self.rootMode:
         doc = c.config.at_root_bodies_start_in_doc_mode
         self.rootMode = g.choose(doc,"doc","code")
 #@-node:ekr.20031218072017.1379:<< Test for @root, @root-doc or @root-code >>
-#@+node:ekr.20071109180120:@test scanColorDirectives
-# This will work regardless of where this method is.
-@language python
-
-# Does not work when run externally with null colorizer.
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    language = c.frame.body.colorizer.scanColorDirectives(p)
-    assert language == 'python','got:%s' % language
-#@-node:ekr.20071109180120:@test scanColorDirectives
 #@-node:ekr.20031218072017.1377:scanColorDirectives (leoColor) & test
 #@+node:ekr.20031218072017.1375:scanForTabWidth
 # Similar to code in scanAllDirectives.
@@ -8079,21 +7916,6 @@ else: # 9/25/02
             g.es(kind + " directory: " + dir2)
 #@-node:ekr.20031218072017.1374:<< handle absolute path >>
 #@-node:ekr.20031218072017.1373:<< Set self.tangle_directory >>
-#@+node:ekr.20071109220650:@test tangle.scanAllDirectives
-# This will work regardless of where this method is.
-@language python
-@tabwidth -4
-
-# Does not work when run externally with null colorizer.
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    d = c.tangleCommands.scanAllDirectives(
-        p,require_path_flag=False,issue_error_flag=False)
-
-    assert d.get('language') == 'python'
-    assert d.get('tabwidth') == -4
-#@-node:ekr.20071109220650:@test tangle.scanAllDirectives
 #@-node:ekr.20031218072017.1360:tangle.scanAllDirectives & test
 #@+node:ekr.20031218072017.3475:tanglePass1 (test)
 # Traverses the tree whose root is given, handling each headline and associated body text.
@@ -8504,53 +8326,6 @@ def updateTab (self,p,w):
     w.setSelectionRange(ins,ins,insert=ins)
 #@nonl
 #@-node:ekr.20051026092433:updateTab
-#@+node:ekr.20070627082044.274:@test selfInsertCommand-1
-if g.unitTesting:
-    c.beginUpdate()
-    try:
-        ec = c.editCommands ; w = c.frame.body.bodyCtrl
-        s = w.getAllText()
-
-        # This strings tests unicode, paren matching, and auto-indentation.
-        u = u'(a\u00c9\u03a9B\u3045\u4e7cz):\n' # '(aÉΩBぅ乼cz):\n'
-        u = u'(pdq):\n'
-        w.setInsertPoint(len(s))
-        for char in u:
-            event = g.Bunch(widget=w,char=char,keysym=None)
-            ec.selfInsertCommand(event)
-        result = w.getAllText()
-        #g.trace('result',repr(result))
-        assert result.endswith('    '),'result:%s' % repr(result) # Test of autocompleter.
-    finally:
-        w.setAllText(s)
-        p.v.t.bodyString = s
-        # g.trace(repr(s))
-        c.recolor()
-        c.endUpdate(False)
-
-# end:
-#@-node:ekr.20070627082044.274:@test selfInsertCommand-1
-#@+node:ekr.20070627082044.275:@test selfInsertCommand-2 (replacing tabs)
-if g.unitTesting:
-    c.beginUpdate()
-    try:
-        ec = c.editCommands ; w = c.frame.body.bodyCtrl
-        s = w.getAllText()
-        w.setSelectionRange(len(s)-9,len(s)-6)
-        event = g.Bunch(widget=w,char='\t',keysym=None)
-        ec.selfInsertCommand(event)
-        result = w.getAllText()
-        # g.trace('result',repr(result))
-        assert result.endswith('\n    abcdef'),'last line:%s' % repr(result.split('\n')[-1])
-    finally:
-        w.setAllText(s)
-        p.v.t.bodyString = s
-        # g.trace(repr(s))
-        c.recolor()
-        c.endUpdate(False)
-###abcdef
-#@nonl
-#@-node:ekr.20070627082044.275:@test selfInsertCommand-2 (replacing tabs)
 #@-node:ekr.20051125080855:selfInsertCommand, helpers & tests
 #@+node:ekr.20040803072955.91:onHeadChanged
 # Tricky code: do not change without careful thought and testing.
@@ -8718,96 +8493,6 @@ else: # 11/19/02
 #@-node:ekr.20031218072017.1366:<< Test for @path >> (tangle.scanAllDirectives)
 #@-node:ekr.20071110074253:Will not refactor @path logic
 #@+node:ekr.20071109180120.1:New unit tests
-#@+node:ekr.20071109224138:@test g.get_directives_dict
-# This will work regardless of where this method is.
-@language python
-@tabwidth -4
-#@verbatim
-#@path xyzzy
-@pagewidth 80
-
-# Does not work when run externally with null colorizer.
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    d = c.atFileCommands.scanAllDirectives(p)
-
-    assert d.get('language') == 'python'
-    assert d.get('tabwidth') == -4
-    # assert d.get('path').endswith('xyzzy')
-    assert d.get('pagewidth') == 80
-#@-node:ekr.20071109224138:@test g.get_directives_dict
-#@+node:ekr.20071109223354:@test at.scanAllDirectives
-# This will work regardless of where this method is.
-@language python
-@tabwidth -4
-# @path xyzzy
-@pagewidth 80
-
-# Does not work when run externally with null colorizer.
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    d = c.atFileCommands.scanAllDirectives(p)
-
-    assert d.get('language') == 'python'
-    assert d.get('tabwidth') == -4
-    # assert d.get('path').endswith('xyzzy')
-    assert d.get('pagewidth') == 80
-#@-node:ekr.20071109223354:@test at.scanAllDirectives
-#@+node:ekr.20071109221337:@test g.scanDirectives
-# This will work regardless of where this method is.
-@language python
-@tabwidth -4
-# @path xyzzy # Creates a folder called xyzzy, interfering with another unit test.
-
-# Does not work when run externally with null colorizer.
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    d = g.scanDirectives(c,p)
-
-    assert d.get('language') == 'python'
-    assert d.get('tabwidth') == -4
-    # assert d.get('path').endswith('xyzzy')
-#@-node:ekr.20071109221337:@test g.scanDirectives
-#@+node:ekr.20071109221215:@test scanColorDirectives
-# This will work regardless of where this method is.
-@language python
-
-# Does not work when run externally with null colorizer.
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    language = g.scanForAtLanguage(c,p)
-    assert language == 'python','got:%s' % language
-#@-node:ekr.20071109221215:@test scanColorDirectives
-#@+node:ekr.20071109180120:@test scanColorDirectives
-# This will work regardless of where this method is.
-@language python
-
-# Does not work when run externally with null colorizer.
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    language = c.frame.body.colorizer.scanColorDirectives(p)
-    assert language == 'python','got:%s' % language
-#@-node:ekr.20071109180120:@test scanColorDirectives
-#@+node:ekr.20071109220650:@test tangle.scanAllDirectives
-# This will work regardless of where this method is.
-@language python
-@tabwidth -4
-
-# Does not work when run externally with null colorizer.
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    d = c.tangleCommands.scanAllDirectives(
-        p,require_path_flag=False,issue_error_flag=False)
-
-    assert d.get('language') == 'python'
-    assert d.get('tabwidth') == -4
-#@-node:ekr.20071109220650:@test tangle.scanAllDirectives
 #@-node:ekr.20071109180120.1:New unit tests
 #@-node:ekr.20070803115653:Support directives in headlines
 #@+node:ekr.20071111052012:Added @bool at_auto_warns_about_leading_whitespace setting
@@ -10086,11 +9771,6 @@ def cantImport (moduleName,pluginName=None,verbose=True):
     else:
         g.es_print(s,color="blue")
 
-#@+node:ekr.20070627082044.850:@test g.cantImport returns None
-if g.unitTesting:
-    assert(g.cantImport("xyzzy","during unit testing") is None)
-#@nonl
-#@-node:ekr.20070627082044.850:@test g.cantImport returns None
 #@-node:ekr.20040917061619:g.cantImport & test
 #@+node:ekr.20041219095213.1:g.importModule
 def importModule (moduleName,pluginName=None,verbose=False):
