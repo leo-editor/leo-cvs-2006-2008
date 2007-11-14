@@ -4,21 +4,6 @@
 #@+node:ekr.20070703111455:To do: 4.4.5
 # Leo 4.4.5 will complete several projects that are long overdue.
 
-#@+node:ekr.20071114061648:Find a way to avoid invoking vim plugin on @url nodes
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4622384
-By: indrajith-k
-
-I have enabled the vim plug in in my Leo settings file. Now I can double click
-on a node and have it opened in vim. But this has a side effect. The behavior
-is retained for @url nodes also. This is a issue. Other than changing the vim
-even handler, is there a smarter way to avoid vim popping up at a @url node?
-
-----
-
-The question of clashes of click bindings has been around for a long time.  Clicking in headlines is pretty much deprecated.  The vim plugin should define a command that can be bound to a key.  That should eliminate the conflict.  Ditto for @url handling.
-#@-node:ekr.20071114061648:Find a way to avoid invoking vim plugin on @url nodes
 #@+node:ekr.20071025160653.2:Commands to add/remove icons
 #@+node:ekr.20071026092640:To do
 @nocolor
@@ -443,85 +428,6 @@ with the following (rST) commands
 Thanks for the clarification.  Imo, this is a good idea, because there seems to be no way at present to get the effect you want without actually changing the body text as you describe.  There are situations in which changing the body text is either infeasible or clumsy.
 #@nonl
 #@-node:ekr.20071109080424:Add @rst-preformat
-#@+node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
-@nocolor
-
-From email from Terry Brown
-
-python /home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py /home/tbrown/.tnb.leo
-
-(should be all on one line, i.e. run and open /home/tbrown/.tnb.leo)
-
-gives the traceback below.  Opening the file from within Leo works fine.
-
-Bah - I just now looked at it closely enough to realize it's the evil
-pickled Tk classes in cleo uAs.  So I don't know whether you want to
-fix that or not, it makes sense Leo would read the file specified on
-the command line before Tk is initialized - if it's just scanning for
-settings maybe it could catch and ignore failed uA reads at that time?
-
-At some point I want to take pickled Tk vars out of cleo, I was
-thinking when that guy was working on the wx gui would be a good time,
-too bad he got sick.
-
-Cheers -Terry
-
-reading settings in /mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/config/leoSettings.leo
-reading settings in /home/tbrown/leoSettings.leo
-reading settings in /home/tbrown/myLeoSettings.leo
-reading settings in /home/tbrown/.tnb.leo
-Traceback (most recent call last):
-  File "/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py", line 398, in <module>
-    run(fileName)
-  File "/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py", line 118, in run
-    g.app.config.readSettingsFiles(fileName,verbose)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoConfig.py", line 1649, in readSettingsFiles
-    c = self.openSettingsFile(path)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoConfig.py", line 1674, in openSettingsFile
-    theFile,path,readAtFileNodesFlag=False,silent=True) # closes theFile.
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 892, in open
-    silent=silent)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 779, in getLeoFile
-    self.getAllLeoElements(fileName,silent)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1317, in getAllLeoElements
-    self.getVnodes()
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1898, in getVnodes
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
-    appendToCurrentStack=append1,appendToTopStack=append2)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1738, in getVnode
-    attr,val = self.getUa("vnode")
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1658, in getUa
-    val2 = pickle.loads(binString)
-  File "/usr/lib/python2.5/pickle.py", line 1374, in loads
-    return Unpickler(file).load()
-  File "/usr/lib/python2.5/pickle.py", line 858, in load
-    dispatch[key](self)
-  File "/usr/lib/python2.5/pickle.py", line 1217, in load_build
-    setstate(state)
-  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/plugins/cleo.py", line 130, in __setstate__
-    Tk.Variable.__init__(self)
-  File "/usr/lib/python2.5/lib-tk/Tkinter.py", line 188, in __init__
-    self._tk = master.tk
-AttributeError: 'NoneType' object has no attribute 'tk'
-Exception exceptions.AttributeError: "TkPickleVar instance has no attribute '_tk'" in <bound method TkPickleVar.__del__ of <cleo.TkPickleVar instance at 0xb73a876c>> ignored
-#@-node:ekr.20071014110905:Test pickled uA's to make sure they can be unpicled
 #@-node:ekr.20070703111455:To do: 4.4.5
 #@+node:ekr.20071113093057:To do: 4.4.6: last major projects
 #@+node:ekr.20071114063047:First
