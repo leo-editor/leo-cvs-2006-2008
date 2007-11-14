@@ -10428,7 +10428,7 @@ if image:
     self.canvas.itemconfigure(theId,tag=tag)
     self.ids[theId] = p.copy()
 
-    def deleteButtonCallback(event=None,c=c,t=p.v.t,fullname=fullname):
+    def deleteButtonCallback(event=None,c=c,t=p.v.t,fullname=fullname,relPath=relPath):
         c.editCommands.deleteIconByName(t,fullname,relPath)
 
     self.canvas.tag_bind(tag,'<3>',deleteButtonCallback)
@@ -10464,6 +10464,8 @@ def deleteAllIcons (self,event):
             if dict:
                 a["icons"] = []
                 a["lineYOffset"] = 0
+                p.setDirty()
+                c.setChanged(True)
 
     c.redraw()
 #@-node:ekr.20071114082418.2:deleteAllIcons
@@ -10479,13 +10481,15 @@ def deleteFirstIcon (self,event):
 
     if aList:
         p.v.t.unknownAttributes ['icons'] = aList[1:]
+        p.setDirty()
+        c.setChanged(True)
         c.redraw()
 #@nonl
 #@-node:ekr.20071114082418:deleteFirstIcon
 #@+node:ekr.20071114092622:deleteIconByName
 def deleteIconByName (self,t,name,relPath):
 
-    c = self.c
+    c = self.c ; p = c.currentPosition()
 
     if not hasattr(t,'unknownAttributes'):
         return
@@ -10499,10 +10503,12 @@ def deleteIconByName (self,t,name,relPath):
     for d in aList:
         name2 = d.get('file')
         name2 = g.os_path_abspath(name2)
+        # g.trace('name',name,'\nrelPath',relPath,'\nabsRelPath',absRelPath,'\nname2',name2)
         if name == name2 or absRelPath == name2:
-            # g.trace('name',name,'\nrelPath',relPath,'\nabsRelPath',absRelPath,'\nname2',name2)
             aList.remove(d)
             t.unknownAttributes ['icons'] = aList
+            p.setDirty()
+            c.setChanged(True)
             c.redraw()
             break
     else:
@@ -10523,6 +10529,8 @@ def deleteLastIcon (self,event):
 
     if aList:
         p.v.t.unknownAttributes ['icons'] = aList[:-1]
+        p.setDirty()
+        c.setChanged(True)
         c.redraw()
 #@-node:ekr.20071114085054:deleteLastIcon
 #@+node:ekr.20071114082418.1:deleteNodeIcons
@@ -10536,6 +10544,8 @@ def deleteNodeIcons (self,event):
         if dict:
             a["icons"] = []
             a["lineYOffset"] = 0
+            p.setDirty()
+            c.setChanged(True)
             c.redraw()
 #@-node:ekr.20071114082418.1:deleteNodeIcons
 #@+node:ekr.20071114081313.1:insertIcon & helper
@@ -10581,12 +10591,10 @@ def insertIcon (self,event):
     aList2.extend(aList)
     p.v.t.unknownAttributes ['icons'] = aList2
     p.v.t.unknownAttributes ['lineYOffset'] = 3
+    p.setDirty()
+    c.setChanged(True)
     c.redraw()
-
-    # Classes and functions can only be pickled if they are at the top level of a module.
-    #"onClick" : onClick,
-    #"onRightClick" : onRightClick,
-    #"onDoubleClick" : onDoubleClick }
+#@nonl
 #@+node:ekr.20071114083142:getImage
 def getImage (self,path):
 

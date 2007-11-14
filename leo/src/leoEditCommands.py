@@ -2297,6 +2297,8 @@ class editCommandsClass (baseEditCommandsClass):
                 if dict:
                     a["icons"] = []
                     a["lineYOffset"] = 0
+                    p.setDirty()
+                    c.setChanged(True)
 
         c.redraw()
     #@-node:ekr.20071114082418.2:deleteAllIcons
@@ -2312,13 +2314,15 @@ class editCommandsClass (baseEditCommandsClass):
 
         if aList:
             p.v.t.unknownAttributes ['icons'] = aList[1:]
+            p.setDirty()
+            c.setChanged(True)
             c.redraw()
     #@nonl
     #@-node:ekr.20071114082418:deleteFirstIcon
     #@+node:ekr.20071114092622:deleteIconByName
     def deleteIconByName (self,t,name,relPath):
 
-        c = self.c
+        c = self.c ; p = c.currentPosition()
 
         if not hasattr(t,'unknownAttributes'):
             return
@@ -2336,6 +2340,8 @@ class editCommandsClass (baseEditCommandsClass):
             if name == name2 or absRelPath == name2:
                 aList.remove(d)
                 t.unknownAttributes ['icons'] = aList
+                p.setDirty()
+                c.setChanged(True)
                 c.redraw()
                 break
         else:
@@ -2356,6 +2362,8 @@ class editCommandsClass (baseEditCommandsClass):
 
         if aList:
             p.v.t.unknownAttributes ['icons'] = aList[:-1]
+            p.setDirty()
+            c.setChanged(True)
             c.redraw()
     #@-node:ekr.20071114085054:deleteLastIcon
     #@+node:ekr.20071114082418.1:deleteNodeIcons
@@ -2369,6 +2377,8 @@ class editCommandsClass (baseEditCommandsClass):
             if dict:
                 a["icons"] = []
                 a["lineYOffset"] = 0
+                p.setDirty()
+                c.setChanged(True)
                 c.redraw()
     #@-node:ekr.20071114082418.1:deleteNodeIcons
     #@+node:ekr.20071114081313.1:insertIcon & helper
@@ -2414,6 +2424,8 @@ class editCommandsClass (baseEditCommandsClass):
         aList2.extend(aList)
         p.v.t.unknownAttributes ['icons'] = aList2
         p.v.t.unknownAttributes ['lineYOffset'] = 3
+        p.setDirty()
+        c.setChanged(True)
         c.redraw()
     #@nonl
     #@+node:ekr.20071114083142:getImage
