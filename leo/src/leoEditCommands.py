@@ -2336,8 +2336,10 @@ class editCommandsClass (baseEditCommandsClass):
         for d in aList:
             name2 = d.get('file')
             name2 = g.os_path_abspath(name2)
-            # g.trace('name',name,'\nrelPath',relPath,'\nabsRelPath',absRelPath,'\nname2',name2)
-            if name == name2 or absRelPath == name2:
+            name2rel = d.get('relPath')
+            # name2rel = g.os_path_abspath(g.os_path_normpath(g.os_path_join(basePath,name2rel)))
+            g.trace('name',name,'\nrelPath',relPath,'\nabsRelPath',absRelPath,'\nname2',name2,'\nname2rel',name2rel)
+            if name == name2 or absRelPath == name2 or relPath == name2rel:
                 aList.remove(d)
                 t.unknownAttributes ['icons'] = aList
                 p.setDirty()
