@@ -93,6 +93,7 @@ __version__ = "1.13"
 # 1.13 EKR: The docstring now states that the open_with plugin must be enabled 
 # for this to work.
 # 1.14 EKR: Emphasized that the open_with plugin must be enabled.
+# 1.15 EKR: Don't open @url nodes in vim.
 #@-at
 #@nonl
 #@-node:ekr.20050226184411.1:<< version history >>
@@ -193,6 +194,7 @@ subprocess = g.importExtension('subprocess',pluginName=__name__,verbose=True)
 #@-node:ekr.20050226184411.2:<< imports >>
 #@nl
 
+openURLNodes = False # True: open @url nodes.
 useDoubleClick = True # True: double-click opens VIM.  False: single-click opens VIM.
 
 # This command is used to communicate with the vim server. If you use gvim
@@ -244,6 +246,8 @@ def open_in_vim (tag,keywords,val=None):
     c = keywords.get('c')
     p = keywords.get("p")
     if not c or not p: return
+    if not openURLNodes and p.headString().startswith('@url'):
+        return # Avoid conflicts with @url nodes.
     v = p.v
 
     vim_cmd = c.config.getString('vim_cmd') or _vim_cmd
