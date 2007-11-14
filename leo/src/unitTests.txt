@@ -1,9 +1,0 @@
-#@+leo-ver=4-thin
-#@+node:ekr.20070627083814.1:@thin unitTests.txt
-# No longer used: all tests have been moved back to unitTest.leo
-
-#@+all
-#@-all
-#@nonl
-#@-node:ekr.20070627083814.1:@thin unitTests.txt
-#@-leo
