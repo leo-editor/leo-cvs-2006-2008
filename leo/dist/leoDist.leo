@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.624838292367">
-	<global_window_position top="16" left="349" height="887" width="849"/>
+<globals body_outline_ratio="0.347174163783">
+	<global_window_position top="16" left="350" height="867" width="848"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -169,7 +169,7 @@
 <v t="ekr.20040701160830.1"><vh>names for use in suppressions</vh></v>
 <v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
-<v t="ekr.20050118095021"><vh>Leo 4.x installer</vh>
+<v t="ekr.20050118095021" a="TV"><vh>Leo 4.x installer</vh>
 <v t="ekr.20050118103207"><vh>Keeping installer/uninstallers in synch</vh>
 <v t="ekr.20050118104149"><vh>config files</vh>
 <v t="ekr.20050118104149.1"><vh>&lt;&lt; install config files &gt;&gt;</vh></v>
@@ -239,7 +239,7 @@
 <v t="EKR.20040519082027.34"><vh>@file-thin ../uninstall</vh></v>
 </v>
 </v>
-<v t="ekr.20051205102401" a="TV"><vh>Update these for each release</vh>
+<v t="ekr.20051205102401"><vh>Update these for each release</vh>
 <v t="EKR.20040519090846.9"><vh>@asis ../doc/README.TXT</vh></v>
 <v t="EKR.20040519090846.8"><vh>@asis ../doc/PKG-INFO.TXT</vh></v>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings for leo-4.3.nsi &gt;&gt;</vh></v>
@@ -713,44 +713,24 @@ Description: Leo is an outline-oriented editor written in 100% pure Python.
 		Download tkIcon from http://www.effbot.org/downloads/#tkIcon
 Platform: Windows, Linux, Macintosh
 </t>
-<t tx="EKR.20040519090846.9">Leo 4.4.4 Final                           November 2, 2007
+<t tx="EKR.20040519090846.9">Leo 4.4.5 beta 1                          November 16, 2007
 
-Leo 4.4.4 Final is available at:
+Leo 4.4.5 beta 1 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
 
-Leo 4.4.4 contains many important features originally planned for later releases.
+Leo 4.4.5 fixes several long-delayed bug fixes and adds several new features.
 
-The highlights of Leo 4.4.4:
+The highlights of Leo 4.4.5:
 ----------------------------
 
-- The Great Graph Aha (tm): simple scripts allow Leo outlines to represent
-  arbitrary directed graphs. There is no need for a separate 'graph world'. The
-  graphed.py plugin is a direct result of this Aha. The graphed.py plugin allows
-  you to create general graphs from Leo outlines.
-
-- @menus trees in settings files create all of Leo's menus.  It is now dead
-  easy to make Leo's menus look the way you want.
-
-- @buttons trees in settings files create common @button nodes created in all
-  Leo outlines.
-
-- @auto nodes eliminate sentinels in derived files, thereby allowing people to
-  collaborate using Leo more easily. **Warning**: for now, please make backup
-  copies of files imported with @auto.
-
-- New commands for resolving cvs conflicts.
-
-- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
-  This plugin features much better performance and a new, elegant algorithm.
-
-- Leo is now compatible with jython.
-
-- Better support for icons in headlines.
-
-- The usual assortment of bug fixes and other minor improvements.
+- Fixes all known bugs.
+- Adds 3 new sort-lines commands.
+- Adds commands to insert and delete icons from headlines.
+- Adds all the Tango 16x16 icons to Leo's icon library.
+- Adds support for @rst-preformat nodes to the rst3 plugin.
 
 Links:
 ------
@@ -758,7 +738,8 @@ Leo:      http://webpages.charter.net/edreamleo/front.html
 Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
-Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html
+</t>
 <t tx="EKR.20040519091259">@pagewidth 70
 @killcolor</t>
 <t tx="EKR.20040519091259.1">4.2-final   setup: 1828 zip: 1508
@@ -3010,8 +2991,54 @@ Delete "$INSTDIR\doc\LeoN\sun98reversible.pdf"
 
 Delete "$INSTDIR\doc\html\*.*"</t>
 <t tx="ekr.20050118104901.3"></t>
-<t tx="ekr.20050118104901.4">File "..\Icons\*.*"</t>
-<t tx="ekr.20050118104901.5">Delete "$INSTDIR\icons\*.*"</t>
+<t tx="ekr.20050118104901.4">File "..\Icons\*.*"
+
+SetOutPath  "$INSTDIR\Icons\Tango\16x16\actions"
+File "..\Icons\Tango\16x16\actions\*.*"
+
+SetOutPath "$INSTDIR\Icons\Tango\16x16\animations"
+File "..\Icons\Tango\16x16\animations\*.*"
+
+SetOutPath "$INSTDIR\Icons\Tango\16x16\apps"
+File "..\Icons\Tango\16x16\apps\*.*"
+
+SetOutPath "$INSTDIR\Icons\Tango\16x16\categories"
+File "..\Icons\Tango\16x16\categories\*.*"
+
+SetOutPath "$INSTDIR\Icons\Tango\16x16\devices"
+File "..\Icons\Tango\16x16\devices\*.*"
+
+SetOutPath "$INSTDIR\Icons\Tango\16x16\emblems"
+File "..\Icons\Tango\16x16\emblems\*.*"
+
+SetOutPath "$INSTDIR\Icons\Tango\16x16\emotes"
+File "..\Icons\Tango\16x16\emotes\*.*"
+
+SetOutPath "$INSTDIR\Icons\Tango\16x16\mimetypes"
+File "..\Icons\Tango\16x16\mimetypes\*.*"
+
+SetOutPath "$INSTDIR\Icons\Tango\16x16\places"
+File "..\Icons\Tango\16x16\places\*.*"
+
+SetOutPath "$INSTDIR\Icons\Tango\16x16\status"
+File "..\Icons\Tango\16x16\status\*.*"
+
+SetOutPath "$INSTDIR\Icons\Tango\16x16"
+
+</t>
+<t tx="ekr.20050118104901.5">Delete "$INSTDIR\Icons\Tango\16x16\actions\*.*"
+Delete "$INSTDIR\Icons\Tango\16x16\animations\*.*"
+Delete "$INSTDIR\Icons\Tango\16x16\apps\*.*"
+Delete "$INSTDIR\Icons\Tango\16x16\categories\*.*"
+Delete "$INSTDIR\Icons\Tango\16x16\devices\*.*"
+Delete "$INSTDIR\Icons\Tango\16x16\emblems\*.*"
+Delete "$INSTDIR\Icons\Tango\16x16\emotes\*.*"
+Delete "$INSTDIR\Icons\Tango\16x16\mimetypes\*.*"
+Delete "$INSTDIR\Icons\Tango\16x16\places\*.*"
+Delete "$INSTDIR\Icons\Tango\16x16\status\*.*"
+Delete "$INSTDIR\Icons\Tango\16x16"
+
+Delete "$INSTDIR\icons\*.*"</t>
 <t tx="ekr.20050118104901.6"></t>
 <t tx="ekr.20050118104901.7">File "..\plugins\leoPlugins.leo"
 
@@ -3024,7 +3051,7 @@ SetOutPath "$INSTDIR\plugins\trees"
 
 File "..\plugins\trees\*.py"
 
-File "..\plugins\trees\pluginsManager.txt"</t>
+; File "..\plugins\trees\pluginsManager.txt"</t>
 <t tx="ekr.20050118104901.8">Delete "$INSTDIR\plugins\leoPlugins.leo"
 
 Delete "$INSTDIR\plugins\*.txt"
@@ -3040,7 +3067,8 @@ Delete "$INSTDIR\plugins\trees\pluginsManager.txt"</t>
 File "..\src\leoProjects.txt"
 File "..\src\LeoPy.leo"
 File "..\src\oldLeoProjects.leo"
-File "..\src\unitTests.txt"
+
+; File "..\src\unitTests.txt"
 
 ; File "..\src\__init__.py"
 File "..\src\leo*.py"

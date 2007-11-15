@@ -1,41 +1,21 @@
-Leo 4.4.4 Final                           November 2, 2007
+Leo 4.4.5 beta 1                          November 16, 2007
 
-Leo 4.4.4 Final is available at:
+Leo 4.4.5 beta 1 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
 
-Leo 4.4.4 contains many important features originally planned for later releases.
+Leo 4.4.5 fixes several long-delayed bug fixes and adds several new features.
 
-The highlights of Leo 4.4.4:
+The highlights of Leo 4.4.5:
 ----------------------------
 
-- The Great Graph Aha (tm): simple scripts allow Leo outlines to represent
-  arbitrary directed graphs. There is no need for a separate 'graph world'. The
-  graphed.py plugin is a direct result of this Aha. The graphed.py plugin allows
-  you to create general graphs from Leo outlines.
-
-- @menus trees in settings files create all of Leo's menus.  It is now dead
-  easy to make Leo's menus look the way you want.
-
-- @buttons trees in settings files create common @button nodes created in all
-  Leo outlines.
-
-- @auto nodes eliminate sentinels in derived files, thereby allowing people to
-  collaborate using Leo more easily. **Warning**: for now, please make backup
-  copies of files imported with @auto.
-
-- New commands for resolving cvs conflicts.
-
-- A threading_colorizer plugin replaces the __jEdit_colorizer__ plugin.
-  This plugin features much better performance and a new, elegant algorithm.
-
-- Leo is now compatible with jython.
-
-- Better support for icons in headlines.
-
-- The usual assortment of bug fixes and other minor improvements.
+- Fixes all known bugs.
+- Adds 3 new sort-lines commands.
+- Adds commands to insert and delete icons from headlines.
+- Adds all the Tango 16x16 icons to Leo's icon library.
+- Adds support for @rst-preformat nodes to the rst3 plugin.
 
 Links:
 ------

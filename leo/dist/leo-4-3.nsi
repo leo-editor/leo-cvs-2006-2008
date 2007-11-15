@@ -329,7 +329,39 @@ Section "Leo" SEC01
   ;@  << install icons >>
   ;@+node:ekr.20050118104901.4:<< install icons >>
   File "..\Icons\*.*"
-  ;@nonl
+
+  SetOutPath  "$INSTDIR\Icons\Tango\16x16\actions"
+  File "..\Icons\Tango\16x16\actions\*.*"
+
+  SetOutPath "$INSTDIR\Icons\Tango\16x16\animations"
+  File "..\Icons\Tango\16x16\animations\*.*"
+
+  SetOutPath "$INSTDIR\Icons\Tango\16x16\apps"
+  File "..\Icons\Tango\16x16\apps\*.*"
+
+  SetOutPath "$INSTDIR\Icons\Tango\16x16\categories"
+  File "..\Icons\Tango\16x16\categories\*.*"
+
+  SetOutPath "$INSTDIR\Icons\Tango\16x16\devices"
+  File "..\Icons\Tango\16x16\devices\*.*"
+
+  SetOutPath "$INSTDIR\Icons\Tango\16x16\emblems"
+  File "..\Icons\Tango\16x16\emblems\*.*"
+
+  SetOutPath "$INSTDIR\Icons\Tango\16x16\emotes"
+  File "..\Icons\Tango\16x16\emotes\*.*"
+
+  SetOutPath "$INSTDIR\Icons\Tango\16x16\mimetypes"
+  File "..\Icons\Tango\16x16\mimetypes\*.*"
+
+  SetOutPath "$INSTDIR\Icons\Tango\16x16\places"
+  File "..\Icons\Tango\16x16\places\*.*"
+
+  SetOutPath "$INSTDIR\Icons\Tango\16x16\status"
+  File "..\Icons\Tango\16x16\status\*.*"
+
+  SetOutPath "$INSTDIR\Icons\Tango\16x16"
+
   ;@-node:ekr.20050118104901.4:<< install icons >>
   ;@nl
   SetOutPath "$INSTDIR\modes"
@@ -354,7 +386,7 @@ Section "Leo" SEC01
 
   File "..\plugins\trees\*.py"
 
-  File "..\plugins\trees\pluginsManager.txt"
+  ; File "..\plugins\trees\pluginsManager.txt"
   ;@nonl
   ;@-node:ekr.20050118104901.7:<< install plugins >>
   ;@nl
@@ -375,7 +407,8 @@ Section "Leo" SEC01
   File "..\src\leoProjects.txt"
   File "..\src\LeoPy.leo"
   File "..\src\oldLeoProjects.leo"
-  File "..\src\unitTests.txt"
+
+  ; File "..\src\unitTests.txt"
 
   ; File "..\src\__init__.py"
   File "..\src\leo*.py"
@@ -627,6 +660,18 @@ Section Uninstall
   ;@nl
   ;@  << uninstall icons >>
   ;@+node:ekr.20050118104901.5:<< uninstall icons >>
+  Delete "$INSTDIR\Icons\Tango\16x16\actions\*.*"
+  Delete "$INSTDIR\Icons\Tango\16x16\animations\*.*"
+  Delete "$INSTDIR\Icons\Tango\16x16\apps\*.*"
+  Delete "$INSTDIR\Icons\Tango\16x16\categories\*.*"
+  Delete "$INSTDIR\Icons\Tango\16x16\devices\*.*"
+  Delete "$INSTDIR\Icons\Tango\16x16\emblems\*.*"
+  Delete "$INSTDIR\Icons\Tango\16x16\emotes\*.*"
+  Delete "$INSTDIR\Icons\Tango\16x16\mimetypes\*.*"
+  Delete "$INSTDIR\Icons\Tango\16x16\places\*.*"
+  Delete "$INSTDIR\Icons\Tango\16x16\status\*.*"
+  Delete "$INSTDIR\Icons\Tango\16x16"
+
   Delete "$INSTDIR\icons\*.*"
   ;@nonl
   ;@-node:ekr.20050118104901.5:<< uninstall icons >>
@@ -727,7 +772,20 @@ Section Uninstall
   RMDir "$INSTDIR\extensions\Pmw"
   RMDir "$INSTDIR\extensions"
 
+  RMDir "$INSTDIR\icons\Tango\16x16\actions"
+  RMDir "$INSTDIR\icons\Tango\16x16\animations"
+  RMDir "$INSTDIR\icons\Tango\16x16\apps"
+  RMDir "$INSTDIR\icons\Tango\16x16\categories"
+  RMDir "$INSTDIR\icons\Tango\16x16\devices"
+  RMDir "$INSTDIR\icons\Tango\16x16\emblems"
+  RMDir "$INSTDIR\icons\Tango\16x16\emotes"
+  RMDir "$INSTDIR\icons\Tango\16x16\mimetypes"
+  RMDir "$INSTDIR\icons\Tango\16x16\places"
+  RMDir "$INSTDIR\icons\Tango\16x16\status"
+  RMDir "$INSTDIR\icons\Tango\16x16"
+  RMDir "$INSTDIR\icons\Tango"
   RMDir "$INSTDIR\icons"
+
   RMDir "$INSTDIR\modes"
 
   RMDir "$INSTDIR\plugins\trees"

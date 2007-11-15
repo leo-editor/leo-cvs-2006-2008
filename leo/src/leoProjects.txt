@@ -10633,6 +10633,11 @@ def getImage (self,path):
 
 http://sourceforge.net/forum/message.php?msg_id=4614081
 #@-node:ekr.20071109080424:Added @rst-preformat
+#@+node:ekr.20071115073730:Installed small icon set from Tango library
+http://tango.freedesktop.org/Tango_Icon_Library
+
+You need to have libmagick6-dev installed in adition to imagemagick
+#@-node:ekr.20071115073730:Installed small icon set from Tango library
 #@-node:ekr.20071110081315:New features
 #@-node:ekr.20071105150738:Leo 4.4.5 b1
 #@-all
