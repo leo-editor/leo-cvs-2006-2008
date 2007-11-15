@@ -10628,6 +10628,11 @@ def getImage (self,path):
 #@-node:ekr.20071114081313.1:insertIcon & helper
 #@-node:ekr.20071114081313:icons...
 #@-node:ekr.20071025160653.2:Added Cmd:Icons menu and commands
+#@+node:ekr.20071109080424:Added @rst-preformat
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4614081
+#@-node:ekr.20071109080424:Added @rst-preformat
 #@-node:ekr.20071110081315:New features
 #@-node:ekr.20071105150738:Leo 4.4.5 b1
 #@-all

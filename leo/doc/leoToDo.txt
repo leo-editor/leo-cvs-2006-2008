@@ -4,23 +4,29 @@
 #@+node:ekr.20070703111455:To do: 4.4.5
 # Leo 4.4.5 will complete several projects that are long overdue.
 
-#@+node:ekr.20071109080424:Add @rst-preformat
-@nocolor
+#@+node:ekr.20071115055315:Add toggle-collapse-outline-when-moving
+#@+node:ekr.20040930064232:contractNodeOrGoToParent
+def contractNodeOrGoToParent (self,event=None):
 
-http://sourceforge.net/forum/message.php?msg_id=4614081
+    """Simulate the left Arrow Key in folder of Windows Explorer."""
 
-> I simply want to mark the headline of that sub-node in a special way to tell it:
+    c = self ; p = c.currentPosition()
 
-> Do the same with the text in content automatically, what could have been done manually 
-with the following (rST) commands 
+    if p.hasChildren() and p.isExpanded():
+        # g.trace('contract',p.headString())
+        c.contractNode()
+    elif p.hasParent() and p.parent().isVisible(c):
+        # g.trace('goto parent',p.headString())
+        c.goToParent()
 
-* Insert "::", <NL>, <NL>, <TAB> before textline 1 
-* Insert <TAB> before textline 2 
-* ...
-
-Thanks for the clarification.  Imo, this is a good idea, because there seems to be no way at present to get the effect you want without actually changing the body text as you describe.  There are situations in which changing the body text is either infeasible or clumsy.
+    c.treeFocusHelper()
 #@nonl
-#@-node:ekr.20071109080424:Add @rst-preformat
+#@-node:ekr.20040930064232:contractNodeOrGoToParent
+#@-node:ekr.20071115055315:Add toggle-collapse-outline-when-moving
+#@+node:ekr.20071115073730:Install small icon set
+http://tango.freedesktop.org/Tango_Icon_Library
+#@nonl
+#@-node:ekr.20071115073730:Install small icon set
 #@-node:ekr.20070703111455:To do: 4.4.5
 #@+node:ekr.20071113093057:To do: 4.4.6: last major projects
 #@+node:ekr.20071114063047:First
