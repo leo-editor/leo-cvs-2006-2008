@@ -714,6 +714,7 @@ class rstClass:
             'ignore_this_headline',
             'ignore_this_node',
             'ignore_this_tree',
+            'preformat_this_node',
             'show_this_headline',
         ]
     #@nonl
@@ -785,6 +786,7 @@ class rstClass:
             'rst3_ignore_tree_prefix':      '@rst-ignore-tree',
             'rst3_option_prefix':           '@rst-option',
             'rst3_options_prefix':          '@rst-options',
+            'rst3_preformat_prefix':        '@rst-preformat',
             'rst3_show_headline_prefix':    '@rst-head',
         }
     #@nonl
@@ -804,7 +806,10 @@ class rstClass:
     def getOption (self,name):
 
         bwm = False
-        if bwm: g.trace("bwm: getOption self:%s, name:%s, value:%s" % (self, name, self.optionsDict.get(name)))
+        if bwm:
+            g.trace("bwm: getOption self:%s, name:%s, value:%s" % (
+                self, name, self.optionsDict.get(name)))
+
         return self.optionsDict.get(name)
     #@nonl
     #@-node:ekr.20050814134351:getOption
@@ -934,6 +939,7 @@ class rstClass:
                 ('ignore_prefix','ignore_this_tree',True),      # '@rst-ignore'
                 ('ignore_node_prefix','ignore_this_node',True), # '@rst-ignore-node'
                 ('ignore_tree_prefix','ignore_this_tree',True), # '@rst-ignore-tree'
+                ('preformat_prefix','preformat_this_node',True), # '@rst-preformat
             ):
                 prefix = self.getOption(prefix)
                 if prefix and word == prefix: # Do _not_ munge this prefix!
@@ -1321,52 +1327,59 @@ class rstClass:
     #@nonl
     #@-node:ekr.20060525102337:writeNodeToString (New in 4.4.1)
     #@-node:ekr.20050809082854: Top-level write code
-    #@+node:ekr.20050805162550.23:writeTree
-    def writeTree(self,p):
+    #@+node:ekr.20050811154552:getDocPart
+    def getDocPart (self,lines,n):
 
-        '''Write p's tree to self.outputFile.'''
+        # g.trace('n',n,repr(''.join(lines)))
 
-        self.scanAllOptions(p)
-
-        if self.getOption('generate_rst'):
-            self.write(self.rstComment('rst3: filename: %s\n\n' % self.outputFileName))
-
-        # We can't use an iterator because we may skip parts of the tree.
-        p = p.copy() # Only one copy is needed for traversal.
-        self.topNode = p.copy() # Indicate the top of this tree.
-        after = p.nodeAfterTree()
-
-        while p and p != after:
-            self.writeNode(p)
-    #@nonl
-    #@-node:ekr.20050805162550.23:writeTree
-    #@+node:ekr.20050810083057:writeNode
-    def writeNode (self,p):
-
-        '''Format a node according to the options presently in effect.'''
-
-        self.initCodeBlockString(p)
-        self.scanAllOptions(p)
-
-        if 0:
-            g.trace('%24s code_mode %s' % (p.headString(),self.getOption('code_mode')))
-
-        if self.getOption('ignore_this_tree'):
-            p.moveToNodeAfterTree()
-        elif self.getOption('ignore_this_node'):
-            p.moveToThreadNext()
-        else:
-            h = p.headString().strip()
-            if g.match_word(h,0,'@rst-options') and not self.getOption('show_options_nodes'):
-                pass
+        result = []
+        #@    << Append whatever follows @doc or @space to result >>
+        #@+node:ekr.20060610104435:<< Append whatever follows @doc or @space to result >>
+        if n > 0:
+            line = lines[n-1]
+            if line.startswith('@doc'):
+                s = line[4:].lstrip()
+            elif line.startswith('@'):
+                s = line[1:].lstrip()
             else:
-                self.http_addNodeMarker(p)
-                self.writeHeadline(p)
-                self.writeBody(p)
+                s = ''
 
-            p.moveToThreadNext()
+            # New in Leo 4.4.4: remove these special tags.
+            for tag in ('@rst-options','@rst-option','@rst-markup'):
+                if g.match_word(s,0,tag):
+                    s = s[len(tag):].strip()
+
+            if s.strip():
+                result.append(s)
+        #@-node:ekr.20060610104435:<< Append whatever follows @doc or @space to result >>
+        #@nl
+        while n < len(lines):
+            s = lines [n] ; n += 1
+            if g.match_word(s,0,'@code') or g.match_word(s,0,'@c'):
+                break
+            result.append(s)
+        return n, result
     #@nonl
-    #@-node:ekr.20050810083057:writeNode
+    #@-node:ekr.20050811154552:getDocPart
+    #@+node:ekr.20050811102607:skip_literal_block
+    def skip_literal_block (self,lines,n):
+
+        s = lines[n] ; result = [s] ; n += 1
+        indent = g.skip_ws(s,0)
+
+        # Skip lines until a non-blank line is found with same or less indent.
+        while n < len(lines):
+            s = lines[n]
+            indent2 = g.skip_ws(s,0)
+            if s and not s.isspace() and indent2 <= indent:
+                break # We will rescan lines [n]
+            n += 1
+            result.append(s)
+
+        # g.printList(result,tag='literal block')
+        return n, result
+    #@nonl
+    #@-node:ekr.20050811102607:skip_literal_block
     #@+node:ekr.20050811101550.1:writeBody & helpers
     def writeBody (self,p):
 
@@ -1616,40 +1629,6 @@ class rstClass:
     #@nonl
     #@-node:ekr.20050805162550.30:replaceCodeBlockDirectives
     #@-node:ekr.20050811101550.1:writeBody & helpers
-    #@+node:ekr.20050811154552:getDocPart
-    def getDocPart (self,lines,n):
-
-        # g.trace('n',n,repr(''.join(lines)))
-
-        result = []
-        #@    << Append whatever follows @doc or @space to result >>
-        #@+node:ekr.20060610104435:<< Append whatever follows @doc or @space to result >>
-        if n > 0:
-            line = lines[n-1]
-            if line.startswith('@doc'):
-                s = line[4:].lstrip()
-            elif line.startswith('@'):
-                s = line[1:].lstrip()
-            else:
-                s = ''
-
-            # New in Leo 4.4.4: remove these special tags.
-            for tag in ('@rst-options','@rst-option','@rst-markup'):
-                if g.match_word(s,0,tag):
-                    s = s[len(tag):].strip()
-
-            if s.strip():
-                result.append(s)
-        #@-node:ekr.20060610104435:<< Append whatever follows @doc or @space to result >>
-        #@nl
-        while n < len(lines):
-            s = lines [n] ; n += 1
-            if g.match_word(s,0,'@code') or g.match_word(s,0,'@c'):
-                break
-            result.append(s)
-        return n, result
-    #@nonl
-    #@-node:ekr.20050811154552:getDocPart
     #@+node:ekr.20050805162550.26:writeHeadline & helper
     def writeHeadline (self,p):
 
@@ -1709,25 +1688,75 @@ class rstClass:
             self.write('\n%s\n' % h)
     #@-node:ekr.20060608102001:writeHeadlineHelper
     #@-node:ekr.20050805162550.26:writeHeadline & helper
-    #@+node:ekr.20050811102607:skip_literal_block
-    def skip_literal_block (self,lines,n):
+    #@+node:ekr.20050810083057:writeNode
+    def writeNode (self,p):
 
-        s = lines[n] ; result = [s] ; n += 1
-        indent = g.skip_ws(s,0)
+        '''Format a node according to the options presently in effect.'''
 
-        # Skip lines until a non-blank line is found with same or less indent.
-        while n < len(lines):
-            s = lines[n]
-            indent2 = g.skip_ws(s,0)
-            if s and not s.isspace() and indent2 <= indent:
-                break # We will rescan lines [n]
-            n += 1
-            result.append(s)
+        self.initCodeBlockString(p)
+        self.scanAllOptions(p)
 
-        # g.printList(result,tag='literal block')
-        return n, result
+        if 0:
+            g.trace('%24s code_mode %s' % (p.headString(),self.getOption('code_mode')))
+
+        h = p.headString().strip()
+
+        if self.getOption('preformat_this_node'):
+            self.http_addNodeMarker(p)
+            self.writePreformat(p)
+            p.moveToThreadNext()
+        elif self.getOption('ignore_this_tree'):
+            p.moveToNodeAfterTree()
+        elif self.getOption('ignore_this_node'):
+            p.moveToThreadNext()
+        elif g.match_word(h,0,'@rst-options') and not self.getOption('show_options_nodes'):
+            p.moveToThreadNext()
+        else:
+            self.http_addNodeMarker(p)
+            self.writeHeadline(p)
+            self.writeBody(p)
+            p.moveToThreadNext()
+    #@-node:ekr.20050810083057:writeNode
+    #@+node:ekr.20071115061253:writePreformat
+    def writePreformat (self,p):
+
+        '''Write p's body text lines as if preformatted.
+
+         ::
+
+            line 1
+            line 2 etc.
+        '''
+
+        # g.trace(p.headString(),g.callers())
+
+        lines = p.bodyString().split('\n')
+        lines = [' '*4 + z for z in lines]
+        lines.insert(0,'::\n')
+
+        s = '\n'.join(lines)
+        if s.strip():
+            self.write('%s\n\n' % s)
+    #@-node:ekr.20071115061253:writePreformat
+    #@+node:ekr.20050805162550.23:writeTree
+    def writeTree(self,p):
+
+        '''Write p's tree to self.outputFile.'''
+
+        self.scanAllOptions(p)
+
+        if self.getOption('generate_rst'):
+            self.write(self.rstComment('rst3: filename: %s\n\n' % self.outputFileName))
+
+        # We can't use an iterator because we may skip parts of the tree.
+        p = p.copy() # Only one copy is needed for traversal.
+        self.topNode = p.copy() # Indicate the top of this tree.
+        after = p.nodeAfterTree()
+
+        while p and p != after:
+            self.writeNode(p)
     #@nonl
-    #@-node:ekr.20050811102607:skip_literal_block
+    #@-node:ekr.20050805162550.23:writeTree
     #@-node:ekr.20050809074827:write methods
     #@+node:ekr.20050810083314:Utils
     #@+node:ekr.20051202070028:computeOutputFileName
