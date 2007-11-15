@@ -17733,7 +17733,7 @@ g.trace(s)
 # c.setBodyString(p,s)
 #@nonl
 #@-node:add tab before each =
-#@+node:Clone all nodes child node
+#@+node:Clone all nodes to child node
 # Clone all nodes specified in the child node called 'to be cloned'
 root = p.copy()
 child = p.firstChild()
@@ -17755,9 +17755,7 @@ try:
                     clone.moveToLastChildOf(root)
 finally:
     c.endUpdate()
-
-
-
+#@nonl
 #@+node:To be cloned
 @test getHandlersForTag
 @test unit testing with embedded class
@@ -17796,7 +17794,7 @@ finally:
 @test that all @test nodes in derived files start with if g.unitTesting
 @test g.reportBadChars
 #@-node:To be cloned
-#@-node:Clone all nodes child node
+#@-node:Clone all nodes to child node
 #@+node:delete from ':' to end (script)
 @color
 
