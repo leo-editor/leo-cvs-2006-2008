@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.421602787456">
-	<global_window_position top="16" left="247" height="641" width="892"/>
+<globals body_outline_ratio="0.5">
+	<global_window_position top="16" left="247" height="932" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -1090,7 +1090,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
 <v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
@@ -3368,8 +3368,8 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071101162646" a="TV"><vh>4.4.4 Final</vh>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20071101162646"><vh>4.4.4 Final</vh>
 <v t="ekr.20071101162751"><vh>Fixed bugs</vh>
 <v t="ekr.20071101162751.2"><vh>Fixed bug that caused rClick plugin to crash</vh></v>
 <v t="ekr.20071101162751.4"><vh>Fixed scrolling problem with chapters</vh></v>
@@ -14135,6 +14135,8 @@ You can change these to make them shorter or to avoid conflicts with headlines i
 
 `options_prefix`: '\@rst-options'
 
+`preformat_prefix`: '\@rst-preformat'
+
 `rst_prefix`: '\@rst'
 
 `show_headline_prefix`: '\@rst-head'</t>
@@ -14167,6 +14169,12 @@ You can change these to make them shorter or to avoid conflicts with headlines i
 @rst-options TEXT
     Set zero or more options from the body text of the node.  TEXT is ignored.
     The entire body text is treated as if it were in an @ @rst-options doc part.
+    
+@rst-preformat TEXT
+    Format the entire body text of the node as if the entire text preformatted.
+    TEXT is ignored. In effect, a line containing '::' is added to the start if
+    the text, and all following lines of the text are indented. This option has
+    no effect on descendant nodes.
 
 **Notes**:
 
