@@ -2965,6 +2965,28 @@ def valIsPossible (self,val):
 #@-node:class cellClass
 #@-node:class sudokuClass
 #@-node:sudoku puzzle
+#@+node:Print all Tango icons in wiki-markup format
+# Prints all icons in the Icons/Tango folder in wiki-markup format.
+# This allows the icons to be inserted into Leo's body pane,
+# provided that the color_markup and add_directives plugins are enabled.
+
+import glob
+
+folders = (
+    'actions','animations','apps','categories','devices',
+    'emblems','emotes','mimetypes','places','status',)
+
+for z in folders:
+    theDir = g.os_path_join(g.app.loadDir,'..','Icons','Tango','16x16',z)
+    print ; print z
+    aList = glob.glob(g.os_path_normpath(g.os_path_join(theDir,'*.*')))
+    aList.sort()
+    aList = ['{picture file=%s} %s' % (z,g.shortFileName(z)) for z in aList]
+    aList = [str(z) for z in aList]
+    s = g.listToString(aList).replace("'",'').replace('[','').replace(']','')
+    print s
+#@nonl
+#@-node:Print all Tango icons in wiki-markup format
 #@-node:Fun...
 #@+node:Important
 #@+node:c2py  Convert C code to Python syntax
