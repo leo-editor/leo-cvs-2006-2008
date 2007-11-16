@@ -10640,6 +10640,10 @@ You need to have libmagick6-dev installed in adition to imagemagick
 #@-node:ekr.20071115073730:Installed small icon set from Tango library
 #@-node:ekr.20071110081315:New features
 #@-node:ekr.20071105150738:Leo 4.4.5 b1
+#@+node:ekr.20071116114551:Leo 4.4.5 final
+#@+node:ekr.20071116114551.1:test.leo now contains a node showing all icons in the Icons/Tango directory
+#@-node:ekr.20071116114551.1:test.leo now contains a node showing all icons in the Icons/Tango directory
+#@-node:ekr.20071116114551:Leo 4.4.5 final
 #@-all
 #@nonl
 #@-node:EKR.20040429143933:@thin leoProjects.txt

@@ -6,8 +6,6 @@
 #@-node:ekr.20071116063232:Document directives in headlines
 #@+node:ekr.20071115111719:Fix pylint problems
 #@-node:ekr.20071115111719:Fix pylint problems
-#@+node:ekr.20071116061520:Study rope & pyxides auto-completion
-#@-node:ekr.20071116061520:Study rope & pyxides auto-completion
 #@+node:ekr.20071114063047:First
 #@+node:ekr.20071031113657:Always use sax parser to read .leo files
 # Are there proper unit tests?

@@ -3407,7 +3407,7 @@
 <v t="ekr.20071115102421"><vh>4.4.5</vh></v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071115102156" a="TV"><vh>Leo 4.4.5 b1</vh>
+<v t="ekr.20071115102156" a="ETV"><vh>Leo 4.4.5 b1</vh>
 <v t="ekr.20071115102156.5"><vh>Fixed bugs</vh>
 <v t="ekr.20071115102156.2"><vh>Removed all references to pluginsManager.txt</vh></v>
 <v t="ekr.20071115102156.6"><vh>Fixed hung windows</vh></v>
@@ -3421,18 +3421,22 @@
 <v t="ekr.20071115102156.141"><vh>Fixed hoist crasher</vh></v>
 <v t="ekr.20071115102156.146"><vh>Ignore unpickling problems in getUa</vh></v>
 </v>
-<v t="ekr.20071115102156.148"><vh>New features</vh>
-<v t="ekr.20071115102156.149"><vh>Support directives in headlines</vh></v>
-<v t="ekr.20071115102156.237"><vh>Added @bool at_auto_warns_about_leading_whitespace setting</vh></v>
-<v t="ekr.20071115102156.238"><vh>Added command: toggle-collapse_nodes_during_finds</vh></v>
-<v t="ekr.20071115102156.256"><vh>Added 3 new sort-lines commands</vh></v>
-<v t="ekr.20071115102156.258"><vh>Added support for @bool diagnose-aspell-installation setting</vh></v>
-<v t="ekr.20071115102156.289"><vh>Added @bool warn_when_plugins_fail_to_load setting</vh></v>
-<v t="ekr.20071115102156.301"><vh>Moved all unit tests to unitTest.leo</vh></v>
-<v t="ekr.20071115102156.302"><vh>vim plugin now supports @bool vim_plugin_opens_url_nodes setting</vh></v>
+<v t="ekr.20071116081521"><vh>New commaneds</vh>
+<v t="ekr.20071115102156.238"><vh>toggle-collapse_nodes_during_finds</vh></v>
+<v t="ekr.20071115102156.256"><vh>3 new sort-lines commands</vh></v>
 <v t="ekr.20071115102156.303"><vh>Added Cmd:Icons menu and commands</vh></v>
+</v>
+<v t="ekr.20071115102156.148"><vh>New features</vh>
+<v t="ekr.20071115102156.149"><vh>Leo now recognizes directives in headlines</vh></v>
+<v t="ekr.20071115102156.301"><vh>Moved all unit tests to unitTest.leo</vh></v>
 <v t="ekr.20071115102156.320"><vh>Added @rst-preformat</vh></v>
 <v t="ekr.20071115102156.321"><vh>Installed small icon set from Tango library</vh></v>
+</v>
+<v t="ekr.20071116081521.1"><vh>New settings</vh>
+<v t="ekr.20071115102156.237"><vh>@bool at_auto_warns_about_leading_whitespace</vh></v>
+<v t="ekr.20071115102156.258"><vh>@bool diagnose-aspell-installation</vh></v>
+<v t="ekr.20071115102156.302"><vh>@bool vim_plugin_opens_url_nodes</vh></v>
+<v t="ekr.20071115102156.289"><vh>@bool warn_when_plugins_fail_to_load </vh></v>
 </v>
 </v>
 </v>
@@ -32815,6 +32819,7 @@ The highlights of Leo 4.4.5:
 ----------------------------
 
 - Fixes all known bugs.
+- Leo now recognizes directives in headlines.
 - Adds 3 new sort-lines commands.
 - Adds commands to insert and delete icons from headlines.
 - Adds all the Tango 16x16 icons to Leo's icon library.
@@ -33156,5 +33161,7 @@ The highlights of Leo 4.4.5:
 
   vim.py does not open url nodes if this setting is False.
 </t>
+<t tx="ekr.20071116081521"></t>
+<t tx="ekr.20071116081521.1"></t>
 </tnodes>
 </leo_file>
