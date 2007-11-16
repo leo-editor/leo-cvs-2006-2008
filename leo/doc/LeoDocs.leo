@@ -777,14 +777,14 @@
 <v t="ekr.20071116062917.1"><vh>@rst html\new-4-4-5.html</vh>
 <v t="ekr.20071116062917.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20071116063202"><vh>Bug fixed</vh></v>
-<v t="ekr.20071116062917.3" a="E"><vh>New features</vh></v>
+<v t="ekr.20071116062917.3"><vh>New features</vh></v>
 <v t="ekr.20071116062917.18"><vh>New commands</vh></v>
-<v t="ekr.20071116063649" a="E"><vh>New settings</vh></v>
+<v t="ekr.20071116063649"><vh>New settings</vh></v>
 <v t="ekr.20071116062917.19"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
 <v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
-<v t="ekr.20070809145744.1" a="E"><vh>@rst html\new-4-4-4.html</vh>
+<v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
 <v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070809145744.3"><vh>@rst-ignore Important new features</vh></v>
 <v t="ekr.20071004103659"><vh>The Great Graph Aha</vh></v>
@@ -1101,19 +1101,19 @@
 </v>
 </v>
 <v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
-<v t="ekr.20060620094033" a="E"><vh>What's New...</vh>
-<v t="ekr.20071116062917" a="TV"><vh>What's New in Leo 4.4.5</vh>
+<v t="ekr.20060620094033"><vh>What's New...</vh>
+<v t="ekr.20071116062917"><vh>What's New in Leo 4.4.5</vh>
 <v t="ekr.20071116062917.1"><vh>@rst html\new-4-4-5.html</vh>
 <v t="ekr.20071116062917.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20071116063202"><vh>Bug fixed</vh></v>
-<v t="ekr.20071116062917.3" a="E"><vh>New features</vh></v>
+<v t="ekr.20071116062917.3"><vh>New features</vh></v>
 <v t="ekr.20071116062917.18"><vh>New commands</vh></v>
-<v t="ekr.20071116063649" a="E"><vh>New settings</vh></v>
+<v t="ekr.20071116063649"><vh>New settings</vh></v>
 <v t="ekr.20071116062917.19"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
 <v t="ekr.20070809145744"><vh>What's New in Leo 4.4.4</vh>
-<v t="ekr.20070809145744.1" a="E"><vh>@rst html\new-4-4-4.html</vh>
+<v t="ekr.20070809145744.1"><vh>@rst html\new-4-4-4.html</vh>
 <v t="ekr.20070809145744.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070809145744.3"><vh>@rst-ignore Important new features</vh></v>
 <v t="ekr.20071004103659"><vh>The Great Graph Aha</vh></v>
@@ -3407,30 +3407,30 @@
 <v t="ekr.20071115102421"><vh>4.4.5</vh></v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071115102156" a="E"><vh>Leo 4.4.5 b1</vh>
+<v t="ekr.20071115102156" a="TV"><vh>Leo 4.4.5 b1</vh>
 <v t="ekr.20071115102156.5"><vh>Fixed bugs</vh>
-<v t="ekr.20071115102156.2" a="E"><vh>Removed all references to pluginsManager.txt</vh></v>
-<v t="ekr.20071115102156.6" a="E"><vh>Fixed hung windows</vh></v>
-<v t="ekr.20071115102156.11" a="E"><vh>Warn on resurrected (vampire) nodes</vh></v>
-<v t="ekr.20071115102156.21" a="E"><vh>Fixed new @auto bug (python)</vh></v>
-<v t="ekr.20071115102156.78" a="E"><vh>Fixed new @auto bug: c++</vh></v>
-<v t="ekr.20071115102156.79" a="E"><vh>Fixed various @auto comparison problems</vh></v>
-<v t="ekr.20071115102156.81" a="E"><vh>Retain relative paths in recent files menu</vh></v>
+<v t="ekr.20071115102156.2"><vh>Removed all references to pluginsManager.txt</vh></v>
+<v t="ekr.20071115102156.6"><vh>Fixed hung windows</vh></v>
+<v t="ekr.20071115102156.11"><vh>Warn on resurrected (vampire) nodes</vh></v>
+<v t="ekr.20071115102156.21"><vh>Fixed new @auto bug (python)</vh></v>
+<v t="ekr.20071115102156.78"><vh>Fixed new @auto bug: c++</vh></v>
+<v t="ekr.20071115102156.79"><vh>Fixed various @auto comparison problems</vh></v>
+<v t="ekr.20071115102156.81"><vh>Retain relative paths in recent files menu</vh></v>
 <v t="ekr.20071115102156.123"><vh>Fixed windows registry problem</vh></v>
-<v t="ekr.20071115102156.124" a="E"><vh>Fixed paste node as clone crasher</vh></v>
-<v t="ekr.20071115102156.141" a="E"><vh>Fixed hoist crasher</vh></v>
-<v t="ekr.20071115102156.146" a="E"><vh>Ignore unpickling problems in getUa</vh></v>
+<v t="ekr.20071115102156.124"><vh>Fixed paste node as clone crasher</vh></v>
+<v t="ekr.20071115102156.141"><vh>Fixed hoist crasher</vh></v>
+<v t="ekr.20071115102156.146"><vh>Ignore unpickling problems in getUa</vh></v>
 </v>
 <v t="ekr.20071115102156.148"><vh>New features</vh>
-<v t="ekr.20071115102156.149" a="E"><vh>Support directives in headlines</vh></v>
+<v t="ekr.20071115102156.149"><vh>Support directives in headlines</vh></v>
 <v t="ekr.20071115102156.237"><vh>Added @bool at_auto_warns_about_leading_whitespace setting</vh></v>
-<v t="ekr.20071115102156.238" a="E"><vh>Added command: toggle-collapse_nodes_during_finds</vh></v>
-<v t="ekr.20071115102156.256" a="E"><vh>Added 3 new sort-lines commands</vh></v>
-<v t="ekr.20071115102156.258" a="E"><vh>Added support for @bool diagnose-aspell-installation setting</vh></v>
-<v t="ekr.20071115102156.289" a="E"><vh>Added @bool warn_when_plugins_fail_to_load setting</vh></v>
+<v t="ekr.20071115102156.238"><vh>Added command: toggle-collapse_nodes_during_finds</vh></v>
+<v t="ekr.20071115102156.256"><vh>Added 3 new sort-lines commands</vh></v>
+<v t="ekr.20071115102156.258"><vh>Added support for @bool diagnose-aspell-installation setting</vh></v>
+<v t="ekr.20071115102156.289"><vh>Added @bool warn_when_plugins_fail_to_load setting</vh></v>
 <v t="ekr.20071115102156.301"><vh>Moved all unit tests to unitTest.leo</vh></v>
 <v t="ekr.20071115102156.302"><vh>vim plugin now supports @bool vim_plugin_opens_url_nodes setting</vh></v>
-<v t="ekr.20071115102156.303" a="E"><vh>Added Cmd:Icons menu and commands</vh></v>
+<v t="ekr.20071115102156.303"><vh>Added Cmd:Icons menu and commands</vh></v>
 <v t="ekr.20071115102156.320"><vh>Added @rst-preformat</vh></v>
 <v t="ekr.20071115102156.321"><vh>Installed small icon set from Tango library</vh></v>
 </v>
@@ -11036,6 +11036,8 @@ Appendices_
 
 Glossary_
 
+`What's new in Leo 4.4.5`_
+
 `What's new in Leo 4.4.4`_
 
 `What's new in Leo 4.4.3`_
@@ -15530,6 +15532,7 @@ Just use ``@thin`` to create your `derived files`_.</t>
 .. _`Chapter 20\: Unit testing with Leo`:           unitTesting.html
 .. _`Appendices`:                                   appendices.html
 .. _`Glossary`:                                     glossary.html
+.. _`What's new in Leo 4.4.5`:                      new-4-4-5.html
 .. _`What's new in Leo 4.4.4`:                      new-4-4-4.html
 .. _`What's new in Leo 4.4.3`:                      new-4-4-3.html
 .. _`What's new in Leo 4.4.2`:                      new-4-4-2.html
@@ -17988,7 +17991,7 @@ Glossary
 	:target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: new-4-4-4.html
+    :target: new-4-4-5.html
 
 </t>
 <t tx="ekr.20050901071613">----------------------
@@ -33117,6 +33120,7 @@ The highlights of Leo 4.4.5:
 
 - The rst3 plugin now supports @rst-preformat nodes.</t>
 <t tx="ekr.20071116062917.18">::
+
     delete-all-icons
     delete-first-icon
     delete-last-icon
