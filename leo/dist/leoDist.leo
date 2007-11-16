@@ -46,9 +46,10 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
-<v t="ekr.20071102083414"><vh>ANN: Leo 4.4.4 final</vh></v>
+<v t="ekr.20071116071405"><vh>ANN: Leo 4.4.5 beta 1</vh></v>
 <v t="EKR.20040519091259.30"><vh>Previous announcements</vh>
 <v t="ekr.20071102083414.1"><vh>4.4.4</vh>
+<v t="ekr.20071102083414"><vh>ANN: Leo 4.4.4 final</vh></v>
 <v t="ekr.20071027050421"><vh>ANN: Leo 4.4.4 beta 4</vh></v>
 <v t="ekr.20071023092623"><vh>ANN: Leo 4.4.4 beta 3</vh></v>
 <v t="ekr.20070919082634"><vh>ANN: Leo 4.4.4 beta 2</vh></v>
@@ -145,7 +146,7 @@
 <v t="ekr.20050116151024"><vh>To do (someday)</vh>
 <v t="ekr.20050116150710.90"><vh>Handle installation with Python 2.4 installed for Current User only</vh></v>
 </v>
-<v t="EKR.20040519080201.1"><vh>Distribution checklist</vh></v>
+<v t="EKR.20040519080201.1" a="TV"><vh>Distribution checklist</vh></v>
 <v t="ekr.20040629175400"><vh>Pychecker stuff</vh>
 <v t="EKR.20040519080201.2" tnodeList="EKR.20040519080201.2"><vh>@file-nosent C:\Documents and Settings\HP_Administrator\My Documents\Edward\.pycheckrc</vh></v>
 <v t="ekr.20050430095952"><vh>Pychecker statements</vh></v>
@@ -169,7 +170,7 @@
 <v t="ekr.20040701160830.1"><vh>names for use in suppressions</vh></v>
 <v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
-<v t="ekr.20050118095021" a="TV"><vh>Leo 4.x installer</vh>
+<v t="ekr.20050118095021"><vh>Leo 4.x installer</vh>
 <v t="ekr.20050118103207"><vh>Keeping installer/uninstallers in synch</vh>
 <v t="ekr.20050118104149"><vh>config files</vh>
 <v t="ekr.20050118104149.1"><vh>&lt;&lt; install config files &gt;&gt;</vh></v>
@@ -249,7 +250,7 @@
 </vnodes>
 <tnodes>
 <t tx="EKR.20040519080201.1">@color
-# Run pychecker by enabling code in leo.py
+# Run pylint
 # Run all unit tests.
 @nocolor
 Clean up .leo files
@@ -287,7 +288,7 @@ Announcements
         - Edit with the 'Edit this page' *tab* (not a link)
     - Update version number on web site.
 	- Announce to Leo's Open Forum.
-    - Announce to SourceForge itself. USE ANNOUNCEMENT FORMAT, not readme format.
+    - Announce to SourceForge itself.
 	- Announce to comp.lang.python
 	- Register Leo at http://www.python.org/pypi?:action=submit_form</t>
 <t tx="EKR.20040519080201.2"># Sample defaults file for PyChecker 0.8.13
@@ -5709,5 +5710,32 @@ Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 <t tx="ekr.20071102083414.1"></t>
+<t tx="ekr.20071116071405">Leo 4.4.5 beta 1                          November 16, 2007
+
+Leo 4.4.5 beta 1 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+Leo 4.4.5 fixes several long-delayed bug fixes and adds several new features.
+
+The highlights of Leo 4.4.5:
+----------------------------
+
+- Fixes all known bugs.
+- Adds 3 new sort-lines commands.
+- Adds commands to insert and delete icons from headlines.
+- Adds all the Tango 16x16 icons to Leo's icon library.
+- Adds support for @rst-preformat nodes to the rst3 plugin.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html
+</t>
 </tnodes>
 </leo_file>

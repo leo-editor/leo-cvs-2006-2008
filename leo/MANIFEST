@@ -57,11 +57,9 @@ Icons\rt_arrow_enabled.gif
 Icons\uninst.ico
 Icons\CVS\Entries.Extra
 Icons\CVS\Entries.Extra.Old
-Icons\CVS\Entries.Log
 Icons\CVS\Entries.Old
 Icons\Tango\16x16\CVS\Entries.Extra
 Icons\Tango\16x16\CVS\Entries.Extra.Old
-Icons\Tango\16x16\CVS\Entries.Log
 Icons\Tango\16x16\CVS\Entries.Old
 Icons\Tango\16x16\actions\add.png
 Icons\Tango\16x16\actions\address-book-new.png
@@ -1024,6 +1022,7 @@ doc\html\new-4-4-1.html
 doc\html\new-4-4-2.html
 doc\html\new-4-4-3.html
 doc\html\new-4-4-4.html
+doc\html\new-4-4-5.html
 doc\html\new-4-4.html
 doc\html\outlines.html
 doc\html\plugins.html
