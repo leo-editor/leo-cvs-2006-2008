@@ -1,13 +1,11 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20070703111455:To do: 4.4.5
-# Leo 4.4.5 will complete several projects that are long overdue.
-
+#@+node:ekr.20071113093057:To do: 4.4.6: last major projects
 #@+node:ekr.20071115111719:Fix pylint problems
 #@-node:ekr.20071115111719:Fix pylint problems
-#@-node:ekr.20070703111455:To do: 4.4.5
-#@+node:ekr.20071113093057:To do: 4.4.6: last major projects
+#@+node:ekr.20071116061520:Study rope & pyxides auto-completion
+#@-node:ekr.20071116061520:Study rope & pyxides auto-completion
 #@+node:ekr.20071114063047:First
 #@+node:ekr.20071031113657:Always use sax parser to read .leo files
 # Are there proper unit tests?
@@ -38,6 +36,278 @@ def contractNodeOrGoToParent (self,event=None):
 #@-node:ekr.20040930064232:contractNodeOrGoToParent
 #@-node:ekr.20071115055315:Add toggle-collapse-outline-when-moving
 #@+node:ekr.20071115111719.2:Remove hard-coded menu tables
+#@+node:ekr.20031218072017.3785:createMenusFromTables & helpers
+def createMenusFromTables (self):
+
+    c = self.c
+
+    aList = c.config.getMenusList()
+    if aList:
+        self.createMenusFromConfigList(aList)
+    else:
+        self.defineMenuTables()
+
+        self.createFileMenuFromTable()
+        self.createEditMenuFromTable()
+        self.createOutlineMenuFromTable()
+
+        g.doHook("create-optional-menus",c=c)
+
+        if self.useCmdMenu:
+            self.createCmndsMenuFromTable()
+
+        self.createWindowMenuFromTable()
+        self.createHelpMenuFromTable()
+#@+node:ekr.20031218072017.3790:createFileMenuFromTable
+def createFileMenuFromTable (self):
+
+    c = self.c
+    fileMenu = self.createNewMenu("&File")
+    self.createMenuEntries(fileMenu,self.fileMenuTopTable)
+    self.createNewMenu("Open &With...","File")
+    self.createMenuEntries(fileMenu,self.fileMenuTop2Table)
+    << create the recent files submenu >>
+    self.add_separator(fileMenu)
+    << create the read/write submenu >>
+    << create the tangle submenu >>
+    << create the untangle submenu >>
+    << create the import submenu >>
+    << create the export submenu >>
+    self.add_separator(fileMenu)
+    self.createMenuEntries(fileMenu,self.fileMenuTop3MenuTable)
+#@+node:ekr.20031218072017.3791:<< create the recent files submenu >>
+self.createNewMenu("Recent &Files...","File")
+c.recentFiles = c.config.getRecentFiles()
+
+if 0: # Not needed, and causes problems in wxWindows...
+    self.createRecentFilesMenuItems()
+#@-node:ekr.20031218072017.3791:<< create the recent files submenu >>
+#@+node:ekr.20031218072017.3792:<< create the read/write submenu >>
+readWriteMenu = self.createNewMenu("&Read/Write...","File")
+
+self.createMenuEntries(readWriteMenu,self.fileMenuReadWriteMenuTable)
+#@-node:ekr.20031218072017.3792:<< create the read/write submenu >>
+#@+node:ekr.20031218072017.3793:<< create the tangle submenu >>
+tangleMenu = self.createNewMenu("Tan&gle...","File")
+
+self.createMenuEntries(tangleMenu,self.fileMenuTangleMenuTable)
+#@-node:ekr.20031218072017.3793:<< create the tangle submenu >>
+#@+node:ekr.20031218072017.3794:<< create the untangle submenu >>
+untangleMenu = self.createNewMenu("&Untangle...","File")
+
+self.createMenuEntries(untangleMenu,self.fileMenuUntangleMenuTable)
+#@-node:ekr.20031218072017.3794:<< create the untangle submenu >>
+#@+node:ekr.20031218072017.3795:<< create the import submenu >>
+importMenu = self.createNewMenu("&Import...","File")
+
+self.createMenuEntries(importMenu,self.fileMenuImportMenuTable)
+#@-node:ekr.20031218072017.3795:<< create the import submenu >>
+#@+node:ekr.20031218072017.3796:<< create the export submenu >>
+exportMenu = self.createNewMenu("&Export...","File")
+
+self.createMenuEntries(exportMenu,self.fileMenuExportMenuTable)
+#@-node:ekr.20031218072017.3796:<< create the export submenu >>
+#@-node:ekr.20031218072017.3790:createFileMenuFromTable
+#@+node:ekr.20031218072017.3786:createEditMenuFromTable
+def createEditMenuFromTable (self):
+
+    editMenu = self.createNewMenu("&Edit")
+    self.createMenuEntries(editMenu,self.editMenuTopTable)
+
+    << create the edit body submenu >>
+    << create the edit headline submenu >>
+    << create the find submenu >>
+
+    self.createMenuEntries(editMenu,self.editMenuTop2Table)
+#@+node:ekr.20031218072017.3787:<< create the edit body submenu >>
+editBodyMenu = self.createNewMenu("Edit &Body...","Edit")
+
+self.createMenuEntries(editBodyMenu,self.editMenuEditBodyTable)
+#@-node:ekr.20031218072017.3787:<< create the edit body submenu >>
+#@+node:ekr.20031218072017.3788:<< create the edit headline submenu >>
+editHeadlineMenu = self.createNewMenu("Edit &Headline...","Edit")
+
+self.createMenuEntries(editHeadlineMenu,self.editMenuEditHeadlineTable)
+#@-node:ekr.20031218072017.3788:<< create the edit headline submenu >>
+#@+node:ekr.20031218072017.3789:<< create the find submenu >>
+findMenu = self.createNewMenu("&Find...","Edit")
+
+self.createMenuEntries(findMenu,self.editMenuFindMenuTable)
+#@-node:ekr.20031218072017.3789:<< create the find submenu >>
+#@-node:ekr.20031218072017.3786:createEditMenuFromTable
+#@+node:ekr.20031218072017.3797:createOutlineMenuFromTable
+def createOutlineMenuFromTable (self):
+
+    outlineMenu = self.createNewMenu("&Outline")
+
+    self.createMenuEntries(outlineMenu,self.outlineMenuTopMenuTable)
+
+    << create check submenu >>
+    << create expand/contract submenu >>
+    << create move submenu >>
+    << create mark submenu >>
+    << create goto submenu >>
+#@+node:ekr.20040711140738.1:<< create check submenu >>
+checkOutlineMenu = self.createNewMenu("Chec&k...","Outline")
+
+self.createMenuEntries(checkOutlineMenu,self.outlineMenuCheckOutlineMenuTable)
+#@-node:ekr.20040711140738.1:<< create check submenu >>
+#@+node:ekr.20031218072017.3798:<< create expand/contract submenu >>
+expandMenu = self.createNewMenu("E&xpand/Contract...","Outline")
+
+self.createMenuEntries(expandMenu,self.outlineMenuExpandContractMenuTable)
+#@-node:ekr.20031218072017.3798:<< create expand/contract submenu >>
+#@+node:ekr.20031218072017.3799:<< create move submenu >>
+moveSelectMenu = self.createNewMenu("&Move...","Outline")
+
+self.createMenuEntries(moveSelectMenu,self.outlineMenuMoveMenuTable)
+#@-node:ekr.20031218072017.3799:<< create move submenu >>
+#@+node:ekr.20031218072017.3800:<< create mark submenu >>
+markMenu = self.createNewMenu("M&ark/Unmark...","Outline")
+
+self.createMenuEntries(markMenu,self.outlineMenuMarkMenuTable)
+#@-node:ekr.20031218072017.3800:<< create mark submenu >>
+#@+node:ekr.20031218072017.3801:<< create goto submenu >>
+gotoMenu = self.createNewMenu("&Go To...","Outline")
+
+self.createMenuEntries(gotoMenu,self.outlineMenuGoToMenuTable)
+#@-node:ekr.20031218072017.3801:<< create goto submenu >>
+#@-node:ekr.20031218072017.3797:createOutlineMenuFromTable
+#@+node:ekr.20050921103736:createCmndsMenuFromTable
+def createCmndsMenuFromTable (self):
+
+    cmdsMenu = self.createNewMenu('&Cmds')
+
+    if 0: # Now in the minibuffer table.
+        # Used in top table: q,u,x
+        self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
+
+    for name,table in (
+        # &: a,b,c,d,f,g,h,i,m,n,o,p,r,s,t,u
+        ('&Abbrev...',          self.cmdsMenuAbbrevTable),
+        ('Body E&ditors',       self.cmdsMenuBodyEditorsTable),
+        ('&Buffers...',         self.cmdsMenuBuffersTable),
+        ('&Chapters...',        self.cmdsMenuChaptersTable),
+        ('C&ursor/Selection...',[]),
+        ('&Focus...',           self.cmdsMenuFocusTable),
+        ('&Macro...',           self.cmdsMenuMacroTable),
+        ('M&inibuffer',         self.cmdsMenuMinibufferTable),
+        #('&Panes...',           self.cmdsMenuPanesTable),
+        ('&Pickers...',         self.cmdsMenuPickersTable),
+        ('&Rectangles...',      self.cmdsMenuRectanglesTable),
+        ('Re&gisters...',       self.cmdsMenuRegistersTable),
+        ('R&un Script/Tests',   self.cmdsMenuRunTable),
+        ('Scr&olling...',       self.cmdsMenuScrollTable),
+        ('Spell C&heck...',     self.cmdsMenuSpellCheckTable),
+        ('&Text Commands',      self.cmdsMenuTextTable),
+        ('Toggle Setti&ngs',    self.cmdsMenuToggleTable),
+    ):
+        if table == self.cmdsMenuChaptersTable and not self.c.chapterController:
+            continue
+        menu = self.createNewMenu(name,'&Cmds')
+        self.createMenuEntries(menu,table)
+
+    for name,table in (
+        # &: b,e,f,s,t,x
+        ('Cursor &Back...',                     self.cursorMenuBackTable),
+        ('Cursor Back &Extend Selection...',    self.cursorMeuuBackExtendTable),
+        ('Cursor Extend &To...',                self.cursorMenuExtendTable),
+        ('Cursor &Forward...',                  self.cursorMenuForwardTable),
+        ('Cursor Forward E&xtend Selection...', self.cursorMenuForwardExtendTable),
+    ):
+        menu = self.createNewMenu(name,'C&ursor/Selection...')
+        self.createMenuEntries(menu,table)
+#@nonl
+#@-node:ekr.20050921103736:createCmndsMenuFromTable
+#@+node:ekr.20031218072017.3802:createWindowMenuFromTable
+def createWindowMenuFromTable (self):
+
+    windowMenu = self.createNewMenu("&Window")
+
+    self.createMenuEntries(windowMenu,self.windowMenuTopTable)
+#@-node:ekr.20031218072017.3802:createWindowMenuFromTable
+#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
+def createHelpMenuFromTable (self,table):
+
+    if sys.platform == 'darwin':
+        self.getMacHelpMenu(table)
+    else:
+        helpMenu = self.createNewMenu("&Help")
+        self.createMenuEntries(helpMenu,self.helpMenuTable)
+#@nonl
+#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
+#@+node:ekr.20070926135612:createMenusFromConfigList & helpers
+def createMenusFromConfigList (self,aList):
+
+    '''Create menus from dictionary d instead of 'hard coded' menus.
+    The 'top' menu has already been created.'''
+
+    tag = '@menu'
+    for z in aList:
+        kind,val,val2 = z
+        if kind.startswith(tag):
+            name = kind[len(tag):].strip()
+            if not self.handleSpecialMenus(name,parentName=None):
+                self.createNewMenu(name) # Create top-level menu.
+                self.createMenuFromConfigList(name,val,level=0)
+        else:
+            self.error('%s %s not valid outside @menu tree' % (kind,val))
+#@+node:ekr.20070927082205:createMenuFromConfigList
+def createMenuFromConfigList (self,parentName,aList,level=0):
+
+    table = [] ; parentMenu = self.getMenu(parentName)
+
+    for z in aList:
+        kind,val,val2 = z
+        if kind.startswith('@menu'):
+            # Menu names can be unicode without any problem.
+            name = kind[5:].strip()
+            if table:
+                self.createMenuEntries(parentMenu,table)
+            if not self.handleSpecialMenus(name,parentName,table):
+                self.createNewMenu(name,parentName) # Create submenu of parent menu.
+                self.createMenuFromConfigList(name,val,level+1)
+            table = []
+        elif kind == '@item':
+            name = str(val) # Item names must always be ascii.
+            if val2:
+                # Translated names can be unicode.
+                table.append((val2,name),)
+            else:
+                table.append(name)
+        else:
+            g.trace('can not happen: bad kind:',kind)
+
+    if table:
+        self.createMenuEntries(parentMenu,table)
+#@nonl
+#@-node:ekr.20070927082205:createMenuFromConfigList
+#@+node:ekr.20070927172712:handleSpecialMenus
+def handleSpecialMenus (self,name,parentName,table=[]):
+
+    '''Handle a special menu if name is the name of a special menu.
+    return True if this method handles the menu.'''
+
+    c = self.c
+    name2 = name.replace('&','').replace(' ','').lower()
+
+    if name2 == 'plugins':
+        # Create the plugins menu using a hook.
+        g.doHook("create-optional-menus",c=c)
+        return True
+    elif name2.startswith('recentfiles'):
+        # Just create the menu.  createRecentFilesMenuItems will be called later.
+        self.createNewMenu(name,parentName)
+        c.recentFiles = c.config.getRecentFiles()
+        return True
+    elif name2 == 'help' and sys.platform == 'darwin':
+        helpMenu = self.getMacHelpMenu(table)
+        return helpMenu is not None
+    else:
+        return False
+#@-node:ekr.20070927172712:handleSpecialMenus
+#@-node:ekr.20070926135612:createMenusFromConfigList & helpers
+#@-node:ekr.20031218072017.3785:createMenusFromTables & helpers
 #@-node:ekr.20071115111719.2:Remove hard-coded menu tables
 #@+node:ekr.20070625091423:Add translation services
 @nocolor
@@ -64,8 +334,14 @@ The easiest scheme seems to be:
 g.esx and g.es_printx allow a mix on translated and untranslated arguments::
 
     g.esx(tr('abc'),fileName)
+
+@color
+#@nonl
 #@+node:ekr.20071115111719.1:Script to print all g.es statements
 @first # -*- coding: utf-8 -*-
+
+# To do: match parens to get entire multi-line statements.
+
 for p in p.self_and_subtree_iter():
     s = p.bodyString()
     h = p.headString()
@@ -79,40 +355,45 @@ for p in p.self_and_subtree_iter():
 
 #@-node:ekr.20071115111719.1:Script to print all g.es statements
 #@+node:ekr.20071115113231:Results
+@color
+
+# Idea: g.et translates only the first arg.
+# But this means we can use g.es and g.es *as is*!  (change s1 + s2 to s1,s2)
+# Standard messages: 'done', 'not found', 'can not open', 'can not create', '%s: %s'
 
 @thin leo.py
-g.es("disabling save commands",color="red")
+g.et("disabling save commands",color="red")
 g.es("File not found: " + fileName)
 g.es_print("can not open script file: " + name, color="red")
 g.es("%s dir: %s" % (kind,theDir),color="blue")
 g.es("psyco now logging to",theFile,color="blue")
-g.es("psyco now running",color="blue")
+g.et("psyco now running",color="blue")
 
 @thin leoApp.py
 g.es_print("leoID = " + g.app.leoID, color='red')
 g.es("leoID = %s (in %s)" % (g.app.leoID,theDir), color="red")
 g.es("empty %s (in %s)" % (tag,theDir), color = "red")
-g.es_print('Unexpected exception in app.setLeoID',color='red')
+g.et_print('Unexpected exception in app.setLeoID',color='red')
 g.es("using os.getenv('USER'): %s " % (repr(theId)),color='red')
 g.es("leoID = %s" % (repr(g.app.leoID)),color="blue")
-g.es_print(s, color="red")
+g.et_print(s, color="red")
 g.es(cant,color='red')
 g.es(cant,color='red')
 g.es(s,color=color,newline=0) # The caller must write the newlines.
 
 @thin leoAtFile.py
-g.es_print('check-derived-file passed',color='blue')
+g.et_print('check-derived-file passed',color='blue')
 g.es("read only: " + fn,color="red")
 g.es("reading: " + root.headString())
 g.es('resurrected node: %s' % (p.headString()),color='blue')
 g.es('in file: %s' % (fileName),color='blue')
-g.es('you may want to delete ressurected nodes')
-g.es("no @file nodes in the selected tree")
+g.et('you may want to delete ressurected nodes')
+g.et("no @file nodes in the selected tree")
 g.es_print('Errors inhibited read @auto %s' % (fileName),color='red')
 g.es("dummy created")
 g.es("using " + s)
 g.es(len(lines), " lines" + m)
-g.es("Write the @file node or use the Import Derived File command")
+g.et("Write the @file node or use the Import Derived File command")
 g.es("Warning: updating changed text in %s" %
 g.es("Correcting hidden node: t=%s" % repr(at.t),color="red")
 g.es("Ignoring 3.x sentinel: " + s.strip(), color="blue")
@@ -121,16 +402,16 @@ g.es("Ignoring bad @comment sentinel: %s" % line,color="red")
 g.es("changed: " + p.headString(),color="blue")
 g.es("bad encoding in derived file:",encoding)
 g.es("Not written: " + at.outputFileName)
-g.es("finished")
-g.es("no @file nodes in the selected tree")
+g.et("finished")
+g.et("no @file nodes in the selected tree")
 g.es("no dirty @file nodes")
 g.es("finished")
-g.es("no dirty @auto nodes in the selected tree")
-g.es("no @auto nodes in the selected tree")
+g.et("no dirty @auto nodes in the selected tree")
+g.et("no @auto nodes in the selected tree")
 g.es("Not written: " + at.outputFileName)
 g.es_print('@auto node not written:\n') ### continued
-g.es("finished")
-g.es("no @file node in the selected tree")
+g.et("finished")
+g.et("no @file node in the selected tree")
 g.es('dubious brackets in %s' % line)
 g.es("Ignoring bad @language directive: %s" % line,color="blue")
 g.es("Ignoring bad @comment directive: %s" % line,color="blue")
@@ -141,15 +422,15 @@ g.es("correcting line endings in: " + self.targetFileName,color="blue")
 g.es("parent node: " + p.parent().headString(),color="blue")
 g.es("exception writing:" + self.targetFileName,color="red")
 g.es("exception deleting:" + self.outputFileName,color="red")
-g.es("conflicting @header and @noheader directives")
-g.es("Unknown language: using Python comment delimiters")
+g.et("conflicting @header and @noheader directives")
+g.et("Unknown language: using Python comment delimiters")
 g.es("c.target_language:",c.target_language)
 g.es("delim1,delim2,delim3:",delim1,delim2,delim3)
 
 @thin leoBridge.py
 g.es("leoID = %s (in %s)" % (g.app.leoID,theDir), color="red")
 g.es("empty %s (in %s)" % (tag,theDir), color = "red")
-g.es('Unexpected exception in app.setLeoID',color='red')
+g.et('Unexpected exception in app.setLeoID',color='red')
 g.es('%s dir: %s' % (kind,theDir),color="blue")
 
 @thin leoChapters.py
@@ -159,12 +440,12 @@ g.es_print(s,color='red')
 
 @thin leoCommands.py
 g.es(c.disableCommandsMessage,color='blue')
-g.es('Ignoring command: already executing a command.',color='red')
-g.es("exception executing command")
-g.es("Leo Log Window...",color=color)
+g.et('Ignoring command: already executing a command.',color='red')
+g.et("exception executing command")
+g.et("Leo Log Window...",color=color)
 g.es(signon)
 g.es("Python %d.%d.%d, %s\n%s" % (n1,n2,n3,g.app.gui.getFullVersion(c),version))
-g.es("unexpected exception in c.openWith")
+g.et("unexpected exception in c.openWith")
 g.es("reopening: " + g.shortFileName(path),color="blue")
 g.es("exception executing: "+command)
 g.es("recreating:  " + g.shortFileName(path),color="red")
@@ -662,6 +943,8 @@ g.es("dragged node will be cloned")
 g.es("dragged node will be moved")
 #@-node:ekr.20071115113231:Results
 #@-node:ekr.20070625091423:Add translation services
+#@+node:ekr.20070220082124:Make sure Leo can generate Latex
+#@-node:ekr.20070220082124:Make sure Leo can generate Latex
 #@-node:ekr.20071114063047:First
 #@+node:ekr.20070703111455.1:Most important
 #@+node:ekr.20071105160956:*** auto-change panes
@@ -3971,8 +4254,6 @@ AttributeError: 'NoneType' object has no attribute 'keyboardQuit'
 #@nonl
 #@-node:ekr.20070613103409:Improve marks/recent buttons
 #@-node:ekr.20071105155631.1:Plugins
-#@+node:ekr.20070220082124:Make sure Leo can generate Latex
-#@-node:ekr.20070220082124:Make sure Leo can generate Latex
 #@-node:ekr.20071113093057:To do: 4.4.6: last major projects
 #@+node:ekr.20070923103337:Not associated with any release
 #@+node:ekr.20071111053028:Move to svn

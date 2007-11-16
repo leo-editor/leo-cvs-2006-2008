@@ -2963,46 +2963,10 @@ Davide
 Need a good yaml parser first: I don't want to write another parser by hand.
 #@nonl
 #@-node:ekr.20031218072017.748:Import/Export to yaml
-#@+node:ekr.20031218072017.754:Open text files in text window
-The at_view plugin already does something like this.
-#@nonl
-#@-node:ekr.20031218072017.754:Open text files in text window
 #@+node:ekr.20041016134312.2:Standard Weave command
 Use noweb and TeX, or maybe Pyx.
 #@nonl
 #@-node:ekr.20041016134312.2:Standard Weave command
-#@+node:ekr.20040914095432:Use TreeCC to create generalized import
-@killcolor
-
-http://sourceforge.net/forum/message.php?msg_id=2754954
-RE: euphoria or general language plugins  
-2004-09-11 20:37
->>Leo doesn't really understand languages otherwise.
-import is another area Leo is too hardwired
-wrt language. if a plugin for each language
-could preprocess the file or code string and insert some minimal sentinals to create nodes and headlines,
-then pass the string to Leo to do the dirty work, adding new languages for import could be easier.
-I'm at this point in a new html file import,
-creating the nodes while parsing is more complicated than one would like.
-I think this has been discussed before, so
-maybe will have to search the forums before I say more.
-
-e
-
----------
-
-http://sourceforge.net/forum/message.php?msg_id=2758616
-By: differance
-
-Check out treecc:
-http://www.southern-storm.com.au/treecc.html
-http://www.southern-storm.com.au/treecc_essay.html
-
-It was developed for DotGNU, but I think you should be able to use it.
-
-Seth
-
-#@-node:ekr.20040914095432:Use TreeCC to create generalized import
 #@+node:ekr.20060227124411:Import/export from wiki's
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3583737
@@ -3446,10 +3410,6 @@ Günther
 #@nonl
 #@-node:ekr.20041130104552:(Support bird-track programs/comments?)
 #@-node:ekr.20041022083226:Directives
-#@+node:ekr.20041228084018.6:Foreign languages
-Including, e.g., Undo messages.
-#@nonl
-#@-node:ekr.20041228084018.6:Foreign languages
 #@+node:ekr.20060527184335:Gui
 #@+node:ekr.20070506075357:Scroll commands are gui-dependent
 #@+node:ekr.20060309060654:scrolling...
@@ -3551,8 +3511,6 @@ def scrollOutlineRight (self,event=None):
 #@-node:ekr.20060726154531:scrollOutlineLeftRight
 #@-node:ekr.20060309060654:scrolling...
 #@-node:ekr.20070506075357:Scroll commands are gui-dependent
-#@+node:ekr.20060116074450.3:Put about dialog in a tab?
-#@-node:ekr.20060116074450.3:Put about dialog in a tab?
 #@+node:ekr.20031218072017.793:Keep right panes constant when tiling horizontally (Tix)
 This is done automatically now!  I may have to use configure events.
 
@@ -3810,6 +3768,345 @@ to build and install your module.
     python setup.py install
 #@nonl
 #@-node:ekr.20061207073104.4:Make myModule.c
+#@+node:ekr.20040812170616:Pyrex versions of key classes
+#@+node:ekr.20040812155849.74:v.Iterators (Can't use yield in pyrex)
+#@+node:ekr.20040812155849.75:self_subtree_iter
+def subtree_iter(self):
+
+    """Return all nodes of self's tree in outline order."""
+
+    v = self
+
+    if v:
+        yield v
+        child = v.t._firstChild
+        while child:
+            for v1 in child.subtree_iter():
+                yield v1
+            child = child.next()
+
+self_and_subtree_iter = subtree_iter
+#@nonl
+#@-node:ekr.20040812155849.75:self_subtree_iter
+#@+node:ekr.20040812155849.76:unique_subtree_iter
+def unique_subtree_iter(self,marks=None):
+
+    """Return all vnodes in self's tree, discarding duplicates """
+
+    v = self
+
+    if marks == None: marks = {}
+
+    if v and v not in marks:
+        marks[v] = v
+        yield v
+        if v.t._firstChild:
+            for v1 in v.t._firstChild.unique_subtree_iter(marks):
+                yield v1
+        v = v._next
+        while v:
+            for v in v.unique_subtree_iter(marks):
+                yield v
+            v = v._next
+
+self_and_unique_subtree_iter = unique_subtree_iter
+#@nonl
+#@-node:ekr.20040812155849.76:unique_subtree_iter
+#@-node:ekr.20040812155849.74:v.Iterators (Can't use yield in pyrex)
+#@+node:ekr.20040812154341.64:p.Iterators (Can't use yield in pyrex)
+@ 3/18/04: a crucial optimization:
+
+Iterators make no copies at all if they would return an empty sequence.
+@c
+
+@others
+#@nonl
+#@+node:ekr.20040812154341.65:p.tnodes_iter & unique_tnodes_iter
+def tnodes_iter(self):
+
+    """Return all tnode's in a positions subtree."""
+
+    p = self
+    for p in p.self_and_subtree_iter():
+        yield p.v
+
+def unique_tnodes_iter(self):
+
+    """Return all unique tnode's in a positions subtree."""
+
+    p = self
+    marks = {}
+    for p in p.self_and_subtree_iter():
+        if p.v not in marks:
+            marks[p.v] = p.v
+            yield p.v
+#@nonl
+#@-node:ekr.20040812154341.65:p.tnodes_iter & unique_tnodes_iter
+#@+node:ekr.20040812154341.66:p.vnodes_iter & unique_vnodes_iter
+def vnodes_iter(self):
+
+    """Return all vnode's in a positions subtree."""
+
+    p = self
+    for p in p.self_and_subtree_iter():
+        yield p.v
+
+def unique_vnodes_iter(self):
+
+    """Return all unique vnode's in a positions subtree."""
+
+    p = self
+    marks = {}
+    for p in p.self_and_subtree_iter():
+        if p.v not in marks:
+            marks[p.v] = p.v
+            yield p.v
+#@nonl
+#@-node:ekr.20040812154341.66:p.vnodes_iter & unique_vnodes_iter
+#@+node:ekr.20040812154341.67:p.allNodes_iter
+class allNodes_iter_class:
+
+    """Returns a list of positions in the entire outline."""
+
+    @others
+
+def allNodes_iter (self,copy=False):
+
+    return self.allNodes_iter_class(self,copy)
+#@nonl
+#@+node:ekr.20040812154341.68:__init__ & __iter__
+def __init__(self,p,copy):
+
+    self.first = p.c.rootPosition().copy()
+    self.p = None
+    self.copy = copy
+
+def __iter__(self):
+
+    return self
+#@-node:ekr.20040812154341.68:__init__ & __iter__
+#@+node:ekr.20040812154341.69:next
+def next(self):
+
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    elif self.p:
+        self.p.moveToThreadNext()
+
+    if self.p:
+        if self.copy: return self.p.copy()
+        else:         return self.p
+    else: raise StopIteration
+#@nonl
+#@-node:ekr.20040812154341.69:next
+#@-node:ekr.20040812154341.67:p.allNodes_iter
+#@+node:ekr.20040812154341.70:p.subtree_iter
+class subtree_iter_class:
+
+    """Returns a list of positions in a subtree, possibly including the root of the subtree."""
+
+    @others
+
+def subtree_iter (self,copy=False):
+
+    return self.subtree_iter_class(self,copy,includeSelf=False)
+
+def self_and_subtree_iter (self,copy=False):
+
+    return self.subtree_iter_class(self,copy,includeSelf=True)
+#@nonl
+#@+node:ekr.20040812154341.71:__init__ & __iter__
+def __init__(self,p,copy,includeSelf):
+
+    if includeSelf:
+        self.first = p.copy()
+        self.after = p.nodeAfterTree()
+    elif p.hasChildren():
+        self.first = p.copy().moveToFirstChild() 
+        self.after = p.nodeAfterTree()
+    else:
+        self.first = None
+        self.after = None
+
+    self.p = None
+    self.copy = copy
+
+def __iter__(self):
+
+    return self
+#@-node:ekr.20040812154341.71:__init__ & __iter__
+#@+node:ekr.20040812154341.72:next
+def next(self):
+
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    elif self.p:
+        self.p.moveToThreadNext()
+
+    if self.p and self.p != self.after:
+        if self.copy: return self.p.copy()
+        else:         return self.p
+    else:
+        raise StopIteration
+#@nonl
+#@-node:ekr.20040812154341.72:next
+#@-node:ekr.20040812154341.70:p.subtree_iter
+#@+node:ekr.20040812154341.73:p.children_iter
+class children_iter_class:
+
+    """Returns a list of children of a position."""
+
+    @others
+
+def children_iter (self,copy=False):
+
+    return self.children_iter_class(self,copy)
+#@nonl
+#@+node:ekr.20040812154341.74:__init__ & __iter__
+def __init__(self,p,copy):
+
+    if p.hasChildren():
+        self.first = p.copy().moveToFirstChild()
+    else:
+        self.first = None
+
+    self.p = None
+    self.copy = copy
+
+def __iter__(self):
+
+    return self
+#@-node:ekr.20040812154341.74:__init__ & __iter__
+#@+node:ekr.20040812154341.75:next
+def next(self):
+
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    elif self.p:
+        self.p.moveToNext()
+
+    if self.p:
+        if self.copy: return self.p.copy()
+        else:         return self.p
+    else: raise StopIteration
+#@nonl
+#@-node:ekr.20040812154341.75:next
+#@-node:ekr.20040812154341.73:p.children_iter
+#@+node:ekr.20040812154341.76:p.parents_iter
+class parents_iter_class:
+
+    """Returns a list of positions of a position."""
+
+    @others
+
+def parents_iter (self,copy=False):
+
+    p = self
+
+    return self.parents_iter_class(self,copy,includeSelf=False)
+
+def self_and_parents_iter(self,copy=False):
+
+    return self.parents_iter_class(self,copy,includeSelf=True)
+#@nonl
+#@+node:ekr.20040812154341.77:__init__ & __iter__
+def __init__(self,p,copy,includeSelf):
+
+    if includeSelf:
+        self.first = p.copy()
+    elif p.hasParent():
+        self.first = p.copy().moveToParent()
+    else:
+        self.first = None
+
+    self.p = None
+    self.copy = copy
+
+def __iter__(self):
+
+    return self
+#@nonl
+#@-node:ekr.20040812154341.77:__init__ & __iter__
+#@+node:ekr.20040812154341.78:next
+def next(self):
+
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    elif self.p:
+        self.p.moveToParent()
+
+    if self.p:
+        if self.copy: return self.p.copy()
+        else:         return self.p
+    else:
+        raise StopIteration
+#@-node:ekr.20040812154341.78:next
+#@-node:ekr.20040812154341.76:p.parents_iter
+#@+node:ekr.20040812154341.79:p.siblings_iter
+class siblings_iter_class:
+
+    """Returns a list of siblings of a position."""
+
+    @others
+
+def siblings_iter (self,copy=False,following=False):
+
+    return self.siblings_iter_class(self,copy,following)
+
+self_and_siblings_iter = siblings_iter
+
+def following_siblings_iter (self,copy=False):
+
+    return self.siblings_iter_class(self,copy,following=True)
+#@nonl
+#@+node:ekr.20040812154341.80:__init__ & __iter__
+def __init__(self,p,copy,following):
+
+    # We always include p, even if following is True.
+
+    if following:
+        self.first = p.copy()
+    else:
+        p = p.copy()
+        while p.hasBack():
+            p.moveToBack()
+        self.first = p
+
+    self.p = None
+    self.copy = copy
+
+def __iter__(self):
+
+    return self
+
+#@-node:ekr.20040812154341.80:__init__ & __iter__
+#@+node:ekr.20040812154341.81:next
+def next(self):
+
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    elif self.p:
+        self.p.moveToNext()
+
+    if self.p:
+        if self.copy: return self.p.copy()
+        else:         return self.p
+    else: raise StopIteration
+#@nonl
+#@-node:ekr.20040812154341.81:next
+#@-node:ekr.20040812154341.79:p.siblings_iter
+#@-node:ekr.20040812154341.64:p.Iterators (Can't use yield in pyrex)
+#@-node:ekr.20040812170616:Pyrex versions of key classes
 #@-node:ekr.20061207073104:Convert bottlenecks to pyrex code
 #@-node:ekr.20070814070357:Performance
 #@+node:ekr.20041228090855.2:Plugins
@@ -6203,345 +6500,6 @@ To do:
 @color
 #@nonl
 #@-node:ekr.20031218072017.995:(Incremental update of screen)
-#@+node:ekr.20040812170616:Pyrex versions of key classes
-#@+node:ekr.20040812155849.74:v.Iterators (Can't use yield in pyrex)
-#@+node:ekr.20040812155849.75:self_subtree_iter
-def subtree_iter(self):
-
-    """Return all nodes of self's tree in outline order."""
-
-    v = self
-
-    if v:
-        yield v
-        child = v.t._firstChild
-        while child:
-            for v1 in child.subtree_iter():
-                yield v1
-            child = child.next()
-
-self_and_subtree_iter = subtree_iter
-#@nonl
-#@-node:ekr.20040812155849.75:self_subtree_iter
-#@+node:ekr.20040812155849.76:unique_subtree_iter
-def unique_subtree_iter(self,marks=None):
-
-    """Return all vnodes in self's tree, discarding duplicates """
-
-    v = self
-
-    if marks == None: marks = {}
-
-    if v and v not in marks:
-        marks[v] = v
-        yield v
-        if v.t._firstChild:
-            for v1 in v.t._firstChild.unique_subtree_iter(marks):
-                yield v1
-        v = v._next
-        while v:
-            for v in v.unique_subtree_iter(marks):
-                yield v
-            v = v._next
-
-self_and_unique_subtree_iter = unique_subtree_iter
-#@nonl
-#@-node:ekr.20040812155849.76:unique_subtree_iter
-#@-node:ekr.20040812155849.74:v.Iterators (Can't use yield in pyrex)
-#@+node:ekr.20040812154341.64:p.Iterators (Can't use yield in pyrex)
-@ 3/18/04: a crucial optimization:
-
-Iterators make no copies at all if they would return an empty sequence.
-@c
-
-@others
-#@nonl
-#@+node:ekr.20040812154341.65:p.tnodes_iter & unique_tnodes_iter
-def tnodes_iter(self):
-
-    """Return all tnode's in a positions subtree."""
-
-    p = self
-    for p in p.self_and_subtree_iter():
-        yield p.v
-
-def unique_tnodes_iter(self):
-
-    """Return all unique tnode's in a positions subtree."""
-
-    p = self
-    marks = {}
-    for p in p.self_and_subtree_iter():
-        if p.v not in marks:
-            marks[p.v] = p.v
-            yield p.v
-#@nonl
-#@-node:ekr.20040812154341.65:p.tnodes_iter & unique_tnodes_iter
-#@+node:ekr.20040812154341.66:p.vnodes_iter & unique_vnodes_iter
-def vnodes_iter(self):
-
-    """Return all vnode's in a positions subtree."""
-
-    p = self
-    for p in p.self_and_subtree_iter():
-        yield p.v
-
-def unique_vnodes_iter(self):
-
-    """Return all unique vnode's in a positions subtree."""
-
-    p = self
-    marks = {}
-    for p in p.self_and_subtree_iter():
-        if p.v not in marks:
-            marks[p.v] = p.v
-            yield p.v
-#@nonl
-#@-node:ekr.20040812154341.66:p.vnodes_iter & unique_vnodes_iter
-#@+node:ekr.20040812154341.67:p.allNodes_iter
-class allNodes_iter_class:
-
-    """Returns a list of positions in the entire outline."""
-
-    @others
-
-def allNodes_iter (self,copy=False):
-
-    return self.allNodes_iter_class(self,copy)
-#@nonl
-#@+node:ekr.20040812154341.68:__init__ & __iter__
-def __init__(self,p,copy):
-
-    self.first = p.c.rootPosition().copy()
-    self.p = None
-    self.copy = copy
-
-def __iter__(self):
-
-    return self
-#@-node:ekr.20040812154341.68:__init__ & __iter__
-#@+node:ekr.20040812154341.69:next
-def next(self):
-
-    if self.first:
-        self.p = self.first
-        self.first = None
-
-    elif self.p:
-        self.p.moveToThreadNext()
-
-    if self.p:
-        if self.copy: return self.p.copy()
-        else:         return self.p
-    else: raise StopIteration
-#@nonl
-#@-node:ekr.20040812154341.69:next
-#@-node:ekr.20040812154341.67:p.allNodes_iter
-#@+node:ekr.20040812154341.70:p.subtree_iter
-class subtree_iter_class:
-
-    """Returns a list of positions in a subtree, possibly including the root of the subtree."""
-
-    @others
-
-def subtree_iter (self,copy=False):
-
-    return self.subtree_iter_class(self,copy,includeSelf=False)
-
-def self_and_subtree_iter (self,copy=False):
-
-    return self.subtree_iter_class(self,copy,includeSelf=True)
-#@nonl
-#@+node:ekr.20040812154341.71:__init__ & __iter__
-def __init__(self,p,copy,includeSelf):
-
-    if includeSelf:
-        self.first = p.copy()
-        self.after = p.nodeAfterTree()
-    elif p.hasChildren():
-        self.first = p.copy().moveToFirstChild() 
-        self.after = p.nodeAfterTree()
-    else:
-        self.first = None
-        self.after = None
-
-    self.p = None
-    self.copy = copy
-
-def __iter__(self):
-
-    return self
-#@-node:ekr.20040812154341.71:__init__ & __iter__
-#@+node:ekr.20040812154341.72:next
-def next(self):
-
-    if self.first:
-        self.p = self.first
-        self.first = None
-
-    elif self.p:
-        self.p.moveToThreadNext()
-
-    if self.p and self.p != self.after:
-        if self.copy: return self.p.copy()
-        else:         return self.p
-    else:
-        raise StopIteration
-#@nonl
-#@-node:ekr.20040812154341.72:next
-#@-node:ekr.20040812154341.70:p.subtree_iter
-#@+node:ekr.20040812154341.73:p.children_iter
-class children_iter_class:
-
-    """Returns a list of children of a position."""
-
-    @others
-
-def children_iter (self,copy=False):
-
-    return self.children_iter_class(self,copy)
-#@nonl
-#@+node:ekr.20040812154341.74:__init__ & __iter__
-def __init__(self,p,copy):
-
-    if p.hasChildren():
-        self.first = p.copy().moveToFirstChild()
-    else:
-        self.first = None
-
-    self.p = None
-    self.copy = copy
-
-def __iter__(self):
-
-    return self
-#@-node:ekr.20040812154341.74:__init__ & __iter__
-#@+node:ekr.20040812154341.75:next
-def next(self):
-
-    if self.first:
-        self.p = self.first
-        self.first = None
-
-    elif self.p:
-        self.p.moveToNext()
-
-    if self.p:
-        if self.copy: return self.p.copy()
-        else:         return self.p
-    else: raise StopIteration
-#@nonl
-#@-node:ekr.20040812154341.75:next
-#@-node:ekr.20040812154341.73:p.children_iter
-#@+node:ekr.20040812154341.76:p.parents_iter
-class parents_iter_class:
-
-    """Returns a list of positions of a position."""
-
-    @others
-
-def parents_iter (self,copy=False):
-
-    p = self
-
-    return self.parents_iter_class(self,copy,includeSelf=False)
-
-def self_and_parents_iter(self,copy=False):
-
-    return self.parents_iter_class(self,copy,includeSelf=True)
-#@nonl
-#@+node:ekr.20040812154341.77:__init__ & __iter__
-def __init__(self,p,copy,includeSelf):
-
-    if includeSelf:
-        self.first = p.copy()
-    elif p.hasParent():
-        self.first = p.copy().moveToParent()
-    else:
-        self.first = None
-
-    self.p = None
-    self.copy = copy
-
-def __iter__(self):
-
-    return self
-#@nonl
-#@-node:ekr.20040812154341.77:__init__ & __iter__
-#@+node:ekr.20040812154341.78:next
-def next(self):
-
-    if self.first:
-        self.p = self.first
-        self.first = None
-
-    elif self.p:
-        self.p.moveToParent()
-
-    if self.p:
-        if self.copy: return self.p.copy()
-        else:         return self.p
-    else:
-        raise StopIteration
-#@-node:ekr.20040812154341.78:next
-#@-node:ekr.20040812154341.76:p.parents_iter
-#@+node:ekr.20040812154341.79:p.siblings_iter
-class siblings_iter_class:
-
-    """Returns a list of siblings of a position."""
-
-    @others
-
-def siblings_iter (self,copy=False,following=False):
-
-    return self.siblings_iter_class(self,copy,following)
-
-self_and_siblings_iter = siblings_iter
-
-def following_siblings_iter (self,copy=False):
-
-    return self.siblings_iter_class(self,copy,following=True)
-#@nonl
-#@+node:ekr.20040812154341.80:__init__ & __iter__
-def __init__(self,p,copy,following):
-
-    # We always include p, even if following is True.
-
-    if following:
-        self.first = p.copy()
-    else:
-        p = p.copy()
-        while p.hasBack():
-            p.moveToBack()
-        self.first = p
-
-    self.p = None
-    self.copy = copy
-
-def __iter__(self):
-
-    return self
-
-#@-node:ekr.20040812154341.80:__init__ & __iter__
-#@+node:ekr.20040812154341.81:next
-def next(self):
-
-    if self.first:
-        self.p = self.first
-        self.first = None
-
-    elif self.p:
-        self.p.moveToNext()
-
-    if self.p:
-        if self.copy: return self.p.copy()
-        else:         return self.p
-    else: raise StopIteration
-#@nonl
-#@-node:ekr.20040812154341.81:next
-#@-node:ekr.20040812154341.79:p.siblings_iter
-#@-node:ekr.20040812154341.64:p.Iterators (Can't use yield in pyrex)
-#@-node:ekr.20040812170616:Pyrex versions of key classes
 #@-node:ekr.20041228084143:Maybe never
 #@+node:ekr.20040123102724:Can't or won't
 #@+node:ekr.20060329102951:@ref
