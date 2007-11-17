@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="14" left="340" height="872" width="892"/>
+	<global_window_position top="14" left="340" height="852" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -243,15 +243,15 @@
 <v t="ekr.20050901102400"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831184021.5"><vh>Chapter 4: Programming with Leo</vh>
-<v t="ekr.20050828061213"><vh>@rst html\directives.html</vh>
+<v t="ekr.20050831184021.5" a="EV"><vh>Chapter 4: Programming with Leo</vh>
+<v t="ekr.20050828061213" a="E"><vh>@rst html\directives.html</vh>
 <v t="ekr.20050828160132"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050828061501.1"><vh>@rst-no-head Intro.</vh></v>
 <v t="ekr.20050828163557"><vh>Overview: the seven ways of creating derived files</vh></v>
 <v t="ekr.20050828211507"><vh>Overview: summary of directives</vh>
 <v t="ekr.20050829083129"><vh>@rst-ignore alternate representation</vh></v>
 </v>
-<v t="ekr.20050828061501.30"><vh>Reference: all about directives</vh>
+<v t="ekr.20050828061501.30" a="T"><vh>Reference: all about directives</vh>
 <v t="ekr.20050828173234"><vh>@ and @doc</vh></v>
 <v t="ekr.20050828061501.31"><vh>@all</vh></v>
 <v t="ekr.20050828173234.1"><vh>@c and @code</vh></v>
@@ -3407,7 +3407,7 @@
 <v t="ekr.20071115102421"><vh>4.4.5</vh></v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071115102156" a="ETV"><vh>Leo 4.4.5 b1</vh>
+<v t="ekr.20071115102156" a="E"><vh>Leo 4.4.5 b1</vh>
 <v t="ekr.20071115102156.5"><vh>Fixed bugs</vh>
 <v t="ekr.20071115102156.2"><vh>Removed all references to pluginsManager.txt</vh></v>
 <v t="ekr.20071115102156.6"><vh>Fixed hung windows</vh></v>
@@ -14557,6 +14557,7 @@ task at hand, and lets me ignore all other details.
 Clones are the basis for Leo's project management capabilities. Indeed, the
 ability to create multiple views of a project is most helpful.</t>
 <t tx="ekr.20050822173420.3">Leo directives control such things as syntax coloring, line wrapping within the body pane and the width of tabs.
+Leo directives may appear in headlines or body text.
 Leo directives start with '@' in the leftmost column, followed by the name of the directive.  Some examples::
 
     @language python
@@ -14908,6 +14909,7 @@ I recommend using Leo for two weeks, or longer, before attempting this chapter.
 
 .. contents::</t>
 <t tx="ekr.20050828061501.30">The following sections give full details about each directive.
+The directives listed here may appear in headlines or body text.
 </t>
 <t tx="ekr.20050828061501.31">The ``@all`` directive is valid only in ``@thin`` trees.
 The ``@all`` directive is similar to ``@others``, but it is less restrictive:
@@ -15588,6 +15590,8 @@ opens the .leo file.
 
 </t>
 <t tx="ekr.20050828163557">You can create derived files using seven kinds of directives.
+Unlike most directives, these directives may only appear in headlines.
+
 The first five,
 ``@auto``, ``@file-thin``, ``@file``, ``@file-nosent``, ``@file-noref``, ``@file-asis``,
 are collectively known as ``@file`` trees.

@@ -2,8 +2,12 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20071113093057:To do: 4.4.6: last major projects
-#@+node:ekr.20071116063232:Document directives in headlines
-#@-node:ekr.20071116063232:Document directives in headlines
+#@+node:ekr.20071116061520:Study rope & pyxides auto-completion
+#@-node:ekr.20071116061520:Study rope & pyxides auto-completion
+#@+node:ekr.20071116093143.1:Execute script using Ipython
+# It should be possible to use Leo as an IPython notebook *now*.
+#@nonl
+#@-node:ekr.20071116093143.1:Execute script using Ipython
 #@+node:ekr.20071115111719:Fix pylint problems
 #@-node:ekr.20071115111719:Fix pylint problems
 #@+node:ekr.20071114063047:First
