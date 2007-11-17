@@ -32,7 +32,7 @@ except Exception:
 
 # The following is sometimes used.
 # __pychecker__ = '--no-import'
-import time
+# import time
 #@nonl
 #@-node:ekr.20050405141130:<< imports >>
 #@nl
@@ -116,24 +116,20 @@ if sys.platform != 'cli':
         #@nonl
         #@-node:ekr.20060919110638.20: __init__ & helpers
         #@+node:ekr.20060919110638.29: Do nothing
-        def endElementNS(self,name,qname):
-            # __pychecker__ = '--no-argsused'
-            g.trace(name)
+        def endElementNS(self,unused_name,unused_qname):
+            g.trace(unused_name)
 
         def endDocument(self):
             pass
 
-        def ignorableWhitespace(self,whitespace):
-            # __pychecker__ = '--no-argsused'
+        def ignorableWhitespace(self,unused_whitespace):
             pass
 
         def skippedEntity(self,name):
-            # __pychecker__ = '--no-argsused'
             g.trace(name)
 
-        def startElementNS(self,name,qname,attrs):
-            # __pychecker__ = '--no-argsused'
-            g.trace(name)
+        def startElementNS(self,unused_name,unused_qname,unused_attrs):
+            g.trace(unused_name)
 
         def startDocument(self):
             pass
@@ -366,20 +362,18 @@ if sys.platform != 'cli':
         #@nonl
         #@-node:ekr.20060919110638.38:startWinPos
         #@+node:ekr.20060919110638.39:startLeoHeader
-        def startLeoHeader (self,attrs):
-            # __pychecker__ = '--no-argsused'
+        def startLeoHeader (self,unused_attrs):
+
             self.tnxToListDict = {}
         #@-node:ekr.20060919110638.39:startLeoHeader
         #@+node:ekr.20060919110638.40:startVH
-        def startVH (self,attrs):
-
-            # __pychecker__ = '--no-argsused'
+        def startVH (self,unused_attrs):
 
             self.content = []
         #@nonl
         #@-node:ekr.20060919110638.40:startVH
         #@+node:ekr.20060919112118:startVnodes
-        def startVnodes (self,attrs):
+        def startVnodes (self,unused_attrs):
 
             # __pychecker__ = '--no-argsused'
 
@@ -573,6 +567,7 @@ class baseFileCommands:
             self.topPosition = None
         # For writing
         self.read_only = False
+        self.rootPosition = None
         self.outputFile = None
         self.openDirectory = None
         self.putCount = 0
@@ -829,8 +824,8 @@ class baseFileCommands:
                 g.es("newTnode: unexpected index type:",type(index),index,color="red")
 
             # Convert any pre-4.1 index to a gnx.
-            theId,time,n = gnx = g.app.nodeIndices.scanGnx(index,0)
-            if time != None:
+            junk,theTime,junk = gnx = g.app.nodeIndices.scanGnx(index,0)
+            if theTime != None:
                 t.setFileIndex(gnx)
 
             return t
@@ -930,7 +925,7 @@ class baseFileCommands:
         finally:
             c.endUpdate()
         c.frame.deiconify()
-        vflag,junk,secondary_ratio = self.frame.initialRatios()
+        junk,junk,secondary_ratio = self.frame.initialRatios()
         c.frame.resizePanesToRatio(ratio,secondary_ratio)
         if 0: # 1/30/04: this is useless.
             # This should be done after the pane size has been set.
@@ -951,8 +946,8 @@ class baseFileCommands:
         """Convert Tnnn to nnn, leaving gnx's unchanged."""
 
         # index might be Tnnn, nnn, or gnx.
-        theId,time,n = g.app.nodeIndices.scanGnx(index,0)
-        if time == None: # A pre-4.1 file index.
+        junk,theTime,junk = g.app.nodeIndices.scanGnx(index,0)
+        if theTime == None: # A pre-4.1 file index.
             if index[0] == "T":
                 index = index[1:]
 
@@ -1197,8 +1192,8 @@ class baseFileCommands:
                 self.fileIndex = i
                 return buf[j:i]
             else: i += 1
+
         raise BadLeoFile("expecting string terminated by " + tag)
-        return ""
     #@-node:EKR.20040526204706.8:getStringToTag
     #@+node:EKR.20040526204706.9:getTag
     def getTag (self,tag):
@@ -1559,8 +1554,8 @@ class baseFileCommands:
                 if attr: attrDict[attr] = val
 
         # index might be Tnnn, nnn, or gnx.
-        theId,time,n = g.app.nodeIndices.scanGnx(index,0)
-        if time == None: # A pre-4.1 file index.
+        junk,theTime,junk = g.app.nodeIndices.scanGnx(index,0)
+        if theTime == None: # A pre-4.1 file index.
             if index[0] == "T":
                 index = index[1:]
 
@@ -1594,7 +1589,7 @@ class baseFileCommands:
 
         # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
 
-        fc = self ; 
+        fc = self
 
         indexList = s.split(',') # The list never ends in a comma.
         tnodeList = []
@@ -1618,18 +1613,16 @@ class baseFileCommands:
             return # <tnodes/> seen.
 
         while self.matchTag("<t"):
-                self.getTnode()
+            self.getTnode()
 
         self.getTag("</tnodes>")
     #@-node:ekr.20031218072017.1560:getTnodes
     #@+node:EKR.20040526204036.1:getUa (non-sax)
     # changed for 4.3.
 
-    def getUa(self,nodeType):
+    def getUa(self,unused_nodeType):
 
         """Parse an unknown attribute in a <v> or <t> element."""
-
-        # __pychecker__ = '--no-argsused' # nodeType not used: good for debugging.
 
         # New in 4.2.  The unknown tag has been pickled and hexlify'd.
         attr,val = self.getUnknownTag()
@@ -1705,8 +1698,8 @@ class baseFileCommands:
                     #@                << raise invalidPaste if the tnode is in self.forbiddenTnodes >>
                     #@+node:ekr.20041023110111:<< raise invalidPaste if the tnode is in self.forbiddenTnodes >>
                     # Bug fix in 4.3 a1: make sure we have valid paste.
-                    theId,time,n = g.app.nodeIndices.scanGnx(index,0)
-                    if not time and index[0] == "T":
+                    junk,theTime,junk = g.app.nodeIndices.scanGnx(index,0)
+                    if not theTime and index[0] == "T":
                         index = index[1:]
 
                     index = self.canonicalTnodeIndex(index)
@@ -2229,10 +2222,8 @@ class baseFileCommands:
     #@+node:ekr.20060919110638.3:readSaxFile
     def readSaxFile (self,theFile,fileName,silent):
 
-        c = self.c
-
         # Pass one: create the intermediate nodes.
-        self.dummyRoot = dummyRoot = self.parse_leo_file(theFile,fileName,silent=silent)
+        dummyRoot = self.parse_leo_file(theFile,fileName,silent=silent)
 
         # self.dumpSaxTree(dummyRoot,dummy=True)
 
@@ -2391,7 +2382,7 @@ class baseFileCommands:
         # Always assign an (immutable) index, even if the tnode is empty.
         for p in c.allNodes_iter():
             try: # Will fail for None or any pre 4.1 file index.
-                theId,time,n = p.v.t.fileIndex
+                junk,junk,junk = p.v.t.fileIndex
             except TypeError:
                 # Don't convert to string until the actual write.
                 p.v.t.fileIndex = nodeIndices.getNewIndex()
@@ -2404,9 +2395,7 @@ class baseFileCommands:
     compactFileIndices = assignFileIndices
     #@-node:ekr.20031218072017.1570:assignFileIndices & compactFileIndices
     #@+node:ekr.20050404190914.2:deleteFileWithMessage
-    def deleteFileWithMessage(self,fileName,kind):
-
-        # __pychecker__ = '--no-argsused' # kind unused: retained for debugging.
+    def deleteFileWithMessage(self,fileName,unused_kind):
 
         try:
             os.remove(fileName)
@@ -2843,8 +2832,8 @@ class baseFileCommands:
             # g.trace("%4d" % len(tnodeList),v)
             for t in tnodeList:
                 try: # Will fail for None or any pre 4.1 file index.
-                    theId,time,n = t.fileIndex
-                except:
+                    junk,junk,junk = t.fileIndex
+                except Exception:
                     g.trace("assigning gnx for ",v,t)
                     gnx = nodeIndices.getNewIndex()
                     v.t.setFileIndex(gnx) # Don't convert to string until the actual write.
@@ -2928,7 +2917,7 @@ class baseFileCommands:
         data = []
         for p,t in tnodesData:
             if type(t.unknownAttributes) != type({}):
-                 g.es("ignoring non-dictionary unknownAttributes for",p,color="blue")
+                g.es("ignoring non-dictionary unknownAttributes for",p,color="blue")
             else:
                 # Create a new dict containing only entries that can be pickled.
                 d = dict(t.unknownAttributes) # Copy the dict.
@@ -3083,7 +3072,7 @@ class baseFileCommands:
                 if not os.access(fileName,os.W_OK):
                     g.es("can not create: read only: " + fileName,color="red")
                     return False
-            except:
+            except Exception:
                 pass # os.access() may not exist on all platforms.
         #@-node:ekr.20040324080359.1:<< return if the .leo file is read-only >>
         #@nl

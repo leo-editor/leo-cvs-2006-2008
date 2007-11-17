@@ -250,6 +250,7 @@ class atFile:
         #@    << init ivars for reading >>
         #@+node:ekr.20041005105605.14:<< init ivars for reading >>
         self.cloneSibCount = 0 # n > 1: Make sure n cloned sibs exists at next @+node sentinel
+        self.correctedLines = 0
         self.docOut = [] # The doc part being accumulated.
         self.done = False # True when @-leo seen.
         self.endSentinelStack = []
@@ -4189,7 +4190,7 @@ class atFile:
         # Calling self.onl() runs afoul of queued newlines.
         self.os(s.replace('\n',self.output_newline))
     #@-node:ekr.20041005105605.205:outputStringWithLineEndings
-    #@+node:ekr.20050506090446.1:putAtFirstLines (new in 4.3 b2)
+    #@+node:ekr.20050506090446.1:putAtFirstLines
     def putAtFirstLines (self,s):
 
         '''Write any @firstlines from string s.
@@ -4208,8 +4209,8 @@ class atFile:
             line = s[j:i]
             at.os(line) ; at.onl()
             i = g.skip_nl(s,i)
-    #@-node:ekr.20050506090446.1:putAtFirstLines (new in 4.3 b2)
-    #@+node:ekr.20050506090955:putAtLastLines (new in 4.3 b2)
+    #@-node:ekr.20050506090446.1:putAtFirstLines
+    #@+node:ekr.20050506090955:putAtLastLines
     def putAtLastLines (self,s):
 
         '''Write any @last lines from string s.
@@ -4235,7 +4236,33 @@ class atFile:
             if g.match(line,0,tag):
                 i = len(tag) ; i = g.skip_ws(line,i)
                 at.os(line[i:])
-    #@-node:ekr.20050506090955:putAtLastLines (new in 4.3 b2)
+    #@-node:ekr.20050506090955:putAtLastLines
+    #@+node:ekr.20071117152308:putBuffered
+    def putBuffered (self,s):
+
+        '''Put s, converting all tabs to blanks as necessary.'''
+
+        if not s: return
+
+        w = self.tab_width
+        if w < 0:
+            result = []
+            lines = s.split('\n')
+            for line in lines:
+                line2 = [] ; j = 0
+                for ch in line:
+                    j += 1
+                    if ch == '\t':
+                        w2 = g.computeWidth(s[:j],w)
+                        w3 = (abs(w) - (w2 % abs(w)))
+                        line2.append(' ' * w3)
+                    else:
+                        line2.append(ch)
+                result.append(''.join(line2))
+            s = '\n'.join(result)
+
+        self.os(s)
+    #@-node:ekr.20071117152308:putBuffered
     #@+node:ekr.20041005105605.206:putDirective  (handles @delims,@comment,@language) 4.x
     #@+at 
     #@nonl

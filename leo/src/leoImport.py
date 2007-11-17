@@ -458,7 +458,7 @@ class baseLeoImportCommands:
                     theFile.close()
                     if not g.unitTesting:
                         g.es("created: " + newFileName)
-                except:
+                except Exception:
                     g.es("exception creating: " + newFileName)
                     g.es_exception()
                 #@-node:ekr.20031218072017.1149:<< Write s into newFileName >>
@@ -504,7 +504,7 @@ class baseLeoImportCommands:
             mode = g.choose(mode=="platform",'w','wb')
             f = open(filename,mode)
             if not f: return
-        except:
+        except Exception:
             g.es("exception opening:" + filename)
             g.es_exception()
             return
@@ -1224,7 +1224,7 @@ class baseLeoImportCommands:
         try: # Read the file into s.
             f = open(fileName)
             s = f.read()
-        except:
+        except Exception:
             g.es("Can not import " + fileName, color="blue")
             return
 
@@ -2654,8 +2654,7 @@ class baseLeoImportCommands:
         def __init__ (self,importCommands,atAuto):
 
             # Init the base class.
-            importCommands.baseScannerClass.__init__(self,importCommands,
-                atAuto=atAuto,language='c')
+            importCommands.baseScannerClass.__init__(self,importCommands,atAuto=atAuto,language='c')
 
             # Set the parser delims.
             self.blockCommentDelim1 = '/*'
