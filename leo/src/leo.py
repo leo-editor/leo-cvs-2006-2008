@@ -280,6 +280,27 @@ def getBatchScript ():
     # Bug fix 4/27/07: Don't put a return in a finally clause.
     return script, windowFlag
 #@-node:ekr.20031218072017.1939:getBatchScript
+#@+node:ekr.20071117060958:getFileName
+def getFileName ():
+
+    '''Return the filename.
+
+    This is a hack for when Leo is started from a script that also starts IPython.'''
+
+    # No imports here.
+    # print 'leo.py:getFileName',sys.argv
+
+    i = 1
+    while i < len(sys.argv) and sys.argv[i].endswith('.py'):
+        i += 1
+
+    if sys.platform=="win32": # Windows
+        result = ' '.join(sys.argv[i:])
+    else:
+        result = sys.argv[i]
+
+    return result
+#@-node:ekr.20071117060958:getFileName
 #@+node:ekr.20031218072017.1936:isValidPython
 def isValidPython():
 
@@ -399,12 +420,10 @@ def startPsyco ():
 #@-others
 
 if __name__ == "__main__":
+
+    # Keep pylint happy by not defining any symbols at the top level.
     if len(sys.argv) > 1:
-        if sys.platform=="win32": # Windows
-            fileNameArg = ' '.join(sys.argv[1:])
-        else:
-            fileNameArg = sys.argv[1]
-        run(fileNameArg)
+        run(getFileName())
     else:
         run()
 #@-node:ekr.20031218072017.2605:@thin leo.py 
