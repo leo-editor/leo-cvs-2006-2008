@@ -527,12 +527,9 @@ def scanAtEncodingDirective(theDict):
     Returns the encoding name or None if the encoding name is invalid.
     """
 
-    # k = theDict["encoding"]
-    # i = g.skip_to_end_of_line(s,k)
-    # j = len("@encoding")
-    # encoding = s[k+j:i].strip()
-
     encoding = theDict.get('encoding')
+    if not encoding:
+        return None
 
     if g.isValidEncoding(encoding):
         # g.trace(encoding)
