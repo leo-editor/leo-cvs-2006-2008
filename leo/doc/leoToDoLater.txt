@@ -2011,8 +2011,8 @@ self.getDquote()
 #@-node:ekr.20031218072017.1567:<< Handle vnode attribute bits  >>
 #@+node:ekr.20041023110111:<< raise invalidPaste if the tnode is in self.forbiddenTnodes >>
 # Bug fix in 4.3 a1: make sure we have valid paste.
-theId,time,n = g.app.nodeIndices.scanGnx(index,0)
-if not time and index[0] == "T":
+junk,theTime,junk = g.app.nodeIndices.scanGnx(index,0)
+if not theTime and index[0] == "T":
     index = index[1:]
 
 index = self.canonicalTnodeIndex(index)
@@ -4663,6 +4663,7 @@ def initIvars(self):
         self.topPosition = None
     # For writing
     self.read_only = False
+    self.rootPosition = None
     self.outputFile = None
     self.openDirectory = None
     self.putCount = 0
@@ -7299,8 +7300,8 @@ def putTnodeList (self,v):
         # g.trace("%4d" % len(tnodeList),v)
         for t in tnodeList:
             try: # Will fail for None or any pre 4.1 file index.
-                theId,time,n = t.fileIndex
-            except:
+                junk,junk,junk = t.fileIndex
+            except Exception:
                 g.trace("assigning gnx for ",v,t)
                 gnx = nodeIndices.getNewIndex()
                 v.t.setFileIndex(gnx) # Don't convert to string until the actual write.
@@ -7384,7 +7385,7 @@ def putDescendentUnknownAttributes (self,p):
     data = []
     for p,t in tnodesData:
         if type(t.unknownAttributes) != type({}):
-             g.es("ignoring non-dictionary unknownAttributes for",p,color="blue")
+            g.es("ignoring non-dictionary unknownAttributes for",p,color="blue")
         else:
             # Create a new dict containing only entries that can be pickled.
             d = dict(t.unknownAttributes) # Copy the dict.
@@ -7534,8 +7535,8 @@ self.getDquote()
 #@-node:ekr.20031218072017.1567:<< Handle vnode attribute bits  >>
 #@+node:ekr.20041023110111:<< raise invalidPaste if the tnode is in self.forbiddenTnodes >>
 # Bug fix in 4.3 a1: make sure we have valid paste.
-theId,time,n = g.app.nodeIndices.scanGnx(index,0)
-if not time and index[0] == "T":
+junk,theTime,junk = g.app.nodeIndices.scanGnx(index,0)
+if not theTime and index[0] == "T":
     index = index[1:]
 
 index = self.canonicalTnodeIndex(index)
@@ -7811,7 +7812,7 @@ def readOutlineOnly (self,theFile,fileName):
     finally:
         c.endUpdate()
     c.frame.deiconify()
-    vflag,junk,secondary_ratio = self.frame.initialRatios()
+    junk,junk,secondary_ratio = self.frame.initialRatios()
     c.frame.resizePanesToRatio(ratio,secondary_ratio)
     if 0: # 1/30/04: this is useless.
         # This should be done after the pane size has been set.

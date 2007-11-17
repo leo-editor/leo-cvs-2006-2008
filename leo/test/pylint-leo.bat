@@ -7,12 +7,13 @@ rem W0613 Unused argument (sometimes used for debugging)
 rem W0621 Redefining <name> from outer scope: especially __pychecker__
 
 rem passed...
-rem call pylint.bat c:\prog\tigris-cvs\leo\src\leoAtFile.py --disable-msg=W0212,W0401,W0402,W0613,W0621 --rcfile=c:\prog\tigris-cvs\leo\test\pylint-leo-rc.txt
+rem call pylint.bat c:\prog\tigris-cvs\leo\src\leoAtFile.py --disable-msg=W0212,W0401,W0402,W0613 --rcfile=c:\prog\tigris-cvs\leo\test\pylint-leo-rc.txt
+rem call pylint.bat c:\prog\tigris-cvs\leo\src\leoFileCommands.py --disable-msg=W0401,W0402 --rcfile=c:\prog\tigris-cvs\leo\test\pylint-leo-rc.txt
 
 echo on
 
 cd c:\prog\pylint-0.13.2\bin
 
-call pylint.bat c:\prog\tigris-cvs\leo\src\leoFileCommands.py --rcfile=c:\prog\tigris-cvs\leo\test\pylint-leo-rc.txt
+call pylint.bat c:\prog\tigris-cvs\leo\src\leoImport.py --disable-msg= --rcfile=c:\prog\tigris-cvs\leo\test\pylint-leo-rc.txt
 
 pause

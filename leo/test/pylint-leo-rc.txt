@@ -208,7 +208,7 @@ init-import=no
 
 # A regular expression matching names used for dummy variables (i.e. not used).
 # EKR: added junk,args,keys,keywords,unused_*
-dummy-variables-rgx=_|dummy|junk|args|keys|keywords|event|unused_.*
+dummy-variables-rgx=_|dummy|junk|args|keys|keywords|event|tag|unused_.*
 
 
 # List of additional names supposed to be defined in builtins. Remember that
