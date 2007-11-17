@@ -818,7 +818,9 @@ class rstClass:
 
         # New in Leo 4.4.4: do this here, not in initWrite:
         d = g.scanDirectives(c=self.c,p=p)
-        language = d.get('language','').lower()
+        language = d.get('language')
+        if language is None: language = 'python'
+        else: language = language.lower()
         syntax = SilverCity is not None
 
         # g.trace('language',language,'language.title()',language.title(),p.headString())
