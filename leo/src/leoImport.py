@@ -2631,8 +2631,8 @@ class baseLeoImportCommands:
                     result.append(s)
 
             if changed:
-                s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
-                message = '%s: inconsistent leading whitespace. %s' % (kind,s)
+                action = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
+                message = 'inconsistent leading whitespace. %s' % action
                 self.report(message)
 
             return ''.join(result)
