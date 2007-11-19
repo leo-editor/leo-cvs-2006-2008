@@ -1783,8 +1783,8 @@ def regularizeWhitespace (self,s):
             result.append(s)
 
     if changed:
-        s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
-        message = '%s: inconsistent leading whitespace. %s' % (kind,s)
+        action = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
+        message = 'inconsistent leading whitespace. %s' % action
         self.report(message)
 
     return ''.join(result)
@@ -3285,8 +3285,8 @@ def regularizeWhitespace (self,s):
             result.append(s)
 
     if changed:
-        s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
-        message = '%s: inconsistent leading whitespace. %s' % (kind,s)
+        action = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
+        message = 'inconsistent leading whitespace. %s' % action
         self.report(message)
 
     return ''.join(result)
@@ -4704,8 +4704,8 @@ def regularizeWhitespace (self,s):
             result.append(s)
 
     if changed:
-        s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
-        message = '%s: inconsistent leading whitespace. %s' % (kind,s)
+        action = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
+        message = 'inconsistent leading whitespace. %s' % action
         self.report(message)
 
     return ''.join(result)
@@ -10580,6 +10580,8 @@ You need to have libmagick6-dev installed in adition to imagemagick
 # These might crash @noref.
 
 #@-node:ekr.20071112110249:pylint: leoAtFile
+#@+node:ekr.20071119053849:Fixed crasher in regularizeWhitespace
+#@-node:ekr.20071119053849:Fixed crasher in regularizeWhitespace
 #@-node:ekr.20071116114551:Leo 4.4.5 final
 #@-all
 #@nonl

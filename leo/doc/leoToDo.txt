@@ -939,8 +939,62 @@ g.es("dragged node will be cloned")
 g.es("dragged node will be moved")
 #@-node:ekr.20071115113231:Results
 #@-node:ekr.20070625091423:Add translation services
-#@+node:ekr.20070220082124:Make sure Leo can generate Latex
-#@-node:ekr.20070220082124:Make sure Leo can generate Latex
+#@+node:ekr.20071117161024:pylint: leoImport
+************* Module leoImport
+W0402: 19: Uses of a deprecated module 'string'
+W0612:426:baseLeoImportCommands.removeSentinelsCommand: Unused variable 'new_df'
+W0612:426:baseLeoImportCommands.removeSentinelsCommand: Unused variable 'derivedFileIsThin'
+W0613:471:baseLeoImportCommands.removeSentinelLines: Unused argument 'end_delim'
+W0612:883:baseLeoImportCommands.importFilesCommand: Unused variable 'nameExt'
+W0612:884:baseLeoImportCommands.importFilesCommand: Unused variable 'ext'
+W0612:929:baseLeoImportCommands.convertMoreStringsToOutlineAfter: Unused variable 'newFlag'
+W0612:1463:baseLeoImportCommands.baseScannerClass.__init__: Unused variable 'delim3'
+W0612:1463:baseLeoImportCommands.baseScannerClass.__init__: Unused variable 'delim2'
+W0613:1489:baseLeoImportCommands.baseScannerClass.check: Unused argument 's'
+W0613:1489:baseLeoImportCommands.baseScannerClass.check: Unused argument 'parent'
+E0602:1615:baseLeoImportCommands.baseScannerClass.checkLeadingWhitespace: Undefined variable 'report'
+E0213:1644:baseLeoImportCommands.baseScannerClass.pr: Method should have "self" as first argument
+W0613:1778:baseLeoImportCommands.baseScannerClass.putClass: Unused argument 'sigStart'
+W0612:1799:baseLeoImportCommands.baseScannerClass.putClass: Unused variable 'sigId'
+W0613:1872:baseLeoImportCommands.baseScannerClass.putClassHelper: Unused argument 'class_name'
+W0613:2034:baseLeoImportCommands.baseScannerClass.extendSignature: Unused argument 's'
+W0612:2046:baseLeoImportCommands.baseScannerClass.getIndent: Unused variable 'j2'
+W0106:2109:baseLeoImportCommands.baseScannerClass.scanHelper: Unnecessary semicolon
+W0613:2519:baseLeoImportCommands.baseScannerClass.skipSigId: Unused argument 's'
+E0602:2635:baseLeoImportCommands.baseScannerClass.regularizeWhitespace: Undefined variable 'kind'
+W0201:2552:baseLeoImportCommands.baseScannerClass.run: Attribute 'file_s' defined outside __init__
+W0201:1787:baseLeoImportCommands.baseScannerClass.putClass: Attribute 'classLines' defined outside __init__
+W0201:1695:baseLeoImportCommands.baseScannerClass.createFunctionNode: Attribute 'methodsSeen' defined outside __init__
+
+W0231:2654:baseLeoImportCommands.cScanner.__init__: __init__ method from base class 'baseScannerClass' is not called
+E0602:2657:baseLeoImportCommands.cScanner.__init__: Undefined variable 'baseScannerClass'
+
+W0231:2687:baseLeoImportCommands.cSharpScanner.__init__: __init__ method from base class 'baseScannerClass' is not called
+W0231:2722:baseLeoImportCommands.elispScanner.__init__: __init__ method from base class 'baseScannerClass' is not called
+W0613:2742:baseLeoImportCommands.elispScanner.startsClass: Unused argument 'i'
+W0613:2742:baseLeoImportCommands.elispScanner.startsClass: Unused argument 's'
+E0602:2760:baseLeoImportCommands.elispScanner.startsFunction: Undefined variable 'key'
+W0231:2794:baseLeoImportCommands.javaScanner.__init__: __init__ method from base class 'baseScannerClass' is not called
+W0613:2811:baseLeoImportCommands.javaScanner.skipSigId: Unused argument 's'
+W0231:2846:baseLeoImportCommands.javaScriptScanner.__init__: __init__ method from base class 'baseScannerClass' is not called
+W0231:2921:baseLeoImportCommands.pascalScanner.__init__: __init__ method from base class 'baseScannerClass' is not called
+W0231:2957:baseLeoImportCommands.phpScanner.__init__: __init__ method from base class 'baseScannerClass' is not called
+W0231:3016:baseLeoImportCommands.pythonScanner.__init__: __init__ method from base class 'baseScannerClass' is not called
+W0613:3231:baseLeoImportCommands.defaultImporterUnitTest: Unused argument 'showTree'
+W0201:812:baseLeoImportCommands.importDerivedFiles: Attribute 'tab_width' defined outside __init__
+
+
+Report
+======
+2016 statements analysed.
+
+Global evaluation
+-----------------
+Your code has been rated at 9.71/10 (previous run: 9.72/10)
+
+Press any key to continue . . .
+#@nonl
+#@-node:ekr.20071117161024:pylint: leoImport
 #@-node:ekr.20071114063047:First
 #@+node:ekr.20070703111455.1:Most important
 #@+node:ekr.20071105160956:*** auto-change panes
@@ -1184,6 +1238,8 @@ Something not-quite-right is happening presently.
 #@+node:ekr.20070703111455.3:Minor
 # some of these can wait till much later.
 #@nonl
+#@+node:ekr.20070220082124:Make sure Leo can generate Latex
+#@-node:ekr.20070220082124:Make sure Leo can generate Latex
 #@+node:ekr.20070521105645:Improve api docs with epidoc?
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=4319363
@@ -3074,8 +3130,8 @@ def regularizeWhitespace (self,s):
             result.append(s)
 
     if changed:
-        s = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
-        message = '%s: inconsistent leading whitespace. %s' % (kind,s)
+        action = g.choose(self.tab_width < 0,'tabs converted to blanks','blanks converted to tabs')
+        message = 'inconsistent leading whitespace. %s' % action
         self.report(message)
 
     return ''.join(result)
@@ -4431,8 +4487,6 @@ I do not want to be treading on your toes, so please tell me if I am intruding.
 #@-node:ekr.20070824093611:Improve wxGui plugin
 #@+node:ekr.20070703111913:Swing gui
 #@+node:ekr.20070930105601:Gui Swing classes
-
-#@nonl
 #@+node:ekr.20071001092721:@thin leoSwingDialog.py
 @language python
 @tabwidth -4
@@ -12621,6 +12675,8 @@ class GCEveryOneMinute(java.lang.Thread):
 #@+node:ekr.20070307082503:Make Leo an IPython notebook
 #@+node:ekr.20071117082144:@url http://projects.scipy.org/ipython/ipython/wiki/NoteBook/ProjectDescription
 #@-node:ekr.20071117082144:@url http://projects.scipy.org/ipython/ipython/wiki/NoteBook/ProjectDescription
+#@+node:ekr.20071118051101:@url http://leo.zwiki.org/ResponsesToIPythonsUserStories
+#@-node:ekr.20071118051101:@url http://leo.zwiki.org/ResponsesToIPythonsUserStories
 #@+node:ekr.20060603090445.7:Ipython stuff
 #@+node:ekr.20060603085719.1:Use IPython autocompleter?
 #@-node:ekr.20060603085719.1:Use IPython autocompleter?
