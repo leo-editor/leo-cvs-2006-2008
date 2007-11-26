@@ -10582,6 +10582,376 @@ You need to have libmagick6-dev installed in adition to imagemagick
 #@-node:ekr.20071112110249:pylint: leoAtFile
 #@+node:ekr.20071119053849:Fixed crasher in regularizeWhitespace
 #@-node:ekr.20071119053849:Fixed crasher in regularizeWhitespace
+#@+node:ekr.20071119160317:Investigateed paste-node-as-clone
+# The recent fix to c.all_unique_tnodes_iter may be part of the problem.
+# There are now recent changes to the paste-node-as-clone logic that could cause new problems.
+#@nonl
+#@+node:ekr.20040312090934:c.iterators
+#@+node:EKR.20040529091232:c.all_positions_iter == allNodes_iter
+class allNodes_iter_class:
+
+    """Returns a list of positions in the entire outline."""
+
+    @others
+
+def allNodes_iter (self,copy=False):
+
+    c = self
+    return self.allNodes_iter_class(c,copy)
+
+all_positions_iter = allNodes_iter
+#@nonl
+#@+node:ekr.20060907085906.1:__init__ & __iter__ (c.all_positions_iter)
+def __init__(self,c,copy):
+
+    # g.trace('c.allNodes_iter.__init','p',p,'c',c)
+
+    self.c = c
+    self.first = c.rootPosition()
+    self.p = None
+    self.copy = copy
+
+def __iter__(self):
+
+    return self
+#@-node:ekr.20060907085906.1:__init__ & __iter__ (c.all_positions_iter)
+#@+node:ekr.20060907085906.2:next
+def next(self):
+
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    elif self.p:
+        self.p.moveToThreadNext()
+
+    if self.p:
+        if self.copy: return self.p.copy()
+        else:         return self.p
+
+    else: raise StopIteration
+#@-node:ekr.20060907085906.2:next
+#@-node:EKR.20040529091232:c.all_positions_iter == allNodes_iter
+#@+node:EKR.20040529091232.1:c.all_tnodes_iter
+# def all_tnodes_iter(self):
+
+    # c = self
+    # for p in c.all_positions_iter():
+        # yield p.v.t
+
+    # # return c.rootPosition().all_tnodes_iter(all=True)
+
+class all_tnodes_iter_class:
+
+    """Returns a list of all tnodes in the entire outline."""
+
+    @others
+
+def all_tnodes_iter (self):
+
+    c = self
+    return self.all_tnodes_iter_class(c)
+#@+node:ekr.20070930185552:__init__ & __iter__ (c.all_tnodes_iter)
+def __init__(self,c):
+
+    # g.trace('c.all_tnodes_iter.__init','p',p,'c',c)
+
+    self.c = c
+    self.first = c.rootPosition()
+    self.p = None
+
+def __iter__(self):
+
+    return self
+#@-node:ekr.20070930185552:__init__ & __iter__ (c.all_tnodes_iter)
+#@+node:ekr.20070930185603:next
+def next(self):
+
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    elif self.p:
+        self.p.moveToThreadNext()
+
+    if self.p:
+        return self.p.v.t
+
+    else:
+        raise StopIteration
+#@-node:ekr.20070930185603:next
+#@-node:EKR.20040529091232.1:c.all_tnodes_iter
+#@+node:EKR.20040529091232.2:c.all_unique_tnodes_iter
+# def all_unique_tnodes_iter(self):
+
+    # c = self ; marks = {}
+
+    # for p in c.all_positions_iter():
+        # if not p.v.t in marks:
+            # marks[p.v.t] = p.v.t
+            # yield p.v.t
+
+class all_unique_tnodes_iter_class:
+
+    """Returns a list of all tnodes in the entire outline."""
+
+    @others
+
+def all_unique_tnodes_iter (self):
+
+    c = self
+    return self.all_unique_tnodes_iter_class(c)
+#@+node:ekr.20070930190218:__init__ & __iter__ (c.all_unique_tnodes_iter)
+def __init__(self,c):
+
+    # g.trace('c.all_uniquetnodes_iter.__init','p',p,'c',c)
+
+    self.c = c
+    self.d = {}
+    self.first = c.rootPosition()
+    self.p = None
+
+def __iter__(self):
+
+    return self
+#@-node:ekr.20070930190218:__init__ & __iter__ (c.all_unique_tnodes_iter)
+#@+node:ekr.20070930190229:next
+def next(self):
+
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    while self.p:
+        self.p.moveToThreadNext()
+        if not self.p:
+            break
+        elif not self.d.get(self.p.v.t):
+            self.d [self.p.v.t] = True
+            return self.p.v.t
+
+    raise StopIteration
+#@-node:ekr.20070930190229:next
+#@-node:EKR.20040529091232.2:c.all_unique_tnodes_iter
+#@+node:EKR.20040529091232.3:c.all_vnodes_iter
+# def all_vnodes_iter(self):
+
+    # c = self
+    # for p in c.all_positions_iter():
+        # yield p.v
+
+class all_vnodes_iter_class:
+
+    """Returns a list of all tnodes in the entire outline."""
+
+    @others
+
+def all_vnodes_iter (self):
+
+    c = self
+    return self.all_vnodes_iter_class(c)
+#@+node:ekr.20070930190711:__init__ & __iter__ (c.all_vnodes_iter)
+def __init__(self,c):
+
+    # g.trace('c.all_tnodes_iter.__init','p',p,'c',c)
+
+    self.c = c
+    self.first = c.rootPosition()
+    self.p = None
+
+def __iter__(self):
+
+    return self
+#@-node:ekr.20070930190711:__init__ & __iter__ (c.all_vnodes_iter)
+#@+node:ekr.20070930190729:next
+def next(self):
+
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    elif self.p:
+        self.p.moveToThreadNext()
+
+    if self.p:
+        return self.p.v
+
+    else: raise StopIteration
+#@-node:ekr.20070930190729:next
+#@-node:EKR.20040529091232.3:c.all_vnodes_iter
+#@+node:EKR.20040529091232.4:c.all_unique_vnodes_iter
+# def all_unique_vnodes_iter(self):
+
+    # c = self ; marks = {}
+    # for p in c.all_positions_iter():
+        # if not p.v in marks:
+            # marks[p.v] = p.v
+            # yield p.v
+
+class all_unique_vnodes_iter_class:
+
+    """Returns a list of all tnodes in the entire outline."""
+
+    @others
+
+def all_unique_vnodes_iter (self):
+
+    c = self
+    return self.all_unique_vnodes_iter_class(c)
+#@+node:ekr.20070930190755:__init__ & __iter__ (c.all_unique_nodes_iter)
+def __init__(self,c):
+
+    # g.trace('c.all_uniquetnodes_iter.__init','p',p,'c',c)
+
+    self.c = c
+    self.d = {}
+    self.first = c.rootPosition()
+    self.p = None
+
+def __iter__(self):
+
+    return self
+#@-node:ekr.20070930190755:__init__ & __iter__ (c.all_unique_nodes_iter)
+#@+node:ekr.20070930190835:next
+def next(self):
+
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    while self.p:
+        self.p.moveToThreadNext()
+        if not self.p:
+            break
+        elif not self.d.get(self.p.v.t):
+            self.d [self.p.v.t] = True
+            return self.p.v
+
+    raise StopIteration
+#@-node:ekr.20070930190835:next
+#@-node:EKR.20040529091232.4:c.all_unique_vnodes_iter
+#@-node:ekr.20040312090934:c.iterators
+#@+node:ekr.20031218072017.1548:Cut & Paste Outlines
+#@+node:ekr.20031218072017.1549:cutOutline
+def cutOutline (self,event=None):
+
+    '''Delete the selected outline and send it to the clipboard.'''
+
+    c = self
+    if c.canDeleteHeadline():
+        c.copyOutline()
+        c.deleteOutline("Cut Node")
+        c.recolor()
+#@-node:ekr.20031218072017.1549:cutOutline
+#@+node:ekr.20031218072017.1550:copyOutline
+def copyOutline (self,event=None):
+
+    '''Copy the selected outline to the clipboard.'''
+
+    # Copying an outline has no undo consequences.
+    c = self
+    c.endEditing()
+    c.fileCommands.assignFileIndices()
+    s = c.fileCommands.putLeoOutline()
+    g.app.gui.replaceClipboardWith(s)
+#@-node:ekr.20031218072017.1550:copyOutline
+#@+node:ekr.20031218072017.1551:pasteOutline
+# To cut and paste between apps, just copy into an empty body first, then copy to Leo's clipboard.
+
+def pasteOutline(self,event=None,reassignIndices=True):
+
+    '''Paste an outline into the present outline from the clipboard.
+    Nodes do *not* retain their original identify.'''
+
+    c = self ; u = c.undoer ; current = c.currentPosition()
+    s = g.app.gui.getTextFromClipboard()
+    pasteAsClone = not reassignIndices
+    undoType = g.choose(reassignIndices,'Paste Node','Paste As Clone')
+
+    c.endEditing()
+
+    if not s or not c.canPasteOutline(s):
+        return # This should never happen.
+
+    isLeo = g.match(s,0,g.app.prolog_prefix_string)
+    tnodeInfoDict = {}
+    if pasteAsClone:
+        << remember all data for undo/redo Paste As Clone >>
+
+    if isLeo:
+        pasted = c.fileCommands.getLeoOutline(s,reassignIndices)
+    else:
+        pasted = c.importCommands.convertMoreStringToOutlineAfter(s,current)
+    if not pasted: return
+
+    c.beginUpdate()
+    try:
+        copiedBunchList = []
+        if pasteAsClone:
+            << put only needed info in copiedBunchList >>
+        undoData = u.beforeInsertNode(current,
+            pasteAsClone=pasteAsClone,copiedBunchList=copiedBunchList)
+        c.endEditing()
+        c.validateOutline()
+        c.selectPosition(pasted)
+        pasted.setDirty()
+        c.setChanged(True)
+        # paste as first child if back is expanded.
+        back = pasted.back()
+        if back and back.isExpanded():
+            pasted.moveToNthChildOf(back,0)
+        c.setRootPosition(c.findRootPosition(pasted)) # New in 4.4.2.
+        u.afterInsertNode(pasted,undoType,undoData)
+    finally:
+        c.endUpdate()
+        c.recolor()
+#@+node:ekr.20050418084539:<< remember all data for undo/redo Paste As Clone >>
+@
+
+We don't know yet which nodes will be affected by the paste, so we remember
+everything. This is expensive, but foolproof.
+
+The alternative is to try to remember the 'before' values of tnodes in the
+fileCommands read logic. Several experiments failed, and the code is very ugly.
+In short, it seems wise to do things the foolproof way.
+
+@c
+
+for p in c.allNodes_iter():
+    t = p.v.t
+    if t not in tnodeInfoDict.keys():
+        tnodeInfoDict[t] = g.Bunch(
+            t=t,head=p.headString(),body=p.bodyString())
+#@-node:ekr.20050418084539:<< remember all data for undo/redo Paste As Clone >>
+#@+node:ekr.20050418084539.2:<< put only needed info in copiedBunchList >>
+# Create a dict containing only copied tnodes.
+copiedTnodeDict = {}
+for p in pasted.self_and_subtree_iter():
+    if p.v.t not in copiedTnodeDict:
+        copiedTnodeDict[p.v.t] = p.v.t
+
+# g.trace(copiedTnodeDict.keys())
+
+for t in tnodeInfoDict.keys():
+    bunch = tnodeInfoDict.get(t)
+    if copiedTnodeDict.get(t):
+        copiedBunchList.append(bunch)
+
+# g.trace('copiedBunchList',copiedBunchList)
+#@-node:ekr.20050418084539.2:<< put only needed info in copiedBunchList >>
+#@-node:ekr.20031218072017.1551:pasteOutline
+#@+node:EKR.20040610130943:pasteOutlineRetainingClones
+def pasteOutlineRetainingClones (self,event=None):
+
+    '''Paste an outline into the present outline from the clipboard.
+    Nodes *retain* their original identify.'''
+
+    c = self
+
+    return c.pasteOutline(reassignIndices=False)
+#@-node:EKR.20040610130943:pasteOutlineRetainingClones
+#@-node:ekr.20031218072017.1548:Cut & Paste Outlines
+#@-node:ekr.20071119160317:Investigateed paste-node-as-clone
 #@-node:ekr.20071116114551:Leo 4.4.5 final
 #@-all
 #@nonl
