@@ -1,22 +1,30 @@
-
+# -*- coding: utf-8 -*-
 #@+leo-ver=4-thin
-#@+node:bob.20070910154126.2:@thin __wx_alt_gui.py
+#@+node:bob.20071124164707:@thin __wx_alt_gui.py
 #@@first
 
 """A plugin to use wxWidgets as Leo's gui.
 
-This plugin has multiple problems and is not recommended.
+This version of wxLeo is being developed by
 
-The problems are gradually being brought under control, and a fully
-functioning wxLeo is expected before the end of 2007
+plumloco@hcoop.net
 
-From revision 60 the plugin is just about useable. Although it
-still needs a lot of work, all the major components are
-behaving more or less reasonably on window and linux. It should be
-possible, with care,  to use it for real work.
+WARNING:
+__wx_alt_gui is incomplete and all features are subject to continuous
+change. It should NOT be entrusted with anything important.
 
-This version of wxLeo is being developed by plumloco@hcoop.net
+USE:
 
+__wx_alt_gui.py should appear as the FIRST item in the list
+of enabled plugins.
+
+All other plugins, except those named below, should be dissabled.
+
+These plugins are compatible with __wx_alt_gui.py:
+    mod_scripting.py
+    rst3.py
+    UNL.py
+    hoist.py
 """
 
 import re
@@ -36,7 +44,7 @@ __version__ = '0.2.%s'% __revision__
 # 0.7.1 EKR: Fixed blunder in init.
 # 0.7.2 EKR: Put a bad hack in redraw_partial_subtree.
 # 
-# forked from __wx_gui py plumloco
+# # # forked from __wx_gui py plumloco
 # 
 # 0.1 plumloco: replaced wx.Tree widget with custom tree widget
 # 
@@ -186,11 +194,12 @@ def init():
 
             old = leoAtFile.atFile.openFileForReading
 
-            def myOpenFileForReading(self,fileName,*args, **kw):
-                g.trace( fileName)
+            def wxOpenFileForReading(self,fileName,*args, **kw):
+                #g.trace( fileName)
                 old(self, fileName, *args, **kw)
+                wx.Yield()
 
-            leoAtFile.atFile.openFileForReading = myOpenFileForReading
+            leoAtFile.atFile.openFileForReading = wxOpenFileForReading
         #@-node:bob.20070831090830:<< over rides >>
         #@nl
 
@@ -246,7 +255,7 @@ def onGlobalChar(self, event):
         # )
         result = c.k.masterKeyHandler(event,stroke=keysym)
         if not result:
-            g.trace('Skip()')
+            #g.trace('Skip()')
             event.Skip()
 #@-node:bob.20070910165627:onGlobalChar
 #@+node:bob.20070910192953:onRogueChar
@@ -902,7 +911,7 @@ if wx:
             __pychecker__ = '--no-argsused' #  insert not used.
 
 
-            g.trace(g.callers(20))
+            #g.trace(g.callers(20))
 
             py = self.toStcIndex
 
@@ -3900,28 +3909,28 @@ if wx:
             k = self ; c = k.c
 
 
-            try:
-                g.trace('=== eventwidget ===',event.widget)
-                g.trace('===   stroke    ===', stroke)
-                #g.trace('callers:', g.callers())
-            except:
-               g.trace('no event!')
-               pass
+            # try:
+               # g.trace('=== eventwidget ===',event.widget)
+               # g.trace('===   stroke    ===', stroke)
+               # g.trace('callers:', g.callers())
+            # except:
+               # g.trace('no event!')
+               # pass
 
 
 
-            g.trace('focus:', self.c.get_focus())
+            #g.trace('focus:', self.c.get_focus())
 
             if event:
                 w = event.widget
             else:
                 w = c.get_focus()
 
-            print '\ttarget:', w
+            #print '\ttarget:', w
 
             name = c.widget_name(w)
 
-            g.trace('NAME', name)
+            #g.trace('NAME', name)
 
 
 
@@ -3929,7 +3938,7 @@ if wx:
 
                 #<< handle char for body
 
-                g.trace('body')
+                #g.trace('body')
                 action = k.unboundKeyAction
                 if action in ('insert','overwrite'):
                     c.editCommands.selfInsertCommand(event,action=action)
@@ -3968,7 +3977,7 @@ if wx:
 
 
                 # c.onLogKey(event)
-                g.trace('log')
+                #g.trace('log')
                 pass
 
                 #>>
@@ -3985,20 +3994,20 @@ if wx:
 
                 keysym = g.app.gui.eventKeysym(event)
 
-                g.trace('\tfind KEYSYM', keysym)
+                #g.trace('\tfind KEYSYM', keysym)
 
                 if keysym == 'Return':
-                    g.trace('\tFOUND RETURN')
+                    #g.trace('\tFOUND RETURN')
                     w.leoParent.findNextCommand()
                     return 'break'
 
                 if keysym == 'Tab':
-                    g.trace('\tFOUND TAB')
+                    #g.trace('\tFOUND TAB')
                     w.leoParent.toggleTextWidgetFocus(w)
                     return 'break'
 
 
-                g.trace('NO SPECIAL CHARS FOUND FOR FIND')
+                #g.trace('NO SPECIAL CHARS FOUND FOR FIND')
                 return None
 
                 #>>
@@ -4006,7 +4015,7 @@ if wx:
             else:
                 # Allow wx to handle the event.
                 # ch = event and event.char ; g.trace('to wx:',name,repr(ch))
-                g.trace('no default key handler')
+                #g.trace('no default key handler')
                 return None
         #@-node:bob.20070901065753:handleDefaultChar
         #@+node:bob.20070830134722:setLabel
@@ -4431,6 +4440,14 @@ if wx:
             self.forceFullRecolorFlag = True
         #@nonl
         #@-node:bob.20070813163332.244:wxBody.forceFullRecolor
+        #@+node:bob.20071124165701:select/unselectLabel
+        def unselectLabel (self,w):
+            return
+
+
+        def selectLabel (self,w):
+            return
+        #@-node:bob.20071124165701:select/unselectLabel
         #@-others
     #@nonl
     #@-node:bob.20070813163332.236:wxLeoBody class (leoBody)
@@ -4534,7 +4551,7 @@ if wx:
             self.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.onPageChanged)
 
         def onPageChanged(self, event):
-            g.trace()
+            #g.trace()
             sel = event.GetSelection()
             if sel < 0:
                 event.Skip()
@@ -5823,8 +5840,8 @@ if wx:
             ch,label = self.createAccelLabel(keys)
 
             def wxMenuCallback (event,callback=callback):
-                g.trace('\nevent',event)
-                print
+                #g.trace('\nevent',event)
+                #print
                 callback() # All args were bound when the callback was created.
                 event.Skip()
 
@@ -5871,7 +5888,7 @@ if wx:
             n1 may be less than, grater than or equal to n2.    
             """
 
-            g.es('delete_range: Not yet Implemented', color='red')
+            print 'delete_range: Not yet Implemented'
 
             if not menu:
                 # g.trace("no menu")
@@ -6239,24 +6256,21 @@ if wx:
         #@+node:bob.20070813163332.315:wxLog.put & putnl
         # All output to the log stream eventually comes here.
 
-        def put(self, s, tabName='Log',  **keys):
+        def put (self, s, color=None, tabName=None, **keys):
 
+            if tabName:
+                self.selectTab(tabName)
 
-            self.selectTab(tabName)
-
-            w = self.logCtrl.widget
-
-            if not w:
-                g.alert('log.put, no widget!')
-                print 's'
+            try:
+                w = self.logCtrl.widget
+            except:
+                w = None
+                g.alert('log.put, can\'t write to log widget!')
+                print 'log tabName:s'
                 print
                 return
 
-            colour  = keys.get('colour', '') or keys.get('color', '')
-            g.trace('colour')
-
-            if not colour:
-                colour='black'
+            colour  = color or keys.get('colour', '') or 'black'
 
             if w:
                 w.BeginTextColour(colour)
@@ -6272,9 +6286,7 @@ if wx:
 
         def putnl (self, tabName=None):
 
-            self.put ('\n', tabName='Log')
-
-
+            self.put ('\n', tabName=tabName)
         #@-node:bob.20070813163332.315:wxLog.put & putnl
         #@+node:bob.20070907211310:Tab Popup Menu
         #@+node:bob.20070907191759.3:onShowTabMenu
@@ -8996,5 +9008,5 @@ if wx:
     #@-node:bob.20070813173446.12:class OutlineCanvas
     #@-node:bob.20070902164500.1:== TREE WIDGETS ==
     #@-others
-#@-node:bob.20070910154126.2:@thin __wx_alt_gui.py
+#@-node:bob.20071124164707:@thin __wx_alt_gui.py
 #@-leo
