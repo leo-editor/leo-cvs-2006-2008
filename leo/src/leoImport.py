@@ -33,7 +33,7 @@ class baseLeoImportCommands:
         self.methodName = None # x, as in < < x methods > > =
         self.output_newline = g.getOutputNewline(c=c) # Value of @bool output_newline
         self.rootLine = "" # Empty or @root + self.fileName
-        self.tabwidth = c.tab_width # The tab width in effect in the c.currentPosition.
+        self.tab_width = c.tab_width # The tab width in effect in the c.currentPosition.
         self.trace = c.config.getBool('trace_import')
         self.treeType = "@file" # "@root" or "@file"
         self.webType = "@noweb" # "cweb" or "noweb"
@@ -423,7 +423,7 @@ class baseLeoImportCommands:
             at = self.c.atFileCommands
             j = g.skip_line(s,i) ; line = s[i:j]
 
-            valid,new_df,start_delim,end_delim,derivedFileIsThin = at.parseLeoSentinel(line)
+            valid,junk,start_delim,end_delim,junk = at.parseLeoSentinel(line)
             if not valid:
                 if not toString: g.es("invalid @+leo sentinel in " + fileName)
                 return
@@ -468,11 +468,9 @@ class baseLeoImportCommands:
     #@+node:ekr.20031218072017.3303:removeSentinelLines
     # This does not handle @nonl properly, but that's a nit...
 
-    def removeSentinelLines(self,s,line_delim,start_delim,end_delim):
+    def removeSentinelLines(self,s,line_delim,start_delim,unused_end_delim):
 
         '''Properly remove all sentinle lines in s.'''
-
-        # __pychecker__ = '--no-argsused' # end_delim.
 
         delim = (line_delim or start_delim or '') + '@'
         verbatim = delim + 'verbatim' ; verbatimFlag = False
@@ -880,8 +878,8 @@ class baseLeoImportCommands:
                 prefix1, junk = g.os_path_splitext(name1)
                 if len(prefix0) > 0 and prefix0 == prefix1:
                     current = current.insertAsLastChild()
-                    junk, nameExt = g.os_path_split(prefix1)
-                    name,ext = g.os_path_splitext(prefix1)
+                    # junk, nameExt = g.os_path_split(prefix1)
+                    name,junk = g.os_path_splitext(prefix1)
                     current.initHeadString(name)
                 #@-node:ekr.20031218072017.3213:<< Create a parent for two files having a common prefix >>
                 #@nl
@@ -926,7 +924,7 @@ class baseLeoImportCommands:
             while index < len(strings):
                 progress = index
                 s = strings[index]
-                level, newFlag = self.moreHeadlineLevel(s)
+                level,junk = self.moreHeadlineLevel(s)
                 level -= firstLevel
                 if level >= 0:
                     #@                << Link a new vnode v into the outline >>
@@ -1437,11 +1435,13 @@ class baseLeoImportCommands:
             self.extraIdChars = ''
             self.fileName = ic.fileName # The original filename.
             self.fileType = ic.fileType # The extension,  '.py', '.c', etc.
+            self.file_s = '' # The complete text to be parsed.
             self.fullChecks = c.config.getBool('full_import_checks')
             self.importCommands = ic
             self.indentRefFlag = None # None, True or False.
             self.language = language
             self.methodName = ic.methodName # x, as in < < x methods > > =
+            self.methodsSeen = False
             self.mismatchWarningGiven = False
             self.output_newline = ic.output_newline # = c.config.getBool('output_newline')
             self.output_indent = 0 # The minimum indentation presently in effect.
@@ -1460,7 +1460,7 @@ class baseLeoImportCommands:
             self.webType = ic.webType # 'cweb' or 'noweb'  
 
             # Compute language ivars.
-            delim1,delim2,delim3 = g.set_delims_from_language(language)
+            delim1,junk,junk = g.set_delims_from_language(language)
             self.comment_delim = delim1
 
             # May be overridden in subclasses.
@@ -1486,7 +1486,7 @@ class baseLeoImportCommands:
         #@-node:ekr.20070703122141.66:baseScannerClass.__init__
         #@+node:ekr.20070808115837:Checking
         #@+node:ekr.20070703122141.102:check
-        def check (self,s,parent):
+        def check (self,unused_s,unused_parent):
 
             '''Make sure the generated nodes are equivalent to the original file.
 
@@ -1612,7 +1612,7 @@ class baseLeoImportCommands:
             ok = (w % abs(tab_width)) == 0
 
             if not ok:
-                report('leading whitespace not consistent with @tabwidth %d' % tab_width)
+                self.report('leading whitespace not consistent with @tabwidth %d' % tab_width)
                 g.es_print('line: %s' % (repr(line)),color='red')
 
             return ok
@@ -1638,17 +1638,6 @@ class baseLeoImportCommands:
                     pr('%3d %s' % (i,lines2[i]),newline=False)
 
             return False
-        #@+node:ekr.20070913084008:minitest of pr
-        if False: # Don't clutter the unit tests.
-
-            def pr(*args,**keys): # reportMismatch test
-                g.es_print(color='blue',*args,**keys)
-
-            pr('input...')
-            pr('newline=False:',newline=False)
-            pr('after')
-            pr('done')
-        #@-node:ekr.20070913084008:minitest of pr
         #@-node:ekr.20070911110507:reportMismatch
         #@-node:ekr.20070808115837:Checking
         #@+node:ekr.20070706084535:Code generation
@@ -1775,7 +1764,7 @@ class baseLeoImportCommands:
             return s
         #@-node:ekr.20070703122141.81:massageComment
         #@+node:ekr.20070707113832.1:putClass & helpers
-        def putClass (self,s,i,sigStart,sigEnd,codeEnd,start,parent):
+        def putClass (self,s,i,sigEnd,codeEnd,start,parent):
 
             '''Creates a child node c of parent for the class, and a child of c for each def in the class.'''
 
@@ -1784,7 +1773,6 @@ class baseLeoImportCommands:
             oldStartSigIndent = self.startSigIndent
 
             # Enter a new class 2: init the new class info.
-            self.classLines = []
             self.indentRefFlag = None
 
             class_kind = self.classId
@@ -1796,7 +1784,7 @@ class baseLeoImportCommands:
             prefix = self.createClassNodePrefix()
             if not self.sigId:
                 g.trace('Can not happen: no sigId')
-                sigId = 'Unknown class name'
+                self.sigId = 'Unknown class name'
             classHead = s[start:sigEnd]
             i = self.extendSignature(s,sigEnd)
             extend = s[sigEnd:i]
@@ -1810,7 +1798,7 @@ class baseLeoImportCommands:
             undentVal = self.getLeadingIndent(classHead,0)
 
             # Call the helper to parse the inner part of the class.
-            putRef,bodyIndent,classDelim,decls,trailing = self.putClassHelper(s,i,codeEnd,class_name,class_node)
+            putRef,bodyIndent,classDelim,decls,trailing = self.putClassHelper(s,i,codeEnd,class_node)
             # g.trace('bodyIndent',bodyIndent,'undentVal',undentVal)
 
             # Set the body of the class node.
@@ -1869,7 +1857,7 @@ class baseLeoImportCommands:
             return '%s\n' % (s)
         #@-node:ekr.20070703122141.106:getClassNodeRef
         #@+node:ekr.20070707171329:putClassHelper
-        def putClassHelper(self,s,i,end,class_name,class_node):
+        def putClassHelper(self,s,i,end,class_node):
 
             '''s contains the body of a class, not including the signature.
 
@@ -1977,9 +1965,6 @@ class baseLeoImportCommands:
                 return s
             else:
                 result = self.undentBy(s,undentVal)
-                # result = ''.join([
-                    # g.removeLeadingWhitespace(line,undent,self.tab_width)
-                        # for line in g.splitLines(s)])
                 if trace: g.trace('after...\n',g.listToString(g.splitLines(result)))
                 return result
 
@@ -2031,7 +2016,7 @@ class baseLeoImportCommands:
         # Scan and skipDecls would typically not be overridden.
         #@-at
         #@+node:ekr.20070707150022:extendSignature
-        def extendSignature(self,s,i):
+        def extendSignature(self,unused_s,i):
 
             '''Extend the signature line if appropriate.
             The text *must* end with a newline.
@@ -2043,9 +2028,8 @@ class baseLeoImportCommands:
         #@+node:ekr.20071017132056:getIndent
         def getIndent (self,s,i):
 
-            j,j2 = g.getLine(s,i)
+            j,junk = g.getLine(s,i)
             junk,indent = g.skip_leading_ws_with_indent(s,j,self.tab_width)
-            # g.trace('%d %s' % (indent,s[j:j2]))
             return indent
         #@nonl
         #@-node:ekr.20071017132056:getIndent
@@ -2059,6 +2043,9 @@ class baseLeoImportCommands:
             - Outer-level classes.
             - Outer-level functions.
             '''
+
+            # Init the parser status ivars.
+            self.methodsSeen = False
 
             # Create the initial body text in the root.
             self.putRootText(parent)
@@ -2098,7 +2085,7 @@ class baseLeoImportCommands:
                     putRef = True
                     if bodyIndent is None: bodyIndent = self.getIndent(s,i)
                     end2 = self.codeEnd # putClass may change codeEnd ivar.
-                    self.putClass(s,i,self.sigStart,self.sigEnd,self.codeEnd,start,parent)
+                    self.putClass(s,i,self.sigEnd,self.codeEnd,start,parent)
                     i = start = end2
                 elif self.startsFunction(s,i): # Sets sigStart,sigEnd & codeEnd ivars.
                     putRef = True
@@ -2106,7 +2093,7 @@ class baseLeoImportCommands:
                     self.putFunction(s,self.sigStart,self.codeEnd,start,parent)
                     i = start = self.codeEnd
                 elif self.startsId(s,i):
-                    i = self.skipId(s,i);
+                    i = self.skipId(s,i)
                 elif kind == 'outer' and g.match(s,i,self.outerBlockDelim1): # Do this after testing for classes.
                     i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
                     # Bug fix: 2007/11/8: do *not* set start: we are just skipping the block.
@@ -2365,6 +2352,72 @@ class baseLeoImportCommands:
             Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
             val = self.hasFunctions and self.startsHelper(s,i,kind='function',tags=self.functionTags)
             return val
+        #@+node:ekr.20070711134534:getSigId
+        def getSigId (self,ids):
+
+            '''Return the signature's id.
+
+            By default, this is the last id in the ids list.'''
+
+            return ids and ids[-1]
+        #@-node:ekr.20070711134534:getSigId
+        #@+node:ekr.20070711140703:skipSigStart
+        def skipSigStart (self,s,i,kind,tags):
+
+            '''Skip over the start of a function/class signature.
+
+            tags is in (self.classTags,self.functionTags).
+
+            Return (i,ids) where ids is list of all ids found, in order.'''
+
+            # __pychecker__ = '--no-argsused' # tags not used in the base class.
+
+            trace = False and self.trace # or kind =='function'
+            ids = [] ; classId = None
+            if trace: g.trace('*entry',kind,i,s[i:i+20])
+            start = i
+            while i < len(s):
+                j = g.skip_ws_and_nl(s,i)
+                for z in self.sigFailTokens:
+                    if g.match(s,j,z):
+                        if trace: g.trace('failtoken',z,'ids',ids)
+                        return start, [], None
+                for z in self.sigHeadExtraTokens:
+                    if g.match(s,j,z):
+                        i += len(z) ; break
+                else:
+                    i = self.skipId(s,j)
+                    theId = s[j:i]
+                    if theId and theId in tags: classId = theId
+                    if theId: ids.append(theId)
+                    else: break
+
+            if trace: g.trace('*exit ',kind,i,i < len(s) and s[i],ids,classId)
+            return i, ids, classId
+        #@-node:ekr.20070711140703:skipSigStart
+        #@+node:ekr.20070712082913:skipSigTail
+        def skipSigTail(self,s,i):
+
+            '''Skip from the end of the arg list to the start of the block.'''
+
+            trace = False and self.trace
+            start = i
+            i = g.skip_ws(s,i)
+            for z in self.sigFailTokens:
+                if g.match(s,i,z):
+                    if trace: g.trace('failToken',z,'line',g.skip_line(s,i))
+                    return i,False
+            while i < len(s):
+                if self.startsComment(s,i):
+                    i = self.skipComment(s,i)
+                elif g.match(s,i,self.blockDelim1):
+                    if trace: g.trace(repr(s[start:i]))
+                    return i,True
+                else:
+                    i += 1
+            if trace: g.trace('no block delim')
+            return i,False
+        #@-node:ekr.20070712082913:skipSigTail
         #@+node:ekr.20070712112008:startsHelper
         def startsHelper(self,s,i,kind,tags):
             '''return True if s[i:] starts a class or function.
@@ -2396,7 +2449,7 @@ class baseLeoImportCommands:
 
             # Get the class/function id.
             i, ids, classId = self.skipSigStart(s,j,kind,tags) # Rescan the first id.
-            i, sigId = self.skipSigId(s,i,ids)
+            sigId = self.getSigId(ids)
             if not sigId:
                 if trace and verbose: g.trace('**no sigId',g.get_line(s,i))
                 return False
@@ -2458,72 +2511,6 @@ class baseLeoImportCommands:
             if trace: g.trace(kind,'returns\n'+s[self.sigStart:i])
             return True
         #@-node:ekr.20070712112008:startsHelper
-        #@+node:ekr.20070711140703:skipSigStart
-        def skipSigStart (self,s,i,kind,tags):
-
-            '''Skip over the start of a function/class signature.
-
-            tags is in (self.classTags,self.functionTags).
-
-            Return (i,ids) where ids is list of all ids found, in order.'''
-
-            # __pychecker__ = '--no-argsused' # tags not used in the base class.
-
-            trace = False and self.trace # or kind =='function'
-            ids = [] ; classId = None
-            if trace: g.trace('*entry',kind,i,s[i:i+20])
-            start = i
-            while i < len(s):
-                j = g.skip_ws_and_nl(s,i)
-                for z in self.sigFailTokens:
-                    if g.match(s,j,z):
-                        if trace: g.trace('failtoken',z,'ids',ids)
-                        return start, [], None
-                for z in self.sigHeadExtraTokens:
-                    if g.match(s,j,z):
-                        i += len(z) ; break
-                else:
-                    i = self.skipId(s,j)
-                    theId = s[j:i]
-                    if theId and theId in tags: classId = theId
-                    if theId: ids.append(theId)
-                    else: break
-
-            if trace: g.trace('*exit ',kind,i,i < len(s) and s[i],ids,classId)
-            return i, ids, classId
-        #@-node:ekr.20070711140703:skipSigStart
-        #@+node:ekr.20070712082913:skipSigTail
-        def skipSigTail(self,s,i):
-
-            '''Skip from the end of the arg list to the start of the block.'''
-
-            trace = False and self.trace
-            start = i
-            i = g.skip_ws(s,i)
-            for z in self.sigFailTokens:
-                if g.match(s,i,z):
-                    if trace: g.trace('failToken',z,'line',g.skip_line(s,i))
-                    return i,False
-            while i < len(s):
-                if self.startsComment(s,i):
-                    i = self.skipComment(s,i)
-                elif g.match(s,i,self.blockDelim1):
-                    if trace: g.trace(repr(s[start:i]))
-                    return i,True
-                else:
-                    i += 1
-            if trace: g.trace('no block delim')
-            return i,False
-        #@-node:ekr.20070712082913:skipSigTail
-        #@+node:ekr.20070711134534:skipSigId
-        def skipSigId (self,s,i,ids):
-
-            '''Return (i, id) where id is the signature's id.
-
-            By default, this is the last id in the ids list.'''
-
-            return i, ids and ids[-1]
-        #@-node:ekr.20070711134534:skipSigId
         #@-node:ekr.20070711132314:startsClass/Function (baseClass) & helpers
         #@+node:ekr.20070711104014.1:startsComment
         def startsComment (self,s,i):
@@ -2739,7 +2726,7 @@ class baseLeoImportCommands:
         # skipClass/Function/Signature are defined in the base class.
         #@nonl
         #@+node:ekr.20070711060113.3:startsClass/Function & skipSignature
-        def startsClass (self,s,i):
+        def startsClass (self,unused_s,unused_i):
             '''Return True if s[i:] starts a class definition.
             Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
             return False
@@ -2757,7 +2744,7 @@ class baseLeoImportCommands:
             i = g.skip_ws(s,i+1)
             if not g.match_word(s,i,'defun'): return False
 
-            i += len(key)
+            i += len('defun')
             sigEnd = i = g.skip_ws_and_nl(s,i)
             j = g.skip_id(s,i)
             word = s[i:j]
@@ -2807,10 +2794,10 @@ class baseLeoImportCommands:
             self.functionTags = []
             self.sigFailTokens = [';','='] # Just like c.
         #@-node:ekr.20071019171430:javaScanner.__init__
-        #@+node:ekr.20071019170943:javaScanner.skipSigId
-        def skipSigId (self,s,i,ids):
+        #@+node:ekr.20071019170943:javaScanner.getSigId
+        def getSigId (self,ids):
 
-            '''Return (i, id) where id is the signature's id.
+            '''Return the signature's id.
 
             By default, this is the last id in the ids list.'''
 
@@ -2823,8 +2810,8 @@ class baseLeoImportCommands:
                 if z == 'extends': break
                 ids.append(z)
 
-            return i, ids and ids[-1]
-        #@-node:ekr.20071019170943:javaScanner.skipSigId
+            return ids and ids[-1]
+        #@-node:ekr.20071019170943:javaScanner.getSigId
         #@-others
     #@-node:edreamleo.20070710085115:class javaScanner (baseScannerClass)
     #@-node:edreamleo.20070710110114:Java scanner
@@ -3229,7 +3216,7 @@ class baseLeoImportCommands:
         return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.txt')
 
     def defaultImporterUnitTest(self,p,fileName=None,s=None,showTree=False):
-        return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,ext='.xxx')
+        return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.xxx')
     #@+node:ekr.20070713082220:scannerUnitTest
     def scannerUnitTest (self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
 
