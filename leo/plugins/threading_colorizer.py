@@ -1392,7 +1392,7 @@ class colorizer:
     #@-node:ekr.20071010193720.49:threadColorizer
     #@-node:ekr.20071010193720.39:Colorers & helpers
     #@+node:ekr.20071010193720.50:In helper thread
-    # Important: g.pdb will crash if called from within helper thread.
+    # Important: g.pdb, g.es or g.es_exception will crash if called from within helper thread.
     #@nonl
     #@+node:ekr.20071010193720.52:colorRangeWithTag (in helper thread)
     def colorRangeWithTag (self,s,i,j,tag,delegate='',exclude_match=False):
@@ -1660,7 +1660,8 @@ class colorizer:
             if self.ignore_case: flags|= re.IGNORECASE
             re_obj = re.compile(pattern,flags)
         except Exception:
-            g.es('Invalid regular expression: %s' % (pattern),color='blue')
+            # Bug fix: 2007/11/07: do not call g.es here!
+            g.trace('Invalid regular expression: %s' % (pattern))
             return 0
 
         self.match_obj = mo = re_obj.search(s,i)
