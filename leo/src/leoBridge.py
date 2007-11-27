@@ -143,7 +143,7 @@ class bridgeController:
         g.app.inBridge = True # Added 2007/10/21: support for g.getScript.
         g.app.nodeIndices = leoNodes.nodeIndices(g.app.leoID)
         g.app.config = leoConfig.configClass()
-        g.app.config.readSettingsFiles(None,verbose=True)
+        g.app.config.readSettingsFiles(None,verbose=self.verbose)
         self.createGui() # Create the gui *before* loading plugins.
         if self.verbose: self.reportDirectories()
         self.adjustSysPath()
@@ -328,12 +328,22 @@ class bridgeController:
 
         g = self.g
 
+        useLog = True
+
         if self.isOpen():
             fileName = self.completeFileName(fileName)
             c = self.createFrame(fileName)
-            g.app.gui.log = log = c.frame.log
-            log.isNull = False
-            log.enabled = True
+
+            if useLog:
+                g.app.gui.log = log = c.frame.log
+                log.isNull = False
+                log.enabled = True
+            # else:
+                # # Use the existing null log
+                # log = g.app.gui.log
+                # print 'use null log',log
+                # log.enabled = False
+
             # print 'createGui:','g.app:',id(g.app),g.app
             # print 'createGui:','g.app.gui',g.app.gui
             return c
