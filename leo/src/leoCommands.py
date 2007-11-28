@@ -266,7 +266,8 @@ class baseCommands:
             g.es(c.disableCommandsMessage,color='blue')
             return 'break' # Inhibit all other handlers.
 
-        if c.inCommand and not g.unitTesting:
+        if c.exists and c.inCommand and not g.unitTesting:
+            # g.trace('inCommand',c)
             g.es('Ignoring command: already executing a command.',color='red')
             return 'break'
 
@@ -282,6 +283,7 @@ class baseCommands:
                 if c and c.exists: # Be careful: the command could destroy c.
                     c.inCommand = False
                     c.k.funcReturn = val
+                # else: print 'c no longer exists',c
             except:
                 c.inCommand = False
                 if g.app.unitTesting:
@@ -1711,6 +1713,10 @@ class baseCommands:
                     p = c.currentPosition()
                     d = g.choose(define_g,{'c':c,'g':g,'p':p},{})
                     if define_name: d['__name__'] = define_name
+                    # A kludge: reset c.inCommand here to handle the case where we *never* return.
+                    # (This can happen when there are multiple event loops.)
+                    # This does not prevent zombie windows if the script puts up a dialog...
+                    c.inCommand = False
                     if writeScriptFile:
                         scriptFile = self.writeScriptFile(script)
                         execfile(scriptFile,d)
