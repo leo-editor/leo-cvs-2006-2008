@@ -2,47 +2,6 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20071127135200:Fix bugs
-#@+node:ekr.20071127092910:Fix crasher when tangling @root
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=4639426
-By: kayvan
-
-Using LEO 4.4.5b1, build 1.223, from November 16, 2007.
-
-I have a simple LEO file with one Headline (called Testing) containing the following
-body text:
-
-@root test.py
-"""Testing"""
-
-When I try to tangle it, I get the following:
-
-Tangling...
-exception executing command
-Traceback (most recent call last):
-  File "C:\Program Files\Leo\src\leoCommands.py", line 281, in doCommand
-    val = command(event)
-  File "C:\Program Files\Leo\src\leoCommands.py", line 1381, in tangleAll
-    c.tangleCommands.tangleAll()
-  File "C:\Program Files\Leo\src\leoTangle.py", line 601, in tangleAll
-    ok = self.tangleTree(p,dont_report_errors)
-  File "C:\Program Files\Leo\src\leoTangle.py", line 718, in tangleTree
-    self.tanglePass1(p) # sets self.p
-  File "C:\Program Files\Leo\src\leoTangle.py", line 663, in tanglePass1
-    self.scanAllDirectives(p,require_path,report_errors) # calls
-init_directive_ivars.
-  File "C:\Program Files\Leo\src\leoTangle.py", line 3598, in scanAllDirectives
-    self.setRootFromText(z,issue_error_flag)
-  File "C:\Program Files\Leo\src\leoTangle.py", line 3267, in setRootFromText
-    i,self.start_mode = g.scanAtRootOptions(s,0)
-  File "C:\Program Files\Leo\src\leoGlobals.py", line 2984, in
-scanAtRootOptions
-    assert(g.match(s,i,"@root"))
-AssertionError
-
-@color
-#@nonl
-#@-node:ekr.20071127092910:Fix crasher when tangling @root
 #@+node:ekr.20071127094526:Fix command lockout problem
 @nocolor
 
