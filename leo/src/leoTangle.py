@@ -376,12 +376,14 @@ class baseTangleCommands:
         self.output_file = None # The file descriptor of the output file.
         self.start_mode = "doc" # "code" or "doc".  Use "doc" for compatibility.
         self.tangle_default_directory = None # Default directory set by scanAllDirectives.
+        self.tangle_output = '' # For unit testing.
 
         #@+at 
         #@nonl
         # Symbol tables: the TST (Tangle Symbol Table) contains all section 
-        # names in the outline. The UST (Untangle Symbol Table) contains all 
-        # sections defined in the derived file.
+        # names in the outline.
+        # The UST (Untangle Symbol Table) contains all sections defined in the 
+        # derived file.
         #@-at
         #@@c
         self.tst = {}
@@ -557,7 +559,8 @@ class baseTangleCommands:
         c = self.c
         c.endEditing()
 
-        g.es("Tangling...")
+        if not g.unitTesting:
+            g.es("Tangling...")
         self.init_ivars()
         self.tangling = True
     #@-node:ekr.20031218072017.3470:initTangleCommand
@@ -571,10 +574,11 @@ class baseTangleCommands:
         self.init_ivars()
         self.tangling = False
     #@-node:ekr.20031218072017.3471:initUntangleCommand
-    #@+node:ekr.20031218072017.3472:tangle (test)
-    def tangle(self,event=None):
+    #@+node:ekr.20031218072017.3472:tangle
+    def tangle(self,event=None,p=None):
 
-        c = self.c ; p = c.currentPosition()
+        c = self.c
+        if not p: p = c.currentPosition()
         self.initTangleCommand()
 
         # Paul Paterson's patch.
@@ -588,8 +592,9 @@ class baseTangleCommands:
                     break
                 p.moveToParent()
 
-        g.es("tangle complete")
-    #@-node:ekr.20031218072017.3472:tangle (test)
+        if not g.unitTesting:
+            g.es("tangle complete")
+    #@-node:ekr.20031218072017.3472:tangle
     #@+node:ekr.20031218072017.3473:tangleAll
     def tangleAll(self,event=None):
 
@@ -610,7 +615,8 @@ class baseTangleCommands:
         elif self.errors > 0 and not self.path_warning_given:
             self.warning("----- Tangle halted because of errors")
         else:
-            g.es("Tangle complete")
+            if not g.unitTesting:
+                g.es("Tangle complete")
     #@-node:ekr.20031218072017.3473:tangleAll
     #@+node:ekr.20031218072017.3474:tangleMarked
     def tangleMarked(self,event=None):
@@ -639,16 +645,17 @@ class baseTangleCommands:
         elif self.errors > 0 and not self.path_warning_given:
             self.warning("----- Tangle halted because of errors")
         else:
-            g.es("Tangle complete")
+            if not g.unitTesting:
+                g.es("Tangle complete")
     #@-node:ekr.20031218072017.3474:tangleMarked
-    #@+node:ekr.20031218072017.3475:tanglePass1 (test)
+    #@+node:ekr.20031218072017.3475:tanglePass1
     # Traverses the tree whose root is given, handling each headline and associated body text.
 
     def tanglePass1(self,p):
 
         """The main routine of tangle pass 1"""
 
-        p = p.copy() # 9/14/04
+        p = p.copy()
         next = p.nodeAfterTree()
         while p and p != next:
             self.p = p
@@ -672,7 +679,7 @@ class baseTangleCommands:
         if self.tangling:
             self.st_check()
             # g.trace(self.st_dump(verbose_flag=True))
-    #@-node:ekr.20031218072017.3475:tanglePass1 (test)
+    #@-node:ekr.20031218072017.3475:tanglePass1
     #@+node:ekr.20031218072017.3476:tanglePass2
     # At this point p is the root of the tree that has been tangled.
 
@@ -737,7 +744,8 @@ class baseTangleCommands:
         c.beginUpdate()
         try:
             self.untangleTree(p,report_errors)
-            g.es("Untangle complete")
+            if not g.unitTesting:
+                g.es("Untangle complete")
         finally:
             c.endUpdate()
     #@-node:ekr.20031218072017.3478:untangle
@@ -763,7 +771,8 @@ class baseTangleCommands:
         elif self.errors > 0:
             self.warning("----- Untangle command halted because of errors")
         else:
-            g.es("Untangle complete")
+            if not g.unitTesting:
+                g.es("Untangle complete")
     #@-node:ekr.20031218072017.3479:untangleAll
     #@+node:ekr.20031218072017.3480:untangleMarked
     def untangleMarked(self,event=None):
@@ -792,7 +801,8 @@ class baseTangleCommands:
         elif self.errors > 0:
             self.warning("----- Untangle command halted because of errors")
         else:
-            g.es("Untangle complete")
+            if not g.unitTesting:
+                g.es("Untangle complete")
     #@-node:ekr.20031218072017.3480:untangleMarked
     #@+node:ekr.20031218072017.3481:untangleRoot (calls cleanup)
     #@+at 
@@ -1357,14 +1367,16 @@ class baseTangleCommands:
             self.output_file.write('\t' * abs(n))
     #@-node:ekr.20031218072017.1488:oblank, oblanks, os, otab, otabs (Tangle)
     #@+node:ekr.20031218072017.1151:tangle.put_all_roots
-    #@+at 
-    #@nonl
+    #@+at
     # This is the top level method of the second pass. It creates a separate C 
-    # file for each @root directive in the outline. As will be seen later,the 
-    # file is actually written only if the new version of the file is 
-    # different from the old version,or if the file did not exist previously. 
-    # If changed_only_flag FLAG is True only changed roots are actually 
-    # written.
+    # file
+    # for each @root directive in the outline. The file is actually written 
+    # only if
+    # the new version of the file is different from the old version,or if the 
+    # file did
+    # not exist previously. If changed_only_flag FLAG is True only changed 
+    # roots are
+    # actually written.
     #@-at
     #@@c
 
@@ -1380,7 +1392,11 @@ class baseTangleCommands:
             mode = c.config.output_newline
             # mode = g.choose(mode=="platform",'w','wb')
             textMode = mode == 'platform'
-            self.output_file,temp_name = g.create_temp_file(textMode=textMode)
+            if g.unitTesting:
+                self.output_file = g.fileLikeObject()
+                temp_name = 'temp-file'
+            else:
+                self.output_file,temp_name = g.create_temp_file(textMode=textMode)
             if not temp_name:
                 g.es("Can not create temp file")
                 break
@@ -1429,19 +1445,23 @@ class baseTangleCommands:
                     self.tangle_indent = 0 # Initialize global.
                     self.put_part_node(part,False) # output first lws
             self.onl() # Make sure the file ends with a cr/lf
+            if g.unitTesting:
+                self.tangle_output = self.output_file.get()
             self.output_file.close()
             self.output_file = None
-            if self.errors + g.app.scanErrors == 0:
-                g.update_file_if_changed(c,file_name,temp_name)
-            else:
-                g.es("unchanged:  " + file_name)
-                #@            << Erase the temporary file >>
-                #@+node:ekr.20031218072017.1155:<< Erase the temporary file >>
-                try: # Just delete the temp file.
-                    os.remove(temp_name)
-                except: pass
-                #@-node:ekr.20031218072017.1155:<< Erase the temporary file >>
-                #@nl
+            if not g.unitTesting:
+                if self.errors + g.app.scanErrors == 0:
+                    g.update_file_if_changed(c,file_name,temp_name)
+                else:
+                    g.es("unchanged:  " + file_name)
+                    #@                << Erase the temporary file >>
+                    #@+node:ekr.20031218072017.1155:<< Erase the temporary file >>
+                    try: # Just delete the temp file.
+                        os.remove(temp_name)
+                    except: pass
+                    #@-node:ekr.20031218072017.1155:<< Erase the temporary file >>
+                    #@nl
+    #@nonl
     #@-node:ekr.20031218072017.1151:tangle.put_all_roots
     #@+node:ekr.20031218072017.3506:put_code
     #@+at 
@@ -3252,8 +3272,7 @@ class baseTangleCommands:
     #@+node:ekr.20031218072017.1259:setRootFromText
     #@+at 
     #@nonl
-    # This code skips the file name used in @root directives.  i points after 
-    # the @root directive.
+    # This code skips the file name used in @root directives.
     # 
     # File names may be enclosed in < and > characters, or in double quotes.  
     # If a file name is not enclosed be these delimiters it continues until 

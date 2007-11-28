@@ -868,12 +868,16 @@ def runAtFileTest(c,p):
     # Compute the type from child1's headline.
     j = g.skip_c_id(h1,2)
     theType = h1[1:j]
-    assert theType in ("@file","@thin","@nosent","@noref","@asis"), "bad type: %s" % type
+    assert theType in ("@file","@thin","@nosent","@noref","@asis","@root",), "bad type: %s" % type
 
     thinFile = theType == "@thin"
     nosentinels = theType in ("@asis","@nosent")
 
-    if theType == "@asis":
+    if theType == "@root":
+        c.tangleCommands.tangle_output = ''
+        c.tangleCommands.tangle(event=None,p=child1)
+        at.stringOutput = c.tangleCommands.tangle_output
+    elif theType == "@asis":
         at.asisWrite(child1,toString=True)
     elif theType == "@noref":
         at.norefWrite(child1,toString=True)
