@@ -127,7 +127,8 @@ def doCommand (self,command,label,event=None):
         g.es(c.disableCommandsMessage,color='blue')
         return 'break' # Inhibit all other handlers.
 
-    if c.inCommand and not g.unitTesting:
+    if c.exists and c.inCommand and not g.unitTesting:
+        # g.trace('inCommand',c)
         g.es('Ignoring command: already executing a command.',color='red')
         return 'break'
 
@@ -143,6 +144,7 @@ def doCommand (self,command,label,event=None):
             if c and c.exists: # Be careful: the command could destroy c.
                 c.inCommand = False
                 c.k.funcReturn = val
+            # else: print 'c no longer exists',c
         except:
             c.inCommand = False
             if g.app.unitTesting:
@@ -7974,6 +7976,409 @@ except: pass
 #@-node:ekr.20031218072017.1155:<< Erase the temporary file >>
 #@-node:ekr.20031218072017.1151:tangle.put_all_roots
 #@-node:ekr.20071127092910:Fixed crasher when tangling @root
+#@+node:ekr.20071127094526:Fixed command lockout problem
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4639872
+By: kayvan
+
+I created a LEO outline with the following in it and started LEO-4.4.5-b1:
+
+---------------------------------------------
+Header: @nosent test.pyw
+Body:
+@language python
+@tabwidth -4
+@others
+
+- Subheader: Test code
+- Body:
+  #!/usr/bin/env python
+  from Tkinter import *
+  root = Tk()
+  w = Label(root, text="Hello world!")
+  w.pack()
+  root.mainloop()
+---------------------------------------------
+
+When I run Cmd->Run Script/Tests->Execute Script, I see the Tk window as expected.
+When I hit the close button to kill the application, all is fine. From this
+point on, any command I do (like Control-I, etc.) I see a message in the Log:
+
+Ignoring command: already executing a command.
+
+Nothing further can be done and I have to kill LEO with Task Manager.
+
+The same actions work as expected with LEO-4.4.4-final.
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.2817: doCommand
+command_count = 0
+
+def doCommand (self,command,label,event=None):
+
+    """Execute the given command, invoking hooks and catching exceptions.
+
+    The code assumes that the "command1" hook has completely handled the command if
+    g.doHook("command1") returns False.
+    This provides a simple mechanism for overriding commands."""
+
+    c = self ; p = c.currentPosition()
+    commandName = command and command.__name__
+    c.setLog()
+
+    self.command_count += 1
+    if not g.app.unitTesting and c.config.getBool('trace_doCommand'):
+        g.trace(commandName)
+
+    # The presence of this message disables all commands.
+    if c.disableCommandsMessage:
+        g.es(c.disableCommandsMessage,color='blue')
+        return 'break' # Inhibit all other handlers.
+
+    if c.exists and c.inCommand and not g.unitTesting:
+        # g.trace('inCommand',c)
+        g.es('Ignoring command: already executing a command.',color='red')
+        return 'break'
+
+    if label and event is None: # Do this only for legacy commands.
+        if label == "cantredo": label = "redo"
+        if label == "cantundo": label = "undo"
+        g.app.commandName = label
+
+    if not g.doHook("command1",c=c,p=p,v=p,label=label):
+        try:
+            c.inCommand = True
+            val = command(event)
+            if c and c.exists: # Be careful: the command could destroy c.
+                c.inCommand = False
+                c.k.funcReturn = val
+            # else: print 'c no longer exists',c
+        except:
+            c.inCommand = False
+            if g.app.unitTesting:
+                raise
+            else:
+                g.es("exception executing command")
+                print "exception executing command"
+                g.es_exception(c=c)
+                if c and c.exists and hasattr(c,'frame'):
+                    c.redraw_now()
+
+        if c and c.exists and c.requestCloseWindow:
+            g.trace('Closing window after command')
+            c.requestCloseWindow = False
+            g.app.closeLeoWindow(c.frame)
+
+    # Be careful: the command could destroy c.
+    if c and c.exists:
+        p = c.currentPosition()
+        g.doHook("command2",c=c,p=p,v=p,label=label)
+
+    return "break" # Inhibit all other handlers.
+#@-node:ekr.20031218072017.2817: doCommand
+#@+node:ekr.20031218072017.2140:c.executeScript & helpers
+def executeScript(self,event=None,p=None,script=None,
+    useSelectedText=True,define_g=True,define_name='__main__',silent=False):
+
+    """This executes body text as a Python script.
+
+    We execute the selected text, or the entire body text if no text is selected."""
+
+    c = self ; script1 = script
+    writeScriptFile = c.config.getBool('write_script_file')
+    if not script:
+        script = g.getScript(c,p,useSelectedText=useSelectedText)
+    self.redirectScriptOutput()
+    try:
+        log = c.frame.log
+        if script.strip():
+            sys.path.insert(0,c.frame.openDirectory)
+            script += '\n' # Make sure we end the script properly.
+            # print '*** script\n',script
+            try:
+                p = c.currentPosition()
+                d = g.choose(define_g,{'c':c,'g':g,'p':p},{})
+                if define_name: d['__name__'] = define_name
+                # A kludge: reset c.inCommand here to handle the case where we *never* return.
+                # (This can happen when there are multiple event loops.)
+                # This does not prevent zombie windows if the script puts up a dialog...
+                c.inCommand = False
+                if writeScriptFile:
+                    scriptFile = self.writeScriptFile(script)
+                    execfile(scriptFile,d)
+                else:
+                    exec script in d
+                if not script1 and not silent:
+                    # Careful: the script may have changed the log tab.
+                    tabName = log and hasattr(log,'tabName') and log.tabName or 'Log'
+                    g.es("end of script",color="purple",tabName=tabName)
+            except Exception:
+                g.handleScriptException(c,p,script,script1)
+            del sys.path[0]
+        else:
+            tabName = log and hasattr(log,'tabName') and log.tabName or 'Log'
+            g.es("no script selected",color="blue",tabName=tabName)
+    finally:
+        self.unredirectScriptOutput()
+#@+node:ekr.20031218072017.2143:redirectScriptOutput
+def redirectScriptOutput (self):
+
+    c = self
+
+    if c.config.redirect_execute_script_output_to_log_pane:
+
+        g.redirectStdout() # Redirect stdout
+        g.redirectStderr() # Redirect stderr
+#@-node:ekr.20031218072017.2143:redirectScriptOutput
+#@+node:EKR.20040627100424:unredirectScriptOutput
+def unredirectScriptOutput (self):
+
+    c = self
+
+    if c.exists and c.config.redirect_execute_script_output_to_log_pane:
+
+        g.restoreStderr()
+        g.restoreStdout()
+#@-node:EKR.20040627100424:unredirectScriptOutput
+#@+node:ekr.20070115135502:writeScriptFile
+def writeScriptFile (self,script):
+
+    # Get the path to the file.
+    c = self
+    path = c.config.getString('script_file_path')
+    if path:
+        parts = path.split('/')
+        path = g.app.loadDir
+        for part in parts:
+            path = g.os_path_abspath(g.os_path_join(path,part))
+    else:
+        path = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test','scriptFile.py'))
+
+    # Write the file.
+    try:
+        f = file(path,'w')
+        f.write(script)
+        f.close()
+    except Exception:
+        path = None
+
+    return path
+#@nonl
+#@-node:ekr.20070115135502:writeScriptFile
+#@-node:ekr.20031218072017.2140:c.executeScript & helpers
+#@+node:ekr.20061031131434.113:endCommand
+def endCommand (self,event,commandName):
+
+    '''Make sure Leo updates the widget following a command.
+
+    Never changes the minibuffer label: individual commands must do that.
+    '''
+
+    # pychecker complains about initAllEditCommanders.
+
+    k = self ; c = k.c
+    # The command may have closed the window.
+    if g.app.quitting or not c.exists: return
+
+    # Set the best possible undoType: prefer explicit commandName to k.commandName.
+    commandName = commandName or k.commandName or ''
+    k.commandName = k.commandName or commandName or ''
+    if commandName:
+        bodyCtrl = c.frame.body.bodyCtrl
+        if not k.inState():
+            # __pychecker__ = '--no-classattr --no-objattrs'
+                # initAllEditCommanders *does* exist.
+            k.commandName = None
+            leoEditCommands.initAllEditCommanders(c)
+            try:
+                bodyCtrl.tag_delete('color')
+                bodyCtrl.tag_delete('color1')
+            except Exception:
+                pass
+        if 0: # Do *not* call this by default.  It interferes with undo.
+            c.frame.body.onBodyChanged(undoType='Typing')
+        if k.newMinibufferWidget:
+            c.widgetWantsFocusNow(k.newMinibufferWidget)
+            # print 'endCommand', g.app.gui.widget_name(k.newMinibufferWidget),g.callers()
+            k.newMinibufferWidget = None
+#@-node:ekr.20061031131434.113:endCommand
+#@+node:ekr.20061031131434.105:masterCommand & helpers
+def masterCommand (self,event,func,stroke,commandName=None):
+
+    '''This is the central dispatching method.
+    All commands and keystrokes pass through here.'''
+
+    k = self ; c = k.c ; gui = g.app.gui
+    trace = False or k.traceMasterCommand
+    traceGC = False
+    if traceGC: g.printNewObjects('masterCom 1')
+
+    c.setLog()
+    c.startRedrawCount = c.frame.tree.redrawCount
+    k.stroke = stroke # Set this global for general use.
+    keysym = gui.eventKeysym(event)
+    ch = gui.eventChar(event)
+    w = gui.eventWidget(event)
+    state = event and hasattr(event,'state') and event.state or 0
+    k.func = func
+    k.funcReturn = None # For unit testing.
+    commandName = commandName or func and func.__name__ or '<no function>'
+    << define specialKeysyms >>
+    special = keysym in specialKeysyms
+    interesting = func is not None
+    inserted = not special
+
+    if trace: #  and interesting:
+        g.trace(
+            # 'stroke: ',stroke,'state:','%x' % state,'ch:',repr(ch),'keysym:',repr(keysym),
+            'w:',w and c.widget_name(w),'func:',func and func.__name__
+        )
+
+    if inserted:
+        # g.trace(stroke,keysym)
+        << add character to history >>
+
+    # We *must not* interfere with the global state in the macro class.
+    if c.macroCommands.recordingMacro:
+        done = c.macroCommands.startKbdMacro(event)
+        if done: return 'break'
+
+    # g.trace(stroke,k.abortAllModesKey)
+
+    if k.abortAllModesKey and stroke == k.abortAllModesKey: # 'Control-g'
+        k.keyboardQuit(event)
+        k.endCommand(event,commandName)
+        return 'break'
+
+    if special: # Don't pass these on.
+        return 'break' 
+
+    if 0: # *** This is now handled by k.masterKeyHandler.
+        if k.inState():
+            val = k.callStateFunction(event) # Calls end-command.
+            if val != 'do-func': return 'break'
+            g.trace('Executing key outside of mode')
+
+    if k.regx.iter:
+        try:
+            k.regXKey = keysym
+            k.regx.iter.next() # EKR: next() may throw StopIteration.
+        except StopIteration:
+            pass
+        return 'break'
+
+    if k.abbrevOn:
+        expanded = c.abbrevCommands.expandAbbrev(event)
+        if expanded: return 'break'
+
+    if func: # Func is an argument.
+        if commandName == 'propagate-key-event':
+            # Do *nothing* with the event.
+            return k.propagateKeyEvent(event)
+        elif commandName.startswith('specialCallback'):
+            # The callback function will call c.doCommand
+            if trace: g.trace('calling specialCallback for',commandName)
+            val = func(event)
+            # k.simulateCommand uses k.funcReturn.
+            k.funcReturn = k.funcReturn or val # For unit tests.
+        else:
+            # Call c.doCommand directly
+            if trace: g.trace('calling command directly',commandName)
+            c.doCommand(func,commandName,event=event)
+        if c.exists:
+            k.endCommand(event,commandName)
+            c.frame.updateStatusLine()
+        if traceGC: g.printNewObjects('masterCom 2')
+        return 'break'
+    elif k.inState():
+        return 'break' #Ignore unbound keys in a state.
+    else:
+        if traceGC: g.printNewObjects('masterCom 3')
+        val = k.handleDefaultChar(event,stroke)
+        if c.exists:
+            c.frame.updateStatusLine()
+        if traceGC: g.printNewObjects('masterCom 4')
+        return val
+#@nonl
+#@+node:ekr.20061031131434.106:<< define specialKeysyms >>
+specialKeysyms = (
+    'Alt_L','Alt_R',
+    'Caps_Lock','Control_L','Control_R',
+    'Num_Lock',
+    'Shift_L','Shift_R',
+)
+#@nonl
+#@-node:ekr.20061031131434.106:<< define specialKeysyms >>
+#@+node:ekr.20061031131434.107:<< add character to history >>
+if stroke or len(ch) > 0:
+    if len(keyHandlerClass.lossage) > 99:
+        keyHandlerClass.lossage.pop()
+
+    # This looks like a memory leak, but isn't.
+    keyHandlerClass.lossage.insert(0,(ch,stroke),)
+#@-node:ekr.20061031131434.107:<< add character to history >>
+#@+node:ekr.20061031131434.108:callStateFunction
+def callStateFunction (self,event):
+
+    k = self ; val = None
+
+    # g.trace(k.state.kind)
+
+    if k.state.kind:
+        if k.state.handler:
+            val = k.state.handler(event)
+            if val != 'continue':
+                k.endCommand(event,k.commandName)
+        else:
+            g.es_print('no state function for %s' % (k.state.kind),color='red')
+
+    return val
+#@-node:ekr.20061031131434.108:callStateFunction
+#@+node:ekr.20061031131434.109:callKeystrokeFunction (not used)
+def callKeystrokeFunction (self,event):
+
+    '''Handle a quick keystroke function.
+    Return the function or None.'''
+
+    k = self
+    numberOfArgs, func = k.keystrokeFunctionDict [k.stroke]
+
+    if func:
+        func(event)
+        commandName = k.inverseCommandsDict.get(func) # Get the emacs command name.
+        k.endCommand(event,commandName)
+
+    return func
+#@-node:ekr.20061031131434.109:callKeystrokeFunction (not used)
+#@+node:ekr.20061031131434.110:handleDefaultChar
+def handleDefaultChar(self,event,stroke):
+
+    k = self ; c = k.c
+    w = event and event.widget
+    name = c.widget_name(w)
+
+    if name.startswith('body'):
+        action = k.unboundKeyAction
+        if action in ('insert','overwrite'):
+            c.editCommands.selfInsertCommand(event,action=action)
+        else: pass # Ignore the key.
+        return 'break'
+    elif name.startswith('head'):
+        c.frame.tree.onHeadlineKey(event)
+        return 'break'
+    elif name.startswith('canvas'):
+        if not stroke: # Not exactly right, but it seems to be good enough.
+            c.onCanvasKey(event) # New in Leo 4.4.2
+        return 'break'
+    else:
+        # Let tkinter handle the event.
+        # ch = event and event.char ; g.trace('to tk:',name,repr(ch))
+        return None
+#@-node:ekr.20061031131434.110:handleDefaultChar
+#@-node:ekr.20061031131434.105:masterCommand & helpers
+#@-node:ekr.20071127094526:Fixed command lockout problem
 #@-node:ekr.20071127183215:Fixed bugs
 #@+node:ekr.20071127183351:New features
 #@+node:ekr.20071116114551.1:test.leo now contains a node showing all icons in the Icons/Tango directory
