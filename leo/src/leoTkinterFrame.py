@@ -2454,14 +2454,15 @@ class leoTkinterLog (leoFrame.leoLog):
             self.colorTagsDict [tabName] = self.colorTags
             #@-node:ekr.20051018072306:<< Create the tab's text widget >>
             #@nl
-            if tabName != 'Log':
-                # c.k doesn't exist when the log pane is created.
-                # k.makeAllBindings will call setTabBindings('Log')
-                self.setTabBindings(tabName)
         else:
             self.canvasDict [tabName] = None
             self.textDict [tabName] = None
             self.frameDict [tabName] = tabFrame
+
+        if tabName != 'Log':
+            # c.k doesn't exist when the log pane is created.
+            # k.makeAllBindings will call setTabBindings('Log')
+            self.setTabBindings(tabName)
     #@-node:ekr.20051024173701:createTab
     #@+node:ekr.20060613131217:cycleTabFocus
     def cycleTabFocus (self,event=None,stop_w = None):
@@ -2579,7 +2580,7 @@ class leoTkinterLog (leoFrame.leoLog):
 
         c = self.c ; k = c.k
         tab = self.nb.tab(tabName)
-        w = self.textDict.get(tabName)
+        w = self.textDict.get(tabName) or self.frameDict.get(tabName)
 
         # Send all event in the text area to the master handlers.
         for kind,handler in (
