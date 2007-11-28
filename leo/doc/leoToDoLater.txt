@@ -2430,7 +2430,7 @@ def findNextMisspelledWord(self):
                     c.endUpdate()
                     w.setSelectionRange(i,j,insert=j)
                 break
-    except:
+    except Exception:
         g.es_exception()
     return alts, word
 #@+node:ekr.20051025071455.46:<< Skip word if ignored or in local dictionary >>
@@ -2543,13 +2543,17 @@ def __init__ (self,c,local_dictionary_file,local_language_code):
         self.use_ctypes = False
     self.aspell = self.sc = None
 
-    if self.use_ctypes:
+    if ctypes:
         self.getAspellWithCtypes()
     else:
         self.getAspell()
 #@-node:ekr.20051025071455.8:__init__
 #@+node:ekr.20061017125710:getAspell
 def getAspell (self):
+
+    if sys.platform.startswith('linux'):
+        self.report('You must be using Python 2.5 or above to use aspell on Linux')
+        return
 
     try:
         import aspell
@@ -2621,8 +2625,8 @@ aspell_error_message.restype = c_char_p
 sc = new_aspell_config()
 if 0:
     print sc 
-    print aspell_config_replace(sc, "prefix", aspell_dir) #1/0 
-    print 'prefix', aspell_dir, `aspell_config_retrieve(sc, "prefix")`
+    print aspell_config_replace(sc, "prefix", self.aspell_dir) #1/0 
+    print 'prefix', self.aspell_dir, `aspell_config_retrieve(sc, "prefix")`
     print aspell_config_retrieve(sc, "lang")
     print aspell_config_replace(sc, "lang",self.local_language_code)
     print aspell_config_retrieve(sc, "lang")

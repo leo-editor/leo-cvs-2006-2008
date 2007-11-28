@@ -1,67 +1,6 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20071127135200:Fix bugs
-#@+node:ekr.20071127103206.1:Improve error reporting for aspell on Linux
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=4634600
-By: kayvan
-
-I have a puzzle. On my ubuntu 7.10 box, leo works just fine with aspell.
-
-On my Redhat FC4 Linux, I was getting two mesasges on startup:
-
-Can not import aspell
-can not import aspell
-
-Yes, one "Can" is capitalized and the next is not, and the "Spell" tab was not
-showing up.
-
-I have aspell-0.60 installed on both machines.
-
-I looked around on the forums and I found some instructions that mention installing
-aspell-python (from http://www.wmula.republika.pl/proj/aspell-python/index-c.html
-) so I installed it on my Redhat box.
-
-When I try to launch leo now, I get:
-
-Traceback (most recent call last):
-[...]
-  File "/home/kayvan/src/leo/src/leoEditCommands.py", line 8152, in init_aspell
-    self.aspell = AspellClass(c,dictionaryFileName,self.local_language_code)
-  File "/home/kayvan/src/leo/src/leoEditCommands.py", line 8446, in __init__
-    self.getAspell()
-  File "/home/kayvan/src/leo/src/leoEditCommands.py", line 8462, in getAspell
-    self.sc = aspell
-and aspell.spell_checker(prefix=self.aspell_dir,lang=self.local_language_code)
-AttributeError: 'module' object has no attribute 'spell_checker'
-
-So I had to remove aspell-python.
-
-What's interesting is that I don't have aspell-python installed on my Ubuntu
-box either.
-
-What's going on? What do I need to do to get aspell working with leo on my Redhat
-machine?
-
-------------------------- My reply
-
-Thanks for this report. I'll look into this immediately. At the very least the
-error reporting could be a bit less alarming. Probably this code should not be
-called at all on Linux.
-
-Leo uses two different ways of importing aspell, depending on what version of
-Python is installed. For Python 2.5 (and may other versions), Leo can avoid
-trying to find aspell.dll. But this code isn't in getAspellWithCtypes, so you
-must have a proper aspell.dll where Leo can find it. But this only work on
-Windows.
-
-The notes in leoSettings.leo, in the node '@settings-->Spell tab' say that you
-must be using Python 2.5 or later if you are using Linux.
-#@nonl
-#@-node:ekr.20071127103206.1:Improve error reporting for aspell on Linux
-#@-node:ekr.20071127135200:Fix bugs
 #@+node:ekr.20071128071822:Do ipython demo
 @nocolor
 
@@ -1040,6 +979,44 @@ g.es("dragged node will be cloned")
 g.es("dragged node will be moved")
 #@-node:ekr.20071115113231:Results
 #@-node:ekr.20070625091423:Add translation services
+#@+node:ekr.20071128094234:Finish scolorizer
+#@+node:ekr.20050920084036.265:scolorizer LATER
+def scolorizer (self,event,pattern=None):
+
+    '''Colorizer for incremental searches.'''
+
+    pass # not ready yet.   
+
+    # k = self.k ; w = self.w
+    # s = pattern or k.getLabel(ignorePrompt=True)
+    # # g.trace(repr(s))
+    # w.tag_delete('color','color1')
+    # if not s: return
+    # if g.app.gui.guiName() != 'tkinter':
+        # return g.es('command not ready yet',color='blue')
+
+    # ind = 0
+    # index = w.getInsertPoint()
+    # index2 = index + len(s)
+    # # g.trace(index,index2)
+    # # Colorize in the forward direction, regardless of the kind of search.
+    # while ind:
+        # try:
+            # ind = w.search(s,ind,stopindex='end',regexp=self.regexp)
+        # except Exception: break
+        # if ind:
+            # i, d = ind.split('.')
+            # d = str(int(d)+len(s))
+            # # g.trace(ind)
+            # if ind in (index,index2):
+                # w.tag_add('color1',ind,'%s.%s' % (i,d))
+            # w.tag_add('color',ind,'%s.%s' % (i,d))
+            # ind = i + '.' + d
+
+    # w.tag_config('color',foreground='red')
+    # w.tag_config('color1',background='lightblue')
+#@-node:ekr.20050920084036.265:scolorizer LATER
+#@-node:ekr.20071128094234:Finish scolorizer
 #@-node:ekr.20071114063047:First
 #@+node:ekr.20070703111455.1:Most important
 #@+node:ekr.20071105160956:*** auto-change panes
