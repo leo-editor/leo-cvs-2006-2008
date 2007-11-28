@@ -6904,18 +6904,11 @@ You need to have libmagick6-dev installed in adition to imagemagick
 #@-node:ekr.20071110081315:New features
 #@-node:ekr.20071105150738:Leo 4.4.5 b1
 #@+node:ekr.20071116114551:Leo 4.4.5 b2
-#@+node:ekr.20071116114551.1:test.leo now contains a node showing all icons in the Icons/Tango directory
-#@-node:ekr.20071116114551.1:test.leo now contains a node showing all icons in the Icons/Tango directory
+#@+node:ekr.20071127183215:Fixed bugs
 #@+node:ekr.20071117153615:Fixed two crashers in the @noref logic
 # fixed: E1101:1877:atFile.readEndNode: Instance of 'atFile' has no 'correctedLines' member
 # fixed: E1101:2725:atFile.norefWrite: Instance of 'atFile' has no 'putBuffered' member
 #@-node:ekr.20071117153615:Fixed two crashers in the @noref logic
-#@+node:ekr.20071112110249:pylint: leoAtFile
-************* Module leoAtFile
-
-# These might crash @noref.
-
-#@-node:ekr.20071112110249:pylint: leoAtFile
 #@+node:ekr.20071119053849:Fixed crasher in regularizeWhitespace
 #@-node:ekr.20071119053849:Fixed crasher in regularizeWhitespace
 #@+node:ekr.20071119160317:Fixed paste-node-as-clone
@@ -7305,6 +7298,111 @@ def pasteOutlineRetainingClones (self,event=None):
 #@-node:EKR.20040610130943:pasteOutlineRetainingClones
 #@-node:ekr.20031218072017.1548:Cut & Paste Outlines
 #@-node:ekr.20071119160317:Fixed paste-node-as-clone
+#@+node:ekr.20071127135200.1:Fixed threading colorizer hang with perl
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=4646055
+By: thyrsus
+
+Running: "Leo 4.4.5 beta 1, build  1.223 , November 16, 2007, Python 2.5.0,
+Tk 8.4.13, Pmw 1.2, linux2", (CVS from 2007-11-25 22:17 GMT), Fedora 7; the
+leo process hangs, running the CPU as hard as it can; I don't see any memory
+increase; the process will die on a signal but is otherwise unresponsive; I
+could probably get a core image, but nothing like a python stack trace.   Additional
+clues: just before this happens I'm editing perl code in a particular node,
+and the colorization is really random - e.g., three blue characters in the middle
+of an otherwise black seven character variable name.  Perhaps relevant: some
+threading models under Linux exhibit a new process for each thread, observable
+with "ps", but I only see the one python process.  Is there a particular threading
+model required by the threaded colorizer?
+
+I've just turned off the threaded colorizer plugin, and the appearance is much
+more sane, but these hangs have only happened twice this morning, so I can't
+say for sure that I'm in the clear until I spend a good deal more time, plus
+I worry about the extra work involved in maintaining two colorizers.
+
+---------- One of my responses.
+
+There is one kind of coding blunder that can bring everything to a halt: calling
+g.es, g.pdb or g.es_exception from the helper thread; neither pdb nor Tkinter
+are not thread safe, so they **must not** be called from outside the main
+thread.
+
+I did find one call to g.es in the helper thread. It is in match_regexp_helper
+in the except clause. To fix this, change the call to g.es to:
+
+g.trace('Invalid regular expression: %s' % (pattern))
+
+Looking at perl.py, we see several calls to match_seq_regexp, which in turn
+calls match_regexp_helper. So if there are problems with the regex's, this will
+hang Leo. This would also explain weird colorizing behavior.
+
+@color
+#@-node:ekr.20071127135200.1:Fixed threading colorizer hang with perl
+#@+node:ekr.20071127092201:Fixed C++ importer crash
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=4643992
+By: rjshanley1
+
+The following code snippet throws the exception shown
+
+    abc::stuff::~destructor(){}
+void abc::stuff::read(int* b) {}
+
+    abc::otherStuff::~otherDestructor(){}
+void abc::otherStuff::testUnitReady(OP* op) {}
+
+int mtSetPrimaryMgr()
+
+-------------------------------
+
+Leo Log Window...
+Leo 4.4.5 beta 1, build  1.223 , November 16, 2007
+Python 2.5.1, Tk 8.4.14, Pmw 1.2
+Windows 5, 1, 2600, 2, Service Pack 2
+
+Can not load c:\aspell\bin\aspell-15.dll
+leoID = rshanley (in C:\)
+global config dir: C:\Program Files\Leo\config
+home dir: C:\
+reading settings in C:\Program Files\Leo\config\leoSettings.leo
+exception executing command
+Traceback (most recent call last):
+  File "C:\Program Files\Leo\src\leoCommands.py", line 281, in doCommand
+    val = command(event)
+  File "C:\Program Files\Leo\src\leoCommands.py", line 1525, in importAtFile
+    c.importCommands.importFilesCommand(names,"@file")
+  File "C:\Program Files\Leo\src\leoImport.py", line 890, in importFilesCommand
+    v = self.createOutline(fileName,current)
+  File "C:\Program Files\Leo\src\leoImport.py", line 744, in createOutline
+    self.scanCText(s,p,atAuto=atAuto)
+  File "C:\Program Files\Leo\src\leoImport.py", line 2649, in scanCText
+    scanner.run(s,parent)
+  File "C:\Program Files\Leo\src\leoImport.py", line 2579, in run
+    ok = self.errors == 0 and self.check(s,parent)
+  File "C:\Program Files\Leo\src\leoImport.py", line 1500, in check
+    return self.checkTrialWrite()
+  File "C:\Program Files\Leo\src\leoImport.py", line 1539, in checkTrialWrite
+    ok = self.compareHelper(lines1,lines2,i,self.strict)
+  File "C:\Program Files\Leo\src\leoImport.py", line 1590, in compareHelper
+    self.checkLeadingWhitespace(line1)
+  File "C:\Program Files\Leo\src\leoImport.py", line 1615, in
+checkLeadingWhitespace
+    report('leading whitespace not consistent with @tabwidth %d' % tab_width)
+NameError: global name 'report' is not defined
+#@nonl
+#@-node:ekr.20071127092201:Fixed C++ importer crash
+#@+node:ekr.20071127182358:Reorganized leoImport.py
+# This was done to init base classes in a more standard way.
+# It should have been done long ago.
+#@nonl
+#@-node:ekr.20071127182358:Reorganized leoImport.py
+#@-node:ekr.20071127183215:Fixed bugs
+#@+node:ekr.20071127183351:New features
+#@+node:ekr.20071116114551.1:test.leo now contains a node showing all icons in the Icons/Tango directory
+#@-node:ekr.20071116114551.1:test.leo now contains a node showing all icons in the Icons/Tango directory
+#@-node:ekr.20071127183351:New features
 #@-node:ekr.20071116114551:Leo 4.4.5 b2
 #@-all
 #@nonl

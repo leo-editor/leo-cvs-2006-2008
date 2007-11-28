@@ -1,6 +1,144 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
+#@+node:ekr.20071127135200:Fix bugs
+#@+node:ekr.20071127092910:Fix crasher when tangling @root
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4639426
+By: kayvan
+
+Using LEO 4.4.5b1, build 1.223, from November 16, 2007.
+
+I have a simple LEO file with one Headline (called Testing) containing the following
+body text:
+
+@root test.py
+"""Testing"""
+
+When I try to tangle it, I get the following:
+
+Tangling...
+exception executing command
+Traceback (most recent call last):
+  File "C:\Program Files\Leo\src\leoCommands.py", line 281, in doCommand
+    val = command(event)
+  File "C:\Program Files\Leo\src\leoCommands.py", line 1381, in tangleAll
+    c.tangleCommands.tangleAll()
+  File "C:\Program Files\Leo\src\leoTangle.py", line 601, in tangleAll
+    ok = self.tangleTree(p,dont_report_errors)
+  File "C:\Program Files\Leo\src\leoTangle.py", line 718, in tangleTree
+    self.tanglePass1(p) # sets self.p
+  File "C:\Program Files\Leo\src\leoTangle.py", line 663, in tanglePass1
+    self.scanAllDirectives(p,require_path,report_errors) # calls
+init_directive_ivars.
+  File "C:\Program Files\Leo\src\leoTangle.py", line 3598, in scanAllDirectives
+    self.setRootFromText(z,issue_error_flag)
+  File "C:\Program Files\Leo\src\leoTangle.py", line 3267, in setRootFromText
+    i,self.start_mode = g.scanAtRootOptions(s,0)
+  File "C:\Program Files\Leo\src\leoGlobals.py", line 2984, in
+scanAtRootOptions
+    assert(g.match(s,i,"@root"))
+AssertionError
+
+@color
+#@nonl
+#@-node:ekr.20071127092910:Fix crasher when tangling @root
+#@+node:ekr.20071127094526:Fix command lockout problem
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=4639872
+By: kayvan
+
+I created a LEO outline with the following in it and started LEO-4.4.5-b1:
+
+---------------------------------------------
+Header: @nosent test.pyw
+Body:
+@language python
+@tabwidth -4
+@others
+
+- Subheader: Test code
+- Body:
+  #!/usr/bin/env python
+  from Tkinter import *
+  root = Tk()
+  w = Label(root, text="Hello world!")
+  w.pack()
+  root.mainloop()
+---------------------------------------------
+
+When I run Cmd->Run Script/Tests->Execute Script, I see the Tk window as expected.
+When I hit the close button to kill the application, all is fine. From this
+point on, any command I do (like Control-I, etc.) I see a message in the Log:
+
+Ignoring command: already executing a command.
+
+Nothing further can be done and I have to kill LEO with Task Manager.
+
+The same actions work as expected with LEO-4.4.4-final.
+#@nonl
+#@-node:ekr.20071127094526:Fix command lockout problem
+#@+node:ekr.20071127103206.1:Improve error reporting for aspell on Linux
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=4634600
+By: kayvan
+
+I have a puzzle. On my ubuntu 7.10 box, leo works just fine with aspell.
+
+On my Redhat FC4 Linux, I was getting two mesasges on startup:
+
+Can not import aspell
+can not import aspell
+
+Yes, one "Can" is capitalized and the next is not, and the "Spell" tab was not
+showing up.
+
+I have aspell-0.60 installed on both machines.
+
+I looked around on the forums and I found some instructions that mention installing
+aspell-python (from http://www.wmula.republika.pl/proj/aspell-python/index-c.html
+) so I installed it on my Redhat box.
+
+When I try to launch leo now, I get:
+
+Traceback (most recent call last):
+[...]
+  File "/home/kayvan/src/leo/src/leoEditCommands.py", line 8152, in init_aspell
+    self.aspell = AspellClass(c,dictionaryFileName,self.local_language_code)
+  File "/home/kayvan/src/leo/src/leoEditCommands.py", line 8446, in __init__
+    self.getAspell()
+  File "/home/kayvan/src/leo/src/leoEditCommands.py", line 8462, in getAspell
+    self.sc = aspell
+and aspell.spell_checker(prefix=self.aspell_dir,lang=self.local_language_code)
+AttributeError: 'module' object has no attribute 'spell_checker'
+
+So I had to remove aspell-python.
+
+What's interesting is that I don't have aspell-python installed on my Ubuntu
+box either.
+
+What's going on? What do I need to do to get aspell working with leo on my Redhat
+machine?
+
+------------------------- My reply
+
+Thanks for this report. I'll look into this immediately. At the very least the
+error reporting could be a bit less alarming. Probably this code should not be
+called at all on Linux.
+
+Leo uses two different ways of importing aspell, depending on what version of
+Python is installed. For Python 2.5 (and may other versions), Leo can avoid
+trying to find aspell.dll. But this code isn't in getAspellWithCtypes, so you
+must have a proper aspell.dll where Leo can find it. But this only work on
+Windows.
+
+The notes in leoSettings.leo, in the node '@settings-->Spell tab' say that you
+must be using Python 2.5 or later if you are using Linux.
+#@nonl
+#@-node:ekr.20071127103206.1:Improve error reporting for aspell on Linux
+#@-node:ekr.20071127135200:Fix bugs
 #@+node:ekr.20071113093057:To do: 4.4.6: last major projects
 #@+node:ekr.20071114063047:First
 #@+node:ekr.20071031113657:Always use sax parser to read .leo files
@@ -1880,81 +2018,6 @@ def scannerUnitTest (self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=
 #@-node:ekr.20070713082220:scannerUnitTest
 #@-node:ekr.20070713075450:Unit tests
 #@+node:ekr.20071027111225:JavaScript scanner (not ready yet)
-# The syntax for patterns causes all kinds of problems...
-#@nonl
-#@+node:ekr.20071027111225.1:scanJavaScriptText
-def scanJavaScriptText (self,s,parent,atAuto=False):
-
-    scanner = self.javaScriptScanner(importCommands=self,atAuto=atAuto)
-
-    scanner.run(s,parent)
-#@-node:ekr.20071027111225.1:scanJavaScriptText
-#@+node:ekr.20071027111225.2:class javaScriptScanner (baseScannerClass)
-class javaScriptScanner (baseScannerClass):
-
-    @others
-#@+node:ekr.20071027111225.3:javaScriptScanner.__init__
-def __init__ (self,importCommands,atAuto):
-
-    # Init the base class.
-    importCommands.baseScannerClass.__init__(self,importCommands,
-        atAuto=atAuto,language='java') # Used to set comment delims.
-
-    # Set the parser delims.
-    self.blockCommentDelim1 = '/*'
-    self.blockCommentDelim2 = '*/'
-    self.blockDelim1 = '{'
-    self.blockDelim2 = '}'
-    self.hasClasses = False
-    self.hasFunctions = True
-    self.lineCommentDelim = '//'
-    self.lineCommentDelim2 = None
-    self.outerBlockDelim1 = None # For now, ignore outer blocks.
-    self.outerBlockDelim2 = None
-    self.classTags = []
-    self.functionTags = ['function']
-    self.sigFailTokens = [';',] # ','=',] # Just like Java.
-#@-node:ekr.20071027111225.3:javaScriptScanner.__init__
-#@+node:ekr.20071102150937:startsString
-def startsString(self,s,i):
-
-    if g.match(s,i,'"') or g.match(s,i,"'"):
-        # Count the number of preceding backslashes:
-        n = 0 ; j = i-1
-        while j >= 0 and s[j] == '\\':
-            n += 1
-            j -= 1
-        return (n % 2) == 0
-    # elif g.match(s,i,'/'):
-        # return i == 0 or s[i-1] != '/'
-    else:
-        return False
-#@-node:ekr.20071102150937:startsString
-#@+node:ekr.20071102161115:skipString
-# Not ready: '/' is also the division operator!
-
-
-# def skipString (self,s,i):
-
-    # # Returns len(s) on unterminated string.
-    # if s[i] in ('"',"'"):
-        # return g.skip_string(s,i,verbose=False)
-    # else:
-        # # Match a pattern.
-        # delim = '/'
-        # g.pdb()
-        # assert(s[i] == delim)
-        # i += 1
-        # n = len(s)
-        # while i < n:
-            # if s[i] == delim and s[i-1] != '\\':
-                # return i + 1
-            # else:
-                # i += 1
-        # return i
-#@nonl
-#@-node:ekr.20071102161115:skipString
-#@-node:ekr.20071027111225.2:class javaScriptScanner (baseScannerClass)
 #@-node:ekr.20071027111225:JavaScript scanner (not ready yet)
 #@-node:ekr.20071027121956:Fix javaScript scanner
 #@+node:ekr.20071004120359.2:Do expand-region-abbrevs from
