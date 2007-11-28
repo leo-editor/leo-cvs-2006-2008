@@ -25,11 +25,7 @@ import re
 import string
 import sys
 
-subprocess     = g.importExtension('subprocess',    pluginName=None,verbose=False)
-
-# The following imports is sometimes used.
-# __pychecker__ = '--no-import'
-import threading
+subprocess = g.importExtension('subprocess',pluginName=None,verbose=False)
 #@-node:ekr.20050710151017:<< imports >>
 #@nl
 
@@ -428,14 +424,14 @@ class abbrevCommandsClass (baseEditCommandsClass):
 
         if items:
             for word in items:
-                 if not word.startswith(txt) or word == txt:
-                     continue
+                if not word.startswith(txt) or word == txt:
+                    continue
                     # dont need words that dont match or == the pattern
-                 if word not in rlist:
-                     rlist.append(word)
-                 else:
-                     rlist.remove(word)
-                     rlist.append(word)
+                if word not in rlist:
+                    rlist.append(word)
+                else:
+                    rlist.remove(word)
+                    rlist.append(word)
 
         # g.trace('rlist',rlist)
     #@-node:ekr.20050920084036.61:getDynamicList (helper)
@@ -1037,7 +1033,7 @@ class controlCommandsClass (baseEditCommandsClass):
         self.c.undoer.undo()
     #@-node:ekr.20050922110030:advertizedUndo
     #@+node:ekr.20050920084036.160:executeSubprocess
-    def executeSubprocess (self,event,command,input):
+    def executeSubprocess (self,event,command,theInput=None):
 
         '''Execute a command in a separate process.'''
 
@@ -1052,7 +1048,7 @@ class controlCommandsClass (baseEditCommandsClass):
             process = subprocess.Popen(command,bufsize=-1,
                 stdout = ofile.fileno(), stderr = ofile.fileno(),
                 stdin = subprocess.PIPE, shell = True)
-            if input: process.communicate(input)
+            if theInput: process.communicate(theInput)
             process.wait()
             efile.seek(0)
             errinfo = efile.read()
@@ -1100,7 +1096,7 @@ class controlCommandsClass (baseEditCommandsClass):
                 command = k.arg
                 k.commandName = 'shell-command: %s' % command
                 k.clearState()
-                self.executeSubprocess(event,command,input=None)
+                self.executeSubprocess(event,command)
         else:
             k.setLabelGrey('can not execute shell-command: can not import subprocess')
     #@-node:ekr.20050920084036.158:shellCommand
@@ -1117,7 +1113,7 @@ class controlCommandsClass (baseEditCommandsClass):
             if w.hasSelection():
                 command = w.getSelectedText()
                 k.commandName = 'shell-command: %s' % command
-                self.executeSubprocess(event,command,input=None)
+                self.executeSubprocess(event,command)
             else:
                 k.clearState()
                 k.resetLabel()
@@ -1227,11 +1223,10 @@ class debugCommandsClass (baseEditCommandsClass):
         # Invoke the debugger, retaining the present environment.
         args = [sys.executable, winpdb, '-t', filename]
         os.chdir(g.app.loadDir)
-        try:
-            import subprocess
+        if subprocess:
             cmdline = '%s %s -t %s' % (python,winpdb,filename)
             subprocess.Popen(cmdline)
-        except ImportError:
+        else:
             os.chdir(g.app.loadDir)
             os.spawnv(os.P_NOWAIT, python, args)
     #@+node:ekr.20060521140213:findDebugger
@@ -1620,7 +1615,7 @@ class editCommandsClass (baseEditCommandsClass):
         if stroke == '<Alt-c>':
             self.capitalizeWord(event)
         elif stroke == '<Alt-u>':
-             self.upCaseWord(event)
+            self.upCaseWord(event)
         elif stroke == '<Alt-l>':
             self.downCaseWord(event)
 
@@ -2153,7 +2148,7 @@ class editCommandsClass (baseEditCommandsClass):
             w = self.editWidget(event) # Sets self.w
             if not w: return
             self.event = event
-            self.backward = backward ; self.extend = extend ;
+            self.backward = backward ; self.extend = extend
             self.insert = w.getInsertPoint()
             s = '%s character %s' % (
                 g.choose(backward,'Backward find','Find'),
@@ -4273,106 +4268,109 @@ class editCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20060726154531:scrollOutlineLeftRight
     #@-node:ekr.20060309060654:scrolling...
     #@+node:ekr.20050920084036.117:sort...
-    '''XEmacs provides several commands for sorting text in a buffer.  All
-    operate on the contents of the region (the text between point and the
-    mark).  They divide the text of the region into many "sort records",
-    identify a "sort key" for each record, and then reorder the records
-    using the order determined by the sort keys.  The records are ordered so
-    that their keys are in alphabetical order, or, for numerical sorting, in
-    numerical order.  In alphabetical sorting, all upper-case letters `A'
-    through `Z' come before lower-case `a', in accordance with the ASCII
-    character sequence.
-
-       The sort commands differ in how they divide the text into sort
-    records and in which part of each record they use as the sort key.
-    Most of the commands make each line a separate sort record, but some
-    commands use paragraphs or pages as sort records.  Most of the sort
-    commands use each entire sort record as its own sort key, but some use
-    only a portion of the record as the sort key.
-
-    `M-x sort-lines'
-         Divide the region into lines and sort by comparing the entire text
-         of a line.  A prefix argument means sort in descending order.
-
-    `M-x sort-paragraphs'
-         Divide the region into paragraphs and sort by comparing the entire
-         text of a paragraph (except for leading blank lines).  A prefix
-         argument means sort in descending order.
-
-    `M-x sort-pages'
-         Divide the region into pages and sort by comparing the entire text
-         of a page (except for leading blank lines).  A prefix argument
-         means sort in descending order.
-
-    `M-x sort-fields'
-         Divide the region into lines and sort by comparing the contents of
-         one field in each line.  Fields are defined as separated by
-         whitespace, so the first run of consecutive non-whitespace
-         characters in a line constitutes field 1, the second such run
-         constitutes field 2, etc.
-
-         You specify which field to sort by with a numeric argument: 1 to
-         sort by field 1, etc.  A negative argument means sort in descending
-         order.  Thus, minus 2 means sort by field 2 in reverse-alphabetical
-         order.
-
-    `M-x sort-numeric-fields'
-         Like `M-x sort-fields', except the specified field is converted to
-         a number for each line and the numbers are compared.  `10' comes
-         before `2' when considered as text, but after it when considered
-         as a number.
-
-    `M-x sort-columns'
-         Like `M-x sort-fields', except that the text within each line used
-         for comparison comes from a fixed range of columns.  An explanation
-         is given below.
-
-       For example, if the buffer contains:
-
-         On systems where clash detection (locking of files being edited) is
-         implemented, XEmacs also checks the first time you modify a buffer
-         whether the file has changed on disk since it was last visited or
-         saved.  If it has, you are asked to confirm that you want to change
-         the buffer.
-
-    then if you apply `M-x sort-lines' to the entire buffer you get:
-
-         On systems where clash detection (locking of files being edited) is
-         implemented, XEmacs also checks the first time you modify a buffer
-         saved.  If it has, you are asked to confirm that you want to change
-         the buffer.
-         whether the file has changed on disk since it was last visited or
-
-    where the upper case `O' comes before all lower case letters.  If you
-    apply instead `C-u 2 M-x sort-fields' you get:
-
-         saved.  If it has, you are asked to confirm that you want to change
-         implemented, XEmacs also checks the first time you modify a buffer
-         the buffer.
-         On systems where clash detection (locking of files being edited) is
-         whether the file has changed on disk since it was last visited or
-
-    where the sort keys were `If', `XEmacs', `buffer', `systems', and `the'.
-
-       `M-x sort-columns' requires more explanation.  You specify the
-    columns by putting point at one of the columns and the mark at the other
-    column.  Because this means you cannot put point or the mark at the
-    beginning of the first line to sort, this command uses an unusual
-    definition of `region': all of the line point is in is considered part
-    of the region, and so is all of the line the mark is in.
-
-       For example, to sort a table by information found in columns 10 to
-    15, you could put the mark on column 10 in the first line of the table,
-    and point on column 15 in the last line of the table, and then use this
-    command.  Or you could put the mark on column 15 in the first line and
-    point on column 10 in the last line.
-
-       This can be thought of as sorting the rectangle specified by point
-    and the mark, except that the text on each line to the left or right of
-    the rectangle moves along with the text inside the rectangle.  *Note
-    Rectangles::.
-
-    '''
+    #@@nocolor
+    #@+at
+    # XEmacs provides several commands for sorting text in a buffer.  All
+    # operate on the contents of the region (the text between point and the
+    # mark).  They divide the text of the region into many "sort records",
+    # identify a "sort key" for each record, and then reorder the records
+    # using the order determined by the sort keys.  The records are ordered so
+    # that their keys are in alphabetical order, or, for numerical sorting, in
+    # numerical order.  In alphabetical sorting, all upper-case letters `A'
+    # through `Z' come before lower-case `a', in accordance with the ASCII
+    # character sequence.
+    # 
+    #    The sort commands differ in how they divide the text into sort
+    # records and in which part of each record they use as the sort key.
+    # Most of the commands make each line a separate sort record, but some
+    # commands use paragraphs or pages as sort records.  Most of the sort
+    # commands use each entire sort record as its own sort key, but some use
+    # only a portion of the record as the sort key.
+    # 
+    # `M-x sort-lines'
+    #      Divide the region into lines and sort by comparing the entire text
+    #      of a line.  A prefix argument means sort in descending order.
+    # 
+    # `M-x sort-paragraphs'
+    #      Divide the region into paragraphs and sort by comparing the entire
+    #      text of a paragraph (except for leading blank lines).  A prefix
+    #      argument means sort in descending order.
+    # 
+    # `M-x sort-pages'
+    #      Divide the region into pages and sort by comparing the entire text
+    #      of a page (except for leading blank lines).  A prefix argument
+    #      means sort in descending order.
+    # 
+    # `M-x sort-fields'
+    #      Divide the region into lines and sort by comparing the contents of
+    #      one field in each line.  Fields are defined as separated by
+    #      whitespace, so the first run of consecutive non-whitespace
+    #      characters in a line constitutes field 1, the second such run
+    #      constitutes field 2, etc.
+    # 
+    #      You specify which field to sort by with a numeric argument: 1 to
+    #      sort by field 1, etc.  A negative argument means sort in descending
+    #      order.  Thus, minus 2 means sort by field 2 in reverse-alphabetical
+    #      order.
+    # 
+    # `M-x sort-numeric-fields'
+    #      Like `M-x sort-fields', except the specified field is converted to
+    #      a number for each line and the numbers are compared.  `10' comes
+    #      before `2' when considered as text, but after it when considered
+    #      as a number.
+    # 
+    # `M-x sort-columns'
+    #      Like `M-x sort-fields', except that the text within each line used
+    #      for comparison comes from a fixed range of columns.  An explanation
+    #      is given below.
+    # 
+    #    For example, if the buffer contains:
+    # 
+    #      On systems where clash detection (locking of files being edited) is
+    #      implemented, XEmacs also checks the first time you modify a buffer
+    #      whether the file has changed on disk since it was last visited or
+    #      saved.  If it has, you are asked to confirm that you want to change
+    #      the buffer.
+    # 
+    # then if you apply `M-x sort-lines' to the entire buffer you get:
+    # 
+    #      On systems where clash detection (locking of files being edited) is
+    #      implemented, XEmacs also checks the first time you modify a buffer
+    #      saved.  If it has, you are asked to confirm that you want to change
+    #      the buffer.
+    #      whether the file has changed on disk since it was last visited or
+    # 
+    # where the upper case `O' comes before all lower case letters.  If you
+    # apply instead `C-u 2 M-x sort-fields' you get:
+    # 
+    #      saved.  If it has, you are asked to confirm that you want to change
+    #      implemented, XEmacs also checks the first time you modify a buffer
+    #      the buffer.
+    #      On systems where clash detection (locking of files being edited) is
+    #      whether the file has changed on disk since it was last visited or
+    # 
+    # where the sort keys were `If', `XEmacs', `buffer', `systems', and `the'.
+    # 
+    #    `M-x sort-columns' requires more explanation.  You specify the
+    # columns by putting point at one of the columns and the mark at the other
+    # column.  Because this means you cannot put point or the mark at the
+    # beginning of the first line to sort, this command uses an unusual
+    # definition of `region': all of the line point is in is considered part
+    # of the region, and so is all of the line the mark is in.
+    # 
+    #    For example, to sort a table by information found in columns 10 to
+    # 15, you could put the mark on column 10 in the first line of the table,
+    # and point on column 15 in the last line of the table, and then use this
+    # command.  Or you could put the mark on column 15 in the first line and
+    # point on column 10 in the last line.
+    # 
+    #    This can be thought of as sorting the rectangle specified by point
+    # and the mark, except that the text on each line to the left or right of
+    # the rectangle moves along with the text inside the rectangle.  *Note
+    # Rectangles::.
+    # 
+    #@@color
+    #@-at
     #@+node:ekr.20050920084036.118:sortLines commands
     def reverseSortLinesIgnoringCase(self,event):
         return self.sortLines(event,ignoreCase=True,reverse=True)
@@ -4822,7 +4820,7 @@ class editFileCommandsClass (baseEditCommandsClass):
             try:
                 os.remove(k.arg)
                 k.setLabel('Deleted: %s' % k.arg)
-            except:
+            except Exception:
                 k.setLabel('Not Deleted: %s' % k.arg)
     #@-node:ekr.20050920084036.164:deleteFile
     #@+node:ekr.20050920084036.165:diff (revise)
@@ -4898,7 +4896,7 @@ class editFileCommandsClass (baseEditCommandsClass):
             try:
                 os.mkdir(k.arg)
                 k.setLabel("Created: %s" % k.arg)
-            except:
+            except Exception:
                 k.setLabel("Not Create: %s" % k.arg)
     #@-node:ekr.20050920084036.168:makeDirectory
     #@+node:ekr.20060419123128:open-outline-by-name
@@ -4935,7 +4933,7 @@ class editFileCommandsClass (baseEditCommandsClass):
             try:
                 os.rmdir(k.arg)
                 k.setLabel('Removed: %s' % k.arg)
-            except:
+            except Exception:
                 k.setLabel('Not Remove: %s' % k.arg)
     #@-node:ekr.20050920084036.169:removeDirectory
     #@+node:ekr.20050920084036.170:saveFile
@@ -5548,11 +5546,9 @@ class killBufferCommandsClass (baseEditCommandsClass):
         self.killBuffer = []
     #@-node:ekr.20051216151811:clearKillRing
     #@+node:ekr.20050920084036.185:getClipboard
-    def getClipboard (self,w):
+    def getClipboard (self):
 
         '''Return the contents of the clipboard.'''
-
-        # __pychecker__ = '--no-argsused' # w not used.
 
         try:
             ctxt = g.app.gui.getTextFromClipboard()
@@ -5560,7 +5556,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
                 self.last_clipboard = ctxt
                 if not self.killBuffer or self.killBuffer [0] != ctxt:
                     return ctxt
-        except:
+        except Exception:
             g.es_exception()
 
         return None
@@ -5738,7 +5734,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
         if not current: return
         text = w.getAllText()
         i, j = w.getSelectionRange()
-        clip_text = self.getClipboard(w)
+        clip_text = self.getClipboard()
         if not self.killBuffer and not clip_text: return
 
         undoType = g.choose(pop,'yank-pop','yank')
@@ -6144,11 +6140,11 @@ class macroCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.200:_saveMacros
     def _saveMacros( self, f , name ):
         '''Saves the macros as a pickled dictionary'''
-        import cPickle
+
         fname = f.name
         try:
             macs = cPickle.load( f )
-        except:
+        except Exception:
             macs = {}
         f.close()
         if self.namedMacros.has_key( name ):
@@ -6329,7 +6325,7 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
             #@+node:ekr.20051005155611:<< handle regexp >>
             try:
                 regex = re.compile(self.qQ)
-            except:
+            except Exception:
                 self.quitSearch(event,'Illegal regular expression')
                 return False
 
@@ -7276,7 +7272,7 @@ class minibufferFind (baseEditCommandsClass):
         self.finder.findNextCommand()
 
         if changeAll:
-             self.finder.changeAllCommand()
+            self.finder.changeAllCommand()
         else:
             # This handles the reverse option.
             self.finder.findNextCommand()
@@ -7293,9 +7289,9 @@ class minibufferFind (baseEditCommandsClass):
         self.finder.v = self.finder.p.v
 
         if findAll:
-             self.finder.findAllCommand()
+            self.finder.findAllCommand()
         elif cloneFindAll:
-             self.finder.cloneFindAllCommand()
+            self.finder.cloneFindAllCommand()
         else:
             # This handles the reverse option.
             self.finder.findNextCommand()
@@ -7449,7 +7445,7 @@ class minibufferFind (baseEditCommandsClass):
         self.showFindOptions()
     #@-node:ekr.20060124134356:setupArgs
     #@+node:ekr.20060210173041:stateZeroHelper
-    def stateZeroHelper (self,event,tag,prefix,handler,escapes=[]):
+    def stateZeroHelper (self,event,tag,prefix,handler,escapes=None):
 
         k = self.k
         self.w = self.editWidget(event)
@@ -7459,6 +7455,7 @@ class minibufferFind (baseEditCommandsClass):
         self.addFindStringToLabel(protect=False)
 
         # g.trace(escapes,g.callers())
+        if escapes is None: escapes = []
         k.getArgEscapes = escapes
         k.getArgEscape = None # k.getArg may set this.
         k.getArg(event,tag,1,handler, # enter state 1
@@ -7920,34 +7917,36 @@ class searchCommandsClass (baseEditCommandsClass):
 
         '''Colorizer for incremental searches.'''
 
-        k = self.k ; w = self.w
-        s = pattern or k.getLabel(ignorePrompt=True)
-        # g.trace(repr(s))
-        w.tag_delete('color','color1')
-        if not s: return
-        if g.app.gui.guiName() != 'tkinter':
-            return g.es('command not ready yet',color='blue')
+        pass # not ready yet.   
 
-        ind = 0
-        index = w.getInsertPoint()
-        index2 = index + len(s)
-        # g.trace(index,index2)
-        # Colorize in the forward direction, regardless of the kind of search.
-        while ind:
-            try:
-                ind = w.search(s,ind,stopindex='end',regexp=self.regexp)
-            except: break
-            if ind:
-                i, d = ind.split('.')
-                d = str(int(d)+len(s))
-                # g.trace(ind)
-                if ind in (index,index2):
-                    w.tag_add('color1',ind,'%s.%s' % (i,d))
-                w.tag_add('color',ind,'%s.%s' % (i,d))
-                ind = i + '.' + d
+        # k = self.k ; w = self.w
+        # s = pattern or k.getLabel(ignorePrompt=True)
+        # # g.trace(repr(s))
+        # w.tag_delete('color','color1')
+        # if not s: return
+        # if g.app.gui.guiName() != 'tkinter':
+            # return g.es('command not ready yet',color='blue')
 
-        w.tag_config('color',foreground='red')
-        w.tag_config('color1',background='lightblue')
+        # ind = 0
+        # index = w.getInsertPoint()
+        # index2 = index + len(s)
+        # # g.trace(index,index2)
+        # # Colorize in the forward direction, regardless of the kind of search.
+        # while ind:
+            # try:
+                # ind = w.search(s,ind,stopindex='end',regexp=self.regexp)
+            # except Exception: break
+            # if ind:
+                # i, d = ind.split('.')
+                # d = str(int(d)+len(s))
+                # # g.trace(ind)
+                # if ind in (index,index2):
+                    # w.tag_add('color1',ind,'%s.%s' % (i,d))
+                # w.tag_add('color',ind,'%s.%s' % (i,d))
+                # ind = i + '.' + d
+
+        # w.tag_config('color',foreground='red')
+        # w.tag_config('color1',background='lightblue')
     #@-node:ekr.20050920084036.265:scolorizer LATER
     #@+node:ekr.20050920084036.263:iSearchHelper
     def iSearchHelper (self,event):
@@ -7956,7 +7955,7 @@ class searchCommandsClass (baseEditCommandsClass):
         isearches do not cross node boundaries.'''
 
         c = self.c ; gui = g.app.gui ; k = self.k ; w = self.w
-        p = c.currentPosition() ;
+        p = c.currentPosition()
         self.searchString = pattern = k.getLabel(ignorePrompt=True)
         if not pattern: return
         s = w.getAllText()
@@ -8333,7 +8332,7 @@ class spellTabHandler (leoFind.leoFind):
                         c.endUpdate()
                         w.setSelectionRange(i,j,insert=j)
                     break
-        except:
+        except Exception:
             g.es_exception()
         return alts, word
     #@-node:ekr.20051025071455.45:findNextMisspelledWord
@@ -8440,13 +8439,17 @@ class AspellClass:
             self.use_ctypes = False
         self.aspell = self.sc = None
 
-        if self.use_ctypes:
+        if ctypes:
             self.getAspellWithCtypes()
         else:
             self.getAspell()
     #@-node:ekr.20051025071455.8:__init__
     #@+node:ekr.20061017125710:getAspell
     def getAspell (self):
+
+        if sys.platform.startswith('linux'):
+            self.report('You must be using Python 2.5 or above to use aspell on Linux')
+            return
 
         try:
             import aspell
@@ -8505,8 +8508,8 @@ class AspellClass:
             sc = new_aspell_config()
             if 0:
                 print sc 
-                print aspell_config_replace(sc, "prefix", aspell_dir) #1/0 
-                print 'prefix', aspell_dir, `aspell_config_retrieve(sc, "prefix")`
+                print aspell_config_replace(sc, "prefix", self.aspell_dir) #1/0 
+                print 'prefix', self.aspell_dir, `aspell_config_retrieve(sc, "prefix")`
                 print aspell_config_retrieve(sc, "lang")
                 print aspell_config_replace(sc, "lang",self.local_language_code)
                 print aspell_config_retrieve(sc, "lang")
