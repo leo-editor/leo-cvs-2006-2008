@@ -278,50 +278,6 @@ def startupEncoding ():
 #@-node:ekr.20041117151301.1:startupEncoding
 #@-node:ekr.20050304072744:Compute directories... (leoGlobals)
 #@+node:ekr.20031218072017.1380:Directive utils...
-#@+node:EKR.20040504150046.4:g.comment_delims_from_extension
-def comment_delims_from_extension(filename):
-
-    """
-    Return the comment delims corresponding to the filename's extension.
-
-    >>> g.comment_delims_from_extension(".py")
-    ('#', None, None)
-
-    >>> g.comment_delims_from_extension(".c")
-    ('//', '/*', '*/')
-
-    >>> g.comment_delims_from_extension(".html")
-    (None, '<!--', '-->')
-
-    """
-
-    root, ext = os.path.splitext(filename)
-    if ext == '.tmp':
-        root, ext = os.path.splitext(root)
-
-    language = g.app.extension_dict.get(ext[1:])
-    if ext:
-
-        return g.set_delims_from_language(language)
-    else:
-        g.trace("unknown extension %s" % ext)
-        return None,None,None
-#@-node:EKR.20040504150046.4:g.comment_delims_from_extension
-#@+node:ekr.20071109165315:g.computeRelativePath
-def computeRelativePath (path):
-
-    if len(path) > 2 and (
-        (path[0]=='<' and path[-1] == '>') or
-        (path[0]=='"' and path[-1] == '"') or
-        (path[0]=="'" and path[-1] == "'")
-    ):
-        path = path[1:-1].strip()
-
-    # 11/14/02: we want a _relative_ path, not an absolute path.
-    # path = g.os_path_join(g.app.loadDir,path)
-
-    return path
-#@-node:ekr.20071109165315:g.computeRelativePath
 #@+node:ekr.20031218072017.1381:@language and @comment directives (leoUtils)
 #@+node:ekr.20031218072017.1382:set_delims_from_language
 # Returns a tuple (single,start,end) of comment delims
@@ -409,6 +365,50 @@ def set_language(s,i,issue_errors_flag=False):
     return None, None, None, None,
 #@-node:ekr.20031218072017.1384:set_language
 #@-node:ekr.20031218072017.1381:@language and @comment directives (leoUtils)
+#@+node:EKR.20040504150046.4:g.comment_delims_from_extension
+def comment_delims_from_extension(filename):
+
+    """
+    Return the comment delims corresponding to the filename's extension.
+
+    >>> g.comment_delims_from_extension(".py")
+    ('#', None, None)
+
+    >>> g.comment_delims_from_extension(".c")
+    ('//', '/*', '*/')
+
+    >>> g.comment_delims_from_extension(".html")
+    (None, '<!--', '-->')
+
+    """
+
+    root, ext = os.path.splitext(filename)
+    if ext == '.tmp':
+        root, ext = os.path.splitext(root)
+
+    language = g.app.extension_dict.get(ext[1:])
+    if ext:
+
+        return g.set_delims_from_language(language)
+    else:
+        g.trace("unknown extension %s" % ext)
+        return None,None,None
+#@-node:EKR.20040504150046.4:g.comment_delims_from_extension
+#@+node:ekr.20071109165315:g.computeRelativePath
+def computeRelativePath (path):
+
+    if len(path) > 2 and (
+        (path[0]=='<' and path[-1] == '>') or
+        (path[0]=='"' and path[-1] == '"') or
+        (path[0]=="'" and path[-1] == "'")
+    ):
+        path = path[1:-1].strip()
+
+    # 11/14/02: we want a _relative_ path, not an absolute path.
+    # path = g.os_path_join(g.app.loadDir,path)
+
+    return path
+#@-node:ekr.20071109165315:g.computeRelativePath
 #@+node:ekr.20031218072017.1385:g.findReference
 #@+at 
 #@nonl
@@ -495,30 +495,6 @@ def get_directives_dict(p,root=None):
             i = g.skip_line(s,i)
     return theDict
 #@-node:ekr.20031218072017.1260:g.get_directives_dict
-#@+node:ekr.20031218072017.1386:getOutputNewline
-def getOutputNewline (c=None,name=None):
-
-    '''Convert the name of a line ending to the line ending itself.
-
-    Priority:
-    - Use name if name given
-    - Use c.config.output_newline if c given,
-    - Otherwise use g.app.config.output_newline.'''
-
-    # g.trace(c,name,c.config.output_newline)
-    if name: s = name
-    elif c:  s = c.config.output_newline
-    else:    s = app.config.output_newline
-
-    if not s: s = ''
-    s = s.lower()
-    if s in ( "nl","lf"): s = '\n'
-    elif s == "cr": s = '\r'
-    elif s == "platform": s = os.linesep  # 12/2/03: emakital
-    elif s == "crlf": s = "\r\n"
-    else: s = '\n' # Default for erroneous values.
-    return s
-#@-node:ekr.20031218072017.1386:getOutputNewline
 #@+node:ekr.20031218072017.1387:g.scanAtEncodingDirective
 def scanAtEncodingDirective(theDict):
 
@@ -546,12 +522,6 @@ def scanAtLineendingDirective(theDict):
     Returns the actual lineending or None if the name of the lineending is invalid.
     """
 
-    # k = theDict["lineending"]
-    # i = g.skip_to_end_of_line(s,k)
-    # j = len("@lineending")
-    # j = g.skip_ws(s,j)
-    # e = s[k+j:i].strip()
-
     e = theDict.get('encoding')
 
     if e in ("cr","crlf","lf","nl","platform"):
@@ -570,10 +540,6 @@ def scanAtPagewidthDirective(theDict,issue_error_flag=False):
     Returns the value of the width or None if the width is invalid.
     """
 
-    # k = theDict["pagewidth"]
-    # j = i = k + len("@pagewidth")
-    # i, val = g.skip_long(s,i)
-
     s = theDict.get('pagewidth')
     i, val = g.skip_long(s,0)
 
@@ -586,6 +552,44 @@ def scanAtPagewidthDirective(theDict,issue_error_flag=False):
             g.es("ignoring " + s,color="red")
         return None
 #@-node:ekr.20031218072017.1389:g.scanAtPagewidthDirective
+#@+node:ekr.20031218072017.3154:g.scanAtRootOptions
+def scanAtRootOptions (s,i,err_flag=False):
+
+    # The @root has been eaten when called from tangle.scanAllDirectives.
+    if g.match(s,i,"@root"):
+        i += len("@root")
+        i = g.skip_ws(s,i)
+
+    mode = None 
+    while g.match(s,i,'-'):
+        #@        << scan another @root option >>
+        #@+node:ekr.20031218072017.3155:<< scan another @root option >>
+        i += 1 ; err = -1
+
+        if g.match_word(s,i,"code"): # Just match the prefix.
+            if not mode: mode = "code"
+            elif err_flag: g.es("modes conflict in:" + g.get_line(s,i))
+        elif g.match(s,i,"doc"): # Just match the prefix.
+            if not mode: mode = "doc"
+            elif err_flag: g.es("modes conflict in:" + g.get_line(s,i))
+        else:
+            err = i-1
+
+        # Scan to the next minus sign.
+        while i < len(s) and s[i] not in (' ','\t','-'):
+            i += 1
+
+        if err > -1 and err_flag:
+            g.es("unknown option:" + s[err:i] + " in " + g.get_line(s,i))
+        #@-node:ekr.20031218072017.3155:<< scan another @root option >>
+        #@nl
+
+    if mode == None:
+        doc = app.config.at_root_bodies_start_in_doc_mode
+        mode = g.choose(doc,"doc","code")
+
+    return i,mode
+#@-node:ekr.20031218072017.3154:g.scanAtRootOptions
 #@+node:ekr.20031218072017.1390:g.scanAtTabwidthDirective
 def scanAtTabwidthDirective(theDict,issue_error_flag=False):
 
@@ -593,10 +597,6 @@ def scanAtTabwidthDirective(theDict,issue_error_flag=False):
 
     Returns the value of the width or None if the width is invalid.
     """
-
-    # k = theDict["tabwidth"]
-    # i = k + len("@tabwidth")
-    # i, val = g.skip_long(s, i)
 
     s = theDict.get('tabwidth')
     i,val = g.skip_long(s,0)
@@ -629,53 +629,6 @@ def scanColorDirectives(c,p):
 
     return language
 #@-node:ekr.20070302160802:g.scanColorDirectives
-#@+node:ekr.20040715155607:g.scanForAtIgnore
-def scanForAtIgnore(c,p):
-
-    """Scan position p and its ancestors looking for @ignore directives."""
-
-    if g.app.unitTesting:
-        return False # For unit tests.
-
-    for p in p.self_and_parents_iter():
-        d = g.get_directives_dict(p)
-        if d.has_key("ignore"):
-            return True
-
-    return False
-#@-node:ekr.20040715155607:g.scanForAtIgnore
-#@+node:ekr.20041123094807:g.scanForAtSettings
-def scanForAtSettings(p):
-
-    """Scan position p and its ancestors looking for @settings nodes."""
-
-    for p in p.self_and_parents_iter():
-        h = p.headString()
-        h = g.app.config.canonicalizeSettingName(h)
-        if h.startswith("@settings"):
-            return True
-
-    return False
-#@-node:ekr.20041123094807:g.scanForAtSettings
-#@+node:ekr.20040712084911.1:g.scanForAtLanguage
-def scanForAtLanguage(c,p):
-
-    """Scan position p and p's ancestors looking only for @language and @ignore directives.
-
-    Returns the language found, or c.target_language."""
-
-    # Unlike the code in x.scanAllDirectives, this code ignores @comment directives.
-
-    if c and p:
-        for p in p.self_and_parents_iter():
-            d = g.get_directives_dict(p)
-            if d.has_key("language"):
-                z = d["language"]
-                language,delim1,delim2,delim3 = g.set_language(z,0)
-                return language
-
-    return c.target_language
-#@-node:ekr.20040712084911.1:g.scanForAtLanguage
 #@+node:ekr.20031218072017.1391:g.scanDirectives
 #@+at 
 #@nonl
@@ -807,6 +760,77 @@ def scanDirectives(c,p=None):
         "pluginsList": pluginsList,
         "wrap"      : wrap }
 #@-node:ekr.20031218072017.1391:g.scanDirectives
+#@+node:ekr.20040715155607:g.scanForAtIgnore
+def scanForAtIgnore(c,p):
+
+    """Scan position p and its ancestors looking for @ignore directives."""
+
+    if g.app.unitTesting:
+        return False # For unit tests.
+
+    for p in p.self_and_parents_iter():
+        d = g.get_directives_dict(p)
+        if d.has_key("ignore"):
+            return True
+
+    return False
+#@-node:ekr.20040715155607:g.scanForAtIgnore
+#@+node:ekr.20040712084911.1:g.scanForAtLanguage
+def scanForAtLanguage(c,p):
+
+    """Scan position p and p's ancestors looking only for @language and @ignore directives.
+
+    Returns the language found, or c.target_language."""
+
+    # Unlike the code in x.scanAllDirectives, this code ignores @comment directives.
+
+    if c and p:
+        for p in p.self_and_parents_iter():
+            d = g.get_directives_dict(p)
+            if d.has_key("language"):
+                z = d["language"]
+                language,delim1,delim2,delim3 = g.set_language(z,0)
+                return language
+
+    return c.target_language
+#@-node:ekr.20040712084911.1:g.scanForAtLanguage
+#@+node:ekr.20041123094807:g.scanForAtSettings
+def scanForAtSettings(p):
+
+    """Scan position p and its ancestors looking for @settings nodes."""
+
+    for p in p.self_and_parents_iter():
+        h = p.headString()
+        h = g.app.config.canonicalizeSettingName(h)
+        if h.startswith("@settings"):
+            return True
+
+    return False
+#@-node:ekr.20041123094807:g.scanForAtSettings
+#@+node:ekr.20031218072017.1386:getOutputNewline
+def getOutputNewline (c=None,name=None):
+
+    '''Convert the name of a line ending to the line ending itself.
+
+    Priority:
+    - Use name if name given
+    - Use c.config.output_newline if c given,
+    - Otherwise use g.app.config.output_newline.'''
+
+    # g.trace(c,name,c.config.output_newline)
+    if name: s = name
+    elif c:  s = c.config.output_newline
+    else:    s = app.config.output_newline
+
+    if not s: s = ''
+    s = s.lower()
+    if s in ( "nl","lf"): s = '\n'
+    elif s == "cr": s = '\r'
+    elif s == "platform": s = os.linesep  # 12/2/03: emakital
+    elif s == "crlf": s = "\r\n"
+    else: s = '\n' # Default for erroneous values.
+    return s
+#@-node:ekr.20031218072017.1386:getOutputNewline
 #@-node:ekr.20031218072017.1380:Directive utils...
 #@+node:ekr.20031218072017.3100:wrap_lines
 #@+at 
@@ -2975,40 +2999,6 @@ def scanAtFileOptions (h,err_flag=False):
 
     return i,atFileType,optionsList
 #@-node:ekr.20031218072017.3152:g.scanAtFileOptions (used in 3.x read code)
-#@+node:ekr.20031218072017.3154:scanAtRootOptions
-def scanAtRootOptions (s,i,err_flag=False):
-
-    assert(g.match(s,i,"@root"))
-    i += len("@root")
-    mode = None 
-    while g.match(s,i,'-'):
-        #@        << scan another @root option >>
-        #@+node:ekr.20031218072017.3155:<< scan another @root option >>
-        i += 1 ; err = -1
-
-        if g.match_word(s,i,"code"): # Just match the prefix.
-            if not mode: mode = "code"
-            elif err_flag: g.es("modes conflict in:" + g.get_line(s,i))
-        elif g.match(s,i,"doc"): # Just match the prefix.
-            if not mode: mode = "doc"
-            elif err_flag: g.es("modes conflict in:" + g.get_line(s,i))
-        else:
-            err = i-1
-
-        # Scan to the next minus sign.
-        while i < len(s) and s[i] not in (' ','\t','-'):
-            i += 1
-
-        if err > -1 and err_flag:
-            g.es("unknown option:" + s[err:i] + " in " + g.get_line(s,i))
-        #@-node:ekr.20031218072017.3155:<< scan another @root option >>
-        #@nl
-
-    if mode == None:
-        doc = app.config.at_root_bodies_start_in_doc_mode
-        mode = g.choose(doc,"doc","code")
-    return i,mode
-#@-node:ekr.20031218072017.3154:scanAtRootOptions
 #@+node:ekr.20031218072017.3156:scanError
 # It is dubious to bump the Tangle error count here, but it really doesn't hurt.
 
