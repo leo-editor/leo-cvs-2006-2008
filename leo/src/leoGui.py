@@ -647,6 +647,11 @@ class unitTestGui(nullGui):
 
         g.app.gui = self.oldGui
     #@-node:ekr.20031218072017.3743: ctor (unitTestGui)
+    #@+node:ekr.20071128094234.1:createSpellTab
+    def createSpellTab(self,c,spellHandler,tabName):
+
+        pass # This method keeps pylint happy.
+    #@-node:ekr.20071128094234.1:createSpellTab
     #@-others
 #@-node:ekr.20031218072017.3742:class unitTestGui (nullGui)
 #@+node:ekr.20070629065104:Unit tests
