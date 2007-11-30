@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.562972292191">
-	<global_window_position top="115" left="226" height="620" width="923"/>
+	<global_window_position top="152" left="330" height="785" width="923"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -77,7 +77,7 @@
 <v t="ekr.20070124092048"><vh>Find entries in k.guiBindNamesDict</vh></v>
 <v t="ekr.20070213074001.1"><vh>find w.xxx</vh></v>
 </v>
-<v t="ekr.20040715105834" a="E"><vh>Fun...</vh>
+<v t="ekr.20040715105834"><vh>Fun...</vh>
 <v t="EKR.20040626212434"><vh>Drawing experiments</vh>
 <v t="EKR.20040626212434.1"><vh>Rectangles &amp; ovals</vh></v>
 <v t="EKR.20040626212434.2"><vh>Lines &amp; arcs</vh></v>
@@ -226,7 +226,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20071116114235" a="TV"><vh>Print all Tango icons in wiki-markup format</vh></v>
+<v t="ekr.20071116114235"><vh>Print all Tango icons in wiki-markup format</vh></v>
 </v>
 <v t="ekr.20051104082026"><vh>Important</vh>
 <v t="ekr.20051110105027.34"><vh>c2py  Convert C code to Python syntax</vh>
@@ -425,7 +425,7 @@
 <v t="ekr.20060928193919.4"><vh>@@button zodb-put-node</vh></v>
 </v>
 </v>
-<v t="ekr.20060824111500"><vh>jEdit2Py</vh>
+<v t="ekr.20060824111500" a="TV"><vh>jEdit2Py</vh>
 <v t="ekr.20060824111500.1"><vh>Colorizing test scripts</vh>
 <v t="ekr.20060824111500.2"><vh>@@button colorize</vh></v>
 <v t="ekr.20060824111500.3"><vh>@@button red:f1</vh></v>
@@ -13078,7 +13078,8 @@ for path1 in files:
     except Exception:
         print 'Exception creating', path2
         g.es_exception()
-print 'done'</t>
+
+g.es_print('done')</t>
 <t tx="ekr.20060824111500.109">import glob
 import string
 import xml.sax
@@ -13106,7 +13107,7 @@ errors = [] # 'cil',] # End keyword not matched by start.
 errors = [r'%s\%s.xml' % (theDir,s) for s in errors]
 # for s in errors: print s
 if 1: # A a list of files.
-    files = [r'%s\%s.xml' % (theDir,s) for s in ('fortran',)]
+    files = [r'%s\%s.xml' % (theDir,s) for s in ('perl',)]
 elif 1: # translate all files.
     files = glob.glob(g.os_path_abspath(g.os_path_join(theDir,'*.xml')))
 elif 1: # error files
@@ -13119,7 +13120,7 @@ else: # translate two representative files.
 
     junk, fn = g.os_path_split(inputFileName)
     language, junk = g.os_path_splitext(fn)
-    g.trace(language)
+    g.es_print('convert: %s' % (language))
 
     mode = parse_jEdit_file(inputFileName,language)
 

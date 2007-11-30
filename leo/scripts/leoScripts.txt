@@ -11561,7 +11561,8 @@ for path1 in files:
     except Exception:
         print 'Exception creating', path2
         g.es_exception()
-print 'done'
+
+g.es_print('done')
 #@nonl
 #@+node:<< imports >>
 import glob
@@ -11600,7 +11601,7 @@ errors = [] # 'cil',] # End keyword not matched by start.
 errors = [r'%s\%s.xml' % (theDir,s) for s in errors]
 # for s in errors: print s
 if 1: # A a list of files.
-    files = [r'%s\%s.xml' % (theDir,s) for s in ('fortran',)]
+    files = [r'%s\%s.xml' % (theDir,s) for s in ('perl',)]
 elif 1: # translate all files.
     files = glob.glob(g.os_path_abspath(g.os_path_join(theDir,'*.xml')))
 elif 1: # error files
@@ -11616,7 +11617,7 @@ def convert (c,inputFileName,outputFileName):
 
     junk, fn = g.os_path_split(inputFileName)
     language, junk = g.os_path_splitext(fn)
-    g.trace(language)
+    g.es_print('convert: %s' % (language))
 
     mode = parse_jEdit_file(inputFileName,language)
 
