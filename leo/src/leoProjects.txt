@@ -561,6 +561,9 @@ def readOneAtAutoNode (self,fileName,p):
     fileName = g.os_path_join(at.default_directory,fileName)
     # g.trace(fileName)
 
+    if not g.unitTesting:
+        g.es("reading: " + p.headString())
+
     # Delete all children.
     c.beginUpdate()
     try:

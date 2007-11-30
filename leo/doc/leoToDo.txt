@@ -1,48 +1,10 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20071128071822:Do ipython demo
-@nocolor
-
-> The simple Python prompt is interesting in its own right and maybe an established use of it within Leo would act as a demonstration. The advancement to IPython would be obvious once there was an attractive integration of the normal prompt.
-
-Good point.
-
-> It seems that many of the user stories you responded to on the wiki could be done with the simple Python prompt integration(somehow using the shell prompt instead of how you might have explained current execute script in your answers). So, of course, the Leo integration and demonstration of a simple Python prompt would assist these users - but require giving up IPython convenience in those situations.
-
-Exactly. 
-
-> But then there would be more of a dialog on how to get to IPython since the integration of the shell - in terms of Leo - is a then a concrete model.
-
-Yes, it would be feasible to do a 'toy' implementation using python's cmd and readline modules. Presumably, this would sidestep all the difficult implementation issues that make ipython valuable :-)
-
-So this is all good.  We have a start of a user-level design, and a way of turning that design into working code *relatively* easily.
-
-Originally, I was thinking that the demo would be a set of diagrams illustrating how to integrate ipython into Leo.  The original post on this thread might claim to be such a 'diagram'.  Here are the bones of the design as described in the first post:
-
-1. Put the interactive shell in a Shell tab in the log pane.
-
-2. If the present node is an @history node, all of the work on the interactive prompt is captured (appended) in that body pane. Such nodes might be grouped into chapters, or by @shell-histories trees.
-
-3. Buttons or commands would play back captured sessions one step at a time.
-
-4. The open-shell-tab command could (under control of user options) rearrange Leo's panes to make them easier to use for entering shell commands.  The close-shell-tab command would undo whatever rearrangement took place.
-
-5. Leo users would see leo outlines as conveniently arranged saved sessions which are available for review and replay. 
-
-I think this is a pretty decent demo!
-
-My original idea was to use the minibuffer for input and use the 'shell' tab (or body pane for @shell nodes) only for output. But this would make it impossible to play back captured sessions.
-
-Actually, it may be easiest to do the full simulation in the Shell tab.  The Shell tab must have bindings that emulate the bindings (say) in idle's main console window.  I strongly suspect that there are more details than meet the eye.  Still, python's cmd and readline modules are a good start.  
-
-In short, it looks like we have a clear roadmap for an ipython demo in Leo: put an 'idle-like' console window in a Shell tab in Leo's log pane.
-
-I'll create commands to open and close the Shell tab soon--maybe today.  Is anyone interested in actually creating an 'idle-like' command interpreter in the Shell pane?
-#@nonl
-#@-node:ekr.20071128071822:Do ipython demo
 #@+node:ekr.20071113093057:To do: 4.4.6: last major projects
 #@+node:ekr.20071114063047:First
+#@+node:ekr.20071129095408:Upgrade to Pmw 1.3
+#@-node:ekr.20071129095408:Upgrade to Pmw 1.3
 #@+node:ekr.20071031113657:Always use sax parser to read .leo files
 # Are there proper unit tests?
 # Do global settings and find-panel settings get set properly.
@@ -10867,6 +10829,46 @@ class GCEveryOneMinute(java.lang.Thread):
 #@-node:ekr.20070703111913:Swing gui
 #@-node:ekr.20071102191642:Other guis
 #@+node:ekr.20070307082503:Make Leo an IPython notebook
+#@+node:ekr.20071128071822:Do ipython demo
+@nocolor
+
+> The simple Python prompt is interesting in its own right and maybe an established use of it within Leo would act as a demonstration. The advancement to IPython would be obvious once there was an attractive integration of the normal prompt.
+
+Good point.
+
+> It seems that many of the user stories you responded to on the wiki could be done with the simple Python prompt integration(somehow using the shell prompt instead of how you might have explained current execute script in your answers). So, of course, the Leo integration and demonstration of a simple Python prompt would assist these users - but require giving up IPython convenience in those situations.
+
+Exactly. 
+
+> But then there would be more of a dialog on how to get to IPython since the integration of the shell - in terms of Leo - is a then a concrete model.
+
+Yes, it would be feasible to do a 'toy' implementation using python's cmd and readline modules. Presumably, this would sidestep all the difficult implementation issues that make ipython valuable :-)
+
+So this is all good.  We have a start of a user-level design, and a way of turning that design into working code *relatively* easily.
+
+Originally, I was thinking that the demo would be a set of diagrams illustrating how to integrate ipython into Leo.  The original post on this thread might claim to be such a 'diagram'.  Here are the bones of the design as described in the first post:
+
+1. Put the interactive shell in a Shell tab in the log pane.
+
+2. If the present node is an @history node, all of the work on the interactive prompt is captured (appended) in that body pane. Such nodes might be grouped into chapters, or by @shell-histories trees.
+
+3. Buttons or commands would play back captured sessions one step at a time.
+
+4. The open-shell-tab command could (under control of user options) rearrange Leo's panes to make them easier to use for entering shell commands.  The close-shell-tab command would undo whatever rearrangement took place.
+
+5. Leo users would see leo outlines as conveniently arranged saved sessions which are available for review and replay. 
+
+I think this is a pretty decent demo!
+
+My original idea was to use the minibuffer for input and use the 'shell' tab (or body pane for @shell nodes) only for output. But this would make it impossible to play back captured sessions.
+
+Actually, it may be easiest to do the full simulation in the Shell tab.  The Shell tab must have bindings that emulate the bindings (say) in idle's main console window.  I strongly suspect that there are more details than meet the eye.  Still, python's cmd and readline modules are a good start.  
+
+In short, it looks like we have a clear roadmap for an ipython demo in Leo: put an 'idle-like' console window in a Shell tab in Leo's log pane.
+
+I'll create commands to open and close the Shell tab soon--maybe today.  Is anyone interested in actually creating an 'idle-like' command interpreter in the Shell pane?
+#@nonl
+#@-node:ekr.20071128071822:Do ipython demo
 #@+node:ekr.20071127103206:Post from BillP
 @nocolor
 
