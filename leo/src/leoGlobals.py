@@ -17,8 +17,9 @@
 #@+node:ekr.20050208101229:<< imports >>
 import leoGlobals as g # So code can use g below.
 
-if 0: # Don't import this here: it messes up Leo's startup code.
-    import leoTest
+# Don't import this here: it messes up Leo's startup code.
+# import leoTest
+
 try:
     import gc
 except ImportError:
@@ -34,8 +35,8 @@ try:
 except ImportError: # does not exist in jython.
     gettext = None
 
-if 0: # Do NOT import pdb here!  We shall define pdb as a _function_ below.
-    import pdb
+# Do NOT import pdb here!  We shall define pdb as a _function_ below.
+# import pdb
 
 import exceptions
 import operator
@@ -47,9 +48,7 @@ import zipfile
 # These do not exist in IronPython.
 # However, it *is* valid for IronPython to use the Python 2.4 libs!
 import difflib
-
 import os
-import shutil
 import string
 import tempfile
 import traceback
@@ -134,10 +133,9 @@ def computeGlobalConfigDir():
 
     encoding = g.startupEncoding()
 
-    # Generates pychecker warning about leo_config_directory.
-    try:
+    if hasattr(sys,'leo_config_directory'):
         theDir = sys.leo_config_directory
-    except AttributeError:
+    else:
         theDir = g.os_path_join(g.app.loadDir,"..","config")
 
     if theDir:
@@ -548,7 +546,6 @@ def scanAtPagewidthDirective(theDict,issue_error_flag=False):
         return val
     else:
         if issue_error_flag:
-            j = g.skip_to_end_of_line(s,k)
             g.es("ignoring " + s,color="red")
         return None
 #@-node:ekr.20031218072017.1389:g.scanAtPagewidthDirective
@@ -599,14 +596,13 @@ def scanAtTabwidthDirective(theDict,issue_error_flag=False):
     """
 
     s = theDict.get('tabwidth')
-    i,val = g.skip_long(s,0)
+    junk,val = g.skip_long(s,0)
 
     if val != None and val != 0:
         # g.trace(val)
         return val
     else:
         if issue_error_flag:
-            i = g.skip_to_end_of_line(s,k)
             g.es("Ignoring " + s,color="red")
         return None
 #@-node:ekr.20031218072017.1390:g.scanAtTabwidthDirective
@@ -956,7 +952,7 @@ def _callerName (n=1,files=False):
             return code1.co_name # The code name
     except ValueError:
         return '' # The stack is not deep enough.
-    except:
+    except Exception:
         g.es_exception()
         return '' # "<no caller name>"
 #@-node:ekr.20031218072017.3107:_callerName
@@ -1053,7 +1049,7 @@ def es_exception (full=True,c=None,color="red"):
             try:
                 print line
             except Exception:
-                print g.toEncodedString(s,'ascii')
+                print g.toEncodedString(line,'ascii')
 
     if g.app.debugSwitch > 1:
         import pdb # Be careful: g.pdb may or may not have been defined.
@@ -1082,7 +1078,7 @@ def getLastTracebackFileAndLineNumber():
             # g.es_print(repr(val))
             msg,(filename, lineno, offset, line) = val
             return filename,lineno
-        except:
+        except Exception:
             g.trace("bad line number")
             return None,0
 
@@ -1334,7 +1330,8 @@ def get_line (s,i):
     k = g.skip_to_end_of_line(s,i)
     return nl + s[j:k]
 
-getLine = get_line
+# Important: getLine is a completely different function.
+# getLine = get_line
 
 def get_line_after (s,i):
 
@@ -1532,7 +1529,7 @@ def get_Sherlock_args (args):
             f = open(fn)
             args = f.readlines()
             f.close()
-        except: pass
+        except Exception: pass
     elif type(args[0]) == type(("1","2")):
         args = args[0] # strip away the outer tuple.
 
@@ -1578,7 +1575,7 @@ def trace (*args,**keys):
         if type(arg) == type(u""):
             pass
             # try:    arg = str(arg) 
-            # except: arg = repr(arg)
+            # except Exception: arg = repr(arg)
         elif type(arg) != type(""):
             arg = repr(arg)
         if len(s) > 0:
@@ -1591,7 +1588,7 @@ def trace (*args,**keys):
         f1 = sys._getframe(1) # The stack frame, one level up.
         code1 = f1.f_code # The code object
         name = code1.co_name # The code name
-    except: name = ''
+    except Exception: name = ''
     if name == "?":
         name = "<unknown>"
 
@@ -1852,7 +1849,7 @@ def makeAllNonExistentDirectories (theDir,c=None):
             try:
                 os.mkdir(path)
                 g.es("created directory: "+path)
-            except:
+            except Exception:
                 g.es("exception creating directory: "+path)
                 g.es_exception()
                 return None
@@ -1922,7 +1919,7 @@ def openWithFileName(fileName,old_c,
         if frame.c.chapterController:
             frame.c.chapterController.finishCreate()
         k = c.k
-        k and k.setInputState(k.unboundKeyAction)
+        if k: k.setInputState(k.unboundKeyAction)
         if c.config.getBool('outline_pane_has_initial_focus'):
             c.treeWantsFocusNow()
         else:
@@ -2041,7 +2038,7 @@ def utils_remove (fileName,verbose=True):
     try:
         os.remove(fileName)
         return True
-    except:
+    except Exception:
         if verbose:
             g.es("exception removing:" + fileName)
             g.es_exception()
@@ -2116,7 +2113,7 @@ def utils_chmod (fileName,mode,verbose=True):
 
     try:
         os.chmod(fileName,mode)
-    except:
+    except Exception:
         if verbose:
             g.es("exception in os.chmod(%s)" % (fileName))
             g.es_exception()
@@ -2128,7 +2125,7 @@ def utils_stat (fileName):
 
     try:
         mode = (os.stat(fileName))[0] & 0777
-    except:
+    except Exception:
         mode = None
 
     return mode
@@ -2234,7 +2231,7 @@ def printGcAll (tag=''):
         t = type(obj)
         if t == 'instance':
             try: t = obj.__class__
-            except: pass
+            except Exception: pass
         # if type(obj) == type(()):
             # print id(obj),repr(obj)
         d[t] = d.get(t,0) + 1
@@ -2245,7 +2242,7 @@ def printGcAll (tag=''):
             # Support for keword args to sort function exists in Python 2.4.
             # Support for None as an alternative to omitting cmp exists in Python 2.3.
             items.sort(key=lambda x: x[1],reverse=True)
-        except: pass
+        except Exception: pass
         for z in items:
             print '%40s %7d' % (z[0],z[1])
     else: # Sort by type
@@ -2277,7 +2274,7 @@ def printGcObjects(tag=''):
             t = type(obj)
             if t == 'instance' and t not in types.StringTypes:
                 try: t = obj.__class__
-                except: pass
+                except Exception: pass
             if t != types.FrameType:
                 r = repr(t) # was type(obj) instead of repr(t)
                 n = typesDict.get(r,0) 
@@ -2369,7 +2366,7 @@ def printGcSummary (tag=''):
         n2 = len(gc.get_objects())
         s = '%s: printGCSummary: garbage: %d, objects: %d' % (tag,n,n2)
         print s
-    except:
+    except Exception:
         traceback.print_exc()
 #@-node:ekr.20060205043324.1:printGcSummary
 #@+node:ekr.20060127165509:printGcVerbose
@@ -2543,27 +2540,6 @@ def plugin_signon(module_name,verbose=False):
 #@-node:ekr.20031218072017.3139:Hooks & plugins (leoGlobals)
 #@+node:ekr.20031218072017.3145:Most common functions...
 # These are guaranteed always to exist for scripts.
-#@+node:ekr.20031218072017.3146:app & leoProxy (no longer used)
-if 0: # No longer needed with the new import scheme.
-
-    class leoProxy:
-
-        """A proxy for the gApp object that can be created before gApp itself.
-
-        After gApp is created, both app.x and app().x refer to gApp.x."""
-
-        def __getattr__(self,attr):
-            return getattr(gApp,attr)
-
-        def __setattr__(self,attr,val):
-            setattr(gApp,attr,val)
-
-        def __call__(self):
-            return gApp
-
-    # The code can use app.x and app().x to refer to ivars of the leoApp class.
-    app = leoProxy()
-#@-node:ekr.20031218072017.3146:app & leoProxy (no longer used)
 #@+node:ekr.20031218072017.3147:choose
 def choose(cond, a, b): # warning: evaluates all arguments
 
@@ -2687,29 +2663,25 @@ def es_trace(s,*args,**keys):
 #@nonl
 #@-node:ekr.20050707065530:es_trace
 #@+node:ekr.20060810095921:et, et_* and _ (underscore)
-# __pychecker__ = 'no-reuseattr'
+#@+at
+# 
+# These are no longer needed.
+# 
+# The convention will be that only the first argument to g.es will be 
+# translated.
+# 
+# def et (s):
+#     es(g.translate(s))
+# 
+# def et_trace(s):
+#     es_trace(g.translate(s))
+# 
+#@-at
+#@@c
 
-if 1: # Do nothing
-    et = es
-    et_print = es_print
-    es_trace = es_trace
-    def _(s): return s
-else: # Use the gettext module to translate arguments.
-    def et (s):
-        es(_(s))
-
-    def et_trace(s):
-        es_trace(_(s))
-
-    def et_trace(s):
-        es_trace(_(s))
-
-    def _ (s):
-        '''Return the translated text of s.'''
-        return gettext.gettext(s)
-
-# __pychecker__ = 'reuseattr'
-#@nonl
+def translate (s):
+    '''Return the translated text of s.'''
+    return gettext.gettext(s)
 #@-node:ekr.20060810095921:et, et_* and _ (underscore)
 #@+node:ekr.20031218072017.3148:top
 if 0: # An extremely dangerous function.
@@ -2721,7 +2693,7 @@ if 0: # An extremely dangerous function.
         # Warning: may be called during startup or shutdown when nothing exists.
         try:
             return app.log.c
-        except:
+        except Exception:
             return None
 #@-node:ekr.20031218072017.3148:top
 #@+node:ekr.20031218072017.3149:trace is defined below
@@ -3163,7 +3135,7 @@ def skip_pascal_begin_end(s,i):
         elif g.match(s,i,"//"): i = g.skip_line(s,i)
         elif g.match(s,i,"(*"): i = g.skip_pascal_block_comment(s,i)
         elif g.match_c_word(s,i,"end"):
-            level -= 1 ;
+            level -= 1
             if level == 0:
                 # lines = s[i1:i+3] ; g.trace('\n' + lines + '\n')
                 return i
@@ -3575,7 +3547,7 @@ def skip_long(s,i):
     try: # There may be no digits.
         val = int(s[j:i])
         return i, val
-    except:
+    except Exception:
         return i,None
 #@-node:ekr.20031218072017.3188:skip_long
 #@+node:ekr.20031218072017.3189:skip_matching_python_delims
@@ -3589,7 +3561,7 @@ def skip_matching_python_delims(s,i,delim1,delim2,reverse=False):
     # g.trace('delim1/2',repr(delim1),repr(delim2),'i',i,'s[i]',repr(s[i]),'s',repr(s[i-5:i+5]))
     assert(g.match(s,i,delim1))
     if reverse:
-         while i >= 0:
+        while i >= 0:
             ch = s[i]
             if ch == delim1:
                 level += 1 ; i -= 1
@@ -3838,7 +3810,7 @@ def executeFile(filename, options= ''):
         #@nl
         rc, so, se = subprocess_wrapper('%s %s %s'%(sys.executable, fname, options))
         if rc:
-             print 'return code', rc
+            print 'return code', rc
         print so, se
     else:
         if fdir: os.chdir(fdir)
@@ -3884,14 +3856,14 @@ except Exception:
             try:
                 import _locale
                 return _locale._getdefaultlocale()[1]
-            except:
+            except Exception:
                 return None
         #@-node:ekr.20031218072017.1504:<< define getpreferredencoding using _locale >>
         #@nl
     else:
         #@        << define getpreferredencoding for *nix >>
         #@+node:ekr.20031218072017.1505:<< define getpreferredencoding for *nix >>
-        # Pychecker complains about CODESET
+        # Pychecker & pylint complains about CODESET
 
         try:
             locale.CODESET # Bug fix, 2/12/05
@@ -3902,7 +3874,7 @@ except Exception:
                 by looking at environment variables."""
                 try:
                     return locale.getdefaultlocale()[1]
-                except:
+                except Exception:
                     return None
         else:
             def getpreferredencoding(do_setlocale = True):
@@ -3917,7 +3889,7 @@ except Exception:
                         return result
                     else:
                         return locale.nl_langinfo(CODESET)
-                except:
+                except Exception:
                     return None
         #@-node:ekr.20031218072017.1505:<< define getpreferredencoding for *nix >>
         #@nl
@@ -3967,7 +3939,7 @@ def reportBadChars (s,encoding):
     elif type(s) == type(""):
         for ch in s:
             try: unicode(ch,encoding,"strict")
-            except: errors += 1
+            except Exception: errors += 1
         if errors:
             s2 = "%d errors converting %s (%s encoding) to unicode" % (
                 errors, unicode(s,encoding,'replace'),
@@ -4550,7 +4522,7 @@ class mulderUpdateAlgorithm:
 
             sfile.close()
             tfile.close()
-        except:
+        except Exception:
             g.es_exception("can not open files")
             return
         #@-node:EKR.20040504150046.11:<< init propagateDiffsToSentinelsFile vars >>
@@ -4640,14 +4612,6 @@ class mulderUpdateAlgorithm:
             assert i_pos == i1
             assert j_pos == j1
             assert fat_pos == mapping[i1]
-
-            if 0: # not yet.
-                if testing: # A bit costly.
-                    t_sourcelines,t_sentinel_lines = push_filter_lines(write_lines, delims)
-                    # Check that we have all the modifications so far.
-                    assert t_sourcelines == j_lines[:j1],"t_sourcelines == j_lines[:j1]"
-                    # Check that we kept all sentinels so far.
-                    assert t_sentinel_lines == push_filter_lines(fat_lines[:fat_pos], delims)[1]
             #@-node:EKR.20040504145804.4:<< update and check the loop invariant>>
             #@nl
             if tag == 'equal':
@@ -4760,7 +4724,7 @@ class mulderUpdateAlgorithm:
             print lines1_message
             print '-'*20
             for line in lines1:
-              print line,
+                print line,
 
             print '='*20
 
@@ -4891,7 +4855,7 @@ def executeScript (name):
         import imp
         theFile,filename,description = imp.find_module(mod_name)
         imp.load_module(mod_name,theFile,filename,description)
-    except:
+    except Exception:
         g.es("Exception executing " + name,color="red")
         g.es_exception()
 
@@ -5419,12 +5383,13 @@ def adjustTripleString (s,tab_width):
     lines = g.splitLines(s)
     w = -1
     for s in lines:
-       if s.strip():
+        if s.strip():
             lws = g.get_leading_ws(s)
             w2 = g.computeWidth(lws,tab_width)
             if w < 0: w = w2
             else:     w = min(w,w2)
             # g.trace('w',w)
+
     if w <= 0: return s
 
     # Remove the leading whitespace.
@@ -5527,7 +5492,7 @@ def removeExtraLws (s,tab_width):
 
     # Find the first non-blank line and compute w, the width of its leading whitespace.
     for s in lines:
-       if s.strip():
+        if s.strip():
             lws = g.get_leading_ws(s)
             w = g.computeWidth(lws,tab_width)
             # g.trace('w',w)
@@ -5656,30 +5621,6 @@ def init_zodb (pathToZodbStorage,verbose=True):
 #@nonl
 #@-node:ekr.20060913090832.1:g.init_zodb
 #@-node:ekr.20060913091602:ZODB support
-#@+node:ekr.20070627204038.1:@@suite example of using plain unittest.TestCase
-if g.unitTesting:
-
-    #@    @+others
-    #@+node:ekr.20070627204038.2:class exampleTestCase
-    import unittest
-
-    class exampleTestCase(unittest.TestCase):
-
-        '''A test case to print a message at the end of plugin tests.'''
-
-        def __init__ (self,c):
-            unittest.TestCase.__init__(self)
-            self.c = c
-
-        def runTest(self):
-            assert self.c
-            print 'exampleTestCase'
-    #@nonl
-    #@-node:ekr.20070627204038.2:class exampleTestCase
-    #@-others
-
-    g.app.scriptDict['suite'] = exampleTestCase(c)
-#@-node:ekr.20070627204038.1:@@suite example of using plain unittest.TestCase
 #@-others
 #@-node:ekr.20031218072017.3093:@thin leoGlobals.py
 #@-leo

@@ -146,16 +146,16 @@ class tnode (baseTnode):
 
         s = g.toUnicode(s,encoding,reportErrors=True)
 
-        if 0: # DANGEROUS:  This automatically converts everything when reading files.
+        # DANGEROUS:  This automatically converts everything when reading files.
 
             # New in Leo 4.4.2: self.c does not exist!
             # This must be done in the Commands class.
-            option = self.c.config.trailing_body_newlines
+            # option = self.c.config.trailing_body_newlines
 
-            if option == "one":
-                s = s.rstrip() + '\n'
-            elif option == "zero":
-                s = s.rstrip()
+            # if option == "one":
+                # s = s.rstrip() + '\n'
+            # elif option == "zero":
+                # s = s.rstrip()
 
         self.bodyString = s
 
@@ -238,7 +238,7 @@ if use_zodb and ZODB:
         pass
 else:
     class baseVnode (object):
-       pass
+        pass
 
 class vnode (baseVnode):
     #@    << vnode constants >>
@@ -278,12 +278,12 @@ class vnode (baseVnode):
         # To support ZODB the code must set v._p_changed = 1 whenever
         # v.unknownAttributes or any mutable vnode object changes.
 
+        self.iconVal = 0
         self.t = t # The tnode.
         self.statusBits = 0 # status bits
 
         # Structure links.
         self._parent = self._next = self._back = None
-    #@nonl
     #@-node:ekr.20031218072017.3344:v.__init__
     #@+node:ekr.20031218072017.3345:v.__repr__ & v.__str__
     def __repr__ (self):
@@ -943,11 +943,6 @@ class nodeIndices (object):
         # works whatever the format of gnx1 and gnx2.
         # This should never throw an exception.
         return gnx1 == gnx2
-
-        id1,time1,n1 = gnx1
-        id2,time2,n2 = gnx2
-        # g.trace(id1==id2 and time1==time2 and n1==n2,gnx1,gnx2)
-        return id1==id2 and time1==time2 and n1==n2
     #@-node:ekr.20031218072017.1993:areEqual
     #@+node:ekr.20031218072017.1994:get/setDefaultId
     # These are used by the fileCommands read/write code.
@@ -992,7 +987,7 @@ class nodeIndices (object):
         try:
             theId,t,n = gnx
             return t != None
-        except:
+        except Exception:
             return False
     #@-node:ekr.20031218072017.1996:isGnx
     #@+node:ekr.20031218072017.1997:scanGnx
@@ -1018,7 +1013,7 @@ class nodeIndices (object):
         # Convert n to int.
         if n:
             try: n = int(n)
-            except: pass
+            except Exception: pass
 
         return theId,t,n
     #@-node:ekr.20031218072017.1997:scanGnx
