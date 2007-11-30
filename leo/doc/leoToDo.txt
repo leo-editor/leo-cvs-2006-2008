@@ -2240,7 +2240,7 @@ def openWithFileName(fileName,old_c,
         if frame.c.chapterController:
             frame.c.chapterController.finishCreate()
         k = c.k
-        k and k.setInputState(k.unboundKeyAction)
+        if k: k.setInputState(k.unboundKeyAction)
         if c.config.getBool('outline_pane_has_initial_focus'):
             c.treeWantsFocusNow()
         else:

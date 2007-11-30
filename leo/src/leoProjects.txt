@@ -27,6 +27,30 @@ E1101:109:baseEditCommandsClass.endCommand: Instance of 'Bunch' has no 'undoType
 E1101:110:baseEditCommandsClass.endCommand: Instance of 'Bunch' has no 'oldSel' member
 E1101:110:baseEditCommandsClass.endCommand: Instance of 'Bunch' has no 'oldText' member
 #@-node:ekr.20071128095109:pylint: leoEditCommands.py
+#@+node:ekr.20071130094930:pylint: leoGlobals.py
+************* Module leoGlobals
+
+# Fixed: E0602:550:scanAtPagewidthDirective: Undefined variable 'k'
+# Fixed: E0602:609:scanAtTabwidthDirective: Undefined variable 'k'
+# Fixed: E0602:1056:es_exception: Undefined variable 's'
+# Fixed: E0102:5098:getLine: function already defined line 1335
+
+# Bad warnings:
+# E1101:137:computeGlobalConfigDir: Module 'sys' has no 'leo_config_directory' member
+# W0631:2956:scanAtFileOptions: Using possibly undefined loop variable 'option'
+# W0104:3869: Statement seems to have no effect
+# E0602:3885:getpreferredencoding: Undefined variable 'LC_CTYPE'
+# E0602:3886:getpreferredencoding: Undefined variable 'LC_CTYPE'
+# E1101:3887:getpreferredencoding: Module 'locale' has no 'nl_langinfo' member
+# E0602:3887:getpreferredencoding: Undefined variable 'CODESET'
+# E0602:3888:getpreferredencoding: Undefined variable 'LC_CTYPE'
+# E1101:3891:getpreferredencoding: Module 'locale' has no 'nl_langinfo' member
+# E0602:3891:getpreferredencoding: Undefined variable 'CODESET'
+# E1101:4386:mulderUpdateAlgorithm.copy_time: Module 'os' has no 'mtime' member
+# W0631:4415:mulderUpdateAlgorithm.create_mapping: Using possibly undefined loop variable 'i'
+# R0903:4815:nullObject: Too few public methods (0/1)
+# W0631:5393:adjustTripleString: Using possibly undefined loop variable 's'
+#@-node:ekr.20071130094930:pylint: leoGlobals.py
 #@-node:ekr.20071128100845:Pylint
 #@+node:ekr.20071105150738:Leo 4.4.5 b1
 #@+node:ekr.20071105202808:Distribution
@@ -1234,7 +1258,7 @@ def openWithFileName(fileName,old_c,
         if frame.c.chapterController:
             frame.c.chapterController.finishCreate()
         k = c.k
-        k and k.setInputState(k.unboundKeyAction)
+        if k: k.setInputState(k.unboundKeyAction)
         if c.config.getBool('outline_pane_has_initial_focus'):
             c.treeWantsFocusNow()
         else:
@@ -1611,7 +1635,7 @@ def openWithFileName(fileName,old_c,
         if frame.c.chapterController:
             frame.c.chapterController.finishCreate()
         k = c.k
-        k and k.setInputState(k.unboundKeyAction)
+        if k: k.setInputState(k.unboundKeyAction)
         if c.config.getBool('outline_pane_has_initial_focus'):
             c.treeWantsFocusNow()
         else:
@@ -1770,7 +1794,7 @@ def openWithFileName(fileName,old_c,
         if frame.c.chapterController:
             frame.c.chapterController.finishCreate()
         k = c.k
-        k and k.setInputState(k.unboundKeyAction)
+        if k: k.setInputState(k.unboundKeyAction)
         if c.config.getBool('outline_pane_has_initial_focus'):
             c.treeWantsFocusNow()
         else:
@@ -3286,7 +3310,6 @@ def scanAtPagewidthDirective(theDict,issue_error_flag=False):
         return val
     else:
         if issue_error_flag:
-            j = g.skip_to_end_of_line(s,k)
             g.es("ignoring " + s,color="red")
         return None
 #@-node:ekr.20031218072017.1389:g.scanAtPagewidthDirective
@@ -3336,14 +3359,13 @@ def scanAtTabwidthDirective(theDict,issue_error_flag=False):
     """
 
     s = theDict.get('tabwidth')
-    i,val = g.skip_long(s,0)
+    junk,val = g.skip_long(s,0)
 
     if val != None and val != 0:
         # g.trace(val)
         return val
     else:
         if issue_error_flag:
-            i = g.skip_to_end_of_line(s,k)
             g.es("Ignoring " + s,color="red")
         return None
 #@-node:ekr.20031218072017.1390:g.scanAtTabwidthDirective
