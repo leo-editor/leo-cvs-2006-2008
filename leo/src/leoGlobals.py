@@ -2660,9 +2660,15 @@ def es_print(s,*args,**keys):
         s = g.toEncodedString(s,'ascii')
 
     if keys.get('newline') in (True,None):
-        print s
+        try:
+            print s
+        except Exception:
+            print g.toEncodedString(s,'ascii')
     else:
-        print s,
+        try:
+            print s,
+        except Exception:
+            print g.toEncodedString(s,'ascii'),
 
     if g.app.gui and not g.app.gui.isNullGui and not g.unitTesting:
         g.es(s,*args,**keys)
