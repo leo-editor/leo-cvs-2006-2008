@@ -450,7 +450,7 @@ class colorizer:
 
     #@    @+others
     #@+node:ekr.20071010193720.20:Birth and init
-    #@+node:ekr.20071010193720.21:__init__
+    #@+node:ekr.20071010193720.21:__init__ (threading colorizer)
     def __init__(self,c):
 
         # g.trace('threading_colorizer',self)
@@ -476,7 +476,7 @@ class colorizer:
         self.count = 0 # For unit testing.
         self.allow_mark_prev = True # The new colorizer tolerates this nonsense :-)
         self.trace = False or c.config.getBool('trace_colorizer')
-        self.trace_match_flag = False
+        self.trace_match_flag = False # True: trace all matching methods.
         self.trace_tags = False
         self.verbose = False
         # Mode data...
@@ -525,7 +525,7 @@ class colorizer:
         self.oldTagsDict = {}
         self.postPassStarted = False
     #@nonl
-    #@-node:ekr.20071010193720.21:__init__
+    #@-node:ekr.20071010193720.21:__init__ (threading colorizer)
     #@+node:ekr.20071010193720.22:addImportedRules
     def addImportedRules (self,mode,rulesDict,rulesetName):
 
@@ -1411,13 +1411,17 @@ class colorizer:
             self.init_mode(delegate)
             # Color everything at once, using the same indices as the caller.
             while i < j:
+                progress = i
                 assert j >= 0, 'colorRangeWithTag: negative j'
                 for f in self.rulesDict.get(s[i],[]):
                     n = f(self,s,i)
-                    if n > 0:
+                    if n is None:
+                        g.trace('Can not happen: delegate matcher returns None')
+                    elif n > 0:
                         # if f.__name__ != 'match_blanks': g.trace(delegate,i,f.__name__)
                         i += n ; break
                 else: i += 1
+                assert i > progress
             bunch = self.modeStack.pop()
             self.initModeFromBunch(bunch)
         elif not exclude_match:

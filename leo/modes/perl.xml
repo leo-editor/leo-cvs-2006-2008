@@ -22,7 +22,8 @@
 			<BEGIN AT_LINE_START="TRUE">=head2</BEGIN>
 			<END AT_LINE_START="TRUE">=cut</END>
 		</SPAN>
-        <SPAN TYPE="LABEL" DELEGATE="POD">
+		
+         <SPAN TYPE="LABEL" DELEGATE="POD">
 			<BEGIN AT_LINE_START="TRUE">=head3</BEGIN>
 			<END AT_LINE_START="TRUE">=cut</END>
 		</SPAN>
@@ -69,9 +70,13 @@
 			<END>}</END>
 		</SPAN>
 
+		<!-- EKR: comment out
+		
 		<SEQ_REGEXP HASH_CHAR="$" TYPE="KEYWORD2">\$(?:#|\w)+</SEQ_REGEXP>
 		<SEQ_REGEXP HASH_CHAR="@" TYPE="KEYWORD2">@(?:#|\w)+</SEQ_REGEXP>
 		<SEQ_REGEXP HASH_CHAR="%" TYPE="KEYWORD2">%(?:#|\w)+</SEQ_REGEXP>
+		
+		end comment out -->
 
 		<SPAN TYPE="KEYWORD2" NO_LINE_BREAK="TRUE" DELEGATE="VARIABLE">
 			<BEGIN>@{</BEGIN>
@@ -84,7 +89,11 @@
 		</SPAN>
 
 		<!-- Literals -->
-		<SPAN TYPE="LITERAL1" DELEGATE="LITERAL">
+		
+		<!-- EKR -->
+		<!-- <SPAN TYPE="LITERAL1" DELEGATE="LITERAL"> -->
+		
+		<SPAN TYPE="LITERAL1">
 			<BEGIN>"</BEGIN>
 			<END>"</END>
 		</SPAN>
@@ -100,24 +109,36 @@
 		</SPAN>
 
 		<!-- Heredoc -->
-		<SPAN_REGEXP HASH_CHAR="&lt;" TYPE="LITERAL2" DELEGATE="LITERAL">
-		<BEGIN><![CDATA[<<[:space:]*(['"])([[:space:][:alnum:]_]*)\1;?\s*]]></BEGIN>
-		<END>$2</END>
-		</SPAN_REGEXP>
-		<SPAN_REGEXP HASH_CHAR="&lt;" TYPE="LITERAL2" DELEGATE="LITERAL">
-		<BEGIN><![CDATA[<<([[:alpha:]_][[:alnum:]_]*);?\s*]]></BEGIN>
-		<END>$1</END>
-		</SPAN_REGEXP>
+		
+		<!-- EKR: comment out
+		
+			<SPAN_REGEXP HASH_CHAR="&lt;" TYPE="LITERAL2" DELEGATE="LITERAL">
+			<BEGIN><![CDATA[<<[:space:]*(['"])([[:space:][:alnum:]_]*)\1;?\s*]]></BEGIN>
+			<END>$2</END>
+			</SPAN_REGEXP>
+			<SPAN_REGEXP HASH_CHAR="&lt;" TYPE="LITERAL2" DELEGATE="LITERAL">
+			<BEGIN><![CDATA[<<([[:alpha:]_][[:alnum:]_]*);?\s*]]></BEGIN>
+			<END>$1</END>
+			</SPAN_REGEXP>
+			
+		end comment out -->
 
 		<!-- jEdit 4.1 adds regular expression syntax rules so we can
 		     highlight this sort of crap. -->
+		     
+		<!-- EKR comment out
 
 		<SEQ_REGEXP TYPE="MARKUP"
                         HASH_CHAR="/"
                         AT_WORD_START="TRUE"
                 >/[^[:blank:]]*?[^\\]/</SEQ_REGEXP>
+		
+		end comment out -->
 
-                <!-- q//, qq//, qr//, qx//, tr///, y///, m//, s/// -->
+		<!-- q//, qq//, qr//, qx//, tr///, y///, m//, s/// -->
+		
+		<!-- EKR comment out
+		
 		<SEQ_REGEXP TYPE="MARKUP"
                 	HASH_CHAR="q"
                 	AT_WORD_START="TRUE"
@@ -152,11 +173,19 @@
                         HASH_CHAR="s"
                         AT_WORD_START="TRUE"
 		>s([[:punct:]])(?:.*?[^\\])*?\1(?:.*?[^\\])*?\1[sgiexom]*</SEQ_REGEXP>
+		
+		end comment out -->
+		
 		<!-- // -->
+		
+		<!-- EKR comment out
+		
 		<SEQ_REGEXP TYPE="MARKUP"
 			HASH_CHAR="/"
 			AT_WORD_START="TRUE"
 		>/[^[:blank:]]*?/</SEQ_REGEXP>
+		
+		end comment out -->
 
 		<!-- Operators -->
 		<SEQ TYPE="OPERATOR">|</SEQ>
@@ -485,7 +514,8 @@
 	</RULES>
 
 	<RULES SET="POD" DEFAULT="COMMENT2">
-		<MARK_FOLLOWING TYPE="LABEL" AT_LINE_START="TRUE">=</MARK_FOLLOWING>
+		<!-- EKR -->
+		<!-- <MARK_FOLLOWING TYPE="LABEL" AT_LINE_START="TRUE">=</MARK_FOLLOWING> -->
 	</RULES>
 
 	<RULES SET="LITERAL" DEFAULT="LITERAL1" ESCAPE="\">
@@ -494,23 +524,35 @@
 			<BEGIN>${</BEGIN>
 			<END>}</END>
 		</SPAN>
+		
+		<!-- EKR comment out
 
 		<MARK_FOLLOWING TYPE="KEYWORD2">$#</MARK_FOLLOWING>
 		<MARK_FOLLOWING TYPE="KEYWORD2">$</MARK_FOLLOWING>
+		
+		end comment out -->
 
 		<SPAN TYPE="KEYWORD2" NO_LINE_BREAK="TRUE" DELEGATE="VARIABLE">
 			<BEGIN>@{</BEGIN>
 			<END>}</END>
 		</SPAN>
+		
+		<!-- EKR comment out
 
 		<MARK_FOLLOWING TYPE="KEYWORD2">@</MARK_FOLLOWING>
+		
+		end comment out -->
 
 		<SPAN TYPE="KEYWORD2" NO_LINE_BREAK="TRUE" DELEGATE="VARIABLE">
 			<BEGIN>%{</BEGIN>
 			<END>}</END>
 		</SPAN>
+		
+		<!-- EKR comment out
 
 		<MARK_FOLLOWING TYPE="KEYWORD2">%</MARK_FOLLOWING>
+		
+		end comment out -->
 
 		<SEQ TYPE="LITERAL1">|</SEQ>
 		<SEQ TYPE="LITERAL1">&amp;</SEQ>
@@ -547,23 +589,35 @@
 			<BEGIN>${</BEGIN>
 			<END>}</END>
 		</SPAN>
+		
+		<!-- EKR comment out
 
 		<MARK_FOLLOWING TYPE="KEYWORD2">$#</MARK_FOLLOWING>
 		<MARK_FOLLOWING TYPE="KEYWORD2">$</MARK_FOLLOWING>
+		
+		end comment out -->
 
 		<SPAN TYPE="KEYWORD2" NO_LINE_BREAK="TRUE">
 			<BEGIN>@{</BEGIN>
 			<END>}</END>
 		</SPAN>
+		
+		<!-- EKR comment out
 
 		<MARK_FOLLOWING TYPE="KEYWORD2">@</MARK_FOLLOWING>
+		
+		end comment out -->
 
 		<SPAN TYPE="KEYWORD2" NO_LINE_BREAK="TRUE">
 			<BEGIN>%{</BEGIN>
 			<END>}</END>
 		</SPAN>
+		
+		<!-- EKR comment out
 
 		<MARK_FOLLOWING TYPE="KEYWORD2">%</MARK_FOLLOWING>
+		
+		end comment out -->
 	</RULES>
 
 	<RULES SET="VARIABLE" DEFAULT="KEYWORD2" ESCAPE="\">
