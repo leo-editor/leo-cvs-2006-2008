@@ -1719,6 +1719,7 @@ class baseScannerClass:
 
         if g.app.unitTesting:
             d = g.app.unitTestDict
+            # g.trace('expected',d.get('expectedMismatchLine'),'actual',d.get('actualMismatchLine'))
             ok = d.get('expectedMismatchLine') == d.get('actualMismatchLine')
             # Unit tests do not generate errors unless the mismatch line does not match.
 
@@ -1736,8 +1737,15 @@ class baseScannerClass:
         def pr(*args,**keys): #compareHelper
             g.es_print(color='blue',*args,**keys)
 
+        def pr_mismatch(i,line1,line2):
+            g.es_print('first mismatched line at line %d' % (i+1))
+            g.es_print('original line:  %s' % line1)
+            g.es_print('generated line: %s' % line2)
+
         d = g.app.unitTestDict
         expectedMismatch = g.app.unitTesting and d.get('expectedMismatchLine')
+        enableWarning = not self.mismatchWarningGiven and self.atAutoWarnsAboutLeadingWhitespace
+        messageKind = None
 
         if i >= len(lines1):
             if i != expectedMismatch or not g.unitTesting:
@@ -1756,28 +1764,60 @@ class baseScannerClass:
             return False
 
         line1,line2 = lines1[i],lines2[i]
+
         if line1 == line2:
             return True # An exact match.
         elif not line1.strip() and not line2.strip():
             return True # Blank lines compare equal.
-        elif (not strict and not g.unitTesting) and line1.lstrip() == line2.lstrip():
-            if not self.mismatchWarningGiven and self.atAutoWarnsAboutLeadingWhitespace:
+        elif strict:
+            s1,s2 = line1.lstrip(),line2.lstrip()
+            messageKind = g.choose(
+                s1 == s2 and self.startsComment(s1,0) and self.startsComment(s2,0),
+                'comment','error')
+        else:
+            s1,s2 = line1.lstrip(),line2.lstrip()
+            messageKind = g.choose(s1==s2,'warning','error')
+
+        if g.unitTesting:
+            d ['actualMismatchLine'] = i+1
+            ok = i+1 == expectedMismatch
+            if not ok:  pr_mismatch(i,line1,line2)
+            return ok
+        elif strict:
+            if enableWarning:
+                self.mismatchWarningGiven = True
+                if messageKind == 'comment':
+                    self.warning('mismatch in leading whitespace before comment')
+                else:
+                    self.error('mismatch in leading whitespace')
+                pr_mismatch(i,line1,line2)
+            return messageKind == 'comment' # Only mismatched comment lines are valid.
+        else:
+            if enableWarning:
                 self.mismatchWarningGiven = True
                 self.checkLeadingWhitespace(line1)
                 self.warning('mismatch in leading whitespace')
-                g.es_print('first mismatched line at line %d' % (i+1))
-                g.es_print('original line:  %s' % line1)
-                g.es_print('generated line: %s' % line2)
-            return True # A match excluding leading whitespace.
-        else:
-            if not g.unitTesting or i+1 != expectedMismatch:
-                # g.trace('unitTesting',g.unitTesting)
-                g.es_print('*** first mismatch at line %d' % (i+1))
-                g.es_print('original line:  %s' % line1)
-                g.es_print('generated line: %s' % line2)
-            d ['actualMismatchLine'] = i+1
-            # g.trace('lines 1...\n',repr(lines1),'\nlines2...\n',repr(lines2))
-            return False
+                pr_mismatch(i,line1,line2)
+            return messageKind in ('comment','warning') # Only errors are invalid.
+
+        # elif (not strict and not g.unitTesting) and line1.lstrip() == line2.lstrip():
+            # if not self.mismatchWarningGiven and self.atAutoWarnsAboutLeadingWhitespace:
+                # self.mismatchWarningGiven = True
+                # self.checkLeadingWhitespace(line1)
+                # self.warning('mismatch in leading whitespace')
+                # g.es_print('first mismatched line at line %d' % (i+1))
+                # g.es_print('original line:  %s' % line1)
+                # g.es_print('generated line: %s' % line2)
+            # return True # A match excluding leading whitespace.
+        # else: # strict OR unit testing.
+            # if not g.unitTesting or i+1 != expectedMismatch:
+                # # g.trace('unitTesting',g.unitTesting)
+                # g.es_print('*** first mismatch at line %d' % (i+1))
+                # g.es_print('original line:  %s' % line1)
+                # g.es_print('generated line: %s' % line2)
+            # d ['actualMismatchLine'] = i+1
+            # # g.trace('lines 1...\n',repr(lines1),'\nlines2...\n',repr(lines2))
+            # return False
     #@-node:ekr.20070730093735:compareHelper
     #@+node:ekr.20071110144948:checkLeadingWhitespace
     def checkLeadingWhitespace (self,line):
@@ -1802,8 +1842,8 @@ class baseScannerClass:
         kind = g.choose(self.atAuto,'@auto','import command')
 
         self.error(
-            '%s did not import the file perfectly\nfirst mismatched line: %d\n%s' % (
-                kind,bad_i,repr(lines2[bad_i-1])))
+            '%s did not import %s perfectly\nfirst mismatched line: %d\n%s' % (
+                kind,self.root.headString(),bad_i,repr(lines2[bad_i-1])))
 
         if len(lines1) < 100:
             pr('input...')
@@ -2101,11 +2141,13 @@ class baseScannerClass:
         body = body1 + body2
         if trace: g.trace('body\n%s' % body)
 
-        if not body.endswith('\n'):
-            self.error(
+        ###if not body.endswith('\n'):
+        tail = body[len(body.rstrip()):]
+        if not '\n' in tail:
+            self.warning(
                 'function %s does not end with a newline; one will be added\n%s' % (
                     self.sigId,g.get_line(s,codeEnd)))
-            g.trace(g.callers())
+            # g.trace(g.callers())
 
         self.createFunctionNode(headline,body,parent)
 
@@ -2151,8 +2193,9 @@ class baseScannerClass:
     #@+node:ekr.20070801074524:underindentedComment & underindentedLine
     def underindentedComment (self,line):
 
-        self.error(
-            'underindented python comments.\nExtra leading whitespace will be added\n' + line)
+        if self.atAutoWarnsAboutLeadingWhitespace:
+            self.warning(
+                'underindented python comments.\nExtra leading whitespace will be added\n' + line)
 
     def underindentedLine (self,line):
 
