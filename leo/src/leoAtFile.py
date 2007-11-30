@@ -557,6 +557,9 @@ class atFile:
         fileName = g.os_path_join(at.default_directory,fileName)
         # g.trace(fileName)
 
+        if not g.unitTesting:
+            g.es("reading: " + p.headString())
+
         # Delete all children.
         c.beginUpdate()
         try:
@@ -574,7 +577,6 @@ class atFile:
             #c.setBodyString(p,'')
             p.clearDirty()
             c.setChanged(oldChanged)
-    #@nonl
     #@-node:ekr.20070909100252:readOneAtAutoNode (atFile)
     #@+node:ekr.20041005105605.27:readOpenFile
     def readOpenFile(self,root,theFile,fileName):
@@ -3077,8 +3079,8 @@ class atFile:
         elif not p.isDirty(): # There is nothing new to write.
             return False
         elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
-            g.es_print('@auto node not written:\n\
-    no children and less than 10 characters (excluding directives)',color='red')
+            g.es_print('%s not written:\n\
+    no children and less than 10 characters (excluding directives)' % (p.headString()),color='red')
             return False
         else: # The @auto tree is dirty and contains significant info.
             return True
