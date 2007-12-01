@@ -2233,6 +2233,14 @@ class baseScannerClass:
     #@nonl
     # Scan and skipDecls would typically not be overridden.
     #@-at
+    #@+node:ekr.20071201072917:adjustDefStart
+    def adjustDefStart (self,unused_s,i):
+
+        '''A hook to allow the Python importer to adjust the 
+        start of a class or function to include decorators.'''
+
+        return i
+    #@-node:ekr.20071201072917:adjustDefStart
     #@+node:ekr.20070707150022:extendSignature
     def extendSignature(self,unused_s,i):
 
@@ -2480,11 +2488,13 @@ class baseScannerClass:
                 # Important: do not include leading ws in the decls.
                 classOrFunc = True
                 i = g.find_line_start(s,i)
+                i = self.adjustDefStart(s,i)
                 break
             elif self.startsFunction(s,i):
                 # Important: do not include leading ws in the decls.
                 classOrFunc = True
                 i = g.find_line_start(s,i)
+                i = self.adjustDefStart(s,i)
                 break
             elif self.startsId(s,i):
                 i = self.skipId(s,i)
@@ -2708,6 +2718,7 @@ class baseScannerClass:
             # skipCodeBlock skips the trailing delim.
 
         # Success: set the ivars.
+        self.sigStart = self.adjustDefStart(s,self.sigStart)
         self.codeEnd = i
         self.sigEnd = sigEnd
         self.sigId = sigId
@@ -2720,7 +2731,7 @@ class baseScannerClass:
         if not g.match(s,k,'\n'):
             self.sigStart = g.find_line_start(s,k)
 
-        # Isue this warning only if we have a real class or function.
+        # Issue this warning only if we have a real class or function.
         if 0: ### wrong.
             if s[self.sigStart:k].strip():
                 self.error('%s definition does not start a line\n%s' % (
@@ -3155,6 +3166,30 @@ class pythonScanner (baseScannerClass):
         self.strict = True
 
     #@-node:ekr.20070703122141.101: __init__
+    #@+node:ekr.20071201073102.1:adjustDefStart (python)
+    def adjustDefStart (self,s,i):
+
+        '''A hook to allow the Python importer to adjust the 
+        start of a class or function to include decorators.'''
+
+        if i == 0 or s[i-1] != '\n':
+            return i
+
+        start = j = g.find_line_start(s,i-2)
+        j = g.skip_ws(s,j)
+        if not g.match(s,j,'@'):
+            return i
+
+        j += 1
+        k = g.skip_id(s,j)
+        word = s[j:k]
+
+        if word and word not in g.globalDirectiveList:
+            # g.trace(repr(word),repr(s[start:i]))
+            return start
+        else:
+            return i
+    #@-node:ekr.20071201073102.1:adjustDefStart (python)
     #@+node:ekr.20070707113839:extendSignature
     def extendSignature(self,s,i):
 
