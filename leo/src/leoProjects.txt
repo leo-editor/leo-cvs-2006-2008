@@ -808,11 +808,13 @@ def skipDecls (self,s,i,end,inClass):
             # Important: do not include leading ws in the decls.
             classOrFunc = True
             i = g.find_line_start(s,i)
+            i = self.adjustDefStart(s,i)
             break
         elif self.startsFunction(s,i):
             # Important: do not include leading ws in the decls.
             classOrFunc = True
             i = g.find_line_start(s,i)
+            i = self.adjustDefStart(s,i)
             break
         elif self.startsId(s,i):
             i = self.skipId(s,i)
@@ -1043,11 +1045,13 @@ def skipDecls (self,s,i,end,inClass):
             # Important: do not include leading ws in the decls.
             classOrFunc = True
             i = g.find_line_start(s,i)
+            i = self.adjustDefStart(s,i)
             break
         elif self.startsFunction(s,i):
             # Important: do not include leading ws in the decls.
             classOrFunc = True
             i = g.find_line_start(s,i)
+            i = self.adjustDefStart(s,i)
             break
         elif self.startsId(s,i):
             i = self.skipId(s,i)
@@ -8581,6 +8585,306 @@ def underindentedLine (self,line):
 #@-node:ekr.20071129124931:Improved @auto code
 #@+node:ekr.20071130062121:Simplified perl colorizer and added progress checks
 #@-node:ekr.20071130062121:Simplified perl colorizer and added progress checks
+#@+node:ekr.20071201065752:Is there an @auto problem?
+#@+node:ekr.20070806141607:writeOneAtAutoNode & helpers
+def writeOneAtAutoNode(self,p,toString,force):
+
+    '''Write p, an @auto node.'''
+
+    at = self ; c = at.c ; root = p.copy()
+
+    fileName = p.atAutoNodeName()
+    if not fileName: return False
+
+    at.scanDefaultDirectory(p,importing=True) # Set default_directory
+    fileName = g.os_path_join(at.default_directory,fileName)
+    exists = g.os_path_exists(fileName)
+
+    if not toString and not self.shouldWriteAtAutoNode(p,exists,force):
+        return False
+
+    # This code is similar to code in at.write.
+    c.endEditing() # Capture the current headline.
+    at.targetFileName = g.choose(toString,"<string-file>",fileName)
+    at.initWriteIvars(root,at.targetFileName,
+        nosentinels=True,thinFile=False,scriptWrite=False,
+        toString=toString,write_strips_blank_lines=False)
+
+    ok = at.openFileForWriting (root,fileName=fileName,toString=toString)
+    if ok:
+        at.writeOpenFile(root,nosentinels=True,toString=toString)
+        at.closeWriteFile() # Sets stringOutput if toString is True.
+        at.replaceTargetFileIfDifferent()
+        # c.atAutoDict [fileName] = True
+    elif not toString:
+        root.setDirty() # Make _sure_ we try to rewrite this file.
+        g.es("Not written: " + at.outputFileName)
+
+    return ok
+#@+node:ekr.20071019141745:shouldWriteAtAutoNode
+@ Much thought went into this decision tree:
+
+- We do not want decisions to depend on past history.  That's too confusing.
+- We must ensure that the file will be written if the user does significant work.
+- We must ensure that the user can create an @auto x node at any time
+  without risk of of replacing x with empty or insignificant information.
+- We want the user to be able to create an @auto node which will be populated the next time the .leo file is opened.
+- We don't want minor import imperfections to be written to the @auto file.
+- The explicit commands that read and write @auto trees must always be honored.
+@c
+
+def shouldWriteAtAutoNode (self,p,exists,force):
+
+    '''Return True if we should write the @auto node at p.'''
+
+    if force: # We are executing write-at-auto-node or write-dirty-at-auto-nodes.
+        return True
+    elif not exists: # We can write a non-existent file without danger.
+        return True
+    elif not p.isDirty(): # There is nothing new to write.
+        return False
+    elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
+        g.es_print('%s not written:\n\
+no children and less than 10 characters (excluding directives)' % (p.headString()),color='red')
+        return False
+    else: # The @auto tree is dirty and contains significant info.
+        return True
+#@-node:ekr.20071019141745:shouldWriteAtAutoNode
+#@+node:ekr.20070909103844:isSignificantAtAutoTree
+def isSignificantAtAutoTree (self,p):
+
+    '''Return True if p's tree has a significant amount of information.'''
+
+    s = p.bodyString()
+
+    # Remove all blank lines and all Leo directives.
+    lines = []
+    for line in g.splitLines(s):
+        if not line.strip():
+            pass
+        elif line.startswith('@'):
+            i = 1 ; j = g.skip_id(line,i,chars='-')
+            word = s[i:j]
+            if not (word and word in g.globalDirectiveList):
+                lines.append(line)
+        else:
+            lines.append(line)
+
+    s2 = ''.join(lines)
+    # g.trace('s2',s2)
+
+    return p.hasChildren() or len(s2.strip()) >= 10
+#@-node:ekr.20070909103844:isSignificantAtAutoTree
+#@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
+#@-node:ekr.20071201065752:Is there an @auto problem?
+#@+node:ekr.20071201071323:Fixed problem with decorators
+#@+node:ekr.20071201071323.1:Report
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4652514
+By: terry_n_brown
+
+@auto seems to be munging decorators.
+
+Starting with the decorator in the right place, it gets written correctly as:
+
+class Index:
+...."""docstring"""
+....@cherrypy.expose
+....def index(self):
+........return "Hello world!"
+
+but on read the body text for node 'class Index' is:
+
+class Index:
+...."""docstring"""
+....@cherrypy.expose
+....@others
+#@-node:ekr.20071201071323.1:Report
+#@+node:ekr.20071201073102:Changed code
+#@+node:ekr.20070707080042:skipDecls
+def skipDecls (self,s,i,end,inClass):
+
+    '''Skip everything until the start of the next class or function.
+
+    The decls *must* end in a newline.'''
+
+    trace = False or self.trace
+    start = i ; prefix = None
+    classOrFunc = False
+    if trace: g.trace(g.callers())
+    while i < end:
+        progress = i
+        if s[i] in (' ','\t','\n'):
+            i += 1 # Prevent lookahead below, and speed up the scan.
+        elif self.startsComment(s,i):
+            # Add the comment to the decl if it *doesn't* start the line.
+            i2,junk = g.getLine(s,i)
+            i2 = g.skip_ws(s,i2)
+            if i2 == i and prefix is None:
+                prefix = i2 # Bug fix: must include leading whitespace in the comment.
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            i = self.skipString(s,i)
+            prefix = None
+        elif self.startsClass(s,i):
+            # Important: do not include leading ws in the decls.
+            classOrFunc = True
+            i = g.find_line_start(s,i)
+            i = self.adjustDefStart(s,i)
+            break
+        elif self.startsFunction(s,i):
+            # Important: do not include leading ws in the decls.
+            classOrFunc = True
+            i = g.find_line_start(s,i)
+            i = self.adjustDefStart(s,i)
+            break
+        elif self.startsId(s,i):
+            i = self.skipId(s,i)
+            prefix = None
+        # Don't skip outer blocks: they may contain classes.
+        elif g.match(s,i,self.outerBlockDelim1):
+            if self.outerBlockEndsDecls:
+                break
+            else:
+                i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+        else:
+            i += 1 ;  prefix = None
+        assert(progress < i)
+
+    if prefix is not None:
+        i = g.find_line_start(s,prefix) # i = prefix
+    decls = s[start:i]
+    if inClass and not classOrFunc:
+        # Don't return decls if a class contains nothing but decls.
+        if trace and decls.strip(): g.trace('**class is all decls...\n',decls)
+        return start
+    elif decls.strip(): 
+        if trace or self.trace: g.trace('\n'+decls)
+        return i
+    else: # Ignore empty decls.
+        return start
+#@-node:ekr.20070707080042:skipDecls
+#@+node:ekr.20070712112008:startsHelper
+def startsHelper(self,s,i,kind,tags):
+    '''return True if s[i:] starts a class or function.
+    Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
+
+    # if not tags: return False
+
+    trace = self.trace
+    verbose = False # kind=='function'
+    self.codeEnd = self.sigEnd = self.sigId = None
+    self.sigStart = i
+
+    # Underindented lines can happen in any language, not just Python.
+    # The skipBlock method of the base class checks for such lines.
+    self.startSigIndent = self.getLeadingIndent(s,i)
+
+    # Get the tag that starts the class or function.
+    j = g.skip_ws_and_nl(s,i)
+    i = self.skipId(s,j)
+    self.sigId = theId = s[j:i] # Set sigId ivar 'early' for error messages.
+    if not theId: return False
+
+    if tags:
+        if theId not in tags:
+            if trace and verbose: g.trace('**** %s theId: %s not in tags: %s' % (kind,theId,tags))
+            return False
+
+    if trace and verbose: g.trace('kind',kind,'id',theId)
+
+    # Get the class/function id.
+    i, ids, classId = self.skipSigStart(s,j,kind,tags) # Rescan the first id.
+    sigId = self.getSigId(ids)
+    if not sigId:
+        if trace and verbose: g.trace('**no sigId',g.get_line(s,i))
+        return False
+
+    if self.output_indent < self.startSigIndent:
+        if trace: g.trace('**over-indent',sigId)
+            #,'output_indent',self.output_indent,'startSigIndent',self.startSigIndent)
+        return False
+
+    # Skip the argument list.
+    i, ok = self.skipArgs(s,i,kind)
+    if not ok:
+        if trace and verbose: g.trace('no args',g.get_line(s,i))
+        return False
+    i = g.skip_ws_and_nl(s,i)
+
+    # Skip the tail of the signature
+    i, ok = self.skipSigTail(s,i)
+    if not ok:
+        if trace and verbose: g.trace('no tail',g.get_line(s,i))
+        return False
+    sigEnd = i
+
+    # A trick: make sure the signature ends in a newline,
+    # even if it overlaps the start of the block.
+    if not g.match(s,sigEnd,'\n') and not g.match(s,sigEnd-1,'\n'):
+        if trace and verbose: g.trace('extending sigEnd')
+        sigEnd = g.skip_line(s,sigEnd)
+
+    if self.blockDelim1:
+        i = g.skip_ws_and_nl(s,i)
+        if not g.match(s,i,self.blockDelim1):
+            if trace and verbose: g.trace('no block',g.get_line(s,i))
+            return False
+
+    i,ok = self.skipCodeBlock(s,i,kind)
+    if not ok: return False
+        # skipCodeBlock skips the trailing delim.
+
+    # Success: set the ivars.
+    self.sigStart = self.adjustDefStart(s,self.sigStart)
+    self.codeEnd = i
+    self.sigEnd = sigEnd
+    self.sigId = sigId
+    self.classId = classId
+
+    # Note: backing up here is safe because
+    # we won't back up past scan's 'start' point.
+    # Thus, characters will never be output twice.
+    k = self.sigStart
+    if not g.match(s,k,'\n'):
+        self.sigStart = g.find_line_start(s,k)
+
+    # Issue this warning only if we have a real class or function.
+    if 0: ### wrong.
+        if s[self.sigStart:k].strip():
+            self.error('%s definition does not start a line\n%s' % (
+                kind,g.get_line(s,k)))
+
+    if trace: g.trace(kind,'returns\n'+s[self.sigStart:i])
+    return True
+#@-node:ekr.20070712112008:startsHelper
+#@+node:ekr.20071201073102.1:adjustDefStart (python)
+def adjustDefStart (self,s,i):
+
+    '''A hook to allow the Python importer to adjust the 
+    start of a class or function to include decorators.'''
+
+    if i == 0 or s[i-1] != '\n':
+        return i
+
+    start = j = g.find_line_start(s,i-2)
+    j = g.skip_ws(s,j)
+    if not g.match(s,j,'@'):
+        return i
+
+    j += 1
+    k = g.skip_id(s,j)
+    word = s[j:k]
+
+    if word and word not in g.globalDirectiveList:
+        # g.trace(repr(word),repr(s[start:i]))
+        return start
+    else:
+        return i
+#@-node:ekr.20071201073102.1:adjustDefStart (python)
+#@-node:ekr.20071201073102:Changed code
+#@-node:ekr.20071201071323:Fixed problem with decorators
 #@-node:ekr.20071127183215:Fixed bugs
 #@+node:ekr.20071127183351:New features
 #@+node:ekr.20071116114551.1:test.leo now contains a node showing all icons in the Icons/Tango directory
