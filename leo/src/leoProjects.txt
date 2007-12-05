@@ -5922,12 +5922,6 @@ def __init__ (self,c,local_dictionary_file,local_language_code):
     # g.trace('code',self.local_language_code,'dict',self.local_dictionary_file)
     # g.trace('dir',self.aspell_dir,'bin_dir',self.aspell_bin_dir)
 
-    try:
-        import ctypes
-        import ctypes.util
-        self.use_ctypes = True
-    except ImportError:
-        self.use_ctypes = False
     self.aspell = self.sc = None
 
     if ctypes:
@@ -5958,11 +5952,9 @@ def getAspell (self):
 #@+node:ekr.20061018111331:getAspellWithCtypes
 def getAspellWithCtypes (self):
 
-    import ctypes
-    import ctypes.util
-    c_int, c_char_p = ctypes.c_int, ctypes.c_char_p
-
     try:
+        c_int, c_char_p = ctypes.c_int, ctypes.c_char_p
+
         if sys.platform.startswith('win'):
             path = g.os_path_join(self.aspell_bin_dir, "aspell-15.dll")
             self.aspell = aspell = ctypes.CDLL(path)
@@ -6081,7 +6073,7 @@ def processWord(self, word):
     if not self.aspell:
         g.trace('aspell not installed')
         return None
-    elif self.use_ctypes:
+    elif ctypes:
         if self.check(self.spell_checker,word,len(word)):
             return None
         else:
@@ -8885,6 +8877,101 @@ def adjustDefStart (self,s,i):
 #@-node:ekr.20071201073102.1:adjustDefStart (python)
 #@-node:ekr.20071201073102:Changed code
 #@-node:ekr.20071201071323:Fixed problem with decorators
+#@+node:ekr.20071205073558:Fixed crasher in aspell logic
+#@+node:ekr.20071205073558.1:Report
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=4658901
+
+Making the modifications you proposed I still was not able to open any outline.
+
+Only if I open Leo w/o a file I was able to retrieve the following information
+from the cms-shell:
+
+<Log>
+
+reading settings in C:\CVS-Reps\leo\config\leoSettings.leo
+reading settings in C:\Dokumente und Einstellungen\VR\myLeoSettings.leo
+reading C:\Dokumente und Einstellungen\VR\.leoRecentFiles.txt
+@enabled-plugins found in myLeoSettings.leo
+rst3 plugin: SilverCity not loaded
+loadOnePlugin: no init() detect_urls
+loadOnePlugin: no init() empty_leo_file
+redefining close-window in all to extend-to-word in all
+redefining goto-first-node in tree to goto-first-visible-node in tree
+redefining goto-first-node in tree to goto-first-visible-node in all
+redefining goto-first-node in tree to goto-first-visible-node in all
+redefining forward-sentence in text to propagate-key-event in all
+redefining forward-word in text to propagate-key-event in all
+redefining kill-region-save in all to propagate-key-event in all
+Traceback (most recent call last):
+  File "C:\CVS-Reps\leo\src\leo.py", line 428, in ?
+    run()
+  File "C:\CVS-Reps\leo\src\leo.py", line 146, in run
+    c,frame = createFrame(fileName,relativeFileName)
+  File "C:\CVS-Reps\leo\src\leo.py", line 221, in createFrame
+    initEditCommanders=True)
+  File "C:\CVS-Reps\leo\src\leoApp.py", line 583, in newLeoCommanderAndFrame
+    c.finishCreate(initEditCommanders)
+  File "C:\CVS-Reps\leo\src\leoCommands.py", line 223, in finishCreate
+    c.frame.log.finishCreate()
+  File "C:\CVS-Reps\leo\src\leoTkinterFrame.py", line 2096, in finishCreate
+    c.spellCommands.openSpellTab()
+  File "C:\CVS-Reps\leo\src\leoEditCommands.py", line 8051, in openSpellTab
+    self.handler = spellTabHandler(c,tabName)
+  File "C:\CVS-Reps\leo\src\leoEditCommands.py", line 8131, in __init__
+    self.loaded = self.init_aspell(c)
+  File "C:\CVS-Reps\leo\src\leoEditCommands.py", line 8151, in init_aspell
+    self.aspell = AspellClass(c,dictionaryFileName,self.local_language_code)
+  File "C:\CVS-Reps\leo\src\leoEditCommands.py", line 8442, in __init__
+    if ctypes:
+UnboundLocalError: local variable 'ctypes' referenced before assignment
+>>>
+
+</Log>
+
+To ease your analyis, I'm also adding my local output w/ Leo-4.4.5-beta-1,
+which works w/o a problem:
+
+<Log>
+
+Leo Log Window...
+Leo 4.4.5 beta 1, build  1.223 , November 16, 2007
+Python 2.4.3, Tk 8.4.7, Pmw 1.2
+Windows 5, 1, 2600, 2, Service Pack 2
+
+redefining close-window in all to extend-to-word in all
+redefining goto-first-node in tree to goto-first-visible-node in tree
+redefining goto-first-node in tree to goto-first-visible-node in all
+redefining goto-first-node in tree to goto-first-visible-node in all
+redefining forward-sentence in text to propagate-key-event in all
+redefining forward-word in text to propagate-key-event in all
+redefining kill-region-save in all to propagate-key-event in all
+Can not import aspell
+can not import aspell
+leoID = vr20060903 (in C:\Dokumente und Einstellungen\VR)
+global config dir: C:\Programme\Leo\config
+home dir: C:\Dokumente und Einstellungen\VR
+reading settings in C:\Programme\Leo\config\leoSettings.leo
+reading settings in C:\Dokumente und Einstellungen\VR\myLeoSettings.leo
+reading settings in C:\Dokumente und Einstellungen\VR\Eigene
+Dateien\WLog\WLog.leo
+reading: C:\Dokumente und Einstellungen\VR\Eigene Dateien\WLog\WLog.leo
+
+</Log>
+
+Kind regards,
+
+    Viktor Ransmayr
+#@-node:ekr.20071205073558.1:Report
+#@+node:ekr.20071205074212:What I did
+@nocolor
+
+leoEditCommands now tries to import ctypes at the top level.
+If there is an ImportError, ctypes is set to None.
+#@nonl
+#@-node:ekr.20071205074212:What I did
+#@-node:ekr.20071205073558:Fixed crasher in aspell logic
 #@-node:ekr.20071127183215:Fixed bugs
 #@+node:ekr.20071127183351:New features
 #@+node:ekr.20071116114551.1:test.leo now contains a node showing all icons in the Icons/Tango directory
@@ -9383,12 +9470,6 @@ def __init__ (self,c,local_dictionary_file,local_language_code):
     # g.trace('code',self.local_language_code,'dict',self.local_dictionary_file)
     # g.trace('dir',self.aspell_dir,'bin_dir',self.aspell_bin_dir)
 
-    try:
-        import ctypes
-        import ctypes.util
-        self.use_ctypes = True
-    except ImportError:
-        self.use_ctypes = False
     self.aspell = self.sc = None
 
     if ctypes:
@@ -9419,11 +9500,9 @@ def getAspell (self):
 #@+node:ekr.20061018111331:getAspellWithCtypes
 def getAspellWithCtypes (self):
 
-    import ctypes
-    import ctypes.util
-    c_int, c_char_p = ctypes.c_int, ctypes.c_char_p
-
     try:
+        c_int, c_char_p = ctypes.c_int, ctypes.c_char_p
+
         if sys.platform.startswith('win'):
             path = g.os_path_join(self.aspell_bin_dir, "aspell-15.dll")
             self.aspell = aspell = ctypes.CDLL(path)
@@ -9542,7 +9621,7 @@ def processWord(self, word):
     if not self.aspell:
         g.trace('aspell not installed')
         return None
-    elif self.use_ctypes:
+    elif ctypes:
         if self.check(self.spell_checker,word,len(word)):
             return None
         else:
