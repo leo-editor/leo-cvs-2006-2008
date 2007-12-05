@@ -3175,20 +3175,24 @@ class pythonScanner (baseScannerClass):
         if i == 0 or s[i-1] != '\n':
             return i
 
-        start = j = g.find_line_start(s,i-2)
-        j = g.skip_ws(s,j)
-        if not g.match(s,j,'@'):
-            return i
+        while i > 0:
+            progress = i
 
-        j += 1
-        k = g.skip_id(s,j)
-        word = s[j:k]
+            start = j = g.find_line_start(s,i-2)
+            j = g.skip_ws(s,j)
+            if not g.match(s,j,'@'):
+                return i
 
-        if word and word not in g.globalDirectiveList:
-            # g.trace(repr(word),repr(s[start:i]))
-            return start
-        else:
-            return i
+            j += 1
+            k = g.skip_id(s,j)
+            word = s[j:k]
+
+            if word and word not in g.globalDirectiveList:
+                # g.trace(repr(word),repr(s[start:i]))
+                i = start
+                assert i < progress
+            else:
+                return i
     #@-node:ekr.20071201073102.1:adjustDefStart (python)
     #@+node:ekr.20070707113839:extendSignature
     def extendSignature(self,s,i):
