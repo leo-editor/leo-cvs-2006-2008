@@ -25,6 +25,12 @@ import re
 import string
 import sys
 
+try:
+    import ctypes
+    import ctypes.util
+except ImportError:
+    ctypes = None
+
 subprocess = g.importExtension('subprocess',pluginName=None,verbose=False)
 #@-node:ekr.20050710151017:<< imports >>
 #@nl
@@ -4269,6 +4275,7 @@ class editCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20060309060654:scrolling...
     #@+node:ekr.20050920084036.117:sort...
     #@@nocolor
+    #@@color
     #@+at
     # XEmacs provides several commands for sorting text in a buffer.  All
     # operate on the contents of the region (the text between point and the
@@ -4369,7 +4376,6 @@ class editCommandsClass (baseEditCommandsClass):
     # the rectangle moves along with the text inside the rectangle.  *Note
     # Rectangles::.
     # 
-    #@@color
     #@-at
     #@+node:ekr.20050920084036.118:sortLines commands
     def reverseSortLinesIgnoringCase(self,event):
@@ -8431,12 +8437,6 @@ class AspellClass:
         # g.trace('code',self.local_language_code,'dict',self.local_dictionary_file)
         # g.trace('dir',self.aspell_dir,'bin_dir',self.aspell_bin_dir)
 
-        try:
-            import ctypes
-            import ctypes.util
-            self.use_ctypes = True
-        except ImportError:
-            self.use_ctypes = False
         self.aspell = self.sc = None
 
         if ctypes:
@@ -8467,11 +8467,9 @@ class AspellClass:
     #@+node:ekr.20061018111331:getAspellWithCtypes
     def getAspellWithCtypes (self):
 
-        import ctypes
-        import ctypes.util
-        c_int, c_char_p = ctypes.c_int, ctypes.c_char_p
-
         try:
+            c_int, c_char_p = ctypes.c_int, ctypes.c_char_p
+
             if sys.platform.startswith('win'):
                 path = g.os_path_join(self.aspell_bin_dir, "aspell-15.dll")
                 self.aspell = aspell = ctypes.CDLL(path)
@@ -8591,7 +8589,7 @@ class AspellClass:
         if not self.aspell:
             g.trace('aspell not installed')
             return None
-        elif self.use_ctypes:
+        elif ctypes:
             if self.check(self.spell_checker,word,len(word)):
                 return None
             else:
