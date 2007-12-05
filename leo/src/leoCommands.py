@@ -71,7 +71,6 @@ class baseCommands:
         c = self
 
         # g.trace('Commands')
-        # self.atAutoDict = {} # Keys are full path names.  Values are True.
         self.exists = True # Indicate that this class exists and has not been destroyed.
             # Do this early in the startup process so we can call hooks.
 

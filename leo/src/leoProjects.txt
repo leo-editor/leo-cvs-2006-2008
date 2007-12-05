@@ -8577,98 +8577,101 @@ def underindentedLine (self,line):
 #@-node:ekr.20071129124931:Improved @auto code
 #@+node:ekr.20071130062121:Simplified perl colorizer and added progress checks
 #@-node:ekr.20071130062121:Simplified perl colorizer and added progress checks
-#@+node:ekr.20071201065752:Is there an @auto problem?
-#@+node:ekr.20070806141607:writeOneAtAutoNode & helpers
-def writeOneAtAutoNode(self,p,toString,force):
+#@+node:ekr.20071205073558:Fixed crasher in aspell logic
+#@+node:ekr.20071205073558.1:Report
+@nocolor
 
-    '''Write p, an @auto node.'''
+https://sourceforge.net/forum/message.php?msg_id=4658901
 
-    at = self ; c = at.c ; root = p.copy()
+Making the modifications you proposed I still was not able to open any outline.
 
-    fileName = p.atAutoNodeName()
-    if not fileName: return False
+Only if I open Leo w/o a file I was able to retrieve the following information
+from the cms-shell:
 
-    at.scanDefaultDirectory(p,importing=True) # Set default_directory
-    fileName = g.os_path_join(at.default_directory,fileName)
-    exists = g.os_path_exists(fileName)
+<Log>
 
-    if not toString and not self.shouldWriteAtAutoNode(p,exists,force):
-        return False
+reading settings in C:\CVS-Reps\leo\config\leoSettings.leo
+reading settings in C:\Dokumente und Einstellungen\VR\myLeoSettings.leo
+reading C:\Dokumente und Einstellungen\VR\.leoRecentFiles.txt
+@enabled-plugins found in myLeoSettings.leo
+rst3 plugin: SilverCity not loaded
+loadOnePlugin: no init() detect_urls
+loadOnePlugin: no init() empty_leo_file
+redefining close-window in all to extend-to-word in all
+redefining goto-first-node in tree to goto-first-visible-node in tree
+redefining goto-first-node in tree to goto-first-visible-node in all
+redefining goto-first-node in tree to goto-first-visible-node in all
+redefining forward-sentence in text to propagate-key-event in all
+redefining forward-word in text to propagate-key-event in all
+redefining kill-region-save in all to propagate-key-event in all
+Traceback (most recent call last):
+  File "C:\CVS-Reps\leo\src\leo.py", line 428, in ?
+    run()
+  File "C:\CVS-Reps\leo\src\leo.py", line 146, in run
+    c,frame = createFrame(fileName,relativeFileName)
+  File "C:\CVS-Reps\leo\src\leo.py", line 221, in createFrame
+    initEditCommanders=True)
+  File "C:\CVS-Reps\leo\src\leoApp.py", line 583, in newLeoCommanderAndFrame
+    c.finishCreate(initEditCommanders)
+  File "C:\CVS-Reps\leo\src\leoCommands.py", line 223, in finishCreate
+    c.frame.log.finishCreate()
+  File "C:\CVS-Reps\leo\src\leoTkinterFrame.py", line 2096, in finishCreate
+    c.spellCommands.openSpellTab()
+  File "C:\CVS-Reps\leo\src\leoEditCommands.py", line 8051, in openSpellTab
+    self.handler = spellTabHandler(c,tabName)
+  File "C:\CVS-Reps\leo\src\leoEditCommands.py", line 8131, in __init__
+    self.loaded = self.init_aspell(c)
+  File "C:\CVS-Reps\leo\src\leoEditCommands.py", line 8151, in init_aspell
+    self.aspell = AspellClass(c,dictionaryFileName,self.local_language_code)
+  File "C:\CVS-Reps\leo\src\leoEditCommands.py", line 8442, in __init__
+    if ctypes:
+UnboundLocalError: local variable 'ctypes' referenced before assignment
+>>>
 
-    # This code is similar to code in at.write.
-    c.endEditing() # Capture the current headline.
-    at.targetFileName = g.choose(toString,"<string-file>",fileName)
-    at.initWriteIvars(root,at.targetFileName,
-        nosentinels=True,thinFile=False,scriptWrite=False,
-        toString=toString,write_strips_blank_lines=False)
+</Log>
 
-    ok = at.openFileForWriting (root,fileName=fileName,toString=toString)
-    if ok:
-        at.writeOpenFile(root,nosentinels=True,toString=toString)
-        at.closeWriteFile() # Sets stringOutput if toString is True.
-        at.replaceTargetFileIfDifferent()
-        # c.atAutoDict [fileName] = True
-    elif not toString:
-        root.setDirty() # Make _sure_ we try to rewrite this file.
-        g.es("Not written: " + at.outputFileName)
+To ease your analyis, I'm also adding my local output w/ Leo-4.4.5-beta-1,
+which works w/o a problem:
 
-    return ok
-#@+node:ekr.20071019141745:shouldWriteAtAutoNode
-@ Much thought went into this decision tree:
+<Log>
 
-- We do not want decisions to depend on past history.  That's too confusing.
-- We must ensure that the file will be written if the user does significant work.
-- We must ensure that the user can create an @auto x node at any time
-  without risk of of replacing x with empty or insignificant information.
-- We want the user to be able to create an @auto node which will be populated the next time the .leo file is opened.
-- We don't want minor import imperfections to be written to the @auto file.
-- The explicit commands that read and write @auto trees must always be honored.
-@c
+Leo Log Window...
+Leo 4.4.5 beta 1, build  1.223 , November 16, 2007
+Python 2.4.3, Tk 8.4.7, Pmw 1.2
+Windows 5, 1, 2600, 2, Service Pack 2
 
-def shouldWriteAtAutoNode (self,p,exists,force):
+redefining close-window in all to extend-to-word in all
+redefining goto-first-node in tree to goto-first-visible-node in tree
+redefining goto-first-node in tree to goto-first-visible-node in all
+redefining goto-first-node in tree to goto-first-visible-node in all
+redefining forward-sentence in text to propagate-key-event in all
+redefining forward-word in text to propagate-key-event in all
+redefining kill-region-save in all to propagate-key-event in all
+Can not import aspell
+can not import aspell
+leoID = vr20060903 (in C:\Dokumente und Einstellungen\VR)
+global config dir: C:\Programme\Leo\config
+home dir: C:\Dokumente und Einstellungen\VR
+reading settings in C:\Programme\Leo\config\leoSettings.leo
+reading settings in C:\Dokumente und Einstellungen\VR\myLeoSettings.leo
+reading settings in C:\Dokumente und Einstellungen\VR\Eigene
+Dateien\WLog\WLog.leo
+reading: C:\Dokumente und Einstellungen\VR\Eigene Dateien\WLog\WLog.leo
 
-    '''Return True if we should write the @auto node at p.'''
+</Log>
 
-    if force: # We are executing write-at-auto-node or write-dirty-at-auto-nodes.
-        return True
-    elif not exists: # We can write a non-existent file without danger.
-        return True
-    elif not p.isDirty(): # There is nothing new to write.
-        return False
-    elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
-        g.es_print('%s not written:\n\
-no children and less than 10 characters (excluding directives)' % (p.headString()),color='red')
-        return False
-    else: # The @auto tree is dirty and contains significant info.
-        return True
-#@-node:ekr.20071019141745:shouldWriteAtAutoNode
-#@+node:ekr.20070909103844:isSignificantAtAutoTree
-def isSignificantAtAutoTree (self,p):
+Kind regards,
 
-    '''Return True if p's tree has a significant amount of information.'''
+    Viktor Ransmayr
+#@-node:ekr.20071205073558.1:Report
+#@+node:ekr.20071205074212:What I did
+@nocolor
 
-    s = p.bodyString()
-
-    # Remove all blank lines and all Leo directives.
-    lines = []
-    for line in g.splitLines(s):
-        if not line.strip():
-            pass
-        elif line.startswith('@'):
-            i = 1 ; j = g.skip_id(line,i,chars='-')
-            word = s[i:j]
-            if not (word and word in g.globalDirectiveList):
-                lines.append(line)
-        else:
-            lines.append(line)
-
-    s2 = ''.join(lines)
-    # g.trace('s2',s2)
-
-    return p.hasChildren() or len(s2.strip()) >= 10
-#@-node:ekr.20070909103844:isSignificantAtAutoTree
-#@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
-#@-node:ekr.20071201065752:Is there an @auto problem?
+leoEditCommands now tries to import ctypes at the top level.
+If there is an ImportError, ctypes is set to None.
+#@nonl
+#@-node:ekr.20071205074212:What I did
+#@-node:ekr.20071205073558:Fixed crasher in aspell logic
 #@+node:ekr.20071201071323:Fixed problem with decorators
 #@+node:ekr.20071201071323.1:Report
 @nocolor
@@ -8694,6 +8697,15 @@ class Index:
 ....@others
 #@-node:ekr.20071201071323.1:Report
 #@+node:ekr.20071201073102:Changed code
+#@+node:ekr.20031218072017.3175:find_line_start
+def find_line_start(s,i):
+
+    if i < 0: return 0 # New in Leo 4.4.5: add this defensive code.
+    # bug fix: 11/2/02: change i to i+1 in rfind
+    i = string.rfind(s,'\n',0,i+1) # Finds the highest index in the range.
+    if i == -1: return 0
+    else: return i + 1
+#@-node:ekr.20031218072017.3175:find_line_start
 #@+node:ekr.20070707080042:skipDecls
 def skipDecls (self,s,i,end,inClass):
 
@@ -8860,118 +8872,272 @@ def adjustDefStart (self,s,i):
     if i == 0 or s[i-1] != '\n':
         return i
 
-    start = j = g.find_line_start(s,i-2)
-    j = g.skip_ws(s,j)
-    if not g.match(s,j,'@'):
-        return i
+    while i > 0:
+        progress = i
 
-    j += 1
-    k = g.skip_id(s,j)
-    word = s[j:k]
+        start = j = g.find_line_start(s,i-2)
+        j = g.skip_ws(s,j)
+        if not g.match(s,j,'@'):
+            return i
 
-    if word and word not in g.globalDirectiveList:
-        # g.trace(repr(word),repr(s[start:i]))
-        return start
-    else:
-        return i
+        j += 1
+        k = g.skip_id(s,j)
+        word = s[j:k]
+
+        if word and word not in g.globalDirectiveList:
+            # g.trace(repr(word),repr(s[start:i]))
+            i = start
+            assert i < progress
+        else:
+            return i
 #@-node:ekr.20071201073102.1:adjustDefStart (python)
 #@-node:ekr.20071201073102:Changed code
 #@-node:ekr.20071201071323:Fixed problem with decorators
-#@+node:ekr.20071205073558:Fixed crasher in aspell logic
-#@+node:ekr.20071205073558.1:Report
+#@+node:ekr.20071204083239:Fixed @auto bug
 @nocolor
 
-https://sourceforge.net/forum/message.php?msg_id=4658901
+http://sourceforge.net/forum/message.php?msg_id=4654762
+By: terry_n_brown
 
-Making the modifications you proposed I still was not able to open any outline.
+Looking at it again I've decided it's a real bug.  Here's how to make it
+happen.
 
-Only if I open Leo w/o a file I was able to retrieve the following information
-from the cms-shell:
+Open a file, create a new @auto node, and type into the @auto node the
+following:
 
-<Log>
 
-reading settings in C:\CVS-Reps\leo\config\leoSettings.leo
-reading settings in C:\Dokumente und Einstellungen\VR\myLeoSettings.leo
-reading C:\Dokumente und Einstellungen\VR\.leoRecentFiles.txt
-@enabled-plugins found in myLeoSettings.leo
-rst3 plugin: SilverCity not loaded
-loadOnePlugin: no init() detect_urls
-loadOnePlugin: no init() empty_leo_file
-redefining close-window in all to extend-to-word in all
-redefining goto-first-node in tree to goto-first-visible-node in tree
-redefining goto-first-node in tree to goto-first-visible-node in all
-redefining goto-first-node in tree to goto-first-visible-node in all
-redefining forward-sentence in text to propagate-key-event in all
-redefining forward-word in text to propagate-key-event in all
-redefining kill-region-save in all to propagate-key-event in all
-Traceback (most recent call last):
-  File "C:\CVS-Reps\leo\src\leo.py", line 428, in ?
-    run()
-  File "C:\CVS-Reps\leo\src\leo.py", line 146, in run
-    c,frame = createFrame(fileName,relativeFileName)
-  File "C:\CVS-Reps\leo\src\leo.py", line 221, in createFrame
-    initEditCommanders=True)
-  File "C:\CVS-Reps\leo\src\leoApp.py", line 583, in newLeoCommanderAndFrame
-    c.finishCreate(initEditCommanders)
-  File "C:\CVS-Reps\leo\src\leoCommands.py", line 223, in finishCreate
-    c.frame.log.finishCreate()
-  File "C:\CVS-Reps\leo\src\leoTkinterFrame.py", line 2096, in finishCreate
-    c.spellCommands.openSpellTab()
-  File "C:\CVS-Reps\leo\src\leoEditCommands.py", line 8051, in openSpellTab
-    self.handler = spellTabHandler(c,tabName)
-  File "C:\CVS-Reps\leo\src\leoEditCommands.py", line 8131, in __init__
-    self.loaded = self.init_aspell(c)
-  File "C:\CVS-Reps\leo\src\leoEditCommands.py", line 8151, in init_aspell
-    self.aspell = AspellClass(c,dictionaryFileName,self.local_language_code)
-  File "C:\CVS-Reps\leo\src\leoEditCommands.py", line 8442, in __init__
-    if ctypes:
-UnboundLocalError: local variable 'ctypes' referenced before assignment
->>>
+import time
 
-</Log>
+class test:
+....pass
 
-To ease your analyis, I'm also adding my local output w/ Leo-4.4.5-beta-1,
-which works w/o a problem:
+def main():
+....a = test()
 
-<Log>
+if __name__='__main__': main()
 
-Leo Log Window...
-Leo 4.4.5 beta 1, build  1.223 , November 16, 2007
-Python 2.4.3, Tk 8.4.7, Pmw 1.2
-Windows 5, 1, 2600, 2, Service Pack 2
 
-redefining close-window in all to extend-to-word in all
-redefining goto-first-node in tree to goto-first-visible-node in tree
-redefining goto-first-node in tree to goto-first-visible-node in all
-redefining goto-first-node in tree to goto-first-visible-node in all
-redefining forward-sentence in text to propagate-key-event in all
-redefining forward-word in text to propagate-key-event in all
-redefining kill-region-save in all to propagate-key-event in all
-Can not import aspell
-can not import aspell
-leoID = vr20060903 (in C:\Dokumente und Einstellungen\VR)
-global config dir: C:\Programme\Leo\config
-home dir: C:\Dokumente und Einstellungen\VR
-reading settings in C:\Programme\Leo\config\leoSettings.leo
-reading settings in C:\Dokumente und Einstellungen\VR\myLeoSettings.leo
-reading settings in C:\Dokumente und Einstellungen\VR\Eigene
-Dateien\WLog\WLog.leo
-reading: C:\Dokumente und Einstellungen\VR\Eigene Dateien\WLog\WLog.leo
+First and last lines may be irrelevant.  Save the file.  Check it's content
+externally.  Looks fine.
 
-</Log>
+Now add a line which just say 'class test' above the 'class test:' line, and
+use command that creates a child node from the select text using the first line
+of the selected text as the node title.  I can't remember its name, but you
+press ctrl-shft-D.  Repeat for main().  Save.  Check it's content externally
+- the children are gone!  Must have been the gypsies :-)
 
-Kind regards,
+-------------
 
-    Viktor Ransmayr
-#@-node:ekr.20071205073558.1:Report
-#@+node:ekr.20071205074212:What I did
-@nocolor
+The problem is that there is no @others directive, but the orphan warning didn't happen and the file was written.
 
-leoEditCommands now tries to import ctypes at the top level.
-If there is an ImportError, ctypes is set to None.
-#@nonl
-#@-node:ekr.20071205074212:What I did
-#@-node:ekr.20071205073558:Fixed crasher in aspell logic
+@color
+#@+node:ekr.20041005105605.144:write
+# This is the entry point to the write code.  root should be an @file vnode.
+
+def write(self,root,
+    nosentinels=False,thinFile=False,scriptWrite=False,
+    toString=False,write_strips_blank_lines=None
+):
+
+    """Write a 4.x derived file."""
+
+    at = self ; c = at.c
+    c.endEditing() # Capture the current headline.
+    << set at.targetFileName >>
+    at.initWriteIvars(root,at.targetFileName,
+        nosentinels=nosentinels,thinFile=thinFile,
+        scriptWrite=scriptWrite,toString=toString,
+        write_strips_blank_lines=write_strips_blank_lines)
+    if not at.openFileForWriting(root,at.targetFileName,toString):
+        return
+
+    try:
+        at.writeOpenFile(root,nosentinels=nosentinels,toString=toString)
+        if toString:
+            at.closeWriteFile() # sets self.stringOutput
+            # Major bug: failure to clear this wipes out headlines!
+            # Minor bug: sometimes this causes slight problems...
+            at.root.v.t.tnodeList = []
+            at.root.v.t._p_changed = True
+        else:
+            at.closeWriteFile()
+            << set dirty and orphan bits on error >>
+    except Exception:
+        if toString:
+            at.exception("exception preprocessing script")
+            at.root.v.t.tnodeList = []
+            at.root.v.t._p_changed = True
+        else:
+            at.writeException() # Sets dirty and orphan bits.
+#@+node:ekr.20041005105605.145:<< set at.targetFileName >>
+if toString:
+    at.targetFileName = "<string-file>"
+elif nosentinels:
+    at.targetFileName = root.atNoSentFileNodeName()
+elif thinFile:
+    at.targetFileName = root.atThinFileNodeName()
+else:
+    at.targetFileName = root.atFileNodeName()
+#@-node:ekr.20041005105605.145:<< set at.targetFileName >>
+#@+node:ekr.20041005105605.146:<< set dirty and orphan bits on error >>
+# Setting the orphan and dirty flags tells Leo to write the tree..
+
+if at.errors > 0 or at.root.isOrphan():
+    root.setOrphan()
+    root.setDirty() # Make _sure_ we try to rewrite this file.
+    os.remove(at.outputFileName) # Delete the temp file.
+    g.es("Not written: " + at.outputFileName)
+else:
+    root.clearOrphan()
+    root.clearDirty()
+    at.replaceTargetFileIfDifferent()
+#@-node:ekr.20041005105605.146:<< set dirty and orphan bits on error >>
+#@-node:ekr.20041005105605.144:write
+#@+node:ekr.20070806141607:writeOneAtAutoNode & helpers
+def writeOneAtAutoNode(self,p,toString,force):
+
+    '''Write p, an @auto node.'''
+
+    at = self ; c = at.c ; root = p.copy()
+
+    fileName = p.atAutoNodeName()
+    if not fileName: return False
+
+    at.scanDefaultDirectory(p,importing=True) # Set default_directory
+    fileName = g.os_path_join(at.default_directory,fileName)
+    exists = g.os_path_exists(fileName)
+
+    if not toString and not self.shouldWriteAtAutoNode(p,exists,force):
+        return False
+
+    # This code is similar to code in at.write.
+    c.endEditing() # Capture the current headline.
+    at.targetFileName = g.choose(toString,"<string-file>",fileName)
+    at.initWriteIvars(root,at.targetFileName,
+        nosentinels=True,thinFile=False,scriptWrite=False,
+        toString=toString,write_strips_blank_lines=False)
+
+    ok = at.openFileForWriting (root,fileName=fileName,toString=toString)
+    if ok:
+        at.writeOpenFile(root,nosentinels=True,toString=toString,atAuto=True)
+        at.closeWriteFile() # Sets stringOutput if toString is True.
+        if at.errors == 0:
+            at.replaceTargetFileIfDifferent()
+        else:
+            g.es("Not written: " + at.outputFileName)
+    elif not toString:
+        root.setDirty() # Make _sure_ we try to rewrite this file.
+        g.es("Not written: " + at.outputFileName)
+
+    return ok
+#@+node:ekr.20071019141745:shouldWriteAtAutoNode
+@ Much thought went into this decision tree:
+
+- We do not want decisions to depend on past history.  That's too confusing.
+- We must ensure that the file will be written if the user does significant work.
+- We must ensure that the user can create an @auto x node at any time
+  without risk of of replacing x with empty or insignificant information.
+- We want the user to be able to create an @auto node which will be populated the next time the .leo file is opened.
+- We don't want minor import imperfections to be written to the @auto file.
+- The explicit commands that read and write @auto trees must always be honored.
+@c
+
+def shouldWriteAtAutoNode (self,p,exists,force):
+
+    '''Return True if we should write the @auto node at p.'''
+
+    if force: # We are executing write-at-auto-node or write-dirty-at-auto-nodes.
+        return True
+    elif not exists: # We can write a non-existent file without danger.
+        return True
+    elif not p.isDirty(): # There is nothing new to write.
+        return False
+    elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
+        g.es_print('%s not written:\n\
+no children and less than 10 characters (excluding directives)' % (p.headString()),color='red')
+        return False
+    else: # The @auto tree is dirty and contains significant info.
+        return True
+#@-node:ekr.20071019141745:shouldWriteAtAutoNode
+#@+node:ekr.20070909103844:isSignificantAtAutoTree
+def isSignificantAtAutoTree (self,p):
+
+    '''Return True if p's tree has a significant amount of information.'''
+
+    s = p.bodyString()
+
+    # Remove all blank lines and all Leo directives.
+    lines = []
+    for line in g.splitLines(s):
+        if not line.strip():
+            pass
+        elif line.startswith('@'):
+            i = 1 ; j = g.skip_id(line,i,chars='-')
+            word = s[i:j]
+            if not (word and word in g.globalDirectiveList):
+                lines.append(line)
+        else:
+            lines.append(line)
+
+    s2 = ''.join(lines)
+    # g.trace('s2',s2)
+
+    return p.hasChildren() or len(s2.strip()) >= 10
+#@-node:ekr.20070909103844:isSignificantAtAutoTree
+#@-node:ekr.20070806141607:writeOneAtAutoNode & helpers
+#@+node:ekr.20041005105605.157:writeOpenFile
+# New in 4.3: must be inited before calling this method.
+# New in 4.3 b2: support for writing from a string.
+
+def writeOpenFile(self,root,nosentinels=False,toString=False,fromString='',atAuto=False):
+
+    """Do all writes except asis writes."""
+
+    at = self ; s = g.choose(fromString,fromString,root.v.t.bodyString)
+
+    root.clearAllVisitedInTree() # Clear both vnode and tnode bits.
+    root.clearVisitedInTree()
+
+    at.putAtFirstLines(s)
+    at.putOpenLeoSentinel("@+leo-ver=4")
+    at.putInitialComment()
+    at.putOpenNodeSentinel(root)
+    at.putBody(root,fromString=fromString)
+    at.putCloseNodeSentinel(root)
+    at.putSentinel("@-leo")
+    root.setVisited()
+    at.putAtLastLines(s)
+
+    if atAuto or (not toString and not nosentinels):
+        at.warnAboutOrphandAndIgnoredNodes()
+#@-node:ekr.20041005105605.157:writeOpenFile
+#@+node:ekr.20041005105605.216:warnAboutOrpanAndIgnoredNodes
+# Called from writeOpenFile.
+
+def warnAboutOrphandAndIgnoredNodes (self):
+
+    # Always warn, even when language=="cweb"
+    at = self ; root = at.root
+
+    for p in root.self_and_subtree_iter():
+        if not p.v.t.isVisited(): # Check tnode bit, not vnode bit.
+            at.writeError("Orphan node:  " + p.headString())
+            if p.hasParent():
+                g.es("parent node: " + p.parent().headString(),color="blue")
+            if not at.thinFile and p.isAtIgnoreNode():
+                at.writeError("@ignore node: " + p.headString())
+
+    if at.thinFile:
+        p = root.copy() ; after = p.nodeAfterTree()
+        while p and p != after:
+            if p.isAtAllNode():
+                p.moveToNodeAfterTree()
+            else:
+                if p.isAtIgnoreNode():
+                    at.writeError("@ignore node: " + p.headString())
+                p.moveToThreadNext()
+#@-node:ekr.20041005105605.216:warnAboutOrpanAndIgnoredNodes
+#@-node:ekr.20071204083239:Fixed @auto bug
 #@-node:ekr.20071127183215:Fixed bugs
 #@+node:ekr.20071127183351:New features
 #@+node:ekr.20071116114551.1:test.leo now contains a node showing all icons in the Icons/Tango directory
