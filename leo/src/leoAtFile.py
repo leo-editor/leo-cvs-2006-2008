@@ -3038,10 +3038,12 @@ class atFile:
 
         ok = at.openFileForWriting (root,fileName=fileName,toString=toString)
         if ok:
-            at.writeOpenFile(root,nosentinels=True,toString=toString)
+            at.writeOpenFile(root,nosentinels=True,toString=toString,atAuto=True)
             at.closeWriteFile() # Sets stringOutput if toString is True.
-            at.replaceTargetFileIfDifferent()
-            # c.atAutoDict [fileName] = True
+            if at.errors == 0:
+                at.replaceTargetFileIfDifferent()
+            else:
+                g.es("Not written: " + at.outputFileName)
         elif not toString:
             root.setDirty() # Make _sure_ we try to rewrite this file.
             g.es("Not written: " + at.outputFileName)
@@ -3251,7 +3253,7 @@ class atFile:
     # New in 4.3: must be inited before calling this method.
     # New in 4.3 b2: support for writing from a string.
 
-    def writeOpenFile(self,root,nosentinels=False,toString=False,fromString=''):
+    def writeOpenFile(self,root,nosentinels=False,toString=False,fromString='',atAuto=False):
 
         """Do all writes except asis writes."""
 
@@ -3270,7 +3272,7 @@ class atFile:
         root.setVisited()
         at.putAtLastLines(s)
 
-        if not toString and not nosentinels:
+        if atAuto or (not toString and not nosentinels):
             at.warnAboutOrphandAndIgnoredNodes()
     #@-node:ekr.20041005105605.157:writeOpenFile
     #@-node:ekr.20041005105605.153:Override in plugins...
@@ -4457,6 +4459,8 @@ class atFile:
             return False
     #@-node:ekr.20041005105605.212:replaceTargetFileIfDifferent
     #@+node:ekr.20041005105605.216:warnAboutOrpanAndIgnoredNodes
+    # Called from writeOpenFile.
+
     def warnAboutOrphandAndIgnoredNodes (self):
 
         # Always warn, even when language=="cweb"
