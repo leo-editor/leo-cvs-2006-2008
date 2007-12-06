@@ -43,14 +43,14 @@ def print_node (p):
          # <img src="doc.gif">Forms<br>
      # </span>
 #@-node:print_node
-#@+node:nullFileObject
+#@+node:class nullFileObject
 class nullFileObject:
 
     '''A class used to discard all output to stdout, etc.'''
 
     def write (self,s):
         pass
-#@-node:nullFileObject
+#@-node:class nullFileObject
 #@-others
 
 import os
