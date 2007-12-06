@@ -1906,9 +1906,9 @@ def openWithFileName(fileName,old_c,
                 theFile,fileName,
                 readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
             app.unlockLog()
-            for frame in g.app.windowList:
+            for z in g.app.windowList: # Bug fix: 2007/12/07: don't change frame var.
                 # The recent files list has been updated by menu.updateRecentFiles.
-                frame.c.config.setRecentFiles(g.app.config.recentFiles)
+                z.c.config.setRecentFiles(g.app.config.recentFiles)
         # Bug fix in 4.4.
         frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
         g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
