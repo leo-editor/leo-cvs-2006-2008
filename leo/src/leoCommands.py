@@ -5393,9 +5393,11 @@ class baseCommands:
 
         '''Select the next node that is a clone of the selected node.'''
 
-        c = self ; p = c.currentPosition()
+        c = self ; cc = c.chapterController ; p = c.currentPosition()
         if not p: return
-        if not p.isCloned(): return
+        if not p.isCloned():
+            g.es('not a clone: %s' % (p.headString()),color='blue')
+            return
 
         t = p.v.t
         p.moveToThreadNext()
@@ -5412,7 +5414,13 @@ class baseCommands:
                 p = c.rootPosition()
 
         if not p: g.es("done",color="blue")
-        c.treeSelectHelper(p) # Sets focus.
+
+        if cc:
+            name = cc.findChapterNameForPosition(p)
+            cc.selectChapterByName(name)
+            c.frame.tree.expandAllAncestors(p)
+
+        c.selectPosition(p)
     #@-node:ekr.20031218072017.2916:goToNextClone
     #@+node:ekr.20031218072017.2917:goToNextDirtyHeadline
     def goToNextDirtyHeadline (self,event=None):
@@ -5555,7 +5563,7 @@ class baseCommands:
         c.treeSelectHelper(p,redraw=redraw)
     #@-node:ekr.20031218072017.2996:selectVisNext
     #@+node:ekr.20070417112650:utils
-    #@+node:ekr.20070226121510: treeFocusHelper (new in Leo 4.4.3)
+    #@+node:ekr.20070226121510: treeFocusHelper
     def treeFocusHelper (self):
 
         c = self
@@ -5564,8 +5572,8 @@ class baseCommands:
             c.treeWantsFocusNow()
         else:
             c.bodyWantsFocusNow()
-    #@-node:ekr.20070226121510: treeFocusHelper (new in Leo 4.4.3)
-    #@+node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
+    #@-node:ekr.20070226121510: treeFocusHelper
+    #@+node:ekr.20070226113916: treeSelectHelper
     def treeSelectHelper (self,p,redraw=True):
 
         c = self ; current = c.currentPosition()
@@ -5579,7 +5587,7 @@ class baseCommands:
                 c.endUpdate(redraw)
 
         c.treeFocusHelper()
-    #@-node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
+    #@-node:ekr.20070226113916: treeSelectHelper
     #@-node:ekr.20070417112650:utils
     #@-node:ekr.20031218072017.2913:Goto
     #@-node:ekr.20031218072017.2894:Outline menu...
