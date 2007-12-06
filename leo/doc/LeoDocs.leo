@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="14" left="340" height="852" width="892"/>
+	<global_window_position top="14" left="340" height="832" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -243,7 +243,7 @@
 <v t="ekr.20050901102400"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831184021.5" a="EV"><vh>Chapter 4: Programming with Leo</vh>
+<v t="ekr.20050831184021.5"><vh>Chapter 4: Programming with Leo</vh>
 <v t="ekr.20050828061213" a="E"><vh>@rst html\directives.html</vh>
 <v t="ekr.20050828160132"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050828061501.1"><vh>@rst-no-head Intro.</vh></v>
@@ -251,7 +251,7 @@
 <v t="ekr.20050828211507"><vh>Overview: summary of directives</vh>
 <v t="ekr.20050829083129"><vh>@rst-ignore alternate representation</vh></v>
 </v>
-<v t="ekr.20050828061501.30" a="T"><vh>Reference: all about directives</vh>
+<v t="ekr.20050828061501.30"><vh>Reference: all about directives</vh>
 <v t="ekr.20050828173234"><vh>@ and @doc</vh></v>
 <v t="ekr.20050828061501.31"><vh>@all</vh></v>
 <v t="ekr.20050828173234.1"><vh>@c and @code</vh></v>
@@ -3404,10 +3404,8 @@
 </v>
 </v>
 </v>
-<v t="ekr.20071115102421"><vh>4.4.5</vh></v>
-</v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071115102156" a="E"><vh>Leo 4.4.5 b1</vh>
+<v t="ekr.20071115102421"><vh>4.4.5</vh>
+<v t="ekr.20071115102156"><vh>Leo 4.4.5 b1</vh>
 <v t="ekr.20071115102156.5"><vh>Fixed bugs</vh>
 <v t="ekr.20071115102156.2"><vh>Removed all references to pluginsManager.txt</vh></v>
 <v t="ekr.20071115102156.6"><vh>Fixed hung windows</vh></v>
@@ -3437,6 +3435,28 @@
 <v t="ekr.20071115102156.258"><vh>@bool diagnose-aspell-installation</vh></v>
 <v t="ekr.20071115102156.302"><vh>@bool vim_plugin_opens_url_nodes</vh></v>
 <v t="ekr.20071115102156.289"><vh>@bool warn_when_plugins_fail_to_load </vh></v>
+</v>
+</v>
+</v>
+</v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20071206093346" a="TV"><vh>Leo 4.4.5 b2</vh>
+<v t="ekr.20071206093323.1"><vh>Fixed bugs</vh>
+<v t="ekr.20071206093323.112" a="E"><vh>Improved error reporting for aspell on Linux</vh></v>
+<v t="ekr.20071206093323.2"><vh>Fixed two crashers in the @noref logic</vh></v>
+<v t="ekr.20071206093323.3"><vh>Fixed crasher in regularizeWhitespace</vh></v>
+<v t="ekr.20071206093323.4" a="E"><vh>Fixed paste-node-as-clone</vh></v>
+<v t="ekr.20071206093323.29"><vh>Fixed threading colorizer hang with perl</vh></v>
+<v t="ekr.20071206093323.30"><vh>Fixed C++ importer crash</vh></v>
+<v t="ekr.20071206093323.31"><vh>Reorganized leoImport.py</vh></v>
+<v t="ekr.20071206093323.32" a="E"><vh>Fixed crasher when tangling @root</vh></v>
+<v t="ekr.20071206093323.59" a="E"><vh>Fixed command lockout problem</vh></v>
+<v t="ekr.20071206093323.72" a="E"><vh>Improved @auto code</vh></v>
+<v t="ekr.20071206093323.76"><vh>Simplified perl colorizer and added progress checks</vh></v>
+<v t="ekr.20071206093323.77" a="E"><vh>Fixed crasher in aspell logic</vh></v>
+<v t="ekr.20071206093323.80" a="E"><vh>Fixed problem with decorators</vh></v>
+<v t="ekr.20071206093323.87" a="E"><vh>Fixed @auto bug</vh></v>
+<v t="ekr.20071206093323.96" a="E"><vh>Fixed  focus problem with goto-next clone command</vh></v>
 </v>
 </v>
 </v>
@@ -33167,5 +33187,129 @@ The highlights of Leo 4.4.5:
 </t>
 <t tx="ekr.20071116081521"></t>
 <t tx="ekr.20071116081521.1"></t>
+<t tx="ekr.20071206093323.1"></t>
+<t tx="ekr.20071206093323.2">pylint reported the following errors:
+
+E1101:1877:atFile.readEndNode: Instance of 'atFile' has no 'correctedLines' member
+E1101:2725:atFile.norefWrite:  Instance of 'atFile' has no 'putBuffered' member
+</t>
+<t tx="ekr.20071206093323.3"></t>
+<t tx="ekr.20071206093323.4">http://sourceforge.net/forum/message.php?msg_id=4632695</t>
+<t tx="ekr.20071206093323.29">http://sourceforge.net/forum/message.php?msg_id=4646055
+</t>
+<t tx="ekr.20071206093323.30">https://sourceforge.net/forum/message.php?msg_id=4643992
+</t>
+<t tx="ekr.20071206093323.31">The init base classes can now be inited in a more standard way.</t>
+<t tx="ekr.20071206093323.32">http://sourceforge.net/forum/message.php?msg_id=4639426
+</t>
+<t tx="ekr.20071206093323.59">http://sourceforge.net/forum/message.php?msg_id=4639872
+</t>
+<t tx="ekr.20071206093323.72">Several problems still remain:
+
+- Files that contain what look like section references.
+
+- Underindented docstrings.</t>
+<t tx="ekr.20071206093323.76"></t>
+<t tx="ekr.20071206093323.77">http://sourceforge.net/forum/message.php?msg_id=4658901</t>
+<t tx="ekr.20071206093323.80">http://sourceforge.net/forum/message.php?msg_id=4652514</t>
+<t tx="ekr.20071206093323.87">http://sourceforge.net/forum/message.php?msg_id=4654762
+</t>
+<t tx="ekr.20071206093323.96">@nocolor
+
+I have clones that traverse chapters.
+
+Given the following Chapters:
+
+&gt; Main
+&gt; Big Picture
+&gt; Smaller Chunk
+
+I have in Main, my organization, with my group in it.  It's also cloned around
+all the other views (really, everything starts in the Big Picture).
+
+This is the layout of my clone:
+
+1:  Chapter:Main &gt; me
+2:  Chapter:Main &gt; MyOrg &gt; me
+3:  Chapter:Big Picture &gt; CEO &gt; Some Big Honcho &gt; MyOrg &gt; me
+4:  Chapter:Smaller Chunk &gt; Some Big Honcho &gt; MyOrg &gt; me
+
+If I Go-To-Next-Clone  (ALT-N) from (1), focus will move to the selected node
+in Chapter:Main, namely (2).
+
+So here's the issue: 
+
+Let each successive line below represent a starting focus, and the next line
+the node that ALT-N selects.  If focus changes in the Outline pane (including
+Chapter pane change) to match the Node, that case is marked with [f] - a successful
+focus transition.
+
+The issue are the lines w/o [f];  Here's a couple of test runs.
+
+1: [f] (starting node / focus)
+2: [f]
+3:
+4:
+1: [f]
+
+Next test:
+
+3: [f]
+1: [f]
+1: [f]
+4:
+3:
+1: [f]
+
+Next test:
+
+4: [f]
+3:
+1: [f]
+2: [f]
+4:
+3:
+1: [f]
+2: [f]
+... and so on...
+
+In cases with NO [f], the outline pane seems moved to the "end", but no node
+selected.
+
+Not a show stopper, but a bug nonetheless.
+
+@color
+</t>
+<t tx="ekr.20071206093323.112">http://sourceforge.net/forum/message.php?msg_id=4634600</t>
+<t tx="ekr.20071206093346">Leo 4.4.5 beta 2                          December 7, 2007
+
+Leo 4.4.5 beta 2 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+This beta 2 release fixes several recently reported bugs.  A final release
+is due in about a week.
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+Leo 4.4.5 fixes several long-delayed bug fixes and adds several new features.
+
+The highlights of Leo 4.4.5:
+----------------------------
+
+- Fixes all known bugs.
+- Leo now recognizes directives in headlines.
+- Adds 3 new sort-lines commands.
+- Adds commands to insert and delete icons from headlines.
+- Adds all the Tango 16x16 icons to Leo's icon library.
+- Adds support for @rst-preformat nodes to the rst3 plugin.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 </tnodes>
 </leo_file>

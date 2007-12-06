@@ -24,18 +24,25 @@ rem W0631 Using possibly undefined loop variable
 
 rem R0903 Too few public methods (0/1)
 
-rem passed...
+
+REM passed...
 rem call pylint.bat c:\prog\tigris-cvs\leo\src\leoAtFile.py --disable-msg=W0212,W0401,W0402,W0613 --rcfile=c:\prog\tigris-cvs\leo\test\pylint-leo-rc.txt
 rem call pylint.bat c:\prog\tigris-cvs\leo\src\leoFileCommands.py --disable-msg=W0401,W0402 --rcfile=c:\prog\tigris-cvs\leo\test\pylint-leo-rc.txt
 rem call pylint.bat c:\prog\tigris-cvs\leo\src\leoImport.py --disable-msg=W0402 --rcfile=c:\prog\tigris-cvs\leo\test\pylint-leo-rc.txt
-rem *** leoEditCommands.py: Dangerous: E1101. W0631 is ok. many W0612 and W0201 warnings
+REM *** leoEditCommands.py: Dangerous: E1101. W0631 is ok. many W0612 and W0201 warnings
 rem call pylint.bat c:\prog\tigris-cvs\leo\src\leoEditCommands.py --disable-msg=E1101,W0141,W0201,W0402,W0602,W0612,W0613,W0621,W0631 --rcfile=c:\prog\tigris-cvs\leo\test\pylint-leo-rc.txt
-rem *** leoGlobals.py: Dangerous: E0602,E1101.
+REM *** leoGlobals.py: Dangerous: E0602,E1101.
 rem call pylint.bat c:\prog\tigris-cvs\leo\src\leoGlobals.py --disable-msg=E0602,E1101,W0104,W0122,W0212,W0402,W0406,W0602,W0603,W0612,W0613,W0621,W0631,R0903 --rcfile=c:\prog\tigris-cvs\leo\test\pylint-leo-rc.txt
 rem call pylint.bat c:\prog\tigris-cvs\leo\src\leoNodes.py --disable-msg=W0212,W0231,W0232,W0401,W0402,W0612,W0613,W0622,R0903 --rcfile=c:\prog\tigris-cvs\leo\test\pylint-leo-rc.txt
-
 rem *** Template: disable warnings for unused args & variables.
 rem call pylint.bat c:\prog\tigris-cvs\leo\src\xxx.py --disable-msg=W0612,W0613 --rcfile=c:\prog\tigris-cvs\leo\test\pylint-leo-rc.txt
+rem call pylint.bat c:\prog\tigris-cvs\leo\src\xxx.py --disable-msg=W0612,W0613 --rcfile=c:\prog\tigris-cvs\leo\test\pylint-leo-rc.txt
+
+rem not passed...
+
+rem to do leoCommands, leoTangle, leoUndo, leoPlugins
+rem to do leoFind, leoFrame, leoGui, leoMenu
+rem to do leoTkinterDialog, leoTkinterFind, leoTkinterGui, leoTkinterFrame, leoTkinterKeys, leoTkinterMenu, leoTkinterTree.
 
 echo on
 
@@ -43,8 +50,6 @@ cd c:\prog\pylint-0.13.2\bin
 
 call pylint.bat c:\prog\tigris-cvs\leo\src\leoChapters.py --disable-msg=W0212,W0231,W0232,W0401,W0402,W0612,W0613,W0622,R0903 --rcfile=c:\prog\tigris-cvs\leo\test\pylint-leo-rc.txt
 
-rem to do leoCommands, leoTangle, leoUndo, leoPlugins
-rem to do leoFind, leoFrame, leoGui, leoMenu
-rem to do leoTkinterDialog, leoTkinterFind, leoTkinterGui, leoTkinterFrame, leoTkinterKeys, leoTkinterMenu, leoTkinterTree.
+echo "*****done*****"
 
 pause
