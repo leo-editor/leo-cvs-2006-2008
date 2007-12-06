@@ -9138,6 +9138,369 @@ def warnAboutOrphandAndIgnoredNodes (self):
                 p.moveToThreadNext()
 #@-node:ekr.20041005105605.216:warnAboutOrpanAndIgnoredNodes
 #@-node:ekr.20071204083239:Fixed @auto bug
+#@+node:ekr.20071204083942:Fixed chapter bug
+@nocolor
+
+I have clones that traverse chapters.
+
+Given the following Chapters:
+
+> Main
+> Big Picture
+> Smaller Chunk
+
+I have in Main, my organization, with my group in it.  It's also cloned around
+all the other views (really, everything starts in the Big Picture).
+
+This is the layout of my clone:
+
+1:  Chapter:Main > me
+2:  Chapter:Main > MyOrg > me
+3:  Chapter:Big Picture > CEO > Some Big Honcho > MyOrg > me
+4:  Chapter:Smaller Chunk > Some Big Honcho > MyOrg > me
+
+If I Go-To-Next-Clone  (ALT-N) from (1), focus will move to the selected node
+in Chapter:Main, namely (2).
+
+So here's the issue: 
+
+Let each successive line below represent a starting focus, and the next line
+the node that ALT-N selects.  If focus changes in the Outline pane (including
+Chapter pane change) to match the Node, that case is marked with [f] - a successful
+focus transition.
+
+The issue are the lines w/o [f];  Here's a couple of test runs.
+
+1: [f] (starting node / focus)
+2: [f]
+3:
+4:
+1: [f]
+
+Next test:
+
+3: [f]
+1: [f]
+1: [f]
+4:
+3:
+1: [f]
+
+Next test:
+
+4: [f]
+3:
+1: [f]
+2: [f]
+4:
+3:
+1: [f]
+2: [f]
+... and so on...
+
+In cases with NO [f], the outline pane seems moved to the "end", but no node
+selected.
+
+Not a show stopper, but a bug nonetheless.
+
+@color
+#@+node:ekr.20031218072017.2916:goToNextClone
+def goToNextClone (self,event=None):
+
+    '''Select the next node that is a clone of the selected node.'''
+
+    c = self ; cc = c.chapterController ; p = c.currentPosition()
+    if not p: return
+    if not p.isCloned():
+        g.es('not a clone: %s' % (p.headString()),color='blue')
+        return
+
+    t = p.v.t
+    p.moveToThreadNext()
+    wrapped = False
+    while 1:
+        if p and p.v.t == t:
+            break
+        elif p:
+            p.moveToThreadNext()
+        elif wrapped:
+            break
+        else:
+            wrapped = True
+            p = c.rootPosition()
+
+    if not p: g.es("done",color="blue")
+
+    if cc:
+        name = cc.findChapterNameForPosition(p)
+        cc.selectChapterByName(name)
+        c.frame.tree.expandAllAncestors(p)
+
+    c.selectPosition(p)
+#@-node:ekr.20031218072017.2916:goToNextClone
+#@+node:ekr.20070226113916: treeSelectHelper
+def treeSelectHelper (self,p,redraw=True):
+
+    c = self ; current = c.currentPosition()
+
+    if p:
+        c.beginUpdate()
+        try:
+            c.frame.tree.expandAllAncestors(p)
+            c.selectPosition(p,updateBeadList=False)
+        finally:
+            c.endUpdate(redraw)
+
+    c.treeFocusHelper()
+#@-node:ekr.20070226113916: treeSelectHelper
+#@clone 2
+#@+node:ekr.20070226121510: treeFocusHelper
+def treeFocusHelper (self):
+
+    c = self
+
+    if c.config.getBool('stayInTreeAfterSelect'):
+        c.treeWantsFocusNow()
+    else:
+        c.bodyWantsFocusNow()
+#@-node:ekr.20070226121510: treeFocusHelper
+#@+node:ekr.20031218072017.2997:c.selectPosition
+def selectPosition(self,p,updateBeadList=True):
+
+    """Select a new position."""
+
+    c = self ; cc = c.chapterController
+
+    if cc:
+        cc.selectChapterForPosition(p)
+
+    # g.trace(p.headString(),g.callers())
+
+    c.frame.tree.select(p,updateBeadList)
+
+    # New in Leo 4.4.2.
+    c.setCurrentPosition(p)
+        # Do *not* test whether the position exists!
+        # We may be in the midst of an undo.
+
+selectVnode = selectPosition
+#@-node:ekr.20031218072017.2997:c.selectPosition
+#@+node:ekr.20070615075643:cc.selectChapterForPosition
+def selectChapterForPosition (self,p):
+
+    '''
+    Select a chapter containing position p.
+    Do nothing if p if p does not exist or is in the presently selected chapter.
+    '''
+    cc = self ; c = cc.c ; trace = False
+
+    if not p or not c.positionExists(p):
+        return
+
+    theChapter = cc.getSelectedChapter()
+    if not theChapter:
+        if trace: g.trace('no chapter')
+        return
+
+    if trace: g.trace('selected:',theChapter.name)
+    # First, try the presently selected chapter.
+    firstName = theChapter.name
+    if firstName == 'main' or theChapter.positionIsInChapter(p):
+        if trace: g.trace('in chapter:',theChapter.name)
+        return
+
+    for name in cc.chaptersDict.keys():
+        if name not in (firstName,'main'):
+            theChapter = cc.chaptersDict.get(name)
+            if theChapter.positionIsInChapter(p):
+                if trace: g.trace('select:',theChapter.name)
+                cc.selectChapterByName(name)
+                return
+    else:
+        if trace: g.trace('select main')
+        cc.selectChapterByName('main')
+#@-node:ekr.20070615075643:cc.selectChapterForPosition
+#@+node:ekr.20071028091719:cc.findChapterNameForPosition
+def findChapterNameForPosition (self,p):
+
+    '''
+    Return the name of a chapter containing p or None if p does not exist.
+    '''
+    cc = self ; c = cc.c
+
+    if not p or not c.positionExists(p):
+        return None
+
+    for name in cc.chaptersDict.keys():
+        if name != 'main':
+            theChapter = cc.chaptersDict.get(name)
+            if theChapter.positionIsInChapter(p):
+                return name
+    else:
+        return 'main'
+#@-node:ekr.20071028091719:cc.findChapterNameForPosition
+#@+node:ekr.20040803072955.128:leoTree.select & helper
+tree_select_lockout = False
+
+def select (self,p,updateBeadList=True,scroll=True):
+
+    '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
+
+    if g.app.killed or self.tree_select_lockout: return None
+
+    try:
+        val = 'break'
+        self.tree_select_lockout = True
+        val = self.treeSelectHelper(p,updateBeadList,scroll)
+    finally:
+        self.tree_select_lockout = False
+
+    return val  # Don't put a return in a finally clause.
+#@+node:ekr.20070423101911:treeSelectHelper
+#  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
+
+def treeSelectHelper (self,p,updateBeadList,scroll):
+
+    c = self.c ; frame = c.frame ; trace = False
+    body = w = frame.body.bodyCtrl
+    old_p = c.currentPosition()
+
+    if not p:
+        # Do *not* test c.positionExists(p) here.
+        # We may be in the process of changing roots.
+        return None # Not an error.
+
+    # g.trace('      ===',id(w),p and p.headString())
+    if self.trace_select and not g.app.unitTesting: g.trace('tree',g.callers())
+
+    if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
+        if old_p:
+            << unselect the old node >>
+
+    g.doHook("unselect2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+
+    if not g.doHook("select1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
+        << select the new node >>
+        if p and p != old_p: # Suppress duplicate call.
+            try: # may fail during initialization.
+                # p is NOT c.currentPosition() here!
+                if 0: # Interferes with new colorizer.
+                    self.canvas.update_idletasks()
+                    self.scrollTo(p)
+                if scroll and g.app.gui.guiName() == 'tkinter':
+                    def scrollCallback(self=self,p=p):
+                        self.scrollTo(p)
+                    self.canvas.after(100,scrollCallback)
+            except Exception: pass
+        c.nodeHistory.update(p,updateBeadList) # Remember this position.
+    c.setCurrentPosition(p)
+    << set the current node >>
+    c.frame.body.assignPositionToEditor(p) # New in Leo 4.4.1.
+    c.frame.updateStatusLine() # New in Leo 4.4.1.
+
+    g.doHook("select2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+    g.doHook("select3",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+
+    return 'break' # Supresses unwanted selection.
+#@+node:ekr.20040803072955.129:<< unselect the old node >>
+# Remember the position of the scrollbar before making any changes.
+if not body: g.trace('no body!','c.frame',c.frame,'old_p',old_p)
+
+yview = body.getYScrollPosition()
+insertSpot = c.frame.body.getInsertPoint()
+
+if old_p != p:
+    self.endEditLabel() # sets editPosition = None
+    self.setUnselectedLabelState(old_p) # 12/17/04
+
+if c.edit_widget(old_p):
+    old_p.v.t.scrollBarSpot = yview
+    old_p.v.t.insertSpot = insertSpot
+#@-node:ekr.20040803072955.129:<< unselect the old node >>
+#@+node:ekr.20040803072955.130:<< select the new node >>
+# Bug fix: we must always set this, even if we never edit the node.
+self.revertHeadline = p.headString()
+frame.setWrap(p)
+
+# Always do this.  Otherwise there can be problems with trailing newlines.
+
+s = g.toUnicode(p.v.t.bodyString,"utf-8")
+old_s = w.getAllText()
+
+if True and p and p == old_p and c.frame.body.colorizer.isSameColorState() and s == old_s:
+    pass
+else:
+    # This destroys all color tags, so do a full recolor.
+    w.setAllText(s)
+    self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
+
+if p.v and p.v.t.scrollBarSpot != None:
+    first,last = p.v.t.scrollBarSpot
+    w.setYScrollPosition(first)
+
+if p.v and p.v.t.insertSpot != None:
+    spot = p.v.t.insertSpot
+    w.setInsertPoint(spot)
+    w.see(spot)
+else:
+    w.setInsertPoint(0)
+
+# g.trace("select:",p.headString())
+#@-node:ekr.20040803072955.130:<< select the new node >>
+#@+node:ekr.20040803072955.133:<< set the current node >>
+# g.trace('selecting',p,'edit_widget',c.edit_widget(p))
+self.setSelectedLabelState(p)
+
+frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
+
+if self.use_chapters:
+    cc = c.chapterController
+    theChapter = cc.getSelectedChapter()
+    if theChapter:
+        theChapter.p = p.copy()
+        # g.trace('tkTree',theChapter.name,'v',id(p.v),p.headString())
+
+if self.stayInTree:
+    c.treeWantsFocus()
+else:
+    c.bodyWantsFocus()
+#@-node:ekr.20040803072955.133:<< set the current node >>
+#@-node:ekr.20070423101911:treeSelectHelper
+#@-node:ekr.20040803072955.128:leoTree.select & helper
+#@+node:ekr.20040803072955.76:findEditWidget (tkTree)
+def findEditWidget (self,p):
+
+    """Return the Tk.Text item corresponding to p."""
+
+    c = self.c ; trace = False
+
+    # if trace: g.trace(g.callers())
+    if p and c:
+        if trace: g.trace('h',p.headString(),'key',p.key())
+        aTuple = self.visibleText.get(p.key())
+        if aTuple:
+            w,theId = aTuple
+            if trace: g.trace('%4d' % (theId),self.textAddr(w),p.headString())
+            return w
+        else:
+            if trace: g.trace('oops: not found',p,g.callers())
+            return None
+
+    if trace: g.trace('not found',p and p.headString())
+    return None
+#@-node:ekr.20040803072955.76:findEditWidget (tkTree)
+#@+node:ekr.20060202090907:p.key
+def key (self):
+
+    p = self
+
+    return '%s:%d.%s' % (
+        id(p.v),
+        p.childIndex(),
+        ','.join([str(id(v)) for v in p.stack])
+    )
+#@-node:ekr.20060202090907:p.key
+#@-node:ekr.20071204083942:Fixed chapter bug
 #@-node:ekr.20071127183215:Fixed bugs
 #@+node:ekr.20071127183351:New features
 #@+node:ekr.20071116114551.1:test.leo now contains a node showing all icons in the Icons/Tango directory

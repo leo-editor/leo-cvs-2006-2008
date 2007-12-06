@@ -1,86 +1,10 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20071204083109:Fix bugs
-#@+node:ekr.20071204083942:Fix chapter bug
-@nocolor
-
-I created a dirty deed...  wrote a spider to grab employee info (internal) and
-made a flattened outline out of it.
-
-Cool - I have a 1MB plus "org chart" in Leo now.  This could be useful.
-
-So - to organize I tried things.... Chapters among them.
-
-Here's what I found.
-
-I have clones that traverse chapters.
-
-Given the following Chapters:
-
-> Main
-> Big Picture
-> Smaller Chunk
-
-I have in Main, my organization, with my group in it.  It's also cloned around
-all the other views (really, everything starts in the Big Picture).
-
-This is the layout of my clone:
-
-1:  Chapter:Main > me
-2:  Chapter:Main > MyOrg > me
-3:  Chapter:Big Picture > CEO > Some Big Honcho > MyOrg > me
-4:  Chapter:Smaller Chunk > Some Big Honcho > MyOrg > me
-
-If I Go-To-Next-Clone  (ALT-N) from (1), focus will move to the selected node
-in Chapter:Main, namely (2).
-So here's the issue: 
-
-Let each successive line below represent a starting focus, and the next line
-the node that ALT-N selects.  If focus changes in the Outline pane (including
-Chapter pane change) to match the Node, that case is marked with [f] - a successful
-focus transition.
-
-The issue are the lines w/o [f];  Here's a couple of test runs.
-
-1: [f] (starting node / focus)
-2: [f]
-3:
-4:
-1: [f]
-
-Next test:
-
-3: [f]
-1: [f]
-1: [f]
-4:
-3:
-1: [f]
-
-Next test:
-
-4: [f]
-3:
-1: [f]
-2: [f]
-4:
-3:
-1: [f]
-2: [f]
-... and so on...
-
-In cases with NO [f], the outline pane seems moved to the "end", but no node
-selected.
-
-Not a show stopper, but a bug nonetheless.
-
-Cheers,
-Yarko
-#@-node:ekr.20071204083942:Fix chapter bug
-#@-node:ekr.20071204083109:Fix bugs
 #@+node:ekr.20071113093057:To do: 4.4.6: last major projects
 #@+node:ekr.20071114063047:First
+#@+node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
+#@-node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
 #@+node:ekr.20071129095408:Upgrade to Pmw 1.3
 #@-node:ekr.20071129095408:Upgrade to Pmw 1.3
 #@+node:ekr.20071031113657:Always use sax parser to read .leo files
