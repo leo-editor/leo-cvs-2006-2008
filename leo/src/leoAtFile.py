@@ -263,6 +263,7 @@ class atFile:
         self.leadingWs = ""
         self.out = None
         self.outStack = []
+        self.rootSeen = False
         self.tnodeList = []
         self.tnodeListIndex = 0
         self.t = None
