@@ -57,14 +57,14 @@ gBridgeController = None # The singleton bridge controller.
 
 #@+others
 #@+node:ekr.20070227092442:controller
-def controller(gui='nullGui',verbose='True'):
+def controller(gui='nullGui',loadPlugins=True,readSettings=True,verbose=False):
 
     '''Create an singleton instance of a bridge controller.'''
 
     global gBridgeController
 
     if not gBridgeController:
-        gBridgeController = bridgeController(gui,verbose)
+        gBridgeController = bridgeController(gui,loadPlugins,readSettings,verbose)
 
     return gBridgeController
 #@nonl
@@ -76,16 +76,18 @@ class bridgeController:
 
     #@    @+others
     #@+node:ekr.20070227092442.3:ctor (bridgeController)
-    def __init__ (self,guiName,verbose):
+    def __init__ (self,guiName,loadPlugins,readSettings,verbose):
 
         self.g = None
         self.gui = None
         self.guiName = guiName
-        self.mainLoop = False # True only if a non-null-gui mainloop is active.
+        self.loadPlugins = loadPlugins
+        self.readSettings = readSettings
         self.verbose = verbose
 
+        self.mainLoop = False # True only if a non-null-gui mainloop is active.
+
         self.initLeo()
-    #@nonl
     #@-node:ekr.20070227092442.3:ctor (bridgeController)
     #@+node:ekr.20070227092442.4:globals
     def globals (self):
@@ -143,11 +145,13 @@ class bridgeController:
         g.app.inBridge = True # Added 2007/10/21: support for g.getScript.
         g.app.nodeIndices = leoNodes.nodeIndices(g.app.leoID)
         g.app.config = leoConfig.configClass()
-        g.app.config.readSettingsFiles(None,verbose=self.verbose)
+        if self.readSettings:
+            g.app.config.readSettingsFiles(None,verbose=self.verbose)
         self.createGui() # Create the gui *before* loading plugins.
         if self.verbose: self.reportDirectories()
         self.adjustSysPath()
-        g.doHook("start1") # Load plugins.
+        if self.loadPlugins:
+            g.doHook("start1") # Load plugins.
         g.init_sherlock(args=[])
         g.app.initing = False
         g.doHook("start2",c=None,p=None,v=None,fileName=None)
@@ -338,11 +342,6 @@ class bridgeController:
                 g.app.gui.log = log = c.frame.log
                 log.isNull = False
                 log.enabled = True
-            # else:
-                # # Use the existing null log
-                # log = g.app.gui.log
-                # print 'use null log',log
-                # log.enabled = False
 
             # print 'createGui:','g.app:',id(g.app),g.app
             # print 'createGui:','g.app.gui',g.app.gui
