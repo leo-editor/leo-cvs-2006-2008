@@ -680,30 +680,35 @@ class chapterController:
         Select a chapter containing position p.
         Do nothing if p if p does not exist or is in the presently selected chapter.
         '''
-        cc = self ; c = cc.c
+        cc = self ; c = cc.c ; trace = False
 
         if not p or not c.positionExists(p):
             return
 
         theChapter = cc.getSelectedChapter()
-        if not theChapter: return
+        if not theChapter:
+            if trace: g.trace('no chapter')
+            return
 
-        # g.trace('selected:',theChapter.name)
+        if trace: g.trace('selected:',theChapter.name)
         # First, try the presently selected chapter.
         firstName = theChapter.name
         if firstName == 'main' or theChapter.positionIsInChapter(p):
-            return # Bug fix: 7/2/07. All position are in the main chapter.
+            if trace: g.trace('in chapter:',theChapter.name)
+            return
 
         for name in cc.chaptersDict.keys():
             if name not in (firstName,'main'):
                 theChapter = cc.chaptersDict.get(name)
                 if theChapter.positionIsInChapter(p):
+                    if trace: g.trace('select:',theChapter.name)
                     cc.selectChapterByName(name)
                     return
         else:
+            if trace: g.trace('select main')
             cc.selectChapterByName('main')
     #@-node:ekr.20070615075643:cc.selectChapterForPosition
-    #@+node:ekr.20071028091719:cc.findChapterForPosition (New in Leo 4.4.4)
+    #@+node:ekr.20071028091719:cc.findChapterNameForPosition
     def findChapterNameForPosition (self,p):
 
         '''
@@ -721,7 +726,7 @@ class chapterController:
                     return name
         else:
             return 'main'
-    #@-node:ekr.20071028091719:cc.findChapterForPosition (New in Leo 4.4.4)
+    #@-node:ekr.20071028091719:cc.findChapterNameForPosition
     #@-node:ekr.20070317130648:Utils
     #@+node:ekr.20070610100031:Undo
     #@+node:ekr.20070606075125:afterCreateChapter

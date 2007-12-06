@@ -1279,7 +1279,7 @@ class basePosition (object):
 
     isEqual = equal
     #@-node:ekr.20040325142015:p.equal & isEqual
-    #@+node:ekr.20060202090907:p.key (new in 4.4b2)
+    #@+node:ekr.20060202090907:p.key
     def key (self):
 
         p = self
@@ -1289,7 +1289,7 @@ class basePosition (object):
             p.childIndex(),
             ','.join([str(id(v)) for v in p.stack])
         )
-    #@-node:ekr.20060202090907:p.key (new in 4.4b2)
+    #@-node:ekr.20060202090907:p.key
     #@-node:ekr.20040228094013: ctor & other special methods...
     #@+node:ekr.20040306212636:Getters
     #@+node:ekr.20040306210951: vnode proxies

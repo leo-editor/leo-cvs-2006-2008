@@ -1554,26 +1554,28 @@ class leoTkinterTree (leoFrame.leoTree):
         if p: return p.copy() # Make _sure_ nobody changes this table!
         else: return None
     #@-node:ekr.20040803072955.74:eventToPosition
-    #@+node:ekr.20040803072955.76:findEditWidget
+    #@+node:ekr.20040803072955.76:findEditWidget (tkTree)
     def findEditWidget (self,p):
 
         """Return the Tk.Text item corresponding to p."""
 
-        c = self.c
+        c = self.c ; trace = False
 
+        # if trace: g.trace(g.callers())
         if p and c:
+            if trace: g.trace('h',p.headString(),'key',p.key())
             aTuple = self.visibleText.get(p.key())
             if aTuple:
                 w,theId = aTuple
-                # g.trace('%4d' % (theId),self.textAddr(w),p.headString())
+                if trace: g.trace('%4d' % (theId),self.textAddr(w),p.headString())
                 return w
             else:
-                # g.trace('oops: not found',p)
+                if trace: g.trace('oops: not found',p,g.callers())
                 return None
 
-        # g.trace(not found',p.headString())
+        if trace: g.trace('not found',p and p.headString())
         return None
-    #@-node:ekr.20040803072955.76:findEditWidget
+    #@-node:ekr.20040803072955.76:findEditWidget (tkTree)
     #@+node:ekr.20040803072955.109:findVnodeWithIconId
     def findPositionWithIconId (self,theId):
 

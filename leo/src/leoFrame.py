@@ -2630,66 +2630,17 @@ class leoTree:
             self.tree_select_lockout = False
 
         return val  # Don't put a return in a finally clause.
-    #@+node:ekr.20070615075643:cc.selectChapterForPosition
-    def selectChapterForPosition (self,p):
-
-        '''
-        Select a chapter containing position p.
-        Do nothing if p if p does not exist or is in the presently selected chapter.
-        '''
-        cc = self ; c = cc.c
-
-        if not p or not c.positionExists(p):
-            return
-
-        theChapter = cc.getSelectedChapter()
-        if not theChapter: return
-
-        # g.trace('selected:',theChapter.name)
-        # First, try the presently selected chapter.
-        firstName = theChapter.name
-        if firstName == 'main' or theChapter.positionIsInChapter(p):
-            return # Bug fix: 7/2/07. All position are in the main chapter.
-
-        for name in cc.chaptersDict.keys():
-            if name not in (firstName,'main'):
-                theChapter = cc.chaptersDict.get(name)
-                if theChapter.positionIsInChapter(p):
-                    cc.selectChapterByName(name)
-                    return
-        else:
-            cc.selectChapterByName('main')
-    #@-node:ekr.20070615075643:cc.selectChapterForPosition
-    #@+node:ekr.20071028091719:cc.findChapterForPosition (New in Leo 4.4.4)
-    def findChapterNameForPosition (self,p):
-
-        '''
-        Return the name of a chapter containing p or None if p does not exist.
-        '''
-        cc = self ; c = cc.c
-
-        if not p or not c.positionExists(p):
-            return None
-
-        for name in cc.chaptersDict.keys():
-            if name != 'main':
-                theChapter = cc.chaptersDict.get(name)
-                if theChapter.positionIsInChapter(p):
-                    return name
-        else:
-            return 'main'
-    #@-node:ekr.20071028091719:cc.findChapterForPosition (New in Leo 4.4.4)
     #@+node:ekr.20070423101911:treeSelectHelper
     #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
 
     def treeSelectHelper (self,p,updateBeadList,scroll):
 
-        c = self.c ; frame = c.frame
-        body = w = frame.body.bodyCtrl # 2007/10/25
+        c = self.c ; frame = c.frame ; trace = False
+        body = w = frame.body.bodyCtrl
         old_p = c.currentPosition()
 
         if not p:
-            # Bug fix: 5/31/07: do *not* test c.positionExists(p) here.
+            # Do *not* test c.positionExists(p) here.
             # We may be in the process of changing roots.
             return None # Not an error.
 
@@ -2766,6 +2717,7 @@ class leoTree:
         c.setCurrentPosition(p)
         #@    << set the current node >>
         #@+node:ekr.20040803072955.133:<< set the current node >>
+        # g.trace('selecting',p,'edit_widget',c.edit_widget(p))
         self.setSelectedLabelState(p)
 
         frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
