@@ -84,7 +84,8 @@ include plugins/*.txt
 include plugins/*.py
 
 include plugins/trees/*.py
-# include plugins/trees/pluginsManager.txt
+# trees/pluginsManager.txt is for the use of a plugin
+include plugins/trees/pluginsManager.txt
 
 include scripts/openLeoScript.sh
 include scripts/scripts.leo

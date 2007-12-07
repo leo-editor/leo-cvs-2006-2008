@@ -386,7 +386,8 @@ Section "Leo" SEC01
 
   File "..\plugins\trees\*.py"
 
-  ; File "..\plugins\trees\pluginsManager.txt"
+  # trees\pluginsManager.txt is a for use of a plugin.
+  File "..\plugins\trees\pluginsManager.txt"
   ;@nonl
   ;@-node:ekr.20050118104901.7:<< install plugins >>
   ;@nl

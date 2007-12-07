@@ -224,7 +224,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846"><vh>Distribution files</vh>
+<v t="EKR.20040519090846" a="TV"><vh>Distribution files</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
@@ -243,11 +243,11 @@
 <v t="EKR.20040519082027.34"><vh>@file-thin ../uninstall</vh></v>
 </v>
 </v>
-<v t="ekr.20051205102401" a="E"><vh>Update these for each release</vh>
+<v t="ekr.20051205102401"><vh>Update these for each release</vh>
 <v t="EKR.20040519090846.9"><vh>@asis ../doc/README.TXT</vh></v>
 <v t="EKR.20040519090846.8"><vh>@asis ../doc/PKG-INFO.TXT</vh></v>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings for leo-4.3.nsi &gt;&gt;</vh></v>
-<v t="ekr.20050118124408" a="TV"><vh>&lt;&lt; 4.3 nsi installer version &gt;&gt;</vh></v>
+<v t="ekr.20050118124408"><vh>&lt;&lt; 4.3 nsi installer version &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
 </v>
 </vnodes>
@@ -3058,7 +3058,8 @@ SetOutPath "$INSTDIR\plugins\trees"
 
 File "..\plugins\trees\*.py"
 
-; File "..\plugins\trees\pluginsManager.txt"</t>
+# trees\pluginsManager.txt is a for use of a plugin.
+File "..\plugins\trees\pluginsManager.txt"</t>
 <t tx="ekr.20050118104901.8">Delete "$INSTDIR\plugins\leoPlugins.leo"
 
 Delete "$INSTDIR\plugins\*.txt"
@@ -5280,7 +5281,8 @@ include plugins/*.txt
 include plugins/*.py
 
 include plugins/trees/*.py
-# include plugins/trees/pluginsManager.txt
+# trees/pluginsManager.txt is for the use of a plugin
+include plugins/trees/pluginsManager.txt
 
 include scripts/openLeoScript.sh
 include scripts/scripts.leo
