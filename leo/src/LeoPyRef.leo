@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.622863247863">
-	<global_window_position top="24" left="218" height="896" width="972"/>
+<globals body_outline_ratio="0.357142857143">
+	<global_window_position top="15" left="344" height="896" width="835"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -43,10 +43,12 @@
 <v t="ekr.20031218072017.329"><vh>@thin ../doc/leoNotes.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
-<v t="EKR.20040429143933"><vh>@thin leoProjects.txt</vh></v>
+<v t="EKR.20040429143933"
+marks="ekr.20070909100252,"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.2"><vh>To do</vh>
-<v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
+<v t="ekr.20040117181936"
+marks="ekr.20070927082205,"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
 <v t="ekr.20031218072017.2406" a="TV"><vh>Code</vh>
@@ -54,7 +56,8 @@
 <v t="ekr.20031218072017.2604"><vh>Core classes...</vh>
 <v t="ekr.20031218072017.2605"><vh>@thin leo.py </vh></v>
 <v t="ekr.20031218072017.2608"><vh>@thin leoApp.py</vh></v>
-<v t="ekr.20041005105605.1"><vh>@thin leoAtFile.py</vh></v>
+<v t="ekr.20041005105605.1"
+marks="ekr.20070909100252,"><vh>@thin leoAtFile.py</vh></v>
 <v t="ekr.20070227091955.1"><vh>@thin leoBridge.py</vh></v>
 <v t="ekr.20070317085508.1"><vh>@thin leoChapters.py</vh></v>
 <v t="ekr.20031218072017.2794"><vh>@thin leoColor.py</vh></v>
@@ -81,12 +84,6 @@
 <v t="ekr.20031218072017.3749"
 marks="ekr.20070927082205,"><vh>@thin leoMenu.py</vh></v>
 </v>
-<v t="ekr.20070930105601"><vh>Gui Swing classes</vh>
-<v t="ekr.20071001092721"><vh>@thin leoSwingDialog.py</vh></v>
-<v t="ekr.20070930105125"><vh>@thin leoSwingFrame.py</vh></v>
-<v t="ekr.20070930102053.1"><vh>@thin leoSwingGui.py</vh></v>
-<v t="ekr.20071001081358"><vh>@thin leoSwingUtils.py</vh></v>
-</v>
 <v t="ekr.20031218072017.3821"><vh>Gui Tkinter classes</vh>
 <v t="ekr.20031218072017.3838"><vh>@thin leoTkinterComparePanel.py</vh></v>
 <v t="ekr.20031218072017.3858"><vh>@thin leoTkinterDialog.py</vh></v>
@@ -107,14 +104,11 @@ marks="ekr.20060211144330.1,"><vh>@thin leoTkinterMenu.py</vh></v>
 
 **Summary of to-do items**
 
-Leo 4.4.5: Useful odds and ends.
-
 Leo 4.4.6: Last major projects:
 
 - Sax-based parsing.
 - Better vim bindings.
 - Translation tools.
-
 
 @color</t>
 <t tx="EKR.20040519090151.3"></t>
@@ -142,7 +136,7 @@ z:  a local temp.</t>
 <t tx="ekr.20031218072017.3821"></t>
 <t tx="ekr.20040629121554.1">def getSignOnLine (self):
     c = self
-    return "Leo 4.4.5 beta 1, build %s, November 9, 2007" % c.getBuildNumber()
+    return "Leo 4.4.5 beta 2, build %s, December 7, 2007" % c.getBuildNumber()
 </t>
 <t tx="ekr.20050721093241">@nocolor
 
@@ -334,7 +328,6 @@ c.setBodyString(p,s)
 u.afterChangeNodeContents(p,'add-if-g-unitTesting',b)
 </t>
 <t tx="ekr.20070629073827"></t>
-<t tx="ekr.20070930105601">    </t>
 <t tx="ekr.20071001054335"># script to split node containing multiple def's into child nodes
 
 def createChild (parent,body,line):
