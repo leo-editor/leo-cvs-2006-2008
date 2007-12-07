@@ -6186,7 +6186,7 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
                 loadedModules[moduleName] = result
         loadingModuleNameStack.pop()
 
-    if g.unitTesting or g.app.batchMode:
+    if g.unitTesting or g.app.batchMode or g.app.inBridge:
         pass
     elif result is None:
         if warn_on_failure or (verbose and not g.app.initing): # or not g.app.unitTesting:

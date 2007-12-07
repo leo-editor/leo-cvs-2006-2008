@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="14" left="340" height="832" width="892"/>
+	<global_window_position top="14" left="340" height="812" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -172,7 +172,7 @@
 <v t="ekr.20050906105946"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.2"><vh>Chapter 1: Installing Leo</vh>
+<v t="ekr.20050831195331.2" a="E"><vh>Chapter 1: Installing Leo</vh>
 <v t="edream.110203163054.48"><vh>@rst html\install.html</vh>
 <v t="ekr.20050901110110"><vh>@rst-no-head links</vh></v>
 <v t="edream.110203163054.49"><vh>System requirements</vh></v>
@@ -3439,8 +3439,8 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071206093346" a="TV"><vh>Leo 4.4.5 b2</vh>
+<v t="edream.110203163054.63" a="ET"><vh>Latest version</vh>
+<v t="ekr.20071206093346" a="V"><vh>Leo 4.4.5 b2</vh>
 <v t="ekr.20071206093323.1"><vh>Fixed bugs</vh>
 <v t="ekr.20071206093323.112" a="E"><vh>Improved error reporting for aspell on Linux</vh></v>
 <v t="ekr.20071206093323.2"><vh>Fixed two crashers in the @noref logic</vh></v>
