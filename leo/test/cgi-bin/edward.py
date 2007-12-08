@@ -58,14 +58,18 @@ import sys
 path = r'c:\prog\tigris-cvs\leo\test\test.leo'
 
 # Kill all output from the bridge so it doesn't become part of the page.
-sys.stdout = nullFileObject()
+# This is no longer necessary when readSettings=False and loadPlugins=False.
+
+#sys.stdout = nullFileObject()
 import leoBridge
-controller = leoBridge.controller(gui='nullGui',verbose=False)
-g = controller.globals()
-c = controller.openLeoFile(path)
+
+b = leoBridge.controller(gui='nullGui',loadPlugins=False,readSettings=False,verbose=False)
+g = b.globals()
+c = b.openLeoFile(path)
 p = c.rootPosition()
+
 # Restore sys.stdout.
-sys.stdout = sys.__stdout__
+#sys.stdout = sys.__stdout__
 
 # This line is required (with extra newline), but does not show on the page.
 print "Content-type:text/html\n"
