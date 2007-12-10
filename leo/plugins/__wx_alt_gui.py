@@ -33,6 +33,8 @@ __revision__ = re.sub(r'^\D+([\d\.]+)\D+$', r'\1', "$Revision$")
 
 __version__ = '0.2.%s'% __revision__
 
+__plugin_name__ = " wxPython GUI"
+
 #@<< version history >>
 #@+node:bob.20070813163858.2:<< version history >>
 #@@nocolor
@@ -137,7 +139,7 @@ try:
     import wx.lib.colourdb
 except ImportError:
     wx = None
-    g.es_print('wx_alt_gui plugin: can not import wxWidgets')
+    #g.es_print('wx_alt_gui plugin: can not import wxWidgets')
 
 try:
     import wx.richtext as richtext
@@ -2868,6 +2870,237 @@ if wx:
         #@-node:bob.20070813163332.175:Event handlers...
         #@-others
     #@-node:bob.20070813163332.160:wxComparePanel class (not ready yet)
+    #@+node:bob.20071209181626:class wxScrolledMessageDialog
+    class wxScrolledMessageDialog(object):
+        """A class to create and run a Scrolled Message dialog for wxPython"""
+        #@    @+others
+        #@+node:bob.20071209181626.1:__init__
+        def __init__(self, title='Message', label= '', msg='', callback=None, buttons=None):
+
+            """Create and run a modal dialog showing 'msg' in a scrollable window."""
+
+            if buttons is None:
+                buttons = []
+
+            self.callback=callback
+
+            self.result = ('Cancel', None)
+
+            self.top = top = wx.Dialog(None, -1, title)
+
+            sizer = wx.BoxSizer(wx.VERTICAL)   
+
+            ll = wx.StaticText(top, -1, label)
+            sizer.Add(ll, 0, wx.ALIGN_CENTRE|wx.ALIGN_CENTER_VERTICAL|wx.TOP|wx.BOTTOM, 5)
+
+            text = wx.TextCtrl(top, -1, msg, size=(400, 200), style=wx.TE_MULTILINE | wx.TE_READONLY)
+            sizer.Add(text, 0, wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+
+            line = wx.StaticLine(top, -1, size=(20,-1), style=wx.LI_HORIZONTAL)
+            sizer.Add(line, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL)
+
+            btnsizer = wx.BoxSizer(wx.HORIZONTAL)
+
+            for name in buttons:
+                btn = wx.Button(top, -1, name)
+                btn.Bind(wx.EVT_BUTTON, lambda e, self=self, name=name: self.onButton(name), btn)
+                btnsizer.Add(btn, 0, wx.ALL, 10)
+
+            btn = wx.Button(top, -1, 'Close')
+            btn.Bind(wx.EVT_BUTTON, lambda e, self=self: self.onButton('Close'), btn)
+            btn.SetDefault()
+            btnsizer.Add(btn)
+
+            #sizer.Add(btnsizer, 0, wx.GROW)
+            sizer.Add(btnsizer, 0, wx.ALIGN_CENTER | wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+
+            self.top.SetSizerAndFit(sizer)
+            top.CenterOnScreen(wx.BOTH)
+            top.ShowModal()
+        #@-node:bob.20071209181626.1:__init__
+        #@+node:bob.20071209181626.2:onButton
+        def onButton(self, name):
+            """Event handler for all button clicks."""
+
+            if name in ('Close',):
+                self.top.Destroy()
+                return
+
+            if self.callback:
+                retval = self.callback(name, data)
+                if retval == 'close':
+                    self.top.Destroy()
+                else:
+                    self.result = ('Cancel', None)
+        #@nonl
+        #@-node:bob.20071209181626.2:onButton
+        #@-others
+
+
+    #@-node:bob.20071209181626:class wxScrolledMessageDialog
+    #@+node:bob.20071209201007:class wxPropertiesDialog
+    class wxPropertiesDialog:
+
+        """A class to create and run a Properties dialog"""
+
+        #@    @+others
+        #@+node:bob.20071209201007.1:__init__
+        def __init__(self, title, data, callback=None, buttons=[]):
+            #@    << docstring >>
+            #@+node:bob.20071209201007.2:<< docstring >>
+            """ Initialize and show a Properties dialog.
+
+                'buttons' should be a list of names for buttons.
+
+                'callback' should be None or a function of the form:
+
+                    def cb(name, data)
+                        ...
+                        return 'close' # or anything other than 'close'
+
+                where name is the name of the button clicked and data is
+                a data structure representing the current state of the dialog.
+
+                If a callback is provided then when a button (other than
+                'OK' or 'Cancel') is clicked then the callback will be called
+                with name and data as parameters.
+
+                    If the literal string 'close' is returned from the callback
+                    the dialog will be closed and self.result will be set to a
+                    tuple (button, data).
+
+                    If anything other than the literal string 'close' is returned
+                    from the callback, the dialog will continue to be displayed.
+
+                If no callback is provided then when a button is clicked the
+                dialog will be closed and self.result set to  (button, data).
+
+                The 'ok' and 'cancel' buttons (which are always provided) behave as
+                if no callback was supplied.
+
+            """
+            #@-node:bob.20071209201007.2:<< docstring >>
+            #@nl
+
+            if buttons is None:
+                buttons = []
+
+            self.entries = []
+            self.title = title
+            self.callback = callback
+            self.buttons = buttons
+            self.data = data
+
+            self.result = ('Cancel', None)
+            self.top = top = wx.Dialog(None,  title=title)
+
+            sizer = wx.BoxSizer(wx.VERTICAL)
+
+            tp = self.createEntryPanel()
+            sizer.Add(tp, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+
+            btnsizer = wx.BoxSizer(wx.HORIZONTAL)
+
+            for name in buttons:
+                btn = wx.Button(top, -1, name)
+                btn.Bind(wx.EVT_BUTTON, lambda e, self=self, name=name: self.onButton(name), btn)
+                btnsizer.Add(btn)
+
+            btn = wx.Button(top, wx.ID_OK)
+            btn.Bind(wx.EVT_BUTTON, lambda e, self=self: self.onButton('OK'), btn)
+            btn.SetDefault()
+            btnsizer.Add(btn, 0, wx.ALL, 5)
+
+            btn = wx.Button(top, wx.ID_CANCEL)
+            btnsizer.Add(btn, wx.ALL, 5)
+
+            sizer.Add(btnsizer, 0, wx.ALIGN_CENTER | wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+
+            self.top.SetSizerAndFit(sizer)
+            top.CenterOnScreen()
+            val = top.ShowModal()
+
+        #@-node:bob.20071209201007.1:__init__
+        #@+node:bob.20071209201007.3:onButton
+
+        def onButton(self, name):
+            """Event handler for all button clicks."""
+
+            data = self.getData()
+            self.result = (name, data)
+
+            if name in ('OK', 'Cancel'):
+                self.top.Destroy()
+                return
+
+            if self.callback:
+                retval = self.callback(name, data)
+                if retval == 'close':
+                    self.top.Destroy()
+                else:
+                    self.result = ('Cancel', None)
+
+
+        #@-node:bob.20071209201007.3:onButton
+        #@+node:bob.20071209201007.4:createEntryPanel
+        def createEntryPanel(self):
+
+            panel = wx.Panel(self.top, -1)
+
+            data = self.data
+            sections = data.keys()
+            sections.sort()
+
+            box = wx.BoxSizer(wx.VERTICAL)
+
+            for section in sections:
+
+                label = wx.StaticText(panel, -1, section)
+                box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALIGN_CENTER_VERTICAL|wx.TOP|wx.BOTTOM, 5)
+
+                options = data[section].keys()
+                options.sort()
+
+                lst = []
+                for option in options:
+                    ss = wx.StaticText(panel, -1, option),
+                    tt = wx.TextCtrl(panel, -1, data[section][option], size=(200,-1))
+                    lst.extend ((ss, (tt, 0, wx.EXPAND)))
+
+                    self.entries.append((section, option, tt))
+
+                sizer = wx.FlexGridSizer(cols=2, hgap=12, vgap=2)
+                sizer.AddGrowableCol(1)
+                sizer.AddMany(lst)
+
+                box.Add(sizer, 0, wx.GROW|wx.ALL, 5)
+
+                line = wx.StaticLine(panel, -1, size=(20,-1), style=wx.LI_HORIZONTAL)
+                box.Add(line, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL)  
+
+            panel.SetSizer(box)
+            panel.SetAutoLayout(True)
+            return panel
+        #@-node:bob.20071209201007.4:createEntryPanel
+        #@+node:bob.20071209201007.5:getData
+        def getData(self):
+            """Return the modified configuration."""
+
+            data = {}
+            for section, option, entry in self.entries:
+                if section not in data:
+                    data[section] = {}
+                s = entry.GetValue()
+                s = g.toEncodedString(s,"ascii",reportErrors=True) # Config params had better be ascii.
+                data[section][option] = s
+
+            return data
+
+
+        #@-node:bob.20071209201007.5:getData
+        #@-others
+    #@nonl
+    #@-node:bob.20071209201007:class wxPropertiesDialog
     #@+node:bob.20070813163332.180:wxGui class
     class wxGui(leoGui.leoGui):
 
@@ -2876,7 +3109,7 @@ if wx:
         #@+node:bob.20070813163332.182: wxGui.__init__
         def __init__ (self):
 
-            # g.trace("wxGui")
+            g.trace("wxGui")
 
             # Initialize the base class.
             if 1: # in plugin
@@ -3039,8 +3272,9 @@ if wx:
 
             """Create and run a wxPython askOK dialog ."""
 
-            if  g.app.unitTesting: return 'ok'
-            d = wx.MessageDialog(self.root, message, "Leo",wx.OK)
+            if  g.app.unitTesting:
+                return 'ok'
+            d = wx.MessageDialog(self.root, message, title, wx.OK)
             d.ShowModal()
             return "ok"
         #@nonl
@@ -3167,6 +3401,22 @@ if wx:
                 return None
         #@nonl
         #@-node:bob.20070813163332.201:runSaveFileDialog
+        #@+node:bob.20071209182132.2:runPropertiesDialog
+        def runPropertiesDialog(self, title='Properties', data={}, callback=None, buttons=None):
+            """Dispay a modal wxPropertiesDialog"""
+
+            dialog = wxPropertiesDialog(title, data, callback, buttons)
+
+            return dialog.result 
+        #@-node:bob.20071209182132.2:runPropertiesDialog
+        #@+node:bob.20071209182238:runScrolledMessageDialog
+        def runScrolledMessageDialog(self,title='Message', label= '', msg='', callback=None, buttons=None):
+            """Display a modal wxScrolledMessageDialog."""
+
+            dialog = wxScrolledMessageDialog(title, label, msg, callback, buttons)
+
+            return dialog.result
+        #@-node:bob.20071209182238:runScrolledMessageDialog
         #@+node:bob.20070813163332.202:simulateDialog
         def simulateDialog (self,key,defaultVal=None):
 
@@ -5936,12 +6186,30 @@ if wx:
             def invoke (self,i):
                 '''Invoke the menu whose index is i'''
         #@-node:bob.20070813163332.344:index & invoke
-        #@+node:bob.20070813163332.345:insert (TO DO)
-        def insert (self,*args,**keys):
+        #@+node:bob.20070813163332.345:insert
+        def insert (self,menuName,position,label,command,underline=None):
 
-            pass # g.trace('wxMenu: to do',args,keys)
-        #@nonl
-        #@-node:bob.20070813163332.345:insert (TO DO)
+            menu = self.getMenu(menuName)
+
+            def wxMenuCallback (event,callback=command):
+                #g.trace('\nevent',event)
+                #print
+                callback() # All args were bound when the callback was created.
+                event.Skip()
+
+            id = wx.NewId()
+
+            item = menu.Insert(position, id, label,label)
+
+            id = item.GetId()
+
+            key = (menu,label),
+
+            self.menuDict[key] = id # Remember id 
+
+            wx.EVT_MENU(self.frame.top,id,wxMenuCallback)
+
+        #@-node:bob.20070813163332.345:insert
         #@+node:bob.20070813163332.346:insert_cascade
         def insert_cascade (self,parent,index,label,menu,underline):
 
@@ -5951,7 +6219,8 @@ if wx:
                 self.menuBar.append(menu,label)
                 id = wx.NewId()
                 accel = None
-                if ch: self.createAccelData(menu,ch,accel,id,label)
+                if ch:
+                    self.createAccelData(menu,ch,accel,id,label)
         #@-node:bob.20070813163332.346:insert_cascade
         #@+node:bob.20070813163332.347:new_menu
         def new_menu(self,parent,tearoff=0):
