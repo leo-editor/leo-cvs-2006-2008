@@ -151,7 +151,7 @@
 <v t="ekr.20050116150710.90"><vh>Handle installation with Python 2.4 installed for Current User only</vh></v>
 </v>
 <v t="EKR.20040519080201.1"><vh>Distribution checklist</vh></v>
-<v t="ekr.20040629175400" a="TV"><vh>Pychecker stuff</vh>
+<v t="ekr.20040629175400"><vh>Pychecker stuff</vh>
 <v t="ekr.20050212143754"><vh>Mods to pychecker in python23/site-packages</vh>
 <v t="ekr.20050212143754.4"><vh>_checkModuleAttribute (modified)</vh></v>
 <v t="ekr.20050212143754.3"><vh>_checkGlobal (modified)</vh></v>
@@ -230,14 +230,14 @@
 </v>
 <v t="EKR.20040519090846.1"><vh>@asis ../doc/LICENSE.TXT</vh></v>
 <v t="ekr.20070622074708"><vh>@asis../manifest.in</vh></v>
+<v t="EKR.20040519090846.9"><vh>@asis ../doc/README.TXT</vh></v>
+<v t="EKR.20040519090846.8"><vh>@asis ../doc/PKG-INFO.TXT</vh></v>
 <v t="EKR.20040519082027.32"><vh>Linux install/uninstall scripts</vh>
 <v t="EKR.20040519082027.33"><vh>@file-thin ../install</vh></v>
 <v t="EKR.20040519082027.34"><vh>@file-thin ../uninstall</vh></v>
 </v>
 </v>
-<v t="ekr.20051205102401"><vh>Update these for each release</vh>
-<v t="EKR.20040519090846.9"><vh>@asis ../doc/README.TXT</vh></v>
-<v t="EKR.20040519090846.8"><vh>@asis ../doc/PKG-INFO.TXT</vh></v>
+<v t="ekr.20051205102401" a="TV"><vh>Update these for each release</vh>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings for leo-4.3.nsi &gt;&gt;</vh></v>
 <v t="ekr.20050118124408"><vh>&lt;&lt; 4.3 nsi installer version &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
@@ -476,18 +476,15 @@ Description: Leo is an outline-oriented editor written in 100% pure Python.
 		Download tkIcon from http://www.effbot.org/downloads/#tkIcon
 Platform: Windows, Linux, Macintosh
 </t>
-<t tx="EKR.20040519090846.9">Leo 4.4.5 beta 2                          December 7, 2007
+<t tx="EKR.20040519090846.9">Leo 4.4.5 final                               December 11, 2007
 
-Leo 4.4.5 beta 2 is available at:
+Leo 4.4.5 final is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
-This beta 2 release fixes several recently reported bugs.  A final release
-is due in about a week.
+Leo 4.4.5 fixes several long-delayed bug fixes and adds several new features.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
-
-Leo 4.4.5 fixes several long-delayed bug fixes and adds several new features.
 
 The highlights of Leo 4.4.5:
 ----------------------------

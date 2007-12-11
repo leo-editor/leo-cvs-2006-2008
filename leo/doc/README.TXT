@@ -1,15 +1,12 @@
-Leo 4.4.5 beta 2                          December 7, 2007
+Leo 4.4.5 final                               December 11, 2007
 
-Leo 4.4.5 beta 2 is available at:
+Leo 4.4.5 final is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
 
-This beta 2 release fixes several recently reported bugs.  A final release
-is due in about a week.
+Leo 4.4.5 fixes several long-delayed bug fixes and adds several new features.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
-
-Leo 4.4.5 fixes several long-delayed bug fixes and adds several new features.
 
 The highlights of Leo 4.4.5:
 ----------------------------
