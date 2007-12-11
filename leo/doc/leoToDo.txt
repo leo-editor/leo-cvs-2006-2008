@@ -1,8 +1,9 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20071113093057:To do: 4.4.6: last major projects
-#@+node:ekr.20071114063047:First
+#@+node:ekr.20071113093057:5.0 cleanups, vim bindings & readline
+#@+node:ekr.20071211092807:First
+#@+node:ekr.20071211091037:Bugs
 #@+node:ekr.20071211082951:Fix undo (dirty bit) problem)
 @nocolor
 
@@ -34,149 +35,10 @@ the same directory as the LEO file that is being processed) when rst3_stylesheet
 is not set.
 #@nonl
 #@-node:ekr.20071210092032:Improve how rst3 plugin finds default.css file
-#@+node:ekr.20071210090623:Apply plumloco's patch to plugins_menu.py
-@nocolor
-
-I would like to request changes to plugins_menu.py to make it gui independant. 
-
-I have attached a copy of the file with the appropriate modifications to http://leo.zwiki.org/Plumloco. 
-
-I have separated out the gui dependent dialogs (the menus are already gui indepandant) and made them general purpose dialogs available to all plugins. 
-
-I have also slightly enhanced the dialogs to provide user defined buttons. 
-
-Now I am finding my feet again and taking an interest in the world, I hope to continue work on the wxPython port. I plan on going through some of the simpler plugins, making them gui independant and implementing them in wx.
-#@nonl
-#@-node:ekr.20071210090623:Apply plumloco's patch to plugins_menu.py
-#@+node:ekr.20071210054816:Apply Terry Brown's config patch
-@nocolor
-The patch attached against leoConfig.py (current CVS) adds a machine
-specific config file to the config files Leo loads.
-
-I synchronize files between multiple (3) machines. This means I can't
-use different myLeoSettings files on each.
-
-Tk fonts are screen dpi sensitive.  But (in Linux at least)
-Tk's attempts to switch a font you picked to something equivalent at a
-different dpi always result in a font that looks terrible.
-
-So every time I switch machines I edit ~/myLeoSettings.leo to move the
-font defs I picked for the current machine to the bottom of the body
-text for the appropriate settings node, and then restart Leo.
-
-This patch means I don't have to do that any more.  I'm sure there are
-other uses for it.  Python doesn't seem to have a generic machine name
-finding function, hence the sequence of alternatives.
-
-Cheers -Terry
-
-
------Inline Attachment Follows-----
-
-Index: leo/src/leoConfig.py
-===================================================================
-RCS file: /cvs/leo/src/leoConfig.py,v
-retrieving revision 1.54
-diff -r1.54 leoConfig.py
-1159a1160,1177
->        machineSettingsFile = None
->        #@    << determine machine settings file name >>
->        #@+node:tbrown.20071208101033:<< determine machine settings file name >>
->        try:
->            import os
->            machineSettingsFile = os.getenv('HOSTNAME')
->            if not machineSettingsFile:
->                machineSettingsFile = os.getenv('COMPUTERNAME')
->            if not machineSettingsFile:
->                import socket
->                machineSettingsFile = socket.gethostname()
->        except:
->            machineSettingsFile = None
->        if machineSettingsFile:
->            machineSettingsFile+='LeoSettings.leo'
->        #@nonl
->        #@-node:tbrown.20071208101033:<< determine machine settings file name >>
->        #@nl
-1165a1184
->            ('machineConfigFile',    g.app.homeDir,          machineSettingsFile),
-1168a1188,1190
->
->            if not fileName: continue
->
-1638a1661
->            (self.machineConfigFile,False),
-
-@color
-#@nonl
-#@+node:ekr.20041117083857:initSettingsFiles
-def initSettingsFiles (self):
-
-    """Set self.globalConfigFile, self.homeFile and self.myConfigFile."""
-
-    settingsFile = 'leoSettings.leo'
-    mySettingsFile = 'myLeoSettings.leo'
-
-    for ivar,theDir,fileName in (
-        ('globalConfigFile',    g.app.globalConfigDir,  settingsFile),
-        ('homeFile',            g.app.homeDir,          settingsFile),
-        ('myGlobalConfigFile',  g.app.globalConfigDir,  mySettingsFile),
-        ('myHomeConfigFile',    g.app.homeDir,          mySettingsFile),
-    ):
-        # The same file may be assigned to multiple ivars:
-        # readSettingsFiles checks for such duplications.
-        path = g.os_path_join(theDir,fileName)
-        if g.os_path_exists(path):
-            setattr(self,ivar,path)
-        else:
-            setattr(self,ivar,None)
-    if 0:
-        g.trace('global file:',self.globalConfigFile)
-        g.trace('home file:',self.homeFile)
-        g.trace('myGlobal file:',self.myGlobalConfigFile)
-        g.trace('myHome file:',self.myHomeConfigFile)
-#@nonl
-#@-node:ekr.20041117083857:initSettingsFiles
-#@-node:ekr.20071210054816:Apply Terry Brown's config patch
-#@+node:ekr.20071211082820:Finish support for @auto javascript
-@nocolor
-
-As far as I am aware, this is the definitive specification for javascript. 
-
-http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf  
-
-The most relavent part is below. This has caused much aggrevation to many people. Regexp's which parse for regexp literals in javascript, usually check for '/' after chars which can not be followed by a div, eg (,[{ etc. I think a regexp literal can occur almost anywhere a string literal can apart from this restriction. 
-
--- quote -- 
-The source text of an ECMAScript program is first converted into a sequence of input elements, which are either tokens, line terminators, comments, or white space. The source text is scanned from left to right, repeatedly taking the longest possible sequence of characters as the next input element. 
-
-There are two goal symbols for the lexical grammar. The InputElementDiv symbol is used in those syntactic grammar contexts where a division (/) or division-assignment (/=) operator is permitted. The InputElementRegExp symbol is used in other syntactic grammar contexts. 
-
-Note that contexts exist in the syntactic grammar where both a division and a RegularExpressionLiteral are permitted by the syntactic grammar; however, since the lexical grammar uses the InputElementDiv goal symbol in such cases, the opening slash is not recognised as starting a regular expression literal in such a context. As a workaround, one may enclose the regular expression literal in p
-#@nonl
-#@-node:ekr.20071211082820:Finish support for @auto javascript
-#@+node:ekr.20071210085349:Support for xml files in @auto
-https://sourceforge.net/forum/message.php?msg_id=4665749
-#@nonl
-#@-node:ekr.20071210085349:Support for xml files in @auto
-#@+node:ekr.20071115055315:Add toggle-collapse-outline-when-moving
-#@+node:ekr.20040930064232:contractNodeOrGoToParent
-def contractNodeOrGoToParent (self,event=None):
-
-    """Simulate the left Arrow Key in folder of Windows Explorer."""
-
-    c = self ; p = c.currentPosition()
-
-    if p.hasChildren() and p.isExpanded():
-        # g.trace('contract',p.headString())
-        c.contractNode()
-    elif p.hasParent() and p.parent().isVisible(c):
-        # g.trace('goto parent',p.headString())
-        c.goToParent()
-
-    c.treeFocusHelper()
-#@nonl
-#@-node:ekr.20040930064232:contractNodeOrGoToParent
-#@-node:ekr.20071115055315:Add toggle-collapse-outline-when-moving
+#@-node:ekr.20071211091037:Bugs
+#@+node:ekr.20071211091037.1:Code cleanup 7
+#@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree (clean up config)
+#@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree (clean up config)
 #@+node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
 #@-node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
 #@+node:ekr.20071129095408:Upgrade to Pmw 1.3
@@ -1098,46 +960,213 @@ g.es("dragged node will be cloned")
 g.es("dragged node will be moved")
 #@-node:ekr.20071115113231:Results
 #@-node:ekr.20070625091423:Add translation services
-#@+node:ekr.20071128094234:Finish scolorizer
-#@+node:ekr.20050920084036.265:scolorizer LATER
-def scolorizer (self,event,pattern=None):
+#@-node:ekr.20071211091037.1:Code cleanup 7
+#@-node:ekr.20071211092807:First
+#@+node:ekr.20071211092807.1:Next 3
+#@+node:ekr.20071115055315:Add toggle-collapse-outline-when-moving
+#@+node:ekr.20040930064232:contractNodeOrGoToParent
+def contractNodeOrGoToParent (self,event=None):
 
-    '''Colorizer for incremental searches.'''
+    """Simulate the left Arrow Key in folder of Windows Explorer."""
 
-    pass # not ready yet.   
+    c = self ; p = c.currentPosition()
 
-    # k = self.k ; w = self.w
-    # s = pattern or k.getLabel(ignorePrompt=True)
-    # # g.trace(repr(s))
-    # w.tag_delete('color','color1')
-    # if not s: return
-    # if g.app.gui.guiName() != 'tkinter':
-        # return g.es('command not ready yet',color='blue')
+    if p.hasChildren() and p.isExpanded():
+        # g.trace('contract',p.headString())
+        c.contractNode()
+    elif p.hasParent() and p.parent().isVisible(c):
+        # g.trace('goto parent',p.headString())
+        c.goToParent()
 
-    # ind = 0
-    # index = w.getInsertPoint()
-    # index2 = index + len(s)
-    # # g.trace(index,index2)
-    # # Colorize in the forward direction, regardless of the kind of search.
-    # while ind:
-        # try:
-            # ind = w.search(s,ind,stopindex='end',regexp=self.regexp)
-        # except Exception: break
-        # if ind:
-            # i, d = ind.split('.')
-            # d = str(int(d)+len(s))
-            # # g.trace(ind)
-            # if ind in (index,index2):
-                # w.tag_add('color1',ind,'%s.%s' % (i,d))
-            # w.tag_add('color',ind,'%s.%s' % (i,d))
-            # ind = i + '.' + d
+    c.treeFocusHelper()
+#@nonl
+#@-node:ekr.20040930064232:contractNodeOrGoToParent
+#@-node:ekr.20071115055315:Add toggle-collapse-outline-when-moving
+#@+node:ekr.20071211091037.3:Finish @auto
+#@+node:ekr.20071027121956:Fix @auto javascript
+# Javascript syntax is truly bizarre.
+#@nonl
+#@+node:ekr.20071211092214:Javascript spec
+@nocolor
 
-    # w.tag_config('color',foreground='red')
-    # w.tag_config('color1',background='lightblue')
-#@-node:ekr.20050920084036.265:scolorizer LATER
-#@-node:ekr.20071128094234:Finish scolorizer
-#@-node:ekr.20071114063047:First
-#@+node:ekr.20070703111455.1:Most important
+As far as I am aware, this is the definitive specification for javascript. 
+
+http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf  
+
+The most relavent part is below. This has caused much aggrevation to many people. Regexp's which parse for regexp literals in javascript, usually check for '/' after chars which can not be followed by a div, eg (,[{ etc. I think a regexp literal can occur almost anywhere a string literal can apart from this restriction. 
+
+-- quote -- 
+The source text of an ECMAScript program is first converted into a sequence of input elements, which are either tokens, line terminators, comments, or white space. The source text is scanned from left to right, repeatedly taking the longest possible sequence of characters as the next input element. 
+
+There are two goal symbols for the lexical grammar. The InputElementDiv symbol is used in those syntactic grammar contexts where a division (/) or division-assignment (/=) operator is permitted. The InputElementRegExp symbol is used in other syntactic grammar contexts. 
+
+Note that contexts exist in the syntactic grammar where both a division and a RegularExpressionLiteral are permitted by the syntactic grammar; however, since the lexical grammar uses the InputElementDiv goal symbol in such cases, the opening slash is not recognised as starting a regular expression literal in such a context. As a workaround, one may enclose the regular expression literal in p
+#@nonl
+#@-node:ekr.20071211092214:Javascript spec
+#@+node:ekr.20031218072017.3210:createOutline
+def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
+
+    c = self.c ; u = c.undoer ; s1 = s
+    junk,self.fileName = g.os_path_split(fileName)
+    self.methodName,self.fileType = g.os_path_splitext(self.fileName)
+    self.setEncoding(p=parent)
+    # g.trace(self.fileName,self.fileType)
+    # All file types except the following just get copied to the parent node.
+    if not ext: ext = self.fileType
+    ext = ext.lower()
+    if not s:
+        << Read file into s >>
+
+    # Create the top-level headline.
+    if atAuto:
+        p = parent.copy()
+        c.beginUpdate()
+        try:
+            p.setTnodeText('')
+        finally:
+            c.endUpdate(False)
+    else:
+        undoData = u.beforeInsertNode(parent)
+        p = parent.insertAsLastChild()
+        if self.treeType == "@file" and not s1:
+            p.initHeadString("@nosent " + fileName)
+        else:
+            p.initHeadString(fileName)
+        u.afterInsertNode(p,'Import',undoData)
+
+    self.rootLine = g.choose(self.treeType=="@file","","@root-code "+self.fileName+'\n')
+
+    if ext in (".c", ".cpp", ".cxx"):
+        self.scanCText(s,p,atAuto=atAuto)
+    elif ext == '.c#':
+        self.scanCSharpText(s,p,atAuto=atAuto)
+    elif ext == ".el":
+        self.scanElispText(s,p,atAuto=atAuto)
+    elif ext == ".java":
+        self.scanJavaText(s,p,atAuto=atAuto)
+    elif ext == ".js":
+        self.scanJavaScriptText(s,p,atAuto=atAuto)
+    elif ext == ".pas":
+        self.scanPascalText(s,p,atAuto=atAuto)
+    elif ext in (".py", ".pyw"):
+        self.scanPythonText(s,p,atAuto=atAuto)
+    elif ext == ".php":
+        self.scanPHPText(s,p,atAuto=atAuto)
+    else:
+        self.scanUnknownFileType(s,p,ext,atAuto=atAuto)
+
+    p.contract()
+    return p
+#@+node:ekr.20031218072017.3211:<< Read file into s >>
+try:
+    fileName = g.os_path_normpath(fileName)
+    theFile = open(fileName)
+    s = theFile.read()
+    s = g.toUnicode(s,self.encoding)
+    theFile.close()
+except IOError:
+    g.es("can not open %s%s" % (g.choose(atAuto,'@auto ',''),fileName),color='red')
+    leoTest.fail()
+    return None
+#@-node:ekr.20031218072017.3211:<< Read file into s >>
+#@-node:ekr.20031218072017.3210:createOutline
+#@+node:ekr.20070713075450:Unit tests
+# atAuto must be False for unit tests: otherwise the test gets wiped out.
+
+def cUnitTest(self,p,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest(p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.c')
+
+def cSharpUnitTest(self,p,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest(p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.c#')
+
+def elispUnitTest(self,p,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.el')
+
+def htmlUnitTest(self,p,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.htm')
+
+def javaUnitTest(self,p,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.java')
+
+def javaScriptUnitTest(self,p,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.js')
+
+def pascalUnitTest(self,p,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.pas')
+
+def phpUnitTest(self,p,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.php')
+
+def pythonUnitTest(self,p,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.py')
+
+def textUnitTest(self,p,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.txt')
+
+def defaultImporterUnitTest(self,p,fileName=None,s=None,showTree=False):
+    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.xxx')
+#@+node:ekr.20070713082220:scannerUnitTest
+def scannerUnitTest (self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
+
+    '''Run a unit test of an import scanner,
+    i.e., create a tree from string s at location p.'''
+
+    c = self.c ; h = p.headString() ; old_root = p.copy()
+    oldChanged = c.changed
+    c.beginUpdate()
+    try:
+        d = g.app.unitTestDict
+        expectedErrors = d.get('expectedErrors')
+        expectedErrorMessage = d.get('expectedErrorMessage')
+        expectedMismatchLine = d.get('expectedMismatchLine')
+        g.app.unitTestDict = {
+            'expectedErrors':expectedErrors,
+            'expectedErrorMessage':expectedErrorMessage,
+            'expectedMismatchLine':expectedMismatchLine,
+        }
+        if not fileName: fileName = p.headString()
+        if not s: s = self.removeSentinelsCommand([fileName],toString=True)
+        title = g.choose(h.startswith('@test'),h[5:],h)
+        self.createOutline(title.strip(),p.copy(),atAuto=atAuto,s=s,ext=ext)
+        d = g.app.unitTestDict
+        ok = ((d.get('result') and expectedErrors in (None,0)) or
+            (
+                # checkTrialWrite returns *True* if the following match.
+                # d.get('result') == False and
+                d.get('actualErrors') == d.get('expectedErrors') and
+                d.get('actualMismatchLine') == d.get('expectedMismatchLine') and
+                (expectedErrorMessage is None or d.get('actualErrorMessage') == d.get('expectedErrorMessage'))
+            ))
+        if not ok:
+            g.trace('result',d.get('result'),
+                'actualErrors',d.get('actualErrors'),
+                'expectedErrors',d.get('expectedErrors'),
+                'actualMismatchLine',d.get('actualMismatchLine'),
+                'expectedMismatchLine', d.get('expectedMismatchLine'),
+                '\nactualErrorMessage  ',d.get('actualErrorMessage'),
+                '\nexpectedErrorMessage',d.get('expectedErrorMessage'),
+            )
+        if not showTree and ok:
+            while old_root.hasChildren():
+                old_root.firstChild().doDelete()
+            c.setChanged(oldChanged)
+
+    finally:
+        c.selectPosition(old_root)
+        c.endUpdate()
+
+    if g.app.unitTesting:
+        assert ok
+
+    return ok
+#@-node:ekr.20070713082220:scannerUnitTest
+#@-node:ekr.20070713075450:Unit tests
+#@-node:ekr.20071027121956:Fix @auto javascript
+#@+node:ekr.20071210085349:Support for xml files in @auto
+https://sourceforge.net/forum/message.php?msg_id=4665749
+#@nonl
+#@-node:ekr.20071210085349:Support for xml files in @auto
+#@-node:ekr.20071211091037.3:Finish @auto
 #@+node:ekr.20071105160956:*** auto-change panes
 @nocolor
 
@@ -1150,10 +1179,9 @@ copy-node: auto-select tree pane.
 copy_text (when not editing a headline): auto-select body text.
 #@nonl
 #@-node:ekr.20071105160956:*** auto-change panes
-#@+node:ekr.20071105145643:Clean up config mess
-#@-node:ekr.20071105145643:Clean up config mess
-#@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree
-#@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree
+#@+node:ekr.20071211093323:more screen shots on Leo's web site
+#@-node:ekr.20071211093323:more screen shots on Leo's web site
+#@-node:ekr.20071211092807.1:Next 3
 #@+node:ekr.20070623144302:vim-like bindings
 #@+node:ekr.20070824094005:Requests
 @nocolor
@@ -1249,19 +1277,369 @@ P.S.  I've glossed over the details of which single characters (like d for delet
 
 EKR
 #@-node:ekr.20071026140857:Posting re vim bindings
+#@+node:ekr.20061028065955.2:Fix binding nits
+#@+node:ekr.20061014050154.2:Binding to None clears all bindings
+#@-node:ekr.20061014050154.2:Binding to None clears all bindings
+#@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
+#@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
+#@+node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
+#@-node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
+#@-node:ekr.20061028065955.2:Fix binding nits
+#@+node:ekr.20070613181147:(maybe) Improve key handling
+# The idea is to use a single <Key binding> and
+# use w.event_generate(key) to create a table
+# that associates Tk key numbers with bindings:
+
+    if event.char:
+        if 0:
+            import Tkinter as Tk
+            w = Tk.Text()
+            def foo (event):
+                g.trace(event)
+            w.bind('<Key>',foo)
+            for prefix in ('Alt-Key-','Shift-Key-'):
+                key = '<%s%s>' % (prefix,event.char.strip())
+                g.trace(key)
+                w.event_generate('a')
+        if 0:
+            for z in ('char','keysym','keycode','keysym_num','state',):
+                a = getattr(event,z)
+                print z,repr(a)
+#@-node:ekr.20070613181147:(maybe) Improve key handling
 #@-node:ekr.20070623144302:vim-like bindings
-#@+node:ekr.20071001052501:Versioning for nodes
+#@+node:ekr.20071029082025:Improve distribution
+* Convert to svn  (use py_svn)
+* Enable sax option.
+* Proper xml namespace in .leo files.  Is this Leo 5.0??
+#@nonl
+#@+node:ekr.20071111053028:Move to svn
 @nocolor
 
-One feature I have not seen in SCS system is something which might be called
-"history compression": I might be interested in having both version 5 and 6
-in my source tree, when the current version is 7, but I am not really interested
-in the 2000 steps which transformed 5 into 6 (just suggested this feature to
-the bazaar people). This happens actually quite often to me, since I use the
-SCS as a back-up system, saving many (uninteresting) intermediate steps while
-implementing a new feature.
+http://subversion.tigris.org/faq.html#cvs2svn
 #@nonl
-#@-node:ekr.20071001052501:Versioning for nodes
+#@+node:ekr.20070905072809.1:Mulder post re svn
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4484641
+By: bwmulder
+
+Actually we are talking about two plugins here: a bazaar plugin, and a
+Leo plugin.
+
+The bazaar plugin would do special things for Leo files during checkout, status
+and checkin. After checkout, for example, it would delete the sentinels in the
+user visible files.
+
+The Leo plugin would know to go to the repository for reading (and writing?).
+
+One open question is to where to store new sentinels: can they be hidden away
+in the Source Control System (SCS) directories?
+
+Another open question: Could Leo sentinels be used as an identity marker, which
+unambiguously identifies a piece of text? With that, the SCS system might have
+enough information to make statements like:
+
+Lines 10-100 where in file x where moved from file y, in other words: the SCS
+could track code at the function level.
+
+The whole process could then work like this:
+
+1. You check out your sources.
+2. After checkout, the bazaar plugin would delete all sentinels from the checked-out
+files.
+3. If you start Leo, Leo would read the (full) file from the SCS.
+4. If you make modifications, the full file would be hidden in SCS directories,
+and the disk file would (again) show no sentinels.
+5. I don't know how the bazaar status command works. We must make sure that
+status works correctly for Leo files as it does for any other files.
+6. For checkin, the SCS system would have to use the information hidden in step
+4.
+
+Open questions:
+
+1. Can the Leo sentinels be used as a permanent identity markers for text? If
+they can't be right now, would Edward be willing to modify them so that they
+can?
+2. Can / should we make the full files available somehow (probably)
+2. How would conflict resolution work? Can / should we hide the sentinels even
+then? (probably not)
+
+So the answer to your question is: yes, I am thinking about such plugins, though
+I am not (yet) thinking of writing such plugins myself.
+
+______________________________________________________________________
+You are receiving this email because you elected to monitor this forum.
+To stop monitoring this forum, login to SourceForge.net and visit:
+https://sourceforge.net/forum/unmonitor.php?forum_id=10226
+#@-node:ekr.20070905072809.1:Mulder post re svn
+#@-node:ekr.20071111053028:Move to svn
+#@+node:ekr.20070929125944:Emulate Orange's download philosophy
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4543089
+By: billp9619
+
+from the download page:
+
+If it's the first time you hear about Python, this is the installation for you.
+The packages includes complete Orange, Python, Windows Extensions for Python
+(PythonWin), Numeric Python, Qt 2.2 non-commercial, PyQt, PyQwt and GraphViz.
+
+Leo should copy this download philosophy.
+
+
+
+#@-node:ekr.20070929125944:Emulate Orange's download philosophy
+#@+node:ekr.20070615063616.1:Create Debian package
+#@-node:ekr.20070615063616.1:Create Debian package
+#@-node:ekr.20071029082025:Improve distribution
+#@+node:ekr.20071105155631.1:Plugins 4
+#@+node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4562648
+By: rogererens
+
+Maybe I may use this thread to make another suggestion for Leo 4.4.5, related
+to @menus: have the menu-options for right-clicking in the various panes also
+in the @settings-tree.
+
+Regards, Roger
+#@nonl
+#@-node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
+#@+node:ekr.20071026052111:Fix cursesGui  plugin
+#@+node:ekr.20071026051956:crash in cursesGui.py
+reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo
+reading settings in C:\Documents and Settings\HP_Administrator\My Documents\Edward\myLeoSettings.leo
+reading settings in C:\prog\tigris-cvs\leo\test\test.leo
+reading C:\Documents and Settings\HP_Administrator\My Documents\Edward\.leoRecentFiles.txt
+reading C:\prog\tigris-cvs\leo\config\.leoRecentFiles.txt
+@enabled-plugins found in test.leo
+textGui oops <module>,run,createFrame,openWithFileName,newLeoCommanderAndFrame,finishCreate,createKeyHandlerClass should be implem
+ented
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 401, in <module>
+    run(fileName)
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 144, in run
+    c,frame = createFrame(fileName)
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 213, in createFrame
+    ok, frame = g.openWithFileName(fileName,None)
+  File "C:\prog\tigris-cvs\leo\src\leoGlobals.py", line 1908, in openWithFileName
+    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
+  File "C:\prog\tigris-cvs\leo\src\leoApp.py", line 577, in newLeoCommanderAndFrame
+    c.finishCreate(initEditCommanders)
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 216, in finishCreate
+    c.commandsDict = leoEditCommands.finishCreateEditCommanders(c)
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 247, in finishCreateEditCommanders
+    d2 = theInstance.getPublicCommands()
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 1022, in getPublicCommands
+    'keyboard-quit':                k.keyboardQuit,
+AttributeError: 'NoneType' object has no attribute 'keyboardQuit'
+>>>
+#@nonl
+#@-node:ekr.20071026051956:crash in cursesGui.py
+#@-node:ekr.20071026052111:Fix cursesGui  plugin
+#@+node:ekr.20071105155631.2:Fix script_io_to_body plugin
+#@-node:ekr.20071105155631.2:Fix script_io_to_body plugin
+#@+node:ekr.20070613103409:Improve marks/recent buttons
+- Arrow keys must move up/down.
+- Should be commands to show the marks/recent dialogs.
+#@nonl
+#@-node:ekr.20070613103409:Improve marks/recent buttons
+#@-node:ekr.20071105155631.1:Plugins 4
+#@-node:ekr.20071113093057:5.0 cleanups, vim bindings & readline
+#@+node:ekr.20071211093011:5.1 ipython & autocompletion
+#@+node:ekr.20070824093611:Improve wxGui plugin
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4480477
+By: plumloco
+
+Sorry to here about your injury, Edward. Hope its not RSI from working too hard
+on Leo.  Get well soon.
+
+When your fit and well again you might like to have a look at this.
+
+I have been playing with custom tree widgets for leo, first with pyGTK then
+with wxPython.  I had thought about doing a  pyGTK plugin until I realized how
+much work was involved :)
+
+I have adapted the __wx_gui.py plugin to work with my custom widget and called
+it __wx_alt_gui.py. You, or anyone else who is interested, can download the
+plugin from http://plumloco.co.uk/scratch/__wx_alt_gui.py.gz.
+
+The great benefit of using this custom widget is that it has no secondary data
+structures to keep in synch, this makes it faster and more efficient in terms
+of resources. It also eliminates the problem of complicated glue code.
+
+All that is needed is to call update whenever a change is made and the widget
+will get all its data directly from the leo outline itself.  A good test for
+the widget is to load a large outline and do an expand-all-nodes on it (try
+the same with __wx_gui and tkLeo).
+
+The widget still needs a lot of work but it works well enough for its usefulness
+and viability to be tested.
+
+I would be interested to know your intentions towards wxLeo.  My impression
+is that you do not plan on being very active in its development, seeing as how
+you are talking about doing a java swing version.
+
+If you have no objections, I would like to do some work on wxLeo myself, partly
+for its own sake and partly to gain experience for a possible pyGTK port.  Obviously
+I do not want to be treading on your toes, so please tell me if I am intruding.
+
+
+#@-node:ekr.20070824093611:Improve wxGui plugin
+#@+node:ekr.20070307082503:Make Leo an IPython notebook
+#@+node:ekr.20071128071822:Do ipython demo
+@nocolor
+
+> The simple Python prompt is interesting in its own right and maybe an established use of it within Leo would act as a demonstration. The advancement to IPython would be obvious once there was an attractive integration of the normal prompt.
+
+Good point.
+
+> It seems that many of the user stories you responded to on the wiki could be done with the simple Python prompt integration(somehow using the shell prompt instead of how you might have explained current execute script in your answers). So, of course, the Leo integration and demonstration of a simple Python prompt would assist these users - but require giving up IPython convenience in those situations.
+
+Exactly. 
+
+> But then there would be more of a dialog on how to get to IPython since the integration of the shell - in terms of Leo - is a then a concrete model.
+
+Yes, it would be feasible to do a 'toy' implementation using python's cmd and readline modules. Presumably, this would sidestep all the difficult implementation issues that make ipython valuable :-)
+
+So this is all good.  We have a start of a user-level design, and a way of turning that design into working code *relatively* easily.
+
+Originally, I was thinking that the demo would be a set of diagrams illustrating how to integrate ipython into Leo.  The original post on this thread might claim to be such a 'diagram'.  Here are the bones of the design as described in the first post:
+
+1. Put the interactive shell in a Shell tab in the log pane.
+
+2. If the present node is an @history node, all of the work on the interactive prompt is captured (appended) in that body pane. Such nodes might be grouped into chapters, or by @shell-histories trees.
+
+3. Buttons or commands would play back captured sessions one step at a time.
+
+4. The open-shell-tab command could (under control of user options) rearrange Leo's panes to make them easier to use for entering shell commands.  The close-shell-tab command would undo whatever rearrangement took place.
+
+5. Leo users would see leo outlines as conveniently arranged saved sessions which are available for review and replay. 
+
+I think this is a pretty decent demo!
+
+My original idea was to use the minibuffer for input and use the 'shell' tab (or body pane for @shell nodes) only for output. But this would make it impossible to play back captured sessions.
+
+Actually, it may be easiest to do the full simulation in the Shell tab.  The Shell tab must have bindings that emulate the bindings (say) in idle's main console window.  I strongly suspect that there are more details than meet the eye.  Still, python's cmd and readline modules are a good start.  
+
+In short, it looks like we have a clear roadmap for an ipython demo in Leo: put an 'idle-like' console window in a Shell tab in Leo's log pane.
+
+I'll create commands to open and close the Shell tab soon--maybe today.  Is anyone interested in actually creating an 'idle-like' command interpreter in the Shell pane?
+#@nonl
+#@-node:ekr.20071128071822:Do ipython demo
+#@+node:ekr.20071127103206:Post from BillP
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4640591
+By: billp9619
+
+It seems to me that the python interactive prompt is such a prominent feature
+of the language that it should be integrated better into leo.
+
+If the shell was there as a standard tab (similar to "Find" panel) then I think
+this would make Leo more enticing as a teaching tool.
+
+I could envision an arrangement such that if the selected outline node is of
+a certain kind - maybe @interactive - then all of the work on the interactive
+prompt is captured(appended) in that body pane. Another button or command would
+play back the captured session one step at a time.
+
+The window action "Toggle Split Direction" places the Log pane at the bottom
+where the body is normally. So when using the prompt it would be below the outline
+- and the body pane hidden by dragging left edge of window flush to the right.
+Such a user would see leo outlines as conveniently arranged saved sessions which
+are available for replay(and reviewable history as saved in corresponding body
+texts).
+#@nonl
+#@-node:ekr.20071127103206:Post from BillP
+#@+node:ekr.20071117082144:@url http://projects.scipy.org/ipython/ipython/wiki/NoteBook/ProjectDescription
+#@-node:ekr.20071117082144:@url http://projects.scipy.org/ipython/ipython/wiki/NoteBook/ProjectDescription
+#@+node:ekr.20071118051101:@url http://leo.zwiki.org/ResponsesToIPythonsUserStories
+#@-node:ekr.20071118051101:@url http://leo.zwiki.org/ResponsesToIPythonsUserStories
+#@+node:ekr.20060603090445.7:Ipython stuff
+#@+node:ekr.20060603085719.1:Use IPython autocompleter?
+#@-node:ekr.20060603085719.1:Use IPython autocompleter?
+#@+node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
+#@-node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
+#@+node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
+#@-node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
+#@+node:ekr.20060603090445.9:Script button that saves environment between runs
+This would allow IPython-like operation.
+#@nonl
+#@-node:ekr.20060603090445.9:Script button that saves environment between runs
+#@-node:ekr.20060603090445.7:Ipython stuff
+#@+node:ekr.20070521100324.1:Using Leo as a notebook
+@nocolor
+https://sourceforge.net/forum/message.php?msg_id=4314394
+By: duanekaufman
+
+I am starting a kinda 'stream-of-thought' document, one in which I can put down
+a paragraph of thought (perhaps in a pretty fashion, using ReST markup), develop
+some code, to do some calculations, run the code and display the results...rinse,
+repeat.
+
+The document, in pseudo-form, would look like:
+
+<Development of thought #1>
+<Code to calculate something>
+<Results from code execution>
+<Discussion of results>
+
+Each of the above would probably be a node, and I have already put together
+things that look like the above, all except for the <results> part. I can run
+the code, but how can I get the output automatically in my node? I can cut-and-paste
+from the underlying command window (I run under Linux and Windows XP), but I
+would like o automate it as much as possible.
+
+Does anyone have any ideas on how to accomodate this workflow?
+
+------ Reply
+
+A most interesting and important question--with such a capability one could make Leo into a full-fledged engineering notebook, e.g., as envisaged by the IPython Notebook project: 
+
+http://projects.scipy.org/ipython/ipython/wiki/NbshellManual 
+
+I can think of several possible approaches: 
+
+1. Create a custom version of the execute script command that would put script output in a particular node. Perhaps the headline of the node could be an argument to the enhanced command. 
+
+2. Have your script write to some 'standard place', and create a command to put that script in the presently selected node. Something like insert-script-output. 
+
+3. Create a script button that executes the script in the presently selected node and puts the result in the node *following* the selected node. You can then either move the node by hand, or use another script button to move the node to a 'standard place', say the last child of the <<results>> node. 
+
+As I write this I think the script-button approach is likely to be the simplest, most flexible and most powerful. I'll look into this myself soon... 
+
+Edward
+#@nonl
+#@-node:ekr.20070521100324.1:Using Leo as a notebook
+#@+node:ekr.20071116093143.1:Execute script using Ipython
+# It should be possible to use Leo as an IPython notebook *now*.
+#@nonl
+#@+node:ekr.20071118114756:IPython notes
+@nocolor
+
+shell.start has a user_ns keyword.  It might be interesting to set this to Leo global dict.
+
+shell_class is IPython.iplib.InteractiveShell
+
+InteractiveShell creates self.logger and self.jobs
+
+self.compile is codeop.CommandCompiler
+
+__builtin__.quit = Quitter('quit')
+__builtin__.exit = Quitter('exit')
+self.meta = Struct()
+
+Show Me videos:
+
+discusses all the magic commands.  Some are cool.
+#@nonl
+#@-node:ekr.20071118114756:IPython notes
+#@-node:ekr.20071116093143.1:Execute script using Ipython
+#@-node:ekr.20070307082503:Make Leo an IPython notebook
+#@+node:ekr.20071211090716:autocompletion
 #@+node:ekr.20060530085844:Improve autocompletion
 # Study rope:  http://rope.sourceforge.net/
 #@nonl
@@ -1363,44 +1741,81 @@ understand what 'self' means. Iirc, I disabled this code because it was too slow
 #@+node:ekr.20071106135937.1:Study the rope code in c:\prog\rope
 #@-node:ekr.20071106135937.1:Study the rope code in c:\prog\rope
 #@-node:ekr.20060530085844:Improve autocompletion
-#@+node:ekr.20071110071126:Better searching
-#@+node:ekr.20071110071126.1:Force the insert point to beginning (or end) of text when selecting during finds?
-Something not-quite-right is happening presently.
-#@nonl
-#@-node:ekr.20071110071126.1:Force the insert point to beginning (or end) of text when selecting during finds?
+#@+node:ekr.20071211091355:Other
 #@+node:ekr.20071110071126.2:Better isearch
 #@-node:ekr.20071110071126.2:Better isearch
-#@-node:ekr.20071110071126:Better searching
-#@+node:ekr.20071116093143.1:Execute script using Ipython
-# It should be possible to use Leo as an IPython notebook *now*.
-#@nonl
-#@+node:ekr.20071118114756:IPython notes
+#@+node:ekr.20071128094234:Finish scolorizer
+#@+node:ekr.20050920084036.265:scolorizer LATER
+def scolorizer (self,event,pattern=None):
+
+    '''Colorizer for incremental searches.'''
+
+    pass # not ready yet.   
+
+    # k = self.k ; w = self.w
+    # s = pattern or k.getLabel(ignorePrompt=True)
+    # # g.trace(repr(s))
+    # w.tag_delete('color','color1')
+    # if not s: return
+    # if g.app.gui.guiName() != 'tkinter':
+        # return g.es('command not ready yet',color='blue')
+
+    # ind = 0
+    # index = w.getInsertPoint()
+    # index2 = index + len(s)
+    # # g.trace(index,index2)
+    # # Colorize in the forward direction, regardless of the kind of search.
+    # while ind:
+        # try:
+            # ind = w.search(s,ind,stopindex='end',regexp=self.regexp)
+        # except Exception: break
+        # if ind:
+            # i, d = ind.split('.')
+            # d = str(int(d)+len(s))
+            # # g.trace(ind)
+            # if ind in (index,index2):
+                # w.tag_add('color1',ind,'%s.%s' % (i,d))
+            # w.tag_add('color',ind,'%s.%s' % (i,d))
+            # ind = i + '.' + d
+
+    # w.tag_config('color',foreground='red')
+    # w.tag_config('color1',background='lightblue')
+#@-node:ekr.20050920084036.265:scolorizer LATER
+#@-node:ekr.20071128094234:Finish scolorizer
+#@+node:ekr.20071001052501:Versioning for nodes
 @nocolor
 
-shell.start has a user_ns keyword.  It might be interesting to set this to Leo global dict.
-
-shell_class is IPython.iplib.InteractiveShell
-
-InteractiveShell creates self.logger and self.jobs
-
-self.compile is codeop.CommandCompiler
-
-__builtin__.quit = Quitter('quit')
-__builtin__.exit = Quitter('exit')
-self.meta = Struct()
-
-Show Me videos:
-
-discusses all the magic commands.  Some are cool.
+One feature I have not seen in SCS system is something which might be called
+"history compression": I might be interested in having both version 5 and 6
+in my source tree, when the current version is 7, but I am not really interested
+in the 2000 steps which transformed 5 into 6 (just suggested this feature to
+the bazaar people). This happens actually quite often to me, since I use the
+SCS as a back-up system, saving many (uninteresting) intermediate steps while
+implementing a new feature.
 #@nonl
-#@-node:ekr.20071118114756:IPython notes
-#@-node:ekr.20071116093143.1:Execute script using Ipython
-#@-node:ekr.20070703111455.1:Most important
+#@-node:ekr.20071001052501:Versioning for nodes
+#@+node:ekr.20071021125124:Revise plugins manager plugin
+Remove all references to pluginsManager.txt.
+#@nonl
+#@-node:ekr.20071021125124:Revise plugins manager plugin
+#@+node:ekr.20061127170002.1:Allow multiple lines on the button bar
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3993176
+By: rich_ries
+
+How can the button bar be enlarged to take a second (or third!) row of icons? Or maybe the Scripting buttons can have
+their own section, like the NodeBar plugin did/does?
+
+add-new-icon-row command?
+#@nonl
+#@-node:ekr.20061127170002.1:Allow multiple lines on the button bar
+#@+node:ekr.20070220082124:Make sure Leo can generate Latex
+#@-node:ekr.20070220082124:Make sure Leo can generate Latex
+#@-node:ekr.20071211091355:Other
 #@+node:ekr.20070703111455.3:Minor
 # some of these can wait till much later.
 #@nonl
-#@+node:ekr.20070220082124:Make sure Leo can generate Latex
-#@-node:ekr.20070220082124:Make sure Leo can generate Latex
 #@+node:ekr.20070521105645:Improve api docs with epidoc?
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=4319363
@@ -1915,170 +2330,6 @@ def revert (self,event=None):
 #@-node:ekr.20031218072017.2837:revert
 #@-node:ekr.20031218072017.2820:top level (file menu)
 #@-node:ekr.20061002093442:Add opml support to new,open, save commands
-#@+node:ekr.20071027121956:Fix javaScript scanner
-# Javascript syntax is truly bizarre.
-#@nonl
-#@+node:ekr.20031218072017.3210:createOutline
-def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
-
-    c = self.c ; u = c.undoer ; s1 = s
-    junk,self.fileName = g.os_path_split(fileName)
-    self.methodName,self.fileType = g.os_path_splitext(self.fileName)
-    self.setEncoding(p=parent)
-    # g.trace(self.fileName,self.fileType)
-    # All file types except the following just get copied to the parent node.
-    if not ext: ext = self.fileType
-    ext = ext.lower()
-    if not s:
-        << Read file into s >>
-
-    # Create the top-level headline.
-    if atAuto:
-        p = parent.copy()
-        c.beginUpdate()
-        try:
-            p.setTnodeText('')
-        finally:
-            c.endUpdate(False)
-    else:
-        undoData = u.beforeInsertNode(parent)
-        p = parent.insertAsLastChild()
-        if self.treeType == "@file" and not s1:
-            p.initHeadString("@nosent " + fileName)
-        else:
-            p.initHeadString(fileName)
-        u.afterInsertNode(p,'Import',undoData)
-
-    self.rootLine = g.choose(self.treeType=="@file","","@root-code "+self.fileName+'\n')
-
-    if ext in (".c", ".cpp", ".cxx"):
-        self.scanCText(s,p,atAuto=atAuto)
-    elif ext == '.c#':
-        self.scanCSharpText(s,p,atAuto=atAuto)
-    elif ext == ".el":
-        self.scanElispText(s,p,atAuto=atAuto)
-    elif ext == ".java":
-        self.scanJavaText(s,p,atAuto=atAuto)
-    elif ext == ".js":
-        self.scanJavaScriptText(s,p,atAuto=atAuto)
-    elif ext == ".pas":
-        self.scanPascalText(s,p,atAuto=atAuto)
-    elif ext in (".py", ".pyw"):
-        self.scanPythonText(s,p,atAuto=atAuto)
-    elif ext == ".php":
-        self.scanPHPText(s,p,atAuto=atAuto)
-    else:
-        self.scanUnknownFileType(s,p,ext,atAuto=atAuto)
-
-    p.contract()
-    return p
-#@+node:ekr.20031218072017.3211:<< Read file into s >>
-try:
-    fileName = g.os_path_normpath(fileName)
-    theFile = open(fileName)
-    s = theFile.read()
-    s = g.toUnicode(s,self.encoding)
-    theFile.close()
-except IOError:
-    g.es("can not open %s%s" % (g.choose(atAuto,'@auto ',''),fileName),color='red')
-    leoTest.fail()
-    return None
-#@-node:ekr.20031218072017.3211:<< Read file into s >>
-#@-node:ekr.20031218072017.3210:createOutline
-#@+node:ekr.20070713075450:Unit tests
-# atAuto must be False for unit tests: otherwise the test gets wiped out.
-
-def cUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest(p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.c')
-
-def cSharpUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest(p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.c#')
-
-def elispUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.el')
-
-def htmlUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.htm')
-
-def javaUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.java')
-
-def javaScriptUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.js')
-
-def pascalUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.pas')
-
-def phpUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.php')
-
-def pythonUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.py')
-
-def textUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.txt')
-
-def defaultImporterUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.xxx')
-#@+node:ekr.20070713082220:scannerUnitTest
-def scannerUnitTest (self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
-
-    '''Run a unit test of an import scanner,
-    i.e., create a tree from string s at location p.'''
-
-    c = self.c ; h = p.headString() ; old_root = p.copy()
-    oldChanged = c.changed
-    c.beginUpdate()
-    try:
-        d = g.app.unitTestDict
-        expectedErrors = d.get('expectedErrors')
-        expectedErrorMessage = d.get('expectedErrorMessage')
-        expectedMismatchLine = d.get('expectedMismatchLine')
-        g.app.unitTestDict = {
-            'expectedErrors':expectedErrors,
-            'expectedErrorMessage':expectedErrorMessage,
-            'expectedMismatchLine':expectedMismatchLine,
-        }
-        if not fileName: fileName = p.headString()
-        if not s: s = self.removeSentinelsCommand([fileName],toString=True)
-        title = g.choose(h.startswith('@test'),h[5:],h)
-        self.createOutline(title.strip(),p.copy(),atAuto=atAuto,s=s,ext=ext)
-        d = g.app.unitTestDict
-        ok = ((d.get('result') and expectedErrors in (None,0)) or
-            (
-                # checkTrialWrite returns *True* if the following match.
-                # d.get('result') == False and
-                d.get('actualErrors') == d.get('expectedErrors') and
-                d.get('actualMismatchLine') == d.get('expectedMismatchLine') and
-                (expectedErrorMessage is None or d.get('actualErrorMessage') == d.get('expectedErrorMessage'))
-            ))
-        if not ok:
-            g.trace('result',d.get('result'),
-                'actualErrors',d.get('actualErrors'),
-                'expectedErrors',d.get('expectedErrors'),
-                'actualMismatchLine',d.get('actualMismatchLine'),
-                'expectedMismatchLine', d.get('expectedMismatchLine'),
-                '\nactualErrorMessage  ',d.get('actualErrorMessage'),
-                '\nexpectedErrorMessage',d.get('expectedErrorMessage'),
-            )
-        if not showTree and ok:
-            while old_root.hasChildren():
-                old_root.firstChild().doDelete()
-            c.setChanged(oldChanged)
-
-    finally:
-        c.selectPosition(old_root)
-        c.endUpdate()
-
-    if g.app.unitTesting:
-        assert ok
-
-    return ok
-#@-node:ekr.20070713082220:scannerUnitTest
-#@-node:ekr.20070713075450:Unit tests
-#@+node:ekr.20071027111225:JavaScript scanner (not ready yet)
-#@-node:ekr.20071027111225:JavaScript scanner (not ready yet)
-#@-node:ekr.20071027121956:Fix javaScript scanner
 #@+node:ekr.20071004120359.2:Do expand-region-abbrevs from
 #@+node:ekr.20050920084036.21:regionalExpandAbbrev (TK code)
 # def regionalExpandAbbrev (self,event):
@@ -2131,68 +2382,6 @@ def scannerUnitTest (self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=
 #@-node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
 #@-node:ekr.20050920084036.21:regionalExpandAbbrev (TK code)
 #@-node:ekr.20071004120359.2:Do expand-region-abbrevs from
-#@+node:ekr.20070905072809.1:Mulder post re svn
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=4484641
-By: bwmulder
-
-Actually we are talking about two plugins here: a bazaar plugin, and a
-Leo plugin.
-
-The bazaar plugin would do special things for Leo files during checkout, status
-and checkin. After checkout, for example, it would delete the sentinels in the
-user visible files.
-
-The Leo plugin would know to go to the repository for reading (and writing?).
-
-One open question is to where to store new sentinels: can they be hidden away
-in the Source Control System (SCS) directories?
-
-Another open question: Could Leo sentinels be used as an identity marker, which
-unambiguously identifies a piece of text? With that, the SCS system might have
-enough information to make statements like:
-
-Lines 10-100 where in file x where moved from file y, in other words: the SCS
-could track code at the function level.
-
-The whole process could then work like this:
-
-1. You check out your sources.
-2. After checkout, the bazaar plugin would delete all sentinels from the checked-out
-files.
-3. If you start Leo, Leo would read the (full) file from the SCS.
-4. If you make modifications, the full file would be hidden in SCS directories,
-and the disk file would (again) show no sentinels.
-5. I don't know how the bazaar status command works. We must make sure that
-status works correctly for Leo files as it does for any other files.
-6. For checkin, the SCS system would have to use the information hidden in step
-4.
-
-Open questions:
-
-1. Can the Leo sentinels be used as a permanent identity markers for text? If
-they can't be right now, would Edward be willing to modify them so that they
-can?
-2. Can / should we make the full files available somehow (probably)
-2. How would conflict resolution work? Can / should we hide the sentinels even
-then? (probably not)
-
-So the answer to your question is: yes, I am thinking about such plugins, though
-I am not (yet) thinking of writing such plugins myself.
-
-______________________________________________________________________
-You are receiving this email because you elected to monitor this forum.
-To stop monitoring this forum, login to SourceForge.net and visit:
-https://sourceforge.net/forum/unmonitor.php?forum_id=10226
-#@-node:ekr.20070905072809.1:Mulder post re svn
-#@+node:ekr.20061028065955.2:Fix binding nits
-#@+node:ekr.20061014050154.2:Binding to None clears all bindings
-#@-node:ekr.20061014050154.2:Binding to None clears all bindings
-#@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
-#@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
-#@+node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
-#@-node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
-#@-node:ekr.20061028065955.2:Fix binding nits
 #@+node:ekr.20070605114358:Improve how recent files works?
 @nocolor
 
@@ -2528,109 +2717,12 @@ def __init__ (self,c,parentFrame):
     c.frame.statusText  = self.textWidget
 #@-node:ekr.20070302171509.2: nullStatusLineClass.ctor
 #@-node:ekr.20070619161413:Finish support for hidden windows
-#@+node:ekr.20070613181147:(maybe) Improve key handling
-# The idea is to use a single <Key binding> and
-# use w.event_generate(key) to create a table
-# that associates Tk key numbers with bindings:
-
-    if event.char:
-        if 0:
-            import Tkinter as Tk
-            w = Tk.Text()
-            def foo (event):
-                g.trace(event)
-            w.bind('<Key>',foo)
-            for prefix in ('Alt-Key-','Shift-Key-'):
-                key = '<%s%s>' % (prefix,event.char.strip())
-                g.trace(key)
-                w.event_generate('a')
-        if 0:
-            for z in ('char','keysym','keycode','keysym_num','state',):
-                a = getattr(event,z)
-                print z,repr(a)
-#@-node:ekr.20070613181147:(maybe) Improve key handling
 #@+node:ekr.20070624135822:Templates for common code fragments
 #@-node:ekr.20070624135822:Templates for common code fragments
-#@+node:ekr.20061127170002.1:Allow multiple lines on the button bar
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3993176
-By: rich_ries
-
-How can the button bar be enlarged to take a second (or third!) row of icons? Or maybe the Scripting buttons can have
-their own section, like the NodeBar plugin did/does?
-
-add-new-icon-row command?
-#@nonl
-#@-node:ekr.20061127170002.1:Allow multiple lines on the button bar
 #@-node:ekr.20070703111455.3:Minor
-#@+node:ekr.20071105155631.1:Plugins
-#@+node:ekr.20071021125124:Revise plugins manager plugin
-Remove all references to pluginsManager.txt.
-#@nonl
-#@-node:ekr.20071021125124:Revise plugins manager plugin
-#@+node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4562648
-By: rogererens
-
-Maybe I may use this thread to make another suggestion for Leo 4.4.5, related
-to @menus: have the menu-options for right-clicking in the various panes also
-in the @settings-tree.
-
-Regards, Roger
-#@nonl
-#@-node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
-#@+node:ekr.20071026052111:Fix cursesGui  plugin
-#@+node:ekr.20071026051956:crash in cursesGui.py
-reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo
-reading settings in C:\Documents and Settings\HP_Administrator\My Documents\Edward\myLeoSettings.leo
-reading settings in C:\prog\tigris-cvs\leo\test\test.leo
-reading C:\Documents and Settings\HP_Administrator\My Documents\Edward\.leoRecentFiles.txt
-reading C:\prog\tigris-cvs\leo\config\.leoRecentFiles.txt
-@enabled-plugins found in test.leo
-textGui oops <module>,run,createFrame,openWithFileName,newLeoCommanderAndFrame,finishCreate,createKeyHandlerClass should be implem
-ented
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leo.py", line 401, in <module>
-    run(fileName)
-  File "c:\prog\tigris-cvs\leo\src\leo.py", line 144, in run
-    c,frame = createFrame(fileName)
-  File "c:\prog\tigris-cvs\leo\src\leo.py", line 213, in createFrame
-    ok, frame = g.openWithFileName(fileName,None)
-  File "C:\prog\tigris-cvs\leo\src\leoGlobals.py", line 1908, in openWithFileName
-    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
-  File "C:\prog\tigris-cvs\leo\src\leoApp.py", line 577, in newLeoCommanderAndFrame
-    c.finishCreate(initEditCommanders)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 216, in finishCreate
-    c.commandsDict = leoEditCommands.finishCreateEditCommanders(c)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 247, in finishCreateEditCommanders
-    d2 = theInstance.getPublicCommands()
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 1022, in getPublicCommands
-    'keyboard-quit':                k.keyboardQuit,
-AttributeError: 'NoneType' object has no attribute 'keyboardQuit'
->>>
-#@nonl
-#@-node:ekr.20071026051956:crash in cursesGui.py
-#@-node:ekr.20071026052111:Fix cursesGui  plugin
-#@+node:ekr.20071105155631.2:Fix script_io_to_body plugin
-#@-node:ekr.20071105155631.2:Fix script_io_to_body plugin
-#@+node:ekr.20070613103409:Improve marks/recent buttons
-- Arrow keys must move up/down.
-- Should be commands to show the marks/recent dialogs.
-#@nonl
-#@-node:ekr.20070613103409:Improve marks/recent buttons
-#@-node:ekr.20071105155631.1:Plugins
-#@-node:ekr.20071113093057:To do: 4.4.6: last major projects
-#@+node:ekr.20070923103337:Not associated with any release
-#@+node:ekr.20071111053028:Move to svn
-@nocolor
-
-http://subversion.tigris.org/faq.html#cvs2svn
-#@nonl
-#@-node:ekr.20071111053028:Move to svn
-#@+node:ekr.20060306194040:Video and more screen shots on Leo's web site
+#@-node:ekr.20071211090716:autocompletion
+#@-node:ekr.20071211093011:5.1 ipython & autocompletion
+#@+node:ekr.20060306194040:Leo Video
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3615177
 By: ktenney
@@ -2725,79 +2817,14 @@ S5: http://meyerweb.com/eric/tools/s5/
   Similar to Slidy I think, haven't looked at it
 #@nonl
 #@-node:ekr.20060829103523:Render Leo slideshows
-#@-node:ekr.20060306194040:Video and more screen shots on Leo's web site
-#@+node:ekr.20071029082025:Improve distribution
-* Convert to svn  (use py_svn)
-* Enable sax option.
-* Proper xml namespace in .leo files.  Is this Leo 5.0??
-#@nonl
-#@+node:ekr.20070929125944:Emulate Orange's download philosophy
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4543089
-By: billp9619
-
-from the download page:
-
-If it's the first time you hear about Python, this is the installation for you.
-The packages includes complete Orange, Python, Windows Extensions for Python
-(PythonWin), Numeric Python, Qt 2.2 non-commercial, PyQt, PyQwt and GraphViz.
-
-Leo should copy this download philosophy.
-
-
-
-#@-node:ekr.20070929125944:Emulate Orange's download philosophy
-#@+node:ekr.20070615063616.1:Create Debian package
-#@-node:ekr.20070615063616.1:Create Debian package
-#@-node:ekr.20071029082025:Improve distribution
-#@+node:ekr.20071102191642:Other guis
+#@-node:ekr.20060306194040:Leo Video
+#@+node:ekr.20071211093011.1:Other guis
 #@+node:ekr.20071030191227:Emacs/Pymacs gui
 #@-node:ekr.20071030191227:Emacs/Pymacs gui
 #@+node:ekr.20071117150547:pyGtk
 Wing IDE uses this: it looks great.
 #@nonl
 #@-node:ekr.20071117150547:pyGtk
-#@+node:ekr.20070824093611:Improve wxGui plugin
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=4480477
-By: plumloco
-
-Sorry to here about your injury, Edward. Hope its not RSI from working too hard
-on Leo.  Get well soon.
-
-When your fit and well again you might like to have a look at this.
-
-I have been playing with custom tree widgets for leo, first with pyGTK then
-with wxPython.  I had thought about doing a  pyGTK plugin until I realized how
-much work was involved :)
-
-I have adapted the __wx_gui.py plugin to work with my custom widget and called
-it __wx_alt_gui.py. You, or anyone else who is interested, can download the
-plugin from http://plumloco.co.uk/scratch/__wx_alt_gui.py.gz.
-
-The great benefit of using this custom widget is that it has no secondary data
-structures to keep in synch, this makes it faster and more efficient in terms
-of resources. It also eliminates the problem of complicated glue code.
-
-All that is needed is to call update whenever a change is made and the widget
-will get all its data directly from the leo outline itself.  A good test for
-the widget is to load a large outline and do an expand-all-nodes on it (try
-the same with __wx_gui and tkLeo).
-
-The widget still needs a lot of work but it works well enough for its usefulness
-and viability to be tested.
-
-I would be interested to know your intentions towards wxLeo.  My impression
-is that you do not plan on being very active in its development, seeing as how
-you are talking about doing a java swing version.
-
-If you have no objections, I would like to do some work on wxLeo myself, partly
-for its own sake and partly to gain experience for a possible pyGTK port.  Obviously
-I do not want to be treading on your toes, so please tell me if I am intruding.
-
-
-#@-node:ekr.20070824093611:Improve wxGui plugin
 #@+node:ekr.20070703111913:Swing gui
 #@+node:ekr.20070930105601:Gui Swing classes
 #@+node:ekr.20071001092721:@thin leoSwingDialog.py
@@ -10984,135 +11011,7 @@ class GCEveryOneMinute(java.lang.Thread):
 #@-node:ekr.20071001081358:@thin leoSwingUtils.py
 #@-node:ekr.20070930105601:Gui Swing classes
 #@-node:ekr.20070703111913:Swing gui
-#@-node:ekr.20071102191642:Other guis
-#@+node:ekr.20070307082503:Make Leo an IPython notebook
-#@+node:ekr.20071128071822:Do ipython demo
-@nocolor
-
-> The simple Python prompt is interesting in its own right and maybe an established use of it within Leo would act as a demonstration. The advancement to IPython would be obvious once there was an attractive integration of the normal prompt.
-
-Good point.
-
-> It seems that many of the user stories you responded to on the wiki could be done with the simple Python prompt integration(somehow using the shell prompt instead of how you might have explained current execute script in your answers). So, of course, the Leo integration and demonstration of a simple Python prompt would assist these users - but require giving up IPython convenience in those situations.
-
-Exactly. 
-
-> But then there would be more of a dialog on how to get to IPython since the integration of the shell - in terms of Leo - is a then a concrete model.
-
-Yes, it would be feasible to do a 'toy' implementation using python's cmd and readline modules. Presumably, this would sidestep all the difficult implementation issues that make ipython valuable :-)
-
-So this is all good.  We have a start of a user-level design, and a way of turning that design into working code *relatively* easily.
-
-Originally, I was thinking that the demo would be a set of diagrams illustrating how to integrate ipython into Leo.  The original post on this thread might claim to be such a 'diagram'.  Here are the bones of the design as described in the first post:
-
-1. Put the interactive shell in a Shell tab in the log pane.
-
-2. If the present node is an @history node, all of the work on the interactive prompt is captured (appended) in that body pane. Such nodes might be grouped into chapters, or by @shell-histories trees.
-
-3. Buttons or commands would play back captured sessions one step at a time.
-
-4. The open-shell-tab command could (under control of user options) rearrange Leo's panes to make them easier to use for entering shell commands.  The close-shell-tab command would undo whatever rearrangement took place.
-
-5. Leo users would see leo outlines as conveniently arranged saved sessions which are available for review and replay. 
-
-I think this is a pretty decent demo!
-
-My original idea was to use the minibuffer for input and use the 'shell' tab (or body pane for @shell nodes) only for output. But this would make it impossible to play back captured sessions.
-
-Actually, it may be easiest to do the full simulation in the Shell tab.  The Shell tab must have bindings that emulate the bindings (say) in idle's main console window.  I strongly suspect that there are more details than meet the eye.  Still, python's cmd and readline modules are a good start.  
-
-In short, it looks like we have a clear roadmap for an ipython demo in Leo: put an 'idle-like' console window in a Shell tab in Leo's log pane.
-
-I'll create commands to open and close the Shell tab soon--maybe today.  Is anyone interested in actually creating an 'idle-like' command interpreter in the Shell pane?
-#@nonl
-#@-node:ekr.20071128071822:Do ipython demo
-#@+node:ekr.20071127103206:Post from BillP
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4640591
-By: billp9619
-
-It seems to me that the python interactive prompt is such a prominent feature
-of the language that it should be integrated better into leo.
-
-If the shell was there as a standard tab (similar to "Find" panel) then I think
-this would make Leo more enticing as a teaching tool.
-
-I could envision an arrangement such that if the selected outline node is of
-a certain kind - maybe @interactive - then all of the work on the interactive
-prompt is captured(appended) in that body pane. Another button or command would
-play back the captured session one step at a time.
-
-The window action "Toggle Split Direction" places the Log pane at the bottom
-where the body is normally. So when using the prompt it would be below the outline
-- and the body pane hidden by dragging left edge of window flush to the right.
-Such a user would see leo outlines as conveniently arranged saved sessions which
-are available for replay(and reviewable history as saved in corresponding body
-texts).
-#@nonl
-#@-node:ekr.20071127103206:Post from BillP
-#@+node:ekr.20071117082144:@url http://projects.scipy.org/ipython/ipython/wiki/NoteBook/ProjectDescription
-#@-node:ekr.20071117082144:@url http://projects.scipy.org/ipython/ipython/wiki/NoteBook/ProjectDescription
-#@+node:ekr.20071118051101:@url http://leo.zwiki.org/ResponsesToIPythonsUserStories
-#@-node:ekr.20071118051101:@url http://leo.zwiki.org/ResponsesToIPythonsUserStories
-#@+node:ekr.20060603090445.7:Ipython stuff
-#@+node:ekr.20060603085719.1:Use IPython autocompleter?
-#@-node:ekr.20060603085719.1:Use IPython autocompleter?
-#@+node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
-#@-node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
-#@+node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
-#@-node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
-#@+node:ekr.20060603090445.9:Script button that saves environment between runs
-This would allow IPython-like operation.
-#@nonl
-#@-node:ekr.20060603090445.9:Script button that saves environment between runs
-#@-node:ekr.20060603090445.7:Ipython stuff
-#@+node:ekr.20070521100324.1:Using Leo as a notebook
-@nocolor
-https://sourceforge.net/forum/message.php?msg_id=4314394
-By: duanekaufman
-
-I am starting a kinda 'stream-of-thought' document, one in which I can put down
-a paragraph of thought (perhaps in a pretty fashion, using ReST markup), develop
-some code, to do some calculations, run the code and display the results...rinse,
-repeat.
-
-The document, in pseudo-form, would look like:
-
-<Development of thought #1>
-<Code to calculate something>
-<Results from code execution>
-<Discussion of results>
-
-Each of the above would probably be a node, and I have already put together
-things that look like the above, all except for the <results> part. I can run
-the code, but how can I get the output automatically in my node? I can cut-and-paste
-from the underlying command window (I run under Linux and Windows XP), but I
-would like o automate it as much as possible.
-
-Does anyone have any ideas on how to accomodate this workflow?
-
------- Reply
-
-A most interesting and important question--with such a capability one could make Leo into a full-fledged engineering notebook, e.g., as envisaged by the IPython Notebook project: 
-
-http://projects.scipy.org/ipython/ipython/wiki/NbshellManual 
-
-I can think of several possible approaches: 
-
-1. Create a custom version of the execute script command that would put script output in a particular node. Perhaps the headline of the node could be an argument to the enhanced command. 
-
-2. Have your script write to some 'standard place', and create a command to put that script in the presently selected node. Something like insert-script-output. 
-
-3. Create a script button that executes the script in the presently selected node and puts the result in the node *following* the selected node. You can then either move the node by hand, or use another script button to move the node to a 'standard place', say the last child of the <<results>> node. 
-
-As I write this I think the script-button approach is likely to be the simplest, most flexible and most powerful. I'll look into this myself soon... 
-
-Edward
-#@nonl
-#@-node:ekr.20070521100324.1:Using Leo as a notebook
-#@-node:ekr.20070307082503:Make Leo an IPython notebook
-#@-node:ekr.20070923103337:Not associated with any release
+#@-node:ekr.20071211093011.1:Other guis
 #@-all
 #@nonl
 #@-node:ekr.20040117181936:@thin ../doc/leoToDo.txt

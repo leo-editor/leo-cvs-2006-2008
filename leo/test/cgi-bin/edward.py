@@ -121,6 +121,8 @@ g = b.globals()
 c = b.openLeoFile(path)
 p = c.rootPosition()
 # import os; print os.getcwd()
+
+# import pdb ; pdb.Pdb() # Doesn't work.
 print_all(c)
 #@nonl
 #@-node:@file cgi-bin/edward.py

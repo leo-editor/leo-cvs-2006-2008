@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="120" left="340" height="650" width="909"/>
+	<global_window_position top="120" left="340" height="630" width="909"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -25,7 +25,7 @@
 <v t="ekr.20070105153901.12"><vh>Are any calls to calloc needed?</vh></v>
 <v t="ekr.20070105153901.13"><vh>Abbreviation Macros</vh></v>
 </v>
-<v t="ekr.20071105090148" a="TV"><vh>Old tests</vh>
+<v t="ekr.20071105090148"><vh>Old tests</vh>
 <v t="ekr.20071105090148.1"><vh>print Tk bindings</vh></v>
 <v t="ekr.20071105090148.2"><vh>byte-code tests</vh></v>
 <v t="ekr.20071105090148.3"><vh>print .</vh></v>
@@ -9520,10 +9520,602 @@
 </v>
 </v>
 </v>
-<v t="ekr.20070626112754.1866"><vh>pychecker</vh>
-<v t="ekr.20070626112754.1867"><vh>Invalid warnings</vh></v>
-<v t="ekr.20070626112754.1868"><vh>Report 5-7-07</vh></v>
-<v t="ekr.20070626112754.1869"><vh>Report 6-10-07</vh></v>
+<v t="ekr.20071211113237" a="TV"><vh>Leo 4.4.5 projects</vh>
+<v t="ekr.20071211113302.2"><vh>Leo 4.4.5 b1</vh>
+<v t="ekr.20071211113302.3"><vh>Distribution</vh>
+<v t="ekr.20071211113302.4"><vh>Removed all references to pluginsManager.txt</vh>
+<v t="ekr.20071211113302.5"><vh>loadHandlers &amp; helper</vh>
+<v t="ekr.20071211113302.6"><vh>getEnabledFiles</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20071211113302.7"><vh>Fixed bugs</vh>
+<v t="ekr.20071211113302.8"><vh>Fixed hung windows</vh>
+<v t="ekr.20071211113302.9"><vh> doCommand</vh></v>
+<v t="ekr.20071211113302.10"><vh>tkGui file dialogs</vh>
+<v t="ekr.20071211113302.11"><vh>runOpenFileDialog</vh></v>
+<v t="ekr.20071211113302.12"><vh>runSaveFileDialog</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.13"><vh>Warn on resurrected (vampire) nodes</vh>
+<v t="ekr.20071211113302.14"><vh>original post (long)</vh></v>
+<v t="ekr.20071211113302.15"><vh>short summary</vh></v>
+<v t="ekr.20071211113302.16"><vh>what I did</vh></v>
+<v t="ekr.20071211113302.17"><vh>read</vh>
+<v t="ekr.20071211113302.18"><vh>&lt;&lt; set fileName &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.19"><vh>&lt;&lt; delete all tempBodyStrings &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.20"><vh>&lt;&lt; advise user to delete all unvisited nodes &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.21"><vh>createThinChild4</vh></v>
+<v t="ekr.20071211113302.22"><vh>findChild4</vh></v>
+</v>
+<v t="ekr.20071211113302.23"><vh>Fixed new @auto bug (python)</vh>
+<v t="ekr.20071211113302.24"><vh>Failing code</vh></v>
+<v t="ekr.20071211113302.25" a="M"><vh>readOneAtAutoNode (atFile)</vh></v>
+<v t="ekr.20071211113302.26"><vh>putClass &amp; helpers</vh>
+<v t="ekr.20071211113302.27"><vh>appendTextToClassNode</vh></v>
+<v t="ekr.20071211113302.28"><vh>createClassNodePrefix</vh></v>
+<v t="ekr.20071211113302.29"><vh>getClassNodeRef</vh></v>
+<v t="ekr.20071211113302.30"><vh>putClassHelper</vh></v>
+</v>
+<v t="ekr.20071211113302.31"><vh>scanHelper</vh></v>
+<v t="ekr.20071211113302.32"><vh>skipDecls</vh></v>
+</v>
+<v t="ekr.20071211113302.33"><vh>Fixed new @auto bug: c++</vh>
+<v t="ekr.20071211113302.34"><vh>scan &amp; scanHelper</vh>
+<v t="ekr.20071211113302.31"><vh>scanHelper</vh></v>
+</v>
+<v t="ekr.20071211113302.35"><vh>skipBlock</vh></v>
+<v t="ekr.20071211113302.32"><vh>skipDecls</vh></v>
+</v>
+<v t="ekr.20071211113302.36"><vh>Fixed various @auto comparison problems</vh></v>
+<v t="ekr.20071211113302.37"><vh>Fixed remaining relative path problems</vh>
+<v t="ekr.20071211113302.38"><vh>Retain relative paths in recent files menu</vh>
+<v t="ekr.20071211113302.39"><vh>Report</vh></v>
+<v t="ekr.20071211113302.40"><vh>Report 2</vh></v>
+<v t="ekr.20071211113302.41"><vh>What I did</vh></v>
+<v t="ekr.20071211113302.42"><vh>open</vh>
+<v t="ekr.20071211113302.43"><vh>&lt;&lt; Set closeFlag if the only open window is empty &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.44"><vh>g.openWithFileName</vh></v>
+<v t="ekr.20071211113302.45"><vh>c.updateRecentFiles</vh></v>
+<v t="ekr.20071211113302.46"><vh>run</vh>
+<v t="ekr.20071211113302.47"><vh>&lt;&lt; import leoGlobals and leoApp &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.48"><vh>&lt;&lt; import leoNodes and leoConfig &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.49"><vh>Found: newLeoCommanderAndFrame</vh>
+<v t="ekr.20071211113302.50"><vh>app.newLeoCommanderAndFrame</vh>
+<v t="ekr.20071211113302.51"><vh>&lt;&lt; compute the window title &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.52"><vh>completeFileName (leo.py)</vh></v>
+<v t="ekr.20071211113302.53"><vh>createFrame (leo.py)</vh></v>
+<v t="ekr.20071211113302.54"><vh>createFrame (leoBridge)</vh></v>
+<v t="ekr.20071211113302.55"><vh>g.app.config.openSettingsFile</vh></v>
+<v t="ekr.20071211113302.44"><vh>g.openWithFileName</vh></v>
+<v t="ekr.20071211113302.56"><vh>new</vh></v>
+<v t="ekr.20071211113302.57"><vh>readOutlineOnly</vh></v>
+<v t="ekr.20071211113302.58"><vh>run-script</vh></v>
+</v>
+<v t="ekr.20071211113302.59"><vh>Found: openWithFileName</vh>
+<v t="ekr.20071211113302.44"><vh>g.openWithFileName</vh></v>
+<v t="ekr.20071211113302.53"><vh>createFrame (leo.py)</vh></v>
+<v t="ekr.20071211113302.54"><vh>createFrame (leoBridge)</vh></v>
+<v t="ekr.20071211113302.42"><vh>open</vh>
+<v t="ekr.20071211113302.43"><vh>&lt;&lt; Set closeFlag if the only open window is empty &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.60"><vh>revert</vh></v>
+<v t="ekr.20071211113302.61"><vh>openRecentFile</vh>
+<v t="ekr.20071211113302.62"><vh>&lt;&lt; Set closeFlag if the only open window is empty &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.63"><vh>openLeoSettings and openMyLeoSettings</vh></v>
+<v t="ekr.20071211113302.64"><vh>openLeoScripts</vh></v>
+<v t="ekr.20071211113302.65"><vh>leoDocumentation</vh></v>
+<v t="ekr.20071211113302.66"><vh>leoPlugins</vh></v>
+<v t="ekr.20071211113302.67"><vh>open-outline-by-name</vh></v>
+<v t="ekr.20071211113302.68"><vh>open</vh></v>
+<v t="ekr.20071211113302.69"><vh>runLeoTest</vh></v>
+<v t="ekr.20071211113302.70"><vh>&lt;&lt; pass the url to the web browser &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.71"><vh>clear-recent-files must write immediately</vh>
+<v t="ekr.20071211113302.72"><vh>Reading and writing .leoRecentFiles.txt (g.app.config)</vh>
+<v t="ekr.20071211113302.73"><vh>readRecentFiles &amp; helpers</vh>
+<v t="ekr.20071211113302.74"><vh>createRecentFiles</vh></v>
+<v t="ekr.20071211113302.75"><vh>readRecentFilesFile</vh></v>
+</v>
+<v t="ekr.20071211113302.76"><vh>writeRecentFilesFile &amp; helper</vh>
+<v t="ekr.20071211113302.77"><vh>writeRecentFilesFileHelper</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.78"><vh>Recent Files submenu &amp; allies</vh>
+<v t="ekr.20071211113302.79"><vh>clearRecentFiles</vh></v>
+<v t="ekr.20071211113302.61"><vh>openRecentFile</vh>
+<v t="ekr.20071211113302.62"><vh>&lt;&lt; Set closeFlag if the only open window is empty &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.45"><vh>c.updateRecentFiles</vh></v>
+</v>
+</v>
+</v>
+</v>
+<v t="ekr.20071211113302.80"><vh>Fixed windows registry problem</vh></v>
+<v t="ekr.20071211113302.81"><vh>Fixed paste node as clone crasher</vh>
+<v t="ekr.20071211113302.82"><vh>Report</vh></v>
+<v t="ekr.20071211113302.83"><vh>getLeoOutlineFromClipboard &amp; helpers</vh>
+<v t="ekr.20071211113302.84"><vh>finishPaste</vh>
+<v t="ekr.20071211113302.85"><vh>&lt;&lt; reassign tnode indices &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.86"><vh>getLeoOutlineHelper</vh>
+<v t="ekr.20071211113302.87"><vh>&lt;&lt; recreate tnodesDict &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.88"><vh>getClipboardHeader</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.89"><vh>Fixed new crasher involving directory scanning</vh>
+<v t="ekr.20071211113302.90"><vh>Found: pluginsList (in leoPlugins.leo)</vh>
+<v t="ekr.20071211113302.91"><vh>initAnyMarkup</vh></v>
+<v t="ekr.20071211113302.92"><vh>colorWikiMarkup &amp; helper</vh>
+<v t="ekr.20071211113302.93"><vh>doWikiText</vh>
+<v t="ekr.20071211113302.94"><vh>&lt;&lt; set first to a tuple describing the first tag to be handled &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.95"><vh>&lt;&lt; handle the tag using n1,n2,delim1,delim2 &gt;&gt;</vh>
+<v t="ekr.20071211113302.96"><vh>&lt;&lt; parse and handle color field &gt;&gt;</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20071211113302.97"><vh>scanPluginDirectives</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.98"><vh>Fixed hoist crasher</vh>
+<v t="ekr.20071211113302.99"><vh>p.siblings_iter</vh>
+<v t="ekr.20071211113302.100"><vh>__init__ &amp; __iter__</vh></v>
+<v t="ekr.20071211113302.101"><vh>next</vh></v>
+</v>
+<v t="ekr.20071211113302.102"><vh>yoffset (tkTree)</vh></v>
+</v>
+<v t="ekr.20071211113302.103"><vh>Ignore unpickling problems in getUa</vh>
+<v t="ekr.20071211113302.104"><vh>getUa (non-sax)</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.105"><vh>New features</vh>
+<v t="ekr.20071211113302.106"><vh>Support directives in headlines</vh>
+<v t="ekr.20071211113302.107"><vh>What I did</vh></v>
+<v t="ekr.20071211113302.108"><vh>g.get_directives_dict</vh>
+<v t="ekr.20071211113302.109"><vh>&lt;&lt; set theDict for @ directives &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.110"><vh>&lt;&lt; set theDict["root"] for noweb * chunks &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.111"><vh>g.computeRelativePath</vh></v>
+<v t="ekr.20071211113302.112"><vh>Directive utils...</vh>
+<v t="ekr.20071211113302.113"><vh>@language and @comment directives (leoUtils)</vh>
+<v t="ekr.20071211113302.114"><vh>set_delims_from_language</vh></v>
+<v t="ekr.20071211113302.115"><vh>set_delims_from_string</vh></v>
+<v t="ekr.20071211113302.116"><vh>set_language</vh></v>
+</v>
+<v t="ekr.20071211113302.117"><vh>g.comment_delims_from_extension</vh></v>
+<v t="ekr.20071211113302.111"><vh>g.computeRelativePath</vh></v>
+<v t="ekr.20071211113302.118"><vh>g.findReference</vh></v>
+<v t="ekr.20071211113302.108"><vh>g.get_directives_dict</vh>
+<v t="ekr.20071211113302.109"><vh>&lt;&lt; set theDict for @ directives &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.110"><vh>&lt;&lt; set theDict["root"] for noweb * chunks &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.119"><vh>g.scanAtEncodingDirective</vh></v>
+<v t="ekr.20071211113302.120"><vh>g.scanAtLineendingDirective</vh></v>
+<v t="ekr.20071211113302.121"><vh>g.scanAtPagewidthDirective</vh></v>
+<v t="ekr.20071211113302.122"><vh>g.scanAtRootOptions</vh>
+<v t="ekr.20071211113302.123"><vh>&lt;&lt; scan another @root option &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.124"><vh>g.scanAtTabwidthDirective</vh></v>
+<v t="ekr.20071211113302.125"><vh>g.scanColorDirectives</vh></v>
+<v t="ekr.20071211113302.126"><vh>g.scanDirectives</vh>
+<v t="ekr.20071211113302.127"><vh>&lt;&lt; Set local vars &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.128"><vh>&lt;&lt; Test for @comment and @language &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.129"><vh>&lt;&lt; Test for @encoding &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.130"><vh>&lt;&lt; Test for @lineending &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.131"><vh>&lt;&lt; Test for @pagewidth &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.132"><vh>&lt;&lt; Test for @path &gt;&gt; (g.scanDirectives)</vh></v>
+<v t="ekr.20071211113302.133"><vh>&lt;&lt; Test for @tabwidth &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.134"><vh>&lt;&lt; Test for @wrap and @nowrap &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.135"><vh>g.scanForAtIgnore</vh></v>
+<v t="ekr.20071211113302.136"><vh>g.scanForAtLanguage</vh></v>
+<v t="ekr.20071211113302.137"><vh>g.scanForAtSettings</vh></v>
+<v t="ekr.20071211113302.138"><vh>getOutputNewline</vh></v>
+</v>
+<v t="ekr.20071211113302.139"><vh>Found: get_directives_dict</vh>
+<v t="ekr.20071211113302.140"><vh>atFile.scanAllDirectives</vh>
+<v t="ekr.20071211113302.141"><vh>&lt;&lt; Set ivars &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.142"><vh>&lt;&lt; Set path from @file node &gt;&gt; in scanDirectory in leoGlobals.py</vh></v>
+<v t="ekr.20071211113302.143"><vh>&lt;&lt; Test for @path &gt;&gt; (atFile.scanAllDirectives)</vh>
+<v t="ekr.20071211113302.144"><vh>&lt;&lt; handle absolute path &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.145"><vh>&lt;&lt; Test for @encoding &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.146"><vh>&lt;&lt; Test for @comment and @language &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.147"><vh>&lt;&lt; Test for @header and @noheader &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.148"><vh>&lt;&lt; Test for @lineending &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.149"><vh>&lt;&lt; Test for @pagewidth &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.150"><vh>&lt;&lt; Test for @tabwidth &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.151"><vh>&lt;&lt; Set current directory &gt;&gt; (atFile.scanAllDirectives)</vh></v>
+<v t="ekr.20071211113302.152"><vh>&lt;&lt; Set comment strings from delims &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.153"><vh>atFile.scanDefaultDirectory</vh>
+<v t="ekr.20071211113302.154"><vh>&lt;&lt; Set path from @file node &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.155"><vh>&lt;&lt; handle @path &gt;&gt;</vh>
+<v t="ekr.20071211113302.156"><vh>&lt;&lt; handle absolute path &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.157"><vh>&lt;&lt; Set current directory &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.125"><vh>g.scanColorDirectives</vh></v>
+<v t="ekr.20071211113302.126"><vh>g.scanDirectives</vh>
+<v t="ekr.20071211113302.127"><vh>&lt;&lt; Set local vars &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.128"><vh>&lt;&lt; Test for @comment and @language &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.129"><vh>&lt;&lt; Test for @encoding &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.130"><vh>&lt;&lt; Test for @lineending &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.131"><vh>&lt;&lt; Test for @pagewidth &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.132"><vh>&lt;&lt; Test for @path &gt;&gt; (g.scanDirectives)</vh></v>
+<v t="ekr.20071211113302.133"><vh>&lt;&lt; Test for @tabwidth &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.134"><vh>&lt;&lt; Test for @wrap and @nowrap &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.135"><vh>g.scanForAtIgnore</vh></v>
+<v t="ekr.20071211113302.136"><vh>g.scanForAtLanguage</vh></v>
+<v t="ekr.20071211113302.158"><vh>scanColorDirectives (leoColor)</vh>
+<v t="ekr.20071211113302.159"><vh>&lt;&lt; Test for @comment or @language &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.160"><vh>&lt;&lt; Test for @root, @root-doc or @root-code &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.161"><vh>scanForTabWidth</vh>
+<v t="ekr.20071211113302.162"><vh>&lt;&lt; set w and break on @tabwidth &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.163"><vh>tangle</vh></v>
+<v t="ekr.20071211113302.164"><vh>tangle.scanAllDirectives</vh>
+<v t="ekr.20071211113302.165"><vh>&lt;&lt; Collect @first attributes &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.166"><vh>&lt;&lt; Test for @comment and @language &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.167"><vh>&lt;&lt; Test for @encoding &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.168"><vh>&lt;&lt; Test for @lineending &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.169"><vh>&lt;&lt; Test for print modes directives &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.170"><vh>&lt;&lt; Test for @path &gt;&gt; (tangle.scanAllDirectives)</vh>
+<v t="ekr.20071211113302.171"><vh>&lt;&lt; handle absolute @path &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.172"><vh>&lt;&lt; Test for @pagewidth &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.173"><vh>&lt;&lt; Test for @root &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.174"><vh>&lt;&lt; Test for @tabwidth &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.175"><vh>&lt;&lt; Test for @header and @noheader &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.176"><vh>&lt;&lt; Set self.tangle_directory &gt;&gt;</vh>
+<v t="ekr.20071211113302.177"><vh>&lt;&lt; handle absolute path &gt;&gt;</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.178"><vh>tanglePass1</vh></v>
+<v t="ekr.20071211113302.179"><vh>tangleTree (calls cleanup)</vh></v>
+<v t="ekr.20071211113302.180"><vh>untangleTree</vh>
+<v t="ekr.20071211113302.181"><vh>&lt;&lt; set end to the next root in the unit &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.182"><vh>useSyntaxColoring</vh></v>
+</v>
+<v t="ekr.20071211113302.183"><vh>selfInsertCommand, helpers</vh>
+<v t="ekr.20071211113302.184"><vh>&lt;&lt; set local vars &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.185"><vh>insertNewlineHelper</vh></v>
+<v t="ekr.20071211113302.186"><vh>initBracketMatcher</vh></v>
+<v t="ekr.20071211113302.187"><vh>flashMatchingBracketsHelper</vh></v>
+<v t="ekr.20071211113302.188"><vh>flashCharacter</vh></v>
+<v t="ekr.20071211113302.189"><vh>updateAutomatchBracket</vh></v>
+<v t="ekr.20071211113302.190"><vh>udpateAutoIndent</vh></v>
+<v t="ekr.20071211113302.191"><vh>updateTab</vh></v>
+</v>
+<v t="ekr.20071211113302.192"><vh>onHeadChanged</vh>
+<v t="ekr.20071211113302.193"><vh>&lt;&lt; truncate s if it has multiple lines &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.194"><vh>Will not refactor @path logic</vh>
+<v t="ekr.20071211113302.151"><vh>&lt;&lt; Set current directory &gt;&gt; (atFile.scanAllDirectives)</vh></v>
+<v t="ekr.20071211113302.143"><vh>&lt;&lt; Test for @path &gt;&gt; (atFile.scanAllDirectives)</vh>
+<v t="ekr.20071211113302.144"><vh>&lt;&lt; handle absolute path &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.132"><vh>&lt;&lt; Test for @path &gt;&gt; (g.scanDirectives)</vh></v>
+<v t="ekr.20071211113302.170"><vh>&lt;&lt; Test for @path &gt;&gt; (tangle.scanAllDirectives)</vh>
+<v t="ekr.20071211113302.171"><vh>&lt;&lt; handle absolute @path &gt;&gt;</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.195"><vh>New unit tests</vh></v>
+</v>
+<v t="ekr.20071211113302.196"><vh>Added @bool at_auto_warns_about_leading_whitespace setting</vh></v>
+<v t="ekr.20071211113302.197"><vh>Added command: toggle-collapse_nodes_during_finds</vh>
+<v t="ekr.20071211113302.198"><vh>class searchCommandsClass</vh>
+<v t="ekr.20071211113302.199"><vh> ctor (searchCommandsClass)</vh></v>
+<v t="ekr.20071211113302.200"><vh>getPublicCommands (searchCommandsClass)</vh></v>
+<v t="ekr.20071211113302.201"><vh>Top-level methods</vh>
+<v t="ekr.20071211113302.202"><vh>openFindTab</vh></v>
+<v t="ekr.20071211113302.203"><vh>Find Tab commands</vh></v>
+<v t="ekr.20071211113302.204"><vh>getHandler</vh></v>
+<v t="ekr.20071211113302.205"><vh>Find options wrappers</vh></v>
+<v t="ekr.20071211113302.206"><vh>Find wrappers</vh></v>
+<v t="ekr.20071211113302.207"><vh>findAgain</vh></v>
+</v>
+<v t="ekr.20071211113302.208"><vh>incremental search...</vh>
+<v t="ekr.20071211113302.209"><vh>iSearchBackspace</vh></v>
+<v t="ekr.20071211113302.210"><vh>startIncremental</vh></v>
+<v t="ekr.20071211113302.211"><vh>iSearchStateHandler</vh></v>
+<v t="ekr.20071211113302.212"><vh>scolorizer LATER</vh></v>
+<v t="ekr.20071211113302.213"><vh>iSearchHelper</vh></v>
+<v t="ekr.20071211113302.214"><vh>endSearch</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20071211113302.215"><vh>Added 3 new sort-lines commands</vh>
+<v t="ekr.20071211113302.216"><vh>sortLines commands</vh></v>
+</v>
+<v t="ekr.20071211113302.217"><vh>Added support for @bool diagnose-aspell-installation</vh>
+<v t="ekr.20071211113302.218"><vh>Spell classes</vh>
+<v t="ekr.20071211113302.219"><vh>class spellCommandsClass</vh>
+<v t="ekr.20071211113302.220"><vh>ctor</vh></v>
+<v t="ekr.20071211113302.221"><vh>getPublicCommands (searchCommandsClass)</vh></v>
+<v t="ekr.20071211113302.222"><vh>openSpellTab</vh>
+<v t="ekr.20071211113302.223"><vh>commands...</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.224"><vh>class spellTabHandler (leoFind.leoFind)</vh>
+<v t="ekr.20071211113302.225"><vh>Birth &amp; death</vh>
+<v t="ekr.20071211113302.226"><vh>spellTabHandler.__init__</vh></v>
+<v t="ekr.20071211113302.227"><vh>init_aspell</vh></v>
+<v t="ekr.20071211113302.228"><vh>readDictionary</vh></v>
+</v>
+<v t="ekr.20071211113302.229"><vh>Commands</vh>
+<v t="ekr.20071211113302.230"><vh>add</vh></v>
+<v t="ekr.20071211113302.231"><vh>change (spellTab)</vh></v>
+<v t="ekr.20071211113302.232"><vh>find &amp; helpers</vh>
+<v t="ekr.20071211113302.233"><vh>findNextMisspelledWord</vh>
+<v t="ekr.20071211113302.234"><vh>&lt;&lt; Skip word if ignored or in local dictionary &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.235"><vh>findNextWord (tkSpell)</vh></v>
+</v>
+<v t="ekr.20071211113302.236"><vh>hide</vh></v>
+<v t="ekr.20071211113302.237"><vh>ignore</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.238"><vh>class AspellClass</vh>
+<v t="ekr.20071211113302.239"><vh>Birth &amp; death</vh>
+<v t="ekr.20071211113302.240"><vh>__init__</vh></v>
+<v t="ekr.20071211113302.241"><vh>getAspell</vh></v>
+<v t="ekr.20071211113302.242"><vh>getAspellWithCtypes</vh>
+<v t="ekr.20071211113302.243"><vh>&lt;&lt; define and configure aspell entry points &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.244"><vh>report</vh></v>
+</v>
+<v t="ekr.20071211113302.245"><vh>processWord</vh></v>
+<v t="ekr.20071211113302.246"><vh>suggestions</vh></v>
+<v t="ekr.20071211113302.247"><vh>updateDictionary</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20071211113302.248"><vh>Added @bool warn_when_plugins_fail_to_load setting</vh>
+<v t="ekr.20071211113302.249"><vh>loadOnePlugin</vh></v>
+<v t="ekr.20071211113302.250"><vh>import wrappers</vh>
+<v t="ekr.20071211113302.251"><vh>g.cantImport</vh></v>
+<v t="ekr.20071211113302.252"><vh>g.importModule</vh></v>
+<v t="ekr.20071211113302.253"><vh>g.importExtension &amp; helpers</vh>
+<v t="ekr.20071211113302.254"><vh>cantImportDialog &amp; helpers</vh>
+<v t="ekr.20071211113302.255"><vh>createDialogFrame</vh></v>
+<v t="ekr.20071211113302.256"><vh>createDialogButtons</vh></v>
+<v t="ekr.20071211113302.257"><vh>center</vh></v>
+<v t="ekr.20071211113302.258"><vh>get_window_info</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.259"><vh>g.importFromPath</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.260"><vh>Moved all unit tests to unitTest.leo</vh></v>
+<v t="ekr.20071211113302.261"><vh>vim plugin now supports @bool vim_plugin_opens_url_nodes setting</vh></v>
+<v t="ekr.20071211113302.262"><vh>Added Cmd:Icons menu and commands</vh>
+<v t="ekr.20071211113302.263"><vh>g.makePathRelativeTo</vh></v>
+<v t="ekr.20071211113302.264"><vh> getPublicCommands (editCommandsClass)</vh></v>
+<v t="ekr.20071211113302.265"><vh>drawUserIcons &amp; helper</vh>
+<v t="ekr.20071211113302.266"><vh>drawUserIcon</vh>
+<v t="ekr.20071211113302.267"><vh>&lt;&lt; set offsets and pads &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.268"><vh>&lt;&lt; draw the icon in string s &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.269"><vh>&lt;&lt; draw the icon at file &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.270"><vh>&lt;&lt; draw the icon at url &gt;&gt;</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.271"><vh>icons...</vh>
+<v t="ekr.20071211113302.272"><vh>deleteAllIcons</vh></v>
+<v t="ekr.20071211113302.273"><vh>deleteFirstIcon</vh></v>
+<v t="ekr.20071211113302.274"><vh>deleteIconByName</vh></v>
+<v t="ekr.20071211113302.275"><vh>deleteLastIcon</vh></v>
+<v t="ekr.20071211113302.276"><vh>deleteNodeIcons</vh></v>
+<v t="ekr.20071211113302.277"><vh>insertIcon &amp; helper</vh>
+<v t="ekr.20071211113302.278"><vh>getImage</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20071211113302.279"><vh>Added @rst-preformat</vh></v>
+<v t="ekr.20071211113302.280"><vh>Installed small icon set from Tango library</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.281"><vh>Leo 4.4.5 b2</vh>
+<v t="ekr.20071211113302.282"><vh>Fixed bugs</vh>
+<v t="ekr.20071211113302.283"><vh>Fixed two crashers in the @noref logic</vh></v>
+<v t="ekr.20071211113302.284"><vh>Fixed crasher in regularizeWhitespace</vh></v>
+<v t="ekr.20071211113302.285"><vh>Fixed paste-node-as-clone</vh>
+<v t="ekr.20071211113302.286"><vh>report</vh></v>
+<v t="ekr.20071211113302.287"><vh>c.iterators</vh>
+<v t="ekr.20071211113302.288"><vh>c.all_positions_iter == allNodes_iter</vh>
+<v t="ekr.20071211113302.289"><vh>__init__ &amp; __iter__ (c.all_positions_iter)</vh></v>
+<v t="ekr.20071211113302.290"><vh>next</vh></v>
+</v>
+<v t="ekr.20071211113302.291"><vh>c.all_tnodes_iter</vh>
+<v t="ekr.20071211113302.292"><vh>__init__ &amp; __iter__ (c.all_tnodes_iter)</vh></v>
+<v t="ekr.20071211113302.293"><vh>next</vh></v>
+</v>
+<v t="ekr.20071211113302.294"><vh>c.all_unique_tnodes_iter</vh>
+<v t="ekr.20071211113302.295"><vh>__init__ &amp; __iter__ (c.all_unique_tnodes_iter)</vh></v>
+<v t="ekr.20071211113302.296"><vh>next</vh></v>
+</v>
+<v t="ekr.20071211113302.297"><vh>c.all_vnodes_iter</vh>
+<v t="ekr.20071211113302.298"><vh>__init__ &amp; __iter__ (c.all_vnodes_iter)</vh></v>
+<v t="ekr.20071211113302.299"><vh>next</vh></v>
+</v>
+<v t="ekr.20071211113302.300"><vh>c.all_unique_vnodes_iter</vh>
+<v t="ekr.20071211113302.301"><vh>__init__ &amp; __iter__ (c.all_unique_nodes_iter)</vh></v>
+<v t="ekr.20071211113302.302"><vh>next</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.303"><vh>Cut &amp; Paste Outlines</vh>
+<v t="ekr.20071211113302.304"><vh>cutOutline</vh></v>
+<v t="ekr.20071211113302.305"><vh>copyOutline</vh></v>
+<v t="ekr.20071211113302.306"><vh>pasteOutline</vh>
+<v t="ekr.20071211113302.307"><vh>&lt;&lt; remember all data for undo/redo Paste As Clone &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.308"><vh>&lt;&lt; put only needed info in copiedBunchList &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.309"><vh>pasteOutlineRetainingClones</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.310"><vh>Fixed threading colorizer hang with perl</vh></v>
+<v t="ekr.20071211113302.311"><vh>Fixed C++ importer crash</vh></v>
+<v t="ekr.20071211113302.312"><vh>Reorganized leoImport.py</vh></v>
+<v t="ekr.20071211113302.313"><vh>Fixed crasher when tangling @root</vh>
+<v t="ekr.20071211113302.164"><vh>tangle.scanAllDirectives</vh>
+<v t="ekr.20071211113302.165"><vh>&lt;&lt; Collect @first attributes &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.166"><vh>&lt;&lt; Test for @comment and @language &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.167"><vh>&lt;&lt; Test for @encoding &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.168"><vh>&lt;&lt; Test for @lineending &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.169"><vh>&lt;&lt; Test for print modes directives &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.170"><vh>&lt;&lt; Test for @path &gt;&gt; (tangle.scanAllDirectives)</vh>
+<v t="ekr.20071211113302.171"><vh>&lt;&lt; handle absolute @path &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.172"><vh>&lt;&lt; Test for @pagewidth &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.173"><vh>&lt;&lt; Test for @root &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.174"><vh>&lt;&lt; Test for @tabwidth &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.175"><vh>&lt;&lt; Test for @header and @noheader &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.176"><vh>&lt;&lt; Set self.tangle_directory &gt;&gt;</vh>
+<v t="ekr.20071211113302.177"><vh>&lt;&lt; handle absolute path &gt;&gt;</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.314"><vh>setRootFromText</vh></v>
+<v t="ekr.20071211113302.122"><vh>g.scanAtRootOptions</vh>
+<v t="ekr.20071211113302.123"><vh>&lt;&lt; scan another @root option &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.315"><vh>at-File test code (leoTest.py)</vh>
+<v t="ekr.20071211113302.316"><vh>&lt;&lt; dump result and expected &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.163"><vh>tangle</vh></v>
+<v t="ekr.20071211113302.179"><vh>tangleTree (calls cleanup)</vh></v>
+<v t="ekr.20071211113302.317"><vh>tangle.put_all_roots</vh>
+<v t="ekr.20071211113302.318"><vh>&lt;&lt;Get root specific attributes&gt;&gt;</vh></v>
+<v t="ekr.20071211113302.319"><vh>&lt;&lt;Put @first lines&gt;&gt;</vh></v>
+<v t="ekr.20071211113302.320"><vh>&lt;&lt;Write a banner at the start of the output file&gt;&gt;</vh></v>
+<v t="ekr.20071211113302.321"><vh>&lt;&lt; Erase the temporary file &gt;&gt;</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.322"><vh>Fixed command lockout problem</vh>
+<v t="ekr.20071211113302.9"><vh> doCommand</vh></v>
+<v t="ekr.20071211113302.323"><vh>c.executeScript &amp; helpers</vh>
+<v t="ekr.20071211113302.324"><vh>redirectScriptOutput</vh></v>
+<v t="ekr.20071211113302.325"><vh>unredirectScriptOutput</vh></v>
+<v t="ekr.20071211113302.326"><vh>writeScriptFile</vh></v>
+</v>
+<v t="ekr.20071211113302.327"><vh>endCommand</vh></v>
+<v t="ekr.20071211113302.328"><vh>masterCommand &amp; helpers</vh>
+<v t="ekr.20071211113302.329"><vh>&lt;&lt; define specialKeysyms &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.330"><vh>&lt;&lt; add character to history &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.331"><vh>callStateFunction</vh></v>
+<v t="ekr.20071211113302.332"><vh>callKeystrokeFunction (not used)</vh></v>
+<v t="ekr.20071211113302.333"><vh>handleDefaultChar</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.334"><vh>Improved @auto code</vh>
+<v t="ekr.20071211113302.335"><vh>checkTrialWrite</vh></v>
+<v t="ekr.20071211113302.336"><vh>compareHelper</vh></v>
+<v t="ekr.20071211113302.337"><vh>underindentedComment &amp; underindentedLine</vh></v>
+</v>
+<v t="ekr.20071211113302.338"><vh>Simplified perl colorizer and added progress checks</vh></v>
+<v t="ekr.20071211113302.339"><vh>Fixed crasher in aspell logic</vh>
+<v t="ekr.20071211113302.340"><vh>Report</vh></v>
+<v t="ekr.20071211113302.341"><vh>What I did</vh></v>
+</v>
+<v t="ekr.20071211113302.342"><vh>Fixed problem with decorators</vh>
+<v t="ekr.20071211113302.343"><vh>Report</vh></v>
+<v t="ekr.20071211113302.344"><vh>Changed code</vh>
+<v t="ekr.20071211113302.345"><vh>find_line_start</vh></v>
+<v t="ekr.20071211113302.32"><vh>skipDecls</vh></v>
+<v t="ekr.20071211113302.346"><vh>startsHelper</vh></v>
+<v t="ekr.20071211113302.347"><vh>adjustDefStart (python)</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.348"><vh>Fixed @auto bug</vh>
+<v t="ekr.20071211113302.349"><vh>write</vh>
+<v t="ekr.20071211113302.350"><vh>&lt;&lt; set at.targetFileName &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.351"><vh>&lt;&lt; set dirty and orphan bits on error &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.352"><vh>writeOneAtAutoNode &amp; helpers</vh>
+<v t="ekr.20071211113302.353"><vh>shouldWriteAtAutoNode</vh></v>
+<v t="ekr.20071211113302.354"><vh>isSignificantAtAutoTree</vh></v>
+</v>
+<v t="ekr.20071211113302.355"><vh>writeOpenFile</vh></v>
+<v t="ekr.20071211113302.356"><vh>warnAboutOrpanAndIgnoredNodes</vh></v>
+</v>
+<v t="ekr.20071211113302.357"><vh>Fixed chapter bug</vh>
+<v t="ekr.20071211113302.358"><vh>goToNextClone</vh></v>
+<v t="ekr.20071211113302.359"><vh> treeSelectHelper</vh></v>
+<v t="ekr.20071211113302.360"><vh> treeFocusHelper</vh></v>
+<v t="ekr.20071211113302.360"><vh> treeFocusHelper</vh></v>
+<v t="ekr.20071211113302.361"><vh>c.selectPosition</vh></v>
+<v t="ekr.20071211113302.362"><vh>cc.selectChapterForPosition</vh></v>
+<v t="ekr.20071211113302.363"><vh>cc.findChapterNameForPosition</vh></v>
+<v t="ekr.20071211113302.364"><vh>leoTree.select &amp; helper</vh>
+<v t="ekr.20071211113302.365"><vh>treeSelectHelper</vh>
+<v t="ekr.20071211113302.366"><vh>&lt;&lt; unselect the old node &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.367"><vh>&lt;&lt; select the new node &gt;&gt;</vh></v>
+<v t="ekr.20071211113302.368"><vh>&lt;&lt; set the current node &gt;&gt;</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.369"><vh>findEditWidget (tkTree)</vh></v>
+<v t="ekr.20071211113302.370"><vh>p.key</vh></v>
+</v>
+<v t="ekr.20071211113302.371"><vh>Fixed bug in g.openWithFileName</vh>
+<v t="ekr.20071211113302.44"><vh>g.openWithFileName</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.372"><vh>New features</vh>
+<v t="ekr.20071211113302.373"><vh>test.leo now contains a node showing all icons in the Icons/Tango directory</vh></v>
+<v t="ekr.20071211113302.374"><vh>Improved error reporting for aspell on Linux</vh>
+<v t="ekr.20071211113302.241"><vh>getAspell</vh></v>
+<v t="ekr.20071211113302.218"><vh>Spell classes</vh>
+<v t="ekr.20071211113302.219"><vh>class spellCommandsClass</vh>
+<v t="ekr.20071211113302.220"><vh>ctor</vh></v>
+<v t="ekr.20071211113302.221"><vh>getPublicCommands (searchCommandsClass)</vh></v>
+<v t="ekr.20071211113302.222"><vh>openSpellTab</vh>
+<v t="ekr.20071211113302.223"><vh>commands...</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.224"><vh>class spellTabHandler (leoFind.leoFind)</vh>
+<v t="ekr.20071211113302.225"><vh>Birth &amp; death</vh>
+<v t="ekr.20071211113302.226"><vh>spellTabHandler.__init__</vh></v>
+<v t="ekr.20071211113302.227"><vh>init_aspell</vh></v>
+<v t="ekr.20071211113302.228"><vh>readDictionary</vh></v>
+</v>
+<v t="ekr.20071211113302.229"><vh>Commands</vh>
+<v t="ekr.20071211113302.230"><vh>add</vh></v>
+<v t="ekr.20071211113302.231"><vh>change (spellTab)</vh></v>
+<v t="ekr.20071211113302.232"><vh>find &amp; helpers</vh>
+<v t="ekr.20071211113302.233"><vh>findNextMisspelledWord</vh>
+<v t="ekr.20071211113302.234"><vh>&lt;&lt; Skip word if ignored or in local dictionary &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.235"><vh>findNextWord (tkSpell)</vh></v>
+</v>
+<v t="ekr.20071211113302.236"><vh>hide</vh></v>
+<v t="ekr.20071211113302.237"><vh>ignore</vh></v>
+</v>
+</v>
+<v t="ekr.20071211113302.238"><vh>class AspellClass</vh>
+<v t="ekr.20071211113302.239"><vh>Birth &amp; death</vh>
+<v t="ekr.20071211113302.240"><vh>__init__</vh></v>
+<v t="ekr.20071211113302.241"><vh>getAspell</vh></v>
+<v t="ekr.20071211113302.242"><vh>getAspellWithCtypes</vh>
+<v t="ekr.20071211113302.243"><vh>&lt;&lt; define and configure aspell entry points &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20071211113302.244"><vh>report</vh></v>
+</v>
+<v t="ekr.20071211113302.245"><vh>processWord</vh></v>
+<v t="ekr.20071211113302.246"><vh>suggestions</vh></v>
+<v t="ekr.20071211113302.247"><vh>updateDictionary</vh></v>
+</v>
+</v>
+</v>
+</v>
+</v>
 </v>
 </vnodes>
 <tnodes>
@@ -49970,49 +50562,6 @@ Writing correct undo and redo helpers is usually a bit tricky.  The code is ofte
     name = u.newChapterName
     cc.chaptersDict[name] = chapter(c=c,chapterController=cc,name=name,root=u.savedRoot)
     cc.selectChapterByName(name)
-</t>
-<t tx="ekr.20070626112754.1866"></t>
-<t tx="ekr.20070626112754.1867">leoGlobals.py:127: No module attribute (leo_config_directory) found # wrong
-leoGlobals.py:3884: Statement appears to have no effect # wrong
-leoGlobals.py:3884: No module attribute (CODESET) found # wrong
-leoGlobals.py:4448: No module attribute (mtime) found # wrong
-
-leoKeys.py:2438: No module attribute (initAllEditCommanders) found
-
-leoChapters.py:463: Invalid arguments to (select), got 0, expected between 1 and 3 # wrong
-
-leoFind.py:1355: No module attribute (__init__) found # wrong
-
-leoTkinterFrame.py:1767: Object (body) has no attribute (leo_p) # wrong.
-
-leoTkinterGui.py:563: Local variable (tkIcon) not used # Wrong.
-</t>
-<t tx="ekr.20070626112754.1868"># fixed: leoGlobals.py:2213: Variable (no_gc_message) used before being set
-
-# fixed: leoConfig.py:1663: (hash) shadows builtin
-
-# fixed: leoCommands.py:5170: Local variable (backBack) not used
-
-# fixed: leoChapters.py:10: Imported module (leoNodes) not used
-# fixed: leoChapters.py:574: Redefining attribute (updateChapterName) original line (59)
-# fixed: leoChapters.py:519: Local variable (tt) not used
-# fixed: leoChapters.py:660: Local variable (b) not used
-
-# fixed: leoTkinterTree.py:548: Parameter (theId) not used
-
-# fixed: leoTkinterFrame.py:2482: No global (cc) found.
-# fixed: leoTkinterFrame.py:2940: Local variable (hull) not used
-# fixed: leoTkinterFrame.py:3085: Parameter (theChapter) not used
-# fixed: leoTkinterFrame.py:3120: Local variable (nb) not used
-# fixed: leoTkinterFrame.py:3122: Local variable (frame) not used
-</t>
-<t tx="ekr.20070626112754.1869"># (fixed) leoGlobals.py:4102: Local variable (data) not used
-# (fixed) leoKeys.py:241: Variable (key) used before being set
-# (fixed) leoChapters.py:105: Local variable (groupUndoData) not used
-# (fixed) leoChapters.py:648: No global (c) found
-# (fixed) leoTkinterFrame.py:534: Local variable (tracewidget) not used
-# (fixed) leoTkinterFrame.py:538: Local variable (untracewidget) not used
-
 </t>
 <t tx="ekr.20070703172620"></t>
 <t tx="ekr.20070703172620.1"></t>
@@ -101343,5 +101892,7847 @@ finally:
 <t tx="ekr.20071105090148.354">﻿# A test of unicode characters  Ä, ڱ,  궯, 奠 end.
 </t>
 <t tx="ekr.20071105090148.355"></t>
+<t tx="ekr.20071211113237"></t>
+<t tx="ekr.20071211113302.2"></t>
+<t tx="ekr.20071211113302.3"></t>
+<t tx="ekr.20071211113302.4"></t>
+<t tx="ekr.20071211113302.5">def loadHandlers(tag):
+
+    """Load all enabled plugins from the plugins directory"""
+
+    def pr (*args,**keys):
+        if not g.app.unitTesting:
+            g.es_print(*args,**keys)
+
+    plugins_path = g.os_path_abspath(g.os_path_join(g.app.loadDir,"..","plugins"))
+    files = glob.glob(g.os_path_join(plugins_path,"*.py"))
+    files = [g.os_path_abspath(theFile) for theFile in files]
+
+    s = g.app.config.getEnabledPlugins()
+    if not s: return
+
+    if not g.app.silentMode:
+        pr('@enabled-plugins found in %s' % (
+            g.app.config.enabledPluginsFileName),color='blue')
+
+    enabled_files = getEnabledFiles(s,plugins_path)
+
+    # Load plugins in the order they appear in the enabled_files list.
+    if files and enabled_files:
+        for theFile in enabled_files:
+            if theFile in files:
+                loadOnePlugin(theFile)
+
+    # Note: g.plugin_signon adds module names to g.app.loadedPlugins
+    if 0:
+        if g.app.loadedPlugins:
+            pr("%d plugins loaded" % (len(g.app.loadedPlugins)), color="blue")
+</t>
+<t tx="ekr.20071211113302.6">def getEnabledFiles (s,plugins_path):
+
+    enabled_files = []
+    disabled_files = []
+    for s in g.splitLines(s):
+        s = s.strip()
+        if s:
+            if g.match(s,0,"#"):
+                s = s[1:].strip()
+                # Kludge: ignore comment lines containing a blank or not ending in '.py'.
+                if s and s.find(' ') == -1 and s[-3:] == '.py':
+                    path = g.os_path_abspath(g.os_path_join(plugins_path,s))
+                    if path not in enabled_files and path not in disabled_files:
+                        # print 'disabled',path
+                        disabled_files.append(path)
+            else:
+                path = g.os_path_abspath(g.os_path_join(plugins_path,s))
+                if path not in enabled_files and path not in disabled_files:
+                    # print 'enabled',path
+                    enabled_files.append(path)
+
+    return enabled_files</t>
+<t tx="ekr.20071211113302.7"></t>
+<t tx="ekr.20071211113302.8">@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3768494
+By: ktenney
+
+I'm using current CVS, W2k
+
+1 open a Leo file (I'm using a batch file / console)
+
+2 click Edit-&gt;Open   &lt;-- Having this dialog open is the problem.
+
+3 return focus to the Leo window
+
+4 click Help-&gt;Open leoDocs.leo
+
+Zombie!
+
+@color</t>
+<t tx="ekr.20071211113302.9">command_count = 0
+
+def doCommand (self,command,label,event=None):
+
+    """Execute the given command, invoking hooks and catching exceptions.
+
+    The code assumes that the "command1" hook has completely handled the command if
+    g.doHook("command1") returns False.
+    This provides a simple mechanism for overriding commands."""
+
+    c = self ; p = c.currentPosition()
+    commandName = command and command.__name__
+    c.setLog()
+
+    self.command_count += 1
+    if not g.app.unitTesting and c.config.getBool('trace_doCommand'):
+        g.trace(commandName)
+
+    # The presence of this message disables all commands.
+    if c.disableCommandsMessage:
+        g.es(c.disableCommandsMessage,color='blue')
+        return 'break' # Inhibit all other handlers.
+
+    if c.exists and c.inCommand and not g.unitTesting:
+        # g.trace('inCommand',c)
+        g.es('Ignoring command: already executing a command.',color='red')
+        return 'break'
+
+    if label and event is None: # Do this only for legacy commands.
+        if label == "cantredo": label = "redo"
+        if label == "cantundo": label = "undo"
+        g.app.commandName = label
+
+    if not g.doHook("command1",c=c,p=p,v=p,label=label):
+        try:
+            c.inCommand = True
+            val = command(event)
+            if c and c.exists: # Be careful: the command could destroy c.
+                c.inCommand = False
+                c.k.funcReturn = val
+            # else: print 'c no longer exists',c
+        except:
+            c.inCommand = False
+            if g.app.unitTesting:
+                raise
+            else:
+                g.es("exception executing command")
+                print "exception executing command"
+                g.es_exception(c=c)
+                if c and c.exists and hasattr(c,'frame'):
+                    c.redraw_now()
+
+        if c and c.exists and c.requestCloseWindow:
+            g.trace('Closing window after command')
+            c.requestCloseWindow = False
+            g.app.closeLeoWindow(c.frame)
+
+    # Be careful: the command could destroy c.
+    if c and c.exists:
+        p = c.currentPosition()
+        g.doHook("command2",c=c,p=p,v=p,label=label)
+
+    return "break" # Inhibit all other handlers.
+</t>
+<t tx="ekr.20071211113302.10"># We no longer specify default extensions so that we can open and save files without extensions.
+</t>
+<t tx="ekr.20071211113302.11">def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
+
+    """Create and run an Tkinter open file dialog ."""
+
+    # __pychecker__ = '--no-argsused' # defaultextension not used.
+
+    initialdir = g.app.globalOpenDir or g.os_path_abspath(os.getcwd())
+
+    if multiple:
+        # askopenfilenames requires Python 2.3 and Tk 8.4.
+        version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
+        if (
+            g.CheckVersion(version,"2.3") and
+            g.CheckVersion(self.root.getvar("tk_patchLevel"),"8.4")
+        ):
+            files = tkFileDialog.askopenfilenames(
+                title=title,filetypes=filetypes,initialdir=initialdir)
+            # g.trace(files)
+            return list(files)
+        else:
+            # Get one file and return it as a list.
+            theFile = tkFileDialog.askopenfilename(
+                title=title,filetypes=filetypes,initialdir=initialdir)
+            return [theFile]
+    else:
+        # Return a single file name as a string.
+        return tkFileDialog.askopenfilename(
+            title=title,filetypes=filetypes,initialdir=initialdir)
+</t>
+<t tx="ekr.20071211113302.12">def runSaveFileDialog(self,initialfile,title,filetypes,defaultextension):
+
+    """Create and run an Tkinter save file dialog ."""
+
+    # __pychecker__ = '--no-argsused' # defaultextension not used.
+
+    initialdir=g.app.globalOpenDir or g.os_path_abspath(os.getcwd()),
+
+    return tkFileDialog.asksaveasfilename(
+        initialdir=initialdir,initialfile=initialfile,
+        title=title,filetypes=filetypes)
+</t>
+<t tx="ekr.20071211113302.13">http://sourceforge.net/forum/message.php?msg_id=3525277</t>
+<t tx="ekr.20071211113302.14">@nocolor
+
+Vampire nodes from cvs
+
+I've just discovered a major problem with cvs updates.  It is a subtle consequence of how Leo writes outlines and reads derived files.  This is a big bug in Leo, not cvs.  The effect of the bug is that nodes can appear in derived files that were never written to them!
+
+The discovery of this 'big bug' came about as the result of the following Aha:
+
+**@thin files that contain @all directives should be a cvs binary (-kb) files.**
+
+The reason is straightforward:  cvs doesn't know enough to merge such files.  Maybe all @thin derived files should be -kb files, but Leo's users will never agree to that!
+
+Anyway, leoProjects.txt is now a binary file as far as cvs is concerned.  Other .txt files, like leoScripts.txt, should also be binary files.  As we shall see, the fact that leoProjects.txt is now a -kb file means that we can not possibly blame the cvs merge algorithm for what is about to happen.
+
+Ok, back to the 'big bug'.  Here is how I got bitten:
+
+- I changed leoProjects.txt in two sandboxes 1 and 2.  In sandbox 1 I added a node called 'changed in the main line'.  In sandbox 2 I added a node called 'changed2'.
+
+- I changed LeoPyRef.leo in sandbox 2, but *not* in sandbox 1.
+
+- I did a update in sandbox 2.
+
+As expected (now that leoProjects.txt is a binary file) I got the following from cvs:
+
+M src/LeoPyRef.leo
+...
+cvs update: nonmergeable file needs merge
+cvs update: revision 1.448 from repository is now in src/leoProjects.txt
+cvs update: file from working directory is now in .#leoProjects.txt.1.447
+
+To summarize the update:
+
+- LeoPyRef.leo has been marked as modified (M), but it has **not** been changed by cvs.
+
+- As expected, leoProjects.txt contains the version from sandbox **1**.
+
+So far, so good.  But when I opened LeoPyRef.leo I got a huge surprise: the outline contains **both** the node 'changed in main-line' and the node 'changed2'.  Whoa Nellie!
+
+How did this happen?  Well, obviously the 'changed in main-line' node came from the cvs update.  I expected that.  The 'changed2' line must have come from the local copy of LeoPyRef.leo.
+
+Once I knew what to look for it wasn't too hard to discover what had happened.  The 'changed2' is a descendent of a cloned node called '4.4 projects'.
+
+- One clone of '4.4 projects' node is a descendent of the @thin leoProjects.txt node.
+
+- Another clone of the '4.4 project' is in the LeoPyRef.leo file but outside of any @thin node.
+
+So the 'resurrection' of the 'changed2' node happened while Leo was reading leoProjects.txt into LeoPyRef.leo.  The '4.4 projects' node **already existed in the outline** before Leo read leoProjects.txt, and the present atFile read logic only **adds** nodes, it never deletes nodes.  Thus, the 'changed2' node 'survived' the atFile read logic.  The 'changed2' node became a 'vampire' node that couldn't be killed.
+
+The problem is far from benign.  Because of clones, the vampire node became an orphan node in **another** file, namely leoKeys.py.  I tried two or three times to remove the vampire/orphan node before realizing what had happened.
+
+The fix (there is *always* a fix) will require some care.  The present atFile.read logic is robust because it *doesn't* delete nodes.  It is essential that the read logic remain robust.  I suspect the solutions will be as follows:
+
+A. The atFile.read code can not delete the subtree of @thin nodes initially, because it doesn't know whether there will be read errors later.  If there are read errors absolutely nothing must change.  This ensures that read errors never destroy information.
+
+B. A new post-pass will look for vampire nodes: nodes that were not actually read from the derived file.  I think (but haven't proven) that all descendents of vampire nodes are also vampire nodes.  If that is so the post-pass will simply delete vampire nodes without worrying about whether they have descendents.
+
+Warning: the new scheme will mean that cvs update can destroy information that previously existed in the outline.  I believe this is correct: we assume that derived files are the 'truly meaningful' files.  Hey, if we are wrong we can always get the old info from cvs :-)
+
+Edward
+</t>
+<t tx="ekr.20071211113302.15">@nocolor
+
+
+The atFile read logic only **adds** nodes, it never deletes nodes. Thus,
+the 'changed2' node 'survived' the atFile read logic. The 'changed2' node became
+a 'vampire' node that couldn't be killed.
+
+The fix will require some care. The present atFile.read logic is robust because
+it *doesn't* delete nodes. I suspect the solutions will be as follows:
+
+A. The atFile.read code can not delete the subtree of @thin nodes initially,
+because it doesn't know whether there will be read errors later. If there are
+read errors absolutely nothing must change. This ensures that read errors never
+destroy information.
+
+B. A new post-pass will look for vampire nodes: nodes that were not actually
+read from the derived file. I think (but haven't proven) that all descendents of
+vampire nodes are also vampire nodes. If that is so the post-pass will simply
+delete vampire nodes without worrying about whether they have descendents.
+</t>
+<t tx="ekr.20071211113302.16">@nocolor
+
+1. createThinChild4 and findChild4 now set the visited bits for all found or
+created nodes.
+
+2. read now warns about 'ressurected' nodes for all the file types that read
+handles, namely @file, @thin and @noref.
+
+This should be a safe solution.  The user can choose at leisure what to do.</t>
+<t tx="ekr.20071211113302.17"># The caller must enclose this code in beginUpdate/endUpdate.
+# Reads @thin, @file and @noref trees.
+
+def read(self,root,importFileName=None,thinFile=False,fromString=None):
+
+    """Read any derived file."""
+
+    at = self ; c = at.c
+    if 0:
+        p = c.currentPosition()
+        g.trace('1',p,p.v._parent,p.v._parent and p.v._parent.t.vnodeList)
+    &lt;&lt; set fileName &gt;&gt;
+    at.initReadIvars(root,fileName,importFileName=importFileName,thinFile=thinFile)
+    if at.errors: return False
+    at.openFileForReading(fileName,fromString=fromString)
+    if not at.inputFile: return False
+    if not g.unitTesting:
+        g.es("reading: " + root.headString())
+    root.clearVisitedInTree()
+    at.scanAllDirectives(root,importing=at.importing,reading=True)
+    at.readOpenFile(root,at.inputFile,fileName)
+    if 0:
+        p = c.currentPosition()
+        g.trace('2',p,p.v._parent,p.v._parent and p.v._parent.t.vnodeList)
+    at.inputFile.close()
+    root.clearDirty() # May be set dirty below.
+    if at.errors == 0:
+        &lt;&lt; advise user to delete all unvisited nodes &gt;&gt;
+    if at.errors == 0 and not at.importing:
+        # Package this as a method for use by mod_labels plugin.
+        self.copyAllTempBodyStringsToTnodes(root,thinFile)
+
+    &lt;&lt; delete all tempBodyStrings &gt;&gt;
+    return at.errors == 0
+</t>
+<t tx="ekr.20071211113302.18">if fromString:
+    fileName = "&lt;string-file&gt;"
+elif importFileName:
+    fileName = importFileName
+elif root.isAnyAtFileNode():
+    fileName = root.anyAtFileNodeName()
+else:
+    fileName = None
+
+if not fileName:
+    at.error("Missing file name.  Restoring @file tree from .leo file.")
+    return False
+</t>
+<t tx="ekr.20071211113302.19">for p in c.allNodes_iter():
+
+    if hasattr(p.v.t,"tempBodyString"):
+        delattr(p.v.t,"tempBodyString")
+</t>
+<t tx="ekr.20071211113302.20">resurrected = 0
+for p in root.self_and_subtree_iter():
+
+    if not p.v.t.isVisited():
+        g.es('resurrected node: %s' % (p.headString()),color='blue')
+        g.es('in file: %s' % (fileName),color='blue')
+        resurrected += 1
+
+if resurrected:
+    g.es('you may want to delete ressurected nodes')
+
+</t>
+<t tx="ekr.20071211113302.21">def createThinChild4 (self,gnxString,headline):
+
+    """Find or create a new *vnode* whose parent (also a vnode) is at.lastThinNode."""
+
+    at = self ; c = at.c ; indices = g.app.nodeIndices
+    last = at.lastThinNode ; lastIndex = last.t.fileIndex
+    gnx = indices.scanGnx(gnxString,0)
+
+    # New in Leo 4.4a5: Solve Read @file nodes problem (by LeoUser)
+    if self._forcedGnxPositionList and last in self._forcedGnxPositionList:
+        last.fileIndex = lastIndex=  gnx
+        self._forcedGnxPositionList.remove(last)
+
+    if 0:
+        g.trace("last",last,last.t.fileIndex)
+        g.trace("args",indices.areEqual(gnx,last.t.fileIndex),gnxString,headline)
+
+    # See if there is already a child with the proper index.
+    child = at.lastThinNode.firstChild()
+    while child and not indices.areEqual(gnx,child.t.fileIndex):
+        child = child.next()
+
+    if at.cloneSibCount &gt; 1:
+        n = at.cloneSibCount ; at.cloneSibCount = 0
+        if child: clonedSibs,junk = at.scanForClonedSibs(child)
+        else: clonedSibs = 0
+        copies = n - clonedSibs
+        # g.trace(copies,headline)
+    else:
+        if indices.areEqual(gnx,lastIndex):
+            last.t.setVisited() # Supress warning/deletion of unvisited nodes.
+            return last
+        if child:
+            child.t.setVisited() # Supress warning/deletion of unvisited nodes.
+            return child
+        copies = 1 # Create exactly one copy.
+
+    while copies &gt; 0:
+        copies -= 1
+        # Create the tnode only if it does not already exist.
+        tnodesDict = c.fileCommands.tnodesDict
+        t = tnodesDict.get(gnxString)
+        if t:
+            assert indices.areEqual(t.fileIndex,gnx), 't.fileIndex: %s gnx: %s' % (t.fileIndex,gnx)
+            # g.trace('not created, should already exist',gnxString)
+        else:
+            t = leoNodes.tnode(bodyString=None,headString=headline)
+            t.fileIndex = gnx
+            tnodesDict[gnxString] = t
+        parent = at.lastThinNode
+        child = leoNodes.vnode(t)
+        t.vnodeList.append(child)
+        child.linkAsNthChild(parent,parent.numberOfChildren())
+        # g.trace('creating last child %s\nof parent%s\n' % (child,parent))
+
+    child.t.setVisited() # Supress warning/deletion of unvisited nodes.
+    return child
+</t>
+<t tx="ekr.20071211113302.22">def findChild4 (self,headline):
+
+    """Return the next tnode in at.root.t.tnodeList."""
+
+    # __pychecker__ = '--no-argsused' # headline might be used for debugging.
+
+    # Note: tnodeLists are used _only_ when reading @file (not @thin) nodes.
+    # tnodeLists compensate (a hack) for not having gnx's in derived files! 
+
+    at = self ; v = at.root.v
+
+    if not hasattr(v.t,"tnodeList"):
+        at.readError("no tnodeList for " + repr(v))
+        g.es("Write the @file node or use the Import Derived File command")
+        g.trace("no tnodeList for ",v)
+        return None
+
+    if at.tnodeListIndex &gt;= len(v.t.tnodeList):
+        at.readError("bad tnodeList index: %d, %s" % (at.tnodeListIndex,repr(v)))
+        g.trace("bad tnodeList index",at.tnodeListIndex,len(v.t.tnodeList),v)
+        return None
+
+    t = v.t.tnodeList[at.tnodeListIndex]
+    assert(t)
+    at.tnodeListIndex += 1
+
+    # Get any vnode joined to t.
+    try:
+        v = t.vnodeList[0]
+    except Exception:
+        at.readError("No vnodeList for tnode: %s" % repr(t))
+        g.trace(at.tnodeListIndex)
+        return None
+
+    # Don't check the headline.  It simply causes problems.
+    t.setVisited() # Supress warning/deletion of unvisited nodes.
+    return t
+</t>
+<t tx="ekr.20071211113302.23">@nocolor
+
+From: Terry Brown &lt;terry_n_brown@yahoo.com&gt;
+
+** Also, no ignore inserted.
+
+Current CVS, ubuntu
+
+From the code below I get:
+
+reading: /mnt/removable/bkup_proj/Mammals/mammaldb/mammaldb.leo
+*** first mismatch at line 119
+original line:      def provide(self, what):
+generated line: def provide(self, what):
+@auto did not import the file perfectly
+first mismatched line: 119
+u'def provide(self, what):\n'
+inserting @ignore
+Errors inhibited read
+@auto /mnt/removable/bkup_proj/Mammals/mammaldb/mammalShow.py
+
+In the code below line 119 is not the first "def provide(self, what):"
+but the second, the one in class mainPages - I've included the preceding
+class def because context seems to be important.
+
+@color</t>
+<t tx="ekr.20071211113302.24">class mammalProviderBase(object):
+    """Root class for content providers used by DWEtree.py"""
+    def __init__(self, params):
+        """store reference to parameters"""
+        self.params = params
+    def provide(self, what):
+        """default &lt;BASE&gt; value"""
+        if what == 'doctitle':
+            return ELE('base', href=self.params['/BASE/'])
+        return None
+
+    def imagePath(self, sppdat):
+        """return path to images and list of images for *species*"""
+        path = 'MNMammals/imglib/Mammalia'
+        for i in 'Order', 'Family', 'Genus', 'Species':
+            path = os.path.join(path, sppdat['%sName' % (i,)])
+        imglib = os.path.join('/var/www',path)
+        imglib = os.path.join(imglib, '*.[Jj][Pp][Gg]')
+        path = os.path.join('/',path)
+        lst = [os.path.split(i)[1] for i in glob.glob(imglib)]
+        lst.sort()
+        return path, lst
+
+class mainPages(mammalProviderBase):
+    """provide content for pages in 'main' folder"""
+    __parent = mammalProviderBase
+    def provide(self, what):
+        """add one layer to &lt;BASE&gt;"""
+        ans = self.__parent.provide(self, what)
+        if what == 'doctitle':
+            return ELE('base', href=self.params['/BASE/']+'main/')
+        return ans
+</t>
+<t tx="ekr.20071211113302.25">def readOneAtAutoNode (self,fileName,p):
+
+    at = self ; c = at.c ; ic = c.importCommands
+
+    oldChanged = c.isChanged()
+    at.scanDefaultDirectory(p,importing=True) # Set default_directory
+    fileName = g.os_path_join(at.default_directory,fileName)
+    # g.trace(fileName)
+
+    if not g.unitTesting:
+        g.es("reading: " + p.headString())
+
+    # Delete all children.
+    c.beginUpdate()
+    try:
+        while p.hasChildren():
+            p.firstChild().doDelete()
+    finally:
+        c.endUpdate(False)
+
+    ic.createOutline(fileName,parent=p.copy(),atAuto=True)
+
+    if ic.errors:
+        g.es_print('Errors inhibited read @auto %s' % (fileName),color='red')
+
+    if ic.errors or not g.os_path_exists(fileName):
+        #c.setBodyString(p,'')
+        p.clearDirty()
+        c.setChanged(oldChanged)
+</t>
+<t tx="ekr.20071211113302.26">def putClass (self,s,i,sigEnd,codeEnd,start,parent):
+
+    '''Creates a child node c of parent for the class, and a child of c for each def in the class.'''
+
+    # Enter a new class 1: save the old class info.
+    oldMethodName = self.methodName
+    oldStartSigIndent = self.startSigIndent
+
+    # Enter a new class 2: init the new class info.
+    self.indentRefFlag = None
+
+    class_kind = self.classId
+    class_name = self.sigId
+    headline = '%s %s' % (class_kind,class_name)
+    self.methodName = headline
+
+    # Compute the starting lines of the class.
+    prefix = self.createClassNodePrefix()
+    if not self.sigId:
+        g.trace('Can not happen: no sigId')
+        self.sigId = 'Unknown class name'
+    classHead = s[start:sigEnd]
+    i = self.extendSignature(s,sigEnd)
+    extend = s[sigEnd:i]
+    if extend:
+        classHead = classHead + extend
+
+    # Create the class node.
+    class_node = self.createHeadline(parent,'',headline)
+
+    # Remember the indentation of the class line.
+    undentVal = self.getLeadingIndent(classHead,0)
+
+    # Call the helper to parse the inner part of the class.
+    putRef,bodyIndent,classDelim,decls,trailing = self.putClassHelper(s,i,codeEnd,class_node)
+    # g.trace('bodyIndent',bodyIndent,'undentVal',undentVal)
+
+    # Set the body of the class node.
+    ref = putRef and self.getClassNodeRef(class_name) or ''
+
+    # Give ref the same indentation as the body of the class.
+    if ref:
+        bodyWs = g.computeLeadingWhitespace (bodyIndent,self.tab_width)
+        ref = '%s%s' % (bodyWs,ref)
+
+    # Remove the leading whitespace.
+    result = (
+        prefix +
+        self.undentBy(classHead,undentVal) +
+        self.undentBy(classDelim,undentVal) +
+        self.undentBy(decls,undentVal) +
+        self.undentBy(ref,undentVal) +
+        self.undentBy(trailing,undentVal))
+
+    # Append the result to the class node.
+    self.appendTextToClassNode(class_node,result)
+
+    # Exit the new class: restore the previous class info.
+    self.methodName = oldMethodName
+    self.startSigIndent = oldStartSigIndent
+</t>
+<t tx="ekr.20071211113302.27">def appendTextToClassNode (self,class_node,s):
+
+    c = self.c
+
+    c.appendStringToBody(class_node,s) 
+</t>
+<t tx="ekr.20071211113302.28">def createClassNodePrefix (self):
+
+    '''Create the class node prefix.'''
+
+    if  self.treeType == '@file':
+        prefix = ''
+    else:
+        prefix = g.angleBrackets(' ' + self.methodName + ' methods ') + '=\n\n'
+        self.methodsSeen = True
+
+    return prefix
+</t>
+<t tx="ekr.20071211113302.29">def getClassNodeRef (self,class_name):
+
+    '''Insert the proper body text in the class_vnode.'''
+
+    if self.treeType == '@file':
+        s = '@others'
+    else:
+        s = g.angleBrackets(' class %s methods ' % (class_name))
+
+    return '%s\n' % (s)
+</t>
+<t tx="ekr.20071211113302.30">def putClassHelper(self,s,i,end,class_node):
+
+    '''s contains the body of a class, not including the signature.
+
+    Parse s for inner methods and classes, and create nodes.'''
+
+    # Increase the output indentation (used only in startsHelper).
+    # This allows us to detect over-indented classes and functions.
+    old_output_indent = self.output_indent
+    self.output_indent += abs(self.tab_width)
+
+    # Parse the decls.
+    j = i ; i = self.skipDecls(s,i,end,inClass=True)
+    decls = s[j:i]
+
+    # Set the body indent if there are real decls.
+    bodyIndent = decls.strip() and self.getIndent(s,i) or None
+
+    # Parse the rest of the class.
+    delim1, delim2 = self.outerBlockDelim1, self.outerBlockDelim2
+    if g.match(s,i,delim1):
+        # Do *not* use g.skip_ws_and_nl here!
+        j = g.skip_ws(s,i + len(delim1))
+        if g.is_nl(s,j): j = g.skip_nl(s,j)
+        classDelim = s[i:j]
+        end2 = self.skipBlock(s,i,delim1=delim1,delim2=delim2)
+        start,putRef,bodyIndent2 = self.scanHelper(s,j,end=end2,parent=class_node,kind='class')
+    else:
+        classDelim = ''
+        start,putRef,bodyIndent2 = self.scanHelper(s,i,end=end,parent=class_node,kind='class')
+
+    if bodyIndent is None: bodyIndent = bodyIndent2
+
+    # Restore the output indentation.
+    self.output_indent = old_output_indent
+
+    # Return the results.
+    trailing = s[start:end]
+    return putRef,bodyIndent,classDelim,decls,trailing
+</t>
+<t tx="ekr.20071211113302.31">def scanHelper(self,s,i,end,parent,kind):
+
+    '''Common scanning code used by both scan and putClassHelper.'''
+
+    # g.trace(g.callers())
+    # g.trace('i',i,g.get_line(s,i))
+    assert kind in ('class','outer')
+    start = i ; putRef = False ; bodyIndent = None
+    while i &lt; end:
+        progress = i
+        if s[i] in (' ','\t','\n'):
+            i += 1 # Prevent lookahead below, and speed up the scan.
+        elif self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            i = self.skipString(s,i)
+        elif self.startsClass(s,i):  # Sets sigStart,sigEnd &amp; codeEnd ivars.
+            putRef = True
+            if bodyIndent is None: bodyIndent = self.getIndent(s,i)
+            end2 = self.codeEnd # putClass may change codeEnd ivar.
+            self.putClass(s,i,self.sigEnd,self.codeEnd,start,parent)
+            i = start = end2
+        elif self.startsFunction(s,i): # Sets sigStart,sigEnd &amp; codeEnd ivars.
+            putRef = True
+            if bodyIndent is None: bodyIndent = self.getIndent(s,i)
+            self.putFunction(s,self.sigStart,self.codeEnd,start,parent)
+            i = start = self.codeEnd
+        elif self.startsId(s,i):
+            i = self.skipId(s,i)
+        elif kind == 'outer' and g.match(s,i,self.outerBlockDelim1): # Do this after testing for classes.
+            i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+            # Bug fix: 2007/11/8: do *not* set start: we are just skipping the block.
+        else: i += 1
+        assert progress &lt; i,'i: %d, ch: %s' % (i,repr(s[i]))
+
+    return start,putRef,bodyIndent
+</t>
+<t tx="ekr.20071211113302.32">def skipDecls (self,s,i,end,inClass):
+
+    '''Skip everything until the start of the next class or function.
+
+    The decls *must* end in a newline.'''
+
+    trace = False or self.trace
+    start = i ; prefix = None
+    classOrFunc = False
+    if trace: g.trace(g.callers())
+    while i &lt; end:
+        progress = i
+        if s[i] in (' ','\t','\n'):
+            i += 1 # Prevent lookahead below, and speed up the scan.
+        elif self.startsComment(s,i):
+            # Add the comment to the decl if it *doesn't* start the line.
+            i2,junk = g.getLine(s,i)
+            i2 = g.skip_ws(s,i2)
+            if i2 == i and prefix is None:
+                prefix = i2 # Bug fix: must include leading whitespace in the comment.
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            i = self.skipString(s,i)
+            prefix = None
+        elif self.startsClass(s,i):
+            # Important: do not include leading ws in the decls.
+            classOrFunc = True
+            i = g.find_line_start(s,i)
+            i = self.adjustDefStart(s,i)
+            break
+        elif self.startsFunction(s,i):
+            # Important: do not include leading ws in the decls.
+            classOrFunc = True
+            i = g.find_line_start(s,i)
+            i = self.adjustDefStart(s,i)
+            break
+        elif self.startsId(s,i):
+            i = self.skipId(s,i)
+            prefix = None
+        # Don't skip outer blocks: they may contain classes.
+        elif g.match(s,i,self.outerBlockDelim1):
+            if self.outerBlockEndsDecls:
+                break
+            else:
+                i = self.skipBlock(s,i,delim1=self.outerBlockDelim1,delim2=self.outerBlockDelim2)
+        else:
+            i += 1 ;  prefix = None
+        assert(progress &lt; i)
+
+    if prefix is not None:
+        i = g.find_line_start(s,prefix) # i = prefix
+    decls = s[start:i]
+    if inClass and not classOrFunc:
+        # Don't return decls if a class contains nothing but decls.
+        if trace and decls.strip(): g.trace('**class is all decls...\n',decls)
+        return start
+    elif decls.strip(): 
+        if trace or self.trace: g.trace('\n'+decls)
+        return i
+    else: # Ignore empty decls.
+        return start
+</t>
+<t tx="ekr.20071211113302.33">@nocolor
+
+In the following code:
+
+extern  "C"
+{
+#include "stuff.h"
+void    init(void);
+#include "that.h"
+}
+
+produces the following in the log window:
+
+Leo Log Window...
+Leo 4.4.4 final, build  1.216 , November 2, 2007
+Python 2.5.1, Tk 8.4.14, Pmw 1.2
+Windows 5, 1, 2600, 2, Service Pack 2
+
+leoID = rshanley (in C:\)
+global config dir: C:\Program Files\Leo\config
+home dir: C:\
+reading settings in C:\Program Files\Leo\config\leoSettings.leo
+*** first mismatch at line 2
+original line:  {
+generated line:
+import command did not import the file perfectly
+first mismatched line: 2
+u'\n'
+input...
+  0 extern  "C"
+  1 {
+  2 #include "stuff.h"
+  3 void    init(void);
+  4 #include "that.h"
+  5 }
+output...
+  0 extern  "C"
+  1
+inserting @ignore
+imported C:/test/aa.cc
+
+@color</t>
+<t tx="ekr.20071211113302.34">def scan (self,s,parent):
+
+    '''A language independent scanner: it uses language-specific helpers.
+
+    Create a child of self.root for:
+    - Leading outer-level declarations.
+    - Outer-level classes.
+    - Outer-level functions.
+    '''
+
+    # Init the parser status ivars.
+    self.methodsSeen = False
+
+    # Create the initial body text in the root.
+    self.putRootText(parent)
+
+    # Parse the decls.
+    i = self.skipDecls(s,0,len(s),inClass=False)
+    decls = s[:i]
+
+    # Create the decls node.
+    if decls: self.createDeclsNode(parent,decls)
+
+    # Scan the rest of the file.
+    start,junk,junk = self.scanHelper(s,i,end=len(s),parent=parent,kind='outer')
+
+    # Finish adding to the parent's body text.
+    self.addRef(parent)
+    if start &lt; len(s):
+        self.c.appendStringToBody(parent,s[start:]) 
+</t>
+<t tx="ekr.20071211113302.35">def skipBlock(self,s,i,delim1=None,delim2=None):
+
+    '''Skip from the opening delim to *past* the matching closing delim.
+
+    If no matching is found i is set to len(s)'''
+
+    trace = False
+    start = i
+    if delim1 is None: delim1 = self.blockDelim1
+    if delim2 is None: delim2 = self.blockDelim2
+    match1 = g.choose(len(delim1)==1,g.match,g.match_word)
+    match2 = g.choose(len(delim2)==1,g.match,g.match_word)
+    assert match1(s,i,delim1)
+    level = 0 ; start = i
+    startIndent = self.startSigIndent
+    if trace: g.trace('***','startIndent',startIndent,g.callers())
+    while i &lt; len(s):
+        progress = i
+        if g.is_nl(s,i):
+            backslashNewline = i &gt; 0 and g.match(s,i-1,'\\\n')
+            i = g.skip_nl(s,i)
+            if not backslashNewline and not g.is_nl(s,i):
+                j, indent = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+                line = g.get_line(s,j)
+                if trace: g.trace('indent',indent,line)
+                if indent &lt; startIndent and line.strip():
+                    # An non-empty underindented line.
+                    # Issue an error unless it contains just the closing bracket.
+                    if level == 1 and match2(s,j,delim2):
+                        pass
+                    else:
+                        if j not in self.errorLines: # No error yet given.
+                            self.errorLines.append(j)
+                            self.underindentedLine(line)
+        elif s[i] in (' ','\t',):
+            i += 1 # speed up the scan.
+        elif self.startsComment(s,i):
+            i = self.skipComment(s,i)
+        elif self.startsString(s,i):
+            i = self.skipString(s,i)
+        elif match1(s,i,delim1):
+            level += 1 ; i += len(delim1)
+        elif match2(s,i,delim2):
+            level -= 1 ; i += len(delim2)
+            if level &lt;= 0:
+                if trace: g.trace('returns\n',repr(s[start:i]))
+                return i
+
+        else: i += 1
+        assert progress &lt; i
+
+    self.error('no block')
+    if 1:
+        i,j = g.getLine(s,start)
+        g.trace(s[max(0,i-20):i+20])
+    if trace: g.trace('** no block')
+    return start
+</t>
+<t tx="ekr.20071211113302.36">@nocolor
+
+http://sourceforge.net/forum/forum.php?thread_id=1865290&amp;forum_id=10226
+
+@bool at_auto_warns_about_leading_whitespace
+
+@color</t>
+<t tx="ekr.20071211113302.37"></t>
+<t tx="ekr.20071211113302.38"></t>
+<t tx="ekr.20071211113302.39">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4464649
+By: terry_n_brown
+
+An argument I'm always having with leo has to do with its conversion of file
+paths to 'absolute' forms.
+
+In the file browser I select '/home/tbrown/misc/foo.leo'.
+Leo reinterprets this as '/media/hda2/usr1/home/tbrown/misc/foo.leo'
+
+Then I switch machines, and while
+'/home/tbrown/misc/foo.leo' would still be valid,
+'/media/hda2/usr1/home/tbrown/misc/foo.leo' isn't - on the other machine it
+would be '/media/hdb1/home/tbrown/misc/foo.leo'.
+
+I end up with the two entries in recent files, having to identify the right one.
+
+If the Tk dialog is returning '/home/tbrown/misc/foo.leo', which I assume it is
+because that's what it's displaying, I wish leo would use and store that.
+</t>
+<t tx="ekr.20071211113302.40">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4615094
+By: terry_n_brown
+
+cvs&gt; python leo/src/leo.py
+Traceback (most recent call last):
+  File "leo/src/leo.py", line 409, in &lt;module&gt;
+    run()
+  File "leo/src/leo.py", line 115, in run
+    fileName,relativeFileName = completeFileName(fileName)
+TypeError: 'NoneType' object is not iterable
+
+["cvs&gt;" above just indicates the shell is in a dir. called cvs, btw]
+
+So it doesn't start unless you specify a file name.  I started it like this:
+
+python leo/src/leo.py ~/myLeoSettings.leo
+
+which worked ok, then after opening /home/tbrown/.tnb.leo and /home/tbrown/tmp.leo
+using File -&gt; Open... the top of /home/tbrown/.leoRecentFiles.txt looks like
+this:
+
+/home/tbrown/myLeoSettings.leo
+/mnt/removable/bkup_usr1/home/tbrown/tmp.leo
+/mnt/removable/bkup_usr1/home/tbrown/.tnb.leo
+
+so it seemed to work for the file loaded from the command line, but not from
+File -&gt; Open...
+
+@color</t>
+<t tx="ekr.20071211113302.41">@nocolor
+
+What I did:
+
+- Added relativeFileName keyword arg to newLeoCommanderAndFrame
+- Added c.mRelativeFileName ivar.
+- Added c.relativeFileName() method.
+- clear-recent-files now writes .leoRecentFiles.txt immediately.
+- updateRecentFiles now clears both the relative and absolute version of the path.
+</t>
+<t tx="ekr.20071211113302.42">def open (self,event=None):
+
+    '''Open a Leo window containing the contents of a .leo file.'''
+
+    c = self
+    &lt;&lt; Set closeFlag if the only open window is empty &gt;&gt;
+
+    fileName = g.app.gui.runOpenFileDialog(
+        title = "Open",
+        filetypes = [("Leo files","*.leo"), ("All files","*")],
+        defaultextension = ".leo")
+    c.bringToFront()
+
+    ok = False
+    if fileName and len(fileName) &gt; 0:
+        ok, frame = g.openWithFileName(fileName,c)
+        if ok:
+            g.setGlobalOpenDir(fileName)
+        if ok and closeFlag:
+            g.app.destroyWindow(c.frame)
+
+    # openWithFileName sets focus if ok.
+    if not ok:
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()</t>
+<t tx="ekr.20071211113302.43">@ If this is the only open window was opened when the app started, and the window has never been written to or saved, then we will automatically close that window if this open command completes successfully.
+@c
+
+closeFlag = (
+    c.frame.startupWindow and # The window was open on startup
+    not c.changed and not c.frame.saved and # The window has never been changed
+    g.app.numberOfWindows == 1) # Only one untitled window has ever been opened
+</t>
+<t tx="ekr.20071211113302.44">def openWithFileName(fileName,old_c,
+    enableLog=True,gui=None,readAtFileNodesFlag=True):
+
+    """Create a Leo Frame for the indicated fileName if the file exists."""
+
+    if not fileName or len(fileName) == 0:
+        return False, None
+
+    def munge(name):
+        return g.os_path_normpath(name or '').lower()
+
+    # Create a full, normalized, Unicode path name, preserving case.
+    relativeFileName = g.os_path_normpath(fileName)
+    fileName = g.os_path_normpath(g.os_path_abspath(fileName))
+    # g.trace(relativeFileName,'--&gt;',fileName)
+
+    # If the file is already open just bring its window to the front.
+    theList = app.windowList
+    for frame in theList:
+        if munge(fileName) == munge(frame.c.mFileName):
+            frame.bringToFront()
+            frame.c.setLog()
+            return True, frame
+    if old_c:
+        # New in 4.4: We must read the file *twice*.
+        # The first time sets settings for the later call to c.finishCreate.
+        # g.trace('***** prereading',fileName)
+        c2 = g.app.config.openSettingsFile(fileName)
+        if c2: g.app.config.updateSettings(c2,localFlag=True)
+        g.doHook('open0')
+
+    # Open the file in binary mode to allow 0x1a in bodies &amp; headlines.
+    theFile,isZipped = g.openLeoOrZipFile(fileName)
+    if not theFile: return False, None
+    c,frame = app.newLeoCommanderAndFrame(
+        fileName=fileName,
+        relativeFileName=relativeFileName,
+        gui=gui)
+    c.isZipped = isZipped
+    frame.log.enable(enableLog)
+    g.app.writeWaitingLog() # New in 4.3: write queued log first.
+    c.beginUpdate()
+    try:
+        if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
+            c.setLog()
+            app.lockLog()
+            frame.c.fileCommands.open(
+                theFile,fileName,
+                readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
+            app.unlockLog()
+            for z in g.app.windowList: # Bug fix: 2007/12/07: don't change frame var.
+                # The recent files list has been updated by menu.updateRecentFiles.
+                z.c.config.setRecentFiles(g.app.config.recentFiles)
+        # Bug fix in 4.4.
+        frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
+        g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
+    finally:
+        c.endUpdate()
+        # chapterController.finishCreate must be called after the first real redraw
+        # because it requires a valid value for c.rootPosition().
+        if frame.c.chapterController:
+            frame.c.chapterController.finishCreate()
+        k = c.k
+        if k: k.setInputState(k.unboundKeyAction)
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+    return True, frame</t>
+<t tx="ekr.20071211113302.45">def updateRecentFiles (self,fileName):
+
+    """Create the RecentFiles menu.  May be called with Null fileName."""
+
+    if g.app.unitTesting: return
+
+    def munge(name):
+        return g.os_path_normpath(name or '').lower()
+    def munge2(name):
+        return g.os_path_abspath(g.os_path_join(g.app.loadDir,name or ''))
+
+    # Update the recent files list in all windows.
+    if fileName:
+        compareFileName = munge(fileName)
+        # g.trace(fileName)
+        for frame in g.app.windowList:
+            c = frame.c
+            # Remove all versions of the file name.
+            for name in c.recentFiles:
+                if munge(fileName) == munge(name) or munge2(fileName) == munge2(name):
+                    c.recentFiles.remove(name)
+            c.recentFiles.insert(0,fileName)
+            # g.trace('adding',fileName)
+            # Recreate the Recent Files menu.
+            frame.menu.createRecentFilesMenuItems()
+    else:
+        for frame in g.app.windowList:
+            frame.menu.createRecentFilesMenuItems()
+</t>
+<t tx="ekr.20071211113302.46">def run(fileName=None,pymacs=None,jyLeo=False,*args,**keywords):
+
+    """Initialize and run Leo"""
+
+    # __pychecker__ = '--no-argsused' # keywords not used.
+
+    # print 'leo.py:run','fileName',fileName
+    if not jyLeo and not isValidPython(): return
+    &lt;&lt; import leoGlobals and leoApp &gt;&gt;
+    g.computeStandardDirectories()
+    adjustSysPath(g)
+    if pymacs:
+        script = windowFlag = False
+    else:
+        script, windowFlag = getBatchScript() # Do early so we can compute verbose next.
+    verbose = script is None
+    g.app.batchMode = script is not None
+    g.app.silentMode = '-silent' in sys.argv or '--silent' in sys.argv
+    g.app.setLeoID(verbose=verbose) # Force the user to set g.app.leoID.
+    &lt;&lt; import leoNodes and leoConfig &gt;&gt;
+    g.app.nodeIndices = leoNodes.nodeIndices(g.app.leoID)
+    g.app.config = leoConfig.configClass()
+    fileName,relativeFileName = completeFileName(fileName)
+    reportDirectories(verbose)
+    # Read settings *after* setting g.app.config.
+    # Read settings *before* opening plugins.  This means if-gui has effect only in per-file settings.
+    g.app.config.readSettingsFiles(fileName,verbose)
+    g.app.setEncoding()
+    if pymacs:
+        createNullGuiWithScript(None)
+    elif jyLeo:
+        import leoSwingGui
+        g.app.gui = leoSwingGui.swingGui()
+    elif script:
+        if windowFlag:
+            g.app.createTkGui() # Creates global windows.
+            g.app.gui.setScript(script)
+            sys.args = []
+        else:
+            createNullGuiWithScript(script)
+        fileName = None
+    # Load plugins. Plugins may create g.app.gui.
+    g.doHook("start1")
+    if g.app.killed: return # Support for g.app.forceShutdown.
+    # Create the default gui if needed.
+    if g.app.gui == None: g.app.createTkGui() # Creates global windows.
+    # Initialize tracing and statistics.
+    g.init_sherlock(args)
+    if g.app and g.app.use_psyco: startPsyco()
+    # Clear g.app.initing _before_ creating the frame.
+    g.app.initing = False # "idle" hooks may now call g.app.forceShutdown.
+    # Create the main frame.  Show it and all queued messages.
+    c,frame = createFrame(fileName,relativeFileName)
+    if not frame: return
+    g.app.trace_gc          = c.config.getBool('trace_gc')
+    g.app.trace_gc_calls    = c.config.getBool('trace_gc_calls')
+    g.app.trace_gc_verbose  = c.config.getBool('trace_gc_verbose')
+    if g.app.disableSave:
+        g.es("disabling save commands",color="red")
+    g.app.writeWaitingLog()
+    p = c.currentPosition()
+    g.doHook("start2",c=c,p=p,v=p,fileName=fileName)
+    if c.config.getBool('allow_idle_time_hook'):
+        g.enableIdleTimeHook()
+    if not fileName:
+        c.redraw_now()
+    c.bodyWantsFocus()
+    g.app.gui.runMainLoop()
+</t>
+<t tx="ekr.20071211113302.47">if jyLeo:
+
+    print '*** starting jyLeo',sys.platform # will be something like java1.6.0_02
+
+    ### This is a hack.
+    ### The jyleo script in test.leo sets the cwd to g.app.loadDir
+    ### Eventually, we will have to compute the equivalent here.
+
+    path = os.path.join(os.getcwd()) ### ,'..','src')
+    if path not in sys.path:
+        print 'appending %s to sys.path' % path
+        sys.path.append(path)
+    if 0:
+        print 'sys.path...'
+        for s in sys.path: print s
+
+# Import leoGlobals, but do NOT set g.
+import leoGlobals
+import leoApp
+
+# Create the app.
+leoGlobals.app = leoApp.LeoApp()
+
+# **now** we can set g.
+g = leoGlobals
+assert(g.app)
+
+if jyLeo:
+    startJyleo(g)
+</t>
+<t tx="ekr.20071211113302.48">import leoNodes
+import leoConfig
+
+# try:
+    # import leoNodes
+# except ImportError:
+    # print "Error importing leoNodes.py"
+    # import traceback ; traceback.print_exc()
+
+# try:
+    # import leoConfig
+# except ImportError:
+    # print "Error importing leoConfig.py"
+    # import traceback ; traceback.print_exc()
+</t>
+<t tx="ekr.20071211113302.49"></t>
+<t tx="ekr.20071211113302.50">def newLeoCommanderAndFrame(self,
+    fileName=None,
+    relativeFileName=None,
+    gui=None,initEditCommanders=True,updateRecentFiles=True):
+
+    """Create a commander and its view frame for the Leo main window."""
+
+    app = self
+
+    import leoCommands
+
+    if not fileName: fileName = ''
+    if not relativeFileName: relativeFileName = ''
+    if not gui: gui = g.app.gui
+    &lt;&lt; compute the window title &gt;&gt;
+
+    # g.trace(fileName,relativeFileName)
+
+    # Create an unfinished frame to pass to the commanders.
+    frame = gui.createLeoFrame(title)
+
+    # Create the commander and its subcommanders.
+    c = leoCommands.Commands(frame,fileName,relativeFileName=relativeFileName)
+
+    if not app.initing:
+        g.doHook("before-create-leo-frame",c=c) # Was 'onCreate': too confusing.
+
+    frame.finishCreate(c)
+    c.finishCreate(initEditCommanders)
+
+    # Finish initing the subcommanders.
+    c.undoer.clearUndoState() # Menus must exist at this point.
+
+    if updateRecentFiles:
+        c.updateRecentFiles(relativeFileName or fileName)
+
+    if not g.app.initing:
+        g.doHook("after-create-leo-frame",c=c)
+
+    return c,frame
+</t>
+<t tx="ekr.20071211113302.51"># Set the window title and fileName
+if fileName:
+    title = g.computeWindowTitle(fileName)
+else:
+    s = "untitled"
+    n = g.app.numberOfWindows
+    if n &gt; 0:
+        s += str(n)
+    title = g.computeWindowTitle(s)
+    g.app.numberOfWindows = n+1
+</t>
+<t tx="ekr.20071211113302.52">def completeFileName (fileName):
+
+    import leoGlobals as g
+
+    if not (fileName and fileName.strip()):
+        return None,None
+
+    # This does not depend on config settings.
+    try:
+        if sys.platform.lower().startswith('win'):
+            fileName = g.toUnicode(fileName,'mbcs')
+        else:
+            fileName = g.toUnicode(fileName,'utf-8')
+    except Exception: pass
+
+    relativeFileName = fileName
+    fileName = g.os_path_join(os.getcwd(),fileName)
+
+    junk,ext = g.os_path_splitext(fileName)
+    if not ext:
+        fileName = fileName + ".leo"
+        relativeFileName = relativeFileName + ".leo"
+
+    return fileName,relativeFileName
+</t>
+<t tx="ekr.20071211113302.53">def createFrame (fileName,relativeFileName):
+
+    """Create a LeoFrame during Leo's startup process."""
+
+    import leoGlobals as g
+
+    # Try to create a frame for the file.
+    if fileName and g.os_path_exists(fileName):
+        ok, frame = g.openWithFileName(relativeFileName or fileName,None)
+        if ok: return frame.c,frame
+
+    # Create a _new_ frame &amp; indicate it is the startup window.
+    c,frame = g.app.newLeoCommanderAndFrame(
+        fileName=fileName,
+        relativeFileName=relativeFileName,
+        initEditCommanders=True)
+    frame.setInitialWindowGeometry()
+    frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
+    frame.startupWindow = True
+    if frame.c.chapterController:
+        frame.c.chapterController.finishCreate()
+        frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
+    # Call the 'new' hook for compatibility with plugins.
+    g.doHook("new",old_c=None,c=c,new_c=c)
+
+    # Report the failure to open the file.
+    if fileName:
+        g.es("File not found: " + fileName)
+
+    return c,frame
+</t>
+<t tx="ekr.20071211113302.54">def createFrame (self,fileName):
+
+    '''Create a commander and frame for the given file.
+    Create a new frame if the fileName is empty or non-exisent.'''
+
+    g = self.g
+
+    if fileName.strip():
+        if g.os_path_exists(fileName):
+            ok, frame = g.openWithFileName(fileName,None)
+            if ok: return frame.c
+        else: g.es("File not found %s, creating new window: " % fileName)
+
+    # Create a new frame. Unlike leo.run, this is not a startup window.
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName)
+    frame.setInitialWindowGeometry()
+    frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
+    # Call the 'new' hook for compatibility with plugins.
+    g.doHook("new",old_c=None,c=c,new_c=c)
+    return c
+</t>
+<t tx="ekr.20071211113302.55">def openSettingsFile (self,path):
+
+    theFile,isZipped = g.openLeoOrZipFile(path)
+    if not theFile: return None
+
+    # Similar to g.openWithFileName except it uses a null gui.
+    # Changing g.app.gui here is a major hack.
+    oldGui = g.app.gui
+    g.app.gui = leoGui.nullGui("nullGui")
+    c,frame = g.app.newLeoCommanderAndFrame(
+        fileName=path,relativeFileName=None,
+        initEditCommanders=False,updateRecentFiles=False)
+    frame.log.enable(False)
+    c.setLog()
+    g.app.lockLog()
+    ok = frame.c.fileCommands.open(
+        theFile,path,readAtFileNodesFlag=False,silent=True) # closes theFile.
+    g.app.unlockLog()
+    frame.openDirectory = g.os_path_dirname(path)
+    g.app.gui = oldGui
+    return ok and c
+</t>
+<t tx="ekr.20071211113302.56">def new (self,event=None,gui=None):
+
+    '''Create a new Leo window.'''
+
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=None,relativeFileName=None,gui=gui)
+
+    # Needed for plugins.
+    g.doHook("new",old_c=self,c=c,new_c=c)
+    # Use the config params to set the size and location of the window.
+    c.beginUpdate()
+    try:
+        frame.setInitialWindowGeometry()
+        frame.deiconify()
+        frame.lift()
+        frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio) # Resize the _new_ frame.
+        t = leoNodes.tnode()
+        v = leoNodes.vnode(t)
+        p = leoNodes.position(v,[])
+        v.initHeadString("NewHeadline")
+        v.moveToRoot(oldRoot=None)
+        c.setRootVnode(v) # New in Leo 4.4.2.
+        c.editPosition(p)
+    finally:
+        c.endUpdate()
+        # chapterController.finishCreate must be called after the first real redraw
+        # because it requires a valid value for c.rootPosition().
+        if c.config.getBool('use_chapters') and c.chapterController:
+            c.chapterController.finishCreate()
+            frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+    return c # For unit test.
+</t>
+<t tx="ekr.20071211113302.57">def readOutlineOnly (self,event=None):
+
+    '''Open a Leo outline from a .leo file, but do not read any derived files.'''
+
+    fileName = g.app.gui.runOpenFileDialog(
+        title="Read Outline Only",
+        filetypes=[("Leo files", "*.leo"), ("All files", "*")],
+        defaultextension=".leo")
+
+    if not fileName:
+        return
+
+    try:
+        theFile = open(fileName,'r')
+        c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName)
+        frame.deiconify()
+        frame.lift()
+        g.app.root.update() # Force a screen redraw immediately.
+        c.fileCommands.readOutlineOnly(theFile,fileName) # closes file.
+    except:
+        g.es("can not open:" + fileName)
+</t>
+<t tx="ekr.20071211113302.58">def run_script(c,script,p=None):
+
+    # It is possible to use script=None, in which case p must be defined.
+
+    init()
+
+    if c is None:
+        c,frame = g.app.newLeoCommanderAndFrame(fileName='dummy script file')
+
+    g.app.scriptResult = None
+
+    c.executeScript(
+        event=None,
+        p=p,
+        script=script,
+        useSelectedText=False,
+        define_g=True,
+        define_name='__main__',
+        silent=True,  # Don't write to the log.
+    )
+
+    # g.trace('script returns: ',repr(g.app.scriptResult))
+    return g.app.scriptResult</t>
+<t tx="ekr.20071211113302.59"></t>
+<t tx="ekr.20071211113302.60">def revert (self,event=None):
+
+    '''Revert the contents of a Leo outline to last saved contents.'''
+
+    c = self
+
+    # Make sure the user wants to Revert.
+    if not c.mFileName:
+        return
+
+    reply = g.app.gui.runAskYesNoDialog(c,"Revert",
+        "Revert to previous version of " + c.mFileName + "?")
+    c.bringToFront()
+
+    if reply=="no":
+        return
+
+    # Kludge: rename this frame so openWithFileName won't think it is open.
+    fileName = c.mFileName ; c.mFileName = ""
+
+    # Create a new frame before deleting this frame.
+    ok, frame = g.openWithFileName(fileName,c)
+    if ok:
+        frame.deiconify()
+        g.app.destroyWindow(c.frame)
+    else:
+        c.mFileName = fileName
+</t>
+<t tx="ekr.20071211113302.61">def openRecentFile(self,name=None):
+
+    if not name: return
+
+    c = self ; v = c.currentVnode()
+    &lt;&lt; Set closeFlag if the only open window is empty &gt;&gt;
+
+    fileName = name
+    if not g.doHook("recentfiles1",c=c,p=v,v=v,fileName=fileName,closeFlag=closeFlag):
+        ok, frame = g.openWithFileName(fileName,c)
+        if ok and closeFlag:
+            g.app.destroyWindow(c.frame) # 12/12/03
+            c = frame.c # Switch to the new commander so the "recentfiles2" hook doesn't crash.
+            c.setLog() # Sets the log stream for g.es()
+
+    g.doHook("recentfiles2",c=c,p=v,v=v,fileName=fileName,closeFlag=closeFlag)
+</t>
+<t tx="ekr.20071211113302.62">@ If this is the only open window was opened when the app started, and the window has never been written to or saved, then we will automatically close that window if this open command completes successfully.
+@c
+
+closeFlag = (
+    c.frame.startupWindow and # The window was open on startup
+    not c.changed and not c.frame.saved and # The window has never been changed
+    g.app.numberOfWindows == 1) # Only one untitled window has ever been opened
+</t>
+<t tx="ekr.20071211113302.63">def openLeoSettings (self,event=None):
+    '''Open leoSettings.leo in a new Leo window.'''
+    self.openSettingsHelper('leoSettings.leo')
+
+def openMyLeoSettings (self,event=None):
+    '''Open myLeoSettings.leo in a new Leo window.'''
+    self.openSettingsHelper('myLeoSettings.leo')
+
+def openSettingsHelper(self,name):
+    c = self
+    homeDir = g.app.homeDir
+    loadDir = g.app.loadDir
+    configDir = g.app.globalConfigDir
+
+    # Look in configDir first.
+    fileName = g.os_path_join(configDir,name)
+    ok = g.os_path_exists(fileName)
+    if ok:
+        ok, frame = g.openWithFileName(fileName,c)
+        if ok: return
+
+    # Look in homeDir second.
+    if configDir == loadDir:
+        g.es("%s not found in %s" % (name,configDir))
+    else:
+        fileName = g.os_path_join(homeDir,name)
+        ok = g.os_path_exists(fileName)
+        if ok:
+            ok, frame = g.openWithFileName(fileName,c)
+        if not ok:
+            g.es("%s not found in %s or %s" % (name,configDir,homeDir))
+</t>
+<t tx="ekr.20071211113302.64">def openLeoScripts (self,event=None):
+
+    c = self
+    fileName = g.os_path_join(g.app.loadDir,'..','scripts','scripts.leo')
+
+    ok, frame = g.openWithFileName(fileName,c)
+    if not ok:
+        g.es('not found: %s' % fileName)
+</t>
+<t tx="ekr.20071211113302.65">def leoDocumentation (self,event=None):
+
+    '''Open LeoDocs.leo in a new Leo window.'''
+
+    c = self ; name = "LeoDocs.leo"
+
+    fileName = g.os_path_join(g.app.loadDir,"..","doc",name)
+    ok,frame = g.openWithFileName(fileName,c)
+    if not ok:
+        g.es("not found: %s" % name)
+</t>
+<t tx="ekr.20071211113302.66">def openLeoPlugins (self,event=None):
+
+    '''Open leoPlugins.leo in a new Leo window.'''
+
+    c = self ; name = "leoPlugins.leo"
+    fileName = g.os_path_join(g.app.loadDir,"..","plugins",name)
+    ok,frame = g.openWithFileName(fileName,c)
+    if not ok:
+        g.es("not found: %s" % name)
+</t>
+<t tx="ekr.20071211113302.67">def openOutlineByName (self,event):
+
+    '''Prompt for the name of a Leo outline and open it.'''
+
+    k = self.k
+    k.setLabelBlue('Open Leo Outline: ',protect=True)
+    k.getFileName(event,handler=self.openOutlineByNameFinisher)
+
+def openOutlineByNameFinisher (self,event):
+
+    c = self.c ; k = self.k ; fileName = k.arg
+
+    k.resetLabel()
+    if fileName and g.os_path_exists(fileName) and not g.os_path_isdir(fileName):
+        g.openWithFileName(fileName,c)
+</t>
+<t tx="ekr.20071211113302.68">def open (fileName=None):
+
+    init()
+
+    if g.app.unitTesting:
+        return
+
+    if not fileName:
+        g.es_print('leoPymacs.open: no file name')
+        return None
+
+    # openWithFileName checks to see if the file is already open.
+    ok, frame = g.openWithFileName(
+        fileName,
+        old_c=None,
+        enableLog=False,
+        readAtFileNodesFlag=True)
+
+    c = ok and frame.c or None
+    if c:
+        g.es_print('leoPymacs.open: %s' % c)
+    else:
+        g.es_print('leoPymacs.open: Can not open %s' % fileName)
+
+    return c</t>
+<t tx="ekr.20071211113302.69">def runLeoTest(c,path,verbose=False,full=False):
+
+    frame = None ; ok = False ; old_gui = g.app.gui
+
+    # Do not set or clear g.app.unitTesting: that is only done in leoTest.runTest.
+
+    try:
+        ok, frame = g.openWithFileName(path,c,enableLog=False)
+        assert(ok and frame)
+        errors = frame.c.checkOutline(verbose=verbose,unittest=True,full=full)
+        assert(errors == 0)
+        ok = True
+    finally:
+        g.app.gui = old_gui
+        if frame and frame.c != c:
+            frame.c.setChanged(False)
+            g.app.closeLeoWindow(frame.c.frame)
+        ### c.frame.update()</t>
+<t tx="ekr.20071211113302.70">@ Most browsers should handle the following urls:
+  ftp://ftp.uu.net/public/whatever.
+  http://localhost/MySiteUnderDevelopment/index.html
+  file://home/me/todolist.html
+@c
+
+try:
+    import os
+    os.chdir(g.app.loadDir)
+    if g.match(url,0,"file:") and url[-4:]==".leo":
+        ok,frame = g.openWithFileName(url[5:],c)
+    else:
+        import webbrowser
+        # Mozilla throws a weird exception, then opens the file!
+        try: webbrowser.open(url)
+        except: pass
+except:
+    g.es("exception opening " + url)
+    g.es_exception()
+</t>
+<t tx="ekr.20071211113302.71"></t>
+<t tx="ekr.20071211113302.72"></t>
+<t tx="ekr.20071211113302.73">def readRecentFiles (self,localConfigFile):
+
+    '''Read all .leoRecentFiles.txt files.'''
+
+    # The order of files in this list affects the order of the recent files list.
+    seen = [] 
+    localConfigPath = g.os_path_dirname(localConfigFile)
+    for path in (
+        g.app.homeDir,
+        g.app.globalConfigDir,
+        localConfigPath,
+    ):
+        if path and path not in seen:
+            ok = self.readRecentFilesFile(path)
+            if ok: seen.append(path)
+    if not seen and self.write_recent_files_as_needed:
+        self.createRecentFiles()</t>
+<t tx="ekr.20071211113302.74">def createRecentFiles (self):
+
+    '''Trye to reate .leoRecentFiles.txt in
+    - the users home directory first,
+    - Leo's config directory second.'''
+
+    for theDir in (g.app.homeDir,g.app.globalConfigDir):
+        if theDir:
+            try:
+                fileName = g.os_path_join(theDir,'.leoRecentFiles.txt')
+                f = file(fileName,'w')
+                f.close()
+                g.es_print('created %s' % (fileName),color='red')
+                return
+            except Exception:
+                g.es_print('can not create %s' % (fileName),color='red')
+                g.es_exception()</t>
+<t tx="ekr.20071211113302.75">def readRecentFilesFile (self,path):
+
+    fileName = g.os_path_join(path,'.leoRecentFiles.txt')
+    ok = g.os_path_exists(fileName)
+    if ok:
+        if not g.unitTesting and not self.silent:
+            print ('reading %s' % fileName)
+        lines = file(fileName).readlines()
+        if lines and self.munge(lines[0])=='readonly':
+            lines = lines[1:]
+        if lines:
+            lines = [g.toUnicode(g.os_path_normpath(line),'utf-8') for line in lines]
+            self.appendToRecentFiles(lines)
+
+    return ok</t>
+<t tx="ekr.20071211113302.76">recentFileMessageWritten = False
+
+def writeRecentFilesFile (self,c):
+
+    '''Write the appropriate .leoRecentFiles.txt file.'''
+
+    tag = '.leoRecentFiles.txt'
+
+    if g.app.unitTesting:
+        return
+
+    localFileName = c.fileName()
+    if localFileName:
+        localPath,junk = g.os_path_split(localFileName)
+    else:
+        localPath = None
+
+    for path in (localPath,g.app.globalConfigDir,g.app.homeDir):
+        if path:
+            fileName = g.os_path_join(path,tag)
+            if g.os_path_exists(fileName):
+                if not self.recentFileMessageWritten:
+                    self.recentFileMessageWritten = True
+                    print ('wrote %s' % fileName)
+                self.writeRecentFilesFileHelper(fileName)
+                return
+    else:
+        # g.trace('----- not found: %s' % g.os_path_join(localPath,tag))
+        return
+</t>
+<t tx="ekr.20071211113302.77">def writeRecentFilesFileHelper (self,fileName):
+    # g.trace(fileName)
+
+    # Don't update the file if it begins with read-only.
+    theFile = None
+    try:
+        theFile = file(fileName)
+        lines = theFile.readlines()
+        if lines and self.munge(lines[0])=='readonly':
+            # g.trace('read-only: %s' %fileName)
+            return
+    except IOError:
+        # The user may have erased a file.  Not an error.
+        if theFile: theFile.close()
+
+    theFile = None
+    try:
+        # g.trace('writing',fileName)
+        theFile = file(fileName,'w')
+        if self.recentFiles:
+            lines = [g.toEncodedString(line,'utf-8') for line in self.recentFiles]
+            theFile.write('\n'.join(lines))
+            # g.trace(fileName,'lines\n%s' % lines)
+        else:
+            theFile.write('\n')
+
+    except IOError:
+        # The user may have erased a file.  Not an error.
+        pass
+
+    except Exception:
+        g.es('unexpected exception writing %s' % fileName,color='red')
+        g.es_exception()
+
+    if theFile:
+        theFile.close()
+</t>
+<t tx="ekr.20071211113302.78"></t>
+<t tx="ekr.20071211113302.79">def clearRecentFiles (self,event=None):
+
+    """Clear the recent files list, then add the present file."""
+
+    c = self ; f = c.frame ; u = c.undoer
+
+    bunch = u.beforeClearRecentFiles()
+
+    recentFilesMenu = f.menu.getMenu("Recent Files...")
+    f.menu.delete_range(recentFilesMenu,0,len(c.recentFiles))
+
+    c.recentFiles = []
+    g.app.config.recentFiles = [] # New in Leo 4.3.
+    f.menu.createRecentFilesMenuItems()
+    c.updateRecentFiles(c.relativeFileName())
+
+    g.app.config.appendToRecentFiles(c.recentFiles)
+
+    # g.trace(c.recentFiles)
+
+    u.afterClearRecentFiles(bunch)
+
+    # New in Leo 4.4.5: write the file immediately.
+    g.app.config.writeRecentFilesFile(c)
+</t>
+<t tx="ekr.20071211113302.80">@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=4615931
+By: yarkot
+
+Noticed that in Released 4.4.4 Leo, the registry entry for opening a LeoFile
+still has  "%1" portion entered without the quotes.
+
+I saw somewhere that this was fixed - doesn't look like it is.
+
+
+----- Probably have to update nsi script.
+
+http://sourceforge.net/forum/message.php?msg_id=4616400
+By: yarkot
+
+I dug this out of the forums (trying to get open association to work properly)...
+The post was:
+http://sourceforge.net/forum/message.php?msg_id=2816347
+
+Yes, to check this out I installed 4.4.4 w/ the *.exe file (to let installer
+set up the registry; I've been running out of CVS so long, my registry
+was Leo-less).
+
+Eventually I updated the registry paths to point to my CVS snapshot - which
+is when I caught this.</t>
+<t tx="ekr.20071211113302.81"></t>
+<t tx="ekr.20071211113302.82">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4618014
+By: billp9619
+
+I am not able to use Paste Node As Clone in recent install of leo
+Using Windows XP
+
+Here is the log pane output. Line "exception executing command" is beginning
+of error message part.:
+=================================================================
+Leo Log Window...
+Leo 4.4.4 final, build  1.216 , November 2, 2007
+Python 2.5.1, Tk 8.4.12, Pmw 1.2
+Windows 5, 1, 2600, 2, Service Pack 2
+
+leoID = id9619 (in E:\Program Files\Leo\config)
+global config dir: E:\Program Files\Leo\config
+home dir: None
+reading settings in E:\Program Files\Leo\config\leoSettings.leo
+exception executing command
+exception executing command
+Traceback (most recent call last):
+  File "E:\Program Files\Leo\src\leoCommands.py", line 276, in doCommand
+    val = command(event)
+  File "E:\Program Files\Leo\src\leoCommands.py", line 3439,
+in pasteOutlineRetainingClones
+    return c.pasteOutline(reassignIndices=False)
+  File "E:\Program Files\Leo\src\leoCommands.py", line 3387, in pasteOutline
+    pasted = c.fileCommands.getLeoOutline(s,reassignIndices)
+  File "E:\Program Files\Leo\src\leoFileCommands.py", line 623, in
+getLeoOutlineFromClipboard
+    v = self.getLeoOutlineHelper(s,reassignIndices,checking=True)
+  File "E:\Program Files\Leo\src\leoFileCommands.py", line 692, in
+getLeoOutlineHelper
+    tref = t.fileIndex
+AttributeError: 'NoneType' object has no attribute 'fileIndex'
+</t>
+<t tx="ekr.20071211113302.83">def getLeoOutlineFromClipboard (self,s,reassignIndices=True):
+
+    '''Read a Leo outline from string s in clipboard format.'''
+
+    try:
+        v = self.getLeoOutlineHelper(s,reassignIndices,checking=True)
+        v = self.getLeoOutlineHelper(s,reassignIndices,checking=False)
+    except invalidPaste:
+        v = None
+        g.es("Invalid Paste As Clone",color="blue")
+    except BadLeoFile:
+        v = None
+        g.es("The clipboard is not valid ",color="blue")
+
+    return v
+
+getLeoOutline = getLeoOutlineFromClipboard # for compatibility</t>
+<t tx="ekr.20071211113302.84">def finishPaste(self,reassignIndices=True):
+
+    """Finish pasting an outline from the clipboard.
+
+    Retain clone links if reassignIndices is False."""
+
+    c = self.c
+    current = c.currentPosition()
+    if reassignIndices:
+        &lt;&lt; reassign tnode indices &gt;&gt;
+    c.selectPosition(current)
+    return current
+</t>
+<t tx="ekr.20071211113302.85">@ putLeoOutline calls assignFileIndices (when copying nodes) so that vnode can be associated with tnodes.
+However, we must _reassign_ the indices here so that no "False clones" are created.
+@c
+
+nodeIndices = g.app.nodeIndices
+
+current.clearVisitedInTree()
+
+for p in current.self_and_subtree_iter():
+    t = p.v.t
+    if not t.isVisited():
+        t.setVisited()
+        # New in Leo 4.4.2 b2: use gnx's.  maxTnodeIndex is no longer used.
+        t.fileIndex = nodeIndices.getNewIndex()
+        # g.trace(t.fileIndex)</t>
+<t tx="ekr.20071211113302.86">def getLeoOutlineHelper (self,s,reassignIndices,checking):
+
+    self.checking = checking
+    self.usingClipboard = True
+    self.fileBuffer = s ; self.fileIndex = 0
+    self.descendentUnknownAttributesDictList = []
+    v = None
+
+    self.tnodesDict = {}
+    if not reassignIndices:
+        &lt;&lt; recreate tnodesDict &gt;&gt;
+    try:
+        self.getXmlVersionTag()
+        self.getXmlStylesheetTag()
+        self.getTag("&lt;leo_file&gt;")
+        self.getClipboardHeader()
+        self.getDummyElements()
+        self.getVnodes(reassignIndices)
+        self.getTnodes()
+        self.getTag("&lt;/leo_file&gt;")
+        if not checking:
+            v = self.finishPaste(reassignIndices)
+    finally:
+        self.fileBuffer = None ; self.fileIndex = 0
+        self.usingClipboard = False
+        self.tnodesDict = {}
+    return v
+</t>
+<t tx="ekr.20071211113302.87">nodeIndices = g.app.nodeIndices
+
+self.tnodesDict = {}
+
+for t in self.c.all_unique_tnodes_iter():
+    if hasattr(t,'fileIndex'):
+        tref = t.fileIndex
+        if nodeIndices.isGnx(tref):
+            tref = nodeIndices.toString(tref)
+        self.tnodesDict[tref] = t
+
+if 0:
+    print '-'*40
+    for key in self.tnodesDict.keys():
+        print key,self.tnodesDict[key]
+</t>
+<t tx="ekr.20071211113302.88">def getClipboardHeader (self):
+
+    if self.getOpenTag("&lt;leo_header"):
+        return # &lt;leo_header&gt; or &lt;leo_header/&gt; has been seen.
+
+    while 1:
+        if self.matchTag("file_format="):
+            self.getDquote() ; self.getLong() ; self.getDquote()
+        elif self.matchTag("tnodes="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
+        elif self.matchTag("max_tnode_index="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
+        elif self.matchTag("&gt;&lt;/leo_header&gt;"): # new in 4.2: allow this form.
+            break
+        else:
+            self.getTag("/&gt;")
+            break</t>
+<t tx="ekr.20071211113302.89">Traceback (most recent call last):
+
+  File "C:\prog\tigris-cvs\leo\src\leoGlobals.py", line 2651, in doHook
+    return f(tag,keywords)
+
+  File "c:\prog\tigris-cvs\leo\src\leoPlugins.py", line 91, in doPlugins
+    return doHandlersForTag(tag,keywords)
+
+  File "c:\prog\tigris-cvs\leo\src\leoPlugins.py", line 70, in doHandlersForTag
+    val = callTagHandler(bunch,tag,keywords)
+
+  File "c:\prog\tigris-cvs\leo\src\leoPlugins.py", line 49, in callTagHandler
+    result = handler(tag,keywords)
+
+  File "C:\prog\tigris-cvs\leo\plugins\add_directives.py", line 57, in scanPluginDirectives
+    k += 1 + len(d) # Skip @directive
+
+TypeError: coercing to Unicode: need string or buffer, int found
+
+</t>
+<t tx="ekr.20071211113302.90"></t>
+<t tx="ekr.20071211113302.91">def initAnyMarkup (tag,keywords):
+
+    """initialize colorer.markup_string
+
+    The colorer completely recolors the body pane when this changes"""
+
+    keys = ("colorer","v")
+    colorer,v = [keywords.get(key) for key in keys]
+
+    c = colorer.c
+    if not c or not c.exists or not v: return
+
+    # underline means hyperlinks
+    c.frame.body.tag_configure("http",underline=1) # EKR: 11/4/03
+    c.frame.body.tag_configure("https",underline=1) # EKR: 11/4/03
+    dict = g.scanDirectives(c,p=v) # v arg is essential.
+    pluginsList = dict.get("pluginsList")
+
+    if pluginsList:
+        for kind,v,s in pluginsList:
+            if kind == "markup" and s:
+                colorer.markup_string = s
+                return
+
+    colorer.markup_string = "unknown" # default
+</t>
+<t tx="ekr.20071211113302.92">def colorWikiMarkup (tag,keywords):
+
+    keys = ("colorer","v","s","i","j","colortag")
+    colorer,v,s,i,j,colortag = [keywords.get(key) for key in keys]
+    c = colorer.c
+
+    dict = g.scanDirectives(c,p=v) # v arg is essential.
+    pluginsList = dict.get("pluginsList")
+
+    if pluginsList:
+        for kind,v,s2 in pluginsList:
+            if kind == "markup" and s2 == 'wiki':
+                doWikiText(colorer,s,i,j,colortag)
+                return True # We have colored the text.
+
+    # g.trace('**not colored')
+    colorer.removeAllImages()
+    return None # We have not colored the text.
+</t>
+<t tx="ekr.20071211113302.93">def doWikiText (colorer,s,i,end,colortag):
+
+    firsti = i
+
+    # Note: for old colorizer, must use index(i) and index(j) to get proper indices.
+    # g.trace(i,end,colortag) # ,repr(s[i:end]))
+
+    while i &lt; end:
+        &lt;&lt; set first to a tuple describing the first tag to be handled &gt;&gt;
+        if first:
+            tag,n1,n2,delim1,delim2 = first
+            i = n2 + len(delim2)
+            &lt;&lt; handle the tag using n1,n2,delim1,delim2 &gt;&gt;
+        else: i = end
+
+    # g.trace('tag',colortag,firsti,end)
+    colorer.tag(colortag,firsti,end)
+</t>
+<t tx="ekr.20071211113302.94">first = None
+
+for tag,delim1,delim2 in (
+    ("bold","__","__"),
+    ("italic","''","''"),
+    ("picture","{picture file=","}"),
+    ("color","~~","~~"),
+):
+    n1 = s.find(delim1,i,end)
+    if n1 &gt; -1:
+        n2 = s.find(delim2,n1+len(delim1),end)
+        if n2 &gt; -1:
+            if not first or (first and n1 &lt; first[1]):
+                first = tag,n1,n2,delim1,delim2
+
+for tag,delim1 in (
+    ("http","http://"),
+    ("https","https://"),
+):
+    k = s.find(delim1,i,end)
+    if k &gt; -1:
+        k2 = k + len(delim1)
+        while k2 &lt; len(s) and s[k2] not in (' ','\t','\n'):
+            k2 += 1
+        delim2 = s[k2]
+        if s[k:k2] and not first or (first and k &lt; first[1]):
+            # g.trace('delim1',k,k2,s[k:k2])
+            first = tag,k,k2,delim1,delim2
+</t>
+<t tx="ekr.20071211113302.95"># g.trace(tag,i,n1,n2,s[n1:n2])
+
+if tag =="picture":
+    colorer.tag("elide",n1,n2+len(delim2)) # Elide everything.
+    filename = s[n1+len(delim1):n2]
+    filename = os.path.join(g.app.loadDir,filename)
+    filename = os.path.normpath(filename)
+    insertWikiPicture(colorer,filename,s,n2+len(delim2))
+elif tag == "color":
+    &lt;&lt; parse and handle color field &gt;&gt;
+elif tag == "http" or tag == "https":
+    colorer.tag(tag,n1,n2)
+else:
+    # look for nested bold or italic.
+    if tag == "bold":
+        delim3,delim4 = "''","''" # Look for nested italic.
+    else:
+        delim3,delim4 = "__","__" # Look for nested bold.
+    n3 = s.find(delim3,n1+len(delim1),n2) ; n4 = -1
+    if n3 &gt; -1:
+        n4 = s.find(delim4,n3+len(delim3),n2+len(delim2))
+    if n3 &gt; -1 and n4 &gt; -1:
+        colorer.tag("elide",n1,n1+len(delim1))
+        colorer.tag("elide",n2,n2+len(delim2))
+        colorer.tag("elide",n3,n3+len(delim3))
+        colorer.tag("elide",n4,n4+len(delim4))
+        colorer.tag(tag,n1+len(delim1),n3)
+        colorer.tag("bolditalic",n3+len(delim3),n4)
+        colorer.tag(tag,n4+len(delim4),n2)
+    else:
+        # No nested tag.
+        colorer.tag("elide",n1,n1+len(delim1))
+        colorer.tag("elide",n2,n2+len(delim2))
+        colorer.tag(tag,n1+len(delim1),n2)</t>
+<t tx="ekr.20071211113302.96"># Parse the color value.
+j = n1+len(delim1)
+n = s.find(":",j,n2)
+if n2 &gt; n &gt; j &gt; -1:
+    name = s[j:n]
+    if name[0] == '#' and len(name) &gt; 1:
+        name = '#' + string.zfill(name[1:],6)
+    if name in colorer.color_tags_list:
+        colorer.tag("elide",n1,n+1)
+        colorer.tag(name,n+1,n2)
+        colorer.tag("elide",n2,n2+len(delim2))
+    else:
+        try:
+            # print "entering", name
+            c = colorer.c
+            c.frame.body.bodyCtrl.tag_configure(name,foreground=name)
+            colorer.color_tags_list.append(name)
+            colorer.tag("elide",n1,n+1)
+            colorer.tag(name,n+1,n2)
+            colorer.tag("elide",n2,n2+len(delim2))
+        except: # an invalid color name: elide nothing.
+            pass # g.es_exception()</t>
+<t tx="ekr.20071211113302.97">def scanPluginDirectives (tag, keywords):
+
+    """Add a tuple (d,v,s,k) to list for every directive d found"""
+
+    global directives
+
+    keys = ("c","v","s","old_dict","dict","pluginsList")
+    c,v,s,old_dict,dict,pluginsList = [keywords.get(key) for key in keys]
+
+    for d in directives:
+        if not old_dict.has_key(d) and dict.has_key(d):
+            # Point k at whatever follows the directive.
+            s = dict.get(d)
+            kind = d
+            pluginsList.append((kind,v,s),)
+</t>
+<t tx="ekr.20071211113302.98">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4620890
+By: tokidokix
+
+Hi,
+I have a (very) small bug on Leo 4.4.4 (linux); I am not sure where to report
+it, so I'll do it here.
+
+When doing a "hoist" on a childless node (on linux, at least), the following
+trackback is displayed on the log windows:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/leo/src/leoTkinterTree.py", line 1315, in scrollTo
+    h1 = self.yoffset(p)
+  File "/usr/local/lib/leo/src/leoTkinterTree.py", line 1416, in yoffset
+    h,flag = self.yoffsetTree(root,p1,isTop=True)
+  File "/usr/local/lib/leo/src/leoTkinterTree.py", line 1436, in yoffsetTree
+    if p2.isExpanded() and p2.hasChildren():
+  File "/usr/local/lib/leo/src/leoNodes.py", line 1349, in isExpanded
+    def isExpanded  (self): return self.v.isExpanded()
+AttributeError: 'NoneType' object has no attribute 'isExpanded'
+
+@color</t>
+<t tx="ekr.20071211113302.99">class siblings_iter_class:
+
+    '''Returns a list of siblings of a position, including the position itself!'''
+
+    @others
+
+def siblings_iter (self,copy=False,following=False):
+
+    return self.siblings_iter_class(self,copy,following)
+
+self_and_siblings_iter = siblings_iter
+
+def following_siblings_iter (self,copy=False):
+
+    return self.siblings_iter_class(self,copy,following=True)
+</t>
+<t tx="ekr.20071211113302.100">def __init__(self,p,copy,following):
+
+    # We always include p, even if following is True.
+
+    if following:
+        self.first = p.copy()
+    else:
+        p = p.copy()
+        while p.hasBack():
+            p.moveToBack()
+        self.first = p
+
+    self.p = None
+    self.copy = copy
+
+def __iter__(self):
+
+    return self
+</t>
+<t tx="ekr.20071211113302.101">def next(self):
+
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    elif self.p:
+        self.p.moveToNext()
+
+    if self.p:
+        if self.copy: return self.p.copy()
+        else:         return self.p
+    else: raise StopIteration
+</t>
+<t tx="ekr.20071211113302.102">@ We can't just return icony because the tree hasn't been redrawn yet.
+For the same reason we can't rely on any TK canvas methods here.
+@c
+
+def yoffset(self,p1):
+    # if not p1.isVisible(): print "yoffset not visible:",p1
+    if not p1: return 0
+    c = self.c
+    if c.hoistStack:
+        bunch = c.hoistStack[-1]
+        root = bunch.p.copy()
+    else:
+        root = self.c.rootPosition()
+    if root:
+        h,flag = self.yoffsetTree(root,p1,isTop=True)
+        # flag can be False during initialization.
+        # if not flag: print "yoffset fails:",h,v1
+        return h
+    else:
+        return 0
+
+def yoffsetTree(self,p,p1,isTop):
+    c = self.c ; h = 0 ; trace = False ; verbose = False
+    if not c.positionExists(p):
+        if trace: g.trace('does not exist',p.headString())
+        return h,False # An extra precaution.
+    p = p.copy()
+    if trace and verbose and isTop and c.hoistStack:
+        g.trace('c.hoistStack',c.hoistStack[-1].p.headString())
+    if isTop and c.hoistStack:
+        if p.firstChild():  theIter = [p.firstChild()]
+        else:               theIter = []
+    else: theIter = p.self_and_siblings_iter() # Bug fix 10/27/07: was p.siblings_iter()
+    for p2 in theIter:
+        if p2 == p1:
+            if trace and verbose: g.trace(h,p1.headString())
+            return h, True
+        h += self.line_height
+        if p2.isExpanded() and p2.hasChildren():
+            child = p2.firstChild()
+            h2, flag = self.yoffsetTree(child,p1,isTop=False)
+            h += h2
+            if flag:
+                if trace and verbose: g.trace(h,p1.headString())
+                return h, True
+
+    if trace: g.trace('not found',p1.headString())
+    return h, False
+</t>
+<t tx="ekr.20071211113302.103">@nocolor
+
+From email from Terry Brown
+
+python /home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py /home/tbrown/.tnb.leo
+
+(should be all on one line, i.e. run and open /home/tbrown/.tnb.leo)
+
+gives the traceback below.  Opening the file from within Leo works fine.
+
+Bah - I just now looked at it closely enough to realize it's the evil
+pickled Tk classes in cleo uAs.  So I don't know whether you want to
+fix that or not, it makes sense Leo would read the file specified on
+the command line before Tk is initialized - if it's just scanning for
+settings maybe it could catch and ignore failed uA reads at that time?
+
+At some point I want to take pickled Tk vars out of cleo, I was
+thinking when that guy was working on the wx gui would be a good time,
+too bad he got sick.
+
+Cheers -Terry
+
+reading settings in /mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/config/leoSettings.leo
+reading settings in /home/tbrown/leoSettings.leo
+reading settings in /home/tbrown/myLeoSettings.leo
+reading settings in /home/tbrown/.tnb.leo
+Traceback (most recent call last):
+  File "/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py", line 398, in &lt;module&gt;
+    run(fileName)
+  File "/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leo.py", line 118, in run
+    g.app.config.readSettingsFiles(fileName,verbose)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoConfig.py", line 1649, in readSettingsFiles
+    c = self.openSettingsFile(path)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoConfig.py", line 1674, in openSettingsFile
+    theFile,path,readAtFileNodesFlag=False,silent=True) # closes theFile.
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 892, in open
+    silent=silent)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 779, in getLeoFile
+    self.getAllLeoElements(fileName,silent)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1317, in getAllLeoElements
+    self.getVnodes()
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1898, in getVnodes
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1781, in getVnode
+    appendToCurrentStack=append1,appendToTopStack=append2)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1738, in getVnode
+    attr,val = self.getUa("vnode")
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoFileCommands.py", line 1658, in getUa
+    val2 = pickle.loads(binString)
+  File "/usr/lib/python2.5/pickle.py", line 1374, in loads
+    return Unpickler(file).load()
+  File "/usr/lib/python2.5/pickle.py", line 858, in load
+    dispatch[key](self)
+  File "/usr/lib/python2.5/pickle.py", line 1217, in load_build
+    setstate(state)
+  File "/mnt/removable/bkup_usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/plugins/cleo.py", line 130, in __setstate__
+    Tk.Variable.__init__(self)
+  File "/usr/lib/python2.5/lib-tk/Tkinter.py", line 188, in __init__
+    self._tk = master.tk
+AttributeError: 'NoneType' object has no attribute 'tk'
+Exception exceptions.AttributeError: "TkPickleVar instance has no attribute '_tk'" in &lt;bound method TkPickleVar.__del__ of &lt;cleo.TkPickleVar instance at 0xb73a876c&gt;&gt; ignored
+
+@color
+</t>
+<t tx="ekr.20071211113302.104"># changed for 4.3.
+
+def getUa(self,unused_nodeType):
+
+    """Parse an unknown attribute in a &lt;v&gt; or &lt;t&gt; element."""
+
+    # New in 4.2.  The unknown tag has been pickled and hexlify'd.
+    attr,val = self.getUnknownTag()
+    # g.trace(attr,repr(val))
+    if not attr:
+        return None,None
+
+    # New in 4.3: leave string attributes starting with 'str_' alone.
+    if attr.startswith('str_') and type(val) == type(''):
+        # g.trace(attr,val)
+        return attr,val
+
+    # New in 4.3: convert attributes starting with 'b64_' using the base64 conversion.
+    if 0: # Not ready yet.
+        if attr.startswith('b64_'):
+            try: pass
+            except Exception: pass
+
+    try:
+        binString = binascii.unhexlify(val) # Throws a TypeError if val is not a hex string.
+    except TypeError:
+        # Assume that Leo 4.1 wrote the attribute.
+        # g.trace('4.1 val:',val2)
+        return attr,val
+    try:
+        # No change needed to support protocols.
+        val2 = pickle.loads(binString)
+        # g.trace('v.3 val:',val2)
+        return attr,val2
+    except (pickle.UnpicklingError,ImportError):
+        return attr,val
+    except Exception:
+        return attr,val # New in Leo 4.4.5.
+</t>
+<t tx="ekr.20071211113302.105"></t>
+<t tx="ekr.20071211113302.106"></t>
+<t tx="ekr.20071211113302.107">@nocolor
+
+1. The dict returned by get_directives_dict contains values that are strings,
+not indices. The string will be the line after the directive (with whitespace
+stripped off).
+
+This was a major change: all the various code sections that sets values from this
+dict had to change.
+
+2. Eliminated the s arg from the g.scanXDirective functions.
+
+3. Refactored common code into g.computeRelativePath().</t>
+<t tx="ekr.20071211113302.108"># The caller passes [root_node] or None as the second arg.  This allows us to distinguish between None and [None].
+
+def get_directives_dict(p,root=None):
+
+    """Scans root for @directives found in globalDirectiveList.
+
+    Returns a dict containing pointers to the start of each directive"""
+
+    if root: root_node = root[0]
+    theDict = {}
+
+    # The headline has higher precedence because it is more visible.
+    for kind,s in (
+        ('body',p.v.t.headString),
+        ('head',p.v.t.bodyString),
+    ):
+        i = 0 ; n = len(s)
+        while i &lt; n:
+            if s[i] == '@' and i+1 &lt; n:
+                &lt;&lt; set theDict for @ directives &gt;&gt;
+            elif kind == 'body' and root and g.match(s,i,"&lt;&lt;"):
+                &lt;&lt; set theDict["root"] for noweb * chunks &gt;&gt;
+            i = g.skip_line(s,i)
+    return theDict
+</t>
+<t tx="ekr.20071211113302.109">j = g.skip_c_id(s,i+1)
+word = s[i+1:j]
+
+global globalDirectiveList
+
+if word in globalDirectiveList:
+    if theDict.has_key(word):
+        # Ignore second value.
+        pass
+        # g.es("Warning: conflicting values for %s" % (word), color="blue")
+    else:
+        # theDict [word] = i
+        k = g.skip_line(s,j)
+        theDict[word] = s[j:k].strip()</t>
+<t tx="ekr.20071211113302.110">@ The following looks for chunk definitions of the form &lt; &lt; * &gt; &gt; =. If found, we take this to be equivalent to @root filename if the headline has the form @root filename.
+@c
+
+i = g.skip_ws(s,i+2)
+
+if i &lt; n and s[i] == '*' :
+    i = g.skip_ws(s,i+1) # Skip the '*'
+    if g.match(s,i,"&gt;&gt;="):
+        # &lt; &lt; * &gt; &gt; = implies that @root should appear in the headline.
+        i += 3
+        if root_node:
+            theDict["root"]=0 # value not immportant
+        else:
+            g.es(g.angleBrackets("*") + "= requires @root in the headline")
+</t>
+<t tx="ekr.20071211113302.111">def computeRelativePath (path):
+
+    if len(path) &gt; 2 and (
+        (path[0]=='&lt;' and path[-1] == '&gt;') or
+        (path[0]=='"' and path[-1] == '"') or
+        (path[0]=="'" and path[-1] == "'")
+    ):
+        path = path[1:-1].strip()
+
+    # 11/14/02: we want a _relative_ path, not an absolute path.
+    # path = g.os_path_join(g.app.loadDir,path)
+
+    return path
+</t>
+<t tx="ekr.20071211113302.112"></t>
+<t tx="ekr.20071211113302.113"></t>
+<t tx="ekr.20071211113302.114"># Returns a tuple (single,start,end) of comment delims
+
+def set_delims_from_language(language):
+
+    # g.trace(g.callers())
+
+    val = app.language_delims_dict.get(language)
+    if val:
+        delim1,delim2,delim3 = g.set_delims_from_string(val)
+        if delim2 and not delim3:
+            return None,delim1,delim2
+        else: # 0,1 or 3 params.
+            return delim1,delim2,delim3
+    else:
+        return None, None, None # Indicate that no change should be made
+</t>
+<t tx="ekr.20071211113302.115">def set_delims_from_string(s):
+
+    """Returns (delim1, delim2, delim2), the delims following the @comment directive.
+
+    This code can be called from @language logic, in which case s can point at @comment"""
+
+    # Skip an optional @comment
+    tag = "@comment"
+    i = 0
+    if g.match_word(s,i,tag):
+        i += len(tag)
+
+    count = 0 ; delims = [None, None, None]
+    while count &lt; 3 and i &lt; len(s):
+        i = j = g.skip_ws(s,i)
+        while i &lt; len(s) and not g.is_ws(s[i]) and not g.is_nl(s,i):
+            i += 1
+        if j == i: break
+        delims[count] = s[j:i]
+        count += 1
+
+    # 'rr 09/25/02
+    if count == 2: # delims[0] is always the single-line delim.
+        delims[2] = delims[1]
+        delims[1] = delims[0]
+        delims[0] = None
+
+    # 7/8/02: The "REM hack": replace underscores by blanks.
+    # 9/25/02: The "perlpod hack": replace double underscores by newlines.
+    for i in xrange(0,3):
+        if delims[i]:
+            delims[i] = string.replace(delims[i],"__",'\n') 
+            delims[i] = string.replace(delims[i],'_',' ')
+
+    return delims[0], delims[1], delims[2]
+</t>
+<t tx="ekr.20071211113302.116">def set_language(s,i,issue_errors_flag=False):
+
+    """Scan the @language directive that appears at s[i:].
+
+    The @language may have been stripped away.
+
+    Returns (language, delim1, delim2, delim3)
+    """
+
+    tag = "@language"
+    # g.trace(g.get_line(s,i))
+    assert(i != None)
+    # assert(g.match_word(s,i,tag))
+    if g.match_word(s,i,tag):
+        i += len(tag)
+    # Get the argument.
+    i = g.skip_ws(s, i)
+    j = i ; i = g.skip_c_id(s,i)
+    # Allow tcl/tk.
+    arg = string.lower(s[j:i])
+    if app.language_delims_dict.get(arg):
+        language = arg
+        delim1, delim2, delim3 = g.set_delims_from_language(language)
+        return language, delim1, delim2, delim3
+
+    if issue_errors_flag:
+        g.es("ignoring: " + g.get_line(s,i))
+
+    return None, None, None, None,
+</t>
+<t tx="ekr.20071211113302.117">def comment_delims_from_extension(filename):
+
+    """
+    Return the comment delims corresponding to the filename's extension.
+
+    &gt;&gt;&gt; g.comment_delims_from_extension(".py")
+    ('#', None, None)
+
+    &gt;&gt;&gt; g.comment_delims_from_extension(".c")
+    ('//', '/*', '*/')
+
+    &gt;&gt;&gt; g.comment_delims_from_extension(".html")
+    (None, '&lt;!--', '--&gt;')
+
+    """
+
+    root, ext = os.path.splitext(filename)
+    if ext == '.tmp':
+        root, ext = os.path.splitext(root)
+
+    language = g.app.extension_dict.get(ext[1:])
+    if ext:
+
+        return g.set_delims_from_language(language)
+    else:
+        g.trace("unknown extension %s" % ext)
+        return None,None,None
+</t>
+<t tx="ekr.20071211113302.118">@ We search the descendents of v looking for the definition node matching name.
+There should be exactly one such node (descendents of other definition nodes are not searched).
+@c
+
+def findReference(c,name,root):
+
+    for p in root.subtree_iter():
+        assert(p!=root)
+        if p.matchHeadline(name) and not p.isAtIgnoreNode():
+            return p
+
+    # g.trace("not found:",name,root)
+    return c.nullPosition()
+</t>
+<t tx="ekr.20071211113302.119">def scanAtEncodingDirective(theDict):
+
+    """Scan the @encoding directive at s[theDict["encoding"]:].
+
+    Returns the encoding name or None if the encoding name is invalid.
+    """
+
+    encoding = theDict.get('encoding')
+    if not encoding:
+        return None
+
+    if g.isValidEncoding(encoding):
+        # g.trace(encoding)
+        return encoding
+    else:
+        g.es("invalid @encoding: "+encoding,color="red")
+        return None
+</t>
+<t tx="ekr.20071211113302.120">def scanAtLineendingDirective(theDict):
+
+    """Scan the @lineending directive at s[theDict["lineending"]:].
+
+    Returns the actual lineending or None if the name of the lineending is invalid.
+    """
+
+    e = theDict.get('encoding')
+
+    if e in ("cr","crlf","lf","nl","platform"):
+        lineending = g.getOutputNewline(name=e)
+        # g.trace(e,lineending)
+        return lineending
+    else:
+        # g.es("invalid @lineending directive:"+e,color="red")
+        return None
+</t>
+<t tx="ekr.20071211113302.121">def scanAtPagewidthDirective(theDict,issue_error_flag=False):
+
+    """Scan the @pagewidth directive at s[theDict["pagewidth"]:].
+
+    Returns the value of the width or None if the width is invalid.
+    """
+
+    s = theDict.get('pagewidth')
+    i, val = g.skip_long(s,0)
+
+    if val != None and val &gt; 0:
+        # g.trace(val)
+        return val
+    else:
+        if issue_error_flag:
+            g.es("ignoring " + s,color="red")
+        return None
+</t>
+<t tx="ekr.20071211113302.122">def scanAtRootOptions (s,i,err_flag=False):
+
+    # The @root has been eaten when called from tangle.scanAllDirectives.
+    if g.match(s,i,"@root"):
+        i += len("@root")
+        i = g.skip_ws(s,i)
+
+    mode = None 
+    while g.match(s,i,'-'):
+        &lt;&lt; scan another @root option &gt;&gt;
+
+    if mode == None:
+        doc = app.config.at_root_bodies_start_in_doc_mode
+        mode = g.choose(doc,"doc","code")
+
+    return i,mode
+</t>
+<t tx="ekr.20071211113302.123">i += 1 ; err = -1
+
+if g.match_word(s,i,"code"): # Just match the prefix.
+    if not mode: mode = "code"
+    elif err_flag: g.es("modes conflict in:" + g.get_line(s,i))
+elif g.match(s,i,"doc"): # Just match the prefix.
+    if not mode: mode = "doc"
+    elif err_flag: g.es("modes conflict in:" + g.get_line(s,i))
+else:
+    err = i-1
+
+# Scan to the next minus sign.
+while i &lt; len(s) and s[i] not in (' ','\t','-'):
+    i += 1
+
+if err &gt; -1 and err_flag:
+    g.es("unknown option:" + s[err:i] + " in " + g.get_line(s,i))
+</t>
+<t tx="ekr.20071211113302.124">def scanAtTabwidthDirective(theDict,issue_error_flag=False):
+
+    """Scan the @tabwidth directive at s[theDict["tabwidth"]:].
+
+    Returns the value of the width or None if the width is invalid.
+    """
+
+    s = theDict.get('tabwidth')
+    junk,val = g.skip_long(s,0)
+
+    if val != None and val != 0:
+        # g.trace(val)
+        return val
+    else:
+        if issue_error_flag:
+            g.es("Ignoring " + s,color="red")
+        return None
+</t>
+<t tx="ekr.20071211113302.125">def scanColorDirectives(c,p):
+
+    '''Return the language in effect at position p.'''
+
+    if c is None: return # c may be None for testing.
+
+    language = c.target_language and c.target_language.lower() or 'python'
+
+    p = p.copy()
+    for p in p.self_and_parents_iter():
+        d = g.get_directives_dict(p)
+        z = d.get('language')
+        if z is not None:
+            language,junk,junk,junk = g.set_language(z,0)
+            return language
+
+    return language
+</t>
+<t tx="ekr.20071211113302.126">@ Perhaps this routine should be the basis of atFile.scanAllDirectives and tangle.scanAllDirectives, but I am loath to make any further to these two already-infamous routines.  Also, this code does not check for @color and @nocolor directives: leoColor.useSyntaxColoring does that.
+@c
+
+def scanDirectives(c,p=None):
+
+    """Scan vnode v and v's ancestors looking for directives.
+
+    Returns a dict containing the results, including defaults."""
+
+    if p is None:
+        p = c.currentPosition()
+
+    &lt;&lt; Set local vars &gt;&gt;
+    old = {}
+    pluginsList = [] # 5/17/03: a list of items for use by plugins.
+    for p in p.self_and_parents_iter():
+        theDict = g.get_directives_dict(p)
+        &lt;&lt; Test for @comment and @language &gt;&gt;
+        &lt;&lt; Test for @encoding &gt;&gt;
+        &lt;&lt; Test for @lineending &gt;&gt;
+        &lt;&lt; Test for @pagewidth &gt;&gt;
+        &lt;&lt; Test for @path &gt;&gt;
+        &lt;&lt; Test for @tabwidth &gt;&gt;
+        &lt;&lt; Test for @wrap and @nowrap &gt;&gt;
+        g.doHook("scan-directives",c=c,p=p,v=p,s=p.bodyString(),
+            old_dict=old,dict=theDict,pluginsList=pluginsList)
+        old.update(theDict)
+
+    if path == None: path = g.getBaseDirectory(c)
+
+    # g.trace('tabwidth',tab_width)
+
+    return {
+        "delims"    : (delim1,delim2,delim3),
+        "encoding"  : encoding,
+        "language"  : language,
+        "lineending": lineending,
+        "pagewidth" : page_width,
+        "path"      : path,
+        "tabwidth"  : tab_width,
+        "pluginsList": pluginsList,
+        "wrap"      : wrap }
+</t>
+<t tx="ekr.20071211113302.127">page_width = c.page_width
+tab_width  = c.tab_width
+language = c.target_language
+if c.target_language:
+    c.target_language = c.target_language.lower()
+delim1, delim2, delim3 = g.set_delims_from_language(c.target_language)
+path = None
+encoding = None # 2/25/03: This must be none so that the caller can set a proper default.
+lineending = g.getOutputNewline(c=c) # Init from config settings.
+wrap = c.config.getBool("body_pane_wraps")
+</t>
+<t tx="ekr.20071211113302.128"># 1/23/05: Any previous @language or @comment prevents processing up the tree.
+# This code is now like the code in tangle.scanAlldirectives.
+
+if old.has_key("comment") or old.has_key("language"):
+    pass
+
+elif theDict.has_key("comment"):
+    z = theDict["comment"]
+    delim1,delim2,delim3 = g.set_delims_from_string(z)
+
+elif theDict.has_key("language"):
+    z = theDict["language"]
+    language,delim1,delim2,delim3 = g.set_language(z,0)
+</t>
+<t tx="ekr.20071211113302.129">if not old.has_key("encoding") and theDict.has_key("encoding"):
+
+    e = g.scanAtEncodingDirective(theDict)
+    if e:
+        encoding = e
+</t>
+<t tx="ekr.20071211113302.130">if not old.has_key("lineending") and theDict.has_key("lineending"):
+
+    e = g.scanAtLineendingDirective(theDict)
+    if e:
+        lineending = e
+</t>
+<t tx="ekr.20071211113302.131">if theDict.has_key("pagewidth") and not old.has_key("pagewidth"):
+
+    w = g.scanAtPagewidthDirective(theDict)
+    if w and w &gt; 0:
+        page_width = w
+</t>
+<t tx="ekr.20071211113302.132">if not path and not old.has_key("path") and theDict.has_key("path"):
+
+    path = theDict["path"]
+    path = g.computeRelativePath(path)
+
+    if path and len(path) &gt; 0:
+        base = g.getBaseDirectory(c) # returns "" on error.
+        path = g.os_path_join(base,path)
+</t>
+<t tx="ekr.20071211113302.133">if theDict.has_key("tabwidth") and not old.has_key("tabwidth"):
+
+    w = g.scanAtTabwidthDirective(theDict)
+    if w and w != 0:
+        tab_width = w
+</t>
+<t tx="ekr.20071211113302.134">if not old.has_key("wrap") and not old.has_key("nowrap"):
+
+    if theDict.has_key("wrap"):
+        wrap = True
+    elif theDict.has_key("nowrap"):
+        wrap = False
+</t>
+<t tx="ekr.20071211113302.135">def scanForAtIgnore(c,p):
+
+    """Scan position p and its ancestors looking for @ignore directives."""
+
+    if g.app.unitTesting:
+        return False # For unit tests.
+
+    for p in p.self_and_parents_iter():
+        d = g.get_directives_dict(p)
+        if d.has_key("ignore"):
+            return True
+
+    return False
+</t>
+<t tx="ekr.20071211113302.136">def scanForAtLanguage(c,p):
+
+    """Scan position p and p's ancestors looking only for @language and @ignore directives.
+
+    Returns the language found, or c.target_language."""
+
+    # Unlike the code in x.scanAllDirectives, this code ignores @comment directives.
+
+    if c and p:
+        for p in p.self_and_parents_iter():
+            d = g.get_directives_dict(p)
+            if d.has_key("language"):
+                z = d["language"]
+                language,delim1,delim2,delim3 = g.set_language(z,0)
+                return language
+
+    return c.target_language
+</t>
+<t tx="ekr.20071211113302.137">def scanForAtSettings(p):
+
+    """Scan position p and its ancestors looking for @settings nodes."""
+
+    for p in p.self_and_parents_iter():
+        h = p.headString()
+        h = g.app.config.canonicalizeSettingName(h)
+        if h.startswith("@settings"):
+            return True
+
+    return False
+</t>
+<t tx="ekr.20071211113302.138">def getOutputNewline (c=None,name=None):
+
+    '''Convert the name of a line ending to the line ending itself.
+
+    Priority:
+    - Use name if name given
+    - Use c.config.output_newline if c given,
+    - Otherwise use g.app.config.output_newline.'''
+
+    # g.trace(c,name,c.config.output_newline)
+    if name: s = name
+    elif c:  s = c.config.output_newline
+    else:    s = app.config.output_newline
+
+    if not s: s = ''
+    s = s.lower()
+    if s in ( "nl","lf"): s = '\n'
+    elif s == "cr": s = '\r'
+    elif s == "platform": s = os.linesep  # 12/2/03: emakital
+    elif s == "crlf": s = "\r\n"
+    else: s = '\n' # Default for erroneous values.
+    return s
+</t>
+<t tx="ekr.20071211113302.139"></t>
+<t tx="ekr.20071211113302.140">@ Once a directive is seen, no other related directives in nodes further up the tree have any effect.  For example, if an @color directive is seen in node p, no @color or @nocolor directives are examined in any ancestor of p.
+
+This code is similar to Commands.scanAllDirectives, but it has been modified for use by the atFile class.
+@c
+
+def scanAllDirectives(self,p,scripting=False,importing=False,reading=False,forcePythonSentinels=False):
+
+    """Scan position p and p's ancestors looking for directives,
+    setting corresponding atFile ivars.
+    """
+
+    # __pychecker__ = '--maxlines=400'
+    # g.stat()
+
+    c = self.c
+    &lt;&lt; Set ivars &gt;&gt;
+    &lt;&lt; Set path from @file node &gt;&gt;
+    old = {}
+    for p in p.self_and_parents_iter():
+        theDict = g.get_directives_dict(p)
+        &lt;&lt; Test for @path &gt;&gt;
+        &lt;&lt; Test for @encoding &gt;&gt;
+        &lt;&lt; Test for @comment and @language &gt;&gt;
+        &lt;&lt; Test for @header and @noheader &gt;&gt;
+        &lt;&lt; Test for @lineending &gt;&gt;
+        &lt;&lt; Test for @pagewidth &gt;&gt;
+        &lt;&lt; Test for @tabwidth &gt;&gt;
+        old.update(theDict)
+    &lt;&lt; Set current directory &gt;&gt;
+    if not importing and not reading:
+        # 5/19/04: don't override comment delims when reading!
+        &lt;&lt; Set comment strings from delims &gt;&gt;
+    # For unit testing.
+    return {
+        "encoding"  : self.encoding,
+        "language"  : self.language,
+        "lineending": self.output_newline,
+        "pagewidth" : self.page_width,
+        "path"      : self.default_directory,
+        "tabwidth"  : self.tab_width,
+    }
+</t>
+<t tx="ekr.20071211113302.141">self.page_width = self.c.page_width
+self.tab_width  = self.c.tab_width
+
+self.default_directory = None # 8/2: will be set later.
+
+if c.target_language:
+    c.target_language = c.target_language.lower() # 6/20/05
+delim1, delim2, delim3 = g.set_delims_from_language(c.target_language)
+self.language = c.target_language
+
+self.encoding = c.config.default_derived_file_encoding
+self.output_newline = g.getOutputNewline(c=self.c) # Init from config settings.
+</t>
+<t tx="ekr.20071211113302.142"># An absolute path in an @file node over-rides everything else.
+# A relative path gets appended to the relative path by the open logic.
+
+name = p.anyAtFileNodeName() # 4/28/04
+
+theDir = g.choose(name,g.os_path_dirname(name),None)
+
+if theDir and len(theDir) &gt; 0 and g.os_path_isabs(theDir):
+    if g.os_path_exists(theDir):
+        self.default_directory = theDir
+    else: # 9/25/02
+        self.default_directory = g.makeAllNonExistentDirectories(theDir,c=c)
+        if not self.default_directory:
+            self.error("Directory \"%s\" does not exist" % theDir)
+</t>
+<t tx="ekr.20071211113302.143"># We set the current director to a path so future writes will go to that directory.
+
+if not self.default_directory and not old.has_key("path") and theDict.has_key("path"):
+
+    path = theDict["path"]
+    path = g.computeRelativePath(path)
+    if path and len(path) &gt; 0:
+        base = g.getBaseDirectory(c) # returns "" on error.
+        path = g.os_path_join(base,path)
+        if g.os_path_isabs(path):
+            &lt;&lt; handle absolute path &gt;&gt;
+        else:
+            self.error("ignoring bad @path: %s" % path)
+    else:
+        self.error("ignoring empty @path")
+</t>
+<t tx="ekr.20071211113302.144"># path is an absolute path.
+
+if g.os_path_exists(path):
+    self.default_directory = path
+else:
+    self.default_directory = g.makeAllNonExistentDirectories(path,c=c)
+    if not self.default_directory:
+        self.error("invalid @path: %s" % path)
+</t>
+<t tx="ekr.20071211113302.145">if not old.has_key("encoding") and theDict.has_key("encoding"):
+
+    e = g.scanAtEncodingDirective(theDict)
+    if e:
+        self.encoding = e
+</t>
+<t tx="ekr.20071211113302.146"># 10/17/02: @language and @comment may coexist in @file trees.
+# For this to be effective the @comment directive should follow the @language directive.
+
+# 1/23/05: Any previous @language or @comment prevents processing up the tree.
+# This code is now like the code in tangle.scanAlldirectives.
+
+if old.has_key("comment") or old.has_key("language"):
+    pass # Do nothing more.
+
+elif theDict.has_key("comment"):
+    z = theDict["comment"]
+    delim1, delim2, delim3 = g.set_delims_from_string(z)
+
+elif theDict.has_key("language"):
+    z = theDict["language"]
+    self.language,delim1,delim2,delim3 = g.set_language(z,0)
+</t>
+<t tx="ekr.20071211113302.147"># EKR: 10/10/02: perform the sames checks done by tangle.scanAllDirectives.
+if theDict.has_key("header") and theDict.has_key("noheader"):
+    g.es("conflicting @header and @noheader directives")
+</t>
+<t tx="ekr.20071211113302.148">if not old.has_key("lineending") and theDict.has_key("lineending"):
+
+    lineending = g.scanAtLineendingDirective(theDict)
+    if lineending:
+        self.explicitLineEnding = True
+        self.output_newline = lineending
+</t>
+<t tx="ekr.20071211113302.149">if theDict.has_key("pagewidth") and not old.has_key("pagewidth"):
+
+    w = g.scanAtPagewidthDirective(theDict,issue_error_flag=True)
+    if w and w &gt; 0:
+        self.page_width = w
+</t>
+<t tx="ekr.20071211113302.150">if theDict.has_key("tabwidth") and not old.has_key("tabwidth"):
+
+    w = g.scanAtTabwidthDirective(theDict,issue_error_flag=True)
+    if w and w != 0:
+        self.tab_width = w
+</t>
+<t tx="ekr.20071211113302.151"># This code is executed if no valid absolute path was specified in the @file node or in an @path directive.
+
+if c.frame and not self.default_directory:
+    base = g.getBaseDirectory(c) # returns "" on error.
+    for theDir in (c.tangle_directory,c.frame.openDirectory,c.openDirectory):
+        if theDir and len(theDir) &gt; 0:
+            theDir = g.os_path_join(base,theDir)
+            if g.os_path_isabs(theDir): # Errors may result in relative or invalid path.
+                if g.os_path_exists(theDir):
+                    self.default_directory = theDir ; break
+                else: # 9/25/02
+                    self.default_directory = g.makeAllNonExistentDirectories(theDir,c=c)
+
+if not self.default_directory and not scripting and not importing:
+    # This should never happen: c.openDirectory should be a good last resort.
+    g.trace()
+    self.error("No absolute directory specified anywhere.")
+    self.default_directory = ""
+</t>
+<t tx="ekr.20071211113302.152">if forcePythonSentinels:
+    # Force Python language.
+    delim1,delim2,delim3 = g.set_delims_from_language("python")
+    self.language = "python"
+
+# Use single-line comments if we have a choice.
+# delim1,delim2,delim3 now correspond to line,start,end
+if delim1:
+    self.startSentinelComment = delim1
+    self.endSentinelComment = "" # Must not be None.
+elif delim2 and delim3:
+    self.startSentinelComment = delim2
+    self.endSentinelComment = delim3
+else: # Emergency!
+    # assert(0)
+    g.es("Unknown language: using Python comment delimiters")
+    g.es("c.target_language:",c.target_language)
+    g.es("delim1,delim2,delim3:",delim1,delim2,delim3)
+    self.startSentinelComment = "#" # This should never happen!
+    self.endSentinelComment = ""
+
+# g.trace(repr(self.startSentinelComment),repr(self.endSentinelComment))
+</t>
+<t tx="ekr.20071211113302.153">def scanDefaultDirectory(self,p,importing=False):
+
+    """Set default_directory ivar by looking for @path directives."""
+
+    at = self ; c = at.c
+    at.default_directory = None
+    &lt;&lt; Set path from @file node &gt;&gt;
+    if at.default_directory:
+        return
+
+    for p in p.self_and_parents_iter():
+        theDict = g.get_directives_dict(p)
+        if theDict.has_key("path"):
+            &lt;&lt; handle @path &gt;&gt;
+            return
+
+    &lt;&lt; Set current directory &gt;&gt;
+    if not at.default_directory and not importing:
+        # This should never happen: c.openDirectory should be a good last resort.
+        at.error("No absolute directory specified anywhere.")
+        at.default_directory = ""
+</t>
+<t tx="ekr.20071211113302.154"># An absolute path in an @file node over-rides everything else.
+# A relative path gets appended to the relative path by the open logic.
+
+name = p.anyAtFileNodeName()
+
+theDir = g.choose(name,g.os_path_dirname(name),None)
+
+# g.trace('at.default_directory',at.default_directory)
+# g.trace('theDir',theDir)
+
+if theDir and g.os_path_isabs(theDir):
+    if g.os_path_exists(theDir):
+        at.default_directory = theDir
+    else:
+        at.default_directory = g.makeAllNonExistentDirectories(theDir,c=c)
+        if not at.default_directory:
+            at.error("Directory \"%s\" does not exist" % theDir)
+</t>
+<t tx="ekr.20071211113302.155"># We set the current director to a path so future writes will go to that directory.
+
+path = theDict["path"]
+path = g.computeRelativePath (path)
+
+if path:
+    base = g.getBaseDirectory(c) # returns "" on error.
+    path = g.os_path_join(base,path)
+
+    if g.os_path_isabs(path):
+        &lt;&lt; handle absolute path &gt;&gt;
+    else:
+        at.error("ignoring bad @path: %s" % path)
+else:
+    at.error("ignoring empty @path")
+</t>
+<t tx="ekr.20071211113302.156"># path is an absolute path.
+
+if g.os_path_exists(path):
+    at.default_directory = path
+else:
+    at.default_directory = g.makeAllNonExistentDirectories(path,c=c)
+    if not at.default_directory:
+        at.error("invalid @path: %s" % path)
+</t>
+<t tx="ekr.20071211113302.157"># This code is executed if no valid absolute path was specified in the @file node or in an @path directive.
+
+assert(not at.default_directory)
+
+if c.frame :
+    base = g.getBaseDirectory(c) # returns "" on error.
+    for theDir in (c.tangle_directory,c.frame.openDirectory,c.openDirectory):
+        if theDir and len(theDir) &gt; 0:
+            theDir = g.os_path_join(base,theDir)
+            if g.os_path_isabs(theDir): # Errors may result in relative or invalid path.
+                if g.os_path_exists(theDir):
+                    at.default_directory = theDir ; break
+                else:
+                    at.default_directory = g.makeAllNonExistentDirectories(theDir,c=c)
+</t>
+<t tx="ekr.20071211113302.158">def scanColorDirectives(self,p):
+
+    """Scan position p and p's ancestors looking for @comment, @language and @root directives,
+    setting corresponding colorizer ivars.
+    """
+
+    p = p.copy() ; c = self.c
+    if c == None: return # self.c may be None for testing.
+
+    if c.target_language:
+        c.target_language = c.target_language.lower()
+    self.language = language = c.target_language
+    self.comment_string = None
+    self.rootMode = None # None, "code" or "doc"
+
+    for p in p.self_and_parents_iter():
+        theDict = g.get_directives_dict(p)
+        &lt;&lt; Test for @comment or @language &gt;&gt;
+        &lt;&lt; Test for @root, @root-doc or @root-code &gt;&gt;
+
+    return self.language # For use by external routines.
+</t>
+<t tx="ekr.20071211113302.159"># @comment and @language may coexist in the same node.
+
+if theDict.has_key("comment"):
+    self.comment_string = theDict["comment"]
+
+if theDict.has_key("language"):
+    z = theDict["language"]
+    language,junk,junk,junk = g.set_language(z,0)
+    self.language = language
+
+if theDict.has_key("comment") or theDict.has_key("language"):
+    break
+</t>
+<t tx="ekr.20071211113302.160">if theDict.has_key("root") and not self.rootMode:
+
+    root = theDict["root"]
+    if g.match_word(root,0,"@root-code"):
+        self.rootMode = "code"
+    elif g.match_word(root,0,"@root-doc"):
+        self.rootMode = "doc"
+    else:
+        doc = c.config.at_root_bodies_start_in_doc_mode
+        self.rootMode = g.choose(doc,"doc","code")
+</t>
+<t tx="ekr.20071211113302.161"># Similar to code in scanAllDirectives.
+
+def scanForTabWidth (self,p):
+
+    c = self.c ; w = c.tab_width
+
+    for p in p.self_and_parents_iter():
+        theDict = g.get_directives_dict(p)
+        &lt;&lt; set w and break on @tabwidth &gt;&gt;
+
+    c.frame.setTabWidth(w)
+</t>
+<t tx="ekr.20071211113302.162">if theDict.has_key("tabwidth"):
+
+    val = g.scanAtTabwidthDirective(theDict,issue_error_flag=False)
+    if val and val != 0:
+        w = val
+        break
+</t>
+<t tx="ekr.20071211113302.163">def tangle(self,event=None,p=None):
+
+    c = self.c
+    if not p: p = c.currentPosition()
+    self.initTangleCommand()
+
+    # Paul Paterson's patch.
+    if not self.tangleTree(p,report_errors):
+        g.es("looking for a parent to tangle...")
+        while p:
+            d = g.get_directives_dict(p,[self.head_root])
+            if d.has_key("root"):
+                g.es("tangling parent")
+                self.tangleTree(p,report_errors)
+                break
+            p.moveToParent()
+
+    if not g.unitTesting:
+        g.es("tangle complete")
+</t>
+<t tx="ekr.20071211113302.164">@ Once a directive is seen, related directives in ancesors have no effect.  For example, if an @color directive is seen in node x, no @color or @nocolor directives are examined in any ancestor of x.
+@c
+
+def scanAllDirectives(self,p,require_path_flag,issue_error_flag):
+
+    """Scan vnode p and p's ancestors looking for directives,
+    setting corresponding tangle ivars and globals.
+    """
+
+    # __pychecker__ = 'maxlines=500 maxbranches=100'
+
+    c = self.c
+    # g.trace(p)
+    old = {} ; print_mode_changed = False
+    self.init_directive_ivars()
+    if p:
+        s = p.bodyString()
+        &lt;&lt; Collect @first attributes &gt;&gt;
+    for p in p.self_and_parents_iter():
+        theDict = g.get_directives_dict(p)
+        &lt;&lt; Test for @comment and @language &gt;&gt;
+        &lt;&lt; Test for @encoding &gt;&gt;
+        &lt;&lt; Test for @lineending &gt;&gt;
+        &lt;&lt; Test for print modes directives &gt;&gt;
+        &lt;&lt; Test for @path &gt;&gt;
+        &lt;&lt; Test for @pagewidth &gt;&gt;
+        &lt;&lt; Test for @root &gt;&gt;
+        &lt;&lt; Test for @tabwidth &gt;&gt;
+        &lt;&lt; Test for @header and @noheader &gt;&gt;
+        old.update(theDict)
+    &lt;&lt; Set self.tangle_directory &gt;&gt;
+    # For unit testing.
+    return {
+        "encoding"  : self.encoding,
+        "language"  : self.language,
+        "lineending": self.output_newline,
+        "pagewidth" : self.page_width,
+        "path"      : self.tangle_directory,
+        "tabwidth"  : self.tab_width,
+    }
+</t>
+<t tx="ekr.20071211113302.165">@ Stephen P. Schaefer 9/13/2002: Add support for @first.
+Unlike other root attributes, does *NOT* inherit from parent nodes.
+@c
+tag = "@first"
+sizeString = len(s) # DTHEIN 13-OCT-2002: use to detect end-of-string
+i = 0
+while 1:
+    # DTHEIN 13-OCT-2002: directives must start at beginning of a line
+    if not g.match_word(s,i,tag):
+        i = g.skip_line(s,i)
+    else:
+        i = i + len(tag)
+        j = i = g.skip_ws(s,i)
+        i = g.skip_to_end_of_line(s,i)
+        if i&gt;j:
+            self.first_lines += s[j:i] + '\n'
+        i = g.skip_nl(s,i)
+    if i &gt;= sizeString:  # DTHEIN 13-OCT-2002: get out when end of string reached
+        break
+</t>
+<t tx="ekr.20071211113302.166">if old.has_key("comment") or old.has_key("language"):
+     pass # Do nothing more.
+
+elif theDict.has_key("comment"):
+
+    z = theDict["comment"]
+    delim1,delim2,delim3 = g.set_delims_from_string(z)
+    if delim1 or delim2:
+        self.single_comment_string = delim1
+        self.start_comment_string = delim2
+        self.end_comment_string = delim3
+        # @comment effectively disables Untangle.
+        self.language = "unknown"
+    else:
+        if issue_error_flag:
+            g.es("ignoring: @comment " + z)
+
+elif theDict.has_key("language"):
+
+    z = theDict["language"]
+    language,delim1,delim2,delim3 = g.set_language(z,0)
+    self.language = language
+    self.single_comment_string = delim1
+    self.start_comment_string = delim2
+    self.end_comment_string = delim3
+    if 0:
+        g.trace(self.single_comment_string,
+            self.start_comment_string,
+            self.end_comment_string)
+
+    # 10/30/02: These ivars must be updated here!
+    # g.trace(self.language)
+    self.use_noweb_flag = True
+    self.use_cweb_flag = False # Only raw cweb mode is ever used.
+    self.raw_cweb_flag = self.language == "cweb" # A new ivar.
+</t>
+<t tx="ekr.20071211113302.167">if not old.has_key("encoding") and theDict.has_key("encoding"):
+
+    e = g.scanAtEncodingDirective(theDict)
+    if e:
+        self.encoding = e
+</t>
+<t tx="ekr.20071211113302.168">if not old.has_key("lineending") and theDict.has_key("lineending"):
+
+    lineending = g.scanAtLineendingDirective(theDict)
+    if lineending:
+        self.output_newline = lineending
+</t>
+<t tx="ekr.20071211113302.169">@ It is valid to have more than one of these directives in the same body text: the more verbose directive takes precedence.
+@c
+
+if not print_mode_changed:
+    for name in ("verbose","terse","quiet","silent"):
+        if theDict.has_key(name):
+            self.print_mode = name
+            print_mode_changed = True
+            break
+</t>
+<t tx="ekr.20071211113302.170">if require_path_flag and not old.has_key("path") and theDict.has_key("path"):
+
+    path = theDict["path"]
+    theDir = relative_path = g.computeRelativePath(path)
+
+    if len(theDir) &gt; 0:
+        base = g.getBaseDirectory(c=c) # May return "".
+        if theDir and len(theDir) &gt; 0:
+            theDir = g.os_path_join(base,theDir)
+            if g.os_path_isabs(theDir):
+                &lt;&lt; handle absolute @path &gt;&gt;
+            elif issue_error_flag and not self.path_warning_given:
+                self.path_warning_given = True # supress future warnings
+                self.error("ignoring relative path in @path:" + theDir)
+    elif issue_error_flag and not self.path_warning_given:
+        self.path_warning_given = True # supress future warnings
+        self.error("ignoring empty @path")
+</t>
+<t tx="ekr.20071211113302.171">if g.os_path_exists(theDir):
+    self.tangle_directory = theDir
+else: # 11/19/02
+    self.tangle_directory = g.makeAllNonExistentDirectories(theDir,c=c)
+    if not self.tangle_directory:
+        if issue_error_flag and not self.path_warning_given:
+            self.path_warning_given = True # supress future warnings
+            self.error("@path directory does not exist: " + theDir)
+            if base and len(base) &gt; 0:
+                g.es("relative_path_base_directory: " + base)
+            if relative_path and len(relative_path) &gt; 0:
+                g.es("relative path in @path directive: " + relative_path)
+</t>
+<t tx="ekr.20071211113302.172">if not old.has_key("pagewidth") and theDict.has_key("pagewidth"):
+
+    w = g.scanAtPagewidthDirective(theDict,issue_error_flag)
+    if w and w &gt; 0:
+        self.page_width = w
+</t>
+<t tx="ekr.20071211113302.173">@ 10/27/02: new code:  self.root may not be defined here, so any relative directory specified in the @root node will have no effect unless we have this code.
+
+@c
+if self.root_name == None and theDict.has_key("root"):
+    z = theDict["root"]
+    self.setRootFromText(z,issue_error_flag)
+</t>
+<t tx="ekr.20071211113302.174">if not old.has_key("tabwidth") and theDict.has_key("tabwidth"):
+
+    w = g.scanAtTabwidthDirective(theDict,issue_error_flag)
+    if w and w != 0:
+        self.tab_width = w
+</t>
+<t tx="ekr.20071211113302.175">if old.has_key("header") or old.has_key("noheader"):
+    pass # Do nothing more.
+
+elif theDict.has_key("header") and theDict.has_key("noheader"):
+    if issue_error_flag:
+        g.es("conflicting @header and @noheader directives")
+
+elif theDict.has_key("header"):
+    self.use_header_flag = True
+
+elif theDict.has_key("noheader"):
+    self.use_header_flag = False
+</t>
+<t tx="ekr.20071211113302.176">@ This code sets self.tangle_directory if it has not already been set by an @path directive.
+
+An absolute file name in an @root directive will override the directory set here.
+A relative file name gets appended later to the default directory.
+That is, the final file name will be g.os_path_join(self.tangle_directory,fileName)
+@c
+
+if c.frame and require_path_flag and not self.tangle_directory:
+    if self.root_name and len(self.root_name) &gt; 0:
+        root_dir = g.os_path_dirname(self.root_name)
+    else:
+        root_dir = None
+    # print "root_dir:", root_dir
+
+    table = ( # This is a precedence table.
+        (root_dir,"@root"), 
+        (c.tangle_directory,"default tangle"), # Probably should be eliminated.
+        (c.frame.openDirectory,"open"))
+
+    base = g.getBaseDirectory(c=c) # May return ""
+
+    for dir2, kind in table:
+        if dir2 and len(dir2) &gt; 0:
+            # print "base,theDir:",base,theDir
+            theDir = g.os_path_join(base,dir2)
+            if g.os_path_isabs(theDir): # Errors may result in relative or invalid path.
+                &lt;&lt; handle absolute path &gt;&gt;
+
+if not self.tangle_directory and require_path_flag: # issue_error_flag:
+    self.pathError("No absolute directory specified by @root, @path or Preferences.")
+</t>
+<t tx="ekr.20071211113302.177">if g.os_path_exists(theDir):
+    if kind == "@root" and not g.os_path_isabs(root_dir):
+        self.tangle_directory = base
+    else:
+        self.tangle_directory = theDir 
+    break
+else: # 9/25/02
+    self.tangle_directory = g.makeAllNonExistentDirectories(theDir,c=c)
+    if not self.tangle_directory:
+        # 10/27/02: It is an error for this not to exist now.
+        self.error("@root directory does not exist:" + theDir)
+        if base and len(base) &gt; 0:
+            g.es("relative_path_base_directory: " + base)
+        if dir2 and len(dir2) &gt; 0:
+            g.es(kind + " directory: " + dir2)
+</t>
+<t tx="ekr.20071211113302.178"># Traverses the tree whose root is given, handling each headline and associated body text.
+
+def tanglePass1(self,p):
+
+    """The main routine of tangle pass 1"""
+
+    p = p.copy()
+    next = p.nodeAfterTree()
+    while p and p != next:
+        self.p = p
+        self.setRootFromHeadline(p)
+        theDict = g.get_directives_dict(p,[self.head_root])
+        is_ignore = theDict.has_key("ignore")
+        if is_ignore:
+            p.moveToNodeAfterTree()
+            continue
+        # This must be called after root_name has been set.
+        if self.tangling:
+            self.scanAllDirectives(p,require_path,report_errors) # calls init_directive_ivars.
+        # Scan the headline and body text.
+        self.skip_headline(p)
+        self.skip_body(p)
+        p.moveToThreadNext()
+        if self.errors + g.app.scanErrors &gt;= max_errors:
+            self.warning("----- Halting Tangle: too many errors")
+            break
+
+    if self.tangling:
+        self.st_check()
+        # g.trace(self.st_dump(verbose_flag=True))
+</t>
+<t tx="ekr.20071211113302.179"># This function is called only from the top level, so there is no need to initialize globals.
+
+def tangleTree(self,p,report_flag):
+
+    """Tangles all nodes in the tree whose root is p.
+
+    Reports on its results if report_flag is True."""
+
+    p = p.copy() # 9/14/04
+    assert(p)
+    any_root_flag = False
+    next = p.nodeAfterTree()
+    self.path_warning_given = False
+
+    while p and p != next:
+        self.setRootFromHeadline(p)
+        theDict = g.get_directives_dict(p,[self.head_root])
+        is_ignore = theDict.has_key("ignore")
+        is_root = theDict.has_key("root")
+        is_unit = theDict.has_key("unit")
+        if is_ignore:
+            p.moveToNodeAfterTree()
+        elif not is_root and not is_unit:
+            p.moveToThreadNext()
+        else:
+            self.tanglePass1(p) # sets self.p
+            if self.root_list and self.tangling:
+                any_root_flag = True
+                self.tanglePass2() # self.p invalid in pass 2.
+            self.cleanup()
+            p.moveToNodeAfterTree()
+            if self.path_warning_given: break # Fatal error.
+
+    if self.tangling and report_flag and not any_root_flag:
+        # This is done by Untangle if we are untangling.
+        self.warning("----- The outline contains no roots")
+    return any_root_flag
+</t>
+<t tx="ekr.20071211113302.180"># This funtion is called when the user selects any "Untangle" command.
+
+def untangleTree(self,p,report_flag):
+
+    p = p.copy() # 9/14/04
+    c = self.c
+    any_root_flag = False
+    afterEntireTree = p.nodeAfterTree()
+    # Initialize these globals here: they can't be cleared later.
+    self.head_root = None
+    self.errors = 0 ; g.app.scanErrors = 0
+    c.clearAllVisited() # Used by untangle code.
+
+    while p and p != afterEntireTree and self.errors + g.app.scanErrors == 0:
+        self.setRootFromHeadline(p)
+        theDict = g.get_directives_dict(p,[self.head_root])
+        ignore = theDict.has_key("ignore")
+        root = theDict.has_key("root")
+        unit = theDict.has_key("unit")
+        if ignore:
+            p.moveToNodeAfterTree()
+        elif unit:
+            # Expand the context to the @unit directive.
+            unitNode = p   # 9/27/99
+            afterUnit = p.nodeAfterTree()
+            p.moveToThreadNext()
+            while p and p != afterUnit and self.errors + g.app.scanErrors== 0:
+                self.setRootFromHeadline(p)
+                theDict = g.get_directives_dict(p,[self.head_root])
+                root = theDict.has_key("root")
+                if root:
+                    any_root_flag = True
+                    end = None
+                    &lt;&lt; set end to the next root in the unit &gt;&gt;
+                    # g.trace("end:",end)
+                    self.scanAllDirectives(p,require_path,report_errors)
+                    self.untangleRoot(p,unitNode,afterUnit)
+                    p = end.copy()
+                else: p.moveToThreadNext()
+        elif root:
+            # Limit the range of the @root to its own tree.
+            afterRoot = p.nodeAfterTree()
+            any_root_flag = True
+            self.scanAllDirectives(p,require_path,report_errors)
+            self.untangleRoot(p,p,afterRoot) # 9/27/99
+            p = afterRoot.copy()
+        else:
+            p.moveToThreadNext()
+
+    self.errors += g.app.scanErrors
+
+    if report_flag:
+        if not any_root_flag:
+            self.warning("----- The outline contains no roots")
+        elif self.errors &gt; 0:
+            self.warning("----- Untangle command halted because of errors")
+    return any_root_flag
+</t>
+<t tx="ekr.20071211113302.181">@ The untangle_root function will untangle an entire tree by calling untangleTree, so the following code ensures that the next @root node will not be an offspring of p.
+@c
+
+end = p.threadNext()
+while end and end != afterUnit:
+    flag, i = g.is_special(end.bodyString(),0,"@root")
+    if flag and not p.isAncestorOf(end):
+        break
+    end.moveToThreadNext()
+</t>
+<t tx="ekr.20071211113302.182">def useSyntaxColoring (self,p):
+
+    """Return True unless p is unambiguously under the control of @nocolor."""
+
+    p = p.copy() ; first = p.copy()
+    self.killFlag = False
+    for p in p.self_and_parents_iter():
+        theDict = g.get_directives_dict(p)
+        no_color = theDict.has_key("nocolor")
+        color = theDict.has_key("color")
+        kill_color = theDict.has_key("killcolor")
+        # A killcolor anywhere disables coloring.
+        if kill_color:
+            self.killFlag = True
+            return False
+        # A color anywhere in the target enables coloring.
+        elif color and p == first:
+            return True
+        # Otherwise, the @nocolor specification must be unambiguous.
+        elif no_color and not color:
+            return False
+        elif color and not no_color:
+            return True
+
+    return True
+</t>
+<t tx="ekr.20071211113302.183">def selfInsertCommand(self,event,action='insert'):
+
+    '''Insert a character in the body pane.
+    This is the default binding for all keys in the body pane.'''
+
+    w = self.editWidget(event)
+    if not w: return 'break'
+    &lt;&lt; set local vars &gt;&gt;
+    #g.trace('ch',repr(ch))
+    if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
+        return "break" # The hook claims to have handled the event.
+    if ch == '\t':
+        self.updateTab(p,w)
+    elif ch == '\b':
+        # This is correct: we only come here if there no bindngs for this key. 
+        self.backwardDeleteCharacter(event)
+    elif ch in ('\r','\n'):
+        ch = '\n'
+        self.insertNewlineHelper(w,oldSel,undoType)
+    elif inBrackets and self.autocompleteBrackets:
+        self.updateAutomatchBracket(p,w,ch,oldSel)
+    elif ch: # Null chars must not delete the selection.
+        i,j = oldSel
+        if i &gt; j: i,j = j,i
+        # Use raw insert/delete to retain the coloring.
+        if i != j:                  w.delete(i,j)
+        elif action == 'overwrite': w.delete(i)
+        w.insert(i,ch)
+        w.setInsertPoint(i+1)
+        if inBrackets and self.flashMatchingBrackets:
+
+            self.flashMatchingBracketsHelper(w,i,ch)               
+    else:
+        return 'break' # This method *always* returns 'break'
+
+    # Set the column for up and down keys.
+    spot = w.getInsertPoint()
+    c.editCommands.setMoveCol(w,spot)
+
+    # Update the text and handle undo.
+    newText = w.getAllText()
+    changed = newText != oldText
+    # g.trace('ch',repr(ch),'changed',changed,'newText',repr(newText[-10:]))
+    if changed:
+        # g.trace('ins',w.getInsertPoint())
+        c.frame.body.onBodyChanged(undoType=undoType,
+            oldSel=oldSel,oldText=oldText,oldYview=None)
+
+    g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
+    return 'break'
+</t>
+<t tx="ekr.20071211113302.184">c = self.c
+p = c.currentPosition()
+gui = g.app.gui
+ch = gui.eventChar(event)
+keysym = gui.eventKeysym(event)
+if keysym == 'Return':
+    ch = '\n' # This fixes the MacOS return bug.
+if keysym == 'Tab': # Support for wx_alt_gui plugin.
+    ch = '\t'
+name = c.widget_name(w)
+oldSel =  name.startswith('body') and w.getSelectionRange() or (None,None)
+oldText = name.startswith('body') and p.bodyString() or ''
+undoType = 'Typing'
+trace = c.config.getBool('trace_masterCommand')
+brackets = self.openBracketsList + self.closeBracketsList
+inBrackets = ch and g.toUnicode(ch,g.app.tkEncoding) in brackets
+if trace: g.trace(name,repr(ch),ch and ch in brackets)</t>
+<t tx="ekr.20071211113302.185">def insertNewlineHelper (self,w,oldSel,undoType):
+
+    c = self.c ; p = c.currentPosition()
+    i,j = oldSel ; ch = '\n'
+
+    if i != j:
+        # No auto-indent if there is selected text.
+        w.delete(i,j)
+        w.insert(i,ch)
+        w.setInsertPoint(i+1)
+    else:
+        w.insert(i,ch)
+        w.setInsertPoint(i+1)
+
+        allow_in_nocolor = c.config.getBool('autoindent_in_nocolor_mode')
+        if (
+            (allow_in_nocolor or c.frame.body.colorizer.useSyntaxColoring(p)) and
+            undoType != "Change"
+        ):
+            # No auto-indent if in @nocolor mode or after a Change command.
+            self.updateAutoIndent(p,w)
+
+    w.seeInsertPoint()</t>
+<t tx="ekr.20071211113302.186">def initBracketMatcher (self,c):
+
+    self.openBracketsList  = c.config.getString('open_flash_brackets')  or '([{'
+    self.closeBracketsList = c.config.getString('close_flash_brackets') or ')]}'
+
+    if len(self.openBracketsList) != len(self.closeBracketsList):
+        g.es_print('bad open/close_flash_brackets setting: using defaults')
+        self.openBracketsList  = '([{'
+        self.closeBracketsList = ')]}'
+
+    # g.trace('self.openBrackets',openBrackets)
+    # g.trace('self.closeBrackets',closeBrackets)
+</t>
+<t tx="ekr.20071211113302.187">def flashMatchingBracketsHelper (self,w,i,ch):
+
+    d = {}
+    if ch in self.openBracketsList:
+        for z in xrange(len(self.openBracketsList)):
+            d [self.openBracketsList[z]] = self.closeBracketsList[z]
+        reverse = False # Search forward
+    else:
+        for z in xrange(len(self.openBracketsList)):
+            d [self.closeBracketsList[z]] = self.openBracketsList[z]
+        reverse = True # Search backward
+
+    delim2 = d.get(ch)
+
+    s = w.getAllText()
+    j = g.skip_matching_python_delims(s,i,ch,delim2,reverse=reverse)
+    if j != -1:
+        self.flashCharacter(w,j)
+</t>
+<t tx="ekr.20071211113302.188">def flashCharacter(self,w,i):
+
+    bg      = self.bracketsFlashBg or 'DodgerBlue1'
+    fg      = self.bracketsFlashFg or 'white'
+    flashes = self.bracketsFlashCount or 2
+    delay   = self.bracketsFlashDelay or 75
+
+    w.flashCharacter(i,bg,fg,flashes,delay)
+</t>
+<t tx="ekr.20071211113302.189">def updateAutomatchBracket (self,p,w,ch,oldSel):
+
+    # assert ch in ('(',')','[',']','{','}')
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    i,j = oldSel
+    language = d.get('language')
+    s = w.getAllText()
+
+    if ch in ('(','[','{',):
+        automatch = language not in ('plain',)
+        if automatch:
+            ch = ch + {'(':')','[':']','{':'}'}.get(ch)
+        if i != j: w.delete(i,j)
+        w.insert(i,ch)
+        if automatch:
+            ins = w.getInsertPoint()
+            w.setInsertPoint(ins-1)
+    else:
+        ins = w.getInsertPoint()
+        ch2 = ins&lt;len(s) and s[ins] or ''
+        if ch2 in (')',']','}'):
+            ins = w.getInsertPoint()
+            w.setInsertPoint(ins+1)
+        else:
+            if i != j: w.delete(i,j)
+            w.insert(i,ch)
+            w.setInsertPoint(i+1)
+</t>
+<t tx="ekr.20071211113302.190">def updateAutoIndent (self,p,w):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width)
+    # Get the previous line.
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i = g.skip_to_start_of_line(s,ins)
+    i,j = g.getLine(s,i-1)
+    s = s[i:j-1]
+    # g.trace(i,j,repr(s))
+
+    # Add the leading whitespace to the present line.
+    junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
+    # g.trace('width',width,'tab_width',tab_width)
+
+    if s and s [-1] == ':':
+        # For Python: increase auto-indent after colons.
+        if g.scanColorDirectives(c,p) == 'python':
+            width += abs(tab_width)
+    if self.smartAutoIndent:
+        # Determine if prev line has unclosed parens/brackets/braces
+        bracketWidths = [width] ; tabex = 0
+        for i in range(0,len(s)):
+            if s [i] == '\t':
+                tabex += tab_width-1
+            if s [i] in '([{':
+                bracketWidths.append(i+tabex+1)
+            elif s [i] in '}])' and len(bracketWidths) &gt; 1:
+                bracketWidths.pop()
+        width = bracketWidths.pop()
+    ws = g.computeLeadingWhitespace(width,tab_width)
+    if ws:
+        i = w.getInsertPoint()
+        w.insert(i,ws)
+        w.setInsertPoint(i+len(ws))
+</t>
+<t tx="ekr.20071211113302.191">def updateTab (self,p,w):
+
+    c = self.c
+    d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width)
+    i,j = w.getSelectionRange()
+        # Returns insert point if no selection, with i &lt;= j.
+
+    if i != j:
+        w.delete(i,j)
+
+    if tab_width &gt; 0:
+        w.insert(i,'\t')
+        ins = i+1
+    else:
+        # Get the preceeding characters.
+        s = w.getAllText()
+        start = g.skip_to_start_of_line(s,i)
+        s2 = s[start:i]
+
+        # Compute n, the number of spaces to insert.
+        width = g.computeWidth(s2,tab_width)
+        n = abs(tab_width) - (width % abs(tab_width))
+        # g.trace('n',n)
+        w.insert(i,' ' * n)
+        ins = i+n
+
+    w.setSelectionRange(ins,ins,insert=ins)</t>
+<t tx="ekr.20071211113302.192"># Tricky code: do not change without careful thought and testing.
+
+def onHeadChanged (self,p,undoType='Typing',s=None):
+
+    '''Officially change a headline.
+    Set the old undo text to the previous revert point.'''
+
+    c = self.c ; u = c.undoer ; w = c.edit_widget(p)
+    if c.suppressHeadChanged: return
+    if not w: return
+
+    ch = '\n' # New in 4.4: we only report the final keystroke.
+    if g.doHook("headkey1",c=c,p=p,v=p,ch=ch):
+        return # The hook claims to have handled the event.
+
+    if s is None: s = w.getAllText()
+    &lt;&lt; truncate s if it has multiple lines &gt;&gt;
+    c.beginUpdate()
+    try:
+        # Make the change official, but undo to the *old* revert point.
+        oldRevert = self.revertHeadline
+        changed = s != oldRevert
+        self.revertHeadline = s
+        p.initHeadString(s)
+        # g.trace('changed',changed,'old',repr(oldRevert),'new',repr(s))
+        if changed:
+            undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
+            if not c.changed: c.setChanged(True)
+            # New in Leo 4.4.5: we must recolor the body because
+            # the headline may contain directives.
+            c.frame.scanForTabWidth(p)
+            c.frame.body.recolor(p,incremental=True)
+            dirtyVnodeList = p.setDirty()
+            u.afterChangeNodeContents(p,undoType,undoData,
+                dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate(flag=changed,scroll=False)
+            # scroll=False in 4.4.1; flag = changed in 4.4.3.
+        if changed:
+            if self.stayInTree:
+                c.treeWantsFocus()
+            else:
+                c.bodyWantsFocus()
+        else:
+            c.frame.tree.setSelectedLabelState(p)
+
+    g.doHook("headkey2",c=c,p=p,v=p,ch=ch)
+</t>
+<t tx="ekr.20071211113302.193"># Remove one or two trailing newlines before warning of truncation.
+for i in (0,1):
+    if s and s[-1] == '\n':
+        if len(s) &gt; 1: s = s[:-1]
+        else: s = ''
+
+# Warn if there are multiple lines.
+i = s.find('\n')
+if i &gt; -1:
+    # g.trace(i,len(s),repr(s))
+    g.es("Truncating headline to one line",color="blue")
+    s = s[:i]
+
+limit = 1000
+if len(s) &gt; limit:
+    g.es("Truncating headline to %d characters" % (limit),color="blue")
+    s = s[:limit]
+
+s = g.toUnicode(s or '',g.app.tkEncoding)
+</t>
+<t tx="ekr.20071211113302.194"># There are many similarities, but there are subtle differences as well.
+# It does not appear to be worth the risk, or benefit.</t>
+<t tx="ekr.20071211113302.195"></t>
+<t tx="ekr.20071211113302.196">@nocolor
+
+This option has effect only when importing so-called non-strict languages,
+for which leading whitespace is not terribly significant.
+
+True: @auto warns about mismatches that occur solely in leading whitespace.</t>
+<t tx="ekr.20071211113302.197">val = c.config.getBool('collapse_nodes_during_finds')
+c.config.set(p,'collapse_nodes_during_finds',not val)
+g.es_print('collapse_nodes_during_finds',c.config.getBool('collapse_nodes_during_finds'))</t>
+<t tx="ekr.20071211113302.198">class searchCommandsClass (baseEditCommandsClass):
+
+    '''Implements many kinds of searches.'''
+
+    @others
+</t>
+<t tx="ekr.20071211113302.199">def __init__ (self,c):
+
+    # g.trace('searchCommandsClass')
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+
+    self.findTabHandler = None
+    self.minibufferFindHandler = None
+    self.inited = False
+
+    try:
+        self.w = c.frame.body.bodyCtrl
+    except AttributeError:
+        self.w = None
+
+    # For isearch commands.
+    self.ifinder = leoFind.leoFind(c,title='ifinder')
+    self.isearch_v = None # vnode of last isearch.
+    self.isearch_stack = [] # A stack of previous matches: entries are: (sel,insert)
+    self.ignoreCase = None
+    self.forward = None
+    self.regexp = None
+</t>
+<t tx="ekr.20071211113302.200">def getPublicCommands (self):
+
+    return {
+        'clone-find-all':                       self.cloneFindAll,
+
+        'find-all':                             self.findAll,
+        'change-all':                           self.changeAll,
+
+        # Thin wrappers on Find tab
+        'change':                               self.findTabChange,
+        'change-then-find':                     self.findTabChangeThenFind,
+        'find-next':                            self.findTabFindNext,
+        'find-prev':                            self.findTabFindPrev,
+
+        'hide-find-tab':                        self.hideFindTab,
+
+        'isearch-forward':                      self.isearchForward,
+        'isearch-backward':                     self.isearchBackward,
+        'isearch-forward-regexp':               self.isearchForwardRegexp,
+        'isearch-backward-regexp':              self.isearchBackwardRegexp,
+        'isearch-with-present-options':         self.isearchWithPresentOptions,
+
+        'open-find-tab':                        self.openFindTab,
+
+        'replace-string':                       self.replaceString,
+
+        're-search-forward':                    self.reSearchForward,
+        're-search-backward':                   self.reSearchBackward,
+
+        'search-again':                         self.findAgain,
+        # Uses existing search pattern.
+
+        'search-forward':                       self.searchForward,
+        'search-backward':                      self.searchBackward,
+        'search-with-present-options':          self.searchWithPresentOptions,
+        # Prompts for search pattern.
+
+        'set-find-everywhere':                  self.setFindScopeEveryWhere,
+        'set-find-node-only':                   self.setFindScopeNodeOnly,
+        'set-find-suboutline-only':             self.setFindScopeSuboutlineOnly,
+
+        'show-find-options':                    self.showFindOptions,
+
+        'toggle-find-collapses_nodes':          self.toggleFindCollapesNodes,
+
+        'toggle-find-ignore-case-option':       self.toggleIgnoreCaseOption,
+        'toggle-find-in-body-option':           self.toggleSearchBodyOption,
+        'toggle-find-in-headline-option':       self.toggleSearchHeadlineOption,
+        'toggle-find-mark-changes-option':      self.toggleMarkChangesOption,
+        'toggle-find-mark-finds-option':        self.toggleMarkFindsOption,
+        'toggle-find-regex-option':             self.toggleRegexOption,
+        'toggle-find-reverse-option':           self.toggleReverseOption,
+        'toggle-find-word-option':              self.toggleWholeWordOption,
+        'toggle-find-wrap-around-option':       self.toggleWrapSearchOption,
+
+        'word-search-forward':                  self.wordSearchForward,
+        'word-search-backward':                 self.wordSearchBackward,
+    }
+</t>
+<t tx="ekr.20071211113302.201"></t>
+<t tx="ekr.20071211113302.202">def openFindTab (self,event=None,show=True):
+
+    '''Open the Find tab in the log pane.'''
+
+    c = self.c ; log = c.frame.log ; tabName = 'Find'
+
+    wasOpen = self.inited
+
+    if self.inited:
+        log.selectTab(tabName)
+    else:
+        self.inited = True
+        log.selectTab(tabName,createText=False)
+        f = log.frameDict.get(tabName)
+        self.findTabHandler = g.app.gui.createFindTab(c,f)
+
+    if show or wasOpen or c.config.getBool('minibufferSearchesShowFindTab'):
+        pass # self.findTabHandler.bringToFront()
+    else:
+        log.hideTab(tabName)
+</t>
+<t tx="ekr.20071211113302.203"># Just open the Find tab if it has never been opened.
+# For minibuffer commands, it would be good to force the Find tab to be visible.
+# However, this leads to unfortunate confusion when executed from a shortcut.
+
+def findTabChange(self,event=None):
+    '''Execute the 'Change' command with the settings shown in the Find tab.'''
+    if self.findTabHandler:
+        self.findTabHandler.changeCommand()
+    else:
+        self.openFindTab()
+
+def findTabChangeThenFind(self,event=None):
+    '''Execute the 'Replace, Find' command with the settings shown in the Find tab.'''
+    if self.findTabHandler:
+        self.findTabHandler.changeThenFindCommand()
+    else:
+        self.openFindTab()
+
+def findTabFindAll(self,event=None):
+    '''Execute the 'Find All' command with the settings shown in the Find tab.'''
+    if self.findTabHandler:
+        self.findTabHandler.findAllCommand()
+    else:
+        self.openFindTab()
+
+def findTabFindNext (self,event=None):
+    '''Execute the 'Find Next' command with the settings shown in the Find tab.'''
+    if self.findTabHandler:
+        self.findTabHandler.findNextCommand()
+    else:
+        self.openFindTab()
+
+def findTabFindPrev (self,event=None):
+    '''Execute the 'Find Previous' command with the settings shown in the Find tab.'''
+    if self.findTabHandler:
+        self.findTabHandler.findPrevCommand()
+    else:
+        self.openFindTab()
+
+def hideFindTab (self,event=None):
+    '''Hide the Find tab.'''
+    if self.findTabHandler:
+        self.c.frame.log.selectTab('Log')
+</t>
+<t tx="ekr.20071211113302.204">def getHandler(self,show=False):
+
+    '''Return the minibuffer handler, creating it if necessary.'''
+
+    c = self.c
+
+    self.openFindTab(show=show)
+        # sets self.findTabHandler,
+        # but *not* minibufferFindHandler.
+
+    if not self.minibufferFindHandler:
+        self.minibufferFindHandler = minibufferFind(c,self.findTabHandler)
+
+    return self.minibufferFindHandler
+</t>
+<t tx="ekr.20071211113302.205">def setFindScopeEveryWhere (self, event):
+    '''Set the 'Entire Outline' radio button in the Find tab.'''
+    return self.setFindScope('entire-outline')
+
+def setFindScopeNodeOnly  (self, event):
+    '''Set the 'Node Only' radio button in the Find tab.'''
+    return self.setFindScope('node-only')
+
+def setFindScopeSuboutlineOnly (self, event):
+    '''Set the 'Suboutline Only' radio button in the Find tab.'''
+    return self.setFindScope('suboutline-only')
+
+def showFindOptions (self,event):
+    '''Show all Find options in the minibuffer label area.'''
+    self.getHandler().showFindOptions()
+
+def toggleFindCollapesNodes(self,event):
+    '''Toggle the 'Collapse Nodes' checkbox in the find tab.'''
+    # return self.toggleOption('collapse_nodes')
+    c = self.c ; p = c.currentPosition()
+    val = c.config.getBool('collapse_nodes_during_finds')
+    c.config.set(p,'collapse_nodes_during_finds',not val)
+    g.es('collapse_nodes_during_finds',c.config.getBool('collapse_nodes_during_finds'))
+
+def toggleIgnoreCaseOption     (self, event):
+    '''Toggle the 'Ignore Case' checkbox in the Find tab.'''
+    return self.toggleOption('ignore_case')
+
+def toggleMarkChangesOption (self, event):
+    '''Toggle the 'Mark Changes' checkbox in the Find tab.'''
+    return self.toggleOption('mark_changes')
+def toggleMarkFindsOption (self, event):
+    '''Toggle the 'Mark Finds' checkbox in the Find tab.'''
+    return self.toggleOption('mark_finds')
+def toggleRegexOption (self, event):
+    '''Toggle the 'Regexp' checkbox in the Find tab.'''
+    return self.toggleOption('pattern_match')
+def toggleReverseOption        (self, event):
+    '''Toggle the 'Reverse' checkbox in the Find tab.'''
+    return self.toggleOption('reverse')
+
+def toggleSearchBodyOption (self, event):
+    '''Set the 'Search Body' checkbox in the Find tab.'''
+    return self.toggleOption('search_body')
+
+def toggleSearchHeadlineOption (self, event):
+    '''Toggle the 'Search Headline' checkbox in the Find tab.'''
+    return self.toggleOption('search_headline')
+
+def toggleWholeWordOption (self, event):
+    '''Toggle the 'Whole Word' checkbox in the Find tab.'''
+    return self.toggleOption('whole_word')
+
+def toggleWrapSearchOption (self, event):
+    '''Toggle the 'Wrap Around' checkbox in the Find tab.'''
+    return self.toggleOption('wrap')
+
+def setFindScope (self, where):  self.getHandler().setFindScope(where)
+def toggleOption (self, ivar):   self.getHandler().toggleOption(ivar)
+</t>
+<t tx="ekr.20071211113302.206">def changeAll(self,event=None):
+    '''Execute the 'Change All' command with the settings shown in the Find tab.'''
+    self.getHandler().changeAll(event)
+
+def cloneFindAll (self,event):
+    '''Do search-with-present-options and print all matches in the log pane. It
+    also creates a node at the beginning of the outline containing clones of all
+    nodes containing the 'find' string. Only one clone is made of each node,
+    regardless of how many clones the node has, or of how many matches are found
+    in each node.'''
+    self.getHandler().cloneFindAll(event)
+
+def findAll            (self,event):
+    '''Do search-with-present-options and print all matches in the log pane.'''
+    self.getHandler().findAll(event)
+
+def replaceString      (self,event):
+    '''Prompts for a search string. Type &lt;Return&gt; to end the search string. The
+    command will then prompt for the replacement string. Typing a second
+    &lt;Return&gt; key will place both strings in the Find tab and executes a **find**
+    command, that is, the search-with-present-options command.'''
+    self.getHandler().replaceString(event)
+
+def reSearchBackward   (self,event):
+    '''Set the 'Regexp' checkbox to True and the 'Reverse' checkbox to True,
+    then do search-with-present-options.'''
+    self.getHandler().reSearchBackward(event)
+
+def reSearchForward    (self,event):
+    '''Set the 'Regexp' checkbox to True, then do search-with-present-options.'''
+    self.getHandler().reSearchForward(event)
+
+def searchBackward     (self,event):
+    '''Set the 'Word Search' checkbox to False and the 'Reverse' checkbox to True,
+    then do search-with-present-options.'''
+    self.getHandler().searchBackward(event)
+
+def searchForward      (self,event):
+    '''Set the 'Word Search' checkbox to False, then do search-with-present-options.'''
+    self.getHandler().searchForward(event)
+
+def wordSearchBackward (self,event):
+    '''Set the 'Word Search' checkbox to True, then do search-with-present-options.'''
+    self.getHandler().wordSearchBackward(event)
+
+def wordSearchForward  (self,event):
+    '''Set the Word Search' checkbox to True and the 'Reverse' checkbox to True,
+    then do search-with-present-options.'''
+    self.getHandler().wordSearchForward(event)
+
+def searchWithPresentOptions (self,event):
+    '''Prompts for a search string. Typing the &lt;Return&gt; key puts the search
+    string in the Find tab and executes a search based on all the settings in
+    the Find tab. Recommended as the default search command.'''
+    self.getHandler().searchWithPresentOptions(event)
+</t>
+<t tx="ekr.20071211113302.207">def findAgain (self,event):
+
+    '''The find-again command is the same as the find-next command
+    if the search pattern in the Find tab is not '&lt;find pattern here&gt;'
+    Otherwise, the find-again is the same as the search-with-present-options command.'''
+
+    h = self.getHandler()
+
+    # h.findAgain returns False if there is no search pattern.
+    # In that case, we revert to search-with-present-options.
+    if not h.findAgain(event):
+        h.searchWithPresentOptions(event)
+</t>
+<t tx="ekr.20071211113302.208">def isearchForward (self,event):
+    '''Begin a forward incremental search.'''
+    self.startIncremental(event,forward=True,ignoreCase=False,regexp=False)
+
+def isearchBackward (self,event):
+    '''Begin a backward incremental search.'''
+    self.startIncremental(event,forward=False,ignoreCase=False,regexp=False)
+
+def isearchForwardRegexp (self,event):
+    '''Begin a forward incremental regexp search.'''
+    self.startIncremental(event,forward=True,ignoreCase=False,regexp=True)
+
+def isearchBackwardRegexp (self,event):
+    '''Begin a backard incremental regexp search.'''
+    self.startIncremental(event,forward=False,ignoreCase=False,regexp=True)
+
+def isearchWithPresentOptions (self,event):
+    '''Begin an incremental regexp search using the regexp and reverse options from the find panel.'''
+    self.startIncremental(event,forward=None,ignoreCase=None,regexp=None)
+</t>
+<t tx="ekr.20071211113302.209">def iSearchBackspace (self):
+
+    c = self.c ; k = self.k ; gui = g.app.gui ; w = self.w
+
+    if not self.isearch_stack:
+        ins = w.getInsertPoint()
+        self.endSearch(ins,ins)
+        return 
+
+    gui.set_focus(c,w)
+    pattern = k.getLabel(ignorePrompt=True)
+    self.scolorizer(event=None,pattern=pattern)
+
+    sel,ins = self.isearch_stack.pop()
+
+    if sel:
+        i,j = sel
+        w.setSelectionRange(i,j,insert=ins)
+    else:
+        w.setInsertPoint(ins)
+
+    w.seeInsertPoint()
+
+    if not self.isearch_stack:
+        self.endSearch(ins,ins)
+</t>
+<t tx="ekr.20071211113302.210">def startIncremental (self,event,forward,ignoreCase,regexp):
+
+    c = self.c ; k = self.k ; w = self.w
+
+    # None is a signal to get the option from the find tab.
+    if forward is None or regexp is None:
+        self.openFindTab(show=False)
+        if not self.minibufferFindHandler:
+            self.minibufferFindHandler = minibufferFind(c,self.findTabHandler)
+        getOption = self.minibufferFindHandler.getOption
+        # g.trace('reverse',getOption('reverse'))
+        # g.trace('pattern',getOption('pattern_match'))
+    else:
+        getOption = lambda a: False # The value isn't used.
+
+    self.event = event
+    self.forward    = g.choose(forward is None,not getOption('reverse'),forward)
+    self.ignoreCase = g.choose(ignoreCase is None,getOption('ignore_case'),ignoreCase)
+    self.regexp     = g.choose(regexp  is None,getOption('pattern_match'),regexp)
+    # Note: the word option can't be used with isearches!
+
+    self.ins1 = ins = w.getInsertPoint()
+    sel = w.getSelectionRange() or (ins,ins),
+    self.isearch_stack = [(sel,ins),]
+
+    k.setLabelBlue('Isearch%s%s%s: ' % (
+            g.choose(self.forward,'',' Backward'),
+            g.choose(self.regexp,' Regexp',''),
+            g.choose(self.ignoreCase,' NoCase',''),
+        ),protect=True)
+    k.setState('isearch',1,handler=self.iSearchStateHandler)
+    c.minibufferWantsFocusNow()
+</t>
+<t tx="ekr.20071211113302.211"># Called when from the state manager when the state is 'isearch'
+
+def iSearchStateHandler (self,event):
+
+    c = self.c ; k = self.k ; w = self.w
+
+    if not event:
+        g.trace('no event',g.callers())
+        return
+    keysym = event.keysym
+    ch = event.char
+    if keysym == 'Control_L': return
+
+    c.bodyWantsFocusNow()
+    if keysym == 'Return':
+        i,j = w.getSelectionRange()
+        if not self.forward: i,j = j,i
+        self.endSearch(i,j)
+    elif keysym == 'BackSpace':
+        k.updateLabel(event)
+        self.iSearchBackspace()
+    elif ch:
+        k.updateLabel(event)
+        self.iSearchHelper(event)
+        self.scolorizer(event)
+</t>
+<t tx="ekr.20071211113302.212">def scolorizer (self,event,pattern=None):
+
+    '''Colorizer for incremental searches.'''
+
+    pass # not ready yet.   
+
+    # k = self.k ; w = self.w
+    # s = pattern or k.getLabel(ignorePrompt=True)
+    # # g.trace(repr(s))
+    # w.tag_delete('color','color1')
+    # if not s: return
+    # if g.app.gui.guiName() != 'tkinter':
+        # return g.es('command not ready yet',color='blue')
+
+    # ind = 0
+    # index = w.getInsertPoint()
+    # index2 = index + len(s)
+    # # g.trace(index,index2)
+    # # Colorize in the forward direction, regardless of the kind of search.
+    # while ind:
+        # try:
+            # ind = w.search(s,ind,stopindex='end',regexp=self.regexp)
+        # except Exception: break
+        # if ind:
+            # i, d = ind.split('.')
+            # d = str(int(d)+len(s))
+            # # g.trace(ind)
+            # if ind in (index,index2):
+                # w.tag_add('color1',ind,'%s.%s' % (i,d))
+            # w.tag_add('color',ind,'%s.%s' % (i,d))
+            # ind = i + '.' + d
+
+    # w.tag_config('color',foreground='red')
+    # w.tag_config('color1',background='lightblue')
+</t>
+<t tx="ekr.20071211113302.213">def iSearchHelper (self,event):
+
+    '''Move the cursor to position that matches the pattern in the miniBuffer.
+    isearches do not cross node boundaries.'''
+
+    c = self.c ; gui = g.app.gui ; k = self.k ; w = self.w
+    p = c.currentPosition()
+    self.searchString = pattern = k.getLabel(ignorePrompt=True)
+    if not pattern: return
+    s = w.getAllText()
+
+    if self.isearch_v != p.v:
+        self.isearch_v = p.v
+        self.isearch_stack = []
+
+    sel = w.getSelectionRange()
+    startindex = insert = w.getInsertPoint()
+
+    if self.forward:
+        i1 = startindex
+        j1 = len(s)
+    else:
+        i1 = 0
+        j1 = min(len(s),startindex + len(pattern))
+
+    i,j = self.ifinder.searchHelper(s,i1,j1,pattern,
+        backwards=not self.forward,
+        nocase=self.ignoreCase,
+        regexp=self.regexp,
+        word=False, # Incremental word-matches are not possible!
+        swapij=False)
+
+    if i != -1:
+        self.isearch_stack.append((sel,insert),)
+        # g.trace(i1,j1,i,j,pos,newpos)
+        gui.set_focus(c,w)
+        w.setSelectionRange(i,j,insert=i)
+</t>
+<t tx="ekr.20071211113302.214">def endSearch (self,i,j):
+
+    w = self.w
+    w.tag_delete('color','color1')
+
+    insert = g.choose(self.forward,'sel.end','sel.start')
+    w.setSelectionRange(i,j,insert=insert)
+
+    self.k.keyboardQuit(event=None)</t>
+<t tx="ekr.20071211113302.215">@
+Also added sort-lines-ignoring-case, reverse-sort-lines and reverse-sort-lines-ignoring-case.</t>
+<t tx="ekr.20071211113302.216">def reverseSortLinesIgnoringCase(self,event):
+    return self.sortLines(event,ignoreCase=True,reverse=True)
+
+def reverseSortLines(self,event):
+    return self.sortLines(event,reverse=True)
+
+def sortLinesIgnoringCase(self,event):
+    return self.sortLines(event,ignoreCase=True)
+
+def sortLines (self,event,ignoreCase=False,reverse=False):
+
+    '''Sort lines of the selected text by comparing the entire text of a line.'''
+
+    c = self.c ; k = c.k ; w = self.editWidget(event)
+    if not self._chckSel(event): return
+
+    undoType = g.choose(reverse,'reverse-sort-lines','sort-lines')
+    self.beginCommand(undoType=undoType)
+    try:
+        s = w.getAllText()
+        sel_1,sel_2 = w.getSelectionRange()
+        ins = w.getInsertPoint()
+        i,junk = g.getLine(s,sel_1)
+        junk,j = g.getLine(s,sel_2)
+        s2 = s[i:j]
+        if not s2.endswith('\n'): s2 = s2+'\n'
+        aList = g.splitLines(s2)
+        if ignoreCase:  aList.sort(key=string.lower)
+        else:           aList.sort()
+        if reverse:     aList.reverse()
+        s = g.joinLines(aList)
+        w.delete(i,j)
+        w.insert(i,s)
+        w.setSelectionRange(sel_1,sel_2,insert=ins)
+    finally:
+        self.endCommand(changed=True,setLabel=True)
+</t>
+<t tx="ekr.20071211113302.217"></t>
+<t tx="ekr.20071211113302.218">@others
+</t>
+<t tx="ekr.20071211113302.219">class spellCommandsClass (baseEditCommandsClass):
+
+    '''Commands to support the Spell Tab.'''
+
+    @others
+</t>
+<t tx="ekr.20071211113302.220">def __init__ (self,c):
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+
+    self.handler = None
+
+    # All the work happens when we first open the frame.
+</t>
+<t tx="ekr.20071211113302.221">def getPublicCommands (self):
+
+    return {
+        'open-spell-tab':           self.openSpellTab,
+        'spell-find':               self.find,
+        'spell-change':             self.change,
+        'spell-change-then-find':   self.changeThenFind,
+        'spell-ignore':             self.ignore,
+        'hide-spell-tab':           self.hide,
+    }
+</t>
+<t tx="ekr.20071211113302.222">def openSpellTab (self,event=None):
+
+    '''Open the Spell Checker tab in the log pane.'''
+
+    c = self.c ; log = c.frame.log ; tabName = 'Spell'
+
+    if log.frameDict.get(tabName):
+        log.selectTab(tabName)
+    elif self.handler:
+        if self.handler.loaded:
+            self.handler.bringToFront()
+    else:
+        log.selectTab(tabName)
+        self.handler = spellTabHandler(c,tabName)
+        if not self.handler.loaded:
+            log.deleteTab(tabName,force=True)
+</t>
+<t tx="ekr.20071211113302.223"># Just open the Spell tab if it has never been opened.
+# For minibuffer commands, we must also force the Spell tab to be visible.
+
+def find (self,event=None):
+    '''Simulate pressing the 'Find' button in the Spell tab.'''
+    if self.handler:
+        self.openSpellTab()
+        self.handler.find()
+    else:
+        self.openSpellTab()
+
+def change(self,event=None):
+    '''Simulate pressing the 'Change' button in the Spell tab.'''
+    if self.handler:
+        self.openSpellTab()
+        self.handler.change()
+    else:
+        self.openSpellTab()
+
+def changeAll(self,event=None):
+
+    if self.handler:
+        self.openSpellTab()
+        self.handler.changeAll()
+    else:
+        self.openSpellTab()
+
+def changeThenFind (self,event=None):
+    '''Simulate pressing the 'Change, Find' button in the Spell tab.'''
+    if self.handler:
+        self.openSpellTab()
+        self.handler.changeThenFind()
+    else:
+        self.openSpellTab()
+
+def hide (self,event=None):
+    '''Hide the Spell tab.'''
+    if self.handler:
+        self.c.frame.log.selectTab('Log')
+        self.c.bodyWantsFocus()
+
+def ignore (self,event=None):
+    '''Simulate pressing the 'Ignore' button in the Spell tab.'''
+    if self.handler:
+        self.openSpellTab()
+        self.handler.ignore()
+    else:
+        self.openSpellTab()
+</t>
+<t tx="ekr.20071211113302.224">class spellTabHandler (leoFind.leoFind):
+
+    """A class to create and manage Leo's Spell Check dialog."""
+
+    @others
+</t>
+<t tx="ekr.20071211113302.225"></t>
+<t tx="ekr.20071211113302.226">def __init__(self,c,tabName):
+
+    """Ctor for the Leo Spelling dialog."""
+
+    leoFind.leoFind.__init__(self,c) # Call the base ctor.
+
+    self.c = c
+    self.body = c.frame.body
+    self.currentWord = None
+    self.suggestions = []
+    self.messages = [] # List of message to be displayed when hiding the tab.
+    self.outerScrolledFrame = None
+    self.workCtrl = g.app.gui.plainTextWidget(c.frame.top)
+        # A text widget for scanning.
+        # Must have a parent frame even though it is not packed.
+
+    self.loaded = self.init_aspell(c)
+    if self.loaded:
+        self.tab = g.app.gui.createSpellTab(c,self,tabName)
+</t>
+<t tx="ekr.20071211113302.227">def init_aspell (self,c):
+
+    '''Init aspell and related ivars.  Return True if all went well.'''
+
+    self.local_language_code = c.config.getString('spell_local_language_code') or 'en'
+
+    self.dictionaryFileName = dictionaryFileName = (
+        c.config.getString('spell_local_dictionary') or
+        os.path.join(g.app.loadDir,"..","plugins",'spellpyx.txt'))
+
+    if not dictionaryFileName or not g.os_path_exists(dictionaryFileName):
+        g.es_print('Can not open dictionary file: %s' % (
+            dictionaryFileName), color='red')
+        return False
+
+    self.aspell = AspellClass(c,dictionaryFileName,self.local_language_code)
+
+    if self.aspell.aspell:
+        self.dictionary = self.readDictionary(dictionaryFileName)
+    else:
+        self.dictionary = False
+        # g.es_print('Can not open Aspell',color='red')
+
+    return self.aspell.aspell
+</t>
+<t tx="ekr.20071211113302.228">def readDictionary (self,fileName):
+
+    """Read the dictionary of words which we use as a local dictionary
+
+    Although Aspell itself has the functionality to handle this kind of things
+    we duplicate it here so that we can also use it for the "ignore" functionality
+    and so that in future a Python only solution could be developed."""
+
+    d = {}
+
+    try:
+        f = open(fileName,"r")
+    except IOError:
+        g.es("Unable to open local dictionary '%s' - using a blank one instead" % fileName)
+        return d
+
+    try:
+        # Create the dictionary - there are better ways to do this
+        # in later Python's but we stick with this method for compatibility
+        for word in f.readlines():
+            d [word.strip().lower()] = 0
+    finally:
+        f.close()
+
+    return d
+</t>
+<t tx="ekr.20071211113302.229"></t>
+<t tx="ekr.20071211113302.230">def add(self,event=None):
+    """Add the selected suggestion to the dictionary."""
+
+    if not self.currentWord: return
+
+    # g.trace(self.currentWord)
+
+    try:
+        f = None
+        try:
+            # Rewrite the dictionary in alphabetical order.
+            f = open(self.dictionaryFileName, "r")
+            words = f.readlines()
+            f.close()
+            words = [word.strip() for word in words]
+            words.append(self.currentWord)
+            words.sort()
+            f = open(self.dictionaryFileName, "w")
+            for word in words:
+                f.write("%s\n" % word)
+            f.flush()
+            f.close()
+            if 1:
+                s = 'Spell: added %s' % self.currentWord
+                self.messages.append(s)
+            else: # Too distracting.
+                g.es("Adding ", color= "blue", newline= False) 
+                g.es('%s' % self.currentWord)
+        except IOError:
+            g.es("Can not add %s to dictionary" % self.currentWord, color="red")
+    finally:
+        if f: f.close()
+
+    self.dictionary[self.currentWord.lower()] = 0
+    self.tab.onFindButton()
+</t>
+<t tx="ekr.20071211113302.231">def change(self,event=None):
+    """Make the selected change to the text"""
+
+    # __pychecker__ = '--no-override --no-argsused'
+         # event param is not used, required, and different from base class.
+
+    c = self.c ; body = self.body ; w = body.bodyCtrl
+
+    selection = self.tab.getSuggestion()
+    if selection:
+        if hasattr(self.tab,'change_i') and self.tab.change_i is not None:
+            start,end = oldSel = self.tab.change_i,self.tab.change_j
+            # g.trace('using',start,end)
+        else:
+            start,end = oldSel = w.getSelectionRange()
+        if start:
+            if start &gt; end: start,end = end,start
+            w.delete(start,end)
+            w.insert(start,selection)
+            w.setSelectionRange(start,start+len(selection))
+            c.frame.body.onBodyChanged("Change",oldSel=oldSel)
+            c.invalidateFocus()
+            c.bodyWantsFocusNow()
+            return True
+
+    # The focus must never leave the body pane.
+    c.invalidateFocus()
+    c.bodyWantsFocusNow()
+    return False
+</t>
+<t tx="ekr.20071211113302.232">def find (self,event=None):
+    """Find the next unknown word."""
+
+    c = self.c ; body = c.frame.body ; w = body.bodyCtrl
+
+    # Reload the work pane from the present node.
+    s = w.getAllText().rstrip()
+    self.workCtrl.delete(0,"end")
+    self.workCtrl.insert("end",s)
+
+    # Reset the insertion point of the work widget.
+    ins = w.getInsertPoint()
+    self.workCtrl.setInsertPoint(ins)
+
+    alts, word = self.findNextMisspelledWord()
+    self.currentWord = word # Need to remember this for 'add' and 'ignore'
+
+    if alts:
+        # Save the selection range.
+        ins = w.getInsertPoint()
+        i,j = w.getSelectionRange()
+        self.tab.fillbox(alts,word)
+        c.invalidateFocus()
+        c.bodyWantsFocusNow()
+        # Restore the selection range.
+        w.setSelectionRange(i,j,insert=ins)
+        w.see(ins)
+        ### w.update() ###
+    else:
+        g.es("no more misspellings")
+        self.tab.fillbox([])
+        c.invalidateFocus()
+        c.bodyWantsFocusNow()
+</t>
+<t tx="ekr.20071211113302.233">def findNextMisspelledWord(self):
+    """Find the next unknown word."""
+
+    c = self.c ; p = c.currentPosition()
+    w = c.frame.body.bodyCtrl
+    aspell = self.aspell ; alts = None ; word = None
+    trace = False
+    try:
+        while 1:
+            i,j,p,word = self.findNextWord(p)
+            if not p or not word:
+                alts = None
+                break
+            &lt;&lt; Skip word if ignored or in local dictionary &gt;&gt;
+            alts = aspell.processWord(word)
+            if trace: g.trace('alts',alts and len(alts) or 0,i,j,word,p and p.headString() or 'None')
+            if alts:
+                c.beginUpdate()
+                try:
+                    c.frame.tree.expandAllAncestors(p)
+                    c.selectPosition(p)
+                finally:
+                    c.endUpdate()
+                    w.setSelectionRange(i,j,insert=j)
+                break
+    except Exception:
+        g.es_exception()
+    return alts, word
+</t>
+<t tx="ekr.20071211113302.234">@ We don't bother to call apell if the word is in our dictionary. The dictionary contains both locally 'allowed' words and 'ignored' words. We put the test before aspell rather than after aspell because the cost of checking aspell is higher than the cost of checking our local dictionary. For small local dictionaries this is probably not True and this code could easily be located after the aspell call
+@c
+
+if self.dictionary.has_key(word.lower()):
+    continue
+</t>
+<t tx="ekr.20071211113302.235">def findNextWord(self,p):
+    """Scan for the next word, leaving the result in the work widget"""
+
+    c = self.c ; p = p.copy() ; trace = False
+    while 1:
+        s = self.workCtrl.getAllText()
+        i = self.workCtrl.getInsertPoint()
+        while i &lt; len(s) and not g.isWordChar1(s[i]):
+            i += 1
+        # g.trace('p',p and p.headString(),'i',i,'len(s)',len(s))
+        if i &lt; len(s):
+            # A non-empty word has been found.
+            j = i
+            while j &lt; len(s) and g.isWordChar(s[j]):
+                j += 1
+            word = s[i:j]
+            # This trace verifies that all words have been checked.
+            # g.trace(repr(word))
+            for w in (self.workCtrl,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w)
+                w.setSelectionRange(i,j,insert=j)
+            if trace: g.trace(i,j,word,p.headString())
+            return i,j,p,word
+        else:
+            # End of the body text.
+            p.moveToThreadNext()
+            if not p: break
+            self.workCtrl.delete(0,'end')
+            self.workCtrl.insert(0,p.bodyString())
+            for w in (self.workCtrl,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w)
+                w.setSelectionRange(0,0,insert=0)
+            if trace: g.trace(0,0,'--&gt;',p.headString())
+
+    return None,None,None,None</t>
+<t tx="ekr.20071211113302.236">def hide (self,event=None):
+
+    self.c.frame.log.selectTab('Log')
+
+    for message in self.messages:
+        g.es(message,color='blue')
+
+    self.messages = []
+</t>
+<t tx="ekr.20071211113302.237">def ignore(self,event=None):
+
+    """Ignore the incorrect word for the duration of this spell check session."""
+
+    if not self.currentWord: return
+
+    if 1: # Somewhat helpful: applies until the tab is destroyed.
+        s = 'Spell: ignore %s' % self.currentWord
+        self.messages.append(s)
+
+    if 0: # Too distracting
+        g.es("Ignoring ", color= "blue", newline= False)
+        g.es('%s' % self.currentWord)
+
+    self.dictionary[self.currentWord.lower()] = 0
+    self.tab.onFindButton()
+</t>
+<t tx="ekr.20071211113302.238">class AspellClass:
+
+    """A wrapper class for Aspell spell checker"""
+
+    @others
+</t>
+<t tx="ekr.20071211113302.239"></t>
+<t tx="ekr.20071211113302.240">def __init__ (self,c,local_dictionary_file,local_language_code):
+
+    """Ctor for the Aspell class."""
+
+    self.c = c
+
+    self.aspell_dir = g.os_path_abspath(c.config.getString('aspell_dir'))
+    self.aspell_bin_dir = g.os_path_abspath(c.config.getString('aspell_bin_dir'))
+    self.diagnose = c.config.getBool('diagnose-aspell-installation')
+
+    self.local_language_code = local_language_code or 'en'
+    self.local_dictionary_file = g.os_path_abspath(local_dictionary_file)
+    self.local_dictionary = "%s.wl" % os.path.splitext(self.local_dictionary_file) [0]
+
+    # g.trace('code',self.local_language_code,'dict',self.local_dictionary_file)
+    # g.trace('dir',self.aspell_dir,'bin_dir',self.aspell_bin_dir)
+
+    self.aspell = self.sc = None
+
+    if ctypes:
+        self.getAspellWithCtypes()
+    else:
+        self.getAspell()
+</t>
+<t tx="ekr.20071211113302.241">def getAspell (self):
+
+    if sys.platform.startswith('linux'):
+        self.report('You must be using Python 2.5 or above to use aspell on Linux')
+        return
+
+    try:
+        import aspell
+    except ImportError:
+        # Specify the path to the top-level Aspell directory.
+        theDir = g.choose(sys.platform=='darwin',self.aspell_dir,self.aspell_bin_dir)
+        aspell = g.importFromPath('aspell',theDir,pluginName=None,verbose=False)
+
+    if not aspell:
+        self.report('can not import aspell')
+
+    self.aspell = aspell
+    self.sc = aspell and aspell.spell_checker(prefix=self.aspell_dir,lang=self.local_language_code)
+</t>
+<t tx="ekr.20071211113302.242">def getAspellWithCtypes (self):
+
+    try:
+        c_int, c_char_p = ctypes.c_int, ctypes.c_char_p
+
+        if sys.platform.startswith('win'):
+            path = g.os_path_join(self.aspell_bin_dir, "aspell-15.dll")
+            self.aspell = aspell = ctypes.CDLL(path)
+        else:
+            path = 'aspell'
+            libname = ctypes.util.find_library(path)
+            assert(libname)
+            self.aspell = aspell = ctypes.CDLL(libname)
+    except Exception:
+        self.report('Can not load %s' % (path))
+        self.aspell = self.check = self.sc = None
+        return
+
+    try:
+        &lt;&lt; define and configure aspell entry points &gt;&gt;
+    except Exception:
+        self.report('aspell checker not enabled')
+        self.aspell = self.check = self.sc = None
+        return
+
+    # Remember these functions (bound methods).
+    # No other ctypes data is known outside this method.
+    self.check = check
+    self.spell_checker = spell_checker
+    self.string_enumeration_next = string_enumeration_next
+    self.suggest = suggest
+    self.word_list_elements = word_list_elements
+    self.word_list_size = word_list_size
+</t>
+<t tx="ekr.20071211113302.243"># new_aspell_config
+new_aspell_config = aspell.new_aspell_config 
+new_aspell_config.restype = c_int
+
+# aspell_config_replace
+aspell_config_replace = aspell.aspell_config_replace 
+aspell_config_replace.argtypes = [c_int, c_char_p, c_char_p] 
+
+# aspell_config_retrieve
+aspell_config_retrieve = aspell.aspell_config_retrieve 
+aspell_config_retrieve.restype = c_char_p  
+aspell_config_retrieve.argtypes = [c_int, c_char_p] 
+
+# aspell_error_message
+aspell_error_message = aspell.aspell_error_message 
+aspell_error_message.restype = c_char_p  
+
+sc = new_aspell_config()
+if 0:
+    print sc 
+    print aspell_config_replace(sc, "prefix", self.aspell_dir) #1/0 
+    print 'prefix', self.aspell_dir, `aspell_config_retrieve(sc, "prefix")`
+    print aspell_config_retrieve(sc, "lang")
+    print aspell_config_replace(sc, "lang",self.local_language_code)
+    print aspell_config_retrieve(sc, "lang")
+
+possible_err = aspell.new_aspell_speller(sc)
+aspell.delete_aspell_config(c_int(sc))
+
+# Rudimentary error checking, needs more.  
+if aspell.aspell_error_number(possible_err) != 0:
+    self.report(aspell_error_message(possible_err))
+    spell_checker = None
+else: 
+    spell_checker = aspell.to_aspell_speller(possible_err)
+
+if not spell_checker:
+    raise Exception('aspell checker not enabled')
+
+word_list_size = aspell.aspell_word_list_size
+word_list_size.restype = c_int
+word_list_size.argtypes = [c_int,]
+
+# word_list_elements
+word_list_elements = aspell.aspell_word_list_elements
+word_list_elements.restype = c_int
+word_list_elements.argtypes = [c_int,]
+
+# string_enumeration_next
+string_enumeration_next = aspell.aspell_string_enumeration_next
+string_enumeration_next.restype = c_char_p
+string_enumeration_next.argtypes = [c_int,]
+
+# check
+check = aspell.aspell_speller_check
+check.restype = c_int 
+check.argtypes = [c_int, c_char_p, c_int]
+
+# suggest
+suggest = aspell.aspell_speller_suggest
+suggest.restype = c_int 
+suggest.argtypes = [c_int, c_char_p, c_int]</t>
+<t tx="ekr.20071211113302.244">def report (self,message):
+
+    if self.diagnose:
+        g.es_print(message,color='blue')
+</t>
+<t tx="ekr.20071211113302.245">def processWord(self, word):
+    """Pass a word to aspell and return the list of alternatives.
+    OK: 
+    * 
+    Suggestions: 
+    &amp; «original» «count» «offset»: «miss», «miss», ... 
+    None: 
+    # «original» «offset» 
+    simplifyed to not create the string then make a list from it
+    """
+
+    # g.trace('word',word)
+
+    if not self.aspell:
+        g.trace('aspell not installed')
+        return None
+    elif ctypes:
+        if self.check(self.spell_checker,word,len(word)):
+            return None
+        else:
+            return self.suggestions(word)
+    else:
+        if self.sc.check(word):
+            return None
+        else:
+            return self.sc.suggest(word)
+</t>
+<t tx="ekr.20071211113302.246">def suggestions(self,word):
+
+    "return list of words found"
+
+    aList = []
+    sw = self.suggest(self.spell_checker, word, len(word))
+
+    if self.word_list_size(sw):
+        ewords = self.word_list_elements(sw)
+        while 1: 
+            x = self.string_enumeration_next(ewords)
+            if x is None: break
+            aList.append(x)
+    return aList</t>
+<t tx="ekr.20071211113302.247">def updateDictionary(self):
+
+    """Update the aspell dictionary from a list of words.
+
+    Return True if the dictionary was updated correctly."""
+
+    try:
+        # Create master list
+        basename = os.path.splitext(self.local_dictionary)[0]
+        cmd = (
+            "%s --lang=%s create master %s.wl &lt; %s.txt" %
+            (self.aspell_bin_dir, self.local_language_code, basename,basename))
+        os.popen(cmd)
+        return True
+
+    except Exception, err:
+        # g.es_print("Unable to update local aspell dictionary: %s" % err)
+        print "Unable to update local aspell dictionary: %s" % (err)
+        return False
+</t>
+<t tx="ekr.20071211113302.248">There is also an @bool trace_plugins setting.</t>
+<t tx="ekr.20071211113302.249">def loadOnePlugin (moduleOrFileName, verbose=False):
+
+    global loadedModules,loadingModuleNameStack
+
+    verbose = verbose or g.app.config.getBool(c=None,setting='trace_plugins')
+    warn_on_failure = g.app.config.getBool(c=None,setting='warn_when_plugins_fail_to_load')
+
+    if moduleOrFileName.endswith('.py'):
+        moduleName = moduleOrFileName [:-3]
+    else:
+        moduleName = moduleOrFileName
+    moduleName = g.shortFileName(moduleName)
+
+    if isLoaded(moduleName):
+        module = loadedModules.get(moduleName)
+        if verbose:
+            s = 'plugin %s already loaded' % moduleName
+            g.es_print(s,color="blue")
+        return module
+
+    plugins_path = g.os_path_join(g.app.loadDir,"..","plugins")
+    moduleName = g.toUnicode(moduleName,g.app.tkEncoding)
+
+    # This import will typically result in calls to registerHandler.
+    # if the plugin does _not_ use the init top-level function.
+    loadingModuleNameStack.append(moduleName)
+    result = g.importFromPath(moduleName,plugins_path,pluginName=moduleName,verbose=True)
+    loadingModuleNameStack.pop()
+
+    if result:
+        loadingModuleNameStack.append(moduleName)
+        if hasattr(result,'init'):
+            try:
+                # Indicate success only if init_result is True.
+                init_result = result.init()
+                if init_result:
+                    loadedModules[moduleName] = result
+                else:
+                    if verbose and not g.app.initing: ## or not g.app.unitTesting:
+                        g.es_print('loadOnePlugin: loading module %s failed' % (moduleName),color="red")
+                    result = None
+            except Exception:
+                g.es('Exception loading plugin',color='red')
+                g.es_exception()
+                result = None
+        else:
+            # No top-level init function.
+            # Guess that the module was loaded correctly,
+            # but do *not* load the plugin if we are unit testing.
+            g.trace('no init()',moduleName)
+            if g.app.unitTesting:
+                result = None
+                loadedModules[moduleName] = None
+            else:
+                loadedModules[moduleName] = result
+        loadingModuleNameStack.pop()
+
+    if g.unitTesting or g.app.batchMode or g.app.inBridge:
+        pass
+    elif result is None:
+        if warn_on_failure or (verbose and not g.app.initing): # or not g.app.unitTesting:
+            s = 'can not load enabled %s plugin' % moduleName
+            g.es_print(s,color="red")
+    elif verbose:
+        s = 'loaded %s plugin' % moduleName
+        g.es_print(s,color="blue")
+
+    return result
+</t>
+<t tx="ekr.20071211113302.250">@ 1/6/05: The problem with Tkinter is that imp.load_module is equivalent to reload.
+
+The solutions is easy: simply return sys.modules.get(moduleName) if moduleName is in sys.modules!
+</t>
+<t tx="ekr.20071211113302.251">def cantImport (moduleName,pluginName=None,verbose=True):
+
+    """Print a "Can't Import" message and return None."""
+
+    s = "Can not import %s" % moduleName
+    if pluginName: s = s + " from plugin %s" % pluginName
+
+    if not g.app or not g.app.gui:
+        print s
+    elif g.unitTesting:
+        return
+    elif g.app.gui.guiName() == 'tkinter' and moduleName in ('Tkinter','Pmw'):
+        return
+    else:
+        g.es_print(s,color="blue")
+
+</t>
+<t tx="ekr.20071211113302.252">def importModule (moduleName,pluginName=None,verbose=False):
+
+    '''Try to import a module as Python's import command does.
+
+    moduleName is the module's name, without file extension.'''
+
+    module = sys.modules.get(moduleName)
+    if not module:
+        try:
+            theFile = None
+            import imp
+            try:
+                data = imp.find_module(moduleName) # This can open the file.
+                theFile,pathname,description = data
+                module = imp.load_module(moduleName,theFile,pathname,description)
+            except Exception: # Importing a module can throw exceptions other than ImportError.
+                g.cantImport(moduleName,pluginName=pluginName,verbose=verbose)
+        finally:
+            if theFile: theFile.close()
+    return module
+</t>
+<t tx="ekr.20071211113302.253">def importExtension (moduleName,pluginName=None,verbose=False,required=False):
+
+    '''Try to import a module.  If that fails,
+    try to import the module from Leo's extensions directory.
+
+    moduleName is the module's name, without file extension.'''
+
+    # g.trace(verbose,moduleName,pluginName)
+
+    import os
+
+    module = g.importModule(moduleName,pluginName=pluginName,verbose=False)
+
+    extensionsDir = g.app and g.app.extensionsDir or os.path.join(os.path.dirname(__file__),'..','extensions')
+
+    if not module:
+        module = g.importFromPath(moduleName,extensionsDir,pluginName=pluginName,verbose=verbose)
+
+        if not module and required:
+            g.cantImportDialog(pluginName,moduleName)
+            try: # Avoid raising SystemExit if possible.
+                import os ; os._exit(1) # May not be available on all platforms.
+            except Exception:
+                import sys ; sys.exit(1)
+
+    return module
+</t>
+<t tx="ekr.20071211113302.254">def cantImportDialog (pluginName,moduleName):
+
+    '''Attempt to show a Tk dialog if an import fails.
+    Yes, this is a small Tk dependency, but it can't be helped.'''
+
+    message = '''
+%s requires the %s module.
+Official distributions contain this module in Leo's extensions folder,
+but this module may be missing if you get Leo from cvs.
+''' % (pluginName,moduleName)
+
+    if 1: # Requires minimal further imports.
+        try:
+            import Tkinter as Tk
+            root = g.app.root or Tk.Tk()
+            title = 'Can not import %s' % moduleName
+            top = createDialogFrame(Tk,root,title,message)
+            root.wait_window(top)
+        except ImportError:
+            print 'Can not import %s' % moduleName
+            print 'Can not import Tkinter'
+            print 'Leo must now exit'
+
+    else: # Can cause import problems during startup.
+        import leoTkinterDialog
+
+        d = leoTkinterDialog.tkinterAskOk(
+            c=None,title='Can not import %s' %(moduleName),
+            message=message)
+        d.run(modal=True)
+</t>
+<t tx="ekr.20071211113302.255">def createDialogFrame(Tk,root,title,message):
+
+    """Create the Tk.Toplevel widget for a leoTkinterDialog."""
+
+    top = Tk.Toplevel(root)
+    top.title(title)
+
+    def onKey(event,top=top):
+        if event.char.lower() in ('\n','\r'):
+            top.destroy()
+    top.bind("&lt;Key&gt;",onKey)
+
+    f = Tk.Frame(top)
+    f.pack(side="top",expand=1,fill="both")
+
+    label = Tk.Label(f,text=message)
+    label.pack(pady=10)
+
+    def okButton(top=top):
+        top.destroy()
+
+    buttons = {"text":'OK',"command":okButton,"default":True}, # Singleton tuple.
+    createDialogButtons(Tk,top,buttons)
+
+    center(top)
+    top.lift()
+    top.focus_force()
+
+    # Attach the icon at idle time.
+    def attachIconCallback(top=top):
+        g.app.gui.attachLeoIcon(top)
+    top.after_idle(attachIconCallback)
+
+    return top
+</t>
+<t tx="ekr.20071211113302.256">def createDialogButtons (Tk,top,buttons):
+
+    """Create a row of buttons.
+
+    buttons is a list of dictionaries containing the properties of each button."""
+
+    f = Tk.Frame(top)
+    f.pack(side="top",padx=30)
+
+    for d in buttons:
+        text = d.get("text","&lt;missing button name&gt;")
+        isDefault = d.get("default",False)
+        underline = d.get("underline",0)
+        command = d.get("command",None)
+        bd = g.choose(isDefault,4,2)
+
+        b = Tk.Button(f,width=6,text=text,bd=bd,underline=underline,command=command)
+        b.pack(side="left",padx=5,pady=10)
+</t>
+<t tx="ekr.20071211113302.257">def center(top):
+
+    """Center the dialog on the screen.
+
+    WARNING: Call this routine _after_ creating a dialog.
+    (This routine inhibits the grid and pack geometry managers.)"""
+
+    sw = top.winfo_screenwidth()
+    sh = top.winfo_screenheight()
+    w,h,x,y = g.get_window_info(top)
+
+    # Set the new window coordinates, leaving w and h unchanged.
+    x = (sw - w)/2
+    y = (sh - h)/2
+    top.geometry("%dx%d%+d%+d" % (w,h,x,y))
+
+    return w,h,x,y
+</t>
+<t tx="ekr.20071211113302.258"># WARNING: Call this routine _after_ creating a dialog.
+# (This routine inhibits the grid and pack geometry managers.)
+
+def get_window_info (top):
+
+    # This is an emergency measure: this call is NOT a major Tk-dependency.
+    top.update_idletasks() # Required to get proper info.
+
+    # Get the information about top and the screen.
+    geom = top.geometry() # geom = "WidthxHeight+XOffset+YOffset"
+    dim,x,y = string.split(geom,'+')
+    w,h = string.split(dim,'x')
+    w,h,x,y = int(w),int(h),int(x),int(y)
+
+    return w,h,x,y
+</t>
+<t tx="ekr.20071211113302.259">def importFromPath (name,path,pluginName=None,verbose=False):
+
+    fn = g.shortFileName(name)
+    moduleName,ext = g.os_path_splitext(fn)
+    path = g.os_path_normpath(path)
+    path = g.toEncodedString(path,app and app.tkEncoding or 'ascii')
+
+    # g.trace(verbose,name,pluginName)
+    module = sys.modules.get(moduleName)
+    if not module:
+        try:
+            theFile = None
+            import imp
+            try:
+                data = imp.find_module(moduleName,[path]) # This can open the file.
+                theFile,pathname,description = data
+                module = imp.load_module(moduleName,theFile,pathname,description)
+            except ImportError:
+                if 0: # verbose:
+                    g.es_print("Exception in g.importFromPath",color='blue')
+                    g.es_exception()
+            except Exception:
+                g.es_print("unexpected exception in g.importFromPath(%s)" %
+                    (name),color='blue')
+                g.es_exception()
+        # Put no return statements before here!
+        finally: 
+            if theFile: theFile.close()
+
+    if not module:
+        g.cantImport(moduleName,pluginName=pluginName,verbose=verbose)
+
+    return module
+</t>
+<t tx="ekr.20071211113302.260"></t>
+<t tx="ekr.20071211113302.261">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4622384
+
+vim.py does not open url nodes if the new setting: 
+
+@bool vim_plugin_opens_url_nodes 
+
+is False (or does not exist). 
+
+@color</t>
+<t tx="ekr.20071211113302.262"># The code now remembers the relative file name as well as the full path name.
+# This may help find the icon when multiple machines are involved.</t>
+<t tx="ekr.20071211113302.263">def makePathRelativeTo (fullPath,basePath):
+
+    if fullPath.startswith(basePath):
+        s = fullPath[len(basePath):]
+        if s.startswith(os.path.sep):
+            s = s[len(os.path.sep):]
+        return s
+    else:
+        return fullPath
+</t>
+<t tx="ekr.20071211113302.264">def getPublicCommands (self):        
+
+    c = self.c ; k = self.k 
+
+    return {
+        'activate-cmds-menu':                   self.activateCmdsMenu,
+        'activate-edit-menu':                   self.activateEditMenu,
+        'activate-file-menu':                   self.activateFileMenu,
+        'activate-help-menu':                   self.activateHelpMenu,
+        'activate-outline-menu':                self.activateOutlineMenu,
+        'activate-plugins-menu':                self.activatePluginsMenu,
+        'activate-window-menu':                 self.activateWindowMenu,
+        'add-editor':                           c.frame.body.addEditor,
+        'add-space-to-lines':                   self.addSpaceToLines,
+        'add-tab-to-lines':                     self.addTabToLines, 
+        'back-to-indentation':                  self.backToIndentation,
+        'back-char':                            self.backCharacter,
+        'back-char-extend-selection':           self.backCharacterExtendSelection,
+        'back-paragraph':                       self.backwardParagraph,
+        'back-paragraph-extend-selection':      self.backwardParagraphExtendSelection,
+        'back-sentence':                        self.backSentence,
+        'back-sentence-extend-selection':       self.backSentenceExtendSelection,
+        'back-word':                            self.backwardWord,
+        'back-word-extend-selection':           self.backwardWordExtendSelection,
+        'backward-delete-char':                 self.backwardDeleteCharacter,
+        'backward-kill-paragraph':              self.backwardKillParagraph,
+        'backward-find-character':              self.backwardFindCharacter,
+        'backward-find-character-extend-selection': self.backwardFindCharacterExtendSelection,
+        'beginning-of-buffer':                  self.beginningOfBuffer,
+        'beginning-of-buffer-extend-selection': self.beginningOfBufferExtendSelection,
+        'beginning-of-line':                    self.beginningOfLine,
+        'beginning-of-line-extend-selection':   self.beginningOfLineExtendSelection,
+        'capitalize-word':                      self.capitalizeWord,
+        'center-line':                          self.centerLine,
+        'center-region':                        self.centerRegion,
+        'clean-all-lines':                      self.cleanAllLines,
+        'clean-lines':                          self.cleanLines,
+        'clear-extend-mode':                    self.clearExtendMode,
+        'clear-selected-text':                  self.clearSelectedText,
+        'click-click-box':                      self.clickClickBox,
+        'click-headline':                       self.clickHeadline,
+        'click-icon-box':                       self.clickIconBox,
+        'contract-body-pane':                   c.frame.contractBodyPane,
+        'contract-log-pane':                    c.frame.contractLogPane,
+        'contract-outline-pane':                c.frame.contractOutlinePane,
+        'contract-pane':                        c.frame.contractPane,
+        'count-region':                         self.countRegion,
+        'cycle-focus':                          self.cycleFocus,
+        'cycle-all-focus':                      self.cycleAllFocus,
+        'cycle-editor-focus':                   c.frame.body.cycleEditorFocus,
+        'delete-all-icons':                     self.deleteAllIcons,
+        'delete-char':                          self.deleteNextChar,
+        'delete-editor':                        c.frame.body.deleteEditor,
+        'delete-first-icon':                    self.deleteFirstIcon,
+        'delete-indentation':                   self.deleteIndentation,
+        'delete-last-icon':                     self.deleteLastIcon,
+        'delete-node-icons':                    self.deleteNodeIcons,
+        'delete-spaces':                        self.deleteSpaces,
+        'do-nothing':                           self.doNothing,
+        'downcase-region':                      self.downCaseRegion,
+        'downcase-word':                        self.downCaseWord,
+        'double-click-headline':                self.doubleClickHeadline,
+        'double-click-icon-box':                self.doubleClickIconBox,
+        'end-of-buffer':                        self.endOfBuffer,
+        'end-of-buffer-extend-selection':       self.endOfBufferExtendSelection,
+        'end-of-line':                          self.endOfLine,
+        'end-of-line-extend-selection':         self.endOfLineExtendSelection,
+        'escape':                               self.watchEscape,
+        'eval-expression':                      self.evalExpression,
+        'exchange-point-mark':                  self.exchangePointMark,
+        'expand-body-pane':                     c.frame.expandBodyPane,
+        'expand-log-pane':                      c.frame.expandLogPane,
+        'expand-outline-pane':                  c.frame.expandOutlinePane,
+        'expand-pane':                          c.frame.expandPane,
+        'extend-to-line':                       self.extendToLine,
+        'extend-to-paragraph':                  self.extendToParagraph,
+        'extend-to-sentence':                   self.extendToSentence,
+        'extend-to-word':                       self.extendToWord,
+        'fill-paragraph':                       self.fillParagraph,
+        'fill-region':                          self.fillRegion,
+        'fill-region-as-paragraph':             self.fillRegionAsParagraph,
+        'find-character':                       self.findCharacter,
+        'find-character-extend-selection':      self.findCharacterExtendSelection,
+        'find-word':                            self.findWord,
+        'flush-lines':                          self.flushLines,
+        'focus-to-body':                        self.focusToBody,
+        'focus-to-log':                         self.focusToLog,
+        'focus-to-minibuffer':                  self.focusToMinibuffer,
+        'focus-to-tree':                        self.focusToTree,
+        'forward-char':                         self.forwardCharacter,
+        'forward-char-extend-selection':        self.forwardCharacterExtendSelection,
+        'forward-paragraph':                    self.forwardParagraph,
+        'forward-paragraph-extend-selection':   self.forwardParagraphExtendSelection,
+        'forward-sentence':                     self.forwardSentence,
+        'forward-sentence-extend-selection':    self.forwardSentenceExtendSelection,
+        'forward-end-word':                     self.forwardEndWord, # New in Leo 4.4.2.
+        'forward-end-word-extend-selection':    self.forwardEndWordExtendSelection, # New in Leo 4.4.2.
+        'forward-word':                         self.forwardWord,
+        'forward-word-extend-selection':        self.forwardWordExtendSelection,
+        'fully-expand-body-pane':               c.frame.fullyExpandBodyPane,
+        'fully-expand-log-pane':                c.frame.fullyExpandLogPane,
+        'fully-expand-pane':                    c.frame.fullyExpandPane,
+        'fully-expand-outline-pane':            c.frame.fullyExpandOutlinePane,
+        'goto-char':                            self.gotoCharacter,
+        'goto-global-line':                     self.gotoGlobalLine,
+        'goto-line':                            self.gotoLine,
+        'hide-body-pane':                       c.frame.hideBodyPane,
+        'hide-log-pane':                        c.frame.hideLogPane,
+        'hide-pane':                            c.frame.hidePane,
+        'hide-outline-pane':                    c.frame.hideOutlinePane,
+        'how-many':                             self.howMany,
+        # Use indentBody in leoCommands.py
+        'indent-relative':                      self.indentRelative,
+        'indent-rigidly':                       self.tabIndentRegion,
+        'indent-to-comment-column':             self.indentToCommentColumn,
+        'insert-icon':                          self.insertIcon,
+        'insert-newline':                       self.insertNewline,
+        'insert-parentheses':                   self.insertParentheses,
+        'keep-lines':                           self.keepLines,
+        'kill-paragraph':                       self.killParagraph,
+        'line-number':                          self.lineNumber,
+        'move-lines-down':                      self.moveLinesDown,
+        'move-lines-up':                        self.moveLinesUp,
+        'move-past-close':                      self.movePastClose,
+        'move-past-close-extend-selection':     self.movePastCloseExtendSelection,
+        'newline-and-indent':                   self.insertNewLineAndTab,
+        'next-line':                            self.nextLine,
+        'next-line-extend-selection':           self.nextLineExtendSelection,
+        'previous-line':                        self.prevLine,
+        'previous-line-extend-selection':       self.prevLineExtendSelection,
+        'remove-blank-lines':                   self.removeBlankLines,
+        'remove-space-from-lines':              self.removeSpaceFromLines,
+        'remove-tab-from-lines':                self.removeTabFromLines,
+        'reverse-region':                       self.reverseRegion,
+        'reverse-sort-lines':                   self.reverseSortLines,
+        'reverse-sort-lines-ignoring-case':     self.reverseSortLinesIgnoringCase,                 
+        'scroll-down':                          self.scrollDown,
+        'scroll-down-extend-selection':         self.scrollDownExtendSelection,
+        'scroll-outline-down-line':             self.scrollOutlineDownLine,
+        'scroll-outline-down-page':             self.scrollOutlineDownPage,
+        'scroll-outline-left':                  self.scrollOutlineLeft,
+        'scroll-outline-right':                 self.scrollOutlineRight,
+        'scroll-outline-up-line':               self.scrollOutlineUpLine,
+        'scroll-outline-up-page':               self.scrollOutlineUpPage,
+        'scroll-up':                            self.scrollUp,
+        'scroll-up-extend-selection':           self.scrollUpExtendSelection,
+        'select-all':                           self.selectAllText,
+        # Exists, but can not be executed via the minibuffer.
+        # 'self-insert-command':                self.selfInsertCommand,
+        'set-comment-column':                   self.setCommentColumn,
+        'set-extend-mode':                      self.setExtendMode,
+        'set-fill-column':                      self.setFillColumn,
+        'set-fill-prefix':                      self.setFillPrefix,
+        #'set-mark-command':                    self.setRegion,
+        'show-colors':                          self.showColors,
+        'show-fonts':                           self.showFonts,
+        'simulate-begin-drag':                  self.simulateBeginDrag,
+        'simulate-end-drag':                    self.simulateEndDrag,
+        'sort-columns':                         self.sortColumns,
+        'sort-fields':                          self.sortFields,
+        'sort-lines':                           self.sortLines,
+        'sort-lines-ignoring-case':             self.sortLinesIgnoringCase,
+        'split-line':                           self.splitLine,
+        'tabify':                               self.tabify,
+        'toggle-extend-mode':                   self.toggleExtendMode,
+        'transpose-chars':                      self.transposeCharacters,
+        'transpose-lines':                      self.transposeLines,
+        'transpose-words':                      self.transposeWords,
+        'untabify':                             self.untabify,
+        'upcase-region':                        self.upCaseRegion,
+        'upcase-word':                          self.upCaseWord,
+        'view-lossage':                         self.viewLossage,
+        'what-line':                            self.whatLine,
+    }
+</t>
+<t tx="ekr.20071211113302.265">def drawUserIcons(self,p,where,x,y):
+
+    """Draw any icons specified by p.v.t.unknownAttributes["icons"]."""
+
+    h,w = 0,0 ; t = p.v.t
+
+    if not hasattr(t,"unknownAttributes"):
+        return h,w
+
+    iconsList = t.unknownAttributes.get("icons")
+    if not iconsList:
+        return h,w
+
+    try:
+        for theDict in iconsList:
+            h2,w2 = self.drawUserIcon(p,where,x,y,w,theDict)
+            h = max(h,h2) ; w += w2
+    except:
+        g.es_exception()
+
+    # g.trace(where,h,w)
+
+    return h,w
+</t>
+<t tx="ekr.20071211113302.266">def drawUserIcon (self,p,where,x,y,w2,theDict):
+
+    c = self.c ; h,w = 0,0
+
+    if where != theDict.get("where","beforeHeadline"):
+        return h,w
+
+    # if self.trace_gc: g.printNewObjects(tag='userIcon 1')
+
+    # g.trace(where,x,y,theDict)
+
+    &lt;&lt; set offsets and pads &gt;&gt;
+    theType = theDict.get("type")
+    if theType == "icon":
+        if 0: # not ready yet.
+            s = theDict.get("icon")
+            &lt;&lt; draw the icon in string s &gt;&gt;
+    elif theType == "file":
+        theFile = theDict.get("file")
+        relPath = theDict.get('relPath')
+        &lt;&lt; draw the icon at file &gt;&gt;
+    elif theType == "url":
+        ## url = theDict.get("url")
+        &lt;&lt; draw the icon at url &gt;&gt;
+
+    # Allow user to specify height, width explicitly.
+    h = theDict.get("height",h)
+    w = theDict.get("width",w)
+
+    # if self.trace_gc: g.printNewObjects(tag='userIcon 2')
+
+    return h,w
+</t>
+<t tx="ekr.20071211113302.267">xoffset = theDict.get("xoffset")
+try:    xoffset = int(xoffset)
+except: xoffset = 0
+
+yoffset = theDict.get("yoffset")
+try:    yoffset = int(yoffset)
+except: yoffset = 0
+
+xpad = theDict.get("xpad")
+try:    xpad = int(xpad)
+except: xpad = 0
+
+ypad = theDict.get("ypad")
+try:    ypad = int(ypad)
+except: ypad = 0
+</t>
+<t tx="ekr.20071211113302.268">pass
+</t>
+<t tx="ekr.20071211113302.269">if relPath:
+    fullname = g.os_path_join(g.app.loadDir,"..","Icons",relPath)
+else:
+    fullname = g.os_path_join(g.app.loadDir,"..","Icons",theFile)
+fullname = g.os_path_normpath(fullname)
+
+# Bug fix: the key must include distinguish nodes.
+key = (fullname,p.v.t)
+image = self.iconimages.get(key)
+
+if not image:
+    try:
+        from PIL import Image, ImageTk
+        image1 = Image.open(fullname)
+        image = ImageTk.PhotoImage(image1)
+        self.iconimages[key] = image
+    except Exception:
+        #g.es_exception()
+        image = None
+
+if not image:
+    try:
+        image = Tk.PhotoImage(master=self.canvas,file=fullname)
+        self.iconimages[key] = image
+    except Exception:
+        #g.es_exception()
+        image = None
+
+if image:
+    theId = self.canvas.create_image(
+        x+xoffset+w2,y+yoffset,
+        anchor="nw",image=image)
+
+    tag='userIcon-%s' % theId
+    self.canvas.itemconfigure(theId,tag=tag)
+    self.ids[theId] = p.copy()
+
+    def deleteButtonCallback(event=None,c=c,t=p.v.t,fullname=fullname,relPath=relPath):
+        c.editCommands.deleteIconByName(t,fullname,relPath)
+
+    self.canvas.tag_bind(tag,'&lt;3&gt;',deleteButtonCallback)
+
+    # assert(theId not in self.visibleIcons)
+    self.visibleUserIcons.append(theId)
+
+    h = image.height() + yoffset + ypad
+    w = image.width()  + xoffset + xpad
+</t>
+<t tx="ekr.20071211113302.270">pass
+</t>
+<t tx="ekr.20071211113302.271">@
+
+To do:
+
+- Define standard icons in a subfolder of Icons folder?
+- Tree control recomputes height of each line.
+</t>
+<t tx="ekr.20071211113302.272">def deleteAllIcons (self,event):
+
+    c = self.c
+
+    for p in c.allNodes_iter():
+
+        if hasattr(p.v.t,"unknownAttributes"):
+            a = p.v.t.unknownAttributes
+            iconsList = a.get("icons")
+            if dict:
+                a["icons"] = []
+                a["lineYOffset"] = 0
+                p.setDirty()
+                c.setChanged(True)
+
+    c.redraw()
+</t>
+<t tx="ekr.20071211113302.273">def deleteFirstIcon (self,event):
+
+    c = self.c ; p = c.currentPosition()
+
+    if not hasattr(p.v.t,'unknownAttributes'):
+        return
+
+    aList = p.v.t.unknownAttributes.get('icons',[])
+
+    if aList:
+        p.v.t.unknownAttributes ['icons'] = aList[1:]
+        p.setDirty()
+        c.setChanged(True)
+        c.redraw()</t>
+<t tx="ekr.20071211113302.274">def deleteIconByName (self,t,name,relPath):
+
+    c = self.c ; p = c.currentPosition()
+
+    if not hasattr(t,'unknownAttributes'):
+        return
+
+    aList = t.unknownAttributes.get('icons',[])
+
+    basePath = g.os_path_abspath(g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons")))
+    absRelPath = g.os_path_abspath(g.os_path_normpath(g.os_path_join(basePath,relPath)))
+    name = g.os_path_abspath(name)
+
+    for d in aList:
+        name2 = d.get('file')
+        name2 = g.os_path_abspath(name2)
+        name2rel = d.get('relPath')
+        # g.trace('name',name,'\nrelPath',relPath,'\nabsRelPath',absRelPath,'\nname2',name2,'\nname2rel',name2rel)
+        if name == name2 or absRelPath == name2 or relPath == name2rel:
+            aList.remove(d)
+            t.unknownAttributes ['icons'] = aList
+            p.setDirty()
+            c.setChanged(True)
+            c.redraw()
+            break
+    else:
+        g.trace('not found',name)
+
+
+
+</t>
+<t tx="ekr.20071211113302.275">def deleteLastIcon (self,event):
+
+    c = self.c ;  p = c.currentPosition()
+
+    if not hasattr(p.v.t,'unknownAttributes'):
+        return
+
+    aList = p.v.t.unknownAttributes.get('icons',[])
+
+    if aList:
+        p.v.t.unknownAttributes ['icons'] = aList[:-1]
+        p.setDirty()
+        c.setChanged(True)
+        c.redraw()
+</t>
+<t tx="ekr.20071211113302.276">def deleteNodeIcons (self,event):
+
+    c = self.c ; p = c.currentPosition()
+
+    if hasattr(p.v.t,"unknownAttributes"):
+        a = p.v.t.unknownAttributes
+        iconsList = a.get("icons")
+        if dict:
+            a["icons"] = []
+            a["lineYOffset"] = 0
+            p.setDirty()
+            c.setChanged(True)
+            c.redraw()
+</t>
+<t tx="ekr.20071211113302.277">def insertIcon (self,event):
+
+    c = self.c ; p = c.currentPosition()
+
+    os.chdir(g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons")))
+
+    paths = g.app.gui.runOpenFileDialog(
+        title='Get Icons',
+        filetypes=[('All files','*'),('Gif','*.gif'), ('Bitmap','*.bmp'),('Icon','*.ico'),],
+        defaultextension=None,
+        multiple=True)
+
+    aList = [] ; xoffset = 2
+    basePath = g.os_path_abspath(g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons")))
+    for path in paths:
+        path = g.os_path_abspath(g.os_path_join(basePath,path))
+        relPath = g.makePathRelativeTo(path,basePath)
+        image,image_height = self.getImage(path)
+        if not image:
+            g.es('can not load image: %s' % (path))
+            return
+        if image_height is None:
+            yoffset = 0
+        else:
+            yoffset = (c.frame.tree.line_height-image_height)/2
+
+        aList.append ({
+            'type' : 'file',
+            'file' : path,
+            'relPath': relPath,
+            'where' : 'beforeHeadline',
+            'yoffset' : yoffset, 'xoffset' : xoffset, 'xpad' : -2,
+        })
+        xoffset += 2
+
+    if not hasattr(p.v.t,'unknownAttributes'):
+        p.v.t.unknownAttributes = {}
+
+    aList2 = p.v.t.unknownAttributes.get('icons',[])
+    aList2.extend(aList)
+    p.v.t.unknownAttributes ['icons'] = aList2
+    p.v.t.unknownAttributes ['lineYOffset'] = 3
+    p.setDirty()
+    c.setChanged(True)
+    c.redraw()</t>
+<t tx="ekr.20071211113302.278">def getImage (self,path):
+
+    c = self.c
+
+    try:
+        from PIL import Image
+    except ImportError:
+        Image = None
+
+    try:
+        from PIL import ImageTk
+    except ImportError:
+        try:
+            import ImageTk
+        except ImportError:
+            ImageTk = None
+
+    try:
+        if Image and ImageTk:
+            image1 = Image.open(path)
+            image = ImageTk.PhotoImage(image1)
+        else:
+            import Tkinter as Tk
+            image = Tk.PhotoImage(master=c.frame.tree.canvas,file=path)
+        return image,image.height()
+    except Exception:
+        return None,None
+</t>
+<t tx="ekr.20071211113302.279">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4614081
+</t>
+<t tx="ekr.20071211113302.280">http://tango.freedesktop.org/Tango_Icon_Library
+
+You need to have libmagick6-dev installed in adition to imagemagick
+</t>
+<t tx="ekr.20071211113302.281"></t>
+<t tx="ekr.20071211113302.282"></t>
+<t tx="ekr.20071211113302.283"># fixed: E1101:1877:atFile.readEndNode: Instance of 'atFile' has no 'correctedLines' member
+# fixed: E1101:2725:atFile.norefWrite: Instance of 'atFile' has no 'putBuffered' member
+</t>
+<t tx="ekr.20071211113302.284"></t>
+<t tx="ekr.20071211113302.285"></t>
+<t tx="ekr.20071211113302.286">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4632695
+By: zhms
+
+I've made many tries, and finally i think i have caught the issue.
+It's caused by "Paste Node as Clone".
+
+1. Just open a leo file,
+2. create some nodes,
+3. and cut a node,
+4. then use "past node as clone",
+5. save and quit or quit and select "yes" to save.
+Ok, the file is already truncated.
+
+--------------
+
+The recent fix to c.all_unique_tnodes_iter may be part of the problem.
+</t>
+<t tx="ekr.20071211113302.287"></t>
+<t tx="ekr.20071211113302.288">class allNodes_iter_class:
+
+    """Returns a list of positions in the entire outline."""
+
+    @others
+
+def allNodes_iter (self,copy=False):
+
+    c = self
+    return self.allNodes_iter_class(c,copy)
+
+all_positions_iter = allNodes_iter</t>
+<t tx="ekr.20071211113302.289">def __init__(self,c,copy):
+
+    # g.trace('c.allNodes_iter.__init','p',p,'c',c)
+
+    self.c = c
+    self.first = c.rootPosition()
+    self.p = None
+    self.copy = copy
+
+def __iter__(self):
+
+    return self
+</t>
+<t tx="ekr.20071211113302.290">def next(self):
+
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    elif self.p:
+        self.p.moveToThreadNext()
+
+    if self.p:
+        if self.copy: return self.p.copy()
+        else:         return self.p
+
+    else: raise StopIteration
+</t>
+<t tx="ekr.20071211113302.291"># def all_tnodes_iter(self):
+
+    # c = self
+    # for p in c.all_positions_iter():
+        # yield p.v.t
+
+    # # return c.rootPosition().all_tnodes_iter(all=True)
+
+class all_tnodes_iter_class:
+
+    """Returns a list of all tnodes in the entire outline."""
+
+    @others
+
+def all_tnodes_iter (self):
+
+    c = self
+    return self.all_tnodes_iter_class(c)
+</t>
+<t tx="ekr.20071211113302.292">def __init__(self,c):
+
+    # g.trace('c.all_tnodes_iter.__init','p',p,'c',c)
+
+    self.c = c
+    self.first = c.rootPosition()
+    self.p = None
+
+def __iter__(self):
+
+    return self
+</t>
+<t tx="ekr.20071211113302.293">def next(self):
+
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    elif self.p:
+        self.p.moveToThreadNext()
+
+    if self.p:
+        return self.p.v.t
+
+    else:
+        raise StopIteration
+</t>
+<t tx="ekr.20071211113302.294"># def all_unique_tnodes_iter(self):
+
+    # c = self ; marks = {}
+
+    # for p in c.all_positions_iter():
+        # if not p.v.t in marks:
+            # marks[p.v.t] = p.v.t
+            # yield p.v.t
+
+class all_unique_tnodes_iter_class:
+
+    """Returns a list of all tnodes in the entire outline."""
+
+    @others
+
+def all_unique_tnodes_iter (self):
+
+    c = self
+    return self.all_unique_tnodes_iter_class(c)
+</t>
+<t tx="ekr.20071211113302.295">def __init__(self,c):
+
+    # g.trace('c.all_uniquetnodes_iter.__init','p',p,'c',c)
+
+    self.c = c
+    self.d = {}
+    self.first = c.rootPosition()
+    self.p = None
+
+def __iter__(self):
+
+    return self
+</t>
+<t tx="ekr.20071211113302.296">def next(self):
+
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    while self.p:
+        self.p.moveToThreadNext()
+        if not self.p:
+            break
+        elif not self.d.get(self.p.v.t):
+            self.d [self.p.v.t] = True
+            return self.p.v.t
+
+    raise StopIteration
+</t>
+<t tx="ekr.20071211113302.297"># def all_vnodes_iter(self):
+
+    # c = self
+    # for p in c.all_positions_iter():
+        # yield p.v
+
+class all_vnodes_iter_class:
+
+    """Returns a list of all tnodes in the entire outline."""
+
+    @others
+
+def all_vnodes_iter (self):
+
+    c = self
+    return self.all_vnodes_iter_class(c)
+</t>
+<t tx="ekr.20071211113302.298">def __init__(self,c):
+
+    # g.trace('c.all_tnodes_iter.__init','p',p,'c',c)
+
+    self.c = c
+    self.first = c.rootPosition()
+    self.p = None
+
+def __iter__(self):
+
+    return self
+</t>
+<t tx="ekr.20071211113302.299">def next(self):
+
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    elif self.p:
+        self.p.moveToThreadNext()
+
+    if self.p:
+        return self.p.v
+
+    else: raise StopIteration
+</t>
+<t tx="ekr.20071211113302.300"># def all_unique_vnodes_iter(self):
+
+    # c = self ; marks = {}
+    # for p in c.all_positions_iter():
+        # if not p.v in marks:
+            # marks[p.v] = p.v
+            # yield p.v
+
+class all_unique_vnodes_iter_class:
+
+    """Returns a list of all tnodes in the entire outline."""
+
+    @others
+
+def all_unique_vnodes_iter (self):
+
+    c = self
+    return self.all_unique_vnodes_iter_class(c)
+</t>
+<t tx="ekr.20071211113302.301">def __init__(self,c):
+
+    # g.trace('c.all_uniquetnodes_iter.__init','p',p,'c',c)
+
+    self.c = c
+    self.d = {}
+    self.first = c.rootPosition()
+    self.p = None
+
+def __iter__(self):
+
+    return self
+</t>
+<t tx="ekr.20071211113302.302">def next(self):
+
+    if self.first:
+        self.p = self.first
+        self.first = None
+
+    while self.p:
+        self.p.moveToThreadNext()
+        if not self.p:
+            break
+        elif not self.d.get(self.p.v.t):
+            self.d [self.p.v.t] = True
+            return self.p.v
+
+    raise StopIteration
+</t>
+<t tx="ekr.20071211113302.303"></t>
+<t tx="ekr.20071211113302.304">def cutOutline (self,event=None):
+
+    '''Delete the selected outline and send it to the clipboard.'''
+
+    c = self
+    if c.canDeleteHeadline():
+        c.copyOutline()
+        c.deleteOutline("Cut Node")
+        c.recolor()
+</t>
+<t tx="ekr.20071211113302.305">def copyOutline (self,event=None):
+
+    '''Copy the selected outline to the clipboard.'''
+
+    # Copying an outline has no undo consequences.
+    c = self
+    c.endEditing()
+    c.fileCommands.assignFileIndices()
+    s = c.fileCommands.putLeoOutline()
+    g.app.gui.replaceClipboardWith(s)
+</t>
+<t tx="ekr.20071211113302.306"># To cut and paste between apps, just copy into an empty body first, then copy to Leo's clipboard.
+
+def pasteOutline(self,event=None,reassignIndices=True):
+
+    '''Paste an outline into the present outline from the clipboard.
+    Nodes do *not* retain their original identify.'''
+
+    c = self ; u = c.undoer ; current = c.currentPosition()
+    s = g.app.gui.getTextFromClipboard()
+    pasteAsClone = not reassignIndices
+    undoType = g.choose(reassignIndices,'Paste Node','Paste As Clone')
+
+    c.endEditing()
+
+    if not s or not c.canPasteOutline(s):
+        return # This should never happen.
+
+    isLeo = g.match(s,0,g.app.prolog_prefix_string)
+    tnodeInfoDict = {}
+    if pasteAsClone:
+        &lt;&lt; remember all data for undo/redo Paste As Clone &gt;&gt;
+
+    if isLeo:
+        pasted = c.fileCommands.getLeoOutline(s,reassignIndices)
+    else:
+        pasted = c.importCommands.convertMoreStringToOutlineAfter(s,current)
+    if not pasted: return
+
+    c.beginUpdate()
+    try:
+        copiedBunchList = []
+        if pasteAsClone:
+            &lt;&lt; put only needed info in copiedBunchList &gt;&gt;
+        undoData = u.beforeInsertNode(current,
+            pasteAsClone=pasteAsClone,copiedBunchList=copiedBunchList)
+        c.endEditing()
+        c.validateOutline()
+        c.selectPosition(pasted)
+        pasted.setDirty()
+        c.setChanged(True)
+        # paste as first child if back is expanded.
+        back = pasted.back()
+        if back and back.isExpanded():
+            pasted.moveToNthChildOf(back,0)
+        c.setRootPosition(c.findRootPosition(pasted)) # New in 4.4.2.
+        u.afterInsertNode(pasted,undoType,undoData)
+    finally:
+        c.endUpdate()
+        c.recolor()
+</t>
+<t tx="ekr.20071211113302.307">@
+
+We don't know yet which nodes will be affected by the paste, so we remember
+everything. This is expensive, but foolproof.
+
+The alternative is to try to remember the 'before' values of tnodes in the
+fileCommands read logic. Several experiments failed, and the code is very ugly.
+In short, it seems wise to do things the foolproof way.
+
+@c
+
+for p in c.allNodes_iter():
+    t = p.v.t
+    if t not in tnodeInfoDict.keys():
+        tnodeInfoDict[t] = g.Bunch(
+            t=t,head=p.headString(),body=p.bodyString())
+</t>
+<t tx="ekr.20071211113302.308"># Create a dict containing only copied tnodes.
+copiedTnodeDict = {}
+for p in pasted.self_and_subtree_iter():
+    if p.v.t not in copiedTnodeDict:
+        copiedTnodeDict[p.v.t] = p.v.t
+
+# g.trace(copiedTnodeDict.keys())
+
+for t in tnodeInfoDict.keys():
+    bunch = tnodeInfoDict.get(t)
+    if copiedTnodeDict.get(t):
+        copiedBunchList.append(bunch)
+
+# g.trace('copiedBunchList',copiedBunchList)
+</t>
+<t tx="ekr.20071211113302.309">def pasteOutlineRetainingClones (self,event=None):
+
+    '''Paste an outline into the present outline from the clipboard.
+    Nodes *retain* their original identify.'''
+
+    c = self
+
+    return c.pasteOutline(reassignIndices=False)
+</t>
+<t tx="ekr.20071211113302.310">@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=4646055
+By: thyrsus
+
+Running: "Leo 4.4.5 beta 1, build  1.223 , November 16, 2007, Python 2.5.0,
+Tk 8.4.13, Pmw 1.2, linux2", (CVS from 2007-11-25 22:17 GMT), Fedora 7; the
+leo process hangs, running the CPU as hard as it can; I don't see any memory
+increase; the process will die on a signal but is otherwise unresponsive; I
+could probably get a core image, but nothing like a python stack trace.   Additional
+clues: just before this happens I'm editing perl code in a particular node,
+and the colorization is really random - e.g., three blue characters in the middle
+of an otherwise black seven character variable name.  Perhaps relevant: some
+threading models under Linux exhibit a new process for each thread, observable
+with "ps", but I only see the one python process.  Is there a particular threading
+model required by the threaded colorizer?
+
+I've just turned off the threaded colorizer plugin, and the appearance is much
+more sane, but these hangs have only happened twice this morning, so I can't
+say for sure that I'm in the clear until I spend a good deal more time, plus
+I worry about the extra work involved in maintaining two colorizers.
+
+---------- One of my responses.
+
+There is one kind of coding blunder that can bring everything to a halt: calling
+g.es, g.pdb or g.es_exception from the helper thread; neither pdb nor Tkinter
+are not thread safe, so they **must not** be called from outside the main
+thread.
+
+I did find one call to g.es in the helper thread. It is in match_regexp_helper
+in the except clause. To fix this, change the call to g.es to:
+
+g.trace('Invalid regular expression: %s' % (pattern))
+
+Looking at perl.py, we see several calls to match_seq_regexp, which in turn
+calls match_regexp_helper. So if there are problems with the regex's, this will
+hang Leo. This would also explain weird colorizing behavior.
+
+@color
+</t>
+<t tx="ekr.20071211113302.311">@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=4643992
+By: rjshanley1
+
+The following code snippet throws the exception shown
+
+    abc::stuff::~destructor(){}
+void abc::stuff::read(int* b) {}
+
+    abc::otherStuff::~otherDestructor(){}
+void abc::otherStuff::testUnitReady(OP* op) {}
+
+int mtSetPrimaryMgr()
+
+-------------------------------
+
+Leo Log Window...
+Leo 4.4.5 beta 1, build  1.223 , November 16, 2007
+Python 2.5.1, Tk 8.4.14, Pmw 1.2
+Windows 5, 1, 2600, 2, Service Pack 2
+
+Can not load c:\aspell\bin\aspell-15.dll
+leoID = rshanley (in C:\)
+global config dir: C:\Program Files\Leo\config
+home dir: C:\
+reading settings in C:\Program Files\Leo\config\leoSettings.leo
+exception executing command
+Traceback (most recent call last):
+  File "C:\Program Files\Leo\src\leoCommands.py", line 281, in doCommand
+    val = command(event)
+  File "C:\Program Files\Leo\src\leoCommands.py", line 1525, in importAtFile
+    c.importCommands.importFilesCommand(names,"@file")
+  File "C:\Program Files\Leo\src\leoImport.py", line 890, in importFilesCommand
+    v = self.createOutline(fileName,current)
+  File "C:\Program Files\Leo\src\leoImport.py", line 744, in createOutline
+    self.scanCText(s,p,atAuto=atAuto)
+  File "C:\Program Files\Leo\src\leoImport.py", line 2649, in scanCText
+    scanner.run(s,parent)
+  File "C:\Program Files\Leo\src\leoImport.py", line 2579, in run
+    ok = self.errors == 0 and self.check(s,parent)
+  File "C:\Program Files\Leo\src\leoImport.py", line 1500, in check
+    return self.checkTrialWrite()
+  File "C:\Program Files\Leo\src\leoImport.py", line 1539, in checkTrialWrite
+    ok = self.compareHelper(lines1,lines2,i,self.strict)
+  File "C:\Program Files\Leo\src\leoImport.py", line 1590, in compareHelper
+    self.checkLeadingWhitespace(line1)
+  File "C:\Program Files\Leo\src\leoImport.py", line 1615, in
+checkLeadingWhitespace
+    report('leading whitespace not consistent with @tabwidth %d' % tab_width)
+NameError: global name 'report' is not defined</t>
+<t tx="ekr.20071211113302.312"># This was done to init base classes in a more standard way.
+# It should have been done long ago.</t>
+<t tx="ekr.20071211113302.313">@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4639426
+By: kayvan
+
+Using LEO 4.4.5b1, build 1.223, from November 16, 2007.
+
+I have a simple LEO file with one Headline (called Testing) containing the following
+body text:
+
+@root test.py
+"""Testing"""
+
+When I try to tangle it, I get the following:
+
+Tangling...
+exception executing command
+Traceback (most recent call last):
+  File "C:\Program Files\Leo\src\leoCommands.py", line 281, in doCommand
+    val = command(event)
+  File "C:\Program Files\Leo\src\leoCommands.py", line 1381, in tangleAll
+    c.tangleCommands.tangleAll()
+  File "C:\Program Files\Leo\src\leoTangle.py", line 601, in tangleAll
+    ok = self.tangleTree(p,dont_report_errors)
+  File "C:\Program Files\Leo\src\leoTangle.py", line 718, in tangleTree
+    self.tanglePass1(p) # sets self.p
+  File "C:\Program Files\Leo\src\leoTangle.py", line 663, in tanglePass1
+    self.scanAllDirectives(p,require_path,report_errors) # calls
+init_directive_ivars.
+  File "C:\Program Files\Leo\src\leoTangle.py", line 3598, in scanAllDirectives
+    self.setRootFromText(z,issue_error_flag)
+  File "C:\Program Files\Leo\src\leoTangle.py", line 3267, in setRootFromText
+    i,self.start_mode = g.scanAtRootOptions(s,0)
+  File "C:\Program Files\Leo\src\leoGlobals.py", line 2984, in
+scanAtRootOptions
+    assert(g.match(s,i,"@root"))
+AssertionError
+
+@color</t>
+<t tx="ekr.20071211113302.314">@ This code skips the file name used in @root directives.
+
+File names may be enclosed in &lt; and &gt; characters, or in double quotes.  If a file name is not enclosed be these delimiters it continues until the next newline.
+@c
+def setRootFromText(self,s,err_flag):
+
+    # g.trace(s)
+    self.root_name = None
+    i,self.start_mode = g.scanAtRootOptions(s,0)
+    i = g.skip_ws(s,i)
+
+    if i &gt;= len(s): return i
+    # Allow &lt;&gt; or "" as delimiters, or a bare file name.
+    if s[i] == '"':
+        i += 1 ; delim = '"'
+    elif s[i] == '&lt;':
+        i += 1 ; delim = '&gt;'
+    else: delim = g.body_newline
+
+    root1 = i # The name does not include the delimiter.
+    while i &lt; len(s) and s[i] != delim and not g.is_nl(s,i):
+        i += 1
+    root2 = i
+
+    if delim != g.body_newline and not g.match(s,i,delim):
+        if err_flag:
+            g.scanError("bad filename in @root " + s[:i])
+    else:
+        self.root_name = string.strip(s[root1:root2])
+    return i
+</t>
+<t tx="ekr.20071211113302.315">def runAtFileTest(c,p):
+
+    """Common code for testing output of @file, @thin, etc."""
+
+    at = c.atFileCommands
+    child1 = p.firstChild()
+    child2 = child1.next()
+    h1 = child1.headString().lower().strip()
+    h2 = child2.headString().lower().strip()
+    assert(g.match(h1,0,"#@"))
+    assert(g.match(h2,0,"output"))
+    expected = child2.bodyString()
+
+    # Compute the type from child1's headline.
+    j = g.skip_c_id(h1,2)
+    theType = h1[1:j]
+    assert theType in ("@file","@thin","@nosent","@noref","@asis","@root",), "bad type: %s" % type
+
+    thinFile = theType == "@thin"
+    nosentinels = theType in ("@asis","@nosent")
+
+    if theType == "@root":
+        c.tangleCommands.tangle_output = ''
+        c.tangleCommands.tangle(event=None,p=child1)
+        at.stringOutput = c.tangleCommands.tangle_output
+    elif theType == "@asis":
+        at.asisWrite(child1,toString=True)
+    elif theType == "@noref":
+        at.norefWrite(child1,toString=True)
+    else:
+        at.write(child1,thinFile=thinFile,nosentinels=nosentinels,toString=True)
+    try:
+        result = g.toUnicode(at.stringOutput,"ascii")
+        assert(result == expected)
+    except AssertionError:
+        &lt;&lt; dump result and expected &gt;&gt;
+        raise
+</t>
+<t tx="ekr.20071211113302.316">print ; print '-' * 20
+print "result..."
+for line in g.splitLines(result):
+    print "%3d" % len(line),repr(line)
+print '-' * 20
+print "expected..."
+for line in g.splitLines(expected):
+    print "%3d" % len(line),repr(line)
+print '-' * 20
+</t>
+<t tx="ekr.20071211113302.317">@
+This is the top level method of the second pass. It creates a separate C file
+for each @root directive in the outline. The file is actually written only if
+the new version of the file is different from the old version,or if the file did
+not exist previously. If changed_only_flag FLAG is True only changed roots are
+actually written.
+@c
+
+def put_all_roots(self):
+
+    c = self.c ; outline_name = c.mFileName
+
+    for section in self.root_list:
+
+        # g.trace(section.name)
+        file_name = g.os_path_join(self.tangle_directory,section.name)
+        file_name = g.os_path_normpath(file_name)
+        mode = c.config.output_newline
+        # mode = g.choose(mode=="platform",'w','wb')
+        textMode = mode == 'platform'
+        if g.unitTesting:
+            self.output_file = g.fileLikeObject()
+            temp_name = 'temp-file'
+        else:
+            self.output_file,temp_name = g.create_temp_file(textMode=textMode)
+        if not temp_name:
+            g.es("Can not create temp file")
+            break
+        &lt;&lt;Get root specific attributes&gt;&gt;
+        &lt;&lt;Put @first lines&gt;&gt;
+        if self.use_header_flag and self.print_mode == "verbose":
+            &lt;&lt; Write a banner at the start of the output file &gt;&gt;
+        for part in section.parts:
+            if part.is_root:
+                self.tangle_indent = 0 # Initialize global.
+                self.put_part_node(part,False) # output first lws
+        self.onl() # Make sure the file ends with a cr/lf
+        if g.unitTesting:
+            self.tangle_output = self.output_file.get()
+        self.output_file.close()
+        self.output_file = None
+        if not g.unitTesting:
+            if self.errors + g.app.scanErrors == 0:
+                g.update_file_if_changed(c,file_name,temp_name)
+            else:
+                g.es("unchanged:  " + file_name)
+                &lt;&lt; Erase the temporary file &gt;&gt;</t>
+<t tx="ekr.20071211113302.318"># Stephen Schaefer, 9/2/02
+# Retrieve the full complement of state for the root node
+self.language = section.root_attributes.language
+self.single_comment_string = section.root_attributes.single_comment_string
+self.start_comment_string = section.root_attributes.start_comment_string
+self.end_comment_string = section.root_attributes.end_comment_string
+self.use_header_flag = section.root_attributes.use_header_flag
+self.print_mode = section.root_attributes.print_mode
+self.path = section.root_attributes.path
+self.page_width = section.root_attributes.page_width
+self.tab_width = section.root_attributes.tab_width
+# Stephen P. Schaefer, 9/13/2002
+self.first_lines = section.root_attributes.first_lines
+</t>
+<t tx="ekr.20071211113302.319"># Stephen P. Schaefer 9/13/2002
+if self.first_lines:
+    self.os(self.first_lines)
+</t>
+<t tx="ekr.20071211113302.320">if self.single_comment_string:
+    self.os(self.single_comment_string)
+    self.os(" Created by Leo from: ")
+    self.os(outline_name)
+    self.onl() ; self.onl()
+elif self.start_comment_string and self.end_comment_string:
+    self.os(self.start_comment_string)
+    self.os(" Created by Leo from: ")
+    self.os(outline_name)
+    self.oblank() ; self.os(self.end_comment_string)
+    self.onl() ; self.onl()
+</t>
+<t tx="ekr.20071211113302.321">try: # Just delete the temp file.
+    os.remove(temp_name)
+except: pass
+</t>
+<t tx="ekr.20071211113302.322">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4639872
+By: kayvan
+
+I created a LEO outline with the following in it and started LEO-4.4.5-b1:
+
+---------------------------------------------
+Header: @nosent test.pyw
+Body:
+@language python
+@tabwidth -4
+@others
+
+- Subheader: Test code
+- Body:
+  #!/usr/bin/env python
+  from Tkinter import *
+  root = Tk()
+  w = Label(root, text="Hello world!")
+  w.pack()
+  root.mainloop()
+---------------------------------------------
+
+When I run Cmd-&gt;Run Script/Tests-&gt;Execute Script, I see the Tk window as expected.
+When I hit the close button to kill the application, all is fine. From this
+point on, any command I do (like Control-I, etc.) I see a message in the Log:
+
+Ignoring command: already executing a command.
+
+Nothing further can be done and I have to kill LEO with Task Manager.
+
+The same actions work as expected with LEO-4.4.4-final.
+
+@color</t>
+<t tx="ekr.20071211113302.323">def executeScript(self,event=None,p=None,script=None,
+    useSelectedText=True,define_g=True,define_name='__main__',silent=False):
+
+    """This executes body text as a Python script.
+
+    We execute the selected text, or the entire body text if no text is selected."""
+
+    c = self ; script1 = script
+    writeScriptFile = c.config.getBool('write_script_file')
+    if not script:
+        script = g.getScript(c,p,useSelectedText=useSelectedText)
+    self.redirectScriptOutput()
+    try:
+        log = c.frame.log
+        if script.strip():
+            sys.path.insert(0,c.frame.openDirectory)
+            script += '\n' # Make sure we end the script properly.
+            # print '*** script\n',script
+            try:
+                p = c.currentPosition()
+                d = g.choose(define_g,{'c':c,'g':g,'p':p},{})
+                if define_name: d['__name__'] = define_name
+                # A kludge: reset c.inCommand here to handle the case where we *never* return.
+                # (This can happen when there are multiple event loops.)
+                # This does not prevent zombie windows if the script puts up a dialog...
+                c.inCommand = False
+                if writeScriptFile:
+                    scriptFile = self.writeScriptFile(script)
+                    execfile(scriptFile,d)
+                else:
+                    exec script in d
+                if not script1 and not silent:
+                    # Careful: the script may have changed the log tab.
+                    tabName = log and hasattr(log,'tabName') and log.tabName or 'Log'
+                    g.es("end of script",color="purple",tabName=tabName)
+            except Exception:
+                g.handleScriptException(c,p,script,script1)
+            del sys.path[0]
+        else:
+            tabName = log and hasattr(log,'tabName') and log.tabName or 'Log'
+            g.es("no script selected",color="blue",tabName=tabName)
+    finally:
+        self.unredirectScriptOutput()
+</t>
+<t tx="ekr.20071211113302.324">def redirectScriptOutput (self):
+
+    c = self
+
+    if c.config.redirect_execute_script_output_to_log_pane:
+
+        g.redirectStdout() # Redirect stdout
+        g.redirectStderr() # Redirect stderr
+</t>
+<t tx="ekr.20071211113302.325">def unredirectScriptOutput (self):
+
+    c = self
+
+    if c.exists and c.config.redirect_execute_script_output_to_log_pane:
+
+        g.restoreStderr()
+        g.restoreStdout()
+</t>
+<t tx="ekr.20071211113302.326">def writeScriptFile (self,script):
+
+    # Get the path to the file.
+    c = self
+    path = c.config.getString('script_file_path')
+    if path:
+        parts = path.split('/')
+        path = g.app.loadDir
+        for part in parts:
+            path = g.os_path_abspath(g.os_path_join(path,part))
+    else:
+        path = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test','scriptFile.py'))
+
+    # Write the file.
+    try:
+        f = file(path,'w')
+        f.write(script)
+        f.close()
+    except Exception:
+        path = None
+
+    return path</t>
+<t tx="ekr.20071211113302.327">def endCommand (self,event,commandName):
+
+    '''Make sure Leo updates the widget following a command.
+
+    Never changes the minibuffer label: individual commands must do that.
+    '''
+
+    # pychecker complains about initAllEditCommanders.
+
+    k = self ; c = k.c
+    # The command may have closed the window.
+    if g.app.quitting or not c.exists: return
+
+    # Set the best possible undoType: prefer explicit commandName to k.commandName.
+    commandName = commandName or k.commandName or ''
+    k.commandName = k.commandName or commandName or ''
+    if commandName:
+        bodyCtrl = c.frame.body.bodyCtrl
+        if not k.inState():
+            # __pychecker__ = '--no-classattr --no-objattrs'
+                # initAllEditCommanders *does* exist.
+            k.commandName = None
+            leoEditCommands.initAllEditCommanders(c)
+            try:
+                bodyCtrl.tag_delete('color')
+                bodyCtrl.tag_delete('color1')
+            except Exception:
+                pass
+        if 0: # Do *not* call this by default.  It interferes with undo.
+            c.frame.body.onBodyChanged(undoType='Typing')
+        if k.newMinibufferWidget:
+            c.widgetWantsFocusNow(k.newMinibufferWidget)
+            # print 'endCommand', g.app.gui.widget_name(k.newMinibufferWidget),g.callers()
+            k.newMinibufferWidget = None
+</t>
+<t tx="ekr.20071211113302.328">def masterCommand (self,event,func,stroke,commandName=None):
+
+    '''This is the central dispatching method.
+    All commands and keystrokes pass through here.'''
+
+    k = self ; c = k.c ; gui = g.app.gui
+    trace = False or k.traceMasterCommand
+    traceGC = False
+    if traceGC: g.printNewObjects('masterCom 1')
+
+    c.setLog()
+    c.startRedrawCount = c.frame.tree.redrawCount
+    k.stroke = stroke # Set this global for general use.
+    keysym = gui.eventKeysym(event)
+    ch = gui.eventChar(event)
+    w = gui.eventWidget(event)
+    state = event and hasattr(event,'state') and event.state or 0
+    k.func = func
+    k.funcReturn = None # For unit testing.
+    commandName = commandName or func and func.__name__ or '&lt;no function&gt;'
+    &lt;&lt; define specialKeysyms &gt;&gt;
+    special = keysym in specialKeysyms
+    interesting = func is not None
+    inserted = not special
+
+    if trace: #  and interesting:
+        g.trace(
+            # 'stroke: ',stroke,'state:','%x' % state,'ch:',repr(ch),'keysym:',repr(keysym),
+            'w:',w and c.widget_name(w),'func:',func and func.__name__
+        )
+
+    if inserted:
+        # g.trace(stroke,keysym)
+        &lt;&lt; add character to history &gt;&gt;
+
+    # We *must not* interfere with the global state in the macro class.
+    if c.macroCommands.recordingMacro:
+        done = c.macroCommands.startKbdMacro(event)
+        if done: return 'break'
+
+    # g.trace(stroke,k.abortAllModesKey)
+
+    if k.abortAllModesKey and stroke == k.abortAllModesKey: # 'Control-g'
+        k.keyboardQuit(event)
+        k.endCommand(event,commandName)
+        return 'break'
+
+    if special: # Don't pass these on.
+        return 'break' 
+
+    if 0: # *** This is now handled by k.masterKeyHandler.
+        if k.inState():
+            val = k.callStateFunction(event) # Calls end-command.
+            if val != 'do-func': return 'break'
+            g.trace('Executing key outside of mode')
+
+    if k.regx.iter:
+        try:
+            k.regXKey = keysym
+            k.regx.iter.next() # EKR: next() may throw StopIteration.
+        except StopIteration:
+            pass
+        return 'break'
+
+    if k.abbrevOn:
+        expanded = c.abbrevCommands.expandAbbrev(event)
+        if expanded: return 'break'
+
+    if func: # Func is an argument.
+        if commandName == 'propagate-key-event':
+            # Do *nothing* with the event.
+            return k.propagateKeyEvent(event)
+        elif commandName.startswith('specialCallback'):
+            # The callback function will call c.doCommand
+            if trace: g.trace('calling specialCallback for',commandName)
+            val = func(event)
+            # k.simulateCommand uses k.funcReturn.
+            k.funcReturn = k.funcReturn or val # For unit tests.
+        else:
+            # Call c.doCommand directly
+            if trace: g.trace('calling command directly',commandName)
+            c.doCommand(func,commandName,event=event)
+        if c.exists:
+            k.endCommand(event,commandName)
+            c.frame.updateStatusLine()
+        if traceGC: g.printNewObjects('masterCom 2')
+        return 'break'
+    elif k.inState():
+        return 'break' #Ignore unbound keys in a state.
+    else:
+        if traceGC: g.printNewObjects('masterCom 3')
+        val = k.handleDefaultChar(event,stroke)
+        if c.exists:
+            c.frame.updateStatusLine()
+        if traceGC: g.printNewObjects('masterCom 4')
+        return val</t>
+<t tx="ekr.20071211113302.329">specialKeysyms = (
+    'Alt_L','Alt_R',
+    'Caps_Lock','Control_L','Control_R',
+    'Num_Lock',
+    'Shift_L','Shift_R',
+)</t>
+<t tx="ekr.20071211113302.330">if stroke or len(ch) &gt; 0:
+    if len(keyHandlerClass.lossage) &gt; 99:
+        keyHandlerClass.lossage.pop()
+
+    # This looks like a memory leak, but isn't.
+    keyHandlerClass.lossage.insert(0,(ch,stroke),)
+</t>
+<t tx="ekr.20071211113302.331">def callStateFunction (self,event):
+
+    k = self ; val = None
+
+    # g.trace(k.state.kind)
+
+    if k.state.kind:
+        if k.state.handler:
+            val = k.state.handler(event)
+            if val != 'continue':
+                k.endCommand(event,k.commandName)
+        else:
+            g.es_print('no state function for %s' % (k.state.kind),color='red')
+
+    return val
+</t>
+<t tx="ekr.20071211113302.332">def callKeystrokeFunction (self,event):
+
+    '''Handle a quick keystroke function.
+    Return the function or None.'''
+
+    k = self
+    numberOfArgs, func = k.keystrokeFunctionDict [k.stroke]
+
+    if func:
+        func(event)
+        commandName = k.inverseCommandsDict.get(func) # Get the emacs command name.
+        k.endCommand(event,commandName)
+
+    return func
+</t>
+<t tx="ekr.20071211113302.333">def handleDefaultChar(self,event,stroke):
+
+    k = self ; c = k.c
+    w = event and event.widget
+    name = c.widget_name(w)
+
+    if name.startswith('body'):
+        action = k.unboundKeyAction
+        if action in ('insert','overwrite'):
+            c.editCommands.selfInsertCommand(event,action=action)
+        else: pass # Ignore the key.
+        return 'break'
+    elif name.startswith('head'):
+        c.frame.tree.onHeadlineKey(event)
+        return 'break'
+    elif name.startswith('canvas'):
+        if not stroke: # Not exactly right, but it seems to be good enough.
+            c.onCanvasKey(event) # New in Leo 4.4.2
+        return 'break'
+    else:
+        # Let tkinter handle the event.
+        # ch = event and event.char ; g.trace('to tk:',name,repr(ch))
+        return None
+</t>
+<t tx="ekr.20071211113302.334">@ Several problems still remain:
+
+- Files that contain what look like section references.
+- Underindented docstrings.</t>
+<t tx="ekr.20071211113302.335">def checkTrialWrite (self,s1=None,s2=None):
+
+    '''Return True if a trial write produces the original file.'''
+
+    # s1 and s2 are for unit testing.
+
+    c = self.c ; at = c.atFileCommands
+
+    if s1 is None and s2 is None:
+        at.write(self.root,
+            nosentinels=True,thinFile=False,
+            scriptWrite=False,toString=True,
+            write_strips_blank_lines=False)
+        s1,s2 = self.file_s, at.stringOutput
+
+    s1 = g.toUnicode(s1,self.encoding)
+    s2 = g.toUnicode(s2,self.encoding)
+
+    # Make sure we have a trailing newline in both strings.
+    s1 = s1.replace('\r','')
+    s2 = s2.replace('\r','')
+    if not s1.endswith('\n'): s1 = s1 + '\n'
+    if not s2.endswith('\n'): s2 = s2 + '\n'
+
+    if s1 == s2: return True
+
+    lines1 = g.splitLines(s1) ; n1 = len(lines1)
+    lines2 = g.splitLines(s2) ; n2 = len(lines2)
+
+    # g.trace('lines1',lines1)
+    # g.trace('lines2',lines2)
+
+    ok = True ; bad_i = 0
+    for i in xrange(max(n1,n2)):
+        ok = self.compareHelper(lines1,lines2,i,self.strict)
+        if not ok:
+            bad_i = i + 1
+            break
+
+    if g.app.unitTesting:
+        d = g.app.unitTestDict
+        # g.trace('expected',d.get('expectedMismatchLine'),'actual',d.get('actualMismatchLine'))
+        ok = d.get('expectedMismatchLine') == d.get('actualMismatchLine')
+        # Unit tests do not generate errors unless the mismatch line does not match.
+
+    if not ok:
+        self.reportMismatch(lines1,lines2,bad_i)
+
+    return ok
+</t>
+<t tx="ekr.20071211113302.336">def compareHelper (self,lines1,lines2,i,strict):
+
+    '''Compare lines1[i] and lines2[i].
+    strict is True if leading whitespace is very significant.'''
+
+    def pr(*args,**keys): #compareHelper
+        g.es_print(color='blue',*args,**keys)
+
+    def pr_mismatch(i,line1,line2):
+        g.es_print('first mismatched line at line %d' % (i+1))
+        g.es_print('original line:  %s' % line1)
+        g.es_print('generated line: %s' % line2)
+
+    d = g.app.unitTestDict
+    expectedMismatch = g.app.unitTesting and d.get('expectedMismatchLine')
+    enableWarning = not self.mismatchWarningGiven and self.atAutoWarnsAboutLeadingWhitespace
+    messageKind = None
+
+    if i &gt;= len(lines1):
+        if i != expectedMismatch or not g.unitTesting:
+            pr('extra lines')
+            for line in lines2[i:]:
+                pr(repr(line))
+        d ['actualMismatchLine'] = i
+        return False
+
+    if i &gt;= len(lines2):
+        if i != expectedMismatch or not g.unitTesting:
+            g.es_print('missing lines')
+            for line in lines2[i:]:
+                g.es_print(repr(line))
+        d ['actualMismatchLine'] = i
+        return False
+
+    line1,line2 = lines1[i],lines2[i]
+
+    if line1 == line2:
+        return True # An exact match.
+    elif not line1.strip() and not line2.strip():
+        return True # Blank lines compare equal.
+    elif strict:
+        s1,s2 = line1.lstrip(),line2.lstrip()
+        messageKind = g.choose(
+            s1 == s2 and self.startsComment(s1,0) and self.startsComment(s2,0),
+            'comment','error')
+    else:
+        s1,s2 = line1.lstrip(),line2.lstrip()
+        messageKind = g.choose(s1==s2,'warning','error')
+
+    if g.unitTesting:
+        d ['actualMismatchLine'] = i+1
+        ok = i+1 == expectedMismatch
+        if not ok:  pr_mismatch(i,line1,line2)
+        return ok
+    elif strict:
+        if enableWarning:
+            self.mismatchWarningGiven = True
+            if messageKind == 'comment':
+                self.warning('mismatch in leading whitespace before comment')
+            else:
+                self.error('mismatch in leading whitespace')
+            pr_mismatch(i,line1,line2)
+        return messageKind == 'comment' # Only mismatched comment lines are valid.
+    else:
+        if enableWarning:
+            self.mismatchWarningGiven = True
+            self.checkLeadingWhitespace(line1)
+            self.warning('mismatch in leading whitespace')
+            pr_mismatch(i,line1,line2)
+        return messageKind in ('comment','warning') # Only errors are invalid.
+
+    # elif (not strict and not g.unitTesting) and line1.lstrip() == line2.lstrip():
+        # if not self.mismatchWarningGiven and self.atAutoWarnsAboutLeadingWhitespace:
+            # self.mismatchWarningGiven = True
+            # self.checkLeadingWhitespace(line1)
+            # self.warning('mismatch in leading whitespace')
+            # g.es_print('first mismatched line at line %d' % (i+1))
+            # g.es_print('original line:  %s' % line1)
+            # g.es_print('generated line: %s' % line2)
+        # return True # A match excluding leading whitespace.
+    # else: # strict OR unit testing.
+        # if not g.unitTesting or i+1 != expectedMismatch:
+            # # g.trace('unitTesting',g.unitTesting)
+            # g.es_print('*** first mismatch at line %d' % (i+1))
+            # g.es_print('original line:  %s' % line1)
+            # g.es_print('generated line: %s' % line2)
+        # d ['actualMismatchLine'] = i+1
+        # # g.trace('lines 1...\n',repr(lines1),'\nlines2...\n',repr(lines2))
+        # return False
+</t>
+<t tx="ekr.20071211113302.337">def underindentedComment (self,line):
+
+    if self.atAutoWarnsAboutLeadingWhitespace:
+        self.warning(
+            'underindented python comments.\nExtra leading whitespace will be added\n' + line)
+
+def underindentedLine (self,line):
+
+    self.error(
+        'underindented line.\nExtra leading whitespace will be added\n' + line)
+</t>
+<t tx="ekr.20071211113302.338"></t>
+<t tx="ekr.20071211113302.339"></t>
+<t tx="ekr.20071211113302.340">@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=4658901
+
+Making the modifications you proposed I still was not able to open any outline.
+
+Only if I open Leo w/o a file I was able to retrieve the following information
+from the cms-shell:
+
+&lt;Log&gt;
+
+reading settings in C:\CVS-Reps\leo\config\leoSettings.leo
+reading settings in C:\Dokumente und Einstellungen\VR\myLeoSettings.leo
+reading C:\Dokumente und Einstellungen\VR\.leoRecentFiles.txt
+@enabled-plugins found in myLeoSettings.leo
+rst3 plugin: SilverCity not loaded
+loadOnePlugin: no init() detect_urls
+loadOnePlugin: no init() empty_leo_file
+redefining close-window in all to extend-to-word in all
+redefining goto-first-node in tree to goto-first-visible-node in tree
+redefining goto-first-node in tree to goto-first-visible-node in all
+redefining goto-first-node in tree to goto-first-visible-node in all
+redefining forward-sentence in text to propagate-key-event in all
+redefining forward-word in text to propagate-key-event in all
+redefining kill-region-save in all to propagate-key-event in all
+Traceback (most recent call last):
+  File "C:\CVS-Reps\leo\src\leo.py", line 428, in ?
+    run()
+  File "C:\CVS-Reps\leo\src\leo.py", line 146, in run
+    c,frame = createFrame(fileName,relativeFileName)
+  File "C:\CVS-Reps\leo\src\leo.py", line 221, in createFrame
+    initEditCommanders=True)
+  File "C:\CVS-Reps\leo\src\leoApp.py", line 583, in newLeoCommanderAndFrame
+    c.finishCreate(initEditCommanders)
+  File "C:\CVS-Reps\leo\src\leoCommands.py", line 223, in finishCreate
+    c.frame.log.finishCreate()
+  File "C:\CVS-Reps\leo\src\leoTkinterFrame.py", line 2096, in finishCreate
+    c.spellCommands.openSpellTab()
+  File "C:\CVS-Reps\leo\src\leoEditCommands.py", line 8051, in openSpellTab
+    self.handler = spellTabHandler(c,tabName)
+  File "C:\CVS-Reps\leo\src\leoEditCommands.py", line 8131, in __init__
+    self.loaded = self.init_aspell(c)
+  File "C:\CVS-Reps\leo\src\leoEditCommands.py", line 8151, in init_aspell
+    self.aspell = AspellClass(c,dictionaryFileName,self.local_language_code)
+  File "C:\CVS-Reps\leo\src\leoEditCommands.py", line 8442, in __init__
+    if ctypes:
+UnboundLocalError: local variable 'ctypes' referenced before assignment
+&gt;&gt;&gt;
+
+&lt;/Log&gt;
+
+To ease your analyis, I'm also adding my local output w/ Leo-4.4.5-beta-1,
+which works w/o a problem:
+
+&lt;Log&gt;
+
+Leo Log Window...
+Leo 4.4.5 beta 1, build  1.223 , November 16, 2007
+Python 2.4.3, Tk 8.4.7, Pmw 1.2
+Windows 5, 1, 2600, 2, Service Pack 2
+
+redefining close-window in all to extend-to-word in all
+redefining goto-first-node in tree to goto-first-visible-node in tree
+redefining goto-first-node in tree to goto-first-visible-node in all
+redefining goto-first-node in tree to goto-first-visible-node in all
+redefining forward-sentence in text to propagate-key-event in all
+redefining forward-word in text to propagate-key-event in all
+redefining kill-region-save in all to propagate-key-event in all
+Can not import aspell
+can not import aspell
+leoID = vr20060903 (in C:\Dokumente und Einstellungen\VR)
+global config dir: C:\Programme\Leo\config
+home dir: C:\Dokumente und Einstellungen\VR
+reading settings in C:\Programme\Leo\config\leoSettings.leo
+reading settings in C:\Dokumente und Einstellungen\VR\myLeoSettings.leo
+reading settings in C:\Dokumente und Einstellungen\VR\Eigene
+Dateien\WLog\WLog.leo
+reading: C:\Dokumente und Einstellungen\VR\Eigene Dateien\WLog\WLog.leo
+
+&lt;/Log&gt;
+
+Kind regards,
+
+    Viktor Ransmayr
+</t>
+<t tx="ekr.20071211113302.341">@nocolor
+
+leoEditCommands now tries to import ctypes at the top level.
+If there is an ImportError, ctypes is set to None.</t>
+<t tx="ekr.20071211113302.342"></t>
+<t tx="ekr.20071211113302.343">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4652514
+By: terry_n_brown
+
+@auto seems to be munging decorators.
+
+Starting with the decorator in the right place, it gets written correctly as:
+
+class Index:
+...."""docstring"""
+....@cherrypy.expose
+....def index(self):
+........return "Hello world!"
+
+but on read the body text for node 'class Index' is:
+
+class Index:
+...."""docstring"""
+....@cherrypy.expose
+....@others
+</t>
+<t tx="ekr.20071211113302.344"></t>
+<t tx="ekr.20071211113302.345">def find_line_start(s,i):
+
+    if i &lt; 0: return 0 # New in Leo 4.4.5: add this defensive code.
+    # bug fix: 11/2/02: change i to i+1 in rfind
+    i = string.rfind(s,'\n',0,i+1) # Finds the highest index in the range.
+    if i == -1: return 0
+    else: return i + 1
+</t>
+<t tx="ekr.20071211113302.346">def startsHelper(self,s,i,kind,tags):
+    '''return True if s[i:] starts a class or function.
+    Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
+
+    # if not tags: return False
+
+    trace = self.trace
+    verbose = False # kind=='function'
+    self.codeEnd = self.sigEnd = self.sigId = None
+    self.sigStart = i
+
+    # Underindented lines can happen in any language, not just Python.
+    # The skipBlock method of the base class checks for such lines.
+    self.startSigIndent = self.getLeadingIndent(s,i)
+
+    # Get the tag that starts the class or function.
+    j = g.skip_ws_and_nl(s,i)
+    i = self.skipId(s,j)
+    self.sigId = theId = s[j:i] # Set sigId ivar 'early' for error messages.
+    if not theId: return False
+
+    if tags:
+        if theId not in tags:
+            if trace and verbose: g.trace('**** %s theId: %s not in tags: %s' % (kind,theId,tags))
+            return False
+
+    if trace and verbose: g.trace('kind',kind,'id',theId)
+
+    # Get the class/function id.
+    i, ids, classId = self.skipSigStart(s,j,kind,tags) # Rescan the first id.
+    sigId = self.getSigId(ids)
+    if not sigId:
+        if trace and verbose: g.trace('**no sigId',g.get_line(s,i))
+        return False
+
+    if self.output_indent &lt; self.startSigIndent:
+        if trace: g.trace('**over-indent',sigId)
+            #,'output_indent',self.output_indent,'startSigIndent',self.startSigIndent)
+        return False
+
+    # Skip the argument list.
+    i, ok = self.skipArgs(s,i,kind)
+    if not ok:
+        if trace and verbose: g.trace('no args',g.get_line(s,i))
+        return False
+    i = g.skip_ws_and_nl(s,i)
+
+    # Skip the tail of the signature
+    i, ok = self.skipSigTail(s,i)
+    if not ok:
+        if trace and verbose: g.trace('no tail',g.get_line(s,i))
+        return False
+    sigEnd = i
+
+    # A trick: make sure the signature ends in a newline,
+    # even if it overlaps the start of the block.
+    if not g.match(s,sigEnd,'\n') and not g.match(s,sigEnd-1,'\n'):
+        if trace and verbose: g.trace('extending sigEnd')
+        sigEnd = g.skip_line(s,sigEnd)
+
+    if self.blockDelim1:
+        i = g.skip_ws_and_nl(s,i)
+        if not g.match(s,i,self.blockDelim1):
+            if trace and verbose: g.trace('no block',g.get_line(s,i))
+            return False
+
+    i,ok = self.skipCodeBlock(s,i,kind)
+    if not ok: return False
+        # skipCodeBlock skips the trailing delim.
+
+    # Success: set the ivars.
+    self.sigStart = self.adjustDefStart(s,self.sigStart)
+    self.codeEnd = i
+    self.sigEnd = sigEnd
+    self.sigId = sigId
+    self.classId = classId
+
+    # Note: backing up here is safe because
+    # we won't back up past scan's 'start' point.
+    # Thus, characters will never be output twice.
+    k = self.sigStart
+    if not g.match(s,k,'\n'):
+        self.sigStart = g.find_line_start(s,k)
+
+    # Issue this warning only if we have a real class or function.
+    if 0: ### wrong.
+        if s[self.sigStart:k].strip():
+            self.error('%s definition does not start a line\n%s' % (
+                kind,g.get_line(s,k)))
+
+    if trace: g.trace(kind,'returns\n'+s[self.sigStart:i])
+    return True
+</t>
+<t tx="ekr.20071211113302.347">def adjustDefStart (self,s,i):
+
+    '''A hook to allow the Python importer to adjust the 
+    start of a class or function to include decorators.'''
+
+    if i == 0 or s[i-1] != '\n':
+        return i
+
+    while i &gt; 0:
+        progress = i
+
+        start = j = g.find_line_start(s,i-2)
+        j = g.skip_ws(s,j)
+        if not g.match(s,j,'@'):
+            return i
+
+        j += 1
+        k = g.skip_id(s,j)
+        word = s[j:k]
+
+        if word and word not in g.globalDirectiveList:
+            # g.trace(repr(word),repr(s[start:i]))
+            i = start
+            assert i &lt; progress
+        else:
+            return i
+</t>
+<t tx="ekr.20071211113302.348">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4654762
+By: terry_n_brown
+
+Looking at it again I've decided it's a real bug.  Here's how to make it
+happen.
+
+Open a file, create a new @auto node, and type into the @auto node the
+following:
+
+
+import time
+
+class test:
+....pass
+
+def main():
+....a = test()
+
+if __name__='__main__': main()
+
+
+First and last lines may be irrelevant.  Save the file.  Check it's content
+externally.  Looks fine.
+
+Now add a line which just say 'class test' above the 'class test:' line, and
+use command that creates a child node from the select text using the first line
+of the selected text as the node title.  I can't remember its name, but you
+press ctrl-shft-D.  Repeat for main().  Save.  Check it's content externally
+- the children are gone!  Must have been the gypsies :-)
+
+-------------
+
+The problem is that there is no @others directive, but the orphan warning didn't happen and the file was written.
+
+@color
+</t>
+<t tx="ekr.20071211113302.349"># This is the entry point to the write code.  root should be an @file vnode.
+
+def write(self,root,
+    nosentinels=False,thinFile=False,scriptWrite=False,
+    toString=False,write_strips_blank_lines=None
+):
+
+    """Write a 4.x derived file."""
+
+    at = self ; c = at.c
+    c.endEditing() # Capture the current headline.
+    &lt;&lt; set at.targetFileName &gt;&gt;
+    at.initWriteIvars(root,at.targetFileName,
+        nosentinels=nosentinels,thinFile=thinFile,
+        scriptWrite=scriptWrite,toString=toString,
+        write_strips_blank_lines=write_strips_blank_lines)
+    if not at.openFileForWriting(root,at.targetFileName,toString):
+        return
+
+    try:
+        at.writeOpenFile(root,nosentinels=nosentinels,toString=toString)
+        if toString:
+            at.closeWriteFile() # sets self.stringOutput
+            # Major bug: failure to clear this wipes out headlines!
+            # Minor bug: sometimes this causes slight problems...
+            at.root.v.t.tnodeList = []
+            at.root.v.t._p_changed = True
+        else:
+            at.closeWriteFile()
+            &lt;&lt; set dirty and orphan bits on error &gt;&gt;
+    except Exception:
+        if toString:
+            at.exception("exception preprocessing script")
+            at.root.v.t.tnodeList = []
+            at.root.v.t._p_changed = True
+        else:
+            at.writeException() # Sets dirty and orphan bits.
+</t>
+<t tx="ekr.20071211113302.350">if toString:
+    at.targetFileName = "&lt;string-file&gt;"
+elif nosentinels:
+    at.targetFileName = root.atNoSentFileNodeName()
+elif thinFile:
+    at.targetFileName = root.atThinFileNodeName()
+else:
+    at.targetFileName = root.atFileNodeName()
+</t>
+<t tx="ekr.20071211113302.351"># Setting the orphan and dirty flags tells Leo to write the tree..
+
+if at.errors &gt; 0 or at.root.isOrphan():
+    root.setOrphan()
+    root.setDirty() # Make _sure_ we try to rewrite this file.
+    os.remove(at.outputFileName) # Delete the temp file.
+    g.es("Not written: " + at.outputFileName)
+else:
+    root.clearOrphan()
+    root.clearDirty()
+    at.replaceTargetFileIfDifferent()
+</t>
+<t tx="ekr.20071211113302.352">def writeOneAtAutoNode(self,p,toString,force):
+
+    '''Write p, an @auto node.'''
+
+    at = self ; c = at.c ; root = p.copy()
+
+    fileName = p.atAutoNodeName()
+    if not fileName: return False
+
+    at.scanDefaultDirectory(p,importing=True) # Set default_directory
+    fileName = g.os_path_join(at.default_directory,fileName)
+    exists = g.os_path_exists(fileName)
+
+    if not toString and not self.shouldWriteAtAutoNode(p,exists,force):
+        return False
+
+    # This code is similar to code in at.write.
+    c.endEditing() # Capture the current headline.
+    at.targetFileName = g.choose(toString,"&lt;string-file&gt;",fileName)
+    at.initWriteIvars(root,at.targetFileName,
+        nosentinels=True,thinFile=False,scriptWrite=False,
+        toString=toString,write_strips_blank_lines=False)
+
+    ok = at.openFileForWriting (root,fileName=fileName,toString=toString)
+    if ok:
+        at.writeOpenFile(root,nosentinels=True,toString=toString,atAuto=True)
+        at.closeWriteFile() # Sets stringOutput if toString is True.
+        if at.errors == 0:
+            at.replaceTargetFileIfDifferent()
+        else:
+            g.es("Not written: " + at.outputFileName)
+    elif not toString:
+        root.setDirty() # Make _sure_ we try to rewrite this file.
+        g.es("Not written: " + at.outputFileName)
+
+    return ok
+</t>
+<t tx="ekr.20071211113302.353">@ Much thought went into this decision tree:
+
+- We do not want decisions to depend on past history.  That's too confusing.
+- We must ensure that the file will be written if the user does significant work.
+- We must ensure that the user can create an @auto x node at any time
+  without risk of of replacing x with empty or insignificant information.
+- We want the user to be able to create an @auto node which will be populated the next time the .leo file is opened.
+- We don't want minor import imperfections to be written to the @auto file.
+- The explicit commands that read and write @auto trees must always be honored.
+@c
+
+def shouldWriteAtAutoNode (self,p,exists,force):
+
+    '''Return True if we should write the @auto node at p.'''
+
+    if force: # We are executing write-at-auto-node or write-dirty-at-auto-nodes.
+        return True
+    elif not exists: # We can write a non-existent file without danger.
+        return True
+    elif not p.isDirty(): # There is nothing new to write.
+        return False
+    elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
+        g.es_print('%s not written:\n\
+no children and less than 10 characters (excluding directives)' % (p.headString()),color='red')
+        return False
+    else: # The @auto tree is dirty and contains significant info.
+        return True
+</t>
+<t tx="ekr.20071211113302.354">def isSignificantAtAutoTree (self,p):
+
+    '''Return True if p's tree has a significant amount of information.'''
+
+    s = p.bodyString()
+
+    # Remove all blank lines and all Leo directives.
+    lines = []
+    for line in g.splitLines(s):
+        if not line.strip():
+            pass
+        elif line.startswith('@'):
+            i = 1 ; j = g.skip_id(line,i,chars='-')
+            word = s[i:j]
+            if not (word and word in g.globalDirectiveList):
+                lines.append(line)
+        else:
+            lines.append(line)
+
+    s2 = ''.join(lines)
+    # g.trace('s2',s2)
+
+    return p.hasChildren() or len(s2.strip()) &gt;= 10
+</t>
+<t tx="ekr.20071211113302.355"># New in 4.3: must be inited before calling this method.
+# New in 4.3 b2: support for writing from a string.
+
+def writeOpenFile(self,root,nosentinels=False,toString=False,fromString='',atAuto=False):
+
+    """Do all writes except asis writes."""
+
+    at = self ; s = g.choose(fromString,fromString,root.v.t.bodyString)
+
+    root.clearAllVisitedInTree() # Clear both vnode and tnode bits.
+    root.clearVisitedInTree()
+
+    at.putAtFirstLines(s)
+    at.putOpenLeoSentinel("@+leo-ver=4")
+    at.putInitialComment()
+    at.putOpenNodeSentinel(root)
+    at.putBody(root,fromString=fromString)
+    at.putCloseNodeSentinel(root)
+    at.putSentinel("@-leo")
+    root.setVisited()
+    at.putAtLastLines(s)
+
+    if atAuto or (not toString and not nosentinels):
+        at.warnAboutOrphandAndIgnoredNodes()
+</t>
+<t tx="ekr.20071211113302.356"># Called from writeOpenFile.
+
+def warnAboutOrphandAndIgnoredNodes (self):
+
+    # Always warn, even when language=="cweb"
+    at = self ; root = at.root
+
+    for p in root.self_and_subtree_iter():
+        if not p.v.t.isVisited(): # Check tnode bit, not vnode bit.
+            at.writeError("Orphan node:  " + p.headString())
+            if p.hasParent():
+                g.es("parent node: " + p.parent().headString(),color="blue")
+            if not at.thinFile and p.isAtIgnoreNode():
+                at.writeError("@ignore node: " + p.headString())
+
+    if at.thinFile:
+        p = root.copy() ; after = p.nodeAfterTree()
+        while p and p != after:
+            if p.isAtAllNode():
+                p.moveToNodeAfterTree()
+            else:
+                if p.isAtIgnoreNode():
+                    at.writeError("@ignore node: " + p.headString())
+                p.moveToThreadNext()
+</t>
+<t tx="ekr.20071211113302.357">@nocolor
+
+I have clones that traverse chapters.
+
+Given the following Chapters:
+
+&gt; Main
+&gt; Big Picture
+&gt; Smaller Chunk
+
+I have in Main, my organization, with my group in it.  It's also cloned around
+all the other views (really, everything starts in the Big Picture).
+
+This is the layout of my clone:
+
+1:  Chapter:Main &gt; me
+2:  Chapter:Main &gt; MyOrg &gt; me
+3:  Chapter:Big Picture &gt; CEO &gt; Some Big Honcho &gt; MyOrg &gt; me
+4:  Chapter:Smaller Chunk &gt; Some Big Honcho &gt; MyOrg &gt; me
+
+If I Go-To-Next-Clone  (ALT-N) from (1), focus will move to the selected node
+in Chapter:Main, namely (2).
+
+So here's the issue: 
+
+Let each successive line below represent a starting focus, and the next line
+the node that ALT-N selects.  If focus changes in the Outline pane (including
+Chapter pane change) to match the Node, that case is marked with [f] - a successful
+focus transition.
+
+The issue are the lines w/o [f];  Here's a couple of test runs.
+
+1: [f] (starting node / focus)
+2: [f]
+3:
+4:
+1: [f]
+
+Next test:
+
+3: [f]
+1: [f]
+1: [f]
+4:
+3:
+1: [f]
+
+Next test:
+
+4: [f]
+3:
+1: [f]
+2: [f]
+4:
+3:
+1: [f]
+2: [f]
+... and so on...
+
+In cases with NO [f], the outline pane seems moved to the "end", but no node
+selected.
+
+Not a show stopper, but a bug nonetheless.
+
+@color
+</t>
+<t tx="ekr.20071211113302.358">def goToNextClone (self,event=None):
+
+    '''Select the next node that is a clone of the selected node.'''
+
+    c = self ; cc = c.chapterController ; p = c.currentPosition()
+    if not p: return
+    if not p.isCloned():
+        g.es('not a clone: %s' % (p.headString()),color='blue')
+        return
+
+    t = p.v.t
+    p.moveToThreadNext()
+    wrapped = False
+    while 1:
+        if p and p.v.t == t:
+            break
+        elif p:
+            p.moveToThreadNext()
+        elif wrapped:
+            break
+        else:
+            wrapped = True
+            p = c.rootPosition()
+
+    if not p: g.es("done",color="blue")
+
+    if cc:
+        name = cc.findChapterNameForPosition(p)
+        cc.selectChapterByName(name)
+        c.frame.tree.expandAllAncestors(p)
+
+    c.selectPosition(p)
+</t>
+<t tx="ekr.20071211113302.359">def treeSelectHelper (self,p,redraw=True):
+
+    c = self ; current = c.currentPosition()
+
+    if p:
+        c.beginUpdate()
+        try:
+            c.frame.tree.expandAllAncestors(p)
+            c.selectPosition(p,updateBeadList=False)
+        finally:
+            c.endUpdate(redraw)
+
+    c.treeFocusHelper()
+</t>
+<t tx="ekr.20071211113302.360">def treeFocusHelper (self):
+
+    c = self
+
+    if c.config.getBool('stayInTreeAfterSelect'):
+        c.treeWantsFocusNow()
+    else:
+        c.bodyWantsFocusNow()
+</t>
+<t tx="ekr.20071211113302.361">def selectPosition(self,p,updateBeadList=True):
+
+    """Select a new position."""
+
+    c = self ; cc = c.chapterController
+
+    if cc:
+        cc.selectChapterForPosition(p)
+
+    # g.trace(p.headString(),g.callers())
+
+    c.frame.tree.select(p,updateBeadList)
+
+    # New in Leo 4.4.2.
+    c.setCurrentPosition(p)
+        # Do *not* test whether the position exists!
+        # We may be in the midst of an undo.
+
+selectVnode = selectPosition
+</t>
+<t tx="ekr.20071211113302.362">def selectChapterForPosition (self,p):
+
+    '''
+    Select a chapter containing position p.
+    Do nothing if p if p does not exist or is in the presently selected chapter.
+    '''
+    cc = self ; c = cc.c ; trace = False
+
+    if not p or not c.positionExists(p):
+        return
+
+    theChapter = cc.getSelectedChapter()
+    if not theChapter:
+        if trace: g.trace('no chapter')
+        return
+
+    if trace: g.trace('selected:',theChapter.name)
+    # First, try the presently selected chapter.
+    firstName = theChapter.name
+    if firstName == 'main' or theChapter.positionIsInChapter(p):
+        if trace: g.trace('in chapter:',theChapter.name)
+        return
+
+    for name in cc.chaptersDict.keys():
+        if name not in (firstName,'main'):
+            theChapter = cc.chaptersDict.get(name)
+            if theChapter.positionIsInChapter(p):
+                if trace: g.trace('select:',theChapter.name)
+                cc.selectChapterByName(name)
+                return
+    else:
+        if trace: g.trace('select main')
+        cc.selectChapterByName('main')
+</t>
+<t tx="ekr.20071211113302.363">def findChapterNameForPosition (self,p):
+
+    '''
+    Return the name of a chapter containing p or None if p does not exist.
+    '''
+    cc = self ; c = cc.c
+
+    if not p or not c.positionExists(p):
+        return None
+
+    for name in cc.chaptersDict.keys():
+        if name != 'main':
+            theChapter = cc.chaptersDict.get(name)
+            if theChapter.positionIsInChapter(p):
+                return name
+    else:
+        return 'main'
+</t>
+<t tx="ekr.20071211113302.364">tree_select_lockout = False
+
+def select (self,p,updateBeadList=True,scroll=True):
+
+    '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
+
+    if g.app.killed or self.tree_select_lockout: return None
+
+    try:
+        val = 'break'
+        self.tree_select_lockout = True
+        val = self.treeSelectHelper(p,updateBeadList,scroll)
+    finally:
+        self.tree_select_lockout = False
+
+    return val  # Don't put a return in a finally clause.
+</t>
+<t tx="ekr.20071211113302.365">#  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
+
+def treeSelectHelper (self,p,updateBeadList,scroll):
+
+    c = self.c ; frame = c.frame ; trace = False
+    body = w = frame.body.bodyCtrl
+    old_p = c.currentPosition()
+
+    if not p:
+        # Do *not* test c.positionExists(p) here.
+        # We may be in the process of changing roots.
+        return None # Not an error.
+
+    # g.trace('      ===',id(w),p and p.headString())
+    if self.trace_select and not g.app.unitTesting: g.trace('tree',g.callers())
+
+    if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
+        if old_p:
+            &lt;&lt; unselect the old node &gt;&gt;
+
+    g.doHook("unselect2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+
+    if not g.doHook("select1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
+        &lt;&lt; select the new node &gt;&gt;
+        if p and p != old_p: # Suppress duplicate call.
+            try: # may fail during initialization.
+                # p is NOT c.currentPosition() here!
+                if 0: # Interferes with new colorizer.
+                    self.canvas.update_idletasks()
+                    self.scrollTo(p)
+                if scroll and g.app.gui.guiName() == 'tkinter':
+                    def scrollCallback(self=self,p=p):
+                        self.scrollTo(p)
+                    self.canvas.after(100,scrollCallback)
+            except Exception: pass
+        c.nodeHistory.update(p,updateBeadList) # Remember this position.
+    c.setCurrentPosition(p)
+    &lt;&lt; set the current node &gt;&gt;
+    c.frame.body.assignPositionToEditor(p) # New in Leo 4.4.1.
+    c.frame.updateStatusLine() # New in Leo 4.4.1.
+
+    g.doHook("select2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+    g.doHook("select3",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+
+    return 'break' # Supresses unwanted selection.
+</t>
+<t tx="ekr.20071211113302.366"># Remember the position of the scrollbar before making any changes.
+if not body: g.trace('no body!','c.frame',c.frame,'old_p',old_p)
+
+yview = body.getYScrollPosition()
+insertSpot = c.frame.body.getInsertPoint()
+
+if old_p != p:
+    self.endEditLabel() # sets editPosition = None
+    self.setUnselectedLabelState(old_p) # 12/17/04
+
+if c.edit_widget(old_p):
+    old_p.v.t.scrollBarSpot = yview
+    old_p.v.t.insertSpot = insertSpot
+</t>
+<t tx="ekr.20071211113302.367"># Bug fix: we must always set this, even if we never edit the node.
+self.revertHeadline = p.headString()
+frame.setWrap(p)
+
+# Always do this.  Otherwise there can be problems with trailing newlines.
+
+s = g.toUnicode(p.v.t.bodyString,"utf-8")
+old_s = w.getAllText()
+
+if True and p and p == old_p and c.frame.body.colorizer.isSameColorState() and s == old_s:
+    pass
+else:
+    # This destroys all color tags, so do a full recolor.
+    w.setAllText(s)
+    self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
+
+if p.v and p.v.t.scrollBarSpot != None:
+    first,last = p.v.t.scrollBarSpot
+    w.setYScrollPosition(first)
+
+if p.v and p.v.t.insertSpot != None:
+    spot = p.v.t.insertSpot
+    w.setInsertPoint(spot)
+    w.see(spot)
+else:
+    w.setInsertPoint(0)
+
+# g.trace("select:",p.headString())
+</t>
+<t tx="ekr.20071211113302.368"># g.trace('selecting',p,'edit_widget',c.edit_widget(p))
+self.setSelectedLabelState(p)
+
+frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
+
+if self.use_chapters:
+    cc = c.chapterController
+    theChapter = cc.getSelectedChapter()
+    if theChapter:
+        theChapter.p = p.copy()
+        # g.trace('tkTree',theChapter.name,'v',id(p.v),p.headString())
+
+if self.stayInTree:
+    c.treeWantsFocus()
+else:
+    c.bodyWantsFocus()
+</t>
+<t tx="ekr.20071211113302.369">def findEditWidget (self,p):
+
+    """Return the Tk.Text item corresponding to p."""
+
+    c = self.c ; trace = False
+
+    # if trace: g.trace(g.callers())
+    if p and c:
+        if trace: g.trace('h',p.headString(),'key',p.key())
+        aTuple = self.visibleText.get(p.key())
+        if aTuple:
+            w,theId = aTuple
+            if trace: g.trace('%4d' % (theId),self.textAddr(w),p.headString())
+            return w
+        else:
+            if trace: g.trace('oops: not found',p,g.callers())
+            return None
+
+    if trace: g.trace('not found',p and p.headString())
+    return None
+</t>
+<t tx="ekr.20071211113302.370">def key (self):
+
+    p = self
+
+    return '%s:%d.%s' % (
+        id(p.v),
+        p.childIndex(),
+        ','.join([str(id(v)) for v in p.stack])
+    )
+</t>
+<t tx="ekr.20071211113302.371"></t>
+<t tx="ekr.20071211113302.372"></t>
+<t tx="ekr.20071211113302.373"></t>
+<t tx="ekr.20071211113302.374">@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=4634600
+By: kayvan
+
+I have a puzzle. On my ubuntu 7.10 box, leo works just fine with aspell.
+
+On my Redhat FC4 Linux, I was getting two mesasges on startup:
+
+Can not import aspell
+can not import aspell
+
+Yes, one "Can" is capitalized and the next is not, and the "Spell" tab was not
+showing up.
+
+I have aspell-0.60 installed on both machines.
+
+I looked around on the forums and I found some instructions that mention installing
+aspell-python (from http://www.wmula.republika.pl/proj/aspell-python/index-c.html
+) so I installed it on my Redhat box.
+
+When I try to launch leo now, I get:
+
+Traceback (most recent call last):
+[...]
+  File "/home/kayvan/src/leo/src/leoEditCommands.py", line 8152, in init_aspell
+    self.aspell = AspellClass(c,dictionaryFileName,self.local_language_code)
+  File "/home/kayvan/src/leo/src/leoEditCommands.py", line 8446, in __init__
+    self.getAspell()
+  File "/home/kayvan/src/leo/src/leoEditCommands.py", line 8462, in getAspell
+    self.sc = aspell
+and aspell.spell_checker(prefix=self.aspell_dir,lang=self.local_language_code)
+AttributeError: 'module' object has no attribute 'spell_checker'
+
+So I had to remove aspell-python.
+
+What's interesting is that I don't have aspell-python installed on my Ubuntu
+box either.
+
+What's going on? What do I need to do to get aspell working with leo on my Redhat
+machine?
+
+------------------------- My reply
+
+Thanks for this report. I'll look into this immediately. At the very least the
+error reporting could be a bit less alarming. Probably this code should not be
+called at all on Linux.
+
+Leo uses two different ways of importing aspell, depending on what version of
+Python is installed. For Python 2.5 (and may other versions), Leo can avoid
+trying to find aspell.dll. But this code isn't in getAspellWithCtypes, so you
+must have a proper aspell.dll where Leo can find it. But this only work on
+Windows.
+
+The notes in leoSettings.leo, in the node '@settings--&gt;Spell tab' say that you
+must be using Python 2.5 or later if you are using Linux.
+
+@color</t>
 </tnodes>
 </leo_file>
