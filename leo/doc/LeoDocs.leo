@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="14" left="340" height="792" width="892"/>
+	<global_window_position top="14" left="340" height="772" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -1102,7 +1102,7 @@
 </v>
 </v>
 <v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
-<v t="ekr.20060620094033" a="TV"><vh>What's New...</vh>
+<v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20071116062917"><vh>What's New in Leo 4.4.5</vh>
 <v t="ekr.20071116062917.1"><vh>@rst html\new-4-4-5.html</vh>
 <v t="ekr.20071116062917.2"><vh>@rst-no-head links</vh></v>
@@ -3438,9 +3438,6 @@
 <v t="ekr.20071115102156.289"><vh>@bool warn_when_plugins_fail_to_load </vh></v>
 </v>
 </v>
-</v>
-</v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
 <v t="ekr.20071206093346"><vh>Leo 4.4.5 b2</vh>
 <v t="ekr.20071206093323.1"><vh>Fixed bugs</vh>
 <v t="ekr.20071206093323.112"><vh>Improved error reporting for aspell on Linux</vh></v>
@@ -3460,6 +3457,10 @@
 <v t="ekr.20071206093323.96"><vh>Fixed  focus problem with goto-next clone command</vh></v>
 </v>
 </v>
+</v>
+</v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20071211083251" a="TV"><vh>Leo 4.4.5 final</vh></v>
 </v>
 </v>
 </vnodes>
@@ -33372,5 +33373,32 @@ at the end of script B, and back in script A, after you've rebuilt
     c.pasteOutline()
 
 </t>
+<t tx="ekr.20071211083251">Leo 4.4.5 final                               December 11, 2007
+
+Leo 4.4.5 final is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo 4.4.5 fixes several long-delayed bug fixes and adds several new features.
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.5:
+----------------------------
+
+- Fixes all known bugs.
+- Leo now recognizes directives in headlines.
+- Adds 3 new sort-lines commands.
+- Adds commands to insert and delete icons from headlines.
+- Adds all the Tango 16x16 icons to Leo's icon library.
+- Adds support for @rst-preformat nodes to the rst3 plugin.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 </tnodes>
 </leo_file>

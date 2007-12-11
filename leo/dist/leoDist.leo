@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.347174163783">
-	<global_window_position top="16" left="350" height="867" width="848"/>
+	<global_window_position top="18" left="369" height="847" width="848"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,9 +46,10 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
-<v t="ekr.20071206094307"><vh>ANN: Leo 4.4.5 beta 2</vh></v>
+<v t="ekr.20071211083035"><vh>ANN: Leo 4.4.5 final</vh></v>
 <v t="EKR.20040519091259.30"><vh>Previous announcements</vh>
 <v t="ekr.20071206094307.1"><vh>4.4.5</vh>
+<v t="ekr.20071206094307"><vh>ANN: Leo 4.4.5 beta 2</vh></v>
 <v t="ekr.20071116071405"><vh>ANN: Leo 4.4.5 beta 1</vh></v>
 </v>
 <v t="ekr.20071102083414.1"><vh>4.4.4</vh>
@@ -150,16 +151,10 @@
 <v t="ekr.20050116150710.90"><vh>Handle installation with Python 2.4 installed for Current User only</vh></v>
 </v>
 <v t="EKR.20040519080201.1"><vh>Distribution checklist</vh></v>
-<v t="ekr.20040629175400"><vh>Pychecker stuff</vh>
-<v t="EKR.20040519080201.2" tnodeList="EKR.20040519080201.2"><vh>@file-nosent C:\Documents and Settings\HP_Administrator\My Documents\Edward\.pycheckrc</vh></v>
-<v t="ekr.20050430095952"><vh>Pychecker statements</vh></v>
-<v t="ekr.20070126082333"><vh>Output of pychecker -h</vh></v>
-<v t="ekr.20050212143754"><vh>*** Mods to pychecker in python23/site-packages ***</vh>
-<v t="ekr.20050212143754.1"><vh>What I did</vh></v>
-<v t="ekr.20050212143754.2"><vh>CodeChecks.py (modified)</vh>
-<v t="ekr.20050212143754.3"><vh>_checkGlobal (modified)</vh></v>
+<v t="ekr.20040629175400" a="TV"><vh>Pychecker stuff</vh>
+<v t="ekr.20050212143754"><vh>Mods to pychecker in python23/site-packages</vh>
 <v t="ekr.20050212143754.4"><vh>_checkModuleAttribute (modified)</vh></v>
-</v>
+<v t="ekr.20050212143754.3"><vh>_checkGlobal (modified)</vh></v>
 </v>
 <v t="ekr.20040629173419.1" tnodeList="ekr.20040629173419.1,ekr.20040701193853,ekr.20040701193853.1,ekr.20040701193853.2,ekr.20040701193853.3,ekr.20040701193853.4,ekr.20040701193853.5"><vh>@file .pycheckrc</vh>
 <v t="ekr.20040701193853"><vh>blacklist</vh></v>
@@ -169,9 +164,6 @@
 <v t="ekr.20040701193853.4"><vh>unusedNames</vh></v>
 <v t="ekr.20040701193853.5"><vh>variablesToIgnore</vh></v>
 </v>
-<v t="ekr.20040701160830"><vh>@url http://pychecker.sourceforge.net/</vh></v>
-<v t="ekr.20040701160830.1"><vh>names for use in suppressions</vh></v>
-<v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
 <v t="ekr.20050118095021"><vh>Leo 4.x installer</vh>
 <v t="ekr.20050118103207"><vh>Keeping installer/uninstallers in synch</vh>
@@ -224,7 +216,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846" a="TV"><vh>Distribution files</vh>
+<v t="EKR.20040519090846"><vh>Distribution files</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
@@ -294,239 +286,6 @@ Announcements
     - Announce to SourceForge itself.
 	- Announce to comp.lang.python
 	- Register Leo at http://www.python.org/pypi?:action=submit_form</t>
-<t tx="EKR.20040519080201.2"># Sample defaults file for PyChecker 0.8.13
-# This file should be called:  .pycheckrc
-# It should be placed in your home directory (value of $HOME).
-# If $HOME is not set, it will look in the current directory.
-
-# bool: only warn about files passed on the command line
-only = 0
-
-# int: the maximum number of warnings to be displayed
-limit = 1000
-
-# bool: warnings for Doc Strings
-noDocModule = 0
-noDocClass = 0
-noDocFunc = 0
-
-# bool: when checking if class data members (attributes) are set
-#       check all members or __init__() only
-onlyCheckInitForMembers = 0
-
-# bool: warn when all module variables are not used (including private vars)
-allVariablesUsed = 0
-
-# bool: produce warnings for each occurrence of a warning for global (xxx)
-reportAllGlobals = 0
-
-# bool: warn when private module variables are not used (_var)
-privateVariableUsed = 1
-
-# bool: warn when imports are not used
-importUsed = 1
-
-# bool: warn when import and from ... import are used for same module
-mixImport = 0 # EKR
-
-# bool: warn when imports are not used in __init__.py
-packageImportUsed = 1
-
-# bool: warn when a module reimports another module (import &amp; from/import)
-moduleImportErrors = 0 # EKR
-
-# bool: warn when modules import themselves
-reimportSelf = 0 # EKR
-
-# bool: warn when local variables are not used
-localVariablesUsed = 1
-
-# bool:  assume a, b, and c are used in this case:  a, b, c = func()
-unusedLocalTuple = 0
-
-# bool:  warn when class attributes (data members) are unused
-membersUsed = 0
-
-# bool: warn when Subclass.__init__ is not called in a subclass
-baseClassInitted = 1
-
-# bool: warn when Subclass needs to override methods that only throw exceptions
-abstractClasses = 1
-
-# bool: warn when __init__ is defined in a subclass
-initDefinedInSubclass = 0
-
-# bool: warn when __init__ returns None
-returnNoneFromInit = 1
-
-# bool: warn when code is not reachable
-unreachableCode = 0
-
-# bool: warn when a constant is used in a conditional statement (if '':)
-constantConditions = 1
-
-# bool: warn when 1 is used in a conditional statement, (if 1: while 1: etc)
-constant1 = 0
-
-# bool: warn when iterating over a string in a for loop
-stringIteration = 1
-
-# bool: warn when setting a variable to different types
-inconsistentTypes = 0
-
-# bool: warn when setting a tuple of variables to a non-sequence (a, b = None)
-unpackNonSequence = 1
-
-# bool: warn when setting a tuple of variables to the wrong length (a, b = 1,)
-unpackLength = 1
-
-# bool: warn when using strings exceptions or 
-#       other classes not derived from Exception to raise/catch exceptions
-badExceptions = 1
-
-# bool: warn when statements appear to have no effect
-noEffect = 1
-
-# bool: warn when using (expr % 1), it has no effect on integers and strings
-modulo1 = 1
-
-# bool: warn if using (expr is const-literal), 
-# doesn't always work on integers and strings
-isLiteral = 0 # EKR
-
-# bool: warn when possibly using string.find() improperly (if s.find():)
-stringFind = 1
-
-# bool: warn when using a deprecated module or function
-deprecated = 1
-
-# bool: warn when the class attribute does not exist
-classAttrExists = 1
-
-# bool: warn when calling an attribute not a method
-callingAttribute = 0
-
-# bool: warn when using named arguments: func(a=1, b=2), where def func(a, b):
-#       def func2(a, b, **kw): doesn't generate a warning
-namedArgs = 0 # EKR
-
-# str: name of 'self' parameter
-methodArgName = 'self'
-
-# list of str: names of first parameter to classmethods
-## classmethodArgNames = ['cls', 'klass']
-
-# bool: warn when method/function arguments are unused
-argumentsUsed = 1
-
-# bool: ignore if self is unused in methods
-ignoreSelfUnused = 0
-
-# bool: warn if functions/classes/methods names are redefined in same scope
-redefiningFunction = 1
-
-# bool:  check if an overriden method has the same signature
-#	 as base class method (__init__() methods are not checked)
-checkOverridenMethods = 1
-
-# bool:  check if a special (reserved) method has the correct signature
-#	 and is known (these are methods that begin and end with __
-## checkSpecialMethods = 1
-
-# int: warnings for code complexity, max value before generating a warning
-maxLines = 2000
-maxBranches = 500
-maxReturns = 100
-maxArgs = 100
-maxLocals = 250
-maxReferences = 500
-
-# bool:  ignore all warnings from standard library components
-#	 (this includes anything under the standard library, eg, site-packages)
-ignoreStandardLibrary = 1 # EKR
-
-# list of strings: ignore unused locals/arguments if name is one of
-unusedNames = [
-	'_', 'empty', 'unused', 'dummy', 'event', 'commander',
-	'c', 'i', 'j', 'k', 's',
-	'tag', 'args', 'keys', 'keywords']
-
-# list of strings: ignore warnings generated from these modules
-blacklist = [
-	'leoFrame', 'leoMenu', 'leoGui',
-        # Base classes have lots of unused params.
-	'Tkinter', 'wxPython', 'gtk', 'GTK', 'GDK', 
-    'mod_http',
-]
-
-# list of strings: ignore global variables not used if name is one of
-variablesToIgnore = [ '__all__', '__version__', '__copyright__', ]
-
-# bool: print the PyChecker parse of modules, classes, etc.
-printParse = 0
-
-# bool: turn debugging of PyChecker on
-debug = 0
-
-# bool: check that attributes of objects exist
-checkObjectAttrs = 1
-
-# bool: various warnings about incorrect usage of __slots__
-slots = 1
-
-# bool: check if __slots__ is empty
-emptySlots = 1
-
-# bool: check for using properties in classic classes
-classicProperties = 1
-
-# bool: check for integer division (may be problem between Python versions)
-intDivide = 1
-
-# bool: check if local variables shadow a global variable with same name
-shadows = 0 # EKR
-
-# bool: check if local variables shadow a builtin variable with same name
-shadowBuiltins = 1
-
-# bool: check if input() is used, which is a security problem, use raw_input()
-usesInput = 1
-
-# bool: check if using a constant string to getattr()/setattr()
-# Doesn't exist.
-constAttr = 1
-
-# bool: check for using +variable, since it is almost always has no effect
-unaryPositive = 1
-
-# bool: check for modifying a parameter with a default value
-#       (value must be: list, dict, instance)
-#       modifying the value may have undesirable/unexpected side-effects
-modifyDefaultValue = 1
-
-# bool: check if the exec statement is used (possible security problem)
-usesExec = 0
-
-# bool: check consistent return values
-checkReturnValues = 1
-
-# bool: check if using implict and explicit return values
-checkImplicitReturns = 1
-
-# dict: suppress warnings, key is module.class.method or module.function
-#	value is a string of command line arguments (can omit -- for long args)
-#       { 'module1': 'no-namedargs maxlines=0',
-#	  'module2.my_func': 'argsused',
-#	  'module3.my_class': 'no-initreturn', }
-if 0:
-	suppressions = {}
-else:
-	suppressions = {
-		'leoFrame' : 'argumentsUsed',
-		'leoGui' : 'argumentsUsed' }
-
-# dict: suppress warnings where keys can be regular expressions
-suppressionRegexs = {}</t>
 <t tx="EKR.20040519082027.32">@color
 @lineending nl
 @language shell</t>
@@ -698,7 +457,7 @@ c:\python22\python &lt;leopath&gt;leo.py "%1"
 </t>
 <t tx="EKR.20040519090846.8">Metadata-Version: 1.0
 Name: leo
-Version: 4.4.5-b2
+Version: 4.4.5-final
 Summary: Leo: Literate Editor with Outlines
 Home-page: http://webpages.charter.net/edreamleo/front.html
 Author: Edward K. Ream
@@ -2079,216 +1838,6 @@ constant1 = 0           # bool: warn when 1 is used in a conditional statement, 
 namedArgs = 0 # EKR
 </t>
 <t tx="ekr.20040629175400"></t>
-<t tx="ekr.20040629180414"># Sample defaults file for PyChecker 0.8.13
-# This file should be called:  .pycheckrc
-# It should be placed in your home directory (value of $HOME).
-# If $HOME is not set, it will look in the current directory.
-
-# bool: warnings for Doc Strings
-noDocModule = 0
-noDocClass = 0
-noDocFunc = 0
-
-# bool: when checking if class data members (attributes) are set
-#       check all members or __init__() only
-onlyCheckInitForMembers = 0
-
-# bool: warn when all module variables are not used (including private vars)
-allVariablesUsed = 0
-
-# bool: produce warnings for each occurrence of a warning for global (xxx)
-reportAllGlobals = 0
-
-# bool: warn when private module variables are not used (_var)
-privateVariableUsed = 1
-
-# bool: warn when imports are not used
-importUsed = 1
-
-# bool: warn when import and from ... import are used for same module
-mixImport = 1
-
-# bool: warn when imports are not used in __init__.py
-packageImportUsed = 1
-
-# bool: warn when a module reimports another module (import &amp; from/import)
-moduleImportErrors = 1
-
-# bool: warn when modules import themselves
-reimportSelf = 1
-
-# bool: warn when local variables are not used
-localVariablesUsed = 1
-
-# bool:  assume a, b, and c are used in this case:  a, b, c = func()
-unusedLocalTuple = 0
-
-# bool:  warn when class attributes (data members) are unused
-membersUsed = 0
-
-# bool: warn when Subclass.__init__ is not called in a subclass
-baseClassInitted = 1
-
-# bool: warn when Subclass needs to override methods that only throw exceptions
-abstractClasses = 1
-
-# bool: warn when __init__ is defined in a subclass
-initDefinedInSubclass = 0
-
-# bool: warn when __init__ returns None
-returnNoneFromInit = 1
-
-# bool: warn when code is not reachable
-unreachableCode = 0
-
-# bool: warn when a constant is used in a conditional statement (if '':)
-constantConditions = 1
-
-# bool: warn when 1 is used in a conditional statement, (if 1: while 1: etc)
-constant1 = 0
-
-# bool: warn when iterating over a string in a for loop
-stringIteration = 1
-
-# bool: warn when setting a variable to different types
-inconsistentTypes = 0
-
-# bool: warn when setting a tuple of variables to a non-sequence (a, b = None)
-unpackNonSequence = 1
-
-# bool: warn when setting a tuple of variables to the wrong length (a, b = 1,)
-unpackLength = 1
-
-# bool: warn when using strings exceptions or 
-#       other classes not derived from Exception to raise/catch exceptions
-badExceptions = 1
-
-# bool: warn when statements appear to have no effect
-noEffect = 1
-
-# bool: warn when using (expr % 1), it has no effect on integers and strings
-modulo1 = 1
-
-# bool: warn if using (expr is const-literal), 
-# doesn't always work on integers and strings
-isLiteral = 1
-
-# bool: warn when using a deprecated module or function
-deprecated = 1
-
-# bool: warn when the class attribute does not exist
-classAttrExists = 1
-
-# bool: warn when calling an attribute not a method
-callingAttribute = 0
-
-# bool: warn when using named arguments: func(a=1, b=2), where def func(a, b):
-#       def func2(a, b, **kw): doesn't generate a warning
-namedArgs = 1
-
-# str: name of 'self' parameter
-methodArgName = 'self'
-
-# list of str: names of first parameter to classmethods
-classmethodArgNames = ['cls', 'klass']
-
-# bool: warn when method/function arguments are unused
-argumentsUsed = 1
-
-# bool: ignore if self is unused in methods
-ignoreSelfUnused = 0
-
-# bool: warn if functions/classes/methods names are redefined in same scope
-redefiningFunction = 1
-
-# bool:  check if an overriden method has the same signature
-#	 as base class method (__init__() methods are not checked)
-checkOverridenMethods = 1
-
-# bool:  check if a special (reserved) method has the correct signature
-#	 and is known (these are methods that begin and end with __
-checkSpecialMethods = 1
-
-# int: warnings for code complexity, max value before generating a warning
-maxLines = 200
-maxBranches = 50
-maxReturns = 10
-maxArgs = 10
-maxLocals = 25
-maxReferences = 5
-
-
-# bool:  ignore all warnings from standard library components
-#	 (this includes anything under the standard library, eg, site-packages)
-ignoreStandardLibrary = 0
-
-# list of strings: ignore unused locals/arguments if name is one of
-unusedNames = [ '_', 'empty', 'unused', 'dummy', ]
-
-# list of strings: ignore warnings generated from these modules
-blacklist = [ 'Tkinter', 'wxPython', 'gtk', 'GTK', 'GDK', ]
-
-
-# list of strings: ignore global variables not used if name is one of
-variablesToIgnore = [ '__all__', '__version__', '__copyright__', ]
-
-# bool: print the PyChecker parse of modules, classes, etc.
-printParse = 0
-
-# bool: turn debugging of PyChecker on
-debug = 0
-
-# bool: check that attributes of objects exist
-checkObjectAttrs = 1
-
-# bool: various warnings about incorrect usage of __slots__
-slots = 1
-
-# bool: check if __slots__ is empty
-emptySlots = 1
-
-# bool: check for using properties in classic classes
-classicProperties = 1
-
-# bool: check for integer division (may be problem between Python versions)
-intDivide = 1
-
-# bool: check if local variables shadow a global variable with same name
-shadows = 1
-
-# bool: check if input() is used, which is a security problem, use raw_input()
-usesInput = 1
-
-# bool: check if using a constant string to getattr()/setattr()
-constAttr = 1
-
-# bool: check for using +variable, since it is almost always has no effect
-unaryPositive = 1
-
-# bool: check for modifying a parameter with a default value
-#       (value must be: list, dict, instance)
-#       modifying the value may have undesirable/unexpected side-effects
-modifyDefaultValue = 1
-
-# bool: check if the exec statement is used (possible security problem)
-usesExec = 0
-
-# bool: check consistent return values
-checkReturnValues = 1
-
-# bool: check if using implict and explicit return values
-checkImplicitReturns = 1
-
-# dict: suppress warnings, key is module.class.method or module.function
-#	value is a string of command line arguments (can omit -- for long args)
-#       { 'module1': 'no-namedargs maxlines=0',
-#	  'module2.my_func': 'argsused',
-#	  'module3.my_class': 'no-initreturn', }
-suppressions = {}
-
-# dict: suppress warnings where keys can be regular expressions
-suppressionRegexs = {}
-</t>
 <t tx="ekr.20040630103409">Leo 4.2 Beta 1 is now available at
 http://sourceforge.net/projects/leo/
 
@@ -2381,163 +1930,6 @@ the overhead of a function call (which you'd have had if you'd split
 the case statement as you would with a normal editor) saves time, and
 makes the system more flexible...
 [End Quote]</t>
-<t tx="ekr.20040701160830"></t>
-<t tx="ekr.20040701160830.1">@color
-
---name    enables
---no-name disables
-
-abstract
-allglobals
-argsused
-badexcept
-blacklist=
-callattr
-callinit
-changetypes
-classattr
-classdoc
-classmethodargs=
-complexity
-config=
-constCond  #note the case
-constant1
-debug
-deprecated
-emptyslots
-errors
-exec
-funcdoc
-implicitreturns
-import
-initattr
-initreturn
-initsubclass
-input
-intdivide
-isliteral
-local
-maxargs=
-maxbranches=
-maxlines=
-maxlocals=
-maxrefs=
-maxreturns=
-members
-miximport
-moddefvalue
-moduledoc
-modulo1
-namedargs
-noeffect
-objattrs
-override
-pkgimport
-positive
-printparse
-privatevar
-properties
-quiet
-quixote
-rcfile
-reimport
-reimportself
-returnvalues
-reuseattr
-self=
-selfused
-shadow
-shadowbuiltin
-slots
-special
-stdlib
-stringfind
-stringiter
-tuple
-unpack
-unpacklen
-unreachable
-unusednames=
-var
-varargsused
-varlist=
-version
-
-no-abstract
-no-allglobals
-no-argsused
-no-badexcept
-no-blacklist=
-no-callattr
-no-callinit
-no-changetypes
-no-classattr
-no-classdoc
-no-classmethodargs=
-no-complexity
-no-config=
-no-constCond
-no-constant1
-no-debug
-no-deprecated
-no-emptyslots
-no-errors
-no-exec
-no-funcdoc
-no-implicitreturns
-no-import
-no-initattr
-no-initreturn
-no-initsubclass
-no-input
-no-intdivide
-no-isliteral
-no-local
-no-maxargs=
-no-maxbranches=
-no-maxlines=
-no-maxlocals=
-no-maxrefs=
-no-maxreturns=
-no-members
-no-miximport
-no-moddefvalue
-no-moduledoc
-no-modulo1
-no-namedargs
-no-noeffect
-no-objattrs
-no-override
-no-pkgimport
-no-positive
-no-printparse
-no-privatevar
-no-properties
-no-quiet
-no-quixote
-no-rcfile
-no-reimport
-no-reimportself
-no-returnvalues
-no-reuseattr
-no-self=
-no-selfused
-no-shadow
-no-shadowbuiltin
-no-slots
-no-special
-no-stdlib
-no-stringfind
-no-stringiter
-no-tuple
-no-unpack
-no-unpacklen
-no-unreachable
-no-unusednames=
-no-var
-no-varargsused
-no-varlist=
-no-version</t>
 <t tx="ekr.20040701193853"># list of strings: ignore warnings generated from these modules
 blacklist = [
 	'Tkinter', 'wxPython', 'gtk', 'GTK', 'GDK',
@@ -2897,7 +2289,7 @@ WindowIcon off
 
 ; settings from HM NIS Edit Wizard
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "LeoSetup-4-4-5-b2.exe"
+OutFile "LeoSetup-4-4-5-final.exe"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 InstallDir "$PROGRAMFILES\Leo"
 Icon "..\Icons\leo_inst.ico"
@@ -3170,7 +2562,7 @@ Delete "$INSTDIR\test\test.leo"
 Delete "$INSTDIR\test\unitTest.leo"
 Delete "$INSTDIR\test\leoBridgeTest.py"
 Delete "$INSTDIR\test\leoDynamicTest.py"</t>
-<t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4.5-b2"</t>
+<t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4.5-final"</t>
 <t tx="ekr.20050124083006">Leo 4.3 alpha 1 is now available at http://sourceforge.net/projects/leo/
 
 Leo 4.3 is the culmination of more than four months of work. In spite
@@ -3397,14 +2789,14 @@ Leo: Literate Editor with Outlines
 Leo: http://webpages.charter.net/edreamleo/front.html
 --------------------------------------------------------------------
 </t>
-<t tx="ekr.20050212143754"></t>
-<t tx="ekr.20050212143754.1">@killcolor
+<t tx="ekr.20050212143754">@nocolor
 
-I solved two problems by brute force:
+I solved two problems by brute force in CodeChecks.py:
 
 1. Suppressed warnings for non-existent pre-defined vars in test routines.
-2. Suppressed warnings about the following supposedly non-existent vars: 'leo_config_directory','CODESET','mtime'</t>
-<t tx="ekr.20050212143754.2">@color</t>
+2. Suppressed warnings about the following supposedly non-existent vars: 'leo_config_directory','CODESET','mtime'
+
+@color</t>
 <t tx="ekr.20050212143754.3">def _checkGlobal(operand, module, func, code, err, main = 0) :
     if not _hasGlobal(operand, module, func, main) :
         
@@ -3665,23 +3057,6 @@ Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://sourceforge.net/cvs/?group_id=3458
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html
 </t>
-<t tx="ekr.20050430095952"># __pychecker__ = '--no-argsused' # event not used.
-
-# __pychecker__ = '--no-constCond -- no-constant1'
-
-# __pychecker__ = '--maxlines=500'
-
-# __pychecker__ = '--no-unusednames=[c,f]'
-
-# __pychecker__ = '--no-reuseattr'
-
-# __pychecker__ = '--no-import'
-
-# __pychecker__ = '--no-errors' # suppress all pychecker errors.
-
-# __pychecker__ = '--errors' # enable all pychecker errors.
-
-# __pychecker__ = '--no-override' # suppress warning about changed signature</t>
 <t tx="ekr.20050516064011">Leo 4.3 beta 2 is now available at http://sourceforge.net/projects/leo/
 
 Leo 4.3 beta 2 completes all major features of Leo 4.3.  There are no known significant bugs.
@@ -4902,110 +4277,6 @@ for a terrific tool!!!!
  
 Julian S. Fecteau 
 </t>
-<t tx="ekr.20070126082333">
-C:\Installers\Prog\Python\PyChecker\pychecker-0.8.17\pychecker&gt;python checker.py -h
-Usage for: checker.py [options] PACKAGE ...
-
-    PACKAGEs can be a python package, module or filename
-
-Long options can be preceded with no- to turn off (e.g., no-namedargs)
-
-Category
-  Options:           Change warning for ... [default value]
-
-Major Options:
-      --only         only warn about files passed on the command line [off]
-  -e, --level        the maximum error level of warnings to be displayed
-  -#, --limit        the maximum number of warnings to be displayed [1000]
-  -F, --config       specify .pycheckrc file to use
-      --quixote      support Quixote's PTL modules
-      --evil         list of evil C extensions that crash the interpreter [[]]
-
-Error Control:
-  -i, --import       unused imports [on]
-  -k, --pkgimport    unused imports from __init__.py [on]
-  -M, --reimportself module imports itself [off]
-  -X, --reimport     reimporting a module [off]
-  -x, --miximport    module does import and from ... import [off]
-  -l, --local        unused local variables, except tuples [on]
-  -t, --tuple        all unused local variables, including tuples [off]
-  -9, --members      all unused class data members [off]
-  -v, --var          all unused module variables [off]
-  -p, --privatevar   unused private module variables [on]
-  -g, --allglobals   report each occurrence of global warnings [off]
-  -n, --namedargs    functions called with named arguments (like keywords) [off]
-  -a, --initattr     Attributes (members) must be defined in __init__() [off]
-  -I, --initsubclass Subclass.__init__() not defined [off]
-  -u, --callinit     Baseclass.__init__() not called [on]
-  -0, --abstract     Subclass needs to override methods that only throw exceptions [on]
-  -N, --initreturn   Return None from __init__() [on]
-  -8, --unreachable  unreachable code [off]
-  -2, --constCond    a constant is used in a conditional statement [on]
-  -1, --constant1    1 is used in a conditional statement (if 1: or while 1:) [off]
-      --stringiter   check if iterating over a string [on]
-      --stringfind   check improper use of string.find() [on]
-  -A, --callattr     Calling data members as functions [off]
-  -y, --classattr    class attribute does not exist [on]
-  -S, --self         First argument to methods [self]
-      --classmethodargs First argument to classmethods [['cls', 'klass']]
-  -T, --argsused     unused method/function arguments [on]
-  -z, --varargsused  unused method/function variable arguments [on]
-  -G, --selfused     ignore if self is unused in methods [off]
-  -o, --override     check if overridden methods have the same signature [on]
-      --special      check if __special__ methods exist and have the correct signature [on]
-  -U, --reuseattr    check if function/class/method names are reused [on]
-  -Y, --positive     check if using unary positive (+) which is usually meaningless [on]
-  -j, --moddefvalue  check if modify (call method) on a parameter that has a default value [on]
-      --changetypes  check if variables are set to different types [off]
-      --unpack       check if unpacking a non-sequence [on]
-      --unpacklen    check if unpacking sequence with the wrong length [on]
-      --badexcept    check if raising or catching bad exceptions [on]
-  -4, --noeffect     check if statement appears to have no effect [on]
-      --modulo1      check if using (expr % 1), it has no effect on integers and strings [on]
-      --isliteral    check if using (expr is const-literal), doesn't always work on integers and strings [off]
-
-Possible Errors:
-  -r, --returnvalues check consistent return values [on]
-  -C, --implicitreturns check if using implict and explicit return values [on]
-  -O, --objattrs     check that attributes of objects exist [on]
-  -7, --slots        various warnings about incorrect usage of __slots__ [on]
-  -3, --properties   using properties with classic classes [on]
-      --emptyslots   check if __slots__ is empty [on]
-  -D, --intdivide    check if using integer division [on]
-  -w, --shadow       check if local variable shadows a global [off]
-  -s, --shadowbuiltin check if a variable shadows a builtin [on]
-
-Security:
-      --input        check if input() is used [on]
-  -6, --exec         check if the exec statement is used [off]
-
-Suppressions:
-  -q, --stdlib       ignore warnings from files under standard library [on]
-  -b, --blacklist    ignore warnings from the list of modules
-                         [['leoFrame', 'leoMenu', 'leoGui', 'Tkinter', 'wxPython', 'gtk', 'GTK', 'GDK', 'mod_http']]
-  -Z, --varlist      ignore global variables not used if name is one of these values
-                         [['__all__', '__version__', '__copyright__']]
-  -E, --unusednames  ignore unused locals/arguments if name is one of these values
-                         [['_', 'empty', 'unused', 'dummy', 'event', 'commander', 'c', 'i', 'j', 'k', 's', 'tag', 'args', 'keys', 'keywords']]
-      --deprecated   ignore use of deprecated modules/functions [on]
-
-Complexity:
-  -L, --maxlines     maximum lines in a function [2000]
-  -B, --maxbranches  maximum branches in a function [500]
-  -R, --maxreturns   maximum returns in a function [100]
-  -J, --maxargs      maximum # of arguments to a function [100]
-  -K, --maxlocals    maximum # of locals in a function [250]
-  -5, --maxrefs      maximum # of identifier references (Law of Demeter) [500]
-  -m, --moduledoc    no module doc strings [off]
-  -c, --classdoc     no class doc strings [off]
-  -f, --funcdoc      no function/method doc strings [off]
-
-Debug:
-      --rcfile       print a .pycheckrc file generated from command line args
-  -P, --printparse   print internal checker parse structures [off]
-  -d, --debug        turn on debugging for checker [off]
-  -Q, --quiet        turn off all output except warnings [off]
-  -V, --version      print the version of PyChecker and exit</t>
 <t tx="ekr.20070126084440">Leo 4.4.3 alpha 1                                  January 26, 2006
 
 Leo 4.4.3 alpha 1 is available at:
@@ -5445,7 +4716,7 @@ print ; print '='*30,'setup.py complete','='*30 ; print
 </t>
 <t tx="ekr.20070622081640"># These can't be used at present.</t>
 <t tx="ekr.20070622084133"></t>
-<t tx="ekr.20070622084634">version='4.4.5-b2' # No spaces and no trailing comma.</t>
+<t tx="ekr.20070622084634">version='4.4.5-final' # No spaces and no trailing comma.</t>
 <t tx="ekr.20070622091049">Leo 4.4.3 beta 3                                June 23, 2006
 
 Leo 4.4.3 beta 3 is available at:
@@ -5776,5 +5047,32 @@ Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 <t tx="ekr.20071206094307.1"></t>
+<t tx="ekr.20071211083035">Leo 4.4.5 final                               December 11, 2007
+
+Leo 4.4.5 final is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo 4.4.5 fixes several long-delayed bug fixes and adds several new features.
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.5:
+----------------------------
+
+- Fixes all known bugs.
+- Leo now recognizes directives in headlines.
+- Adds 3 new sort-lines commands.
+- Adds commands to insert and delete icons from headlines.
+- Adds all the Tango 16x16 icons to Leo's icon library.
+- Adds support for @rst-preformat nodes to the rst3 plugin.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 </tnodes>
 </leo_file>
