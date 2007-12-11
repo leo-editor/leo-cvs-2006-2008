@@ -1,8 +1,10 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20071113093057:5.0 cleanups, vim bindings & readline
-#@+node:ekr.20071211092807:First 5
+#@+node:ekr.20071211143430:4.4.6 bugs & easy improvements
+#@+node:ekr.20071211093323:more screen shots on Leo's web site
+#@-node:ekr.20071211093323:more screen shots on Leo's web site
+#@+node:ekr.20071211092807:Bugs: 4
 #@+node:ekr.20071210092032:Improve how rst3 plugin finds default.css file
 @nocolor
 
@@ -490,8 +492,42 @@ def getExistingVnode (self,tref,headline):
 #@-node:ekr.20040326063413:getExistingVnode
 #@-node:ekr.20031218072017.1566:getVnode & helpers
 #@-node:ekr.20060724071225:Look at Paste Node As Clone
-#@+node:ekr.20071211093323:more screen shots on Leo's web site
-#@-node:ekr.20071211093323:more screen shots on Leo's web site
+#@+node:ekr.20071026052111:Fix cursesGui  plugin
+#@+node:ekr.20071026051956:crash in cursesGui.py
+reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo
+reading settings in C:\Documents and Settings\HP_Administrator\My Documents\Edward\myLeoSettings.leo
+reading settings in C:\prog\tigris-cvs\leo\test\test.leo
+reading C:\Documents and Settings\HP_Administrator\My Documents\Edward\.leoRecentFiles.txt
+reading C:\prog\tigris-cvs\leo\config\.leoRecentFiles.txt
+@enabled-plugins found in test.leo
+textGui oops <module>,run,createFrame,openWithFileName,newLeoCommanderAndFrame,finishCreate,createKeyHandlerClass should be implem
+ented
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 401, in <module>
+    run(fileName)
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 144, in run
+    c,frame = createFrame(fileName)
+  File "c:\prog\tigris-cvs\leo\src\leo.py", line 213, in createFrame
+    ok, frame = g.openWithFileName(fileName,None)
+  File "C:\prog\tigris-cvs\leo\src\leoGlobals.py", line 1908, in openWithFileName
+    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
+  File "C:\prog\tigris-cvs\leo\src\leoApp.py", line 577, in newLeoCommanderAndFrame
+    c.finishCreate(initEditCommanders)
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 216, in finishCreate
+    c.commandsDict = leoEditCommands.finishCreateEditCommanders(c)
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 247, in finishCreateEditCommanders
+    d2 = theInstance.getPublicCommands()
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 1022, in getPublicCommands
+    'keyboard-quit':                k.keyboardQuit,
+AttributeError: 'NoneType' object has no attribute 'keyboardQuit'
+>>>
+#@nonl
+#@-node:ekr.20071026051956:crash in cursesGui.py
+#@-node:ekr.20071026052111:Fix cursesGui  plugin
+#@+node:ekr.20071105155631.2:Fix script_io_to_body plugin
+#@-node:ekr.20071105155631.2:Fix script_io_to_body plugin
+#@-node:ekr.20071211092807:Bugs: 4
+#@+node:ekr.20071211142600:Easy 3
 #@+node:ekr.20071211132156:find-any-clone command
 flag = False
 
@@ -519,14 +555,41 @@ else:
 See: contractNodeOrGoToParent
 #@nonl
 #@-node:ekr.20071115055315:Add toggle-collapse-outline-when-moving command
-#@-node:ekr.20071211092807:First 5
-#@+node:ekr.20071211091037.1:Code cleanup 7
-#@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree (clean up config)
-#@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree (clean up config)
-#@+node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
-#@-node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
 #@+node:ekr.20071129095408:Upgrade to Pmw 1.3
 #@-node:ekr.20071129095408:Upgrade to Pmw 1.3
+#@-node:ekr.20071211142600:Easy 3
+#@+node:ekr.20071211091037.3:Finish @auto
+#@+node:ekr.20071027121956:Fix @auto javascript
+# Javascript syntax is truly bizarre.
+#@nonl
+#@+node:ekr.20071211092214:Javascript spec
+@nocolor
+
+As far as I am aware, this is the definitive specification for javascript. 
+
+http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf  
+
+The most relavent part is below. This has caused much aggrevation to many people. Regexp's which parse for regexp literals in javascript, usually check for '/' after chars which can not be followed by a div, eg (,[{ etc. I think a regexp literal can occur almost anywhere a string literal can apart from this restriction. 
+
+-- quote -- 
+The source text of an ECMAScript program is first converted into a sequence of input elements, which are either tokens, line terminators, comments, or white space. The source text is scanned from left to right, repeatedly taking the longest possible sequence of characters as the next input element. 
+
+There are two goal symbols for the lexical grammar. The InputElementDiv symbol is used in those syntactic grammar contexts where a division (/) or division-assignment (/=) operator is permitted. The InputElementRegExp symbol is used in other syntactic grammar contexts. 
+
+Note that contexts exist in the syntactic grammar where both a division and a RegularExpressionLiteral are permitted by the syntactic grammar; however, since the lexical grammar uses the InputElementDiv goal symbol in such cases, the opening slash is not recognised as starting a regular expression literal in such a context. As a workaround, one may enclose the regular expression literal in p
+#@nonl
+#@-node:ekr.20071211092214:Javascript spec
+#@-node:ekr.20071027121956:Fix @auto javascript
+#@+node:ekr.20071210085349:Support for xml files in @auto
+https://sourceforge.net/forum/message.php?msg_id=4665749
+#@nonl
+#@-node:ekr.20071210085349:Support for xml files in @auto
+#@-node:ekr.20071211091037.3:Finish @auto
+#@-node:ekr.20071211143430:4.4.6 bugs & easy improvements
+#@+node:ekr.20071113093057:4.5 cleanups, vim bindings & readline
+#@+node:ekr.20071211091037.1:Code cleanup 5
+#@+node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
+#@-node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
 #@+node:ekr.20071031113657:Always use sax parser to read .leo files
 # Are there proper unit tests?
 # Do global settings and find-panel settings get set properly.
@@ -540,6 +603,32 @@ xmlns:leo="http://edreamleo.org/namespaces/leo-python-editor/1.1"
 See createMenusFromTables.
 #@nonl
 #@-node:ekr.20071115111719.2:Remove hard-coded menu tables
+#@+node:ekr.20070613103409:Improve marks/recent buttons
+- Arrow keys must move up/down.
+- Should be commands to show the marks/recent dialogs.
+#@nonl
+#@-node:ekr.20070613103409:Improve marks/recent buttons
+#@-node:ekr.20071211091037.1:Code cleanup 5
+#@+node:ekr.20071211142600.1:Important 4
+#@+node:ekr.20071211142600.2:Config stuff
+#@+node:ekr.20071211142600.3:Clean up config mess
+#@-node:ekr.20071211142600.3:Clean up config mess
+#@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree
+#@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree
+#@+node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4562648
+By: rogererens
+
+Maybe I may use this thread to make another suggestion for Leo 4.4.5, related
+to @menus: have the menu-options for right-clicking in the various panes also
+in the @settings-tree.
+
+Regards, Roger
+#@nonl
+#@-node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
+#@-node:ekr.20071211142600.2:Config stuff
 #@+node:ekr.20070625091423:Add translation services
 @nocolor
 
@@ -1174,34 +1263,6 @@ g.es("dragged node will be cloned")
 g.es("dragged node will be moved")
 #@-node:ekr.20071115113231:Results
 #@-node:ekr.20070625091423:Add translation services
-#@-node:ekr.20071211091037.1:Code cleanup 7
-#@+node:ekr.20071211091037.3:Finish @auto
-#@+node:ekr.20071027121956:Fix @auto javascript
-# Javascript syntax is truly bizarre.
-#@nonl
-#@+node:ekr.20071211092214:Javascript spec
-@nocolor
-
-As far as I am aware, this is the definitive specification for javascript. 
-
-http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf  
-
-The most relavent part is below. This has caused much aggrevation to many people. Regexp's which parse for regexp literals in javascript, usually check for '/' after chars which can not be followed by a div, eg (,[{ etc. I think a regexp literal can occur almost anywhere a string literal can apart from this restriction. 
-
--- quote -- 
-The source text of an ECMAScript program is first converted into a sequence of input elements, which are either tokens, line terminators, comments, or white space. The source text is scanned from left to right, repeatedly taking the longest possible sequence of characters as the next input element. 
-
-There are two goal symbols for the lexical grammar. The InputElementDiv symbol is used in those syntactic grammar contexts where a division (/) or division-assignment (/=) operator is permitted. The InputElementRegExp symbol is used in other syntactic grammar contexts. 
-
-Note that contexts exist in the syntactic grammar where both a division and a RegularExpressionLiteral are permitted by the syntactic grammar; however, since the lexical grammar uses the InputElementDiv goal symbol in such cases, the opening slash is not recognised as starting a regular expression literal in such a context. As a workaround, one may enclose the regular expression literal in p
-#@nonl
-#@-node:ekr.20071211092214:Javascript spec
-#@-node:ekr.20071027121956:Fix @auto javascript
-#@+node:ekr.20071210085349:Support for xml files in @auto
-https://sourceforge.net/forum/message.php?msg_id=4665749
-#@nonl
-#@-node:ekr.20071210085349:Support for xml files in @auto
-#@-node:ekr.20071211091037.3:Finish @auto
 #@+node:ekr.20070623144302:vim-like bindings
 #@+node:ekr.20071105160956:*** auto-change panes
 @nocolor
@@ -1424,62 +1485,9 @@ Leo should copy this download philosophy.
 #@+node:ekr.20070615063616.1:Create Debian package
 #@-node:ekr.20070615063616.1:Create Debian package
 #@-node:ekr.20071029082025:Improve distribution
-#@+node:ekr.20071105155631.1:Plugins 4
-#@+node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4562648
-By: rogererens
-
-Maybe I may use this thread to make another suggestion for Leo 4.4.5, related
-to @menus: have the menu-options for right-clicking in the various panes also
-in the @settings-tree.
-
-Regards, Roger
-#@nonl
-#@-node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
-#@+node:ekr.20071026052111:Fix cursesGui  plugin
-#@+node:ekr.20071026051956:crash in cursesGui.py
-reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo
-reading settings in C:\Documents and Settings\HP_Administrator\My Documents\Edward\myLeoSettings.leo
-reading settings in C:\prog\tigris-cvs\leo\test\test.leo
-reading C:\Documents and Settings\HP_Administrator\My Documents\Edward\.leoRecentFiles.txt
-reading C:\prog\tigris-cvs\leo\config\.leoRecentFiles.txt
-@enabled-plugins found in test.leo
-textGui oops <module>,run,createFrame,openWithFileName,newLeoCommanderAndFrame,finishCreate,createKeyHandlerClass should be implem
-ented
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leo.py", line 401, in <module>
-    run(fileName)
-  File "c:\prog\tigris-cvs\leo\src\leo.py", line 144, in run
-    c,frame = createFrame(fileName)
-  File "c:\prog\tigris-cvs\leo\src\leo.py", line 213, in createFrame
-    ok, frame = g.openWithFileName(fileName,None)
-  File "C:\prog\tigris-cvs\leo\src\leoGlobals.py", line 1908, in openWithFileName
-    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
-  File "C:\prog\tigris-cvs\leo\src\leoApp.py", line 577, in newLeoCommanderAndFrame
-    c.finishCreate(initEditCommanders)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 216, in finishCreate
-    c.commandsDict = leoEditCommands.finishCreateEditCommanders(c)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 247, in finishCreateEditCommanders
-    d2 = theInstance.getPublicCommands()
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 1022, in getPublicCommands
-    'keyboard-quit':                k.keyboardQuit,
-AttributeError: 'NoneType' object has no attribute 'keyboardQuit'
->>>
-#@nonl
-#@-node:ekr.20071026051956:crash in cursesGui.py
-#@-node:ekr.20071026052111:Fix cursesGui  plugin
-#@+node:ekr.20071105155631.2:Fix script_io_to_body plugin
-#@-node:ekr.20071105155631.2:Fix script_io_to_body plugin
-#@+node:ekr.20070613103409:Improve marks/recent buttons
-- Arrow keys must move up/down.
-- Should be commands to show the marks/recent dialogs.
-#@nonl
-#@-node:ekr.20070613103409:Improve marks/recent buttons
-#@-node:ekr.20071105155631.1:Plugins 4
-#@-node:ekr.20071113093057:5.0 cleanups, vim bindings & readline
-#@+node:ekr.20071211093011:5.1 ipython & autocompletion
+#@-node:ekr.20071211142600.1:Important 4
+#@-node:ekr.20071113093057:4.5 cleanups, vim bindings & readline
+#@+node:ekr.20071211093011:4.6  ipython & autocompletion
 #@+node:ekr.20070824093611:Improve wxGui plugin
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=4480477
@@ -2385,7 +2393,7 @@ a big deal, then not to worry, I can always navigate to the file of course.
 #@-node:ekr.20070624135822:Templates for common code fragments
 #@-node:ekr.20070703111455.3:Minor
 #@-node:ekr.20071211090716:autocompletion
-#@-node:ekr.20071211093011:5.1 ipython & autocompletion
+#@-node:ekr.20071211093011:4.6  ipython & autocompletion
 #@+node:ekr.20060306194040:Leo Video
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3615177
