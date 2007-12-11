@@ -254,12 +254,22 @@ def getMachineName (self):
     if name:
         name +='LeoSettings.leo'
 
-    g.trace(name)
+    # g.trace(name)
 
     return name
 #@-node:ekr.20071211112804:getMachineName
 #@-node:ekr.20041117083857:initSettingsFiles
 #@-node:ekr.20071210054816:Applied Terry Brown's config patch
+#@+node:ekr.20071210090623:Applied plumloco's patch to plugins_menu.py
+@nocolor
+
+The version of plugins_menu.py at http://leo.zwiki.org/Plumloco separates out
+the gui dependent dialogs (the menus are already gui indepandant) and made them
+general purpose dialogs available to all plugins.
+
+I have also slightly enhanced the dialogs to provide user defined buttons. 
+#@nonl
+#@-node:ekr.20071210090623:Applied plumloco's patch to plugins_menu.py
 #@-node:ekr.20071211113202.2:New features
 #@-node:ekr.20071211113202:Leo 5.0 a1
 #@-all

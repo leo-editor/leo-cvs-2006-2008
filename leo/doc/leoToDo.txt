@@ -3,19 +3,6 @@
 #@+all
 #@+node:ekr.20071113093057:5.0 cleanups, vim bindings & readline
 #@+node:ekr.20071211092807:First
-#@+node:ekr.20071211091037:Bugs
-#@+node:ekr.20071211082951:Fix undo (dirty bit) problem)
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=4668960
-By: terry_n_brown
-
-It seems in derived files you can delete some text and save, causing the derived
-file to be written and all dirty flags cleared.  But then undo makes the text
-come back, as expected, but save only saves the outline, because the dirty flag
-wasn't set on the node in which the text was restored by undo.
-#@nonl
-#@-node:ekr.20071211082951:Fix undo (dirty bit) problem)
 #@+node:ekr.20071210092032:Improve how rst3 plugin finds default.css file
 @nocolor
 
@@ -35,7 +22,6 @@ the same directory as the LEO file that is being processed) when rst3_stylesheet
 is not set.
 #@nonl
 #@-node:ekr.20071210092032:Improve how rst3 plugin finds default.css file
-#@-node:ekr.20071211091037:Bugs
 #@+node:ekr.20071211091037.1:Code cleanup 7
 #@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree (clean up config)
 #@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree (clean up config)
