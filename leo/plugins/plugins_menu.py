@@ -1,5 +1,5 @@
 #@+leo-ver=4-thin
-#@+node:EKR.20040517080555.2:@thin plugins_menu.py
+#@+node:bob.20071208012538:@thin plugins_menu.py
 #@<< docstring >>
 #@+node:ekr.20050101090207.9:<< docstring >>
 '''Create a Plugins menu
@@ -57,7 +57,7 @@ import sys
 #@nonl
 #@-node:ekr.20050101090207.10:<< imports >>
 #@nl
-__version__ = "1.14"
+__version__ = "1.15"
 #@<< version history >>
 #@+node:ekr.20050101100033:<< version history >>
 #@@nocolor
@@ -93,6 +93,8 @@ __version__ = "1.14"
 #   This solves the HTTP mystery: HTTP was being imported by mod_scripting 
 # plugin.
 # 1.14 EKR: Added init function.
+# 1.15 plumloco: Separated out the gui elements of the 'properties' and 
+# 'about' dialogs to make the plugin gui independant.
 #@-at
 #@nonl
 #@-node:ekr.20050101100033:<< version history >>
@@ -100,7 +102,7 @@ __version__ = "1.14"
 
 __plugin_name__ = "Plugins Menu"
 __plugin_priority__ = -100
-# __plugin_group__ = "Core"
+__plugin_group__ = "Core"
 
 #@+others
 #@+node:ekr.20060107091318:Functions
@@ -202,19 +204,25 @@ def createPluginsMenu (tag,keywords):
 #@+node:ekr.20070302175530:init
 def init ():
 
-    if not Tk or g.app.unitTesting: return None
+
+
+    if g.app.unitTesting: return None
 
     if g.app.gui is None:
-        g.app.createTkGui(__file__)
+            g.app.createTkGui(__file__)
 
-    ok = g.app.gui.guiName() == "tkinter"
+            if g.app.gui.guiName() != "tkinter":
+                return False
 
-    if ok:
-        leoPlugins.registerHandler("create-optional-menus",createPluginsMenu)
-        g.plugin_signon(__name__)
+    leoPlugins.registerHandler("create-optional-menus",createPluginsMenu)
+    g.plugin_signon(__name__)
 
-    return ok
-#@nonl
+
+    if g.app.gui.guiName() == 'tkinter':
+        g.app.gui.runPropertiesDialog = runPropertiesDialog
+        g.app.gui.runScrolledMessageDialog = runScrolledMessageDialog
+
+    return True
 #@-node:ekr.20070302175530:init
 #@-node:ekr.20060107091318:Functions
 #@+node:pap.20050305152751:class PluginDatabase
@@ -265,7 +273,7 @@ class _PluginDatabase:
     def storeAllPlugins(self, files):
         """Store all the plugins for later reference if we need to enable them"""
         self.all_plugins = dict(
-    		[(g.os_path_splitext(g.os_path_basename(f))[0], f) for f in files])
+            [(g.os_path_splitext(g.os_path_basename(f))[0], f) for f in files])
     #@nonl
     #@-node:pap.20051008005012:storeAllPlugins
     #@-others
@@ -292,18 +300,18 @@ class PlugIn:
         try:
             self.mod = __import__(g.os_path_splitext(g.os_path_basename(filename))[0])
             if not self.mod: return
-            # g.trace('Plugin',self.mod)
+
             try:
-                name = self.mod.__plugin_name__
+                self.name = self.mod.__plugin_name__
             except AttributeError:
-                name = self.mod.__name__
+                self.name = self.getNiceName(self.mod.__name__)
+
             self.moduleName = self.mod.__name__
-            self.realname = name
-            self.name = self.getNiceName(name)
-            #
+            self.realname = self.name
+
             self.group = getattr(self.mod, "__plugin_group__", None)
             PluginDatabase.addPlugin(self, self.group)
-            #
+
             try:
                 self.priority = self.mod.__plugin_priority__
             except AttributeError:
@@ -375,15 +383,18 @@ class PlugIn:
         #@nonl
         #@-node:pap.20041009131822:<< Look for toplevel menu item >>
         #@nl
-    #@nonl
     #@-node:EKR.20040517080555.4:__init__
     #@+node:EKR.20040517080555.8:about
     def about(self,event=None):
 
-        """Put up an "about" dialog for this plugin"""
+        """Put information about this plugin in a scrolledMessage dialog."""
 
-        PluginAbout(self.name, self.version, self.doc)
-    #@nonl
+        g.app.gui.runScrolledMessageDialog(
+            title="About Plugin ( " + self.name + " )",
+            label="Version: " + self.version,
+            msg=self.doc
+        )
+
     #@-node:EKR.20040517080555.8:about
     #@+node:pap.20050317183526:getNiceName
     def getNiceName(self, name):
@@ -404,12 +415,74 @@ class PlugIn:
     #@-node:pap.20050317183526:getNiceName
     #@+node:EKR.20040517080555.9:properties
     def properties(self, event=None):
+        """Display a modal properties dialog for this plugin"""
 
-        """Create a modal properties dialog for this plugin"""
 
-        PropertiesWindow(self.configfilename, self)
-    #@nonl
+        if self.hasapply:
+
+            def callback(name, data):
+                self.updateConfiguration(data)
+                self.mod.applyConfiguration(self.config)
+                self.writeConfiguration()
+
+            buttons = ['Apply']
+
+        else:
+            callback = None
+            buttons = []
+
+        self.config = config = ConfigParser.ConfigParser()
+        config.read(self.configfilename)
+
+        # Load config data into dictionary of dictianaries.
+        # Do no allow for nesting of sections.
+
+        data = {}
+
+        for section in config.sections():
+            options = {}
+            for option in config.options(section):
+                #print 'config', section, option 
+                options[option] = unicode(config.get(section,option))
+            data[section] = options
+
+        # Save the original config data. This will not be changed.
+
+        self.sourceConfig = data
+
+        # Open a modal dialog and wait for it to return.
+        # Provide the dialog with a callback for the 'Appply' function.
+
+        title = "Properties of " + self.name
+
+        result, data = g.app.gui.runPropertiesDialog(title, data, callback, buttons)
+
+        if result != 'Cancel' and data:
+            self.updateConfiguration(data)
+            self.writeConfiguration()
+
     #@-node:EKR.20040517080555.9:properties
+    #@+node:bob.20071209102050:updateConfiguration
+    def updateConfiguration(self, data):
+        """Update the config object from the dialog 'data' structure"""
+
+        # Should we clear the config object first?
+
+
+        for section in data.keys():
+            for option in data[section].keys():
+                self.config.set(section, option, data[section][option])
+    #@-node:bob.20071209102050:updateConfiguration
+    #@+node:bob.20071208033759:writeConfiguration
+    def writeConfiguration(self):
+        """Write the configuration to a file."""
+
+        f = open(self.configfilename, "w")
+        try:
+            self.config.write(f)
+        except:
+            f.close()
+    #@-node:bob.20071208033759:writeConfiguration
     #@+node:pap.20051011215345:niceMenuName
     def niceMenuName(self, name):
         """Return a nice version of the command name for the menu
@@ -432,163 +505,213 @@ class PlugIn:
     #@-others
 
 #@-node:EKR.20040517080555.3:class Plugin
-#@+node:EKR.20040517080555.10:class PropertiesWindow
-class PropertiesWindow:
+#@+node:EKR.20040517080555.10:class TkPropertiesDialog
+class TkPropertiesDialog:
 
-    """A class to create and run a Properties dialog for a plugin"""
+    """A class to create and run a Properties dialog"""
 
     #@    @+others
-    #@+node:EKR.20040517080555.11:__init__
-    def __init__(self, filename, plugin):
+    #@+node:bob.20071208030419:__init__
+    def __init__(self, title, data, callback=None, buttons=[]):
+        #@    << docstring >>
+        #@+node:bob.20071208211442:<< docstring >>
+        """ Initialize and show a Properties dialog.
 
-        """Initialize the property window"""
+            'buttons' should be a list of names for buttons.
 
-        #@    << initialize all ivars >>
-        #@+node:EKR.20040517080555.12:<< initialize all ivars >>
-        # config stuff.
-        config = ConfigParser.ConfigParser()
-        config.read(filename)
-        self.filename = filename
-        self.config = config
-        self.plugin = plugin
+            'callback' should be None or a function of the form:
 
-        # self.entries is a list of tuples (section, option, e),
-        # where section and options are strings and e is a Tk.Entry widget.
-        # This list is used by writeConfiguration to write all settings.
-        self.entries = []
-        #@-node:EKR.20040517080555.12:<< initialize all ivars >>
+                def cb(name, data)
+                    ...
+                    return 'close' # or anything other than 'close'
+
+            where name is the name of the button clicked and data is
+            a data structure representing the current state of the dialog.
+
+            If a callback is provided then when a button (other than
+            'OK' or 'Cancel') is clicked then the callback will be called
+            with name and data as parameters.
+
+                If the literal string 'close' is returned from the callback
+                the dialog will be closed and self.result will be set to a
+                tuple (button, data).
+
+                If anything other than the literal string 'close' is returned
+                from the callback, the dialog will continue to be displayed.
+
+            If no callback is provided then when a button is clicked the
+            dialog will be closed and self.result set to  (button, data).
+
+            The 'ok' and 'cancel' buttons (which are always provided) behave as
+            if no callback was supplied.
+
+        """
+        #@-node:bob.20071208211442:<< docstring >>
         #@nl
+
+        if buttons is None:
+            buttons = []
+
+        self.entries = []
+        self.title = title
+        self.callback = callback
+        self.buttons = buttons
+        self.data = data
+
         #@    << create the frame from the configuration data >>
-        #@+node:EKR.20040517080555.13:<< create the frame from the configuration data >>
+        #@+node:bob.20071208030419.2:<< Create the frame from the configuration data >>
         root = g.app.root
 
         #@<< Create the top level and the main frame >>
-        #@+node:EKR.20040517080555.14:<< Create the top level and the main frame >>
+        #@+node:bob.20071208030419.3:<< Create the top level and the main frame >>
         self.top = top = Tk.Toplevel(root)
         g.app.gui.attachLeoIcon(self.top)
-        top.title("Properties of "+ plugin.name)
+        #top.title("Properties of "+ plugin.name)
+        top.title(title)
+
         top.resizable(0,0) # neither height or width is resizable.
 
         self.frame = frame = Tk.Frame(top)
         frame.pack(side="top")
         #@nonl
-        #@-node:EKR.20040517080555.14:<< Create the top level and the main frame >>
+        #@-node:bob.20071208030419.3:<< Create the top level and the main frame >>
         #@nl
         #@<< Create widgets for each section and option >>
-        #@+node:EKR.20040517080555.15:<< Create widgets for each section and option >>
+        #@+node:bob.20071208030419.4:<< Create widgets for each section and option >>
         # Create all the entry boxes on the screen to allow the user to edit the properties
-        sections = config.sections()
+
+        sections = data.keys()
         sections.sort()
+
         for section in sections:
+
             # Create a frame for the section.
             f = Tk.Frame(top, relief="groove",bd=2)
             f.pack(side="top",padx=5,pady=5)
             Tk.Label(f, text=section.capitalize()).pack(side="top")
+
             # Create an inner frame for the options.
             b = Tk.Frame(f)
             b.pack(side="top",padx=2,pady=2)
-            # Create a Tk.Label and Tk.Entry for each option.
-            options = config.options(section)
+
+            options = data[section].keys()
             options.sort()
+
             row = 0
+            # Create a Tk.Label and Tk.Entry for each option.
             for option in options:
                 e = Tk.Entry(b)
-                e.insert(0, unicode(config.get(section,option))) # 6/8/04
+                e.insert(0, data[section][option])
                 Tk.Label(b, text=option).grid(row=row, column=0, sticky="e", pady=4)
                 e.grid(row=row, column=1, sticky="ew", pady = 4)
                 row += 1
                 self.entries.append((section, option, e))
-        #@nonl
-        #@-node:EKR.20040517080555.15:<< Create widgets for each section and option >>
+        #@-node:bob.20071208030419.4:<< Create widgets for each section and option >>
         #@nl
-        #@<< Create Ok, Cancel and Apply buttons >>
-        #@+node:EKR.20040517080555.16:<< Create Ok, Cancel and Apply buttons >>
+        #@<< Create the buttons >>
+        #@+node:bob.20071208030419.5:<< Create the buttons >>
         box = Tk.Frame(top, borderwidth=5)
         box.pack(side="bottom")
 
-        list = [("OK",self.onOk),("Cancel",top.destroy)]
-        if plugin.hasapply:
-            list.append(("Apply",self.onApply),)
+        buttons.extend(("OK", "Cancel"))
 
-        for text,f in list:
-            Tk.Button(box,text=text,width=6,command=f).pack(side="left",padx=5)
-        #@nonl
-        #@-node:EKR.20040517080555.16:<< Create Ok, Cancel and Apply buttons >>
+        for name in buttons:
+            Tk.Button(box,
+                text=name,
+                width=6,
+                command=lambda self=self, name=name: self.onButton(name)
+            ).pack(side="left",padx=5)
+
+        #@-node:bob.20071208030419.5:<< Create the buttons >>
         #@nl
 
         g.app.gui.center_dialog(top) # Do this after packing.
         top.grab_set() # Make the dialog a modal dialog.
         top.focus_force() # Get all keystrokes.
 
+        self.result = ('Cancel', '')
+
         root.wait_window(top)
         #@nonl
-        #@-node:EKR.20040517080555.13:<< create the frame from the configuration data >>
+        #@-node:bob.20071208030419.2:<< Create the frame from the configuration data >>
         #@nl
     #@nonl
-    #@-node:EKR.20040517080555.11:__init__
+    #@-node:bob.20071208030419:__init__
     #@+node:EKR.20040517080555.17:Event Handlers
-    def onApply(self):
 
-        """Event handler for Apply button"""
-        self.writeConfiguration()
-        self.plugin.mod.applyConfiguration(self.config)
+    def onButton(self, name):
+        """Event handler for all button clicks."""
 
-    def onOk(self):
+        data = self.getData()
+        self.result = (name, data)
 
-        """Event handler for Ok button"""
-        self.writeConfiguration()
-        self.top.destroy()
-    #@nonl
+        if name in ('OK', 'Cancel'):
+            self.top.destroy()
+            return
+
+        if self.callback:
+            retval = self.callback(name, data)
+            if retval == 'close':
+                self.top.destroy()
+            else:
+                self.result = ('Cancel', None)
+
+
     #@-node:EKR.20040517080555.17:Event Handlers
-    #@+node:EKR.20040517080555.18:writeConfiguration
-    def writeConfiguration(self):
+    #@+node:EKR.20040517080555.18:getData
+    def getData(self):
+        """Return the modified configuration."""
 
-        """Write the configuration to disk"""
-
-        # Set values back into the config item.
+        data = {}
         for section, option, entry in self.entries:
+            if section not in data:
+                data[section] = {}
             s = entry.get()
             s = g.toEncodedString(s,"ascii",reportErrors=True) # Config params had better be ascii.
-            self.config.set(section,option,s)
+            data[section][option] = s
 
-        # Write out to the file.
-        f = open(self.filename, "w")
-        self.config.write(f)
-        f.close()
-    #@nonl
-    #@-node:EKR.20040517080555.18:writeConfiguration
+        return data
+
+
+    #@-node:EKR.20040517080555.18:getData
     #@-others
 #@nonl
-#@-node:EKR.20040517080555.10:class PropertiesWindow
-#@+node:EKR.20040517080555.19:class PluginAbout
-class PluginAbout:
+#@-node:EKR.20040517080555.10:class TkPropertiesDialog
+#@+node:EKR.20040517080555.19:class TkScrolledMessageDialog
+class TkScrolledMessageDialog:
 
-    """A class to create and run an About Plugin dialog"""
+    """A class to create and run a Scrolled Message dialog for Tk"""
 
     #@    @+others
     #@+node:EKR.20040517080555.20:__init__
-    def __init__(self, name, version, about):
+    def __init__(self, title='Message', label= '', msg='', callback=None, buttons=None):
 
-        """# Create and run a modal dialog giving the name,
-        version and description of a plugin.
-        """
+        """Create and run a modal dialog showing 'msg' in a scrollable window."""
+
+        if buttons is None:
+            buttons = []
+
+        self.result = ('Cancel', None)
 
         root = g.app.root
         self.top = top = Tk.Toplevel(root)
         g.app.gui.attachLeoIcon(self.top)
-        top.title("About " + name)
+        top.title(title)
         top.resizable(0,0) # neither height or width is resizable.
 
         frame = Tk.Frame(top)
         frame.pack(side="top")
         #@    << Create the contents of the about box >>
         #@+node:EKR.20040517080555.21:<< Create the contents of the about box >>
-        Tk.Label(frame,text="Version " + version).pack()
+        #Tk.Label(frame,text="Version " + version).pack()
+
+        if label:
+            Tk.Label(frame, text=label).pack()
 
         body = w = g.app.gui.plainTextWidget(
             frame,name='body-pane',
             bd=2,bg="white",relief="flat",setgrid=0,wrap='word')
-        w.insert(0,about)
+        w.insert(0,msg)
         if 0: # prevents arrow keys from being visible.
             w.configure(state='disabled')
         w.setInsertPoint(0)
@@ -602,6 +725,7 @@ class PluginAbout:
         body.pack(expand=1,fill="both")
 
         def destroyCallback(event=None,top=top):
+            self.result = ('Cancel', None)
             top.destroy()
 
         body.bind('<Return>',destroyCallback)
@@ -610,14 +734,22 @@ class PluginAbout:
         #@nonl
         #@-node:EKR.20040517080555.21:<< Create the contents of the about box >>
         #@nl
-        #@    << Create the close button >>
-        #@+node:EKR.20040517080555.22:<< Create the close button >>
-        buttonbox = Tk.Frame(top, borderwidth=5)
-        buttonbox.pack(side="bottom")
+        #@    << Create the buttons >>
+        #@+node:EKR.20040517080555.22:<< Create the buttons >>
 
-        self.button = b = Tk.Button(buttonbox, text="Close", command=top.destroy)
-        b.pack(side="bottom")
-        #@-node:EKR.20040517080555.22:<< Create the close button >>
+        box = Tk.Frame(top, borderwidth=5)
+        box.pack(side="bottom")
+
+        buttons.append("Close")
+
+        for name in buttons:
+            Tk.Button(box,
+                text=name,
+                width=6,
+                command=lambda self=self, name=name: self.onButton(name)
+            ).pack(side="left",padx=5)
+        #@nonl
+        #@-node:EKR.20040517080555.22:<< Create the buttons >>
         #@nl
 
         g.app.gui.center_dialog(top) # Do this after packing.
@@ -627,8 +759,46 @@ class PluginAbout:
         root.wait_window(top)
     #@nonl
     #@-node:EKR.20040517080555.20:__init__
+    #@+node:bob.20071209110304.1:Event Handlers
+
+    def onButton(self, name):
+        """Event handler for all button clicks."""
+
+
+        if name in ('Close'):
+
+            self.top.destroy()
+            return
+
+        if self.callback:
+            retval = self.callback(name, data)
+            if retval == 'close':
+                self.top.destroy()
+            else:
+                self.result = ('Cancel', None)
+
+
+    #@-node:bob.20071209110304.1:Event Handlers
     #@-others
-#@-node:EKR.20040517080555.19:class PluginAbout
+#@-node:EKR.20040517080555.19:class TkScrolledMessageDialog
+#@+node:bob.20071208211442.1:runPropertiesDialog
+def runPropertiesDialog(title='Properties', data={}, callback=None, buttons=None):
+    """Dispay a modal TkPropertiesDialog"""
+
+
+    dialog = TkPropertiesDialog(title, data, callback, buttons)
+
+    return dialog.result 
+#@-node:bob.20071208211442.1:runPropertiesDialog
+#@+node:bob.20071209110304:runScrolledMessageDialog
+def runScrolledMessageDialog(title='Message', label= '', msg='', callback=None, buttons=None):
+    """Display a modal TkScrolledMessageDialog."""
+
+
+    dialog = TkScrolledMessageDialog(title, label, msg, callback, buttons)
+
+    return dialog.result
+#@-node:bob.20071209110304:runScrolledMessageDialog
 #@-others
-#@-node:EKR.20040517080555.2:@thin plugins_menu.py
+#@-node:bob.20071208012538:@thin plugins_menu.py
 #@-leo
