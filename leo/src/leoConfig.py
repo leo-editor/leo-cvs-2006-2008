@@ -1196,7 +1196,7 @@ class configClass:
         if name:
             name +='LeoSettings.leo'
 
-        g.trace(name)
+        # g.trace(name)
 
         return name
     #@-node:ekr.20071211112804:getMachineName
