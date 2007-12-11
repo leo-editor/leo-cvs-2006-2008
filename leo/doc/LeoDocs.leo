@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="14" left="340" height="812" width="892"/>
+	<global_window_position top="14" left="340" height="792" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -172,7 +172,7 @@
 <v t="ekr.20050906105946"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.2" a="E"><vh>Chapter 1: Installing Leo</vh>
+<v t="ekr.20050831195331.2"><vh>Chapter 1: Installing Leo</vh>
 <v t="edream.110203163054.48"><vh>@rst html\install.html</vh>
 <v t="ekr.20050901110110"><vh>@rst-no-head links</vh></v>
 <v t="edream.110203163054.49"><vh>System requirements</vh></v>
@@ -244,7 +244,7 @@
 </v>
 </v>
 <v t="ekr.20050831184021.5"><vh>Chapter 4: Programming with Leo</vh>
-<v t="ekr.20050828061213" a="E"><vh>@rst html\directives.html</vh>
+<v t="ekr.20050828061213"><vh>@rst html\directives.html</vh>
 <v t="ekr.20050828160132"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050828061501.1"><vh>@rst-no-head Intro.</vh></v>
 <v t="ekr.20050828163557"><vh>Overview: the seven ways of creating derived files</vh></v>
@@ -731,7 +731,8 @@
 <v t="ekr.20070317033759"><vh>Chapter 19: Embedding Leo with the leoBridge module</vh>
 <v t="ekr.20070317033759.1"><vh>@rst html\leoBridge.html</vh>
 <v t="ekr.20070317033759.2"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20070317033759.3"><vh>@rst-no-head body</vh></v>
+<v t="ekr.20070317033759.3"><vh>The basics</vh></v>
+<v t="ekr.20071210094621"><vh>Running leoBridge from within Leo</vh></v>
 <v t="ekr.20070317033759.6"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -1101,7 +1102,7 @@
 </v>
 </v>
 <v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
-<v t="ekr.20060620094033"><vh>What's New...</vh>
+<v t="ekr.20060620094033" a="TV"><vh>What's New...</vh>
 <v t="ekr.20071116062917"><vh>What's New in Leo 4.4.5</vh>
 <v t="ekr.20071116062917.1"><vh>@rst html\new-4-4-5.html</vh>
 <v t="ekr.20071116062917.2"><vh>@rst-no-head links</vh></v>
@@ -3439,24 +3440,24 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="ET"><vh>Latest version</vh>
-<v t="ekr.20071206093346" a="V"><vh>Leo 4.4.5 b2</vh>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20071206093346"><vh>Leo 4.4.5 b2</vh>
 <v t="ekr.20071206093323.1"><vh>Fixed bugs</vh>
-<v t="ekr.20071206093323.112" a="E"><vh>Improved error reporting for aspell on Linux</vh></v>
+<v t="ekr.20071206093323.112"><vh>Improved error reporting for aspell on Linux</vh></v>
 <v t="ekr.20071206093323.2"><vh>Fixed two crashers in the @noref logic</vh></v>
 <v t="ekr.20071206093323.3"><vh>Fixed crasher in regularizeWhitespace</vh></v>
-<v t="ekr.20071206093323.4" a="E"><vh>Fixed paste-node-as-clone</vh></v>
+<v t="ekr.20071206093323.4"><vh>Fixed paste-node-as-clone</vh></v>
 <v t="ekr.20071206093323.29"><vh>Fixed threading colorizer hang with perl</vh></v>
 <v t="ekr.20071206093323.30"><vh>Fixed C++ importer crash</vh></v>
 <v t="ekr.20071206093323.31"><vh>Reorganized leoImport.py</vh></v>
-<v t="ekr.20071206093323.32" a="E"><vh>Fixed crasher when tangling @root</vh></v>
-<v t="ekr.20071206093323.59" a="E"><vh>Fixed command lockout problem</vh></v>
-<v t="ekr.20071206093323.72" a="E"><vh>Improved @auto code</vh></v>
+<v t="ekr.20071206093323.32"><vh>Fixed crasher when tangling @root</vh></v>
+<v t="ekr.20071206093323.59"><vh>Fixed command lockout problem</vh></v>
+<v t="ekr.20071206093323.72"><vh>Improved @auto code</vh></v>
 <v t="ekr.20071206093323.76"><vh>Simplified perl colorizer and added progress checks</vh></v>
-<v t="ekr.20071206093323.77" a="E"><vh>Fixed crasher in aspell logic</vh></v>
-<v t="ekr.20071206093323.80" a="E"><vh>Fixed problem with decorators</vh></v>
-<v t="ekr.20071206093323.87" a="E"><vh>Fixed @auto bug</vh></v>
-<v t="ekr.20071206093323.96" a="E"><vh>Fixed  focus problem with goto-next clone command</vh></v>
+<v t="ekr.20071206093323.77"><vh>Fixed crasher in aspell logic</vh></v>
+<v t="ekr.20071206093323.80"><vh>Fixed problem with decorators</vh></v>
+<v t="ekr.20071206093323.87"><vh>Fixed @auto bug</vh></v>
+<v t="ekr.20071206093323.96"><vh>Fixed  focus problem with goto-next clone command</vh></v>
 </v>
 </v>
 </v>
@@ -30099,6 +30100,8 @@ Using the leoBridge module, host programs can get access to:
 - all of Leo's source code,
 - the contents of any .leo file,
 - the commander of any .leo file.
+
+.. contents::
 </t>
 <t tx="ekr.20070317033759.2">.. Links
 
@@ -33311,5 +33314,63 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20071210094621">This following is adapted from Terry Brown's entry in Leo's wiki.
+
+You can not just run leoBridge from Leo, because the leoBridge module is design
+to run a separate copy of Leo. However, it is possible to run leoBridge from a
+subprocess. That turned out to be more, um, interesting than anticipated, so I'm
+recording the results here.
+
+The idea is that script A running in Leo (i.e. in a regular GUI Leo session)
+calls script B through subprocess.Popen(), script B uses LeoBridge to do
+something (parse unloaded Leo files), and returns the result to script A.
+Passing the result back via the clipboard seemed like a possibility, but
+XWindows / tcl/tk clipboard madness being what it is, that didn't seem to work.
+
+First trick, calling script B from script A::
+
+    import subprocess
+    p = subprocess.Popen(('python',
+        path_to_script_B,
+        parameter_for_script_B,),
+        stdout=subprocess.PIPE,
+        env={'PYTHONPATH': g.app.loadDir,'USER': g.app.leoID},
+    )
+    p.wait()
+
+Setting PYTHONPATH in the environment seemed like the easiest way to let
+script B find leoBridge.py (which it needs to import).  But by setting the
+env parameter you limit script B's environment to be **only** PYTHONPATH,
+which causes leoBridge to fail because, in unix at least, it depends
+on USER in the environment.  So you need to pass that through too.
+
+Now, because passing stuff back on the clipboard seems unreliable, at least
+in XWindows, script B passes results back to script A via stdout (print),
+but there's some Leo initialization chatter you want to avoid.  So put a
+sentinel, 'START_CLIPBOARD', in the output, and collect it like this::
+
+    response = p.stdout.readlines()
+    while response and 'START_CLIPBOARD' not in response[0]:
+        del response[0]
+    del response[0]  # delete the sentinel as well
+    response = ''.join(response)
+
+This is the basic mechanism.  What I *actually* wanted to do was have script
+B generate a branch of nodes and pass that back to script A for insertion in
+the tree script A is running in.  That's relatively easy if you use::
+
+    c.setCurrentPosition(pos_of_branch_to_return)
+    c.copyOutline()
+    print '&lt;!-- START_CLIPBOARD --&gt;'
+    print g.app.gui.getTextFromClipboard()
+    print '&lt;!-- END_CLIPBOARD --&gt;'
+
+at the end of script B, and back in script A, after you've rebuilt
+`response` as shown above, just::
+
+    g.app.gui.replaceClipboardWith(response)
+    c.pasteOutline()
+
+</t>
 </tnodes>
 </leo_file>
