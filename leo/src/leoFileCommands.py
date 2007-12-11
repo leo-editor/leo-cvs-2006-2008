@@ -903,7 +903,7 @@ class baseFileCommands:
         self.fileBuffer = theFile.read() ; theFile.close()
         self.fileIndex = 0
         #@    << Set the default directory >>
-        #@+node:ekr.20031218072017.2298:<< Set the default directory >>
+        #@+node:ekr.20071211134300:<< Set the default directory >>
         #@+at 
         #@nonl
         # The most natural default directory is the directory containing the 
@@ -917,7 +917,7 @@ class baseFileCommands:
 
         if len(theDir) > 0:
             c.openDirectory = theDir
-        #@-node:ekr.20031218072017.2298:<< Set the default directory >>
+        #@-node:ekr.20071211134300:<< Set the default directory >>
         #@nl
         c.beginUpdate()
         try:
