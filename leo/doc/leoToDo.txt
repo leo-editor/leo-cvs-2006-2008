@@ -2,7 +2,7 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20071113093057:5.0 cleanups, vim bindings & readline
-#@+node:ekr.20071211092807:First
+#@+node:ekr.20071211092807:First 5
 #@+node:ekr.20071210092032:Improve how rst3 plugin finds default.css file
 @nocolor
 
@@ -22,6 +22,504 @@ the same directory as the LEO file that is being processed) when rst3_stylesheet
 is not set.
 #@nonl
 #@-node:ekr.20071210092032:Improve how rst3 plugin finds default.css file
+#@+node:ekr.20060724071225:Look at Paste Node As Clone
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3835397
+By: nobody
+
+In my large outline with probably thousands of nodes, "paste node as clone"
+takes almost a minute to complete, always. Is this normal behavior? It slows
+down my thought processes significantly to have to wait 1 minute to clone a
+node...
+
+@color
+#@nonl
+#@+node:EKR.20040610130943:pasteOutlineRetainingClones
+def pasteOutlineRetainingClones (self,event=None):
+
+    '''Paste an outline into the present outline from the clipboard.
+    Nodes *retain* their original identify.'''
+
+    c = self
+
+    return c.pasteOutline(reassignIndices=False)
+#@-node:EKR.20040610130943:pasteOutlineRetainingClones
+#@+node:ekr.20031218072017.1551:pasteOutline
+# To cut and paste between apps, just copy into an empty body first, then copy to Leo's clipboard.
+
+def pasteOutline(self,event=None,reassignIndices=True):
+
+    '''Paste an outline into the present outline from the clipboard.
+    Nodes do *not* retain their original identify.'''
+
+    c = self ; u = c.undoer ; current = c.currentPosition()
+    s = g.app.gui.getTextFromClipboard()
+    pasteAsClone = not reassignIndices
+    undoType = g.choose(reassignIndices,'Paste Node','Paste As Clone')
+
+    c.endEditing()
+
+    if not s or not c.canPasteOutline(s):
+        return # This should never happen.
+
+    isLeo = g.match(s,0,g.app.prolog_prefix_string)
+    tnodeInfoDict = {}
+    if pasteAsClone:
+        << remember all data for undo/redo Paste As Clone >>
+
+    if isLeo:
+        pasted = c.fileCommands.getLeoOutline(s,reassignIndices)
+    else:
+        pasted = c.importCommands.convertMoreStringToOutlineAfter(s,current)
+    if not pasted: return
+
+    c.beginUpdate()
+    try:
+        copiedBunchList = []
+        if pasteAsClone:
+            << put only needed info in copiedBunchList >>
+        undoData = u.beforeInsertNode(current,
+            pasteAsClone=pasteAsClone,copiedBunchList=copiedBunchList)
+        c.endEditing()
+        c.validateOutline()
+        c.selectPosition(pasted)
+        pasted.setDirty()
+        c.setChanged(True)
+        # paste as first child if back is expanded.
+        back = pasted.back()
+        if back and back.isExpanded():
+            pasted.moveToNthChildOf(back,0)
+        c.setRootPosition(c.findRootPosition(pasted)) # New in 4.4.2.
+        u.afterInsertNode(pasted,undoType,undoData)
+    finally:
+        c.endUpdate()
+        c.recolor()
+#@+node:ekr.20050418084539:<< remember all data for undo/redo Paste As Clone >>
+@
+
+We don't know yet which nodes will be affected by the paste, so we remember
+everything. This is expensive, but foolproof.
+
+The alternative is to try to remember the 'before' values of tnodes in the
+fileCommands read logic. Several experiments failed, and the code is very ugly.
+In short, it seems wise to do things the foolproof way.
+
+@c
+
+for p in c.allNodes_iter():
+    t = p.v.t
+    if t not in tnodeInfoDict.keys():
+        tnodeInfoDict[t] = g.Bunch(
+            t=t,head=p.headString(),body=p.bodyString())
+#@-node:ekr.20050418084539:<< remember all data for undo/redo Paste As Clone >>
+#@+node:ekr.20050418084539.2:<< put only needed info in copiedBunchList >>
+# Create a dict containing only copied tnodes.
+copiedTnodeDict = {}
+for p in pasted.self_and_subtree_iter():
+    if p.v.t not in copiedTnodeDict:
+        copiedTnodeDict[p.v.t] = p.v.t
+
+# g.trace(copiedTnodeDict.keys())
+
+for t in tnodeInfoDict.keys():
+    bunch = tnodeInfoDict.get(t)
+    if copiedTnodeDict.get(t):
+        copiedBunchList.append(bunch)
+
+# g.trace('copiedBunchList',copiedBunchList)
+#@-node:ekr.20050418084539.2:<< put only needed info in copiedBunchList >>
+#@-node:ekr.20031218072017.1551:pasteOutline
+#@+node:ekr.20031218072017.1559:getLeoOutlineFromClipboard & helpers
+def getLeoOutlineFromClipboard (self,s,reassignIndices=True):
+
+    '''Read a Leo outline from string s in clipboard format.'''
+
+    try:
+        v = self.getLeoOutlineHelper(s,reassignIndices,checking=True)
+        v = self.getLeoOutlineHelper(s,reassignIndices,checking=False)
+    except invalidPaste:
+        v = None
+        g.es("Invalid Paste As Clone",color="blue")
+    except BadLeoFile:
+        v = None
+        g.es("The clipboard is not valid ",color="blue")
+
+    return v
+
+getLeoOutline = getLeoOutlineFromClipboard # for compatibility
+#@nonl
+#@+node:ekr.20031218072017.1557:finishPaste
+def finishPaste(self,reassignIndices=True):
+
+    """Finish pasting an outline from the clipboard.
+
+    Retain clone links if reassignIndices is False."""
+
+    c = self.c
+    current = c.currentPosition()
+    if reassignIndices:
+        << reassign tnode indices >>
+    c.selectPosition(current)
+    return current
+#@+node:ekr.20031218072017.1558:<< reassign tnode indices >>
+@ putLeoOutline calls assignFileIndices (when copying nodes) so that vnode can be associated with tnodes.
+However, we must _reassign_ the indices here so that no "False clones" are created.
+@c
+
+nodeIndices = g.app.nodeIndices
+
+current.clearVisitedInTree()
+
+for p in current.self_and_subtree_iter():
+    t = p.v.t
+    if not t.isVisited():
+        t.setVisited()
+        # New in Leo 4.4.2 b2: use gnx's.  maxTnodeIndex is no longer used.
+        t.fileIndex = nodeIndices.getNewIndex()
+        # g.trace(t.fileIndex)
+#@nonl
+#@-node:ekr.20031218072017.1558:<< reassign tnode indices >>
+#@-node:ekr.20031218072017.1557:finishPaste
+#@+node:ekr.20060826052453.1:getLeoOutlineHelper
+def getLeoOutlineHelper (self,s,reassignIndices,checking):
+
+    self.checking = checking
+    self.usingClipboard = True
+    self.fileBuffer = s ; self.fileIndex = 0
+    self.descendentUnknownAttributesDictList = []
+    v = None
+
+    self.tnodesDict = {}
+    if not reassignIndices:
+        << recreate tnodesDict >>
+    try:
+        self.getXmlVersionTag()
+        self.getXmlStylesheetTag()
+        self.getTag("<leo_file>")
+        self.getClipboardHeader()
+        self.getDummyElements()
+        self.getVnodes(reassignIndices)
+        self.getTnodes()
+        self.getTag("</leo_file>")
+        if not checking:
+            v = self.finishPaste(reassignIndices)
+    finally:
+        self.fileBuffer = None ; self.fileIndex = 0
+        self.usingClipboard = False
+        self.tnodesDict = {}
+    return v
+#@+node:EKR.20040610134756:<< recreate tnodesDict >>
+nodeIndices = g.app.nodeIndices
+
+self.tnodesDict = {}
+
+for t in self.c.all_unique_tnodes_iter():
+    if hasattr(t,'fileIndex'):
+        tref = t.fileIndex
+        if nodeIndices.isGnx(tref):
+            tref = nodeIndices.toString(tref)
+        self.tnodesDict[tref] = t
+
+if 0:
+    print '-'*40
+    for key in self.tnodesDict.keys():
+        print key,self.tnodesDict[key]
+#@-node:EKR.20040610134756:<< recreate tnodesDict >>
+#@-node:ekr.20060826052453.1:getLeoOutlineHelper
+#@+node:ekr.20031218072017.3022:getClipboardHeader
+def getClipboardHeader (self):
+
+    if self.getOpenTag("<leo_header"):
+        return # <leo_header> or <leo_header/> has been seen.
+
+    while 1:
+        if self.matchTag("file_format="):
+            self.getDquote() ; self.getLong() ; self.getDquote()
+        elif self.matchTag("tnodes="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
+        elif self.matchTag("max_tnode_index="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
+        elif self.matchTag("></leo_header>"): # new in 4.2: allow this form.
+            break
+        else:
+            self.getTag("/>")
+            break
+#@nonl
+#@-node:ekr.20031218072017.3022:getClipboardHeader
+#@-node:ekr.20031218072017.1559:getLeoOutlineFromClipboard & helpers
+#@+node:ekr.20031218072017.1565:getVnodes
+def getVnodes (self,reassignIndices=True):
+
+    c = self.c
+
+    if self.getOpenTag("<vnodes>"):
+        return # <vnodes/> seen.
+
+    self.forbiddenTnodes = []
+    back = parent = None # This routine _must_ work on vnodes!
+    self.currentVnodeStack = []
+    self.topVnodeStack = []
+
+    if self.usingClipboard:
+        oldRoot = c.rootPosition()
+        oldCurrent = c.currentPosition()
+        if not reassignIndices:
+            << set self.forbiddenTnodes to tnodes than must not be pasted >>
+
+    while self.matchTag("<v"):
+        append1 = not self.usingClipboard and len(self.currentVnodeStack) == 0
+        append2 = not self.usingClipboard and len(self.topVnodeStack) == 0
+        back = self.getVnode(parent,back,skip=False,
+            appendToCurrentStack=append1,appendToTopStack=append2)
+
+    if self.usingClipboard and not self.checking:
+        # Link in the pasted nodes after the current position.
+        newRoot = c.rootPosition()
+        c.setRootPosition(oldRoot)
+        newRoot.v.linkAfter(oldCurrent.v)
+        newCurrent = oldCurrent.copy()
+        newCurrent.v = newRoot.v
+        c.setCurrentPosition(newCurrent)
+
+    self.getTag("</vnodes>")
+#@+node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
+self.forbiddenTnodes = []
+
+for p in oldCurrent.self_and_parents_iter():
+    if p.v.t not in self.forbiddenTnodes:
+        self.forbiddenTnodes.append(p.v.t)
+
+# g.trace("forbiddenTnodes",self.forbiddenTnodes)
+#@-node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
+#@-node:ekr.20031218072017.1565:getVnodes
+#@+node:ekr.20031218072017.1566:getVnode & helpers
+# changed for 4.2 & 4.4
+def getVnode (self,parent,back,skip,appendToCurrentStack,appendToTopStack):
+
+    v = None
+    setCurrent = setExpanded = setMarked = setOrphan = setTop = False
+    tref = -1 ; headline = '' ; tnodeList = None ; attrDict = {}
+
+    # we have already matched <v.
+
+    # New in Leo 4.4: support collapsed tnodes.
+    if self.matchTag('/>'): # A collapsed vnode.
+        v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
+        if self.checking: return None
+        else: return v
+
+    while 1:
+        if self.matchTag("a=\""):
+            << Handle vnode attribute bits >>
+        elif self.matchTag("t="):
+            # New for 4.1.  Read either "Tnnn" or "gnx".
+            tref = index = self.getDqString()
+            if self.usingClipboard:
+                << raise invalidPaste if the tnode is in self.forbiddenTnodes >>
+        elif self.matchTag("vtag=\"V"):
+            self.getIndex() ; self.getDquote() # ignored
+        elif self.matchTag("tnodeList="):
+            s = self.getDqString()
+            tnodeList = self.getTnodeList(s) # New for 4.0
+        elif self.matchTag("descendentTnodeUnknownAttributes="):
+            # New for 4.2, deprecated for 4.3?
+            s = self.getDqString()
+            theDict = self.getDescendentUnknownAttributes(s)
+            if theDict:
+                self.descendentUnknownAttributesDictList.append(theDict)
+        elif self.matchTag("expanded="): # New in 4.2
+            s = self.getDqString()
+            self.descendentExpandedList.extend(self.getDescendentAttributes(s,tag="expanded"))
+        elif self.matchTag("marks="): # New in 4.2.
+            s = self.getDqString()
+            self.descendentMarksList.extend(self.getDescendentAttributes(s,tag="marks"))
+        elif self.matchTag(">"):
+            break
+        else: # New for 4.0: allow unknown attributes.
+            # New in 4.2: allow pickle'd and hexlify'ed values.
+            attr,val = self.getUa("vnode")
+            if attr: attrDict[attr] = val
+    # Headlines are optional.
+    if self.matchTag("<vh>"):
+        headline = self.getEscapedString() ; self.getTag("</vh>")
+    # g.trace("skip:",skip,"parent:",parent,"back:",back,"headline:",headline)
+    if skip:
+        v = self.getExistingVnode(tref,headline)
+        if v: # Bug fix: 4/18/05: The headline may change during paste as clone.
+            v.initHeadString(headline,encoding=self.leo_file_encoding)
+    if v is None:
+        v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
+        if not self.checking:
+            skip = skip or skip2
+            if tnodeList:
+                v.t.tnodeList = tnodeList # New for 4.0, 4.2: now in tnode.
+
+    if not self.checking:
+        << Set the remembered status bits >>
+
+    # Recursively create all nested nodes.
+    parent = v ; back = None
+    while self.matchTag("<v"):
+        append1 = appendToCurrentStack and len(self.currentVnodeStack) == 0
+        append2 = appendToTopStack and len(self.topVnodeStack) == 0
+        back = self.getVnode(parent,back,skip,
+            appendToCurrentStack=append1,appendToTopStack=append2)
+
+    if not self.checking:
+        << Append to current or top stack >>
+
+    # End this vnode.
+    self.getTag("</v>")
+    return v
+#@nonl
+#@+node:ekr.20031218072017.1567:<< Handle vnode attribute bits  >>
+# The a=" has already been seen.
+while 1:
+    if   self.matchChar('C'): pass # Not used: clone bits are recomputed later.
+    elif self.matchChar('D'): pass # Not used.
+    elif self.matchChar('E'): setExpanded = True
+    elif self.matchChar('M'): setMarked = True
+    elif self.matchChar('O'): setOrphan = True
+    elif self.matchChar('T'): setTop = True
+    elif self.matchChar('V'): setCurrent = True
+    else: break
+
+self.getDquote()
+#@-node:ekr.20031218072017.1567:<< Handle vnode attribute bits  >>
+#@+node:ekr.20041023110111:<< raise invalidPaste if the tnode is in self.forbiddenTnodes >>
+# Bug fix in 4.3 a1: make sure we have valid paste.
+junk,theTime,junk = g.app.nodeIndices.scanGnx(index,0)
+if not theTime and index[0] == "T":
+    index = index[1:]
+
+index = self.canonicalTnodeIndex(index)
+t = self.tnodesDict.get(index)
+
+if t in self.forbiddenTnodes:
+    # g.trace(t)
+    raise invalidPaste
+#@-node:ekr.20041023110111:<< raise invalidPaste if the tnode is in self.forbiddenTnodes >>
+#@+node:ekr.20031218072017.1568:<< Set the remembered status bits >>
+if setCurrent:
+    self.currentVnodeStack = [v]
+
+if setTop:
+    self.topVnodeStack = [v]
+
+if setExpanded:
+    v.initExpandedBit()
+
+if setMarked:
+    v.initMarkedBit() # 3/25/03: Do not call setMarkedBit here!
+
+if setOrphan:
+    v.setOrphan()
+#@-node:ekr.20031218072017.1568:<< Set the remembered status bits >>
+#@+node:ekr.20040326055828:<< Append to current or top stack >>
+if not setCurrent and len(self.currentVnodeStack) > 0 and appendToCurrentStack:
+    #g.trace("append current",v)
+    self.currentVnodeStack.append(v)
+
+if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
+    #g.trace("append top",v)
+    self.topVnodeStack.append(v)
+#@-node:ekr.20040326055828:<< Append to current or top stack >>
+#@+node:ekr.20031218072017.1860:createVnode
+# (changed for 4.2) sets skip
+
+def createVnode (self,parent,back,tref,headline,attrDict):
+
+    # g.trace(parent,headline)
+    v = None ; c = self.c
+    # Shared tnodes are placed in the file even if empty.
+    if tref == -1:
+        t = leoNodes.tnode()
+    else:
+        tref = self.canonicalTnodeIndex(tref)
+        t = self.tnodesDict.get(tref)
+        if not t:
+            t = self.newTnode(tref)
+
+    if self.checking: return None,False
+
+    if back: # create v after back.
+        v = back.insertAfter(t)
+    elif parent: # create v as the parent's first child.
+        v = parent.insertAsNthChild(0,t)
+    else: # create a root vnode
+        v = leoNodes.vnode(t)
+        v.moveToRoot(oldRoot=None)
+        c.setRootVnode(v) # New in Leo 4.4.2.
+
+    if v not in v.t.vnodeList:
+        v.t.vnodeList.append(v) # New in 4.2.
+
+    skip = len(v.t.vnodeList) > 1
+    v.initHeadString(headline,encoding=self.leo_file_encoding)
+    << handle unknown vnode attributes >>
+    # g.trace(skip,tref,v,v.t,len(v.t.vnodeList))
+    return v,skip
+#@nonl
+#@+node:ekr.20031218072017.1861:<< handle unknown vnode attributes >>
+keys = attrDict.keys()
+if keys:
+    v.unknownAttributes = attrDict
+    v._p_changed = 1
+
+    if 0: # For debugging.
+        s = "unknown attributes for " + v.headString()
+        g.es_print(s,color="blue")
+        for key in keys:
+            s = "%s = %s" % (key,attrDict.get(key))
+            g.es_print(s)
+#@-node:ekr.20031218072017.1861:<< handle unknown vnode attributes >>
+#@-node:ekr.20031218072017.1860:createVnode
+#@+node:ekr.20040326063413:getExistingVnode
+def getExistingVnode (self,tref,headline):
+
+    assert(tref > -1)
+    tref = self.canonicalTnodeIndex(tref)
+    t = self.tnodesDict.get(tref)
+    try:
+        return t.vnodeList[0]
+    except (IndexError,AttributeError):
+        g.es("Missing vnode:",headline,color="red")
+        g.es("Probably an outline topology error.")
+        return None
+#@-node:ekr.20040326063413:getExistingVnode
+#@-node:ekr.20031218072017.1566:getVnode & helpers
+#@-node:ekr.20060724071225:Look at Paste Node As Clone
+#@+node:ekr.20071211093323:more screen shots on Leo's web site
+#@-node:ekr.20071211093323:more screen shots on Leo's web site
+#@+node:ekr.20071211132156:find-any-clone command
+flag = False
+
+if p.isCloned():
+    p.moveToThreadNext()
+
+while p:
+    if p.isCloned():
+        flag = True ; break
+    else:
+        p.moveToThreadNext()
+
+if flag:
+    c.beginUpdate()
+    try:
+        c.frame.tree.expandAllAncestors(p)
+        c.selectPosition(p)
+    finally:
+        c.endUpdate()
+
+else:
+    g.es('No more clones',color='blue')
+#@-node:ekr.20071211132156:find-any-clone command
+#@+node:ekr.20071115055315:Add toggle-collapse-outline-when-moving command
+See: contractNodeOrGoToParent
+#@nonl
+#@-node:ekr.20071115055315:Add toggle-collapse-outline-when-moving command
+#@-node:ekr.20071211092807:First 5
 #@+node:ekr.20071211091037.1:Code cleanup 7
 #@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree (clean up config)
 #@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree (clean up config)
@@ -39,278 +537,8 @@ xmlns:leo="http://edreamleo.org/namespaces/leo-python-editor/1.1"
 #@nonl
 #@-node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
 #@+node:ekr.20071115111719.2:Remove hard-coded menu tables
-#@+node:ekr.20031218072017.3785:createMenusFromTables & helpers
-def createMenusFromTables (self):
-
-    c = self.c
-
-    aList = c.config.getMenusList()
-    if aList:
-        self.createMenusFromConfigList(aList)
-    else:
-        self.defineMenuTables()
-
-        self.createFileMenuFromTable()
-        self.createEditMenuFromTable()
-        self.createOutlineMenuFromTable()
-
-        g.doHook("create-optional-menus",c=c)
-
-        if self.useCmdMenu:
-            self.createCmndsMenuFromTable()
-
-        self.createWindowMenuFromTable()
-        self.createHelpMenuFromTable()
-#@+node:ekr.20031218072017.3790:createFileMenuFromTable
-def createFileMenuFromTable (self):
-
-    c = self.c
-    fileMenu = self.createNewMenu("&File")
-    self.createMenuEntries(fileMenu,self.fileMenuTopTable)
-    self.createNewMenu("Open &With...","File")
-    self.createMenuEntries(fileMenu,self.fileMenuTop2Table)
-    << create the recent files submenu >>
-    self.add_separator(fileMenu)
-    << create the read/write submenu >>
-    << create the tangle submenu >>
-    << create the untangle submenu >>
-    << create the import submenu >>
-    << create the export submenu >>
-    self.add_separator(fileMenu)
-    self.createMenuEntries(fileMenu,self.fileMenuTop3MenuTable)
-#@+node:ekr.20031218072017.3791:<< create the recent files submenu >>
-self.createNewMenu("Recent &Files...","File")
-c.recentFiles = c.config.getRecentFiles()
-
-if 0: # Not needed, and causes problems in wxWindows...
-    self.createRecentFilesMenuItems()
-#@-node:ekr.20031218072017.3791:<< create the recent files submenu >>
-#@+node:ekr.20031218072017.3792:<< create the read/write submenu >>
-readWriteMenu = self.createNewMenu("&Read/Write...","File")
-
-self.createMenuEntries(readWriteMenu,self.fileMenuReadWriteMenuTable)
-#@-node:ekr.20031218072017.3792:<< create the read/write submenu >>
-#@+node:ekr.20031218072017.3793:<< create the tangle submenu >>
-tangleMenu = self.createNewMenu("Tan&gle...","File")
-
-self.createMenuEntries(tangleMenu,self.fileMenuTangleMenuTable)
-#@-node:ekr.20031218072017.3793:<< create the tangle submenu >>
-#@+node:ekr.20031218072017.3794:<< create the untangle submenu >>
-untangleMenu = self.createNewMenu("&Untangle...","File")
-
-self.createMenuEntries(untangleMenu,self.fileMenuUntangleMenuTable)
-#@-node:ekr.20031218072017.3794:<< create the untangle submenu >>
-#@+node:ekr.20031218072017.3795:<< create the import submenu >>
-importMenu = self.createNewMenu("&Import...","File")
-
-self.createMenuEntries(importMenu,self.fileMenuImportMenuTable)
-#@-node:ekr.20031218072017.3795:<< create the import submenu >>
-#@+node:ekr.20031218072017.3796:<< create the export submenu >>
-exportMenu = self.createNewMenu("&Export...","File")
-
-self.createMenuEntries(exportMenu,self.fileMenuExportMenuTable)
-#@-node:ekr.20031218072017.3796:<< create the export submenu >>
-#@-node:ekr.20031218072017.3790:createFileMenuFromTable
-#@+node:ekr.20031218072017.3786:createEditMenuFromTable
-def createEditMenuFromTable (self):
-
-    editMenu = self.createNewMenu("&Edit")
-    self.createMenuEntries(editMenu,self.editMenuTopTable)
-
-    << create the edit body submenu >>
-    << create the edit headline submenu >>
-    << create the find submenu >>
-
-    self.createMenuEntries(editMenu,self.editMenuTop2Table)
-#@+node:ekr.20031218072017.3787:<< create the edit body submenu >>
-editBodyMenu = self.createNewMenu("Edit &Body...","Edit")
-
-self.createMenuEntries(editBodyMenu,self.editMenuEditBodyTable)
-#@-node:ekr.20031218072017.3787:<< create the edit body submenu >>
-#@+node:ekr.20031218072017.3788:<< create the edit headline submenu >>
-editHeadlineMenu = self.createNewMenu("Edit &Headline...","Edit")
-
-self.createMenuEntries(editHeadlineMenu,self.editMenuEditHeadlineTable)
-#@-node:ekr.20031218072017.3788:<< create the edit headline submenu >>
-#@+node:ekr.20031218072017.3789:<< create the find submenu >>
-findMenu = self.createNewMenu("&Find...","Edit")
-
-self.createMenuEntries(findMenu,self.editMenuFindMenuTable)
-#@-node:ekr.20031218072017.3789:<< create the find submenu >>
-#@-node:ekr.20031218072017.3786:createEditMenuFromTable
-#@+node:ekr.20031218072017.3797:createOutlineMenuFromTable
-def createOutlineMenuFromTable (self):
-
-    outlineMenu = self.createNewMenu("&Outline")
-
-    self.createMenuEntries(outlineMenu,self.outlineMenuTopMenuTable)
-
-    << create check submenu >>
-    << create expand/contract submenu >>
-    << create move submenu >>
-    << create mark submenu >>
-    << create goto submenu >>
-#@+node:ekr.20040711140738.1:<< create check submenu >>
-checkOutlineMenu = self.createNewMenu("Chec&k...","Outline")
-
-self.createMenuEntries(checkOutlineMenu,self.outlineMenuCheckOutlineMenuTable)
-#@-node:ekr.20040711140738.1:<< create check submenu >>
-#@+node:ekr.20031218072017.3798:<< create expand/contract submenu >>
-expandMenu = self.createNewMenu("E&xpand/Contract...","Outline")
-
-self.createMenuEntries(expandMenu,self.outlineMenuExpandContractMenuTable)
-#@-node:ekr.20031218072017.3798:<< create expand/contract submenu >>
-#@+node:ekr.20031218072017.3799:<< create move submenu >>
-moveSelectMenu = self.createNewMenu("&Move...","Outline")
-
-self.createMenuEntries(moveSelectMenu,self.outlineMenuMoveMenuTable)
-#@-node:ekr.20031218072017.3799:<< create move submenu >>
-#@+node:ekr.20031218072017.3800:<< create mark submenu >>
-markMenu = self.createNewMenu("M&ark/Unmark...","Outline")
-
-self.createMenuEntries(markMenu,self.outlineMenuMarkMenuTable)
-#@-node:ekr.20031218072017.3800:<< create mark submenu >>
-#@+node:ekr.20031218072017.3801:<< create goto submenu >>
-gotoMenu = self.createNewMenu("&Go To...","Outline")
-
-self.createMenuEntries(gotoMenu,self.outlineMenuGoToMenuTable)
-#@-node:ekr.20031218072017.3801:<< create goto submenu >>
-#@-node:ekr.20031218072017.3797:createOutlineMenuFromTable
-#@+node:ekr.20050921103736:createCmndsMenuFromTable
-def createCmndsMenuFromTable (self):
-
-    cmdsMenu = self.createNewMenu('&Cmds')
-
-    if 0: # Now in the minibuffer table.
-        # Used in top table: q,u,x
-        self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
-
-    for name,table in (
-        # &: a,b,c,d,f,g,h,i,m,n,o,p,r,s,t,u
-        ('&Abbrev...',          self.cmdsMenuAbbrevTable),
-        ('Body E&ditors',       self.cmdsMenuBodyEditorsTable),
-        ('&Buffers...',         self.cmdsMenuBuffersTable),
-        ('&Chapters...',        self.cmdsMenuChaptersTable),
-        ('C&ursor/Selection...',[]),
-        ('&Focus...',           self.cmdsMenuFocusTable),
-        ('&Macro...',           self.cmdsMenuMacroTable),
-        ('M&inibuffer',         self.cmdsMenuMinibufferTable),
-        #('&Panes...',           self.cmdsMenuPanesTable),
-        ('&Pickers...',         self.cmdsMenuPickersTable),
-        ('&Rectangles...',      self.cmdsMenuRectanglesTable),
-        ('Re&gisters...',       self.cmdsMenuRegistersTable),
-        ('R&un Script/Tests',   self.cmdsMenuRunTable),
-        ('Scr&olling...',       self.cmdsMenuScrollTable),
-        ('Spell C&heck...',     self.cmdsMenuSpellCheckTable),
-        ('&Text Commands',      self.cmdsMenuTextTable),
-        ('Toggle Setti&ngs',    self.cmdsMenuToggleTable),
-    ):
-        if table == self.cmdsMenuChaptersTable and not self.c.chapterController:
-            continue
-        menu = self.createNewMenu(name,'&Cmds')
-        self.createMenuEntries(menu,table)
-
-    for name,table in (
-        # &: b,e,f,s,t,x
-        ('Cursor &Back...',                     self.cursorMenuBackTable),
-        ('Cursor Back &Extend Selection...',    self.cursorMeuuBackExtendTable),
-        ('Cursor Extend &To...',                self.cursorMenuExtendTable),
-        ('Cursor &Forward...',                  self.cursorMenuForwardTable),
-        ('Cursor Forward E&xtend Selection...', self.cursorMenuForwardExtendTable),
-    ):
-        menu = self.createNewMenu(name,'C&ursor/Selection...')
-        self.createMenuEntries(menu,table)
+See createMenusFromTables.
 #@nonl
-#@-node:ekr.20050921103736:createCmndsMenuFromTable
-#@+node:ekr.20031218072017.3802:createWindowMenuFromTable
-def createWindowMenuFromTable (self):
-
-    windowMenu = self.createNewMenu("&Window")
-
-    self.createMenuEntries(windowMenu,self.windowMenuTopTable)
-#@-node:ekr.20031218072017.3802:createWindowMenuFromTable
-#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
-def createHelpMenuFromTable (self,table):
-
-    if sys.platform == 'darwin':
-        self.getMacHelpMenu(table)
-    else:
-        helpMenu = self.createNewMenu("&Help")
-        self.createMenuEntries(helpMenu,self.helpMenuTable)
-#@nonl
-#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
-#@+node:ekr.20070926135612:createMenusFromConfigList & helpers
-def createMenusFromConfigList (self,aList):
-
-    '''Create menus from dictionary d instead of 'hard coded' menus.
-    The 'top' menu has already been created.'''
-
-    tag = '@menu'
-    for z in aList:
-        kind,val,val2 = z
-        if kind.startswith(tag):
-            name = kind[len(tag):].strip()
-            if not self.handleSpecialMenus(name,parentName=None):
-                self.createNewMenu(name) # Create top-level menu.
-                self.createMenuFromConfigList(name,val,level=0)
-        else:
-            self.error('%s %s not valid outside @menu tree' % (kind,val))
-#@+node:ekr.20070927082205:createMenuFromConfigList
-def createMenuFromConfigList (self,parentName,aList,level=0):
-
-    table = [] ; parentMenu = self.getMenu(parentName)
-
-    for z in aList:
-        kind,val,val2 = z
-        if kind.startswith('@menu'):
-            # Menu names can be unicode without any problem.
-            name = kind[5:].strip()
-            if table:
-                self.createMenuEntries(parentMenu,table)
-            if not self.handleSpecialMenus(name,parentName,table):
-                self.createNewMenu(name,parentName) # Create submenu of parent menu.
-                self.createMenuFromConfigList(name,val,level+1)
-            table = []
-        elif kind == '@item':
-            name = str(val) # Item names must always be ascii.
-            if val2:
-                # Translated names can be unicode.
-                table.append((val2,name),)
-            else:
-                table.append(name)
-        else:
-            g.trace('can not happen: bad kind:',kind)
-
-    if table:
-        self.createMenuEntries(parentMenu,table)
-#@nonl
-#@-node:ekr.20070927082205:createMenuFromConfigList
-#@+node:ekr.20070927172712:handleSpecialMenus
-def handleSpecialMenus (self,name,parentName,table=[]):
-
-    '''Handle a special menu if name is the name of a special menu.
-    return True if this method handles the menu.'''
-
-    c = self.c
-    name2 = name.replace('&','').replace(' ','').lower()
-
-    if name2 == 'plugins':
-        # Create the plugins menu using a hook.
-        g.doHook("create-optional-menus",c=c)
-        return True
-    elif name2.startswith('recentfiles'):
-        # Just create the menu.  createRecentFilesMenuItems will be called later.
-        self.createNewMenu(name,parentName)
-        c.recentFiles = c.config.getRecentFiles()
-        return True
-    elif name2 == 'help' and sys.platform == 'darwin':
-        helpMenu = self.getMacHelpMenu(table)
-        return helpMenu is not None
-    else:
-        return False
-#@-node:ekr.20070927172712:handleSpecialMenus
-#@-node:ekr.20070926135612:createMenusFromConfigList & helpers
-#@-node:ekr.20031218072017.3785:createMenusFromTables & helpers
 #@-node:ekr.20071115111719.2:Remove hard-coded menu tables
 #@+node:ekr.20070625091423:Add translation services
 @nocolor
@@ -947,27 +1175,6 @@ g.es("dragged node will be moved")
 #@-node:ekr.20071115113231:Results
 #@-node:ekr.20070625091423:Add translation services
 #@-node:ekr.20071211091037.1:Code cleanup 7
-#@-node:ekr.20071211092807:First
-#@+node:ekr.20071211092807.1:Next 3
-#@+node:ekr.20071115055315:Add toggle-collapse-outline-when-moving
-#@+node:ekr.20040930064232:contractNodeOrGoToParent
-def contractNodeOrGoToParent (self,event=None):
-
-    """Simulate the left Arrow Key in folder of Windows Explorer."""
-
-    c = self ; p = c.currentPosition()
-
-    if p.hasChildren() and p.isExpanded():
-        # g.trace('contract',p.headString())
-        c.contractNode()
-    elif p.hasParent() and p.parent().isVisible(c):
-        # g.trace('goto parent',p.headString())
-        c.goToParent()
-
-    c.treeFocusHelper()
-#@nonl
-#@-node:ekr.20040930064232:contractNodeOrGoToParent
-#@-node:ekr.20071115055315:Add toggle-collapse-outline-when-moving
 #@+node:ekr.20071211091037.3:Finish @auto
 #@+node:ekr.20071027121956:Fix @auto javascript
 # Javascript syntax is truly bizarre.
@@ -989,170 +1196,13 @@ There are two goal symbols for the lexical grammar. The InputElementDiv symbol i
 Note that contexts exist in the syntactic grammar where both a division and a RegularExpressionLiteral are permitted by the syntactic grammar; however, since the lexical grammar uses the InputElementDiv goal symbol in such cases, the opening slash is not recognised as starting a regular expression literal in such a context. As a workaround, one may enclose the regular expression literal in p
 #@nonl
 #@-node:ekr.20071211092214:Javascript spec
-#@+node:ekr.20031218072017.3210:createOutline
-def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
-
-    c = self.c ; u = c.undoer ; s1 = s
-    junk,self.fileName = g.os_path_split(fileName)
-    self.methodName,self.fileType = g.os_path_splitext(self.fileName)
-    self.setEncoding(p=parent)
-    # g.trace(self.fileName,self.fileType)
-    # All file types except the following just get copied to the parent node.
-    if not ext: ext = self.fileType
-    ext = ext.lower()
-    if not s:
-        << Read file into s >>
-
-    # Create the top-level headline.
-    if atAuto:
-        p = parent.copy()
-        c.beginUpdate()
-        try:
-            p.setTnodeText('')
-        finally:
-            c.endUpdate(False)
-    else:
-        undoData = u.beforeInsertNode(parent)
-        p = parent.insertAsLastChild()
-        if self.treeType == "@file" and not s1:
-            p.initHeadString("@nosent " + fileName)
-        else:
-            p.initHeadString(fileName)
-        u.afterInsertNode(p,'Import',undoData)
-
-    self.rootLine = g.choose(self.treeType=="@file","","@root-code "+self.fileName+'\n')
-
-    if ext in (".c", ".cpp", ".cxx"):
-        self.scanCText(s,p,atAuto=atAuto)
-    elif ext == '.c#':
-        self.scanCSharpText(s,p,atAuto=atAuto)
-    elif ext == ".el":
-        self.scanElispText(s,p,atAuto=atAuto)
-    elif ext == ".java":
-        self.scanJavaText(s,p,atAuto=atAuto)
-    elif ext == ".js":
-        self.scanJavaScriptText(s,p,atAuto=atAuto)
-    elif ext == ".pas":
-        self.scanPascalText(s,p,atAuto=atAuto)
-    elif ext in (".py", ".pyw"):
-        self.scanPythonText(s,p,atAuto=atAuto)
-    elif ext == ".php":
-        self.scanPHPText(s,p,atAuto=atAuto)
-    else:
-        self.scanUnknownFileType(s,p,ext,atAuto=atAuto)
-
-    p.contract()
-    return p
-#@+node:ekr.20031218072017.3211:<< Read file into s >>
-try:
-    fileName = g.os_path_normpath(fileName)
-    theFile = open(fileName)
-    s = theFile.read()
-    s = g.toUnicode(s,self.encoding)
-    theFile.close()
-except IOError:
-    g.es("can not open %s%s" % (g.choose(atAuto,'@auto ',''),fileName),color='red')
-    leoTest.fail()
-    return None
-#@-node:ekr.20031218072017.3211:<< Read file into s >>
-#@-node:ekr.20031218072017.3210:createOutline
-#@+node:ekr.20070713075450:Unit tests
-# atAuto must be False for unit tests: otherwise the test gets wiped out.
-
-def cUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest(p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.c')
-
-def cSharpUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest(p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.c#')
-
-def elispUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.el')
-
-def htmlUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.htm')
-
-def javaUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.java')
-
-def javaScriptUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.js')
-
-def pascalUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.pas')
-
-def phpUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.php')
-
-def pythonUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.py')
-
-def textUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.txt')
-
-def defaultImporterUnitTest(self,p,fileName=None,s=None,showTree=False):
-    return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.xxx')
-#@+node:ekr.20070713082220:scannerUnitTest
-def scannerUnitTest (self,p,atAuto=False,ext=None,fileName=None,s=None,showTree=False):
-
-    '''Run a unit test of an import scanner,
-    i.e., create a tree from string s at location p.'''
-
-    c = self.c ; h = p.headString() ; old_root = p.copy()
-    oldChanged = c.changed
-    c.beginUpdate()
-    try:
-        d = g.app.unitTestDict
-        expectedErrors = d.get('expectedErrors')
-        expectedErrorMessage = d.get('expectedErrorMessage')
-        expectedMismatchLine = d.get('expectedMismatchLine')
-        g.app.unitTestDict = {
-            'expectedErrors':expectedErrors,
-            'expectedErrorMessage':expectedErrorMessage,
-            'expectedMismatchLine':expectedMismatchLine,
-        }
-        if not fileName: fileName = p.headString()
-        if not s: s = self.removeSentinelsCommand([fileName],toString=True)
-        title = g.choose(h.startswith('@test'),h[5:],h)
-        self.createOutline(title.strip(),p.copy(),atAuto=atAuto,s=s,ext=ext)
-        d = g.app.unitTestDict
-        ok = ((d.get('result') and expectedErrors in (None,0)) or
-            (
-                # checkTrialWrite returns *True* if the following match.
-                # d.get('result') == False and
-                d.get('actualErrors') == d.get('expectedErrors') and
-                d.get('actualMismatchLine') == d.get('expectedMismatchLine') and
-                (expectedErrorMessage is None or d.get('actualErrorMessage') == d.get('expectedErrorMessage'))
-            ))
-        if not ok:
-            g.trace('result',d.get('result'),
-                'actualErrors',d.get('actualErrors'),
-                'expectedErrors',d.get('expectedErrors'),
-                'actualMismatchLine',d.get('actualMismatchLine'),
-                'expectedMismatchLine', d.get('expectedMismatchLine'),
-                '\nactualErrorMessage  ',d.get('actualErrorMessage'),
-                '\nexpectedErrorMessage',d.get('expectedErrorMessage'),
-            )
-        if not showTree and ok:
-            while old_root.hasChildren():
-                old_root.firstChild().doDelete()
-            c.setChanged(oldChanged)
-
-    finally:
-        c.selectPosition(old_root)
-        c.endUpdate()
-
-    if g.app.unitTesting:
-        assert ok
-
-    return ok
-#@-node:ekr.20070713082220:scannerUnitTest
-#@-node:ekr.20070713075450:Unit tests
 #@-node:ekr.20071027121956:Fix @auto javascript
 #@+node:ekr.20071210085349:Support for xml files in @auto
 https://sourceforge.net/forum/message.php?msg_id=4665749
 #@nonl
 #@-node:ekr.20071210085349:Support for xml files in @auto
 #@-node:ekr.20071211091037.3:Finish @auto
+#@+node:ekr.20070623144302:vim-like bindings
 #@+node:ekr.20071105160956:*** auto-change panes
 @nocolor
 
@@ -1165,10 +1215,6 @@ copy-node: auto-select tree pane.
 copy_text (when not editing a headline): auto-select body text.
 #@nonl
 #@-node:ekr.20071105160956:*** auto-change panes
-#@+node:ekr.20071211093323:more screen shots on Leo's web site
-#@-node:ekr.20071211093323:more screen shots on Leo's web site
-#@-node:ekr.20071211092807.1:Next 3
-#@+node:ekr.20070623144302:vim-like bindings
 #@+node:ekr.20070824094005:Requests
 @nocolor
 
@@ -2317,56 +2363,8 @@ def revert (self,event=None):
 #@-node:ekr.20031218072017.2820:top level (file menu)
 #@-node:ekr.20061002093442:Add opml support to new,open, save commands
 #@+node:ekr.20071004120359.2:Do expand-region-abbrevs from
-#@+node:ekr.20050920084036.21:regionalExpandAbbrev (TK code)
-# def regionalExpandAbbrev (self,event):
-
-    # '''Exapand abbreviations throughout a region.'''
-
-    # k = self.k ; w = self.editWidget(event)
-    # if not w or not self._chckSel(event): return
-
-    # i1,i2 = w.getSelectionRange()
-    # ins = w.getInsertPoint()
-    # << define a new generator searchXR >>
-
-    # # EKR: the 'result' of calling searchXR is a generator object.
-    # k.regx.iter = searchXR(i1,i2,ins,event)
-    # k.regx.iter.next() # Call it the first time.
+See: regionalExpandAbbrev.
 #@nonl
-#@+node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
-# @ This is a generator (it contains a yield).
-# To make this work we must define a new generator for each call to regionalExpandAbbrev.
-# @c
-# def searchXR (i1,i2,ins,event):
-    # k = self.k
-    # w = self.editWidget(event)
-    # if not w: return
-
-    # w.tag_add('sXR',i1,i2)
-    # while i1:
-        # tr = w.tag_ranges('sXR')
-        # if not tr: break
-        # i1 = w.search(r'\w',i1,stopindex=tr[1],regexp=True)
-        # if i1:
-            # word = w.get('%s wordstart' % i1,'%s wordend' % i1)
-            # w.tag_delete('found')
-            # w.tag_add('found','%s wordstart' % i1,'%s wordend' % i1)
-            # w.tag_config('found',background='yellow')
-            # if self.abbrevs.has_key(word):
-                # k.setLabel('Replace %s with %s? y/n' % (word,self.abbrevs[word]))
-                # yield None
-                # if k.regXKey == 'y':
-                    # ind = w.index('%s wordstart' % i1)
-                    # w.delete('%s wordstart' % i1,'%s wordend' % i1)
-                    # w.insert(ind,self.abbrevs[word])
-            # i1 = '%s wordend' % i1
-    # w.setInsertPoint(ins,ins,insert=ins)
-    # w.tag_delete('sXR')
-    # w.tag_delete('found')
-    # k.setLabelGrey('')
-    # self.k.regx = g.bunch(iter=None,key=None)
-#@-node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
-#@-node:ekr.20050920084036.21:regionalExpandAbbrev (TK code)
 #@-node:ekr.20071004120359.2:Do expand-region-abbrevs from
 #@+node:ekr.20070605114358:Improve how recent files works?
 @nocolor
@@ -2383,326 +2381,6 @@ the recent files link is wrong.
 If it would be trivial for Leo to not do this, I'd like that feature.  If it's
 a big deal, then not to worry, I can always navigate to the file of course.
 #@-node:ekr.20070605114358:Improve how recent files works?
-#@+node:ekr.20070619161413:Finish support for hidden windows
-@
-
-*** Important ***
-
-The new code is just barely enough to open a window with a nullGui for @button dynamic-tests.
-**However**, it is just the start of what would be required to open a window and execute most operations on it.
-In particular, throughout leoEditCommands.py we should substitute c.frame.gui (or self.gui) for g.app.gui.
-But it's way too late in the Leo 4.4.3 release cycle to do that.
-#@nonl
-#@+node:ekr.20031218072017.3679:  leoFrame.__init__
-def __init__ (self,gui):
-
-    self.c = None # Must be created by subclasses.
-    self.title = None # Must be created by subclasses.
-    self.gui = gui
-
-    # Objects attached to this frame.
-    self.colorPanel = None 
-    self.comparePanel = None
-    self.findPanel = None
-    self.fontPanel = None
-    self.iconBar = None
-    self.isNullFrame = False
-    self.keys = None
-    self.menu = None
-    self.miniBufferWidget = None # New in 4.4.
-    self.prefsPanel = None
-    self.statusLine = None
-    self.useMiniBufferWidget = False # New in 4.4
-
-    # Gui-independent data
-    self.componentsDict = {} # Keys are names, values are componentClass instances.
-    self.es_newlines = 0 # newline count for this log stream
-    self.openDirectory = ""
-    self.requestRecolorFlag = False
-    self.saved=False # True if ever saved
-    self.splitVerticalFlag,self.ratio, self.secondary_ratio = True,0.5,0.5 # Set by initialRatios later.
-    self.startupWindow=False # True if initially opened window
-    self.stylesheet = None # The contents of <?xml-stylesheet...?> line.
-    self.tab_width = 0 # The tab width in effect in this pane.
-
-#@+node:ekr.20061109120726:leoFrame.mustBeDefinedOnlyInBaseClass
-mustBeDefinedOnlyInBaseClass = (
-
-    'initialRatios',
-    'longFileName',
-    'oops',
-    'promptForSave',
-    'scanForTabWidth',
-    'shortFileName',
-
-    # Headline editing.
-    'abortEditLabelCommand',
-    'endEditLabelCommand',
-    'insertHeadlineTime',
-
-    # Cut/Copy/Paste.
-    'OnPaste',
-    'OnPasteFromMenu',
-    'copyText',
-    'cutText',
-    'pasteText',
-
-    # Icon bar convenience methods.    
-    'addIconButton',
-    'clearIconBar',
-    'createIconBar',
-    'getIconBar',
-    'getIconBarObject',
-    'hideIconBar',
-
-    # Status line convenience methods.
-    'createStatusLine',
-    'clearStatusLine',
-    'disableStatusLine',
-    'enableStatusLine',
-    'getStatusLine',
-    'getStatusObject',
-    'putStatusLine',
-    'setFocusStatusLine',
-    'statusLineIsEnabled',
-    'updateStatusLine',
-)
-#@nonl
-#@-node:ekr.20061109120726:leoFrame.mustBeDefinedOnlyInBaseClass
-#@+node:ekr.20061109120704:leoFrame.mustBeDefinedInSubclasses
-mustBeDefinedInSubclasses = (
-    #Gui-dependent commands.
-    'cascade',
-    'contractBodyPane',
-    'contractLogPane',
-    'contractOutlinePane',
-    'contractPane',
-    'equalSizedPanes',
-    'expandLogPane',
-    'expandPane',
-    'fullyExpandBodyPane',
-    'fullyExpandLogPane',
-    'fullyExpandOutlinePane',
-    'fullyExpandPane',
-    'hideBodyPane',
-    'hideLogPane',
-    'hideLogWindow',
-    'hideOutlinePane',
-    'hidePane',
-    'leoHelp',
-    'minimizeAll',
-    'resizeToScreen',
-    'toggleActivePane',
-    'toggleSplitDirection',
-    # Windowutilities...
-    'bringToFront',
-    'deiconify',
-    'get_window_info',
-    'lift',
-    'update',
-    # Config...
-    'resizePanesToRatio',
-    'setInitialWindowGeometry',
-    'setTopGeometry',
-)
-#@nonl
-#@-node:ekr.20061109120704:leoFrame.mustBeDefinedInSubclasses
-#@-node:ekr.20031218072017.3679:  leoFrame.__init__
-#@+node:ekr.20031218072017.2052:g.openWithFileName
-def openWithFileName(fileName,old_c,
-    enableLog=True,gui=None,readAtFileNodesFlag=True):
-
-    """Create a Leo Frame for the indicated fileName if the file exists."""
-
-    if not fileName or len(fileName) == 0:
-        return False, None
-
-    def munge(name):
-        return g.os_path_normpath(name or '').lower()
-
-    # Create a full, normalized, Unicode path name, preserving case.
-    relativeFileName = g.os_path_normpath(fileName)
-    fileName = g.os_path_normpath(g.os_path_abspath(fileName))
-    # g.trace(relativeFileName,'-->',fileName)
-
-    # If the file is already open just bring its window to the front.
-    theList = app.windowList
-    for frame in theList:
-        if munge(fileName) == munge(frame.c.mFileName):
-            frame.bringToFront()
-            frame.c.setLog()
-            return True, frame
-    if old_c:
-        # New in 4.4: We must read the file *twice*.
-        # The first time sets settings for the later call to c.finishCreate.
-        # g.trace('***** prereading',fileName)
-        c2 = g.app.config.openSettingsFile(fileName)
-        if c2: g.app.config.updateSettings(c2,localFlag=True)
-        g.doHook('open0')
-
-    # Open the file in binary mode to allow 0x1a in bodies & headlines.
-    theFile,isZipped = g.openLeoOrZipFile(fileName)
-    if not theFile: return False, None
-    c,frame = app.newLeoCommanderAndFrame(
-        fileName=fileName,
-        relativeFileName=relativeFileName,
-        gui=gui)
-    c.isZipped = isZipped
-    frame.log.enable(enableLog)
-    g.app.writeWaitingLog() # New in 4.3: write queued log first.
-    c.beginUpdate()
-    try:
-        if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
-            c.setLog()
-            app.lockLog()
-            frame.c.fileCommands.open(
-                theFile,fileName,
-                readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
-            app.unlockLog()
-            for z in g.app.windowList: # Bug fix: 2007/12/07: don't change frame var.
-                # The recent files list has been updated by menu.updateRecentFiles.
-                z.c.config.setRecentFiles(g.app.config.recentFiles)
-        # Bug fix in 4.4.
-        frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
-        g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
-    finally:
-        c.endUpdate()
-        # chapterController.finishCreate must be called after the first real redraw
-        # because it requires a valid value for c.rootPosition().
-        if frame.c.chapterController:
-            frame.c.chapterController.finishCreate()
-        k = c.k
-        if k: k.setInputState(k.unboundKeyAction)
-        if c.config.getBool('outline_pane_has_initial_focus'):
-            c.treeWantsFocusNow()
-        else:
-            c.bodyWantsFocusNow()
-    return True, frame
-#@nonl
-#@-node:ekr.20031218072017.2052:g.openWithFileName
-#@+node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
-def newLeoCommanderAndFrame(self,
-    fileName=None,
-    relativeFileName=None,
-    gui=None,initEditCommanders=True,updateRecentFiles=True):
-
-    """Create a commander and its view frame for the Leo main window."""
-
-    app = self
-
-    import leoCommands
-
-    if not fileName: fileName = ''
-    if not relativeFileName: relativeFileName = ''
-    if not gui: gui = g.app.gui
-    << compute the window title >>
-
-    # g.trace(fileName,relativeFileName)
-
-    # Create an unfinished frame to pass to the commanders.
-    frame = gui.createLeoFrame(title)
-
-    # Create the commander and its subcommanders.
-    c = leoCommands.Commands(frame,fileName,relativeFileName=relativeFileName)
-
-    if not app.initing:
-        g.doHook("before-create-leo-frame",c=c) # Was 'onCreate': too confusing.
-
-    frame.finishCreate(c)
-    c.finishCreate(initEditCommanders)
-
-    # Finish initing the subcommanders.
-    c.undoer.clearUndoState() # Menus must exist at this point.
-
-    if updateRecentFiles:
-        c.updateRecentFiles(relativeFileName or fileName)
-
-    if not g.app.initing:
-        g.doHook("after-create-leo-frame",c=c)
-
-    return c,frame
-#@+node:ekr.20031218072017.2189:<< compute the window title >>
-# Set the window title and fileName
-if fileName:
-    title = g.computeWindowTitle(fileName)
-else:
-    s = "untitled"
-    n = g.app.numberOfWindows
-    if n > 0:
-        s += str(n)
-    title = g.computeWindowTitle(s)
-    g.app.numberOfWindows = n+1
-#@-node:ekr.20031218072017.2189:<< compute the window title >>
-#@-node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
-#@+node:ekr.20031218072017.1623:new
-def new (self,event=None,gui=None):
-
-    '''Create a new Leo window.'''
-
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=None,relativeFileName=None,gui=gui)
-
-    # Needed for plugins.
-    g.doHook("new",old_c=self,c=c,new_c=c)
-    # Use the config params to set the size and location of the window.
-    c.beginUpdate()
-    try:
-        frame.setInitialWindowGeometry()
-        frame.deiconify()
-        frame.lift()
-        frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio) # Resize the _new_ frame.
-        t = leoNodes.tnode()
-        v = leoNodes.vnode(t)
-        p = leoNodes.position(v,[])
-        v.initHeadString("NewHeadline")
-        v.moveToRoot(oldRoot=None)
-        c.setRootVnode(v) # New in Leo 4.4.2.
-        c.editPosition(p)
-    finally:
-        c.endUpdate()
-        # chapterController.finishCreate must be called after the first real redraw
-        # because it requires a valid value for c.rootPosition().
-        if c.config.getBool('use_chapters') and c.chapterController:
-            c.chapterController.finishCreate()
-            frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
-        if c.config.getBool('outline_pane_has_initial_focus'):
-            c.treeWantsFocusNow()
-        else:
-            c.bodyWantsFocusNow()
-    return c # For unit test.
-#@-node:ekr.20031218072017.1623:new
-#@+node:ekr.20070302095121:createTextWidget
-def createTextWidget (self,parentFrame=None):
-
-    self.logNumber += 1
-
-    c = self.c
-
-    gui = c and c.frame and c.frame.gui or g.app.gui
-
-    log = gui.plainTextWidget(
-        c = self.c,
-        name="log-%d" % self.logNumber,
-    )
-
-    return log
-#@-node:ekr.20070302095121:createTextWidget
-#@+node:ekr.20070302171509.2: nullStatusLineClass.ctor
-def __init__ (self,c,parentFrame):
-
-    self.c = c
-    self.enabled = False
-    self.parentFrame = parentFrame
-
-    gui = c and c.frame and c.frame.gui or g.app.gui
-
-    self.textWidget = w = gui.plainTextWidget(c,name='status-line')
-
-    # Set the official ivars.
-    c.frame.statusFrame = None
-    c.frame.statusLabel = None
-    c.frame.statusText  = self.textWidget
-#@-node:ekr.20070302171509.2: nullStatusLineClass.ctor
-#@-node:ekr.20070619161413:Finish support for hidden windows
 #@+node:ekr.20070624135822:Templates for common code fragments
 #@-node:ekr.20070624135822:Templates for common code fragments
 #@-node:ekr.20070703111455.3:Minor
