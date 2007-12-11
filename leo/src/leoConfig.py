@@ -1153,16 +1153,18 @@ class configClass:
     #@+node:ekr.20041117083857:initSettingsFiles
     def initSettingsFiles (self):
 
-        """Set self.globalConfigFile, self.homeFile and self.myConfigFile."""
+        """Set self.globalConfigFile, self.homeFile, self.machineConfigFile and self.myConfigFile."""
 
         settingsFile = 'leoSettings.leo'
         mySettingsFile = 'myLeoSettings.leo'
+        machineConfigFile = self.getMachineName()
 
         for ivar,theDir,fileName in (
             ('globalConfigFile',    g.app.globalConfigDir,  settingsFile),
             ('homeFile',            g.app.homeDir,          settingsFile),
             ('myGlobalConfigFile',  g.app.globalConfigDir,  mySettingsFile),
             ('myHomeConfigFile',    g.app.homeDir,          mySettingsFile),
+            ('machineConfigFile',   g.app.homeDir,          machineConfigFile),
         ):
             # The same file may be assigned to multiple ivars:
             # readSettingsFiles checks for such duplications.
@@ -1177,6 +1179,27 @@ class configClass:
             g.trace('myGlobal file:',self.myGlobalConfigFile)
             g.trace('myHome file:',self.myHomeConfigFile)
     #@nonl
+    #@+node:ekr.20071211112804:getMachineName
+    def getMachineName (self):
+
+        try:
+            import os
+            name = os.getenv('HOSTNAME')
+            if not name:
+                name = os.getenv('COMPUTERNAME')
+            if not name:
+                import socket
+                name = socket.gethostname()
+        except Exception:
+            name = ''
+
+        if name:
+            name +='LeoSettings.leo'
+
+        g.trace(name)
+
+        return name
+    #@-node:ekr.20071211112804:getMachineName
     #@-node:ekr.20041117083857:initSettingsFiles
     #@-node:ekr.20041117083202:Birth... (g.app.config)
     #@+node:ekr.20041117081009:Getters... (g.app.config)
@@ -1636,6 +1659,7 @@ class configClass:
             (localConfigFile,False),
             (self.myGlobalConfigFile,False),
             (self.myHomeConfigFile,False),
+            (self.machineConfigFile,False),
             (myLocalConfigFile,False),
             (fileName,True),
         ):
