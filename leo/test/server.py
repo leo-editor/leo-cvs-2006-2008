@@ -13,11 +13,16 @@ port = 8080
 Handler = CGIHTTPServer.CGIHTTPRequestHandler
 s = SocketServer.TCPServer(("", port), Handler)
 
+# def myExecutable(path):
+#    return True
+# SocketServer.executable = myExecutable
+
 s.server_name = '127.0.0.1' # represents local host.
 s.server_port = port
 
+# import os ; print 'cwd', os.getcwd()
+
 print "server.py: serving at port", port
 s.serve_forever()
-#@nonl
 #@-node:@file server.py
 #@-leo

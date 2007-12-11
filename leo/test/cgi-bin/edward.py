@@ -1,92 +1,127 @@
 #! c:\python25\python.exe
+# -*- coding: utf-8 -*-
 #@+leo-ver=4
 #@+node:@file cgi-bin/edward.py
 #@@first
-# This is the cgi script called from hello.html when the user hits the button.
+#@@first
 
+'''This is the cgi script called from hello.html when the user hits the button.'''
+
+#@@language python
+#@@tabwidth -4
+import leoBridge
+#@<< define dhtml stuff >>
+#@+node:<< define dhtml stuff >>
+division = """
+<div STYLE="margin-left:3em;text-indent:0em;margin-top:0em; margin-bottom:0em;">
+<h3 onClick="expandcontent('sc%d')" style="cursor:hand; cursor:pointer; margin-top:0em; margin-bottom:0em">+ %s</h3>
+    <div id="sc%d" class="switchcontent" style="margin-top:0em; margin-bottom:0em;">
+"""
+
+style = """
+<STYLE type="text/css">
+    BODY {font:x-medium 'Verdana'; margin-right:1.5em}
+    PRE {margin:0px; display:inline}
+</STYLE>
+"""
+#@nonl
+#@-node:<< define dhtml stuff >>
+#@nl
 #@+others
-#@+node:print_css
-def print_css():
+#@+node:escape
+def escape (s):
 
-    print '<style type="text/css">'
-    print 'body{'
-    print '  font: 10pt Verdana,sans-serif;'
-    print '  color: navy;'
-    print '}'
-    print '.node{'
-    print '  cursor: pointer;'
-    print '  cursor: hand;'
-    print '}'
-    print '.branch{'
-    print '  display: none;'
-    print '  margin-left: 16px;'
-    print '}'
-    print '</style>'
-#@-node:print_css
-#@+node:print_node
-def print_node (p):
+    return s.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')
+#@-node:escape
+#@+node:print_all
+def print_all(c):
 
-    gnx = g.app.nodeIndices.toString(p.v.t.fileIndex)
+    # This line is required (with extra newline), but does not show on the page.
+    print "Content-type:text/html\n"
 
-    print '<div class="node">'
-    print '<img src="closed.gif" alt="-" border="0" id="%s">' % gnx
-    print p.headString()
-    print '<p>'
-    print p.bodyString() or '<b>no body</b>'
-    print '</div>'
+    print '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">'
+    print '<html>'
+    print_head(c)
+    print_body(c)
+    print '</html>'
+#@-node:print_all
+#@+node:print_body
+def print_body(c):
 
-    # <span class="branch" id="branch1">
-         # <img src="doc.gif">Tags, Tags, Tags<br>
-         # <img src="doc.gif">Hyperlinks</a><br>
-         # <img src="doc.gif">Images<br>
-         # <img src="doc.gif">Tables<br>
-         # <img src="doc.gif">Forms<br>
-     # </span>
-#@-node:print_node
-#@+node:class nullFileObject
-class nullFileObject:
+    print '<body class="st" onload="format()">'
+    print_tree(c)
+    print '</body>'
+#@-node:print_body
+#@+node:print_head
+def print_head(c):
 
-    '''A class used to discard all output to stdout, etc.'''
+    print '<head>'
 
-    def write (self,s):
-        pass
-#@-node:class nullFileObject
+    if 1: # Copy the entire leo.js file into the page.
+        print '<script type="text/javascript">'
+        print_leo_dot_js(c)
+        print '</script>'
+
+    else: # Possible bug in the python server??
+        # The Python says leo.js is not executable(!)
+        print '<script src="leo.js" type="text/javascript"></script>'
+
+    print '<title>%s</title>' % (c.shortFileName())
+    print '</head>'
+#@-node:print_head
+#@+node:print_leo_dot_js
+def print_leo_dot_js(c):
+
+    path = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test','cgi-bin','leo.js'))
+
+    try:
+        f = file(path)
+    except IOError:
+        print 'can not open',path
+        return
+
+    for line in f.readlines():
+        print line,
+
+    f.close()
+#@-node:print_leo_dot_js
+#@+node:print_tree
+def print_tree(c):
+
+    div = "<div class='c' STYLE='margin-left:4em;margin-top:0em; margin-bottom:0em;'>\n<pre>\n%s\n</pre>\n</div>"
+    end_div = "</div>\n</div>\n"
+    n = 1 # The node number
+    prev_level = 0
+    open_divs = 0
+    for p in c.allNodes_iter():
+        h = p.headString()
+        while prev_level >= p.level() and open_divs > 0:
+            print end_div
+            prev_level -= 1
+            open_divs -= 1
+        body = p.bodyString().encode( "utf-8" )
+        body = body.rstrip().rstrip("\n")
+        print division % (n,escape(h),n)
+        open_divs += 1
+        if body: print div % escape(body)
+        prev_level = p.level()
+        n += 1
+
+    # Close all divisions.
+    while open_divs > 0:
+        print end_div
+        open_divs -= 1
+#@-node:print_tree
 #@-others
 
-import os
-import sys
 path = r'c:\prog\tigris-cvs\leo\test\test.leo'
-
-# Kill all output from the bridge so it doesn't become part of the page.
-# This is no longer necessary when readSettings=False and loadPlugins=False.
-
-#sys.stdout = nullFileObject()
-import leoBridge
 
 b = leoBridge.controller(gui='nullGui',loadPlugins=False,readSettings=False,verbose=False)
 g = b.globals()
 c = b.openLeoFile(path)
 p = c.rootPosition()
-
-# Restore sys.stdout.
-#sys.stdout = sys.__stdout__
-
-# This line is required (with extra newline), but does not show on the page.
-print "Content-type:text/html\n"
-
-print '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">'
-print '<html>'
-print '<head>'
-print '<title></title>'
-print_css()
-print '</head>'
-print '<body>'
-print '<p> This is the page returned by edward.py'
-print '<p> It is a placeholder, to be replaced by css representing a tree.'
-print 'sys.argv:',sys.argv
-
-print_node(p)
-print '</body>'
-print '</html>'
+# import os; print os.getcwd()
+print_all(c)
+#@nonl
 #@-node:@file cgi-bin/edward.py
 #@-leo
