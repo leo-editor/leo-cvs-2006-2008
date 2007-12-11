@@ -473,17 +473,21 @@ class baseUndoer:
             return
 
         isOld = oldOrNew=='old'
-        dirty   = g.choose(isOld,u.oldDirty,  u.newDirty)
-        marked  = g.choose(isOld,u.oldMarked, u.newMarked)
-        changed = g.choose(isOld,u.oldChanged,u.newChanged)
-
-        if dirty:   u.p.setDirty(setDescendentsDirty=False)
-        else:       u.p.clearDirty()
+        marked = g.choose(isOld,u.oldMarked, u.newMarked)
 
         if marked:  c.setMarked(u.p)
         else:       c.clearMarked(u.p)
 
-        u.c.setChanged(changed)
+        # Bug fix: Leo 5.0: Undo/redo always set changed/dirty bits
+        # because the file may have been saved.
+
+        # changed = g.choose(isOld,u.oldChanged,u.newChanged)
+        # dirty   = g.choose(isOld,u.oldDirty,  u.newDirty)
+        # if dirty:   u.p.setDirty(setDescendentsDirty=False)
+        # else:       u.p.clearDirty()
+
+        u.p.setDirty(setDescendentsDirty=False)
+        u.c.setChanged(True)
     #@-node:ekr.20050410095424:updateMarks
     #@-node:ekr.20050416092908.1:Internal helpers
     #@+node:ekr.20031218072017.3608:Externally visible entries
@@ -1238,8 +1242,9 @@ class baseUndoer:
             bunch = old_d
 
         bunch.dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
-        if not p.isDirty():
-            bunch.dirtyVnodeList.append(p.copy())
+
+        # Bug fix: Leo 5.0: always add p to the list.
+        bunch.dirtyVnodeList.append(p.copy())
         bunch.leading=u.leading
         bunch.trailing= u.trailing
         bunch.newNewlines=u.newNewlines
@@ -1315,7 +1320,7 @@ class baseUndoer:
             oldRoot = c.rootPosition()
             u.newP.linkAsRoot(oldRoot)
 
-        for v in u.dirtyVnodeList: # New in 4.4b3.
+        for v in u.dirtyVnodeList:
             v.t.setDirty()
 
         c.selectPosition(u.newP)
@@ -1580,8 +1585,8 @@ class baseUndoer:
         c.selectPosition(u.newP)
         c.deleteOutline()
 
-        for v in u.dirtyVnodeList: # New in 4.4b3.
-            v.t.clearDirty()
+        for v in u.dirtyVnodeList:
+            v.t.setDirty() # Bug fix: Leo 5.0
 
         c.selectPosition(u.p)
     #@-node:ekr.20050412083057.1:undoCloneNode
@@ -1600,7 +1605,7 @@ class baseUndoer:
 
         # Restore all vnodeLists (and thus all clone marks).
         u.p.restoreLinksInTree()
-        u.p.setAllAncestorAtFileNodesDirty() # New in 4.4b3.
+        u.p.setAllAncestorAtFileNodesDirty()
         c.selectPosition(u.p)
     #@-node:ekr.20050412084055:undoDeleteNode
     #@+node:ekr.20050318085713:undoGroup
@@ -1641,7 +1646,7 @@ class baseUndoer:
         u.groupCount -= 1
 
         for v in dirtyVnodeList:
-            v.t.clearDirty()
+            v.t.setDirty() # Bug fix: Leo 5.0.
 
         if not g.unitTesting:
             g.es("undo %d instances" % count)
@@ -1695,7 +1700,8 @@ class baseUndoer:
         if u.groupCount == 0:
 
             for v in u.dirtyVnodeList:
-                v.t.clearDirty()
+                v.t.setDirty() # Bug fix: Leo 5.0.
+
             c.selectPosition(u.p)
     #@-node:ekr.20050526124906:undoMark
     #@+node:ekr.20050411112033:undoMove
@@ -1715,7 +1721,7 @@ class baseUndoer:
         u.updateMarks('old')
 
         for v in u.dirtyVnodeList:
-            v.t.clearDirty()
+            v.t.setDirty() # Bug fix: Leo 5.0.
 
         c.selectPosition(u.p)
     #@-node:ekr.20050411112033:undoMove
@@ -1723,7 +1729,7 @@ class baseUndoer:
     def undoNodeContents (self):
 
         '''Undo all changes to the contents of a node,
-        including headline and body text, and dirty and marked bits.
+        including headline and body text, and marked bits.
         '''
 
         u = self ; c = u.c ;  w = c.frame.body.bodyCtrl
@@ -1733,7 +1739,7 @@ class baseUndoer:
         c.frame.body.recolor(u.p,incremental=False)
 
         u.p.initHeadString(u.oldHead)
-        c.frame.tree.setHeadline(u.p,u.oldHead) # New in 4.4b2.
+        c.frame.tree.setHeadline(u.p,u.oldHead)
 
         if u.groupCount == 0 and u.oldSel:
             u.c.frame.body.setSelectionRange(u.oldSel)
@@ -1741,7 +1747,7 @@ class baseUndoer:
         u.updateMarks('old')
 
         for v in u.dirtyVnodeList:
-            v.t.clearDirty()
+            v.t.setDirty() # Bug fix: Leo 5.0.
     #@-node:ekr.20050318085713.1:undoNodeContents
     #@+node:ekr.20050318085713.2:undoTree
     def undoTree (self):
@@ -1795,8 +1801,8 @@ class baseUndoer:
             u.oldNewlines,u.newNewlines,
             tag="undo",undoType=u.undoType)
 
-        for v in u.dirtyVnodeList: # New in 4.4b3.
-            v.t.clearDirty()
+        for v in u.dirtyVnodeList:
+            v.t.setDirty() # Bug fix: Leo 5.0.
 
         if u.oldSel:
             c.bodyWantsFocusNow()
