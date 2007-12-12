@@ -1021,7 +1021,7 @@ class controlCommandsClass (baseEditCommandsClass):
         return {
             'advertised-undo':              self.advertizedUndo,
             'iconify-frame':                self.iconifyFrame, # Same as suspend.
-            'keyboard-quit':                k.keyboardQuit,
+            'keyboard-quit':                k and k.keyboardQuit,
             'save-buffers-kill-leo':        self.saveBuffersKillLeo,
             'set-silent-mode':              self.setSilentMode,
             'print-plugins':                self.printPlugins,
@@ -1165,8 +1165,6 @@ class debugCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20060127162921: ctor
     #@+node:ekr.20060127163325: getPublicCommands
     def getPublicCommands (self):
-
-        k = self
 
         return {
             'collect-garbage':              self.collectGarbage,
@@ -1410,7 +1408,7 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.55: getPublicCommands (editCommandsClass)
     def getPublicCommands (self):        
 
-        c = self.c ; k = self.k 
+        c = self.c
 
         return {
             'activate-cmds-menu':                   self.activateCmdsMenu,
@@ -1420,7 +1418,7 @@ class editCommandsClass (baseEditCommandsClass):
             'activate-outline-menu':                self.activateOutlineMenu,
             'activate-plugins-menu':                self.activatePluginsMenu,
             'activate-window-menu':                 self.activateWindowMenu,
-            'add-editor':                           c.frame.body.addEditor,
+            'add-editor':                           c.frame.body and c.frame.body.addEditor,
             'add-space-to-lines':                   self.addSpaceToLines,
             'add-tab-to-lines':                     self.addTabToLines, 
             'back-to-indentation':                  self.backToIndentation,
@@ -4658,8 +4656,6 @@ class editFileCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.163: getPublicCommands (editFileCommandsClass)
     def getPublicCommands (self):
 
-        k = self.k
-
         return {
             'compare-leo-files':    self.compareLeoFiles,
             'delete-file':          self.deleteFile,
@@ -4976,8 +4972,6 @@ class helpCommandsClass (baseEditCommandsClass):
     #@    @+others
     #@+node:ekr.20060205165501:getPublicCommands (helpCommands)
     def getPublicCommands (self):
-
-        c = self.c
 
         return {
             'help-for-minibuffer':      self.helpForMinibuffer,
@@ -5399,47 +5393,50 @@ class keyHandlerCommandsClass (baseEditCommandsClass):
 
         k = self.k
 
-        return {
-            'auto-complete':            k.autoCompleter.autoComplete,
-            'auto-complete-force':      k.autoCompleter.autoCompleteForce,
-            'digit-argument':           k.digitArgument,
-            'disable-autocompleter':    k.autoCompleter.disableAutocompleter,
-            'disable-calltips':         k.autoCompleter.disableCalltips,
-            'enable-autocompleter':     k.autoCompleter.enableAutocompleter,
-            'enable-calltips':          k.autoCompleter.enableCalltips,
-            'exit-named-mode':          k.exitNamedMode,
-            'full-command':             k.fullCommand, # For menu.
-            'hide-mini-buffer':         k.hideMinibuffer,
-            'mode-help':                k.modeHelp,
-            'negative-argument':        k.negativeArgument,
-            'number-command':           k.numberCommand,
-            'number-command-0':         k.numberCommand0,
-            'number-command-1':         k.numberCommand1,
-            'number-command-2':         k.numberCommand2,
-            'number-command-3':         k.numberCommand3,
-            'number-command-4':         k.numberCommand4,
-            'number-command-5':         k.numberCommand5,
-            'number-command-6':         k.numberCommand6,
-            'number-command-7':         k.numberCommand7,
-            'number-command-8':         k.numberCommand8,
-            'number-command-9':         k.numberCommand9,
-            'print-bindings':           k.printBindings,
-            'print-commands':           k.printCommands,
-            'propagate-key-event':      k.propagateKeyEvent,
-            'repeat-complex-command':   k.repeatComplexCommand,
-            # 'scan-for-autocompleter':   k.autoCompleter.scan,
-            'set-command-state':        k.setCommandState,
-            'set-insert-state':         k.setInsertState,
-            'set-overwrite-state':      k.setOverwriteState,
-            'show-calltips':            k.autoCompleter.showCalltips,
-            'show-calltips-force':      k.autoCompleter.showCalltipsForce,
-            'show-mini-buffer':         k.showMinibuffer,
-            'toggle-autocompleter':     k.autoCompleter.toggleAutocompleter,
-            'toggle-calltips':          k.autoCompleter.toggleCalltips,
-            'toggle-mini-buffer':       k.toggleMinibuffer,
-            'toggle-input-state':       k.toggleInputState,
-            'universal-argument':       k.universalArgument,
-        }
+        if k:
+            return {
+                'auto-complete':            k.autoCompleter.autoComplete,
+                'auto-complete-force':      k.autoCompleter.autoCompleteForce,
+                'digit-argument':           k.digitArgument,
+                'disable-autocompleter':    k.autoCompleter.disableAutocompleter,
+                'disable-calltips':         k.autoCompleter.disableCalltips,
+                'enable-autocompleter':     k.autoCompleter.enableAutocompleter,
+                'enable-calltips':          k.autoCompleter.enableCalltips,
+                'exit-named-mode':          k.exitNamedMode,
+                'full-command':             k.fullCommand, # For menu.
+                'hide-mini-buffer':         k.hideMinibuffer,
+                'mode-help':                k.modeHelp,
+                'negative-argument':        k.negativeArgument,
+                'number-command':           k.numberCommand,
+                'number-command-0':         k.numberCommand0,
+                'number-command-1':         k.numberCommand1,
+                'number-command-2':         k.numberCommand2,
+                'number-command-3':         k.numberCommand3,
+                'number-command-4':         k.numberCommand4,
+                'number-command-5':         k.numberCommand5,
+                'number-command-6':         k.numberCommand6,
+                'number-command-7':         k.numberCommand7,
+                'number-command-8':         k.numberCommand8,
+                'number-command-9':         k.numberCommand9,
+                'print-bindings':           k.printBindings,
+                'print-commands':           k.printCommands,
+                'propagate-key-event':      k.propagateKeyEvent,
+                'repeat-complex-command':   k.repeatComplexCommand,
+                # 'scan-for-autocompleter':   k.autoCompleter.scan,
+                'set-command-state':        k.setCommandState,
+                'set-insert-state':         k.setInsertState,
+                'set-overwrite-state':      k.setOverwriteState,
+                'show-calltips':            k.autoCompleter.showCalltips,
+                'show-calltips-force':      k.autoCompleter.showCalltipsForce,
+                'show-mini-buffer':         k.showMinibuffer,
+                'toggle-autocompleter':     k.autoCompleter.toggleAutocompleter,
+                'toggle-calltips':          k.autoCompleter.toggleCalltips,
+                'toggle-mini-buffer':       k.toggleMinibuffer,
+                'toggle-input-state':       k.toggleInputState,
+                'universal-argument':       k.universalArgument,
+            }
+        else:
+            return {}
     #@-node:ekr.20050920084036.173:getPublicCommands (keyHandler)
     #@-others
 #@-node:ekr.20050920084036.171:keyHandlerCommandsClass (add docstrings)
@@ -5468,7 +5465,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
             # Call the base finishCreate.
             # This sets self.k
 
-        if self.k.useGlobalKillbuffer:
+        if self.k and self.k.useGlobalKillbuffer:
             self.killBuffer = leoKeys.keyHandlerClass.global_killbuffer
     #@-node:ekr.20050920084036.175: ctor & finishCreate
     #@+node:ekr.20050920084036.176: getPublicCommands
