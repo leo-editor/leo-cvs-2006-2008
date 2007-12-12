@@ -2943,6 +2943,20 @@ class keyHandlerClass:
                         c.commandsDict [key] = c.commandsDict.get(commandName)
                         break
     #@-node:ekr.20061031131434.131:k.registerCommand
+    #@+node:ekr.20071212104050:k.overrideCommand
+    def overrideCommand (self,commandName,func):
+
+        # Override entries in c.k.masterBindingsDict
+        k = self
+        d = k.masterBindingsDict
+        for key in d.keys():
+            d2 = d.get(key)
+            for key2 in d2.keys():
+                b = d2.get(key2)
+                if b.commandName == commandName:
+                    b.func=func
+                    d2[key2] = b
+    #@-node:ekr.20071212104050:k.overrideCommand
     #@-node:ekr.20061031131434.125:Externally visible helpers
     #@+node:ekr.20061031131434.145:Master event handlers (keyHandler)
     #@+node:ekr.20061031131434.146:masterKeyHandler
