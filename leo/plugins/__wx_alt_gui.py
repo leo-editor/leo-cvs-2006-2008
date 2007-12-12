@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
+
 #@+leo-ver=4-thin
-#@+node:bob.20071124164707:@thin __wx_alt_gui.py
+#@+node:bob.20071211190555:@thin plugins\__wx_alt_gui.py
 #@@first
 
 """A plugin to use wxWidgets as Leo's gui.
@@ -21,10 +21,14 @@ of enabled plugins.
 All other plugins, except those named below, should be dissabled.
 
 These plugins are compatible with __wx_alt_gui.py:
-    mod_scripting.py
-    rst3.py
-    UNL.py
-    hoist.py
+
+    + plugins_menu (the modified 1.15+ version)
+    + scripting, rst3, UNL, vim, datenodes.py
+
+These plugins are not yet compatible but at least
+will not make it crash if they are enabled:   
+
+    threading_colorizer, hoist
 """
 
 import re
@@ -60,54 +64,29 @@ __plugin_name__ = " wxPython GUI"
 #@<< bug list & to-do >>
 #@+node:bob.20070813163332.52:<< bug list & to-do >>
 #@@nocolor
-#@+at
-# 
-# - Headline widget, fix focusing for search
-# 
-# 
-# 
-# First:
-# 
-# - Provide interface for cleo.
-# 
-# - Add drag-drop and drag-scroll to tree widget
-# 
-# - Make widgets honour config fonts.
-# 
-# - Make multiple editors
-# 
-# - Add dummy transaction so ctrl-v works initially, (?? what ??)
-# 
-# - Get aspell working: use g.pdb to trace aspell startup logic.
-# 
-# 
-# Bug list: (oh! so many!)
-# 
-# * Autocompletion does not work. ?
-# 
-# * Multiple body editors do not work, and crash unit tests in Linux.  [ One 
-# of the methods was not blocked off with a 'return', hence the crash. ]
-# 
-# - The Spell tab functional is empty, and aspell is not imported properly.
-# 
-# 
-# Later:
-# - Implement a focus indicator for the tree pane.
-# 
-# - Convert Tk color names to rgb values.
-# - Convert Tk font names to wx font names?
-# - Support user-colorizer in the stc.
-# 
-# - Offer choice between stc and richtext body controls
-# 
-# - Add variable line heights for nodes in tree control.
-# 
-# 
-# 
-# 
-# 
-# 
-#@-at
+"""
+- Make compatible with plugins, at leas don't crash if a
+  plugin is loaded which is not compatible.
+
+- Colorize edit pane
+
+- Make widgets honour config fonts.
+
+- Make multiple editors
+
+
+Bug list: (oh! to many to list!)
+
+- log panel does not behave well when text is edited, the pane
+  has to be resized. (I think this is a wx.RichText bug.
+
+"""
+
+
+
+
+
+
 #@-node:bob.20070813163332.52:<< bug list & to-do >>
 #@nl
 
@@ -199,7 +178,7 @@ def init():
             def wxOpenFileForReading(self,fileName,*args, **kw):
                 #g.trace( fileName)
                 old(self, fileName, *args, **kw)
-                wx.Yield()
+                wx.SafeYield(onlyIfNeeded=True)
 
             leoAtFile.atFile.openFileForReading = wxOpenFileForReading
         #@-node:bob.20070831090830:<< over rides >>
@@ -391,6 +370,11 @@ if wx:
 
             self._setAllText('')
         #@-node:bob.20070831045021:clear
+        #@+node:plumloco.20071211050853:after_idle
+        def after_idle(*args):
+            g.trace('undefined')
+        #@nonl
+        #@-node:plumloco.20071211050853:after_idle
         #@-others
     #@-node:bob.20070813163332.137:<< baseTextWidget class >>
     #@nl
@@ -1511,7 +1495,9 @@ if wx:
             name='text <unknown richTextWidget>',
             **kw
         ):
-
+            print 'richtext', kw
+            print '\t', leoParent
+            print '\t', parent
 
 
             if not widget:
@@ -4458,7 +4444,6 @@ if wx:
                 icon = wx.Bitmap(fname, type)
 
                 if icon and icon.GetWidth()>0:
-                    print 'loaded icon', fname, icon.GetWidth()
                     return icon
 
                 print 'Can not load icon from', fname 
@@ -4466,7 +4451,7 @@ if wx:
 
             icons = []
             path = g.os_path_abspath(g.os_path_join(g.app.loadDir, '..', 'Icons'))
-            if g.os_path_exists(path + '/box01.GIF'):
+            if g.os_path_exists(g.os_path_join(path, 'box01.GIF')):
                 ext = '.GIF'
             else:
                 ext = '.gif'
@@ -4701,7 +4686,7 @@ if wx:
         #@-others
     #@nonl
     #@-node:bob.20070813163332.236:wxLeoBody class (leoBody)
-    #@+node:bob.20070908081747:-- Leo Object --
+    #@+node:bob.20070908081747:-- Object --
     #@+node:bob.20070908081747.1:leoObject class
     class leoObject(object):
         """A base class for all leo objects."""
@@ -4739,16 +4724,15 @@ if wx:
 
         #@-node:bob.20070908081747.4:def __init__
         #@+node:bob.20070908084322:def __str__
-        # def __str__(self):
-            # return 'wxLeoObject: %s [%s]'%(self.__class__.__name__, id(self))
+        def __str__(self):
+            return 'wxLeoObject: %s [%s]'%(self.__class__.__name__, id(self))
 
-        # __repr__ = __str__
+        __repr__ = __str__
         #@-node:bob.20070908084322:def __str__
         #@-others
     #@-node:bob.20070908081747.3:wxLeoObject class
-    #@-node:bob.20070908081747:-- Leo Object --
-    #@+node:bob.20070908081747.5:-- Notebook Panel --
-    #@+node:bob.20070908081747.6:Notebook
+    #@-node:bob.20070908081747:-- Object --
+    #@+node:bob.20070908081747.6:-- Notebook --
     #@+node:bob.20070908081747.7:leoNotebook
     class leoNotebook(leoObject):
 
@@ -4760,8 +4744,8 @@ if wx:
 
             self.__tabs = []
         #@-node:bob.20070908081747.8:__init__
-        #@+node:bob.20070908111527:append
-        def append(self, tab):
+        #@+node:bob.20070908111527:appendTab
+        def appendTab(self, tab):
 
             assert isinstance(tab, leoTab)
 
@@ -4775,7 +4759,7 @@ if wx:
                 self.__tabs.append(tab)
                 return len(self.__tabs)
 
-        #@-node:bob.20070908111527:append
+        #@-node:bob.20070908111527:appendTab
         #@+node:bob.20070908115245:Tabs Property
         def getTabs(self):
             return self.__tabs[:]
@@ -4786,19 +4770,25 @@ if wx:
 
 
     #@-node:bob.20070908081747.7:leoNotebook
-    #@+node:bob.20070908081747.9:wxLeoNotebook
+    #@+node:bob.20070908081747.9:wxLeoNotebook class
     class wxLeoNotebook(wx.Notebook, wxLeoObject, leoNotebook):
         """A wxPython specific implementation of a leoNotebook."""
         #@    @+others
         #@+node:bob.20070908081747.10:__init__
         def __init__(self, c, parent, showTabs=False):
 
+
             leoNotebook.__init__(self, c)
             wxLeoObject.__init__(self)
 
             wx.Notebook.__init__(self, parent)
 
+
+            g.trace( self,' >> ', parent)
+
             self.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.onPageChanged)
+
+            self.Bind(wx.EVT_SIZE, self.onSize)
 
         def onPageChanged(self, event):
             #g.trace()
@@ -4809,6 +4799,15 @@ if wx:
 
             page = self.GetPage(sel)
             page.SetSize(self.GetClientSize())
+            event.Skip()
+
+        def onSize(self, event):
+            g.trace(myclass(self))
+            page = self.GetCurrentPage()
+            if page:
+                page.SetSize(self.GetClientSize())
+            event.Skip()
+
 
 
 
@@ -4817,6 +4816,15 @@ if wx:
 
 
         #@-node:bob.20070908081747.10:__init__
+        #@+node:bob.20071212081425:__str__
+        def __str__(self):
+            return '%s [%s]'%(self.__class__.__name__, id(self))
+
+        __repr__ = __str__
+        #@nonl
+        #@-node:bob.20071212081425:__str__
+        #@+node:bob.20071212081425.1:NewHeadline
+        #@-node:bob.20071212081425.1:NewHeadline
         #@+node:bob.20070908104659.1:tabToRawIndex
         def tabToRawIndex(self, tab):
             """The index of the page in the native notebook."""
@@ -4831,53 +4839,90 @@ if wx:
             return None
 
         #@-node:bob.20070908104659.1:tabToRawIndex
-        #@+node:bob.20070908103701.1:setPageText
-        def setPageText(self, tab, text):
-
-            #g.trace(text, tab, self)
-
-            idx = self.tabToRawIndex(tab)
-            #g.trace(idx, self)
-            if idx is not None:
-                self.SetPageText(idx, text)
-        #@-node:bob.20070908103701.1:setPageText
         #@+node:bob.20070908111527.1:appendTab
         def appendTab(self, tab, select=False):
 
             assert isinstance(tab, wxLeoTab)
 
-            n = super(wxLeoNotebook, self).append(tab)
+            n = super(wxLeoNotebook, self).appendTab(tab)
 
             idx = self.tabToRawIndex(tab)
 
-            if idx is None:        
+            if idx is None:
                 self.AddPage(tab.page, tab.tabName, select)
             else:
                 g.trace('page can\'t be inserted twice')
 
 
         #@-node:bob.20070908111527.1:appendTab
+        #@+node:bob.20070908103701.1:setPageText
+        def setPageText(self, tab, text):
+            """Set the text on the notebook tab.
+
+            Gui specific method for internal use only.
+
+            """
+            #g.trace(text, tab, self)
+
+            idx = self.tabToRawIndex(tab)
+            #g.trace(idx, self)
+
+            if idx is not None:
+                self.SetPageText(idx, text)
+        #@-node:bob.20070908103701.1:setPageText
         #@+node:bob.20070908111527.2:appendPage
         def appendPage(self, tabName, page, select=False):
+            """Append a page that is not yet contained in a Tab.
+
+            A new Tab is created to contain the page.
+
+            Returns: The newly created Tab object.
+
+            """
 
             tab = wxLeoTab(tabName, page)
-
             self.appendTab(tab, select)
-
             return tab
         #@-node:bob.20070908111527.2:appendPage
         #@-others
     #@nonl
-    #@-node:bob.20070908081747.9:wxLeoNotebook
-    #@-node:bob.20070908081747.6:Notebook
-    #@+node:bob.20070908102321:Tab
+    #@-node:bob.20070908081747.9:wxLeoNotebook class
+    #@-node:bob.20070908081747.6:-- Notebook --
+    #@+node:bob.20070908102321:-- Tab --
+    #@+at
+    # A Tab is an object that manages a page and a tab for notebooks.
+    # 
+    # It is independant of any particular notebook and can be moved
+    # from one notebook to another or removed very easily.
+    # 
+    # It can exist on its own and need not be part of any notebook.
+    # 
+    # It manages a page which is a single gui object and handles all
+    # issues with regard to the parenting of the object.
+    #@-at
+    #@@c
+    #@nonl
     #@+node:bob.20070908102321.1:leoTab class
     class leoTab(leoObject):
 
         #@    @+others
         #@+node:bob.20070908102321.2:__init__
+
         def __init__(self, c, tabName=None, page=None, nb=None):
 
+            """
+            Create an instance of a notebook Tab object.
+
+            tabName: The name to appear on the tab or None (not '') to indicate
+                     that the name will be assigned later.
+
+            page: The gui object (eg a Panel) to be managed or None to indicaate
+                  that this will be assigned later.
+
+            nb: The notebook to which this Tab will initially be attached or None to
+                indicate that the tab does not initially belong to any notebook.
+
+            """
             leoObject.__init__(self, c)
 
             self.__nb = None
@@ -4887,10 +4932,6 @@ if wx:
             self.setTabName(tabName)
             self.setNotebook(nb)
             self.setPage(page)
-
-
-
-
         #@-node:bob.20070908102321.2:__init__
         #@+node:bob.20070908102321.3:TabName property
         def getTabName(self):
@@ -4901,7 +4942,7 @@ if wx:
 
         tabName = property(
             lambda self: self.getTabName(),
-            lambda self, n: self.setTabName(n),
+            lambda self, name: self.setTabName(name),
         )
         #@-node:bob.20070908102321.3:TabName property
         #@+node:bob.20070908102321.4:Notebook property
@@ -4916,6 +4957,7 @@ if wx:
             lambda self: self.getNotebook(),
             lambda self, nb: self.setNotebook(nb),
         )
+        notebook = nb
 
         #@-node:bob.20070908102321.4:Notebook property
         #@+node:bob.20070908102321.5:Page property
@@ -4982,7 +5024,8 @@ if wx:
         #@-node:bob.20070908102321.10:Page property
         #@-others
     #@-node:bob.20070908102321.6:wxLeoTab class
-    #@-node:bob.20070908102321:Tab
+    #@-node:bob.20070908102321:-- Tab --
+    #@+node:bob.20070908081747.5:-- Notebook Panel --
     #@+node:bob.20070908081747.11:leoNotebookPanel class
     class leoNotebookPanel(leoObject):
         """A class to manage a leoNotebook and any helper windows surrounding it.
@@ -5015,10 +5058,14 @@ if wx:
         #@    @+others
         #@+node:bob.20070908081747.13:__init__
         def __init__(self, c, parent, showtabs=False):
+            """A panel containing a Notebook.
 
+            The base class of all body, tree and notebook panes.
+            """
 
-            leoNotebookPanel.__init__(self, c)
             wxLeoObject.__init__(self)
+            leoNotebookPanel.__init__(self, c)
+
             wx.Panel.__init__(self, parent)
 
             self.sizer = sizer = wx.BoxSizer(wx.VERTICAL)
@@ -5036,10 +5083,12 @@ if wx:
             #self.Bind(wx.EVT_CHAR, lambda event, type='leonotebookpanel':onRogueChar(event, type)) 
 
 
-        def onSize(self, event):
-            g.trace('notebook panel')
-            event.Skip()
         #@-node:bob.20070908081747.13:__init__
+        #@+node:bob.20071212080244:onSize
+        def onSize(self, event):
+            g.trace(myclass(self))
+            event.Skip()
+        #@-node:bob.20071212080244:onSize
         #@-others
 
 
@@ -5184,7 +5233,7 @@ if wx:
             self.logPanel = lp = self.createLogPanel()
 
             # redirects
-            #  self.nb = nb = lp.nb
+            # self.nb = nb = lp.nb
             #  self.log = lp.log
 
             nb = self.nb
@@ -5269,9 +5318,7 @@ if wx:
 
             self.top.Layout()
 
-
-
-            wx.Yield()
+            wx.SafeYield(onlyIfNeeded=True)
 
 
 
@@ -5311,7 +5358,7 @@ if wx:
 
             parent = parent or self.hiddenWindow
 
-            return wx.SplitterWindow(parent, style), wx.SplitterWindow(parent, style)
+            return wx.SplitterWindow(parent, style=style), wx.SplitterWindow(parent, style=style)
 
         #@-node:bob.20070912144833.1:createSplitters
         #@+node:bob.20070912144833.2:setupSplitters
@@ -6120,61 +6167,30 @@ if wx:
                 g.trace("null menu")
         #@nonl
         #@-node:bob.20070813163332.342:add_separator
-        #@+node:bob.20070813163332.343:delete_range (wxMenu) (does not work)
-        # The wxWindows menu code has problems:  changes do not take effect immediately.
+        #@+node:bob.20070813163332.343:delete_range
 
         def delete_range (self,menu,n1,n2):
+            """Delete a range of items in a menu.
 
-            """Delete a range of items ina menu.
+            Items from min(n1, n2) to max(n1, n2) inclusive 
+            will be removed.
 
-            n1, n2 must be integers indicating the 
-            inclusive range of items to be deleted.
-
-            if min(n1,n2) is les than 0 0 will be assumed.
-
-            max(n2,n2) may be greater than the number of items
-                in the menu.
-
-            n1 may be less than, grater than or equal to n2.    
             """
-
-            print 'delete_range: Not yet Implemented'
-
             if not menu:
-                # g.trace("no menu")
-                return
+                return g.trace('Can not happen.  No menu')   
 
-            # g.trace(n1,n2,menu.GetTitle())
-
-            count = menu.GetMenuItemCount()
-
-            if n2 > n1:
+            if n1 > n2:
                 n2, n1 = n1, n2
 
-            if n2 > count:
-                n2 = count
+            items = menu.GetMenuItems()
 
-            if n1 < 0:
-                n1 = 0
-
-            if  1:# debugging
-                items = menu.GetMenuItems()
-                for item in items:
+            for count, item in enumerate(items):
+                if count >= n1 and count<= n2:
                     id = item.GetId()
                     item = menu.FindItemById(id)
-                    print '\t', item.GetText()
+                    menu.RemoveItem(item)
 
-            ## Doesn't work:  a problem with wxPython.
-
-            i = n2
-            while i >= n1:
-                item = menu.FindItemByPosition(i)
-                menu.DestroyItem(item)
-                g.trace("deleting:",item.GetText())
-
-                i-=1
-
-        #@-node:bob.20070813163332.343:delete_range (wxMenu) (does not work)
+        #@-node:bob.20070813163332.343:delete_range
         #@+node:bob.20070813163332.344:index & invoke
         # It appears wxWidgets can't invoke a menu programmatically.
         # The workaround is to change the unit test.
@@ -6527,6 +6543,8 @@ if wx:
 
         def put (self, s, color=None, tabName=None, **keys):
 
+            #print '[%s]'%s, color, tabName
+
             if tabName:
                 self.selectTab(tabName)
 
@@ -6668,10 +6686,10 @@ if wx:
 
             nb = self.nb
             # g.trace(tabName)
-
             if createText:
 
                 w = logTextWidget(self, nb)
+
                 w.widget.BeginTextColour('black')
 
                 tab = wxLeoTab(self.c, tabName, w.widget, nb)
@@ -6693,39 +6711,6 @@ if wx:
                 nb.AddPage(win,tabName)
                 return win
 
-        # def createTab (self,tabName,createText=True,wrap='none'): # wxLog.
-
-            # nb = self.nb
-            # # g.trace(tabName)
-
-            # if createText:
-                # win = logFrame = wx.Panel(nb, style=wx.NO_BORDER)
-                # nb.AddPage(win,tabName)
-
-                # w = logTextWidget(self, win)
-
-                # w.setBackgroundColor(name2color('leo blue'))
-
-                # sizer = wx.BoxSizer(wx.HORIZONTAL)
-                # sizer.Add(w.widget,1,wx.EXPAND)
-                # win.SetSizer(sizer)
-                # sizer.Fit(win)
-
-                # self.textDict [tabName] = w
-                # self.frameDict [tabName] = win
-
-
-                # # c.k doesn't exist when the log pane is created.
-                # # if tabName != 'Log':
-                    # # # k.makeAllBindings will call setTabBindings('Log')
-                    # # self.setTabBindings(tabName)
-                # return w
-            # else:
-                # win = wx.Panel(nb,name='tab:%s' % tabName)
-                # self.textDict [tabName] = None
-                # self.frameDict [tabName] = win
-                # nb.AddPage(win,tabName)
-                # return win
         #@-node:bob.20070813163332.7:createTab
         #@+node:bob.20070813163332.317:selectTab
         def selectTab(self, tabName, createText=True, wrap='none'):
@@ -7300,7 +7285,6 @@ if wx:
     #@+node:bob.20070902164500.1:== TREE WIDGETS ==
     #@+node:bob.20070813163332.371:wxLeoTree class (leoFrame.leoTree):
     class wxLeoTree (leoFrame.leoTree):
-
         #@    @+others
         #@+node:bob.20070813163332.372:__init__
         def __init__ (self, c, parentFrame):
@@ -7449,7 +7433,7 @@ if wx:
         #@+node:bob.20070818175928:edit_widget
 
         def edit_widget(self, p=None):
-            """Return the headlineTextWidget or None if not editing."""
+            """Return the headlineTextWidget."""
 
             return self.headlineTextWidget
         #@-node:bob.20070818175928:edit_widget
@@ -7886,36 +7870,70 @@ if wx:
         #@-node:bob.20070906195449.1:continueDrag
         #@-node:bob.20070906100710:Drag
         #@+node:bob.20070813163332.386:Mouse Events
-        #@+at
-        # Mouse events are collected by the treeCtrl and sent to handlers
-        # 
-        # dispatcher is called with a position,
-        # 
-        # a 'source' which is the name of an region inside the headline
-        #     this could be 'ClickBox', 'IconBox', 'TextBox' or a user 
-        # supplied
-        # 
-        # 
-        # 
-        #@-at
-        #@@code
+        """
+        All mouse events are collected by the treeCtrl and sent
+        to a dispatcher (onMouse).
+
+        onMouse is called with dispatcher is called with a position,
+
+        a 'source' which is the name of an region inside the headline
+            this could be 'ClickBox', 'IconBox', 'TextBox' or a user supplied
+
+
+
+        """
 
 
         #@+node:bob.20070827175321:onMouse (Dispatcher)
         def onMouse(self, event, type):
             '''
-            Respond to mouse events on the canvas and dispatch them
-            to appropriate handler methods depending on source and type.
+            Respond to mouse events and call appropriate handlers.
+
+            'event' is the raw 'event' object from the original event.
+
+            'type' is a string representing the type of event and may
+            have one of the following values:
+
+                + LeftDown, LeftUp, LeftDoubleClick
+                + MiddleDown, MiddleUp, MiddleDoubleClick
+                + RightDown, RightUp, RightDoubleClick
+                + and Motion
+
+            'source' is a string derived from 'event' which represents
+            the position of the event in the headline and may have one
+            of the following values:
+
+                ClickBox, IconBox, TextBox, Headline.
+
+            'source' may also have a user defined value representing,
+            for example, a user defined icon.
+
+            'sp' is leo position object, derived from event via HitTest,
+            representing the node on which the event occured. It is
+            called sp rather than the usual 'p' because it is 'special',
+            in that it contains extra information.
+
+            The value of 'source' and 'type' are combined and the
+            following three methods are called in order for each event:
+
+                + onPreMouse{type}(sp, event, source, type)
+                + onMouse{source}{type}(sp, event, source, type)
+                + onPostMouse{type}(sp, event, source, type)
+
+            None of these methods need exist and are obviously not called
+            if they don't.
+
+            The 'source' value is always an empty string for
+            Motion events.
+
+            Note to self: Refrain from taking drugs while proramming.
             '''
-
-
 
             point = event.GetPosition()
 
             sp, source = self.hitTest(point)
 
             #g.trace(self, type, source, sp)
-
 
             if False and type != 'Motion':
                 #@        << trace mouse >>
@@ -7947,7 +7965,6 @@ if wx:
                 s = 'onPreMouse' + type
                 if hasattr(self, s):
                     getattr(self, s)(sp, event, source, type)
-
 
                 if type == 'Motion':
                     s='onMouseMotion'
@@ -8133,6 +8150,25 @@ if wx:
                 self.onEndDrag(sp, event)
         #@nonl
         #@-node:bob.20070906193733.1:onMouseIconBoxLeftUp
+        #@+node:bob.20071210205301:onMouseIconBoxLeftDoubleClick
+        def onMouseIconBoxLeftDoubleClick(self, sp, event, source, type):
+
+            c = self.c
+
+            assert sp
+
+            #g.trace()
+
+            if self.trace and self.verbose: g.trace()
+
+            try:
+                if not g.doHook("icondclick1",c=c,p=sp,v=sp,event=event):
+                    self.endEditLabel() # Bug fix: 11/30/05
+                    self.OnIconDoubleClick(sp) # Call the method in the base class.
+                g.doHook("icondclick2",c=c,p=sp,v=sp,event=event)
+            except:
+                g.es_event_exception("icondclick")
+        #@-node:bob.20071210205301:onMouseIconBoxLeftDoubleClick
         #@-node:bob.20070814090359:Icon Box...
         #@+node:bob.20070816213833:Text Box
         #@+node:bob.20070818153826:onMouseTextBoxLeftDown
@@ -8364,6 +8400,7 @@ if wx:
     #@+node:bob.20070813173446:class OutlineCanvasPanel
 
     class OutlineCanvasPanel(wx.PyPanel):
+        """A class to mimic a scrolled window to contain an OutlineCanvas."""
         #@    @+others
         #@+node:bob.20070813173446.1:__init__
 
@@ -8686,33 +8723,28 @@ if wx:
                 #@+node:bob.20070906162528:<< create bindings >>
                 onmouse = self._leoTree.onMouse
 
-                o.Bind(wx.EVT_LEFT_DOWN,
-                    lambda event, type='LeftDown': onmouse(event, type)
-                )
+                for e, s in (
+                   ( wx.EVT_LEFT_DOWN,     'LeftDown'),
+                   ( wx.EVT_LEFT_UP,       'LeftUp'),
+                   ( wx.EVT_LEFT_DCLICK,   'LeftDoubleClick'),
+                   ( wx.EVT_MIDDLE_DOWN,   'MiddleDown'),
+                   ( wx.EVT_MIDDLE_UP,     'MiddleUp'),
+                   ( wx.EVT_MIDDLE_DCLICK, 'MiddleDoubleClick'),
+                   ( wx.EVT_RIGHT_DOWN,    'RightDown'),
+                   ( wx.EVT_RIGHT_UP,      'RightUp'),
+                   ( wx.EVT_RIGHT_DCLICK,  'RightDoubleClick'),
+                   ( wx.EVT_MOTION,        'Motion')
+                ):
+                    o.Bind(e, lambda event, type=s: onmouse(event, type))
 
-                o.Bind(wx.EVT_LEFT_UP,
-                    lambda event, type='LeftUp': onmouse(event, type)
-                )
 
-                o.Bind(wx.EVT_RIGHT_DOWN,
-                    lambda event, type='RightDown': onmouse(event, type)
-                )
-
-                o.Bind(wx.EVT_RIGHT_UP,
-                    lambda event, type='RightUp': onmouse(event, type)
-                )
 
                 #self.Bind(wx.EVT_KEY_UP, self._leoTree.onChar)
                 #self.Bind(wx.EVT_KEY_DOWN, lambda event: self._leoTree.onKeyDown(event))
 
-                o.Bind(wx.EVT_MOTION,
-                    lambda event, type='Motion': onmouse(event, type)
-                )
-
                 self.Bind(wx.EVT_CHAR,
                     lambda event, self=self._leoTree: onGlobalChar(self, event)
                 )
-                #@nonl
                 #@-node:bob.20070906162528:<< create bindings >>
                 #@nl
 
@@ -8734,6 +8766,10 @@ if wx:
 
         #@-node:bob.20070909060610:virtualTop property
         #@+node:bob.20070829195118:hitTest
+        def hitTest(self, point):
+            result = self._hitTest(point)
+            g.trace(result)
+            return result
 
         def hitTest(self, point):
 
@@ -9277,5 +9313,5 @@ if wx:
     #@-node:bob.20070813173446.12:class OutlineCanvas
     #@-node:bob.20070902164500.1:== TREE WIDGETS ==
     #@-others
-#@-node:bob.20071124164707:@thin __wx_alt_gui.py
+#@-node:bob.20071211190555:@thin plugins\__wx_alt_gui.py
 #@-leo
