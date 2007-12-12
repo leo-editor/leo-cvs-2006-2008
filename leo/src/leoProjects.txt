@@ -668,6 +668,270 @@ def redoTyping (self):
 #@-node:EKR.20040526075238.5:redoTyping
 #@-node:ekr.20031218072017.2030:redo & helpers...
 #@-node:ekr.20071211082951:Fixed undo (dirty bit) problem)
+#@+node:ekr.20071026052111:Fixed cursesGui  plugin
+#@-node:ekr.20071026052111:Fixed cursesGui  plugin
+#@+node:ekr.20071105155631.2:Fixed script_io_to_body plugin
+@
+Added k.overrideCommand.
+#@nonl
+#@+node:ekr.20031218072017.2140:c.executeScript & helpers
+def executeScript(self,event=None,p=None,script=None,
+    useSelectedText=True,define_g=True,define_name='__main__',silent=False):
+
+    """This executes body text as a Python script.
+
+    We execute the selected text, or the entire body text if no text is selected."""
+
+    c = self ; script1 = script
+    writeScriptFile = c.config.getBool('write_script_file')
+    if not script:
+        script = g.getScript(c,p,useSelectedText=useSelectedText)
+    self.redirectScriptOutput()
+    try:
+        log = c.frame.log
+        if script.strip():
+            sys.path.insert(0,c.frame.openDirectory)
+            script += '\n' # Make sure we end the script properly.
+            # print '*** script\n',script
+            try:
+                p = c.currentPosition()
+                d = g.choose(define_g,{'c':c,'g':g,'p':p},{})
+                if define_name: d['__name__'] = define_name
+                # A kludge: reset c.inCommand here to handle the case where we *never* return.
+                # (This can happen when there are multiple event loops.)
+                # This does not prevent zombie windows if the script puts up a dialog...
+                c.inCommand = False
+                # g.trace('**** before')
+                if writeScriptFile:
+                    scriptFile = self.writeScriptFile(script)
+                    execfile(scriptFile,d)
+                else:
+                    exec script in d
+                # g.trace('**** after')
+                if not script1 and not silent:
+                    # Careful: the script may have changed the log tab.
+                    tabName = log and hasattr(log,'tabName') and log.tabName or 'Log'
+                    g.es("end of script",color="purple",tabName=tabName)
+            except Exception:
+                g.handleScriptException(c,p,script,script1)
+            del sys.path[0]
+        else:
+            tabName = log and hasattr(log,'tabName') and log.tabName or 'Log'
+            g.es("no script selected",color="blue",tabName=tabName)
+    finally:
+        self.unredirectScriptOutput()
+#@+node:ekr.20031218072017.2143:redirectScriptOutput
+def redirectScriptOutput (self):
+
+    c = self
+
+    if c.config.redirect_execute_script_output_to_log_pane:
+
+        g.redirectStdout() # Redirect stdout
+        g.redirectStderr() # Redirect stderr
+#@-node:ekr.20031218072017.2143:redirectScriptOutput
+#@+node:EKR.20040627100424:unredirectScriptOutput
+def unredirectScriptOutput (self):
+
+    c = self
+
+    if c.exists and c.config.redirect_execute_script_output_to_log_pane:
+
+        g.restoreStderr()
+        g.restoreStdout()
+#@-node:EKR.20040627100424:unredirectScriptOutput
+#@+node:ekr.20070115135502:writeScriptFile
+def writeScriptFile (self,script):
+
+    # Get the path to the file.
+    c = self
+    path = c.config.getString('script_file_path')
+    if path:
+        parts = path.split('/')
+        path = g.app.loadDir
+        for part in parts:
+            path = g.os_path_abspath(g.os_path_join(path,part))
+    else:
+        path = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test','scriptFile.py'))
+
+    # Write the file.
+    try:
+        f = file(path,'w')
+        f.write(script)
+        f.close()
+    except Exception:
+        path = None
+
+    return path
+#@nonl
+#@-node:ekr.20070115135502:writeScriptFile
+#@-node:ekr.20031218072017.2140:c.executeScript & helpers
+#@+node:ekr.20071212104050:k.overrideCommand
+def overrideCommand (self,commandName,func):
+
+    # Override entries in c.k.masterBindingsDict
+    k = self
+    d = k.masterBindingsDict
+    for key in d.keys():
+        d2 = d.get(key)
+        for key2 in d2.keys():
+            b = d2.get(key2)
+            if b.commandName == commandName:
+                b.func=func
+                d2[key2] = b
+#@-node:ekr.20071212104050:k.overrideCommand
+#@+node:ekr.20051016101927:put & putnl (tkLog)
+@ Printing uses self.logCtrl, so this code need not concern itself
+with which tab is active.
+
+Also, selectTab switches the contents of colorTags, so that is not concern.
+It may be that Pmw will allow us to dispense with the colorTags logic...
+#@+node:ekr.20031218072017.1473:put
+# All output to the log stream eventually comes here.
+def put (self,s,color=None,tabName='Log'):
+
+    c = self.c ; w = self.logCtrl
+
+    # print 'tkLog.put',s
+    # print 'tkLog.put',len(s),g.callers()
+
+    if g.app.quitting or not c or not c.exists:
+        return
+
+    if tabName:
+        self.selectTab(tabName)
+
+    if w:
+        << put s to log control >>
+        self.logCtrl.update_idletasks()
+    else:
+        << put s to logWaiting and print s >>
+#@+node:EKR.20040423082910:<< put s to log control >>
+if color:
+    if color not in self.colorTags:
+        self.colorTags.append(color)
+        w.tag_config(color,foreground=color)
+    w.insert("end",s)
+    w.tag_add(color,"end-%dc" % (len(s)+1),"end-1c")
+    w.tag_add("black","end")
+else:
+    w.insert("end",s)
+
+w.see('end')
+self.forceLogUpdate(s)
+#@-node:EKR.20040423082910:<< put s to log control >>
+#@+node:EKR.20040423082910.1:<< put s to logWaiting and print s >>
+g.app.logWaiting.append((s,color),)
+
+print "Null tkinter log"
+
+if type(s) == type(u""):
+    s = g.toEncodedString(s,"ascii")
+
+print s
+#@-node:EKR.20040423082910.1:<< put s to logWaiting and print s >>
+#@-node:ekr.20031218072017.1473:put
+#@+node:ekr.20051016101927.1:putnl
+def putnl (self,tabName='Log'):
+
+    if g.app.quitting:
+        return
+
+    # print 'tkLog.putnl' # ,g.callers()
+
+    if tabName:
+        self.selectTab(tabName)
+
+    w = self.logCtrl
+
+    if w:
+        w.insert("end",'\n')
+        w.see('end')
+        self.forceLogUpdate('\n')
+    else:
+        # Put a newline to logWaiting and print newline
+        g.app.logWaiting.append(('\n',"black"),)
+        print "Null tkinter log"
+        print
+#@-node:ekr.20051016101927.1:putnl
+#@-node:ekr.20051016101927:put & putnl (tkLog)
+#@+node:ekr.20031218072017.1474:enl, ecnl & ecnls
+def ecnl(tabName='Log'):
+    g.ecnls(1,tabName)
+
+def ecnls(n,tabName='Log'):
+    log = app.log
+    if log and not log.isNull:
+        while log.newlines < n:
+            g.enl(tabName)
+
+def enl(tabName='Log'):
+    log = app.log
+    if log and not log.isNull:
+        log.newlines += 1
+        log.putnl(tabName)
+#@-node:ekr.20031218072017.1474:enl, ecnl & ecnls
+#@+node:ekr.20070626132332:es & minitest
+def es(s,*args,**keys):
+    # print 'es','app.log',repr(app.log),'log.isNull',not app.log or app.log.isNull,repr(s)
+    # print 'es',repr(s)
+    log = app.log
+    if app.killed:
+        return
+    newline = keys.get("newline",True)
+    color = keys.get('color')
+    tabName = keys.get('tabName','Log')
+        # Default goes to log pane *Not* the presently active pane.
+    if color == 'suppress': return # New in 4.3.
+    if type(s) != type("") and type(s) != type(u""): # 1/20/03
+        s = repr(s)
+    for arg in args:
+        if type(arg) != type("") and type(arg) != type(u""): # 1/20/03
+            arg = repr(arg)
+        s = s + ", " + arg
+    if app.batchMode:
+        if app.log:
+            app.log.put(s)
+    elif g.unitTesting:
+        if log and not log.isNull:
+            s = g.toEncodedString(s,'ascii')
+            if newline: print s
+            else: print s,
+    else:
+        if log and log.isNull:
+            pass
+        elif log:
+            # print 'g.es',s
+            log.put(s,color=color,tabName=tabName)
+            for ch in s:
+                if ch == '\n': log.newlines += 1
+                else: log.newlines = 0
+            if newline:
+                g.ecnl(tabName=tabName) # only valid here
+        elif newline:
+            app.logWaiting.append((s+'\n',color),)
+            # print s
+        else:
+            app.logWaiting.append((s,color),)
+            # print s,
+#@+node:ekr.20071024101611:mini test of es
+@nocolor
+@first
+@
+
+This doesn't work as an external unit test.
+To test, select all following lines and do execute-script.
+
+@first # -*- coding: utf-8 -*-
+s1 = 'line1 Ä, ڱ,  궯, 奠 end'
+s2 = g.toUnicode(s1,'utf-8')
+
+for s in (s1,s2):
+    g.es(s)
+    g.es_print(s)
+#@-node:ekr.20071024101611:mini test of es
+#@-node:ekr.20070626132332:es & minitest
+#@-node:ekr.20071105155631.2:Fixed script_io_to_body plugin
 #@-node:ekr.20071211113202.1:Bugs fixed
 #@+node:ekr.20071211113202.2:New features
 #@+node:ekr.20071210054816:Applied Terry Brown's config patch
