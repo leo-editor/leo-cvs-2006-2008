@@ -1716,11 +1716,13 @@ class baseCommands:
                     # (This can happen when there are multiple event loops.)
                     # This does not prevent zombie windows if the script puts up a dialog...
                     c.inCommand = False
+                    # g.trace('**** before')
                     if writeScriptFile:
                         scriptFile = self.writeScriptFile(script)
                         execfile(scriptFile,d)
                     else:
                         exec script in d
+                    # g.trace('**** after')
                     if not script1 and not silent:
                         # Careful: the script may have changed the log tab.
                         tabName = log and hasattr(log,'tabName') and log.tabName or 'Log'

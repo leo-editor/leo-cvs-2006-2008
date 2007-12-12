@@ -2565,6 +2565,7 @@ def enl(tabName='Log'):
 #@+node:ekr.20070626132332:es & minitest
 def es(s,*args,**keys):
     # print 'es','app.log',repr(app.log),'log.isNull',not app.log or app.log.isNull,repr(s)
+    # print 'es',repr(s)
     log = app.log
     if app.killed:
         return
@@ -2612,7 +2613,7 @@ def es(s,*args,**keys):
 # This doesn't work as an external unit test.
 # To test, select all following lines and do execute-script.
 # 
-# 
+#@@first
 # s1 = 'line1 Ä, ڱ,  궯, 奠 end'
 # s2 = g.toUnicode(s1,'utf-8')
 # 

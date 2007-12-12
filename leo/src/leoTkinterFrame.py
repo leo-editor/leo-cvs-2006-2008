@@ -2328,9 +2328,10 @@ class leoTkinterLog (leoFrame.leoLog):
     # All output to the log stream eventually comes here.
     def put (self,s,color=None,tabName='Log'):
 
-        c = self.c
+        c = self.c ; w = self.logCtrl
 
-        # print 'tkLog.put',self.c.shortFileName(),tabName,g.callers()
+        # print 'tkLog.put',s
+        # print 'tkLog.put',len(s),g.callers()
 
         if g.app.quitting or not c or not c.exists:
             return
@@ -2338,20 +2339,20 @@ class leoTkinterLog (leoFrame.leoLog):
         if tabName:
             self.selectTab(tabName)
 
-        if self.logCtrl:
+        if w:
             #@        << put s to log control >>
             #@+node:EKR.20040423082910:<< put s to log control >>
             if color:
                 if color not in self.colorTags:
                     self.colorTags.append(color)
-                    self.logCtrl.tag_config(color,foreground=color)
-                self.logCtrl.insert("end",s)
-                self.logCtrl.tag_add(color,"end-%dc" % (len(s)+1),"end-1c")
-                self.logCtrl.tag_add("black","end")
+                    w.tag_config(color,foreground=color)
+                w.insert("end",s)
+                w.tag_add(color,"end-%dc" % (len(s)+1),"end-1c")
+                w.tag_add("black","end")
             else:
-                self.logCtrl.insert("end",s)
+                w.insert("end",s)
 
-            self.logCtrl.see('end')
+            w.see('end')
             self.forceLogUpdate(s)
             #@-node:EKR.20040423082910:<< put s to log control >>
             #@nl
@@ -2375,12 +2376,17 @@ class leoTkinterLog (leoFrame.leoLog):
 
         if g.app.quitting:
             return
+
+        # print 'tkLog.putnl' # ,g.callers()
+
         if tabName:
             self.selectTab(tabName)
 
-        if self.logCtrl:
-            self.logCtrl.insert("end",'\n')
-            self.logCtrl.see('end')
+        w = self.logCtrl
+
+        if w:
+            w.insert("end",'\n')
+            w.see('end')
             self.forceLogUpdate('\n')
         else:
             # Put a newline to logWaiting and print newline
