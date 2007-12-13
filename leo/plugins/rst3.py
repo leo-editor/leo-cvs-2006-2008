@@ -47,7 +47,7 @@ bwm_file = None
 if 0:
     bwm_file = open("bwm_file", "w")
 
-__version__ = '1.21'
+__version__ = '1.22'
 
 #@<< imports >>
 #@+node:ekr.20050805162550.2:<< imports >>
@@ -105,6 +105,7 @@ except ImportError:
 # 1.19 EKR: Fixed crash that happens when invoked from menu.
 # 1.20 EKR: Registers the write-restructured-text command.
 # 1.21 EKR: Added rst3-publish-argv-for-missing-stylesheets setting.
+# 1.22 EKR: Fixed bug that caused the plugin not to find default.css.
 #@-at
 #@nonl
 #@-node:ekr.20050805162550.3:<< change log >>
@@ -1285,7 +1286,7 @@ class rstClass:
         # Make the stylesheet path relative to the directory containing the output file.
         rel_stylesheet_path = (
             self.getOption('stylesheet_path') or
-            g.os_path_dirname(self.c.frame.openDirectory))
+            self.c.frame.openDirectory) # Bug fix: take entire open directory.
 
         stylesheet_path = g.os_path_abspath(rel_stylesheet_path)
 
