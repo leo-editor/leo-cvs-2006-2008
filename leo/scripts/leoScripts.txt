@@ -16440,6 +16440,29 @@ def printFindList( findList, bodyFlag = 1 ):
 #@-node:Find/change scripts
 #@-node:Scripts used by commands
 #@+node:Text editing scripts
+#@+node:@@button Create headlines from body
+# Create child nodes whose headline are all lines in the body.
+s = p.bodyString()
+lines = g.splitLines(s)
+lines = [z.strip() for z in lines if z.strip()]
+
+c.beginUpdate()
+try:
+    for line in lines:
+        p2 = p.insertAsLastChild()
+        while line.find('  ') > -1:
+            line = line.replace('  ',' ')
+        i = line.find('#')
+        if i == -1:
+            p2.initHeadString(line)
+        else:
+            # Put comments in the body.
+            p2.initHeadString(line[:i].strip())
+            c.setBodyString(p2,line[i:].strip())
+finally:
+    c.endUpdate()
+#@nonl
+#@-node:@@button Create headlines from body
 #@+node:add tab after each :
 @color
 
