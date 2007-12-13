@@ -1283,17 +1283,18 @@ class rstClass:
         pub.set_writer(writer)
 
         # Make the stylesheet path relative to the directory containing the output file.
-        stylesheet_path = (
-            # self.getOption('stylesheet_path') or g.os_path_dirname(self.outputFileName))
-            self.getOption('stylesheet_path') or g.os_path_dirname(self.c.frame.openDirectory))
+        rel_stylesheet_path = (
+            self.getOption('stylesheet_path') or
+            g.os_path_dirname(self.c.frame.openDirectory))
 
-        if 1: # New in 4.4a4: allow relative paths.
-            path = g.os_path_join(
-                stylesheet_path,self.getOption('stylesheet_name'))
+        stylesheet_path = g.os_path_abspath(rel_stylesheet_path)
 
-        else: # Old code: convert everything to absolute paths.
-            path = g.os_path_abspath(g.os_path_join(
-                stylesheet_path,self.getOption('stylesheet_name')))
+        # Allow relative paths.
+        path = g.os_path_abspath(g.os_path_join(
+            stylesheet_path,self.getOption('stylesheet_name')))
+
+        # g.trace('stylesheet_path',stylesheet_path)
+        # g.trace('path',path)
 
         if g.os_path_exists(path):
             if self.ext == '.pdf':
@@ -1302,9 +1303,13 @@ class rstClass:
                 return pub.publish(argv=['--stylesheet=%s' % path])
         else:
             if not args1:
-                g.es_print('stylesheet does not exist: %s' % (path),color='red')
+                if rel_stylesheet_path == stylesheet_path:
+                    g.es_print('stylesheet does not exist: %s' % (path),color='red')
+                else:
+                    g.es_print('stylesheet does not exist',color='red')
+                    g.es_print('relative path: %s' % (rel_stylesheet_path),color='red')
+                    g.es_print('absolute path: %s' % (path),color='red')
             return pub.publish(argv=args)
-    #@nonl
     #@-node:ekr.20050809082854.1:writeToDocutils (sets argv)
     #@+node:ekr.20060525102337:writeNodeToString (New in 4.4.1)
     def writeNodeToString (self,p=None,ext=None):
