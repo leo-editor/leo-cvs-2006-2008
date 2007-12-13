@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.347174163783">
-	<global_window_position top="18" left="369" height="847" width="848"/>
+	<global_window_position top="35" left="460" height="827" width="848"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -216,7 +216,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846"><vh>Distribution files</vh>
+<v t="EKR.20040519090846" a="E"><vh>Distribution files</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
@@ -229,7 +229,7 @@
 <v t="EKR.20040519090846.7"><vh>Shell &amp; batch scripts</vh></v>
 </v>
 <v t="EKR.20040519090846.1"><vh>@asis ../doc/LICENSE.TXT</vh></v>
-<v t="ekr.20070622074708"><vh>@asis../manifest.in</vh></v>
+<v t="ekr.20070622074708" a="TV"><vh>@asis../manifest.in</vh></v>
 <v t="EKR.20040519090846.9"><vh>@asis ../doc/README.TXT</vh></v>
 <v t="EKR.20040519090846.8"><vh>@asis ../doc/PKG-INFO.TXT</vh></v>
 <v t="EKR.20040519082027.32"><vh>Linux install/uninstall scripts</vh>
@@ -237,7 +237,7 @@
 <v t="EKR.20040519082027.34"><vh>@file-thin ../uninstall</vh></v>
 </v>
 </v>
-<v t="ekr.20051205102401" a="TV"><vh>Update these for each release</vh>
+<v t="ekr.20051205102401"><vh>Update these for each release</vh>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings for leo-4.3.nsi &gt;&gt;</vh></v>
 <v t="ekr.20050118124408"><vh>&lt;&lt; 4.3 nsi installer version &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
@@ -4514,29 +4514,29 @@ include extensions/subprocess.py
 # include extensions/__init__.py
 
 include extensions/Pmw/__init__.py
-include extensions/Pmw/Pmw_1_2/__init__.py
-include extensions/Pmw/Pmw_1_2/bin/*.*
-include extensions/Pmw/Pmw_1_2/contrib/*.*
-include extensions/Pmw/Pmw_1_2/demos/*.*
-include extensions/Pmw/Pmw_1_2/doc/*.*
-include extensions/Pmw/Pmw_1_2/lib/*.*
-include extensions/Pmw/Pmw_1_2/tests/*.*
+include extensions/Pmw/Pmw_1_3/__init__.py
+include extensions/Pmw/Pmw_1_3/bin/*.*
+include extensions/Pmw/Pmw_1_3/contrib/*.*
+include extensions/Pmw/Pmw_1_3/demos/*.*
+include extensions/Pmw/Pmw_1_3/doc/*.*
+include extensions/Pmw/Pmw_1_3/lib/*.*
+include extensions/Pmw/Pmw_1_3/tests/*.*
 
 # These will typically generate sdist warnings.
-exclude extensions/Pmw/Pmw_1_2/bin/*.pyc
-exclude extensions/Pmw/Pmw_1_2/contrib/*.pyc
-exclude extensions/Pmw/Pmw_1_2/demos/*.pyc
-exclude extensions/Pmw/Pmw_1_2/doc/*.pyc
-exclude extensions/Pmw/Pmw_1_2/lib/*.pyc
-exclude extensions/Pmw/Pmw_1_2/tests/*.pyc
+exclude extensions/Pmw/Pmw_1_3/bin/*.pyc
+exclude extensions/Pmw/Pmw_1_3/contrib/*.pyc
+exclude extensions/Pmw/Pmw_1_3/demos/*.pyc
+exclude extensions/Pmw/Pmw_1_3/doc/*.pyc
+exclude extensions/Pmw/Pmw_1_3/lib/*.pyc
+exclude extensions/Pmw/Pmw_1_3/tests/*.pyc
 
 # These will typically generate sdist warnings.
-exclude extensions/Pmw/Pmw_1_2/bin/*.pyo
-exclude extensions/Pmw/Pmw_1_2/contrib/*.pyo
-exclude extensions/Pmw/Pmw_1_2/demos/*.pyo
-exclude extensions/Pmw/Pmw_1_2/doc/*.pyo
-exclude extensions/Pmw/Pmw_1_2/lib/*.pyo
-exclude extensions/Pmw/Pmw_1_2/tests/*.pyo
+exclude extensions/Pmw/Pmw_1_3/bin/*.pyo
+exclude extensions/Pmw/Pmw_1_3/contrib/*.pyo
+exclude extensions/Pmw/Pmw_1_3/demos/*.pyo
+exclude extensions/Pmw/Pmw_1_3/doc/*.pyo
+exclude extensions/Pmw/Pmw_1_3/lib/*.pyo
+exclude extensions/Pmw/Pmw_1_3/tests/*.pyo
 
 include Icons/*.*
 
