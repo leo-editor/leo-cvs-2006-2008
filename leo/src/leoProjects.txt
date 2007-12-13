@@ -1093,7 +1093,7 @@ except IOError:
 #@-node:ekr.20031218072017.3211:<< Read file into s >>
 #@-node:ekr.20031218072017.3210:createOutline
 #@-node:ekr.20071212075450:Make Import to @file create @file nodes
-#@+node:ekr.20071210092032:Investigated how rst3 plugin finds default.css file
+#@+node:ekr.20071210092032:Fixed bug: rst3 plugin now finds default.css file correctly
 @nocolor
 
 http://sourceforge.net/forum/message.php?msg_id=4667105
@@ -1111,7 +1111,7 @@ There has to be a way for us to get the rst3 plugin to see the default.css (in
 the same directory as the LEO file that is being processed) when rst3_stylesheet_path
 is not set.
 #@nonl
-#@-node:ekr.20071210092032:Investigated how rst3 plugin finds default.css file
+#@-node:ekr.20071210092032:Fixed bug: rst3 plugin now finds default.css file correctly
 #@-node:ekr.20071211113202.1:Bugs fixed
 #@+node:ekr.20071211113202.2:New features
 #@+node:ekr.20071210054816:Applied Terry Brown's config patch
