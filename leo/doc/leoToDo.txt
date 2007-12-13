@@ -4,8 +4,6 @@
 #@+node:ekr.20071211093323:more screen shots on Leo's web site
 #@-node:ekr.20071211093323:more screen shots on Leo's web site
 #@+node:ekr.20071211143430:4.4.6 bugs & easy improvements
-#@+node:ekr.20071129095408:Upgrade to Pmw 1.3
-#@-node:ekr.20071129095408:Upgrade to Pmw 1.3
 #@+node:ekr.20071211142600:Easy 2
 #@+node:ekr.20071211132156:find-any-clone command
 flag = False

@@ -1328,6 +1328,8 @@ general purpose dialogs available to all plugins.
 I have also slightly enhanced the dialogs to provide user defined buttons. 
 #@nonl
 #@-node:ekr.20071210090623:Applied plumloco's patch to plugins_menu.py
+#@+node:ekr.20071129095408:Upgraded to Pmw 1.3
+#@-node:ekr.20071129095408:Upgraded to Pmw 1.3
 #@-node:ekr.20071211113202.2:New features
 #@-node:ekr.20071211113202:4.4.6
 #@-all
