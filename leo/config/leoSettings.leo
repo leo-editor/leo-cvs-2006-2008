@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.653566229985">
-	<global_window_position top="83" left="243" height="558" width="864"/>
+<globals body_outline_ratio="0.477886977887">
+	<global_window_position top="83" left="243" height="814" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -83,7 +83,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20070926132045"><vh>Buttons</vh>
 <v t="ekr.20070926082407"><vh>@buttons</vh>
 <v t="ekr.20070926082256.1"><vh>@@button Beautify</vh></v>
@@ -556,8 +556,8 @@
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
 </v>
-<v t="ekr.20070925144552" a="E"><vh>Menus</vh>
-<v t="ekr.20070925144534" a="E"><vh>@menus</vh>
+<v t="ekr.20070925144552"><vh>Menus</vh>
+<v t="ekr.20070925144534"><vh>@menus</vh>
 <v t="ekr.20070925144534.1"><vh>@menu &amp;File</vh>
 <v t="ekr.20070925144534.2"><vh>@item *&amp;new</vh></v>
 <v t="ekr.20070925144534.3"><vh>@item open-outline</vh></v>
@@ -775,7 +775,7 @@
 </v>
 </v>
 <v t="ekr.20070925144534.190"><vh>@menu &amp;Plugins</vh></v>
-<v t="ekr.20070925144534.191" a="E"><vh>@menu &amp;Cmds</vh>
+<v t="ekr.20070925144534.191"><vh>@menu &amp;Cmds</vh>
 <v t="ekr.20070925144534.192"><vh>@menu &amp;Abbrev...</vh>
 <v t="ekr.20070925144534.193"><vh>@item abbre&amp;v-mode</vh></v>
 <v t="ekr.20070925144534.194"><vh>@item -</vh></v>
@@ -872,7 +872,7 @@
 <v t="ekr.20070925144534.275"><vh>@item focus-to-&amp;minibuffer</vh></v>
 <v t="ekr.20070925144534.276"><vh>@item focus-to-&amp;tree</vh></v>
 </v>
-<v t="ekr.20071114081712" a="TV"><vh>@menu &amp;Icons...</vh>
+<v t="ekr.20071114081712"><vh>@menu &amp;Icons...</vh>
 <v t="ekr.20071114081712.2"><vh>@item delete-&amp;all-icons</vh></v>
 <v t="ekr.20071114084709"><vh>@item delete-&amp;first-icon</vh></v>
 <v t="ekr.20071114084709.1"><vh>@item delete-&amp;last-icon</vh></v>
@@ -1107,6 +1107,57 @@
 <v t="ekr.20060919173031.1"><vh>@bool opml_write_leo_globals_attributes = True</vh></v>
 <v t="ekr.20060922110220"><vh>@bool opml_write_uAs = True</vh></v>
 <v t="ekr.20060919171527.2"><vh>@string opml_namespace = leo:com:leo-opml-version-1</vh></v>
+</v>
+<v t="ekr.20071213060239"><vh>rst3 plugin</vh>
+<v t="ekr.20071213060239.1"><vh>rst3 http options</vh>
+<v t="ekr.20071213061454"><vh>rst3_clear_http_attributes = False</vh></v>
+<v t="ekr.20071213061454.1"><vh>rst3_http_server_support = False</vh></v>
+<v t="ekr.20071213061454.2"><vh>rst3_http_attributename = rst_http_attribute</vh></v>
+<v t="ekr.20071213061454.3"><vh>rst3_node_begin_marker = http-node-marker-</vh></v>
+</v>
+<v t="ekr.20071213060239.2"><vh>rst3 path options</vh>
+<v t="ekr.20071213061504"><vh>rst3_default_path = None</vh></v>
+<v t="ekr.20071213061504.1"><vh>rst3_stylesheet_name = default.css</vh></v>
+<v t="ekr.20071213061504.2"><vh>rst3_stylesheet_path = None</vh></v>
+<v t="ekr.20071213061504.3"><vh>rst3_publish_argv_for_missing_stylesheets = None</vh></v>
+</v>
+<v t="ekr.20071213060514"><vh>rst3 global options</vh>
+<v t="ekr.20071213061811"><vh>rst3_number_code_lines = True</vh></v>
+<v t="ekr.20071213061811.1"><vh>rst3_underline_characters = #=+*^~"'`-:&gt;&lt;_</vh></v>
+<v t="ekr.20071213061811.2"><vh>rst3_verbose = True</vh></v>
+<v t="ekr.20071213061811.3"><vh>rst3_write_intermediate_file = False</vh></v>
+</v>
+<v t="ekr.20071213060514.1"><vh>rst3 mode options</vh>
+<v t="ekr.20071213061923"><vh>rst3_code_mode = False</vh></v>
+<v t="ekr.20071213061923.1"><vh>rst3_doc_only_mode = False</vh></v>
+<v t="ekr.20071213061923.2"><vh>rst3_generate_rst = True</vh></v>
+</v>
+<v t="ekr.20071213060514.2"><vh>rst3 formatting options</vh>
+<v t="ekr.20071213061930.1"><vh>rst3_show_headlines = True</vh></v>
+<v t="ekr.20071213061930.2"><vh>rst3_show_organizer_nodes = True</vh></v>
+<v t="ekr.20071213061930.3"><vh>rst3_show_options_nodes = False</vh></v>
+<v t="ekr.20071213061930.4"><vh>rst3_strip_at_file_prefixes = True</vh></v>
+</v>
+<v t="ekr.20071213061923.3"><vh>rst3 formatting options (code mode only)</vh>
+<v t="ekr.20071213062019"><vh>rst3_show_doc_parts_as_paragraphs = False</vh></v>
+<v t="ekr.20071213062019.1"><vh>rst3_show_leo_directives = True</vh></v>
+<v t="ekr.20071213062019.2"><vh>rst3_show_markup_doc_parts = False</vh></v>
+<v t="ekr.20071213062019.3"><vh>rst3_show_options_doc_parts = False</vh></v>
+</v>
+<v t="ekr.20071213060607"><vh>rst3 options: names of headline commands</vh>
+<v t="ekr.20071213062019.4"><vh>rst3_code_prefix = @rst-code</vh></v>
+<v t="ekr.20071213062019.5"><vh>rst3_doc_only_prefix = @rst-doc-only</vh></v>
+<v t="ekr.20071213062019.6"><vh>rst3_rst_prefix = @rst</vh></v>
+<v t="ekr.20071213062019.7"><vh>rst3_ignore_headline_prefix = @rst-no-head</vh></v>
+<v t="ekr.20071213062019.8"><vh>rst3_ignore_headlines_prefix = @rst-no-headlines</vh></v>
+<v t="ekr.20071213062019.9"><vh>rst3_ignore_node_prefix = @rst-ignore-node</vh></v>
+<v t="ekr.20071213062019.10"><vh>rst3_ignore_prefix = @rst-ignore</vh></v>
+<v t="ekr.20071213062019.11"><vh>rst3_ignore_tree_prefix = @rst-ignore-tree</vh></v>
+<v t="ekr.20071213062019.12"><vh>rst3_option_prefix = @rst-option</vh></v>
+<v t="ekr.20071213062019.13"><vh>rst3_options_prefix = @rst-options</vh></v>
+<v t="ekr.20071213062019.14"><vh>rst3_preformat_prefix = @rst-preformat</vh></v>
+<v t="ekr.20071213062019.15"><vh>rst3_show_headline_prefix = @rst-head</vh></v>
+</v>
 </v>
 <v t="ekr.20060930111325"><vh>scripting plugin</vh>
 <v t="ekr.20060930111325.2"><vh>@bool scripting-at-button-nodes = True</vh></v>
@@ -8429,5 +8480,59 @@ delete-all-icons</t>
 <t tx="ekr.20071114081712.5"></t>
 <t tx="ekr.20071114084709"></t>
 <t tx="ekr.20071114084709.1"></t>
+<t tx="ekr.20071213060239">@color</t>
+<t tx="ekr.20071213060239.1"></t>
+<t tx="ekr.20071213060239.2"></t>
+<t tx="ekr.20071213060514"></t>
+<t tx="ekr.20071213060514.1"></t>
+<t tx="ekr.20071213060514.2"># Formatting options that apply to both code and rst modes....</t>
+<t tx="ekr.20071213060607">rst3_code_prefix =             @rst-code     # Enter code mode.
+rst3_doc_only_prefix =         @rst-doc-only # Enter doc-only mode.
+rst3_rst_prefix =              @rst          # Enter rst mode.
+rst3_ignore_headline_prefix =  @rst-no-head
+rst3_ignore_headlines_prefix = @rst-no-headlines
+rst3_ignore_node_prefix =      @rst-ignore-node
+rst3_ignore_prefix =           @rst-ignore
+rst3_ignore_tree_prefix =      @rst-ignore-tree
+rst3_option_prefix =           @rst-option
+rst3_options_prefix =          @rst-options
+rst3_preformat_prefix =        @rst-preformat
+rst3_show_headline_prefix =    @rst-head</t>
+<t tx="ekr.20071213061454"></t>
+<t tx="ekr.20071213061454.1"></t>
+<t tx="ekr.20071213061454.2"></t>
+<t tx="ekr.20071213061454.3"></t>
+<t tx="ekr.20071213061504"></t>
+<t tx="ekr.20071213061504.1"></t>
+<t tx="ekr.20071213061504.2"></t>
+<t tx="ekr.20071213061504.3"></t>
+<t tx="ekr.20071213061811"></t>
+<t tx="ekr.20071213061811.1"></t>
+<t tx="ekr.20071213061811.2"></t>
+<t tx="ekr.20071213061811.3"># Used only if generate_rst is True.</t>
+<t tx="ekr.20071213061923"># True: generate rst markup from @code and @doc parts.</t>
+<t tx="ekr.20071213061923.1"># True: generate only from @doc parts.</t>
+<t tx="ekr.20071213061923.2"># True: generate rst markup. False: generate plain text.</t>
+<t tx="ekr.20071213061923.3"></t>
+<t tx="ekr.20071213061930.1"># Can be set by @rst-no-head headlines.</t>
+<t tx="ekr.20071213061930.2"></t>
+<t tx="ekr.20071213061930.3"></t>
+<t tx="ekr.20071213061930.4"></t>
+<t tx="ekr.20071213062019"></t>
+<t tx="ekr.20071213062019.1"></t>
+<t tx="ekr.20071213062019.2"></t>
+<t tx="ekr.20071213062019.3"></t>
+<t tx="ekr.20071213062019.4"># Enter code mode.</t>
+<t tx="ekr.20071213062019.5"># Enter doc-only mode.</t>
+<t tx="ekr.20071213062019.6"># Enter rst mode.</t>
+<t tx="ekr.20071213062019.7"></t>
+<t tx="ekr.20071213062019.8"></t>
+<t tx="ekr.20071213062019.9"></t>
+<t tx="ekr.20071213062019.10"></t>
+<t tx="ekr.20071213062019.11"></t>
+<t tx="ekr.20071213062019.12"></t>
+<t tx="ekr.20071213062019.13"></t>
+<t tx="ekr.20071213062019.14"></t>
+<t tx="ekr.20071213062019.15"></t>
 </tnodes>
 </leo_file>
