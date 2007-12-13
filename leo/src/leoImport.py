@@ -728,9 +728,10 @@ class leoImportCommands:
         else:
             undoData = u.beforeInsertNode(parent)
             p = parent.insertAsLastChild()
-            if self.treeType == "@file" and not s1:
-                p.initHeadString("@nosent " + fileName)
+            if self.treeType == "@file":
+                p.initHeadString("@file " + fileName)
             else:
+                # @root nodes don't have @root in the headline.
                 p.initHeadString(fileName)
             u.afterInsertNode(p,'Import',undoData)
 
