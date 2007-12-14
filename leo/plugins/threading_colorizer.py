@@ -9,7 +9,7 @@ See: http://webpages.charter.net/edreamleo/coloring.html for documentation.
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '1.1'
+__version__ = '1.3'
 
 trace_all_matches = False
 trace_leo_matches = False
@@ -44,11 +44,10 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 #     - The helper thread runs to completion before *any* tagging is done.
 #     - No locks are needed because the globalTagList is never simultaneously 
 # accessed.
-# 
 # 1.1: EKR: support non-interruptable coloring.  Required when there are 
 # multiple body editors.
-# 
 # 1.2: EKR: Fixed off-by-one bug in 'end' hack in putNewTags.
+# 1.3: EKR: Fixed off-by-one bug in match_doc_part.
 #@-at
 #@nonl
 #@-node:ekr.20071010193720.2:<< version history >>
@@ -300,7 +299,7 @@ def match_doc_part (self,s,i):
         k = s.find('@c',j)
         if k == -1:
             # g.trace('i,len(s)',i,len(s))
-            j = n
+            j = n+1 # Bug fix: 2007/12/14
             self.colorRangeWithTag(s,i,j,'docPart')
             return j - i
         if s[k-1] == '\n' and (g.match_word(s,k,'@c') or g.match_word(s,k,'@code')):
