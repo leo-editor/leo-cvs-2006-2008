@@ -7273,8 +7273,8 @@ class minibufferFind (baseEditCommandsClass):
         self.finder.p = self.c.currentPosition()
         self.finder.v = self.finder.p.v
 
-        # This handles the reverse option.
-        self.finder.findNextCommand()
+        # Bug fix: 2007-12-14: remove call to self.finder.findNextCommand.
+        # This was the cause of replaces not starting in the right place!
 
         if changeAll:
             self.finder.changeAllCommand()
