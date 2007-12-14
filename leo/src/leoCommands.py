@@ -1157,6 +1157,7 @@ class baseCommands:
         u.afterClearRecentFiles(bunch)
 
         # New in Leo 4.4.5: write the file immediately.
+        g.app.config.recentFileMessageWritten = False # Force the write message.
         g.app.config.writeRecentFilesFile(c)
     #@-node:ekr.20031218072017.2080:clearRecentFiles
     #@+node:ekr.20031218072017.2081:openRecentFile
@@ -5286,6 +5287,16 @@ class baseCommands:
             c.treeFocusHelper()
         c.updateSyntaxColorer(p) # Moving can change syntax coloring.
     #@-node:ekr.20031218072017.1774:promote
+    #@+node:ekr.20071213185710:c.toggleSparseMove
+    def toggleSparseMove (self,event=None):
+
+        c = self ; p = c.currentPosition()
+        tag = 'sparse_move_outline_left'
+
+        sparseMove = not c.config.getBool(tag)
+        c.config.set(p, tag, sparseMove)
+        g.es('%s = %s' % (tag,sparseMove),color='blue')
+    #@-node:ekr.20071213185710:c.toggleSparseMove
     #@-node:ekr.20031218072017.1766:Move... (Commands)
     #@+node:ekr.20031218072017.2913:Goto
     #@+node:ekr.20031218072017.1628:goNextVisitedNode
@@ -5424,6 +5435,37 @@ class baseCommands:
 
         c.selectPosition(p)
     #@-node:ekr.20031218072017.2916:goToNextClone
+    #@+node:ekr.20071213123942:findNextClone
+    def findNextClone (self,event=None):
+
+        '''Select the next cloned node.'''
+
+        c = self ; p = c.currentPosition() ; flag = False
+        if not p: return
+
+        if p.isCloned():
+            p.moveToThreadNext()
+
+        while p:
+            if p.isCloned():
+                flag = True ; break
+            else:
+                p.moveToThreadNext()
+
+        if flag:
+            c.beginUpdate()
+            try:
+                cc = c.chapterController
+                if cc:
+                    name = cc.findChapterNameForPosition(p)
+                    cc.selectChapterByName(name)
+                c.frame.tree.expandAllAncestors(p)
+                c.selectPosition(p)
+            finally:
+                c.endUpdate()
+        else:
+            g.es('No more clones',color='blue')
+    #@-node:ekr.20071213123942:findNextClone
     #@+node:ekr.20031218072017.2917:goToNextDirtyHeadline
     def goToNextDirtyHeadline (self,event=None):
 

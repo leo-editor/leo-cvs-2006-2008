@@ -1712,18 +1712,21 @@ class configClass:
         else:
             localPath = None
 
+        written = False
         for path in (localPath,g.app.globalConfigDir,g.app.homeDir):
             if path:
                 fileName = g.os_path_join(path,tag)
                 if g.os_path_exists(fileName):
                     if not self.recentFileMessageWritten:
-                        self.recentFileMessageWritten = True
-                        print ('wrote %s' % fileName)
+                        print ('wrote recent file: %s' % fileName)
+                        written = True
                     self.writeRecentFilesFileHelper(fileName)
-                    return
+                    # Bug fix: Leo 4.4.6: write *all* recent files.
+
+        if written:
+            self.recentFileMessageWritten = True
         else:
-            # g.trace('----- not found: %s' % g.os_path_join(localPath,tag))
-            return
+            pass # g.trace('----- not found: %s' % g.os_path_join(localPath,tag))
     #@+node:ekr.20050424131051:writeRecentFilesFileHelper
     def writeRecentFilesFileHelper (self,fileName):
         # g.trace(fileName)
