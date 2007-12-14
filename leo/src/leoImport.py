@@ -2006,6 +2006,7 @@ class baseScannerClass:
         class_kind = self.classId
         class_name = self.sigId
         headline = '%s %s' % (class_kind,class_name)
+        headline = headline.strip()
         self.methodName = headline
 
         # Compute the starting lines of the class.
@@ -3363,15 +3364,16 @@ class xmlScanner (baseScannerClass):
 
         # Init the base class.
         baseScannerClass.__init__(self,importCommands,atAuto=atAuto,language='xml')
+            # sets self.c
 
         # Set the parser delims.
         self.blockCommentDelim1 = '<!--'
         self.blockCommentDelim2 = '-->'
         self.blockDelim1 = None 
         self.blockDelim2 = None
-        self.classTags = ['html',]
+        self.classTags = [] # Inited by import_xml_tags setting.
         self.extraIdChars = None
-        self.functionTags = ['body','head',] # Testing only
+        self.functionTags = []
         self.lineCommentDelim = None
         self.lineCommentDelim2 = None
         self.outerBlockDelim1 = None
@@ -3382,11 +3384,29 @@ class xmlScanner (baseScannerClass):
 
         # Overrides more attributes.
         self.hasClasses = True
-        self.hasFunctions = True
+        self.hasFunctions = False
         self.strict = False
-        self.trace = True
+        self.trace = False
+
+        self.addTags()
 
     #@-node:ekr.20071214072451: __init__ (xmlScanner)
+    #@+node:ekr.20071214131818:addTags
+    def addTags (self):
+
+        '''Add items to self.class/functionTags and from settings.'''
+
+        c = self.c
+
+        for ivar,setting in (
+            ('classTags','import_xml_tags',),
+            # ('functionTags','import_xml_function_tags'),
+        ):
+            aList = getattr(self,ivar)
+            aList2 = c.config.getData(setting) or []
+            aList.extend(aList2)
+            # g.trace(ivar,aList)
+    #@-node:ekr.20071214131818:addTags
     #@+node:ekr.20071214072924.4:startsHelper & helpers
     def startsHelper(self,s,i,kind,tags):
         '''return True if s[i:] starts a class or function.
@@ -3413,7 +3433,8 @@ class xmlScanner (baseScannerClass):
             return False
 
         if trace and verbose: g.trace(theId)
-        classId = sigId = theId
+        classId = '' 
+        sigId = theId
 
         # Complete the opening tag.
         i, ok = self.skipToEndOfTag(s,i)
@@ -3465,6 +3486,8 @@ class xmlScanner (baseScannerClass):
             progress = i
             if i == '"':
                 i = self.skipString(s,i)
+            elif g.match(s,i,'/>'):
+                return i,False # Starts a self-contained tag.
             elif g.match(s,i,'>'):
                 i += 1
                 if g.match(s,i,'\n'): i += 1
