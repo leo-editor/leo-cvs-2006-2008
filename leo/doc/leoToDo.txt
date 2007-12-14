@@ -5,8 +5,6 @@
 #@-node:ekr.20071211093323:more screen shots on Leo's web site
 #@+node:ekr.20071211143430:4.4.6 bugs & easy improvements
 #@+node:ekr.20071027121956:Fix @auto javascript
-# Javascript syntax is truly bizarre.
-#@nonl
 #@+node:ekr.20071211092214:Javascript spec
 @nocolor
 
