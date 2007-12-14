@@ -14,25 +14,32 @@ As far as I am aware, this is the definitive specification for javascript.
 
 http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf  
 
-The most relavent part is below. This has caused much aggrevation to many people. Regexp's which parse for regexp literals in javascript, usually check for '/' after chars which can not be followed by a div, eg (,[{ etc. I think a regexp literal can occur almost anywhere a string literal can apart from this restriction. 
+The most relavent part is below. This has caused much aggrevation to many
+people. Regexp's which parse for regexp literals in javascript, usually check
+for '/' after chars which can not be followed by a div, eg (,[{ etc. I think a
+regexp literal can occur almost anywhere a string literal can apart from this
+restriction.
 
--- quote -- 
-The source text of an ECMAScript program is first converted into a sequence of input elements, which are either tokens, line terminators, comments, or white space. The source text is scanned from left to right, repeatedly taking the longest possible sequence of characters as the next input element. 
+-- quote --
 
-There are two goal symbols for the lexical grammar. The InputElementDiv symbol is used in those syntactic grammar contexts where a division (/) or division-assignment (/=) operator is permitted. The InputElementRegExp symbol is used in other syntactic grammar contexts. 
+The source text of an ECMAScript program is first converted into a sequence of
+input elements, which are either tokens, line terminators, comments, or white
+space. The source text is scanned from left to right, repeatedly taking the
+longest possible sequence of characters as the next input element.
 
-Note that contexts exist in the syntactic grammar where both a division and a RegularExpressionLiteral are permitted by the syntactic grammar; however, since the lexical grammar uses the InputElementDiv goal symbol in such cases, the opening slash is not recognised as starting a regular expression literal in such a context. As a workaround, one may enclose the regular expression literal in p
+There are two goal symbols for the lexical grammar. The InputElementDiv symbol
+is used in those syntactic grammar contexts where a division (/) or
+division-assignment (/=) operator is permitted. The InputElementRegExp symbol is
+used in other syntactic grammar contexts.
+
+Note that contexts exist in the syntactic grammar where both a division and a
+RegularExpressionLiteral are permitted by the syntactic grammar; however, since
+the lexical grammar uses the InputElementDiv goal symbol in such cases, the
+opening slash is not recognised as starting a regular expression literal in such
+a context. As a workaround, one may enclose the regular expression literal in p.
 #@nonl
 #@-node:ekr.20071211092214:Javascript spec
 #@-node:ekr.20071027121956:Fix @auto javascript
-#@+node:ekr.20071213095537:Find doesn't always start in the correct place
-a ab
-
-a
-c    ab
-a c
-#@nonl
-#@-node:ekr.20071213095537:Find doesn't always start in the correct place
 #@-node:ekr.20071211143430:4.4.6 bugs & easy improvements
 #@+node:ekr.20071113093057:4.5 cleanups, vim bindings & readline
 #@+node:ekr.20071211091037.1:Code cleanup 5
