@@ -139,9 +139,10 @@ class leoFind:
     #@+node:ekr.20031218072017.3053:leoFind.__init__ & helpers
     def __init__ (self,c,title=None):
 
-        # g.trace('leoFind',c)
-
         self.c = c
+        self.trace = False
+
+        # g.trace('leoFind',c)
 
         # Spell checkers use this class, so we can't always compute a title.
         if title:
@@ -752,12 +753,16 @@ class leoFind:
 
     def findNextMatch(self):
 
-        c = self.c
+        c = self.c ; trace = self.trace
+
+        if trace: g.trace('entry',g.callers())
 
         if not self.search_headline and not self.search_body:
+            if trace: g.trace('nothing to search')
             return None, None
 
         if len(self.find_text) == 0:
+            if trace: g.trace('no find text')
             return None, None
 
         p = self.p ; self.errors = 0
@@ -765,21 +770,25 @@ class leoFind:
         self.backwardAttempts = 0
         while p:
             pos, newpos = self.search()
-            # g.trace('pos',pos,'p',p.headString(),g.callers())
+            if trace: g.trace('attempt','pos',pos,'p',p.headString())
             if pos is not None:
                 if self.mark_finds:
                     p.setMarked()
                     c.frame.tree.drawIcon(p) # redraw only the icon.
+                if trace: g.trace('success',pos,newpos)
                 return pos, newpos
             elif self.errors:
                 g.trace('find errors')
                 return None,None # Abort the search.
             elif self.node_only:
+                if trace: g.trace('fail: node only')
                 return None,None # We are only searching one node.
             else:
+                if trace: g.trace('failed attempt',p)
                 attempts += 1
                 p = self.p = self.selectNextPosition()
-        # g.trace('attempts',attempts,'backwardAttempts',self.backwardAttempts)
+
+        if trace: g.trace('attempts',attempts,'backwardAttempts',self.backwardAttempts)
         return None, None
     #@-node:ekr.20031218072017.3075:findNextMatch
     #@+node:ekr.20031218072017.3076:resetWrap
@@ -796,7 +805,7 @@ class leoFind:
 
         Returns (pos, newpos) or (None,None)."""
 
-        c = self.c ; p = self.p ; w = self.s_ctrl
+        c = self.c ; p = self.p ; w = self.s_ctrl ; trace = self.trace
         index = w.getInsertPoint()
         s = w.getAllText()
 
@@ -805,33 +814,41 @@ class leoFind:
         pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
             backwards=self.reverse,nocase=self.ignore_case,
             regexp=self.pattern_match,word=self.whole_word)
+
         # g.trace('pos,newpos',pos,newpos)
-        if pos == -1: return None,None
+        if pos == -1:
+            if trace: g.trace('** pos is -1',pos,newpos)
+            return None,None
         #@    << fail if we are passed the wrap point >>
         #@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
         if self.wrapping and self.wrapPos is not None and self.wrapPosition and p == self.wrapPosition:
 
             if self.reverse and pos < self.wrapPos:
-                # g.trace("reverse wrap done")
+                if trace: g.trace("** reverse wrap done",pos,newpos)
                 return None, None
 
             if not self.reverse and newpos > self.wrapPos:
-                # g.trace('wrap done')
+                if trace: g.trace('** wrap done',pos,newpos)
                 return None, None
         #@-node:ekr.20060526140328:<< fail if we are passed the wrap point >>
         #@nl
         insert = g.choose(self.reverse,min(pos,newpos),max(pos,newpos))
         w.setSelectionRange(pos,newpos,insert=insert)
+
+        if trace: g.trace('** returns',pos,newpos)
         return pos,newpos
     #@+node:ekr.20060526081931:searchHelper & allies
     def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word,swapij=True):
 
+        trace = self.trace
+
         if swapij and backwards: i,j = j,i
 
-        # g.trace(backwards,i,j,repr(s[i:i+20]))
+        if trace: g.trace('back,nocase,regexp,word,',
+            backwards,nocase,regexp,word,i,j,repr(s[i:i+20]))
 
         if not s[i:j] or not pattern:
-            # if s: g.trace('empty',i,j,'len(s)',len(s),'pattern',pattern)
+            if trace: g.trace('empty',i,j,'len(s)',len(s),'pattern',pattern)
             return -1,-1
 
         if regexp:
@@ -841,6 +858,7 @@ class leoFind:
         else:
             pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
 
+        if trace: g.trace('returns',pos,newpos)
         return pos,newpos
     #@+node:ekr.20060526092203:regexHelper
     def regexHelper (self,s,i,j,pattern,backwards,nocase):
@@ -942,35 +960,45 @@ class leoFind:
                 return k,k+n
     #@-node:ekr.20060526140744:backwardsHelper
     #@+node:ekr.20060526093531:plainHelper
-    #@@tabwidth 4
-
     def plainHelper (self,s,i,j,pattern,nocase,word):
 
-        # g.trace(i,j,repr(s[i:i+20]),'pattern',repr(pattern),'word',repr(word))
+        trace = self.trace
+
+        # if trace: g.trace(i,j,repr(s[i:i+20]),'pattern',repr(pattern),'word',repr(word))
+        if trace: g.trace(i,j,repr(s[i:i+20]))
+
         if nocase:
             s = s.lower() ; pattern = pattern.lower()
-    	pattern = self.replaceBackSlashes(pattern)
+        pattern = self.replaceBackSlashes(pattern)
         n = len(pattern)
         if word:
             while 1:
                 k = s.find(pattern,i,j)
                 # g.trace(k,n)
-                if k == -1: return -1, -1
+                if k == -1:
+                    if trace: g.trace('no match word',i)
+                    return -1, -1
                 elif self.matchWord(s,k,pattern):
+                    if trace: g.trace('match word',k)
                     return k, k + n
                 else: i = k + n
         else:
             k = s.find(pattern,i,j)
             if k == -1:
+                if trace: g.trace('no match word',i)
                 return -1, -1
             else:
+                if trace: g.trace('match', k)
                 return k, k + n
     #@-node:ekr.20060526093531:plainHelper
     #@+node:ekr.20060526140744.1:matchWord
     def matchWord(self,s,i,pattern):
 
+        trace = self.trace
+
         pattern = self.replaceBackSlashes(pattern)
         if not s or not pattern or not g.match(s,i,pattern):
+            if trace: g.trace('empty')
             return False
 
         pat1,pat2 = pattern[0],pattern[-1]
@@ -986,10 +1014,10 @@ class leoFind:
 
         # g.trace('i',i,'ch1,ch2,pat',repr(ch1),repr(ch2),repr(pattern))
 
-        if isWordPat1 and isWordCh1 or isWordPat2 and isWordCh2:
-            return False
-        else:
-            return True
+        inWord = isWordPat1 and isWordCh1 or isWordPat2 and isWordCh2
+        if trace: g.trace('returns',not inWord)
+        return not inWord
+
     #@-node:ekr.20060526140744.1:matchWord
     #@+node:ekr.20070105165924:replaceBackSlashes
     def replaceBackSlashes (self,s):
@@ -1012,6 +1040,8 @@ class leoFind:
                 else:
                     i += 1 # Skip the escaped character.
             i += 1
+
+        if self.trace: g.trace(repr(s))
         return s
     #@-node:ekr.20070105165924:replaceBackSlashes
     #@-node:ekr.20060526081931:searchHelper & allies
