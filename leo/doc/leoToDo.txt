@@ -4,35 +4,6 @@
 #@+node:ekr.20071211093323:more screen shots on Leo's web site
 #@-node:ekr.20071211093323:more screen shots on Leo's web site
 #@+node:ekr.20071211143430:4.4.6 bugs & easy improvements
-#@+node:ekr.20071211142600:Easy 2
-#@+node:ekr.20071211132156:find-any-clone command
-flag = False
-
-if p.isCloned():
-    p.moveToThreadNext()
-
-while p:
-    if p.isCloned():
-        flag = True ; break
-    else:
-        p.moveToThreadNext()
-
-if flag:
-    c.beginUpdate()
-    try:
-        c.frame.tree.expandAllAncestors(p)
-        c.selectPosition(p)
-    finally:
-        c.endUpdate()
-
-else:
-    g.es('No more clones',color='blue')
-#@-node:ekr.20071211132156:find-any-clone command
-#@+node:ekr.20071115055315:Add toggle-collapse-outline-when-moving command
-See: contractNodeOrGoToParent
-#@nonl
-#@-node:ekr.20071115055315:Add toggle-collapse-outline-when-moving command
-#@-node:ekr.20071211142600:Easy 2
 #@+node:ekr.20071211091037.3:Finish @auto
 #@+node:ekr.20071027121956:Fix @auto javascript
 # Javascript syntax is truly bizarre.
@@ -60,6 +31,14 @@ https://sourceforge.net/forum/message.php?msg_id=4665749
 #@nonl
 #@-node:ekr.20071210085349:Support for xml files in @auto
 #@-node:ekr.20071211091037.3:Finish @auto
+#@+node:ekr.20071213095537:Find doesn't always start in the correct place
+a ab
+
+a
+c    ab
+a c
+#@nonl
+#@-node:ekr.20071213095537:Find doesn't always start in the correct place
 #@-node:ekr.20071211143430:4.4.6 bugs & easy improvements
 #@+node:ekr.20071113093057:4.5 cleanups, vim bindings & readline
 #@+node:ekr.20071211091037.1:Code cleanup 5
