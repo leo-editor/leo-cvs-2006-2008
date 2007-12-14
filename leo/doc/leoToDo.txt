@@ -4,7 +4,6 @@
 #@+node:ekr.20071211093323:more screen shots on Leo's web site
 #@-node:ekr.20071211093323:more screen shots on Leo's web site
 #@+node:ekr.20071211143430:4.4.6 bugs & easy improvements
-#@+node:ekr.20071211091037.3:Finish @auto
 #@+node:ekr.20071027121956:Fix @auto javascript
 # Javascript syntax is truly bizarre.
 #@nonl
@@ -26,11 +25,6 @@ Note that contexts exist in the syntactic grammar where both a division and a Re
 #@nonl
 #@-node:ekr.20071211092214:Javascript spec
 #@-node:ekr.20071027121956:Fix @auto javascript
-#@+node:ekr.20071210085349:Support for xml files in @auto
-https://sourceforge.net/forum/message.php?msg_id=4665749
-#@nonl
-#@-node:ekr.20071210085349:Support for xml files in @auto
-#@-node:ekr.20071211091037.3:Finish @auto
 #@+node:ekr.20071213095537:Find doesn't always start in the correct place
 a ab
 

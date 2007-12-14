@@ -5,11 +5,15 @@
 #@@first
 #@@first
 
+# To do: use cgi.FieldStorage.
+
 '''This is the cgi script called from hello.html when the user hits the button.'''
 
 #@@language python
 #@@tabwidth -4
 import leoBridge
+import cgi
+import cgitb ; cgitb.enable()
 #@<< define dhtml stuff >>
 #@+node:<< define dhtml stuff >>
 division = """
@@ -49,6 +53,13 @@ def print_all(c):
 def print_body(c):
 
     print '<body class="st" onload="format()">'
+
+    form = cgi.FieldStorage()
+    print repr(form)
+    # if form.has_key('name'):
+        # print 'name',form['name'].value
+    # else:
+        # print 'no name'
     print_tree(c)
     print '</body>'
 #@-node:print_body
