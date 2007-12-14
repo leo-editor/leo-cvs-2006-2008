@@ -7256,6 +7256,7 @@ class configSettings:
     def getBool      (self,setting): return g.app.config.getBool     (self.c,setting)
     def getButtons   (self):         return g.app.config.buttonsList # unusual.
     def getColor     (self,setting): return g.app.config.getColor    (self.c,setting)
+    def getData      (self,setting): return g.app.config.getData     (self.c,setting)
     def getDirectory (self,setting): return g.app.config.getDirectory(self.c,setting)
     def getInt       (self,setting): return g.app.config.getInt      (self.c,setting)
     def getFloat     (self,setting): return g.app.config.getFloat    (self.c,setting)

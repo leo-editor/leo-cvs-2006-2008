@@ -29,7 +29,7 @@ class parserBaseClass:
         'float','path','ratio','shortcut','string','strings']
 
     control_types = [
-        'abbrev','enabledplugins','font','if','ifgui','ifplatform','ignore','mode',
+        'abbrev','data','enabledplugins','font','if','ifgui','ifplatform','ignore','mode',
         'openwith','page','settings','shortcuts',
         'buttons','menus', # New in Leo 4.4.4.
         ]
@@ -56,6 +56,7 @@ class parserBaseClass:
             'bool':         self.doBool,
             'buttons':      self.doButtons, # New in 4.4.4
             'color':        self.doColor,
+            'data':         self.doData, # New in 4.4.6
             'directory':    self.doDirectory,
             'enabledplugins': self.doEnabledPlugins,
             'font':         self.doFont,
@@ -155,6 +156,15 @@ class parserBaseClass:
 
         self.set(p,kind,name,val)
     #@-node:ekr.20041120094940.2:doColor
+    #@+node:ekr.20071214140900:doData
+    def doData (self,p,kind,name,val):
+
+        s = p.bodyString()
+        lines = g.splitLines(s)
+        data = [z.strip() for z in lines if z.strip() and not z.startswith('#')]
+
+        self.set(p,kind,name,data)
+    #@-node:ekr.20071214140900:doData
     #@+node:ekr.20041120094940.3:doDirectory & doPath
     def doDirectory (self,p,kind,name,val):
 
@@ -1266,6 +1276,11 @@ class configClass:
 
         return self.get(c,setting,"color")
     #@-node:ekr.20041122070339:getColor
+    #@+node:ekr.20071214140900.1:getData
+    def getData (self,c,setting):
+
+        return self.get(c,setting,"data")
+    #@-node:ekr.20071214140900.1:getData
     #@+node:ekr.20041117093009.1:getDirectory
     def getDirectory (self,c,setting):
 
