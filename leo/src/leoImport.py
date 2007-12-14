@@ -753,6 +753,8 @@ class leoImportCommands:
             self.scanPythonText(s,p,atAuto=atAuto)
         elif ext == ".php":
             self.scanPHPText(s,p,atAuto=atAuto)
+        elif ext in ('.html','.htm','.xml'):
+            self.scanXmlText(s,p,atAuto=atAuto)
         else:
             self.scanUnknownFileType(s,p,ext,atAuto=atAuto)
 
@@ -1439,6 +1441,9 @@ class leoImportCommands:
     def textUnitTest(self,p,fileName=None,s=None,showTree=False):
         return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.txt')
 
+    def xmlUnitTest(self,p,fileName=None,s=None,showTree=False):
+        return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.xml')
+
     def defaultImporterUnitTest(self,p,fileName=None,s=None,showTree=False):
         return self.scannerUnitTest (p,atAuto=False,fileName=fileName,s=s,showTree=showTree,ext='.xxx')
     #@+node:ekr.20070713082220:scannerUnitTest
@@ -1563,6 +1568,13 @@ class leoImportCommands:
 
         scanner.run(s,parent)
     #@-node:ekr.20070703122141.99:scanPythonText
+    #@+node:ekr.20071214072145:scanXmlText
+    def scanXmlText (self,s,parent,atAuto=False):
+
+        scanner = xmlScanner(importCommands=self,atAuto=atAuto)
+
+        scanner.run(s,parent)
+    #@-node:ekr.20071214072145:scanXmlText
     #@+node:ekr.20070713075352:scanUnknownFileType (default scanner)
     def scanUnknownFileType (self,s,p,ext,atAuto=False):
 
@@ -3342,6 +3354,150 @@ class pythonScanner (baseScannerClass):
     #@-node:ekr.20070803101619:skipSigTail
     #@-others
 #@-node:ekr.20070703122141.100:class pythonScanner
+#@+node:ekr.20071214072145.1:class xmlScanner
+class xmlScanner (baseScannerClass):
+
+    #@    @+others
+    #@+node:ekr.20071214072451: __init__ (xmlScanner)
+    def __init__ (self,importCommands,atAuto):
+
+        # Init the base class.
+        baseScannerClass.__init__(self,importCommands,atAuto=atAuto,language='xml')
+
+        # Set the parser delims.
+        self.blockCommentDelim1 = '<!--'
+        self.blockCommentDelim2 = '-->'
+        self.blockDelim1 = None 
+        self.blockDelim2 = None
+        self.classTags = ['html',]
+        self.extraIdChars = None
+        self.functionTags = ['body','head',] # Testing only
+        self.lineCommentDelim = None
+        self.lineCommentDelim2 = None
+        self.outerBlockDelim1 = None
+        self.outerBlockDelim2 = None
+        self.outerBlockEndsDecls = False
+        self.sigHeadExtraTokens = []
+        self.sigFailTokens = []
+
+        # Overrides more attributes.
+        self.hasClasses = True
+        self.hasFunctions = True
+        self.strict = False
+        self.trace = True
+
+    #@-node:ekr.20071214072451: __init__ (xmlScanner)
+    #@+node:ekr.20071214072924.4:startsHelper & helpers
+    def startsHelper(self,s,i,kind,tags):
+        '''return True if s[i:] starts a class or function.
+        Sets sigStart, sigEnd, sigId and codeEnd ivars.'''
+
+        trace = self.trace ; verbose = False
+        self.codeEnd = self.sigEnd = self.sigId = None
+
+        # Underindented lines can happen in any language, not just Python.
+        # The skipBlock method of the base class checks for such lines.
+        self.startSigIndent = self.getLeadingIndent(s,i)
+
+        # Get the tag that starts the class or function.
+        if not g.match(s,i,'<'): return False
+        self.sigStart = i
+        i += 1
+        j = g.skip_ws_and_nl(s,i)
+        i = self.skipId(s,j)
+        self.sigId = theId = s[j:i] # Set sigId ivar 'early' for error messages.
+        if not theId: return False
+
+        if theId not in tags:
+            if trace and verbose: g.trace('**** %s theId: %s not in tags: %s' % (kind,theId,tags))
+            return False
+
+        if trace and verbose: g.trace(theId)
+        classId = sigId = theId
+
+        # Complete the opening tag.
+        i, ok = self.skipToEndOfTag(s,i)
+        if not ok:
+            if trace and verbose: g.trace('no tail',g.get_line(s,i))
+            return False
+        sigEnd = i
+
+        # A trick: make sure the signature ends in a newline,
+        # even if it overlaps the start of the block.
+        if 0:
+            if not g.match(s,sigEnd,'\n') and not g.match(s,sigEnd-1,'\n'):
+                if trace and verbose: g.trace('extending sigEnd')
+                sigEnd = g.skip_line(s,sigEnd)
+
+        i,ok = self.skipToMatchingTag(s,i,theId)
+        if not ok:
+            if trace: g.trace('no matching tag',theId)
+            return False
+
+        # Success: set the ivars.
+        self.sigStart = self.adjustDefStart(s,self.sigStart)
+        self.codeEnd = i
+        self.sigEnd = sigEnd
+        self.sigId = sigId
+        self.classId = classId
+
+        # Note: backing up here is safe because
+        # we won't back up past scan's 'start' point.
+        # Thus, characters will never be output twice.
+        k = self.sigStart
+        if not g.match(s,k,'\n'):
+            self.sigStart = g.find_line_start(s,k)
+
+        # Issue this warning only if we have a real class or function.
+        if 0: ### wrong.if trace: g.trace(kind,'returns\n'+s[self.sigStart:i])
+            if s[self.sigStart:k].strip():
+                self.error('%s definition does not start a line\n%s' % (
+                    kind,g.get_line(s,k)))
+
+        if trace: g.trace(kind,'returns\n'+s[self.sigStart:i])
+        return True
+    #@+node:ekr.20071214072924.3:skipToEndOfTag
+    def skipToEndOfTag(self,s,i):
+
+        '''Skip to the end of an open tag.'''
+
+        while i < len(s):
+            progress = i
+            if i == '"':
+                i = self.skipString(s,i)
+            elif g.match(s,i,'>'):
+                i += 1
+                if g.match(s,i,'\n'): i += 1
+                return i,True
+            else:
+                i += 1
+            assert progress < i
+
+        return i,False
+    #@-node:ekr.20071214072924.3:skipToEndOfTag
+    #@+node:ekr.20071214075117:skipToMatchingTag
+    def skipToMatchingTag (self,s,i,tag):
+
+        while i < len(s):
+            progress = i
+            if i == '"':
+                i = self.skipString(s,i)
+            elif g.match(s,i,'</'):
+                i += 2 ; j = i
+                i = self.skipId(s,j)
+                tag2 = s[j:i]
+                if tag2 == tag:
+                    i,ok = self.skipToEndOfTag(s,i)
+                    return i,ok
+            else:
+                i += 1
+            assert progress < i
+
+        return i,False
+    #@-node:ekr.20071214075117:skipToMatchingTag
+    #@-node:ekr.20071214072924.4:startsHelper & helpers
+    #@-others
+#@-node:ekr.20071214072145.1:class xmlScanner
 #@-others
 #@nonl
 #@-node:ekr.20031218072017.3241:<< scanner classes >>
