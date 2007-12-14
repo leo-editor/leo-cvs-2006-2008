@@ -129,7 +129,9 @@ class LeoApp:
             "rebol" : ";",  # jason 2003-07-03
             "shell" : "#",  # shell scripts
             "tcltk" : "#",
-            "unknown" : "#" } # Set when @comment is seen.
+            "unknown" : "#", # Set when @comment is seen.
+            "xml" : "<!-- -->",
+        }
 
         self.language_extension_dict = {
             "ada" : "ads",
@@ -161,7 +163,9 @@ class LeoApp:
             "shell" : "sh",   # DS 4/1/04
             "tex" : "tex",
             "tcltk" : "tcl",
-            "unknown" : "txt" } # Set when @comment is seen.
+            "unknown" : "txt", # Set when @comment is seen.
+            "xml": "xml",
+        }
 
         self.extension_dict = {
             "ads"   : "ada",
@@ -190,7 +194,9 @@ class LeoApp:
             "tex"   : "tex",
             "txt"   : "plain",
             "tcl"   : "tcltk",
-            "w"     : "cweb" }
+            "w"     : "cweb",
+            "xml"   : "xml",
+        }
         #@-node:ekr.20031218072017.368:<< define global data structures >> app
         #@nl
     #@-node:ekr.20031218072017.1416:app.__init__
