@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.477886977887">
-	<global_window_position top="83" left="243" height="794" width="864"/>
+	<global_window_position top="83" left="243" height="774" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -83,7 +83,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20070926132045"><vh>Buttons</vh>
 <v t="ekr.20070926082407"><vh>@buttons</vh>
 <v t="ekr.20070926082256.1"><vh>@@button Beautify</vh></v>
@@ -346,7 +346,7 @@
 <v t="ekr.20060804095015"><vh>@string open_flash_brackets = ([{</vh></v>
 <v t="ekr.20060926161207.2" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 </v>
-<v t="ekr.20051007200824" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
+<v t="ekr.20051007200824" a="E" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
 <v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
 <v t="ekr.20051007200824.1" annotate="7d71002e"><vh>About shortcut specifiers</vh></v>
 <v t="ekr.20060116090646"><vh>Reference for function keys</vh></v>
@@ -550,14 +550,14 @@
 <v t="ekr.20060925060533.4"><vh>@shortcuts Text operations</vh></v>
 </v>
 </v>
-<v t="ekr.20060110141538.1" annotate="7d71002e"><vh>@keys No bindings</vh>
+<v t="ekr.20060110141538.1" a="E" annotate="7d71002e"><vh>@keys No bindings</vh>
 <v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
-<v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: F-M</vh></v>
+<v t="ekr.20060112093227.1" a="TV"><vh>@shortcuts No bindings: F-M</vh></v>
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
 </v>
 <v t="ekr.20070925144552"><vh>Menus</vh>
-<v t="ekr.20070925144534"><vh>@menus</vh>
+<v t="ekr.20070925144534" a="E"><vh>@menus</vh>
 <v t="ekr.20070925144534.1"><vh>@menu &amp;File</vh>
 <v t="ekr.20070925144534.2"><vh>@item *&amp;new</vh></v>
 <v t="ekr.20070925144534.3"><vh>@item open-outline</vh></v>
@@ -750,6 +750,7 @@
 <v t="ekr.20070925144534.166"><vh>@item *&amp;unmark-all</vh></v>
 </v>
 <v t="ekr.20070925144534.167"><vh>@menu &amp;Go To...</vh>
+<v t="ekr.20071213190345"><vh>@item find-next-clone</vh></v>
 <v t="ekr.20070925144534.168"><vh>@item goto-first-node</vh></v>
 <v t="ekr.20070925144534.169"><vh>@item goto-first-visible-node</vh></v>
 <v t="ekr.20070925144534.170"><vh>@item goto-first-sibling</vh></v>
@@ -775,7 +776,7 @@
 </v>
 </v>
 <v t="ekr.20070925144534.190"><vh>@menu &amp;Plugins</vh></v>
-<v t="ekr.20070925144534.191"><vh>@menu &amp;Cmds</vh>
+<v t="ekr.20070925144534.191" a="E"><vh>@menu &amp;Cmds</vh>
 <v t="ekr.20070925144534.192"><vh>@menu &amp;Abbrev...</vh>
 <v t="ekr.20070925144534.193"><vh>@item abbre&amp;v-mode</vh></v>
 <v t="ekr.20070925144534.194"><vh>@item -</vh></v>
@@ -992,6 +993,7 @@
 <v t="ekr.20070925144534.377"><vh>@item toggle-find-&amp;reverse-option</vh></v>
 <v t="ekr.20070925144534.378"><vh>@item toggle-find-&amp;word-option</vh></v>
 <v t="ekr.20070925144534.379"><vh>@item toggle-find-wrap-&amp;around-option</vh></v>
+<v t="ekr.20071213190345.1"><vh>@item toggle-s&amp;parce-move</vh></v>
 </v>
 <v t="ekr.20071004121248"><vh>@menu &amp;Yank And Kill</vh>
 <v t="ekr.20071004121328"><vh>@item kill-&amp;buffer</vh></v>
@@ -4010,6 +4012,7 @@ fill-region                         = None
 fill-region-as-paragraph            = None
 find-character                      = None
 find-character-extend-selection     = None
+find-next-clone                     = None
 change                              = None
 change-all                          = None
 change-then-find                    = None
@@ -4299,6 +4302,7 @@ toggle-mini-buffer                  = None
     # It **is** possible to use &lt;alt-x&gt;toggle-mini-buffer&lt;return&gt; even if the mini-buffer isn't visible!
     # This had better be defined if you intend ever to hide the minibuffer.
     # To avoid confusion, it should be something unlikely to be typed by accident.
+toggle-sparce-move                  = None
 toggle-split-direction              = None
 transpose-chars                     = None
 transpose-lines                     = None
@@ -8323,7 +8327,7 @@ button_text_font_weight = bold
 <t tx="ekr.20070925144534.359"></t>
 <t tx="ekr.20070925144534.360"></t>
 <t tx="ekr.20070925144534.361"></t>
-<t tx="ekr.20070925144534.362"></t>
+<t tx="ekr.20070925144534.362"># accel: a,b,c,d,e,f,h,i,m,p,r,s,t,u,v,w,x</t>
 <t tx="ekr.20070925144534.363"></t>
 <t tx="ekr.20070925144534.364"></t>
 <t tx="ekr.20070925144534.365"></t>
@@ -8534,5 +8538,7 @@ rst3_show_headline_prefix =    @rst-head</t>
 <t tx="ekr.20071213062019.13"></t>
 <t tx="ekr.20071213062019.14"></t>
 <t tx="ekr.20071213062019.15"></t>
+<t tx="ekr.20071213190345"></t>
+<t tx="ekr.20071213190345.1"></t>
 </tnodes>
 </leo_file>
