@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.477886977887">
-	<global_window_position top="83" left="243" height="774" width="864"/>
+	<global_window_position top="83" left="243" height="754" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -23,9 +23,9 @@
 </v>
 </v>
 </v>
-<v t="ekr.20041119035137" str_leo_pos="3,10"><vh>About this file</vh>
+<v t="ekr.20041119035137" a="E" str_leo_pos="3,10"><vh>About this file</vh>
 <v t="ekr.20041122163623"><vh>Note about canonicalized names</vh></v>
-<v t="ekr.20041119035704"><vh> Basic setting nodes: @type-name setting-name = value</vh>
+<v t="ekr.20041119035704" a="E"><vh> Basic setting nodes: @type-name setting-name = value</vh>
 <v t="ekr.20041119042929"><vh>@bool</vh></v>
 <v t="ekr.20041119042929.1"><vh>@color</vh></v>
 <v t="ekr.20041119044139"><vh>@directory</vh></v>
@@ -328,6 +328,9 @@
 <v t="ekr.20060702100257"><vh>@font menu text font</vh></v>
 <v t="ekr.20041119051246.4"><vh>@font outline font</vh></v>
 </v>
+<v t="ekr.20071214132254" a="E"><vh>Import options</vh>
+<v t="ekr.20071214132254.1" a="TV"><vh>@data import_xml_tags</vh></v>
+</v>
 <v t="ekr.20060122105527.3"><vh>Keyboard and minibuffer options</vh>
 <v t="ekr.20060215094146"><vh>@@bool ignore_caps_lock = True</vh></v>
 <v t="ekr.20060216170801"><vh>@bool enable_calltips = False</vh></v>
@@ -346,7 +349,7 @@
 <v t="ekr.20060804095015"><vh>@string open_flash_brackets = ([{</vh></v>
 <v t="ekr.20060926161207.2" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 </v>
-<v t="ekr.20051007200824" a="E" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
+<v t="ekr.20051007200824" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
 <v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
 <v t="ekr.20051007200824.1" annotate="7d71002e"><vh>About shortcut specifiers</vh></v>
 <v t="ekr.20060116090646"><vh>Reference for function keys</vh></v>
@@ -550,9 +553,9 @@
 <v t="ekr.20060925060533.4"><vh>@shortcuts Text operations</vh></v>
 </v>
 </v>
-<v t="ekr.20060110141538.1" a="E" annotate="7d71002e"><vh>@keys No bindings</vh>
+<v t="ekr.20060110141538.1" annotate="7d71002e"><vh>@keys No bindings</vh>
 <v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
-<v t="ekr.20060112093227.1" a="TV"><vh>@shortcuts No bindings: F-M</vh></v>
+<v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: F-M</vh></v>
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
 </v>
@@ -8540,5 +8543,12 @@ rst3_show_headline_prefix =    @rst-head</t>
 <t tx="ekr.20071213062019.15"></t>
 <t tx="ekr.20071213190345"></t>
 <t tx="ekr.20071213190345.1"></t>
+<t tx="ekr.20071214132254"></t>
+<t tx="ekr.20071214132254.1"># xml tags, one per line.
+
+html
+body
+head
+div</t>
 </tnodes>
 </leo_file>

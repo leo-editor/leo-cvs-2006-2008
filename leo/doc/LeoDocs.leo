@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="14" left="340" height="772" width="892"/>
+	<global_window_position top="14" left="340" height="752" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -172,7 +172,7 @@
 <v t="ekr.20050906105946"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.2" a="TV"><vh>Chapter 1: Installing Leo</vh>
+<v t="ekr.20050831195331.2"><vh>Chapter 1: Installing Leo</vh>
 <v t="edream.110203163054.48"><vh>@rst html\install.html</vh>
 <v t="ekr.20050901110110"><vh>@rst-no-head links</vh></v>
 <v t="edream.110203163054.49"><vh>System requirements</vh></v>
@@ -404,14 +404,14 @@
 <v t="ekr.20050901102400.3"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="EKR.20040524104904.211"><vh>Chapter 8: Customizing Leo</vh>
-<v t="ekr.20050901101608.4"><vh>@rst html\customizing.html</vh>
+<v t="EKR.20040524104904.211" a="E"><vh>Chapter 8: Customizing Leo</vh>
+<v t="ekr.20050901101608.4" a="E"><vh>@rst html\customizing.html</vh>
 <v t="ekr.20050901102055"><vh>@rst-no-head links</vh></v>
-<v t="EKR.20040524104904.140"><vh>Specifying settings</vh>
+<v t="EKR.20040524104904.140" a="E"><vh>Specifying settings</vh>
 <v t="ekr.20070317043727"><vh>Organizer nodes</vh></v>
 <v t="ekr.20070317043727.1"><vh>@ignore nodes</vh></v>
 <v t="ekr.20070317043727.2"><vh>Simple settings nodes</vh></v>
-<v t="ekr.20070317043727.3"><vh>Complex settings nodes</vh></v>
+<v t="ekr.20070317043727.3" a="TV"><vh>Complex settings nodes</vh></v>
 </v>
 <v t="ekr.20060105214753"><vh>Input modes</vh></v>
 <v t="ekr.20050306090601"><vh>Adding extensible attributes to nodes and .leo files</vh></v>
@@ -4158,9 +4158,6 @@ example, any setting specified in an ``@settings`` tree in the file being loaded
 overrides any setting seen in any ``leoSettings.leo`` file.
 
 The following sections describe the kinds of nodes in ``@settings`` trees.
-
-
-
 </t>
 <t tx="EKR.20040524104904.143"></t>
 <t tx="EKR.20040524104904.144">-   The ``Check Outline`` command checks the outline for consistency.
@@ -30280,6 +30277,11 @@ The actual settings are specified in the body text.  At present, there are seven
   **New in Leo 4.4.4**: All @buttons tree in a settings file defines global buttons that
   are created in the icon area of all .leo files.
   You define @button nodes in the @buttons tree as usual.
+  
+- ``@data``
+
+  **New in Leo 4.4.5**: The body text contains a list of strings, one per line.
+  Lines starting with '#' are ignored.
     
 - ``@enabled-plugins``
 
