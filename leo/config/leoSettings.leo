@@ -23,9 +23,9 @@
 </v>
 </v>
 </v>
-<v t="ekr.20041119035137" a="E" str_leo_pos="3,10"><vh>About this file</vh>
+<v t="ekr.20041119035137" str_leo_pos="3,10"><vh>About this file</vh>
 <v t="ekr.20041122163623"><vh>Note about canonicalized names</vh></v>
-<v t="ekr.20041119035704" a="E"><vh> Basic setting nodes: @type-name setting-name = value</vh>
+<v t="ekr.20041119035704"><vh> Basic setting nodes: @type-name setting-name = value</vh>
 <v t="ekr.20041119042929"><vh>@bool</vh></v>
 <v t="ekr.20041119042929.1"><vh>@color</vh></v>
 <v t="ekr.20041119044139"><vh>@directory</vh></v>
@@ -83,7 +83,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20070926132045"><vh>Buttons</vh>
 <v t="ekr.20070926082407"><vh>@buttons</vh>
 <v t="ekr.20070926082256.1"><vh>@@button Beautify</vh></v>
@@ -328,8 +328,8 @@
 <v t="ekr.20060702100257"><vh>@font menu text font</vh></v>
 <v t="ekr.20041119051246.4"><vh>@font outline font</vh></v>
 </v>
-<v t="ekr.20071214132254" a="E"><vh>Import options</vh>
-<v t="ekr.20071214132254.1" a="TV"><vh>@data import_xml_tags</vh></v>
+<v t="ekr.20071214132254"><vh>Import options</vh>
+<v t="ekr.20071214132254.1"><vh>@data import_xml_tags</vh></v>
 </v>
 <v t="ekr.20060122105527.3"><vh>Keyboard and minibuffer options</vh>
 <v t="ekr.20060215094146"><vh>@@bool ignore_caps_lock = True</vh></v>
@@ -560,7 +560,7 @@
 </v>
 </v>
 <v t="ekr.20070925144552"><vh>Menus</vh>
-<v t="ekr.20070925144534" a="E"><vh>@menus</vh>
+<v t="ekr.20070925144534"><vh>@menus</vh>
 <v t="ekr.20070925144534.1"><vh>@menu &amp;File</vh>
 <v t="ekr.20070925144534.2"><vh>@item *&amp;new</vh></v>
 <v t="ekr.20070925144534.3"><vh>@item open-outline</vh></v>
@@ -779,7 +779,7 @@
 </v>
 </v>
 <v t="ekr.20070925144534.190"><vh>@menu &amp;Plugins</vh></v>
-<v t="ekr.20070925144534.191" a="E"><vh>@menu &amp;Cmds</vh>
+<v t="ekr.20070925144534.191"><vh>@menu &amp;Cmds</vh>
 <v t="ekr.20070925144534.192"><vh>@menu &amp;Abbrev...</vh>
 <v t="ekr.20070925144534.193"><vh>@item abbre&amp;v-mode</vh></v>
 <v t="ekr.20070925144534.194"><vh>@item -</vh></v>

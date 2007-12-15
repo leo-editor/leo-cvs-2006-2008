@@ -2956,6 +2956,53 @@ The last char was not colored.
 <tag />
 #@nonl
 #@-node:ekr.20071214094952:fixed colorizer bug
+#@+node:ekr.20071214150627:Fixed clone focus bug
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4676037
+
+The fix was to insert a missing begin/endUpdate.
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.2916:goToNextClone
+def goToNextClone (self,event=None):
+
+    '''Select the next node that is a clone of the selected node.'''
+
+    c = self ; cc = c.chapterController ; p = c.currentPosition()
+    if not p: return
+    if not p.isCloned():
+        g.es('not a clone: %s' % (p.headString()),color='blue')
+        return
+
+    t = p.v.t
+    p.moveToThreadNext()
+    wrapped = False
+    while 1:
+        if p and p.v.t == t:
+            break
+        elif p:
+            p.moveToThreadNext()
+        elif wrapped:
+            break
+        else:
+            wrapped = True
+            p = c.rootPosition()
+
+    if not p: g.es("done",color="blue")
+
+    c.beginUpdate()
+    try:
+        if cc:
+            name = cc.findChapterNameForPosition(p)
+            cc.selectChapterByName(name)
+            c.frame.tree.expandAllAncestors(p)
+
+        c.selectPosition(p)
+    finally:
+        c.endUpdate() 
+#@-node:ekr.20031218072017.2916:goToNextClone
+#@-node:ekr.20071214150627:Fixed clone focus bug
 #@-node:ekr.20071211113202.1:Bugs fixed
 #@+node:ekr.20071211113202.2:New features
 #@+node:ekr.20071210054816:Applied Terry Brown's config patch
