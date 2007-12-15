@@ -963,7 +963,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20031218072017.1974:destroySelf (tkFrame)
     #@-node:ekr.20031218072017.3964:Destroying the tkFrame
     #@-node:ekr.20031218072017.3941: Birth & Death (tkFrame)
-    #@+node:ekr.20041223104933:class tkStatusLineClass
+    #@+node:ekr.20041223104933:class tkStatusLineClass (tkFrame)
     class tkStatusLineClass:
 
         '''A class representing the status line.'''
@@ -1086,6 +1086,15 @@ class leoTkinterFrame (leoFrame.leoFrame):
 
             w.configure(state="disabled")
         #@-node:ekr.20031218072017.3963:put (leoTkinterFrame:statusLineClass)
+        #@+node:ekr.20071215114822:setBindings (tkStatusLine)
+        def setBindings (self):
+
+            k = self.c.keyHandler ; w = self.textWidget
+
+            w.bind('<Key>',k.masterKeyHandler)
+
+            k.completeAllBindingsForWidget(w)
+        #@-node:ekr.20071215114822:setBindings (tkStatusLine)
         #@+node:ekr.20041223111916.1:unpack & hide
         def unpack (self):
 
@@ -1117,7 +1126,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
             self.lastCol = col
         #@-node:ekr.20031218072017.1733:update (statusLine)
         #@-others
-    #@-node:ekr.20041223104933:class tkStatusLineClass
+    #@-node:ekr.20041223104933:class tkStatusLineClass (tkFrame)
     #@+node:ekr.20041223102225:class tkIconBarClass
     class tkIconBarClass:
 

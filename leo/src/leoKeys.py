@@ -2031,6 +2031,7 @@ class keyHandlerClass:
         k.initAbbrev()
         c.frame.body.createBindings()
         c.frame.log.setTabBindings('Log')
+        if c.frame.statusLine: c.frame.statusLine.setBindings()
         c.frame.tree.setBindings()
         c.frame.setMinibufferBindings()
         k.completeAllBindings()
