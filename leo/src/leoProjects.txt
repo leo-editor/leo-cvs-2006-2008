@@ -1709,7 +1709,7 @@ def changeAll(self):
             s = w.getAllText()
             i,j = g.getLine(s,pos1)
             line = s[i:j]
-            self.printLine(line,allFlag=True)
+            # self.printLine(line,allFlag=True)
         p = c.currentPosition()
         u.afterChangeGroup(p,undoType,reportFlag=True)
         g.es("changed: %d instances" % (count))
@@ -3003,6 +3003,8 @@ def goToNextClone (self,event=None):
         c.endUpdate() 
 #@-node:ekr.20031218072017.2916:goToNextClone
 #@-node:ekr.20071214150627:Fixed clone focus bug
+#@+node:ekr.20071215160319:Removed call to printLine in change-all logic
+#@-node:ekr.20071215160319:Removed call to printLine in change-all logic
 #@-node:ekr.20071211113202.1:Bugs fixed
 #@+node:ekr.20071211113202.2:New features
 #@+node:ekr.20071210054816:Applied Terry Brown's config patch
