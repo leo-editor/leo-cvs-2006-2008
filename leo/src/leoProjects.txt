@@ -3509,6 +3509,19 @@ def skipToMatchingTag (self,s,i,tag):
 #@-node:ekr.20071214072924.4:startsHelper & helpers
 #@-node:ekr.20071214072145.1:class xmlScanner
 #@-node:ekr.20071214061555:Added @auto xml script
+#@+node:ekr.20071215114822.1:Added text bindings to status area
+# This fixes a focus problem.
+#@nonl
+#@+node:ekr.20071215114822:setBindings (tkStatusLine)
+def setBindings (self):
+
+    k = self.c.keyHandler ; w = self.textWidget
+
+    w.bind('<Key>',k.masterKeyHandler)
+
+    k.completeAllBindingsForWidget(w)
+#@-node:ekr.20071215114822:setBindings (tkStatusLine)
+#@-node:ekr.20071215114822.1:Added text bindings to status area
 #@-node:ekr.20071211113202.2:New features
 #@-node:ekr.20071211113202:4.4.6
 #@-all

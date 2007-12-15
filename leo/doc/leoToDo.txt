@@ -37,10 +37,78 @@ opening slash is not recognised as starting a regular expression literal in such
 a context. As a workaround, one may enclose the regular expression literal in p.
 #@nonl
 #@-node:ekr.20071211092214:Javascript spec
+#@+node:ekr.20071027111225.2:class javaScriptScanner (not ready yet)
+# The syntax for patterns causes all kinds of problems...
+
+class javaScriptScanner (baseScannerClass):
+
+    @others
+#@+node:ekr.20071027111225.3:javaScriptScanner.__init__
+def __init__ (self,importCommands,atAuto):
+
+    # Init the base class.
+    baseScannerClass.__init__(self,importCommands,atAuto=atAuto,language='java')
+        # The langauge is used to set comment delims.
+
+    # Set the parser delims.
+    self.blockCommentDelim1 = '/*'
+    self.blockCommentDelim2 = '*/'
+    self.blockDelim1 = '{'
+    self.blockDelim2 = '}'
+    self.hasClasses = False
+    self.hasFunctions = True
+    self.lineCommentDelim = '//'
+    self.lineCommentDelim2 = None
+    self.outerBlockDelim1 = None # For now, ignore outer blocks.
+    self.outerBlockDelim2 = None
+    self.classTags = []
+    self.functionTags = ['function']
+    self.sigFailTokens = [';',] # ','=',] # Just like Java.
+#@-node:ekr.20071027111225.3:javaScriptScanner.__init__
+#@+node:ekr.20071102150937:startsString
+def startsString(self,s,i):
+
+    if g.match(s,i,'"') or g.match(s,i,"'"):
+        # Count the number of preceding backslashes:
+        n = 0 ; j = i-1
+        while j >= 0 and s[j] == '\\':
+            n += 1
+            j -= 1
+        return (n % 2) == 0
+    # elif g.match(s,i,'/'):
+        # return i == 0 or s[i-1] != '/'
+    else:
+        return False
+#@-node:ekr.20071102150937:startsString
+#@+node:ekr.20071102161115:skipString
+# Not ready: '/' is also the division operator!
+
+
+# def skipString (self,s,i):
+
+    # # Returns len(s) on unterminated string.
+    # if s[i] in ('"',"'"):
+        # return g.skip_string(s,i,verbose=False)
+    # else:
+        # # Match a pattern.
+        # delim = '/'
+        # g.pdb()
+        # assert(s[i] == delim)
+        # i += 1
+        # n = len(s)
+        # while i < n:
+            # if s[i] == delim and s[i-1] != '\\':
+                # return i + 1
+            # else:
+                # i += 1
+        # return i
+#@nonl
+#@-node:ekr.20071102161115:skipString
+#@-node:ekr.20071027111225.2:class javaScriptScanner (not ready yet)
 #@-node:ekr.20071027121956:Fix @auto javascript
 #@-node:ekr.20071211143430:4.4.6 bugs & easy improvements
 #@+node:ekr.20071113093057:4.5 cleanups, vim bindings & readline
-#@+node:ekr.20071211091037.1:Code cleanup 5
+#@+node:ekr.20071211091037.1:Code cleanup 6
 #@+node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
 #@-node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
 #@+node:ekr.20071031113657:Always use sax parser to read .leo files
@@ -61,7 +129,76 @@ See createMenusFromTables.
 - Should be commands to show the marks/recent dialogs.
 #@nonl
 #@-node:ekr.20070613103409:Improve marks/recent buttons
-#@-node:ekr.20071211091037.1:Code cleanup 5
+#@+node:ekr.20071215101531:Reorg drawing code
+@nocolor
+
+I am considering a reorg for Leo 4.5 to eliminate all begin/endUpdate pairs. Commands would typically *request* a redraw, and the request would be honored after the command finishes. 
+
+I tried something like this before, and it did not turn out well. However, yesterday I realized that I could experiment by having endUpdate do the request. This avoid massive code changes until I am convinced everything will work. 
+
+This is a tricky area. In some cases, notably the find commands, there must be a way to force an immediate redraw, i.e., before the command completes. 
+
+Similarly, I plan to revisit the tricky areas of node selection and focus selection. Again, one might naively believe that these can be handled after commands finish, but there are enough exceptions to make this 'interesting'.
+
+@color
+#@nonl
+#@+node:ekr.20071215114036:Notes
+@color
+
+@ notes:
+
+- Calls to request_x emphasize that the action is not to be taken immediately.
+- Calls to redraw, set_focus and setCurrentPosition emphasize that the action will happen eventually.
+- Calls to actual_x are for special situations.
+@c
+
+Add c ivars: requested_draw, requested_position, requested_focus.
+
+c methods:
+
+def update (self):
+    '''Honor all requests for drawing, focus and position.'''
+    c = self
+    if c.requested_position(): # First.
+        c.actual_selectPosition(c.requested_positiion)
+        c.requested_position = None
+    if c.requested_draw: # Second.
+        c.actual_draw()
+        c.requested_draw = False
+    if c.requested_focus: # Third.
+        c.actual_set_focus()
+        c.requested_focus = None
+
+def request_draw (self,flag = True):
+    self.requested_draw = flag
+draw = redraw = request_redraw
+
+def begin_update(self):
+    pass
+end_update = request_redraw
+
+def actual_draw (self):
+    << do the actual redraw >>
+redraw_now = actual_draw
+
+def request_currentPosition (self,p):
+    self.requested_draw = p.copy()
+setCurrentPosition = request_currentPosition
+
+def actual_setCurrentPosition (self,p):
+    << select position p >>
+
+def request_focus (self,w):
+    self.requested_focus = w
+set_focus = request_focus
+
+def actual_set_focus (self,w):
+    << set the focus to w >>
+set_focus_now = actual_set_focus
+#@nonl
+#@-node:ekr.20071215114036:Notes
+#@-node:ekr.20071215101531:Reorg drawing code
+#@-node:ekr.20071211091037.1:Code cleanup 6
 #@+node:ekr.20071211142600.1:Important 4
 #@+node:ekr.20071211142600.2:Config stuff
 #@+node:ekr.20071211142600.3:Clean up config mess
