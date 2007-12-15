@@ -2416,9 +2416,11 @@ class baseScannerClass:
 
         self.error('no block')
         if 1:
+            print '** no block **'
             i,j = g.getLine(s,start)
-            g.trace(s[max(0,i-20):i+20])
-        if trace: g.trace('** no block')
+            g.trace(i,s[i:j])
+        else:
+            if trace: g.trace('** no block')
         return start
     #@-node:ekr.20070707073859:skipBlock
     #@+node:ekr.20070712091019:skipCodeBlock
@@ -3063,33 +3065,37 @@ class javaScriptScanner (baseScannerClass):
                 n += 1
                 j -= 1
             return (n % 2) == 0
-        # elif g.match(s,i,'/'):
-            # return i == 0 or s[i-1] != '/'
+        elif g.match(s,i,'//'): ##  or g.match(s,i,'/\\'):
+            # Neither of these are valid in regexp literals.
+            return False
+        elif g.match(s,i,'/'):
+            # could be a division operator or regexp literal.
+            while i >= 0 and s[i-1] in ' \t\n':
+                i -= 1
+            if i == 0: return True
+            return s[i-1] in (',([{=')
         else:
             return False
     #@-node:ekr.20071102150937:startsString
     #@+node:ekr.20071102161115:skipString
-    # Not ready: '/' is also the division operator!
+    def skipString (self,s,i):
 
-
-    # def skipString (self,s,i):
-
-        # # Returns len(s) on unterminated string.
-        # if s[i] in ('"',"'"):
-            # return g.skip_string(s,i,verbose=False)
-        # else:
-            # # Match a pattern.
-            # delim = '/'
-            # g.pdb()
-            # assert(s[i] == delim)
-            # i += 1
-            # n = len(s)
-            # while i < n:
-                # if s[i] == delim and s[i-1] != '\\':
-                    # return i + 1
-                # else:
-                    # i += 1
-            # return i
+        # Returns len(s) on unterminated string.
+        if s[i] in ('"',"'"):
+            return g.skip_string(s,i,verbose=False)
+        else:
+            # Match a regexp pattern.
+            delim = '/'
+            assert(s[i] == delim)
+            i += 1
+            n = len(s)
+            while i < n:
+                if s[i] == delim and s[i-1] != '\\':
+                    # This ignores flags, but does that matter?
+                    return i + 1
+                else:
+                    i += 1
+            return i
     #@nonl
     #@-node:ekr.20071102161115:skipString
     #@-others
