@@ -515,7 +515,7 @@ class leoFind:
                 s = w.getAllText()
                 i,j = g.getLine(s,pos1)
                 line = s[i:j]
-                self.printLine(line,allFlag=True)
+                # self.printLine(line,allFlag=True)
             p = c.currentPosition()
             u.afterChangeGroup(p,undoType,reportFlag=True)
             g.es("changed: %d instances" % (count))
