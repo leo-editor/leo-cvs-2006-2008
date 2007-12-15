@@ -5428,12 +5428,16 @@ class baseCommands:
 
         if not p: g.es("done",color="blue")
 
-        if cc:
-            name = cc.findChapterNameForPosition(p)
-            cc.selectChapterByName(name)
-            c.frame.tree.expandAllAncestors(p)
+        c.beginUpdate()
+        try:
+            if cc:
+                name = cc.findChapterNameForPosition(p)
+                cc.selectChapterByName(name)
+                c.frame.tree.expandAllAncestors(p)
 
-        c.selectPosition(p)
+            c.selectPosition(p)
+        finally:
+            c.endUpdate() 
     #@-node:ekr.20031218072017.2916:goToNextClone
     #@+node:ekr.20071213123942:findNextClone
     def findNextClone (self,event=None):
