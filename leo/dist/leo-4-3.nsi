@@ -302,26 +302,26 @@ Section "Leo" SEC01
   SetOutPath "$INSTDIR\extensions\Pmw"
   File "..\extensions\Pmw\__init__.py"
 
-  SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2"
-  File "..\extensions\Pmw\Pmw_1_2\__init__.py"
+  SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_3"
+  File "..\extensions\Pmw\Pmw_1_3\__init__.py"
 
-  SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\bin"
-  File "..\extensions\Pmw\Pmw_1_2\bin\*.*"
+  SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_3\bin"
+  File "..\extensions\Pmw\Pmw_1_3\bin\*.*"
 
-  SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\contrib"
-  File "..\extensions\Pmw\Pmw_1_2\contrib\*.*"
+  SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_3\contrib"
+  File "..\extensions\Pmw\Pmw_1_3\contrib\*.*"
 
-  SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\demos"
-  File "..\extensions\Pmw\Pmw_1_2\demos\*.*"
+  SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_3\demos"
+  File "..\extensions\Pmw\Pmw_1_3\demos\*.*"
 
-  SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\doc"
-  File "..\extensions\Pmw\Pmw_1_2\doc\*.*"
+  SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_3\doc"
+  File "..\extensions\Pmw\Pmw_1_3\doc\*.*"
 
-  SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\lib"
-  File "..\extensions\Pmw\Pmw_1_2\lib\*.*"
+  SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_3\lib"
+  File "..\extensions\Pmw\Pmw_1_3\lib\*.*"
 
-  SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\tests"
-  File "..\extensions\Pmw\Pmw_1_2\tests\*.*"
+  SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_3\tests"
+  File "..\extensions\Pmw\Pmw_1_3\tests\*.*"
   ;@nonl
   ;@-node:ekr.20050118122404:<< install extensions files >>
   ;@nl
@@ -648,14 +648,14 @@ Section Uninstall
 
   Delete "$INSTDIR\extensions\Pmw\__init__.p*"
 
-  Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\__init__.p*"
+  Delete "$INSTDIR\extensions\Pmw\Pmw_1_3\__init__.p*"
 
-  Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\bin\*.*"
-  Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\contrib\*.*"
-  Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\demos\*.*"
-  Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\doc\*.*"
-  Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\lib\*.*"
-  Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\tests\*.*"
+  Delete "$INSTDIR\extensions\Pmw\Pmw_1_3\bin\*.*"
+  Delete "$INSTDIR\extensions\Pmw\Pmw_1_3\contrib\*.*"
+  Delete "$INSTDIR\extensions\Pmw\Pmw_1_3\demos\*.*"
+  Delete "$INSTDIR\extensions\Pmw\Pmw_1_3\doc\*.*"
+  Delete "$INSTDIR\extensions\Pmw\Pmw_1_3\lib\*.*"
+  Delete "$INSTDIR\extensions\Pmw\Pmw_1_3\tests\*.*"
   ;@nonl
   ;@-node:ekr.20050118122740.1:<< uninstall extensions files >>
   ;@nl
@@ -763,13 +763,13 @@ Section Uninstall
   RMDir "$INSTDIR\doc"
 
   RMDir "$INSTDIR\extensions\Gato"
-  RMDir "$INSTDIR\extensions\Pmw\Pmw_1_2\bin"
-  RMDir "$INSTDIR\extensions\Pmw\Pmw_1_2\contrib"
-  RMDir "$INSTDIR\extensions\Pmw\Pmw_1_2\demos"
-  RMDir "$INSTDIR\extensions\Pmw\Pmw_1_2\doc"
-  RMDir "$INSTDIR\extensions\Pmw\Pmw_1_2\lib"
-  RMDir "$INSTDIR\extensions\Pmw\Pmw_1_2\tests"
-  RMDir "$INSTDIR\extensions\Pmw\Pmw_1_2"
+  RMDir "$INSTDIR\extensions\Pmw\Pmw_1_3\bin"
+  RMDir "$INSTDIR\extensions\Pmw\Pmw_1_3\contrib"
+  RMDir "$INSTDIR\extensions\Pmw\Pmw_1_3\demos"
+  RMDir "$INSTDIR\extensions\Pmw\Pmw_1_3\doc"
+  RMDir "$INSTDIR\extensions\Pmw\Pmw_1_3\lib"
+  RMDir "$INSTDIR\extensions\Pmw\Pmw_1_3\tests"
+  RMDir "$INSTDIR\extensions\Pmw\Pmw_1_3"
   RMDir "$INSTDIR\extensions\Pmw"
   RMDir "$INSTDIR\extensions"
 

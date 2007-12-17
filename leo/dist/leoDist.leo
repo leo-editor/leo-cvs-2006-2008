@@ -166,7 +166,7 @@
 <v t="ekr.20040701193853.5"><vh>variablesToIgnore</vh></v>
 </v>
 </v>
-<v t="ekr.20050118095021"><vh>Leo 4.x installer</vh>
+<v t="ekr.20050118095021" a="TV"><vh>Leo 4.x installer</vh>
 <v t="ekr.20050118103207"><vh>Keeping installer/uninstallers in synch</vh>
 <v t="ekr.20050118104149"><vh>config files</vh>
 <v t="ekr.20050118104149.1"><vh>&lt;&lt; install config files &gt;&gt;</vh></v>
@@ -217,7 +217,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846" a="TV"><vh>Distribution files</vh>
+<v t="EKR.20040519090846"><vh>Distribution files</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
@@ -2500,26 +2500,26 @@ File "..\extensions\subprocess.py"
 SetOutPath "$INSTDIR\extensions\Pmw"
 File "..\extensions\Pmw\__init__.py"
 
-SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2"
-File "..\extensions\Pmw\Pmw_1_2\__init__.py"
+SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_3"
+File "..\extensions\Pmw\Pmw_1_3\__init__.py"
 
-SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\bin"
-File "..\extensions\Pmw\Pmw_1_2\bin\*.*"
+SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_3\bin"
+File "..\extensions\Pmw\Pmw_1_3\bin\*.*"
 
-SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\contrib"
-File "..\extensions\Pmw\Pmw_1_2\contrib\*.*"
+SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_3\contrib"
+File "..\extensions\Pmw\Pmw_1_3\contrib\*.*"
 
-SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\demos"
-File "..\extensions\Pmw\Pmw_1_2\demos\*.*"
+SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_3\demos"
+File "..\extensions\Pmw\Pmw_1_3\demos\*.*"
 
-SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\doc"
-File "..\extensions\Pmw\Pmw_1_2\doc\*.*"
+SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_3\doc"
+File "..\extensions\Pmw\Pmw_1_3\doc\*.*"
 
-SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\lib"
-File "..\extensions\Pmw\Pmw_1_2\lib\*.*"
+SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_3\lib"
+File "..\extensions\Pmw\Pmw_1_3\lib\*.*"
 
-SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\tests"
-File "..\extensions\Pmw\Pmw_1_2\tests\*.*"</t>
+SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_3\tests"
+File "..\extensions\Pmw\Pmw_1_3\tests\*.*"</t>
 <t tx="ekr.20050118122404.1">; File "..\test\__init__.py"
 File "..\test\test.leo"
 File "..\test\unitTest.leo"
@@ -2542,14 +2542,14 @@ Delete "$INSTDIR\extensions\subprocess.p*"
 
 Delete "$INSTDIR\extensions\Pmw\__init__.p*"
 
-Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\__init__.p*"
+Delete "$INSTDIR\extensions\Pmw\Pmw_1_3\__init__.p*"
 
-Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\bin\*.*"
-Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\contrib\*.*"
-Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\demos\*.*"
-Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\doc\*.*"
-Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\lib\*.*"
-Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\tests\*.*"</t>
+Delete "$INSTDIR\extensions\Pmw\Pmw_1_3\bin\*.*"
+Delete "$INSTDIR\extensions\Pmw\Pmw_1_3\contrib\*.*"
+Delete "$INSTDIR\extensions\Pmw\Pmw_1_3\demos\*.*"
+Delete "$INSTDIR\extensions\Pmw\Pmw_1_3\doc\*.*"
+Delete "$INSTDIR\extensions\Pmw\Pmw_1_3\lib\*.*"
+Delete "$INSTDIR\extensions\Pmw\Pmw_1_3\tests\*.*"</t>
 <t tx="ekr.20050118122740.2"></t>
 <t tx="ekr.20050118122740.3">; Delete "$INSTDIR\test\__init__.py"
 Delete "$INSTDIR\test\test.leo"
