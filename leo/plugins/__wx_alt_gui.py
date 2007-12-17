@@ -1,7 +1,7 @@
-
 #@+leo-ver=4-thin
-#@+node:bob.20071211190555:@thin plugins\__wx_alt_gui.py
-#@@first
+#@+node:bob.20071211190555:@thin __wx_alt_gui.py
+#@@language python
+#@@tabwidth -4
 
 """A plugin to use wxWidgets as Leo's gui.
 
@@ -4802,7 +4802,7 @@ if wx:
             event.Skip()
 
         def onSize(self, event):
-            g.trace(myclass(self))
+            #g.trace(myclass(self))
             page = self.GetCurrentPage()
             if page:
                 page.SetSize(self.GetClientSize())
@@ -5086,7 +5086,7 @@ if wx:
         #@-node:bob.20070908081747.13:__init__
         #@+node:bob.20071212080244:onSize
         def onSize(self, event):
-            g.trace(myclass(self))
+            #g.trace(myclass(self))
             event.Skip()
         #@-node:bob.20071212080244:onSize
         #@-others
@@ -5571,7 +5571,7 @@ if wx:
         #@-node:bob.20070813163332.269:event handlers
         #@+node:bob.20070813163332.273:wxFrame dummy routines: (to do: minor)
         def after_idle(*args):
-            pass
+            g.trace(myclass())
 
         def bringToFront(self):
             pass
@@ -7136,6 +7136,11 @@ if wx:
 
             self.sizer = None
         #@-node:bob.20070813163332.361:__init__
+        #@+node:bob.20071217090205:setBindings
+        def setBindings(self, *args, **kw):
+            g.trace(myclass(self))
+        #@nonl
+        #@-node:bob.20071217090205:setBindings
         #@+node:bob.20070831060158.1:finishCreate
         def finishCreate(self, parentFrame):
 
@@ -9313,5 +9318,5 @@ if wx:
     #@-node:bob.20070813173446.12:class OutlineCanvas
     #@-node:bob.20070902164500.1:== TREE WIDGETS ==
     #@-others
-#@-node:bob.20071211190555:@thin plugins\__wx_alt_gui.py
+#@-node:bob.20071211190555:@thin __wx_alt_gui.py
 #@-leo
