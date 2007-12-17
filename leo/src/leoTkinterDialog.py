@@ -615,10 +615,8 @@ class  tkinterAskOkCancelString (leoTkinterDialog):
 
         ch = event.char.lower()
 
-        if ch in ('o','\n','\r'):
+        if ch in ('\n','\r'):
             self.okButton()
-        elif ch == 'c':
-            self.cancelButton()
 
         return "break"
     #@-node:ekr.20070122103505.4:tkinterAskOkCancelString.onKey
