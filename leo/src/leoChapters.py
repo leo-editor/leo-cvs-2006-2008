@@ -101,6 +101,8 @@ class chapterController:
         p = c.currentPosition() ; h = p.headString()
         fromChapter = cc.getSelectedChapter()
         toChapter = cc.getChapter(toChapterName)
+        if not toChapter:
+            return cc.error('no such chapter: %s' % toChapterName)
         if fromChapter.name == 'main' and h.startswith('@chapter'):
             return cc.error('can not clone @chapter node')
         # g.trace('from',fromChapter.name,'to',toChapter)
@@ -189,6 +191,8 @@ class chapterController:
         p = c.currentPosition() ; h = p.headString()
         fromChapter = cc.getSelectedChapter()
         toChapter = cc.getChapter(toChapterName)
+        if not toChapter:
+            return cc.error('no such chapter: %s' % toChapterName)
         if fromChapter.name == 'main' and h.startswith('@chapter'):
             return cc.error('can not copy @chapter node')
         # g.trace('from',fromChapter.name,'to',toChapter.name)
@@ -321,8 +325,7 @@ class chapterController:
         fromChapter = cc.getSelectedChapter()
         toChapter = cc.getChapter(toChapterName)
         if not toChapter:
-            cc.error('chapter "%s" does not exist' % toChapterName)
-            return
+            return cc.error('chapter "%s" does not exist' % toChapterName)
 
         if 1: # Defensive code: should never happen.
             if fromChapter.name == 'main' and p.headString().startswith('@chapter'):
