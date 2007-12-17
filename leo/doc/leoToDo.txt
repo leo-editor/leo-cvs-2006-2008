@@ -4,9 +4,11 @@
 #@+node:ekr.20071211093323:more screen shots on Leo's web site
 #@-node:ekr.20071211093323:more screen shots on Leo's web site
 #@+node:ekr.20071211143430:4.4.6 bugs & easy improvements
+For final: run pylint on all major files.
+#@nonl
 #@-node:ekr.20071211143430:4.4.6 bugs & easy improvements
 #@+node:ekr.20071113093057:4.5 cleanups, vim bindings & readline
-#@+node:ekr.20071211091037.1:Code cleanup 6
+#@+node:ekr.20071211091037.1:Code cleanup 7
 #@+node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
 #@-node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
 #@+node:ekr.20071031113657:Always use sax parser to read .leo files
@@ -96,7 +98,14 @@ set_focus_now = actual_set_focus
 #@nonl
 #@-node:ekr.20071215114036:Notes
 #@-node:ekr.20071215101531:Reorg drawing code
-#@-node:ekr.20071211091037.1:Code cleanup 6
+#@+node:ekr.20071217032247:Compile regexp's once in findNextMatch
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4677335
+
+The regexHelper method does compile regexp's before searching for them.  Alas, this method is called once per searched node, which greatly increases the compilation overhead.  Presumably it would be much better to compile the regexp once, say in findNextMatch.
+#@-node:ekr.20071217032247:Compile regexp's once in findNextMatch
+#@-node:ekr.20071211091037.1:Code cleanup 7
 #@+node:ekr.20071211142600.1:Important 4
 #@+node:ekr.20071211142600.2:Config stuff
 #@+node:ekr.20071211142600.3:Clean up config mess

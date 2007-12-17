@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.357142857143">
-	<global_window_position top="15" left="344" height="896" width="835"/>
+<globals body_outline_ratio="0.564732142857">
+	<global_window_position top="25" left="221" height="896" width="843"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -43,12 +43,12 @@
 <v t="ekr.20031218072017.329"><vh>@thin ../doc/leoNotes.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
-<v t="EKR.20040429143933"
-marks="ekr.20070909100252,"><vh>@thin leoProjects.txt</vh></v>
+<v t="EKR.20040429143933" a="E"
+marks="ekr.20071024101611,"
+expanded="ekr.20071211113202,ekr.20071211113202.1,"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.2"><vh>To do</vh>
-<v t="ekr.20040117181936"
-marks="ekr.20070927082205,"><vh>@thin ../doc/leoToDo.txt</vh></v>
+<v t="ekr.20040117181936" a="E"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
 <v t="ekr.20031218072017.2406" a="TV"><vh>Code</vh>
@@ -65,7 +65,8 @@ marks="ekr.20070909100252,"><vh>@thin leoAtFile.py</vh></v>
 <v t="ekr.20041117062700"><vh>@thin leoConfig.py</vh></v>
 <v t="ekr.20050710142719"><vh>@thin leoEditCommands.py</vh></v>
 <v t="ekr.20031218072017.3018"><vh>@thin leoFileCommands.py</vh></v>
-<v t="ekr.20031218072017.3093"><vh>@thin leoGlobals.py</vh></v>
+<v t="ekr.20031218072017.3093"
+marks="ekr.20071024101611,"><vh>@thin leoGlobals.py</vh></v>
 <v t="ekr.20031218072017.3206"><vh>@thin leoImport.py</vh></v>
 <v t="ekr.20031218072017.3320"><vh>@thin leoNodes.py</vh></v>
 <v t="ekr.20031218072017.3439"><vh>@thin leoPlugins.py</vh></v>
@@ -99,18 +100,7 @@ marks="ekr.20060211144330.1,"><vh>@thin leoTkinterMenu.py</vh></v>
 </vnodes>
 <tnodes>
 <t tx="EKR.20040430162943"></t>
-<t tx="EKR.20040519090151.2">@nocolor
-@
-
-**Summary of to-do items**
-
-Leo 4.4.6: Last major projects:
-
-- Sax-based parsing.
-- Better vim bindings.
-- Translation tools.
-
-@color</t>
+<t tx="EKR.20040519090151.2"></t>
 <t tx="EKR.20040519090151.3"></t>
 <t tx="ekr.20031218072017.2406">@tabwidth -4
 @pagewidth 80
@@ -136,7 +126,7 @@ z:  a local temp.</t>
 <t tx="ekr.20031218072017.3821"></t>
 <t tx="ekr.20040629121554.1">def getSignOnLine (self):
     c = self
-    return "Leo 4.4.5 beta 2, build %s, December 7, 2007" % c.getBuildNumber()
+    return "Leo 4.4.6 beta 1, build %s, December 17, 2007" % c.getBuildNumber()
 </t>
 <t tx="ekr.20050721093241">@nocolor
 

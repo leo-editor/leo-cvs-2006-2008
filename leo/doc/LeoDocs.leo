@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.5">
-	<global_window_position top="14" left="340" height="752" width="892"/>
+<globals body_outline_ratio="0.628989361702">
+	<global_window_position top="14" left="340" height="732" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -404,14 +404,14 @@
 <v t="ekr.20050901102400.3"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="EKR.20040524104904.211" a="E"><vh>Chapter 8: Customizing Leo</vh>
-<v t="ekr.20050901101608.4" a="E"><vh>@rst html\customizing.html</vh>
+<v t="EKR.20040524104904.211"><vh>Chapter 8: Customizing Leo</vh>
+<v t="ekr.20050901101608.4"><vh>@rst html\customizing.html</vh>
 <v t="ekr.20050901102055"><vh>@rst-no-head links</vh></v>
-<v t="EKR.20040524104904.140" a="E"><vh>Specifying settings</vh>
+<v t="EKR.20040524104904.140"><vh>Specifying settings</vh>
 <v t="ekr.20070317043727"><vh>Organizer nodes</vh></v>
 <v t="ekr.20070317043727.1"><vh>@ignore nodes</vh></v>
 <v t="ekr.20070317043727.2"><vh>Simple settings nodes</vh></v>
-<v t="ekr.20070317043727.3" a="TV"><vh>Complex settings nodes</vh></v>
+<v t="ekr.20070317043727.3"><vh>Complex settings nodes</vh></v>
 </v>
 <v t="ekr.20060105214753"><vh>Input modes</vh></v>
 <v t="ekr.20050306090601"><vh>Adding extensible attributes to nodes and .leo files</vh></v>
@@ -774,6 +774,14 @@
 </v>
 </v>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
+<v t="ekr.20071217093444"><vh>What's New in Leo 4.4.6</vh>
+<v t="ekr.20071217093444.1"><vh>@rst html\new-4-4-6.html</vh>
+<v t="ekr.20071217093444.2"><vh>@rst-no-head links</vh></v>
+<v t="ekr.20071217093444.5"><vh>New commands</vh></v>
+<v t="ekr.20071217093444.6"><vh>New settings</vh></v>
+<v t="ekr.20071217093444.7"><vh>@rst-no-head end stuff</vh></v>
+</v>
+</v>
 <v t="ekr.20071116062917"><vh>What's New in Leo 4.4.5</vh>
 <v t="ekr.20071116062917.1"><vh>@rst html\new-4-4-5.html</vh>
 <v t="ekr.20071116062917.2"><vh>@rst-no-head links</vh></v>
@@ -834,7 +842,7 @@
 </v>
 </v>
 <v t="ekr.20060620094033.1"><vh>What's New in Leo 4.4.1 and 4.4.1.1</vh>
-<v t="ekr.20060620094645.310"><vh>@rst html\new-4-4-1.html</vh>
+<v t="ekr.20060620094645.310" a="E"><vh>@rst html\new-4-4-1.html</vh>
 <v t="ekr.20060621132547"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060620130636"><vh>New commands</vh></v>
 <v t="ekr.20060620095949.15"><vh>New features</vh></v>
@@ -1102,7 +1110,15 @@
 </v>
 </v>
 <v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
-<v t="ekr.20060620094033"><vh>What's New...</vh>
+<v t="ekr.20060620094033" a="T"><vh>What's New...</vh>
+<v t="ekr.20071217093444"><vh>What's New in Leo 4.4.6</vh>
+<v t="ekr.20071217093444.1"><vh>@rst html\new-4-4-6.html</vh>
+<v t="ekr.20071217093444.2"><vh>@rst-no-head links</vh></v>
+<v t="ekr.20071217093444.5"><vh>New commands</vh></v>
+<v t="ekr.20071217093444.6"><vh>New settings</vh></v>
+<v t="ekr.20071217093444.7"><vh>@rst-no-head end stuff</vh></v>
+</v>
+</v>
 <v t="ekr.20071116062917"><vh>What's New in Leo 4.4.5</vh>
 <v t="ekr.20071116062917.1"><vh>@rst html\new-4-4-5.html</vh>
 <v t="ekr.20071116062917.2"><vh>@rst-no-head links</vh></v>
@@ -1163,7 +1179,7 @@
 </v>
 </v>
 <v t="ekr.20060620094033.1"><vh>What's New in Leo 4.4.1 and 4.4.1.1</vh>
-<v t="ekr.20060620094645.310"><vh>@rst html\new-4-4-1.html</vh>
+<v t="ekr.20060620094645.310" a="E"><vh>@rst html\new-4-4-1.html</vh>
 <v t="ekr.20060621132547"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060620130636"><vh>New commands</vh></v>
 <v t="ekr.20060620095949.15"><vh>New features</vh></v>
@@ -3457,10 +3473,37 @@
 <v t="ekr.20071206093323.96"><vh>Fixed  focus problem with goto-next clone command</vh></v>
 </v>
 </v>
+<v t="ekr.20071211083251"><vh>Leo 4.4.5 final</vh></v>
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071211083251"><vh>Leo 4.4.5 final</vh></v>
+<v t="ekr.20071217092250" a="V"><vh>leo 4.4.6 b1</vh>
+<v t="ekr.20071217092203.1"><vh>Bugs fixed</vh>
+<v t="ekr.20071217092203.2"><vh>Fixed undo (dirty bit) problem)</vh></v>
+<v t="ekr.20071217092203.30"><vh>Fixed cursesGui  plugin</vh></v>
+<v t="ekr.20071217092203.31"><vh>Fixed script_io_to_body plugin</vh></v>
+<v t="ekr.20071217092203.45"><vh>Make Import to @file create @file nodes</vh></v>
+<v t="ekr.20071217092203.51"><vh>Fixed bug: rst3 plugin now finds default.css file correctly</vh></v>
+<v t="ekr.20071217092203.52"><vh>Fixed bug with clear-recent-files</vh></v>
+<v t="ekr.20071217092203.64"><vh>Fixed bug: replace didn't always start in the correct place</vh></v>
+<v t="ekr.20071217092203.127"><vh>fixed colorizer bug</vh></v>
+<v t="ekr.20071217092203.128"><vh>Fixed clone focus bug</vh></v>
+<v t="ekr.20071217092203.130"><vh>Removed call to printLine in change-all logic</vh></v>
+<v t="ekr.20071217092203.131"><vh>Fixed crash when copying or cloning to non-exisitent chapter</vh></v>
+<v t="ekr.20071217092203.161"><vh>Added text bindings to status area</vh></v>
+<v t="ekr.20071217092203.136"><vh>Repaired damaged minusnode.gif icon</vh></v>
+</v>
+<v t="ekr.20071217092203.137"><vh>New features</vh>
+<v t="ekr.20071217092203.138"><vh>Applied Terry Brown's config patch</vh></v>
+<v t="ekr.20071217092203.145"><vh>Applied plumloco's patch to plugins_menu.py</vh></v>
+<v t="ekr.20071217092203.146"><vh>Upgraded to Pmw 1.3</vh></v>
+<v t="ekr.20071217092203.147"><vh>Added find-next-clone command</vh></v>
+<v t="ekr.20071217092203.149"><vh>Added toggle-sparse-move command</vh></v>
+<v t="ekr.20071217092203.152"><vh>Added support for @data nodes in @settings trees</vh></v>
+<v t="ekr.20071217092203.154"><vh>Added @auto xml script</vh></v>
+<v t="ekr.20071217092203.163"><vh>Added @import scanners for javascript and xml files</vh></v>
+</v>
+</v>
 </v>
 </v>
 </vnodes>
@@ -11059,6 +11102,8 @@ Appendices_
 
 Glossary_
 
+`What's new in Leo 4.4.6`_
+
 `What's new in Leo 4.4.5`_
 
 `What's new in Leo 4.4.4`_
@@ -15557,6 +15602,7 @@ Just use ``@thin`` to create your `derived files`_.</t>
 .. _`Chapter 20\: Unit testing with Leo`:           unitTesting.html
 .. _`Appendices`:                                   appendices.html
 .. _`Glossary`:                                     glossary.html
+.. _`What's new in Leo 4.4.6`:                      new-4-4-6.html
 .. _`What's new in Leo 4.4.5`:                      new-4-4-5.html
 .. _`What's new in Leo 4.4.4`:                      new-4-4-4.html
 .. _`What's new in Leo 4.4.3`:                      new-4-4-3.html
@@ -18018,7 +18064,7 @@ Glossary
 	:target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: new-4-4-5.html
+    :target: new-4-4-6.html
 
 </t>
 <t tx="ekr.20050901071613">----------------------
@@ -33139,7 +33185,7 @@ The highlights of Leo 4.4.5:
 .. WARNING: image targets may not have upper case letters!
 
 .. |prev| image:: arrow_lt.gif
-	:target: glossary.html
+	:target: new-4-4-6.html
 
 .. |leo|  image:: leo.gif
 	:target: front.html
@@ -33402,5 +33448,133 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20071217092203.1"></t>
+<t tx="ekr.20071217092203.2">http://sourceforge.net/forum/message.php?msg_id=4668960
+
+It seems in derived files you can delete some text and save, causing the derived
+file to be written and all dirty flags cleared.  But then undo makes the text
+come back, as expected, but save only saves the outline, because the dirty flag
+wasn't set on the node in which the text was restored by undo.</t>
+<t tx="ekr.20071217092203.30"></t>
+<t tx="ekr.20071217092203.31">Added k.overrideCommand.</t>
+<t tx="ekr.20071217092203.45">http://sourceforge.net/forum/message.php?msg_id=4671771
+</t>
+<t tx="ekr.20071217092203.51">http://sourceforge.net/forum/message.php?msg_id=4667105</t>
+<t tx="ekr.20071217092203.52">The command now clears all .leoRecentFiles.txt files and write a message.</t>
+<t tx="ekr.20071217092203.64">This was a very long-standing bug: the most annoying in all of Leo.</t>
+<t tx="ekr.20071217092203.127">The last char was not colored in the following doc part:
+    
+@
+
+&lt;tag /&gt;</t>
+<t tx="ekr.20071217092203.128">http://sourceforge.net/forum/message.php?msg_id=4676037
+</t>
+<t tx="ekr.20071217092203.130">This prevents over-long traces.</t>
+<t tx="ekr.20071217092203.131"></t>
+<t tx="ekr.20071217092203.136"></t>
+<t tx="ekr.20071217092203.137"></t>
+<t tx="ekr.20071217092203.138">The patch attached against leoConfig.py (current CVS) adds a machine
+specific config file to the config files Leo loads.
+
+I synchronize files between multiple (3) machines. This means I can't
+use different myLeoSettings files on each.
+
+Tk fonts are screen dpi sensitive.  But (in Linux at least)
+Tk's attempts to switch a font you picked to something equivalent at a
+different dpi always result in a font that looks terrible.
+
+So every time I switch machines I edit ~/myLeoSettings.leo to move the
+font defs I picked for the current machine to the bottom of the body
+text for the appropriate settings node, and then restart Leo.
+
+This patch means I don't have to do that any more.  I'm sure there are
+other uses for it.  Python doesn't seem to have a generic machine name
+finding function, hence the sequence of alternatives.</t>
+<t tx="ekr.20071217092203.145">The version of plugins_menu.py at http://leo.zwiki.org/Plumloco separates out
+the gui dependent dialogs (the menus are already gui indepandant) and made them
+general purpose dialogs available to all plugins.
+
+I have also slightly enhanced the dialogs to provide user defined buttons. </t>
+<t tx="ekr.20071217092203.146"></t>
+<t tx="ekr.20071217092203.147">The finds the next cloned node, regardless of whether the presently selected node is a clone or not.</t>
+<t tx="ekr.20071217092203.149">The command toggles whether moving a node left collapses the outline.</t>
+<t tx="ekr.20071217092203.152"></t>
+<t tx="ekr.20071217092203.154">Use @data import_xml_tags setting to specify the xml tags that act as organizers.</t>
+<t tx="ekr.20071217092203.161">This fixes a focus problem.</t>
+<t tx="ekr.20071217092203.163">Javascript regexps that look like section references cause problems, but that can not be helped.</t>
+<t tx="ekr.20071217092250">Leo 4.4.6 beta 1                           December 17, 2007
+
+Leo 4.4.6 beta 1 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo 4.4.6 fixes several recently reported bugs, all minor.
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.6:
+----------------------------
+- Fixes all known bugs.
+- Added @auto importers for javascript and xml files.
+- Added find-next-clone and toggle-sparse-move commands.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20071217093444"></t>
+<t tx="ekr.20071217093444.1">@ @rst-options
+code_mode=False
+generate_rst=True
+http_server_support = False
+show_organizer_nodes=True
+show_headlines=True
+show_leo_directives=True
+stylesheet_path=..\doc
+write_intermediate_file = False
+verbose=True
+@c
+
+|prev| |leo| |next|
+
+##########################################
+What's New in Leo 4.4.6
+##########################################
+
+Leo 4.4.6 fixes all known bugs and adds a few new features.
+    
+.. contents::</t>
+<t tx="ekr.20071217093444.2">.. Links used in this document.
+
+.. _`leoBridge chapter`:    leoBridge.html
+.. _`debugging with Leo`:   debuggers.html
+
+
+.. WARNING: image targets may not have upper case letters!
+
+.. |prev| image:: arrow_lt.gif
+	:target: glossary.html
+
+.. |leo|  image:: leo.gif
+	:target: front.html
+
+.. |next| image:: arrow_rt.gif
+    :target: new-4-4-5.html
+</t>
+<t tx="ekr.20071217093444.5">::
+
+    find-next-clone
+    toggle-sparse-move
+</t>
+<t tx="ekr.20071217093444.6">- Added support for @data nodes in settings files.
+
+- The @data import_xml_tags setting specifies the xml tags that act as organizers.
+  This settings is used by @auto when importing xml files.</t>
+<t tx="ekr.20071217093444.7">-----------------------
+
+|prev| |leo| |next|</t>
 </tnodes>
 </leo_file>

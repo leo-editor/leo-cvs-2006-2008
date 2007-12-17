@@ -1,22 +1,18 @@
-Leo 4.4.5 final                               December 11, 2007
+Leo 4.4.6 beta 1                           December 17, 2007
 
-Leo 4.4.5 final is available at:
+Leo 4.4.6 beta 1 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
 
-Leo 4.4.5 fixes several long-delayed bug fixes and adds several new features.
+Leo 4.4.6 fixes several recently reported bugs, all minor.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
 
-The highlights of Leo 4.4.5:
+The highlights of Leo 4.4.6:
 ----------------------------
-
 - Fixes all known bugs.
-- Leo now recognizes directives in headlines.
-- Adds 3 new sort-lines commands.
-- Adds commands to insert and delete icons from headlines.
-- Adds all the Tango 16x16 icons to Leo's icon library.
-- Adds support for @rst-preformat nodes to the rst3 plugin.
+- Added @auto importers for javascript and xml files.
+- Added find-next-clone and toggle-sparse-move commands.
 
 Links:
 ------

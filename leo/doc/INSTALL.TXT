@@ -14,16 +14,16 @@ Installing the leo.py on Linux
 Download the latest version of Leo (a .zip file) from: http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
 
 Unzip the downloaded .zip file into a folder in your home directory.
-The folder will be called something like leo-4-4-5-final.
+The folder will be called something like leo-4-4-5.
 
 You now have two choices:
 
 1. You can run Leo from your home directory.
-Just add  ~/leo-4-4-5-final to your path.
+Just add  ~/leo-4-4-5 to your path.
 
 2. You can install leo into \usr\local\lib and \usr\local\bin by running Leo's install script as follows::
 
-    cd ~/leo-4-4-5-final
+    cd ~/leo-4-4-5
     chmod u+x install
     sudo ./install
 

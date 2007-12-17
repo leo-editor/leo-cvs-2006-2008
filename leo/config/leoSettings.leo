@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.477886977887">
-	<global_window_position top="83" left="243" height="754" width="864"/>
+	<global_window_position top="103" left="397" height="714" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -38,6 +38,7 @@
 <v t="ekr.20041119042929.7"><vh>@string</vh></v>
 </v>
 <v t="ekr.20041119035704.1"><vh> Organizer nodes</vh></v>
+<v t="ekr.20071217093419"><vh>\@data</vh></v>
 <v t="ekr.20070224073109"><vh>\@enabled-plugins</vh></v>
 <v t="ekr.20060913144412"><vh>\@keys keyset-name</vh></v>
 <v t="ekr.20041119035931"><vh>\@if expression</vh></v>
@@ -1914,20 +1915,26 @@ Autments the settings parser and the dialog creator with scripts.</t>
 <t tx="ekr.20041122163623">When looking at @x, Leo converts to lower case and removes minus signs.
 Therefore, @if-platform and @ifPlatformare equivalent to @ifplatform.</t>
 <t tx="ekr.20041213105007">@nocolor
+@
 
 Valid values:
-    
+
 weight: bold, normal, None
 slant: roman, italic, None
 
-Use the show-fonts command to pick fonts, then copy the values shown by the show-fonts command to the values here.</t>
+Use the show-fonts command to pick fonts, then copy the values shown by the show-fonts command to the values here.
+
+@c
+
+import sys ; print sys.platform
+</t>
 <t tx="ekr.20041213105007.1"></t>
 <t tx="ekr.20041213105007.2"></t>
 <t tx="ekr.20041213105007.3"></t>
 <t tx="ekr.20041213105508"># The font for the log pane. Default is default font for Tk.Text widgets.
 # Tk translates invalid font names to another font in a system-dependent way.
 # 
-# Default size is 12 for Linux, 8 otherwise.
+# Default size is 12 for Linux, 9 otherwise.
 
 log_text_font_family = Courier
 log_text_font_size = 9
@@ -8550,5 +8557,7 @@ html
 body
 head
 div</t>
+<t tx="ekr.20071217093419">The body text should contain the data, one string per line.
+Comments lines starting with '#' are ignored.</t>
 </tnodes>
 </leo_file>

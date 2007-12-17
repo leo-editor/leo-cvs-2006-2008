@@ -53,6 +53,7 @@ E1101:110:baseEditCommandsClass.endCommand: Instance of 'Bunch' has no 'oldText'
 #@-node:ekr.20071130094930:pylint: leoGlobals.py
 #@-node:ekr.20071128100845:Pylint
 #@+node:ekr.20071211113202:4.4.6
+#@+node:ekr.20071217092725:Beta 1
 #@+node:ekr.20071211113202.1:Bugs fixed
 #@+node:ekr.20071211082951:Fixed undo (dirty bit) problem)
 @nocolor
@@ -3005,6 +3006,145 @@ def goToNextClone (self,event=None):
 #@-node:ekr.20071214150627:Fixed clone focus bug
 #@+node:ekr.20071215160319:Removed call to printLine in change-all logic
 #@-node:ekr.20071215160319:Removed call to printLine in change-all logic
+#@+node:ekr.20071217082302:Fixed crash when copying or cloning to non-exisitent chapter
+<type 'exceptions.AttributeError'> Exception in Tk callback
+  Function: <function masterBindKeyCallback at 0x019EC5B0> (type: <type 'function'>)
+  Args: (<Tkinter.Event instance at 0x030A4530>,)
+  Event type: KeyPress (type num: 2)
+Traceback (innermost last):
+  File "c:\python25\lib\site-packages\Pmw\Pmw_1_3\lib\PmwBase.py", line 1747, in __call__
+    return apply(self.func, args)
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 2155, in masterBindKeyCallback
+    return k.masterKeyHandler(event,stroke=stroke)
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 3026, in masterKeyHandler
+    return k.getArg(event,stroke=stroke)
+  File "C:\prog\tigris-cvs\leo\src\leoKeys.py", line 2843, in getArg
+    if handler: handler(event)
+  File "C:\prog\tigris-cvs\leo\src\leoChapters.py", line 183, in copyNodeToChapter
+    cc.copyNodeToChapterHelper(k.arg)
+  File "C:\prog\tigris-cvs\leo\src\leoChapters.py", line 200, in copyNodeToChapterHelper
+    parent = cc.getChapterNode(toChapter.name)
+<type 'exceptions.AttributeError'>: 'NoneType' object has no attribute 'name'
+#@nonl
+#@+node:ekr.20070317085437.50:cc.cloneNodeToChapter & helper
+def cloneNodeToChapter (self,event=None):
+
+    '''Prompt for a chapter name,
+    then clone the selected node to the chapter.'''
+
+    cc = self ; k = cc.c.k ; tag = 'clone-node-to-chapter'
+    state = k.getState(tag)
+
+    if state == 0:
+        names = cc.chaptersDict.keys()
+        prefix = 'Clone node to chapter: '
+        k.setLabelBlue(prefix,protect=True)
+        k.getArg(event,tag,1,self.cloneNodeToChapter,prefix=prefix,tabList=names)
+    else:
+        k.clearState()
+        k.resetLabel()
+        if k.arg:
+            cc.cloneNodeToChapterHelper(k.arg)
+#@nonl
+#@+node:ekr.20070604155815.1:cc.cloneToChapterHelper
+def cloneNodeToChapterHelper (self,toChapterName):
+
+    cc = self ; c = cc.c ;  u = c.undoer ; undoType = 'Clone Node To Chapter'
+    p = c.currentPosition() ; h = p.headString()
+    fromChapter = cc.getSelectedChapter()
+    toChapter = cc.getChapter(toChapterName)
+    if not toChapter:
+        return cc.error('no such chapter: %s' % toChapterName)
+    if fromChapter.name == 'main' and h.startswith('@chapter'):
+        return cc.error('can not clone @chapter node')
+    # g.trace('from',fromChapter.name,'to',toChapter)
+
+    c.beginUpdate()
+    try:
+        # Open the group undo.
+        c.undoer.beforeChangeGroup(p,undoType)
+        # Do the clone.  c.clone handles the inner undo.
+        clone = c.clone()
+        # Do the move.
+        undoData2 = u.beforeMoveNode(clone)
+        clone.unlink()
+        if toChapter.name == 'main':
+            clone.moveAfter(toChapter.p)
+        else:
+            parent = cc.getChapterNode(toChapter.name)
+            clone.moveToLastChildOf(parent)
+        u.afterMoveNode(clone,'Move Node',undoData2,dirtyVnodeList=[])
+        c.selectPosition(clone)
+        c.setChanged(True)
+        # Close the group undo.
+        # Only the ancestors of the moved node get set dirty.
+        dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
+        c.undoer.afterChangeGroup(clone,undoType,reportFlag=False,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate(False)
+
+    toChapter.p = clone.copy()
+    toChapter.select()
+    fromChapter.p = p.copy()
+#@-node:ekr.20070604155815.1:cc.cloneToChapterHelper
+#@-node:ekr.20070317085437.50:cc.cloneNodeToChapter & helper
+#@+node:ekr.20070317085437.51:cc.copyNodeToChapter & helper
+def copyNodeToChapter (self,event=None):
+
+    '''Prompt for a chapter name,
+    then copy the selected node to the chapter.'''
+
+    cc = self ; k = cc.c.k ; tag = 'copy-node-to-chapter'
+    state = k.getState(tag)
+
+    if state == 0:
+        names = cc.chaptersDict.keys()
+        prefix = 'Copy node to chapter: '
+        k.setLabelBlue(prefix,protect=True)
+        k.getArg(event,tag,1,self.copyNodeToChapter,prefix=prefix,tabList=names)
+    else:
+        k.clearState()
+        k.resetLabel()
+        if k.arg:
+            cc.copyNodeToChapterHelper(k.arg)
+#@nonl
+#@+node:ekr.20070604155815.2:cc.copyNodeToChapterHelper
+def copyNodeToChapterHelper (self,toChapterName):
+
+    cc = self ; c = cc.c ; u = c.undoer ; undoType = 'Copy Node To Chapter'
+    p = c.currentPosition() ; h = p.headString()
+    fromChapter = cc.getSelectedChapter()
+    toChapter = cc.getChapter(toChapterName)
+    if not toChapter:
+        return cc.error('no such chapter: %s' % toChapterName)
+    if fromChapter.name == 'main' and h.startswith('@chapter'):
+        return cc.error('can not copy @chapter node')
+    # g.trace('from',fromChapter.name,'to',toChapter.name)
+
+    c.beginUpdate()
+    try:
+        # For undo, we treat the copy like a pasted (inserted) node.
+        # Use parent as the node to select for undo.
+        parent = cc.getChapterNode(toChapter.name)
+        undoData = u.beforeInsertNode(parent,pasteAsClone=False,copiedBunchList=[])
+        s = c.fileCommands.putLeoOutline()
+        p2 = c.fileCommands.getLeoOutline(s)
+        p2.unlink()
+        p2.moveToLastChildOf(parent)
+        c.selectPosition(p2)
+        u.afterInsertNode(p2,undoType,undoData)
+        c.setChanged(True)
+    finally:
+        c.endUpdate(False)
+
+    toChapter.p = p2.copy()
+    toChapter.select()
+    fromChapter.p = p.copy()
+#@-node:ekr.20070604155815.2:cc.copyNodeToChapterHelper
+#@-node:ekr.20070317085437.51:cc.copyNodeToChapter & helper
+#@-node:ekr.20071217082302:Fixed crash when copying or cloning to non-exisitent chapter
+#@+node:ekr.20071217090919:Repaired damaged minusnode.gif icon
+#@-node:ekr.20071217090919:Repaired damaged minusnode.gif icon
 #@-node:ekr.20071211113202.1:Bugs fixed
 #@+node:ekr.20071211113202.2:New features
 #@+node:ekr.20071210054816:Applied Terry Brown's config patch
@@ -3620,7 +3760,7 @@ opening slash is not recognised as starting a regular expression literal in such
 a context. As a workaround, one may enclose the regular expression literal in p.
 #@nonl
 #@-node:ekr.20071211092214:Javascript spec
-#@+node:ekr.20071027111225.2:class javaScriptScanner (not ready yet)
+#@+node:ekr.20071027111225.2:class javaScriptScanner
 # The syntax for patterns causes all kinds of problems...
 
 class javaScriptScanner (baseScannerClass):
@@ -3691,9 +3831,12 @@ def skipString (self,s,i):
         return i
 #@nonl
 #@-node:ekr.20071102161115:skipString
-#@-node:ekr.20071027111225.2:class javaScriptScanner (not ready yet)
+#@-node:ekr.20071027111225.2:class javaScriptScanner
 #@-node:ekr.20071027121956:Completed javascript import scanner
 #@-node:ekr.20071211113202.2:New features
+#@-node:ekr.20071217092725:Beta 1
+#@+node:ekr.20071217092725.1:Final
+#@-node:ekr.20071217092725.1:Final
 #@-node:ekr.20071211113202:4.4.6
 #@-all
 #@nonl
