@@ -315,7 +315,7 @@ class baseCommands:
     #@+node:ekr.20040629121554.1:getSignOnLine (Contains hard-coded version info)
     def getSignOnLine (self):
         c = self
-        return "Leo 4.4.6 beta 1, build %s, December 16, 2007" % c.getBuildNumber()
+        return "Leo 4.4.6 beta 1, build %s, December 17, 2007" % c.getBuildNumber()
     #@-node:ekr.20040629121554.1:getSignOnLine (Contains hard-coded version info)
     #@+node:ekr.20040629121554.2:initVersion
     def initVersion (self):

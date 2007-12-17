@@ -3027,7 +3027,7 @@ class javaScanner (baseScannerClass):
     #@-node:ekr.20071019170943:javaScanner.getSigId
     #@-others
 #@-node:edreamleo.20070710085115:class javaScanner
-#@+node:ekr.20071027111225.2:class javaScriptScanner (not ready yet)
+#@+node:ekr.20071027111225.2:class javaScriptScanner
 # The syntax for patterns causes all kinds of problems...
 
 class javaScriptScanner (baseScannerClass):
@@ -3099,7 +3099,7 @@ class javaScriptScanner (baseScannerClass):
     #@nonl
     #@-node:ekr.20071102161115:skipString
     #@-others
-#@-node:ekr.20071027111225.2:class javaScriptScanner (not ready yet)
+#@-node:ekr.20071027111225.2:class javaScriptScanner
 #@+node:ekr.20070711104241.3:class pascalScanner
 class pascalScanner (baseScannerClass):
 
