@@ -371,8 +371,8 @@ if wx:
             self._setAllText('')
         #@-node:bob.20070831045021:clear
         #@+node:plumloco.20071211050853:after_idle
-        def after_idle(*args):
-            g.trace('undefined')
+        def after_idle(self, *args, **kw):
+            w.CallAfter(*args, **kw)
         #@nonl
         #@-node:plumloco.20071211050853:after_idle
         #@-others
@@ -1495,10 +1495,6 @@ if wx:
             name='text <unknown richTextWidget>',
             **kw
         ):
-            print 'richtext', kw
-            print '\t', leoParent
-            print '\t', parent
-
 
             if not widget:
                 widget = richtext.RichTextCtrl(parent, style=wx.WANTS_CHARS, **kw)
@@ -2121,7 +2117,6 @@ if wx:
 
             self.createFrame()
             self.createBindings()
-            ###self.fillbox([])
         #@-node:bob.20070813163332.116:wxSpellTab.__init__
         #@+node:bob.20070813163332.117:createBindings TO DO
         def createBindings (self):
@@ -3095,7 +3090,7 @@ if wx:
         #@+node:bob.20070813163332.182: wxGui.__init__
         def __init__ (self):
 
-            g.trace("wxGui")
+            #g.trace("wxGui")
 
             # Initialize the base class.
             if 1: # in plugin
@@ -3123,12 +3118,17 @@ if wx:
             #@    @+others
             #@+node:bob.20070830070902:alert
 
-            def alert(msg, caption='Alert'):
-
-                g.es('\n' + msg, color='cyan')
-                dlg = wx.MessageDialog(None,msg,'Alert')
-                dlg.ShowModal()
-                dlg.Destroy()
+            def alert(*args, **kw):
+                caption = kw.get('caption', 'Alert')
+                g.trace(*args)
+                msg = ' '.join([str(a) for a in args])
+                g.es('\n%s' % msg, color='green')
+                try:
+                    dlg = wx.MessageDialog(None,msg,'Alert')
+                    dlg.ShowModal()
+                    dlg.Destroy()
+                except:
+                    pass
 
             g.alert = alert
             #@-node:bob.20070830070902:alert
@@ -3726,8 +3726,7 @@ if wx:
                 if hasattr(event,'c'):
                     return event.c.frame.body.bodyCtrl
                 else:
-                    g.trace('wx gui: k.generalModeHandler event: no event widget: event = %s' % (
-                        event),g.callers())
+                    #g.trace('wx gui: k.generalModeHandler event: no event widget: event = %s' % (event),g.callers())
                     return None
             elif hasattr(event,'GetEventObject'): # A wx Event.
                 # Return the wrapper class
@@ -4007,13 +4006,13 @@ if wx:
         #@+node:bob.20070813163332.227:setIdleTimeHook
         def setIdleTimeHook (self,idleTimeHookHandler,*args,**keys):
 
-            pass # g.trace(idleTimeHookHandler)
+            wx.CallAfter(idleTimeHookHandler, *args, **keys)
 
         #@-node:bob.20070813163332.227:setIdleTimeHook
         #@+node:bob.20070813163332.228:setIdleTimeHookAfterDelay
         def setIdleTimeHookAfterDelay (self,idleTimeHookHandler,*args,**keys):
 
-            g.trace(idleTimeHookHandler)
+            wx.CallLater(g.app.idleTimeDelay,idleTimeHookHandler, *args, **keys)
         #@nonl
         #@-node:bob.20070813163332.228:setIdleTimeHookAfterDelay
         #@-node:bob.20070813163332.226:Idle time (wxGui) (to do)
@@ -4097,7 +4096,7 @@ if wx:
         #@+node:bob.20070829204339:fullCommand
 
         def fullCommand(self, *args, **kw):
-            g.trace('overidden')
+            #g.trace('overidden')
             self.c.minibufferWantsFocus()
             return leoKeys.keyHandlerClass.fullCommand(self, *args, **kw)
         #@nonl
@@ -4124,7 +4123,7 @@ if wx:
         #@+node:bob.20070830065423:universalDispatcher
 
         def universalDispatcher(self, *args, **kw):
-            g.trace('overidden')
+            #g.trace('overidden')
             self.c.minibufferWantsFocus()
             return leoKeys.keyHandlerClass.universalDispatcher(self, *args, **kw)
         #@nonl
@@ -4379,7 +4378,7 @@ if wx:
         #@+node:bob.20070901193129.4:wantsFocus
         def wantsFocus(self, o):
             assert False
-            g.trace('wxfocusmanger', o)
+            #g.trace('wxfocusmanger', o)
             o.SetFocus()
         #@nonl
         #@-node:bob.20070901193129.4:wantsFocus
@@ -4569,7 +4568,7 @@ if wx:
 
         def onClick (self,event):
 
-            g.trace('leoBody')
+            #g.trace('leoBody')
 
             c = self.c ; k = c.k ; 
 
@@ -4621,7 +4620,7 @@ if wx:
             return self.bodyCtrl.GetCharWidth()  # widget specific
 
         def scheduleIdleTimeRoutine (self,function,*args,**keys):
-            g.trace()
+            wx.CallAfter(function, *args, **keys)
 
         def tag_add (self,*args,**keys):        
             #g.trace()
@@ -4784,7 +4783,7 @@ if wx:
             wx.Notebook.__init__(self, parent)
 
 
-            g.trace( self,' >> ', parent)
+            #g.trace( self,' >> ', parent)
 
             self.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.onPageChanged)
 
@@ -5570,8 +5569,8 @@ if wx:
         #@-node:bob.20070813163332.271:onCloseLeoFrame
         #@-node:bob.20070813163332.269:event handlers
         #@+node:bob.20070813163332.273:wxFrame dummy routines: (to do: minor)
-        def after_idle(*args):
-            g.trace(myclass())
+        def after_idle(self, *args, **kw):
+            wx.CallAfter(*args, **kw)
 
         def bringToFront(self):
             pass
@@ -5978,7 +5977,6 @@ if wx:
                 #@nl
             self.scale.set(count*size)
             self.scale.update_idletasks()
-        #@nonl
         #@-node:bob.20070813163332.296:showProgressBar
         #@-node:bob.20070813163332.295:leoHelp
         #@-node:bob.20070813163332.294:Help Menu...
@@ -5989,7 +5987,7 @@ if wx:
             """Called whenever any menu is pulled down."""
 
             # We define this routine to strip off the event param.
-            g.trace(g.callers())
+            #g.trace(g.callers())
 
 
 
@@ -6129,13 +6127,15 @@ if wx:
         #@+node:bob.20070813163332.54:add_command
         def add_command (self,menu,**keys):
 
+
+
             if not menu:
                 return g.trace('Can not happen.  No menu')
 
             callback = keys.get('command')
             accel = keys.get('accelerator')
             ch,label = self.createAccelLabel(keys)
-
+            #g.trace(keys.get('label'))
             def wxMenuCallback (event,callback=callback):
                 #g.trace('\nevent',event)
                 #print
@@ -6207,6 +6207,7 @@ if wx:
 
             menu = self.getMenu(menuName)
 
+
             def wxMenuCallback (event,callback=command):
                 #g.trace('\nevent',event)
                 #print
@@ -6229,14 +6230,19 @@ if wx:
         #@+node:bob.20070813163332.346:insert_cascade
         def insert_cascade (self,parent,index,label,menu,underline):
 
-            if not parent:
+            """Create a menu with the given parent menu."""
+
+            if parent:
+                # Create a submenu of the parent menu.
                 keys = {'label':label,'underline':underline}
                 ch,label = self.createAccelLabel(keys)
-                self.menuBar.append(menu,label)
                 id = wx.NewId()
+                parent.InsertMenu(index, id,label,menu,label)
                 accel = None
-                if ch:
-                    self.createAccelData(menu,ch,accel,id,label)
+                if ch: self.createAccelData(menu,ch,accel,id,label)
+            else:
+                # Create a top-level menu.
+                self.menuBar.Insert(indx, menu,label)
         #@-node:bob.20070813163332.346:insert_cascade
         #@+node:bob.20070813163332.347:new_menu
         def new_menu(self,parent,tearoff=0):
@@ -6258,62 +6264,93 @@ if wx:
 
             # menuBar.SetAcceleratorTable(wx.NullAcceleratorTable)
         #@-node:bob.20070813163332.349:createMenuBar
-        #@+node:bob.20070813163332.350:createOpenWithMenuFromTable (not ready yet)
-        #@+at 
-        #@nonl
-        # Entries in the table passed to createOpenWithMenuFromTable are
-        # tuples of the form (commandName,shortcut,data).
-        # 
-        # - command is one of "os.system", "os.startfile", "os.spawnl", 
-        # "os.spawnv" or "exec".
-        # - shortcut is a string describing a shortcut, just as for 
-        # createMenuItemsFromTable.
-        # - data is a tuple of the form (command,arg,ext).
-        # 
-        # Leo executes command(arg+path) where path is the full path to the 
-        # temp file.
-        # If ext is not None, the temp file has the given extension.
-        # Otherwise, Leo computes an extension based on the @language 
-        # directive in effect.
-        #@-at
-        #@@c
-
+        #@+node:bob.20071217225740:createOpenWithMenuFromTable & helper
         def createOpenWithMenuFromTable (self,table):
 
-            g.trace("Not ready yet")
+            '''Entries in the table passed to createOpenWithMenuFromTable are
+        tuples of the form (commandName,shortcut,data).
 
-            return ### Not ready yet
+        - command is one of "os.system", "os.startfile", "os.spawnl", "os.spawnv" or "exec".
+        - shortcut is a string describing a shortcut, just as for createMenuItemsFromTable.
+        - data is a tuple of the form (command,arg,ext).
 
+        Leo executes command(arg+path) where path is the full path to the temp file.
+        If ext is not None, the temp file has the given extension.
+        Otherwise, Leo computes an extension based on the @language directive in effect.'''
+
+            c = self.c
             g.app.openWithTable = table # Override any previous table.
+
             # Delete the previous entry.
+
             parent = self.getMenu("File")
+
             label = self.getRealMenuName("Open &With...")
+
             amp_index = label.find("&")
             label = label.replace("&","")
-            try:
-                index = parent.index(label)
-                parent.delete(index)
-            except:
-                try:
-                    index = parent.index("Open With...")
-                    parent.delete(index)
-                except: return
-            # Create the "Open With..." menu.
-            openWithMenu = Tk.Menu(parent,tearoff=0)
+
+            ## FIXME to be gui independant
+            index = 0;
+            for item in parent.GetMenuItems():
+                if item.GetLabelFromText(item.GetText()) == 'Open With...':
+                    parent.RemoveItem(item)
+                    break
+                index += 1
+
+
+            # Create the Open With menu.
+            openWithMenu = self.createOpenWithMenu(parent,label,index,amp_index)
+
             self.setMenu("Open With...",openWithMenu)
-            parent.insert_cascade(index,label=label,menu=openWithMenu,underline=amp_index)
-            # Populate the "Open With..." menu.
-            shortcut_table = []
-            for triple in table:
-                if len(triple) == 3: # 6/22/03
-                    shortcut_table.append(triple)
-                else:
+            # Create the menu items in of the Open With menu.
+            for entry in table:
+                if len(entry) != 3: # 6/22/03
                     g.es("createOpenWithMenuFromTable: invalid data",color="red")
                     return
+            self.createOpenWithMenuItemsFromTable(openWithMenu,table)
+        #@+node:bob.20071217225740.1:createOpenWithMenuItemsFromTable
+        def createOpenWithMenuItemsFromTable (self,menu,table):
 
-            # for i in shortcut_table: print i
-            self.createMenuItemsFromTable("Open &With...",shortcut_table,openWith=1)
-        #@-node:bob.20070813163332.350:createOpenWithMenuFromTable (not ready yet)
+            '''Create an entry in the Open with Menu from the table.
+
+            Each entry should be a sequence with 2 or 3 elements.'''
+
+            c = self.c ; k = c.k
+
+            if g.app.unitTesting: return
+
+            for data in table:
+                #@        << get label, accelerator & command or continue >>
+                #@+node:bob.20071217225740.2:<< get label, accelerator & command or continue >>
+                ok = (
+                    type(data) in (type(()), type([])) and
+                    len(data) in (2,3)
+                )
+
+                if ok:
+                    if len(data) == 2:
+                        label,openWithData = data ; accelerator = None
+                    else:
+                        label,accelerator,openWithData = data
+                        accelerator = k.shortcutFromSetting(accelerator)
+                        accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
+                else:
+                    g.trace('bad data in Open With table: %s' % repr(data))
+                    continue # Ignore bad data
+                #@-node:bob.20071217225740.2:<< get label, accelerator & command or continue >>
+                #@nl
+                # g.trace(label,accelerator)
+                realLabel = self.getRealMenuName(label)
+                underline=realLabel.find("&")
+                realLabel = realLabel.replace("&","")
+                callback = self.defineOpenWithMenuCallback(openWithData)
+
+                self.add_command(menu,label=realLabel,
+                    accelerator=accelerator or '',
+                    command=callback,underline=underline)
+        #@-node:bob.20071217225740.1:createOpenWithMenuItemsFromTable
+        #@-node:bob.20071217225740:createOpenWithMenuFromTable & helper
         #@+node:bob.20070813163332.351:defineMenuCallback
         def defineMenuCallback(self,command,name):
 
@@ -6334,6 +6371,14 @@ if wx:
 
             return wxOpenWithMenuCallback
         #@-node:bob.20070813163332.352:defineOpenWithMenuCallback
+        #@+node:bob.20071218074136:createOpenWithMenu
+        def createOpenWithMenu(self,parent,label,index,amp_index):
+
+            '''Create a submenu.'''
+            menu = self.new_menu(parent)
+            self.insert_cascade(parent, index, label=label,menu=menu,underline=amp_index)
+            return menu
+        #@-node:bob.20071218074136:createOpenWithMenu
         #@+node:bob.20070813163332.353:disableMenu
         def disableMenu (self,menu,name):
 
@@ -6369,25 +6414,6 @@ if wx:
                 g.trace("no item",name,val)
         #@nonl
         #@-node:bob.20070813163332.354:enableMenu
-        #@+node:bob.20070813163332.355:getMenu
-        def getMenu (self,name):
-
-            # Get the actual menu from the base class.
-            menu = leoMenu.leoMenu.getMenu(self,name)
-
-            # Create a wrapper class that defines 
-            class menuWrapperClass (wx.Menu):
-                def index (self,name):
-                    '''Return the menu item whose name is given.'''
-                    return self.FindItem(name)
-
-                def invoke (self,i):
-                    '''Invoke the menu whose index is i'''
-
-
-            return menu
-        #@nonl
-        #@-node:bob.20070813163332.355:getMenu
         #@+node:bob.20070813163332.356:setMenuLabel
         def setMenuLabel (self,menu,name,label,underline=-1):
 
@@ -6552,7 +6578,7 @@ if wx:
                 w = self.logCtrl.widget
             except:
                 w = None
-                g.alert('log.put, can\'t write to log widget!')
+                #g.alert('log.put, can\'t write to log widget!')
                 print 'log tabName:s'
                 print
                 return
@@ -6768,7 +6794,7 @@ if wx:
         def renameTab(self, oldName, newName):
 
             if newName:
-                g.trace(oldName, newName)
+                #g.trace(oldName, newName)
                 self.tabFromName(oldName).tabName = newName
 
                 self.frameDict[newName] = self.frameDict[oldName]
