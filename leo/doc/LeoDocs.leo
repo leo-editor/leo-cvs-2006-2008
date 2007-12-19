@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.628989361702">
-	<global_window_position top="14" left="340" height="732" width="892"/>
+	<global_window_position top="14" left="340" height="712" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -842,7 +842,7 @@
 </v>
 </v>
 <v t="ekr.20060620094033.1"><vh>What's New in Leo 4.4.1 and 4.4.1.1</vh>
-<v t="ekr.20060620094645.310" a="E"><vh>@rst html\new-4-4-1.html</vh>
+<v t="ekr.20060620094645.310"><vh>@rst html\new-4-4-1.html</vh>
 <v t="ekr.20060621132547"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060620130636"><vh>New commands</vh></v>
 <v t="ekr.20060620095949.15"><vh>New features</vh></v>
@@ -1109,8 +1109,8 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
-<v t="ekr.20060620094033" a="T"><vh>What's New...</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20071217093444"><vh>What's New in Leo 4.4.6</vh>
 <v t="ekr.20071217093444.1"><vh>@rst html\new-4-4-6.html</vh>
 <v t="ekr.20071217093444.2"><vh>@rst-no-head links</vh></v>
@@ -1179,7 +1179,7 @@
 </v>
 </v>
 <v t="ekr.20060620094033.1"><vh>What's New in Leo 4.4.1 and 4.4.1.1</vh>
-<v t="ekr.20060620094645.310" a="E"><vh>@rst html\new-4-4-1.html</vh>
+<v t="ekr.20060620094645.310"><vh>@rst html\new-4-4-1.html</vh>
 <v t="ekr.20060621132547"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060620130636"><vh>New commands</vh></v>
 <v t="ekr.20060620095949.15"><vh>New features</vh></v>
@@ -3476,8 +3476,8 @@
 <v t="ekr.20071211083251"><vh>Leo 4.4.5 final</vh></v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071217092250" a="V"><vh>leo 4.4.6 b1</vh>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20071217092250"><vh>leo 4.4.6 b1</vh>
 <v t="ekr.20071217092203.1"><vh>Bugs fixed</vh>
 <v t="ekr.20071217092203.2"><vh>Fixed undo (dirty bit) problem)</vh></v>
 <v t="ekr.20071217092203.30"><vh>Fixed cursesGui  plugin</vh></v>
@@ -15118,7 +15118,13 @@ The ``@first`` directive is not valid in ``@root`` or ``@unit`` trees.</t>
 <t tx="ekr.20050828061501.37">The ``@language`` directive specifies the comment delimiters and string types used by the
 ``Tangle`` and ``Untangle`` commands.
 This directive over-rides the default specified in the settings dialog.
-Here are the valid ``@language`` directives::
+
+When the threading_colorizer plugin is enabled, the valid @language directives are::
+
+    @language x
+    
+where the leo/modes folder contains the file x.py.  When the threading_colorizier plugin is not enabled,
+the 'old' colorizer is used and the valid ``@language`` directives are::
 
     @language actionscript
     @language c

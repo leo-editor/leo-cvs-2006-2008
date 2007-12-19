@@ -3836,6 +3836,54 @@ def skipString (self,s,i):
 #@-node:ekr.20071211113202.2:New features
 #@-node:ekr.20071217092725:Beta 1
 #@+node:ekr.20071217092725.1:Final
+#@+node:ekr.20071219084047:Fixed bug in nav_buttons plugin
+@nocolro
+
+http://sourceforge.net/forum/message.php?msg_id=4682598
+By: plumloco
+
+
+In nav_buttons plugin when showing the recentSectionsDialog, delete and clearall
+result in tk error dialogs.
+
+The fix is to ...
+
+change line 323 to: c.nodeHistory.clear()
+change line 351 to: p = self.positionList[n]
+
+#@-node:ekr.20071219084047:Fixed bug in nav_buttons plugin
+#@+node:ekr.20071218110722:Fixed problems with modes/rest.py
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4681175
+By: terry_n_brown
+
+It seems the colorization dies shortly into each node. So the first .. comment
+might be colored, or the first part of an `interpreted` word, but then it gives
+up.
+
+What I did:
+
+- There was a horrendous bug in the match_seq_regexp matcher which could cause the colorizer to loop. 
+- Added some more defensive code to have the colorizer recover more gracefully in this case. 
+- The jedit2py script was not associating regexp rules whose regex starts with
+  '\' with the proper character. The proper character is the hash_char
+  character, not the '\' character. As a result, regexp's that start with '\'
+  never got matched.
+
+The following colorizers are affected by the change:
+
+modes/apacheconf.py
+modes/erlang.py
+modes/moin.py
+modes/perl.py
+modes/php.py
+modes/pl1.py
+modes/rest.py
+modes/shell.py
+modes/shellscript.py
+#@nonl
+#@-node:ekr.20071218110722:Fixed problems with modes/rest.py
 #@-node:ekr.20071217092725.1:Final
 #@-node:ekr.20071211113202:4.4.6
 #@-all
