@@ -70,13 +70,13 @@
 			<END>}</END>
 		</SPAN>
 
-		<!-- EKR: comment out
+		<!-- EKR: comment out -->
 		
 		<SEQ_REGEXP HASH_CHAR="$" TYPE="KEYWORD2">\$(?:#|\w)+</SEQ_REGEXP>
 		<SEQ_REGEXP HASH_CHAR="@" TYPE="KEYWORD2">@(?:#|\w)+</SEQ_REGEXP>
 		<SEQ_REGEXP HASH_CHAR="%" TYPE="KEYWORD2">%(?:#|\w)+</SEQ_REGEXP>
 		
-		end comment out -->
+		<!-- end comment out -->
 
 		<SPAN TYPE="KEYWORD2" NO_LINE_BREAK="TRUE" DELEGATE="VARIABLE">
 			<BEGIN>@{</BEGIN>
@@ -110,7 +110,7 @@
 
 		<!-- Heredoc -->
 		
-		<!-- EKR: comment out
+		<!-- EKR: comment out -->
 		
 			<SPAN_REGEXP HASH_CHAR="&lt;" TYPE="LITERAL2" DELEGATE="LITERAL">
 			<BEGIN><![CDATA[<<[:space:]*(['"])([[:space:][:alnum:]_]*)\1;?\s*]]></BEGIN>
@@ -121,23 +121,23 @@
 			<END>$1</END>
 			</SPAN_REGEXP>
 			
-		end comment out -->
+		<!-- end comment out -->
 
 		<!-- jEdit 4.1 adds regular expression syntax rules so we can
 		     highlight this sort of crap. -->
 		     
-		<!-- EKR comment out
+		<!-- EKR comment out -->
 
 		<SEQ_REGEXP TYPE="MARKUP"
                         HASH_CHAR="/"
                         AT_WORD_START="TRUE"
                 >/[^[:blank:]]*?[^\\]/</SEQ_REGEXP>
 		
-		end comment out -->
+		<!-- end comment out -->
 
 		<!-- q//, qq//, qr//, qx//, tr///, y///, m//, s/// -->
 		
-		<!-- EKR comment out
+		<!-- EKR comment out -->
 		
 		<SEQ_REGEXP TYPE="MARKUP"
                 	HASH_CHAR="q"
@@ -174,18 +174,18 @@
                         AT_WORD_START="TRUE"
 		>s([[:punct:]])(?:.*?[^\\])*?\1(?:.*?[^\\])*?\1[sgiexom]*</SEQ_REGEXP>
 		
-		end comment out -->
+		<!-- end comment out -->
 		
 		<!-- // -->
 		
-		<!-- EKR comment out
+		<!-- EKR comment out -->
 		
 		<SEQ_REGEXP TYPE="MARKUP"
 			HASH_CHAR="/"
 			AT_WORD_START="TRUE"
 		>/[^[:blank:]]*?/</SEQ_REGEXP>
 		
-		end comment out -->
+		<!-- end comment out -->
 
 		<!-- Operators -->
 		<SEQ TYPE="OPERATOR">|</SEQ>

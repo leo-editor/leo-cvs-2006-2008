@@ -2606,7 +2606,8 @@ def php_rule9(colorer, s, i):
 # Rules dict for php_main ruleset.
 rulesDict1 = {
 	"&": [php_rule9,],
-	"<": [php_rule0,php_rule1,php_rule2,php_rule3,php_rule4,php_rule5,php_rule6,php_rule7,php_rule8,],
+	"<": [php_rule0,php_rule1,php_rule2,php_rule3,php_rule5,php_rule6,php_rule7,php_rule8,],
+	"< ": [php_rule4,],
 }
 
 # Rules for php_tags ruleset.
@@ -2873,7 +2874,8 @@ rulesDict4 = {
 	"9": [php_rule56,],
 	":": [php_rule54,],
 	";": [php_rule49,],
-	"<": [php_rule26,php_rule32,php_rule39,],
+	"<": [php_rule32,php_rule39,],
+	"< ": [php_rule26,],
 	"=": [php_rule28,php_rule33,],
 	">": [php_rule31,php_rule38,],
 	"?": [php_rule52,],

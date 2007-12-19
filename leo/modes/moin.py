@@ -196,9 +196,11 @@ def moin_rule36(colorer, s, i):
 
 # Rules dict for moin_main ruleset.
 rulesDict1 = {
+	" ": [moin_rule3,],
 	"#": [moin_rule0,moin_rule1,],
-	"(": [moin_rule6,moin_rule8,],
+	"'": [moin_rule6,],
 	"-": [moin_rule7,],
+	"=": [moin_rule8,],
 	"A": [moin_rule9,],
 	"B": [moin_rule10,],
 	"C": [moin_rule11,],
@@ -226,7 +228,6 @@ rulesDict1 = {
 	"Y": [moin_rule33,],
 	"Z": [moin_rule34,],
 	"[": [moin_rule2,moin_rule35,moin_rule36,],
-	"\\": [moin_rule3,],
 	"`": [moin_rule5,],
 	"{": [moin_rule4,],
 }

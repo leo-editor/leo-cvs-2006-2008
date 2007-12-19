@@ -149,13 +149,17 @@ def rest_rule26(colorer, s, i):
 rulesDict1 = {
 	"\"": [rest_rule7,],
 	"#": [rest_rule6,],
+	"*": [rest_rule10,rest_rule14,rest_rule15,],
+	"+": [rest_rule9,rest_rule25,rest_rule26,],
 	"-": [rest_rule3,],
-	".": [rest_rule1,rest_rule16,],
+	".": [rest_rule1,rest_rule11,rest_rule13,rest_rule16,],
 	":": [rest_rule24,],
 	"=": [rest_rule2,],
-	"\\": [rest_rule8,rest_rule9,rest_rule10,rest_rule11,rest_rule12,rest_rule13,rest_rule14,rest_rule15,rest_rule18,rest_rule19,rest_rule20,rest_rule21,rest_rule25,rest_rule26,],
+	"[": [rest_rule18,rest_rule19,rest_rule20,rest_rule21,],
+	"^": [rest_rule8,],
 	"_": [rest_rule0,],
 	"`": [rest_rule5,rest_rule17,rest_rule22,rest_rule23,],
+	"|": [rest_rule12,],
 	"~": [rest_rule4,],
 }
 
