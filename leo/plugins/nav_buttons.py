@@ -320,7 +320,7 @@ class recentSectionsDialog (tkinterListBoxDialog):
         c = self.c
 
         self.positionList = []
-        self.nodeHistory.clear()
+        c.nodeHistory.clear()
         self.fillbox()
     #@nonl
     #@-node:edream.110203113231.783:clearAll
@@ -348,7 +348,7 @@ class recentSectionsDialog (tkinterListBoxDialog):
 
         if items:
             n = items[0]
-            p = self.position[n]
+            p = self.positionList[n]
             del self.positionList[n]
             c.nodeHistory.remove(p)
             self.fillbox()
