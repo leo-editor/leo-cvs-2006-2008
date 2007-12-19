@@ -1,5 +1,5 @@
 #@+leo-ver=4-thin
-#@+node:EKR.20040517075715.4:@thin open_with.py
+#@+node:bob.20071218121513:@thin open_with.py
 #@<< docstring >>
 #@+node:ekr.20050910140846:<< docstring >>
 '''Create menu for Open With command and handle the resulting commands.
@@ -51,20 +51,23 @@ __version__ = '1.11'
 #@+node:ekr.20050311090939.8:init
 def init():
 
-    ok = Tk is not None # Ok for unit testing: creates Open With menu.
+    gui = g.app.gui.guiName
 
-    if ok:
-        if g.app.gui is None:
+    if gui() is None:
+
+        if Tk:
             g.app.createTkGui(__file__)
+        else:
+            return False
 
-        if g.app.gui.guiName() == "tkinter":
-            g.app.hasOpenWithMenu = True
-            g.enableIdleTimeHook(idleTimeDelay=1000) # Check every second.
-            leoPlugins.registerHandler("idle", on_idle)
-            leoPlugins.registerHandler(('new','open2'), create_open_with_menu)
-            g.plugin_signon(__name__)
+    if gui() is not None:
+        g.app.hasOpenWithMenu = True
+        g.enableIdleTimeHook(idleTimeDelay=1000) # Check every second.
+        leoPlugins.registerHandler("idle", on_idle)
+        leoPlugins.registerHandler(('new','open2'), create_open_with_menu)
+        g.plugin_signon(__name__)
 
-    return ok
+    return True
 #@nonl
 #@-node:ekr.20050311090939.8:init
 #@+node:EKR.20040517075715.5:on_idle
@@ -72,6 +75,8 @@ def init():
 # "body", "c", "encoding", "f", "path", "time" and "p".
 
 def on_idle (tag,keywords):
+
+    #g.trace(tag,keywords)
 
     import os
     a = g.app
@@ -257,5 +262,5 @@ def doSubprocessTable ():
 #@-node:EKR.20040517075715.8:create_open_with_menu & helpers
 #@-others
 #@nonl
-#@-node:EKR.20040517075715.4:@thin open_with.py
+#@-node:bob.20071218121513:@thin open_with.py
 #@-leo
