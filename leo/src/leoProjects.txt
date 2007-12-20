@@ -3864,7 +3864,8 @@ up.
 
 What I did:
 
-- There was a horrendous bug in the match_seq_regexp matcher which could cause the colorizer to loop. 
+- There was a horrendous bug in the match_seq_regexp matcher which could cause the colorizer to loop.
+- There was another horrendous bug in match_regexp_helper that cause spurious matches.
 - Added some more defensive code to have the colorizer recover more gracefully in this case. 
 - The jedit2py script was not associating regexp rules whose regex starts with
   '\' with the proper character. The proper character is the hash_char

@@ -475,7 +475,7 @@ class colorizer:
         self.count = 0 # For unit testing.
         self.allow_mark_prev = True # The new colorizer tolerates this nonsense :-)
         self.trace = False or c.config.getBool('trace_colorizer')
-        self.trace_match_flag = False # True: trace all matching methods.
+        self.trace_match_flag = False # (Useful) True: trace all matching methods.
         self.trace_tags = False
         self.verbose = False
         # Mode data...
