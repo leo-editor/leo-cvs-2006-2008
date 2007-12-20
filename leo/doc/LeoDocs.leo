@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -1109,7 +1109,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="ETV"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20071217093444"><vh>What's New in Leo 4.4.6</vh>
 <v t="ekr.20071217093444.1"><vh>@rst html\new-4-4-6.html</vh>
@@ -3476,8 +3476,8 @@
 <v t="ekr.20071211083251"><vh>Leo 4.4.5 final</vh></v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20071217092250" a="E"><vh>leo 4.4.6 b1</vh>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20071217092250"><vh>leo 4.4.6 b1</vh>
 <v t="ekr.20071217092203.1"><vh>Bugs fixed</vh>
 <v t="ekr.20071217092203.2"><vh>Fixed undo (dirty bit) problem)</vh></v>
 <v t="ekr.20071217092203.30"><vh>Fixed cursesGui  plugin</vh></v>
@@ -18691,7 +18691,7 @@ new features that Leo should have.
 Edward K. Ream, October 25, 2001.  P.S., September, 2005:
 
 Four years of experience have only added to my admiration for Python. Leo could
-not possible be what it is today without Python.</t>
+not possibly be what it is today without Python.</t>
 <t tx="ekr.20050901092232.7">-----------------------
 
 |back| |leo| |next|</t>
@@ -19185,7 +19185,7 @@ I really started to 'get' Python in September 2001. I wrote the white papers at
 about this time. Python solved *all* my programming problems. I rewrote Leo in
 Python in about two months! For the first time in my career I was no longer
 anxious while programming; it simply isn't possible to create bad bugs in
-Python. The Python version of Leo the first officially OpenSoftware version of
+Python. The Python version of Leo was the first officially OpenSoftware version of
 Leo. The first functional version of Leo in Python was 0.05 alpha, December 17,
 2001.</t>
 <t tx="ekr.20050902105852.5">I registered the Leo project on SourceForge on March 10, 2003. It is certainly
@@ -27457,8 +27457,12 @@ Recent projects include:
   See Chapter 16.
 - Modifying Leo's vnodes and tnodes so that Leo's data can be used with ZODB.
   See Chapter 17.
-- Reading and writing Leo outlines in `OPML`_ format.
-  See Chapter 18.</t>
+- Using pymacs to write Leo scripts within Emacs.
+  See Chapter 18.
+- Using the leoBridge module to embed Leo support in other programs.
+  See Chapter 19.
+- Using Leo to run unit tests.
+  See Chapter 20.</t>
 <t tx="ekr.20060629083935.2"></t>
 <t tx="ekr.20060629083935.3"></t>
 <t tx="ekr.20060629083935.8">http://sourceforge.net/forum/message.php?msg_id=3795258

@@ -400,10 +400,6 @@ R0801:	Duplication
 
 #@-node:ekr.20071218000536:pylint report
 #@-node:ekr.20071217134533:Run pylint on all files
-#@+node:ekr.20071219152901:create modes/test-language.py
-# Might be useful for unit tests.
-#@nonl
-#@-node:ekr.20071219152901:create modes/test-language.py
 #@-node:ekr.20071211143430:4.4.6 bugs & easy improvements
 #@+node:ekr.20071113093057:4.5 cleanups, vim bindings & readline
 #@+node:ekr.20071211091037.1:Code cleanup 7
@@ -1381,6 +1377,10 @@ Leo should copy this download philosophy.
 #@-node:ekr.20070615063616.1:Create Debian package
 #@-node:ekr.20071029082025:Improve distribution
 #@-node:ekr.20071211142600.1:Important 4
+#@+node:ekr.20071219152901:create modes/test-language.py
+# Might be useful for unit tests.
+#@nonl
+#@-node:ekr.20071219152901:create modes/test-language.py
 #@-node:ekr.20071113093057:4.5 cleanups, vim bindings & readline
 #@+node:ekr.20071211093011:4.6  ipython & autocompletion
 #@+node:ekr.20070824093611:Improve wxGui plugin
