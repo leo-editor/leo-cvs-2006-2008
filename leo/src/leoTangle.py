@@ -459,11 +459,6 @@ class baseTangleCommands:
         c = self.c
         #@    << init directive ivars >>
         #@+node:ekr.20031218072017.1359:<< init directive ivars >> (tangle)
-        if 0: # not used in this version of Leo
-            self.allow_rich_text = default_allow_rich_text
-            self.extended_noweb_flag = default_extended_noweb_flag
-            self.target_language = default_target_language # uses c.target_lanuage instead
-
         # Global options
         self.page_width = c.page_width
         self.tab_width = c.tab_width
@@ -3486,7 +3481,7 @@ class baseTangleCommands:
             #@        << Test for @comment and @language >>
             #@+node:ekr.20031218072017.1362:<< Test for @comment and @language >>
             if old.has_key("comment") or old.has_key("language"):
-                 pass # Do nothing more.
+                pass # Do nothing more.
 
             elif theDict.has_key("comment"):
 

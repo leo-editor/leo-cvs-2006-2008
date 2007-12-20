@@ -4,7 +4,7 @@
 
 On startup:
 - doPlugins() calls loadHandlers() to import all
-  mod_XXXX.py files in the Leo directory.
+  mod_x.py files in the Leo directory.
 - Imported files should register hook handlers using the
   registerHandler and registerExclusiveHandler functions.
   Only one "exclusive" function is allowed per hook.

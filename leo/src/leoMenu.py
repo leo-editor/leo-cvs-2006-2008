@@ -39,11 +39,15 @@ class leoMenu:
         if 0: # Must be done much later.
             self.defineMenuTables()
     #@-node:ekr.20031218072017.3751: leoMenu.__init__
-    #@+node:ekr.20031218072017.3775:oops
+    #@+node:ekr.20031218072017.3775:error and oops
     def oops (self):
 
         print "leoMenu oops:", g.callers(), "should be overridden in subclass"
-    #@-node:ekr.20031218072017.3775:oops
+
+    def error (self,s):
+
+        g.es_print(s,color='red')
+    #@-node:ekr.20031218072017.3775:error and oops
     #@+node:ekr.20031218072017.3776:Gui-independent menu enablers
     #@+node:ekr.20031218072017.3777:updateAllMenus
     def updateAllMenus (self):
@@ -413,9 +417,9 @@ class leoMenu:
 
         cmdsMenu = self.createNewMenu('&Cmds')
 
-        if 0: # Now in the minibuffer table.
+        # Now in the minibuffer table.
             # Used in top table: q,u,x
-            self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
+            # self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
 
         for name,table in (
             # &: a,b,c,d,f,g,h,i,m,n,o,p,r,s,t,u
@@ -518,12 +522,13 @@ class leoMenu:
     #@nonl
     #@-node:ekr.20070927082205:createMenuFromConfigList
     #@+node:ekr.20070927172712:handleSpecialMenus
-    def handleSpecialMenus (self,name,parentName,table=[]):
+    def handleSpecialMenus (self,name,parentName,table=None):
 
         '''Handle a special menu if name is the name of a special menu.
         return True if this method handles the menu.'''
 
         c = self.c
+        if table is None: table = []
         name2 = name.replace('&','').replace(' ','').lower()
 
         if name2 == 'plugins':
@@ -904,9 +909,6 @@ class leoMenu:
     #@-node:ekr.20031218072017.3767:defineOutlineMenuTables & helpers
     #@+node:ekr.20050921103230:defineCmdsMenuTables & helpers
     def defineCmdsMenuTables (self):
-
-        if 0: # Replaced by minibuffer submenu.
-            self.defineCmdsMenuTopTable()
 
         self.defineCmdsMenuAbbrevTable()
         self.defineCmdsMenuBodyEditorsTable()
@@ -1732,7 +1734,7 @@ class leoMenu:
         self.oops()
 
     def new_menu(self,parent,tearoff=0):
-        self.oops()
+        self.oops() ; return None
     #@-node:ekr.20031218072017.3809:9 Routines with Tk spellings
     #@+node:ekr.20031218072017.3810:9 Routines with new spellings
     def activateMenu (self,menuName): # New in Leo 4.4b2.
@@ -1744,21 +1746,17 @@ class leoMenu:
     def createMenuBar (self,frame):
         self.oops()
 
-    if 0: # Now defined in the base class
-        def createOpenWithMenuFromTable (self,table):
-            self.oops()
-
-        def defineMenuCallback(self,command,name):
-            self.oops()
-
-        def defineOpenWithMenuCallback(self,command):
-            self.oops()
+    def createOpenWithMenu (self,parent,label,index,amp_index):
+        self.oops() ; return None
 
     def disableMenu (self,menu,name):
         self.oops()
 
     def enableMenu (self,menu,name,val):
         self.oops()
+
+    def getMacHelpMenu (self,table):
+        return None
 
     def getManuLabel (self,menu):
         # __pychecker__ = '--no-argsused' # menu not used.

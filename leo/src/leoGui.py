@@ -477,7 +477,7 @@ class nullGui(leoGui):
         leoGui.__init__ (self,guiName) # init the base class.
 
         self.clipboardContents = ''
-        self.dict = {}
+        self.theDict = {}
         self.focusWidget = None
         self.script = None
         self.lastFrame = None
@@ -610,7 +610,7 @@ class nullGui(leoGui):
     #@+node:ekr.20031218072017.3747:simulateDialog
     def simulateDialog (self,key,defaultVal=None):
 
-        val = self.dict.get(key,defaultVal)
+        val = self.theDict.get(key,defaultVal)
 
         if self.trace:
             print key, val
@@ -628,7 +628,7 @@ class unitTestGui(nullGui):
 
     #@    @+others
     #@+node:ekr.20031218072017.3743: ctor (unitTestGui)
-    def __init__ (self,dict={},trace=False):
+    def __init__ (self,theDict=None,trace=False):
 
         self.oldGui = g.app.gui
 
@@ -639,7 +639,8 @@ class unitTestGui(nullGui):
         self.bodyTextWidget = self.oldGui.bodyTextWidget
         self.plainTextWidget = self.oldGui.plainTextWidget
 
-        self.dict = dict
+        if theDict is None: theDict = {}
+        self.theDict = theDict
         self.trace = trace
         g.app.gui = self
 

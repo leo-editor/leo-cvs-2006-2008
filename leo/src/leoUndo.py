@@ -73,8 +73,8 @@ import string
 
 #@+others
 #@+node:ekr.20031218072017.3605:class undoer
-class baseUndoer:
-    """The base class of the undoer class."""
+class undoer:
+    """A class that implements unlimited undo and redo."""
     #@    @+others
     #@+node:ekr.20031218072017.3606:undo.__init__ & clearIvars
     def __init__ (self,c):
@@ -107,7 +107,36 @@ class baseUndoer:
 
         # New in 4.2...
         self.optionalIvars = []
-    #@nonl
+
+        # Set the following ivars to keep pychecker happy.
+        self.afterTree = None
+        self.beforeTree = None
+        self.dirtyVnodeList = None
+        self.kind = None
+        self.newBack = None
+        self.newBody = None
+        self.newHead = None
+        self.newMarked = None
+        self.newN = None
+        self.newP = None
+        self.newParent = None
+        self.newRecentFiles = None
+        self.newTree = None
+        self.oldBack = None
+        self.oldBody = None
+        self.oldHead = None
+        self.oldMarked = None
+        self.oldN = None
+        self.oldParent = None
+        self.oldRecentFiles = None
+        self.oldTree = None
+        self.pasteAsClone = None
+
+    def redoHelper(self):
+        pass
+
+    def undoHelper(self):
+        pass
     #@+node:ekr.20031218072017.3607:clearIvars
     def clearIvars (self):
 
@@ -1421,7 +1450,7 @@ class baseUndoer:
             g.es("redo %d instances" % count)
 
         c.selectPosition(p)
-        newSel and c.frame.body.setSelectionRange(newSel)
+        if newSel: c.frame.body.setSelectionRange(newSel)
     #@nonl
     #@-node:ekr.20050318085432.6:redoGroup
     #@+node:ekr.20050318085432.7:redoNodeContents
@@ -1652,7 +1681,7 @@ class baseUndoer:
             g.es("undo %d instances" % count)
 
         c.selectPosition(p)
-        oldSel and c.frame.body.setSelectionRange(oldSel)
+        if oldSel: c.frame.body.setSelectionRange(oldSel)
     #@nonl
     #@-node:ekr.20050318085713:undoGroup
     #@+node:ekr.20050412083244:undoHoistNode & undoDehoistNode
@@ -1859,10 +1888,6 @@ class baseUndoer:
     #@-node:ekr.20031218072017.1493:undoRedoText (passed)
     #@-node:ekr.20031218072017.2039:undo & helpers...
     #@-others
-
-class undoer (baseUndoer):
-    """A class that implements unlimited undo and redo."""
-    pass
 #@-node:ekr.20031218072017.3605:class undoer
 #@+node:ekr.20031218072017.2243:class nullUndoer (undoer)
 class nullUndoer (undoer):

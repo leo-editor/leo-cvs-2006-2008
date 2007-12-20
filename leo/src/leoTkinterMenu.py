@@ -70,48 +70,6 @@ class leoTkinterMenu (leoMenu.leoMenu):
         return d
     #@-node:ekr.20060210133835.1:tkMenu.computeMenuPositions
     #@-node:ekr.20060211101811:Activate menu commands
-    #@+node:ekr.20060211144330.1:getMacHelpMenu
-    def getMacHelpMenu (self,table):
-
-        defaultTable = [
-                # &: a,b,c,d,e,f,h,l,m,n,o,p,r,s,t,u
-                ('&About Leo...',           'about-leo'),
-                ('Online &Home Page',       'open-online-home'),
-                '*open-online-&tutorial',
-                '*open-&users-guide',
-                '-',
-                ('Open Leo&Docs.leo',       'open-leoDocs-leo'),
-                ('Open Leo&Plugins.leo',    'open-leoPlugins-leo'),
-                ('Open Leo&Settings.leo',   'open-leoSettings-leo'),
-                ('Open &myLeoSettings.leo', 'open-myLeoSettings-leo'),
-                ('Open scr&ipts.leo',       'open-scripts-leo'),
-                '-',
-                '*he&lp-for-minibuffer',
-                '*help-for-&command',
-                '-',
-                '*&apropos-autocompletion',
-                '*apropos-&bindings',
-                '*apropos-&debugging-commands',
-                '*apropos-&find-commands',
-                '-',
-                '*pri&nt-bindings',
-                '*print-c&ommands',
-            ]
-
-        try:
-            topMenu = self.getMenu('top')
-            # Use the name argument to create the special Macintosh Help menu.
-            helpMenu = Tk.Menu(topMenu,name='help',tearoff=0)
-            self.add_cascade(topMenu,label='Help',menu=helpMenu,underline=0)
-            self.createMenuEntries(helpMenu,table or defaultTable)
-            return helpMenu
-
-        except Exception:
-            g.trace('Can not get MacOS Help menu')
-            g.es_exception()
-            return None
-    #@nonl
-    #@-node:ekr.20060211144330.1:getMacHelpMenu
     #@+node:ekr.20031218072017.4103:Tkinter menu bindings
     # See the Tk docs for what these routines are to do
     #@+node:ekr.20031218072017.4104:Methods with Tk spellings
@@ -308,6 +266,48 @@ class leoTkinterMenu (leoMenu.leoMenu):
     #@-node:ekr.20031218072017.4121:setMenuLabel
     #@-node:ekr.20031218072017.4114:Methods with other spellings (Tkmenu)
     #@-node:ekr.20031218072017.4103:Tkinter menu bindings
+    #@+node:ekr.20071220094941:getMacHelpMenu
+    def getMacHelpMenu (self,table):
+
+        defaultTable = [
+                # &: a,b,c,d,e,f,h,l,m,n,o,p,r,s,t,u
+                ('&About Leo...',           'about-leo'),
+                ('Online &Home Page',       'open-online-home'),
+                '*open-online-&tutorial',
+                '*open-&users-guide',
+                '-',
+                ('Open Leo&Docs.leo',       'open-leoDocs-leo'),
+                ('Open Leo&Plugins.leo',    'open-leoPlugins-leo'),
+                ('Open Leo&Settings.leo',   'open-leoSettings-leo'),
+                ('Open &myLeoSettings.leo', 'open-myLeoSettings-leo'),
+                ('Open scr&ipts.leo',       'open-scripts-leo'),
+                '-',
+                '*he&lp-for-minibuffer',
+                '*help-for-&command',
+                '-',
+                '*&apropos-autocompletion',
+                '*apropos-&bindings',
+                '*apropos-&debugging-commands',
+                '*apropos-&find-commands',
+                '-',
+                '*pri&nt-bindings',
+                '*print-c&ommands',
+            ]
+
+        try:
+            topMenu = self.getMenu('top')
+            # Use the name argument to create the special Macintosh Help menu.
+            helpMenu = Tk.Menu(topMenu,name='help',tearoff=0)
+            self.add_cascade(topMenu,label='Help',menu=helpMenu,underline=0)
+            self.createMenuEntries(helpMenu,table or defaultTable)
+            return helpMenu
+
+        except Exception:
+            g.trace('Can not get MacOS Help menu')
+            g.es_exception()
+            return None
+    #@nonl
+    #@-node:ekr.20071220094941:getMacHelpMenu
     #@-others
 #@-node:ekr.20031218072017.4100:@thin leoTkinterMenu.py
 #@-leo

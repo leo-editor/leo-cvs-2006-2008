@@ -1036,7 +1036,7 @@ class leoFind:
                 elif ch == 'n':
                     s = s[:i] + '\n' + s[i+2:] # replace the \n by a newline
                 elif ch == 't':
-                     s = s[:i] + '\t' + s[i+2:] # replace \t by a tab
+                    s = s[:i] + '\t' + s[i+2:] # replace \t by a tab
                 else:
                     i += 1 # Skip the escaped character.
             i += 1
