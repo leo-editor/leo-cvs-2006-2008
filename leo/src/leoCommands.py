@@ -21,10 +21,8 @@ if g.app and g.app.use_psyco:
     except ImportError: pass
 
 import leoAtFile
-import leoConfig
 import leoEditCommands
 import leoFileCommands
-import leoKeys
 import leoImport
 import leoNodes
 import leoTangle
@@ -99,7 +97,7 @@ class baseCommands:
         self.tangleCommands = leoTangle.tangleCommands(c)
         leoEditCommands.createEditCommanders(c)
 
-        if 0 and g.debugGC:
+        if 0:
             print ; print "*** using Null undoer ***" ; print
             self.undoer = leoUndo.nullUndoer(self)
         else:
@@ -856,7 +854,7 @@ class baseCommands:
                         if subprocess:
                             subprocess.Popen(vtuple)
                         else:
-                            g.grace('Can not import subprocess.  Skipping: "%s"' % command)
+                            g.trace('Can not import subprocess.  Skipping: "%s"' % command)
                     else:
                         command="bad command:"+str(openType)
                         g.trace(command)
@@ -925,22 +923,23 @@ class baseCommands:
         """Return the path to the temp file corresponding to p and ext."""
 
         if 0: # new code: similar to code in mod_tempfname.py plugin.
-            try:
-                # At least in Windows, user name may contain special characters
-                # which would require escaping quotes.
-                leoTempDir = g.sanitize_filename(getpass.getuser()) + "_" + "Leo"
-            except:
-                leoTempDir = "LeoTemp"
-                g.es("Could not retrieve your user name.")
-                g.es("Temporary files will be stored in: %s" % leoTempDir)
+            pass
+            # try:
+                # # At least in Windows, user name may contain special characters
+                # # which would require escaping quotes.
+                # leoTempDir = g.sanitize_filename(getpass.getuser()) + "_" + "Leo"
+            # except:
+                # leoTempDir = "LeoTemp"
+                # g.es("Could not retrieve your user name.")
+                # g.es("Temporary files will be stored in: %s" % leoTempDir)
 
-            td = os.path.join(g.os_path_abspath(tempfile.gettempdir()),leoTempDir)
-            if not os.path.exists(td):
-                os.mkdir(td)
+            # td = os.path.join(g.os_path_abspath(tempfile.gettempdir()),leoTempDir)
+            # if not os.path.exists(td):
+                # os.mkdir(td)
 
-            name = g.sanitize_filename(v.headString()) + '_' + str(id(v.t))  + ext
-            path = os.path.join(td,name)
-            return path
+            # name = g.sanitize_filename(v.headString()) + '_' + str(id(p.v.t))  + ext
+            # path = os.path.join(td,name)
+            # return path
         else: # Original code.
             name = "LeoTemp_%s_%s%s" % (
                 str(id(p.v.t)),
@@ -948,7 +947,22 @@ class baseCommands:
                 ext)
 
             name = g.toUnicode(name,g.app.tkEncoding)
+            # try:
+                # # At least in Windows, user name may contain special characters
+                # # which would require escaping quotes.
+                # leoTempDir = g.sanitize_filename(getpass.getuser()) + "_" + "Leo"
+            # except:
+                # leoTempDir = "LeoTemp"
+                # g.es("Could not retrieve your user name.")
+                # g.es("Temporary files will be stored in: %s" % leoTempDir)
 
+            # td = os.path.join(g.os_path_abspath(tempfile.gettempdir()),leoTempDir)
+            # if not os.path.exists(td):
+                # os.mkdir(td)
+
+            # name = g.sanitize_filename(v.headString()) + '_' + str(id(v.t))  + ext
+            # path = os.path.join(td,name)
+            # return path
             if 1:
                 td = g.os_path_abspath(tempfile.gettempdir())
             else:
@@ -1931,6 +1945,7 @@ class baseCommands:
                     tnodeList = root.v.t.tnodeList
                     #@    << set tnodeIndex to the number of +node sentinels before line n >>
                     #@+node:ekr.20031218072017.2871:<< set tnodeIndex to the number of +node sentinels before line n >>
+
                     tnodeIndex = -1 # Don't count the @file node.
                     scanned = 0 # count of lines scanned.
 
@@ -1949,6 +1964,7 @@ class baseCommands:
                     tnodeIndex = max(0,tnodeIndex)
                     #@    << set p to the first vnode whose tnode is tnodeList[tnodeIndex] or set ok = False >>
                     #@+node:ekr.20031218072017.2872:<< set p to the first vnode whose tnode is tnodeList[tnodeIndex] or set ok = false >>
+
                     #@+at 
                     #@nonl
                     # We use the tnodeList to find a _tnode_ corresponding to 
@@ -3459,7 +3475,7 @@ class baseCommands:
 
         c.beginUpdate()
         try:
-           c.endEditing() # Make sure we capture the headline for Undo.
+            c.endEditing() # Make sure we capture the headline for Undo.
         finally:
             c.endUpdate(False)
 
@@ -3468,7 +3484,7 @@ class baseCommands:
             h = p.headString()
             if h.startswith(chapters):
                 if p.hasChildren():
-                   return cc.error('Can not delete @chapters node with children.')
+                    return cc.error('Can not delete @chapters node with children.')
             elif h.startswith(chapter):
                 name = h[len(chapter):].strip()
                 if name:
@@ -4031,7 +4047,7 @@ class baseCommands:
         c = self
 
         if p: root = p.copy()
-        else: root = c.currentPosition();
+        else: root = c.currentPosition()
 
         pp = c.prettyPrinter(c)
 
@@ -5189,7 +5205,6 @@ class baseCommands:
             if 0:
                 g.trace("visBack",back)
                 g.trace("visBack2",back2)
-                g.trace("oldParent",oldParent)
                 g.trace("back2.hasChildren",back2.hasChildren())
                 g.trace("back2.isExpanded",back2.isExpanded())
 
@@ -5889,8 +5904,8 @@ class baseCommands:
                 dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
                 dirtyVnodeList.extend(dirtyVnodeList2)
             else: # No need to mark descendents dirty.
-               dirtyVnodeList2 =  p.setAllAncestorAtFileNodesDirty()
-               dirtyVnodeList.extend(dirtyVnodeList2)
+                dirtyVnodeList2 =  p.setAllAncestorAtFileNodesDirty()
+                dirtyVnodeList.extend(dirtyVnodeList2)
             c.setChanged(True)
             u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
         finally:
@@ -6003,7 +6018,7 @@ class baseCommands:
 
     def minibufferWantsFocusNow(self):
         c = self ; k = c.k
-        k and k.minibufferWantsFocusNow()
+        if k: k.minibufferWantsFocusNow()
 
     def treeWantsFocusNow(self):
         c = self ; tree = c.frame.tree
@@ -6026,7 +6041,7 @@ class baseCommands:
 
     def minibufferWantsFocus(self):
         c = self ; k = c.k
-        k and k.minibufferWantsFocus()
+        if k: k.minibufferWantsFocus()
 
     def treeWantsFocus(self):
         c = self ; tree = c.frame.tree
@@ -6075,7 +6090,7 @@ class baseCommands:
 
         if c.inCommand:
             if trace: g.trace('expecting later call to c.masterFocusHandler')
-            pass # A call to c.masterFocusHandler will surely happen.
+            # A call to c.masterFocusHandler will surely happen.
         else:
             c.masterFocusHandler() # Do it now.
     #@-node:ekr.20060208143543:c.restoreFocus
@@ -6127,7 +6142,7 @@ class baseCommands:
     #@+node:ekr.20060207140352:c.masterFocusHandler
     def masterFocusHandler (self):
 
-        c = self ; 
+        c = self
         trace = not g.app.unitTesting and c.config.getBool('trace_masterFocusHandler')
 
         # Give priority to later requests, but default to previously set widget.
@@ -6297,8 +6312,8 @@ class baseCommands:
         c = self ; p = c.currentPosition()
 
         if c.hoistStack:
-             bunch = c.hoistStack[0]
-             if p == bunch.p: return False
+            bunch = c.hoistStack[0]
+            if p == bunch.p: return False
 
         return p.hasParent() or p.hasThreadBack() or p.hasNext()
 
@@ -7195,6 +7210,12 @@ class configSettings:
     def __init__ (self,c):
 
         self.c = c
+
+        # Init these here to keep pylint happy.
+        self.default_derived_file_encoding = None
+        self.new_leo_file_encoding = None
+        self.redirect_execute_script_output_to_log_pane = None
+        self.tkEncoding = None
 
         self.defaultBodyFontSize = g.app.config.defaultBodyFontSize
         self.defaultLogFontSize  = g.app.config.defaultLogFontSize
