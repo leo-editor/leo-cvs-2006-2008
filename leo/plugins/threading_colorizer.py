@@ -1448,8 +1448,8 @@ class colorizer:
                 return
             for f in self.rulesDict.get(s[i],[]):
                 n = f(self,s,i)
-                if n is None:
-                    g.trace('Can not happen: matcher returns None')
+                if n is None or n < 0:
+                    g.trace('Can not happen: bad matcher returns: %s' % repr(n))
                 elif n > 0:
                     i += n ; break
             else:
@@ -1500,7 +1500,7 @@ class colorizer:
 
         '''Succeed if seq matches s[i:]'''
 
-        if self.trace_match_flag: g.trace(g.callers(2),i,repr(s[i:i+20]))
+        if self.verbose: g.trace(g.callers(1),i,repr(s[i:i+20]))
 
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
@@ -1524,7 +1524,7 @@ class colorizer:
 
         '''Succeed if the regular expression regex matches s[i:].'''
 
-        if self.trace_match_flag: g.trace(g.callers(2),i,repr(s[i:i+20]))
+        if self.verbose: g.trace(g.callers(1),i,repr(s[i:i+20]))
 
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
@@ -1583,7 +1583,7 @@ class colorizer:
 
         if not self.allow_mark_prev: return 0
 
-        if self.trace_match_flag: g.trace(g.callers(2),i,repr(s[i:i+20]))
+        if self.verbose: g.trace(g.callers(1),i,repr(s[i:i+20]))
 
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
@@ -1630,7 +1630,7 @@ class colorizer:
 
         if not self.allow_mark_prev: return 0
 
-        if self.trace_match_flag: g.trace(g.callers(2),i,repr(s[i:i+20]))
+        if self.verbose: g.trace(g.callers(1),i,repr(s[i:i+20]))
 
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
@@ -1656,7 +1656,7 @@ class colorizer:
 
         '''Return the length of the matching text if seq (a regular expression) matches the present position.'''
 
-        if self.trace_match_flag: g.trace(pattern)
+        if self.verbose: g.trace(g.callers(1),i,repr(s[i:i+20]),'pattern',pattern)
 
         try:
             flags = re.MULTILINE
@@ -1673,7 +1673,10 @@ class colorizer:
             return 0
         else:
             start, end = mo.start(), mo.end()
-            # g.trace('match: %s' % repr(s[start: end]))
+            if start != i: # Bug fix 2007-12-18: no match at i
+                return 0
+            # g.trace('pattern',pattern)
+            # g.trace('match: %d, %d, %s' % (start,end,repr(s[start: end])))
             # g.trace('groups',mo.groups())
             return end - start
     #@-node:ekr.20071010193720.65:match_regexp_helper
@@ -1709,13 +1712,15 @@ class colorizer:
 
         '''Succeed if the regular expression regexp matches at s[i:].'''
 
-        if self.trace_match_flag: g.trace(g.callers(2),i,repr(s[i:i+20]))
+        if self.verbose: g.trace(g.callers(1),i,repr(s[i:i+20]),'regexp',regexp)
 
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
         if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
 
-        j = self.match_regexp_helper(s,i,regexp)
+        n = self.match_regexp_helper(s,i,regexp)
+        j = i + n # Bug fix: 2007-12-18
+        assert (j-i == n)
         self.colorRangeWithTag(s,i,j,kind,delegate=delegate)
         self.prev = (i,j,kind)
         self.trace_match(kind,s,i,j)
@@ -1801,8 +1806,7 @@ class colorizer:
 
         '''Succeed if s[i:] starts with 'begin' (a regular expression) and contains a following 'end'.'''
 
-        if self.trace_match_flag:
-            g.trace('begin',repr(begin),'end',repr(end),self.dump(s[i:]))
+        if self.verbose: g.trace('begin',repr(begin),'end',repr(end),self.dump(s[i:]))
 
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
@@ -1986,7 +1990,7 @@ class colorizer:
     def trace_match(self,kind,s,i,j):
 
         if j != i and self.trace_match_flag:
-            g.trace(kind,i,j,g.callers(4),self.dump(s[i:j]))
+            g.trace(kind,i,j,g.callers(2),self.dump(s[i:j]))
     #@nonl
     #@-node:ekr.20071010193720.78:trace_match
     #@-node:ekr.20071010193720.71:Utils
