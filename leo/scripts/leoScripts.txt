@@ -11600,8 +11600,8 @@ fixed = ['antlr','applescript','apacheconf','bibtex','cil','pl1','shell','shells
 errors = [] # 'cil',] # End keyword not matched by start.
 errors = [r'%s\%s.xml' % (theDir,s) for s in errors]
 # for s in errors: print s
-if 1: # A a list of files.
-    files = [r'%s\%s.xml' % (theDir,s) for s in ('perl',)]
+if 0: # A a list of files.
+    files = [r'%s\%s.xml' % (theDir,s) for s in ('perl',)] # 'rest','perl',
 elif 1: # translate all files.
     files = glob.glob(g.os_path_abspath(g.os_path_join(theDir,'*.xml')))
 elif 1: # error files
@@ -12015,6 +12015,8 @@ def putEolSpanRegexp (self,rule):
 
     quote = self.quoteString
     seq = rule.getSeq(rule.name)
+    hash_char = rule.getStrAttrib('hash_char') or seq[0]
+    # g.trace('hash_char',hash_char)
 
     s = '''\n\
 def %s_rule%d(colorer, s, i):
@@ -12034,7 +12036,7 @@ def %s_rule%d(colorer, s, i):
     )
 
     self.putTripleString(s)
-    return seq[0]
+    return hash_char  # Bug fix: was seq[0]
 #@nonl
 #@-node:putEolSpanRegexp
 #@+node:putImport
@@ -12137,6 +12139,8 @@ def putSeqRegexp (self,rule):
 
     quote = self.quoteString
     seq = rule.getSeq(rule.name)
+    hash_char = rule.getStrAttrib('hash_char') or seq[0]
+    # g.trace('hash_char',hash_char)
 
     s = '''\n\
 def %s_rule%d(colorer, s, i):
@@ -12154,7 +12158,7 @@ def %s_rule%d(colorer, s, i):
     )
 
     self.putTripleString(s)
-    return seq[0]
+    return hash_char # Bug fix: was seq[0]
 #@nonl
 #@-node:putSeqRegexp
 #@+node:putSpan
@@ -12192,6 +12196,7 @@ def putSpanRegexp (self,rule):
 
     quote = self.quoteString
     begin,end = rule.getSpan()
+    hash_char = rule.getStrAttrib('hash_char') or begin[0]
 
     s = '''\n\
 def %s_rule%d(colorer, s, i):
@@ -12215,7 +12220,7 @@ def %s_rule%d(colorer, s, i):
     )
 
     self.putTripleString(s)
-    return begin[0]
+    return hash_char # Bug fix: was begin[0]
 #@nonl
 #@-node:putSpanRegexp
 #@+node:putTerminate
