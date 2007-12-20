@@ -1667,7 +1667,8 @@ class colorizer:
             g.trace('Invalid regular expression: %s' % (pattern))
             return 0
 
-        self.match_obj = mo = re_obj.search(s,i)
+        # Match succeeds or fails more quickly than search.
+        self.match_obj = mo = re_obj.match(s,i) # re_obj.search(s,i)
 
         if mo is None:
             return 0
