@@ -193,7 +193,7 @@ def undoGroup (self):
         g.es("undo %d instances" % count)
 
     c.selectPosition(p)
-    oldSel and c.frame.body.setSelectionRange(oldSel)
+    if oldSel: c.frame.body.setSelectionRange(oldSel)
 #@nonl
 #@-node:ekr.20050318085713:undoGroup
 #@+node:ekr.20050412083244:undoHoistNode & undoDehoistNode
@@ -562,7 +562,7 @@ def redoGroup (self):
         g.es("redo %d instances" % count)
 
     c.selectPosition(p)
-    newSel and c.frame.body.setSelectionRange(newSel)
+    if newSel: c.frame.body.setSelectionRange(newSel)
 #@nonl
 #@-node:ekr.20050318085432.6:redoGroup
 #@+node:ekr.20050318085432.7:redoNodeContents
@@ -2225,7 +2225,7 @@ def replaceBackSlashes (self,s):
             elif ch == 'n':
                 s = s[:i] + '\n' + s[i+2:] # replace the \n by a newline
             elif ch == 't':
-                 s = s[:i] + '\t' + s[i+2:] # replace \t by a tab
+                s = s[:i] + '\t' + s[i+2:] # replace \t by a tab
             else:
                 i += 1 # Skip the escaped character.
         i += 1
@@ -2915,7 +2915,7 @@ def replaceBackSlashes (self,s):
             elif ch == 'n':
                 s = s[:i] + '\n' + s[i+2:] # replace the \n by a newline
             elif ch == 't':
-                 s = s[:i] + '\t' + s[i+2:] # replace \t by a tab
+                s = s[:i] + '\t' + s[i+2:] # replace \t by a tab
             else:
                 i += 1 # Skip the escaped character.
         i += 1

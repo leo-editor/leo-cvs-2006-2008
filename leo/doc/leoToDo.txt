@@ -394,11 +394,13 @@ Reports
 R0801:	Duplication
 #@-node:ekr.20071217231828.4:Simularities
 #@-node:ekr.20071217231348:Pylint docs
-#@+node:ekr.20071218000536:pylint report
-@nocolor
+#@+node:ekr.20071220081732:pylint report
+@killcolor
 
+************* Module leoTkinterDialog
 
-#@-node:ekr.20071218000536:pylint report
+E0202:825:tkinterListBoxDialog.hide: An attribute inherited from tkinterListBoxDialog hide this method
+#@-node:ekr.20071220081732:pylint report
 #@-node:ekr.20071217134533:Run pylint on all files
 #@-node:ekr.20071211143430:4.4.6 bugs & easy improvements
 #@+node:ekr.20071113093057:4.5 cleanups, vim bindings & readline

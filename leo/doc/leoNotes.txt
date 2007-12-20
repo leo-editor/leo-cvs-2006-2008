@@ -2858,6 +2858,21 @@ Brian Theado
 @language python
 @color
 #@nonl
+#@+node:ekr.20070228074312.43:tkColorToWxColor
+def tkColorToWxColor (self, color):
+
+    d = {
+        'black':        wx.BLACK,
+        "red":          wx.RED,
+        "blue":         wx.BLUE,
+        "#00aa00":      wx.GREEN,
+        "firebrick3":   wx.RED,
+        'white':        wx.WHITE,
+    }
+
+    return d.get(color)
+#@nonl
+#@-node:ekr.20070228074312.43:tkColorToWxColor
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl
