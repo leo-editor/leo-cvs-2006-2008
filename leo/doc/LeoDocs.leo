@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.628989361702">
-	<global_window_position top="14" left="340" height="712" width="892"/>
+<globals body_outline_ratio="0.431306306306">
+	<global_window_position top="14" left="340" height="888" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -1109,7 +1109,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="ETV"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20071217093444"><vh>What's New in Leo 4.4.6</vh>
 <v t="ekr.20071217093444.1"><vh>@rst html\new-4-4-6.html</vh>
@@ -3476,8 +3476,8 @@
 <v t="ekr.20071211083251"><vh>Leo 4.4.5 final</vh></v>
 </v>
 </v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
-<v t="ekr.20071217092250"><vh>leo 4.4.6 b1</vh>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20071217092250" a="E"><vh>leo 4.4.6 b1</vh>
 <v t="ekr.20071217092203.1"><vh>Bugs fixed</vh>
 <v t="ekr.20071217092203.2"><vh>Fixed undo (dirty bit) problem)</vh></v>
 <v t="ekr.20071217092203.30"><vh>Fixed cursesGui  plugin</vh></v>
@@ -3607,7 +3607,7 @@ How to recover the data:
 	- Read Outline.
 	- Remove @ignore
 	- Import derived file... </t>
-<t tx="EKR.20040524104904.26">@nocolor</t>
+<t tx="EKR.20040524104904.26"></t>
 <t tx="EKR.20040524104904.27">A cloned node is a copy of a node that changes when the original changes. Not
 only are changes maintained across all the the clones of a node, changes to its
 offspring (children, grandchildren, etc). are simultaneously made to the
@@ -3861,7 +3861,7 @@ Notes:
 2. Within @asis trees only, if a headline starts with @@, Leo writes everything in the headline following the @@ just before the corresponding body text.
 
 3. Files derived from @asis trees contain _nothing_ not contained in body text (or @@ headlines).  In particular, if body text does not end in a newline, the first line from the next node will concatenated to the last line of the preceding node.</t>
-<t tx="EKR.20040524104904.99">@nocolor</t>
+<t tx="EKR.20040524104904.99"></t>
 <t tx="EKR.20040524104904.100"></t>
 <t tx="EKR.20040524104904.101">-   The ``New`` command creates a new Leo main window.
 
@@ -4286,7 +4286,7 @@ The following sections describe the kinds of nodes in ``@settings`` trees.
 -   The ``Open LeoSettings.leo`` command opens ``LeoSettings.leo``.
 
 </t>
-<t tx="EKR.20040524104904.161">@nocolor</t>
+<t tx="EKR.20040524104904.161"></t>
 <t tx="EKR.20040524104904.162">The following paragraphs discuss the main benefits of traditional `literate programming`_.
 **Note**: none of these benefits depends on printed output.
 
@@ -4451,7 +4451,7 @@ weren't where I expected them to be.
 A dictionary is a better model for programs than a novel. Leo's outlines provide
 a more regular organization, while providing space for the most lengthy
 discussions when those discussions are required.</t>
-<t tx="EKR.20040524104904.211">@nocolor</t>
+<t tx="EKR.20040524104904.211"></t>
 <t tx="EKR.20040524104904.224">Naively using plugins can expose you and your .leo files to malicious attacks.
 The fundamental principles are::
 
@@ -4569,7 +4569,7 @@ unknownAttributes is concerned. This won't work in all cases. For example, a
 plugin that creates an arbitrary directed graph between vnodes must distinguish
 between joined vnodes. In that case, the plugin should confine itself to @file
 trees, or just vnodes in .leo files, for that matter.</t>
-<t tx="EKR.20040524104904.245">@nocolor</t>
+<t tx="EKR.20040524104904.245"></t>
 <t tx="EKR.20040524104904.247">In May of 1999 I began work on the Borland version of Leo for Windows.  The Borland Delphi classes were a pleasure to use and free of bugs.  I redesigned Leo's file format for the Windows version of Leo;  the Yellow Box file format is a binary format that requires the Yellow Box runtime.  Fortunately, I choose to use XML for Leo's file format. I have Marc-Antoine Parent to thank for this decision; he urged me to use XML and patiently explained how to use XML properly.  However, there are two significant problems with the Borland version of Leo.  First, it works only on Windows.  Second, it can never be Open software, because it uses Borland's Delphi classes and a commercial syntax coloring component.
 
 In October of 2001 I began work on the leo.py, an Open Software version of leo.py, a version of Leo written in Python and Tk.  At last I have found the proper platform for Leo.  leo.py naturally supports scripting in Python.  The combination of Python and Tk is incredibly powerful, very easy to use, and truly cross platform.  I rewrote Leo in Python in about two months!  For the first time in my career I no longer am anxious while programming; it simply isn't possible to create bad bugs in Python.</t>
@@ -4694,7 +4694,7 @@ than an incremental improvement over Smalltalk or C++ or objective-C; it is
 "something completely different". The rest of this post tries to explain this
 difference.
 </t>
-<t tx="EKR.20040524104904.261">@nocolor</t>
+<t tx="EKR.20040524104904.261"></t>
 <t tx="EKR.20040524104904.262">All versions of Leo are organized as a collection of classes. The general
 organization of Leo has remained remarkably stable throughout all versions of
 Leo, although the names of classes are different in different versions.
@@ -5031,7 +5031,7 @@ create a new bead. The list of beads does not branch; all undoable operations
 (except the Undo and Redo commands themselves) delete any beads following the
 newly created bead. I did not invent this model of unlimited undo.
 I first came across it in the documentation for Apple's Yellow Box classes.</t>
-<t tx="EKR.20040524104904.274">@nocolor</t>
+<t tx="EKR.20040524104904.274"></t>
 <t tx="EKR.20040524104904.282">To convert an ``@root`` tree to an ``@file`` tree, choose the root of the tree to be converted,
 then do the following in the Python window::
 
@@ -11012,7 +11012,7 @@ future changes to the internals of these classes.
 	p.following_siblings_iter  # returns all siblings following p.
 	p.subtree_iter             # returns all positions in p's subtree, excluding p.
 	p.self_and_subtree_iter    # returns all positions in p's subtree, including p.</t>
-<t tx="ekr.20040414161647">@nocolor
+<t tx="ekr.20040414161647">@language rest
 
 These are the sources for the html version of Leo's users guide,
 as well as the documentation for the rst3 plugin used to create the actual html files.
@@ -17914,15 +17914,15 @@ The benefits of the new workflow:
 
 - test.leo is the perfect place to develop test.
   I can create and organize those tests and when I am done, ''test.leo'' is a log of my work.</t>
-<t tx="ekr.20050831184021.1">@nocolor</t>
-<t tx="ekr.20050831184021.2">@nocolor</t>
-<t tx="ekr.20050831184021.3">@nocolor</t>
-<t tx="ekr.20050831184021.4">@nocolor</t>
-<t tx="ekr.20050831184021.5">@nocolor</t>
-<t tx="ekr.20050831195331.1">@nocolor</t>
-<t tx="ekr.20050831195331.2">@nocolor</t>
-<t tx="ekr.20050831195331.3">@nocolor</t>
-<t tx="ekr.20050831195331.4">@nocolor</t>
+<t tx="ekr.20050831184021.1"></t>
+<t tx="ekr.20050831184021.2"></t>
+<t tx="ekr.20050831184021.3"></t>
+<t tx="ekr.20050831184021.4"></t>
+<t tx="ekr.20050831184021.5"></t>
+<t tx="ekr.20050831195331.1"></t>
+<t tx="ekr.20050831195331.2"></t>
+<t tx="ekr.20050831195331.3"></t>
+<t tx="ekr.20050831195331.4"></t>
 <t tx="ekr.20050831195449">@nocolor
 
 For instruction about installing Leo see:
@@ -18565,7 +18565,7 @@ For example, an `@root node`_ is a node containing an @root directive_, etc.
 <t tx="ekr.20050901083017">-----------------------
 
 |prev| |leo| |next|</t>
-<t tx="ekr.20050901084134">@nocolor</t>
+<t tx="ekr.20050901084134"></t>
 <t tx="ekr.20050901092232">@ @rst-options
 code_mode=False
 generate_rst=True
@@ -19837,7 +19837,7 @@ For Windows systems you can install Python's subprocess module in Python 2.2 or
         
 This installer installs the subprocess sources and also _subprocess.pyd in Python's site-packages folder.
 </t>
-<t tx="ekr.20050912125144">@nocolor</t>
+<t tx="ekr.20050912125144"></t>
 <t tx="ekr.20050912125144.1">@ @rst-options
 code_mode=False
 generate_rst=True
@@ -20827,7 +20827,7 @@ The highlights of 4.3.2:
 - Improved the Pretty Printing command.
 
 - The usual assortment of bug fixes.</t>
-<t tx="ekr.20050914132220">@nocolor</t>
+<t tx="ekr.20050914132220"></t>
 <t tx="ekr.20050916065715">@killcolor
 https://sourceforge.net/forum/message.php?msg_id=3341105
 By: rogererens
@@ -20845,7 +20845,7 @@ staring at them...</t>
 **Important**: Leo's tutorial is now a clearer explanation of the basics.
 This tech report should be rewritten.
 
-@nocolor
+
 @tabwidth -4</t>
 <t tx="ekr.20050916184158.1">@ @rst-options
 code_mode=False
@@ -23152,7 +23152,7 @@ even a minute for this.</t>
 - @bool trace_key_event
 - @bool trace_minibuffer
 - @bool trace_status_line</t>
-<t tx="ekr.20060218085144">@nocolor
+<t tx="ekr.20060218085144">
 This white paper originally appeared in November 2003 as a series of postings to comp.lang.python.
 Many features have been added since then.
 I rewrote this paper in February 2006.
@@ -24128,7 +24128,7 @@ Using Python colorer control files has the following advantages:
 - It is easy to modify the Python colorer control files 'by hand' without changing the corresponding xml file.
   In particular, it would be easy to define entirely new kinds of pattern-matching rules in Python merely
   by creating functions in a colorer control file.</t>
-<t tx="ekr.20060430221745">@nocolor</t>
+<t tx="ekr.20060430221745"></t>
 <t tx="ekr.20060430221745.1">@ @rst-options
 code_mode=False
 generate_rst=True
@@ -24858,7 +24858,7 @@ Notes:
   None converts the @rst tree to a single reStructuredText string, as shown in @button rst-&gt;rst.
 
 - There is some support for ext='.pdf', but this is experimental code.  Expect crashes.</t>
-<t tx="ekr.20060527105211">@nocolor</t>
+<t tx="ekr.20060527105211"></t>
 <t tx="ekr.20060527105617">@ @rst-options
 code_mode=False
 generate_rst=True
@@ -25051,7 +25051,7 @@ which can later rehoist the same node.
 The 'Dehoist' button performs one level of dehoisting.
 
 This plugin replaces the old chapters plugin.</t>
-<t tx="ekr.20060602142732">@nocolor
+<t tx="ekr.20060602142732">
 
 leoKeys.py handles key bindings.
 There are two kinds of bindings, gui bindings and pane bindings.
@@ -26198,7 +26198,7 @@ def update_ivars(self):
 <t tx="ekr.20060608111953.60">------------------
 
 |back| |leo| |next|</t>
-<t tx="ekr.20060612102055">@nocolor</t>
+<t tx="ekr.20060612102055"></t>
 <t tx="ekr.20060612103240">.. June 8, 2006
 
 @ @rst-options
@@ -26767,9 +26767,9 @@ Here is the full list of mode-related commands::
     toggle-calltips
     toggle-extend-mode
     toggle-input-state</t>
-<t tx="ekr.20060620094033">@nocolor</t>
+<t tx="ekr.20060620094033"></t>
 <t tx="ekr.20060620094033.1"></t>
-<t tx="ekr.20060620094033.2">@nocolor</t>
+<t tx="ekr.20060620094033.2"></t>
 <t tx="ekr.20060620094425">@ @rst-options
 code_mode=False
 generate_rst=True
@@ -27819,7 +27819,7 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
-<t tx="ekr.20060913164304">@nocolor</t>
+<t tx="ekr.20060913164304"></t>
 <t tx="ekr.20060913164304.1">@ @rst-options
 code_mode=False
 generate_rst=True
@@ -29206,7 +29206,7 @@ Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
 <t tx="ekr.20061021164213">Set @bool ignore_unbound_non_ascii_keys = False in LeoSettings.leo or myLeoSettings.leo.</t>
 <t tx="ekr.20061021164213.1">This is a known bug in Tk/Tkinter and there is no good workaround. Some
 keyboards allow you to disable the caps-lock key.</t>
-<t tx="ekr.20061025065357">@nocolor</t>
+<t tx="ekr.20061025065357"></t>
 <t tx="ekr.20061025065357.1">@ @rst-options
 code_mode=False
 generate_rst=True
@@ -31139,7 +31139,7 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
-<t tx="ekr.20070628083442">@nocolor
+<t tx="ekr.20070628083442">
 @tabwidth -4</t>
 <t tx="ekr.20070628083442.1">@ @rst-options
 code_mode=False
