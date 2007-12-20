@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.477886977887">
-	<global_window_position top="103" left="397" height="714" width="864"/>
+	<global_window_position top="103" left="397" height="694" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -84,14 +84,14 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20070926132045"><vh>Buttons</vh>
 <v t="ekr.20070926082407"><vh>@buttons</vh>
 <v t="ekr.20070926082256.1"><vh>@@button Beautify</vh></v>
 <v t="ekr.20071009135515"><vh>@@button rst3</vh></v>
 </v>
 </v>
-<v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
+<v t="ekr.20041213105007.1" a="E" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
 <v t="ekr.20041119052015.2"><vh>@color log_text_foreground_color = None</vh></v>
@@ -127,7 +127,7 @@
 <v t="ekr.20041119051901.1"><vh>@color headline_text_editing_selection_background_color = None</vh></v>
 <v t="ekr.20041119050749.12"><vh>@color outline_pane_background_color = #ffffec</vh></v>
 </v>
-<v t="ekr.20041119034357.70"><vh>Syntax colors &amp; options</vh>
+<v t="ekr.20041119034357.70" a="E"><vh>Syntax colors &amp; options</vh>
 <v t="ekr.20060201111002"><vh>@bool use_syntax_coloring = True</vh></v>
 <v t="ekr.20060828145228"><vh>Options for old colorizer</vh>
 <v t="ekr.20041119034357.73"><vh>@bool color_cweb_comments_with_latex = True</vh></v>
@@ -150,11 +150,11 @@
 <v t="ekr.20041119034357.89"><vh>@color undefined_section_name_color = red</vh></v>
 <v t="ekr.20060829085840"><vh>@font php keyword fonts (old colorizer)</vh></v>
 </v>
-<v t="ekr.20060504131831"><vh>Options for jEdit colorer</vh>
+<v t="ekr.20060504131831" a="E"><vh>Options for jEdit colorer</vh>
 <v t="ekr.20060513100933"><vh>@int colorizer_interrupt_count1 = 10</vh></v>
 <v t="ekr.20060513100933.1"><vh>@int colorizer_interrupt_count2 = 5000</vh></v>
-<v t="ekr.20060828110551"><vh>Default colors, used if no language-specific color are in effect</vh>
-<v t="ekr.20060704090341"><vh>@color label_color = green</vh></v>
+<v t="ekr.20060828110551" a="E"><vh>Default colors, used if no language-specific color are in effect</vh>
+<v t="ekr.20060704090341" a="TV"><vh>@color label_color = red</vh></v>
 <v t="ekr.20060504131831.1"><vh>@color keyword1_color = blue</vh></v>
 <v t="ekr.20060827102902"><vh>@color keyword2_color = blue</vh></v>
 <v t="ekr.20060827102902.1"><vh>@color keyword3_color = blue</vh></v>
@@ -171,7 +171,7 @@
 <v t="ekr.20060713101831"><vh>@color operator_color = black</vh></v>
 </v>
 <v t="ekr.20060828110551.1"><vh>Language-specific colors</vh>
-<v t="ekr.20060828110551.2"><vh>php</vh>
+<v t="ekr.20060828110551.2" a="E"><vh>php</vh>
 <v t="ekr.20060828110551.3"><vh>@color php_operator_color = DodgerBlue1</vh></v>
 <v t="ekr.20060828145228.1"><vh>@font php keyword fonts (new colorizer)</vh></v>
 </v>
@@ -5912,7 +5912,7 @@ menu_text_font_weight = None</t>
 <t tx="ekr.20060828145228.1"># For new colorizer
 
 # php_keyword1_font_family = None
-php_keyword1_font_size = 16
+php_keyword1_font_size = None
 php_keyword1_font_slant = roman
     # roman, italic
 php_keyword1_font_weight = normal
