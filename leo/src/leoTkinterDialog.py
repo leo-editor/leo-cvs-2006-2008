@@ -771,11 +771,11 @@ class tkinterListBoxDialog (leoTkinterDialog):
     #@+node:ekr.20031218072017.3891:addStdButtons
     def addStdButtons (self,frame):
 
-        """Add stanadard buttons to a listBox dialog."""
+        """Add standard buttons to a listBox dialog."""
 
         # Create the ok and cancel buttons.
         self.ok = ok = Tk.Button(frame,text="Go",width=6,command=self.go)
-        self.hide = hide = Tk.Button(frame,text="Hide",width=6,command=self.hide)
+        self.hideButton = hide = Tk.Button(frame,text="Hide",width=6,command=self.hide)
 
         ok.pack(side="left",pady=2,padx=5)
         hide.pack(side="left",pady=2,padx=5)

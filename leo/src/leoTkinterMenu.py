@@ -43,7 +43,7 @@ class leoTkinterMenu (leoMenu.leoMenu):
             d = self.computeMenuPositions()
             x = d.get(menuName)
             if x is None:
-                 x = 0 ; g.trace('oops, no menu offset: %s' % menuName)
+                x = 0 ; g.trace('oops, no menu offset: %s' % menuName)
 
             menu.tk_popup(topx+d.get(menuName,0),topy) # Fix by caugm.  Thanks!
         else:
@@ -211,7 +211,6 @@ class leoTkinterMenu (leoMenu.leoMenu):
             except:
                 print "disableMenu menu,name:",menu,name
                 g.es_exception()
-                pass
     #@-node:ekr.20031218072017.4119:disableMenu
     #@+node:ekr.20031218072017.4120:enableMenu
     # Fail gracefully if the item name does not exist.
@@ -229,7 +228,7 @@ class leoTkinterMenu (leoMenu.leoMenu):
             except:
                 print "enableMenu menu,name,val:",menu,name,val
                 g.es_exception()
-                pass
+    #@nonl
     #@-node:ekr.20031218072017.4120:enableMenu
     #@+node:ekr.20060622075612:getMenuLabel
     def getMenuLabel (self,menu,name):

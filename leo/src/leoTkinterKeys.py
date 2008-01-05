@@ -5,7 +5,7 @@
 #@@language python
 #@@tabwidth -4
 #@@pagewidth 80
-import leoGlobals as g
+
 import Tkinter as Tk
 import leoKeys
 

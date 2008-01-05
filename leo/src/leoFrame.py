@@ -750,7 +750,7 @@ class leoBody:
     # Birth, death & config
     def createBindings (self,w=None):               self.oops()
     def createControl (self,parentFrame,p):         self.oops()
-    def createTextWidget (self,parentFrame=None):   self.oops() ; return None
+    def createTextWidget (self,parentFrame,p,name): self.oops() ; return None
     def setColorFromConfig (self,w=None):           self.oops()
     def setFontFromConfig (self,w=None):            self.oops()
 
@@ -2025,7 +2025,7 @@ class leoLog:
     def configureBorder(self,border):               pass
     def createControl (self,parentFrame):           pass
     def createCanvas (self,tabName):                pass
-    def createTextWidget (self,parentFrame=None):   return None
+    def createTextWidget (self,parentFrame):        return None
     def finishCreate (self):                        pass
     def setColorFromConfig (self):                  pass
     def setFontFromConfig (self):                   pass
@@ -2244,8 +2244,8 @@ class leoTree:
     def editLabel(self,v,selectAll=False):          self.oops()
     def headWidth(self,p=None,s=''):                self.oops() ; return 0
     def setEditLabelState(self,v,selectAll=False):  self.oops()
-    def setSelectedLabelState(self,*args,**keys):   self.oops()
-    def setUnselectedLabelState(self,*args,**keys): self.oops()
+    def setSelectedLabelState(self,p):              self.oops()
+    def setUnselectedLabelState(self,p):            self.oops()
     #@nonl
     #@-node:ekr.20031218072017.3706: Must be defined in subclasses
     #@+node:ekr.20061109165848:Must be defined in base class
@@ -3106,7 +3106,7 @@ class nullLog (leoLog):
         return self.createTextWidget(parentFrame)
     #@-node:ekr.20041012083237.1:createControl
     #@+node:ekr.20070302095121:createTextWidget
-    def createTextWidget (self,parentFrame=None):
+    def createTextWidget (self,parentFrame):
 
         self.logNumber += 1
 
@@ -3293,10 +3293,10 @@ class nullTree (leoTree):
     def setEditLabelState(self,v,selectAll=False):
         pass
 
-    def setSelectedLabelState(self,*args,**keys):
+    def setSelectedLabelState(self,p):
         pass
 
-    def setUnselectedLabelState(self,*args,**keys):
+    def setUnselectedLabelState(self,p):
         pass
     #@+node:ekr.20070228164730:editLabel (nullTree) same as tkTree)
     def editLabel (self,p,selectAll=False):

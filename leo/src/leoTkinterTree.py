@@ -1,10 +1,10 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040803072955:@thin leoTkinterTree.py
-"""Override outline drawing code to test optimized drawing"""
+'''Override outline drawing code to test optimized drawing
 
-"""This class implements a tree control similar to Windows explorer.
+This class implements a tree control similar to Windows explorer.
 
-The code is based on code found in Python's IDLE program."""
+The code is based on code found in Python's IDLE program.'''
 
 #@@language python
 #@@tabwidth -4
@@ -53,9 +53,9 @@ import sys
 
 class leoTkinterTree (leoFrame.leoTree):
 
-    callbacksInjected = False
-
     """Leo tkinter tree class."""
+
+    callbacksInjected = False
 
     #@    @+others
     #@+node:ekr.20040803072955.2:  Notes
@@ -868,7 +868,6 @@ class leoTkinterTree (leoFrame.leoTree):
         self.setVisibleArea(args)
 
         if 0:
-            self.deleteBindings()
             self.canvas.delete("all")
 
         self.drawTopTree()
@@ -1092,13 +1091,9 @@ class leoTkinterTree (leoFrame.leoTree):
         #@nl
         theType = theDict.get("type")
         if theType == "icon":
-            if 0: # not ready yet.
-                s = theDict.get("icon")
-                #@            << draw the icon in string s >>
-                #@+node:ekr.20040803072955.49:<< draw the icon in string s >>
-                pass
-                #@-node:ekr.20040803072955.49:<< draw the icon in string s >>
-                #@nl
+            ### not ready yet.
+            # s = theDict.get("icon")
+            pass
         elif theType == "file":
             theFile = theDict.get("file")
             relPath = theDict.get('relPath')
@@ -1470,21 +1465,21 @@ class leoTkinterTree (leoFrame.leoTree):
 
         return True # This will fail when the headline actually changes!
 
-        for w in self.visibleText:
+        # for w in self.visibleText:
 
-            p = w.leo_position
-            if p:
-                s = w.getAllText().strip()
-                h = p.headString().strip()
+            # p = w.leo_position
+            # if p:
+                # s = w.getAllText().strip()
+                # h = p.headString().strip()
 
-                if h != s:
-                    self.dumpWidgetList(tag)
-                    return False
-            else:
-                self.dumpWidgetList(tag)
-                return False
+                # if h != s:
+                    # self.dumpWidgetList(tag)
+                    # return False
+            # else:
+                # self.dumpWidgetList(tag)
+                # return False
 
-        return True
+        # return True
     #@-node:ekr.20040803072955.72:checkWidgetList
     #@+node:ekr.20040803072955.73:dumpWidgetList
     def dumpWidgetList (self,tag):

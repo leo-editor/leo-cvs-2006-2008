@@ -249,7 +249,7 @@ class leoTkinterBody (leoFrame.leoBody):
 
         self.forceFullRecolorFlag = True
     #@-node:ekr.20031218072017.3999:forceRecolor
-    #@+node:ekr.20031218072017.4000:Tk bindings (tkBbody)
+    #@+node:ekr.20031218072017.4000:Tk bindings (tkBody)
     #@+node:ekr.20031218072017.4002:Color tags (Tk spelling) (tkBody)
     def tag_add (self,tagName,index1,index2):
         self.bodyCtrl.tag_add(tagName,index1,index2)
@@ -323,7 +323,7 @@ class leoTkinterBody (leoFrame.leoBody):
         # self.bodyCtrl.setSelectionRange(i,j)
     #@nonl
     #@-node:ekr.20070228081242:Text (now in base class)
-    #@-node:ekr.20031218072017.4000:Tk bindings (tkBbody)
+    #@-node:ekr.20031218072017.4000:Tk bindings (tkBody)
     #@+node:ekr.20070424053629.2:Editors (tkBody)
     #@+node:ekr.20070424054235:createEditorFrame
     def createEditorFrame (self,pane):
@@ -357,7 +357,6 @@ class leoTkinterBody (leoFrame.leoBody):
                 w2.configure(bg=bg,fg=fg)
             except Exception:
                 g.es_exception()
-                pass
     #@-node:ekr.20060606090542:setEditorColors
     #@-node:ekr.20070424053629.2:Editors (tkBody)
     #@-others
@@ -1170,8 +1169,9 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 n = g.app.iconWidgetCount = 1
 
             if not command:
-                def command():
+                def commandCallback():
                     print "command for widget %s" % (n)
+                command = commandCallback
 
             if imagefile or image:
                 #@        << create a picture >>
@@ -1344,7 +1344,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         if 0:
             if sys.platform.startswith('win'):
                 # Support Linux middle-button paste easter egg.
-                w.bind("<Button-2>",frame.OnPaste)
+                w.bind("<Button-2>",f.OnPaste)
     #@-node:ekr.20060203114017:f.setMinibufferBindings
     #@-node:ekr.20051014154752:Minibuffer methods
     #@+node:ekr.20031218072017.3967:Configuration (tkFrame)
@@ -1413,7 +1413,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         frame.configureBarsFromConfig()
 
         frame.body.setFontFromConfig()
-        frame.body.setColorFromConfigt()
+        frame.body.setColorFromConfig()
 
         frame.setTabWidth(c.tab_width)
         frame.log.setFontFromConfig()
@@ -1450,7 +1450,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
             # g.trace(w,tabw)
         except:
             g.es_exception()
-            pass
+    #@nonl
     #@-node:ekr.20031218072017.722:setTabWidth (tkFrame)
     #@+node:ekr.20031218072017.1540:setWrap (tkFrame)
     def setWrap (self,p):
@@ -2410,7 +2410,7 @@ class leoTkinterLog (leoFrame.leoLog):
 
         self.selectTab(tabName,wrap=wrap)
         w = self.logCtrl
-        w and w.delete(0,'end')
+        if w: w.delete(0,'end')
     #@-node:ekr.20051017212057:clearTab
     #@+node:ekr.20071002143627.1:createCanvas
     def createCanvas (self,tabName=None):
@@ -3100,25 +3100,6 @@ class leoTkTextWidget (Tk.Text):
         return 'leoTkTextWidget id: %s name: %s' % (id(self),name)
 
     #@    @+others
-    #@+node:ekr.20070213170836:plainTextWidget.__init__
-    if 0:
-        def __init__ (self,c,*args,**keys):
-
-            w = self
-
-            # Create the actual gui widget.
-            self.widget = Tk.Text(*args,**keys)
-
-            # Init the base class.
-            name = keys.get('name') or '<unknown plainTextWidget>'
-            baseTextWidget.__init__(self,c=c,
-                baseClassName='plainTextWidget',name=name,widget=self.widget)
-
-            # self.defaultFont = font = wx.Font(pointSize=10,
-                # family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
-                # style  = wx.FONTSTYLE_NORMAL,
-                # weight = wx.FONTWEIGHT_NORMAL,)
-    #@-node:ekr.20070213170836:plainTextWidget.__init__
     #@+node:ekr.20070213170937:bindings (not used)
     # Specify the names of widget-specific methods.
     # These particular names are the names of wx.TextCtrl methods.
@@ -3139,7 +3120,7 @@ class leoTkTextWidget (Tk.Text):
     # def _setBackgroundColor(self,color): return self.widget.configure(background=color)
     # def _setFocus(self):                return self.widget.focus_set()
     # def _setInsertPoint(self,i):        return self.widget.mark_set('insert',i)
-    # # def _setSelectionRange(self,i,j):   return self.widget.SetSelection(i,j)
+    # def _setSelectionRange(self,i,j):   return self.widget.SetSelection(i,j)
     #@-node:ekr.20070213170937:bindings (not used)
     #@+node:ekr.20061113151148.2:Index conversion (leoTextWidget)
     #@+node:ekr.20061117085824:w.toGuiIndex
@@ -3194,32 +3175,6 @@ class leoTkTextWidget (Tk.Text):
     #@nonl
     #@-node:ekr.20061117085824.2:w.rowColToGuiIndex
     #@-node:ekr.20061113151148.2:Index conversion (leoTextWidget)
-    #@+node:ekr.20061117160129:getName (Tk.Text)
-    def getName (self):
-
-        w = self
-        return hasattr(w,'_name') and w._name or repr(w)
-    #@nonl
-    #@-node:ekr.20061117160129:getName (Tk.Text)
-    #@+node:ekr.20070213171850:_setSelectionRange
-    if 0:
-        def _setSelectionRange (self,i,j,insert=None):
-
-            w = self.widget
-
-            i,j = w.toGuiIndex(i),w.toGuiIndex(j)
-
-            # g.trace('i,j,insert',repr(i),repr(j),repr(insert),g.callers())
-
-            # g.trace('i,j,insert',i,j,repr(insert))
-            if w.compare(w,i, ">", j): i,j = j,i
-            w.tag_remove(w,"sel","1.0",i)
-            w.tag_add(w,"sel",i,j)
-            w.tag_remove(w,"sel",j,"end")
-
-            if insert is not None:
-                w.setInsertPoint(insert)
-    #@-node:ekr.20070213171850:_setSelectionRange
     #@+node:ekr.20061113151148.3:Wrapper methods (leoTextWidget)
     #@+node:ekr.20061113151148.4:delete
     def delete(self,i,j=None):
@@ -3254,7 +3209,7 @@ class leoTkTextWidget (Tk.Text):
             Tk.Text.tag_configure(w,'flash',foreground=fg,background=bg)
             addFlashCallback(w,flashes,i)
         except Exception:
-            pass ; g.es_exception()
+            pass # g.es_exception()
     #@nonl
     #@-node:ekr.20061113151148.12:flashCharacter
     #@+node:ekr.20061113151148.5:get
@@ -3290,6 +3245,13 @@ class leoTkTextWidget (Tk.Text):
         i = w.toPythonIndex(i)
         return i
     #@-node:ekr.20061113151148.14:getInsertPoint
+    #@+node:ekr.20061117160129:getName
+    def getName (self):
+
+        w = self
+        return hasattr(w,'_name') and w._name or repr(w)
+    #@nonl
+    #@-node:ekr.20061117160129:getName
     #@+node:ekr.20061113151148.15:getSelectedText
     def getSelectedText (self): # tkTextWidget.
 
@@ -3321,12 +3283,6 @@ class leoTkTextWidget (Tk.Text):
         return i,j
     #@nonl
     #@-node:ekr.20061113151148.16:getSelectionRange
-    #@+node:ekr.20070211185433.1:getYScrollPosition
-    def getYScrollPosition (self):
-
-         w = self
-         return w.yview()
-    #@-node:ekr.20070211185433.1:getYScrollPosition
     #@+node:ekr.20070212204016:getWidth
     def getWidth (self):
 
@@ -3337,6 +3293,12 @@ class leoTkTextWidget (Tk.Text):
         w = self
         return w.cget('width')
     #@-node:ekr.20070212204016:getWidth
+    #@+node:ekr.20070211185433.1:getYScrollPosition
+    def getYScrollPosition (self):
+
+        w = self
+        return w.yview()
+    #@-node:ekr.20070211185433.1:getYScrollPosition
     #@+node:ekr.20061113151148.17:hasSelection
     def hasSelection (self):
 
@@ -3344,6 +3306,14 @@ class leoTkTextWidget (Tk.Text):
         i,j = w.getSelectionRange()
         return i != j
     #@-node:ekr.20061113151148.17:hasSelection
+    #@+node:ekr.20070213104858.1:indexIsVisible
+    def indexIsVisible (self,i):
+
+        w = self
+
+        return w.dlineinfo(i)
+    #@nonl
+    #@-node:ekr.20070213104858.1:indexIsVisible
     #@+node:ekr.20061113151148.6:insert
     # The signature is more restrictive than the Tk.Text.insert method.
 
@@ -3354,14 +3324,6 @@ class leoTkTextWidget (Tk.Text):
         Tk.Text.insert(w,i,s)
 
     #@-node:ekr.20061113151148.6:insert
-    #@+node:ekr.20070213104858.1:indexIsVisible
-    def indexIsVisible (self,i):
-
-        w = self
-
-        return w.dlineinfo(i)
-    #@nonl
-    #@-node:ekr.20070213104858.1:indexIsVisible
     #@+node:ekr.20061113151148.7:mark_set NO LONGER USED
     # def mark_set(self,markName,i):
 
@@ -3446,13 +3408,6 @@ class leoTkTextWidget (Tk.Text):
         if insert is not None:
             w.setInsertPoint(insert)
     #@-node:ekr.20061113151148.22:setSelectionRange
-    #@+node:ekr.20070211185433:setYScrollPosition
-    def setYScrollPosition (self,i):
-
-         w = self
-         w.yview('moveto',i)
-    #@nonl
-    #@-node:ekr.20070211185433:setYScrollPosition
     #@+node:ekr.20070212081121:setWidth
     def setWidth (self,width):
 
@@ -3463,6 +3418,13 @@ class leoTkTextWidget (Tk.Text):
         w = self
         w.configure(width=width)
     #@-node:ekr.20070212081121:setWidth
+    #@+node:ekr.20070211185433:setYScrollPosition
+    def setYScrollPosition (self,i):
+
+        w = self
+        w.yview('moveto',i)
+    #@nonl
+    #@-node:ekr.20070211185433:setYScrollPosition
     #@+node:ekr.20061113151148.8:tag_add
     # The signature is slightly different than the Tk.Text.insert method.
 
@@ -3487,6 +3449,8 @@ class leoTkTextWidget (Tk.Text):
         return tuple(aList)
     #@-node:ekr.20061113151148.9:tag_ranges
     #@+node:ekr.20070116073907:tag_remove
+    # The signature is slightly different than the Tk.Text.insert method.
+
     def tag_remove (self,tagName,i,j=None,*args):
 
         w = self
