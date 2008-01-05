@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -172,8 +172,8 @@
 <v t="ekr.20050906105946"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.2"><vh>Chapter 1: Installing Leo</vh>
-<v t="edream.110203163054.48"><vh>@rst html\install.html</vh>
+<v t="ekr.20050831195331.2" a="E"><vh>Chapter 1: Installing Leo</vh>
+<v t="edream.110203163054.48" a="E"><vh>@rst html\install.html</vh>
 <v t="ekr.20050901110110"><vh>@rst-no-head links</vh></v>
 <v t="edream.110203163054.49"><vh>System requirements</vh></v>
 <v t="edream.110203163054.50"><vh>How to install Leo on Linux</vh></v>
@@ -719,10 +719,10 @@
 <v t="ekr.20060913164729"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20061025065357"><vh>Chapter 18: Leo and Emacs</vh>
-<v t="ekr.20061025065357.1"><vh>@rst html\emacs.html</vh>
+<v t="ekr.20061025065357" a="E"><vh>Chapter 18: Leo and Emacs</vh>
+<v t="ekr.20061025065357.1" a="E"><vh>@rst html\emacs.html</vh>
 <v t="ekr.20061025065357.2"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20061025081359"><vh>Controlling Leo from Emacs using Pymacs</vh></v>
+<v t="ekr.20061025081359" a="TV"><vh>Controlling Leo from Emacs using Pymacs</vh></v>
 <v t="ekr.20061025070825.1"><vh>Functions in leoPymacs.py</vh></v>
 <v t="ekr.20061025142434"><vh>The minibuffer</vh></v>
 <v t="ekr.20061025065357.12"><vh>@rst-no-head end stuff</vh></v>
@@ -29316,7 +29316,7 @@ Here are step-by-step instructions for executing Python scripts in Emacs:
    A clarification is needed about two-way communication between Python and lisp scripts:
    in truth, Python scripts can call the Pymacs.lisp function *only* if the Python script
    was invoked from emacs.
-   Otherwise, callilng Pymacs.lisp will hang the process making the call.
+   Otherwise, calling Pymacs.lisp will hang the process making the call.
    For example, executing the following script as an ordinary Leo script will hang Leo::
    
         from Pymacs import lisp
