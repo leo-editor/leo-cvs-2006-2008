@@ -8,7 +8,6 @@
 # 
 [MASTER]
 
-
 # Specify a configuration file.
 #rcfile=
 
@@ -99,8 +98,6 @@ disable-checker=DESIGN,SIMILARITIES,IMPORTS
 # W0704 Except doesn't do anything (Except: pass)
 # W1111 Assigning to a function call that only returns None
 
-
-
 # Disable some warnings
 
 # disable-msg=W0142,R0201,C0111,C0321,C0322,C0323,C0324,W0404,W0703,W0704
@@ -124,7 +121,7 @@ include-ids=yes
 files-output=no
 
 # Tells wether to display a full report or only the messages
-reports=yes
+reports=no
 
 # Python expression which should return a note less than 10 (10 is the highest
 # note).You have access to the variables errors warning, statement which
@@ -154,7 +151,7 @@ comment=no
 # R0701 Raw metrics
 # R0801 Duplication
 
-disable-report=R0001,R0002,R0003,R0101,R0401,R0402,R0701,R0801
+disable-report=R0001,R0002,R0003,R0004,R0101,R0401,R0402,R0701,R0801
 
 
 # BASIC...
