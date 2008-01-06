@@ -13118,6 +13118,24 @@ print 'done!'
 #@-node:result
 #@-node:Script to create comma delimited lists
 #@-node:Convert ChoiceMail .ini file to .csv file
+#@+node:Delete All Icons
+# Same as delete-all-icons command (now removed)
+# A script seems safer because it can not be executed by mistake.
+
+c.beginUpdate()
+try:
+    for p in c.allNodes_iter():
+        if hasattr(p.v.t,"unknownAttributes"):
+            a = p.v.t.unknownAttributes
+            iconsList = a.get("icons")
+            if iconsList:
+                a["icons"] = []
+                a["lineYOffset"] = 0
+                p.setDirty()
+                c.setChanged(True)
+finally:
+    c.endUpdate()
+#@-node:Delete All Icons
 #@+node:Script to backup Outlook Express files
 # http://support.microsoft.com/default.aspx/kb/270670
 # See Notes child for the manual instructions taken from the URL above.

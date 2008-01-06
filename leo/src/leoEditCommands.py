@@ -1456,7 +1456,7 @@ class editCommandsClass (baseEditCommandsClass):
             'cycle-focus':                          self.cycleFocus,
             'cycle-all-focus':                      self.cycleAllFocus,
             'cycle-editor-focus':                   c.frame.body.cycleEditorFocus,
-            'delete-all-icons':                     self.deleteAllIcons,
+            # 'delete-all-icons':                   self.deleteAllIcons,
             'delete-char':                          self.deleteNextChar,
             'delete-editor':                        c.frame.body.deleteEditor,
             'delete-first-icon':                    self.deleteFirstIcon,
@@ -2283,24 +2283,24 @@ class editCommandsClass (baseEditCommandsClass):
     # - Define standard icons in a subfolder of Icons folder?
     # - Tree control recomputes height of each line.
     #@-at
-    #@+node:ekr.20071114082418.2:deleteAllIcons
-    def deleteAllIcons (self,event):
+    #@+node:ekr.20071114082418.2:deleteAllIcons (no longer used)
+    # def deleteAllIcons (self,event):
 
-        c = self.c
+        # c = self.c
 
-        for p in c.allNodes_iter():
+        # for p in c.allNodes_iter():
 
-            if hasattr(p.v.t,"unknownAttributes"):
-                a = p.v.t.unknownAttributes
-                iconsList = a.get("icons")
-                if dict:
-                    a["icons"] = []
-                    a["lineYOffset"] = 0
-                    p.setDirty()
-                    c.setChanged(True)
+            # if hasattr(p.v.t,"unknownAttributes"):
+                # a = p.v.t.unknownAttributes
+                # iconsList = a.get("icons")
+                # if iconsList:
+                    # a["icons"] = []
+                    # a["lineYOffset"] = 0
+                    # p.setDirty()
+                    # c.setChanged(True)
 
-        c.redraw()
-    #@-node:ekr.20071114082418.2:deleteAllIcons
+        # c.redraw()
+    #@-node:ekr.20071114082418.2:deleteAllIcons (no longer used)
     #@+node:ekr.20071114082418:deleteFirstIcon
     def deleteFirstIcon (self,event):
 
@@ -2386,7 +2386,8 @@ class editCommandsClass (baseEditCommandsClass):
 
         c = self.c ; p = c.currentPosition()
 
-        os.chdir(g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons")))
+        iconDir = g.os_path_abspath(g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons")))
+        os.chdir(iconDir)
 
         paths = g.app.gui.runOpenFileDialog(
             title='Get Icons',
@@ -2395,10 +2396,10 @@ class editCommandsClass (baseEditCommandsClass):
             multiple=True)
 
         aList = [] ; xoffset = 2
-        basePath = g.os_path_abspath(g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons")))
         for path in paths:
-            path = g.os_path_abspath(g.os_path_join(basePath,path))
-            relPath = g.makePathRelativeTo(path,basePath)
+            path = g.os_path_abspath(g.os_path_join(iconDir,path))
+            relPath = g.makePathRelativeTo(path,iconDir)
+            # g.trace('relPath',relPath)
             image,image_height = self.getImage(path)
             if not image:
                 g.es('can not load image: %s' % (path))
@@ -2427,7 +2428,6 @@ class editCommandsClass (baseEditCommandsClass):
         p.setDirty()
         c.setChanged(True)
         c.redraw()
-    #@nonl
     #@+node:ekr.20071114083142:getImage
     def getImage (self,path):
 
@@ -2437,6 +2437,7 @@ class editCommandsClass (baseEditCommandsClass):
             from PIL import Image
         except ImportError:
             Image = None
+            g.es('can not import Image',color='blue')
 
         try:
             from PIL import ImageTk
@@ -2445,6 +2446,7 @@ class editCommandsClass (baseEditCommandsClass):
                 import ImageTk
             except ImportError:
                 ImageTk = None
+                g.es('can not import ImageTk',color='blue')
 
         try:
             if Image and ImageTk:

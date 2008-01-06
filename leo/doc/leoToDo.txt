@@ -4,8 +4,6 @@
 #@+node:ekr.20071211093323:more screen shots on Leo's web site
 #@-node:ekr.20071211093323:more screen shots on Leo's web site
 #@+node:ekr.20071211143430:4.4.6 bugs & easy improvements
-F
-#@nonl
 #@-node:ekr.20071211143430:4.4.6 bugs & easy improvements
 #@+node:ekr.20071113093057:4.5 cleanups, vim bindings & readline
 #@+node:ekr.20071211091037.1:Code cleanup 7

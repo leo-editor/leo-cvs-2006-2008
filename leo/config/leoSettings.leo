@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.477886977887">
-	<global_window_position top="103" left="397" height="694" width="864"/>
+	<global_window_position top="103" left="397" height="674" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -84,7 +84,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20070926132045"><vh>Buttons</vh>
 <v t="ekr.20070926082407"><vh>@buttons</vh>
 <v t="ekr.20070926082256.1"><vh>@@button Beautify</vh></v>
@@ -560,8 +560,8 @@
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
 </v>
-<v t="ekr.20070925144552"><vh>Menus</vh>
-<v t="ekr.20070925144534"><vh>@menus</vh>
+<v t="ekr.20070925144552" a="E"><vh>Menus</vh>
+<v t="ekr.20070925144534" a="E"><vh>@menus</vh>
 <v t="ekr.20070925144534.1"><vh>@menu &amp;File</vh>
 <v t="ekr.20070925144534.2"><vh>@item *&amp;new</vh></v>
 <v t="ekr.20070925144534.3"><vh>@item open-outline</vh></v>
@@ -780,7 +780,7 @@
 </v>
 </v>
 <v t="ekr.20070925144534.190"><vh>@menu &amp;Plugins</vh></v>
-<v t="ekr.20070925144534.191"><vh>@menu &amp;Cmds</vh>
+<v t="ekr.20070925144534.191" a="E"><vh>@menu &amp;Cmds</vh>
 <v t="ekr.20070925144534.192"><vh>@menu &amp;Abbrev...</vh>
 <v t="ekr.20070925144534.193"><vh>@item abbre&amp;v-mode</vh></v>
 <v t="ekr.20070925144534.194"><vh>@item -</vh></v>
@@ -877,7 +877,7 @@
 <v t="ekr.20070925144534.275"><vh>@item focus-to-&amp;minibuffer</vh></v>
 <v t="ekr.20070925144534.276"><vh>@item focus-to-&amp;tree</vh></v>
 </v>
-<v t="ekr.20071114081712"><vh>@menu &amp;Icons...</vh>
+<v t="ekr.20071114081712" a="TV"><vh>@menu &amp;Icons...</vh>
 <v t="ekr.20071114081712.2"><vh>@item delete-&amp;all-icons</vh></v>
 <v t="ekr.20071114084709"><vh>@item delete-&amp;first-icon</vh></v>
 <v t="ekr.20071114084709.1"><vh>@item delete-&amp;last-icon</vh></v>
@@ -8487,7 +8487,7 @@ True: @auto warns about mismatches that occur solely in leading whitespace.</t>
 <t tx="ekr.20071114081712">insert-icon
 delete-icon-by-name
 delete-node-icons
-delete-all-icons</t>
+</t>
 <t tx="ekr.20071114081712.2"></t>
 <t tx="ekr.20071114081712.3"></t>
 <t tx="ekr.20071114081712.4"></t>
