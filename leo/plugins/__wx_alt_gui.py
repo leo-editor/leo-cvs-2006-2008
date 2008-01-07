@@ -3,33 +3,60 @@
 #@@language python
 #@@tabwidth -4
 
+#@<< docstring >>
+#@+node:bob.20071231124159:<< docstring >>
 """A plugin to use wxWidgets as Leo's gui.
 
 This version of wxLeo is being developed by
 
 plumloco@hcoop.net
 
+
 WARNING:
+~~~~~~~~
 __wx_alt_gui is incomplete and all features are subject to continuous
 change. It should NOT be entrusted with anything important.
 
-USE:
+
+Priority is being given to getting this plugin right for linux, so it may
+or may not work on windows at any particular time.
+
+Requirements:
+~~~~~~~~~~~~~
+
+    + Python 2.4 plus
+    + wxPython 2.8.7 plus
+    + threading_colorizer pugin
+
+Use:
+~~~~
 
 __wx_alt_gui.py should appear as the FIRST item in the list
 of enabled plugins.
 
-All other plugins, except those named below, should be dissabled.
+All other plugins, except those named below, should be
+dissabled.
 
-These plugins are compatible with __wx_alt_gui.py:
+These plugins are believed to be compatible with __wx_alt_gui.py:
 
-    + plugins_menu (the modified 1.15+ version)
-    + scripting, rst3, UNL, vim, datenodes.py
+    + threading_colorizer.py (>=1.4)
+    + plugins_menu.py (>=1.15)
+    + leo_to_dhtml.py
+    + mod_http.py
+    + mod_scripting.py
+    + mod_tempfname.py
+    + datenodes.py
+    + open_with.py
+    + rst3.py
+    + UNL.py
+    + vim.py
 
-These plugins are not yet compatible but at least
-will not make it crash if they are enabled:   
+Other plugins might also be compatible if they use only menus
+and standard leo dialogs.
 
-    threading_colorizer, hoist
 """
+#@-node:bob.20071231124159:<< docstring >>
+#@nl
 
 import re
 
@@ -44,19 +71,23 @@ __plugin_name__ = " wxPython GUI"
 #@@nocolor
 #@+at
 # 
-# 0.5 EKR: Released with Leo 4.4.3 a1.
-# 0.6 EKR: Released with Leo 4.4.3 a2.
-# 0.7 EKR: Added version check in init.
-# 0.7.1 EKR: Fixed blunder in init.
-# 0.7.2 EKR: Put a bad hack in redraw_partial_subtree.
+# 0.0 Forked by plumloco from EKR's original __wx_gui prototype.
 # 
-# # # forked from __wx_gui py plumloco
+# 0.1 plumloco: replaced wx.Tree widget with custom tree widget.
 # 
-# 0.1 plumloco: replaced wx.Tree widget with custom tree widget
-# 
-# 0.2 plumloco: transferred to leo cvs and started using new version 
+# 0.2 plumloco: transferred to leo cvs and started using new version
 # numbering.
 # 
+# 0.2.1.12: plumloco:
+# - require python 2.4
+# - require wxPython >= 2.8.7
+# - added support for threading_colorizer
+# - changed to using colors.py for color information.
+# - 'fixed' log pane bug (by using a bad hack)
+# - added support for nav_butons
+# - honors a few more settings
+# - added support for headline icons
+# - other stuff
 # 
 #@-at
 #@-node:bob.20070813163858.2:<< version history >>
@@ -65,20 +96,27 @@ __plugin_name__ = " wxPython GUI"
 #@+node:bob.20070813163332.52:<< bug list & to-do >>
 #@@nocolor
 """
-- Make compatible with plugins, at leas don't crash if a
+ToDo:
+
+- Make compatible with plugins, at least don't crash if a
   plugin is loaded which is not compatible.
 
 - Colorize edit pane
 
-- Make widgets honour config fonts.
+- Make widgets honour config fonts and colors.
 
-- Make multiple editors
+- Fix so all leo hooks are called.
+
+- Make multiple editors.
+
+- Fix focus (which I totally trashed for some crazy reason).
+
+- Add connecting lines to tee widget.
+
+- Seek threapy ...
 
 
 Bug list: (oh! to many to list!)
-
-- log panel does not behave well when text is edited, the pane
-  has to be resized. (I think this is a wx.RichText bug.
 
 """
 
@@ -114,26 +152,12 @@ import traceback
 
 try:
     import wx
-    import wx.lib
-    import wx.lib.colourdb
+    import wx.richtext as richtext
+    import wx.stc as stc
+
 except ImportError:
     wx = None
     #g.es_print('wx_alt_gui plugin: can not import wxWidgets')
-
-try:
-    import wx.richtext as richtext
-except ImportError:
-    richtext = None
-
-
-from pprint import pprint
-
-try:
-    import wx.stc as stc
-except ImportError:
-    stc = None
-
-
 
 #@-node:bob.20070813163332.62:<< imports >>
 #@nl
@@ -147,14 +171,28 @@ def init():
     if g.app.unitTesting: # Not Ok for unit testing!
         return False
 
-    aList = wx.version().split('.')
-    v1,v2 = aList[0],aList[1]
+    global colors, getColor, getColorRGB, globalImages
 
-    if not g.CheckVersion ('%s.%s' % (v1,v2),'2.8'):  
-        g.es_print('wx_gui plugin requires wxPython 2.8 or later')
+
+
+    import colors
+
+
+    getColor = colors.getColor
+    getColorRGB = colors.getColorRGB
+
+    globalImages = {}
+
+
+
+    aList = wx.version().split('.')
+    v1,v2,v3 = aList[0],aList[1],aList[2]
+
+    if not g.CheckVersion ('%s.%s.%s' % (v1,v2,v3),'2.8.7'):
+        g.es_print('\n\n\nwx_gui plugin requires wxPython 2.8.7 or later\n\n\n')
         return False
 
-    ok = wx and not g.app.gui 
+    ok = wx and not g.app.gui
 
     if ok:
         g.app.gui = wxGui()
@@ -170,37 +208,70 @@ def init():
     if ok:
         #@        <<overrides>>
         #@+node:bob.20070831090830:<< over rides >>
-        if wx:
-            import leoAtFile
 
-            old = leoAtFile.atFile.openFileForReading
+        # import leoAtFile
 
-            def wxOpenFileForReading(self,fileName,*args, **kw):
-                #g.trace( fileName)
-                old(self, fileName, *args, **kw)
-                wx.SafeYield(onlyIfNeeded=True)
+        # old = leoAtFile.atFile.openFileForReading
 
-            leoAtFile.atFile.openFileForReading = wxOpenFileForReading
+        # def wxOpenFileForReading(self,fileName,*args, **kw):
+            # #g.trace( fileName)
+            # old(self, fileName, *args, **kw)
+            # #wx.SafeYield(onlyIfNeeded=True)
+
+        # leoAtFile.atFile.openFileForReading = wxOpenFileForReading
+        import leoEditCommands
+        g.funcToMethod(getImage, leoEditCommands.editCommandsClass)
         #@-node:bob.20070831090830:<< over rides >>
         #@nl
+        pass
 
     return ok
 #@-node:bob.20070813163332.64: init
 #@+node:bob.20070813163332.4:name2color
-def name2color (name,default='white'):
+def name2color (name, default='white'):
+    """Convert a named color into a wx.Color object.
 
-    # A hack: these names are *not* part of the color list!
-    if name in wx.GetApp().leo_colors or name[0]=='#':
+    'name' must be an instance of string or a
+    wx.Colour object, anything else is an error
+
+    if name is already a wx.Colour object it
+
+    """
+
+    #g.trace(name, default)
+    if not isinstance(name, basestring):
+        assert name is None or isinstance(name, wx.Colour), "`name` must be string or wx.Colour"
         return name
 
-    for z in (name,name.upper()):
-        for name2,r2,g2,b2 in wx.lib.colourdb.getColourInfoList():
-            if z == name2:
-                return wx.Colour(r2,g2,b2)
+    rgb = getColorRGB(name, default)
+    #g.trace('rgb =', rgb)
 
-    g.trace('color name not found',name)
-    return default
+    #assert rgb is not None, "`name` must be a valid color."
+    if rgb is None:
+        return None
+
+    #g.trace('wxcolour =', wx.Colour(*rgb))
+    return wx.Colour(*rgb)
+
 #@-node:bob.20070813163332.4:name2color
+#@+node:bob.20080105141717:getImage
+def getImage (self,path):
+
+    c = self.c
+
+    image =  g.app.gui.getImage(c, path)
+
+    if image is None:
+        return None, None
+
+    else:
+        try:
+            return image, image.GetHeight()
+        except:
+            pass
+
+        return None, None
+#@-node:bob.20080105141717:getImage
 #@+node:bob.20070901052447:myclass
 def myclass(self):
     try:
@@ -262,6 +333,82 @@ if wx:
     #@nl
 
     #@    @+others
+    #@+node:bob.20071229151620:tkFont.Font
+    class tkFont(object):
+        """class to emulate tkFont module"""
+
+        class Font(object):
+            """class to emulate tkFont.Font object."""
+
+            #@        @+others
+            #@+node:bob.20071229151620.1:__init__ (tkFont.Font)
+            def __init__(self,*args, **kw):
+                #print myclass(self), args, kw
+
+                self.kw = kw
+
+
+
+
+            #@-node:bob.20071229151620.1:__init__ (tkFont.Font)
+            #@+node:bob.20071229153618:actual
+            def actual(self, key=None):
+
+                if not key:
+                    return self.kw
+
+                else:
+                    return self.kw.get(key, None)
+
+            #@-node:bob.20071229153618:actual
+            #@+node:bob.20071229154443:configure
+            def configure(self, **kw):
+
+                self.kw.update(kw)
+                #g.trace(self.kw)
+
+            config = configure
+            #@-node:bob.20071229154443:configure
+            #@-others
+    #@-node:bob.20071229151620:tkFont.Font
+    #@+node:bob.20071229172621:Tk_Text
+    class Tk_Text(object):
+
+        #@    @+others
+        #@+node:bob.20071229172621.1:__init__
+        def __init__(self):
+
+            pass
+
+        #@-node:bob.20071229172621.1:__init__
+        #@+node:bob.20071229174432:tag_add
+        def tag_add(self, w, tag, start, stop):
+            g.trace( w, tag, start, stop)
+        #@nonl
+        #@-node:bob.20071229174432:tag_add
+        #@+node:bob.20071229174730:tag_ranges
+        def tag_ranges(self, w, name):
+            g.trace(w, name)
+            return tuple()
+        #@nonl
+        #@-node:bob.20071229174730:tag_ranges
+        #@+node:bob.20071229175418:tag_remove
+        def tag_remove(self, w, tagName, x_i, x_j):
+            g.trace( w, tagName, x_i, x_j)
+        #@nonl
+        #@-node:bob.20071229175418:tag_remove
+        #@+node:bob.20071229172621.2:showcalls
+        def showcalls(self, name, *args, **kw):
+            g.trace( 'showcalls', name, args, kw)
+        #@nonl
+        #@-node:bob.20071229172621.2:showcalls
+        #@+node:bob.20071229172621.3:__getattr__
+        def __getattr__(self, name):
+
+           return lambda *args, **kw : self.showcalls(name, *args, **kw)
+        #@-node:bob.20071229172621.3:__getattr__
+        #@-others
+    #@-node:bob.20071229172621:Tk_Text
     #@+node:bob.20070813163332.136:=== TEXT WIDGETS ===
     #@<< baseTextWidget class >>
     #@+node:bob.20070813163332.137:<< baseTextWidget class >>
@@ -276,9 +423,9 @@ if wx:
         def __init__(self,
             leoParent,
             name=None,
-            widget=None, 
-            baseClassName=None, 
-            bindchar=True, 
+            widget=None,
+            baseClassName=None,
+            bindchar=True,
             **keys
         ):
 
@@ -372,9 +519,21 @@ if wx:
         #@-node:bob.20070831045021:clear
         #@+node:plumloco.20071211050853:after_idle
         def after_idle(self, *args, **kw):
-            w.CallAfter(*args, **kw)
+            wx.CallAfter(*args, **kw)
         #@nonl
         #@-node:plumloco.20071211050853:after_idle
+        #@+node:bob.20071229161941:after
+
+        def after(self, *args, **kw):
+            wx.CallLater(*args, **kw)
+        #@-node:bob.20071229161941:after
+        #@+node:bob.20071231142747:setBackgroundColor & SetBackgroundColour
+        def setBackgroundColor (self,color):
+
+            return self._setBackgroundColor(name2color(color))
+
+
+        #@-node:bob.20071231142747:setBackgroundColor & SetBackgroundColour
         #@-others
     #@-node:bob.20070813163332.137:<< baseTextWidget class >>
     #@nl
@@ -474,17 +633,23 @@ if wx:
             stc.StyledTextCtrl.__init__(self, parent, -1)
             baseTextWidget.__init__(self, leoParent, name, self )
 
+
+            self.leo_styles = {}
+            self.leo_tags = {}
+
             self.CmdKeyClearAll()
             self.SetUndoCollection(False)
             self.EmptyUndoBuffer()
 
             self.SetViewWhiteSpace(False)
-            #self.SetWrapMode(stc.STC_WRAP_WORD)
+            self.SetWrapMode(stc.STC_WRAP_NONE)
 
             self.SetEOLMode(stc.STC_EOL_LF)
             self.SetViewEOL(False)
 
             self.UsePopUp(False)
+
+            self.SetStyleBits(7)
 
 
             self.initStc()
@@ -503,41 +668,32 @@ if wx:
         # Code copied from wxPython demo.
 
         def initStc (self):
-            import keyword
+
             w = self.widget
-            use_fold = True
-
-            w.SetLexer(stc.STC_LEX_PYTHON)
-            w.SetKeyWords(0, " ".join(keyword.kwlist))
-
-            # Highlight tab/space mixing (shouldn't be any)
-            w.SetProperty("tab.timmy.whinge.level", "1")
+            use_fold = False
 
             # Set left and right margins
-            w.SetMargins(2,2)
-
+            w.SetMargins(10,10)
+            w.SetMarginWidth(1,0)
             # Indentation and tab stuff
-            w.SetIndent(4)               # Proscribed indent size for wx
-            w.SetIndentationGuides(True) # Show indent guides
-            w.SetBackSpaceUnIndents(True)# Backspace unindents rather than delete 1 space
-            w.SetTabIndents(True)        # Tab key indents
-            w.SetTabWidth(4)             # Proscribed tab size for wx
-            w.SetUseTabs(False)          # Use spaces rather than tabs, or TabTimmy will complain!    
-            # No right-edge mode indicator
-            w.SetEdgeMode(wx.stc.STC_EDGE_NONE)
+            w.SetIndentationGuides(False) # Show indent guides
 
             # Global default style
             if wx.Platform == '__WXMSW__':
-                w.StyleSetSpec(stc.STC_STYLE_DEFAULT, 
+                w.StyleSetSpec(stc.STC_STYLE_DEFAULT,
                     'fore:#000000,back:#FFFFFF,face:Courier New,size:11')
             elif wx.Platform == '__WXMAC__':
-                # TODO: if this looks fine on Linux too, remove the Mac-specific case 
+                # TODO: if this looks fine on Linux too, remove the Mac-specific case
                 # and use this whenever OS != MSW.
-                w.StyleSetSpec(stc.STC_STYLE_DEFAULT, 
+                w.StyleSetSpec(stc.STC_STYLE_DEFAULT,
                     'fore:#000000,back:#FFFFFF,face:Courier')
             else:
-                w.StyleSetSpec(stc.STC_STYLE_DEFAULT, 
+                w.StyleSetSpec(stc.STC_STYLE_DEFAULT,
                     'fore:#000000,back:#FFFFFF,face:Courier,size:13')
+
+            # Set leo default styles
+            default = stc.STC_STYLE_DEFAULT
+
 
             # Clear styles and revert to default.
             w.StyleClearAll()
@@ -546,46 +702,27 @@ if wx:
             # The rest remains unchanged.
 
             # Line numbers in margin
-            w.StyleSetSpec(stc.STC_STYLE_LINENUMBER,'fore:#000000,back:#99A9C2')    
+            w.StyleSetSpec(stc.STC_STYLE_LINENUMBER, 'fore:#000000,back:#99A9C2')
+
             # Highlighted brace
             w.StyleSetSpec(stc.STC_STYLE_BRACELIGHT,'fore:#00009D,back:#FFFF00')
+
             # Unmatched brace
             w.StyleSetSpec(stc.STC_STYLE_BRACEBAD,'fore:#00009D,back:#FF0000')
+
             # Indentation guide
             w.StyleSetSpec(stc.STC_STYLE_INDENTGUIDE, "fore:#CDCDCD")
 
-            # Python styles
-            w.StyleSetSpec(stc.STC_P_DEFAULT, 'fore:#000000')
-            # Comments
-            w.StyleSetSpec(stc.STC_P_COMMENTLINE,  'fore:#008000,back:#F0FFF0')
-            w.StyleSetSpec(stc.STC_P_COMMENTBLOCK, 'fore:#008000,back:#F0FFF0')
-            # Numbers
-            w.StyleSetSpec(stc.STC_P_NUMBER, 'fore:#008080')
-            # Strings and characters
-            w.StyleSetSpec(stc.STC_P_STRING, 'fore:#800080')
-            w.StyleSetSpec(stc.STC_P_CHARACTER, 'fore:#800080')
-            # Keywords
-            w.StyleSetSpec(stc.STC_P_WORD, 'fore:#000080,bold')
-            # Triple quotes
-            w.StyleSetSpec(stc.STC_P_TRIPLE, 'fore:#800080,back:#FFFFEA')
-            w.StyleSetSpec(stc.STC_P_TRIPLEDOUBLE, 'fore:#800080,back:#FFFFEA')
-            # Class names
-            w.StyleSetSpec(stc.STC_P_CLASSNAME, 'fore:#0000FF,bold')
-            # Function names
-            w.StyleSetSpec(stc.STC_P_DEFNAME, 'fore:#008080,bold')
-            # Operators
-            w.StyleSetSpec(stc.STC_P_OPERATOR, 'fore:#800000,bold')
-            # Identifiers. I leave this as not bold because everything seems
-            # to be an identifier if it doesn't match the above criterae
-            w.StyleSetSpec(stc.STC_P_IDENTIFIER, 'fore:#000000')
-
             # Caret color
-            w.SetCaretForeground("BLUE")
-            # Selection background
-            w.SetSelBackground(1, '#66CCFF')
+            w.SetCaretForeground(name2color("BLUE"))
 
-            w.SetSelBackground(True, wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT))
-            w.SetSelForeground(True, wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT))
+            # Selection background
+            w.SetSelBackground(True,
+                wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT))
+
+            # Selection foreground
+            w.SetSelForeground(True,
+                wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT))
 
         #@-node:bob.20070827204727:initStc
         #@+node:bob.20070813163332.151:Wrapper methods
@@ -709,7 +846,7 @@ if wx:
             first = w.FirstVisibleLine
 
             #print
-            #g.trace( '\n\tHave FirstVisible:', first) 
+            #g.trace( '\n\tHave FirstVisible:', first)
             #print '\tWant FirstVisible:', wantfirst
 
             #print
@@ -724,15 +861,21 @@ if wx:
 
             """Convert index into an integer value suitable for use with the stc control."""
 
-            #g.trace('\n\t imput[%s] data-type: %s' %(i, type(s)))
+            #g.trace('\n\t iput[%s] data-type: %s' %(i, type(s)))
+
 
             if i is None:
                 return 0
 
+
             if isinstance(i, basestring):
-                row, col = i.split('.')
-                i = g.convertRowColToPythonIndex(s, int(row), int(col))
-                #print('\t  i converted:', i)
+                try:
+                    row, col = i.split('.')
+                    i = g.convertRowColToPythonIndex(s, int(row), int(col))
+                    #print('\t  i converted:', i)
+                except ValueError:
+                    if i == 'end':
+                        i = len(s)
 
             #print '\n\tChar-codes: [', ' | '.join([str(ord(ch)) for ch in s]), ']'
 
@@ -839,7 +982,7 @@ if wx:
             wt = w.Text
             ii = self.toStcIndex(i, wt)
             # print '\n\tbefore insert'
-            # print '\tstc-index', topy(ii, wt), ii 
+            # print '\tstc-index', topy(ii, wt), ii
             # print '\tw.Text ', _split(topy(ii, wt), wt)
 
             w.InsertText(ii, s)
@@ -857,7 +1000,7 @@ if wx:
             #wt = w.Text
             # print '\n\twith new caret position'
             # print '\tstc-index', topy(ii, wt), ii
-            # print '\tw.Text ', _split(topy(ii, wt), wt)    
+            # print '\tw.Text ', _split(topy(ii, wt), wt)
 
 
             #w.ScrollToLine(w.LineFromPosition(ii))
@@ -887,7 +1030,7 @@ if wx:
             #ii = w.CurrentPos
             #topy = self.fromStcIndex
             # print '\n\tstc-index', topy(ii, wt), ii
-            # print '\tw.Text ', _split(topy(ii, wt), wt)  
+            # print '\tw.Text ', _split(topy(ii, wt), wt)
         #@nonl
         #@-node:bob.20070813163332.156:stc.setInsertPoint
         #@+node:bob.20070813163332.157:stc.setSelectionRange
@@ -903,13 +1046,13 @@ if wx:
 
             w = self.widget ;
 
-            s = w.Text    
+            s = w.Text
 
             ii, jj, stcInsert = py(i, s), py(j,s), py(insert, s)
 
             w.virtualInsertPoint = None
             if insert is not None:
-                w.virtualInsertPoint = insert 
+                w.virtualInsertPoint = insert
 
             #print
             #g.trace( '\n\tInput:', i, j, insert)
@@ -939,6 +1082,206 @@ if wx:
 
             return 0 ### ?? Non-zero value may loop.
         #@-node:bob.20070813163332.159:xyToGui/PythonIndex (to do)
+        #@+node:bob.20071229180021:tags (to-do)
+        #@+node:bob.20071229180021.1:mark_set (to be removed)
+        def mark_set(self,markName,i):
+
+            g.trace('stc', markName, i)
+            return
+
+            w = self
+            i = self.toStcIndex(i)
+
+            ### Tk.Text.mark_set(w,markName,i)
+        #@-node:bob.20071229180021.1:mark_set (to be removed)
+        #@+node:bob.20071230062331:init_colorizer
+        def init_colorizer(self, col):
+
+            #g.trace()
+
+            col.removeOldTags = lambda *args: self.ClearDocumentStyle()
+
+            col.removeAllTags = lambda  : self.ClearDocumentStyle()
+        #@-node:bob.20071230062331:init_colorizer
+        #@+node:bob.20071230065317:putNewTags
+        def putNewTags(self, col, addList, trace, verbose):
+
+            w = col.w
+
+            s = col.s
+
+            for i, j, tagName in addList:
+
+                ii = len(s[:i].encode('utf8'))
+                num = len(s[i:j].encode('utf8'))
+
+                if trace and verbose:
+                    g.trace('add', tagName, i, j, s[i:j])
+
+                w.StartStyling(ii, 127)
+                w.SetStyling(num, w.leo_styles[tagName])
+
+            return True
+
+        #@-node:bob.20071230065317:putNewTags
+        #@+node:bob.20071229180021.2:tag_add
+        # The signature is slightly different than the Tk.Text.insert method.
+
+        def tag_add(self, tagName,i,j=None,*args):
+
+            g.trace('stc', tagName, i, j, args)
+
+            return
+
+            if j is None:
+                j = i + 1
+
+            ii = self.toStcIndex(i)
+            jj = self.toStcIndex(j or i +1)
+
+
+            style = self.leo_styles.get(tagName, None)
+
+            if style is not None:
+                g.trace('stc',i,j,tagName)
+                #self.textBaseClass.SetStyle(w, ii, jj, style)
+        #@-node:bob.20071229180021.2:tag_add
+        #@+node:bob.20071229190049:start_tag_configure
+        def start_tag_configure(self):
+            #g.trace()
+            self.leo_tags = {}
+            self.leo_styles = {}
+        #@nonl
+        #@-node:bob.20071229190049:start_tag_configure
+        #@+node:bob.20071229180021.3:tag_configure
+        def tag_configure (self,tagName,**kw):
+
+            #g.trace('stc', tagName, kw)
+
+            try:
+                thistag = self.leo_tags[tagName]
+            except KeyError:
+                thistag = self.leo_tags[tagName] = {}
+
+            thistag.update(kw)
+
+        tag_config = tag_configure
+        #@-node:bob.20071229180021.3:tag_configure
+        #@+node:bob.20071229190049.1:end_tag_configure
+        def end_tag_configure(self):
+
+            w = self
+
+            # g.trace()
+
+            w.StyleClearAll()
+
+            styleNumber = 0
+            for tagName, tagData in self.leo_tags.iteritems():
+                styleNumber += 1
+                if styleNumber == 32:
+                    styleNumber += 8
+
+                w.leo_styles[tagName] = styleNumber
+
+                for item, value in tagData.iteritems():
+                    #g.es(item, value, color='darkgreen')
+
+                    if item == ('font'):
+                        for fontitem, fontvalue in value.actual().iteritems():
+
+                            if fontitem == 'family':
+                                w.StyleSetFaceName(styleNumber, fontvalue)
+
+                            elif fontitem == 'size':
+                                w.StyleSetSize(styleNumber, int(fontvalue))
+
+                            elif fontitem == 'underline':
+                                w.StyleSetUnderline(styleNumber, fontvalue)
+                                #print 'font-underline value: ', fontvalue
+
+                            elif fontitem ==  'weight':
+                                w.StyleSetBold(styleNumber, fontvalue == 'bold')
+
+                            elif fontitem == 'slant':
+                                w.StyleSetItalic(styleNumber, fontvalue=='italic')
+
+                    elif item == 'foreground':
+
+                        if not value:
+                            #print 'no foreground color: ', tagName
+                            continue
+
+                        color = getColor(value, None)
+                        if value is None:
+                            #print 'unknown color [%s]' % color
+                            continue
+                        w.StyleSetForeground(styleNumber, color)
+
+                    elif item in ('background', 'bg'):
+                        item = 'background'
+                        if not value:
+                            #print 'no background color for: %s' % tagName
+                            continue
+
+                        color = getColor(value, None)
+                        if value is None:
+                            #print g.es('unknown color [%s]' % color)
+                            continue
+                        w.StyleSetBackground(styleNumber, color)
+
+                    elif item == 'underline':
+                        w.StyleSetUnderline(styleNumber, value)
+
+                    else:
+                        #print('unknown style, %s, %s' % (item, value))
+                        pass
+
+            #print 'no of tags: ', len( self.leo_styles)
+        #@-node:bob.20071229190049.1:end_tag_configure
+        #@+node:bob.20071229180021.5:tag_delete (NEW)
+        def tag_delete (self,tagName,*args,**keys):
+            #g.trace('stc', tagName,args,keys)
+            pass
+        #@nonl
+        #@-node:bob.20071229180021.5:tag_delete (NEW)
+        #@+node:bob.20071229180021.6:tag_names
+        def tag_names (self, *args):
+            #g.trace('stc', args)
+            return []
+        #@-node:bob.20071229180021.6:tag_names
+        #@+node:bob.20071229180021.7:tag_ranges
+        def tag_ranges(self,tagName):
+            #g.trace('stc', tagName)
+            return tuple() ###
+
+            w = self
+            aList = Tk.Text.tag_ranges(w,tagName)
+            aList = [w.toPythonIndex(z) for z in aList]
+            return tuple(aList)
+        #@-node:bob.20071229180021.7:tag_ranges
+        #@+node:bob.20071229180021.8:tag_remove
+        def tag_remove(self,tagName,i,j=None,*args):
+            #g.trace('stc', tagName, i, j, args)
+            return
+
+            w = self
+
+            if j is None:
+                j = i + 1
+
+            ii = self.toStcIndex(i)
+            jj = self.toStcIndex(j)
+
+            #return ### Not ready yet.
+
+            style = w.leo_styles.get(tagName)
+
+            if style is not None:
+                g.trace('stc',i,j,tagName)
+                #w.textBaseClass.SetStyle(w,ii,jj,style)
+        #@-node:bob.20071229180021.8:tag_remove
+        #@-node:bob.20071229180021:tags (to-do)
         #@-node:bob.20070813163332.153:Overrides of baseTextWidget methods
         #@+node:bob.20070903081639:Wrapper methods (widget-independent)
         # These methods are widget-independent because they call the corresponding _xxx methods.
@@ -1274,100 +1617,10 @@ if wx:
                  w._setYScrollPosition(i)
             #@nonl
             #@-node:bob.20070903081639.30:setYScrollPosition
-            #@+node:bob.20070903081639.31:tags (to-do)
-            #@+node:bob.20070903081639.32:mark_set (to be removed)
-            def mark_set(self,markName,i):
-
-                w = self
-                i = self.toPythonIndex(i)
-
-                ### Tk.Text.mark_set(w,markName,i)
-            #@-node:bob.20070903081639.32:mark_set (to be removed)
-            #@+node:bob.20070903081639.33:tag_add
-            # The signature is slightly different than the Tk.Text.insert method.
-
-            def tag_add(self,tagName,i,j=None,*args):
-
-                w = self
-                i = self.toPythonIndex(i)
-                if j is None: j = i + 1
-                j = self.toPythonIndex(j)
-
-                return ###
-
-                if not hasattr(w,'leo_styles'):
-                    w.leo_styles = {}
-
-                style = w.leo_styles.get(tagName)
-
-                if style is not None:
-                    # g.trace(i,j,tagName)
-                    w.textBaseClass.SetStyle(w,i,j,style)
-            #@nonl
-            #@-node:bob.20070903081639.33:tag_add
-            #@+node:bob.20070903081639.34:tag_configure & helper
-            def tag_configure (self,colorName,**keys):
-                pass
-
-            tag_config = tag_configure
-            #@nonl
-            #@+node:bob.20070903081639.35:tkColorToWxColor
-            def tkColorToWxColor (self, color):
-
-                d = {
-                    'black':        wx.BLACK,
-                    "red":          wx.RED,
-                    "blue":         wx.BLUE,
-                    "#00aa00":      wx.GREEN,
-                    "firebrick3":   wx.RED,
-                    'white':        wx.WHITE,
-                }
-
-                return d.get(color)
-            #@nonl
-            #@-node:bob.20070903081639.35:tkColorToWxColor
-            #@-node:bob.20070903081639.34:tag_configure & helper
-            #@+node:bob.20070903081639.36:tag_delete (NEW)
-            def tag_delete (self,tagName,*args,**keys):
-
-                pass # g.trace(tagName,args,keys)
-            #@nonl
-            #@-node:bob.20070903081639.36:tag_delete (NEW)
-            #@+node:bob.20070903081639.37:tag_names
-            def tag_names (self, *args):
-
-                return []
-            #@-node:bob.20070903081639.37:tag_names
-            #@+node:bob.20070903081639.38:tag_ranges
-            def tag_ranges(self,tagName):
-
-                return tuple() ###
-
-                w = self
-                aList = Tk.Text.tag_ranges(w,tagName)
-                aList = [w.toPythonIndex(z) for z in aList]
-                return tuple(aList)
-            #@-node:bob.20070903081639.38:tag_ranges
-            #@+node:bob.20070903081639.39:tag_remove
-            def tag_remove(self,tagName,i,j=None,*args):
-
-                w = self
-                i = self.toPythonIndex(i)
-                if j is None: j = i + 1
-                j = self.toPythonIndex(j)
-
-                return ### Not ready yet.
-
-                if not hasattr(w,'leo_styles'):
-                    w.leo_styles = {}
-
-                style = w.leo_styles.get(tagName)
-
-                if style is not None:
-                    # g.trace(i,j,tagName)
-                    w.textBaseClass.SetStyle(w,i,j,style)
-            #@nonl
-            #@-node:bob.20070903081639.39:tag_remove
+            #@+node:bob.20070903081639.41:xyToGui/PythonIndex
+            def xyToPythonIndex (self,x,y):
+                return 0
+            #@-node:bob.20070903081639.41:xyToGui/PythonIndex
             #@+node:bob.20070903081639.40:yview
             def yview (self,*args):
 
@@ -1376,11 +1629,6 @@ if wx:
                 return 0,0
             #@nonl
             #@-node:bob.20070903081639.40:yview
-            #@-node:bob.20070903081639.31:tags (to-do)
-            #@+node:bob.20070903081639.41:xyToGui/PythonIndex
-            def xyToPythonIndex (self,x,y):
-                return 0
-            #@-node:bob.20070903081639.41:xyToGui/PythonIndex
             #@-others
         #@nonl
         #@-node:bob.20070903081639:Wrapper methods (widget-independent)
@@ -1499,84 +1747,97 @@ if wx:
             if not widget:
                 widget = richtext.RichTextCtrl(parent, style=wx.WANTS_CHARS, **kw)
 
-            baseTextWidget.__init__(self, leoParent, 
+            baseTextWidget.__init__(self, leoParent,
                 name=name, widget=widget,
             )
+
+            widget.Bind(wx.EVT_SIZE, self.onSize)
 
 
 
         #@-node:bob.20070813163332.144:__init__
+        #@+node:bob.20071230181436:onSize
+        def onSize(self, event):
+            """Handle EVT_SIZE for RichTextCtrl."""
+
+            w = self.widget
+
+            #g.trace(myclass(self), w.GetClientSize())
+            w.ShowPosition(w.GetInsertionPoint())
+
+            event.Skip()
+        #@-node:bob.20071230181436:onSize
         #@+node:bob.20070826135428:bindings (TextCtrl)
 
         # Interface non gui text control methods
         #  to physical wx.TextCtrl methods.
 
-        def _appendText(self,s): 
-            g.trace('richtext',s)
+        def _appendText(self,s):
+            #g.trace('richtext',s)
             return self.widget.AppendText(s)
 
-        def _get(self,i,j):   
-            g.trace('richtext',i, j)               
+        def _get(self,i,j):
+            #g.trace('richtext',i, j)
             return self.widget.GetRange(i,j)
 
-        def _getAllText(self): 
-            g.trace('richtext')              
+        def _getAllText(self):
+            #g.trace('richtext')
             return self.widget.GetValue()
 
-        def _getFocus(self):    
-            g.trace('richtext')             
+        def _getFocus(self):
+            #g.trace('richtext')
             return self.widget.FindFocus()
 
-        def _getInsertPoint(self):  
-            g.trace('richtext')         
+        def _getInsertPoint(self):
+            #g.trace('richtext')
             return self.widget.GetInsertionPoint()
 
         def _getLastPosition(self ):
-            g.trace('richtext')     
+            #g.trace('richtext')
             return self.widget.GetLastPosition()
 
-        def _getSelectedText(self):   
-            g.trace('richtext')       
+        def _getSelectedText(self):
+            #g.trace('richtext')
             return self.widget.GetStringSelection()
 
-        def _getSelectionRange(self):  
-            g.trace('richtext')      
+        def _getSelectionRange(self):
+            #g.trace('richtext')
             return self.widget.GetSelection()
 
-        def _hitTest(self,pos):    
-            g.trace('richtext',pos)          
+        def _hitTest(self,pos):
+            #g.trace('richtext',pos)
             return self.widget.HitTest(pos)
 
         def _insertText(self,i,s):
             self.setInsertPoint(i,s)
             return self.widget.WriteText(s)
 
-        def _scrollLines(self,n): 
-            g.trace('richtext', n)
+        def _scrollLines(self,n):
+            #g.trace('richtext', n)
             return self.widget.ScrollLines(n)
 
-        def _see(self,i): 
-            g.trace('richtext',i)
+        def _see(self,i):
+            #g.trace('richtext',i)
             return self.widget.ShowPosition(i)
 
-        def _setAllText(self,s): 
-            g.trace('richtext',s)
+        def _setAllText(self,s):
+            #g.trace('richtext',s)
             return self.widget.SetValue(s)
 
-        def _setBackgroundColor(self,color): 
+        def _setBackgroundColor(self,color):
             #g.trace('richtext',color)
             return self.widget.SetBackgroundColour(color)
 
-        def _setFocus(self):  
-            g.trace('richtext')       
+        def _setFocus(self):
+            #g.trace('richtext')
             return self.widget.SetFocus()
 
-        def _setInsertPoint(self,i): 
-            g.trace('richtext',i)
+        def _setInsertPoint(self,i):
+            #g.trace('richtext',i)
 
             self.widget.SetSelection(i, i)
 
-        def _setSelectionRange(self,i,j): 
+        def _setSelectionRange(self,i,j):
             #g.trace('richtext',i,j)
             return self.widget.SetSelection(i,j)
 
@@ -1603,7 +1864,7 @@ if wx:
                 event.leoWidget = self
                 keysym = g.app.gui.eventKeysym(event)
 
-                # if keysym: 
+                # if keysym:
 
                 if keysym:
                     g.trace('base text: keysym:',repr(keysym))
@@ -1630,10 +1891,20 @@ if wx:
         '''A wrapper for log pane text widgets.'''
 
         #@    @+others
-        #@+node:bob.20070901051401:pass
-        pass
-        #@nonl
-        #@-node:bob.20070901051401:pass
+        #@+node:bob.20070901051401:onGainFocus
+
+        def onGainFocus(self, event):
+            """Respond to focus event for logTextWidget.
+
+            We don't want focus, so send it back to where it
+            came from.
+
+            """
+
+            self.c.focusManager.lastFocus()
+            event.Skip()
+            return True
+        #@-node:bob.20070901051401:onGainFocus
         #@-others
     #@nonl
     #@-node:bob.20070826133248:logTextWidget (richTextWidget)
@@ -1657,63 +1928,6 @@ if wx:
             self.text = None
         #@nonl
         #@-node:bob.20070813163332.67:wxSearchWidget.__init__
-        #@+node:bob.20070813163332.68:Insert point (deleted)
-        # Simulating wxWindows calls (upper case)
-        # def GetInsertionPoint (self):
-            # return self.insertPoint
-        # 
-        # def SetInsertionPoint (self,index):
-            # self.insertPoint = index
-            # 
-        # def SetInsertionPointEND (self,index):
-            # self.insertPoint = len(self.text)+1
-        # 
-        # # Returning indices...
-        # def getBeforeInsertionPoint (self):
-            # g.trace()
-        # 
-        # # Returning chars...
-        # def getCharAtInsertPoint (self):
-            # g.trace()
-        # 
-        # def getCharBeforeInsertPoint (self):
-            # g.trace()
-        # 
-        # # Setting the insertion point...
-        # def setInsertPointToEnd (self):
-            # self.insertPoint = -1
-            # 
-        # def setInsertPointToStartOfLine (self,lineNumber):
-            # g.trace()
-        #@nonl
-        #@-node:bob.20070813163332.68:Insert point (deleted)
-        #@+node:bob.20070813163332.69:Selection (deleted)
-        # Simulating wxWindows calls (upper case)
-        # def SetSelection(self,n1,n2):
-            # self.selection = n1,n2
-            # 
-        # # Others...
-        # def deleteSelection (self):
-            # self.selection = 0,0
-        # 
-        # def getSelectionRange (self):
-            # return self.selection
-            # 
-        # def hasTextSelection (self):
-            # start,end = self.selection
-            # return start != end
-        # 
-        # def selectAllText (self):
-            # self.selection = 0,-1
-        # 
-        # def setSelectionRange (self,sel):
-            # try:
-                # start,end = sel
-                # self.selection = start,end
-            # except:
-                # self.selection = sel,sel
-        #@nonl
-        #@-node:bob.20070813163332.69:Selection (deleted)
         #@-others
     #@nonl
     #@-node:bob.20070813163332.66:wxSearchWidget
@@ -1741,7 +1955,7 @@ if wx:
         #@-node:bob.20070813163332.98:initGui
         #@+node:bob.20070813163332.99:init (wxFindTab)
         # Called from leoFind.findTab.ctor.
-        # We must override leoFind.init to init the checkboxes 'by hand' here. 
+        # We must override leoFind.init to init the checkboxes 'by hand' here.
 
         def init (self,c):
             #g.trace('wxFindTab',g.callers())
@@ -1841,6 +2055,13 @@ if wx:
 
             self.parentFrame = self.top = parentFrame
 
+            configName = 'log_pane_Find_tab_background_color'
+            self.top.SetBackgroundColour(
+                name2color(
+                    self.c.config.getColor(configName) or 'MistyRose1'
+                )
+            )
+
             self.createFindChangeAreas()
             self.createBoxes()
             self.createButtons()
@@ -1921,7 +2142,7 @@ if wx:
                 ('Rege&xp',     'pattern_match'),
                 ('Mark &Finds', 'mark_finds'),
                 ("*&Entire Outline","entire-outline"),
-                ("*&Suboutline Only","suboutline-only"),  
+                ("*&Suboutline Only","suboutline-only"),
                 ("*&Node Only","node-only"),
                 ('Search &Headline','search_headline'),
                 ('Search &Body','search_body'),
@@ -1931,6 +2152,11 @@ if wx:
             # Important: changing these controls merely changes entries in self.svarDict.
             # First, leoFind.update_ivars sets the find ivars from self.svarDict.
             # Second, self.init sets the values of widgets from the ivars.
+
+            def onBoxFocus(event):
+                self.c.focusManager.lastFocus()
+                event.Skip()
+
             inGroup = False
             for label,ivar in data:
                 if label.startswith('*'):
@@ -1939,10 +2165,13 @@ if wx:
                     inGroup = True
                     w = wx.RadioButton(f,label=label,style=style)
                     self.widgetsDict[ivar] = w
+
                     def radioButtonCallback(event=None,ivar=ivar):
                         svar = self.svarDict["radio-search-scope"]
                         svar.set(ivar)
+
                     w.Bind(wx.EVT_RADIOBUTTON,radioButtonCallback)
+                    w.Bind(wx.EVT_SET_FOCUS, onBoxFocus)
                 else:
                     w = wx.CheckBox(f,label=label)
                     self.widgetsDict[ivar] = w
@@ -1952,8 +2181,8 @@ if wx:
                         svar.set(g.choose(val,False,True))
                         # g.trace(ivar,val)
                     w.Bind(wx.EVT_CHECKBOX,checkBoxCallback)
+                    w.Bind(wx.EVT_SET_FOCUS, onBoxFocus)
                 self.boxes.append(w)
-        #@nonl
         #@-node:bob.20070813163332.107:createBoxes
         #@+node:bob.20070813163332.108:createBindings TO DO
         def createBindings (self):
@@ -2095,10 +2324,10 @@ if wx:
 
             g.trace(c.widget_name(widget), widget)
             if c.widget_name(widget) == 'find-text':
-                print 'chang', self.change_ctrl
+                #print 'change', self.change_ctrl
                 self.change_ctrl.setFocus()
             else:
-                print 'find', self.find_ctrl
+                #print 'find', self.find_ctrl
                 self.find_ctrl.setFocus()
 
         #@-node:bob.20070901083131:toggleTextWidgetFocus
@@ -2121,7 +2350,7 @@ if wx:
         #@+node:bob.20070813163332.117:createBindings TO DO
         def createBindings (self):
 
-            return ### 
+            return ###
 
             c = self.c ; k = c.k
             widgets = (self.listBox, self.outerFrame)
@@ -2661,7 +2890,7 @@ if wx:
             lab = Tk.Label(row,text="mismatches")
             lab.pack(side="left",padx=2)
 
-            for padx,text,var in (    
+            for padx,text,var in (
                 (0,  "Print matched lines",           self.printMatchesVar),
                 (20, "Show both matching lines",      self.printBothMatchesVar),
                 (0,  "Print mismatched lines",        self.printMismatchesVar),
@@ -2851,237 +3080,6 @@ if wx:
         #@-node:bob.20070813163332.175:Event handlers...
         #@-others
     #@-node:bob.20070813163332.160:wxComparePanel class (not ready yet)
-    #@+node:bob.20071209181626:class wxScrolledMessageDialog
-    class wxScrolledMessageDialog(object):
-        """A class to create and run a Scrolled Message dialog for wxPython"""
-        #@    @+others
-        #@+node:bob.20071209181626.1:__init__
-        def __init__(self, title='Message', label= '', msg='', callback=None, buttons=None):
-
-            """Create and run a modal dialog showing 'msg' in a scrollable window."""
-
-            if buttons is None:
-                buttons = []
-
-            self.callback=callback
-
-            self.result = ('Cancel', None)
-
-            self.top = top = wx.Dialog(None, -1, title)
-
-            sizer = wx.BoxSizer(wx.VERTICAL)   
-
-            ll = wx.StaticText(top, -1, label)
-            sizer.Add(ll, 0, wx.ALIGN_CENTRE|wx.ALIGN_CENTER_VERTICAL|wx.TOP|wx.BOTTOM, 5)
-
-            text = wx.TextCtrl(top, -1, msg, size=(400, 200), style=wx.TE_MULTILINE | wx.TE_READONLY)
-            sizer.Add(text, 0, wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
-
-            line = wx.StaticLine(top, -1, size=(20,-1), style=wx.LI_HORIZONTAL)
-            sizer.Add(line, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL)
-
-            btnsizer = wx.BoxSizer(wx.HORIZONTAL)
-
-            for name in buttons:
-                btn = wx.Button(top, -1, name)
-                btn.Bind(wx.EVT_BUTTON, lambda e, self=self, name=name: self.onButton(name), btn)
-                btnsizer.Add(btn, 0, wx.ALL, 10)
-
-            btn = wx.Button(top, -1, 'Close')
-            btn.Bind(wx.EVT_BUTTON, lambda e, self=self: self.onButton('Close'), btn)
-            btn.SetDefault()
-            btnsizer.Add(btn)
-
-            #sizer.Add(btnsizer, 0, wx.GROW)
-            sizer.Add(btnsizer, 0, wx.ALIGN_CENTER | wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
-
-            self.top.SetSizerAndFit(sizer)
-            top.CenterOnScreen(wx.BOTH)
-            top.ShowModal()
-        #@-node:bob.20071209181626.1:__init__
-        #@+node:bob.20071209181626.2:onButton
-        def onButton(self, name):
-            """Event handler for all button clicks."""
-
-            if name in ('Close',):
-                self.top.Destroy()
-                return
-
-            if self.callback:
-                retval = self.callback(name, data)
-                if retval == 'close':
-                    self.top.Destroy()
-                else:
-                    self.result = ('Cancel', None)
-        #@nonl
-        #@-node:bob.20071209181626.2:onButton
-        #@-others
-
-
-    #@-node:bob.20071209181626:class wxScrolledMessageDialog
-    #@+node:bob.20071209201007:class wxPropertiesDialog
-    class wxPropertiesDialog:
-
-        """A class to create and run a Properties dialog"""
-
-        #@    @+others
-        #@+node:bob.20071209201007.1:__init__
-        def __init__(self, title, data, callback=None, buttons=[]):
-            #@    << docstring >>
-            #@+node:bob.20071209201007.2:<< docstring >>
-            """ Initialize and show a Properties dialog.
-
-                'buttons' should be a list of names for buttons.
-
-                'callback' should be None or a function of the form:
-
-                    def cb(name, data)
-                        ...
-                        return 'close' # or anything other than 'close'
-
-                where name is the name of the button clicked and data is
-                a data structure representing the current state of the dialog.
-
-                If a callback is provided then when a button (other than
-                'OK' or 'Cancel') is clicked then the callback will be called
-                with name and data as parameters.
-
-                    If the literal string 'close' is returned from the callback
-                    the dialog will be closed and self.result will be set to a
-                    tuple (button, data).
-
-                    If anything other than the literal string 'close' is returned
-                    from the callback, the dialog will continue to be displayed.
-
-                If no callback is provided then when a button is clicked the
-                dialog will be closed and self.result set to  (button, data).
-
-                The 'ok' and 'cancel' buttons (which are always provided) behave as
-                if no callback was supplied.
-
-            """
-            #@-node:bob.20071209201007.2:<< docstring >>
-            #@nl
-
-            if buttons is None:
-                buttons = []
-
-            self.entries = []
-            self.title = title
-            self.callback = callback
-            self.buttons = buttons
-            self.data = data
-
-            self.result = ('Cancel', None)
-            self.top = top = wx.Dialog(None,  title=title)
-
-            sizer = wx.BoxSizer(wx.VERTICAL)
-
-            tp = self.createEntryPanel()
-            sizer.Add(tp, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
-
-            btnsizer = wx.BoxSizer(wx.HORIZONTAL)
-
-            for name in buttons:
-                btn = wx.Button(top, -1, name)
-                btn.Bind(wx.EVT_BUTTON, lambda e, self=self, name=name: self.onButton(name), btn)
-                btnsizer.Add(btn)
-
-            btn = wx.Button(top, wx.ID_OK)
-            btn.Bind(wx.EVT_BUTTON, lambda e, self=self: self.onButton('OK'), btn)
-            btn.SetDefault()
-            btnsizer.Add(btn, 0, wx.ALL, 5)
-
-            btn = wx.Button(top, wx.ID_CANCEL)
-            btnsizer.Add(btn, wx.ALL, 5)
-
-            sizer.Add(btnsizer, 0, wx.ALIGN_CENTER | wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
-
-            self.top.SetSizerAndFit(sizer)
-            top.CenterOnScreen()
-            val = top.ShowModal()
-
-        #@-node:bob.20071209201007.1:__init__
-        #@+node:bob.20071209201007.3:onButton
-
-        def onButton(self, name):
-            """Event handler for all button clicks."""
-
-            data = self.getData()
-            self.result = (name, data)
-
-            if name in ('OK', 'Cancel'):
-                self.top.Destroy()
-                return
-
-            if self.callback:
-                retval = self.callback(name, data)
-                if retval == 'close':
-                    self.top.Destroy()
-                else:
-                    self.result = ('Cancel', None)
-
-
-        #@-node:bob.20071209201007.3:onButton
-        #@+node:bob.20071209201007.4:createEntryPanel
-        def createEntryPanel(self):
-
-            panel = wx.Panel(self.top, -1)
-
-            data = self.data
-            sections = data.keys()
-            sections.sort()
-
-            box = wx.BoxSizer(wx.VERTICAL)
-
-            for section in sections:
-
-                label = wx.StaticText(panel, -1, section)
-                box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALIGN_CENTER_VERTICAL|wx.TOP|wx.BOTTOM, 5)
-
-                options = data[section].keys()
-                options.sort()
-
-                lst = []
-                for option in options:
-                    ss = wx.StaticText(panel, -1, option),
-                    tt = wx.TextCtrl(panel, -1, data[section][option], size=(200,-1))
-                    lst.extend ((ss, (tt, 0, wx.EXPAND)))
-
-                    self.entries.append((section, option, tt))
-
-                sizer = wx.FlexGridSizer(cols=2, hgap=12, vgap=2)
-                sizer.AddGrowableCol(1)
-                sizer.AddMany(lst)
-
-                box.Add(sizer, 0, wx.GROW|wx.ALL, 5)
-
-                line = wx.StaticLine(panel, -1, size=(20,-1), style=wx.LI_HORIZONTAL)
-                box.Add(line, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL)  
-
-            panel.SetSizer(box)
-            panel.SetAutoLayout(True)
-            return panel
-        #@-node:bob.20071209201007.4:createEntryPanel
-        #@+node:bob.20071209201007.5:getData
-        def getData(self):
-            """Return the modified configuration."""
-
-            data = {}
-            for section, option, entry in self.entries:
-                if section not in data:
-                    data[section] = {}
-                s = entry.GetValue()
-                s = g.toEncodedString(s,"ascii",reportErrors=True) # Config params had better be ascii.
-                data[section][option] = s
-
-            return data
-
-
-        #@-node:bob.20071209201007.5:getData
-        #@-others
-    #@nonl
-    #@-node:bob.20071209201007:class wxPropertiesDialog
     #@+node:bob.20070813163332.180:wxGui class
     class wxGui(leoGui.leoGui):
 
@@ -3108,7 +3106,16 @@ if wx:
 
             self.extendGlobals()
 
+            self.Tk_Text = Tk_Text()
 
+
+            #@    @+others
+            #@+node:bob.20080105082712:nav_buttons declarations
+            self.listBoxDialog = wxListBoxDialog
+            self.marksDialog = wxMarksDialog
+            self.recentSectionsDialog = wxRecentSectionsDialog
+            #@-node:bob.20080105082712:nav_buttons declarations
+            #@-others
         #@-node:bob.20070813163332.182: wxGui.__init__
         #@+node:bob.20070830054714.1:extendGlobals
 
@@ -3122,7 +3129,7 @@ if wx:
                 caption = kw.get('caption', 'Alert')
                 g.trace(*args)
                 msg = ' '.join([str(a) for a in args])
-                g.es('\n%s' % msg, color='green')
+                g.es('\n%s' % msg, color='darkgreen')
                 try:
                     dlg = wx.MessageDialog(None,msg,'Alert')
                     dlg.ShowModal()
@@ -3362,7 +3369,7 @@ if wx:
                     result = d.GetPath()
                 return result
             else:
-                return None 
+                return None
         #@-node:bob.20070813163332.200:runOpenFileDialog
         #@+node:bob.20070813163332.201:runSaveFileDialog
         def runSaveFileDialog(self,initialfile,title,filetypes,defaultextension):
@@ -3387,13 +3394,15 @@ if wx:
                 return None
         #@nonl
         #@-node:bob.20070813163332.201:runSaveFileDialog
+        #@+node:bob.20080105081220:plugins_menu
+        #@+others
         #@+node:bob.20071209182132.2:runPropertiesDialog
         def runPropertiesDialog(self, title='Properties', data={}, callback=None, buttons=None):
             """Dispay a modal wxPropertiesDialog"""
 
             dialog = wxPropertiesDialog(title, data, callback, buttons)
 
-            return dialog.result 
+            return dialog.result
         #@-node:bob.20071209182132.2:runPropertiesDialog
         #@+node:bob.20071209182238:runScrolledMessageDialog
         def runScrolledMessageDialog(self,title='Message', label= '', msg='', callback=None, buttons=None):
@@ -3403,6 +3412,8 @@ if wx:
 
             return dialog.result
         #@-node:bob.20071209182238:runScrolledMessageDialog
+        #@-others
+        #@-node:bob.20080105081220:plugins_menu
         #@+node:bob.20070813163332.202:simulateDialog
         def simulateDialog (self,key,defaultVal=None):
 
@@ -3418,7 +3429,7 @@ if wx:
                 return "*.leo"
 
             if 1: # Too bad: this is sooo wimpy.
-                    a,b = filetypes[0] 
+                    a,b = filetypes[0]
                     return b
 
             else: # This _sometimes_ works: wxWindows is driving me crazy!
@@ -3496,8 +3507,7 @@ if wx:
             wx.WXK_NUMPAD_BEGIN         : 'Home',
         }
 
-        #@+at 
-        #@nonl
+        #@+at
         # These are by design not compatible with unicode characters.
         # If you want to get a unicode character from a key event use
         # wxKeyEvent::GetUnicodeKey instead.
@@ -3568,7 +3578,7 @@ if wx:
         # WXK_NUMPAD_DECIMAL,
         # WXK_NUMPAD_DIVIDE,
         # 
-        # // the following key codes are only generated under Windows 
+        # // the following key codes are only generated under Windows
         # currently
         # WXK_WINDOWS_LEFT,
         # WXK_WINDOWS_RIGHT,
@@ -3604,12 +3614,18 @@ if wx:
 
             '''Return the char field of an event, either a wx event or a converted Leo event.'''
 
+            if not event:
+                return event
+
             if hasattr(event,'char'):
                 return event.char # A leoKeyEvent.
             else:
                 return self.keysymHelper(event,kind='char')
 
-        def eventKeysym (self,event):
+        def eventKeysym (self,event,c=None):
+
+            if not event:
+                return event
 
             if hasattr(event,'keysym'):
                 return event.keysym # A leoKeyEvent: we have already computed the result.
@@ -3714,7 +3730,7 @@ if wx:
             if hasattr(event,'leoWidget'):
                 return event.leoWidget
             elif isinstance(event,self.leoKeyEvent): # a leoKeyEvent.
-                return event.widget 
+                return event.widget
             elif isinstance(event,g.Bunch): # A manufactured event.
                 if hasattr(event,'widget'):
                     w = event.widget
@@ -3848,7 +3864,7 @@ if wx:
 
         def color (self,color):
             '''Return the gui-specific color corresponding to the Tk color name.'''
-            return color # Do not call oops: this method is essential for the config classes.
+            return name2color(color)
         #@-node:bob.20070813163332.214:Constants
         #@+node:bob.20070813163332.215:Dialog
         #@+node:bob.20070813163332.216:bringToFront
@@ -3892,117 +3908,27 @@ if wx:
 
             # g.trace(g.app.config.defaultFont)
 
-            return g.app.config.defaultFont ##
 
             family_name = family
 
             try:
+                #fake tkFont
                 font = tkFont.Font(family=family,size=size,slant=slant,weight=weight)
-                #print family_name,family,size,slant,weight
-                #print "actual_name:",font.cget("family")
+
+                #g.trace(g.callers())
+                #print '\t', family,size,slant,weight
+                #print '\t', "actual_name:", font.cget("family")
+                #print '\tdefault-font:', g.app.config.defaultFont
+                #return g.app.config.defaultFont ##
                 return font
             except:
-                g.es("exception setting font from " + `family_name`)
-                g.es("family,size,slant,weight:"+
-                    `family`+':'+`size`+':'+`slant`+':'+`weight`)
-                g.es_exception()
+                #g.es("family,size,slant,weight:"+
+                #   `family`+':'+`size`+':'+`slant`+':'+`weight`)
+                #g.es_exception()
                 return g.app.config.defaultFont
-        #@nonl
         #@-node:bob.20070813163332.221:getFontFromParams
         #@-node:bob.20070813163332.220:Font (wxGui) (to do)
-        #@+node:bob.20070813163332.222:Icons (wxGui) (to do)
-        #@+node:bob.20070813163332.223:attachLeoIcon
-        def attachLeoIcon (self,w):
-
-            """Try to attach a Leo icon to the Leo Window.
-
-            Use tk's wm_iconbitmap function if available (tk 8.3.4 or greater).
-            Otherwise, try to use the Python Imaging Library and the tkIcon package."""
-
-            if self.bitmap != None:
-                # We don't need PIL or tkicon: this is tk 8.3.4 or greater.
-                try:
-                    w.wm_iconbitmap(self.bitmap)
-                except:
-                    self.bitmap = None
-
-            if self.bitmap == None:
-                try:
-                    #@            << try to use the PIL and tkIcon packages to draw the icon >>
-                    #@+node:bob.20070813163332.224:<< try to use the PIL and tkIcon packages to draw the icon >>
-                    #@+at 
-                    #@nonl
-                    # This code requires Fredrik Lundh's PIL and tkIcon 
-                    # packages:
-                    # 
-                    # Download PIL    from 
-                    # http://www.pythonware.com/downloads/index.htm#pil
-                    # Download tkIcon from 
-                    # http://www.effbot.org/downloads/#tkIcon
-                    # 
-                    # Many thanks to Jonathan M. Gilligan for suggesting this 
-                    # code.
-                    #@-at
-                    #@@c
-
-                    import Image,tkIcon,_tkicon
-
-                    # Wait until the window has been drawn once before attaching the icon in OnVisiblity.
-                    def visibilityCallback(event,self=self,w=w):
-                        try: self.leoIcon.attach(w.winfo_id())
-                        except: pass
-                    w.bind("<Visibility>",visibilityCallback)
-                    if not self.leoIcon:
-                        # Load a 16 by 16 gif.  Using .gif rather than an .ico allows us to specify transparency.
-                        icon_file_name = os.path.join(g.app.loadDir,'..','Icons','LeoWin.gif')
-                        icon_file_name = os.path.normpath(icon_file_name)
-                        icon_image = Image.open(icon_file_name)
-                        if 1: # Doesn't resize.
-                            self.leoIcon = self.createLeoIcon(icon_image)
-                        else: # Assumes 64x64
-                            self.leoIcon = tkIcon.Icon(icon_image)
-                    #@nonl
-                    #@-node:bob.20070813163332.224:<< try to use the PIL and tkIcon packages to draw the icon >>
-                    #@nl
-                except:
-                    # traceback.print_exc()
-                    self.leoIcon = None
-        #@nonl
-        #@-node:bob.20070813163332.223:attachLeoIcon
-        #@+node:bob.20070813163332.225:createLeoIcon
-        # This code is adapted from tkIcon.__init__
-        # Unlike the tkIcon code, this code does _not_ resize the icon file.
-
-        def createLeoIcon (self,icon):
-
-            try:
-                import Image,tkIcon,_tkicon
-
-                i = icon ; m = None
-                # create transparency mask
-                if i.mode == "P":
-                    try:
-                        t = i.info["transparency"]
-                        m = i.point(lambda i, t=t: i==t, "1")
-                    except KeyError: pass
-                elif i.mode == "RGBA":
-                    # get transparency layer
-                    m = i.split()[3].point(lambda i: i == 0, "1")
-                if not m:
-                    m = Image.new("1", i.size, 0) # opaque
-                # clear unused parts of the original image
-                i = i.convert("RGB")
-                i.paste((0, 0, 0), (0, 0), m)
-                # create icon
-                m = m.tostring("raw", ("1", 0, 1))
-                c = i.tostring("raw", ("BGRX", 0, -1))
-                return _tkicon.new(i.size, c, m)
-            except:
-                return None
-        #@nonl
-        #@-node:bob.20070813163332.225:createLeoIcon
-        #@-node:bob.20070813163332.222:Icons (wxGui) (to do)
-        #@+node:bob.20070813163332.226:Idle time (wxGui) (to do)
+        #@+node:bob.20070813163332.226:Idle time (wxGui)
         #@+node:bob.20070813163332.227:setIdleTimeHook
         def setIdleTimeHook (self,idleTimeHookHandler,*args,**keys):
 
@@ -4015,7 +3941,13 @@ if wx:
             wx.CallLater(g.app.idleTimeDelay,idleTimeHookHandler, *args, **keys)
         #@nonl
         #@-node:bob.20070813163332.228:setIdleTimeHookAfterDelay
-        #@-node:bob.20070813163332.226:Idle time (wxGui) (to do)
+        #@+node:bob.20080106175313:update_idletasks
+        def update_idletasks(self, *args, **kw):
+            #g.trace(g.callers())
+            wx.SafeYield(onlyIfNeeded=True)
+        #@nonl
+        #@-node:bob.20080106175313:update_idletasks
+        #@-node:bob.20070813163332.226:Idle time (wxGui)
         #@+node:bob.20070813163332.53:isTextWidget
         def isTextWidget (self,w):
 
@@ -4028,7 +3960,7 @@ if wx:
 
             First try the (gui)LeoObject getName method.
             Second try wx widgets GetName method.
-            Third use repr(w) 
+            Third use repr(w)
             """
 
             #g.trace(w)
@@ -4047,6 +3979,35 @@ if wx:
             return repr(w)
         #@-node:bob.20070813163332.229:widget_name
         #@-node:bob.20070813163332.212:gui utils (must add several)
+        #@+node:bob.20080105181202:getImage
+        def getImage (self, c, relPath, force=False):
+
+
+            basepath = g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons"))
+
+
+            if not force and relPath in globalImages:
+                image = globalImages[relPath]
+                g.es('cach ', image, image.GetHeight(), color='magenta')
+                return image, image.GetHeight()
+
+            try:
+                path = g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons", relPath))
+                globalImages[relPath] = image = wx.BitmapFromImage(wx.Image(path))
+                return image
+
+            except Exception:
+                pass
+
+            try:
+                path = g.os_path_normpath(relPath)
+                localImages[relPath] =  image = wx.BitmapFromImage(wx.Image(path))
+                return image
+            except Exception:
+                pass
+
+            return None
+        #@-node:bob.20080105181202:getImage
         #@-others
     #@nonl
     #@-node:bob.20070813163332.180:wxGui class
@@ -4133,7 +4094,7 @@ if wx:
             """Handle default actions for keystrokes not defined elsewhere.
 
             If event is not none then it will be used to find the window
-            the wich caused the event otherwise the currently focused
+            which caused the event otherwise the currently focused
             window will be used.
 
             If none is returned then the caller should call event.Skip()
@@ -4317,17 +4278,24 @@ if wx:
                     max = 10
             self.__max = max
 
+        def __str__(self):
+            name = 'stack'
+            if self.__log:
+                name = 'log'
+            return '<%s: %s>' % (name, self.__stk)
+        __repr__ = __str__
+
         def push(self, item):
             stk = self.__stk
             if not stk or (stk[-1] is not item):
                 stk.append(item)
             del stk[:-self.__max]
 
-        def pop(self):
+        def pop(self, o=None):
             stk = self.__stk
             if self.__log:
                 return stk and stk[-1]
-            return stk and stk.pop(-1)
+            return stk and (stk[-1] is o) and stk.pop(-1)
 
         def top(self):
             stk = self.__stk
@@ -4358,30 +4326,44 @@ if wx:
             ):
                 setattr(self, s, c.config.getBool(s))
 
+            self.stack = _focusHistory()
+            self.log = _focusHistory(log=True)
+
+
 
         #@-node:bob.20070901193129.1:__init__
         #@+node:bob.20070901193129.2:gotFocus
 
         def gotFocus(self, o, event):
-            #g.trace(o)
+            #g.trace(self.c.widget_name(o))
+
+            self.log.push(o)
+            self.stack.push(o)
+
+            if 0:
+                print
+                g.trace( self.log)
+                print
+                #g.trace( self.stack)
+                #print
             event.Skip()
-        #@nonl
         #@-node:bob.20070901193129.2:gotFocus
         #@+node:bob.20070901193129.3:lostFocus
 
         def lostFocus(self, o, event):
             #g.trace(o)
+
+            self.stack.pop(o)
+            if 0:
+                print
+                g.trace( self.log)
+                print
+                g.trace( self.stack)
+                print
             event.Skip()
 
 
         #@-node:bob.20070901193129.3:lostFocus
-        #@+node:bob.20070901193129.4:wantsFocus
-        def wantsFocus(self, o):
-            assert False
-            #g.trace('wxfocusmanger', o)
-            o.SetFocus()
-        #@nonl
-        #@-node:bob.20070901193129.4:wantsFocus
         #@+node:bob.20070901193129.5:setFocus
         def setFocus(self, o):
              o.SetFocus()
@@ -4398,6 +4380,12 @@ if wx:
             ))
         #@nonl
         #@-node:bob.20070901193129.6:chooseBodyOfOutline
+        #@+node:bob.20080102183111:lastFocus
+        def lastFocus(self):
+
+            o = self.log.pop()
+            self.setFocus(o)
+        #@-node:bob.20080102183111:lastFocus
         #@-others
 
 
@@ -4409,14 +4397,6 @@ if wx:
         def OnInit(self):
 
             self.SetAppName("Leo")
-
-            # Add some pre-defined default colors.
-            add = wx.TheColourDatabase.AddColour
-
-            self.leo_colors = ('leo blue','leo pink','leo yellow')
-            add('leo blue',  wx.Color(240,248,255)) # alice blue
-            add('leo pink',  wx.Color(255,228,225)) # misty rose
-            add('leo yellow',wx.Color(253,245,230)) # old lace
 
             wx.InitAllImageHandlers()
 
@@ -4434,21 +4414,23 @@ if wx:
 
         def loadIcons(self):
 
-            global icons, plusBoxIcon, minusBoxIcon, appIcon
+            global icons, plusBoxIcon, minusBoxIcon, appIcon, namedIcons
 
             import cStringIO
 
-            def loadIcon(fname, type=wx.BITMAP_TYPE_GIF):
+            def loadIcon(fname, type=wx.BITMAP_TYPE_ANY):
 
-                icon = wx.Bitmap(fname, type)
+                icon = wx.BitmapFromImage(wx.Image(fname, type))
 
                 if icon and icon.GetWidth()>0:
                     return icon
 
-                print 'Can not load icon from', fname 
-
+                print 'Can not load icon from', fname
 
             icons = []
+            namedIcons = {}
+
+
             path = g.os_path_abspath(g.os_path_join(g.app.loadDir, '..', 'Icons'))
             if g.os_path_exists(g.os_path_join(path, 'box01.GIF')):
                 ext = '.GIF'
@@ -4460,18 +4442,22 @@ if wx:
                 icons.append(icon)
 
 
-            for i in (  'lt_arrow_enabled',
-                        'rt_arrow_enabled',
-                        'lt_arrow_disabled',
-                        'lt_arrow_disabled'
+
+            for name in (
+                'lt_arrow_enabled',
+                'rt_arrow_enabled',
+                'lt_arrow_disabled',
+                'rt_arrow_disabled'
             ):
-                icon = loadIcon(g.os_path_join(path, i + '.gif'))
-                icons.append(icon)
+                icon = loadIcon(g.os_path_join(path, name + '.gif'))
+                if icon:
+                    namedIcons[name] = icon
 
 
-            plusnode_data = '\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\t\x00\x00\x00\t\x08\x02\x00\x00\x00o\xf3\x91G\x00\x00\x00\x03sBIT\x08\x08\x08\xdb\xe1O\xe0\x00\x00\x00>IDAT\x08\x99\x85\x8f1\x0e\x00 \x08\x03[\xc3\xbf\xe9\xcfq`\x105h\xa7^.%\x81\xee\x8e&\x06@\xd2-$\x8d\xca$+\x0e\xf4\xb1c\x91%"\x96K \x99\xe5\x7fssu\x04\x80\x8f\xff&NC\x12\x11\x18\x0c\xfa\n\x00\x00\x00\x00IEND\xaeB`\x82' 
 
-            minusnode_data = '\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\t\x00\x00\x00\t\x08\x02\x00\x00\x00o\xf3\x91G\x00\x00\x00\x03sBIT\x08\x08\x08\xdb\xe1O\xe0\x00\x00\x009IDAT\x08\x99\x95\x8f\xc1\n\x000\x08Bu\xf4\xdf\xf9\xe7\xed\xd0a\x83\x910/\x92\x0f\x03\x99\x99\x18\x14\x00$\xbd@\xd2\x9aJ\x00\x1c\x8b6\x92wZU\x87\xf5\xf1\xf1\xd31\x9a}\x1b\xb0\x07\x0c\x0e\x8e\xe2\xc5\xf1\x00\x00\x00\x00IEND\xaeB`\x82' 
+            plusnode_data = '\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\t\x00\x00\x00\t\x08\x02\x00\x00\x00o\xf3\x91G\x00\x00\x00\x03sBIT\x08\x08\x08\xdb\xe1O\xe0\x00\x00\x00>IDAT\x08\x99\x85\x8f1\x0e\x00 \x08\x03[\xc3\xbf\xe9\xcfq`\x105h\xa7^.%\x81\xee\x8e&\x06@\xd2-$\x8d\xca$+\x0e\xf4\xb1c\x91%"\x96K \x99\xe5\x7fssu\x04\x80\x8f\xff&NC\x12\x11\x18\x0c\xfa\n\x00\x00\x00\x00IEND\xaeB`\x82'
+
+            minusnode_data = '\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\t\x00\x00\x00\t\x08\x02\x00\x00\x00o\xf3\x91G\x00\x00\x00\x03sBIT\x08\x08\x08\xdb\xe1O\xe0\x00\x00\x009IDAT\x08\x99\x95\x8f\xc1\n\x000\x08Bu\xf4\xdf\xf9\xe7\xed\xd0a\x83\x910/\x92\x0f\x03\x99\x99\x18\x14\x00$\xbd@\xd2\x9aJ\x00\x1c\x8b6\x92wZU\x87\xf5\xf1\xf1\xd31\x9a}\x1b\xb0\x07\x0c\x0e\x8e\xe2\xc5\xf1\x00\x00\x00\x00IEND\xaeB`\x82'
 
             def bitmapfromdata(data):
                 return wx.BitmapFromImage(
@@ -4505,6 +4491,7 @@ if wx:
             # Init the base class: calls createControl.
             leoFrame.leoBody.__init__(self,frame,parentFrame)
 
+            self.trace_onBodyChanged = c.config.getBool('trace_onBodyChanged')
             self.bodyCtrl = self.createControl(frame,parentFrame)
 
             self.colorizer = leoColor.colorizer(self.c)
@@ -4520,6 +4507,7 @@ if wx:
                 parentFrame,
                 name='body' # Must be body for k.masterKeyHandler.
             )
+
             #w.widget.Bind(wx.EVT_LEFT_DOWN, self.onClick)
 
 
@@ -4532,7 +4520,7 @@ if wx:
             These are *not* made in nullBody instances.'''
 
 
-            #FIXME 
+            #FIXME
 
             return ###
 
@@ -4562,39 +4550,6 @@ if wx:
         #@nonl
         #@-node:bob.20070813163332.241:wxBody.setEditorColors
         #@-node:bob.20070813163332.237:Birth & death (wxLeoBody)
-        #@+node:bob.20070827093843:onClick
-
-        ##FIXME 
-
-        def onClick (self,event):
-
-            #g.trace('leoBody')
-
-            c = self.c ; k = c.k ; 
-
-            w = g.app.gui.eventWidget(event)
-            wname = w.name
-
-            if wname.startswith('body'):
-                # A hack to support middle-button pastes:
-                #   remember the previous selection.
-
-                k.previousSelection = w.getSelectionRange()
-
-                x,y = g.app.gui.eventXY(event)
-                i = w.xyToPythonIndex(x,y)
-
-                #w.setSelectionRange(i,i,insert=i)
-                c.editCommands.setMoveCol(w,i)
-
-                self.selectEditor(w)
-
-                c.frame.updateStatusLine()
-            else:
-                g.trace('can not happen')
-
-            event.Skip()
-        #@-node:bob.20070827093843:onClick
         #@+node:bob.20070813163332.242:Tk wrappers (wxBody)
 
         def cget(self,*args,**keys):
@@ -4622,7 +4577,7 @@ if wx:
         def scheduleIdleTimeRoutine (self,function,*args,**keys):
             wx.CallAfter(function, *args, **keys)
 
-        def tag_add (self,*args,**keys):        
+        def tag_add (self,*args,**keys):
             #g.trace()
             return self.bodyCtrl.tag_add(*args,**keys)
 
@@ -4643,9 +4598,9 @@ if wx:
             return self.bodyCtrl.tag_remove(*args,**keys)
         #@-node:bob.20070813163332.242:Tk wrappers (wxBody)
         #@+node:bob.20070813163332.243:onBodyChanged (wxBody: calls leoBody.onBodyChanged)
-
+        #@@c
         def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
-
+            '''Update Leo after the body has been changed.'''
             #g.trace()
             if g.app.killed or self.c.frame.killed: return
 
@@ -4667,6 +4622,7 @@ if wx:
                     undoType,oldSel=oldSel,oldText=oldText,oldYview=oldYview)
             finally:
                 self.frame.lockout -= 1
+
         #@-node:bob.20070813163332.243:onBodyChanged (wxBody: calls leoBody.onBodyChanged)
         #@+node:bob.20070813163332.244:wxBody.forceFullRecolor
         def forceFullRecolor (self):
@@ -4789,23 +4745,8 @@ if wx:
 
             self.Bind(wx.EVT_SIZE, self.onSize)
 
-        def onPageChanged(self, event):
-            #g.trace()
-            sel = event.GetSelection()
-            if sel < 0:
-                event.Skip()
-                return
 
-            page = self.GetPage(sel)
-            page.SetSize(self.GetClientSize())
-            event.Skip()
 
-        def onSize(self, event):
-            #g.trace(myclass(self))
-            page = self.GetCurrentPage()
-            if page:
-                page.SetSize(self.GetClientSize())
-            event.Skip()
 
 
 
@@ -4822,8 +4763,35 @@ if wx:
         __repr__ = __str__
         #@nonl
         #@-node:bob.20071212081425:__str__
-        #@+node:bob.20071212081425.1:NewHeadline
-        #@-node:bob.20071212081425.1:NewHeadline
+        #@+node:bob.20071230174704:onSize
+        def onSize(self, event):
+            """Handle EVT_SIZE for wx.Notebook."""
+
+            #g.trace(myclass(self), self.GetClientSize())
+
+            page = self.GetCurrentPage()
+
+            if page:
+                page.SetSize(self.GetClientSize())
+
+
+            event.Skip()
+
+        #@-node:bob.20071230174704:onSize
+        #@+node:bob.20071230175001:onPageChanged
+        def onPageChanged(self, event):
+            """Handle EVT_NOTEBOOK_PAGE_CHANGED for wx.Notebook."""
+
+            #g.trace()
+
+            sel = event.GetSelection()
+
+            if sel > -1:
+                page = self.GetPage(sel)
+                page.SetSize(self.GetClientSize())
+
+            event.Skip()
+        #@-node:bob.20071230175001:onPageChanged
         #@+node:bob.20070908104659.1:tabToRawIndex
         def tabToRawIndex(self, tab):
             """The index of the page in the native notebook."""
@@ -4976,7 +4944,7 @@ if wx:
     #@+node:bob.20070908102321.6:wxLeoTab class
     class wxLeoTab(wxLeoObject, leoTab):
 
-        """wxPython implementation of leoTab.""" 
+        """wxPython implementation of leoTab."""
         #@    @+others
         #@+node:bob.20070908102321.7:__init__
         def __init__(self, c, tabName=None, page=None, nb=None):
@@ -5079,13 +5047,16 @@ if wx:
 
             #self.Bind(wx.EVT_SIZE, self.onSize)
 
-            #self.Bind(wx.EVT_CHAR, lambda event, type='leonotebookpanel':onRogueChar(event, type)) 
+            #self.Bind(wx.EVT_CHAR, lambda event, type='leonotebookpanel':onRogueChar(event, type))
 
 
         #@-node:bob.20070908081747.13:__init__
         #@+node:bob.20071212080244:onSize
         def onSize(self, event):
-            #g.trace(myclass(self))
+            """Handle EVT_SIZE for wx.Panel."""
+
+            #g.trace(myclass(self), self.GetClientSize())
+
             event.Skip()
         #@-node:bob.20071212080244:onSize
         #@-others
@@ -5111,9 +5082,11 @@ if wx:
 
             self.title = title
 
+            self.line_height = 0
+
 
             # To be set in finishCreate.
-            self.c = None 
+            self.c = None
             #self.bodyCtrl = None
 
             self.logPanel = None
@@ -5125,7 +5098,7 @@ if wx:
             self.minibuffer =None
             self.statusLine = None
             self.iconBar = None
-            self.menuBar = None    
+            self.menuBar = None
 
             self.statusLineClass = wxLeoStatusLine
             self.minibufferClass = wxLeoMinibuffer
@@ -5159,6 +5132,7 @@ if wx:
 
             self._splitterOrientation = VERTICAL
 
+
         #@-node:bob.20070813163332.259:__init__ (wxLeoFrame)
         #@+node:bob.20070813163332.260:__repr__
         def __repr__ (self):
@@ -5191,7 +5165,7 @@ if wx:
 
             self.trace_status_line = c.config.getBool('trace_status_line')
             self.use_chapters      = c.config.getBool('use_chapters')
-            self.use_chapter_tabs  = c.config.getBool('use_chapter_tabs')   
+            self.use_chapter_tabs  = c.config.getBool('use_chapter_tabs')
 
             c.focusManager = g.app.gui.createFocusManagerClass(self.c)
 
@@ -5212,6 +5186,8 @@ if wx:
 
             # Set the official ivars.
             self.topFrame = self.top = self.outerFrame = top
+
+            top.update_idletasks = g.app.gui.update_idletasks
 
 
             # Create the icon area.
@@ -5265,15 +5241,6 @@ if wx:
 
             box.Add(s1, 1, wx.EXPAND)
 
-            #@    << create and add minibuffer area >>
-            #@+node:bob.20070825182338:<< create and add minibuffer area >>
-
-            self.minibuffer = self.createMinibuffer()
-
-            sizer = self.minibuffer.finishCreate(top)
-            box.Add(sizer, 0, wx.EXPAND | wx.TOP | wx.RIGHT, 3) 
-            #@-node:bob.20070825182338:<< create and add minibuffer area >>
-            #@nl
             #@    << create and add status area >>
             #@+node:bob.20070825181313:<< create and add status area >>
 
@@ -5284,7 +5251,15 @@ if wx:
             #@nonl
             #@-node:bob.20070825181313:<< create and add status area >>
             #@nl
+            #@    << create and add minibuffer area >>
+            #@+node:bob.20070825182338:<< create and add minibuffer area >>
 
+            self.minibuffer = self.createMinibuffer()
+
+            sizer = self.minibuffer.finishCreate(top)
+            box.Add(sizer, 0, wx.EXPAND | wx.TOP | wx.RIGHT, 3)
+            #@-node:bob.20070825182338:<< create and add minibuffer area >>
+            #@nl
 
             # Create the menus & icon.
             self.menu = wxLeoMenu(self)
@@ -5321,6 +5296,7 @@ if wx:
 
 
 
+
         #@+node:bob.20070831060158:createMinibuffer
 
         def createMinibuffer (self):
@@ -5345,11 +5321,9 @@ if wx:
         #@+node:bob.20070813163332.262:setWindowIcon
         def setWindowIcon(self):
 
-            if wx.Platform == "__WXMSW__":
-
-                path = os.path.join(g.app.loadDir,"..","Icons","LeoApp16.ico")
-                icon = wx.Icon(path,wx.BITMAP_TYPE_ICO,16,16)
-                self.top.SetIcon(icon)
+            path = os.path.join(g.app.loadDir,"..","Icons","LeoApp16.ico")
+            icon = wx.Icon(path,wx.BITMAP_TYPE_ICO,16,16)
+            self.top.SetIcon(icon)
         #@-node:bob.20070813163332.262:setWindowIcon
         #@-node:bob.20070813163332.261:finishCreate (wxLeoFrame)
         #@+node:bob.20070912144833.1:createSplitters
@@ -5357,8 +5331,10 @@ if wx:
 
             parent = parent or self.hiddenWindow
 
-            return wx.SplitterWindow(parent, style=style), wx.SplitterWindow(parent, style=style)
-
+            return (
+                wx.SplitterWindow(parent, style=style),
+                wx.SplitterWindow(parent, style=style)
+            )
         #@-node:bob.20070912144833.1:createSplitters
         #@+node:bob.20070912144833.2:setupSplitters
         def setupSplitters(self, tree, log, body, s1, s2):
@@ -5372,6 +5348,9 @@ if wx:
             body.Reparent(s1)
             tree.Reparent(s2)
             log.Reparent(s2)
+
+            s1.SetSashGravity(0.33)
+            s2.SetSashGravity(0.66)
 
 
             if self._splitterOrientation == HORIZONTAL:
@@ -5512,7 +5491,7 @@ if wx:
             #bind(wx.EVT_MENU_OPEN, self.updateAllMenus)#self.updateAllMenus)
             #bind(wx.EVT_MENU_OPEN, self.xupdateAllMenus)#self.updateAllMenus)
 
-            bind(wx.EVT_CHAR, 
+            bind(wx.EVT_CHAR,
                 lambda event, self=self: onGlobalChar(self, event)
             )
 
@@ -5572,6 +5551,11 @@ if wx:
         def after_idle(self, *args, **kw):
             wx.CallAfter(*args, **kw)
 
+        def after(self, *args, **kw):
+            wx.CallLater(self, *args, **kw)
+
+
+
         def bringToFront(self):
             pass
 
@@ -5599,7 +5583,6 @@ if wx:
 
         def update (self):
             pass
-        #@nonl
         #@-node:bob.20070813163332.273:wxFrame dummy routines: (to do: minor)
         #@+node:bob.20070813163332.274:Externally visible routines...
         #@+node:bob.20070813163332.275:deiconify
@@ -5713,15 +5696,13 @@ if wx:
                 c.bodyWantsFocusNow()
         #@-node:bob.20070813163332.284:hidePane
         #@+node:bob.20070813163332.285:expand/contract/hide...Pane
-        #@+at 
-        #@nonl
+        #@+at
         # The first arg to divideLeoSplitter means the following:
         # 
         #     f.splitVerticalFlag: use the primary   (tree/body) ratio.
         # not f.splitVerticalFlag: use the secondary (tree/log) ratio.
         #@-at
         #@@c
-
         def contractBodyPane (self,event=None):
             '''Contract the body pane.'''
             f = self ; r = min(1.0,f.ratio+0.1)
@@ -5857,7 +5838,7 @@ if wx:
         def toggleSplitDirection(self,event=None):
 
             def po(o):
-               g.trace(g.choose(o==VERTICAL, 'vertical', 'horizontal')) 
+               g.trace(g.choose(o==VERTICAL, 'vertical', 'horizontal'))
 
 
             orient = self._splitterOrientation
@@ -5936,7 +5917,7 @@ if wx:
 
             if os.path.exists(file):
                 os.startfile(file)
-            else:	
+            else:
                 answer = g.app.gui.runAskYesNoDialog(c,
                     "Download Tutorial?",
                     "Download tutorial (sbooks.chm) from SourceForge?")
@@ -6036,7 +6017,7 @@ if wx:
         #@-node:bob.20070813163332.334:  wxLeoMenu.__init__
         #@+node:bob.20070813163332.335:Accelerators
         #@+at
-        # Accelerators are NOT SHOWN when the user opens the menu with the 
+        # Accelerators are NOT SHOWN when the user opens the menu with the
         # mouse!
         # This is a wx bug.
         #@-at
@@ -6150,7 +6131,7 @@ if wx:
 
             key = (menu,label),
 
-            self.menuDict[key] = id # Remember id 
+            self.menuDict[key] = id # Remember id
 
             wx.EVT_MENU(self.frame.top,id,wxMenuCallback)
 
@@ -6172,12 +6153,12 @@ if wx:
         def delete_range (self,menu,n1,n2):
             """Delete a range of items in a menu.
 
-            Items from min(n1, n2) to max(n1, n2) inclusive 
+            Items from min(n1, n2) to max(n1, n2) inclusive
             will be removed.
 
             """
             if not menu:
-                return g.trace('Can not happen.  No menu')   
+                return g.trace('Should not happen.  No menu')
 
             if n1 > n2:
                 n2, n1 = n1, n2
@@ -6222,7 +6203,7 @@ if wx:
 
             key = (menu,label),
 
-            self.menuDict[key] = id # Remember id 
+            self.menuDict[key] = id # Remember id
 
             wx.EVT_MENU(self.frame.top,id,wxMenuCallback)
 
@@ -6293,11 +6274,10 @@ if wx:
             ## FIXME to be gui independant
             index = 0;
             for item in parent.GetMenuItems():
-                if item.GetLabelFromText(item.GetText()) == 'Open With...':
+                if item.GetLabelFromText(item.GetText()) == 'Open _With...':
                     parent.RemoveItem(item)
                     break
                 index += 1
-
 
             # Create the Open With menu.
             openWithMenu = self.createOpenWithMenu(parent,label,index,amp_index)
@@ -6478,7 +6458,7 @@ if wx:
         #@-others
     #@-node:bob.20070907191759:wxLeoLogMenu class
     #@+node:bob.20070813163332.308:wxLeoLog class (leoLog)
-    class wxLeoLog (leoFrame.leoLog, leoObject):
+    class wxLeoLog (leoFrame.leoLog):
 
         """The base class for the log pane in Leo windows."""
 
@@ -6486,8 +6466,7 @@ if wx:
         #@+node:bob.20070813163332.309:leoLog.__init__
         def __init__ (self, c, nb):
 
-            leoObject.__init__(self, c)
-
+            self.c = c
 
             self.nb = nb
 
@@ -6516,12 +6495,19 @@ if wx:
             c = self.c ;  nb = self.nb
 
             # Create the Log tab.
-            self.logCtrl = self.selectTab('Log')
+            win = self.logCtrl = self.selectTab('Log')
+
+            win.SetBackgroundColour(
+                name2color(
+                    c.config.getColor('log_pane_background_color'), 'leo blue'
+                )
+            )
+
+
 
             # Create the Find tab.
             win = self.createTab('Find',createText=False)
-            color = name2color('leo blue')
-            win.SetBackgroundColour(color)
+
             c.frame.findTabHandler = g.app.gui.createFindTab(c,parentFrame=win)
 
             # Create the Spell tab.
@@ -6571,30 +6557,68 @@ if wx:
 
             #print '[%s]'%s, color, tabName
 
+            c = self.c ;
+
+            if g.app.quitting or not c or not c.exists:
+                return
+
             if tabName:
                 self.selectTab(tabName)
 
             try:
                 w = self.logCtrl.widget
             except:
-                w = None
                 #g.alert('log.put, can\'t write to log widget!')
+                w = None
                 print 'log tabName:s'
                 print
-                return
-
-            colour  = color or keys.get('colour', '') or 'black'
 
             if w:
-                w.BeginTextColour(colour)
+                color  = color or keys.get('colour', '') or 'black'
+
+                w.Delete((w.GetInsertionPoint(), w.GetLastPosition()))
+
+                w.BeginTextColour(name2color(color))
+
                 try:
-                    w.AppendText(s)
+                    w.WriteText(s)
                 finally:
                     w.EndTextColour()
 
-                w.MoveEnd()
-                w.ShowPosition(w.GetLastPosition())
-                w.PageDown()
+                pt = w.GetInsertionPoint()
+
+                w.WriteText('\n')
+
+                last = w.GetLastPosition()
+
+                w.ShowPosition(last)
+
+                w.SetInsertionPoint(pt)
+
+                #self.logCtrl.update_idletasks()
+
+                c.invalidateFocus()
+                c.bodyWantsFocusNow()
+
+                try:
+                    wx.Yield()
+                except:
+                    print 'yield failed'
+                    pass
+
+            else:
+                #@        << put s to logWaiting and print s >>
+                #@+node:bob.20071230083410:<< put s to logWaiting and print s >>
+                g.app.logWaiting.append((s,color),)
+
+                print "Null log"
+
+                if type(s) == type(u""):
+                    s = g.toEncodedString(s,"ascii")
+
+                print s
+                #@-node:bob.20071230083410:<< put s to logWaiting and print s >>
+                #@nl
 
 
         def putnl (self, tabName=None):
@@ -6621,7 +6645,7 @@ if wx:
                 if not where & wx.BK_HITTEST_NOWHERE:
                     return
             else:
-                tabName = self.nb.GetPageText(idx)   
+                tabName = self.nb.GetPageText(idx)
 
             choices = self.newChoices[:]
 
@@ -6709,6 +6733,9 @@ if wx:
         #@+node:bob.20070813163332.7:createTab
 
         def createTab (self, tabName, createText=True, wrap='none'):
+            """Create a tab for the log pane notebook.
+
+            """
 
             nb = self.nb
             # g.trace(tabName)
@@ -6716,13 +6743,11 @@ if wx:
 
                 w = logTextWidget(self, nb)
 
-                w.widget.BeginTextColour('black')
-
                 tab = wxLeoTab(self.c, tabName, w.widget, nb)
 
                 nb.appendTab(tab)
 
-                w.setBackgroundColor(name2color('leo blue'))
+                w.setBackgroundColor('light green')
 
                 self.textDict [tabName] = w
                 self.frameDict [tabName] = w.widget
@@ -6740,8 +6765,9 @@ if wx:
         #@-node:bob.20070813163332.7:createTab
         #@+node:bob.20070813163332.317:selectTab
         def selectTab(self, tabName, createText=True, wrap='none'):
+            """Select a tab in the log pane notebook, creae the tab if necessary.
 
-            '''Create the tab if necessary and make it active.'''
+            """
 
             tabFrame = self.frameDict.get(tabName)
 
@@ -6753,8 +6779,7 @@ if wx:
             self.logCtrl = self.textDict.get(tabName)
             self.tabFrame = self.frameDict.get(tabName)
 
-            nb = self.nb 
-
+            nb = self.nb
 
             i = self.indexFromName(tabName)
             if i is not None:
@@ -6762,7 +6787,7 @@ if wx:
                 assert nb.GetPage(i) == self.tabFrame
 
             #g.trace(self.nb.GetClientSize())
-            self.tabFrame.SetSize(nb.GetClientSize())       
+            self.tabFrame.SetSize(nb.GetClientSize())
 
             return self.tabFrame
         #@-node:bob.20070813163332.317:selectTab
@@ -6799,7 +6824,7 @@ if wx:
 
                 self.frameDict[newName] = self.frameDict[oldName]
                 self.textDict[newName] = self.textDict[oldName]
-                del self.frameDict[oldName]         
+                del self.frameDict[oldName]
                 del self.textDict[oldName]
         #@-node:bob.20070813163332.326:renameTab
         #@+node:bob.20070813163332.320:getSelectedTab
@@ -6836,7 +6861,7 @@ if wx:
                     if i == len(values): i = 0
                     tabName = d.keys()[i]
                     self.selectTab(tabName)
-                    return 
+                    return
             #@nonl
             #@-node:bob.20070813163332.324:cycleTabFocus
             #@+node:bob.20070813163332.325:lower/raiseTab
@@ -6869,15 +6894,26 @@ if wx:
         """A script button for leo's toolbar."""
 
         def __init__(self, parent,
-                text='', command=None, bg='leo blue',
-                size=(-1,24), statusLine=None
+                text='',
+                command=None,
+                bg='leo blue',
+                size=(-1,24),
+                statusLine=None,
+                canRemove=True,
+                **kw
         ):
 
+            self.command = command
             self.parent = parent
             self.toolbar = parent.toolbar
-            self.command = command
+            self.canRemove = canRemove
 
-            wx.Button.__init__(self, self.toolbar, label=text, size=size)
+            wx.Button.__init__(self,
+                self.toolbar,
+                label=text,
+                size=size,
+                style = wx.BU_EXACTFIT
+                )
             self.SetBackgroundColour(name2color(bg))
 
             if statusLine:
@@ -6885,8 +6921,9 @@ if wx:
                 wx.ToolTip.Enable(True)
                 wx.ToolTip.SetDelay(200)
 
-            self.Bind(wx.EVT_BUTTON, self.onCommand)        
-            self.Bind(wx.EVT_RIGHT_UP, self.onDelete)
+            self.Bind(wx.EVT_BUTTON, self.onCommand)
+            if canRemove:
+                self.Bind(wx.EVT_RIGHT_UP, self.onDelete)
 
         def onDelete(self, event=None):
             self.toolbar.RemoveTool(self.GetId())
@@ -6895,9 +6932,46 @@ if wx:
             if self.command:
                 self.command(event=event)
 
-
-
     #@-node:bob.20070824193757:wxLeoButton class
+    #@+node:bob.20080103194110:wxLeoIconButton class
+    class wxLeoBitmapButton(wx.BitmapButton):
+        """A bitmap script button for leo's toolbar."""
+
+        def __init__(self, parent,
+                bitmap,
+                command=None,
+                bg='leo blue',
+                canRemove=True,
+                statusLine=None,
+                **kw
+        ):
+
+            self.command = command
+            self.parent = parent
+            self.toolbar = parent.toolbar
+
+            wx.BitmapButton.__init__(self, self.toolbar,
+                bitmap=bitmap,
+                size=bitmap.GetSize()
+            )
+            self.SetBackgroundColour(name2color(bg))
+
+            if statusLine:
+                self.SetToolTipString(statusLine)
+                wx.ToolTip.Enable(True)
+                wx.ToolTip.SetDelay(200)
+
+            self.Bind(wx.EVT_BUTTON, self.onCommand)
+            if canRemove:
+                self.Bind(wx.EVT_RIGHT_UP, self.onDelete)
+
+        def onDelete(self, event=None):
+            self.toolbar.RemoveTool(self.GetId())
+
+        def onCommand(self, event=None):
+            if self.command:
+                self.command(event=event)
+    #@-node:bob.20080103194110:wxLeoIconButton class
     #@+node:bob.20070824165956:wxLeoChapterSelector class
 
     class wxLeoChapterSelector(wx.ComboBox):
@@ -6962,15 +7036,18 @@ if wx:
 
             self.toolbar =  self.iconFrame = toolbar
 
-            # self.toolbar.SetToolPacking(5)
+            self.toolbar.SetToolPacking(0)
+            self.toolbar.SetMargins((0,0))
 
-            # Insert a spacer to increase the height of the bar.
-            # if wx.Platform == "__WXMSW__":
-                # tsize = (32,32)
+            #Insert a spacer to increase the height of the bar.
+            # if True or wx.Platform == "__WXMSW__":
+                # #tsize = (24,24)
                 # path = os.path.join(g.app.loadDir,"..","Icons","LeoApp.ico")
                 # bitmap = wx.Bitmap(path,wx.BITMAP_TYPE_ICO)
-                # toolbar.SetToolBitmapSize(tsize)
+                # print 'bitmap size', bitmap.GetSize()
+                # #toolbar.SetToolBitmapSize((16,16))
                 # toolbar.AddLabelTool(-1,'',bitmap)
+
 
             if cc:
                 cc.chapterSelector = wxLeoChapterSelector(c, toolbar)
@@ -6980,60 +7057,77 @@ if wx:
             c.frame.iconFrame = self.iconFrame
         #@-node:bob.20070813163332.300:__init__ wxLeoIconBar
         #@+node:bob.20070813163332.301:add
-        def add(self, text='', command=None,
-                bg='leo blue', size=(-1,24), statusLine=None, *args, **keys):
-
+        def add(self,
+            text='',
+            command=None,
+            bg='leo blue',
+            size=(-1,24),
+            statusLine=None,
+            imagefile=None,
+            image=None,
+            canRemove=True,
+            *args, **keys
+        ):
             """Add a button containing text or a picture to the icon bar.
 
-            Pictures take precedence over text"""
+            Pictures take precedence over text
 
-            toolbar = self.toolbar
+            `image` may be a wx.Bitmap or a name, if it is a name then
+            the wx.Bitmap found in global namedIcons[image] will be used.
 
-            #imagefile = keys.get('imagefile')
-            #image = keys.get('image')
+            If image is None and imagefile is loadable and a valid image
+            that file will be loaded and converted to a wx.Bitmap.
 
-            b = wxLeoButton(self, text=text,
-                command=command, bg=bg, size=size, statusLine=statusLine)
+            If neither image or imagefile are specifid, a text button will
+            be created.
+
+            """
+
+            if not command:
+                def command(*args,**kw):
+                    print "command for widget %s"%text
+
+            if not imagefile and not image and not text:
+                return
+
+            bitmap = None
+            if isinstance(image, wx.Bitmap):
+                bitmap = image
+
+            elif isinstance(image, basestring) and image in namedIcons:
+                bitmap = namedIcons[image]
+
+            elif imagefile:
+                try:
+                    imagefile = g.os_path_join(g.app.loadDir,imagefile)
+                    imagefile = g.os_path_normpath(imagefile)
+                    image = wx.Image(imagefile)
+                    bitmap = wx.BitmapFromImage(image)
+                except:
+                    bitmap = None
+
+            if bitmap:
+                control = wxLeoBitmapButton
+            else:
+                control = wxLeoButton
+
+            b = control(self,
+                text = text,
+                bitmap=bitmap,
+                command=command,
+                bg=bg,
+                size=size,
+                canRemove=canRemove,
+                statusLine=statusLine
+            )
 
             self.widgets.append(b)
 
-            tool = toolbar.AddControl(b)
+            tool = self.toolbar.AddControl(b)
 
-            toolbar.Realize()
+            self.toolbar.Realize()
 
             return b
-
-            # if imagefile or image:
-                # < < create a picture > >
-            # elif text:
-                # b = Tk.Button(f,text=text,relief="groove",bd=2,command=command)
-        #@+node:bob.20070813163332.302:create a picture
-        # try:
-            # if imagefile:
-                # # Create the image.  Throws an exception if file not found
-                # imagefile = g.os_path_join(g.app.loadDir,imagefile)
-                # imagefile = g.os_path_normpath(imagefile)
-                # image = Tk.PhotoImage(master=g.app.root,file=imagefile)
-
-                # # Must keep a reference to the image!
-                # try:
-                    # refs = g.app.iconImageRefs
-                # except:
-                    # refs = g.app.iconImageRefs = []
-
-                # refs.append((imagefile,image),)
-
-            # if not bg:
-                # bg = f.cget("bg")
-
-            # b = Tk.Button(f,image=image,relief="flat",bd=0,command=command,bg=bg)
-            # b.pack(side="left",fill="y")
-            # return b
-
-        # except:
-            # g.es_exception()
-            # return None
-        #@-node:bob.20070813163332.302:create a picture
         #@-node:bob.20070813163332.301:add
         #@+node:bob.20070813163332.303:clear
         def clear(self):
@@ -7060,9 +7154,9 @@ if wx:
             return self.iconFrame
         #@-node:bob.20070813163332.305:getFrame
         #@+node:bob.20070813163332.307:show/hide (do nothings)
-        def pack (self):    pass  
-        def unpack (self):  pass 
-        show = pack   
+        def pack (self):    pass
+        def unpack (self):  pass
+        show = pack
         hide = unpack
         #@-node:bob.20070813163332.307:show/hide (do nothings)
         #@-others
@@ -7103,7 +7197,7 @@ if wx:
 
             self.ctrl = self.createControl(parentFrame)
 
-            label.SetForegroundColour('blue')
+            label.SetForegroundColour(name2color('blue'))
 
             style = wx.ALIGN_CENTER_VERTICAL
 
@@ -7186,7 +7280,7 @@ if wx:
 
             self.set('Loading ...')
 
-            style = wx.ALIGN_CENTER_VERTICAL 
+            style = wx.ALIGN_CENTER_VERTICAL
 
             self.sizer.Add(self.statusPos, 0, style)
             self.sizer.Add(self.statusUNL.widget, 1, style)
@@ -7312,6 +7406,682 @@ if wx:
         #@-node:bob.20070813163332.370:update (statusLine)
         #@-others
     #@-node:bob.20070813163332.360:wxLeoStatusLine class
+    #@+node:bob.20080104144147:plugin menu dialogs
+    #@+others
+    #@+node:bob.20080104143928:class wxScrolledMessageDialog
+    class wxScrolledMessageDialog(object):
+        """A class to create and run a Scrolled Message dialog for wxPython"""
+        #@    @+others
+        #@+node:bob.20080104143928.1:__init__
+        def __init__(self, title='Message', label= '', msg='', callback=None, buttons=None):
+
+            """Create and run a modal dialog showing 'msg' in a scrollable window."""
+
+            if buttons is None:
+                buttons = []
+
+            self.callback=callback
+
+            self.result = ('Cancel', None)
+
+            self.top = top = wx.Dialog(None, -1, title)
+
+            sizer = wx.BoxSizer(wx.VERTICAL)
+
+            ll = wx.StaticText(top, -1, label)
+            sizer.Add(ll, 0, wx.ALIGN_CENTRE|wx.ALIGN_CENTER_VERTICAL|wx.TOP|wx.BOTTOM, 5)
+
+            text = wx.TextCtrl(top, -1, msg, size=(400, 200), style=wx.TE_MULTILINE | wx.TE_READONLY)
+            sizer.Add(text, 0, wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+
+            line = wx.StaticLine(top, -1, size=(20,-1), style=wx.LI_HORIZONTAL)
+            sizer.Add(line, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL)
+
+            btnsizer = wx.BoxSizer(wx.HORIZONTAL)
+
+            for name in buttons:
+                btn = wx.Button(top, -1, name)
+                btn.Bind(wx.EVT_BUTTON, lambda e, self=self, name=name: self.onButton(name), btn)
+                btnsizer.Add(btn, 0, wx.ALL, 10)
+
+            btn = wx.Button(top, -1, 'Close')
+            btn.Bind(wx.EVT_BUTTON, lambda e, self=self: self.onButton('Close'), btn)
+            btn.SetDefault()
+            btnsizer.Add(btn)
+
+            #sizer.Add(btnsizer, 0, wx.GROW)
+            sizer.Add(btnsizer, 0, wx.ALIGN_CENTER | wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+
+            self.top.SetSizerAndFit(sizer)
+            top.CenterOnScreen(wx.BOTH)
+            top.ShowModal()
+        #@-node:bob.20080104143928.1:__init__
+        #@+node:bob.20080104143928.2:onButton
+        def onButton(self, name):
+            """Event handler for all button clicks."""
+
+            if name in ('Close',):
+                self.top.Destroy()
+                return
+
+            if self.callback:
+                retval = self.callback(name, data)
+                if retval == 'close':
+                    self.top.Destroy()
+                else:
+                    self.result = ('Cancel', None)
+        #@nonl
+        #@-node:bob.20080104143928.2:onButton
+        #@-others
+
+
+    #@-node:bob.20080104143928:class wxScrolledMessageDialog
+    #@+node:bob.20080104144001:class wxPropertiesDialog
+    class wxPropertiesDialog(object):
+
+        """A class to create and run a Properties dialog"""
+
+        #@    @+others
+        #@+node:bob.20080104144001.1:__init__
+        def __init__(self, title, data, callback=None, buttons=[]):
+            #@    << docstring >>
+            #@+node:bob.20080104144001.2:<< docstring >>
+            """ Initialize and show a Properties dialog.
+
+                'buttons' should be a list of names for buttons.
+
+                'callback' should be None or a function of the form:
+
+                    def cb(name, data)
+                        ...
+                        return 'close' # or anything other than 'close'
+
+                where name is the name of the button clicked and data is
+                a data structure representing the current state of the dialog.
+
+                If a callback is provided then when a button (other than
+                'OK' or 'Cancel') is clicked then the callback will be called
+                with name and data as parameters.
+
+                    If the literal string 'close' is returned from the callback
+                    the dialog will be closed and self.result will be set to a
+                    tuple (button, data).
+
+                    If anything other than the literal string 'close' is returned
+                    from the callback, the dialog will continue to be displayed.
+
+                If no callback is provided then when a button is clicked the
+                dialog will be closed and self.result set to  (button, data).
+
+                The 'ok' and 'cancel' buttons (which are always provided) behave as
+                if no callback was supplied.
+
+            """
+            #@-node:bob.20080104144001.2:<< docstring >>
+            #@nl
+
+            if buttons is None:
+                buttons = []
+
+            self.entries = []
+            self.title = title
+            self.callback = callback
+            self.buttons = buttons
+            self.data = data
+
+            self.result = ('Cancel', None)
+            self.top = top = wx.Dialog(None,  title=title)
+
+            sizer = wx.BoxSizer(wx.VERTICAL)
+
+            tp = self.createEntryPanel()
+            sizer.Add(tp, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+
+            btnsizer = wx.BoxSizer(wx.HORIZONTAL)
+
+            for name in buttons:
+                btn = wx.Button(top, -1, name)
+                btn.Bind(wx.EVT_BUTTON, lambda e, self=self, name=name: self.onButton(name), btn)
+                btnsizer.Add(btn)
+
+            btn = wx.Button(top, wx.ID_OK)
+            btn.Bind(wx.EVT_BUTTON, lambda e, self=self: self.onButton('OK'), btn)
+            btn.SetDefault()
+            btnsizer.Add(btn, 0, wx.ALL, 5)
+
+            btn = wx.Button(top, wx.ID_CANCEL)
+            btnsizer.Add(btn, wx.ALL, 5)
+
+            sizer.Add(btnsizer, 0, wx.ALIGN_CENTER | wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+
+            self.top.SetSizerAndFit(sizer)
+            top.CenterOnScreen()
+            val = top.ShowModal()
+
+        #@-node:bob.20080104144001.1:__init__
+        #@+node:bob.20080104144001.3:onButton
+
+        def onButton(self, name):
+            """Event handler for all button clicks."""
+
+            data = self.getData()
+            self.result = (name, data)
+
+            if name in ('OK', 'Cancel'):
+                self.top.Destroy()
+                return
+
+            if self.callback:
+                retval = self.callback(name, data)
+                if retval == 'close':
+                    self.top.Destroy()
+                else:
+                    self.result = ('Cancel', None)
+
+
+        #@-node:bob.20080104144001.3:onButton
+        #@+node:bob.20080104144001.4:createEntryPanel
+        def createEntryPanel(self):
+
+            panel = wx.Panel(self.top, -1)
+
+            data = self.data
+            sections = data.keys()
+            sections.sort()
+
+            box = wx.BoxSizer(wx.VERTICAL)
+
+            for section in sections:
+
+                label = wx.StaticText(panel, -1, section)
+                box.Add(label, 0, wx.ALIGN_CENTRE|wx.ALIGN_CENTER_VERTICAL|wx.TOP|wx.BOTTOM, 5)
+
+                options = data[section].keys()
+                options.sort()
+
+                lst = []
+                for option in options:
+                    ss = wx.StaticText(panel, -1, option),
+                    tt = wx.TextCtrl(panel, -1, data[section][option], size=(200,-1))
+                    lst.extend ((ss, (tt, 0, wx.EXPAND)))
+
+                    self.entries.append((section, option, tt))
+
+                sizer = wx.FlexGridSizer(cols=2, hgap=12, vgap=2)
+                sizer.AddGrowableCol(1)
+                sizer.AddMany(lst)
+
+                box.Add(sizer, 0, wx.GROW|wx.ALL, 5)
+
+                line = wx.StaticLine(panel, -1, size=(20,-1), style=wx.LI_HORIZONTAL)
+                box.Add(line, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL)
+
+            panel.SetSizer(box)
+            panel.SetAutoLayout(True)
+            return panel
+        #@-node:bob.20080104144001.4:createEntryPanel
+        #@+node:bob.20080104144001.5:getData
+        def getData(self):
+            """Return the modified configuration."""
+
+            data = {}
+            for section, option, entry in self.entries:
+                if section not in data:
+                    data[section] = {}
+                s = entry.GetValue()
+                s = g.toEncodedString(s,"ascii",reportErrors=True) # Config params had better be ascii.
+                data[section][option] = s
+
+            return data
+
+
+        #@-node:bob.20080104144001.5:getData
+        #@-others
+    #@nonl
+    #@-node:bob.20080104144001:class wxPropertiesDialog
+    #@-others
+    #@nonl
+    #@-node:bob.20080104144147:plugin menu dialogs
+    #@+node:bob.20080105082325:nav_buttons dialogs
+    #@+others
+    #@+node:bob.20080105082325.1:class wxListBoxDialog
+    class wxListBoxDialog(wx.Frame):
+
+        #@    @+others
+        #@+node:bob.20080105082325.2:__init__
+        def __init__(self, c, title, label='', buttons = [], log=None):
+
+            self.c = c
+
+            self.buttonSizer = buttonSizers = []
+            self.buttonCtrls = buttonCtrls = {}
+
+            self.defaultActions = {
+                'Hide': self.hide,
+                'Go': self.go
+            }
+
+            wx.Frame.__init__(self, c.frame.top,
+               title=title, size=(300, 500)
+            )
+
+            if not log:
+                log = lambda s: sys.stdout.write('\n%s'%s)
+            self.log = log
+
+            self.boxSizer = boxSizer = wx.BoxSizer(wx.VERTICAL)
+
+            self.listbox = listbox = wx.ListBox(self, -1,
+                choices=['zero', 'one', 'two', 'three'], style=wx.LB_EXTENDED
+            )
+
+            listbox.Bind(wx.EVT_LISTBOX, self.onClick)
+            listbox.Bind(wx.EVT_LISTBOX_DCLICK, self.onDoubleClick)
+
+            boxSizer.Add(listbox, 1, wx.EXPAND|wx.ALL, 5)
+
+
+            #@    << add buttons >>
+            #@+node:bob.20080105082325.3:<< add buttons >>
+
+
+            for i, items in enumerate(buttons):
+
+                buttonSizers.append(wx.BoxSizer(wx.HORIZONTAL))
+
+                for name, retval, image  in items:
+
+                    if not retval:
+                        retval = name
+                    if image:
+                        b = wx.BitmapButton(self,
+                            bitmap = namedIcons[image]
+                        )
+                    else:
+                        b  = wx.Button(self, -1, name)
+
+                    b.Bind(wx.EVT_BUTTON, lambda event, retval=retval: self.onButton(retval))
+
+                    buttonSizers[i].Add( b, 0,
+                        wx.ALL | wx.ALIGN_CENTER_VERTICAL,
+                        5
+                    )
+                    self.buttonCtrls[name or retval] = b
+
+            for sizer in buttonSizers:
+                self.boxSizer.Add(sizer, 0,
+                    wx.ALIGN_CENTRE | wx.ALIGN_CENTER_VERTICAL,
+                    10
+                )
+            #@-node:bob.20080105082325.3:<< add buttons >>
+            #@nl
+
+            self.SetSizer(boxSizer)
+
+            self.addIconBarButtons()
+
+            self.Bind(wx.EVT_CLOSE, self.hide)
+        #@-node:bob.20080105082325.2:__init__
+        #@+node:bob.20080105082325.4:onDoubleClick
+        def onDoubleClick(self, event):
+            self.go(event)
+
+        #@-node:bob.20080105082325.4:onDoubleClick
+        #@+node:bob.20080105082325.5:onClick
+        def onClick(self, event):
+            print 'click', self.listbox.GetString(event.GetSelection())
+            pass
+        #@-node:bob.20080105082325.5:onClick
+        #@+node:bob.20080105082325.6:onButton
+        def onButton(self,retval):
+
+            if retval in self.actions:
+                return self.actions[retval]()
+
+            if retval in self.defaultActions:
+                return self.defaultActions[retval]()
+
+            g.alert(retval)
+        #@-node:bob.20080105082325.6:onButton
+        #@+node:bob.20080105082325.7:go
+        def go(self, event=None):
+
+            """Handle clicks in the "go" button in a list box dialog."""
+
+            # __pychecker__ = '--no-argsused' # the event param must be present.
+
+            c = self.c ; listbox = self.listbox
+
+            # Work around an old Python bug.  Convert strings to ints.
+            if event:
+                item = event.GetSelection()
+            else:
+                item = -1
+                items = listbox.GetSelections()
+                if len(items):
+                    item = items[0]
+
+            if item > -1:
+                p = self.positionList[item]
+                c.beginUpdate()
+                try:
+                    c.frame.tree.expandAllAncestors(p)
+                    c.selectPosition(p,updateBeadList=True)
+                        # A case could be made for updateBeadList=False
+                finally:
+                    c.endUpdate()
+        #@-node:bob.20080105082325.7:go
+        #@+node:bob.20080105082325.8:hide
+        def hide(self, event=None):
+            self.Show(False)
+
+
+
+        #@-node:bob.20080105082325.8:hide
+        #@-others
+
+
+
+        def CloseWindow(self, event):
+            self.Show(False)
+
+    #@-node:bob.20080105082325.1:class wxListBoxDialog
+    #@+node:bob.20080105082325.9:class marksDialog (listBoxDialog)
+    class wxMarksDialog (wxListBoxDialog):
+
+        """A class to create the marks dialog"""
+
+        #@    @+others
+        #@+node:bob.20080105082325.10: __init__
+        def __init__ (self, c, images=None):
+
+            """Create a Marks listbox dialog."""
+
+            self.c = c
+            self.bg = 'old lace'
+
+            self.label = None
+            self.title = 'Marks for %s' % g.shortFileName(c.mFileName) # c.frame.title
+
+            self.actions = []
+
+            buttons = [
+                (
+                    ('Go', '', ''),
+                    ('Hide', '', '')
+                ),
+            ]
+
+            wxListBoxDialog.__init__(self, c,
+                self.title,
+                self.label,
+                buttons=buttons
+            )
+
+            #self.updateMarks()
+            #if not marksInitiallyVisible:
+            #   self.Show(False)
+        #@-node:bob.20080105082325.10: __init__
+        #@+node:bob.20080105082325.11:addIconBarButtons
+        def addIconBarButtons (self):
+
+            c = self.c ;
+
+            # Add 'Marks' button to icon bar.
+
+            def marksButtonCallback(*args,**keys):
+                self.Show()
+                self.Iconize(False)
+
+            self.marks_button = c.frame.addIconButton(
+                text="Marks",
+                command=marksButtonCallback,
+                bg=self.bg,
+                canRemove = False
+            )
+        #@-node:bob.20080105082325.11:addIconBarButtons
+        #@+node:bob.20080105082325.12:updateMarks
+        def updateMarks(self, tag,keywords):
+
+            '''Recreate the Marks listbox.'''
+
+            # Warning: it is not correct to use self.c in hook handlers.
+
+            c = keywords.get('c')
+
+            try:
+                if c != self.c:
+                     return
+            except:
+                c = None
+
+            if not c:
+                return
+
+            self.listbox.Clear()
+
+            # Bug fix 5/12/05: Set self.positionList for use by tkinterListBoxDialog.go().
+            i = 0 ; self.positionList = [] ; tnodeList = []
+
+            items = []
+            for p in c.allNodes_iter():
+                if p.isMarked() and p.v.t not in tnodeList:
+                    items.append(p.headString().strip())
+                    tnodeList.append(p.v.t)
+                    self.positionList.append(p.copy())
+
+            self.listbox.AppendItems(items)
+        #@-node:bob.20080105082325.12:updateMarks
+        #@-others
+    #@nonl
+    #@-node:bob.20080105082325.9:class marksDialog (listBoxDialog)
+    #@+node:bob.20080105082325.13:class wxRecentSectionsDialog (wxListBoxDialog)
+    class wxRecentSectionsDialog (wxListBoxDialog):
+
+        """A class to create the recent sections dialog"""
+
+        #@    @+others
+        #@+node:bob.20080105082325.14:__init__
+        def __init__ (self,c,images=None):
+
+            """Create a Recent Sections listbox dialog."""
+
+            self.c = c
+            self.bg = 'old lace'
+
+            self.label = None
+            self.title = "Recent nodes for %s" % g.shortFileName(c.mFileName)
+            self.lt_nav_button = self.rt_nav_button = None # Created by createFrame.
+
+            # Init the base class.
+            # N.B.  The base class contains positionList ivar.
+
+            self.actions = {
+                'Clear All': self.clearAll,
+                'Delete': self.deleteEntry,
+                'backwards': c.goPrevVisitedNode,
+                'forwards': c.goNextVisitedNode,
+            }
+
+
+            buttons = [
+                (
+                    ('', 'backwards', 'lt_arrow_enabled'),
+                    ('', 'forwards', 'rt_arrow_enabled'),
+                ),
+                (
+                    ('Go', '', ''),
+                    ('Hide', '', '')
+                ),
+                (
+                    ('Clear All', '', ''),
+                    ('Delete', '', '')
+                ),
+            ]
+
+            wxListBoxDialog.__init__(self,c,self.title,self.label, buttons=buttons)
+
+            self.fillbox() # Must be done initially.
+
+            if True or not recentInitiallyVisible:
+                self.Show(False)
+
+            self.updateButtons()
+        #@-node:bob.20080105082325.14:__init__
+        #@+node:bob.20080105082325.15:addIconBarButtons
+        def addIconBarButtons (self):
+
+            c = self.c ;
+
+            # Add 'Recent' button to icon bar.
+
+            def recentButtonCallback(*args,**keys):
+                self.fillbox(forceUpdate=True)
+                self.Show()
+                self.Iconize(False)
+
+            self.sections_button = c.frame.addIconButton(
+                text="Recent",
+                command=recentButtonCallback,
+                bg=self.bg,
+                canRemove=False
+            )
+
+            # Add left and right arrows to icon bar.
+
+            self.lt_nav_iconFrame_button = c.frame.addIconButton(
+                image= 'lt_arrow_disabled',
+                command=c.goPrevVisitedNode,
+                bg=self.bg,
+                canRemove=False
+            )
+
+            self.rt_nav_iconFrame_button = c.frame.addIconButton(
+                image = 'rt_arrow_disabled',
+                command=c.goNextVisitedNode,
+                bg=self.bg,
+                canRemove=False
+            )
+
+            # Don't dim the button when it is inactive.
+            #for b in (self.lt_nav_iconFrame_button, self.rt_nav_iconFrame_button):
+            #   fg = b.cget("foreground")
+            #   b.configure(disabledforeground=fg)
+
+        #@-node:bob.20080105082325.15:addIconBarButtons
+        #@+node:bob.20080105082325.16:clearAll
+        def clearAll (self,event=None):
+
+            """Handle clicks in the "Clear All" button of the Recent Sections listbox dialog."""
+
+            c = self.c
+
+            self.positionList = []
+            c.nodeHistory.clear()
+            self.fillbox()
+        #@nonl
+        #@-node:bob.20080105082325.16:clearAll
+        #@+node:bob.20080105082325.17:deleteEntry
+        def deleteEntry (self,event=None):
+            """Handle clicks in the "Delete" button of a Recent Sections listbox dialog."""
+
+            c = self.c
+            items = self.listbox.GetSelections()
+            newPositionList = []
+
+            for n, p in enumerate(self.positionList):
+                if n in items:
+                    c.nodeHistory.remove(p)
+                newPositionList.append(p)
+                self.positionList = newPositionList
+                self.fillbox()
+
+
+        #@-node:bob.20080105082325.17:deleteEntry
+        #@+node:bob.20080105082325.18:fillbox
+        def fillbox(self,forceUpdate=False):
+
+            """Update the Recent Sections listbox."""
+
+            # Only fill the box if the dialog is visible.
+            # This is an important protection against bad performance.
+
+            #if not forceUpdate and self.top.state() != "normal":
+            #    return
+
+            self.listbox.Clear()
+            c = self.c
+            self.positionList = []
+            tnodeList = []
+            items = []
+            for p in c.nodeHistory.visitedPositions():
+                if c.positionExists(p) and p.v.t not in tnodeList:
+                    items.append(p.headString().strip())
+                    tnodeList.append(p.v.t)
+                    self.positionList.append(p.copy())
+
+            self.listbox.AppendItems(items)
+
+        #@-node:bob.20080105082325.18:fillbox
+        #@+node:bob.20080105082325.19:updateButtons
+        def updateButtons (self):
+
+            c = self.c
+
+            for b, b2, enabled_image, disabled_image,cond in (
+                (
+                    self.buttonCtrls['backwards'],
+                    self.lt_nav_iconFrame_button,
+
+                    'lt_arrow_enabled',
+                    'lt_arrow_disabled',
+
+                    c.nodeHistory.canGoToPrevVisited()
+                ),
+                (
+                    self.buttonCtrls['forwards'],
+                    self.rt_nav_iconFrame_button,
+
+                    'rt_arrow_enabled',
+                    'rt_arrow_disabled',
+
+                    c.nodeHistory.canGoToNextVisited()
+                ),
+            ):
+                # Disabled state makes the icon look bad.
+
+                if cond:
+                    image = namedIcons[enabled_image]
+                else:
+                    image = namedIcons[disabled_image]
+
+                b.SetBitmapLabel(image)
+                b2.SetBitmapLabel(image)
+        #@-node:bob.20080105082325.19:updateButtons
+        #@+node:bob.20080105082325.20:updateRecent
+        def updateRecent(self,tag,keywords):
+
+            # Warning: it is not correct to use self.c in hook handlers.
+            c = keywords.get('c')
+            try:
+                if c != self.c:
+                    return
+            except:
+                c = None
+
+            if not c:
+                return
+
+            forceUpdate = tag in ('new2','open2')
+            self.fillbox(forceUpdate)
+            self.updateButtons()
+        #@nonl
+        #@-node:bob.20080105082325.20:updateRecent
+        #@-others
+    #@nonl
+    #@-node:bob.20080105082325.13:class wxRecentSectionsDialog (wxListBoxDialog)
+    #@-others
+    #@-node:bob.20080105082325:nav_buttons dialogs
     #@-node:bob.20070902164500:== EXTRA WIDGETS
     #@+node:bob.20070902164500.1:== TREE WIDGETS ==
     #@+node:bob.20070813163332.371:wxLeoTree class (leoFrame.leoTree):
@@ -7341,28 +8111,23 @@ if wx:
             self.expanded_click_area        = c.config.getBool('expanded_click_area')
             #self.gc_before_redraw           = c.config.getBool('gc_before_redraw')
 
-            self.headline_text_editing_foreground_color = c.config.getColor(
-                'headline_text_editing_foreground_color')
-            self.headline_text_editing_background_color = c.config.getColor(
-                'headline_text_editing_background_color')
-            self.headline_text_editing_selection_foreground_color = c.config.getColor(
-                'headline_text_editing_selection_foreground_color')
-            self.headline_text_editing_selection_background_color = c.config.getColor(
-                'headline_text_editing_selection_background_color')
-            self.headline_text_selected_foreground_color = c.config.getColor(
-                "headline_text_selected_foreground_color")
-            self.headline_text_selected_background_color = c.config.getColor(
-                "headline_text_selected_background_color")
-            self.headline_text_editing_selection_foreground_color = c.config.getColor(
-                "headline_text_editing_selection_foreground_color")
-            self.headline_text_editing_selection_background_color = c.config.getColor(
-                "headline_text_editing_selection_background_color")
-            self.headline_text_unselected_foreground_color = c.config.getColor(
-                'headline_text_unselected_foreground_color')
-            self.headline_text_unselected_background_color = c.config.getColor(
-                'headline_text_unselected_background_color')
 
-            #self.idle_redraw = c.config.getBool('idle_redraw')
+            for item, default in (
+                ('headline_text_editing_foreground_color', 'black'),
+                ('headline_text_editing_background_color', 'white'),
+                ('headline_text_editing_selection_foreground_color', None),
+                ('headline_text_editing_selection_background_color', None),
+                ('headline_text_selected_foreground_color', None),
+                ('headline_text_selected_background_color', None),
+                ('headline_text_editing_selection_foreground_color', None),
+                ('headline_text_editing_selection_background_color', None),
+                ('headline_text_unselected_foreground_color', None),
+                ('headline_text_unselected_background_color', None),
+                ('outline_pane_background_color', 'leo yellow')
+            ):
+                setattr(self, item, name2color(c.config.getColor(item), default))
+
+            self.idle_redraw = c.config.getBool('idle_redraw')
 
             self.initialClickExpandsOrContractsNode = c.config.getBool(
                 'initialClickExpandsOrContractsNode')
@@ -7381,7 +8146,6 @@ if wx:
             self.trace_select   = c.config.getBool('trace_select')
             #self.trace_stats    = c.config.getBool('show_tree_stats')
             self.use_chapters   = c.config.getBool('use_chapters')
-            #@nonl
             #@-node:bob.20070816202030:<< init config >>
             #@nl
 
@@ -7392,7 +8156,7 @@ if wx:
             self.canvas = self
 
             # A lockout that prevents event handlers from firing during redraws.
-            self.drawing = False 
+            self.drawing = False
 
             #self.effects = wx.Effects()
 
@@ -7406,6 +8170,8 @@ if wx:
             self.drag_p = None
             self.dragging = None
             self.controlDrag = None
+
+
 
 
 
@@ -7477,18 +8243,23 @@ if wx:
             pass
 
         def treeGotFocus(self, event):
+            #g.trace()
             if self.treeCtrl:
                 self.treeCtrl.redraw()
             self.c.focusManager.gotFocus(self, event)
 
         def treeLostFocus(self, event):
+            #g.trace()
             if self.treeCtrl:
                 self.treeCtrl.redraw()
             self.c.focusManager.lostFocus(self, event)
             #g.trace()
 
         def hasFocus(self):
-            return self.treeCtrl and wx.Window.FindFocus() is self.treeCtrl
+            if not self.treeCtrl:
+                return None
+            fw = wx.Window.FindFocus()
+            return fw is self.treeCtrl #or fw is self.treeCtrl._canvas
         #@-node:bob.20070823140954:Focus Gain/Lose
         #@+node:bob.20070901202654:SetFocus
         def setFocus(self):
@@ -7507,9 +8278,12 @@ if wx:
         #@-node:bob.20070906201117:getCanvas
         #@+node:bob.20070907062229:getCanvasHeight
         def getCanvasHeight(self):
+            print '++++++', self.treeCtrl._canvas._size.height
             return self.treeCtrl._canvas._size.height
-        #@nonl
+
         #@-node:bob.20070907062229:getCanvasHeight
+        #@+node:bob.20080105224858:getLineHeight
+        #@-node:bob.20080105224858:getLineHeight
         #@+node:bob.20070907054452:onScrollRelative
         def onScrollRelative(self, orient, value):
             self.treeCtrl.onScrollRelative(orient, value)
@@ -7533,6 +8307,11 @@ if wx:
                 self.getCanvas().SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
 
         #@-node:bob.20070906203543:setCursor
+        #@+node:bob.20080106181804:idle_redraw
+        def idle_redraw(*args, **kw):
+            return
+        #@nonl
+        #@-node:bob.20080106181804:idle_redraw
         #@+node:bob.20070813163332.376:Drawing
         #@+node:bob.20070813163332.379:beginUpdate
         def beginUpdate(self):
@@ -7627,7 +8406,7 @@ if wx:
             else:
                 stk = [c.rootPosition()]
             #g.trace('====================')
-            count = 0    
+            count = 0
             while stk:
 
                 p = stk.pop()
@@ -7700,7 +8479,7 @@ if wx:
             c.setLog()
 
             if not p:
-                return 
+                return
             #g.trace()
 
 
@@ -7767,12 +8546,12 @@ if wx:
 
             """The official helper of the onEndDrag event handler."""
 
-            c = self.c 
+            c = self.c
             c.setLog()
 
             #g.trace()
 
-            p = self.drag_p 
+            p = self.drag_p
 
             if not event:
                 return
@@ -7868,7 +8647,7 @@ if wx:
 
                     width, height = canvas._size
 
-                    pos = point.y 
+                    pos = point.y
                     vpos = pos + top
 
 
@@ -7884,8 +8663,8 @@ if wx:
                         self.onScrollRelative(wx.VERTICAL, -min(updelta*diff, 5000) )
 
                     elif pos > height - 10:
-                        diff = (height - 10 - pos)*5    
-                        self.onScrollRelative(wx.VERTICAL, -min(downdelta*diff, 5000) )    
+                        diff = (height - 10 - pos)*5
+                        self.onScrollRelative(wx.VERTICAL, -min(downdelta*diff, 5000) )
 
                     if point.x + cx < 10:
                         self.onScrollRelative(wx.HORIZONTAL, -10)
@@ -8031,21 +8810,21 @@ if wx:
         #@+node:bob.20070906105804.2:onPreMouseLeftUp
         #@+at
         # def onPreMouseLeftUp(self, sp, event, source, type):
-        #     g.trace('source:', source, 'type:', type, 'Position:', sp and 
+        #     g.trace('source:', source, 'type:', type, 'Position:', sp and
         # sp.headString())
         #@-at
         #@-node:bob.20070906105804.2:onPreMouseLeftUp
         #@+node:bob.20070906105804.4:onPreMouseRightDown
         #@+at
         # def onPreMouseRightDown(self, sp, event, source, type):
-        #     g.trace('source:', source, 'type:', type, 'Position:', sp and 
+        #     g.trace('source:', source, 'type:', type, 'Position:', sp and
         # sp.headString())
         #@-at
         #@-node:bob.20070906105804.4:onPreMouseRightDown
         #@+node:bob.20070906105804.3:onPreMouseRightUp
         #@+at
         # def onPreMouseRightUp(self, sp, event, source, type):
-        #     g.trace('source:', source, 'type:', type, 'Position:', sp and 
+        #     g.trace('source:', source, 'type:', type, 'Position:', sp and
         # sp.headString())
         #@-at
         #@-node:bob.20070906105804.3:onPreMouseRightUp
@@ -8056,7 +8835,7 @@ if wx:
         #@+node:bob.20070827164653.3:onPostMouseLeftDown
         #@+at
         # def onPostMouseLeftDown(self, sp, event, source, type):
-        #     g.trace('source:', source, 'type:', type, 'Position:', sp and 
+        #     g.trace('source:', source, 'type:', type, 'Position:', sp and
         # sp.headString())
         #@-at
         #@-node:bob.20070827164653.3:onPostMouseLeftDown
@@ -8075,7 +8854,7 @@ if wx:
         #@+node:bob.20070906105339.2:onPostMouseRightDown
         #@+at
         # def onPostMouseRightDown(self, sp, event, source, type):
-        #     g.trace('source:', source, 'type:', type, 'Position:', sp and 
+        #     g.trace('source:', source, 'type:', type, 'Position:', sp and
         # sp.headString())
         # 
         #@-at
@@ -8083,7 +8862,7 @@ if wx:
         #@+node:bob.20070906105444.1:onPostMouseRightUp
         #@+at
         # def onPostMouseRightUp(self, sp, event, source, type):
-        #     g.trace('source:', source, 'type:', type, 'Position:', sp and 
+        #     g.trace('source:', source, 'type:', type, 'Position:', sp and
         # sp.headString())
         # 
         #@-at
@@ -8211,7 +8990,7 @@ if wx:
             c.setLog()
 
             c.beginUpdate()
-            try: 
+            try:
                 if c.isCurrentPosition(p):
 
                     self.editLabel(p)
@@ -8268,7 +9047,7 @@ if wx:
                 try:
                     self.endEditLabel()
                     self.setEditPosition(p)
-                    #g.trace('ep', self.editPosition())        
+                    #g.trace('ep', self.editPosition())
                 finally:
                     c.endUpdate()
 
@@ -8280,7 +9059,7 @@ if wx:
                 entry.setAllText(s)
 
                 selectAll = selectAll or self.select_all_text_when_editing_headlines
-                if selectAll: 
+                if selectAll:
                     entry.ctrl.SetSelection(-1, -1)
                 else:
                     entry.ctrl.SetInsertionPointEnd()
@@ -8371,7 +9150,7 @@ if wx:
             # g.trace(p, g.callers())
 
             if p:
-                # clear 'selected' status flag 
+                # clear 'selected' status flag
                 p.v.statusBits &= ~ p.v.selectedBit
 
         #@-node:bob.20070818090003.3:setUnselectedLabelState
@@ -8422,9 +9201,16 @@ if wx:
         #@-node:bob.20070908231221:Font Property
         #@+node:bob.20070908222657:requestLineHeight
         def requestLineHeight(height):
-            self.getCanvas().requestLineHeight()
+            self.getCanvas().requestLineHeight(height)
         #@nonl
         #@-node:bob.20070908222657:requestLineHeight
+        #@+node:bob.20080105225910:line_height property
+        def getLineHeight(self):
+            return self.treeCtrl._canvas._lineHeight
+
+        line_height = property(getLineHeight)
+        #@nonl
+        #@-node:bob.20080105225910:line_height property
         #@-others
     #@nonl
     #@-node:bob.20070813163332.371:wxLeoTree class (leoFrame.leoTree):
@@ -8473,7 +9259,9 @@ if wx:
 
             self.Bind(wx.EVT_SIZE, self.onSize)
 
-            self.SetBackgroundColour('leo yellow')
+
+
+            self.SetBackgroundColour(self._leoTree.outline_pane_background_color)
 
             self.Bind(wx.EVT_CHAR,
                 lambda event, self=self._leoTree: onGlobalChar(self, event)
@@ -8512,8 +9300,8 @@ if wx:
 
             entry._virtualTop = canvas._virtualTop + y -2
 
-            entry.MoveXY(x - 2, y -2) 
-            entry.SetSize((width + 4, -1))
+            entry.MoveXY(x - 2, y -2)
+            entry.SetSize((max(width + 4, 100), -1))
 
             tw = self._leoTree.headlineTextWidget
 
@@ -8688,13 +9476,13 @@ if wx:
         blits to the window during paint calls for expose events, etc,
 
         A redraw is only required when the height of the canvas changes,
-        a vertical scroll event occurs, or if the outline changes. 
+        a vertical scroll event occurs, or if the outline changes.
 
         """
         #@    @+others
         #@+node:bob.20070813173446.13:__init__
         def __init__(self, parent):
-            """Create an OutlineCanvas instance.""" 
+            """Create an OutlineCanvas instance."""
 
             #g.trace('OutlineCanvas')
 
@@ -8712,7 +9500,7 @@ if wx:
 
             self._size = wx.Size(100, 100)
 
-            self.__virtualTop = 0 
+            self.__virtualTop = 0
 
             self._textIndent = 30
 
@@ -8727,7 +9515,7 @@ if wx:
             self._iconSize = None
 
             self._clickBoxSize = None
-            self._lineHeight =  None
+            self._lineHeight =  10
             self._requestedLineHeight = 10
 
             self._yTextOffset = None
@@ -8741,7 +9529,7 @@ if wx:
             #@-node:bob.20070828070933.1:<< define ivars >>
             #@nl
 
-            wx.Window.__init__(self, parent, -1, size=self._size, style=wx.WANTS_CHARS | wx.NO_BORDER )   
+            wx.Window.__init__(self, parent, -1, size=self._size, style=wx.WANTS_CHARS | wx.NO_BORDER )
 
             self._createNewBuffer(self._size)
 
@@ -8779,8 +9567,21 @@ if wx:
                 #@-node:bob.20070906162528:<< create bindings >>
                 #@nl
 
-
-
+        #@+at
+        # self.box_padding = 5 # extra padding between box and icon
+        # self.box_width = 9 + self.box_padding
+        # self.icon_width = 20
+        # self.text_indent = 4 # extra padding between icon and tex
+        # 
+        # self.hline_y = 7 # Vertical offset of horizontal line
+        # self.root_left = 7 + self.box_width
+        # self.root_top = 2
+        # 
+        # self.default_line_height = 17 + 2 # default if can't set line_height 
+        # from font.
+        # self.line_height = self.default_line_height
+        # 
+        #@-at
         #@-node:bob.20070813173446.13:__init__
         #@+node:bob.20070909060610:virtualTop property
 
@@ -8818,7 +9619,7 @@ if wx:
 
                         if region.Contains(point):
 
-                            return sp, type                   
+                            return sp, type
                     return sp, 'Headline'
 
             return None, 'Canvas'
@@ -8841,8 +9642,6 @@ if wx:
         def vscrollTo(self, pos):
             """Scroll the canvas vertically to the specified position."""
 
-
-
             if (self._treeHeight - self._size.height) < pos :
                 pos = self._treeHeight - self._size.height
 
@@ -8850,8 +9649,6 @@ if wx:
                 pos = 0
 
             self._virtualTop = pos
-
-
 
             self.resize()
         #@-node:bob.20070813173446.17:vscrollTo
@@ -8874,7 +9671,7 @@ if wx:
                 # TODO: decide if need to create new buffer?
                 self._createNewBuffer(self._size)
 
-                self._parent.hscrollUpdate()  
+                self._parent.hscrollUpdate()
                 self.draw()
                 self.refresh()
 
@@ -8922,7 +9719,7 @@ if wx:
             cp = c.currentPosition().copy()
             cpCount = None
 
-            count = 0    
+            count = 0
             while stk:
 
                 p = stk.pop()
@@ -9001,16 +9798,19 @@ if wx:
             anything that effects the tree display.
 
             """
-            self._requestedLineHeight
+
 
             self._fontHeight = self._buffer.GetTextExtent('Wy')[1]
             self._iconSize = wx.Size(icons[0].GetWidth(), icons[0].GetHeight())
 
             self._clickBoxSize = wx.Size(plusBoxIcon.GetWidth(), plusBoxIcon.GetHeight())
 
-            self._lineHeight = max(self._fontHeight, self._iconSize.height,) + 2 * self._yPad
+            self._lineHeight = max(
+                self._fontHeight,
+                self._iconSize.height,
+                self._requestedLineHeight
+            ) + 2 * self._yPad
 
-            self._lineHeight = max(self._lineHeight, self._requestedLineHeight)
             # y offsets
 
             self._yTextOffset = (self._lineHeight - self._fontHeight)//2
@@ -9019,11 +9819,11 @@ if wx:
 
             self._clickBoxCenterOffset = wx.Point(
                 -self._textIndent*2 + self._iconSize.width//2,
-                self._lineHeight//2 
+                self._lineHeight//2
             )
 
             self._clickBoxOffset = wx.Point(
-                self._clickBoxCenterOffset.x - self._clickBoxSize.width//2,                       
+                self._clickBoxCenterOffset.x - self._clickBoxSize.width//2,
                 (self._lineHeight  - self._clickBoxSize.height)//2
             )
 
@@ -9031,82 +9831,13 @@ if wx:
         #@-node:bob.20070813173446.23:contextChanged
         #@+node:bob.20070908222657.1:requestLineHeight
         def requestLineHeight(height):
-            """Request a minimum height for lines.""" 
+            """Request a minimum height for lines."""
 
             assert int(height) and height < 200
             self.requestedHeight = height
             self.beginUpdate()
             self.endUpdate()
         #@-node:bob.20070908222657.1:requestLineHeight
-        #@+node:bob.20070908202626:- Renderers -
-        #@+node:bob.20070909174306.1:renderAll
-        def renderAll(self):
-
-            c = self.c
-            positions = self._positions
-            dc = self._buffer
-
-            #@    << draw text >>
-            #@+node:bob.20070823184701:<< draw text >>
-
-            current = c.currentPosition()
-
-            #dc.SetBrush(wx.TRANSPARENT_BRUSH)
-            #dc.SetPen(wx.BLACK_PEN)
-
-
-            for sp in positions:
-
-                if current and current == sp:
-                    dc.SetBrush(wx.LIGHT_GREY_BRUSH)
-                    dc.SetPen(wx.LIGHT_GREY_PEN)
-                    dc.DrawRectangleRect(
-                        wx.Rect(*sp._textBoxRect).Inflate(3, 3)
-                    )
-                    current = False
-                    #dc.SetBrush(wx.TRANSPARENT_BRUSH)
-                    #dc.SetPen(wx.BLACK_PEN)
-
-                dc.DrawTextPoint(sp.headString(), sp._textBoxRect.position)
-            #@-node:bob.20070823184701:<< draw text >>
-            #@nl
-            #@    << draw lines >>
-            #@+node:bob.20070813173446.27:<< draw lines >>
-            #@-node:bob.20070813173446.27:<< draw lines >>
-            #@nl
-            #@    << draw bitmaps >>
-            #@+node:bob.20070823184701.1:<< draw bitmaps >>
-
-            for sp in positions:
-
-                dc.DrawBitmapPoint(sp._icon, sp._iconBoxRect.position )
-                if sp._clickBoxIcon:
-                    dc.DrawBitmapPoint(sp._clickBoxIcon, sp._clickBoxRect.position , True)
-            #@-node:bob.20070823184701.1:<< draw bitmaps >>
-            #@nl
-        #@-node:bob.20070909174306.1:renderAll
-        #@+node:bob.20070908202626.1:renderClickBox
-        def renderClickBox(self, sp):
-
-            if sp._clickBoxIcon:
-                self._canvas.DrawBitmapPoint(sp._clickBoxIcon, sp._clickBoxRect.position , True)
-        #@-node:bob.20070908202626.1:renderClickBox
-        #@+node:bob.20070908202626.2:renderIconBox
-        def renderIconBox(self, sp):
-           self._canvas.DrawBitmapPoint(sp._icon, sp._iconBoxRect.position) 
-        #@nonl
-        #@-node:bob.20070908202626.2:renderIconBox
-        #@+node:bob.20070908202626.3:renderTextBox
-        def renderTextBox(self, sp):
-
-            dc = self._canvas    
-
-            #dc.SetBrush(sp._textBrush)
-            #dc.SetPen(sp._textPen)
-
-            dc.DrawTextPoint(sp.headString(), sp._textBoxRect.position)
-        #@-node:bob.20070908202626.3:renderTextBox
-        #@-node:bob.20070908202626:- Renderers -
         #@+node:bob.20070813173446.24:def draw
 
         def draw(self, showCurrentPosition=False):
@@ -9117,18 +9848,9 @@ if wx:
             dc = self._buffer
             c = self._c
 
-            brush = wx.Brush('leo yellow')
+            brush = wx.Brush(self._leoTree.outline_pane_background_color)
             dc.SetBackground(brush)
             dc.Clear()
-
-            dc.SetBrush(wx.TRANSPARENT_BRUSH)
-            if self._leoTree.hasFocus():
-                dc.SetPen(wx.RED_PEN)
-            else:
-                dc.SetPen(wx.GREEN_PEN)
-            dc.DrawEllipsePointSize((1,1), self._size-(2,2))
-
-            lineHeight = self._lineHeight
 
             top = self._virtualTop
             if top < 0:
@@ -9151,7 +9873,6 @@ if wx:
             clickBoxSize = self._clickBoxSize
 
             iconSize = self._iconSize
-
 
             lineHeight = self._lineHeight
             halfLineHeight = lineHeight//2
@@ -9205,7 +9926,6 @@ if wx:
                         # top: top of the line in real canvas coordinates
                         sp._top = mytop - top
 
-
                         textSize = wx.Size(*dc.GetTextExtent(sp.headString()+'>'))
 
                         xTextOffset = ((sp._depth +1) * textIndent) + xPad
@@ -9213,7 +9933,6 @@ if wx:
                         textPos = wx.Point( xTextOffset,  sp._top + yTextOffset )
                         iconPos = textPos  + (-textIndent,  yIconOffset)
                         clickBoxPos = textPos + clickBoxOffset
-
 
                         sp._clickBoxCenter = clickBoxPos + clickBoxCenterOffset
 
@@ -9226,7 +9945,7 @@ if wx:
                         if sp.hasFirstChild():
                             sp._clickBoxIcon = plusBoxIcon
                             if sp.isExpanded():
-                                sp._clickBoxIcon = minusBoxIcon 
+                                sp._clickBoxIcon = minusBoxIcon
                         else:
                             sp._clickBoxIcon = None
 
@@ -9261,7 +9980,7 @@ if wx:
                 #g.trace('No positions!')
                 return
 
-            self._virtualTop =  positions[0]._virtualTop 
+            self._virtualTop =  positions[0]._virtualTop
 
             # try:
                 # result = self._leoTree.drawTreeHook(self)
@@ -9289,8 +10008,36 @@ if wx:
                 #dc.SetBrush(wx.TRANSPARENT_BRUSH)
                 #dc.SetPen(wx.BLACK_PEN)
 
-
                 for sp in positions:
+
+                    #@    << draw user icons >>
+                    #@+node:bob.20080105192650:<< draw user icons >>
+                    #if hasattr(sp.v.t,'unknownAttributes'):
+                    try:
+                        iconsList = sp.v.t.unknownAttributes.get('icons', [])
+                    except:
+                        iconsList = None
+
+
+                    if iconsList:
+
+                            pos = sp._textBoxRect.position
+
+                            for usrIcon in iconsList:
+                                try:
+                                    image = globalImages[usrIcon['relPath']]
+                                except KeyError:
+                                    path = usrIcon['relPath']
+                                    image = g.app.gui.getImage(c, path)
+
+                                dc.DrawBitmapPoint(image, pos)
+
+                                pos = pos + (image.GetWidth() + 5, 0)
+
+                            sp._textBoxRect.position = pos
+                    #@nonl
+                    #@-node:bob.20080105192650:<< draw user icons >>
+                    #@nl
 
                     if current and current == sp:
                         dc.SetBrush(wx.LIGHT_GREY_BRUSH)
@@ -9314,15 +10061,31 @@ if wx:
 
                 for sp in positions:
 
-                    dc.DrawBitmapPoint(sp._icon, sp._iconBoxRect.position )
+
+                    dc.DrawBitmapPoint(
+                        sp._icon,
+                        sp._iconBoxRect.position
+                    )
+
                     if sp._clickBoxIcon:
-                        dc.DrawBitmapPoint(sp._clickBoxIcon, sp._clickBoxRect.position , True)
+                        dc.DrawBitmapPoint(
+                            sp._clickBoxIcon,
+                            sp._clickBoxRect.position,
+                            True
+                        )
                 #@-node:bob.20070823184701.1:<< draw bitmaps >>
                 #@nl
 
             #@<< draw focus >>
             #@+node:bob.20070824082600:<< draw focus >>
 
+            dc.SetBrush(wx.TRANSPARENT_BRUSH)
+            if self._leoTree.hasFocus():
+                dc.SetPen(wx.BLACK_PEN)
+            #else:
+            #    dc.SetPen(wx.GREEN_PEN)
+                dc.DrawRectanglePointSize( (0,0), self.GetSize())
+            #@nonl
             #@-node:bob.20070824082600:<< draw focus >>
             #@nl
 
