@@ -2337,7 +2337,7 @@ class leoTkinterLog (leoFrame.leoLog):
     # All output to the log stream eventually comes here.
     def put (self,s,color=None,tabName='Log'):
 
-        c = self.c ; w = self.logCtrl
+        c = self.c
 
         # print 'tkLog.put',s
         # print 'tkLog.put',len(s),g.callers()
@@ -2347,7 +2347,7 @@ class leoTkinterLog (leoFrame.leoLog):
 
         if tabName:
             self.selectTab(tabName)
-
+        w = self.logCtrl
         if w:
             #@        << put s to log control >>
             #@+node:EKR.20040423082910:<< put s to log control >>
