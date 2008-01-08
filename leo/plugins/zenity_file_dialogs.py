@@ -82,6 +82,7 @@ def testForZenity():
 #@-node:testForZenity
 #@+node:init
 def init ():
+    global ok
 	
     if g.unitTesting:
         return False
