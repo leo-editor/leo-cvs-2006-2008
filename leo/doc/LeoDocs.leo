@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.431306306306">
-	<global_window_position top="14" left="340" height="888" width="892"/>
+	<global_window_position top="14" left="340" height="868" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -172,8 +172,8 @@
 <v t="ekr.20050906105946"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.2" a="E"><vh>Chapter 1: Installing Leo</vh>
-<v t="edream.110203163054.48" a="E"><vh>@rst html\install.html</vh>
+<v t="ekr.20050831195331.2"><vh>Chapter 1: Installing Leo</vh>
+<v t="edream.110203163054.48"><vh>@rst html\install.html</vh>
 <v t="ekr.20050901110110"><vh>@rst-no-head links</vh></v>
 <v t="edream.110203163054.49"><vh>System requirements</vh></v>
 <v t="edream.110203163054.50"><vh>How to install Leo on Linux</vh></v>
@@ -719,10 +719,10 @@
 <v t="ekr.20060913164729"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20061025065357" a="E"><vh>Chapter 18: Leo and Emacs</vh>
-<v t="ekr.20061025065357.1" a="E"><vh>@rst html\emacs.html</vh>
+<v t="ekr.20061025065357"><vh>Chapter 18: Leo and Emacs</vh>
+<v t="ekr.20061025065357.1"><vh>@rst html\emacs.html</vh>
 <v t="ekr.20061025065357.2"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20061025081359" a="TV"><vh>Controlling Leo from Emacs using Pymacs</vh></v>
+<v t="ekr.20061025081359"><vh>Controlling Leo from Emacs using Pymacs</vh></v>
 <v t="ekr.20061025070825.1"><vh>Functions in leoPymacs.py</vh></v>
 <v t="ekr.20061025142434"><vh>The minibuffer</vh></v>
 <v t="ekr.20061025065357.12"><vh>@rst-no-head end stuff</vh></v>
@@ -1109,7 +1109,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20071217093444"><vh>What's New in Leo 4.4.6</vh>
 <v t="ekr.20071217093444.1"><vh>@rst html\new-4-4-6.html</vh>
@@ -3475,8 +3475,7 @@
 </v>
 <v t="ekr.20071211083251"><vh>Leo 4.4.5 final</vh></v>
 </v>
-</v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20080106114331"><vh>4.4.6</vh>
 <v t="ekr.20071217092250"><vh>leo 4.4.6 b1</vh>
 <v t="ekr.20071217092203.1"><vh>Bugs fixed</vh>
 <v t="ekr.20071217092203.2"><vh>Fixed undo (dirty bit) problem)</vh></v>
@@ -3502,6 +3501,17 @@
 <v t="ekr.20071217092203.152"><vh>Added support for @data nodes in @settings trees</vh></v>
 <v t="ekr.20071217092203.154"><vh>Added @auto xml script</vh></v>
 <v t="ekr.20071217092203.163"><vh>Added @import scanners for javascript and xml files</vh></v>
+</v>
+</v>
+</v>
+</v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20080106114225" a="TV"><vh>leo 4.4.6 b2</vh>
+<v t="ekr.20080106114648"><vh>Fixed bugs</vh>
+<v t="ekr.20080106114203.1"><vh>Fixed bug in nav_buttons plugin</vh></v>
+<v t="ekr.20080106114203.2"><vh>Fixed problems with modes/rest.py</vh></v>
+<v t="ekr.20080106114203.3"><vh>Replaced delete-all-icons command with a script in script.leo</vh></v>
+<v t="ekr.20080106114203.4"><vh>Leo issues better messages if Image can not be imported</vh></v>
 </v>
 </v>
 </v>
@@ -33578,7 +33588,8 @@ Leo 4.4.6 fixes all known bugs and adds a few new features.
 
     find-next-clone
     toggle-sparse-move
-</t>
+
+Replaced the delete-all-icons command with a script in scripts.leo.  This command was too dangerous.</t>
 <t tx="ekr.20071217093444.6">- Added support for @data nodes in settings files.
 
 - The @data import_xml_tags setting specifies the xml tags that act as organizers.
@@ -33586,5 +33597,56 @@ Leo 4.4.6 fixes all known bugs and adds a few new features.
 <t tx="ekr.20071217093444.7">-----------------------
 
 |prev| |leo| |next|</t>
+<t tx="ekr.20080106114203.1">http://sourceforge.net/forum/message.php?msg_id=4682598
+</t>
+<t tx="ekr.20080106114203.2">http://sourceforge.net/forum/message.php?msg_id=4681175
+
+- There was a horrendous bug in the match_seq_regexp matcher which could cause the colorizer to loop.
+- There was another horrendous bug in match_regexp_helper that cause spurious matches.
+- Added some more defensive code to have the colorizer recover more gracefully in this case. 
+- The jedit2py script was not associating regexp rules whose regex starts with
+  '\' with the proper character. The proper character is the hash_char
+  character, not the '\' character. As a result, regexp's that start with '\'
+  never got matched.
+
+The following colorizers are affected by the change:
+
+modes/apacheconf.py
+modes/erlang.py
+modes/moin.py
+modes/perl.py
+modes/php.py
+modes/pl1.py
+modes/rest.py
+modes/shell.py
+modes/shellscript.py</t>
+<t tx="ekr.20080106114203.3"></t>
+<t tx="ekr.20080106114203.4">http://sourceforge.net/forum/message.php?msg_id=4687706
+</t>
+<t tx="ekr.20080106114225">Leo 4.4.6 beta 2                           January 7, 2008
+
+Leo 4.4.6 beta 2 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo 4.4.6 fixes several recently reported bugs, all minor.
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.6:
+----------------------------
+- Fixes all known bugs.
+- Added @auto importers for javascript and xml files.
+- Added find-next-clone and toggle-sparse-move commands.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20080106114331"></t>
+<t tx="ekr.20080106114648"></t>
 </tnodes>
 </leo_file>
