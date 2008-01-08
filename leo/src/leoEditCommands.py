@@ -2283,8 +2283,69 @@ class editCommandsClass (baseEditCommandsClass):
     # - Define standard icons in a subfolder of Icons folder?
     # - Tree control recomputes height of each line.
     #@-at
+    #@+node:ekr.20080108092811: Helpers
+    #@+node:ekr.20080108091349:appendImageDictToList
+    def appendImageDictToList(self,aList,iconDir,path,xoffset):
+
+        c = self.c
+        path = g.os_path_abspath(g.os_path_join(iconDir,path))
+        relPath = g.makePathRelativeTo(path,iconDir)
+
+        image,image_height = self.getImage(path)
+        if not image:
+            g.es('can not load image: %s' % (path))
+            return xoffset
+
+        if image_height is None:
+            yoffset = 0
+        else:
+            yoffset = (c.frame.tree.line_height-image_height)/2
+
+        aList.append ({
+            'type' : 'file',
+            'file' : path,
+            'relPath': relPath,
+            'where' : 'beforeHeadline',
+            'yoffset' : yoffset, 'xoffset' : xoffset, 'xpad' : -2,
+        })
+        xoffset += 2
+
+        return xoffset
+    #@-node:ekr.20080108091349:appendImageDictToList
+    #@+node:ekr.20071114083142:getImage
+    def getImage (self,path):
+
+        c = self.c
+
+        try:
+            from PIL import Image
+        except ImportError:
+            Image = None
+            g.es('can not import Image',color='blue')
+
+        try:
+            from PIL import ImageTk
+        except ImportError:
+            try:
+                import ImageTk
+            except ImportError:
+                ImageTk = None
+                g.es('can not import ImageTk',color='blue')
+
+        try:
+            if Image and ImageTk:
+                image1 = Image.open(path)
+                image = ImageTk.PhotoImage(image1)
+            else:
+                import Tkinter as Tk
+                image = Tk.PhotoImage(master=c.frame.tree.canvas,file=path)
+            return image,image.height()
+        except Exception:
+            return None,None
+    #@-node:ekr.20071114083142:getImage
+    #@-node:ekr.20080108092811: Helpers
     #@+node:ekr.20071114082418.2:deleteAllIcons (no longer used)
-    # def deleteAllIcons (self,event):
+    # def deleteAllIcons (self,event=None):
 
         # c = self.c
 
@@ -2302,7 +2363,7 @@ class editCommandsClass (baseEditCommandsClass):
         # c.redraw()
     #@-node:ekr.20071114082418.2:deleteAllIcons (no longer used)
     #@+node:ekr.20071114082418:deleteFirstIcon
-    def deleteFirstIcon (self,event):
+    def deleteFirstIcon (self,event=None):
 
         c = self.c ; p = c.currentPosition()
 
@@ -2351,7 +2412,7 @@ class editCommandsClass (baseEditCommandsClass):
 
     #@-node:ekr.20071114092622:deleteIconByName
     #@+node:ekr.20071114085054:deleteLastIcon
-    def deleteLastIcon (self,event):
+    def deleteLastIcon (self,event=None):
 
         c = self.c ;  p = c.currentPosition()
 
@@ -2367,7 +2428,7 @@ class editCommandsClass (baseEditCommandsClass):
             c.redraw()
     #@-node:ekr.20071114085054:deleteLastIcon
     #@+node:ekr.20071114082418.1:deleteNodeIcons
-    def deleteNodeIcons (self,event):
+    def deleteNodeIcons (self,event=None):
 
         c = self.c ; p = c.currentPosition()
 
@@ -2381,8 +2442,8 @@ class editCommandsClass (baseEditCommandsClass):
                 c.setChanged(True)
                 c.redraw()
     #@-node:ekr.20071114082418.1:deleteNodeIcons
-    #@+node:ekr.20071114081313.1:insertIcon & helper
-    def insertIcon (self,event):
+    #@+node:ekr.20071114081313.1:insertIcon
+    def insertIcon (self,event=None):
 
         c = self.c ; p = c.currentPosition()
 
@@ -2397,26 +2458,27 @@ class editCommandsClass (baseEditCommandsClass):
 
         aList = [] ; xoffset = 2
         for path in paths:
-            path = g.os_path_abspath(g.os_path_join(iconDir,path))
-            relPath = g.makePathRelativeTo(path,iconDir)
-            # g.trace('relPath',relPath)
-            image,image_height = self.getImage(path)
-            if not image:
-                g.es('can not load image: %s' % (path))
-                return
-            if image_height is None:
-                yoffset = 0
-            else:
-                yoffset = (c.frame.tree.line_height-image_height)/2
+            xoffset = self.appendImageDictToList(aList,iconDir,path,xoffset)
+            # path = g.os_path_abspath(g.os_path_join(iconDir,path))
+            # relPath = g.makePathRelativeTo(path,iconDir)
+            # # g.trace('relPath',relPath)
+            # image,image_height = self.getImage(path)
+            # if not image:
+                # g.es('can not load image: %s' % (path))
+                # return
+            # if image_height is None:
+                # yoffset = 0
+            # else:
+                # yoffset = (c.frame.tree.line_height-image_height)/2
 
-            aList.append ({
-                'type' : 'file',
-                'file' : path,
-                'relPath': relPath,
-                'where' : 'beforeHeadline',
-                'yoffset' : yoffset, 'xoffset' : xoffset, 'xpad' : -2,
-            })
-            xoffset += 2
+            # aList.append ({
+                # 'type' : 'file',
+                # 'file' : path,
+                # 'relPath': relPath,
+                # 'where' : 'beforeHeadline',
+                # 'yoffset' : yoffset, 'xoffset' : xoffset, 'xpad' : -2,
+            # })
+            # xoffset += 2
 
         if not hasattr(p.v.t,'unknownAttributes'):
             p.v.t.unknownAttributes = {}
@@ -2428,38 +2490,29 @@ class editCommandsClass (baseEditCommandsClass):
         p.setDirty()
         c.setChanged(True)
         c.redraw()
-    #@+node:ekr.20071114083142:getImage
-    def getImage (self,path):
+    #@-node:ekr.20071114081313.1:insertIcon
+    #@+node:ekr.20080108090719:insertIconFromFile
+    def insertIconFromFile (self,path):
 
-        c = self.c
+        c = self.c ; p = c.currentPosition()
 
-        try:
-            from PIL import Image
-        except ImportError:
-            Image = None
-            g.es('can not import Image',color='blue')
+        iconDir = g.os_path_abspath(g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons")))
+        os.chdir(iconDir)
 
-        try:
-            from PIL import ImageTk
-        except ImportError:
-            try:
-                import ImageTk
-            except ImportError:
-                ImageTk = None
-                g.es('can not import ImageTk',color='blue')
+        aList = [] ; xoffset = 2
+        xoffset = self.appendImageDictToList(aList,iconDir,path,xoffset)
 
-        try:
-            if Image and ImageTk:
-                image1 = Image.open(path)
-                image = ImageTk.PhotoImage(image1)
-            else:
-                import Tkinter as Tk
-                image = Tk.PhotoImage(master=c.frame.tree.canvas,file=path)
-            return image,image.height()
-        except Exception:
-            return None,None
-    #@-node:ekr.20071114083142:getImage
-    #@-node:ekr.20071114081313.1:insertIcon & helper
+        if not hasattr(p.v.t,'unknownAttributes'):
+            p.v.t.unknownAttributes = {}
+
+        aList2 = p.v.t.unknownAttributes.get('icons',[])
+        aList2.extend(aList)
+        p.v.t.unknownAttributes ['icons'] = aList2
+        p.v.t.unknownAttributes ['lineYOffset'] = 3
+        p.setDirty()
+        c.setChanged(True)
+        c.redraw()
+    #@-node:ekr.20080108090719:insertIconFromFile
     #@-node:ekr.20071114081313:icons...
     #@+node:ekr.20050920084036.74:indent...
     #@+node:ekr.20050920084036.75:backToIndentation
