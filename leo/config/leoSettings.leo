@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.477886977887">
-	<global_window_position top="103" left="397" height="674" width="864"/>
+	<global_window_position top="103" left="397" height="654" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -877,8 +877,7 @@
 <v t="ekr.20070925144534.275"><vh>@item focus-to-&amp;minibuffer</vh></v>
 <v t="ekr.20070925144534.276"><vh>@item focus-to-&amp;tree</vh></v>
 </v>
-<v t="ekr.20071114081712" a="TV"><vh>@menu &amp;Icons...</vh>
-<v t="ekr.20071114081712.2"><vh>@item delete-&amp;all-icons</vh></v>
+<v t="ekr.20071114081712" a="ETV"><vh>@menu &amp;Icons...</vh>
 <v t="ekr.20071114084709"><vh>@item delete-&amp;first-icon</vh></v>
 <v t="ekr.20071114084709.1"><vh>@item delete-&amp;last-icon</vh></v>
 <v t="ekr.20071114081712.3"><vh>@item delete-&amp;node-icons</vh></v>
@@ -8484,11 +8483,7 @@ for which leading whitespace is not terribly significant.
 True: @auto warns about mismatches that occur solely in leading whitespace.</t>
 <t tx="ekr.20071113084330"></t>
 <t tx="ekr.20071114072753">True: the vim plugin will open @url nodes when they are double clicked.</t>
-<t tx="ekr.20071114081712">insert-icon
-delete-icon-by-name
-delete-node-icons
-</t>
-<t tx="ekr.20071114081712.2"></t>
+<t tx="ekr.20071114081712"></t>
 <t tx="ekr.20071114081712.3"></t>
 <t tx="ekr.20071114081712.4"></t>
 <t tx="ekr.20071114081712.5"></t>
