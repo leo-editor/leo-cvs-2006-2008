@@ -2347,6 +2347,8 @@ class leoTkinterLog (leoFrame.leoLog):
 
         if tabName:
             self.selectTab(tabName)
+
+        # Note: this must be done after the call to selectTab.
         w = self.logCtrl
         if w:
             #@        << put s to log control >>
