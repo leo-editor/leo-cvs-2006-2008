@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.431306306306">
-	<global_window_position top="14" left="340" height="868" width="892"/>
+	<global_window_position top="14" left="340" height="848" width="892"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -387,6 +387,7 @@
 <v t="ekr.20040403173920.5" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d343122206e616d653d22687474702d6e6f64652d6d61726b65722d3431223e710155043c2f613e71025d710328553d3c64697620636c6173733d2273656374696f6e222069643d2266756e6374696f6e732d646566696e65642d696e2d6c656f676c6f62616c732d7079223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f553b3c64697620636c6173733d2273656374696f6e222069643d227265646972656374696e672d6f75747075742d66726f6d2d73637269707473223e0a711055783c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964323122206e616d653d227265646972656374696e672d6f75747075742d66726f6d2d73637269707473223e5265646972656374696e67206f75747075742066726f6d20736372697074733c2f613e3c2f68313e0a7111652e"><vh>Redirecting output from scripts</vh></v>
 <v t="ekr.20061003204952"><vh>Writing to different log tabs</vh></v>
 <v t="ekr.20071026183116"><vh>Invoking dialogs using the g.app.gui class</vh></v>
+<v t="ekr.20080109074102"><vh>Inserting and deleting icons</vh></v>
 <v t="ekr.20051101171734"><vh>Customizing panes with different widgets</vh>
 <v t="ekr.20061003204952.1"><vh>Official ivars</vh></v>
 <v t="ekr.20061003212136"><vh>Common operations on Tk.Text widgets</vh></v>
@@ -33648,5 +33649,21 @@ CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 <t tx="ekr.20080106114331"></t>
 <t tx="ekr.20080106114648"></t>
+<t tx="ekr.20080109074102">You can add an icon to the presently selected node with
+c.editCommands.insertIconFromFile(path). path is an absolute path or a path
+relative to the leo/Icons folder. A relative path is recommended if you plan to
+use the icons on machines with different directory structures.
+
+For example::
+
+    path = 'rt_arrow_disabled.gif' 
+    c.editCommands.insertIconFromFile(path) 
+
+Scripts can delete icons from the presently selected node using the following methods::
+ 
+    c.editCommands.deleteFirstIcon() 
+    c.editCommands.deleteLastIcon() 
+    c.editCommands.deleteNodeIcons() 
+</t>
 </tnodes>
 </leo_file>
