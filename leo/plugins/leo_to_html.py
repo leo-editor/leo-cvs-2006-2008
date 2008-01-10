@@ -5,21 +5,95 @@
 
 #@<< docstring >>
 #@+node:danr7.20060902215215.2:<< docstring >>
-'''leoToHTML 1.0 plugin by Dan Rahmel, bullet list code by Mike Crowe.
+'''leo_to_html converts a leo outline to an html web page.
 
-This plugin takes an outline stored in LEO and outputs it as an HTML file. The outline
-is output as either a set of headings or an unordered list.
+Introduction
+~~~~~~~~~~~~
+Based on original leoToHTML 1.0 plugin by Dan Rahmel, bullet list code by Mike Crowe.
 
-If this plug-in loads properly, you should have an "Outline to HTML"
-option added to your File > Export... menu in Leo.
+This plugin takes an outline stored in LEO and converts it to html which is then
+either saved in  a file or shown in a browser.
 
-Settings such as outputing just the headlines (vs. headlines & body text) and whether
-to include or ignore the contents of @file nodes are stored in the html_export.ini file
-in your Leo\plugins folder.
+The outline can be reprsented as a bullet list, a numberd list or using html
+<h?> type headings.
 
-The default export path is also stored in the INI file. By default, it's set to c:\ so
-you may need to modify it depending on your system.
 
+menu items
+~~~~~~~~~~
+If this plugin loads properly, the following menu items should appear in
+your File > Export... menu in Leo.
+
+	Save Outline as HTML  (equivelent to export-html)
+	Save Node as HTML     (equivelent to export-html-node)
+	Show Outline as HTML  (equivelent to show-html)
+	Show Node as HTML     (equivelent to show-html-node)
+
+
+Commands
+~~~~~~~~
+Several commands will also be made availiable
+
+    + 'export-html' will export to a file according to current settings.
+    + 'export-html-*' will export to a file using bullet type * which can be 'number', 'bullet' or 'head'.
+
+The following commands will start a browser showing the html.
+
+    +'show-html' will show the outline according to current settings.
+    +'show-html-*' will show the outline using bullet type * which can be 'number', 'bullet' or 'head'.
+
+
+The following commands are the same as above except only the current node is converted.
+
+    +'export-html-node'
+    +'export-html-node-*'
+    +'show-html-node'
+    +'show-html-node-*
+
+@settings
+~~~~~~~~~
+There are several settings that can appear in the leo_to_html.ini file in leo's
+plugins folder or be set via the Plugins > leo_to_html > Properties... menu. 
+
+These are:
+
+exportpath:
+    The path to the folder where you want to store the generate html file.
+
+    Default: c:\
+
+flagjustheadlines:
+    Default: 'Yes' to include only headlines in the ouput.
+
+flagignorefiles:
+    Default: 'Yes' to ignore @file nodes.
+
+use_xhtml:
+    Yes to include xhtml doctype declarations and make the file valid xhtml.
+    Otherwise only a simple <html> tag is used although the output will be xhtml
+    complient otherwise.
+
+    Default: Yes
+
+bullet_type:
+    If this is 'bullet' then the output will be in the form of a bulleted list.
+    If this is 'number' then the output will be in the form of a numbered list.
+    If this is 'heading' then the output will use <h?> style headers.
+
+    Anything else will result in <h?> type tags being used where ? will be a
+    digit startin at 1 and increasing up to a maximum of six depending on depth
+    of nesting.
+
+    Default: number
+
+browser_command:
+    Set this to the command needed to launch a browser on your system.
+
+    Default:  c:\Program Files\Internet Explorer\IEXPLORE.EXE
+
+Scripting
+~~~~~~~~~
+All the functionality of this plugin can not be accessed via a Leo_to_HTML
+object which can be imported and used in scripts.
 
 '''
 #@-node:danr7.20060902215215.2:<< docstring >>
@@ -34,6 +108,24 @@ you may need to modify it depending on your system.
 # checking
 # 0.90 - Created initial plug-in framework
 # 1.1 ekr: Added init method.
+# 2.0 plumloco:
+#     - made gui independent
+#     - made output xhtml compliant
+#     - added ini options
+#         - use_xhtml: 'Yes' to included xhtml headers in output.
+#         - bullet_type: 'number', 'bullet', or 'head'.
+#         - browser_command: the command needed to launch a browser.
+#     - removed bullet/headlines dialog in favour of bullet_type ini option.
+#     - added option to show output in a browser instead of saving to a file
+#     - added extra menu items to save/show current node only
+#     - added export-html-*-* commands
+#     - added show-html-*-* commands
+#     - added Leo_to_HTML object so all the plugins functionality can be 
+# scripted.
+# 
+# 
+# 
+# 
 #@-at
 #@-node:danr7.20060902215215.3:<< version history >>
 #@nl
@@ -42,117 +134,572 @@ you may need to modify it depending on your system.
 import leoGlobals as g
 import leoPlugins
 import ConfigParser
-import tkMessageBox
+
 
 #@-node:danr7.20060902215215.4:<< imports >>
 #@nl
 
-__version__ = "1.1"
+
+__version__ = '2.0'
+
+
+pluginController = None
+
 
 #@+others
-#@+node:ekr.20070124112251:init
+#@+node:bob.20080107154936:module level functions
+#@+node:bob.20080107154936.1:init
+
+
 def init ():
-
-    if g.app.gui is None:
-            g.app.createTkGui(__file__)
-
-    if g.app.gui.guiName() != "tkinter": return False
-
-    # Ok for unit testing: creates menu.
-    leoPlugins.registerHandler("create-optional-menus",createExportMenu)
+    leoPlugins.registerHandler("create-optional-menus",createExportMenus)
+    leoPlugins.registerHandler('after-create-leo-frame', onCreate)
     g.plugin_signon(__name__)
-
     return True
+
+#@-node:bob.20080107154936.1:init
+#@+node:bob.20080107154936.2:safe
+def safe(s):
+    return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+
+#@-node:bob.20080107154936.2:safe
+#@+node:bob.20080107154936.3:onCreate
+def onCreate (tag, keys):
+
+    c = keys.get('c')
+    if not c: return
+
+    thePluginController = pluginController(c)
 #@nonl
-#@-node:ekr.20070124112251:init
-#@+node:danr7.20060902215215.5:createExportMenu (leo_to_html)
-def createExportMenu (tag,keywords):
+#@-node:bob.20080107154936.3:onCreate
+#@+node:bob.20080107154936.4:createExportMenus
+def createExportMenus (tag,keywords):
 
     c = keywords.get("c")
 
-    # Insert leoToRTF in #3 position of the File > Export menu.
-    c.frame.menu.insert('Export...',3,
-        label = 'Outline to HTML',
-        command = lambda c = c: export_html(c))
-#@-node:danr7.20060902215215.5:createExportMenu (leo_to_html)
-#@+node:danr7.20060902215215.6:export_html
-def export_html( c ):
-    # Show messagebox to ask if headline output or bullet list
+    for item, cmd in (
+        ('Show Node as HTML', 'show-html-node'),
+        ('Show Outline as HTML', 'show-html'),
+        ('Save Node as HTML', 'export-html-node'),
+        ('Save Outline as HTML', 'export-html'),
+    ):
+        c.frame.menu.insert('Export...', 3,
+            label = item,
+            command = lambda c = c, cmd=cmd: c.k.simulateCommand(cmd)
+        )
+#@-node:bob.20080107154936.4:createExportMenus
+#@-node:bob.20080107154936:module level functions
+#@+node:bob.20080107154757:class pluginController
+class pluginController:
 
-    if g.app.unitTesting:
-        flagHeadings = True
-    else:
-        flagHeadings = tkMessageBox.askyesno(
-            "askyesno", "Save outline as HTML headings? \n(No will save outline as bullet list)")
+    #@    @+others
+    #@+node:bob.20080107154757.1:__init__
+    def __init__ (self,c):
 
-    g.es("Exporting HTML...")
+        self.c = c
+        # Warning: hook handlers must use keywords.get('c'), NOT self.c.
 
-    # Get user preferences from INI file 
-    fileName = g.os_path_join(g.app.loadDir,"../","plugins","leo_to_html.ini")
-    config = ConfigParser.ConfigParser()
-    config.read(fileName)
-    flagIgnoreFiles =  config.get("Main", "flagIgnoreFiles") == "Yes"
-    flagJustHeadlines = config.get("Main", "flagJustHeadlines") == "Yes"
-    filePath = config.get("Main", "exportPath").strip() # "c:\\"
+        for command in (
+            'export-html',
+            'export-html-bullet',
+            'export-html-number',
+            'export-html-head',
 
-    myFileName = c.frame.shortFileName()    # Get current outline filename
-    myFileName = myFileName[:-4]            # Remove .leo suffix
+            'export-html-node',
+            'export-html-node-bullet',
+            'export-html-node-number',
+            'export-html-node-head',
 
-    g.es(" Leo -> HTML started...",color="turquoise4")
+            'show-html',
+            'show-html-bullet',
+            'show-html-number',
+            'show-html-head',
 
-    # Open file for output
-    f=open(filePath + myFileName + ".html", 'w')
+            'show-html-node',
+            'show-html-node-bullet',
+            'show-html-node-number',
+            'show-html-node-head'
+        ):
+            method = getattr(self, command.replace('-','_'))
+            c.k.registerCommand(command, shortcut=None, func=method)
+    #@-node:bob.20080107154757.1:__init__
+    #@+node:bob.20080107154757.3:export_html
+    # EXPORT ALL
 
-    # Write HTML header information
-    f.write("<HTML>")
-    f.write("<BODY>")
+    def export_html(self, event=None, bullet=None, show=False, node=False):
+        html = Leo_to_HTML(self.c)
+        html.main(bullet=bullet, show=show, node=node)
 
-    myLevel = -1
-    for p in c.allNodes_iter():
-        curLevel = p.level() + 1    # Store current level
-        if curLevel <> myLevel and not flagHeadings:
-            if curLevel > myLevel:
-                f.write("<ul>\n")   # If level is greater, open new UL
+    def export_html_bullet(self, event=None):
+        self.export_html(bullet='bullet')
+
+    def export_html_number(self, event=None):
+        self.export_html(bullet='number')
+
+    def export_html_head(self, event=None):
+        self.export_html(bullet='head')
+
+    # EXPORT NODE
+
+
+    def export_html_node(self,event=None, bullet=None,):
+        self.export_html(bullet=bullet, node=True)
+
+    def export_html_node_bullet(self, event=None):
+        self.export_html_node(bullet='bullet')
+
+    def export_html_node_number(self, event=None):
+        self.export_html_node(bullet='number')
+
+    def export_html_node_head(self, event=None):
+        self.export_html_node(bullet='head')
+
+
+    # SHOW ALL
+
+
+    def show_html(self, event=None, bullet=None):
+        self.export_html(bullet=bullet, show=True)
+
+    def show_html_bullet(self, event=None):
+        self.show_html(bullet='bullet')
+
+    def show_html_number(self, event=None):
+        self.show_html(bullet='number')
+
+    def show_html_head(self, event=None):
+        self.show_html(bullet='head')
+
+
+    ## SHOW NODE
+
+    def show_html_node(self, event=None, bullet=None):
+        self.export_html(bullet=bullet, show=True, node=True)
+
+    def show_html_node_bullet(self, event=None):
+        self.show_html_node(bullet='bullet')
+
+    def show_html_node_number(self, event=None):
+        self.show_html_node(bullet='number')
+
+    def show_html_node_head(self, event=None):
+        self.show_html_node(bullet='head')
+    #@-node:bob.20080107154757.3:export_html
+    #@-others
+#@nonl
+#@-node:bob.20080107154757:class pluginController
+#@+node:bob.20080107154746:class Leo_to_HTML
+class Leo_to_HTML(object):
+
+    defaultTitle = 'leo to dhtml demo'
+    defaultDestination = '/home/bob/tmp/leo/dhtml/'
+
+    #@    @+others
+    #@+node:bob.20080107154746.1:__init__
+
+    def __init__(self, c):
+
+        self.c = c
+        self.basedir = ''
+        self.reportColor = 'turquoise4'
+        self.errorColor = 'red'
+        self.fileColor = 'turquoise4'
+        self.msgPrefix = 'leo_to_html: '
+
+    #@-node:bob.20080107154746.1:__init__
+    #@+node:bob.20080107154746.2:do_xhtml
+    def do_xhtml(self, node=False):
+        """Convert the tree to xhtml.
+
+        Return the result as a string in self.xhtml.
+
+        Only the code to represent the tree is generated, not the
+        wraper code to turn it into a file.
+        """
+
+        self.xhtml = xhtml = []
+
+        if node:
+            root = self.c.currentPosition()
+        else:
+            root = self.c.rootPosition()
+
+        if self.bullet_type != 'head':
+            xhtml.append(self.openLevelString)
+
+        for pp in root.following_siblings_iter():
+
+            if self.bullet_type == 'head':
+                self.doItemHeadlineTags(pp)
             else:
-                f.write("</ul>\n"*(myLevel-curLevel))   # If level is less, close ULs to reach current level
+                self.doItemBulletList(pp)
 
-        myLevel = curLevel
-        myHeadline = p.headString()
+        if self.bullet_type != 'head':
+            xhtml.append(self.closeLevelString)
 
-        # Check if node is an @file and ignore if configured to
-        if not (myHeadline[:5] == "@file" and flagIgnoreFiles):
-            myOutput = myHeadline
-            myOutput = myOutput.encode( "utf-8" )   # Encode to html standard output
-            # If writing file as heading list, do that. Otherwise, write the bullet list items
-            if flagHeadings:
-                f.write("<H" + str(myLevel) + ">" + myOutput + "</H" + str(myLevel) + ">")
+        self.xhtml = '\n'.join(xhtml)
+
+
+    #@+node:bob.20080107160008:doItemHeadlineTags
+
+    def doItemHeadlineTags(self, p, level=1):
+
+        xhtml = self.xhtml
+
+        self.doHeadline(p, level)
+        self.doBodyElement(p, level)
+
+        if p.hasChildren() and self.showSubtree(p):
+
+            for item in p.children_iter():
+                self.doItemHeadlineTags(item, level +1)
+
+
+
+
+    #@-node:bob.20080107160008:doItemHeadlineTags
+    #@+node:bob.20080107165629:doItemBulletList
+    def doItemBulletList(self, p):
+        """" Recursivley proccess an outline node into an xhtml bullet list."""
+
+        xhtml = self.xhtml
+
+        xhtml.append(self.openItemString)
+
+        self.doHeadline(p)
+        self.doBodyElement(p)
+
+        if p.hasChildren():
+
+            xhtml.append(self.openLevelString)
+            for item in p.children_iter():
+                self.doItemBulletList(item)
+            xhtml.append(self.closeLevelString)
+
+        xhtml.append(self.closeItemString)
+    #@-node:bob.20080107165629:doItemBulletList
+    #@+node:bob.20080107154746.5:doHeadline
+    def doHeadline(self, p, level=None):
+        """Append wrapped headstring to ouput stream."""
+
+        headline = safe(p.headString()).replace(' ', '&nbsp;')
+
+        if level is None:
+            self.xhtml.append(headline)
+            return
+
+        h = '%s' % min(level, 6)
+        self.xhtml.append( self.openHeadlineString % h + headline + self.closeHeadlineString % h)
+    #@-node:bob.20080107154746.5:doHeadline
+    #@+node:bob.20080107154746.6:doBodyElement
+    def doBodyElement(self, pp, level=None):
+        """Append body string to output stream."""
+
+        if not self.include_body: return
+
+        self.xhtml.append(
+            self.openBodyString \
+            + '<pre>' + safe(pp.bodyString()) + '</pre>' \
+            + self.closeBodyString
+        )
+
+    #@-node:bob.20080107154746.6:doBodyElement
+    #@+node:bob.20080107175336:showSubtree
+    def showSubtree(self, p):
+
+        """Return True if subtree should be shown.
+
+        subtree should be shown if is not an @file node or if it
+        is an @file node and flags say it should be shown.
+
+        """
+
+        s = p.headString()
+        if not self.flagIgnoreFiles or s[:len('@file')] != '@file':
+           return True 
+    #@-node:bob.20080107175336:showSubtree
+    #@-node:bob.20080107154746.2:do_xhtml
+    #@+node:bob.20080107154746.9:main
+    def main(self, bullet=None, show=False, node=False):
+        """Generate the html and write the files.
+
+        If 'bullet' is not None then that bullet type
+        will be used else the value of bullet_type from
+        the the .ini file will be used.
+
+        if 'show' is True the file will be saved to a temp 
+        dir and shown in a browser.
+
+        """
+
+        self.silent = show
+
+        self.announce_start()
+
+        self.loadConfig()
+
+        if bullet in ('bullet', 'number', 'head'):
+            self.bullet_type = bullet
+
+        self.setup()
+
+        if self.use_xhtml:
+            self.template = self.getXHTMLTemplate()
+        else:
+            self.template = self.getPlainTemplate()
+
+        self.do_xhtml(node)
+        self.applyTemplate()
+
+        if show:
+            self.show()
+
+        else:
+            self.writeall()
+
+        self.announce_end()
+
+
+    #@-node:bob.20080107154746.9:main
+    #@+node:bob.20080109063110.7:announce
+    def announce(self, msg, prefix=None, color=None, silent=None):
+
+        if silent is None:
+            silent = self.silent
+
+        if silent:
+            return
+
+        g.es('%s%s' % (prefix or self.msgPrefix, msg), color=color or self.reportColor)
+
+    def announce_start(self, msg='running ...', prefix=None, color=None):
+           self.announce(msg, prefix, color) 
+
+    def announce_end(self, msg='done', prefix=None, color=None):
+            self.announce(msg, prefix, color)
+
+    def announce_fail(self, msg='failed', prefix=None, color=None):
+        self.announce(msg, prefix, color= color or self.errorColor, silent=False) 
+    #@-node:bob.20080109063110.7:announce
+    #@+node:bob.20080107154746.11:loadConfig
+    def loadConfig(self):
+
+        def config(s):
+            s = configParser.get("Main", s)
+            g.trace(s)
+            if not s:
+                s = ''
+            return s.strip()
+
+        def flag(s):
+             ss = config(s)
+             if ss:
+                 return ss.lower()[0] in ('y', 't', '1')
+
+        g.trace(g.app.loadDir,"..","plugins","leo_to_html.ini")
+        fileName = g.os_path_join(g.app.loadDir,"..","plugins","leo_to_html.ini")
+        configParser = ConfigParser.ConfigParser()
+        configParser.read(fileName)
+
+        self.flagIgnoreFiles =  flag("flagIgnoreFiles")
+        self.include_body = not flag("flagJustHeadlines")
+
+        self.path = config("exportPath") # "/"
+
+        self.browser_command = config("browser_command")
+        self.use_xhtml =  flag("use_xhtml")
+
+        self.bullet_type = config( "bullet_type").lower()
+        if self.bullet_type not in ('bullet', 'number', 'head'):
+            self.bulletType = 'number'
+
+
+
+
+
+
+    #@-node:bob.20080107154746.11:loadConfig
+    #@+node:bob.20080109063110.8:setup
+    def setup(self):
+
+        self.openItemString = '<li>'
+        self.closeItemString = '</li>'
+
+        self.openBodyString = '<div>'
+        self.closeBodyString = '</div>'
+
+
+        self.openHeadlineString = ''
+        self.closeHeadlineString = ''
+
+
+        if self.bullet_type == 'head':
+
+            self.openHeadlineString = '<h%s>'
+            self.closeHeadlineString = '</h%s>'
+
+            self.openBodyString = '<blockquote>'
+            self.closeBodyString = '</blockquote>'
+
+
+        else:
+
+            if self.bullet_type == 'number':
+                self.openLevelString = '<ol>'
+                self.closeLevelString = '</ol>'
+
             else:
-                f.write("<li><H" + str(myLevel) + ">" + myOutput + "</H" + str(myLevel) + "></li>")
+
+                self.openLevelString = '<ul>'
+                self.closeLevelString = '</ul>'
+
+            self.openBlockquoteString = '<div>'
+            self.closeBlockquoteString = '</div>'
 
 
-            # If including outline body text, convert it to HTML usable format
-            if not flagJustHeadlines:
-                myBody = p.bodyString().encode( "utf-8" )
-                # Insert line breaks where newline characters were 
-                myBody = myBody.rstrip().replace("\n","<br>\n")
-                # Make sure there is body text before writing
-                if len(myBody)>0: 
-                    if flagHeadings:
-                        f.write("<p>" + myBody)
-                    else:
-                        f.write("<ul><li>" + myBody + "</li></ul>\n")  
+        myFileName = self.c.frame.shortFileName()    # Get current outline filename
+        if not myFileName:
+            myFileName = 'untitiled'
 
-    # Write final level closes
-    if not flagHeadings:
-        f.write("</ul>\n"*(myLevel))
+        self.title = myFileName
 
-    # Write HTML close
-    f.write("</BODY></HTML>")  
+        if myFileName[-4:].lower() == '.leo':
+            myFileName = myFileName[:-4]            # Remove .leo suffix
 
-    # Close file
-    f.close()
-    g.es(" Leo -> HTML completed.",color="turquoise4")
-#@-node:danr7.20060902215215.6:export_html
+        self.myFileName = myFileName + '.html'
+    #@-node:bob.20080109063110.8:setup
+    #@+node:bob.20080107154746.10:applyTemplate
+    def applyTemplate(self, template=None):
+
+        xhtml = self.xhtml
+
+        if template is None:
+            template = self.template
+
+        self.xhtml = template%(
+            self.title,
+            xhtml
+        )
+    #@-node:bob.20080107154746.10:applyTemplate
+    #@+node:bob.20080109063110.9:show
+    def show(self):
+
+        basedir = g.os_path_join(g.app.loadDir,"..","temp")
+
+        self.write(self.myFileName, self.xhtml, basedir=basedir, path='')
+
+        filepath = g.os_path_abspath(g.os_path_join(
+            basedir, self.myFileName
+        ))
+
+        try:
+            import subprocess
+        except:
+            subprocess = None
+            self.announce_fail('Show failed - cant import subprocess')
+
+        if subprocess:
+            try:
+                subprocess.Popen([self.browser_command,  "file://%s" % filepath])
+            except:
+                self.announce_fail('Show failed - cant open browser')
+    #@-node:bob.20080109063110.9:show
+    #@+node:bob.20080107171331:writeall
+    def writeall(self):
+        """Write all the files"""
+
+        self.write(self.myFileName, self.xhtml)
+    #@-node:bob.20080107171331:writeall
+    #@+node:bob.20080107154746.13:write
+    def write(self, name, data, basedir=None, path=None):
+        """Write a single file.
+
+        The `name` can be a file name or a ralative path
+        which will be added to self.basedir and self.path to create
+        a full path for the file to be written.
+
+        """
+
+        if basedir is None:
+            basedir = self.basedir
+
+        if path is None:
+            path = self.path
+
+        filepath = g.os_path_abspath(g.os_path_join(
+            basedir, path , name
+        ))
+
+
+        try:
+            f = open(filepath, 'wb')
+            ok = True
+        except IOError:
+            ok = False
+
+        if ok:
+            try:
+                try:
+                    f.write(data.encode('utf-8'))
+                finally:
+                    f.close()
+            except IOError:
+                ok = False
+
+
+        if ok:
+            self.announce('ouput file - %s' % filepath, color=self.fileColor)
+            return True
+
+        self.announce_fail('failed writing to %s' % filepath)
+        return False
+    #@-node:bob.20080107154746.13:write
+    #@+node:bob.20080107175154:getXHTMLTemplate
+    def getXHTMLTemplate(self):
+        """Returns a string containing a template for the outline page.
+
+        The string should have positions in order, for:
+            title and body text.
+
+        """
+
+        return """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>
+        %s
+    </title>
+    </head>
+    <body>
+    %s
+    </body></html>
+    """
+
+    #@-node:bob.20080107175154:getXHTMLTemplate
+    #@+node:bob.20080107175336.1:getPlainTemplate
+    def getPlainTemplate(self):
+        """Returns a string containing a template for the outline page.
+
+        The string should have positions in order, for:
+            title and body text.
+
+        """
+
+        return """<html>
+    <head>
+    <title>
+        %s
+    </title>
+    </head>
+    <body>
+    %s
+    </body></html>
+    """
+    #@-node:bob.20080107175336.1:getPlainTemplate
+    #@-others
+#@-node:bob.20080107154746:class Leo_to_HTML
 #@-others
 #@nonl
 #@-node:danr7.20060902215215.1:@thin leo_to_html.py
