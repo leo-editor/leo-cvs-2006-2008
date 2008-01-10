@@ -1235,6 +1235,20 @@ class rstClass:
             ok = False
 
         if ok:
+            if isHtml:
+                import re
+                idxTitle = output.find('<title></title>')
+                if idxTitle > -1:
+                    m = re.search('<h1>([^<]*)</h1>', output)
+                    if not m:
+                        m = re.search('<h1><[^>]+>([^<]*)</a></h1>', output)
+                    if m:
+                        output = output.replace(
+                            '<title></title>',
+                            '<title>%s</title>' % m.group(1)
+                        )
+
+
             if toString:
                 self.stringOutput = output
             else:
