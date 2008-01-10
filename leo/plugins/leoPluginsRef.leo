@@ -287,6 +287,10 @@
 </v>
 <v t="ekr.20060703162826"><vh>Dialogs</vh>
 <v t="ekr.20060703162506"><vh>@thin keybindings.py</vh></v>
+<v t="bob.20080109185406"><vh>gtkDialogs</vh>
+<v t="bob.20080109185406.1"><vh>@thin gtkDialogs.py</vh></v>
+<v t="bob.20080109185406.2"><vh>@thin runGtkDialogs.py.txt</vh></v>
+</v>
 </v>
 <v t="ekr.20041030092101"><vh>Dyna plugins by e</vh>
 <v t="ekr.20060110125615"><vh>@url http://rclick.netfirms.com/dyna_menu.py.html  (dyna plugin)</vh></v>
@@ -1430,6 +1434,7 @@ in LeoDocs.leo for full details.
 **Important**: Leo no longer uses pluginsManager.txt to enable or disable plugins.
 
 @color</t>
+<t tx="bob.20080109185406"></t>
 <t tx="edream.110203113231.233">@color</t>
 <t tx="edream.110203113231.618">@ It is usually best _not_ to catch exceptions in plugins:
 doHook catches all exceptions and disables further calls to plugins.

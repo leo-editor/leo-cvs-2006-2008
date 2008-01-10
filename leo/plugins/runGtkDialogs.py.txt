@@ -1,5 +1,5 @@
 #@+leo-ver=4-thin
-#@+node:bob.20071220173044:@thin runGtkDialogs.py.txt
+#@+node:bob.20080109185406.2:@thin runGtkDialogs.py.txt
 #@@language python
 #@@tabwidth -4
 
@@ -157,5 +157,5 @@ err(str(chooser))
 
 sys.exit(chooser.exitvalue)
 
-#@-node:bob.20071220173044:@thin runGtkDialogs.py.txt
+#@-node:bob.20080109185406.2:@thin runGtkDialogs.py.txt
 #@-leo

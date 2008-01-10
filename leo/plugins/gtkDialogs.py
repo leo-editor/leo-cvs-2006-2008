@@ -1,5 +1,5 @@
 #@+leo-ver=4-thin
-#@+node:bob.20071220105741:@thin gtkDialogs.py
+#@+node:bob.20080109185406.1:@thin gtkDialogs.py
 #@@language python
 #@@tabwidth -4
 #@<< docstring >>
@@ -216,5 +216,5 @@ def runSaveFileDialog(initialfile=None,title=None,filetypes=None,defaultextensio
 #@-node:bob.20071220100831:runSaveFileDialog
 #@-others
 #@nonl
-#@-node:bob.20071220105741:@thin gtkDialogs.py
+#@-node:bob.20080109185406.1:@thin gtkDialogs.py
 #@-leo
