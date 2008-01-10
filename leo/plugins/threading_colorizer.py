@@ -450,14 +450,27 @@ class colorizer:
     #@    @+others
     #@+node:ekr.20071010193720.20:Birth and init
     #@+node:ekr.20071010193720.21:__init__ (threading colorizer)
-    def __init__(self,c):
+    def __init__(self,c,w=None):
 
         # g.trace('threading_colorizer',self)
         # Basic data...
         self.c = c
         self.p = None
         self.s = None # The string being colorized.
-        self.w = c.frame.body.bodyCtrl
+
+        self.fake = bool(w)
+
+        if w is None:
+            self.w = c.frame.body.bodyCtrl
+            try:
+                self.Tk_Text = g.app.gui.Tk_Text
+                self.fake = True
+            except AttributeError:
+                self.Tk_Text = Tk.Text
+        else:
+            self.w = w
+            self.Tk_Text = w
+
         # Attributes dict ivars: defaults are as shown...
         self.default = 'null'
         self.digit_re = ''
@@ -591,6 +604,11 @@ class colorizer:
 
         c = self.c ; w = self.w
 
+        try:
+            w.start_tag_configure()
+        except AttributeError:
+            pass
+
         # Get the default body font.
         defaultBodyfont = self.fonts.get('default_body_font')
         if not defaultBodyfont:
@@ -681,6 +699,11 @@ class colorizer:
         w.tag_configure("bolditalic",font=self.bolditalic_font)
         for name in self.color_tags_list:
             w.tag_configure(name,foreground=name)
+
+        try:
+            w.end_tag_configure()
+        except AttributeError:
+            pass
     #@nonl
     #@-node:ekr.20071010193720.24:configure_tags
     #@+node:ekr.20071010193720.25:configure_variable_tags
@@ -1083,7 +1106,7 @@ class colorizer:
         for name in names:
             if name in self.tags:
                 # Call Tk.tag_ranges to avoid overhead in toPython index (called from w.tag_ranges)
-                tk_tags = Tk.Text.tag_ranges(w,name)
+                tk_tags = self.Tk_Text.tag_ranges(w,name)
                 # if tk_tags: g.trace(name,tk_tags)
                 tags = []
                 for tag in tk_tags:
@@ -1158,7 +1181,10 @@ class colorizer:
     #@+node:ekr.20071010193720.43:init
     def init (self,p):
 
-        self.w = w = self.c.frame.body.bodyCtrl
+        if not self.fake:
+            self.w = self.c.frame.body.bodyCtrl
+
+        w = self.w
 
         self.killFlag = False
         # self.language is set by self.updateSyntaxColorer.
@@ -1174,6 +1200,11 @@ class colorizer:
 
         self.init_mode(self.language)
         self.configure_tags() # Must do this every time to support multiple editors.
+
+        try:
+            w.init_colorizer(self)
+        except:
+            pass
     #@-node:ekr.20071010193720.43:init
     #@+node:ekr.20071013090135:newMergeTags & helper
     def newMergeTags (self):
@@ -1232,6 +1263,14 @@ class colorizer:
 
         # if verbose and addList:g.trace(len(addList))
 
+        try:
+            flag = w.putNewTags(self, addList, trace, verbose)
+        except AttributeError:
+            flag = False
+
+        if flag:
+            return
+
         last_i = last_row = last_col = last_i = 0
         for i,j,tag in addList:
             if trace and verbose: g.trace('add',tag,i,j,self.s[i:j])
@@ -1253,11 +1292,11 @@ class colorizer:
                 if not g.doHook("color-optional-markup",
                     colorer=self,p=self.p,v=self.p,s=s,i=i,j=j,colortag=tag):
                     # w.tag_add(tag,x1,x2)
-                    Tk.Text.tag_add(w,tag,x1,x2)
+                    self.Tk_Text.tag_add(w,tag,x1,x2)
             else:
                 # g.trace(tag,x1,x2,i,j)
                 # w.tag_add(tag,x1,x2)
-                Tk.Text.tag_add(w,tag,x1,x2)
+                self.Tk_Text.tag_add(w,tag,x1,x2)
     #@-node:ekr.20071013085626:putNewTags
     #@+node:ekr.20071010193720.44:removeAllImages
     def removeAllImages (self):
@@ -1323,7 +1362,7 @@ class colorizer:
                 last_row = row_j ; last_col = col_j ; last_i = j
                 x_j = '%d.%d' % (row_j+1,col_j)
             # if trace: g.trace('i',i,'x_i',x_i,'j',j,'x_j',x_j)
-            Tk.Text.tag_remove(w,tagName,x_i,x_j)
+            self.Tk_Text.tag_remove(w,tagName,x_i,x_j)
     #@nonl
     #@-node:ekr.20071013084305:removeOldTags
     #@+node:ekr.20071011042037:removeTagsFromRange
