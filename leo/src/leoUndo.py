@@ -507,15 +507,10 @@ class undoer:
         if marked:  c.setMarked(u.p)
         else:       c.clearMarked(u.p)
 
-        # Bug fix: Leo 5.0: Undo/redo always set changed/dirty bits
+        # Bug fix: Leo 4.4.6: Undo/redo always set changed/dirty bits
         # because the file may have been saved.
-
-        # changed = g.choose(isOld,u.oldChanged,u.newChanged)
-        # dirty   = g.choose(isOld,u.oldDirty,  u.newDirty)
-        # if dirty:   u.p.setDirty(setDescendentsDirty=False)
-        # else:       u.p.clearDirty()
-
         u.p.setDirty(setDescendentsDirty=False)
+        u.p.setAllAncestorAtFileNodesDirty(setDescendentsDirty=False) # Bug fix: Leo 4.4.6
         u.c.setChanged(True)
     #@-node:ekr.20050410095424:updateMarks
     #@-node:ekr.20050416092908.1:Internal helpers
@@ -1272,7 +1267,7 @@ class undoer:
 
         bunch.dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
 
-        # Bug fix: Leo 5.0: always add p to the list.
+        # Bug fix: Leo 4.4.6: always add p to the list.
         bunch.dirtyVnodeList.append(p.copy())
         bunch.leading=u.leading
         bunch.trailing= u.trailing
@@ -1424,7 +1419,6 @@ class undoer:
 
         u.groupCount += 1
 
-
         bunch = u.beads[u.bead] ; count = 0
         if not hasattr(bunch,'items'):
             g.trace('oops: expecting bunch.items.  bunch.kind = %s' % bunch.kind)
@@ -1442,6 +1436,8 @@ class undoer:
                 c.endUpdate(False)
 
         u.groupCount -= 1
+
+        u.updateMarks('new') # Bug fix: Leo 4.4.6.
 
         for v in dirtyVnodeList:
             v.t.setDirty()
@@ -1544,6 +1540,8 @@ class undoer:
             u.newNewlines,u.oldNewlines,
             tag="redo",undoType=u.undoType)
 
+        u.updateMarks('new')
+
         for v in u.dirtyVnodeList:
             v.t.setDirty()
 
@@ -1615,7 +1613,7 @@ class undoer:
         c.deleteOutline()
 
         for v in u.dirtyVnodeList:
-            v.t.setDirty() # Bug fix: Leo 5.0
+            v.t.setDirty() # Bug fix: Leo 4.4.6
 
         c.selectPosition(u.p)
     #@-node:ekr.20050412083057.1:undoCloneNode
@@ -1674,8 +1672,10 @@ class undoer:
 
         u.groupCount -= 1
 
+        u.updateMarks('old') # Bug fix: Leo 4.4.6.
+
         for v in dirtyVnodeList:
-            v.t.setDirty() # Bug fix: Leo 5.0.
+            v.t.setDirty() # Bug fix: Leo 4.4.6.
 
         if not g.unitTesting:
             g.es("undo %d instances" % count)
@@ -1729,7 +1729,7 @@ class undoer:
         if u.groupCount == 0:
 
             for v in u.dirtyVnodeList:
-                v.t.setDirty() # Bug fix: Leo 5.0.
+                v.t.setDirty() # Bug fix: Leo 4.4.6.
 
             c.selectPosition(u.p)
     #@-node:ekr.20050526124906:undoMark
@@ -1750,7 +1750,7 @@ class undoer:
         u.updateMarks('old')
 
         for v in u.dirtyVnodeList:
-            v.t.setDirty() # Bug fix: Leo 5.0.
+            v.t.setDirty() # Bug fix: Leo 4.4.6.
 
         c.selectPosition(u.p)
     #@-node:ekr.20050411112033:undoMove
@@ -1776,7 +1776,7 @@ class undoer:
         u.updateMarks('old')
 
         for v in u.dirtyVnodeList:
-            v.t.setDirty() # Bug fix: Leo 5.0.
+            v.t.setDirty() # Bug fix: Leo 4.4.6.
     #@-node:ekr.20050318085713.1:undoNodeContents
     #@+node:ekr.20050318085713.2:undoTree
     def undoTree (self):
@@ -1830,8 +1830,10 @@ class undoer:
             u.oldNewlines,u.newNewlines,
             tag="undo",undoType=u.undoType)
 
+        u.updateMarks('old')
+
         for v in u.dirtyVnodeList:
-            v.t.setDirty() # Bug fix: Leo 5.0.
+            v.t.setDirty() # Bug fix: Leo 4.4.6.
 
         if u.oldSel:
             c.bodyWantsFocusNow()
