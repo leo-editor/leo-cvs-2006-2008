@@ -1,5 +1,5 @@
 #@+leo-ver=4-thin
-#@+node:bob.20071208012538:@thin plugins_menu.py
+#@+node:EKR.20040517080555.2:@thin plugins_menu.py
 #@<< docstring >>
 #@+node:ekr.20050101090207.9:<< docstring >>
 '''Create a Plugins menu
@@ -800,5 +800,5 @@ def runScrolledMessageDialog(title='Message', label= '', msg='', callback=None, 
     return dialog.result
 #@-node:bob.20071209110304:runScrolledMessageDialog
 #@-others
-#@-node:bob.20071208012538:@thin plugins_menu.py
+#@-node:EKR.20040517080555.2:@thin plugins_menu.py
 #@-leo

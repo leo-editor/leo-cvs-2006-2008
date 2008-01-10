@@ -1,5 +1,5 @@
 #@+leo-ver=4-thin
-#@+node:bob.20071211190555:@thin __wx_alt_gui.py
+#@+node:bob.20070910154126.2:@thin __wx_alt_gui.py
 #@@language python
 #@@tabwidth -4
 
@@ -10107,5 +10107,5 @@ if wx:
     #@-node:bob.20070813173446.12:class OutlineCanvas
     #@-node:bob.20070902164500.1:== TREE WIDGETS ==
     #@-others
-#@-node:bob.20071211190555:@thin __wx_alt_gui.py
+#@-node:bob.20070910154126.2:@thin __wx_alt_gui.py
 #@-leo
