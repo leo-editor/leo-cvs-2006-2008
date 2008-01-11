@@ -4924,6 +4924,104 @@ def updateMarks (self,oldOrNew):
     u.c.setChanged(True)
 #@-node:ekr.20050410095424:updateMarks
 #@-node:ekr.20080110050340:Fixed undo bug
+#@+node:ekr.20080111083955.1:Don't mark nodes dirty if insert-icon is cancelled
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4714779
+By: terry_n_brown
+
+dirties?  I guess that's the verb.  Anyway, extremely trivial, but the insert
+icon menu command marks the node as changed even if you click cancel and don't
+insert any icon.
+
+
+@color
+#@nonl
+#@+node:ekr.20071114081313.1:insertIcon
+def insertIcon (self,event=None):
+
+    c = self.c ; p = c.currentPosition()
+
+    iconDir = g.os_path_abspath(g.os_path_normpath(g.os_path_join(g.app.loadDir,"..","Icons")))
+    os.chdir(iconDir)
+
+    paths = g.app.gui.runOpenFileDialog(
+        title='Get Icons',
+        filetypes=[('All files','*'),('Gif','*.gif'), ('Bitmap','*.bmp'),('Icon','*.ico'),],
+        defaultextension=None,
+        multiple=True)
+
+    if not paths: return
+
+    aList = [] ; xoffset = 2
+    for path in paths:
+        xoffset = self.appendImageDictToList(aList,iconDir,path,xoffset)
+
+    if not hasattr(p.v.t,'unknownAttributes'):
+        p.v.t.unknownAttributes = {}
+
+    aList2 = p.v.t.unknownAttributes.get('icons',[])
+    aList2.extend(aList)
+    p.v.t.unknownAttributes ['icons'] = aList2
+    p.v.t.unknownAttributes ['lineYOffset'] = 3
+    p.setDirty()
+    c.setChanged(True)
+    c.redraw()
+#@-node:ekr.20071114081313.1:insertIcon
+#@-node:ekr.20080111083955.1:Don't mark nodes dirty if insert-icon is cancelled
+#@+node:ekr.20080111090250:Removed unit tests that depend on files not on cvs
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4713900
+By: plumloco
+
+All unit tests pass on Windows except for three missing files, which were missing
+pre-commit.
+
+Windows Errors.
+
+
+ERROR: @test c# ref card
+IOError: [Errno 2] No such file or directory:
+u'E:\\leo\\leo\\test\\big-c#-test.c#'
+
+ERROR: @test constants.java
+IOError: [Errno 2] No such file or directory:
+u'E:\\leo\\leo\\test\\constants.java'
+
+ERROR: @test AdminPermission.java
+IOError: [Errno 2] No such file or directory:
+u'E:\\leo\\leo\\test\\AdminPermission.java'
+
+On Linux I get dozens  of errors of the form:
+
+======================================================================
+ERROR: Test syntax and tabbing of <<various plugin names>> plugin
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<string>", line 33, in runTest
+  File "/home/bob/work/leo/leo/src/leoTest.py", line 1601, in checkFileSyntax
+    compiler.parse(s + '\n')
+  File "compiler/transformer.py", line 52, in parse
+  File "compiler/transformer.py", line 129, in parsesuite
+  File "<string>", line 3
+
+    ^
+SyntaxError: invalid syntax
+
+@color
+#@nonl
+#@+node:ekr.20051104075904.93:checkFileSyntax
+def checkFileSyntax (fileName,s):
+
+    try:
+        compiler.parse(s + '\n')
+    except SyntaxError:
+        g.es("Syntax error in: %s" % fileName,color="blue")
+        g.es_exception(full=False,color="black")
+        raise
+#@-node:ekr.20051104075904.93:checkFileSyntax
+#@-node:ekr.20080111090250:Removed unit tests that depend on files not on cvs
 #@-node:ekr.20071217092725.1:Beta 2
 #@-node:ekr.20071211113202:4.4.6
 #@-all
