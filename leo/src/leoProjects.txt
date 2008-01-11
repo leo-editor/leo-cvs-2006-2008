@@ -4517,29 +4517,11 @@ def insertIcon (self,event=None):
         defaultextension=None,
         multiple=True)
 
+    if not paths: return
+
     aList = [] ; xoffset = 2
     for path in paths:
         xoffset = self.appendImageDictToList(aList,iconDir,path,xoffset)
-        # path = g.os_path_abspath(g.os_path_join(iconDir,path))
-        # relPath = g.makePathRelativeTo(path,iconDir)
-        # # g.trace('relPath',relPath)
-        # image,image_height = self.getImage(path)
-        # if not image:
-            # g.es('can not load image: %s' % (path))
-            # return
-        # if image_height is None:
-            # yoffset = 0
-        # else:
-            # yoffset = (c.frame.tree.line_height-image_height)/2
-
-        # aList.append ({
-            # 'type' : 'file',
-            # 'file' : path,
-            # 'relPath': relPath,
-            # 'where' : 'beforeHeadline',
-            # 'yoffset' : yoffset, 'xoffset' : xoffset, 'xpad' : -2,
-        # })
-        # xoffset += 2
 
     if not hasattr(p.v.t,'unknownAttributes'):
         p.v.t.unknownAttributes = {}
@@ -4600,29 +4582,11 @@ def insertIcon (self,event=None):
         defaultextension=None,
         multiple=True)
 
+    if not paths: return
+
     aList = [] ; xoffset = 2
     for path in paths:
         xoffset = self.appendImageDictToList(aList,iconDir,path,xoffset)
-        # path = g.os_path_abspath(g.os_path_join(iconDir,path))
-        # relPath = g.makePathRelativeTo(path,iconDir)
-        # # g.trace('relPath',relPath)
-        # image,image_height = self.getImage(path)
-        # if not image:
-            # g.es('can not load image: %s' % (path))
-            # return
-        # if image_height is None:
-            # yoffset = 0
-        # else:
-            # yoffset = (c.frame.tree.line_height-image_height)/2
-
-        # aList.append ({
-            # 'type' : 'file',
-            # 'file' : path,
-            # 'relPath': relPath,
-            # 'where' : 'beforeHeadline',
-            # 'yoffset' : yoffset, 'xoffset' : xoffset, 'xpad' : -2,
-        # })
-        # xoffset += 2
 
     if not hasattr(p.v.t,'unknownAttributes'):
         p.v.t.unknownAttributes = {}
@@ -4828,29 +4792,11 @@ def insertIcon (self,event=None):
         defaultextension=None,
         multiple=True)
 
+    if not paths: return
+
     aList = [] ; xoffset = 2
     for path in paths:
         xoffset = self.appendImageDictToList(aList,iconDir,path,xoffset)
-        # path = g.os_path_abspath(g.os_path_join(iconDir,path))
-        # relPath = g.makePathRelativeTo(path,iconDir)
-        # # g.trace('relPath',relPath)
-        # image,image_height = self.getImage(path)
-        # if not image:
-            # g.es('can not load image: %s' % (path))
-            # return
-        # if image_height is None:
-            # yoffset = 0
-        # else:
-            # yoffset = (c.frame.tree.line_height-image_height)/2
-
-        # aList.append ({
-            # 'type' : 'file',
-            # 'file' : path,
-            # 'relPath': relPath,
-            # 'where' : 'beforeHeadline',
-            # 'yoffset' : yoffset, 'xoffset' : xoffset, 'xpad' : -2,
-        # })
-        # xoffset += 2
 
     if not hasattr(p.v.t,'unknownAttributes'):
         p.v.t.unknownAttributes = {}
