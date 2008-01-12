@@ -36,7 +36,9 @@ in the @settings tree of myLeoSettings.leo.
 #@@killcolor
 #@+at
 # 
-# 0.1 plumloco: Initial version
+# 1.1 plumloco: Initial version
+# 1.2 plumloco: Changed root node to fit in leoPlugins
+# 1.3 plumloco: check for c is None in hook handler
 #@-at
 #@nonl
 #@-node:bob.20071220123624:<< version history >>
@@ -101,6 +103,8 @@ def onStart2 (tag, keywords):
 
 
     c = keywords.get('c')
+    if not c:
+        return
 
     global pythoncommand
 
