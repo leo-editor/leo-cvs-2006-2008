@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.564732142857">
-	<global_window_position top="25" left="221" height="896" width="843"/>
+	<global_window_position top="19" left="356" height="896" width="917"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -43,12 +43,11 @@
 <v t="ekr.20031218072017.329"><vh>@thin ../doc/leoNotes.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
-<v t="EKR.20040429143933" a="E"
-marks="ekr.20071024101611,"
-expanded="ekr.20071211113202,ekr.20071211113202.1,"><vh>@thin leoProjects.txt</vh></v>
+<v t="EKR.20040429143933"
+marks="ekr.20071217231348.4,ekr.20071217231348.5,ekr.20071217231501,ekr.20071217231501.1,ekr.20071217231501.2,ekr.20071217231828.4,ekr.20031218072017.1473,ekr.20071024101611,"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.2"><vh>To do</vh>
-<v t="ekr.20040117181936" a="E"><vh>@thin ../doc/leoToDo.txt</vh></v>
+<v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
 <v t="ekr.20031218072017.2406" a="TV"><vh>Code</vh>
@@ -85,15 +84,21 @@ marks="ekr.20071024101611,"><vh>@thin leoGlobals.py</vh></v>
 <v t="ekr.20031218072017.3749"
 marks="ekr.20070927082205,"><vh>@thin leoMenu.py</vh></v>
 </v>
+<v t="ekr.20080112145409"><vh>Gui gtk classes</vh>
+<v t="ekr.20080112145409.1"><vh>@thin leoGtkDialog.py</vh></v>
+<v t="ekr.20080112145409.53"><vh>@thin leoGtkFrame.py</vh></v>
+<v t="ekr.20080112145409.435"
+expanded="ekr.20080112145409.437,ekr.20080112145409.451,"><vh>@thin leoGtkGui.py</vh></v>
+</v>
 <v t="ekr.20031218072017.3821"><vh>Gui Tkinter classes</vh>
 <v t="ekr.20031218072017.3838"><vh>@thin leoTkinterComparePanel.py</vh></v>
 <v t="ekr.20031218072017.3858"><vh>@thin leoTkinterDialog.py</vh></v>
 <v t="ekr.20031218072017.3897"><vh>@thin leoTkinterFind.py</vh></v>
-<v t="ekr.20031218072017.3939"><vh>@thin leoTkinterFrame.py</vh></v>
+<v t="ekr.20031218072017.3939"
+marks="ekr.20031218072017.1473,"><vh>@thin leoTkinterFrame.py</vh></v>
 <v t="ekr.20031218072017.4047"><vh>@thin leoTkinterGui.py</vh></v>
 <v t="ekr.20031218072017.4099"><vh>@thin leoTkinterKeys.py</vh></v>
-<v t="ekr.20031218072017.4100"
-marks="ekr.20060211144330.1,"><vh>@thin leoTkinterMenu.py</vh></v>
+<v t="ekr.20031218072017.4100"><vh>@thin leoTkinterMenu.py</vh></v>
 <v t="ekr.20040803072955"><vh>@thin leoTkinterTree.py</vh></v>
 </v>
 </v>
@@ -366,5 +371,6 @@ import leoTest
 leoTest.runTestsExternally(c,all=False)
 
 </t>
+<t tx="ekr.20080112145409"></t>
 </tnodes>
 </leo_file>
