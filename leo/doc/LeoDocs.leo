@@ -533,6 +533,9 @@
 <v t="ekr.20050912125735.225"><vh>templates.py</vh></v>
 <v t="ekr.20060928201227"><vh>word_cound.py</vh></v>
 </v>
+<v t="bob.20080110214217"><vh>Dialogs</vh>
+<v t="bob.20080110214217.1"><vh>gtkDialogs</vh></v>
+</v>
 <v t="ekr.20050912125735.334"><vh>Debugging &amp;  testing</vh>
 <v t="ekr.20050912125735.335"><vh>failed_import.py</vh></v>
 <v t="ekr.20050912125735.336"><vh>dump_globals.py</vh></v>
@@ -559,6 +562,9 @@
 <v t="ekr.20060928200207.1"><vh>leoToRTF</vh></v>
 <v t="ekr.20060928200207.2"><vh>leoToHTML</vh></v>
 <v t="ekr.20060928200207.3"><vh>leoOPML</vh></v>
+</v>
+<v t="bob.20080110221203"><vh>Guis</vh>
+<v t="bob.20080110221203.1"><vh>__wx_alt_gui.py</vh></v>
 </v>
 <v t="ekr.20050912125735.980"><vh>Icon and status areas</vh>
 <v t="ekr.20060601112502"><vh>chapter_hoist.py</vh></v>
@@ -5645,6 +5651,25 @@ The code is pretty fragile; it should handle either None or "", but in fact it r
 <t tx="EKR.20040628095213.513"></t>
 <t tx="EKR.20040628100535">@killcolor</t>
 <t tx="EKR.20040628100535.1"></t>
+<t tx="bob.20080110214217"></t>
+<t tx="bob.20080110214217.1">gtkDialogs replaces Tk's file dialogs with Gtk file chooser dialogs.
+
+The plugin is aimed mainly at Linux users with pyGtk installed on their systems,
+but it should work on on any system that support Gtk2 and pyGtk.
+
+</t>
+<t tx="bob.20080110221203"></t>
+<t tx="bob.20080110221203.1">This plugin allows wxPython to be used as leo's gui instead of TK.
+
+It is a prototype under development and so does not have all the features of Tk
+leo nor are there many plugins compatible with it yet.
+
+It is mainly being developed for Linux at the moment, but attempts are being
+made to keep it working on Windows as well.
+
+Work on this project has now halted in favour of a gtkLeo plugin.
+
+</t>
 <t tx="edream.110203163054.46">@nocolor</t>
 <t tx="edream.110203163054.48">@ @rst-options
 code_mode=False
@@ -28585,18 +28610,24 @@ in your Leo\plugins folder.
 
 The default export path is also stored in the INI file. By default, it's set to c:\ so
 you may need to modify it depending on your system.</t>
-<t tx="ekr.20060928200207.2">This plugin takes an outline stored in LEO and outputs it as an HTML file. The outline
-is output as either a set of headings or an unordered list.
+<t tx="ekr.20060928200207.2">This plugin takes an outline stored in LEO and converts it to html which is
+then either saved in a file or shown in a browser.
 
-If this plug-in loads properly, you should have an "Outline to HTML"
-option added to your File &gt; Export... menu in Leo.
+The outline can be represented as a bullet list, a numbered list or using html
+&lt;h?&gt; type headings. Optionally, the body text may be included in the output.
 
-Settings such as outputting just the headlines (vs. headlines &amp; body text) and whether
-to include or ignore the contents of @file nodes are stored in the html_export.ini file
-in your Leo\plugins folder.
+If desired, only the current node will be included in the output rather than
+the entire outline.
 
-The default export path is also stored in the INI file. By default, it's set to c:\ so
-you may need to modify it depending on your system.</t>
+An xhtml header may be included in the output, in which case the generated html
+will be valid XHTML 1.0 Strict.
+
+The plugin is fully scriptable as all its functionality is available through a
+Leo_to_HTML object which can be imported and used in scripts.
+
+Several commands and menu items are provided to give easy access to the plugins
+various features and options may be set via leo_to_html.ini file and the plugins
+properties dialog.</t>
 <t tx="ekr.20060928200207.3">This plugin reads and writes Leo outlines in .opml (http://en.wikipedia.org/wiki/OPML) format.
 
 The OPML plugin creates two new commands that read and write Leo outlines in OPML format.
