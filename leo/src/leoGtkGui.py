@@ -20,13 +20,8 @@ import string
 import sys
 
 import leoFrame
+import leoKeys
 import leoGtkFrame
-
-# import leoTkinterComparePanel
-# import leoTkinterDialog
-# import leoTkinterFind
-# import tkFont
-# import tkFileDialog
 #@-node:ekr.20080112145409.436:<< imports >>
 #@nl
 
@@ -47,21 +42,19 @@ class gtkGui(leoGui.leoGui):
         self.bodyTextWidget  = leoGtkFrame.leoGtkTextWidget
         self.plainTextWidget = leoGtkFrame.leoGtkTextWidget
 
-        self.bitmap_name = None
-        self.bitmap = None
-
-        self.defaultFont = None
-        self.defaultFontFamily = None
-
+        # self.bitmap_name = None
+        # self.bitmap = None
+        # self.defaultFont = None
+        # self.defaultFontFamily = None
         # self.win32clipboard = None 
     #@nonl
     #@-node:ekr.20080112145409.438: gtkGui.__init__
     #@+node:ekr.20080112145409.439:createKeyHandlerClass (gtkGui)
     def createKeyHandlerClass (self,c,useGlobalKillbuffer=True,useGlobalRegisters=True):
 
-        import leoGtkFrame # Do this here to break any circular dependency.
+        import leoGtkKeys # Do this here to break any circular dependency.
 
-        return leoGtkFrame.gtkKeyHandlerClass(c,useGlobalKillbuffer,useGlobalRegisters)
+        return leoGtkKeys.gtkKeyHandlerClass(c,useGlobalKillbuffer,useGlobalRegisters)
     #@-node:ekr.20080112145409.439:createKeyHandlerClass (gtkGui)
     #@+node:ekr.20080112145409.440:runMainLoop (gtkGui)
     def runMainLoop(self):

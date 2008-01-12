@@ -142,7 +142,7 @@ class leoGtkDialog:
 
         pass
     #@-node:ekr.20080112145409.9:onClose
-    #@+node:ekr.20080112145409.10:run (tkDialog)
+    #@+node:ekr.20080112145409.10:run (gtkDialog)
     def run (self,modal):
 
         """Run a leoGtkDialog."""
@@ -172,7 +172,7 @@ class leoGtkDialog:
             return self.answer
         else:
             return None
-    #@-node:ekr.20080112145409.10:run (tkDialog)
+    #@-node:ekr.20080112145409.10:run (gtkDialog)
     #@-others
 #@-node:ekr.20080112145409.2: class leoGtkDialog
 #@+node:ekr.20080112145409.11:class gtkAboutLeo
