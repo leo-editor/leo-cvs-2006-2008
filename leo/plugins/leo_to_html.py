@@ -9,38 +9,48 @@
 
 Introduction
 ~~~~~~~~~~~~
-Based on original leoToHTML 1.0 plugin by Dan Rahmel, bullet list code by Mike Crowe.
 
 This plugin takes an outline stored in LEO and converts it to html which is then
-either saved in  a file or shown in a browser.
+either saved in a file or shown in a browser. It is based on the original
+leoToHTML 1.0 plugin by Dan Rahmel which had bullet list code by Mike Crowe.
 
-The outline can be reprsented as a bullet list, a numberd list or using html
-<h?> type headings.
+The outline can be represented as a bullet list, a numbered list or using html
+<h?> type headings. Optionally, the body text may be included in the output.
+
+If desired, only the current node will be included in the output rather than
+the entire outline.
+
+An xhtml header may be included in the output, in which case the code will be
+valid XHTML 1.0 Strict.
+
+The plugin is fully scriptable as all its functionality is available through a
+Leo_to_HTML object which can be imported and used in scripts.
 
 
-menu items
+Menu items
 ~~~~~~~~~~
+
 If this plugin loads properly, the following menu items should appear in
 your File > Export... menu in Leo.
 
-	Save Outline as HTML  (equivelent to export-html)
-	Save Node as HTML     (equivelent to export-html-node)
-	Show Outline as HTML  (equivelent to show-html)
-	Show Node as HTML     (equivelent to show-html-node)
+	Save Outline as HTML  (equivalent to export-html)
+	Save Node as HTML     (equivalent to export-html-node)
+	Show Outline as HTML  (equivalent to show-html)
+	Show Node as HTML     (equivalent to show-html-node)
 
 
 Commands
 ~~~~~~~~
-Several commands will also be made availiable
+
+Several commands will also be made available
 
     + 'export-html' will export to a file according to current settings.
-    + 'export-html-*' will export to a file using bullet type * which can be 'number', 'bullet' or 'head'.
+    + 'export-html-*' will export to a file using bullet type '*' which can be 'number', 'bullet' or 'head'.
 
 The following commands will start a browser showing the html.
 
     +'show-html' will show the outline according to current settings.
-    +'show-html-*' will show the outline using bullet type * which can be 'number', 'bullet' or 'head'.
-
+    +'show-html-*' will show the outline using bullet type '*' which can be 'number', 'bullet' or 'head'.
 
 The following commands are the same as above except only the current node is converted.
 
@@ -49,12 +59,13 @@ The following commands are the same as above except only the current node is con
     +'show-html-node'
     +'show-html-node-*
 
-@settings
-~~~~~~~~~
-There are several settings that can appear in the leo_to_html.ini file in leo's
-plugins folder or be set via the Plugins > leo_to_html > Properties... menu. 
 
-These are:
+Properties
+~~~~~~~~~
+
+There are several settings that can appear in the leo_to_html.ini properties
+file in leo's plugins folder or be set via the Plugins > leo_to_html >
+Properties... menu. These are:
 
 exportpath:
     The path to the folder where you want to store the generate html file.
@@ -62,15 +73,15 @@ exportpath:
     Default: c:\
 
 flagjustheadlines:
-    Default: 'Yes' to include only headlines in the ouput.
+    Default: 'Yes' to include only headlines in the output.
 
 flagignorefiles:
     Default: 'Yes' to ignore @file nodes.
 
 use_xhtml:
-    Yes to include xhtml doctype declarations and make the file valid xhtml.
+    Yes to include xhtml doctype declarations and make the file valid XHTML 1.0 Strict.
     Otherwise only a simple <html> tag is used although the output will be xhtml
-    complient otherwise.
+    compliant otherwise.
 
     Default: Yes
 
@@ -79,8 +90,8 @@ bullet_type:
     If this is 'number' then the output will be in the form of a numbered list.
     If this is 'heading' then the output will use <h?> style headers.
 
-    Anything else will result in <h?> type tags being used where ? will be a
-    digit startin at 1 and increasing up to a maximum of six depending on depth
+    Anything else will result in <h?> type tags being used where '?' will be a
+    digit starting at 1 and increasing up to a maximum of six depending on depth
     of nesting.
 
     Default: number
@@ -89,11 +100,6 @@ browser_command:
     Set this to the command needed to launch a browser on your system.
 
     Default:  c:\Program Files\Internet Explorer\IEXPLORE.EXE
-
-Scripting
-~~~~~~~~~
-All the functionality of this plugin can not be accessed via a Leo_to_HTML
-object which can be imported and used in scripts.
 
 '''
 #@-node:danr7.20060902215215.2:<< docstring >>
@@ -122,6 +128,11 @@ object which can be imported and used in scripts.
 #     - added show-html-*-* commands
 #     - added Leo_to_HTML object so all the plugins functionality can be 
 # scripted.
+# 2.1 plumloco:
+#     - fixed bug in export of single nodes
+#     - fixed to use tempdir to get a temp dir
+#     - improved (and spellchecked :) docstring.
+#     - added abspath module level method
 # 
 # 
 # 
@@ -134,13 +145,14 @@ object which can be imported and used in scripts.
 import leoGlobals as g
 import leoPlugins
 import ConfigParser
-
+import re
+import tempfile
 
 #@-node:danr7.20060902215215.4:<< imports >>
 #@nl
 
 
-__version__ = '2.0'
+__version__ = '2.1'
 
 
 pluginController = None
@@ -150,11 +162,11 @@ pluginController = None
 #@+node:bob.20080107154936:module level functions
 #@+node:bob.20080107154936.1:init
 
-
 def init ():
     leoPlugins.registerHandler("create-optional-menus",createExportMenus)
     leoPlugins.registerHandler('after-create-leo-frame', onCreate)
     g.plugin_signon(__name__)
+    # I think this should be ok for unit testing.
     return True
 
 #@-node:bob.20080107154936.1:init
@@ -163,6 +175,11 @@ def safe(s):
     return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
 
 #@-node:bob.20080107154936.2:safe
+#@+node:bob.20080110210953:abspath
+def abspath(*args):
+    return g.os_path_abspath(g.os_path_join(*args))
+#@nonl
+#@-node:bob.20080110210953:abspath
 #@+node:bob.20080107154936.3:onCreate
 def onCreate (tag, keys):
 
@@ -291,9 +308,6 @@ class pluginController:
 #@+node:bob.20080107154746:class Leo_to_HTML
 class Leo_to_HTML(object):
 
-    defaultTitle = 'leo to dhtml demo'
-    defaultDestination = '/home/bob/tmp/leo/dhtml/'
-
     #@    @+others
     #@+node:bob.20080107154746.1:__init__
 
@@ -301,6 +315,7 @@ class Leo_to_HTML(object):
 
         self.c = c
         self.basedir = ''
+        self.path = ''
         self.reportColor = 'turquoise4'
         self.errorColor = 'red'
         self.fileColor = 'turquoise4'
@@ -327,12 +342,21 @@ class Leo_to_HTML(object):
         if self.bullet_type != 'head':
             xhtml.append(self.openLevelString)
 
-        for pp in root.following_siblings_iter():
+        if node:
 
             if self.bullet_type == 'head':
-                self.doItemHeadlineTags(pp)
+                self.doItemHeadlineTags(root)
             else:
-                self.doItemBulletList(pp)
+                self.doItemBulletList(root)
+
+        else:
+
+            for pp in root.following_siblings_iter():
+
+                if self.bullet_type == 'head':
+                    self.doItemHeadlineTags(pp)
+                else:
+                    self.doItemBulletList(pp)
 
         if self.bullet_type != 'head':
             xhtml.append(self.closeLevelString)
@@ -341,8 +365,8 @@ class Leo_to_HTML(object):
 
 
     #@+node:bob.20080107160008:doItemHeadlineTags
-
     def doItemHeadlineTags(self, p, level=1):
+        """" Recursivley proccess an outline node into an xhtml list."""
 
         xhtml = self.xhtml
 
@@ -360,7 +384,7 @@ class Leo_to_HTML(object):
     #@-node:bob.20080107160008:doItemHeadlineTags
     #@+node:bob.20080107165629:doItemBulletList
     def doItemBulletList(self, p):
-        """" Recursivley proccess an outline node into an xhtml bullet list."""
+        """" Recursivley proccess an outline node into an xhtml list."""
 
         xhtml = self.xhtml
 
@@ -393,7 +417,7 @@ class Leo_to_HTML(object):
     #@-node:bob.20080107154746.5:doHeadline
     #@+node:bob.20080107154746.6:doBodyElement
     def doBodyElement(self, pp, level=None):
-        """Append body string to output stream."""
+        """Append wrapped body string to output stream."""
 
         if not self.include_body: return
 
@@ -409,7 +433,7 @@ class Leo_to_HTML(object):
 
         """Return True if subtree should be shown.
 
-        subtree should be shown if is not an @file node or if it
+        subtree should be shown if it is not an @file node or if it
         is an @file node and flags say it should be shown.
 
         """
@@ -423,12 +447,11 @@ class Leo_to_HTML(object):
     def main(self, bullet=None, show=False, node=False):
         """Generate the html and write the files.
 
-        If 'bullet' is not None then that bullet type
-        will be used else the value of bullet_type from
-        the the .ini file will be used.
+        If 'bullet' is not recognized then the value of bullet_type from
+        the the properties file will be used.
 
-        if 'show' is True the file will be saved to a temp 
-        dir and shown in a browser.
+        If 'show' is True then the file will be saved to a temp dir and shown
+        in a browser.
 
         """
 
@@ -486,7 +509,7 @@ class Leo_to_HTML(object):
 
         def config(s):
             s = configParser.get("Main", s)
-            g.trace(s)
+            #g.trace(s)
             if not s:
                 s = ''
             return s.strip()
@@ -497,14 +520,14 @@ class Leo_to_HTML(object):
                  return ss.lower()[0] in ('y', 't', '1')
 
         g.trace(g.app.loadDir,"..","plugins","leo_to_html.ini")
-        fileName = g.os_path_join(g.app.loadDir,"..","plugins","leo_to_html.ini")
+        fileName = abspath(g.app.loadDir,"..","plugins","leo_to_html.ini")
         configParser = ConfigParser.ConfigParser()
         configParser.read(fileName)
 
         self.flagIgnoreFiles =  flag("flagIgnoreFiles")
         self.include_body = not flag("flagJustHeadlines")
 
-        self.path = config("exportPath") # "/"
+        self.basedir = config("exportPath") # "/"
 
         self.browser_command = config("browser_command")
         self.use_xhtml =  flag("use_xhtml")
@@ -582,15 +605,18 @@ class Leo_to_HTML(object):
         )
     #@-node:bob.20080107154746.10:applyTemplate
     #@+node:bob.20080109063110.9:show
+
     def show(self):
 
-        basedir = g.os_path_join(g.app.loadDir,"..","temp")
+        filepath = abspath(self.basedir, self.path, self.myFileName)
 
-        self.write(self.myFileName, self.xhtml, basedir=basedir, path='')
+        filename = 'leo_show_' + re.sub('[/\\:]', '_', filepath)
 
-        filepath = g.os_path_abspath(g.os_path_join(
-            basedir, self.myFileName
-        ))
+        filepath = abspath(tempfile.gettempdir(), filename)
+
+        self.write(filepath, self.xhtml, basedir='', path='')
+
+
 
         try:
             import subprocess
@@ -614,9 +640,12 @@ class Leo_to_HTML(object):
     def write(self, name, data, basedir=None, path=None):
         """Write a single file.
 
-        The `name` can be a file name or a ralative path
-        which will be added to self.basedir and self.path to create
-        a full path for the file to be written.
+        The `name` can be a file name or a ralative path which will be
+        added to basedir and path to create a full path for the file to be
+        written.
+
+        If basedir is None self.basedir will be used and if path is none
+        self.path will be used.
 
         """
 
@@ -626,10 +655,7 @@ class Leo_to_HTML(object):
         if path is None:
             path = self.path
 
-        filepath = g.os_path_abspath(g.os_path_join(
-            basedir, path , name
-        ))
-
+        filepath = abspath(basedir, path , name)
 
         try:
             f = open(filepath, 'wb')
