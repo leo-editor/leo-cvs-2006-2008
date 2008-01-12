@@ -14,6 +14,7 @@
 import leoGlobals as g
 import leoGui
 
+import gtk
 import os
 import string
 import sys
@@ -101,7 +102,7 @@ class gtkGui(leoGui.leoGui):
 
             """Set the icon to be used in all Leo windows.
 
-            This code does nothing for Tk versions before 8.4.3."""
+            This code does nothing for gtk versions before 8.4.3."""
 
             gui = self
 
@@ -110,12 +111,12 @@ class gtkGui(leoGui.leoGui):
                 # g.trace(repr(version),g.CheckVersion(version,"8.4.3"))
                 if g.CheckVersion(version,"8.4.3") and sys.platform == "win32":
 
-                    # tk 8.4.3 or greater: load a 16 by 16 icon.
+                    # gtk 8.4.3 or greater: load a 16 by 16 icon.
                     path = g.os_path_join(g.app.loadDir,"..","Icons")
                     if g.os_path_exists(path):
                         theFile = g.os_path_join(path,"LeoApp16.ico")
                         if g.os_path_exists(path):
-                            self.bitmap = Tk.BitmapImage(theFile)
+                            self.bitmap = gtk.BitmapImage(theFile)
                         else:
                             g.es("LeoApp16.ico not in Icons directory", color="red")
                     else:
@@ -207,7 +208,7 @@ class gtkGui(leoGui.leoGui):
         initialdir = g.app.globalOpenDir or g.os_path_abspath(os.getcwd())
 
         if multiple:
-            # askopenfilenames requires Python 2.3 and Tk 8.4.
+            # askopenfilenames requires Python 2.3 and gtk 8.4.
             version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
             if (
                 g.CheckVersion(version,"2.3") and
@@ -312,10 +313,10 @@ class gtkGui(leoGui.leoGui):
     #@-node:ekr.20080112145409.451:Clipboard (gtkGui)
     #@+node:ekr.20080112145409.454:color
     # g.es calls gui.color to do the translation,
-    # so most code in Leo's core can simply use Tk color names.
+    # so most code in Leo's core can simply use gtk color names.
 
     def color (self,color):
-        '''Return the gui-specific color corresponding to the Tk color name.'''
+        '''Return the gui-specific color corresponding to the gtk color name.'''
         return color
 
     #@-node:ekr.20080112145409.454:color
@@ -363,7 +364,7 @@ class gtkGui(leoGui.leoGui):
         caption=None,relief="groove",bd=2,padx=0,pady=0):
 
         # Create w, the master frame.
-        w = Tk.Frame(parent)
+        w = gtk.Frame(parent)
         w.grid(sticky="news")
 
         # Configure w as a grid with 5 rows and columns.
@@ -381,16 +382,16 @@ class gtkGui(leoGui.leoGui):
         w.rowconfigure(5,minsize=bd)
 
         # Create the border spanning all rows and columns.
-        border = Tk.Frame(w,bd=bd,relief=relief) # padx=padx,pady=pady)
+        border = gtk.Frame(w,bd=bd,relief=relief) # padx=padx,pady=pady)
         border.grid(row=1,column=1,rowspan=5,columnspan=5,sticky="news")
 
         # Create the content frame, f, in the center of the grid.
-        f = Tk.Frame(w,bd=bd)
+        f = gtk.Frame(w,bd=bd)
         f.grid(row=3,column=3,sticky="news")
 
         # Add the caption.
         if caption and len(caption) > 0:
-            caption = Tk.Label(parent,text=caption,highlightthickness=0,bd=0)
+            caption = gtk.Label(parent,text=caption,highlightthickness=0,bd=0)
             # caption.tkraise(w)
             caption.grid(in_=w,row=0,column=2,rowspan=2,columnspan=3,padx=4,sticky="w")
 
@@ -492,11 +493,11 @@ class gtkGui(leoGui.leoGui):
 
         """Try to attach a Leo icon to the Leo Window.
 
-        Use tk's wm_iconbitmap function if available (tk 8.3.4 or greater).
+        Use gtk's wm_iconbitmap function if available (gtk 8.3.4 or greater).
         Otherwise, try to use the Python Imaging Library and the tkIcon package."""
 
         if self.bitmap != None:
-            # We don't need PIL or tkicon: this is tk 8.3.4 or greater.
+            # We don't need PIL or tkicon: this is gtk 8.3.4 or greater.
             try:
                 w.wm_iconbitmap(self.bitmap)
             except:
@@ -598,7 +599,7 @@ class gtkGui(leoGui.leoGui):
 
         '''Return True if w is a Text widget suitable for text-oriented commands.'''
 
-        return w and isinstance(w,leoFrame.stringTextWidget) ### Tk.Text)
+        return w and isinstance(w,leoFrame.stringTextWidget) ### gtk.Text)
     #@-node:ekr.20080112145409.473:isTextWidget
     #@+node:ekr.20080112145409.474:makeScriptButton
     def makeScriptButton (self,c,

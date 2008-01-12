@@ -7,6 +7,8 @@
 import leoGlobals as g
 import string
 
+import gtk
+
 #@+others
 #@+node:ekr.20080112145409.2: class leoGtkDialog
 class leoGtkDialog:
@@ -28,7 +30,7 @@ class leoGtkDialog:
         self.frame = None # The outermost frame.
         self.root = None # g.app.root
         self.showFlag = show
-        self.top = None # The toplevel Tk widget.
+        self.top = None # The toplevel widget.
         self.focus_widget = None # The widget to get the first focus.
         self.canClose = canClose
     #@-node:ekr.20080112145409.3:__init__ (tkDialog)
@@ -76,7 +78,7 @@ class leoGtkDialog:
         buttons is a list of dictionaries containing the properties of each button."""
 
         assert(self.frame)
-        self.buttonsFrame = f = Tk.Frame(self.top)
+        self.buttonsFrame = f = gtk.Frame(self.top)
         f.pack(side="top",padx=30)
 
         # Buttons is a list of dictionaries, with an empty dictionary at the end if there is only one entry.
@@ -88,7 +90,7 @@ class leoGtkDialog:
             command = d.get("command",None)
             bd = g.choose(isDefault,4,2)
 
-            b = Tk.Button(f,width=6,text=text,bd=bd,underline=underline,command=command)
+            b = gtk.Button(f,width=6,text=text,bd=bd,underline=underline,command=command)
             b.pack(side="left",padx=5,pady=10)
             buttonList.append(b)
 
@@ -100,28 +102,28 @@ class leoGtkDialog:
     #@+node:ekr.20080112145409.7:createMessageFrame
     def createMessageFrame (self,message):
 
-        """Create a frame containing a Tk.Label widget."""
+        """Create a frame containing a gtk.Label widget."""
 
-        label = Tk.Label(self.frame,text=message)
+        label = gtk.Label(self.frame,text=message)
         label.pack(pady=10)
     #@-node:ekr.20080112145409.7:createMessageFrame
     #@+node:ekr.20080112145409.8:createTopFrame
     def createTopFrame(self):
 
-        """Create the Tk.Toplevel widget for a leoGtkDialog."""
+        """Create the top-level widget for a leoGtkDialog."""
 
         if g.app.unitTesting: return
 
         self.root = g.app.root
         # g.trace("leoGtkDialog",'root',self.root)
 
-        self.top = Tk.Toplevel(self.root)
-        self.top.title(self.title)
+        self.top = gtk.Window() ### Tk.Toplevel(self.root)
+        # self.top.title(self.title)
 
         if not self.resizeable:
             self.top.resizable(0,0) # neither height or width is resizable.
 
-        self.frame = Tk.Frame(self.top)
+        self.frame = get.Frame() ### self.top)
         self.frame.pack(side="top",expand=1,fill="both")
 
         if not self.canClose:
@@ -209,7 +211,7 @@ class gtkAboutLeo (leoGtkDialog):
         theCopyright = self.copyright ; email = self.email
         url = self.url ; version = self.version
 
-        # Calculate the approximate height & width. (There are bugs in Tk here.)
+        # Calculate the approximate height & width.
         lines = string.split(theCopyright,'\n')
         height = len(lines) + 8 # Add lines for version,url,email,spacing.
         width = 0
@@ -224,12 +226,12 @@ class gtkAboutLeo (leoGtkDialog):
             frame,height=height,width=width,bd=0,bg=frame.cget("background"))
         w.pack(pady=10)
 
-        try:
-            bitmap_name = g.os_path_join(g.app.loadDir,"..","Icons","Leoapp.GIF") # 5/12/03
-            image = Tk.PhotoImage(file=bitmap_name)
-            w.image_create("1.0",image=image,padx=10)
-        except Exception:
-            pass # This can sometimes happen for mysterious reasons.
+        # try:
+            # bitmap_name = g.os_path_join(g.app.loadDir,"..","Icons","Leoapp.GIF") # 5/12/03
+            # image = Tk.PhotoImage(file=bitmap_name)
+            # w.image_create("1.0",image=image,padx=10)
+        # except Exception:
+            # pass # This can sometimes happen for mysterious reasons.
 
         w.insert("end",version) #,tag="version")
         w.tag_add('version','end-%dc' %(len(version)+1),'end-1c')
@@ -347,10 +349,10 @@ class gtkAskLeoID (leoGtkDialog):
 
         f = self.frame
 
-        label = Tk.Label(f,text=message)
+        label = gtk.Label(f,text=message)
         label.pack(pady=10)
 
-        self.id_entry = text = Tk.Entry(f,width=20)
+        self.id_entry = text = gtk.Entry(f,width=20)
         text.pack()
     #@-node:ekr.20080112145409.19:gtkAskLeoID.createFrame
     #@+node:ekr.20080112145409.20:gtkAskLeoID.onButton
@@ -485,10 +487,10 @@ class  gtkAskOkCancelNumber (leoGtkDialog):
 
         c = self.c
 
-        lab = Tk.Label(self.frame,text=message)
+        lab = gtk.Label(self.frame,text=message)
         lab.pack(pady=10,side="left")
 
-        self.number_entry = w = Tk.Entry(self.frame,width=20)
+        self.number_entry = w = gtk.Entry(self.frame,width=20)
         w.pack(side="left")
 
         c.set_focus(w)
@@ -583,10 +585,10 @@ class  gtkAskOkCancelString (leoGtkDialog):
 
         c = self.c
 
-        lab = Tk.Label(self.frame,text=message)
+        lab = gtk.Label(self.frame,text=message)
         lab.pack(pady=10,side="left")
 
-        self.number_entry = w = Tk.Entry(self.frame,width=20)
+        self.number_entry = w = gtk.Entry(self.frame,width=20)
         w.pack(side="left")
 
         c.set_focus(w)
@@ -738,7 +740,7 @@ class gtkAskYesNoCancel(leoGtkDialog):
 #@+node:ekr.20080112145409.45:class gtkListboxDialog
 class gtkListBoxDialog (leoGtkDialog):
 
-    """A base class for gtk dialogs containing a Tk Listbox"""
+    """A base class for gtk dialogs containing a gtk Listbox"""
 
     #@    @+others
     #@+node:ekr.20080112145409.46:gtkListboxDialog.__init__
@@ -772,8 +774,8 @@ class gtkListBoxDialog (leoGtkDialog):
         """Add stanadard buttons to a listBox dialog."""
 
         # Create the ok and cancel buttons.
-        self.ok = ok = Tk.Button(frame,text="Go",width=6,command=self.go)
-        self.hide = hide = Tk.Button(frame,text="Hide",width=6,command=self.hide)
+        self.ok = ok = gtk.Button(frame,text="Go",width=6,command=self.go)
+        self.hide = hide = gtk.Button(frame,text="Hide",width=6,command=self.hide)
 
         ok.pack(side="left",pady=2,padx=5)
         hide.pack(side="left",pady=2,padx=5)
@@ -787,22 +789,22 @@ class gtkListBoxDialog (leoGtkDialog):
 
         if g.app.unitTesting: return
 
-        self.outerFrame = f = Tk.Frame(self.frame)
+        self.outerFrame = f = gtk.Frame(self.frame)
         f.pack(expand=1,fill="both")
 
         if self.label:
-            labf = Tk.Frame(f)
+            labf = gtk.Frame(f)
             labf.pack(pady=2)
-            lab = Tk.Label(labf,text=self.label)
+            lab = gtk.Label(labf,text=self.label)
             lab.pack()
 
-        f2 = Tk.Frame(f)
+        f2 = gtk.Frame(f)
         f2.pack(expand=1,fill="both")
 
-        self.box = box = Tk.Listbox(f2,height=20,width=30)
+        self.box = box = gtk.Listbox(f2,height=20,width=30)
         box.pack(side="left",expand=1,fill="both")
 
-        bar = Tk.Scrollbar(f2)
+        bar = gtk.Scrollbar(f2)
         bar.pack(side="left", fill="y")
 
         bar.config(command=box.yview)

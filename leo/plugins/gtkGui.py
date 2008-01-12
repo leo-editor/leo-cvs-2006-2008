@@ -9,6 +9,7 @@ try:
     import gtk
 except ImportError:
     gtk = None
+    g.es_print('can not import gtk')
 
 #@+others
 #@+node:ekr.20080112150934.1:init
@@ -21,7 +22,7 @@ def init():
         return False
 
     if g.app.gui:
-        return g.app.gui.guiName() == 'gtk':
+        return g.app.gui.guiName() == 'gtk'
     else:
         g.app.gui = leoGtkGui.gtkGui()
         # g.app.root = g.app.gui.createRootWindow()

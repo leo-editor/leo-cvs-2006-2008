@@ -18,10 +18,7 @@ import leoKeys
 import leoMenu
 import leoNodes
 
-import javax.gtk as gtk
-import java.awt as awt
-import java.lang
-
+import gtk
 import os
 import string
 import sys
@@ -131,13 +128,13 @@ class leoGtkFrame (leoFrame.leoFrame):
 
 
         f = self ; c = f.c
-        ### f.top = top = Tk.Toplevel()
+        ### f.top = top = gtk.Toplevel()
         ### g.app.gui.attachLeoIcon(top)
         ### top.title(f.title)
         ### top.minsize(30,10) # In grid units.
 
         def exit(event):
-            java.lang.System.exit(0)
+            pass ### java.lang.System.exit(0)
 
         # def onButtonPressed(event):
             # field.text=quotes[event.source.text]
@@ -146,8 +143,10 @@ class leoGtkFrame (leoFrame.leoFrame):
             # return gtk.JButton(name,preferredSize=(100,20),
                 # actionPerformed=onButtonPressed)
 
-        f.top = w = gtk.JFrame('jyLeo!',size=(700,700),windowClosing=exit)
-        w.contentPane.layout = awt.FlowLayout()
+        f.top = w = gtk.Window()
+
+        # f.top = w = gtk.JFrame('jyLeo!',size=(700,700),windowClosing=exit)
+        # w.contentPane.layout = awt.FlowLayout()
 
         # if g.os_path_exists(g.app.user_xresources_path):
             # f.top.option_readfile(g.app.user_xresources_path)
@@ -164,7 +163,7 @@ class leoGtkFrame (leoFrame.leoFrame):
         # f.top.bind("<Deactivate>",f.OnDeactivateLeoEvent)
 
         # Create the outer frame, the 'hull' component.
-        # f.outerFrame = Tk.Frame(top)
+        # f.outerFrame = gtk.Frame(top)
         # f.outerFrame.pack(expand=1,fill="both")
     #@-node:ekr.20080112145409.61:createOuterFrames
     #@+node:ekr.20080112145409.62:createSplitterComponents (removed frame.bodyCtrl ivar)
@@ -230,10 +229,10 @@ class leoGtkFrame (leoFrame.leoFrame):
 
         frame = self
 
-        canvas = Tk.Canvas(parentFrame,name="canvas",
+        canvas = gtk.Canvas(parentFrame,name="canvas",
             bd=0,bg="white",relief="flat")
 
-        treeBar = Tk.Scrollbar(parentFrame,name="treeBar")
+        treeBar = gtk.Scrollbar(parentFrame,name="treeBar")
 
         # New in Leo 4.4.3 b1: inject the ivar into the canvas.
         canvas.leo_treeBar = treeBar
@@ -262,7 +261,7 @@ class leoGtkFrame (leoFrame.leoFrame):
         treeBar['command']     = self.yviewCallback
         treeBar.pack(side="right", fill="y")
         if scrolls: 
-            treeXBar = Tk.Scrollbar( 
+            treeXBar = gtk.Scrollbar( 
                 parentFrame,name='treeXBar',orient="horizontal") 
             canvas['xscrollcommand'] = treeXBar.set 
             treeXBar['command'] = canvas.xview 
@@ -406,12 +405,12 @@ class leoGtkFrame (leoFrame.leoFrame):
         return None,None,None,None ###
 
         # # Create the frames.
-        # f = Tk.Frame(parent,bd=0,relief="flat")
+        # f = gtk.Frame(parent,bd=0,relief="flat")
         # f.pack(expand=1,fill="both",pady=1)
 
-        # f1 = Tk.Frame(f)
-        # f2 = Tk.Frame(f)
-        # bar = Tk.Frame(f,bd=2,relief="raised",bg="LightSteelBlue2")
+        # f1 = gtk.Frame(f)
+        # f2 = gtk.Frame(f)
+        # bar = gtk.Frame(f,bd=2,relief="raised",bg="LightSteelBlue2")
 
         # # Configure and place the frames.
         # self.configureBar(bar,verticalFlag)
@@ -625,10 +624,10 @@ class leoGtkFrame (leoFrame.leoFrame):
             #if 'black' not in self.log.colorTags:
             #    self.log.colorTags.append("black")
             self.parentFrame = parentFrame
-            self.statusFrame = Tk.Frame(parentFrame,bd=2)
+            self.statusFrame = gtk.Frame(parentFrame,bd=2)
             text = "line 0, col 0"
             width = len(text) + 4
-            self.labelWidget = Tk.Label(self.statusFrame,text=text,width=width,anchor="w")
+            self.labelWidget = gtk.Label(self.statusFrame,text=text,width=width,anchor="w")
             self.labelWidget.pack(side="left",padx=1)
 
             bg = self.statusFrame.cget("background")
@@ -774,7 +773,7 @@ class leoGtkFrame (leoFrame.leoFrame):
             self.c = c
 
             self.buttons = {}
-            self.iconFrame = w = Tk.Frame(parentFrame,height="5m",bd=2,relief="groove")
+            self.iconFrame = w = gtk.Frame(parentFrame,height="5m",bd=2,relief="groove")
             self.c.frame.iconFrame = self.iconFrame
             self.font = None
             self.parentFrame = parentFrame
@@ -816,7 +815,7 @@ class leoGtkFrame (leoFrame.leoFrame):
                         # Create the image.  Throws an exception if file not found
                         imagefile = g.os_path_join(g.app.loadDir,imagefile)
                         imagefile = g.os_path_normpath(imagefile)
-                        image = Tk.PhotoImage(master=g.app.root,file=imagefile)
+                        image = gtk.PhotoImage(master=g.app.root,file=imagefile)
 
                         # Must keep a reference to the image!
                         try:
@@ -829,7 +828,7 @@ class leoGtkFrame (leoFrame.leoFrame):
                     if not bg:
                         bg = f.cget("bg")
 
-                    b = Tk.Button(f,image=image,relief="flat",bd=0,command=command,bg=bg)
+                    b = gtk.Button(f,image=image,relief="flat",bd=0,command=command,bg=bg)
                     b.pack(side="left",fill="y")
                     return b
 
@@ -839,7 +838,7 @@ class leoGtkFrame (leoFrame.leoFrame):
                 #@-node:ekr.20080112145409.96:<< create a picture >>
                 #@nl
             elif text:
-                b = Tk.Button(f,text=text,relief="groove",bd=2,command=command)
+                b = gtk.Button(f,text=text,relief="groove",bd=2,command=command)
                 if not self.font:
                     self.font = c.config.getFontFromParams(
                         "button_text_font_family", "button_text_font_size",
@@ -939,11 +938,11 @@ class leoGtkFrame (leoFrame.leoFrame):
 
         frame = self ; c = frame.c
 
-        # frame.minibufferFrame = f = Tk.Frame(frame.outerFrame,relief='flat',borderwidth=0)
+        # frame.minibufferFrame = f = gtk.Frame(frame.outerFrame,relief='flat',borderwidth=0)
         # if c.showMinibuffer:
             # f.pack(side='bottom',fill='x')
 
-        # lab = Tk.Label(f,text='mini-buffer',justify='left',anchor='nw',foreground='blue')
+        # lab = gtk.Label(f,text='mini-buffer',justify='left',anchor='nw',foreground='blue')
         # lab.pack(side='left')
 
         # if c.useTextMinibuffer:
@@ -951,7 +950,7 @@ class leoGtkFrame (leoFrame.leoFrame):
                 # f,height=1,relief='groove',background='lightgrey',name='minibuffer')
             # label.pack(side='left',fill='x',expand=1,padx=2,pady=1)
         # else:
-            # label = Tk.Label(f,relief='groove',justify='left',anchor='w',name='minibuffer')
+            # label = gtk.Label(f,relief='groove',justify='left',anchor='w',name='minibuffer')
             # label.pack(side='left',fill='both',expand=1,padx=2,pady=1)
 
         # frame.minibufferVisible = c.showMinibuffer
@@ -1112,25 +1111,27 @@ class leoGtkFrame (leoFrame.leoFrame):
     #@+node:ekr.20080112145409.115:setTopGeometry (gtkFrame)
     def setTopGeometry(self,w,h,x,y,adjustSize=True):
 
-        # Put the top-left corner on the screen.
-        x = max(10,x) ; y = max(10,y)
+        pass ###
 
-        if adjustSize:
-            top = self.top
-            sw = top.winfo_screenwidth()
-            sh = top.winfo_screenheight()
+        # # Put the top-left corner on the screen.
+        # x = max(10,x) ; y = max(10,y)
 
-            # Adjust the size so the whole window fits on the screen.
-            w = min(sw-10,w)
-            h = min(sh-10,h)
+        # if adjustSize:
+            # top = self.top
+            # sw = top.winfo_screenwidth()
+            # sh = top.winfo_screenheight()
 
-            # Adjust position so the whole window fits on the screen.
-            if x + w > sw: x = 10
-            if y + h > sh: y = 10
+            # # Adjust the size so the whole window fits on the screen.
+            # w = min(sw-10,w)
+            # h = min(sh-10,h)
 
-        geom = "%dx%d%+d%+d" % (w,h,x,y)
+            # # Adjust position so the whole window fits on the screen.
+            # if x + w > sw: x = 10
+            # if y + h > sh: y = 10
 
-        self.top.geometry(geom)
+        # geom = "%dx%d%+d%+d" % (w,h,x,y)
+
+        # self.top.geometry(geom)
     #@-node:ekr.20080112145409.115:setTopGeometry (gtkFrame)
     #@+node:ekr.20080112145409.116:reconfigurePanes (use config bar_width) (gtkFrame)
     def reconfigurePanes (self):
@@ -1270,13 +1271,13 @@ class leoGtkFrame (leoFrame.leoFrame):
 
     def OnMouseWheel(self, event=None):
 
-        try:
-            if event.delta < 1:
-                self.canvas.yview(Tk.SCROLL, 1, Tk.UNITS)
-            else:
-                self.canvas.yview(Tk.SCROLL, -1, Tk.UNITS)
-        except:
-            g.es_event_exception("scroll wheel")
+        # try:
+            # if event.delta < 1:
+                # self.canvas.yview(Tk.SCROLL, 1, Tk.UNITS)
+            # else:
+                # self.canvas.yview(Tk.SCROLL, -1, Tk.UNITS)
+        # except:
+            # g.es_event_exception("scroll wheel")
 
         return "break"
     #@-node:ekr.20080112145409.126:OnMouseWheel (Tomaz Ficko)
@@ -1600,10 +1601,10 @@ class leoGtkFrame (leoFrame.leoFrame):
         if self.scale == None:
             #@        << create the scale widget >>
             #@+node:ekr.20080112145409.147:<< create the scale widget >>
-            top = Tk.Toplevel()
+            top = gtk.Window() # Tk.Toplevel()
             top.title("Download progress")
-            self.scale = scale = Tk.Scale(top,state="normal",orient="horizontal",from_=0,to=total)
-            scale.pack()
+            # self.scale = scale = Tk.Scale(top,state="normal",orient="horizontal",from_=0,to=total)
+            # scale.pack()
             top.lift()
             #@-node:ekr.20080112145409.147:<< create the scale widget >>
             #@nl
@@ -1626,44 +1627,47 @@ class leoGtkFrame (leoFrame.leoFrame):
     #@-node:ekr.20080112145409.148:Delayed Focus (gtkFrame)
     #@+node:ekr.20080112145409.149:Tk bindings... (gtkFrame)
     def bringToFront (self):
-        # g.trace(g.callers())
-        self.top.deiconify()
-        self.top.lift()
+        g.trace(g.callers())
+        # self.top.deiconify()
+        # self.top.lift()
 
     def getFocus(self):
         """Returns the widget that has focus, or body if None."""
-        try:
-            # This method is unreliable while focus is changing.
-            # The call to update_idletasks may help.  Or not.
-            self.top.update_idletasks()
-            f = self.top.focus_displayof()
-        except Exception:
-            f = None
-        if f:
-            return f
-        else:
-            return self.body.bodyCtrl
+        g.trace()
+        # try:
+            # # This method is unreliable while focus is changing.
+            # # The call to update_idletasks may help.  Or not.
+            # self.top.update_idletasks()
+            # f = self.top.focus_displayof()
+        # except Exception:
+            # f = None
+        # if f:
+            # return f
+        # else:
+            # return self.body.bodyCtrl
 
     def getTitle (self):
-        return self.top.title()
+        g.trace()
+        return self.top and self.top.title or '<no title>'
 
     def setTitle (self,title):
         return self.top.title(title)
 
     def get_window_info(self):
-        return g.app.gui.get_window_info(self.top)
+        g.trace()
+        # return g.app.gui.get_window_info(self.top)
 
     def iconify(self):
-        self.top.iconify()
+        g.trace() # self.top.iconify()
 
     def deiconify (self):
-        self.top.deiconify()
+        g.trace() # self.top.deiconify()
 
     def lift (self):
-        self.top.lift()
+        g.trace() # self.top.lift()
 
     def update (self):
-        self.top.update()
+        g.trace() # self.top.update()
     #@-node:ekr.20080112145409.149:Tk bindings... (gtkFrame)
     #@-others
 #@-node:ekr.20080112145409.55:class leoGtkFrame
@@ -1768,6 +1772,8 @@ class leoGtkBody (leoFrame.leoBody):
         body = w = leoGtkTextWidget (parentFrame,name='body-pane',
             bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
 
+        bodyBar = None ###
+        bodyXBar = None ###
         # bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
 
         # def yscrollCallback(x,y,bodyBar=bodyBar,w=w):
@@ -1987,19 +1993,19 @@ class leoGtkBody (leoFrame.leoBody):
     #@+node:ekr.20080112145409.169:createEditorFrame
     def createEditorFrame (self,pane):
 
-        f = Tk.Frame(pane)
+        f = gtk.Frame(pane)
         f.pack(side='top',expand=1,fill='both')
         return f
     #@-node:ekr.20080112145409.169:createEditorFrame
     #@+node:ekr.20080112145409.170:packEditorLabelWidget
     def packEditorLabelWidget (self,w):
 
-        '''Create a Tk label widget.'''
+        '''Create a gtk label widget.'''
 
         if not hasattr(w,'leo_label') or not w.leo_label:
             # g.trace('w.leo_frame',id(w.leo_frame))
             w.pack_forget()
-            w.leo_label = Tk.Label(w.leo_frame)
+            w.leo_label = gtk.Label(w.leo_frame)
             w.leo_label.pack(side='top')
             w.pack(expand=1,fill='both')
     #@nonl
@@ -2042,158 +2048,12 @@ class leoGtkMenu( leoMenu.leoMenu ):
     #@+node:ekr.20080112145409.174: leoGtkMenu.__init__
     def __init__ (self,frame):
 
-        if 0:
-            ld = io.File( g.app.loadDir )
-            ijcl.addToSearchPath( ld )
-            ijcl.beginLoading()
-            self.font = frame.top.getFont()
-            self.executor = java.util.concurrent.Executors.newCachedThreadPool()
-            self.queue = java.util.concurrent.LinkedBlockingQueue()
-            self.menu_changer = self.MenuChanger( self.queue )
-            self.names_and_commands = {}
-            self.keystrokes_and_actions = {}
-
+        # Init the base class.
         leoMenu.leoMenu.__init__( self, frame )
-
-        #self.createLeoGtkPrint()
-        #self.defineLeoGtkPrintTable()
-        #self.addCommanderSupplemental()
-
-
-
-
-
-
-
-
     #@-node:ekr.20080112145409.174: leoGtkMenu.__init__
-    #@+node:ekr.20080112145409.175:not ready yet
+    #@+node:ekr.20080112145409.181:plugin menu stuff... (not ready yet)
     if 0:
         #@    @+others
-        #@+node:ekr.20080112145409.176:class MenuChanger
-        class MenuChanger( java.lang.Runnable, java.util.concurrent.Callable ):
-
-            def __init__( self, queue ):
-                self.queue = queue
-
-            def run( self ):
-
-                ft = java.util.concurrent.FutureTask( self )
-                java.awt.EventQueue.invokeLater( ft )
-
-
-            def call( self ):
-
-                menu , name , label, enabled = self.queue.take() 
-                target = None
-                for z in menu.getMenuComponents():
-                    if hasattr( z, "getText" ) and z.getText() == name:
-                        target = z
-                        break
-
-
-                if target:
-                    target.setText( label )
-                    target.setEnabled( enabled )
-        #@-node:ekr.20080112145409.176:class MenuChanger
-        #@+node:ekr.20080112145409.177:print menu stuff...
-
-        #@+node:ekr.20080112145409.178:defineLeoGtkPrintTable
-        def defineLeoGtkPrintTable( self ):
-
-            self.printNodeTable= (
-
-            ( "Print Current Node" , None, lambda event: self.lsp.printNode() ),
-            ( "Print Current Node as HTML", None, lambda event: self.lsp.printNode( type = "HTML" ) ),
-            ( "Print Marked Nodes", None, lambda event:  self.lsp.printMarkedNodes() ),
-            ( "Print Marked Nodes as HTML", None, lambda event: self.lsp.printNode( type ="HTML" ) ),
-
-            )
-
-            for z in self.printNodeTable:
-                self.names_and_commands[ z[ 0 ] ] = z[ 2 ]
-        #@-node:ekr.20080112145409.178:defineLeoGtkPrintTable
-        #@+node:ekr.20080112145409.179:createLeoGtkPrintMenu
-        def createLeoGtkPrintMenu( self ):
-
-            fmenu = self.getMenu( "File" )
-
-            components = fmenu.getMenuComponents()
-
-            x = 0
-            for z in components:
-
-                if hasattr( z, 'getText' ) and z.getText() == "Recent Files...":
-                    break
-                x += 1
-
-
-            spot = x + 1
-
-            pmenu = gtk.JMenu( "Printing" )
-
-            pnodes = gtk.JMenu( "Print Nodes" )
-            pmenu.add( pnodes )
-            for z in self.printNodeTable:
-                item = gtk.JMenuItem( z[ 0 ] )
-                item.actionPerformed = z[ 2 ]
-                pnodes.add( item )
-
-            sep = gtk.JSeparator()
-            fmenu.add( sep, spot  )
-            fmenu.add( pmenu, spot + 1 )
-
-            print_tree = gtk.JMenuItem( "Print Tree As Is" )
-            print_tree.actionPerformed = self.lsp.printTreeAsIs
-            pmenu.add( print_tree )
-            self.names_and_commands[ "Print Tree As Is" ] = self.lsp.printTreeAsIs
-            print_as_more = gtk.JMenuItem( "Print Outline in More Format" )
-            print_as_more.actionPerformed = self.lsp.printOutlineAsMore
-            self.names_and_commands[ "Print Outline in More Formet" ] = self.lsp.printOutlineAsMore
-            pmenu.add( print_as_more )
-
-
-
-
-
-
-
-
-
-
-
-        #@-node:ekr.20080112145409.179:createLeoGtkPrintMenu
-        #@+node:ekr.20080112145409.180:createLeoGtkPrint
-        def createLeoGtkPrint( self ):
-
-            c = self.c
-            import leoGtkPrint
-            lsp = leoGtkPrint.leoGtkPrint( c )
-            menu = lsp.getAsMenu()
-
-            fmenu = self.getMenu( "File" )
-
-            components = fmenu.getMenuComponents()
-
-            x = 0
-            for z in components:
-
-                if hasattr( z, 'getText' ) and z.getText() == "Recent Files...":
-                    break
-                x += 1
-
-
-            spot = x + 1
-
-
-            sep = gtk.JSeparator()
-            fmenu.add( sep, spot  )
-            fmenu.add( menu, spot + 1 )
-
-
-        #@-node:ekr.20080112145409.180:createLeoGtkPrint
-        #@-node:ekr.20080112145409.177:print menu stuff...
-        #@+node:ekr.20080112145409.181:plugin menu stuff...
         #@+node:ekr.20080112145409.182:createPluginMenu
         def createPluginMenu( self ):
 
@@ -2226,630 +2086,170 @@ class leoGtkMenu( leoMenu.leoMenu ):
 
             return self.plugin_menu
         #@-node:ekr.20080112145409.184:getPluginMenu
-        #@-node:ekr.20080112145409.181:plugin menu stuff...
-        #@+node:ekr.20080112145409.185:JythonShell stuff
-
-        #@+node:ekr.20080112145409.186:openJythonShell
-        def openJythonShell( self ):
-
-            js = ijcl.getJythonShell()
-            jd = js.getDelegate()
-            config = g.app.config
-            c = self.c
-
-            import leoGtkFrame
-            getColorInstance = leoGtkFrame.getColorInstance 
-
-            colorconfig = js.getColorConfiguration()
-            color = config.getColor( c, "jyshell_background" )
-            colorconfig.setBackgroundColor( getColorInstance( color, awt.Color.WHITE ) )
-
-            color = config.getColor( c, "jyshell_foreground" )
-            colorconfig.setForegroundColor( getColorInstance( color, awt.Color.GRAY ) )
-
-            color = config.getColor( c, "jyshell_keyword" )
-            colorconfig.setKeywordColor( getColorInstance( color, awt.Color.GREEN ) )
-
-            color = config.getColor( c, "jyshell_local" )
-            colorconfig.setLocalColor( getColorInstance( color, awt.Color.ORANGE ) )
-
-            color = config.getColor( c, "jyshell_ps1color" )
-            colorconfig.setPromptOneColor( getColorInstance( color, awt.Color.BLUE ) )
-
-            color = config.getColor( c, "jyshell_ps2color" )
-            colorconfig.setPromptTwoColor( getColorInstance( color, awt.Color.GREEN ) )
-
-            color = config.getColor( c, "jyshell_syntax" )
-            colorconfig.setSyntaxColor( getColorInstance( color, awt.Color.RED ) )
-
-            color = config.getColor( c, "jyshell_output" )
-            colorconfig.setOutColor( getColorInstance( color, awt.Color.GRAY ) )
-
-            color = config.getColor( c, "jyshell_error" )
-            colorconfig.setErrColor( getColorInstance( color, awt.Color.RED ) )
-
-            family = config.get( c, "jyshell_text_font_family", "family" )
-            size = config.get( c, "jyshell_text_font_size", "size" )
-            weight = config.get( c, "jyshell_text_font_weight", "weight" )
-            slant = None
-            font = config.getFontFromParams( c, "jyshell_text_font_family", "jyshell_text_font_size", None, "jyshell_text_font_weight")
-
-            use_bgimage = g.app.config.getBool( c, "jyshell_background_image" )
-            if use_bgimage:
-
-                image_location = g.app.config.getString( c, "jyshell_image_location@as-filedialog" )
-                test_if_exists = java.io.File( image_location )
-                if test_if_exists.exists():
-                    ii = gtk.ImageIcon( image_location )
-                    alpha = g.app.config.getFloat( c, "jyshell_background_alpha" )
-                    js.setBackgroundImage( ii.getImage(), float( alpha ) )
-
-            if font:
-                js.setFont( font )
-
-            js.setVisible( True )
-            widget = js.getWidget()
-            log = self.c.frame.log    
-            self.addMenuToJythonShell( js )
-            log.addTab( "JythonShell", widget )
-            log.selectTab( widget )
-
-
-        #@-node:ekr.20080112145409.186:openJythonShell
-        #@+node:ekr.20080112145409.187:addMenuToJythonShell
-        def addMenuToJythonShell( self, js ):
-
-            c = self.c
-            jd = js.getDelegate()
-            jmenu = gtk.JMenu( "Leo" )
-            jd.addToMenu( jmenu )
-
-            e = gtk.JMenuItem( "Execute Node As Script" )  
-            e.actionPerformed = lambda event, jd = jd: self.fireNodeAsScript( event, jd )
-            jmenu.add( e )
-
-            p = gtk.JMenuItem( "Run Node in Pdb" )
-            p.actionPerformed = self.getRunNodeInPdb( c, jd )
-            jmenu.add( p )
-
-            captext = "Capture Shell Input In Node"
-            totext = "Turn Off Shell Input Capture"
-            sc = gtk.JMenuItem( captext )
-            import org.leo.JTextComponentOutputStream as jtcos
-            class logcontrol:
-                def __init__( self, menu ):
-                    self.menu = menu
-                    self.loging = False
-                    self.ostream = jtcos( c.frame.body.editor.editor )
-
-                def __call__( self, event ):  
-                    menu = self.menu
-                    loging = self.loging
-                    if not loging:
-                        js.addLogger( self.ostream )
-                        menu.setText( totext )
-                        self.loging = True
-                    else:
-                        js.removeLogger( self.ostream )
-                        menu.setText( captext )
-                        self.loging = False
-
-            sc.actionPerformed = logcontrol( sc )           
-            jmenu.add( sc )
-
-            d = gtk.JMenuItem( "Detach Shell" )
-            class detacher( java.util.concurrent.Callable ):
-
-                def __init__( self, menu ):
-                    self.menu = menu
-                    self.embeded = True
-                    js.setCloser( self )
-
-                def call( self ):
-
-                    if self.embeded:
-                        log = c.frame.log
-                        widget = js.getWidget()
-                        log.removeTab( widget )
-                    else:
-                        widget = js.getWidget()
-                        parent = widget.getTopLevelAncestor()
-                        parent.dispose();
-
-                def __call__( self, event ):
-                    d = self.menu
-                    text = d.getText()
-                    if( text == "Detach Shell" ):
-                        d.setText( "Retach Shell" )
-                        jf = gtk.JFrame( "JythonShell" )
-                        widget = js.getWidget()
-                        log = c.frame.log 
-                        log.removeTab( widget )
-                        jf.add( widget )
-                        jf.setSize( 500, 500 )
-                        jf.visible = 1
-                        self.embeded = False
-                    else:
-                        d.setText( "Detach Shell" )
-                        widget = js.getWidget()
-                        parent = widget.getTopLevelAncestor()
-                        parent.dispose();
-                        log = c.frame.log
-                        log.addTab( "JythonShell", widget  )
-                        log.selectTab( widget ) 
-                        self.embeded = True
-
-            d.actionPerformed = detacher( d )
-            jmenu.add( d )    
-
-
-        #@-node:ekr.20080112145409.187:addMenuToJythonShell
-        #@+node:ekr.20080112145409.188:getInsertNodeIntoShell
-        def getInsertNodeIntoShell( self, c, jd ):
-
-            jm = gtk.JMenuItem( "Write Node Into Shell as Reference" )
-            def writeNode( event ):
-
-                cp = c.currentPosition()
-                at = c.atFileCommands 
-                c.fileCommands.assignFileIndices()
-                at.write(cp.copy(),nosentinels=True,toString=True,scriptWrite=True)
-                data = at.stringOutput
-
-                jtf = self._GetReferenceName( jd, data )
-                jtf.rmv_spot = jd.insertWidget( jtf )
-                jtf.requestFocusInWindow()
-
-
-
-            jm.actionPerformed = writeNode
-            return jm
-        #@-node:ekr.20080112145409.188:getInsertNodeIntoShell
-        #@+node:ekr.20080112145409.189:getInsertReferenceIntoLeo
-        def getInsertReferenceIntoLeo( self, jd ):
-
-            jmi = gtk.JMenuItem( "Insert Reference As Node" )
-
-            def action( event ):
-
-                jtf = self._GetReferenceAsObject( jd, self.c )
-                jtf.rmv_spot = jd.insertWidget( jtf )
-                jtf.requestFocusInWindow()
-
-            jmi.actionPerformed = action
-            return jmi
-        #@nonl
-        #@-node:ekr.20080112145409.189:getInsertReferenceIntoLeo
-        #@+node:ekr.20080112145409.190:getRunNodeInPdb
-        def getRunNodeInPdb( self, c, jd ):
-
-            def runInPdb( event ):
-
-                cp = c.currentPosition()
-                name = cp.headString()
-                name = name.split()[ 0 ]
-                at = c.atFileCommands 
-                c.fileCommands.assignFileIndices()
-                at.write(cp.copy(),nosentinels=True,toString=True,scriptWrite=True)
-                data = at.stringOutput
-
-                f = java.io.File.createTempFile( "leopdbrun", None )
-                pw = java.io.PrintWriter( f )
-                pw.println( "import pdb" )
-                pw.println( "pdb.set_trace()" )
-                for z in data.split( "\n" ):
-                    pw.println( z )            
-                pw.close()
-                f.deleteOnExit()       
-                l = java.util.Vector()
-                l.add( "execfile( '%s', globals(), locals())" % f.getAbsolutePath() )
-                jd.processAsScript( l )
-
-
-            return runInPdb      
-        #@-node:ekr.20080112145409.190:getRunNodeInPdb
-        #@+node:ekr.20080112145409.191:fireNodeAsScript
-        def fireNodeAsScript( self, event, jd ):
-
-            c = self.c        
-            cp = c.currentPosition()    
-            at = c.atFileCommands 
-            c.fileCommands.assignFileIndices()
-            at.write(cp.copy(),nosentinels=True,toString=True,scriptWrite=True)
-            data = at.stringOutput.split( '\n' ) 
-
-
-            l = java.util.Vector()
-            for z in data:
-                l.add( java.lang.String( z ) )
-
-            jd.processAsScript( l )
-        #@nonl
-        #@-node:ekr.20080112145409.191:fireNodeAsScript
-        #@+node:ekr.20080112145409.192:class _GetReferenceName
-        class _GetReferenceName( gtk.JTextField, aevent.KeyListener ):
-
-
-            def __init__( self, jd, data ):
-                gtk.JTextField.__init__( self )
-                self.jd = jd
-                self.data = data
-                border = self.getBorder()
-                tborder = sborder.TitledBorder( border )
-                tborder.setTitle( "Choose Reference Name:" )
-                self.setBorder( tborder )
-                self.addKeyListener( self )
-                self.rmv_spot = None
-
-            def keyPressed( self, event ):
-
-                kc = event.getKeyChar();
-                if kc == '\n':
-                    self.execute()
-                elif java.lang.Character.isWhitespace( kc ):
-                    event.consume
-
-            def execute( self ):
-
-                self.jd.setReference( self.getText(), self.data )
-                if self.rmv_spot:
-                    self.jd.remove( self.rmv_spot)
-                self.jd.requestFocusInWindow()
-
-            def keyTyped( self, event ):
-
-                kc = event.getKeyChar()
-                if kc == '\n': return
-                elif java.lang.Character.isWhitespace( kc ):
-                    event.consume()
-
-            def keyReleased( self, event ):
-
-                kc = event.getKeyChar()
-                if kc == '\n': return
-                elif java.lang.Character.isWhitespace( kc ):
-                    event.consume()
-
-
-        class _GetReferenceAsObject( _GetReferenceName ):
-
-            def __init__( self, jd, c ):
-                leoGtkMenu._GetReferenceName.__init__( self, jd, None )
-                self.c = c
-                border = self.getBorder()
-                border.setTitle( "Which Reference To Insert:" )
-
-
-            def execute( self ):
-
-                ref = self.jd.getReference( self.getText() )
-                if ref:
-                    self.c.beginUpdate()
-                    pos = self.c.currentPosition()
-                    npos = pos.insertAfter()
-                    npos.setHeadString( "Reference: %s" % self.getText() )
-                    npos.setTnodeText( str( ref ) )
-                    self.c.endUpdate()
-                if self.rmv_spot:
-                    self.jd.remove( self.rmv_spot )
-        #@-node:ekr.20080112145409.192:class _GetReferenceName
-        #@-node:ekr.20080112145409.185:JythonShell stuff
-        #@+node:ekr.20080112145409.193:addUserGuide
-        def addUserGuide( self ):
-
-            help = self.getMenu( 'Help' )
-            c = self.c
-            help.addSeparator()
-            jmi = gtk.JCheckBoxMenuItem( "View User Guide" )
-            widgets = []
-            def showUserGuide( event ):
-                if jmi.getState() and not widgets:
-                    import leoGtkLeoTutorial
-                    lswlt = leoGtkLeoTutorial.leoGtkLeoTutorial()
-                    widget = lswlt.getWidget()
-                    widgets.append( widget )
-                    c.frame.body.addTab( "User Guide", widget )
-                elif jmi.getState() and widgets:
-                    widget = widgets[ 0 ]
-                    c.frame.body.addTab( "User Guide", widget )
-                else:
-                    widget = widgets[ 0 ]
-                    c.frame.body.removeTab( widget )
-
-
-            jmi.actionPerformed = showUserGuide
-            help.add( jmi )
-        #@-node:ekr.20080112145409.193:addUserGuide
-        #@+node:ekr.20080112145409.194:createRecentFilesMenuItems (leoMenu)
-        def createRecentFilesMenuItems (self):
-
-            c = self.c ; frame = c.frame
-            recentFilesMenu = self.getMenu("Recent Files...")
-
-            # Delete all previous entries.
-            if len( recentFilesMenu.getMenuComponents() ) != 0:
-                deferable = lambda :self.delete_range(recentFilesMenu,0,len(c.recentFiles)+2)
-                if not gtk.GtkUtilities.isEventDispatchThread():
-                    dc = DefCallable( deferable )
-                    ft = dc.wrappedAsFutureTask()
-                    gtk.GtkUtilities.invokeAndWait( ft )
-                else:
-                    deferable()
-            # Create the first two entries.
-            table = (
-                ("Clear Recent Files",None,c.clearRecentFiles),
-                ("-",None,None))
-            self.createMenuEntries(recentFilesMenu,table,init=True)
-
-            # Create all the other entries.
-            i = 3
-            for name in c.recentFiles:
-                def callback (event=None,c=c,name=name): # 12/9/03
-                    c.openRecentFile(name)
-                label = "%d %s" % (i-2,g.computeWindowTitle(name))
-                self.add_command(recentFilesMenu,label=label,command=callback,underline=0)
-                i += 1
-        #@nonl
-        #@-node:ekr.20080112145409.194:createRecentFilesMenuItems (leoMenu)
-        #@+node:ekr.20080112145409.195:oops
-        def oops (self):
-
-            print "leoMenu oops:", g.callerName(2), "should be overridden in subclass"
-        #@nonl
-        #@-node:ekr.20080112145409.195:oops
-        #@+node:ekr.20080112145409.196:Must be overridden in menu subclasses
-        #@+node:ekr.20080112145409.197:9 Routines with Tk spellings
-        def add_cascade (self,parent,label,menu,underline):
-
-            menu.setText( label )
-
-        def add_command (self,menu,**keys):
-
-            if keys[ 'label' ] == "Open Python Window":
-                keys[ 'command' ] = self.openJythonShell
-
-            self.names_and_commands[ keys[ 'label' ] ] = keys[ 'command' ]
-
-            action = self.MenuRunnable( keys[ 'label' ], keys[ 'command' ], self.c, self.executor )
-            jmenu = gtk.JMenuItem( action )
-            if keys.has_key( 'accelerator' ) and keys[ 'accelerator' ]:
-                accel = keys[ 'accelerator' ]
-                acc_list = accel.split( '+' )
-                changeTo = { 'Alt': 'alt', 'Shift':'shift', #translation table
-                             'Ctrl':'ctrl', 'UpArrow':'UP', 'DnArrow':'DOWN',
-                             '-':'MINUS', '+':'PLUS', '=':'EQUALS',
-                             '[':'typed [', ']':'typed ]', '{':'typed {',
-                             '}':'typed }', 'Esc':'ESCAPE', '.':'typed .',
-                              "`":"typed `", "BkSp":"BACK_SPACE"} #SEE java.awt.event.KeyEvent for further translations
-                chg_list = []
-                for z in acc_list:
-                    if z in changeTo:
-                        chg_list.append( changeTo[ z ] )
-                    else:
-                        chg_list.append( z )
-                accelerator = " ".join( chg_list )
-                ks = gtk.KeyStroke.getKeyStroke( accelerator )
-                if ks:
-                    self.keystrokes_and_actions[ ks ] = action
-                    jmenu.setAccelerator( ks )
-                else:
-                    pass
-            menu.add( jmenu )
-            label = keys[ 'label' ]
-            return jmenu
-
-        def add_separator(self,menu):
-            menu.addSeparator()
-
-        def bind (self,bind_shortcut,callback):
-            #self.oops() 
-            pass
-
-        def delete (self,menu,realItemName):
-            self.oops()
-
-        def delete_range (self,menu,n1,n2):
-
-
-            items = menu.getMenuComponents()
-            n3 = n1
-            components = []
-            while 1:
-                if n3 == n2:
-                    break
-                item = menu.getMenuComponent( n3 )
-                components.append( item )
-                n3 += 1
-
-            for z in components:
-                menu.remove( z )
-
-
-        def destroy (self,menu):
-            self.oops()
-
-        def insert_cascade (self,parent,index,label,menu,underline):
-            self.oops()
-
-        def new_menu(self,parent,tearoff=0):
-            jm = gtk.JMenu( "1" )
-            #jm = self.LeoMenu( "1" )
-            parent.add( jm )
-            #jm.setFont( self.font)
-            return jm
-        #@nonl
-        #@-node:ekr.20080112145409.197:9 Routines with Tk spellings
-        #@+node:ekr.20080112145409.198:7 Routines with new spellings
-        def createMenuBar (self,frame):
-
-            top = frame.top
-            self.defineMenuTables()
-            topMenu = gtk.JMenuBar()
-            top.setJMenuBar( topMenu )
-            topMenu.setFont( self.font )
-            # Do gui-independent stuff.
-            self.setMenu("top",topMenu)
-            self.createMenusFromTables()
-            self.createLeoGtkPrint()
-            self.createPluginMenu()
-            self.addUserGuide()
-
-        def createOpenWithMenuFromTable (self,table):
-            self.oops()
-
-        def defineMenuCallback(self,command,name):
-            return command
-
-        def defineOpenWithMenuCallback(self,command):
-            self.oops()
-
-        def disableMenu (self,menu,name):
-            for z in menu.getMenuComponents():
-                if hasattr( z, "getText" ) and z.getText() == name:
-                    z.setEnabled( False )
-
-        def enableMenu (self,menu,name,val):
-            for z in menu.getMenuComponents():
-                if hasattr( z, "getText" ) and z.getText() == name:
-                    z.setEnabled( bool( val ) )
-
-        def setMenuLabel (self,menu,name,label,underline=-1, enabled = 1):
-
-            item = ( menu, name, label, enabled )
-            self.queue.offer( item )
-            self.executor.submit( self.menu_changer )
-        #@-node:ekr.20080112145409.198:7 Routines with new spellings
-        #@+node:ekr.20080112145409.199:class MenuRunnable
-        class MenuRunnable( gtk.AbstractAction, java.lang.Runnable): 
-
-            def __init__( self, name, command, c , executor):
-                gtk.AbstractAction.__init__( self, name )
-                self.command = command
-                self.c = c
-                self.name = name
-                self.executor = executor
-
-            def run( self ):
-                self.c.doCommand( self.command, self.name ) #command()
-
-            def actionPerformed( self, aE ):
-
-                #print self.command
-                #if self.name == 'Save':
-                self.executor.submit( self )
-
-                #else:        
-                #    se
-        #@nonl
-        #@-node:ekr.20080112145409.199:class MenuRunnable
-        #@+node:ekr.20080112145409.200:class MenuExecuteOnSelect
-        class MenuExecuteOnSelect( sevent.MenuListener ):
-
-            def __init__( self, method ):
-                self.method = method
-
-            def menuSelected( self, me ):
-                self.method()
-
-            def menuCanceled( self, me ):
-                pass
-
-            def menuDeselected( self, me ):
-                pass
-        #@nonl
-        #@-node:ekr.20080112145409.200:class MenuExecuteOnSelect
-        #@+node:ekr.20080112145409.201:class LeoMenu
-        class LeoMenu( gtk.JMenu ):
-
-            def __init__( self, *args ):
-                gtk.JMenu.__init__( self, *args )
-
-            def add( self, *items ):
-                if hasattr( items[ 0 ], "setFont" ):
-                    items[ 0 ].setFont( self.getFont() )
-                return self.super__add( *items )
-
-        #@-node:ekr.20080112145409.201:class LeoMenu
-        #@-node:ekr.20080112145409.196:Must be overridden in menu subclasses
         #@-others
     #@nonl
-    #@-node:ekr.20080112145409.175:not ready yet
+    #@-node:ekr.20080112145409.181:plugin menu stuff... (not ready yet)
+    #@+node:ekr.20080112145409.195:oops
+    def oops (self):
+
+        print "leoMenu oops:", g.callers(2), "should be overridden in subclass"
+    #@nonl
+    #@-node:ekr.20080112145409.195:oops
+    #@+node:ekr.20080112145409.194:createRecentFilesMenuItems (leoMenu)
+    def createRecentFilesMenuItems (self):
+
+        c = self.c ; frame = c.frame
+        recentFilesMenu = self.getMenu("Recent Files...")
+
+        # Delete all previous entries.
+        # if len( recentFilesMenu.getMenuComponents() ) != 0:
+            # deferable = lambda :self.delete_range(recentFilesMenu,0,len(c.recentFiles)+2)
+            # if not gtk.GtkUtilities.isEventDispatchThread():
+                # dc = DefCallable( deferable )
+                # ft = dc.wrappedAsFutureTask()
+                # gtk.GtkUtilities.invokeAndWait( ft )
+            # else:
+                # deferable()
+        # Create the first two entries.
+        table = (
+            ("Clear Recent Files",None,c.clearRecentFiles),
+            ("-",None,None))
+        self.createMenuEntries(recentFilesMenu,table)
+
+        # Create all the other entries.
+        i = 3
+        for name in c.recentFiles:
+            def callback (event=None,c=c,name=name): # 12/9/03
+                c.openRecentFile(name)
+            label = "%d %s" % (i-2,g.computeWindowTitle(name))
+            self.add_command(recentFilesMenu,label=label,command=callback,underline=0)
+            i += 1
+    #@nonl
+    #@-node:ekr.20080112145409.194:createRecentFilesMenuItems (leoMenu)
+    #@+node:ekr.20080112145409.196:Must be overridden in menu subclasses
+    #@+node:ekr.20080112145409.197:9 Routines with Tk spellings
+    def add_cascade (self,parent,label,menu,underline):
+
+        menu.setText( label )
+
+    def add_command (self,menu,**keys):
+
+        return None
+
+        # if keys[ 'label' ] == "Open Python Window":
+            # keys[ 'command' ] = self.openJythonShell
+
+        # self.names_and_commands[ keys[ 'label' ] ] = keys[ 'command' ]
+
+        # action = self.MenuRunnable( keys[ 'label' ], keys[ 'command' ], self.c, self.executor )
+        # jmenu = gtk.JMenuItem( action )
+        # if keys.has_key( 'accelerator' ) and keys[ 'accelerator' ]:
+            # accel = keys[ 'accelerator' ]
+            # acc_list = accel.split( '+' )
+            # changeTo = { 'Alt': 'alt', 'Shift':'shift', #translation table
+                         # 'Ctrl':'ctrl', 'UpArrow':'UP', 'DnArrow':'DOWN',
+                         # '-':'MINUS', '+':'PLUS', '=':'EQUALS',
+                         # '[':'typed [', ']':'typed ]', '{':'typed {',
+                         # '}':'typed }', 'Esc':'ESCAPE', '.':'typed .',
+                          # "`":"typed `", "BkSp":"BACK_SPACE"} #SEE java.awt.event.KeyEvent for further translations
+            # chg_list = []
+            # for z in acc_list:
+                # if z in changeTo:
+                    # chg_list.append( changeTo[ z ] )
+                # else:
+                    # chg_list.append( z )
+            # accelerator = " ".join( chg_list )
+            # ks = gtk.KeyStroke.getKeyStroke( accelerator )
+            # if ks:
+                # self.keystrokes_and_actions[ ks ] = action
+                # jmenu.setAccelerator( ks )
+            # else:
+                # pass
+        # menu.add( jmenu )
+        # label = keys[ 'label' ]
+        # return jmenu
+
+    def add_separator(self,menu):
+        pass
+
+    def bind (self,bind_shortcut,callback):
+        #self.oops() 
+        pass
+
+    def delete (self,menu,realItemName):
+        self.oops()
+
+    def delete_range (self,menu,n1,n2):
+
+        pass
+        # items = menu.getMenuComponents()
+        # n3 = n1
+        # components = []
+        # while 1:
+            # if n3 == n2:
+                # break
+            # item = menu.getMenuComponent( n3 )
+            # components.append( item )
+            # n3 += 1
+
+        # for z in components:
+            # menu.remove( z )
+
+
+    def destroy (self,menu):
+        self.oops()
+
+    def insert_cascade (self,parent,index,label,menu,underline):
+        self.oops()
+
+    def new_menu(self,parent,tearoff=0):
+
+        return None ###
+    #@-node:ekr.20080112145409.197:9 Routines with Tk spellings
+    #@+node:ekr.20080112145409.198:7 Routines with new spellings
+    def createMenuBar (self,frame):
+
+        top = frame.top
+        self.defineMenuTables()
+        # topMenu = gtk.JMenuBar()
+        # top.setJMenuBar( topMenu )
+        # topMenu.setFont( self.font )
+        # # Do gui-independent stuff.
+        # self.setMenu("top",topMenu)
+        # self.createMenusFromTables()
+        # self.createLeoGtkPrint()
+        # self.createPluginMenu()
+        # self.addUserGuide()
+
+    def createOpenWithMenuFromTable (self,table):
+        self.oops()
+
+    def defineMenuCallback(self,command,name):
+        return command
+
+    def defineOpenWithMenuCallback(self,command):
+        self.oops()
+
+    def disableMenu (self,menu,name):
+        for z in menu.getMenuComponents():
+            if hasattr( z, "getText" ) and z.getText() == name:
+                z.setEnabled( False )
+
+    def enableMenu (self,menu,name,val):
+        for z in menu.getMenuComponents():
+            if hasattr( z, "getText" ) and z.getText() == name:
+                z.setEnabled( bool( val ) )
+
+    def setMenuLabel (self,menu,name,label,underline=-1, enabled = 1):
+
+        item = ( menu, name, label, enabled )
+        self.queue.offer( item )
+        self.executor.submit( self.menu_changer )
+    #@-node:ekr.20080112145409.198:7 Routines with new spellings
+    #@-node:ekr.20080112145409.196:Must be overridden in menu subclasses
     #@-others
 #@nonl
 #@-node:ekr.20080112145409.173:class leoGtkMenu
-#@+node:ekr.20080112145409.202:class leoSplash (java.lang.Runnable)
-class leoSplash ( java.lang.Runnable ):
-
-    #@    @+others
-    #@+node:ekr.20080112145409.203:run (leoSplash)
-    def run (self):
-
-        g.trace(g.callers())
-
-        self.splash = splash = gtk.JWindow()
-        splash.setAlwaysOnTop(1)
-        cpane = splash.getContentPane()
-        rp = splash.getRootPane()
-        tb = gtk.border.TitledBorder('Leo')
-        tb.setTitleJustification(tb.CENTER)
-        rp.setBorder(tb)
-        splash.setBackground(awt.Color.ORANGE)
-        dimension = awt.Dimension(400,400)
-        splash.setPreferredSize(dimension)
-        splash.setSize(400,400)
-
-        sicon = g.os_path_join(g.app.loadDir,"..","Icons","Leosplash.GIF")
-        ii = gtk.ImageIcon(sicon)
-        image = gtk.JLabel(ii)
-        image.setBackground(awt.Color.ORANGE)
-        cpane.add(image)
-        self.splashlabel = splashlabel = gtk.JLabel("Leo is starting....")
-        splashlabel.setBackground(awt.Color.ORANGE)
-        splashlabel.setForeground(awt.Color.BLUE)
-        cpane.add(splashlabel,awt.BorderLayout.SOUTH)
-        w, h = self._calculateCenteredPosition(splash)
-        splash.setLocation(w,h)
-        splash.visible = True
-    #@-node:ekr.20080112145409.203:run (leoSplash)
-    #@+node:ekr.20080112145409.204:utils
-    def _calculateCenteredPosition( self, widget ):
-
-        size = widget.getPreferredSize()
-        height = size.height/2
-        width = size.width/2
-        h,w = self._getScreenPositionForDialog()
-        height = h - height
-        width = w - width
-        return width, height
-
-    def _getScreenPositionForDialog( self ):
-
-        tk = awt.Toolkit.getDefaultToolkit()
-        dim = tk.getScreenSize()
-        h = dim.height/2
-        w = dim.width/2
-        return h, w   
-
-    def setText( self, text ):  
-        self.splashlabel.setText( text )
-
-    def hide( self ):
-        self.splash.visible = 0
-
-    def toBack( self ):
-        if self.splash.visible:
-            self.splash.toBack()
-
-    def toFront( self ):
-        if self.splash.visible:
-            self.splash.setAlwaysOnTop( 1 )
-            self.splash.toFront()
-
-    def isVisible( self ):
-        return self.splash.visible
-    #@-node:ekr.20080112145409.204:utils
-    #@-others
-#@-node:ekr.20080112145409.202:class leoSplash (java.lang.Runnable)
 #@+node:ekr.20080112145409.205:class leoGtkLog (REWRITE)
 class leoGtkLog (leoFrame.leoLog):
 
@@ -2932,7 +2332,7 @@ class leoGtkLog (leoFrame.leoLog):
             parentFrame,name="log-%d" % self.logNumber,
             setgrid=0,wrap=self.wrap,bd=2,bg="white",relief="flat")
 
-        # logBar = Tk.Scrollbar(parentFrame,name="logBar")
+        # logBar = gtk.Scrollbar(parentFrame,name="logBar")
 
         # log['yscrollcommand'] = logBar.set
         # logBar['command'] = log.yview
@@ -2940,7 +2340,7 @@ class leoGtkLog (leoFrame.leoLog):
         # logBar.pack(side="right", fill="y")
         # # rr 8/14/02 added horizontal elevator 
         # if self.wrap == "none": 
-            # logXBar = Tk.Scrollbar( 
+            # logXBar = gtk.Scrollbar( 
                 # parentFrame,name='logXBar',orient="horizontal") 
             # log['xscrollcommand'] = logXBar.set 
             # logXBar['command'] = log.xview 
@@ -3250,7 +2650,7 @@ class leoGtkLog (leoFrame.leoLog):
 
         '''Cycle keyboard focus between the tabs in the log pane.'''
 
-        c = self.c ; d = self.frameDict # Keys are page names. Values are Tk.Frames.
+        c = self.c ; d = self.frameDict # Keys are page names. Values are gtk.Frames.
         w = d.get(self.tabName)
         # g.trace(self.tabName,w)
         values = d.values()
@@ -3300,7 +2700,7 @@ class leoGtkLog (leoFrame.leoLog):
     def lowerTab (self,tabName):
 
         # if tabName:
-            # b = self.nb.tab(tabName) # b is a Tk.Button.
+            # b = self.nb.tab(tabName) # b is a gtk.Button.
             # b.config(bg='grey80')
         self.c.invalidateFocus()
         self.c.bodyWantsFocus()
@@ -3308,7 +2708,7 @@ class leoGtkLog (leoFrame.leoLog):
     def raiseTab (self,tabName):
 
         # if tabName:
-            # b = self.nb.tab(tabName) # b is a Tk.Button.
+            # b = self.nb.tab(tabName) # b is a gtk.Button.
             # b.config(bg='LightSteelBlue1')
         self.c.invalidateFocus()
         self.c.bodyWantsFocus()
@@ -3424,17 +2824,17 @@ class leoGtkLog (leoFrame.leoLog):
 
         # Overlay what is there!
         c = self.c
-        f = Tk.Frame(canvas)
+        f = gtk.Frame(canvas)
         f.pack(side='top',fill='both',expand=1)
 
-        row1 = Tk.Frame(f)
+        row1 = gtk.Frame(f)
         row1.pack(side='top',expand=0,fill='x',pady=10)
-        row2 = Tk.Frame(f)
+        row2 = gtk.Frame(f)
         row2.pack(side='top',expand=0,fill='x')
 
-        Tk.Label(row1,text='Tab name').pack(side='left')
+        gtk.Label(row1,text='Tab name').pack(side='left')
 
-        e = Tk.Entry(row1,background='white')
+        e = gtk.Entry(row1,background='white')
         e.pack(side='left')
 
         def getNameCallback (event=None):
@@ -3445,10 +2845,10 @@ class leoGtkLog (leoFrame.leoLog):
         def closeTabNameCallback (event=None):
             f.pack_forget()
 
-        b = Tk.Button(row2,text='Ok',width=6,command=getNameCallback)
+        b = gtk.Button(row2,text='Ok',width=6,command=getNameCallback)
         b.pack(side='left',padx=10)
 
-        b = Tk.Button(row2,text='Cancel',width=6,command=closeTabNameCallback)
+        b = gtk.Button(row2,text='Cancel',width=6,command=closeTabNameCallback)
         b.pack(side='left')
 
         g.app.gui.set_focus(c,e)
@@ -3536,14 +2936,14 @@ class leoGtkLog (leoFrame.leoLog):
         colors = list(colors)
         bg = parent.cget('background')
 
-        outer = Tk.Frame(parent,background=bg)
+        outer = gtk.Frame(parent,background=bg)
         outer.pack(side='top',fill='both',expand=1,pady=10)
 
-        f = Tk.Frame(outer)
+        f = gtk.Frame(outer)
         f.pack(side='top',expand=0,fill='x')
-        f1 = Tk.Frame(f) ; f1.pack(side='top',expand=0,fill='x')
-        f2 = Tk.Frame(f) ; f2.pack(side='top',expand=1,fill='x')
-        f3 = Tk.Frame(f) ; f3.pack(side='top',expand=1,fill='x')
+        f1 = gtk.Frame(f) ; f1.pack(side='top',expand=0,fill='x')
+        f2 = gtk.Frame(f) ; f2.pack(side='top',expand=1,fill='x')
+        f3 = gtk.Frame(f) ; f3.pack(side='top',expand=1,fill='x')
 
         label = g.app.gui.plainTextWidget(f1,height=1,width=20)
         label.insert('1.0','Color name or value...')
@@ -3576,7 +2976,7 @@ class leoGtkLog (leoFrame.leoLog):
                 for theFrame in (parent,outer,f,f1,f2,f3):
                     theFrame.configure(background=val)
 
-        b = Tk.Button(f3,text="Color Picker...",
+        b = gtk.Button(f3,text="Color Picker...",
             command=pickerCallback,background=bg)
         b.pack(side='left',pady=4)
         #@-node:ekr.20080112145409.249:<< create picker button and callback >>
@@ -3595,11 +2995,11 @@ class leoGtkLog (leoFrame.leoLog):
         font = self.getFont()
         #@    << create the frames >>
         #@+node:ekr.20080112145409.252:<< create the frames >>
-        f = Tk.Frame(parent,background=bg) ; f.pack (side='top',expand=0,fill='both')
-        f1 = Tk.Frame(f,background=bg)     ; f1.pack(side='top',expand=1,fill='x')
-        f2 = Tk.Frame(f,background=bg)     ; f2.pack(side='top',expand=1,fill='x')
-        f3 = Tk.Frame(f,background=bg)     ; f3.pack(side='top',expand=1,fill='x')
-        f4 = Tk.Frame(f,background=bg)     ; f4.pack(side='top',expand=1,fill='x')
+        f = gtk.Frame(parent,background=bg) ; f.pack (side='top',expand=0,fill='both')
+        f1 = gtk.Frame(f,background=bg)     ; f1.pack(side='top',expand=1,fill='x')
+        f2 = gtk.Frame(f,background=bg)     ; f2.pack(side='top',expand=1,fill='x')
+        f3 = gtk.Frame(f,background=bg)     ; f3.pack(side='top',expand=1,fill='x')
+        f4 = gtk.Frame(f,background=bg)     ; f4.pack(side='top',expand=1,fill='x')
         #@-node:ekr.20080112145409.252:<< create the frames >>
         #@nl
         #@    << create the family combo box >>
@@ -3621,9 +3021,9 @@ class leoGtkLog (leoFrame.leoLog):
         #@nl
         #@    << create the size entry >>
         #@+node:ekr.20080112145409.254:<< create the size entry >>
-        Tk.Label(f2,text="Size:",width=10,background=bg).pack(side="left")
+        gtk.Label(f2,text="Size:",width=10,background=bg).pack(side="left")
 
-        sizeEntry = Tk.Entry(f2,width=4)
+        sizeEntry = gtk.Entry(f2,width=4)
         sizeEntry.insert(0,'12')
         sizeEntry.pack(side="left",padx=2,pady=2)
         #@-node:ekr.20080112145409.254:<< create the size entry >>
@@ -3763,11 +3163,11 @@ class leoGtkTreeTab (leoFrame.leoTreeTab):
         tt = self ; c = tt.c
 
         # Create the main container.
-        tt.frame = Tk.Frame(c.frame.iconFrame)
+        tt.frame = gtk.Frame(c.frame.iconFrame)
         tt.frame.pack(side="left")
 
         # Create the chapter menu.
-        self.chapterVar = var = Tk.StringVar()
+        self.chapterVar = var = gtk.StringVar()
         var.set('main')
 
         tt.chapterMenu = menu = Pmw.OptionMenu(tt.frame,
@@ -3834,12 +3234,12 @@ class leoGtkTreeTab (leoFrame.leoTreeTab):
 #@+node:ekr.20080112145409.273:class leoGtkTextWidget (revise)
 class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
 
-    '''A class to wrap the Tk.Text widget.
-    Translates Python (integer) indices to and from Tk (string) indices.
+    '''A class to wrap the gtk.Text widget.
+    Translates Python (integer) indices to and from gtk (string) indices.
 
     This class inherits almost all gtkText methods: you call use them as usual.'''
 
-    # The signatures of tag_add and insert are different from the Tk.Text signatures.
+    # The signatures of tag_add and insert are different from the gtk.Text signatures.
     # __pychecker__ = '--no-override' # suppress warning about changed signature.
 
     def __repr__(self):
@@ -3851,8 +3251,10 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
 
     def __init__ (self,parentFrame,*args,**keys):
 
+        return None
+
         # Create the actual gui widget.
-        ### self.widget = Tk.Text(*args,**keys)
+        ### self.widget = gtk.Text(*args,**keys)
 
         ### To do: probably need to subclass JTextField so we can inject ivars.
 
@@ -3898,7 +3300,7 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
     #@+node:ekr.20080112145409.276:Index conversion (gtkTextWidget)
     #@+node:ekr.20080112145409.277:w.toGuiIndex
     def toGuiIndex (self,i,s=None):
-        '''Convert a Python index to a Tk index as needed.'''
+        '''Convert a Python index to a gtk index as needed.'''
         w = self
         if i is None:
             g.trace('can not happen: i is None',g.callers())
@@ -3907,30 +3309,30 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
             # The 's' arg supports the threaded colorizer.
             if s is None:
                 # This *must* be 'end-1c', even if other code must change.
-                s = '' ### s = Tk.Text.get(w,'1.0','end-1c')
+                s = '' ### s = gtk.Text.get(w,'1.0','end-1c')
             row,col = g.convertPythonIndexToRowCol(s,i)
             i = '%s.%s' % (row+1,col)
             # g.trace(len(s),i,repr(s))
         else:
             try:
-                i = 0 ### i = Tk.Text.index(w,i)
+                i = 0 ### i = gtk.Text.index(w,i)
             except Exception:
                 # g.es_exception()
-                g.trace('Tk.Text.index failed:',repr(i),g.callers())
+                g.trace('gtk.Text.index failed:',repr(i),g.callers())
                 i = '1.0'
         return i
     #@nonl
     #@-node:ekr.20080112145409.277:w.toGuiIndex
     #@+node:ekr.20080112145409.278:w.toPythonIndex
     def toPythonIndex (self,i):
-        '''Convert a Tk index to a Python index as needed.'''
+        '''Convert a gtk index to a Python index as needed.'''
         w =self
         if i is None:
             g.trace('can not happen: i is None')
             return 0
         elif type(i) in (type('a'),type(u'a')):
-            s = '' ### s = Tk.Text.get(w,'1.0','end') # end-1c does not work.
-            i = '1.0' ### i = Tk.Text.index(w,i) # Convert to row/column form.
+            s = '' ### s = gtk.Text.get(w,'1.0','end') # end-1c does not work.
+            i = '1.0' ### i = gtk.Text.index(w,i) # Convert to row/column form.
             row,col = i.split('.')
             row,col = int(row),int(col)
             row -= 1
@@ -3992,10 +3394,10 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
         i = w.toGuiIndex(i)
 
         if j is None:
-            pass ### Tk.Text.delete(w,i)
+            pass ### gtk.Text.delete(w,i)
         else:
             j = w.toGuiIndex(j)
-            pass ### Tk.Text.delete(w,i,j)
+            pass ### gtk.Text.delete(w,i,j)
     #@-node:ekr.20080112145409.285:delete
     #@+node:ekr.20080112145409.286:flashCharacter
     def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # gtkTextWidget.
@@ -4005,17 +3407,17 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
         # def addFlashCallback(w,count,index):
             # # g.trace(count,index)
             # i,j = w.toGuiIndex(index),w.toGuiIndex(index+1)
-            # Tk.Text.tag_add(w,'flash',i,j)
-            # Tk.Text.after(w,delay,removeFlashCallback,w,count-1,index)
+            # gtk.Text.tag_add(w,'flash',i,j)
+            # gtk.Text.after(w,delay,removeFlashCallback,w,count-1,index)
 
         # def removeFlashCallback(w,count,index):
             # # g.trace(count,index)
-            # Tk.Text.tag_remove(w,'flash','1.0','end')
+            # gtk.Text.tag_remove(w,'flash','1.0','end')
             # if count > 0:
-                # Tk.Text.after(w,delay,addFlashCallback,w,count,index)
+                # gtk.Text.after(w,delay,addFlashCallback,w,count,index)
 
         # try:
-            # Tk.Text.tag_configure(w,'flash',foreground=fg,background=bg)
+            # gtk.Text.tag_configure(w,'flash',foreground=fg,background=bg)
             # addFlashCallback(w,flashes,i)
         # except Exception:
             # pass ; g.es_exception()
@@ -4028,18 +3430,18 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
         i = w.toGuiIndex(i)
 
         if j is None:
-            return '' ### return Tk.Text.get(w,i)
+            return '' ### return gtk.Text.get(w,i)
         else:
             j = w.toGuiIndex(j)
-            return ### return Tk.Text.get(w,i,j)
+            return ### return gtk.Text.get(w,i,j)
     #@-node:ekr.20080112145409.287:get
     #@+node:ekr.20080112145409.288:getAllText
     def getAllText (self): # gtkTextWidget.
 
-        """Return all the text of Tk.Text widget w converted to unicode."""
+        """Return all the text of gtk.Text widget w converted to unicode."""
 
         w = self
-        ### s = Tk.Text.get(w,"1.0","end-1c") # New in 4.4.1: use end-1c.
+        ### s = gtk.Text.get(w,"1.0","end-1c") # New in 4.4.1: use end-1c.
         s = '' ###
 
         if s is None:
@@ -4051,7 +3453,7 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
     def getInsertPoint(self): # gtkTextWidget.
 
         w = self
-        i = 0 ### i = Tk.Text.index(w,'insert')
+        i = 0 ### i = gtk.Text.index(w,'insert')
         i = w.toPythonIndex(i)
         return i
     #@-node:ekr.20080112145409.289:getInsertPoint
@@ -4062,7 +3464,7 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
         i,j = w.getSelectionRange()
         if i != j:
             i,j = w.toGuiIndex(i),w.toGuiIndex(j)
-            s = '' ### s = Tk.Text.get(w,i,j)
+            s = '' ### s = gtk.Text.get(w,i,j)
             return g.toUnicode(s,g.app.tkEncoding)
         else:
             return u""
@@ -4075,11 +3477,11 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
         Return a tuple giving the insertion point if no range of text is selected."""
 
         w = self
-        sel = 0,0 ### sel = Tk.Text.tag_ranges(w,"sel")
+        sel = 0,0 ### sel = gtk.Text.tag_ranges(w,"sel")
         if len(sel) == 2:
             i,j = sel
         else:
-            i = j = 0 ### i = j = Tk.Text.index(w,"insert")
+            i = j = 0 ### i = j = gtk.Text.index(w,"insert")
 
         i,j = w.toPythonIndex(i),w.toPythonIndex(j)  
         if sort and i > j: i,j = j,i
@@ -4110,13 +3512,13 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
         return i != j
     #@-node:ekr.20080112145409.294:hasSelection
     #@+node:ekr.20080112145409.295:insert
-    # The signature is more restrictive than the Tk.Text.insert method.
+    # The signature is more restrictive than the gtk.Text.insert method.
 
     def insert(self,i,s):
 
         w = self
         i = w.toGuiIndex(i)
-        ### Tk.Text.insert(w,i,s)
+        ### gtk.Text.insert(w,i,s)
 
     #@-node:ekr.20080112145409.295:insert
     #@+node:ekr.20080112145409.296:indexIsVisible
@@ -4132,7 +3534,7 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
 
         # w = self
         # i = w.toGuiIndex(i)
-        # Tk.Text.mark_set(w,markName,i)
+        # gtk.Text.mark_set(w,markName,i)
     #@-node:ekr.20080112145409.297:mark_set NO LONGER USED
     #@+node:ekr.20080112145409.298:replace
     def replace (self,i,j,s): # gtkTextWidget
@@ -4140,21 +3542,21 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
         w = self
         i,j = w.toGuiIndex(i),w.toGuiIndex(j)
 
-        ### Tk.Text.delete(w,i,j)
-        ### Tk.Text.insert(w,i,s)
+        ### gtk.Text.delete(w,i,j)
+        ### gtk.Text.insert(w,i,s)
     #@-node:ekr.20080112145409.298:replace
     #@+node:ekr.20080112145409.299:see
     def see (self,i): # gtkTextWidget.
 
         w = self
         i = w.toGuiIndex(i)
-        ### Tk.Text.see(w,i)
+        ### gtk.Text.see(w,i)
     #@-node:ekr.20080112145409.299:see
     #@+node:ekr.20080112145409.300:seeInsertPoint
     def seeInsertPoint (self): # gtkTextWidget.
 
         w = self
-        ### Tk.Text.see(w,'insert')
+        ### gtk.Text.see(w,'insert')
     #@-node:ekr.20080112145409.300:seeInsertPoint
     #@+node:ekr.20080112145409.301:selectAllText
     def selectAllText (self,insert=None): # gtkTextWidget
@@ -4170,13 +3572,13 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
 
         w = self
 
-        # state = Tk.Text.cget(w,"state")
-        # Tk.Text.configure(w,state="normal")
+        # state = gtk.Text.cget(w,"state")
+        # gtk.Text.configure(w,state="normal")
 
-        # Tk.Text.delete(w,'1.0','end')
-        # Tk.Text.insert(w,'1.0',s)
+        # gtk.Text.delete(w,'1.0','end')
+        # gtk.Text.insert(w,'1.0',s)
 
-        # Tk.Text.configure(w,state=state)
+        # gtk.Text.configure(w,state=state)
     #@-node:ekr.20080112145409.302:setAllText
     #@+node:ekr.20080112145409.303:setBackgroundColor
     def setBackgroundColor (self,color):
@@ -4191,7 +3593,7 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
         w = self
         i = w.toGuiIndex(i)
         # g.trace(i,g.callers())
-        ### Tk.Text.mark_set(w,'insert',i)
+        ### gtk.Text.mark_set(w,'insert',i)
     #@-node:ekr.20080112145409.304:setInsertPoint
     #@+node:ekr.20080112145409.305:setSelectionRange
     def setSelectionRange (self,i,j,insert=None): # gtkTextWidget
@@ -4205,10 +3607,10 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
         # g.trace('i,j,insert',i,j,repr(insert))
 
         ###
-        # if Tk.Text.compare(w,i, ">", j): i,j = j,i
-        # Tk.Text.tag_remove(w,"sel","1.0",i)
-        # Tk.Text.tag_add(w,"sel",i,j)
-        # Tk.Text.tag_remove(w,"sel",j,"end")
+        # if gtk.Text.compare(w,i, ">", j): i,j = j,i
+        # gtk.Text.tag_remove(w,"sel","1.0",i)
+        # gtk.Text.tag_add(w,"sel",i,j)
+        # gtk.Text.tag_remove(w,"sel",j,"end")
 
         # if insert is not None:
             # w.setInsertPoint(insert)
@@ -4231,7 +3633,7 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
         w.configure(width=width)
     #@-node:ekr.20080112145409.307:setWidth
     #@+node:ekr.20080112145409.308:tag_add
-    # The signature is slightly different than the Tk.Text.insert method.
+    # The signature is slightly different than the gtk.Text.insert method.
 
     def tag_add(self,tagName,i,j=None,*args):
 
@@ -4239,10 +3641,10 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
         i = w.toGuiIndex(i)
 
         # if j is None:
-            # Tk.Text.tag_add(w,tagName,i,*args)
+            # gtk.Text.tag_add(w,tagName,i,*args)
         # else:
             # j = w.toGuiIndex(j)
-            # Tk.Text.tag_add(w,tagName,i,j,*args)
+            # gtk.Text.tag_add(w,tagName,i,j,*args)
 
     #@-node:ekr.20080112145409.308:tag_add
     #@+node:ekr.20080112145409.309:tag_configure (NEW)
@@ -4256,7 +3658,7 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
     def tag_ranges(self,tagName):
 
         w = self
-        aList = [] ### aList = Tk.Text.tag_ranges(w,tagName)
+        aList = [] ### aList = gtk.Text.tag_ranges(w,tagName)
         aList = [w.toPythonIndex(z) for z in aList]
         return tuple(aList)
     #@-node:ekr.20080112145409.310:tag_ranges
@@ -4267,10 +3669,10 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
         i = w.toGuiIndex(i)
 
         if j is None:
-            pass ### Tk.Text.tag_remove(w,tagName,i,*args)
+            pass ### gtk.Text.tag_remove(w,tagName,i,*args)
         else:
             j = w.toGuiIndex(j)
-            ### Tk.Text.tag_remove(w,tagName,i,j,*args)
+            ### gtk.Text.tag_remove(w,tagName,i,j,*args)
 
 
     #@-node:ekr.20080112145409.311:tag_remove
@@ -4278,22 +3680,22 @@ class leoGtkTextWidget: ### (leoFrame.baseTextWidget):
     def deleteTextSelection (self): # gtkTextWidget
 
         w = self
-        # sel = Tk.Text.tag_ranges(w,"sel")
+        # sel = gtk.Text.tag_ranges(w,"sel")
         # if len(sel) == 2:
             # start,end = sel
-            # if Tk.Text.compare(w,start,"!=",end):
-                # Tk.Text.delete(w,start,end)
+            # if gtk.Text.compare(w,start,"!=",end):
+                # gtk.Text.delete(w,start,end)
     #@-node:ekr.20080112145409.312:w.deleteTextSelection
     #@+node:ekr.20080112145409.313:xyToGui/PythonIndex
     def xyToGuiIndex (self,x,y): # gtkTextWidget
 
         w = self
-        return 0 ### return Tk.Text.index(w,"@%d,%d" % (x,y))
+        return 0 ### return gtk.Text.index(w,"@%d,%d" % (x,y))
 
     def xyToPythonIndex(self,x,y): # gtkTextWidget
 
         w = self
-        i = 0 ### i = Tk.Text.index(w,"@%d,%d" % (x,y))
+        i = 0 ### i = gtk.Text.index(w,"@%d,%d" % (x,y))
         i = w.toPythonIndex(i)
         return i
     #@-node:ekr.20080112145409.313:xyToGui/PythonIndex
@@ -4565,8 +3967,8 @@ class leoGtkTree (leoFrame.leoTree):
         self.visibleIcons = []
         self.visibleLines = []
         self.visibleText  = {}
-            # Pre 4.4b2: Keys are vnodes, values are Tk.Text widgets.
-            #     4.4b2: Keys are p.key(), values are Tk.Text widgets.
+            # Pre 4.4b2: Keys are vnodes, values are gtk.Text widgets.
+            #     4.4b2: Keys are p.key(), values are gtk.Text widgets.
         self.visibleUserIcons = []
 
         # Lists of free, hidden widgets...
@@ -4574,7 +3976,7 @@ class leoGtkTree (leoFrame.leoTree):
         self.freeClickBoxes = []
         self.freeIcons = []
         self.freeLines = []
-        self.freeText = [] # New in 4.4b2: a list of free Tk.Text widgets
+        self.freeText = [] # New in 4.4b2: a list of free gtk.Text widgets
 
         self.freeUserIcons = []
     #@-node:ekr.20080112145409.320:__init__ (gtkTree)
@@ -4762,7 +4164,7 @@ class leoGtkTree (leoFrame.leoTree):
             canvas.coords(theId,x,y) # Make the window visible again.
                 # theId is the id of the *window* not the text.
         else:
-            # Tags are not valid in Tk.Text widgets.
+            # Tags are not valid in gtk.Text widgets.
             self.textNumber += 1
             w = g.app.gui.plainTextWidget(
                 canvas,name='head-%d' % self.textNumber,
@@ -4983,7 +4385,7 @@ class leoGtkTree (leoFrame.leoTree):
     #@+node:ekr.20080112145409.345:textAddr
     def textAddr(self,w):
 
-        """Return the address part of repr(Tk.Text)."""
+        """Return the address part of repr(gtk.Text)."""
 
         return repr(w)[-9:-1].lower()
     #@-node:ekr.20080112145409.345:textAddr
@@ -5370,7 +4772,7 @@ class leoGtkTree (leoFrame.leoTree):
                 try:
                     fullname = g.os_path_join(g.app.loadDir,"..","Icons",theFile)
                     fullname = g.os_path_normpath(fullname)
-                    image = Tk.PhotoImage(master=self.canvas,file=fullname)
+                    image = gtk.PhotoImage(master=self.canvas,file=fullname)
                     self.iconimages[fullname] = image
                 except:
                     #g.es("Exception loading: " + fullname)
@@ -5450,7 +4852,7 @@ class leoGtkTree (leoFrame.leoTree):
         if self.trace_stats: self.showStats()
 
         canvas.lower("lines")  # Lowest.
-        canvas.lift("textBox") # Not the Tk.Text widget: it should be low.
+        canvas.lift("textBox") # Not the gtk.Text widget: it should be low.
         canvas.lift("userIcon")
         canvas.lift("plusBox")
         canvas.lift("clickBox")
@@ -5500,7 +4902,7 @@ class leoGtkTree (leoFrame.leoTree):
         try:
             fullname = g.os_path_join(g.app.loadDir,"..","Icons",name)
             fullname = g.os_path_normpath(fullname)
-            image = Tk.PhotoImage(master=self.canvas,file=fullname)
+            image = gtk.PhotoImage(master=self.canvas,file=fullname)
             self.iconimages[name] = image
             return image
         except:
@@ -5647,7 +5049,7 @@ class leoGtkTree (leoFrame.leoTree):
     #@+at 
     #@nonl
     # We can't just return icony because the tree hasn't been redrawn yet.
-    # For the same reason we can't rely on any TK canvas methods here.
+    # For the same reason we can't rely on any gtk canvas methods here.
     #@-at
     #@@c
 
@@ -5738,7 +5140,7 @@ class leoGtkTree (leoFrame.leoTree):
     #@+node:ekr.20080112145409.382:tree.edit_widget
     def edit_widget (self,p):
 
-        """Returns the Tk.Edit widget for position p."""
+        """Returns the gtk.Edit widget for position p."""
 
         return self.findEditWidget(p)
     #@nonl
@@ -5786,7 +5188,7 @@ class leoGtkTree (leoFrame.leoTree):
     #@+node:ekr.20080112145409.384:findEditWidget
     def findEditWidget (self,p):
 
-        """Return the Tk.Text item corresponding to p."""
+        """Return the gtk.Text item corresponding to p."""
 
         c = self.c
 
@@ -6165,7 +5567,7 @@ class leoGtkTree (leoFrame.leoTree):
             self.setUnselectedLabelState(p) # unselected
     #@-node:ekr.20080112145409.404:configureTextState
     #@+node:ekr.20080112145409.405:onCtontrolT
-    # This works around an apparent Tk bug.
+    # This works around an apparent gtk bug.
 
     def onControlT (self,event=None):
 
@@ -6280,7 +5682,7 @@ class leoGtkTree (leoFrame.leoTree):
     # this needs to be an attribute of the tree object; hence, 
     # "self.popupMenu".
     # 
-    # Aside: though Tk tries to be muli-platform, the interaction with 
+    # Aside: though gtk tries to be muli-platform, the interaction with 
     # different window managers does cause small differences that will need to 
     # be compensated by system specific application code. :-(
     #@-at
@@ -6306,7 +5708,7 @@ class leoGtkTree (leoFrame.leoTree):
             self.popupMenu.destroy()
             self.popupMenu = None
 
-        self.popupMenu = menu = Tk.Menu(g.app.root, tearoff=0)
+        self.popupMenu = menu = gtk.Menu(g.app.root, tearoff=0)
 
         # Add the Open With entries if they exist.
         if g.app.openWithTable:
@@ -6431,7 +5833,7 @@ class leoGtkTree (leoFrame.leoTree):
     #@+node:ekr.20080112145409.418:allocateNodes
     def allocateNodes(self,where,lines):
 
-        """Allocate Tk widgets in nodes that will become visible as the result of an upcoming scroll"""
+        """Allocate gtk widgets in nodes that will become visible as the result of an upcoming scroll"""
 
         assert(where in ("above","below"))
 
@@ -6459,7 +5861,7 @@ class leoGtkTree (leoFrame.leoTree):
 
         """Calculate the nodes that will become visible as the result of an upcoming scroll.
 
-        args is the tuple passed to the Tk.Canvas.yview method"""
+        args is the tuple passed to the gtk.Canvas.yview method"""
 
         if not self.allocateOnlyVisibleNodes: return
 
