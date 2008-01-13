@@ -3182,7 +3182,11 @@ class baseCommands:
         if not c.frame.findPanel:
             c.frame.findPanel = g.app.gui.createFindPanel(c)
 
-        c.frame.findPanel.bringToFront()
+        if c.frame.findPanel:
+            c.frame.findPanel.bringToFront()
+        else:
+            g.es('The %s gui does not support a stand-alone find dialog' % (
+                g.app.gui.guiName()),color='blue')
     #@-node:ekr.20031218072017.2888:showFindPanel
     #@+node:ekr.20031218072017.2889:findNext
     def findNext (self,event=None):
@@ -5665,7 +5669,11 @@ class baseCommands:
         if not frame.comparePanel:
             frame.comparePanel = g.app.gui.createComparePanel(c)
 
-        frame.comparePanel.bringToFront()
+        if frame.comparePanel:
+            frame.comparePanel.bringToFront()
+        else:
+            g.es('The %s gui does not support the compare window' % (
+                g.app.gui.guiName()),color='blue')
     #@-node:ekr.20031218072017.2092:openCompareWindow
     #@+node:ekr.20031218072017.2932:openPythonWindow
     def openPythonWindow (self,event=None):
