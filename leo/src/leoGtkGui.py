@@ -20,7 +20,6 @@ import string
 import sys
 
 import leoFrame
-import leoKeys
 import leoGtkFrame
 #@-node:ekr.20080112145409.436:<< imports >>
 #@nl
@@ -70,7 +69,7 @@ class gtkGui(leoGui.leoGui):
             else:
                 print 'no log, no commander for executeScript in gtkGui.runMainLoop'
         else:
-            pass # no need to invoke a gtk main loop.
+            gtk.main()
     #@-node:ekr.20080112145409.440:runMainLoop (gtkGui)
     #@+node:ekr.20080112145409.441:Not used
     def createRootWindow(self):
@@ -95,7 +94,7 @@ class gtkGui(leoGui.leoGui):
 
             """Set the icon to be used in all Leo windows.
 
-            This code does nothing for gtk versions before 8.4.3."""
+            This code does nothing for Tk versions before 8.4.3."""
 
             gui = self
 
@@ -674,7 +673,7 @@ class gtkGui(leoGui.leoGui):
         #@nl
     #@-node:ekr.20080112145409.474:makeScriptButton
     #@-node:ekr.20080112145409.450:gtkGui utils (TO DO)
-    #@+node:ekr.20080112145409.479:class leoKeyEvent (gtkGui)
+    #@+node:ekr.20080112145409.479:class leoKeyEvent (gtkGui) (To do)
     class leoKeyEvent:
 
         '''A gui-independent wrapper for gui events.'''
@@ -703,7 +702,7 @@ class gtkGui(leoGui.leoGui):
 
             return 'gtkGui.leoKeyEvent: char: %s, keysym: %s' % (repr(self.char),repr(self.keysym))
     #@nonl
-    #@-node:ekr.20080112145409.479:class leoKeyEvent (gtkGui)
+    #@-node:ekr.20080112145409.479:class leoKeyEvent (gtkGui) (To do)
     #@-others
 #@-node:ekr.20080112145409.435:@thin leoGtkGui.py
 #@-leo

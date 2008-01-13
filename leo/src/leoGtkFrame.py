@@ -131,9 +131,6 @@ class leoGtkFrame (leoFrame.leoFrame):
         ### top.title(f.title)
         ### top.minsize(30,10) # In grid units.
 
-        def exit(event):
-            pass ### java.lang.System.exit(0)
-
         # def onButtonPressed(event):
             # field.text=quotes[event.source.text]
 
@@ -141,7 +138,12 @@ class leoGtkFrame (leoFrame.leoFrame):
             # return gtk.JButton(name,preferredSize=(100,20),
                 # actionPerformed=onButtonPressed)
 
+        def destroy_callback(widget,data=None):
+            gtk.main_quit()  ### should call g.app.closeLeoWindow.
+
         f.top = w = gtk.Window()
+        w.connect("destroy", destroy_callback)
+        w.show()
 
         # f.top = w = gtk.JFrame('jyLeo!',size=(700,700),windowClosing=exit)
         # w.contentPane.layout = awt.FlowLayout()
@@ -2999,13 +3001,7 @@ class leoGtkTreeTab (leoFrame.leoTreeTab):
 #@+node:ekr.20080112145409.273:class leoGtkTextWidget
 class leoGtkTextWidget:
 
-    '''A class to wrap the gtk.Text widget.
-    Translates Python (integer) indices to and from gtk (string) indices.
-
-    This class inherits almost all gtkText methods: you call use them as usual.'''
-
-    # The signatures of tag_add and insert are different from the gtk.Text signatures.
-    # __pychecker__ = '--no-override' # suppress warning about changed signature.
+    '''A class to wrap the gtk.Text widget.'''
 
     def __repr__(self):
         name = hasattr(self,'_name') and self._name or '<no name>'
@@ -3060,7 +3056,7 @@ class leoGtkTextWidget:
     # def _setBackgroundColor(self,color): return self.widget.configure(background=color)
     # def _setFocus(self):                return self.widget.focus_set()
     # def _setInsertPoint(self,i):        return self.widget.mark_set('insert',i)
-    # # def _setSelectionRange(self,i,j):   return self.widget.SetSelection(i,j)
+    # def _setSelectionRange(self,i,j):   return self.widget.SetSelection(i,j)
     #@-node:ekr.20080112145409.275:bindings (not used)
     #@+node:ekr.20080112145409.276:Index conversion (gtkTextWidget)
     #@+node:ekr.20080112145409.277:w.toGuiIndex
