@@ -192,14 +192,6 @@ class bridgeController:
         else:
             assert False,'leoBridge.py must run with nullGui'
 
-        if 0: # A gui main loop is probably a bad idea.
-            if self.guiName == 'tkinter':
-                import leoTkinterGui
-                g.app.gui = leoTkinterGui.tkinterGui()
-                g.app.root = g.app.gui.createRootWindow()
-                g.app.gui.finishCreate()
-
-
     #@-node:ekr.20070227095743:createGui
     #@+node:ekr.20070227093629.4:isValidPython
     def isValidPython(self):

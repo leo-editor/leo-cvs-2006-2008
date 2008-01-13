@@ -242,9 +242,6 @@ def createNullGuiWithScript (script):
 
     g.app.batchMode = True
     g.app.gui = leoGui.nullGui("nullGui")
-    # if not g.app.root:
-        # g.app.root = g.app.gui.createRootWindow()
-    # g.app.gui.finishCreate()
     g.app.gui.setScript(script)
 #@-node:ekr.20031218072017.1938:createNullGuiWithScript (leo.py)
 #@+node:ekr.20031218072017.1939:getBatchScript
