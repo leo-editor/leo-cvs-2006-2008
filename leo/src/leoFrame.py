@@ -568,7 +568,7 @@ class baseTextWidget:
     #@-node:ekr.20070228074312.9:Wrapper methods (widget-independent)
     #@-others
 #@-node:ekr.20070228074312:class baseTextWidget
-#@+node:ekr.20070228074228.1:class stringTextWidget (stringTextWidget)
+#@+node:ekr.20070228074228.1:class stringTextWidget (baseTextWidget)
 class stringTextWidget (baseTextWidget):
 
     '''A class that represents text as a Python string.'''
@@ -651,7 +651,7 @@ class stringTextWidget (baseTextWidget):
     #@nonl
     #@-node:ekr.20070228111853:setSelectionRange (stringText)
     #@-others
-#@-node:ekr.20070228074228.1:class stringTextWidget (stringTextWidget)
+#@-node:ekr.20070228074228.1:class stringTextWidget (baseTextWidget)
 #@-others
 #@nonl
 #@-node:ekr.20070228074228:<< define text classes >>
