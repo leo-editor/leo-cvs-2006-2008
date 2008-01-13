@@ -154,20 +154,21 @@ class tkinterGui(leoGui.leoGui):
         else: # Works in Python 2.3.  Closes Python window.
             self.root.quit()
     #@-node:ekr.20031218072017.4051:destroySelf
-    #@+node:ekr.20031218072017.4053:killGui (not used)
+    #@+node:ekr.20031218072017.4053:killGui
     def killGui(self,exitFlag=True):
 
         """Destroy a gui and terminate Leo if exitFlag is True."""
 
-        pass # Not ready yet.
-    #@-node:ekr.20031218072017.4053:killGui (not used)
-    #@+node:ekr.20031218072017.4054:recreateRootWindow (not used)
+        pass # No need to do anything.
+    #@-node:ekr.20031218072017.4053:killGui
+    #@+node:ekr.20031218072017.4054:recreateRootWindow
     def recreateRootWindow(self):
         """A do-nothing base class to create the hidden root window of a gui
 
         after a previous gui has terminated with killGui(False)."""
-        pass
-    #@-node:ekr.20031218072017.4054:recreateRootWindow (not used)
+
+        pass # No need to do anything.
+    #@-node:ekr.20031218072017.4054:recreateRootWindow
     #@+node:ekr.20031218072017.4055:runMainLoop (tkGui)
     def runMainLoop(self):
 
