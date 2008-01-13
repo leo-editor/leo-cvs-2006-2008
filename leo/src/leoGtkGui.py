@@ -29,24 +29,15 @@ class gtkGui(leoGui.leoGui):
     """A class encapulating all calls to gtk."""
 
     #@    @+others
-    #@+node:ekr.20080112145409.437:gtkGui birth & death
+    #@+node:ekr.20080112145409.437:gtkGui birth & death (done)
     #@+node:ekr.20080112145409.438: gtkGui.__init__
     def __init__ (self):
 
         # Initialize the base class.
         leoGui.leoGui.__init__(self,'gtk')
 
-        self.root = None
-
         self.bodyTextWidget  = leoGtkFrame.leoGtkTextWidget
         self.plainTextWidget = leoGtkFrame.leoGtkTextWidget
-
-        # self.bitmap_name = None
-        # self.bitmap = None
-        # self.defaultFont = None
-        # self.defaultFontFamily = None
-        # self.win32clipboard = None 
-    #@nonl
     #@-node:ekr.20080112145409.438: gtkGui.__init__
     #@+node:ekr.20080112145409.439:createKeyHandlerClass (gtkGui)
     def createKeyHandlerClass (self,c,useGlobalKillbuffer=True,useGlobalRegisters=True):
@@ -71,7 +62,9 @@ class gtkGui(leoGui.leoGui):
         else:
             gtk.main()
     #@-node:ekr.20080112145409.440:runMainLoop (gtkGui)
-    #@+node:ekr.20080112145409.441:Not used
+    #@+node:ekr.20080112145409.441:Do nothings
+    # These methods must be defined in subclasses, but they need not do anything.
+
     def createRootWindow(self):
         pass
 
@@ -86,6 +79,11 @@ class gtkGui(leoGui.leoGui):
         """A do-nothing base class to create the hidden root window of a gui
         after a previous gui has terminated with killGui(False)."""
         pass
+
+    #@-node:ekr.20080112145409.441:Do nothings
+    #@+node:ekr.20080113055213:Not used
+    # The tkinter gui ctor calls these methods.
+    # They are included here for reference.
 
     if 0:
         #@    @+others
@@ -135,9 +133,9 @@ class gtkGui(leoGui.leoGui):
             config.defaultFontFamily = self.defaultFontFamily
         #@-node:ekr.20080112145409.443:gtkGui.getDefaultConfigFont
         #@-others
-    #@-node:ekr.20080112145409.441:Not used
-    #@-node:ekr.20080112145409.437:gtkGui birth & death
-    #@+node:ekr.20080112145409.444:gtkGui dialogs & panels
+    #@-node:ekr.20080113055213:Not used
+    #@-node:ekr.20080112145409.437:gtkGui birth & death (done)
+    #@+node:ekr.20080112145409.444:gtkGui dialogs & panels (to do)
     def runAboutLeoDialog(self,c,version,theCopyright,url,email):
         """Create and run a gtk About Leo dialog."""
         d = leoGtkDialog.gtkAboutLeo(c,version,theCopyright,url,email)
@@ -184,79 +182,77 @@ class gtkGui(leoGui.leoGui):
     #@+node:ekr.20080112145409.445:gtkGui.createSpellTab
     def createSpellTab(self,c,spellHandler,tabName):
 
-        ### return leoGtkFind.gtkSpellTab(c,spellHandler,tabName)
-
-        pass
+        return leoGtkFind.gtkSpellTab(c,spellHandler,tabName)
     #@-node:ekr.20080112145409.445:gtkGui.createSpellTab
-    #@+node:ekr.20080112145409.446:gtkGui file dialogs
+    #@+node:ekr.20080112145409.446:gtkGui file dialogs (to do)
     # We no longer specify default extensions so that we can open and save files without extensions.
     #@+node:ekr.20080112145409.447:runOpenFileDialog
     def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
 
         """Create and run an gtk open file dialog ."""
 
-        # __pychecker__ = '--no-argsused' # defaultextension not used.
-
         initialdir = g.app.globalOpenDir or g.os_path_abspath(os.getcwd())
 
-        if multiple:
-            # askopenfilenames requires Python 2.3 and gtk 8.4.
-            version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
-            if (
-                g.CheckVersion(version,"2.3") and
-                g.CheckVersion(self.root.getvar("tk_patchLevel"),"8.4")
-            ):
-                files = gtkFileDialog.askopenfilenames(
-                    title=title,filetypes=filetypes,initialdir=initialdir)
-                # g.trace(files)
-                return list(files)
-            else:
-                # Get one file and return it as a list.
-                theFile = gtkFileDialog.askopenfilename(
-                    title=title,filetypes=filetypes,initialdir=initialdir)
-                return [theFile]
-        else:
-            # Return a single file name as a string.
-            return gtkFileDialog.askopenfilename(
-                title=title,filetypes=filetypes,initialdir=initialdir)
+        ### To do
+
+        # if multiple:
+            # # askopenfilenames requires Python 2.3 and gtk 8.4.
+            # version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
+            # if (
+                # g.CheckVersion(version,"2.3") and
+                # g.CheckVersion(self.root.getvar("tk_patchLevel"),"8.4")
+            # ):
+                # files = gtkFileDialog.askopenfilenames(
+                    # title=title,filetypes=filetypes,initialdir=initialdir)
+                # # g.trace(files)
+                # return list(files)
+            # else:
+                # # Get one file and return it as a list.
+                # theFile = gtkFileDialog.askopenfilename(
+                    # title=title,filetypes=filetypes,initialdir=initialdir)
+                # return [theFile]
+        # else:
+            # # Return a single file name as a string.
+            # return gtkFileDialog.askopenfilename(
+                # title=title,filetypes=filetypes,initialdir=initialdir)
     #@-node:ekr.20080112145409.447:runOpenFileDialog
     #@+node:ekr.20080112145409.448:runSaveFileDialog
     def runSaveFileDialog(self,initialfile,title,filetypes,defaultextension):
 
         """Create and run an gtk save file dialog ."""
 
-        # __pychecker__ = '--no-argsused' # defaultextension not used.
+        ### To do.
 
         initialdir=g.app.globalOpenDir or g.os_path_abspath(os.getcwd()),
 
-        return gtkFileDialog.asksaveasfilename(
-            initialdir=initialdir,initialfile=initialfile,
-            title=title,filetypes=filetypes)
+        # return gtkFileDialog.asksaveasfilename(
+            # initialdir=initialdir,initialfile=initialfile,
+            # title=title,filetypes=filetypes)
     #@-node:ekr.20080112145409.448:runSaveFileDialog
-    #@-node:ekr.20080112145409.446:gtkGui file dialogs
-    #@+node:ekr.20080112145409.449:gtkGui panels
+    #@-node:ekr.20080112145409.446:gtkGui file dialogs (to do)
+    #@+node:ekr.20080112145409.449:gtkGui panels (done)
     def createComparePanel(self,c):
         """Create a gtk color picker panel."""
-        ### return leoGtkComparePanel.leoGtkComparePanel(c)
+        return None # This window is optional.
+
+        ### If desired, this panel could be created as follows:
+        # return leoGtkComparePanel.leoGtkComparePanel(c)
 
     def createFindPanel(self,c):
         """Create a hidden gtk find panel."""
-        ### 
-        # panel = leoGtkFind.leoGtkFind(c)
-        # panel.top.withdraw()
-        # return panel
+        return None # This dialog is deprecated.
 
     def createFindTab (self,c,parentFrame):
         """Create a gtk find tab in the indicated frame."""
-        ### return leoGtkFind.gtkFindTab(c,parentFrame)
+        return leoGtkFind.gtkFindTab(c,parentFrame)
 
     def createLeoFrame(self,title):
         """Create a new Leo frame."""
         gui = self
         return leoGtkFrame.leoGtkFrame(title,gui)
-    #@-node:ekr.20080112145409.449:gtkGui panels
-    #@-node:ekr.20080112145409.444:gtkGui dialogs & panels
-    #@+node:ekr.20080112145409.450:gtkGui utils (TO DO)
+    #@-node:ekr.20080112145409.449:gtkGui panels (done)
+    #@-node:ekr.20080112145409.444:gtkGui dialogs & panels (to do)
+    #@+node:ekr.20080112145409.450:gtkGui utils (to do)
     #@+node:ekr.20080112145409.451:Clipboard (gtkGui)
     #@+node:ekr.20080112145409.452:replaceClipboardWith
     def replaceClipboardWith (self,s):
@@ -303,16 +299,16 @@ class gtkGui(leoGui.leoGui):
                 return None
     #@-node:ekr.20080112145409.453:getTextFromClipboard
     #@-node:ekr.20080112145409.451:Clipboard (gtkGui)
-    #@+node:ekr.20080112145409.454:color
+    #@+node:ekr.20080112145409.454:color (to do)
     # g.es calls gui.color to do the translation,
-    # so most code in Leo's core can simply use gtk color names.
+    # so most code in Leo's core can simply use Tk color names.
 
     def color (self,color):
         '''Return the gui-specific color corresponding to the gtk color name.'''
         return color
 
-    #@-node:ekr.20080112145409.454:color
-    #@+node:ekr.20080112145409.455:Dialog
+    #@-node:ekr.20080112145409.454:color (to do)
+    #@+node:ekr.20080112145409.455:Dialog (these are optional)
     #@+node:ekr.20080112145409.456:get_window_info
     # WARNING: Call this routine _after_ creating a dialog.
     # (This routine inhibits the grid and pack geometry managers.)
@@ -389,8 +385,8 @@ class gtkGui(leoGui.leoGui):
 
         return w,f
     #@-node:ekr.20080112145409.458:create_labeled_frame
-    #@-node:ekr.20080112145409.455:Dialog
-    #@+node:ekr.20080112145409.459:Events (gtkGui)
+    #@-node:ekr.20080112145409.455:Dialog (these are optional)
+    #@+node:ekr.20080112145409.459:Events (gtkGui) (to do)
     def event_generate(self,w,kind,*args,**keys):
         '''Generate an event.'''
         return w.event_generate(kind,*args,**keys)
@@ -413,8 +409,8 @@ class gtkGui(leoGui.leoGui):
         else:
             return 0,0
     #@nonl
-    #@-node:ekr.20080112145409.459:Events (gtkGui)
-    #@+node:ekr.20080112145409.460:Focus
+    #@-node:ekr.20080112145409.459:Events (gtkGui) (to do)
+    #@+node:ekr.20080112145409.460:Focus (to do)
     #@+node:ekr.20080112145409.461:gtkGui.get_focus
     def get_focus(self,c):
 
@@ -422,7 +418,7 @@ class gtkGui(leoGui.leoGui):
 
         return c.frame.top.focus_displayof()
     #@-node:ekr.20080112145409.461:gtkGui.get_focus
-    #@+node:ekr.20080112145409.462:gtk.Gui.set_focus
+    #@+node:ekr.20080112145409.462:gtkGui.set_focus
     set_focus_count = 0
 
     def set_focus(self,c,w):
@@ -451,9 +447,9 @@ class gtkGui(leoGui.leoGui):
             except Exception:
                 # g.es_exception()
                 return False
-    #@-node:ekr.20080112145409.462:gtk.Gui.set_focus
-    #@-node:ekr.20080112145409.460:Focus
-    #@+node:ekr.20080112145409.463:Font
+    #@-node:ekr.20080112145409.462:gtkGui.set_focus
+    #@-node:ekr.20080112145409.460:Focus (to do)
+    #@+node:ekr.20080112145409.463:Font (to do)
     #@+node:ekr.20080112145409.464:gtkGui.getFontFromParams
     def getFontFromParams(self,family,size,slant,weight,defaultSize=12):
 
@@ -471,105 +467,99 @@ class gtkGui(leoGui.leoGui):
             # g.es_exception() # This just confuses people.
             return g.app.config.defaultFont
     #@-node:ekr.20080112145409.464:gtkGui.getFontFromParams
-    #@-node:ekr.20080112145409.463:Font
-    #@+node:ekr.20080112145409.465:getFullVersion
+    #@-node:ekr.20080112145409.463:Font (to do)
+    #@+node:ekr.20080112145409.465:getFullVersion (to do)
     def getFullVersion (self,c):
 
         gtkLevel = '<gtkLevel>' ### c.frame.top.getvar("tk_patchLevel")
 
         return 'gtk %s' % (gtkLevel)
-    #@-node:ekr.20080112145409.465:getFullVersion
-    #@+node:ekr.20080112145409.466:Icons
-    #@+node:ekr.20080112145409.467:attachLeoIcon & createLeoIcon
+    #@-node:ekr.20080112145409.465:getFullVersion (to do)
+    #@+node:ekr.20080112145409.466:Icons (to do)
+    #@+node:ekr.20080112145409.467:attachLeoIcon
     def attachLeoIcon (self,w):
 
-        """Try to attach a Leo icon to the Leo Window.
+        """Attach a Leo icon to the Leo Window."""
 
-        Use gtk's wm_iconbitmap function if available (gtk 8.3.4 or greater).
-        Otherwise, try to use the Python Imaging Library and the tkIcon package."""
+        # if self.bitmap != None:
+            # # We don't need PIL or tkicon: this is gtk 8.3.4 or greater.
+            # try:
+                # w.wm_iconbitmap(self.bitmap)
+            # except:
+                # self.bitmap = None
 
-        if self.bitmap != None:
-            # We don't need PIL or tkicon: this is gtk 8.3.4 or greater.
-            try:
-                w.wm_iconbitmap(self.bitmap)
-            except:
-                self.bitmap = None
+        # if self.bitmap == None:
+            # try:
+                # < < try to use the PIL and tkIcon packages to draw the icon > >
+            # except:
+                # # import traceback ; traceback.print_exc()
+                # # g.es_exception()
+                # self.leoIcon = None
+    #@+node:ekr.20080112145409.468:try to use the PIL and tkIcon packages to draw the icon
+    #@+at 
+    #@nonl
+    # This code requires Fredrik Lundh's PIL and tkIcon packages:
+    # 
+    # Download PIL    from http://www.pythonware.com/downloads/index.htm#pil
+    # Download tkIcon from http://www.effbot.org/downloads/#tkIcon
+    # 
+    # Many thanks to Jonathan M. Gilligan for suggesting this code.
+    #@-at
+    #@@c
 
-        if self.bitmap == None:
-            try:
-                #@            << try to use the PIL and tkIcon packages to draw the icon >>
-                #@+node:ekr.20080112145409.468:<< try to use the PIL and tkIcon packages to draw the icon >>
-                #@+at 
-                #@nonl
-                # This code requires Fredrik Lundh's PIL and tkIcon packages:
-                # 
-                # Download PIL    from 
-                # http://www.pythonware.com/downloads/index.htm#pil
-                # Download tkIcon from http://www.effbot.org/downloads/#tkIcon
-                # 
-                # Many thanks to Jonathan M. Gilligan for suggesting this 
-                # code.
-                #@-at
-                #@@c
+    # import Image
+    # import tkIcon # pychecker complains, but this *is* used.
 
-                import Image
-                import tkIcon # pychecker complains, but this *is* used.
+    # # Wait until the window has been drawn once before attaching the icon in OnVisiblity.
+    # def visibilityCallback(event,self=self,w=w):
+        # try: self.leoIcon.attach(w.winfo_id())
+        # except: pass
+    # w.bind("<Visibility>",visibilityCallback)
 
-                # Wait until the window has been drawn once before attaching the icon in OnVisiblity.
-                def visibilityCallback(event,self=self,w=w):
-                    try: self.leoIcon.attach(w.winfo_id())
-                    except: pass
-                w.bind("<Visibility>",visibilityCallback)
-
-                if not self.leoIcon:
-                    # Load a 16 by 16 gif.  Using .gif rather than an .ico allows us to specify transparency.
-                    icon_file_name = g.os_path_join(g.app.loadDir,'..','Icons','LeoWin.gif')
-                    icon_file_name = g.os_path_normpath(icon_file_name)
-                    icon_image = Image.open(icon_file_name)
-                    if 1: # Doesn't resize.
-                        self.leoIcon = self.createLeoIcon(icon_image)
-                    else: # Assumes 64x64
-                        self.leoIcon = tkIcon.Icon(icon_image)
-                #@-node:ekr.20080112145409.468:<< try to use the PIL and tkIcon packages to draw the icon >>
-                #@nl
-            except:
-                # import traceback ; traceback.print_exc()
-                # g.es_exception()
-                self.leoIcon = None
-    #@+node:ekr.20080112145409.469:createLeoIcon
+    # if not self.leoIcon:
+        # # Load a 16 by 16 gif.  Using .gif rather than an .ico allows us to specify transparency.
+        # icon_file_name = g.os_path_join(g.app.loadDir,'..','Icons','LeoWin.gif')
+        # icon_file_name = g.os_path_normpath(icon_file_name)
+        # icon_image = Image.open(icon_file_name)
+        # if 1: # Doesn't resize.
+            # self.leoIcon = self.createLeoIcon(icon_image)
+        # else: # Assumes 64x64
+            # self.leoIcon = tkIcon.Icon(icon_image)
+    #@-node:ekr.20080112145409.468:try to use the PIL and tkIcon packages to draw the icon
+    #@+node:ekr.20080112145409.469:createLeoIcon (a helper)
     # This code is adapted from tkIcon.__init__
     # Unlike the tkIcon code, this code does _not_ resize the icon file.
 
-    def createLeoIcon (self,icon):
+    # def createLeoIcon (self,icon):
 
-        try:
-            import Image,_tkicon
+        # try:
+            # import Image,_tkicon
 
-            i = icon ; m = None
-            # create transparency mask
-            if i.mode == "P":
-                try:
-                    t = i.info["transparency"]
-                    m = i.point(lambda i, t=t: i==t, "1")
-                except KeyError: pass
-            elif i.mode == "RGBA":
-                # get transparency layer
-                m = i.split()[3].point(lambda i: i == 0, "1")
-            if not m:
-                m = Image.new("1", i.size, 0) # opaque
-            # clear unused parts of the original image
-            i = i.convert("RGB")
-            i.paste((0, 0, 0), (0, 0), m)
-            # create icon
-            m = m.tostring("raw", ("1", 0, 1))
-            c = i.tostring("raw", ("BGRX", 0, -1))
-            return _tkicon.new(i.size, c, m)
-        except:
-            return None
-    #@-node:ekr.20080112145409.469:createLeoIcon
-    #@-node:ekr.20080112145409.467:attachLeoIcon & createLeoIcon
-    #@-node:ekr.20080112145409.466:Icons
-    #@+node:ekr.20080112145409.470:Idle Time
+            # i = icon ; m = None
+            # # create transparency mask
+            # if i.mode == "P":
+                # try:
+                    # t = i.info["transparency"]
+                    # m = i.point(lambda i, t=t: i==t, "1")
+                # except KeyError: pass
+            # elif i.mode == "RGBA":
+                # # get transparency layer
+                # m = i.split()[3].point(lambda i: i == 0, "1")
+            # if not m:
+                # m = Image.new("1", i.size, 0) # opaque
+            # # clear unused parts of the original image
+            # i = i.convert("RGB")
+            # i.paste((0, 0, 0), (0, 0), m)
+            # # create icon
+            # m = m.tostring("raw", ("1", 0, 1))
+            # c = i.tostring("raw", ("BGRX", 0, -1))
+            # return _tkicon.new(i.size, c, m)
+        # except:
+            # return None
+    #@-node:ekr.20080112145409.469:createLeoIcon (a helper)
+    #@-node:ekr.20080112145409.467:attachLeoIcon
+    #@-node:ekr.20080112145409.466:Icons (to do)
+    #@+node:ekr.20080112145409.470:Idle Time (to do)
     #@+node:ekr.20080112145409.471:gtkGui.setIdleTimeHook
     def setIdleTimeHook (self,idleTimeHookHandler):
 
@@ -582,18 +572,20 @@ class gtkGui(leoGui.leoGui):
     #@+node:ekr.20080112145409.472:setIdleTimeHookAfterDelay
     def setIdleTimeHookAfterDelay (self,idleTimeHookHandler):
 
-        if self.root:
-            g.app.root.after(g.app.idleTimeDelay,idleTimeHookHandler)
+        pass
+
+        # if self.root:
+            # g.app.root.after(g.app.idleTimeDelay,idleTimeHookHandler)
     #@-node:ekr.20080112145409.472:setIdleTimeHookAfterDelay
-    #@-node:ekr.20080112145409.470:Idle Time
+    #@-node:ekr.20080112145409.470:Idle Time (to do)
     #@+node:ekr.20080112145409.473:isTextWidget
     def isTextWidget (self,w):
 
         '''Return True if w is a Text widget suitable for text-oriented commands.'''
 
-        return w and isinstance(w,leoFrame.stringTextWidget) ### gtk.Text)
+        return w and isinstance(w,leoFrame.baseTextWidget)
     #@-node:ekr.20080112145409.473:isTextWidget
-    #@+node:ekr.20080112145409.474:makeScriptButton
+    #@+node:ekr.20080112145409.474:makeScriptButton (to do)
     def makeScriptButton (self,c,
         p=None, # A node containing the script.
         script=None, # The script itself.
@@ -671,9 +663,9 @@ class gtkGui(leoGui.leoGui):
         k.registerCommand(buttonCommandName,None,executeScriptCallback,pane='button',verbose=False)
         #@-node:ekr.20080112145409.478:<< create press-buttonText-button command >>
         #@nl
-    #@-node:ekr.20080112145409.474:makeScriptButton
-    #@-node:ekr.20080112145409.450:gtkGui utils (TO DO)
-    #@+node:ekr.20080112145409.479:class leoKeyEvent (gtkGui) (To do)
+    #@-node:ekr.20080112145409.474:makeScriptButton (to do)
+    #@-node:ekr.20080112145409.450:gtkGui utils (to do)
+    #@+node:ekr.20080112145409.479:class leoKeyEvent (gtkGui) (to do)
     class leoKeyEvent:
 
         '''A gui-independent wrapper for gui events.'''
@@ -702,7 +694,7 @@ class gtkGui(leoGui.leoGui):
 
             return 'gtkGui.leoKeyEvent: char: %s, keysym: %s' % (repr(self.char),repr(self.keysym))
     #@nonl
-    #@-node:ekr.20080112145409.479:class leoKeyEvent (gtkGui) (To do)
+    #@-node:ekr.20080112145409.479:class leoKeyEvent (gtkGui) (to do)
     #@-others
 #@-node:ekr.20080112145409.435:@thin leoGtkGui.py
 #@-leo

@@ -436,7 +436,7 @@ class gtkFindTab (leoFind.findTab):
 class gtkSpellTab:
 
     #@    @+others
-    #@+node:ekr.20080112173119.42:tkSpellTab.__init__
+    #@+node:ekr.20080112173119.42:gtkSpellTab.__init__
     def __init__ (self,c,handler,tabName):
 
         self.c = c
@@ -446,7 +446,7 @@ class gtkSpellTab:
         self.createFrame()
         self.createBindings()
         self.fillbox([])
-    #@-node:ekr.20080112173119.42:tkSpellTab.__init__
+    #@-node:ekr.20080112173119.42:gtkSpellTab.__init__
     #@+node:ekr.20080112173119.43:createBindings
     def createBindings (self):
 
