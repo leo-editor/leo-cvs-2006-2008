@@ -50,7 +50,7 @@ marks="ekr.20071217231348.4,ekr.20071217231348.5,ekr.20071217231501,ekr.20071217
 <v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
-<v t="ekr.20031218072017.2406" a="E"><vh>Code</vh>
+<v t="ekr.20031218072017.2406" a="TV"><vh>Code</vh>
 <v t="ekr.20040629121554.1"><vh>getSignOnLine (Contains hard-coded version info)</vh></v>
 <v t="ekr.20031218072017.2604"><vh>Core classes...</vh>
 <v t="ekr.20031218072017.2605"><vh>@thin leo.py </vh></v>
@@ -95,14 +95,12 @@ marks="ekr.20031218072017.1473,"><vh>@thin leoTkinterFrame.py</vh></v>
 <v t="ekr.20031218072017.4100"><vh>@thin leoTkinterMenu.py</vh></v>
 <v t="ekr.20040803072955"><vh>@thin leoTkinterTree.py</vh></v>
 </v>
-<v t="ekr.20080112145409" a="TV"><vh>Gui gtk classes</vh>
-<v t="ekr.20080112175736"><vh> gtk: to do</vh></v>
-<v t="ekr.20080113061130"><vh> gtk: what I did</vh></v>
+<v t="ekr.20080112145409"><vh>Gui gtk classes</vh>
+<v t="ekr.20080114142724"><vh>@thin leoGtkNotes.txt</vh></v>
 <v t="ekr.20080112145409.1"><vh>@thin leoGtkDialog.py</vh></v>
 <v t="ekr.20080112173119"><vh>@thin leoGtkFind.py</vh></v>
 <v t="ekr.20080112145409.53"><vh>@thin leoGtkFrame.py</vh></v>
-<v t="ekr.20080112145409.435"
-expanded="ekr.20080112145409.467,"><vh>@thin leoGtkGui.py</vh></v>
+<v t="ekr.20080112145409.435"><vh>@thin leoGtkGui.py</vh></v>
 <v t="ekr.20080112171650"><vh>@thin leoGtkKeys.py</vh></v>
 <v t="ekr.20080112171213"><vh>@thin leoGtkMenu.py</vh></v>
 <v t="ekr.20080112170946"><vh>@thin leoGtkTree.py</vh></v>
@@ -378,30 +376,5 @@ leoTest.runTestsExternally(c,all=False)
 
 </t>
 <t tx="ekr.20080112145409"></t>
-<t tx="ekr.20080112175736">@nocolor
-
-gtkGui:
-** Rewrite leoKeyEventClass.
-   This should be done by EKR: it is an essential part of all key handline.
-- There is no root ivar in the gtk gui.  Rewrite all code that uses self.root.
-- Rewrite runOpenFileDialog
-- Rewrite runSaveFileDialog
-
-
-gtkFrame:
-- What is the correct way to close a window?
-- Which ivars are truly "official".
-- Should there be a separate minibuffer class?
-- Should there be separate files for the log, body, etc.?
-- Should there be smaller methods to create components and make bindings?
-
-gtkFind:
-- Create the find tab.
-
-gtkComparePanel:
-- At present this does not exist.  The compare window is optional</t>
-<t tx="ekr.20080113061130">@nocolor
-
-- Added code to Leo's code to do nothing it the compare panel and stand-alone find panel do not exist.</t>
 </tnodes>
 </leo_file>
