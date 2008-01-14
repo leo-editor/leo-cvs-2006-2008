@@ -1,6 +1,7 @@
-#@+leo-ver=4
-#@+node:@file /home/bob/work/leo/workleo/test/gtkOutlineTest.py
-
+#!/usr/bin/python
+#@+leo-ver=4-thin
+#@+node:bob.20080111200056:@thin gtkOutlineTest.py
+#@@first
 import sys, os
 
 
@@ -8,31 +9,21 @@ import sys, os
 import pygtk
 pygtk.require('2.0')
 import gtk
-import operator
-import time
-import string
 
-
-print '~~~~~~~~~~~~~~~~~~~~~~~~~~~  ', __file__, sys.path[0]
+import pango
+import cairo
 
 #@+others
-#@+node:GtkLeoTreeDemo
+#@+node:bob.20080111194559:GtkLeoTreeDemo
 #@@first
-
-# example drawingarea.py
-
 
 
 class GtkLeoTreeDemo(object):
 
 
     #@    @+others
-    #@+node:__init__
+    #@+node:bob.20080113184034:__init__
     def __init__(self):
-
-        print 'Drawing area'
-
-        print '=================='
 
         #for n in c.allNodes_iter():
         #    print n.headString()
@@ -59,8 +50,8 @@ class GtkLeoTreeDemo(object):
 
 
 
-    #@-node:__init__
-    #@+node:onButtonPress
+    #@-node:bob.20080113184034:__init__
+    #@+node:bob.20080113183321:onButtonPress
     def onButtonPress(self, w, event, *args):
 
         codes = {
@@ -85,13 +76,13 @@ class GtkLeoTreeDemo(object):
                 sp.expand()
 
             self.canvas.update()
-    #@-node:onButtonPress
-    #@+node:onButtonRelease
-    #@-node:onButtonRelease
+    #@-node:bob.20080113183321:onButtonPress
+    #@+node:bob.20080113183321.1:onButtonRelease
+    #@-node:bob.20080113183321.1:onButtonRelease
     #@-others
 #@nonl
-#@-node:GtkLeoTreeDemo
-#@+node:loadIcon
+#@-node:bob.20080111194559:GtkLeoTreeDemo
+#@+node:bob.20080113170657:loadIcon
 def loadIcon(fname):
 
     try:
@@ -103,8 +94,8 @@ def loadIcon(fname):
         return icon
 
     print 'Can not load icon from', fname
-#@-node:loadIcon
-#@+node:loadIcons
+#@-node:bob.20080113170657:loadIcon
+#@+node:bob.20080113133525:loadIcons
 def loadIcons():
 
     global icons, plusBoxIcon, minusBoxIcon, appIcon, namedIcons, globalImages
@@ -146,8 +137,8 @@ def loadIcons():
 
     globalImages = {}
 
-#@-node:loadIcons
-#@+node:name2Color
+#@-node:bob.20080113133525:loadIcons
+#@+node:bob.20080113141134:name2Color
 
 
 def name2color(name, default=None, cairo=False):
@@ -175,8 +166,8 @@ def name2color(name, default=None, cairo=False):
 
 
     return gtk.gdk.Color(r,g,b)
-#@-node:name2Color
-#@+node:getImage
+#@-node:bob.20080113141134:name2Color
+#@+node:bob.20080113170041:getImage
 def getImage (relPath, force=False):
 
 
@@ -201,14 +192,16 @@ def getImage (relPath, force=False):
         pass
 
     return None
-#@-node:getImage
-#@+node:class OutlineCanvasPanel
+#@-node:bob.20080113170041:getImage
+#@+node:bob.20080114060133:getHeadlineFont
+#@-node:bob.20080114060133:getHeadlineFont
+#@+node:bob.20080111201957.77:class OutlineCanvasPanel
 
 class OutlineCanvasPanel(object):
     """A class to mimic a scrolled window to contain an OutlineCanvas."""
 
     #@    @+others
-    #@+node:__init__
+    #@+node:bob.20080111201957.78:__init__
 
     def __init__(self, parent, leoTree, name):
         """Create an OutlineCanvasPanel instance."""
@@ -277,8 +270,8 @@ class OutlineCanvasPanel(object):
 
         #self.onScroll(wx.HORIZONTAL, 0)
 
-    #@-node:__init__
-    #@+node:showEntry
+    #@-node:bob.20080111201957.78:__init__
+    #@+node:bob.20080111201957.79:showEntry
     showcount = 0
     def showEntry(self):
 
@@ -318,8 +311,8 @@ class OutlineCanvasPanel(object):
         #tw.setInsertPoint(len(sp.headString()))
         tw.setSelectionRange(*range)
         entry.Show()
-    #@-node:showEntry
-    #@+node:hideEntry
+    #@-node:bob.20080111201957.79:showEntry
+    #@+node:bob.20080111201957.80:hideEntry
 
     def hideEntry(self):
 
@@ -328,34 +321,34 @@ class OutlineCanvasPanel(object):
         entry.MoveXY(0, -1000)
 
         entry.Hide()
-    #@-node:hideEntry
-    #@+node:getPositions
+    #@-node:bob.20080111201957.80:hideEntry
+    #@+node:bob.20080111201957.81:getPositions
 
     def getPositions(self):
         return self._canvas._positions
     #@nonl
-    #@-node:getPositions
-    #@+node:onScrollVertical
+    #@-node:bob.20080111201957.81:getPositions
+    #@+node:bob.20080111201957.87:onScrollVertical
     def onScrollVertical(self, adjustment):
         """Scroll the outline vertically to a new position."""
 
         self._canvas.vscrollTo(int(adjustment.value))
     #@nonl
-    #@-node:onScrollVertical
-    #@+node:onScrollHorizontal
+    #@-node:bob.20080111201957.87:onScrollVertical
+    #@+node:bob.20080113090336:onScrollHorizontal
     def onScrollHorizontal(self, adjustment):
         """Scroll the outline horizontally to a new position.
 
         """
         self._canvas.hscrollTo(int(adjustment.value))
-    #@-node:onScrollHorizontal
-    #@+node:onScrollRelative
+    #@-node:bob.20080113090336:onScrollHorizontal
+    #@+node:bob.20080111201957.88:onScrollRelative
 
     def onScrollRelative(self, orient, value):
 
         return self.onScroll(orient, self.GetScrollPos(orient) + value)
-    #@-node:onScrollRelative
-    #@+node:vscrollUpdate
+    #@-node:bob.20080111201957.88:onScrollRelative
+    #@+node:bob.20080111201957.90:vscrollUpdate
 
     def vscrollUpdate(self):
         """Set the vertical scroll bar to match current conditions."""
@@ -389,8 +382,8 @@ class OutlineCanvasPanel(object):
         )
 
 
-    #@-node:vscrollUpdate
-    #@+node:hscrollUpdate
+    #@-node:bob.20080111201957.90:vscrollUpdate
+    #@+node:bob.20080111201957.91:hscrollUpdate
 
     def hscrollUpdate(self):
         """Set the vertical scroll bar to match current conditions."""
@@ -423,35 +416,35 @@ class OutlineCanvasPanel(object):
             canvasWidth #page-size
         )
 
-    #@-node:hscrollUpdate
-    #@+node:update
+    #@-node:bob.20080111201957.91:hscrollUpdate
+    #@+node:bob.20080111201957.92:update
 
     def update(self):
         self._canvas.update()
 
 
-    #@-node:update
-    #@+node:redraw
+    #@-node:bob.20080111201957.92:update
+    #@+node:bob.20080111201957.93:redraw
 
     def redraw(self):
         self._canvas.redraw()
     #@nonl
-    #@-node:redraw
-    #@+node:refresh
+    #@-node:bob.20080111201957.93:redraw
+    #@+node:bob.20080111201957.94:refresh
     def refresh(self):
         self._canvas.refresh()
     #@nonl
-    #@-node:refresh
-    #@+node:GetName
+    #@-node:bob.20080111201957.94:refresh
+    #@+node:bob.20080111201957.95:GetName
     def GetName(self):
         return 'canvas'
 
     getName = GetName
     #@nonl
-    #@-node:GetName
+    #@-node:bob.20080111201957.95:GetName
     #@-others
-#@-node:class OutlineCanvasPanel
-#@+node:class OutlineCanvas
+#@-node:bob.20080111201957.77:class OutlineCanvasPanel
+#@+node:bob.20080111201957.96:class OutlineCanvas
 class OutlineCanvas(gtk.DrawingArea):
     """Implements a virtual view of a leo outline tree.
 
@@ -463,21 +456,20 @@ class OutlineCanvas(gtk.DrawingArea):
 
     """
     #@    @+others
-    #@+node:__init__
+    #@+node:bob.20080111201957.97:__init__
     def __init__(self, parent):
         """Create an OutlineCanvas instance."""
 
         #g.trace('OutlineCanvas')
 
-        self.c = parent.c
+        self.c = c = parent.c
 
         self._parent = parent
         #self.leoTree = parent.leoTree
 
-        self.c = c
 
         #@    << define ivars >>
-        #@+node:<< define ivars >>
+        #@+node:bob.20080111201957.98:<< define ivars >>
         #self._icons = icons
 
         self._widgets = []
@@ -514,11 +506,20 @@ class OutlineCanvas(gtk.DrawingArea):
         self._clickBoxOffset = None
 
 
-        #@-node:<< define ivars >>
+        #@-node:bob.20080111201957.98:<< define ivars >>
         #@nl
 
         gtk.DrawingArea.__init__(self)
-        self._pangoLayout = self.create_pango_layout("")  
+        self._pangoLayout = self.create_pango_layout("Wq")
+
+
+        # g.trace()
+
+
+        self._font = pango.FontDescription(outlineFont)
+
+        self._pangoLayout.set_font_description(self._font)
+
 
         self._buffer = None
 
@@ -533,7 +534,7 @@ class OutlineCanvas(gtk.DrawingArea):
         #    
         #@nonl
         #@<< create  bindings >>
-        #@+node:<< create bindings >>
+        #@+node:bob.20080111201957.99:<< create bindings >>
         # onmouse = self._leoTree.onMouse
 
         # for e, s in (
@@ -559,7 +560,7 @@ class OutlineCanvas(gtk.DrawingArea):
             # lambda event, self=self._leoTree: onGlobalChar(self, event)
         # )
 
-        #@-node:<< create bindings >>
+        #@-node:bob.20080111201957.99:<< create bindings >>
         #@nl
 
     #@+at
@@ -577,8 +578,8 @@ class OutlineCanvas(gtk.DrawingArea):
     # self.line_height = self.default_line_height
     # 
     #@-at
-    #@-node:__init__
-    #@+node:hitTest
+    #@-node:bob.20080111201957.97:__init__
+    #@+node:bob.20080111201957.101:hitTest
     def hitTest(self, x, y):
         result = self._hitTest(point)
         g.trace(result)
@@ -612,8 +613,8 @@ class OutlineCanvas(gtk.DrawingArea):
 
         return None, 'Canvas'
 
-    #@-node:hitTest
-    #@+node:_createNewBuffer
+    #@-node:bob.20080111201957.101:hitTest
+    #@+node:bob.20080111201957.102:_createNewBuffer
     def _createNewBuffer(self):
         """Create a new buffer for drawing."""
 
@@ -639,8 +640,8 @@ class OutlineCanvas(gtk.DrawingArea):
 
 
 
-    #@-node:_createNewBuffer
-    #@+node:vscrollTo
+    #@-node:bob.20080111201957.102:_createNewBuffer
+    #@+node:bob.20080111201957.103:vscrollTo
 
     def vscrollTo(self, pos):
         """Scroll the canvas vertically to the specified position."""
@@ -654,8 +655,8 @@ class OutlineCanvas(gtk.DrawingArea):
         self._virtualTop = pos
 
         self.redraw()
-    #@-node:vscrollTo
-    #@+node:hscrollTo
+    #@-node:bob.20080111201957.103:vscrollTo
+    #@+node:bob.20080113073006:hscrollTo
     def hscrollTo(self, pos):
         """Scroll the canvas vertically to the specified position."""
 
@@ -671,8 +672,8 @@ class OutlineCanvas(gtk.DrawingArea):
         self._virtualLeft = pos
 
         self.redraw()
-    #@-node:hscrollTo
-    #@+node:resize
+    #@-node:bob.20080113073006:hscrollTo
+    #@+node:bob.20080111201957.104:resize
 
     def resize(self):
         """Resize the outline canvas and, if required, create and draw on a new buffer."""
@@ -701,13 +702,13 @@ class OutlineCanvas(gtk.DrawingArea):
 
 
 
-    #@-node:resize
-    #@+node:redraw
+    #@-node:bob.20080111201957.104:resize
+    #@+node:bob.20080112173505:redraw
     def redraw(self):
         self.draw()
         self.refresh()
-    #@-node:redraw
-    #@+node:update
+    #@-node:bob.20080112173505:redraw
+    #@+node:bob.20080111201957.106:update
 
     def update(self):
         """Do a full update assuming the tree has been changed."""
@@ -724,7 +725,7 @@ class OutlineCanvas(gtk.DrawingArea):
             stk = [self.c.rootPosition()]
 
         #@    << find height of tree and position of currentNode >>
-        #@+node:<< find height of tree and position of currentNode >>
+        #@+node:bob.20080111201957.107:<< find height of tree and position of currentNode >>
 
         # Find the number of visible nodes in the outline.
 
@@ -751,13 +752,13 @@ class OutlineCanvas(gtk.DrawingArea):
                 count += 1
 
                 #@        << if p.isExpanded() and p.hasFirstChild():>>
-                #@+node:<< if p.isExpanded() and p.hasFirstChild():>>
+                #@+node:bob.20080111201957.108:<< if p.isExpanded() and p.hasFirstChild():>>
                 ## if p.isExpanded() and p.hasFirstChild():
 
                 v=p.v
                 if v.statusBits & v.expandedBit and v.t._firstChild:
                 #@nonl
-                #@-node:<< if p.isExpanded() and p.hasFirstChild():>>
+                #@-node:bob.20080111201957.108:<< if p.isExpanded() and p.hasFirstChild():>>
                 #@nl
                     stk.append(newp)
                     p = p.firstChild()
@@ -781,7 +782,7 @@ class OutlineCanvas(gtk.DrawingArea):
 
 
 
-        #@-node:<< find height of tree and position of currentNode >>
+        #@-node:bob.20080111201957.107:<< find height of tree and position of currentNode >>
         #@nl
 
         if (self._treeHeight - self._virtualTop) < canvasHeight:
@@ -797,8 +798,8 @@ class OutlineCanvas(gtk.DrawingArea):
         self._parent.hscrollUpdate()
 
 
-    #@-node:update
-    #@+node:onPaint
+    #@-node:bob.20080111201957.106:update
+    #@+node:bob.20080111201957.109:onPaint
 
     def onPaint(self, *args):
         """Renders the off-screen buffer to the outline canvas."""
@@ -810,15 +811,15 @@ class OutlineCanvas(gtk.DrawingArea):
         # We use self.style.black_gc only because we need a gc, it has no relavence.
 
         self.window.draw_drawable(self.style.black_gc ,self._buffer, 0, 0, 0, 0, w, h)
-    #@-node:onPaint
-    #@+node:onMap
+    #@-node:bob.20080111201957.109:onPaint
+    #@+node:bob.20080112090335:onMap
     def onMap(self, *args):
         self._createNewBuffer()
         self.update()
         self.connect('expose-event', self.onPaint)
         self.connect("size-allocate", self.onSize)
-    #@-node:onMap
-    #@+node:onSize
+    #@-node:bob.20080112090335:onMap
+    #@+node:bob.20080112224841:onSize
     def onSize(self, *args):
         """React to changes in the size of the outlines display area."""
 
@@ -833,8 +834,8 @@ class OutlineCanvas(gtk.DrawingArea):
             c.endUpdate(False)
 
 
-    #@-node:onSize
-    #@+node:refresh
+    #@-node:bob.20080112224841:onSize
+    #@+node:bob.20080111201957.105:refresh
 
     #def refresh(self):
         # """Renders the offscreen buffer to the outline canvas."""
@@ -845,8 +846,8 @@ class OutlineCanvas(gtk.DrawingArea):
 
     refresh = onPaint
     #@nonl
-    #@-node:refresh
-    #@+node:contextChanged
+    #@-node:bob.20080111201957.105:refresh
+    #@+node:bob.20080111201957.110:contextChanged
     def contextChanged(self):
         """Adjust canvas attributes after a change in context.
 
@@ -884,8 +885,8 @@ class OutlineCanvas(gtk.DrawingArea):
         )
 
 
-    #@-node:contextChanged
-    #@+node:requestLineHeight
+    #@-node:bob.20080111201957.110:contextChanged
+    #@+node:bob.20080111201957.111:requestLineHeight
     def requestLineHeight(height):
         """Request a minimum height for lines."""
 
@@ -893,8 +894,8 @@ class OutlineCanvas(gtk.DrawingArea):
         self.requestedHeight = height
         self.beginUpdate()
         self.endUpdate()
-    #@-node:requestLineHeight
-    #@+node:def draw
+    #@-node:bob.20080111201957.111:requestLineHeight
+    #@+node:bob.20080111201957.112:def draw
 
     def draw(self, *args):
         """Draw the outline on the off-screen buffer."""
@@ -905,7 +906,8 @@ class OutlineCanvas(gtk.DrawingArea):
         x, y, canvasWidth, canvasHeight = self.get_allocation()
 
 
-        pangoLayout = self._pangoLayout   
+        pangoLayout = self._pangoLayout
+
 
         cr = self._buffer.cairo_create()
 
@@ -952,7 +954,7 @@ class OutlineCanvas(gtk.DrawingArea):
         halfLineHeight = lineHeight//2
 
         #@    << draw tree >>
-        #@+node:<< draw tree >>
+        #@+node:bob.20080111201957.113:<< draw tree >>
         y = 0
 
         hoistFlag = bool(c.hoistStack)
@@ -969,7 +971,8 @@ class OutlineCanvas(gtk.DrawingArea):
         # fast as
         # possible. Perhaps I was being a bit too paranoid and we should 
         # change back to
-        # more conventional iterations.
+        # more conventional iterations, on the other hand if it ain't broke 
+        # don't fix it.
         #@-at
         #@@c
 
@@ -998,7 +1001,7 @@ class OutlineCanvas(gtk.DrawingArea):
                     sp = p.copy()
 
                     #@            << setup object >>
-                    #@+node:<< set up object >>
+                    #@+node:bob.20080111201957.114:<< set up object >>
                     # depth: the depth of indentation relative to the current hoist.
                     sp._depth = len(stk)
 
@@ -1043,7 +1046,7 @@ class OutlineCanvas(gtk.DrawingArea):
 
                     sp._clickRegions = []
 
-                    #@-node:<< set up object >>
+                    #@-node:bob.20080111201957.114:<< set up object >>
                     #@nl
 
                     positions.append(sp)
@@ -1054,13 +1057,13 @@ class OutlineCanvas(gtk.DrawingArea):
                     )
 
                 #@        << if p.isExpanded() and p.hasFirstChild():>>
-                #@+node:<< if p.isExpanded() and p.hasFirstChild():>>
+                #@+node:bob.20080111201957.108:<< if p.isExpanded() and p.hasFirstChild():>>
                 ## if p.isExpanded() and p.hasFirstChild():
 
                 v=p.v
                 if v.statusBits & v.expandedBit and v.t._firstChild:
                 #@nonl
-                #@-node:<< if p.isExpanded() and p.hasFirstChild():>>
+                #@-node:bob.20080111201957.108:<< if p.isExpanded() and p.hasFirstChild():>>
                 #@nl
                     stk.append(newp)
                     p = p.firstChild()
@@ -1100,7 +1103,7 @@ class OutlineCanvas(gtk.DrawingArea):
         # if not result:
         if 1:
             #@    << draw text >>
-            #@+node:<< draw text >>
+            #@+node:bob.20080111201957.115:<< draw text >>
 
             current = c.currentPosition()
 
@@ -1109,7 +1112,7 @@ class OutlineCanvas(gtk.DrawingArea):
             for sp in positions:
 
                 #@    << draw user icons >>
-                #@+node:<< draw user icons >>
+                #@+node:bob.20080111201957.116:<< draw user icons >>
 
 
                 try:
@@ -1140,7 +1143,7 @@ class OutlineCanvas(gtk.DrawingArea):
 
                         sp._textBoxRect[0] = x + image.get_width() + 5
 
-                #@-node:<< draw user icons >>
+                #@-node:bob.20080111201957.116:<< draw user icons >>
                 #@nl
 
                 # if current and current == sp:
@@ -1162,14 +1165,14 @@ class OutlineCanvas(gtk.DrawingArea):
                 cr.show_layout(pangoLayout)
 
 
-            #@-node:<< draw text >>
+            #@-node:bob.20080111201957.115:<< draw text >>
             #@nl
             #@    << draw lines >>
-            #@+node:<< draw lines >>
-            #@-node:<< draw lines >>
+            #@+node:bob.20080111201957.117:<< draw lines >>
+            #@-node:bob.20080111201957.117:<< draw lines >>
             #@nl
             #@    << draw bitmaps >>
-            #@+node:<< draw bitmaps >>
+            #@+node:bob.20080111201957.118:<< draw bitmaps >>
 
             for sp in positions:
 
@@ -1197,11 +1200,11 @@ class OutlineCanvas(gtk.DrawingArea):
             # 
             # 
             #@-at
-            #@-node:<< draw bitmaps >>
+            #@-node:bob.20080111201957.118:<< draw bitmaps >>
             #@nl
 
             #@    << draw focus >>
-            #@+node:<< draw focus >>
+            #@+node:bob.20080111201957.119:<< draw focus >>
             if 0:
                 dc.SetBrush(wx.TRANSPARENT_BRUSH)
                 if self._leoTree.hasFocus():
@@ -1210,13 +1213,13 @@ class OutlineCanvas(gtk.DrawingArea):
                 #    dc.SetPen(wx.GREEN_PEN)
                     dc.DrawRectanglePointSize( (0,0), self.GetSize())
             #@nonl
-            #@-node:<< draw focus >>
+            #@-node:bob.20080111201957.119:<< draw focus >>
             #@nl
 
 
 
 
-        #@-node:<< draw tree >>
+        #@-node:bob.20080111201957.113:<< draw tree >>
         #@nl
 
         #self._parent.showEntry()
@@ -1228,1149 +1231,9 @@ class OutlineCanvas(gtk.DrawingArea):
 
 
 
-    #@-node:def draw
+    #@-node:bob.20080111201957.112:def draw
     #@-others
-#@-node:class OutlineCanvas
-#@+node:== TREE WIDGETS ==
-if 0:
-    #@    @+others
-    #@+node:wxLeoTree class (leoFrame.leoTree):
-    class wxLeoTree (leoFrame.leoTree):
-        #@    @+others
-        #@+node:__init__
-        def __init__ (self, c, parentFrame):
-
-
-            self.c = c
-            #self.frame = c.frame
-
-            # Init the base class.
-            #leoFrame.leoTree.__init__(self, self.frame)
-
-
-            #@    << init config >>
-            #@+node:<< init config >>
-            # Configuration and debugging settings.
-            # ?? These must be defined here to eliminate memory leaks. ??
-
-            # c = self.c
-
-            # self.allow_clone_drags          = c.config.getBool('allow_clone_drags')
-            # self.center_selected_tree_node  = c.config.getBool('center_selected_tree_node')
-            # self.enable_drag_messages       = c.config.getBool("enable_drag_messages")
-            # self.expanded_click_area        = c.config.getBool('expanded_click_area')
-            # self.gc_before_redraw           = c.config.getBool('gc_before_redraw')
-
-
-            # for item, default in (
-                # ('headline_text_editing_foreground_color', 'black'),
-                # ('headline_text_editing_background_color', 'white'),
-                # ('headline_text_editing_selection_foreground_color', None),
-                # ('headline_text_editing_selection_background_color', None),
-                # ('headline_text_selected_foreground_color', None),
-                # ('headline_text_selected_background_color', None),
-                # ('headline_text_editing_selection_foreground_color', None),
-                # ('headline_text_editing_selection_background_color', None),
-                # ('headline_text_unselected_foreground_color', None),
-                # ('headline_text_unselected_background_color', None),
-                # ('outline_pane_background_color', 'leo yellow')
-            # ):
-                # setattr(self, item, name2color(c.config.getColor(item), default))
-
-            # self.idle_redraw = c.config.getBool('idle_redraw')
-
-            # self.initialClickExpandsOrContractsNode = c.config.getBool(
-                # 'initialClickExpandsOrContractsNode')
-            # self.look_for_control_drag_on_mouse_down = c.config.getBool(
-                # 'look_for_control_drag_on_mouse_down')
-            # self.select_all_text_when_editing_headlines = c.config.getBool(
-                # 'select_all_text_when_editing_headlines')
-
-            # self.stayInTree     = c.config.getBool('stayInTreeAfterSelect')
-            # self.trace          = c.config.getBool('trace_tree')
-            # self.trace_alloc    = c.config.getBool('trace_tree_alloc')
-            # self.trace_chapters = c.config.getBool('trace_chapters')
-            # self.trace_edit     = c.config.getBool('trace_tree_edit')
-            # self.trace_gc       = c.config.getBool('trace_tree_gc')
-            # self.trace_redraw   = c.config.getBool('trace_tree_redraw')
-            # self.trace_select   = c.config.getBool('trace_select')
-            # self.trace_stats    = c.config.getBool('show_tree_stats')
-            # self.use_chapters   = c.config.getBool('use_chapters')
-            #@-node:<< init config >>
-            #@nl
-
-            #g.trace('tree', frame)
-
-
-            # A dummy ivar used in c.treeWantsFocus, etc.
-            self.canvas = self
-
-            # A lockout that prevents event handlers from firing during redraws.
-            self.drawing = False
-
-            #self.effects = wx.Effects()
-
-            self.keyDownModifiers = None
-
-            self.updateCount = 0
-
-            self.treeCtrl = None
-            self.treeCtrl = self.createControl(parentFrame)
-
-            self.drag_p = None
-            self.dragging = None
-            self.controlDrag = None
-
-
-
-
-
-
-
-        #@+node:createBindings
-
-        def createBindings (self): # wxLeoTree
-            pass
-
-        #@-node:createBindings
-        #@+node:createControl
-
-        def createControl (self, parentFrame):
-            """Create an OutlineCanvasPanel."""
-
-            treeCtrl = OutlineCanvasPanel(
-                parentFrame,
-                leoTree=self,
-                name='tree'
-            )
-
-            entry = treeCtrl._entry
-            self.headlineTextWidget = hw = headlineTextWidget(self, widget=entry)
-
-
-            entry.Bind(wx.EVT_KILL_FOCUS, self.entryLostFocus)
-            entry.Bind(wx.EVT_SET_FOCUS, self.entryGotFocus)
-
-            treeCtrl.Bind(wx.EVT_KILL_FOCUS, self.treeLostFocus)
-            treeCtrl.Bind(wx.EVT_SET_FOCUS, self.treeGotFocus)
-
-
-            return treeCtrl
-        #@-node:createControl
-        #@+node:setBindings
-        def setBindings(self):
-
-            pass # g.trace('wxLeoTree: to do')
-
-        def bind(self,*args,**keys):
-
-            pass # g.trace('wxLeoTree',args,keys)
-        #@nonl
-        #@-node:setBindings
-        #@-node:__init__
-        #@+node:__str__ & __repr__
-
-        def __repr__ (self):
-
-            return "Tree %d" % id(self)
-
-        __str__ = __repr__
-
-        #@-node:__str__ & __repr__
-        #@+node:edit_widget
-
-        def edit_widget(self, p=None):
-            """Return the headlineTextWidget."""
-
-            return self.headlineTextWidget
-        #@-node:edit_widget
-        #@+node:Focus Gain/Lose
-
-        def entryLostFocus(self, event):
-            self.endEditLabel(event)
-
-        def entryGotFocus(self, event):
-            pass
-
-        def treeGotFocus(self, event):
-            #g.trace()
-            if self.treeCtrl:
-                self.treeCtrl.redraw()
-            self.c.focusManager.gotFocus(self, event)
-
-        def treeLostFocus(self, event):
-            #g.trace()
-            if self.treeCtrl:
-                self.treeCtrl.redraw()
-            self.c.focusManager.lostFocus(self, event)
-            #g.trace()
-
-        def hasFocus(self):
-            if not self.treeCtrl:
-                return None
-            fw = wx.Window.FindFocus()
-            return fw is self.treeCtrl #or fw is self.treeCtrl._canvas
-        #@-node:Focus Gain/Lose
-        #@+node:SetFocus
-        def setFocus(self):
-
-            if not self.treeCtrl or g.app.killed or self.c.frame.killed: return
-
-            self.treeCtrl.SetFocus()
-
-        SetFocus = setFocus
-
-        #@-node:SetFocus
-        #@+node:getCanvas
-        def getCanvas(self):
-            return self.treeCtrl._canvas
-        #@nonl
-        #@-node:getCanvas
-        #@+node:getCanvasHeight
-        def getCanvasHeight(self):
-            x, y, w, h = self
-            print '++++++', self.treeCtrl._canvas._size.height
-            return self.treeCtrl._canvas._size.height
-
-        #@-node:getCanvasHeight
-        #@+node:getLineHeight
-        #@-node:getLineHeight
-        #@+node:onScrollRelative
-        def onScrollRelative(self, orient, value):
-            self.treeCtrl.onScrollRelative(orient, value)
-        #@nonl
-        #@-node:onScrollRelative
-        #@+node:HasCapture / Capture / Release Mouse
-        def HasCapture(self):
-            return self.getCanvas().HasCapture()
-
-        def CaptureMouse(self):
-            return self.getCanvas().CaptureMouse()
-
-        def ReleaseMouse(self):
-            return self.getCanvas().ReleaseMouse()
-        #@-node:HasCapture / Capture / Release Mouse
-        #@+node:setCursor
-        def setCursor(self, cursor):
-            if cursor == 'drag':
-                self.getCanvas().SetCursor(wx.StockCursor(wx.CURSOR_HAND))
-            else:
-                self.getCanvas().SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
-
-        #@-node:setCursor
-        #@+node:idle_redraw
-        def idle_redraw(*args, **kw):
-            return
-        #@nonl
-        #@-node:idle_redraw
-        #@+node:Drawing
-        #@+node:beginUpdate
-        def beginUpdate(self):
-
-            self.updateCount += 1
-        #@-node:beginUpdate
-        #@+node:endUpdate
-        def endUpdate(self, flag=True, scroll=False):
-
-            assert(self.updateCount > 0)
-
-            self.updateCount -= 1
-            if flag and self.updateCount <= 0:
-                self.redraw()
-
-                if self.updateCount < 0:
-                    g.trace("Can't happen: negative updateCount", g.callers())
-
-
-
-        #@-node:endUpdate
-        #@+node:redraw & redraw_now & helpers
-        redrawCount = 0
-
-        def redraw (self, scroll=True):
-
-            c = self.c ;
-            cc = c.chapterController
-            tree = self.treeCtrl
-
-            if c is None or self.drawing:
-                return
-
-            #self.redrawCount += 1
-            #if not g.app.unitTesting: g.trace(self.redrawCount,g.callers())
-
-            self.drawing = True # Disable event handlers.
-
-            if cc and cc.chapterSelector:
-                cc.chapterSelector.update()
-
-            try:
-                self.expandAllAncestors(c.currentPosition())
-                tree.update()
-                self.scrollTo()
-            finally:
-                self.drawing = False # Enable event handlers.
-
-            #if not g.app.unitTesting: g.trace('done')
-
-        redraw_now = redraw
-        #@-node:redraw & redraw_now & helpers
-        #@+node:scrollTo
-        def scrollTo(self,p=None):
-            """Scrolls the canvas so that p is in view.
-
-            Assumes that the canvas is in a valid state.
-            """
-
-            __pychecker__ = '--no-argsused' # event not used.
-            __pychecker__ = '--no-intdivide' # suppress warning about integer division.
-
-            c = self.c
-            tree = self.treeCtrl
-
-            if not p or not c.positionExists(p):
-                p = c.currentPosition()
-
-            if not p or not c.positionExists(p):
-                # g.trace('current p does not exist',p)
-                p = c.rootPosition()
-
-            if not p or not c.positionExists(p):
-                # g.trace('no position')
-                return
-
-            target_p = p
-
-            positions = tree.getPositions()
-
-            #@    << virtual top for target >>
-            #@+node:<< virtual top for target >>
-
-            #
-            # Find the virtual top for node.
-            #
-
-            hoistFlag = bool(c.hoistStack)
-
-            if hoistFlag:
-                stk = [c.hoistStack[-1].p]
-            else:
-                stk = [c.rootPosition()]
-            #g.trace('====================')
-            count = 0
-            while stk:
-
-                p = stk.pop()
-
-                while p:
-
-                    if p == target_p:
-                        stk = None
-                        p = None
-                        break
-
-                    #g.trace('count', p)
-                    if stk or not hoistFlag:
-                        newp = p.next()
-                    else:
-                        newp = None
-
-                    count += 1
-
-                    if p.isExpanded() and p.hasFirstChild():
-                        stk.append(newp)
-                        p = p.firstChild()
-                        continue
-
-                    p = newp
-
-            targetTop = count * tree._canvas._lineHeight
-            #g.trace(targetTop, count)
-            #@nonl
-            #@-node:<< virtual top for target >>
-            #@nl
-
-            if 1 and self.center_selected_tree_node:
-                newtop = targetTop - (self.treeCtrl.GetClientSize().height)//2
-                if newtop < 0:
-                    newtop = 0
-
-                #tree.onScroll(wx.VERTICAL, newtop)
-                #g.trace(newtop, targetTop, self.treeCtrl.GetClientSize())
-            else:
-                assert False, 'FIXME - tree.ScrollTo'
-
-        idle_scrollTo = scrollTo # For compatibility.
-        #@-node:scrollTo
-        #@-node:Drawing
-        #@+node:== Event handlers ==
-        #@+node:def onChar
-        def onChar(self, event, keycode, keysym):
-            pass
-        #@nonl
-        #@-node:def onChar
-        #@+node:onHeadlineKey
-
-        # k.handleDefaultChar calls onHeadlineKey.
-        def onHeadlineKey (self, event):
-
-            #g.trace(event)
-
-            if g.app.killed or self.c.frame.killed:
-                return
-
-            if event and event.keysym:
-                self.updateHead(event, event.widget)
-        #@-node:onHeadlineKey
-        #@+node:Drag
-        #@+node:startDrag
-        def startDrag(self, p, event):
-
-            c = self.c
-            c.setLog()
-
-            if not p:
-                return
-            #g.trace()
-
-
-            self.startDragPoint = self.dragPoint = event.GetPosition()
-
-            self.drag_p = p # don't copy as p is enhanced
-
-            self.dragging = True
-
-            #g.trace("\n\t*** start drag ***", self.drag_p.headString())
-
-            #print '\tself.controlDrag', self.controlDrag
-
-            if self.allow_clone_drags:
-                self.controlDrag = c.frame.controlKeyIsDown
-                if self.look_for_control_drag_on_mouse_down:
-                    if self.enable_drag_messages:
-                        if self.controlDrag:
-                            g.es("dragged node will be cloned")
-                        else:
-                            g.es("dragged node will be moved")
-            else:
-                 self.controlDrag = False
-
-            self.setCursor('drag')
-        #@-node:startDrag
-        #@+node:onDrag
-        def onDrag(self, p, event):
-
-            #print 'onDrag',
-
-            c = self.c
-
-            if not p:
-                p = self.drag_p
-
-            c.setLog()
-
-            if not self.dragging:
-                if not g.doHook("drag1",c=c,p=p,v=p,event=event):
-                    self.startDrag(p, event)
-                g.doHook("drag2",c=c,p=p,v=p,event=event)
-
-            if not g.doHook("dragging1",c=c,p=p,v=p,event=event):
-                self.continueDrag(p, event)
-            g.doHook("dragging2",c=c,p=p,v=p,event=event)
-        #@-node:onDrag
-        #@+node:onEndDrag
-        def onEndDrag(self, drop_p, event):
-
-            """Tree end-of-drag handler."""
-
-            c = self.c ; p = self.drag_p
-            if not (drop_p and self.drag_p):
-                self.cancelDrag()
-
-            c.setLog()
-
-            if not g.doHook("enddrag1",c=c,p=p,v=p,event=event):
-                self.endDrag(drop_p, event)
-            g.doHook("enddrag2",c=c,p=p,v=p,event=event)
-        #@+node:endDrag
-        def endDrag (self, drop_p, event):
-
-            """The official helper of the onEndDrag event handler."""
-
-            c = self.c
-            c.setLog()
-
-            #g.trace()
-
-            p = self.drag_p
-
-            if not event:
-                return
-
-            c.beginUpdate()
-            redrawFlag = False
-            try:
-
-                #@        << set drop_p, childFlag >>
-                #@+node:<< set drop_p, childFlag >>
-
-
-
-                childFlag = drop_p and drop_p.hasChildren() and drop_p.isExpanded()
-                #@-node:<< set drop_p, childFlag >>
-                #@nl
-                if self.allow_clone_drags:
-                    if not self.look_for_control_drag_on_mouse_down:
-                        self.controlDrag = c.frame.controlKeyIsDown
-
-                redrawFlag = drop_p and drop_p.v.t != p.v.t
-                if redrawFlag: # Disallow drag to joined node.
-                    #@            << drag p to drop_p >>
-                    #@+node:<< drag p to drop_p>>
-                    #g.trace('\n')
-                    #print '\tsource:', p.headString()
-                    #print '\ttarget:', drop_p.headString()
-
-                    if self.controlDrag: # Clone p and move the clone.
-                        if childFlag:
-                            c.dragCloneToNthChildOf(p, drop_p, 0)
-                        else:
-                            c.dragCloneAfter(p, drop_p)
-                    else: # Just drag p.
-                        if childFlag:
-                            c.dragToNthChildOf(p, drop_p, 0)
-                        else:
-                            c.dragAfter(p,drop_p)
-                    #@-node:<< drag p to drop_p>>
-                    #@nl
-                elif self.trace and self.verbose:
-                    g.trace("Cancel drag")
-
-                # Reset the old cursor by brute force.
-                self.setCursor('default')
-                self.dragging = False
-                self.drag_p = None
-            finally:
-                # Must set self.drag_p = None first.
-                c.endUpdate(redrawFlag)
-                c.recolor_now() # Dragging can affect coloring.
-        #@-node:endDrag
-        #@-node:onEndDrag
-        #@+node:cancelDrag
-        def cancelDrag(self, p, event):
-
-            #g.trace()
-
-            if self.trace and self.verbose:
-                g.trace("Cancel drag")
-
-            # Reset the old cursor by brute force.
-            self.setCursor('default')
-            self.dragging = False
-            self.drag_p = None
-        #@-node:cancelDrag
-        #@+node:continueDrag
-        def continueDrag(self, p, event):
-
-            #g.trace()
-
-            p = self.drag_p
-            if not p:
-                return
-
-            try:
-                point = event.GetPosition()
-                if self.dragging: # This gets cleared by onEndDrag()
-                    self.dragPoint = point
-                    #print 'ContiueDrag',
-                    #@            << scroll the canvas as needed >>
-                    #@+node:<< scroll the canvas as needed >>
-
-                    # Scroll the screen.
-
-                    # TODO: This is rough, scrolling needs to be much smoother
-                    # TODO: Use a timer instead of mouse motion
-
-                    canvas = self.getCanvas()
-
-                    treeHeight = canvas._treeHeight
-                    treeWidth = canvas._treeWidth
-
-                    top = canvas._virtualTop
-                    treeLeft = cavas._virtualLeft
-
-                    width, height = canvas._size
-
-                    pos = point.y
-                    vpos = pos + top
-
-
-                    updelta = max(1, vpos/treeHeight)
-                    downdelta = max(1, (treeHeight - vpos)/treeHeight)
-
-                    cx = canvas.GetPosition().x
-
-
-                    diff = downdelta = updelta = 1
-                    if pos < 10:
-                        diff = (10 - pos)*5
-                        self.onScrollRelative(wx.VERTICAL, -min(updelta*diff, 5000) )
-
-                    elif pos > height - 10:
-                        diff = (height - 10 - pos)*5
-                        self.onScrollRelative(wx.VERTICAL, -min(downdelta*diff, 5000) )
-
-                    if point.x + cx < 10:
-                        self.onScrollRelative(wx.HORIZONTAL, -10)
-
-                    elif point.x + cx > self.treeCtrl.GetClientSize().width:
-                        self.onScrollRelative(wx.HORIZONTAL, 10)
-
-                    #g.trace(updelta*diff, downdelta*diff, diff)
-                    #@-node:<< scroll the canvas as needed >>
-                    #@nl
-            except:
-                g.es_event_exception("continue drag")
-        #@-node:continueDrag
-        #@-node:Drag
-        #@+node:Mouse Events
-        """
-        All mouse events are collected by the treeCtrl and sent
-        to a dispatcher (onMouse).
-
-        onMouse is called with dispatcher is called with a position,
-
-        a 'source' which is the name of an region inside the headline
-            this could be 'ClickBox', 'IconBox', 'TextBox' or a user supplied
-
-
-
-        """
-
-
-        #@+node:onMouse (Dispatcher)
-        def onMouse(self, event, type):
-            '''
-            Respond to mouse events and call appropriate handlers.
-
-            'event' is the raw 'event' object from the original event.
-
-            'type' is a string representing the type of event and may
-            have one of the following values:
-
-                + LeftDown, LeftUp, LeftDoubleClick
-                + MiddleDown, MiddleUp, MiddleDoubleClick
-                + RightDown, RightUp, RightDoubleClick
-                + and Motion
-
-            'source' is a string derived from 'event' which represents
-            the position of the event in the headline and may have one
-            of the following values:
-
-                ClickBox, IconBox, TextBox, Headline.
-
-            'source' may also have a user defined value representing,
-            for example, a user defined icon.
-
-            'sp' is leo position object, derived from event via HitTest,
-            representing the node on which the event occured. It is
-            called sp rather than the usual 'p' because it is 'special',
-            in that it contains extra information.
-
-            The value of 'source' and 'type' are combined and the
-            following three methods are called in order for each event:
-
-                + onPreMouse{type}(sp, event, source, type)
-                + onMouse{source}{type}(sp, event, source, type)
-                + onPostMouse{type}(sp, event, source, type)
-
-            None of these methods need exist and are obviously not called
-            if they don't.
-
-            The 'source' value is always an empty string for
-            Motion events.
-
-            Note to self: Refrain from taking drugs while proramming.
-            '''
-
-            point = event.GetPosition()
-
-            sp, source = self.hitTest(point)
-
-            #g.trace(self, type, source, sp)
-
-            if False and type != 'Motion':
-                #@        << trace mouse >>
-                #@+node:<< trace mouse >>
-                g.trace('\n\tsource:', source)
-                print '\ttype:', type
-                print '\theadline', sp and sp.headString()
-                print
-
-                s = 'onPreMouse' + type
-                print '\t', s
-                if hasattr(self, s):
-                    getattr(self, s)(sp, event, source, type)
-
-                s = 'onMouse' + source + type
-                print '\t', s
-                if hasattr(self, s):
-                    getattr(self, s)(sp, event, source, type)
-
-                s = 'onPostMouse' + type
-                print '\t', s
-                if hasattr(self, s):
-                    getattr(self, s)(sp, event, source, type)
-
-                #@-node:<< trace mouse >>
-                #@nl
-            else:
-
-                s = 'onPreMouse' + type
-                if hasattr(self, s):
-                    getattr(self, s)(sp, event, source, type)
-
-                if type == 'Motion':
-                    s='onMouseMotion'
-                    if hasattr(self, s):
-                        getattr(self, s)(sp, event, source, type)
-                else:
-                    s = 'onMouse' + source + type
-                    if hasattr(self, s):
-                        #print 'ok for ', source, type
-                        getattr(self, s)(sp, event, source, type)
-                    else:
-                        #print 'fail for ', source, type
-                        pass
-                s = 'onPostMouse' + type
-                if hasattr(self, s):
-                    getattr(self, s)(sp, event, source, type)
-
-        #@-node:onMouse (Dispatcher)
-        #@+node:HitTest
-        def hitTest(self, point):
-            return self.treeCtrl._canvas.hitTest(point)
-
-
-
-        #@-node:HitTest
-        #@+node:Pre
-        #@+node:onPreMouseLeftDown
-        def onPreMouseLeftDown(self, sp, event, source, type):
-            #g.trace('source:', source, 'type:', type, 'Position:', sp and sp.headString())
-
-            self.setFocus()
-        #@-node:onPreMouseLeftDown
-        #@+node:onPreMouseLeftUp
-        #@+at
-        # def onPreMouseLeftUp(self, sp, event, source, type):
-        #     g.trace('source:', source, 'type:', type, 'Position:', sp and
-        # sp.headString())
-        #@-at
-        #@-node:onPreMouseLeftUp
-        #@+node:onPreMouseRightDown
-        #@+at
-        # def onPreMouseRightDown(self, sp, event, source, type):
-        #     g.trace('source:', source, 'type:', type, 'Position:', sp and
-        # sp.headString())
-        #@-at
-        #@-node:onPreMouseRightDown
-        #@+node:onPreMouseRightUp
-        #@+at
-        # def onPreMouseRightUp(self, sp, event, source, type):
-        #     g.trace('source:', source, 'type:', type, 'Position:', sp and
-        # sp.headString())
-        #@-at
-        #@-node:onPreMouseRightUp
-        #@+node:onPreMouseMotion
-        #@-node:onPreMouseMotion
-        #@-node:Pre
-        #@+node:Post
-        #@+node:onPostMouseLeftDown
-        #@+at
-        # def onPostMouseLeftDown(self, sp, event, source, type):
-        #     g.trace('source:', source, 'type:', type, 'Position:', sp and
-        # sp.headString())
-        #@-at
-        #@-node:onPostMouseLeftDown
-        #@+node:onPostMouseLeftUp
-        def onPostMouseLeftUp(self, sp, event, source, type):
-            #g.trace('source:', source, 'type:', type, 'Position:', sp and sp.headString())
-
-            self.setCursor('default')
-            if self.HasCapture():
-                self.ReleaseMouse()
-
-            #If we are still dragging here something as gone wrong.
-            if self.dragging:
-                self.cancelDrag(sp, event)
-        #@-node:onPostMouseLeftUp
-        #@+node:onPostMouseRightDown
-        #@+at
-        # def onPostMouseRightDown(self, sp, event, source, type):
-        #     g.trace('source:', source, 'type:', type, 'Position:', sp and
-        # sp.headString())
-        # 
-        #@-at
-        #@-node:onPostMouseRightDown
-        #@+node:onPostMouseRightUp
-        #@+at
-        # def onPostMouseRightUp(self, sp, event, source, type):
-        #     g.trace('source:', source, 'type:', type, 'Position:', sp and
-        # sp.headString())
-        # 
-        #@-at
-        #@-node:onPostMouseRightUp
-        #@+node:onPostMouseMotion
-        #@-node:onPostMouseMotion
-        #@-node:Post
-        #@+node:Motion
-        def onMouseMotion(self, p, event, source, type):
-            if self.dragging:
-                self.onDrag(p, event)
-        #@-node:Motion
-        #@+node:Click Box
-        #@+node:onMouseClickBoxLeftDown
-        def onMouseClickBoxLeftDown (self, p, event, source, type):
-            """React to leftMouseDown event on ClickBox.
-
-            Toggles expanded status for this node.
-
-            """
-
-            c = self.c
-
-            p1 = c.currentPosition()
-            #g.trace(source, type, p)
-            c.beginUpdate()
-            try:
-                if not g.doHook("boxclick1", c=c, p=p, v=p, event=event):
-
-                    self.endEditLabel()
-
-                    if p == p1 or self.initialClickExpandsOrContractsNode:
-                        if p.isExpanded():
-                            p.contract()
-                        else:
-                            p.expand()
-
-                    self.select(p)
-
-                    if c.frame.findPanel:
-                        c.frame.findPanel.handleUserClick(p)
-                    if self.stayInTree:
-                        c.treeWantsFocus()
-                    else:
-                        c.bodyWantsFocus()
-
-                g.doHook("boxclick2", c=c, p=p, v=p, event=event)
-
-            finally:
-                c.endUpdate()
-
-
-        #@-node:onMouseClickBoxLeftDown
-        #@-node:Click Box
-        #@+node:Icon Box...
-        #@+node:onMouseIconBoxLeftDown
-        def onMouseIconBoxLeftDown(self, p, event, source , type):
-            """React to leftMouseDown event on the icon box."""
-
-            #g.trace(source, type)
-            c = self.c
-            c.setLog()
-
-            if not self.HasCapture():
-                self.CaptureMouse()
-
-            c.beginUpdate()
-            try:
-                if not g.doHook("iconclick1", c=c, p=p, v=p, event=event):
-
-                    self.endEditLabel()
-                    self.onDrag(p, event)
-
-                    self.select(p)
-
-                    if c.frame.findPanel:
-                        c.frame.findPanel.handleUserClick(p)
-                    if self.stayInTree:
-                        c.treeWantsFocus()
-                    else:
-                        c.bodyWantsFocus()
-
-                g.doHook("iconclick2", c=c, p=p, v=p, event=event)
-
-            finally:
-                c.endUpdate()
-
-        #@-node:onMouseIconBoxLeftDown
-        #@+node:onMouseIconBoxLeftUp
-
-        def onMouseIconBoxLeftUp(self, sp, event, source, type):
-            #g.trace('\n\tDrop:', self.drag_p, '\n\tOn:', sp and sp.headString())
-
-            if self.dragging:
-                self.onEndDrag(sp, event)
-        #@nonl
-        #@-node:onMouseIconBoxLeftUp
-        #@+node:onMouseIconBoxLeftDoubleClick
-        def onMouseIconBoxLeftDoubleClick(self, sp, event, source, type):
-
-            c = self.c
-
-            assert sp
-
-            #g.trace()
-
-            if self.trace and self.verbose: g.trace()
-
-            try:
-                if not g.doHook("icondclick1",c=c,p=sp,v=sp,event=event):
-                    self.endEditLabel() # Bug fix: 11/30/05
-                    self.OnIconDoubleClick(sp) # Call the method in the base class.
-                g.doHook("icondclick2",c=c,p=sp,v=sp,event=event)
-            except:
-                g.es_event_exception("icondclick")
-        #@-node:onMouseIconBoxLeftDoubleClick
-        #@-node:Icon Box...
-        #@+node:Text Box
-        #@+node:onMouseTextBoxLeftDown
-
-        def onMouseTextBoxLeftDown(self, p, event, source, type):
-            """React to leftMouseDown event on the label of a headline."""
-
-            c = self.c
-            c.setLog()
-
-            c.beginUpdate()
-            try:
-                if c.isCurrentPosition(p):
-
-                    self.editLabel(p)
-
-                else:
-                    if not g.doHook("headclick1",c=c,p=p,v=p,event=event):
-
-                        self.endEditLabel()
-                        self.select(p)
-
-                        if c.frame.findPanel:
-                            c.frame.findPanel.handleUserClick(p)
-
-                        if self.stayInTree:
-                            c.treeWantsFocus()
-                        else:
-                            c.bodyWantsFocus()
-                    g.doHook("headclick2",c=c,p=p,v=p,event=event)
-            finally:
-                c.endUpdate()
-
-        #@-node:onMouseTextBoxLeftDown
-        #@-node:Text Box
-        #@+node:Headline
-        #@+node:onMouseHeadlineLeftDown
-
-        def onMouseHeadlineLeftDown(self, sp, event, source, type):
-            """React to leftMouseDown event outside of main headline regions."""
-
-            #g.trace('FIXME')
-            if not self.expanded_click_area:
-
-                return
-            self.onMouseClickBoxLeftDown(sp, event, source, type)
-        #@-node:onMouseHeadlineLeftDown
-        #@-node:Headline
-        #@-node:Mouse Events
-        #@-node:== Event handlers ==
-        #@+node:editLabel
-        def editLabel (self,p,selectAll=False):
-            '''The edit-label command.'''
-
-            #g.trace(g.callers())
-
-            if g.app.killed or self.c.frame.killed: return
-
-            c = self.c
-
-            entry = self.headlineTextWidget
-
-            if p:
-
-                c.beginUpdate()
-                try:
-                    self.endEditLabel()
-                    self.setEditPosition(p)
-                    #g.trace('ep', self.editPosition())
-                finally:
-                    c.endUpdate()
-
-                # Help for undo.
-                self.revertHeadline = s = p.headString()
-
-                self.setEditLabelState(p)
-
-                entry.setAllText(s)
-
-                selectAll = selectAll or self.select_all_text_when_editing_headlines
-                if selectAll:
-                    entry.ctrl.SetSelection(-1, -1)
-                else:
-                    entry.ctrl.SetInsertionPointEnd()
-                entry.ctrl.SetFocus()
-                c.headlineWantsFocus(p)
-        #@-node:editLabel
-        #@+node:endEditLabel
-        def endEditLabel (self, event=None):
-            '''End editing of a headline and update p.headString().'''
-
-            c = self.c
-
-            if event:
-                #g.trace('kill focus')
-                pass
-
-            if g.app.killed or c.frame.killed:
-                return
-
-            w = self.headlineTextWidget
-
-            ep = self.editPosition()
-            if not ep:
-                return
-
-            s = w.getAllText()
-
-            h = ep.headString()
-
-            #g.trace('old:',h,'new:',s)
-
-            # Don't clear the headline by default.
-            if s and s != h:
-                self.onHeadChanged(ep,undoType='Typing',s=s)
-
-            self.setEditPosition(None)
-            c.beginUpdate()
-            c.endUpdate()
-
-            if c.config.getBool('stayInTreeAfterEditHeadline'):
-                c.treeWantsFocusNow()
-            else:
-                c.bodyWantsFocusNow()
-
-            if event:
-                event.Skip()
-        #@-node:endEditLabel
-        #@+node:tree.setHeadline (new in 4.4b2)
-        def setHeadline (self,p,s):
-
-            '''Set the actual text of the headline widget.
-
-            This is called from the undo/redo logic to change the text before redrawing.'''
-
-            w = self.editPosition() and self.headlineTextWidget
-
-            w = self.edit_widget(p)
-            if w:
-                w.setAllText(s)
-                self.revertHeadline = s
-            elif g.app.killed or self.c.frame.killed:
-                return
-            else:
-                g.trace('#'*20,'oops')
-        #@-node:tree.setHeadline (new in 4.4b2)
-        #@+node:tree.set...LabelState
-        #@+node:setEditLabelState
-        def setEditLabelState(self, p, selectAll=False):
-
-            #g.trace()
-            pass
-
-        #@-node:setEditLabelState
-        #@+node:setSelectedLabelState
-
-        def setSelectedLabelState(self, p):
-
-            # g.trace(p, g.callers())
-
-            if p:
-                p.setSelected()
-
-        #@-node:setSelectedLabelState
-        #@+node:setUnselectedLabelState
-
-        def setUnselectedLabelState(self,p): # not selected.
-
-            # g.trace(p, g.callers())
-
-            if p:
-                # clear 'selected' status flag
-                p.v.statusBits &= ~ p.v.selectedBit
-
-        #@-node:setUnselectedLabelState
-        #@-node:tree.set...LabelState
-        #@+node:do nothings
-        def headWidth (self,p=None,s=''): return 0
-
-        # Colors.
-        def setDisabledHeadlineColors (self,p):             pass
-        def setEditHeadlineColors (self,p):                 pass
-        def setUnselectedHeadlineColors (self,p):           pass
-
-
-        # Focus
-        def focus_get (self):
-            return self.FindFocus()
-
-        def setFocus (self):
-            self.treeCtrl.SetFocusIgnoringChildren()
-
-        SetFocus = setFocus
-
-
-        #@-node:do nothings
-        #@+node:GetName
-        def GetName(self):
-            return 'canvas'
-
-        getName = GetName
-        #@-node:GetName
-        #@+node:Reparent
-        def reparent(self, parent):
-            self.treeCtrl.Reparent(parent)
-
-        Reparent = reparent
-        #@-node:Reparent
-        #@+node:Font Property
-        def getFont(self):
-            g.trace('not ready')
-
-        def setFont(self):
-            g.trace('not ready')
-
-        font = property(getFont, setFont)
-
-
-
-        #@-node:Font Property
-        #@+node:requestLineHeight
-        def requestLineHeight(height):
-            self.getCanvas().requestLineHeight(height)
-        #@nonl
-        #@-node:requestLineHeight
-        #@+node:line_height property
-        def getLineHeight(self):
-            return self.treeCtrl._canvas._lineHeight
-
-        line_height = property(getLineHeight)
-        #@nonl
-        #@-node:line_height property
-        #@-others
-    #@nonl
-    #@-node:wxLeoTree class (leoFrame.leoTree):
-    #@-others
-#@nonl
-#@-node:== TREE WIDGETS ==
+#@-node:bob.20080111201957.96:class OutlineCanvas
 #@-others
 
 def abspath(*args):
@@ -2390,6 +1253,8 @@ if __name__ == "__main__":
     g = controller.globals()
     c = controller.openLeoFile(abspath(leoDir, 'test', 'unitTest.leo'))
 
+    outlineFont = ''
+
     colors = g.importExtension('colors')
 
     GtkLeoTreeDemo()
@@ -2397,5 +1262,5 @@ if __name__ == "__main__":
     gtk.main()
 
 
-#@-node:@file /home/bob/work/leo/workleo/test/gtkOutlineTest.py
+#@-node:bob.20080111200056:@thin gtkOutlineTest.py
 #@-leo
