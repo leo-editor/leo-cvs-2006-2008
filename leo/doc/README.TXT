@@ -1,6 +1,6 @@
-Leo 4.4.6 beta 1                           December 17, 2007
+Leo 4.4.6 beta 2                           January 15, 2008
 
-Leo 4.4.6 beta 1 is available at:
+Leo 4.4.6 beta 2 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
 
 Leo 4.4.6 fixes several recently reported bugs, all minor.
