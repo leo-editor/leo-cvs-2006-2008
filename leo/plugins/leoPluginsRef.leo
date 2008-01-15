@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.425056947608">
-	<global_window_position top="25" left="356" height="865" width="841"/>
+<globals body_outline_ratio="0.336912751678">
+	<global_window_position top="19" left="273" height="725" width="841"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -287,10 +287,6 @@
 </v>
 <v t="ekr.20060703162826"><vh>Dialogs</vh>
 <v t="ekr.20060703162506"><vh>@thin keybindings.py</vh></v>
-<v t="bob.20080109185406"><vh>gtkDialogs</vh>
-<v t="bob.20080109185406.1"><vh>@thin gtkDialogs.py</vh></v>
-<v t="bob.20080109185406.2"><vh>@thin runGtkDialogs.py.txt</vh></v>
-</v>
 </v>
 <v t="ekr.20041030092101"><vh>Dyna plugins by e</vh>
 <v t="ekr.20060110125615"><vh>@url http://rclick.netfirms.com/dyna_menu.py.html  (dyna plugin)</vh></v>
@@ -307,7 +303,7 @@
 <v t="EKR.20040517075715"><vh>External editors &amp; Open With</vh>
 <v t="EKR.20040517075715.1"><vh>@thin mod_tempfname.py</vh></v>
 <v t="EKR.20040517080049.4"><vh>@thin open_shell.py</vh></v>
-<v t="EKR.20040517075715.4"><vh>@thin open_with.py</vh></v>
+<v t="bob.20071218121513"><vh>@thin open_with.py</vh></v>
 <v t="EKR.20040517075715.10"><vh>@thin vim.py</vh></v>
 <v t="EKR.20040517075715.12"><vh>@thin xemacs.py</vh></v>
 <v t="EKR.20040517075715.13"><vh>Word export</vh>
@@ -332,7 +328,9 @@
 <v t="edream.110203113231.233"><vh>wxGui plugin (Use at your own risk)</vh>
 <v t="edream.110203113231.302"><vh>@thin __wx_gui.py</vh></v>
 </v>
-<v t="bob.20070910154126.2"><vh>@thin __wx_alt_gui.py</vh></v>
+<v t="bob.20070910154126.2"
+expanded="bob.20070813163332.63,"><vh>@thin __wx_alt_gui.py</vh></v>
+<v t="ekr.20080112150934" a="E"><vh>@thin gtkGui.py</vh></v>
 </v>
 <v t="ekr.20040722135402"><vh>Icon and status areas</vh>
 <v t="ekr.20060328125925"><vh>@thin chapter_hoist.py</vh></v>
@@ -375,7 +373,8 @@
 <v t="ekr.20040828122150"><vh>@thin pie_menus.py</vh></v>
 </v>
 <v t="ekr.20060530091119"><vh>New colorizer</vh>
-<v t="ekr.20071010193720"><vh>@thin threading_colorizer.py	</vh></v>
+<v t="ekr.20071010193720"
+marks="ekr.20071010193720.21,"><vh>@thin threading_colorizer.py	</vh></v>
 </v>
 <v t="edream.110203113231.872"><vh>Nodes...</vh>
 <v t="edream.110203113231.873"><vh>@thin at_folder.py</vh></v>
@@ -539,7 +538,7 @@
 </v>
 <v t="ekr.20041009112303"><vh>Plugins manager, updater &amp; menu</vh>
 <v t="EKR.20040517080555.1"><vh> Plugins menu</vh>
-<v t="EKR.20040517080555.2"><vh>@thin plugins_menu.py</vh></v>
+<v t="bob.20071208012538"><vh>@thin plugins_menu.py</vh></v>
 <v t="EKR.20040517080555.25"><vh>@thin pluginsTest.py</vh></v>
 <v t="EKR.20040517080555.32"><vh>Notes re plugins menu</vh>
 <v t="EKR.20040517080555.33"><vh> Changes made by E.K.Ream</vh></v>
@@ -1434,7 +1433,6 @@ in LeoDocs.leo for full details.
 **Important**: Leo no longer uses pluginsManager.txt to enable or disable plugins.
 
 @color</t>
-<t tx="bob.20080109185406"></t>
 <t tx="edream.110203113231.233">@color</t>
 <t tx="edream.110203113231.618">@ It is usually best _not_ to catch exceptions in plugins:
 doHook catches all exceptions and disables further calls to plugins.

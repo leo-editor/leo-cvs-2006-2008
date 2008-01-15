@@ -1619,6 +1619,8 @@ plugins\footprints.py
 plugins\french_fm.py
 plugins\graphed.py
 plugins\groupOperations.py
+plugins\gtkDialogs.py
+plugins\gtkGui.py
 plugins\hoist.py
 plugins\image.py
 plugins\import_cisco_config.py
@@ -1681,6 +1683,7 @@ plugins\rowcol.py
 plugins\rst.py
 plugins\rst2.py
 plugins\rst3.py
+plugins\runGtkDialogs.py.txt
 plugins\run_nodes.py
 plugins\scheduler.py
 plugins\script_io_to_body.py
@@ -1743,6 +1746,13 @@ src\leoFileCommands.py
 src\leoFind.py
 src\leoFrame.py
 src\leoGlobals.py
+src\leoGtkDialog.py
+src\leoGtkFind.py
+src\leoGtkFrame.py
+src\leoGtkGui.py
+src\leoGtkKeys.py
+src\leoGtkMenu.py
+src\leoGtkTree.py
 src\leoGui.py
 src\leoImport.py
 src\leoKeys.py
