@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.431306306306">
-	<global_window_position top="14" left="355" height="828" width="877"/>
+	<global_window_position top="14" left="355" height="788" width="877"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -785,6 +785,7 @@
 <v t="ekr.20071217093444.1"><vh>@rst html\new-4-4-6.html</vh>
 <v t="ekr.20071217093444.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20071217093444.5"><vh>New commands</vh></v>
+<v t="ekr.20080116071239"><vh>New features</vh></v>
 <v t="ekr.20071217093444.6"><vh>New settings</vh></v>
 <v t="ekr.20071217093444.7"><vh>@rst-no-head end stuff</vh></v>
 </v>
@@ -1122,6 +1123,7 @@
 <v t="ekr.20071217093444.1"><vh>@rst html\new-4-4-6.html</vh>
 <v t="ekr.20071217093444.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20071217093444.5"><vh>New commands</vh></v>
+<v t="ekr.20080116071239"><vh>New features</vh></v>
 <v t="ekr.20071217093444.6"><vh>New settings</vh></v>
 <v t="ekr.20071217093444.7"><vh>@rst-no-head end stuff</vh></v>
 </v>
@@ -3513,15 +3515,15 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20080106114225" a="ETV"><vh>leo 4.4.6 b2</vh>
+<v t="ekr.20080106114225" a="TV"><vh>leo 4.4.6 b2</vh>
 <v t="ekr.20080106114648"><vh>Fixed bugs</vh>
 <v t="ekr.20080106114203.1"><vh>Fixed bug in nav_buttons plugin</vh></v>
 <v t="ekr.20080106114203.2"><vh>Fixed problems with modes/rest.py</vh></v>
 <v t="ekr.20080106114203.3"><vh>Replaced delete-all-icons command with a script in script.leo</vh></v>
 <v t="ekr.20080106114203.4"><vh>Leo issues better messages if Image can not be imported</vh></v>
-<v t="ekr.20080115093848.18" a="E"><vh>Added convenience methods for icons</vh></v>
-<v t="ekr.20080115093848.19" a="E"><vh>Fixed undo bug</vh></v>
-<v t="ekr.20080115093848.23" a="E"><vh>Don't mark nodes dirty if insert-icon is cancelled</vh></v>
+<v t="ekr.20080115093848.18"><vh>Added convenience methods for icons</vh></v>
+<v t="ekr.20080115093848.19"><vh>Fixed undo bug</vh></v>
+<v t="ekr.20080115093848.23"><vh>Don't mark nodes dirty if insert-icon is cancelled</vh></v>
 </v>
 </v>
 </v>
@@ -32090,10 +32092,18 @@ Leo creates @auto trees by parsing the corresponding derived file. Parsers
 create descendant nodes of the @auto tree: one node for each class, method and
 function in the derived file.
 
-Parsers presently exist for C, elisp, Java, Pascal, PHP and Python. Leo
-determines the language using the file's extension. If no parser exists for a
-language, the entire body of the derived file is copied to the body of the @auto
-node.</t>
+Parsers presently exist for C, elisp, Java, Javascript, Pascal, PHP, Python and xml. Leo
+determines the language using the file's extension.  Notes:
+    
+- If no parser exists for a language, the entire body of the derived file is
+  copied to the body of the @auto node.
+  
+- Javascript regexps that look like section references cause problems, but that
+  can not be helped.
+  
+- Use the @data import_xml_tags setting in leoSettings.leo to specify the xml
+  tags that create outline nodes. By default, the **organizer tags** are html,
+  body, head, and div.</t>
 <t tx="ekr.20070814090306.2">Leo performs several checks to ensure that the result of importing an external
 file will be equivlant to the file that writing the @auto tree would produce.
 
@@ -33703,6 +33713,10 @@ Scripts can delete icons from the presently selected node using the following me
 <t tx="ekr.20080115093848.19">http://sourceforge.net/forum/message.php?msg_id=4712329
 </t>
 <t tx="ekr.20080115093848.23">http://sourceforge.net/forum/message.php?msg_id=4714779
+</t>
+<t tx="ekr.20080116071239">- Added support for @auto xml and @auto javascript.
+  Use @data import_xml_tags setting to specify the xml tags that act as organizers.
+  Javascript regexps that look like section references cause problems, but that can not be helped.
 </t>
 </tnodes>
 </leo_file>
