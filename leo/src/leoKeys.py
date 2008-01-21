@@ -1060,7 +1060,7 @@ class autoCompleterClass:
     #@-node:ekr.20061031131434.46:start
     #@-node:ekr.20061031131434.16:Helpers
     #@+node:ekr.20061031131434.47:Scanning
-    # Not used at present, but soon.
+    # Not used at present.
     #@+node:ekr.20061031131434.48:initialScan
     # Don't call this finishCreate: the startup logic would call it too soon.
 
@@ -1357,7 +1357,7 @@ class autoCompleterClass:
             finally:
                 c.atFileCommands.putBody = self.old_putBody
 
-            return s # Bug fix: 4/29/07: Don't put a return in a finally clause.
+            return s # Don't put a return in a finally clause.
 
 
         #@-node:ekr.20061031131434.62:parse
