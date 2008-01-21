@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="187" left="302" height="580" width="800"/>
+	<global_window_position top="17" left="66" height="729" width="1199"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -12,18 +12,614 @@
 <v t="ekr.20080121105857"><vh>Startup</vh>
 <v t="ekr.20080121105230.3"><vh>@chapters</vh></v>
 </v>
-<v t="ekr.20080121105857.1"><vh>Scripts</vh>
 <v t="ekr.20080121105800"><vh>create-at-auto-nodes</vh></v>
-</v>
-<v t="ekr.20080121105837" a="TV"><vh>Komodo autocompleter code</vh>
+<v t="ekr.20080121122039"><vh>@button remove license</vh></v>
+<v t="ekr.20080121105837" a="E"><vh>Komodo autocompleter code</vh>
 <v t="ekr.20080121105837.1"><vh>Komodo notes</vh>
 <v t="ekr.20080121105837.2"><vh>.rng files</vh></v>
 </v>
-<v t="ekr.20080121105837.3"><vh>Komodo code</vh>
-<v t="ekr.20080121105837.4"><vh>licence</vh></v>
-<v t="ekr.20080121105837.5"><vh>Komodo Edit 4.3\lib</vh>
-<v t="ekr.20080121105837.6"><vh>lib/mozilla</vh>
+<v t="ekr.20080121133057"><vh>Important doc nodes</vh>
+<v t="ekr.20080121133057.1"><vh>&lt;&lt; citadel.py docstring &gt;&gt;</vh></v>
+<v t="ekr.20080121133057.2"><vh>&lt;&lt; class CitadelBuffer docstring &gt;&gt;</vh></v>
+<v t="ekr.20080121105837.1770"><vh>&lt;&lt; database.py docstring &gt;&gt; (important)</vh></v>
+<v t="ekr.20080121105837.1853"><vh>sdk/share/lang_LANG.py (Important)</vh></v>
+</v>
+<v t="ekr.20080121105837.3" a="E"><vh>Komodo code</vh>
+<v t="ekr.20080121105837.4"><vh>license1</vh></v>
+<v t="ekr.20080121140752"><vh>license2</vh></v>
+<v t="ekr.20080121105837.1815" a="E"><vh>lib/sdk</vh>
+<v t="ekr.20080121105837.1816"><vh>sdk/bin</vh>
+<v t="ekr.20080121105837.1817"><vh>codeintel.py</vh>
+<v t="ekr.20080121105837.1818"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
+<v t="ekr.20080121105837.1819"><vh>class Shell</vh>
+<v t="ekr.20080121105837.1820"><vh>get_optparser</vh></v>
+<v t="ekr.20080121105837.1821"><vh>postoptparse</vh></v>
+<v t="ekr.20080121105837.1822"><vh>do_scan</vh></v>
+<v t="ekr.20080121105837.1823"><vh>do_html</vh></v>
+</v>
+<v t="ekr.20080121105837.1824"><vh>Internal support functions</vh>
+<v t="ekr.20080121105837.1825"><vh>_url_from_local_path</vh></v>
+<v t="ekr.20080121105837.1826"><vh>_should_include_path</vh></v>
+<v t="ekr.20080121105837.1827"><vh>_paths_from_path_patterns</vh></v>
+<v t="ekr.20080121105837.1828"><vh>class _PerLevelFormatter</vh>
+<v t="ekr.20080121105837.1829"><vh>__init__</vh></v>
+<v t="ekr.20080121105837.1830"><vh>format</vh></v>
+</v>
+<v t="ekr.20080121105837.1831"><vh>_setup_logging</vh></v>
+</v>
+<v t="ekr.20080121105837.1832"><vh>Main line</vh>
+<v t="ekr.20080121105837.1833"><vh>_do_main</vh></v>
+<v t="ekr.20080121105837.1834"><vh>main</vh></v>
+</v>
+</v>
+<v t="ekr.20080121105837.1835"><vh>luddite.py</vh>
+<v t="ekr.20080121105837.1836"><vh>imports</vh></v>
+<v t="ekr.20080121105837.1837"><vh>_set_lib_path</vh></v>
+<v t="ekr.20080121105837.1838"><vh>class Shell</vh>
+<v t="ekr.20080121105837.1839"><vh>get_optparser</vh></v>
+<v t="ekr.20080121105837.1840"><vh>postoptparse</vh></v>
+<v t="ekr.20080121105837.1841"><vh>do_just_compile</vh></v>
+<v t="ekr.20080121105837.1842"><vh>do_deprecated_compile</vh></v>
+<v t="ekr.20080121105837.1843"><vh>_do_parse</vh></v>
+<v t="ekr.20080121105837.1844"><vh>do_deprecated_package</vh></v>
+<v t="ekr.20080121105837.1845"><vh>do_lex</vh></v>
+<v t="ekr.20080121105837.1846"><vh>do_lexhtml</vh></v>
+</v>
+<v t="ekr.20080121105837.1847"><vh>class _PerLevelFormatter</vh>
+<v t="ekr.20080121105837.1848"><vh>__init__</vh></v>
+<v t="ekr.20080121105837.1849"><vh>format</vh></v>
+</v>
+<v t="ekr.20080121105837.1850"><vh>_setup_logging</vh></v>
+<v t="ekr.20080121105837.1851"><vh>_url_from_local_path</vh></v>
+</v>
+</v>
+<v t="ekr.20080121134628"><vh>sdk/pylib</vh>
+<v t="ekr.20080121134650"><vh>cmdln.py</vh>
+<v t="ekr.20080121134847"><vh>cmdln declarations</vh></v>
+<v t="ekr.20080121134847.1"><vh>class CmdlnError</vh>
+<v t="ekr.20080121134847.2"><vh>__init__</vh></v>
+<v t="ekr.20080121134847.3"><vh>__str__</vh></v>
+</v>
+<v t="ekr.20080121134847.4"><vh>class CmdlnUserError</vh></v>
+<v t="ekr.20080121134847.5"><vh>alias</vh></v>
+<v t="ekr.20080121134847.6"><vh>class RawCmdln</vh>
+<v t="ekr.20080121134847.7"><vh>__init__</vh></v>
+<v t="ekr.20080121134847.8"><vh>get_optparser</vh></v>
+<v t="ekr.20080121134847.9"><vh>postoptparse</vh></v>
+<v t="ekr.20080121134847.10"><vh>main</vh></v>
+<v t="ekr.20080121134847.11"><vh>cmd</vh></v>
+<v t="ekr.20080121134847.12"><vh>_str</vh></v>
+<v t="ekr.20080121134847.13"><vh>cmdloop</vh></v>
+<v t="ekr.20080121134847.14"><vh>precmd</vh></v>
+<v t="ekr.20080121134847.15"><vh>postcmd</vh></v>
+<v t="ekr.20080121134847.16"><vh>cmdexc</vh></v>
+<v t="ekr.20080121134847.17"><vh>onecmd</vh></v>
+<v t="ekr.20080121134847.18"><vh>_dispatch_cmd</vh></v>
+<v t="ekr.20080121134847.19"><vh>default</vh></v>
+<v t="ekr.20080121134847.20"><vh>parseline</vh></v>
+<v t="ekr.20080121134847.21"><vh>helpdefault</vh></v>
+<v t="ekr.20080121134847.22"><vh>do_help</vh></v>
+<v t="ekr.20080121134847.23"><vh>_help_reindent</vh></v>
+<v t="ekr.20080121134847.24"><vh>_help_preprocess</vh></v>
+<v t="ekr.20080121134847.25"><vh>_help_preprocess_name</vh></v>
+<v t="ekr.20080121134847.26"><vh>_help_preprocess_option_list</vh></v>
+<v t="ekr.20080121134847.27"><vh>_help_preprocess_command_list</vh></v>
+<v t="ekr.20080121134847.28"><vh>_gen_names_and_attrs</vh></v>
+<v t="ekr.20080121134847.29"><vh>_help_preprocess_help_list</vh></v>
+<v t="ekr.20080121134847.30"><vh>_help_preprocess_cmd_name</vh></v>
+<v t="ekr.20080121134847.31"><vh>_help_preprocess_cmd_usage</vh></v>
+<v t="ekr.20080121134847.32"><vh>_help_preprocess_cmd_option_list</vh></v>
+<v t="ekr.20080121134847.33"><vh>_get_canonical_cmd_name</vh></v>
+<v t="ekr.20080121134847.34"><vh>_get_canonical_map</vh></v>
+<v t="ekr.20080121134847.35"><vh>_get_cmd_handler</vh></v>
+<v t="ekr.20080121134847.36"><vh>_do_EOF</vh></v>
+<v t="ekr.20080121134847.37"><vh>emptyline</vh></v>
+</v>
+<v t="ekr.20080121134847.38"><vh>class StopOptionProcessing</vh></v>
+<v t="ekr.20080121134847.39"><vh>class _OptionParserEx</vh>
+<v t="ekr.20080121134847.40"><vh>error</vh></v>
+<v t="ekr.20080121134847.41"><vh>exit</vh></v>
+</v>
+<v t="ekr.20080121134847.42"><vh>class CmdlnOptionParser</vh>
+<v t="ekr.20080121134847.43"><vh>__init__</vh></v>
+<v t="ekr.20080121134847.44"><vh>print_help</vh></v>
+<v t="ekr.20080121134847.45"><vh>error</vh></v>
+</v>
+<v t="ekr.20080121134847.46"><vh>class SubCmdOptionParser</vh>
+<v t="ekr.20080121134847.47"><vh>set_cmdln_info</vh></v>
+<v t="ekr.20080121134847.48"><vh>print_help</vh></v>
+<v t="ekr.20080121134847.49"><vh>error</vh></v>
+</v>
+<v t="ekr.20080121134847.50"><vh>option</vh></v>
+<v t="ekr.20080121134847.51"><vh>class Cmdln</vh>
+<v t="ekr.20080121134847.52"><vh>_dispatch_cmd</vh></v>
+</v>
+<v t="ekr.20080121134847.53"><vh>_format_linedata</vh></v>
+<v t="ekr.20080121134847.54"><vh>_summarize_doc</vh></v>
+<v t="ekr.20080121134847.55"><vh>line2argv</vh></v>
+<v t="ekr.20080121134847.56"><vh>argv2line</vh></v>
+<v t="ekr.20080121134847.57"><vh>_dedentlines</vh></v>
+<v t="ekr.20080121134847.58"><vh>_dedent</vh></v>
+<v t="ekr.20080121134847.59"><vh>_get_indent</vh></v>
+<v t="ekr.20080121134847.60"><vh>_get_trailing_whitespace</vh></v>
+</v>
+<v t="ekr.20080121134650.1"><vh>koextlib.py</vh>
+<v t="ekr.20080121134847.61"><vh>koextlib declarations</vh></v>
+<v t="ekr.20080121134847.62"><vh>class KoExtError</vh></v>
+<v t="ekr.20080121134847.63"><vh>is_ext_dir</vh></v>
+<v t="ekr.20080121134847.64"><vh>validate_ext_name</vh></v>
+<v t="ekr.20080121134847.65"><vh>validate_ext_id</vh></v>
+<v t="ekr.20080121134847.66"><vh>validate_ext_version</vh></v>
+<v t="ekr.20080121134847.67"><vh>validate_ext_creator</vh></v>
+<v t="ekr.20080121134847.68"><vh>create_ext_skel</vh></v>
+<v t="ekr.20080121134847.69"><vh>create_udl_lang_skel</vh></v>
+<v t="ekr.20080121134847.70"><vh>create_codeintel_lang_skel</vh></v>
+<v t="ekr.20080121134847.71"><vh>build_ext</vh></v>
+<v t="ekr.20080121134847.72"><vh>class KomodoInfo</vh>
+<v t="ekr.20080121134847.73"><vh>_where_am_i</vh></v>
+<v t="ekr.20080121134847.74"><vh>in_src_tree</vh></v>
+<v t="ekr.20080121134847.75"><vh>xpidl_path</vh></v>
+<v t="ekr.20080121134847.76"><vh>sdk_dir</vh></v>
+<v t="ekr.20080121134847.77"><vh>idl_dir</vh></v>
+<v t="ekr.20080121134847.78"><vh>udl_dir</vh></v>
+<v t="ekr.20080121134847.79"><vh>_get_bkconfig_var</vh></v>
+<v t="ekr.20080121134847.80"><vh>py_lib_dirs</vh></v>
+<v t="ekr.20080121134847.81"><vh>moz_bin_dir</vh></v>
+<v t="ekr.20080121134847.82"><vh>ext_dirs</vh></v>
+</v>
+<v t="ekr.20080121134847.83"><vh>class ExtensionInfo</vh>
+<v t="ekr.20080121134847.84"><vh>__init__</vh></v>
+<v t="ekr.20080121134847.85"><vh>_install_rdf_info</vh></v>
+<v t="ekr.20080121134847.86"><vh>name</vh></v>
+<v t="ekr.20080121134847.87"><vh>version</vh></v>
+<v t="ekr.20080121134847.88"><vh>id</vh></v>
+<v t="ekr.20080121134847.89"><vh>codename</vh></v>
+<v t="ekr.20080121134847.90"><vh>pkg_name</vh></v>
+</v>
+<v t="ekr.20080121134847.91"><vh>_code_safe_lang_from_lang</vh></v>
+<v t="ekr.20080121134847.92"><vh>_module_from_path</vh></v>
+<v t="ekr.20080121134847.93"><vh>_query_yes_no_quit</vh></v>
+<v t="ekr.20080121134847.94"><vh>_query</vh></v>
+<v t="ekr.20080121134847.95"><vh>_banner</vh></v>
+<v t="ekr.20080121134847.96"><vh>_dedentlines</vh></v>
+<v t="ekr.20080121134847.97"><vh>_dedent</vh></v>
+<v t="ekr.20080121134847.98"><vh>_xpidl</vh></v>
+<v t="ekr.20080121134847.99"><vh>_luddite_compile</vh></v>
+<v t="ekr.20080121134847.100"><vh>_trim_files_in_dir</vh></v>
+<v t="ekr.20080121134847.101"><vh>_rmtree_OnError</vh></v>
+<v t="ekr.20080121134847.102"><vh>_rmtree</vh></v>
+<v t="ekr.20080121134847.103"><vh>__run_log</vh></v>
+<v t="ekr.20080121134847.104"><vh>_run</vh></v>
+<v t="ekr.20080121134847.105"><vh>_run_in_dir</vh></v>
+<v t="ekr.20080121134847.106"><vh>_rm</vh></v>
+<v t="ekr.20080121134847.107"><vh>_mv</vh></v>
+<v t="ekr.20080121134847.108"><vh>_cp</vh></v>
+<v t="ekr.20080121134847.109"><vh>_mkdir</vh></v>
+</v>
+</v>
+<v t="ekr.20080121134949" a="E"><vh>sdk/pylib/ludditelib</vh>
+<v t="ekr.20080121134949.1"><vh>cmdln.py</vh>
+<v t="ekr.20080121135406"><vh>cmdln declarations</vh></v>
+<v t="ekr.20080121135406.1"><vh>class CmdlnError</vh>
+<v t="ekr.20080121135406.2"><vh>__init__</vh></v>
+<v t="ekr.20080121135406.3"><vh>__str__</vh></v>
+</v>
+<v t="ekr.20080121135406.4"><vh>class CmdlnUserError</vh></v>
+<v t="ekr.20080121135406.5"><vh>alias</vh></v>
+<v t="ekr.20080121135406.6"><vh>class RawCmdln</vh>
+<v t="ekr.20080121135406.7"><vh>__init__</vh></v>
+<v t="ekr.20080121135406.8"><vh>get_optparser</vh></v>
+<v t="ekr.20080121135406.9"><vh>postoptparse</vh></v>
+<v t="ekr.20080121135406.10"><vh>main</vh></v>
+<v t="ekr.20080121135406.11"><vh>cmd</vh></v>
+<v t="ekr.20080121135406.12"><vh>_str</vh></v>
+<v t="ekr.20080121135406.13"><vh>cmdloop</vh></v>
+<v t="ekr.20080121135406.14"><vh>precmd</vh></v>
+<v t="ekr.20080121135406.15"><vh>postcmd</vh></v>
+<v t="ekr.20080121135406.16"><vh>cmdexc</vh></v>
+<v t="ekr.20080121135406.17"><vh>onecmd</vh></v>
+<v t="ekr.20080121135406.18"><vh>_dispatch_cmd</vh></v>
+<v t="ekr.20080121135406.19"><vh>default</vh></v>
+<v t="ekr.20080121135406.20"><vh>parseline</vh></v>
+<v t="ekr.20080121135406.21"><vh>helpdefault</vh></v>
+<v t="ekr.20080121135406.22"><vh>do_help</vh></v>
+<v t="ekr.20080121135406.23"><vh>_help_reindent</vh></v>
+<v t="ekr.20080121135406.24"><vh>_help_preprocess</vh></v>
+<v t="ekr.20080121135406.25"><vh>_help_preprocess_name</vh></v>
+<v t="ekr.20080121135406.26"><vh>_help_preprocess_option_list</vh></v>
+<v t="ekr.20080121135406.27"><vh>_help_preprocess_command_list</vh></v>
+<v t="ekr.20080121135406.28"><vh>_gen_names_and_attrs</vh></v>
+<v t="ekr.20080121135406.29"><vh>_help_preprocess_help_list</vh></v>
+<v t="ekr.20080121135406.30"><vh>_help_preprocess_cmd_name</vh></v>
+<v t="ekr.20080121135406.31"><vh>_help_preprocess_cmd_usage</vh></v>
+<v t="ekr.20080121135406.32"><vh>_help_preprocess_cmd_option_list</vh></v>
+<v t="ekr.20080121135406.33"><vh>_get_canonical_cmd_name</vh></v>
+<v t="ekr.20080121135406.34"><vh>_get_canonical_map</vh></v>
+<v t="ekr.20080121135406.35"><vh>_get_cmd_handler</vh></v>
+<v t="ekr.20080121135406.36"><vh>_do_EOF</vh></v>
+<v t="ekr.20080121135406.37"><vh>emptyline</vh></v>
+</v>
+<v t="ekr.20080121135406.38"><vh>class StopOptionProcessing</vh></v>
+<v t="ekr.20080121135406.39"><vh>class _OptionParserEx</vh>
+<v t="ekr.20080121135406.40"><vh>error</vh></v>
+<v t="ekr.20080121135406.41"><vh>exit</vh></v>
+</v>
+<v t="ekr.20080121135406.42"><vh>class CmdlnOptionParser</vh>
+<v t="ekr.20080121135406.43"><vh>__init__</vh></v>
+<v t="ekr.20080121135406.44"><vh>print_help</vh></v>
+<v t="ekr.20080121135406.45"><vh>error</vh></v>
+</v>
+<v t="ekr.20080121135406.46"><vh>class SubCmdOptionParser</vh>
+<v t="ekr.20080121135406.47"><vh>set_cmdln_info</vh></v>
+<v t="ekr.20080121135406.48"><vh>print_help</vh></v>
+<v t="ekr.20080121135406.49"><vh>error</vh></v>
+</v>
+<v t="ekr.20080121135406.50"><vh>option</vh></v>
+<v t="ekr.20080121135406.51"><vh>class Cmdln</vh>
+<v t="ekr.20080121135406.52"><vh>_dispatch_cmd</vh></v>
+</v>
+<v t="ekr.20080121135406.53"><vh>_format_linedata</vh></v>
+<v t="ekr.20080121135406.54"><vh>_summarize_doc</vh></v>
+<v t="ekr.20080121135406.55"><vh>line2argv</vh></v>
+<v t="ekr.20080121135406.56"><vh>argv2line</vh></v>
+<v t="ekr.20080121135406.57"><vh>_dedentlines</vh></v>
+<v t="ekr.20080121135406.58"><vh>_dedent</vh></v>
+<v t="ekr.20080121135406.59"><vh>_get_indent</vh></v>
+<v t="ekr.20080121135406.60"><vh>_get_trailing_whitespace</vh></v>
+</v>
+<v t="ekr.20080121134949.2"><vh>commands.py</vh>
+<v t="ekr.20080121135406.61"><vh>commands declarations</vh></v>
+<v t="ekr.20080121135406.62"><vh>compile</vh></v>
+<v t="ekr.20080121135406.63"><vh>deprecated_compile</vh></v>
+<v t="ekr.20080121135406.64"><vh>parse</vh></v>
+<v t="ekr.20080121135406.65"><vh>deprecated_package</vh></v>
+<v t="ekr.20080121135406.66"><vh>_get_build_dir</vh></v>
+<v t="ekr.20080121135406.67"><vh>_codename_from_name</vh></v>
+<v t="ekr.20080121135406.68"><vh>__run_log</vh></v>
+<v t="ekr.20080121135406.69"><vh>_run</vh></v>
+<v t="ekr.20080121135406.70"><vh>_run_in_dir</vh></v>
+</v>
+<v t="ekr.20080121134949.3"><vh>common.py</vh>
+<v t="ekr.20080121135406.71"><vh>common declarations</vh></v>
+<v t="ekr.20080121135406.72"><vh>class LudditeError</vh></v>
+<v t="ekr.20080121135406.73"><vh>is_source_tree_layout</vh></v>
+<v t="ekr.20080121135406.74"><vh>norm_guid</vh></v>
+<v t="ekr.20080121135406.75"><vh>generate_guid</vh></v>
+</v>
+<v t="ekr.20080121134949.4"><vh>constants.py</vh>
+<v t="ekr.20080121135406.76"><vh>constants declarations</vh></v>
+</v>
+<v t="ekr.20080121134949.5"><vh>debug.py</vh>
+<v t="ekr.20080121135406.77"><vh>debug declarations</vh></v>
+<v t="ekr.20080121135406.78"><vh>_add_libs</vh></v>
+<v t="ekr.20080121135406.79"><vh>lex</vh></v>
+<v t="ekr.20080121135406.80"><vh>lex_to_html</vh></v>
+<v t="ekr.20080121135406.81"><vh>_style_names_from_style_num</vh></v>
+<v t="ekr.20080121135406.82"><vh>_lexudl_path_escape</vh></v>
+<v t="ekr.20080121135406.83"><vh>_urlescape</vh></v>
+<v t="ekr.20080121135406.84"><vh>class UDLLexer</vh>
+<v t="ekr.20080121135406.85"><vh>__init__</vh></v>
+<v t="ekr.20080121135406.86"><vh>_gen_lexres_candidate_paths</vh></v>
+<v t="ekr.20080121135406.87"><vh>_get_lexres_path</vh></v>
+</v>
+<v t="ekr.20080121135406.88"><vh>class Accessor</vh>
+<v t="ekr.20080121135406.89"><vh>char_at_pos</vh></v>
+<v t="ekr.20080121135406.90"><vh>style_at_pos</vh></v>
+<v t="ekr.20080121135406.91"><vh>line_and_col_at_pos</vh></v>
+<v t="ekr.20080121135406.92"><vh>gen_char_and_style_back</vh></v>
+<v t="ekr.20080121135406.93"><vh>gen_char_and_style</vh></v>
+<v t="ekr.20080121135406.94"><vh>match_at_pos</vh></v>
+<v t="ekr.20080121135406.95"><vh>line_from_pos</vh></v>
+<v t="ekr.20080121135406.96"><vh>line_start_pos_from_pos</vh></v>
+<v t="ekr.20080121135406.97"><vh>pos_from_line_and_col</vh></v>
+<v t="ekr.20080121135406.98"><vh>text</vh></v>
+<v t="ekr.20080121135406.99"><vh>text_range</vh></v>
+<v t="ekr.20080121135406.100"><vh>length</vh></v>
+<v t="ekr.20080121135406.101"><vh>gen_tokens</vh></v>
+<v t="ekr.20080121135406.102"><vh>contiguous_style_range_from_pos</vh></v>
+</v>
+<v t="ekr.20080121135406.103"><vh>class SilverCityAccessor</vh>
+<v t="ekr.20080121135406.104"><vh>__init__</vh></v>
+<v t="ekr.20080121135406.105"><vh>reset_content</vh></v>
+<v t="ekr.20080121135406.106"><vh>tokens</vh></v>
+<v t="ekr.20080121135406.107"><vh>char_at_pos</vh></v>
+<v t="ekr.20080121135406.108"><vh>_token_at_pos</vh></v>
+<v t="ekr.20080121135406.109"><vh>style_at_pos</vh></v>
+<v t="ekr.20080121135406.110"><vh>line_and_col_at_pos</vh></v>
+<v t="ekr.20080121135406.111"><vh>gen_char_and_style_back</vh></v>
+<v t="ekr.20080121135406.112"><vh>gen_char_and_style</vh></v>
+<v t="ekr.20080121135406.113"><vh>match_at_pos</vh></v>
+<v t="ekr.20080121135406.114"><vh>line_from_pos</vh></v>
+<v t="ekr.20080121135406.115"><vh>line_start_pos_from_pos</vh></v>
+<v t="ekr.20080121135406.116"><vh>pos_from_line_and_col</vh></v>
+<v t="ekr.20080121135406.117"><vh>text</vh></v>
+<v t="ekr.20080121135406.118"><vh>text_range</vh></v>
+<v t="ekr.20080121135406.119"><vh>length</vh></v>
+<v t="ekr.20080121135406.120"><vh>gen_tokens</vh></v>
+<v t="ekr.20080121135406.121"><vh>contiguous_style_range_from_pos</vh></v>
+</v>
+<v t="ekr.20080121135406.122"><vh>_htmlescape</vh></v>
+<v t="ekr.20080121135406.123"><vh>_indent</vh></v>
+<v t="ekr.20080121135406.124"><vh>_escaped_text_from_text</vh></v>
+<v t="ekr.20080121135406.125"><vh>_one_line_summary_from_text</vh></v>
+</v>
+<v t="ekr.20080121134949.6"><vh>gen.py (Error)</vh>
+<v t="ekr.20080121135406.126"><vh>gen declarations</vh></v>
+<v t="ekr.20080121135406.127"><vh>isTemplateStateName</vh></v>
+<v t="ekr.20080121135406.128"><vh>die</vh></v>
+<v t="ekr.20080121135406.129"><vh>warn</vh></v>
+<v t="ekr.20080121135406.130"><vh>qq</vh></v>
+<v t="ekr.20080121135406.131"><vh>test_assign_entry</vh></v>
+<v t="ekr.20080121135406.132"><vh>class MainObj</vh>
+<v t="ekr.20080121135406.133"><vh>__init__</vh></v>
+<v t="ekr.20080121135406.134"><vh>_get_safe_lang_name</vh></v>
+<v t="ekr.20080121135406.135"><vh>calcUniqueStates</vh></v>
+<v t="ekr.20080121135406.136"><vh>_split_quote_string</vh></v>
+<v t="ekr.20080121135406.137"><vh>_all_words</vh></v>
+<v t="ekr.20080121135406.138"><vh>_has_ptn_var</vh></v>
+<v t="ekr.20080121135406.139"><vh>_state_num_from_name</vh></v>
+<v t="ekr.20080121135406.140"><vh>dumpAsTable</vh></v>
+<v t="ekr.20080121135406.141"><vh>dumpLanguageService</vh></v>
+<v t="ekr.20080121135406.142"><vh>emitScratchBuffer</vh></v>
+<v t="ekr.20080121135406.143"><vh>escapeStr</vh></v>
+<v t="ekr.20080121135406.144"><vh>fullStyleName</vh></v>
+<v t="ekr.20080121135406.145"><vh>generateKomodoTemplateFile</vh></v>
+<v t="ekr.20080121135406.146"><vh>getFamilyOwner</vh></v>
+<v t="ekr.20080121135406.147"><vh>internStateName</vh></v>
+<v t="ekr.20080121135406.148"><vh>setFamilyOwner</vh></v>
+</v>
+<v t="ekr.20080121135406.149"><vh>class CurrentInfo</vh>
+<v t="ekr.20080121135406.150"><vh>__init__</vh></v>
+<v t="ekr.20080121135406.151"><vh>__repr__</vh></v>
+</v>
+<v t="ekr.20080121135406.152"><vh>class Analyzer</vh>
+<v t="ekr.20080121135406.153"><vh>__init__</vh></v>
+<v t="ekr.20080121135406.154"><vh>semanticCheck</vh></v>
+<v t="ekr.20080121135406.155"><vh>_assign_once_dups_ok</vh></v>
+<v t="ekr.20080121135406.156"><vh>processTree</vh></v>
+<v t="ekr.20080121135406.157"><vh>_favor_upto_color</vh></v>
+</v>
+</v>
+<v t="ekr.20080121134949.7"><vh>lex.py (Intermixed tabs and blanks)</vh>
+<v t="ekr.20080121135406.158"><vh>lex declarations</vh></v>
+<v t="ekr.20080121135406.159"><vh>class LexError</vh>
+<v t="ekr.20080121135406.160"><vh>__init__</vh></v>
+</v>
+<v t="ekr.20080121135406.161"><vh>class LexToken</vh>
+<v t="ekr.20080121135406.162"><vh>__str__</vh></v>
+<v t="ekr.20080121135406.163"><vh>__repr__</vh></v>
+<v t="ekr.20080121135406.164"><vh>skip</vh></v>
+</v>
+<v t="ekr.20080121135406.165"><vh>class Lexer</vh>
+<v t="ekr.20080121135406.166"><vh>__init__</vh></v>
+<v t="ekr.20080121135406.167"><vh>__copy__</vh></v>
+<v t="ekr.20080121135406.168"><vh>input</vh></v>
+<v t="ekr.20080121135406.169"><vh>errtoken</vh></v>
+<v t="ekr.20080121135406.170"><vh>realtoken</vh></v>
+</v>
+<v t="ekr.20080121135406.171"><vh>validate_file</vh></v>
+<v t="ekr.20080121135406.172"><vh>_read_lextab</vh></v>
+<v t="ekr.20080121135406.173"><vh>lex</vh></v>
+<v t="ekr.20080121135406.174"><vh>runmain</vh></v>
+</v>
+<v t="ekr.20080121134949.8"><vh>lexer.py</vh>
+<v t="ekr.20080121135406.175"><vh>lexer declarations</vh></v>
+<v t="ekr.20080121135406.176"><vh>t_LB_NAME</vh></v>
+<v t="ekr.20080121135406.177"><vh>t_NUMBER</vh></v>
+<v t="ekr.20080121135406.178"><vh>t_LB_NL</vh></v>
+<v t="ekr.20080121135406.179"><vh>t_error</vh></v>
+<v t="ekr.20080121135406.180"><vh>t_comment</vh></v>
+<v t="ekr.20080121135406.181"><vh>t_nl_escape</vh></v>
+<v t="ekr.20080121135406.182"><vh>t_LB_STRING</vh></v>
+<v t="ekr.20080121135406.183"><vh>t_LB_REGEX</vh></v>
+<v t="ekr.20080121135406.184"><vh>class Lexer</vh>
+<v t="ekr.20080121135406.185"><vh>__init__</vh></v>
+<v t="ekr.20080121135406.186"><vh>token</vh></v>
+<v t="ekr.20080121135406.187"><vh>input</vh></v>
+<v t="ekr.20080121135406.188"><vh>_test</vh></v>
+</v>
+<v t="ekr.20080121135406.189"><vh>get_input</vh></v>
+<v t="ekr.20080121135406.190"><vh>do_main</vh></v>
+<v t="ekr.20080121135406.191"><vh>main</vh></v>
+</v>
+<v t="ekr.20080121134949.9"><vh>parser.py</vh>
+<v t="ekr.20080121135406.192"><vh>parser declarations</vh></v>
+<v t="ekr.20080121135406.193"><vh>keep_non_empty_dicts</vh></v>
+<v t="ekr.20080121135406.194"><vh>keep_non_empty_lists</vh></v>
+<v t="ekr.20080121135406.195"><vh>combine_filter_list_dict</vh></v>
+<v t="ekr.20080121135406.196"><vh>combine_filter_list_item</vh></v>
+<v t="ekr.20080121135406.197"><vh>combine_filter_list</vh></v>
+<v t="ekr.20080121135406.198"><vh>p_program</vh></v>
+<v t="ekr.20080121135406.199"><vh>p_statements</vh></v>
+<v t="ekr.20080121135406.200"><vh>p_statements_1</vh></v>
+<v t="ekr.20080121135406.201"><vh>p_statements_2</vh></v>
+<v t="ekr.20080121135406.202"><vh>p_statement</vh></v>
+<v t="ekr.20080121135406.203"><vh>p_statement_1</vh></v>
+<v t="ekr.20080121135406.204"><vh>p_statement_2</vh></v>
+<v t="ekr.20080121135406.205"><vh>p_pattern</vh></v>
+<v t="ekr.20080121135406.206"><vh>p_fold_stmt</vh></v>
+<v t="ekr.20080121135406.207"><vh>p_plus_or_minus</vh></v>
+<v t="ekr.20080121135406.208"><vh>p_include</vh></v>
+<v t="ekr.20080121135406.209"><vh>p_namespace_decln</vh></v>
+<v t="ekr.20080121135406.210"><vh>p_public_id_decln</vh></v>
+<v t="ekr.20080121135406.211"><vh>p_system_id_decln</vh></v>
+<v t="ekr.20080121135406.212"><vh>p_family_decln</vh></v>
+<v t="ekr.20080121135406.213"><vh>p_initial</vh></v>
+<v t="ekr.20080121135406.214"><vh>p_keyword_list</vh></v>
+<v t="ekr.20080121135406.215"><vh>p_keyword_style</vh></v>
+<v t="ekr.20080121135406.216"><vh>p_xlanguage</vh></v>
+<v t="ekr.20080121135406.217"><vh>p_sublanguage</vh></v>
+<v t="ekr.20080121135406.218"><vh>p_name_and_string_list</vh></v>
+<v t="ekr.20080121135406.219"><vh>p_stateBlock</vh></v>
+<v t="ekr.20080121135406.220"><vh>p_transitions</vh></v>
+<v t="ekr.20080121135406.221"><vh>p_transitions_1</vh></v>
+<v t="ekr.20080121135406.222"><vh>p_transitions_2</vh></v>
+<v t="ekr.20080121135406.223"><vh>p_transition</vh></v>
+<v t="ekr.20080121135406.224"><vh>p_transition_1</vh></v>
+<v t="ekr.20080121135406.225"><vh>p_transition_2</vh></v>
+<v t="ekr.20080121135406.226"><vh>p_transition_3</vh></v>
+<v t="ekr.20080121135406.227"><vh>p_transition_4</vh></v>
+<v t="ekr.20080121135406.228"><vh>p_cmds_and_trans</vh></v>
+<v t="ekr.20080121135406.229"><vh>p_cmds_and_trans_1</vh></v>
+<v t="ekr.20080121135406.230"><vh>p_cmds_and_trans_2</vh></v>
+<v t="ekr.20080121135406.231"><vh>p_cmds_and_trans_3</vh></v>
+<v t="ekr.20080121135406.232"><vh>p_cmds_and_trans_4</vh></v>
+<v t="ekr.20080121135406.233"><vh>p_cmds_and_trans_5</vh></v>
+<v t="ekr.20080121135406.234"><vh>p_state_tran</vh></v>
+<v t="ekr.20080121135406.235"><vh>p_tokenCheckBlock</vh></v>
+<v t="ekr.20080121135406.236"><vh>p_tokenCheckDeclns</vh></v>
+<v t="ekr.20080121135406.237"><vh>p_tokenCheckDeclns_1</vh></v>
+<v t="ekr.20080121135406.238"><vh>p_tokenCheckDeclns_2</vh></v>
+<v t="ekr.20080121135406.239"><vh>p_tokenCheckDecln</vh></v>
+<v t="ekr.20080121135406.240"><vh>p_tokenCheckDecln1</vh></v>
+<v t="ekr.20080121135406.241"><vh>p_tokenCheckDecln2</vh></v>
+<v t="ekr.20080121135406.242"><vh>p_action_type</vh></v>
+<v t="ekr.20080121135406.243"><vh>p_action_selectors</vh></v>
+<v t="ekr.20080121135406.244"><vh>p_start_style_stmt</vh></v>
+<v t="ekr.20080121135406.245"><vh>p_end_style_stmt</vh></v>
+<v t="ekr.20080121135406.246"><vh>p_string_const</vh></v>
+<v t="ekr.20080121135406.247"><vh>p_pattern_const</vh></v>
+<v t="ekr.20080121135406.248"><vh>p_state_name</vh></v>
+<v t="ekr.20080121135406.249"><vh>p_cmds</vh></v>
+<v t="ekr.20080121135406.250"><vh>p_cmds_1</vh></v>
+<v t="ekr.20080121135406.251"><vh>p_cmds_2</vh></v>
+<v t="ekr.20080121135406.252"><vh>p_cmd</vh></v>
+<v t="ekr.20080121135406.253"><vh>p_paint_cmd</vh></v>
+<v t="ekr.20080121135406.254"><vh>p_paint_name</vh></v>
+<v t="ekr.20080121135406.255"><vh>p_no_keyword_cmd</vh></v>
+<v t="ekr.20080121135406.256"><vh>p_at_eoltran_cmd</vh></v>
+<v t="ekr.20080121135406.257"><vh>p_redo_cmd</vh></v>
+<v t="ekr.20080121135406.258"><vh>p_clear_delimiter_cmd</vh></v>
+<v t="ekr.20080121135406.259"><vh>p_keep_delimiter_cmd</vh></v>
+<v t="ekr.20080121135406.260"><vh>p_set_delimiter_cmd</vh></v>
+<v t="ekr.20080121135406.261"><vh>p_set_opposite_delimiter_cmd</vh></v>
+<v t="ekr.20080121135406.262"><vh>p_spush_check_cmd</vh></v>
+<v t="ekr.20080121135406.263"><vh>p_opt_paren_state_name</vh></v>
+<v t="ekr.20080121135406.264"><vh>p_opt_paren_state_name_1</vh></v>
+<v t="ekr.20080121135406.265"><vh>p_opt_paren_state_name_2</vh></v>
+<v t="ekr.20080121135406.266"><vh>p_spop_check_cmd</vh></v>
+<v t="ekr.20080121135406.267"><vh>p_color_sym</vh></v>
+<v t="ekr.20080121135406.268"><vh>p_name</vh></v>
+<v t="ekr.20080121135406.269"><vh>p_names_and_strings</vh></v>
+<v t="ekr.20080121135406.270"><vh>p_names_and_strings_1</vh></v>
+<v t="ekr.20080121135406.271"><vh>p_names_and_strings_2</vh></v>
+<v t="ekr.20080121135406.272"><vh>p_name_or_string_opt_comma</vh></v>
+<v t="ekr.20080121135406.273"><vh>p_name_or_string_opt_comma_1</vh></v>
+<v t="ekr.20080121135406.274"><vh>p_name_or_string_opt_comma_2</vh></v>
+<v t="ekr.20080121135406.275"><vh>p_name_or_string</vh></v>
+<v t="ekr.20080121135406.276"><vh>p_opt_paren_number</vh></v>
+<v t="ekr.20080121135406.277"><vh>p_paren_number</vh></v>
+<v t="ekr.20080121135406.278"><vh>p_eol_seq</vh></v>
+<v t="ekr.20080121135406.279"><vh>p_opt_colon_eol</vh></v>
+<v t="ekr.20080121135406.280"><vh>p_eol</vh></v>
+<v t="ekr.20080121135406.281"><vh>p_opt_colon</vh></v>
+<v t="ekr.20080121135406.282"><vh>p_opt_comma</vh></v>
+<v t="ekr.20080121135406.283"><vh>p_opt_term</vh></v>
+<v t="ekr.20080121135406.284"><vh>p_opt_token_check</vh></v>
+<v t="ekr.20080121135406.285"><vh>p_empty</vh></v>
+<v t="ekr.20080121135406.286"><vh>p_error</vh></v>
+<v t="ekr.20080121135406.287"><vh>_wrap_read_file</vh></v>
+<v t="ekr.20080121135406.288"><vh>_read_file</vh></v>
+<v t="ekr.20080121135406.289"><vh>parse_udl_path</vh></v>
+</v>
+<v t="ekr.20080121134949.10"><vh>uuid.py</vh>
+<v t="ekr.20080121135406.290"><vh>uuid declarations</vh></v>
+<v t="ekr.20080121135406.291"><vh>class UUID</vh>
+<v t="ekr.20080121135406.292"><vh>__init__</vh></v>
+<v t="ekr.20080121135406.293"><vh>__cmp__</vh></v>
+<v t="ekr.20080121135406.294"><vh>__str__</vh></v>
+<v t="ekr.20080121135406.295"><vh>__repr__</vh></v>
+<v t="ekr.20080121135406.296"><vh>get_bytes</vh></v>
+<v t="ekr.20080121135406.297"><vh>set_bytes</vh></v>
+<v t="ekr.20080121135406.298"><vh>get_urn</vh></v>
+<v t="ekr.20080121135406.299"><vh>get_variant</vh></v>
+<v t="ekr.20080121135406.300"><vh>set_variant</vh></v>
+<v t="ekr.20080121135406.301"><vh>get_version</vh></v>
+<v t="ekr.20080121135406.302"><vh>set_version</vh></v>
+</v>
+<v t="ekr.20080121135406.303"><vh>unixgetaddr</vh></v>
+<v t="ekr.20080121135406.304"><vh>wingetaddr</vh></v>
+<v t="ekr.20080121135406.305"><vh>getaddr</vh></v>
+<v t="ekr.20080121135406.306"><vh>uuid1</vh></v>
+<v t="ekr.20080121135406.307"><vh>uuid3</vh></v>
+<v t="ekr.20080121135406.308"><vh>uuid4</vh></v>
+<v t="ekr.20080121135406.309"><vh>uuid5</vh></v>
+</v>
+<v t="ekr.20080121134949.11"><vh>yacc.py</vh>
+<v t="ekr.20080121135406.310"><vh>yacc declarations</vh></v>
+<v t="ekr.20080121135406.311"><vh>class YaccError</vh></v>
+<v t="ekr.20080121135406.312"><vh>class YaccSymbol</vh>
+<v t="ekr.20080121135406.313"><vh>__str__</vh></v>
+<v t="ekr.20080121135406.314"><vh>__repr__</vh></v>
+</v>
+<v t="ekr.20080121135406.315"><vh>class YaccProduction</vh>
+<v t="ekr.20080121135406.316"><vh>__init__</vh></v>
+<v t="ekr.20080121135406.317"><vh>__getitem__</vh></v>
+<v t="ekr.20080121135406.318"><vh>__setitem__</vh></v>
+<v t="ekr.20080121135406.319"><vh>__len__</vh></v>
+<v t="ekr.20080121135406.320"><vh>lineno</vh></v>
+<v t="ekr.20080121135406.321"><vh>linespan</vh></v>
+<v t="ekr.20080121135406.322"><vh>pushback</vh></v>
+</v>
+<v t="ekr.20080121135406.323"><vh>class Parser</vh>
+<v t="ekr.20080121135406.324"><vh>__init__</vh></v>
+<v t="ekr.20080121135406.325"><vh>errok</vh></v>
+<v t="ekr.20080121135406.326"><vh>restart</vh></v>
+<v t="ekr.20080121135406.327"><vh>parse</vh></v>
+</v>
+<v t="ekr.20080121135406.328"><vh>validate_file</vh></v>
+<v t="ekr.20080121135406.329"><vh>validate_dict</vh></v>
+<v t="ekr.20080121135406.330"><vh>initialize_vars</vh></v>
+<v t="ekr.20080121135406.331"><vh>class Production</vh>
+<v t="ekr.20080121135406.332"><vh>__init__</vh></v>
+<v t="ekr.20080121135406.333"><vh>__str__</vh></v>
+<v t="ekr.20080121135406.334"><vh>__repr__</vh></v>
+<v t="ekr.20080121135406.335"><vh>lr_item</vh></v>
+</v>
+<v t="ekr.20080121135406.336"><vh>class MiniProduction</vh></v>
+<v t="ekr.20080121135406.337"><vh>is_identifier</vh></v>
+<v t="ekr.20080121135406.338"><vh>add_production</vh></v>
+<v t="ekr.20080121135406.339"><vh>add_function</vh></v>
+<v t="ekr.20080121135406.340"><vh>compute_reachable</vh></v>
+<v t="ekr.20080121135406.341"><vh>mark_reachable_from</vh></v>
+<v t="ekr.20080121135406.342"><vh>compute_terminates</vh></v>
+<v t="ekr.20080121135406.343"><vh>verify_productions</vh></v>
+<v t="ekr.20080121135406.344"><vh>build_lritems</vh></v>
+<v t="ekr.20080121135406.345"><vh>add_precedence</vh></v>
+<v t="ekr.20080121135406.346"><vh>augment_grammar</vh></v>
+<v t="ekr.20080121135406.347"><vh>first</vh></v>
+<v t="ekr.20080121135406.348"><vh>compute_follow</vh></v>
+<v t="ekr.20080121135406.349"><vh>compute_first1</vh></v>
+<v t="ekr.20080121135406.350"><vh>lr_init_vars</vh></v>
+<v t="ekr.20080121135406.351"><vh>lr0_closure</vh></v>
+<v t="ekr.20080121135406.352"><vh>lr0_goto</vh></v>
+<v t="ekr.20080121135406.353"><vh>lr0_goto_setnumber</vh></v>
+<v t="ekr.20080121135406.354"><vh>lr0_kernel</vh></v>
+<v t="ekr.20080121135406.355"><vh>lr0_items</vh></v>
+<v t="ekr.20080121135406.356"><vh>slr_parse_table</vh></v>
+<v t="ekr.20080121135406.357"><vh>lr1_closure</vh></v>
+<v t="ekr.20080121135406.358"><vh>add_lookaheads</vh></v>
+<v t="ekr.20080121135406.359"><vh>ReduceNonterminals</vh></v>
+<v t="ekr.20080121135406.360"><vh>ReduceToTerminals</vh></v>
+<v t="ekr.20080121135406.361"><vh>ReduceToNonterminals</vh></v>
+<v t="ekr.20080121135406.362"><vh>lalr_parse_table</vh></v>
+<v t="ekr.20080121135406.363"><vh>lr_write_tables</vh></v>
+<v t="ekr.20080121135406.364"><vh>lr_read_tables</vh></v>
+<v t="ekr.20080121135406.365"><vh>yacc</vh></v>
+<v t="ekr.20080121135406.366"><vh>yacc_cleanup</vh></v>
+<v t="ekr.20080121135406.367"><vh>parse</vh></v>
+</v>
+<v t="ekr.20080121134949.12" a="TV"><vh>__init__.py</vh></v>
+</v>
+<v t="ekr.20080121105837.1852"><vh>sdk/share</vh>
+<v t="ekr.20080121105837.1853"><vh>sdk/share/lang_LANG.py (Important)</vh></v>
+<v t="ekr.20080121105837.1854"><vh>cix-2.0.rng</vh></v>
+</v>
+</v>
 <v t="ekr.20080121105837.7"><vh>lib/mozilla/python/komodo/codeintel2</vh>
+<v t="ekr.20080121105837.1855"><vh>codeintel2/stdlibs/*.cix</vh>
+<v t="ekr.20080121123437"><vh>pywin32.cix (TRUNCATED)</vh></v>
+</v>
 <v t="ekr.20080121105837.8"><vh>codeintel2</vh>
 <v t="ekr.20080121105837.9"><vh>accessor.py</vh>
 <v t="ekr.20080121105837.10"><vh>accessor declarations</vh></v>
@@ -129,9 +725,11 @@
 <v t="ekr.20080121105837.103"><vh>_htmlescape</vh></v>
 <v t="ekr.20080121105837.104"><vh>_doctest</vh></v>
 </v>
-<v t="ekr.20080121105837.105"><vh>citadel.py</vh>
-<v t="ekr.20080121105837.106"><vh>citadel declarations</vh></v>
+<v t="ekr.20080121105837.105"><vh>citadel.py (Important)</vh>
+<v t="ekr.20080121133057.1"><vh>&lt;&lt; citadel.py docstring &gt;&gt;</vh></v>
+<v t="ekr.20080121105837.106"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
 <v t="ekr.20080121105837.107"><vh>class CitadelBuffer</vh>
+<v t="ekr.20080121133057.2"><vh>&lt;&lt; class CitadelBuffer docstring &gt;&gt;</vh></v>
 <v t="ekr.20080121105837.108"><vh>__init__</vh></v>
 <v t="ekr.20080121105837.109"><vh>acquire_lock</vh></v>
 <v t="ekr.20080121105837.110"><vh>release_lock</vh></v>
@@ -188,7 +786,7 @@
 </v>
 </v>
 <v t="ekr.20080121105837.158"><vh>citadel_common.py</vh>
-<v t="ekr.20080121105837.159"><vh>citadel_common declarations</vh></v>
+<v t="ekr.20080121105837.159"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
 <v t="ekr.20080121105837.160"><vh>class ScanRequest</vh>
 <v t="ekr.20080121105837.161"><vh>__init__</vh></v>
 <v t="ekr.20080121105837.162"><vh>__repr__</vh></v>
@@ -509,13 +1107,130 @@
 <v t="ekr.20080121105837.436"><vh>_parse_calltip</vh></v>
 </v>
 <v t="ekr.20080121105837.437"><vh>Language-specific...</vh>
-<v t="ekr.20080121105837.438"><vh>xxx cile.py (Code Inteligence Language Engine)</vh>
-<v t="ekr.20080121105837.439"><vh>perlcile.py</vh>
-<v t="ekr.20080121105837.440"><vh>perlcile declarations</vh></v>
-<v t="ekr.20080121105837.441"><vh>scan</vh></v>
-<v t="ekr.20080121105837.442"><vh>scan_purelang</vh></v>
-<v t="ekr.20080121105837.443"><vh>scan_multilang</vh></v>
-<v t="ekr.20080121105837.444"><vh>main</vh></v>
+<v t="ekr.20080121105837.733"><vh>shared_lexer.py</vh>
+<v t="ekr.20080121105837.734"><vh>shared_lexer declarations</vh></v>
+<v t="ekr.20080121105837.735"><vh>class Token</vh>
+<v t="ekr.20080121105837.736"><vh>__init__</vh></v>
+<v t="ekr.20080121105837.737"><vh>clone</vh></v>
+<v t="ekr.20080121105837.738"><vh>dump</vh></v>
+</v>
+<v t="ekr.20080121105837.739"><vh>class Signature</vh>
+<v t="ekr.20080121105837.740"><vh>__init__</vh></v>
+<v t="ekr.20080121105837.741"><vh>open</vh></v>
+<v t="ekr.20080121105837.742"><vh>close</vh></v>
+<v t="ekr.20080121105837.743"><vh>text</vh></v>
+<v t="ekr.20080121105837.744"><vh>append</vh></v>
+<v t="ekr.20080121105837.745"><vh>replace</vh></v>
+<v t="ekr.20080121105837.746"><vh>is_gathering</vh></v>
+</v>
+<v t="ekr.20080121105837.747"><vh>class Lexer</vh>
+<v t="ekr.20080121105837.748"><vh>__init__</vh></v>
+<v t="ekr.20080121105837.749"><vh>build_dict</vh></v>
+<v t="ekr.20080121105837.750"><vh>is_string_token</vh></v>
+<v t="ekr.20080121105837.751"><vh>contains_nl</vh></v>
+<v t="ekr.20080121105837.752"><vh>_adapt_line</vh></v>
+<v t="ekr.20080121105837.753"><vh>_get_next_token</vh></v>
+<v t="ekr.20080121105837.754"><vh>_get_eof_token</vh></v>
+<v t="ekr.20080121105837.755"><vh>matches_whitespace</vh></v>
+<v t="ekr.20080121105837.756"><vh>get_curr_indentation</vh></v>
+<v t="ekr.20080121105837.757"><vh>curr_comment</vh></v>
+<v t="ekr.20080121105837.758"><vh>clear_comments</vh></v>
+<v t="ekr.20080121105837.759"><vh>has_comment</vh></v>
+<v t="ekr.20080121105837.760"><vh>is_udl_markup_family</vh></v>
+<v t="ekr.20080121105837.761"><vh>is_udl_css_family</vh></v>
+<v t="ekr.20080121105837.762"><vh>is_udl_csl_family</vh></v>
+<v t="ekr.20080121105837.763"><vh>is_udl_ssl_family</vh></v>
+<v t="ekr.20080121105837.764"><vh>is_udl_tpl_family</vh></v>
+<v t="ekr.20080121105837.765"><vh>start_sig</vh></v>
+<v t="ekr.20080121105837.766"><vh>stop_sig</vh></v>
+<v t="ekr.20080121105837.767"><vh>trim_ws</vh></v>
+<v t="ekr.20080121105837.768"><vh>get_sig</vh></v>
+<v t="ekr.20080121105837.769"><vh>put_back</vh></v>
+<v t="ekr.20080121105837.770"><vh>curr_line_no</vh></v>
+<v t="ekr.20080121105837.771"><vh>append_split_tokens</vh></v>
+<v t="ekr.20080121105837.772"><vh>get_next_token</vh></v>
+</v>
+<v t="ekr.20080121105837.773"><vh>class UDLLexerClassifier</vh>
+<v t="ekr.20080121105837.774"><vh>is_comment</vh></v>
+<v t="ekr.20080121105837.775"><vh>style_comment</vh></v>
+<v t="ekr.20080121105837.776"><vh>style_default</vh></v>
+<v t="ekr.20080121105837.777"><vh>style_operator</vh></v>
+</v>
+<v t="ekr.20080121105837.778"><vh>read_and_detab</vh></v>
+<v t="ekr.20080121105837.779"><vh>main</vh></v>
+</v>
+<v t="ekr.20080121105837.780"><vh>shared_parser.py</vh>
+<v t="ekr.20080121105837.781"><vh>shared_parser declarations</vh></v>
+<v t="ekr.20080121105837.782"><vh>class CommonClassifier</vh>
+<v t="ekr.20080121105837.783"><vh>get_quote_patterns</vh></v>
+<v t="ekr.20080121105837.784"><vh>is_identifier_or_keyword</vh></v>
+</v>
+<v t="ekr.20080121105837.785"><vh>class UDLClassifier</vh>
+<v t="ekr.20080121105837.786"><vh>get_builtin_type</vh></v>
+<v t="ekr.20080121105837.787"><vh>is_any_operator</vh></v>
+<v t="ekr.20080121105837.788"><vh>is_comment</vh></v>
+<v t="ekr.20080121105837.789"><vh>is_comment_structured</vh></v>
+<v t="ekr.20080121105837.790"><vh>is_identifier</vh></v>
+<v t="ekr.20080121105837.791"><vh>is_index_op</vh></v>
+<v t="ekr.20080121105837.792"><vh>is_interpolating_string</vh></v>
+<v t="ekr.20080121105837.793"><vh>is_keyword</vh></v>
+<v t="ekr.20080121105837.794"><vh>is_number</vh></v>
+<v t="ekr.20080121105837.795"><vh>is_operator</vh></v>
+<v t="ekr.20080121105837.796"><vh>is_string</vh></v>
+<v t="ekr.20080121105837.797"><vh>is_string_qw</vh></v>
+<v t="ekr.20080121105837.798"><vh>is_symbol</vh></v>
+<v t="ekr.20080121105837.799"><vh>is_variable</vh></v>
+<v t="ekr.20080121105837.800"><vh>is_variable_array</vh></v>
+<v t="ekr.20080121105837.801"><vh>is_variable_scalar</vh></v>
+<v t="ekr.20080121105837.802"><vh>tokenStyleToContainerStyle</vh></v>
+<v t="ekr.20080121105837.803"><vh>style_identifier</vh></v>
+<v t="ekr.20080121105837.804"><vh>style_operator</vh></v>
+<v t="ekr.20080121105837.805"><vh>style_word</vh></v>
+</v>
+</v>
+<v t="ekr.20080121131522"><vh>Python stuff...</vh>
+<v t="ekr.20080121105837.1387"><vh>lang_python.py</vh>
+<v t="ekr.20080121105837.1388"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
+<v t="ekr.20080121105837.1389"><vh>class PythonLexer</vh>
+<v t="ekr.20080121105837.1390"><vh>__init__</vh></v>
+</v>
+<v t="ekr.20080121105837.1391"><vh>class PythonImportsEvaluator</vh>
+<v t="ekr.20080121105837.1392"><vh>__str__</vh></v>
+<v t="ekr.20080121105837.1393"><vh>eval</vh></v>
+</v>
+<v t="ekr.20080121105837.1394"><vh>class PythonLangIntel</vh>
+<v t="ekr.20080121105837.1395"><vh>__init__</vh></v>
+<v t="ekr.20080121105837.1396"><vh>async_eval_at_trg</vh></v>
+<v t="ekr.20080121105837.1397"><vh>_python_from_env</vh></v>
+<v t="ekr.20080121105837.1398"><vh>_python_info_from_python</vh></v>
+<v t="ekr.20080121105837.1399"><vh>_gen_python_import_paths_from_dirs</vh></v>
+<v t="ekr.20080121105837.1400"><vh>_gen_python_import_paths_from_pth_path</vh></v>
+<v t="ekr.20080121105837.1401"><vh>_extra_dirs_from_env</vh></v>
+<v t="ekr.20080121105837.1402"><vh>_buf_indep_libs_from_env</vh></v>
+<v t="ekr.20080121105837.1403"><vh>libs_from_buf</vh></v>
+<v t="ekr.20080121105837.1404"><vh>_invalidate_cache</vh></v>
+<v t="ekr.20080121105837.1405"><vh>_invalidate_cache_and_rescan_extra_dirs</vh></v>
+</v>
+<v t="ekr.20080121105837.1406"><vh>class PythonBuffer</vh>
+<v t="ekr.20080121105837.1407"><vh>libs</vh></v>
+<v t="ekr.20080121105837.1408"><vh>trg_from_pos</vh></v>
+<v t="ekr.20080121105837.1409"><vh>_last_logical_line</vh></v>
+</v>
+<v t="ekr.20080121105837.1410"><vh>class PythonImportHandler</vh>
+<v t="ekr.20080121105837.1411"><vh>__init__</vh></v>
+<v t="ekr.20080121105837.1412"><vh>_shellOutForPath</vh></v>
+<v t="ekr.20080121105837.1413"><vh>setCorePath</vh></v>
+<v t="ekr.20080121105837.1414"><vh>_getStdCIXScanId</vh></v>
+<v t="ekr.20080121105837.1415"><vh>findModule</vh></v>
+<v t="ekr.20080121105837.1416"><vh>findModuleOnDisk</vh></v>
+<v t="ekr.20080121105837.1417"><vh>_findScannableFiles</vh></v>
+<v t="ekr.20080121105837.1418"><vh>genScannableFiles</vh></v>
+<v t="ekr.20080121105837.1419"><vh>find_importables_in_dir</vh></v>
+</v>
+<v t="ekr.20080121105837.1420"><vh>class PythonCILEDriver</vh>
+<v t="ekr.20080121105837.1421"><vh>scan_purelang</vh></v>
+</v>
+<v t="ekr.20080121105837.1422"><vh>register</vh></v>
 </v>
 <v t="ekr.20080121105837.445"><vh>pythoncile.py</vh>
 <v t="ekr.20080121105837.446"><vh>&lt;&lt; docstring &gt;&gt;</vh></v>
@@ -558,6 +1273,39 @@
 <v t="ekr.20080121105837.482"><vh>_getAST</vh></v>
 <v t="ekr.20080121105837.483"><vh>scan</vh></v>
 <v t="ekr.20080121105837.484"><vh>main</vh></v>
+</v>
+<v t="ekr.20080121105837.964"><vh>tree_python.py</vh>
+<v t="ekr.20080121105837.967"><vh>eval_cplns</vh></v>
+<v t="ekr.20080121105837.968"><vh>eval_calltips</vh></v>
+<v t="ekr.20080121105837.969"><vh>eval_defns</vh></v>
+<v t="ekr.20080121105837.970"><vh>_tokenize_citdl_expr</vh></v>
+<v t="ekr.20080121105837.971"><vh>_join_citdl_expr</vh></v>
+<v t="ekr.20080121105837.972"><vh>_calltip_from_func</vh></v>
+<v t="ekr.20080121105837.973"><vh>_calltip_from_class</vh></v>
+<v t="ekr.20080121105837.974"><vh>_ctor_hit_from_class</vh></v>
+<v t="ekr.20080121105837.975"><vh>_calltip_from_hit</vh></v>
+<v t="ekr.20080121105837.976"><vh>_members_from_elem</vh></v>
+<v t="ekr.20080121105837.977"><vh>_members_from_hit</vh></v>
+<v t="ekr.20080121105837.978"><vh>_hit_from_citdl</vh></v>
+<v t="ekr.20080121105837.979"><vh>_hit_from_first_part</vh></v>
+<v t="ekr.20080121105837.980"><vh>_hit_from_elem_imports</vh></v>
+<v t="ekr.20080121105837.981"><vh>_hit_from_call</vh></v>
+<v t="ekr.20080121105837.982"><vh>_hit_from_getattr</vh></v>
+<v t="ekr.20080121105837.983"><vh>_hit_from_variable_type_inference</vh></v>
+<v t="ekr.20080121105837.984"><vh>_hit_from_type_inference</vh></v>
+<v t="ekr.20080121105837.985"><vh>built_in_blob</vh></v>
+<v t="ekr.20080121105837.986"><vh>parent_scoperef_from_scoperef</vh></v>
+<v t="ekr.20080121105837.987"><vh>_elem_from_scoperef</vh></v>
+</v>
+</v>
+<v t="ekr.20080121131751"><vh>Other languages</vh>
+<v t="ekr.20080121105837.438"><vh>xxx cile.py (Code Inteligence Language Engine)</vh>
+<v t="ekr.20080121105837.439"><vh>perlcile.py</vh>
+<v t="ekr.20080121105837.440"><vh>perlcile declarations</vh></v>
+<v t="ekr.20080121105837.441"><vh>scan</vh></v>
+<v t="ekr.20080121105837.442"><vh>scan_purelang</vh></v>
+<v t="ekr.20080121105837.443"><vh>scan_multilang</vh></v>
+<v t="ekr.20080121105837.444"><vh>main</vh></v>
 </v>
 <v t="ekr.20080121105837.485"><vh>rubycile.py</vh>
 <v t="ekr.20080121105837.486"><vh>rubycile declarations</vh></v>
@@ -835,87 +1583,6 @@
 <v t="ekr.20080121105837.732"><vh>get_fully_qualified_name_as_list</vh></v>
 </v>
 </v>
-<v t="ekr.20080121105837.733"><vh>shared_lexer.py</vh>
-<v t="ekr.20080121105837.734"><vh>shared_lexer declarations</vh></v>
-<v t="ekr.20080121105837.735"><vh>class Token</vh>
-<v t="ekr.20080121105837.736"><vh>__init__</vh></v>
-<v t="ekr.20080121105837.737"><vh>clone</vh></v>
-<v t="ekr.20080121105837.738"><vh>dump</vh></v>
-</v>
-<v t="ekr.20080121105837.739"><vh>class Signature</vh>
-<v t="ekr.20080121105837.740"><vh>__init__</vh></v>
-<v t="ekr.20080121105837.741"><vh>open</vh></v>
-<v t="ekr.20080121105837.742"><vh>close</vh></v>
-<v t="ekr.20080121105837.743"><vh>text</vh></v>
-<v t="ekr.20080121105837.744"><vh>append</vh></v>
-<v t="ekr.20080121105837.745"><vh>replace</vh></v>
-<v t="ekr.20080121105837.746"><vh>is_gathering</vh></v>
-</v>
-<v t="ekr.20080121105837.747"><vh>class Lexer</vh>
-<v t="ekr.20080121105837.748"><vh>__init__</vh></v>
-<v t="ekr.20080121105837.749"><vh>build_dict</vh></v>
-<v t="ekr.20080121105837.750"><vh>is_string_token</vh></v>
-<v t="ekr.20080121105837.751"><vh>contains_nl</vh></v>
-<v t="ekr.20080121105837.752"><vh>_adapt_line</vh></v>
-<v t="ekr.20080121105837.753"><vh>_get_next_token</vh></v>
-<v t="ekr.20080121105837.754"><vh>_get_eof_token</vh></v>
-<v t="ekr.20080121105837.755"><vh>matches_whitespace</vh></v>
-<v t="ekr.20080121105837.756"><vh>get_curr_indentation</vh></v>
-<v t="ekr.20080121105837.757"><vh>curr_comment</vh></v>
-<v t="ekr.20080121105837.758"><vh>clear_comments</vh></v>
-<v t="ekr.20080121105837.759"><vh>has_comment</vh></v>
-<v t="ekr.20080121105837.760"><vh>is_udl_markup_family</vh></v>
-<v t="ekr.20080121105837.761"><vh>is_udl_css_family</vh></v>
-<v t="ekr.20080121105837.762"><vh>is_udl_csl_family</vh></v>
-<v t="ekr.20080121105837.763"><vh>is_udl_ssl_family</vh></v>
-<v t="ekr.20080121105837.764"><vh>is_udl_tpl_family</vh></v>
-<v t="ekr.20080121105837.765"><vh>start_sig</vh></v>
-<v t="ekr.20080121105837.766"><vh>stop_sig</vh></v>
-<v t="ekr.20080121105837.767"><vh>trim_ws</vh></v>
-<v t="ekr.20080121105837.768"><vh>get_sig</vh></v>
-<v t="ekr.20080121105837.769"><vh>put_back</vh></v>
-<v t="ekr.20080121105837.770"><vh>curr_line_no</vh></v>
-<v t="ekr.20080121105837.771"><vh>append_split_tokens</vh></v>
-<v t="ekr.20080121105837.772"><vh>get_next_token</vh></v>
-</v>
-<v t="ekr.20080121105837.773"><vh>class UDLLexerClassifier</vh>
-<v t="ekr.20080121105837.774"><vh>is_comment</vh></v>
-<v t="ekr.20080121105837.775"><vh>style_comment</vh></v>
-<v t="ekr.20080121105837.776"><vh>style_default</vh></v>
-<v t="ekr.20080121105837.777"><vh>style_operator</vh></v>
-</v>
-<v t="ekr.20080121105837.778"><vh>read_and_detab</vh></v>
-<v t="ekr.20080121105837.779"><vh>main</vh></v>
-</v>
-<v t="ekr.20080121105837.780"><vh>shared_parser.py</vh>
-<v t="ekr.20080121105837.781"><vh>shared_parser declarations</vh></v>
-<v t="ekr.20080121105837.782"><vh>class CommonClassifier</vh>
-<v t="ekr.20080121105837.783"><vh>get_quote_patterns</vh></v>
-<v t="ekr.20080121105837.784"><vh>is_identifier_or_keyword</vh></v>
-</v>
-<v t="ekr.20080121105837.785"><vh>class UDLClassifier</vh>
-<v t="ekr.20080121105837.786"><vh>get_builtin_type</vh></v>
-<v t="ekr.20080121105837.787"><vh>is_any_operator</vh></v>
-<v t="ekr.20080121105837.788"><vh>is_comment</vh></v>
-<v t="ekr.20080121105837.789"><vh>is_comment_structured</vh></v>
-<v t="ekr.20080121105837.790"><vh>is_identifier</vh></v>
-<v t="ekr.20080121105837.791"><vh>is_index_op</vh></v>
-<v t="ekr.20080121105837.792"><vh>is_interpolating_string</vh></v>
-<v t="ekr.20080121105837.793"><vh>is_keyword</vh></v>
-<v t="ekr.20080121105837.794"><vh>is_number</vh></v>
-<v t="ekr.20080121105837.795"><vh>is_operator</vh></v>
-<v t="ekr.20080121105837.796"><vh>is_string</vh></v>
-<v t="ekr.20080121105837.797"><vh>is_string_qw</vh></v>
-<v t="ekr.20080121105837.798"><vh>is_symbol</vh></v>
-<v t="ekr.20080121105837.799"><vh>is_variable</vh></v>
-<v t="ekr.20080121105837.800"><vh>is_variable_array</vh></v>
-<v t="ekr.20080121105837.801"><vh>is_variable_scalar</vh></v>
-<v t="ekr.20080121105837.802"><vh>tokenStyleToContainerStyle</vh></v>
-<v t="ekr.20080121105837.803"><vh>style_identifier</vh></v>
-<v t="ekr.20080121105837.804"><vh>style_operator</vh></v>
-<v t="ekr.20080121105837.805"><vh>style_word</vh></v>
-</v>
-</v>
 <v t="ekr.20080121105837.806"><vh>tcl_lexer.py (intermixed tabs &amp; blanks)</vh>
 <v t="ekr.20080121105837.807"><vh>tcl_lexer declarations</vh></v>
 <v t="ekr.20080121105837.808"><vh>class TclLexerClassifier</vh>
@@ -1091,32 +1758,6 @@
 <v t="ekr.20080121105837.961"><vh>function_shortnames_from_elem</vh></v>
 <v t="ekr.20080121105837.962"><vh>class_names_from_elem</vh></v>
 <v t="ekr.20080121105837.963"><vh>interface_names_from_elem</vh></v>
-</v>
-</v>
-<v t="ekr.20080121105837.964"><vh>tree_python.py</vh>
-<v t="ekr.20080121105837.965"><vh>tree_python declarations</vh></v>
-<v t="ekr.20080121105837.966"><vh>class PythonTreeEvaluator</vh>
-<v t="ekr.20080121105837.967"><vh>eval_cplns</vh></v>
-<v t="ekr.20080121105837.968"><vh>eval_calltips</vh></v>
-<v t="ekr.20080121105837.969"><vh>eval_defns</vh></v>
-<v t="ekr.20080121105837.970"><vh>_tokenize_citdl_expr</vh></v>
-<v t="ekr.20080121105837.971"><vh>_join_citdl_expr</vh></v>
-<v t="ekr.20080121105837.972"><vh>_calltip_from_func</vh></v>
-<v t="ekr.20080121105837.973"><vh>_calltip_from_class</vh></v>
-<v t="ekr.20080121105837.974"><vh>_ctor_hit_from_class</vh></v>
-<v t="ekr.20080121105837.975"><vh>_calltip_from_hit</vh></v>
-<v t="ekr.20080121105837.976"><vh>_members_from_elem</vh></v>
-<v t="ekr.20080121105837.977"><vh>_members_from_hit</vh></v>
-<v t="ekr.20080121105837.978"><vh>_hit_from_citdl</vh></v>
-<v t="ekr.20080121105837.979"><vh>_hit_from_first_part</vh></v>
-<v t="ekr.20080121105837.980"><vh>_hit_from_elem_imports</vh></v>
-<v t="ekr.20080121105837.981"><vh>_hit_from_call</vh></v>
-<v t="ekr.20080121105837.982"><vh>_hit_from_getattr</vh></v>
-<v t="ekr.20080121105837.983"><vh>_hit_from_variable_type_inference</vh></v>
-<v t="ekr.20080121105837.984"><vh>_hit_from_type_inference</vh></v>
-<v t="ekr.20080121105837.985"><vh>built_in_blob</vh></v>
-<v t="ekr.20080121105837.986"><vh>parent_scoperef_from_scoperef</vh></v>
-<v t="ekr.20080121105837.987"><vh>_elem_from_scoperef</vh></v>
 </v>
 </v>
 <v t="ekr.20080121105837.988"><vh>tree_ruby.py</vh>
@@ -1567,49 +2208,6 @@
 <v t="ekr.20080121105837.1385"><vh>_isdigit</vh></v>
 <v t="ekr.20080121105837.1386"><vh>register</vh></v>
 </v>
-<v t="ekr.20080121105837.1387"><vh>lang_python.py</vh>
-<v t="ekr.20080121105837.1388"><vh>lang_python declarations</vh></v>
-<v t="ekr.20080121105837.1389"><vh>class PythonLexer</vh>
-<v t="ekr.20080121105837.1390"><vh>__init__</vh></v>
-</v>
-<v t="ekr.20080121105837.1391"><vh>class PythonImportsEvaluator</vh>
-<v t="ekr.20080121105837.1392"><vh>__str__</vh></v>
-<v t="ekr.20080121105837.1393"><vh>eval</vh></v>
-</v>
-<v t="ekr.20080121105837.1394"><vh>class PythonLangIntel</vh>
-<v t="ekr.20080121105837.1395"><vh>__init__</vh></v>
-<v t="ekr.20080121105837.1396"><vh>async_eval_at_trg</vh></v>
-<v t="ekr.20080121105837.1397"><vh>_python_from_env</vh></v>
-<v t="ekr.20080121105837.1398"><vh>_python_info_from_python</vh></v>
-<v t="ekr.20080121105837.1399"><vh>_gen_python_import_paths_from_dirs</vh></v>
-<v t="ekr.20080121105837.1400"><vh>_gen_python_import_paths_from_pth_path</vh></v>
-<v t="ekr.20080121105837.1401"><vh>_extra_dirs_from_env</vh></v>
-<v t="ekr.20080121105837.1402"><vh>_buf_indep_libs_from_env</vh></v>
-<v t="ekr.20080121105837.1403"><vh>libs_from_buf</vh></v>
-<v t="ekr.20080121105837.1404"><vh>_invalidate_cache</vh></v>
-<v t="ekr.20080121105837.1405"><vh>_invalidate_cache_and_rescan_extra_dirs</vh></v>
-</v>
-<v t="ekr.20080121105837.1406"><vh>class PythonBuffer</vh>
-<v t="ekr.20080121105837.1407"><vh>libs</vh></v>
-<v t="ekr.20080121105837.1408"><vh>trg_from_pos</vh></v>
-<v t="ekr.20080121105837.1409"><vh>_last_logical_line</vh></v>
-</v>
-<v t="ekr.20080121105837.1410"><vh>class PythonImportHandler</vh>
-<v t="ekr.20080121105837.1411"><vh>__init__</vh></v>
-<v t="ekr.20080121105837.1412"><vh>_shellOutForPath</vh></v>
-<v t="ekr.20080121105837.1413"><vh>setCorePath</vh></v>
-<v t="ekr.20080121105837.1414"><vh>_getStdCIXScanId</vh></v>
-<v t="ekr.20080121105837.1415"><vh>findModule</vh></v>
-<v t="ekr.20080121105837.1416"><vh>findModuleOnDisk</vh></v>
-<v t="ekr.20080121105837.1417"><vh>_findScannableFiles</vh></v>
-<v t="ekr.20080121105837.1418"><vh>genScannableFiles</vh></v>
-<v t="ekr.20080121105837.1419"><vh>find_importables_in_dir</vh></v>
-</v>
-<v t="ekr.20080121105837.1420"><vh>class PythonCILEDriver</vh>
-<v t="ekr.20080121105837.1421"><vh>scan_purelang</vh></v>
-</v>
-<v t="ekr.20080121105837.1422"><vh>register</vh></v>
-</v>
 <v t="ekr.20080121105837.1423"><vh>lang_rhtml.py</vh>
 <v t="ekr.20080121105837.1424"><vh>lang_rhtml declarations</vh></v>
 <v t="ekr.20080121105837.1425"><vh>class RHTMLLexer</vh></v>
@@ -1792,7 +2390,7 @@
 <v t="ekr.20080121105837.1575"><vh>register</vh></v>
 </v>
 </v>
-<v t="ekr.20080121105837.1576"><vh>udl.py</vh>
+<v t="ekr.20080121105837.1576"><vh>udl.py (user defined language)</vh>
 <v t="ekr.20080121105837.1577"><vh>udl declarations</vh></v>
 <v t="ekr.20080121105837.1578"><vh>is_udl_m_style</vh></v>
 <v t="ekr.20080121105837.1579"><vh>is_udl_css_style</vh></v>
@@ -1827,6 +2425,7 @@
 <v t="ekr.20080121105837.1605"><vh>class UDLCILEDriver</vh>
 <v t="ekr.20080121105837.1606"><vh>master_cile_driver</vh></v>
 <v t="ekr.20080121105837.1607"><vh>scan_purelang</vh></v>
+</v>
 </v>
 </v>
 </v>
@@ -1954,8 +2553,8 @@
 <v t="ekr.20080121105837.1715"><vh>scan</vh></v>
 </v>
 </v>
-<v t="ekr.20080121105837.1716"><vh>tree.py</vh>
-<v t="ekr.20080121105837.1717"><vh>tree declarations</vh></v>
+<v t="ekr.20080121105837.1716"><vh>tree.py (Important)</vh>
+<v t="ekr.20080121105837.1717"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
 <v t="ekr.20080121105837.1718"><vh>tree_2_0_from_tree_0_1</vh></v>
 <v t="ekr.20080121105837.1719"><vh>tree_from_cix_path</vh></v>
 <v t="ekr.20080121105837.1720"><vh>tree_from_cix</vh></v>
@@ -2011,9 +2610,46 @@
 </v>
 <v t="ekr.20080121105837.1767"><vh>__init__.py (codeintel2)</vh></v>
 </v>
-<v t="ekr.20080121105837.1768"><vh>codeintel2\database</vh>
+<v t="ekr.20080121105837.1768"><vh>codeintel2/database</vh>
+<v t="ekr.20080121121728.9"><vh> __init__.py (database)</vh></v>
+<v t="ekr.20080121121728.1"><vh>catalog.py</vh>
+<v t="ekr.20080121121842"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
+<v t="ekr.20080121121842.1"><vh>class CatalogsZone</vh>
+<v t="ekr.20080121121842.2"><vh>__init__</vh></v>
+<v t="ekr.20080121121842.3"><vh>__repr__</vh></v>
+<v t="ekr.20080121121842.4"><vh>_selection_from_selector</vh></v>
+<v t="ekr.20080121121842.5"><vh>_res_ids_from_selections</vh></v>
+<v t="ekr.20080121121842.6"><vh>get_lib</vh></v>
+<v t="ekr.20080121121842.7"><vh>res_index</vh></v>
+<v t="ekr.20080121121842.8"><vh>blob_index</vh></v>
+<v t="ekr.20080121121842.9"><vh>toplevelname_index</vh></v>
+<v t="ekr.20080121121842.10"><vh>toplevelprefix_index</vh></v>
+<v t="ekr.20080121121842.11"><vh>save</vh></v>
+<v t="ekr.20080121121842.12"><vh>cull_mem</vh></v>
+<v t="ekr.20080121121842.13"><vh>avail_catalogs</vh></v>
+<v t="ekr.20080121121842.14"><vh>update</vh></v>
+<v t="ekr.20080121121842.15"><vh>_new_res_id</vh></v>
+<v t="ekr.20080121121842.16"><vh>_remove_res</vh></v>
+<v t="ekr.20080121121842.17"><vh>_add_res</vh></v>
+<v t="ekr.20080121121842.18"><vh>res_id_from_lang_and_blobname</vh></v>
+<v t="ekr.20080121121842.19"><vh>get_blob</vh></v>
+<v t="ekr.20080121121842.20"><vh>lpaths_from_lang_and_blobname</vh></v>
+</v>
+<v t="ekr.20080121121842.21"><vh>class CatalogLib</vh>
+<v t="ekr.20080121121842.22"><vh>__init__</vh></v>
+<v t="ekr.20080121121842.23"><vh>__repr__</vh></v>
+<v t="ekr.20080121121842.24"><vh>import_handler</vh></v>
+<v t="ekr.20080121121842.25"><vh>has_blob</vh></v>
+<v t="ekr.20080121121842.26"><vh>get_blob</vh></v>
+<v t="ekr.20080121121842.27"><vh>get_blob_imports</vh></v>
+<v t="ekr.20080121121842.28"><vh>_blobnames_from_toplevelname</vh></v>
+<v t="ekr.20080121121842.29"><vh>hits_from_lpath</vh></v>
+<v t="ekr.20080121121842.30"><vh>toplevel_cplns</vh></v>
+</v>
+<v t="ekr.20080121121842.31"><vh>_elem_from_scoperef</vh></v>
+</v>
 <v t="ekr.20080121105837.1769"><vh>database.py (Important)</vh>
-<v t="ekr.20080121105837.1770"><vh>&lt;&lt; docstring &gt;&gt;</vh></v>
+<v t="ekr.20080121105837.1770"><vh>&lt;&lt; database.py docstring &gt;&gt; (important)</vh></v>
 <v t="ekr.20080121105837.1771"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
 <v t="ekr.20080121105837.1772"><vh>&lt;&lt; version stuff &gt;&gt;</vh></v>
 <v t="ekr.20080121105837.1773"><vh>__init__</vh></v>
@@ -2063,62 +2699,178 @@
 <v t="ekr.20080121105837.1814"><vh>update_buf_data</vh></v>
 </v>
 </v>
+<v t="ekr.20080121121728.3"><vh>langlib.py</vh>
+<v t="ekr.20080121121842.32"><vh>langlib declarations</vh></v>
+<v t="ekr.20080121121842.33"><vh>class LangDirsLib</vh>
+<v t="ekr.20080121121842.34"><vh>__init__</vh></v>
+<v t="ekr.20080121121842.35"><vh>__repr__</vh></v>
+<v t="ekr.20080121121842.36"><vh>_acquire_lock</vh></v>
+<v t="ekr.20080121121842.37"><vh>_release_lock</vh></v>
+<v t="ekr.20080121121842.38"><vh>has_blob</vh></v>
+<v t="ekr.20080121121842.39"><vh>has_blob_in_db</vh></v>
+<v t="ekr.20080121121842.40"><vh>get_blob</vh></v>
+<v t="ekr.20080121121842.41"><vh>get_blob_imports</vh></v>
+<v t="ekr.20080121121842.42"><vh>hits_from_lpath</vh></v>
+<v t="ekr.20080121121842.43"><vh>toplevel_cplns</vh></v>
+<v t="ekr.20080121121842.44"><vh>ensure_dir_scanned</vh></v>
+<v t="ekr.20080121121842.45"><vh>_importables_from_dir</vh></v>
+<v t="ekr.20080121121842.46"><vh>_dbsubpath_from_blobname</vh></v>
+</v>
+<v t="ekr.20080121121842.47"><vh>class LangTopLevelNameIndex</vh>
+<v t="ekr.20080121121842.48"><vh>__init__</vh></v>
+<v t="ekr.20080121121842.49"><vh>__repr__</vh></v>
+<v t="ekr.20080121121842.50"><vh>merge</vh></v>
+<v t="ekr.20080121121842.51"><vh>merge_expired</vh></v>
+<v t="ekr.20080121121842.52"><vh>data</vh></v>
+<v t="ekr.20080121121842.53"><vh>update</vh></v>
+<v t="ekr.20080121121842.54"><vh>remove</vh></v>
+<v t="ekr.20080121121842.55"><vh>_pivot_res_data</vh></v>
+<v t="ekr.20080121121842.56"><vh>toplevel_cplns</vh></v>
+<v t="ekr.20080121121842.57"><vh>get_blobnames</vh></v>
+</v>
+<v t="ekr.20080121121842.58"><vh>class LangZone</vh>
+<v t="ekr.20080121121842.59"><vh>__init__</vh></v>
+<v t="ekr.20080121121842.60"><vh>__repr__</vh></v>
+<v t="ekr.20080121121842.61"><vh>__del__</vh></v>
+<v t="ekr.20080121121842.62"><vh>_acquire_lock</vh></v>
+<v t="ekr.20080121121842.63"><vh>_release_lock</vh></v>
+<v t="ekr.20080121121842.64"><vh>_check_lang</vh></v>
+<v t="ekr.20080121121842.65"><vh>dhash_from_dir</vh></v>
+<v t="ekr.20080121121842.66"><vh>dfb_from_dir</vh></v>
+<v t="ekr.20080121121842.67"><vh>get_buf_scan_time</vh></v>
+<v t="ekr.20080121121842.68"><vh>get_buf_data</vh></v>
+<v t="ekr.20080121121842.69"><vh>remove_buf_data</vh></v>
+<v t="ekr.20080121121842.70"><vh>update_buf_data</vh></v>
+<v t="ekr.20080121121842.71"><vh>_mk_zone_skel</vh></v>
+<v t="ekr.20080121121842.72"><vh>_mk_dbdir</vh></v>
+<v t="ekr.20080121121842.73"><vh>load_blob</vh></v>
+<v t="ekr.20080121121842.74"><vh>load_index</vh></v>
+<v t="ekr.20080121121842.75"><vh>changed_index</vh></v>
+<v t="ekr.20080121121842.76"><vh>save_index</vh></v>
+<v t="ekr.20080121121842.77"><vh>save</vh></v>
+<v t="ekr.20080121121842.78"><vh>cull_mem</vh></v>
+<v t="ekr.20080121121842.79"><vh>get_lib</vh></v>
+</v>
+</v>
+<v t="ekr.20080121121728.4"><vh>multilanglib.py</vh>
+<v t="ekr.20080121121842.80"><vh>multilanglib declarations</vh></v>
+<v t="ekr.20080121121842.81"><vh>class MultiLangTopLevelNameIndex</vh>
+<v t="ekr.20080121121842.82"><vh>__init__</vh></v>
+<v t="ekr.20080121121842.83"><vh>__repr__</vh></v>
+<v t="ekr.20080121121842.84"><vh>merge</vh></v>
+<v t="ekr.20080121121842.85"><vh>merge_expired</vh></v>
+<v t="ekr.20080121121842.86"><vh>data</vh></v>
+<v t="ekr.20080121121842.87"><vh>update</vh></v>
+<v t="ekr.20080121121842.88"><vh>remove</vh></v>
+<v t="ekr.20080121121842.89"><vh>_pivot_res_data</vh></v>
+<v t="ekr.20080121121842.90"><vh>toplevel_cplns</vh></v>
+<v t="ekr.20080121121842.91"><vh>get_blobnames</vh></v>
+</v>
+<v t="ekr.20080121121842.92"><vh>class MultiLangZone</vh>
+<v t="ekr.20080121121842.93"><vh>get_lib</vh></v>
+<v t="ekr.20080121121842.94"><vh>dfb_from_dir</vh></v>
+<v t="ekr.20080121121842.95"><vh>get_buf_data</vh></v>
+<v t="ekr.20080121121842.96"><vh>remove_buf_data</vh></v>
+<v t="ekr.20080121121842.97"><vh>update_buf_data</vh></v>
+</v>
+<v t="ekr.20080121121842.98"><vh>class MultiLangDirsLib</vh>
+<v t="ekr.20080121121842.99"><vh>__init__</vh></v>
+<v t="ekr.20080121121842.100"><vh>__repr__</vh></v>
+<v t="ekr.20080121121842.101"><vh>_acquire_lock</vh></v>
+<v t="ekr.20080121121842.102"><vh>_release_lock</vh></v>
+<v t="ekr.20080121121842.103"><vh>has_blob</vh></v>
+<v t="ekr.20080121121842.104"><vh>has_blob_in_db</vh></v>
+<v t="ekr.20080121121842.105"><vh>get_blob</vh></v>
+<v t="ekr.20080121121842.106"><vh>hits_from_lpath</vh></v>
+<v t="ekr.20080121121842.107"><vh>toplevel_cplns</vh></v>
+<v t="ekr.20080121121842.108"><vh>ensure_dir_scanned</vh></v>
+<v t="ekr.20080121121842.109"><vh>_importables_from_dir</vh></v>
+<v t="ekr.20080121121842.110"><vh>_dbsubpath_from_blobname</vh></v>
+</v>
+</v>
+<v t="ekr.20080121121728.5"><vh>projlib.py</vh>
+<v t="ekr.20080121121842.111"><vh>projlib declarations</vh></v>
+<v t="ekr.20080121121842.112"><vh>class ProjectZone</vh>
+<v t="ekr.20080121121842.113"><vh>__init__</vh></v>
+<v t="ekr.20080121121842.114"><vh>__repr__</vh></v>
+<v t="ekr.20080121121842.115"><vh>__del__</vh></v>
+<v t="ekr.20080121121842.116"><vh>get_dirs_from_basename</vh></v>
+<v t="ekr.20080121121842.117"><vh>set_dirs_from_basename</vh></v>
+<v t="ekr.20080121121842.118"><vh>_mk_dbdir</vh></v>
+<v t="ekr.20080121121842.119"><vh>save</vh></v>
+<v t="ekr.20080121121842.120"><vh>update</vh></v>
+<v t="ekr.20080121121842.121"><vh>_likely_filename_from_lang_and_blobname</vh></v>
+<v t="ekr.20080121121842.122"><vh>has_blob</vh></v>
+<v t="ekr.20080121121842.123"><vh>get_blob</vh></v>
+<v t="ekr.20080121121842.124"><vh>_lang_lib_for_blob</vh></v>
+<v t="ekr.20080121121842.125"><vh>get_lib</vh></v>
+</v>
+<v t="ekr.20080121121842.126"><vh>class ProjectLib</vh>
+<v t="ekr.20080121121842.127"><vh>__init__</vh></v>
+<v t="ekr.20080121121842.128"><vh>__repr__</vh></v>
+<v t="ekr.20080121121842.129"><vh>has_blob</vh></v>
+<v t="ekr.20080121121842.130"><vh>get_blob</vh></v>
+</v>
+</v>
+<v t="ekr.20080121121728.6"><vh>resource.py</vh>
+<v t="ekr.20080121121842.131"><vh>resource declarations</vh></v>
+<v t="ekr.20080121121842.132"><vh>class Resource</vh>
+<v t="ekr.20080121121842.133"><vh>__init__</vh></v>
+<v t="ekr.20080121121842.134"><vh>canon_path</vh></v>
+</v>
+<v t="ekr.20080121121842.135"><vh>class AreaResource</vh>
+<v t="ekr.20080121121842.136"><vh>area_and_subpath_from_path</vh></v>
+<v t="ekr.20080121121842.137"><vh>__init__</vh></v>
+<v t="ekr.20080121121842.138"><vh>__str__</vh></v>
+<v t="ekr.20080121121842.139"><vh>__repr__</vh></v>
+<v t="ekr.20080121121842.140"><vh>area_path</vh></v>
+<v t="ekr.20080121121842.141"><vh>path</vh></v>
+</v>
+</v>
+<v t="ekr.20080121121728.7"><vh>stdlib.py</vh>
+<v t="ekr.20080121121842.142"><vh>stdlib declarations</vh></v>
+<v t="ekr.20080121121842.143"><vh>class StdLib</vh>
+<v t="ekr.20080121121842.144"><vh>__init__</vh></v>
+<v t="ekr.20080121121842.145"><vh>__repr__</vh></v>
+<v t="ekr.20080121121842.146"><vh>import_handler</vh></v>
+<v t="ekr.20080121121842.147"><vh>blob_index</vh></v>
+<v t="ekr.20080121121842.148"><vh>toplevelname_index</vh></v>
+<v t="ekr.20080121121842.149"><vh>toplevelprefix_index</vh></v>
+<v t="ekr.20080121121842.150"><vh>has_blob</vh></v>
+<v t="ekr.20080121121842.151"><vh>get_blob</vh></v>
+<v t="ekr.20080121121842.152"><vh>get_blob_imports</vh></v>
+<v t="ekr.20080121121842.153"><vh>hits_from_lpath</vh></v>
+<v t="ekr.20080121121842.154"><vh>toplevel_cplns</vh></v>
+</v>
+<v t="ekr.20080121121842.155"><vh>class StdLibsZone</vh>
+<v t="ekr.20080121121842.156"><vh>__init__</vh></v>
+<v t="ekr.20080121121842.157"><vh>__del__</vh></v>
+<v t="ekr.20080121121842.158"><vh>vers_and_names_from_lang</vh></v>
+<v t="ekr.20080121121842.159"><vh>res_index</vh></v>
+<v t="ekr.20080121121842.160"><vh>save</vh></v>
+<v t="ekr.20080121121842.161"><vh>get_lib</vh></v>
+<v t="ekr.20080121121842.162"><vh>_get_preload_zip</vh></v>
+<v t="ekr.20080121121842.163"><vh>can_preload</vh></v>
+<v t="ekr.20080121121842.164"><vh>preload</vh></v>
+<v t="ekr.20080121121842.165"><vh>remove_lang</vh></v>
+<v t="ekr.20080121121842.166"><vh>update_lang</vh></v>
+<v t="ekr.20080121121842.167"><vh>_handle_res_todos</vh></v>
+<v t="ekr.20080121121842.168"><vh>_remove_res</vh></v>
+<v t="ekr.20080121121842.169"><vh>_add_res</vh></v>
+</v>
+<v t="ekr.20080121121842.170"><vh>_ver_from_ver_str</vh></v>
+</v>
+<v t="ekr.20080121121728.8"><vh>util.py</vh>
+<v t="ekr.20080121121842.171"><vh>util declarations</vh></v>
+<v t="ekr.20080121121842.172"><vh>filter_blobnames_for_prefix</vh></v>
+<v t="ekr.20080121121842.173"><vh>rmdir</vh></v>
+<v t="ekr.20080121121842.174"><vh>_rmtree_onerror</vh></v>
+<v t="ekr.20080121121842.175"><vh>__run_log</vh></v>
+<v t="ekr.20080121121842.176"><vh>run</vh></v>
+<v t="ekr.20080121121842.177"><vh>run_in_dir</vh></v>
 </v>
 </v>
 </v>
-<v t="ekr.20080121105837.1815"><vh>lib/sdk</vh>
-<v t="ekr.20080121105837.1816"><vh>sdk/bin</vh>
-<v t="ekr.20080121105837.1817"><vh>codeintel.py</vh>
-<v t="ekr.20080121105837.1818"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
-<v t="ekr.20080121105837.1819"><vh>class Shell</vh>
-<v t="ekr.20080121105837.1820"><vh>get_optparser</vh></v>
-<v t="ekr.20080121105837.1821"><vh>postoptparse</vh></v>
-<v t="ekr.20080121105837.1822"><vh>do_scan</vh></v>
-<v t="ekr.20080121105837.1823"><vh>do_html</vh></v>
-</v>
-<v t="ekr.20080121105837.1824"><vh>Internal support functions</vh>
-<v t="ekr.20080121105837.1825"><vh>_url_from_local_path</vh></v>
-<v t="ekr.20080121105837.1826"><vh>_should_include_path</vh></v>
-<v t="ekr.20080121105837.1827"><vh>_paths_from_path_patterns</vh></v>
-<v t="ekr.20080121105837.1828"><vh>class _PerLevelFormatter</vh>
-<v t="ekr.20080121105837.1829"><vh>__init__</vh></v>
-<v t="ekr.20080121105837.1830"><vh>format</vh></v>
-</v>
-<v t="ekr.20080121105837.1831"><vh>_setup_logging</vh></v>
-</v>
-<v t="ekr.20080121105837.1832"><vh>Main line</vh>
-<v t="ekr.20080121105837.1833"><vh>_do_main</vh></v>
-<v t="ekr.20080121105837.1834"><vh>main</vh></v>
-</v>
-</v>
-<v t="ekr.20080121105837.1835"><vh>luddite.py</vh>
-<v t="ekr.20080121105837.1836"><vh>imports</vh></v>
-<v t="ekr.20080121105837.1837"><vh>_set_lib_path</vh></v>
-<v t="ekr.20080121105837.1838"><vh>class Shell</vh>
-<v t="ekr.20080121105837.1839"><vh>get_optparser</vh></v>
-<v t="ekr.20080121105837.1840"><vh>postoptparse</vh></v>
-<v t="ekr.20080121105837.1841"><vh>do_just_compile</vh></v>
-<v t="ekr.20080121105837.1842"><vh>do_deprecated_compile</vh></v>
-<v t="ekr.20080121105837.1843"><vh>_do_parse</vh></v>
-<v t="ekr.20080121105837.1844"><vh>do_deprecated_package</vh></v>
-<v t="ekr.20080121105837.1845"><vh>do_lex</vh></v>
-<v t="ekr.20080121105837.1846"><vh>do_lexhtml</vh></v>
-</v>
-<v t="ekr.20080121105837.1847"><vh>class _PerLevelFormatter</vh>
-<v t="ekr.20080121105837.1848"><vh>__init__</vh></v>
-<v t="ekr.20080121105837.1849"><vh>format</vh></v>
-</v>
-<v t="ekr.20080121105837.1850"><vh>_setup_logging</vh></v>
-<v t="ekr.20080121105837.1851"><vh>_url_from_local_path</vh></v>
-</v>
-</v>
-<v t="ekr.20080121105837.1852"><vh>sdk/share</vh>
-<v t="ekr.20080121105837.1853"><vh>lang_LANG.py (Important)</vh></v>
-<v t="ekr.20080121105837.1854"><vh>cix-2.0.rng</vh></v>
-</v>
-</v>
-</v>
-<v t="ekr.20080121105837.1855"><vh>stdlibs/*.cix</vh></v>
 </v>
 </v>
 </vnodes>
@@ -2132,6 +2884,9 @@ reallyCreate = True
 
 baseDir = r'c:\Python25\Lib\site-packages\pubsub'
 baseDir = r'C:\Program Files\Komodo Edit 4.3\lib\mozilla\python\komodo\codeintel2'
+baseDir = r'C:\Program Files\Komodo Edit 4.3\lib\mozilla\python\komodo\codeintel2\database'
+baseDir = r'C:\Program Files\Komodo Edit 4.3\lib\sdk\pylib'
+baseDir = r'C:\Program Files\Komodo Edit 4.3\lib\sdk\pylib\ludditelib'
 dirs = ('',) #'Extensions','UserConfig',)
 print '-----'
 
@@ -2151,9 +2906,7 @@ try:
 finally:
     c.endUpdate()
 </t>
-<t tx="ekr.20080121105837"># Must use komodo code.  It's beautiful, it's functional, it's cool, it's awesome.
-
-</t>
+<t tx="ekr.20080121105837"></t>
 <t tx="ekr.20080121105837.1">@language rest
 
 Most important files:
@@ -2202,8 +2955,6 @@ See http://www.fileinfo.net/extension/rng</t>
 # the terms of any one of the MPL, the GPL or the LGPL.
 # 
 # ***** END LICENSE BLOCK *****</t>
-<t tx="ekr.20080121105837.5"></t>
-<t tx="ekr.20080121105837.6"></t>
 <t tx="ekr.20080121105837.7"></t>
 <t tx="ekr.20080121105837.8"></t>
 <t tx="ekr.20080121105837.9">@language python
@@ -3647,26 +4398,21 @@ def _doctest():
     doctest.testmod()
 
 </t>
-<t tx="ekr.20080121105837.105">@language python
+<t tx="ekr.20080121105837.105">#!/usr/bin/env python
+# ***** BEGIN LICENSE BLOCK *****
+&lt;&lt; citadel.py docstring &gt;&gt;
+
+@language python
 @tabwidth -4
+
+#---- globals
+log = logging.getLogger("codeintel.citadel")
+#log.setLevel(logging.INFO)
+
+&lt;&lt; imports &gt;&gt;
 @others
 </t>
-<t tx="ekr.20080121105837.106">#!/usr/bin/env python
-# ***** BEGIN LICENSE BLOCK *****
-
-r"""Handling for citadel parts of CodeIntel.
-
-The origin of the name "citadel": In early dev of codeintel naming for
-various things generally began with "CI" for CodeIntel. The (simple) syntax
-for defining type guesses (the things that are evaluated against the CIDB)
-was (and is) called CITDL (CodeIntel Type Definition Language) -- pronounced
-"citadel", in an attempt to be mnemonic. In dev for Komodo 4, the codeintel
-system is being generalized to support languages that don't fit in the
-CIDB/CITDL-framework so "citadel" is the umbrella term for CIDB/CITDL-based
-stuff in the codeintel system.
-"""
-
-import os
+<t tx="ekr.20080121105837.106">import os
 from os.path import (isfile, isdir, exists, dirname, abspath, join, basename)
 import sys
 import logging
@@ -3681,50 +4427,12 @@ from codeintel2.buffer import Buffer
 from codeintel2.common import *
 from codeintel2.indexer import ScanRequest
 #from codeintel2.scheduler import BatchUpdater
-
-
-
-#---- globals
-
-log = logging.getLogger("codeintel.citadel")
 </t>
-<t tx="ekr.20080121105837.107">#log.setLevel(logging.INFO)
-
-
-
-#---- module interface
+<t tx="ekr.20080121105837.107">#---- module interface
 
 
 class CitadelBuffer(Buffer):
-    """Virtual base class for language Buffers whose completion evaluation
-    is based on CIDB/CITDL/CIX.
-
-    CitadelBuffers have the following additional API:
-        .defns_from_pos(..) Returns a list of citdl expressions for position.
-        .scan(...)          Force a scan of the buffer.
-        .scan_time          Time of the last scan (or None if not in the db)
-        .scan_error         A string describing why the last scan failed
-                            (or None if it didn't fail or there hasn't
-                            been a scan)
-        .blob_from_lang     Mapping of language to blob (a.k.a. the
-                            module Element). This will synchronously
-                            scan if there is not scan data already
-                            available.
-
-        .tree/.cix          CIX Element tree and serialized CIX of this
-                            buffer's scan data.
-
-        .scoperef_from_pos()
-        .scoperef_from_blob_and_line()
-                            Routines for getting the current scope in
-                            the blob scan data. Used for completion eval
-                            and code browsing.
-
-        # Two convenience routines for working with the db.
-        .load()             Load data about this buffer into the db.
-        .unload()           Remove data about this buffer from the db.
-
-    """
+    &lt;&lt; class CitadelBuffer docstring &gt;&gt;
     # Local cache for buf data that is stored in the db. Each one of
     # these has a property for access.
     _scan_time_cache = None
@@ -4635,6 +5343,8 @@ def import_handler_from_lang(self, lang):
 </t>
 <t tx="ekr.20080121105837.158">@language python
 @tabwidth -4
+
+&lt;&lt; imports &gt;&gt;
 @others
 </t>
 <t tx="ekr.20080121105837.159"># ***** BEGIN LICENSE BLOCK *****
@@ -4651,8 +5361,6 @@ import threading
 import logging
 
 from codeintel2.common import *
-
-
 
 log = logging.getLogger("codeintel.citadel")
 
@@ -19597,11 +20305,7 @@ def _php_cache_from_elem(self, elem):
         cache[cache_item_name] = interface_names
     return interface_names
 </t>
-<t tx="ekr.20080121105837.964">@language python
-@tabwidth -4
-@others
-</t>
-<t tx="ekr.20080121105837.965">#!/usr/bin/env python
+<t tx="ekr.20080121105837.964">#!/usr/bin/env python
 # ***** BEGIN LICENSE BLOCK *****
 
 """Completion evaluation code for Python"""
@@ -19609,10 +20313,12 @@ def _php_cache_from_elem(self, elem):
 from codeintel2.common import *
 from codeintel2.tree import TreeEvaluator
 
+@language python
+@tabwidth -4
 
-</t>
-<t tx="ekr.20080121105837.966">class PythonTreeEvaluator(TreeEvaluator):
+class PythonTreeEvaluator(TreeEvaluator):
     @others
+
 </t>
 <t tx="ekr.20080121105837.967">def eval_cplns(self):
     self.log_start()
@@ -30165,16 +30871,30 @@ def register(mgr):
                       cile_driver_class=PHPCILEDriver,
                       is_cpln_lang=True)
 </t>
-<t tx="ekr.20080121105837.1387">@language python
-@tabwidth -4
-@others
-</t>
-<t tx="ekr.20080121105837.1388">#!/usr/bin/env python
+<t tx="ekr.20080121105837.1387">#!/usr/bin/env python
 # ***** BEGIN LICENSE BLOCK *****
 
 """Python support for CodeIntel"""
 
-import os
+@language python
+@tabwidth -4
+
+&lt;&lt; imports &gt;&gt;
+
+#---- globals
+lang = "Python"
+log = logging.getLogger("codeintel.python")
+#log.setLevel(logging.DEBUG)
+
+CACHING = True #DEPRECATED: kill it
+
+# See http://effbot.org/zone/pythondoc.htm
+_g_pythondoc_tags = list(sorted(
+    "param keyparam return exception def defreturn see link linkplain".split()))
+
+@others
+</t>
+<t tx="ekr.20080121105837.1388">import os
 from os.path import (isfile, isdir, exists, dirname, abspath, splitext,
                      join, basename, isfile, normcase)
 import sys
@@ -30205,23 +30925,6 @@ try:
     _xpcom_ = True
 except ImportError:
     _xpcom_ = False
-
-
-
-#---- globals
-
-lang = "Python"
-log = logging.getLogger("codeintel.python")
-#log.setLevel(logging.DEBUG)
-
-CACHING = True #DEPRECATED: kill it
-
-# See http://effbot.org/zone/pythondoc.htm
-_g_pythondoc_tags = list(sorted("param keyparam return exception def "
-                                "defreturn see link linkplain".split()))
-
-
-
 </t>
 <t tx="ekr.20080121105837.1389">#---- language support
 
@@ -31182,6 +31885,7 @@ def libs(self):
     @others
 </t>
 <t tx="ekr.20080121105837.1421">def scan_purelang(self, buf):
+
     #log.warn("TODO: python cile that uses elementtree")
     cix = pythoncile.scan(buf.accessor.text, buf.path)
     from codeintel2.tree import tree_from_cix
@@ -31192,11 +31896,7 @@ def libs(self):
 </t>
 <t tx="ekr.20080121105837.1422">#---- internal support stuff
 
-
-
-
 #---- registration
-
 def register(mgr):
     """Register language support with the Manager."""
     mgr.set_lang_info(lang,
@@ -35991,11 +36691,7 @@ class Lexer:
     raise CILEError("Syntax Error in lexer")
 
 </t>
-<t tx="ekr.20080121105837.1716">@language python
-@tabwidth -4
-@others
-</t>
-<t tx="ekr.20080121105837.1717">#!/usr/bin/env python
+<t tx="ekr.20080121105837.1716">#!/usr/bin/env python
 
 """New citree-based codeintel evaluation engine.
 
@@ -36006,9 +36702,20 @@ limitations, bugs, and having a better code design (i.e. where lang-specific
 quirks can be dealt with cleanly).
 """
 
-import logging
+@language python
+@tabwidth -4
+
+&lt;&lt; imports &gt;&gt;
+
+log = logging.getLogger("codeintel.tree")
+CIX_VERSION = "2.0"
+
+@others
+</t>
+<t tx="ekr.20080121105837.1717">import logging
 
 import ciElementTree as ET
+
 if not getattr(ET, "_patched_for_komodo_", False):
     import warnings
     warnings.warn("Not using codeintel's patched elementtree: "
@@ -36016,13 +36723,6 @@ if not getattr(ET, "_patched_for_komodo_", False):
 
 from codeintel2.common import *
 from codeintel2.citadel import CitadelEvaluator
-
-
-log = logging.getLogger("codeintel.tree")
-
-CIX_VERSION = "2.0"
-
-
 </t>
 <t tx="ekr.20080121105837.1718">def tree_2_0_from_tree_0_1(tree):
     """Convert CIX 0.1 to CIX 2.0."""
@@ -37319,7 +38019,7 @@ General Usage
 <t tx="ekr.20080121105837.1768"></t>
 <t tx="ekr.20080121105837.1769">#!python
 
-&lt;&lt; docstring &gt;&gt;
+&lt;&lt; database.py docstring &gt;&gt;
 &lt;&lt; imports &gt;&gt;
 
 #---- globals
@@ -37699,8 +38399,7 @@ from codeintel2.database.projlib import ProjectZone
 </t>
 <t tx="ekr.20080121105837.1778">@property
 def version(self):
-    """Return the version of the db on disk (or None if cannot
-    determine).
+    """Return the version of the db on disk (or None if cannot determine).
     """
     path = join(self.base_dir, "VERSION")
     try:
@@ -39819,6 +40518,15913 @@ javascript.cix
 python-2.4.cix
 python-2.5.cix</t>
 <t tx="ekr.20080121105857"></t>
-<t tx="ekr.20080121105857.1"></t>
+<t tx="ekr.20080121121728.1">#!python
+
+
+"""The API catalogs-zone of the codeintel database.
+See the database/database.py module docstring for an overview.
+"""
+
+@language python
+@tabwidth -4
+
+&lt;&lt; imports &gt;&gt;
+
+#---- globals
+log = logging.getLogger("codeintel.db")
+
+
+@others
+</t>
+<t tx="ekr.20080121121728.3">@language python
+@tabwidth -4
+@others
+</t>
+<t tx="ekr.20080121121728.4">@language python
+@tabwidth -4
+@others
+</t>
+<t tx="ekr.20080121121728.5">@language python
+@tabwidth -4
+@others
+</t>
+<t tx="ekr.20080121121728.6">@language python
+@tabwidth -4
+@others
+</t>
+<t tx="ekr.20080121121728.7">@language python
+@tabwidth -4
+@others
+</t>
+<t tx="ekr.20080121121728.8">@language python
+@tabwidth -4
+@others
+</t>
+<t tx="ekr.20080121121728.9">#!python
+# ***** LICENSE BLOCK *****
+
+"""the codeintel database (start by reading database/database.py)"""
+
+@language python
+@tabwidth -4
+
+</t>
+<t tx="ekr.20080121121842">import sys
+import os
+from os.path import (join, dirname, exists, expanduser, splitext, basename,
+                     split, abspath, isabs, isdir, isfile, normpath,
+                     normcase)
+import cPickle as pickle
+import threading
+import time
+import md5
+import bisect
+import fnmatch
+from glob import glob
+from pprint import pprint, pformat
+import logging
+from cStringIO import StringIO
+import codecs
+import copy
+import weakref
+import Queue
+
+import ciElementTree as ET
+from codeintel2.common import *
+from codeintel2.buffer import Buffer
+from codeintel2.util import dedent, safe_lang_from_lang, banner, hotshotit
+from codeintel2.tree import tree_from_cix_path
+from codeintel2.database.util import filter_blobnames_for_prefix
+from codeintel2.database.resource import AreaResource
+</t>
+<t tx="ekr.20080121121842.1">#log.setLevel(logging.DEBUG)
+
+
+
+#---- Database zone and lib implementations
+
+class CatalogsZone(object):
+    """Singleton zone managing the db/catalogs/... area.
+
+    TODO: Locking: .cull_mem() and .save() will be called periodically
+          on indexer thread. Anything they access needs to be guarded.
+    """
+    _res_index = None
+    _blob_index = None
+    _toplevelname_index = None
+    _toplevelprefix_index = None
+    
+    _have_updated_at_least_once = False
+
+    @others
+</t>
+<t tx="ekr.20080121121842.2">def __init__(self, mgr, catalog_dirs=None):
+    self.mgr = mgr
+    self.db = mgr.db
+
+    if catalog_dirs is None:
+        catalog_dirs = []
+    assert isinstance(catalog_dirs, list)
+    std_catalog_dir = join(dirname(dirname(abspath(__file__))), "catalogs")
+    if std_catalog_dir not in catalog_dirs:
+        catalog_dirs.append(std_catalog_dir)
+    self.catalog_dirs = catalog_dirs
+
+    self.base_dir = join(self.db.base_dir, "db", "catalogs")
+
+    self._lib_cache = {} # (lang, selection_res_ids) -&gt; CatalogLib
+
+    self._lock = threading.RLock()
+    self._blob_and_atime_from_blobname_from_lang_cache = {}
+    self._dbsubpaths_and_lpaths_to_save = []
+
+</t>
+<t tx="ekr.20080121121842.3">def __repr__(self):
+    return "&lt;catalog zone&gt;"
+
+</t>
+<t tx="ekr.20080121121842.4">def _selection_from_selector(self, selections):
+    """Given a sequence of catalog selection strings (each is a
+    catalog name or full path to a catalog .cix file) return a dict
+    mapping:
+
+        &lt;normalized-selector&gt; -&gt; &lt;selection-string&gt;
+
+    If "selections" is None, this returns None.
+    """
+    if selections is None:
+        return None
+    selection_from_selector = {}
+    for selection in selections:
+        if isabs(selection):
+            selector = normpath(normcase(selection))
+        else:
+            selector = selection.lower()
+        selection_from_selector[selector] = selection
+    return selection_from_selector
+
+</t>
+<t tx="ekr.20080121121842.5">_res_ids_from_selector_cache = None
+def _res_ids_from_selections(self, selections):
+    """Returns a tuple of the database resource ids for the given
+    selections and a list of selections that didn't match any loaded
+    resources.
+    """
+    if self._res_ids_from_selector_cache is None:
+        cache = self._res_ids_from_selector_cache = {}
+        for cix_area_path, res_data in self.res_index.items():
+            cix_path = AreaResource(cix_area_path).path
+            res_id = res_data[0]
+            cache[normpath(normcase(cix_path))] = [res_id]
+            name = splitext(basename(cix_path))[0].lower()
+            if name not in cache:
+                cache[name] = []
+            cache[name].append(res_id)
+        log.debug("_res_ids_from_selector_cache: %r", cache)
+
+    res_ids = []
+    missing_selections = []
+    for selector, selection \
+        in self._selection_from_selector(selections).items():
+        try:
+            res_ids += self._res_ids_from_selector_cache[selector]
+        except KeyError, ex:
+            missing_selections.append(selection)
+    log.debug("_res_ids_from_selections: res_ids=%r", res_ids)
+    return tuple(res_ids), missing_selections
+
+</t>
+<t tx="ekr.20080121121842.6">def get_lib(self, lang, selections=None, attempt_load_if_necessary=False):
+    """Return a CatalogLib for the given lang and selections.
+
+        ...
+        "attempt_load_if_necessary" (optional, default False) is a
+            boolean indicating if an attempt should be made to load
+            available catalogs for missing selections.
+    """
+    assert not isinstance(selections, basestring),\
+        "catalog lib 'selections' must be None or a sequence, not %r: %r"\
+        % (type(selections), selections)
+    if not self._have_updated_at_least_once:
+        self.update(selections)
+
+    if selections is not None:
+        selection_res_ids, missing_selections \
+            = self._res_ids_from_selections(selections)
+        if missing_selections and attempt_load_if_necessary:
+            self.update(missing_selections)
+            selection_res_ids, missing_selections \
+                = self._res_ids_from_selections(selections)
+        if missing_selections:
+            log.warn("the following catalog selections didn't match "
+                     "any loaded API catalog: '%s'",
+                     "', '".join(missing_selections))
+    else:
+        selection_res_ids = None
+    key = (lang, selection_res_ids)
+    if key not in self._lib_cache:
+        self._lib_cache[key] = CatalogLib(self, lang,
+                                          selections, selection_res_ids)
+    return self._lib_cache[key]
+
+</t>
+<t tx="ekr.20080121121842.7">@property
+def res_index(self):
+    """Load and return the resource index (res_index)."""
+    if self._res_index is None:
+        idxpath = join(self.base_dir, "res_index")
+        self._res_index = self.db.load_pickle(idxpath, {})
+    return self._res_index
+
+</t>
+<t tx="ekr.20080121121842.8">@property
+def blob_index(self):
+    """Load and return the blob index (blob_index)."""
+    if self._blob_index is None:
+        idxpath = join(self.base_dir, "blob_index")
+        self._blob_index = self.db.load_pickle(idxpath, {})
+    return self._blob_index
+
+</t>
+<t tx="ekr.20080121121842.9">@property
+def toplevelname_index(self):
+    """Load and return the top-level name index (toplevelname_index)."""
+    if self._toplevelname_index is None:
+        idxpath = join(self.base_dir, "toplevelname_index")
+        self._toplevelname_index = self.db.load_pickle(idxpath, {})
+    return self._toplevelname_index
+
+</t>
+<t tx="ekr.20080121121842.10">@property
+def toplevelprefix_index(self):
+    """Load and return the top-level prefix index (toplevelprefix_index)."""
+    if self._toplevelprefix_index is None:
+        idxpath = join(self.base_dir, "toplevelprefix_index")
+        self._toplevelprefix_index = self.db.load_pickle(idxpath, {})
+    return self._toplevelprefix_index
+
+</t>
+<t tx="ekr.20080121121842.11">def save(self):
+    self._lock.acquire()
+    try:
+        for dbsubpath, lpaths in self._dbsubpaths_and_lpaths_to_save:
+            self.db.save_pickle(join(self.base_dir, dbsubpath), lpaths)
+        self._dbsubpaths_and_lpaths_to_save = []
+    finally:
+        self._lock.release()
+
+</t>
+<t tx="ekr.20080121121842.12">def cull_mem(self):
+    """Drop blobs from cache that have not been accessed in over 5
+    minutes.
+
+    To attempt to keep memory consumption under control we want to
+    ensure we don't keep everything cached from the db in memory
+    until process completion.
+    """
+    #TOTEST: Does Python/Komodo actually release this memory or
+    #        are we kidding ourselves?
+    self._lock.acquire()
+    try:
+        N = 10
+        if len(self._blob_and_atime_from_blobname_from_lang_cache) &lt; N:
+            # Too few blobs in memory to bother culling.
+            return
+
+        log.info("catalog: culling memory")
+        now = time.time()
+        for lang, blob_and_atime_from_blobname \
+            in self._blob_and_atime_from_blobname_from_lang_cache.items():
+            for blobname, (blob, atime) in blob_and_atime_from_blobname.items():
+                if now - atime &gt; 300.0: # &gt;5 minutes since last access
+                    del blob_and_atime_from_blobname[blobname]
+    finally:
+        self._lock.release()
+
+</t>
+<t tx="ekr.20080121121842.13">def avail_catalogs(self, selections=None):
+    """Generate a list of available catalogs.
+
+        "selections" (optional) is a list of string of the same form
+            as to `.get_lib()'. It is used to determine the boolean
+            value of &lt;selected&gt; in the yielded tuples.
+
+    Generated dicts as follows:
+        {"name": &lt;catalog-name&gt;,    # 'name' attr of &lt;codeintel&gt; tag
+                                    #   or file basename
+         "lang": &lt;lang&gt;,            # 'lang' attribute of first &lt;file&gt; tag
+         "description": &lt;desc&gt;,     # 'description' attr of &lt;codeintel&gt;
+         "cix_path": &lt;cix-path&gt;,
+         "selected": &lt;selected&gt;,
+         "selection": &lt;selection&gt;,
+        }
+    where &lt;selected&gt; is boolean indicating if this catalog is
+    selected according to "selections" and &lt;selection&gt; is the string
+    in "selections" that resulted in this.
+    """
+    selection_from_selector = self._selection_from_selector(selections)
+    for cix_path in (cix_path for d in self.catalog_dirs if exists(d)
+                     for cix_path in glob(join(d, "*.cix"))):
+        name = lang = description = None
+        try:
+            for event, elem in ET.iterparse(cix_path, events=("start",)):
+                if elem.tag == "codeintel":
+                    name = elem.get("name")
+                    description = elem.get("description")
+                elif elem.tag == "file":
+                    lang = elem.get("lang")
+                    break
+        except ET.XMLParserError, ex:
+            log.warn("%s: error reading catalog, skipping it (%s)",
+                     cix_path, ex)
+            continue
+        if lang is None:
+            log.warn("%s: no 'lang' attribute on catalog &lt;file&gt; tag, "
+                     "skipping it", cix_path)
+            continue
+        if name is None:
+            name = splitext(basename(cix_path))[0]
+        norm_name = name.lower()
+        norm_cix_path = normpath(normcase(cix_path))
+        if selection_from_selector is None:
+            selected = True
+            selection = None
+        else:
+            selection = (selection_from_selector.get(norm_name)
+                         or selection_from_selector.get(norm_cix_path))
+            selected = selection is not None
+        yield {"name": name,
+               "lang": lang,
+               "description": description,
+               "cix_path": cix_path,
+               "selected": selected,
+               "selection": selection}
+
+</t>
+<t tx="ekr.20080121121842.14">def update(self, selections=None, progress_cb=None):
+    """Update the catalog as necessary.
+    
+        "selections" (optional) is a list of string of the same form
+            as to `.get_lib()' -- used here to filter the catalogs
+            that we consider for updating.
+        "progress_cb" (optional) is a callable that is called as
+            follows to show the progress of the update:
+                progress_cb(&lt;desc&gt;, &lt;value&gt;)
+            where &lt;desc&gt; is a short string describing the current step
+            and &lt;value&gt; is an integer between 0 and 100 indicating the
+            level of completeness.
+    """
+    self._have_updated_at_least_once = True
+
+    # Figure out what updates need to be done...
+    if progress_cb:
+        try:    progress_cb("Determining necessary catalog updates...", 5)
+        except: log.exception("error in progress_cb (ignoring)")
+    res_name_from_res_path = dict(  # this is our checklist
+        (p, v[2]) for p,v in self.res_index.items())
+    todos = []
+    log.info("updating %s: %d catalog dir(s)", self,
+             len(self.catalog_dirs))
+    for catalog_info in self.avail_catalogs(selections):
+        cix_path = catalog_info["cix_path"]
+        res = AreaResource(cix_path)
+        # check that the update-time is the mtime (i.e. up-to-date)
+        try:
+            res_id, last_updated, name, res_data \
+                = self.res_index[res.area_path]
+        except KeyError:
+            # add this new CIX file
+            todos.append(("add", res, catalog_info["name"]))
+        else:
+            mtime = os.stat(cix_path).st_mtime
+            if last_updated != mtime: # epsilon? '&gt;=' instead of '!='?
+                # update with newer version
+                todos.append(("update", res, catalog_info["name"]))
+            #else:
+            #    log.debug("not updating '%s' catalog: mtime is unchanged",
+            #              catalog_info["name"])
+            del res_name_from_res_path[res.area_path] # tick it off
+
+    for res_area_path, res_name in res_name_from_res_path.items():
+        # remove this obsolete CIX file
+        try:
+            todos.append( ("remove", AreaResource(res_area_path), res_name) )
+        except ValueError, ex:
+            # Skip resources in unknown areas. This is primarily to
+            # allow debugging/testing (when the set of registered
+            # path_areas may not include the set when running in
+            # Komodo.)
+            pass
+
+    # Filter todos on selections, if any.
+    if selections is not None:
+        selection_from_selector = self._selection_from_selector(selections)
+        before = todos[:]
+        todos = [todo for todo in todos
+            if todo[2].lower() in selection_from_selector
+            or normpath(normcase(todo[1].path)) in selection_from_selector
+        ]
+
+    # ... and then do them.
+    if not todos:
+        return
+    for i, (action, res, name) in enumerate(todos):
+        log.debug("%s `%s' catalog (%s)", action, name, res)
+        try:
+            if action == "add":
+                desc = "Adding '%s' API catalog" % basename(res.subpath)
+                self.db.report_event(desc)
+                if progress_cb:
+                    try:    progress_cb(desc, (5 + 95/len(todos)*i))
+                    except: log.exception("error in progress_cb (ignoring)")
+                self._add_res(res)
+            elif action == "remove":
+                desc = "Removing '%s' API catalog" % basename(res.subpath)
+                self.db.report_event(desc)
+                if progress_cb:
+                    try:    progress_cb(desc, (5 + 95/len(todos)*i))
+                    except: log.exception("error in progress_cb (ignoring)")
+                self._remove_res(res)
+            elif action == "update":
+                desc = "Updating '%s' API catalog" % basename(res.subpath)
+                self.db.report_event(desc)
+                if progress_cb:
+                    try:    progress_cb(desc, (5 + 95/len(todos)*i))
+                    except: log.exception("error in progress_cb (ignoring)")
+                #XXX Bad for filesystem. Change this to do it
+                #    more intelligently if possible.
+                self._remove_res(res)
+                self._add_res(res)
+        except DatabaseError, ex:
+            log.warn("%s (skipping)" % ex)
+
+    if progress_cb:
+        try:    progress_cb("Saving catalog indeces...", 95)
+        except: log.exception("error in progress_cb (ignoring)")
+    self._res_ids_from_selector_cache = None # invalidate this cache
+    if self._res_index is not None:
+        self.db.save_pickle(
+            join(self.base_dir, "res_index"),
+            self._res_index)
+    if self._blob_index is not None:
+        self.db.save_pickle(
+            join(self.base_dir, "blob_index"),
+            self._blob_index)
+    if self._toplevelname_index is not None:
+        self.db.save_pickle(
+            join(self.base_dir, "toplevelname_index"),
+            self._toplevelname_index)
+    if self._toplevelprefix_index is not None:
+        self.db.save_pickle(
+            join(self.base_dir, "toplevelprefix_index"),
+            self._toplevelprefix_index)
+
+</t>
+<t tx="ekr.20080121121842.15">_existing_res_ids_cache = None
+_new_res_id_counter = 0
+def _new_res_id(self):
+    if self._existing_res_ids_cache is None:
+        self._existing_res_ids_cache \
+            = dict((d[0], True) for d in self.res_index.values())
+    while True:
+        if self._new_res_id_counter not in self._existing_res_ids_cache:
+            new_res_id = self._new_res_id_counter
+            self._new_res_id_counter += 1
+            self._existing_res_ids_cache[new_res_id] = True
+            return new_res_id
+        self._new_res_id_counter += 1
+
+</t>
+<t tx="ekr.20080121121842.16">def _remove_res(self, res):
+    LEN_PREFIX = self.db.LEN_PREFIX
+    res_id, last_updated, name, res_data = self.res_index[res.area_path]
+    # res_data: {lang -&gt; blobname -&gt; ilk -&gt; toplevelnames}
+    for lang, tfifb in res_data.items():
+        dbfile_and_res_id_from_blobname = self.blob_index[lang]
+        for blobname, toplevelnames_from_ilk in tfifb.items():
+            # Update 'blob_index' for $lang.
+            dbfile, res_id = dbfile_and_res_id_from_blobname[blobname]
+            del dbfile_and_res_id_from_blobname[blobname]
+
+            # Remove ".blob" file (and associated caches).
+            pattern = join(self.base_dir, safe_lang_from_lang(lang),
+                           dbfile+".*")
+            try:
+                for path in glob(pattern):
+                    log.debug("fs-write: remove catalog %s blob file '%s'",
+                              lang, basename(path))
+                    os.remove(path)
+            except EnvironmentError, ex:
+                #XXX If get lots of these, then try harder. Perhaps
+                #    creating a zombies area, or creating a list of
+                #    them: self.db.add_zombie(dbpath).
+                #XXX THis isn't a correct analysis: the dbfile may just
+                #    not have been there.
+                log.warn("could not remove dbfile '%s' (%s '%s'): "
+                         "leaving zombie", dbpath, lang, blobname)
+
+            # Update 'toplevel*_index' for $lang.
+            # toplevelname_index:   {lang -&gt; ilk -&gt; toplevelname -&gt; res_id -&gt; blobnames}
+            # toplevelprefix_index: {lang -&gt; ilk -&gt; prefix -&gt; res_id -&gt; toplevelnames}
+            for ilk, toplevelnames in toplevelnames_from_ilk.iteritems():
+                try:
+                    bfrft = self.toplevelname_index[lang][ilk]
+                    for toplevelname in toplevelnames:
+                        del bfrft[toplevelname][res_id]
+                        if not bfrft[toplevelname]:
+                            del bfrft[toplevelname]
+                except KeyError, ex:
+                    self.db.corruption("CatalogsZone._remove_res",
+                        "error removing top-level names of ilk '%s' for "
+                            "'%s' resource from toplevelname_index: %s"
+                            % (ilk, basename(res.path), ex),
+                        "ignore")
+
+                try:
+                    tfrfp = self.toplevelprefix_index[lang][ilk]
+                    for toplevelname in toplevelnames:
+                        prefix = toplevelname[:LEN_PREFIX]
+                        del tfrfp[prefix][res_id]
+                        if not tfrfp[prefix]:
+                            del tfrfp[prefix]
+                except KeyError, ex:
+                    self.db.corruption("CatalogsZone._remove_res",
+                        "error removing top-level name of ilk '%s' for "
+                            "'%s' resource from toplevelprefix_index: %s"
+                            % (ilk, basename(res.path), ex),
+                        "ignore")
+
+    del self.res_index[res.area_path]
+
+</t>
+<t tx="ekr.20080121121842.17">def _add_res(self, res):
+    cix_path = res.path
+    try:
+        tree = tree_from_cix_path(cix_path)
+    except ET.XMLParserError, ex:
+        log.warn("could not load `%s' into catalog (skipping): %s",
+                 cix_path, ex)
+        return
+
+    LEN_PREFIX = self.db.LEN_PREFIX
+    res_id = self._new_res_id()
+    res_data = {}   # {lang -&gt; blobname -&gt; ilk -&gt; toplevelnames}
+    name = tree.get("name") or splitext(basename(cix_path))[0]
+    for blob in tree.findall("file/scope"):
+        lang, blobname = blob.get("lang"), blob.get("name")
+        if not lang:
+            raise DatabaseError("add `%s': no 'lang' attr on %r"
+                                % (res, blob))
+
+        # Create 'res_data'.
+        tfifb = res_data.setdefault(lang, {})
+        toplevelnames_from_ilk = tfifb.setdefault(blobname, {})
+        if lang in self.db.import_everything_langs:
+            for toplevelname, elem in blob.names.iteritems():
+                ilk = elem.get("ilk") or elem.tag
+                if ilk not in toplevelnames_from_ilk:
+                    toplevelnames_from_ilk[ilk] = set([toplevelname])
+                else:
+                    toplevelnames_from_ilk[ilk].add(toplevelname)
+
+        # Update 'toplevel*_index'.
+        # toplevelname_index:   {lang -&gt; ilk -&gt; toplevelname -&gt; res_id -&gt; blobnames}
+        # toplevelprefix_index: {lang -&gt; ilk -&gt; prefix -&gt; res_id -&gt; toplevelnames}
+        bfrftfi = self.toplevelname_index.setdefault(lang, {})
+        tfrfpfi = self.toplevelprefix_index.setdefault(lang, {})
+        for ilk, toplevelnames in toplevelnames_from_ilk.iteritems():
+            bfrft = bfrftfi.setdefault(ilk, {})
+            tfrfp = tfrfpfi.setdefault(ilk, {})
+            for toplevelname in toplevelnames:
+                bfr = bfrft.setdefault(toplevelname, {})
+                if res_id not in bfr:
+                    bfr[res_id] = set([blobname])
+                else:
+                    bfr[res_id].add(blobname)
+                prefix = toplevelname[:LEN_PREFIX]
+                tfr = tfrfp.setdefault(prefix, {})
+                if res_id not in tfr:
+                    tfr[res_id] = set([toplevelname])
+                else:
+                    tfr[res_id].add(toplevelname)
+
+        # Update 'blob_index'.
+        dbfile_and_res_id_from_blobname \
+            = self.blob_index.setdefault(lang, {})
+        assert blobname not in dbfile_and_res_id_from_blobname, \
+               ("codeintel: %s %r blob in `%s' collides "
+                "with existing %s %r blob in catalog: "
+                "XXX haven't decided how to deal with that yet"
+                % (lang, blobname, cix_path, lang, blobname))
+        dbfile = self.db.bhash_from_blob_info(cix_path, lang, blobname)
+        dbfile_and_res_id_from_blobname[blobname] = (dbfile, res_id)
+
+        # Write out '.blob' file.
+        dbdir = join(self.base_dir, safe_lang_from_lang(lang))
+        if not exists(dbdir):
+            log.debug("fs-write: mkdir '%s'", dbdir)
+            os.makedirs(dbdir)
+        log.debug("fs-write: catalog %s blob '%s'", lang, dbfile)
+        ET.ElementTree(blob).write(join(dbdir, dbfile+".blob"))
+
+    # Update 'res_index'.
+    last_updated = os.stat(cix_path).st_mtime
+    self.res_index[res.area_path] \
+        = (res_id, last_updated, name, res_data)
+
+</t>
+<t tx="ekr.20080121121842.18">def res_id_from_lang_and_blobname(self, lang, blobname):
+    try:
+        dbfile, res_id = self.blob_index[lang][blobname]
+    except KeyError:
+        return None
+    else:
+        return res_id
+
+</t>
+<t tx="ekr.20080121121842.19">def get_blob(self, lang, blobname, look_in_cache_only=False):
+    try:
+        dbfile, res_id = self.blob_index[lang][blobname]
+    except KeyError:
+        return None
+
+    # If index path is in the cache: return it, update its atime.
+    now = time.time()
+    blob_and_atime_from_blobname \
+        = self._blob_and_atime_from_blobname_from_lang_cache.setdefault(lang, {})
+    if blobname in blob_and_atime_from_blobname:
+        log.debug("cache-read: load %s blob `%s'", lang, blobname)
+        blob, atime = blob_and_atime_from_blobname[blobname]
+        blob_and_atime_from_blobname[blobname] = (blob, now)
+        return blob
+
+    # Need to load and cache it.
+    if look_in_cache_only:
+        return None
+    dbsubpath = join(self.base_dir, safe_lang_from_lang(lang), dbfile)
+    blob = self.db.load_blob(dbsubpath)
+    blob_and_atime_from_blobname[blobname] = (blob, now)
+    return blob
+
+</t>
+<t tx="ekr.20080121121842.20">def lpaths_from_lang_and_blobname(self, lang, blobname):
+    """Get lpaths for the named blob.
+
+    We get it from the blob's "lpaths" cache key (calculating that
+    if necessary).
+    """
+    blob = self.get_blob(lang, blobname, look_in_cache_only=True)
+    if blob is not None: 
+        if "lpaths" in blob.cache:
+            return blob.cache["lpaths"]
+    else:
+        blob = self.get_blob(lang, blobname)
+        if blob is None:
+            raise NotFoundInDatabase("%s '%s' blob not found in catalogs"
+                                     % (lang, blobname))
+        if "lpaths" in blob.cache:
+            return blob.cache["lpaths"]
+
+    # Need to calculate lpaths from 'blob'.
+    log.debug("calc symbol info for %s '%s' catalog blob", lang, blobname)
+    langintel = self.mgr.langintel_from_lang(lang)
+    lpaths = langintel.lpaths_from_blob(blob)
+
+    # Update cache and queue this up to be saved to disk (by .save()).
+    blob.cache["lpaths"] = lpaths
+    dbfile, res_id = self.blob_index[lang][blobname]
+    self._lock.acquire()
+    try:
+        self._dbsubpaths_and_lpaths_to_save.append(
+            (join(safe_lang_from_lang(lang), dbfile+".lpaths"), lpaths)
+        )
+    finally:
+        self._lock.release()
+
+    return lpaths
+
+
+</t>
+<t tx="ekr.20080121121842.21">class CatalogLib(object):
+    """A light lang-specific and selection-filtered view on the whole
+    CatalogsZone.
+    """
+    name = "cataloglib"
+
+    @others
+</t>
+<t tx="ekr.20080121121842.22">def __init__(self, catalogs_zone, lang,
+             selections=None, selection_res_ids=None):
+    self.catalogs_zone = catalogs_zone
+    self.lang = lang
+    self.selections = selections
+    if selection_res_ids is None:
+        self.selection_res_id_set = None
+    else:
+        self.selection_res_id_set = set(selection_res_ids)
+    self._import_handler = None
+    self._blob_imports_from_prefix_cache = {}
+    
+</t>
+<t tx="ekr.20080121121842.23">_repr_cache = None
+def __repr__(self):
+    if self._repr_cache is None:
+        # Include the base names of the selected resources in the name.
+        if self.selection_res_id_set is None:
+            selection_names = ['(all)']
+        else:
+            selection_names = []
+            for s in self.selections:
+                if isabs(s):
+                    selection_names.append(splitext(basename(s))[0])
+                else:
+                    selection_names.append(s)
+        self._repr_cache = "&lt;%s cataloglib: %s&gt;"\
+                           % (self.lang, ', '.join(selection_names))
+    return self._repr_cache
+
+</t>
+<t tx="ekr.20080121121842.24">@property
+def import_handler(self):
+    if self._import_handler is None:
+        self._import_handler \
+            = self.catalogs_zone.mgr.citadel.import_handler_from_lang(self.lang)
+    return self._import_handler
+
+</t>
+<t tx="ekr.20080121121842.25">def has_blob(self, blobname):
+    res_id = self.catalogs_zone.res_id_from_lang_and_blobname(self.lang,
+                                                              blobname)
+    if res_id is None:
+        return False
+    if self.selection_res_id_set is None:
+        return True
+    return res_id in self.selection_res_id_set
+
+</t>
+<t tx="ekr.20080121121842.26">def get_blob(self, blobname):
+    if not self.has_blob(blobname): # knows how to filter on selections
+        return None
+    return self.catalogs_zone.get_blob(self.lang, blobname)
+
+</t>
+<t tx="ekr.20080121121842.27">def get_blob_imports(self, prefix):
+    """Return the set of imports under the given prefix.
+
+        "prefix" is a tuple of import name parts. E.g. ("xml", "sax")
+            for "import xml.sax." in Python. Or ("XML", "Parser") for
+            "use XML::Parser::" in Perl.
+
+    See description in database.py docstring for details.
+    """
+    # This code works fine if prefix is the empty tuple.
+    if prefix not in self._blob_imports_from_prefix_cache:
+        try:
+            dbfile_and_res_id_from_blobname \
+                = self.catalogs_zone.blob_index[self.lang]
+        except KeyError:
+            return set()
+        
+        if self.selection_res_id_set is None:
+            matches = filter_blobnames_for_prefix(
+                dbfile_and_res_id_from_blobname,
+                prefix,
+                self.import_handler.sep)
+        else:
+            matches = filter_blobnames_for_prefix(
+                (bn
+                 for bn, (f, res_id) in dbfile_and_res_id_from_blobname.items()
+                 if res_id in self.selection_res_id_set),
+                prefix,
+                self.import_handler.sep)
+        self._blob_imports_from_prefix_cache[prefix] = matches
+    return self._blob_imports_from_prefix_cache[prefix]
+
+</t>
+<t tx="ekr.20080121121842.28">def _blobnames_from_toplevelname(self, toplevelname, ilk=None):
+    """Yield all blobnames in the currently selected catalogs
+    with the given toplevelname.
+    
+    If "ilk" is given then only symbols of that ilk will be considered.
+    """
+    # toplevelname_index: {lang -&gt; ilk -&gt; toplevelname -&gt; res_id -&gt; blobnames}
+    if self.lang in self.catalogs_zone.toplevelname_index:
+        for i, potential_bfrft \
+            in self.catalogs_zone.toplevelname_index[self.lang].iteritems():
+            if ilk is not None and i != ilk:
+                continue
+            if toplevelname not in potential_bfrft:
+                continue
+            potential_bfr = potential_bfrft[toplevelname]
+            if self.selection_res_id_set is None:
+                for blobnames in potential_bfr.itervalues():
+                    for blobname in blobnames:
+                        yield blobname
+            else:
+                for res_id, blobnames in potential_bfr.iteritems():
+                    if res_id not in self.selection_res_id_set:
+                        continue
+                    for blobname in blobnames:
+                        yield blobname
+
+</t>
+<t tx="ekr.20080121121842.29">def hits_from_lpath(self, lpath, ctlr=None, curr_buf=None):
+    assert isinstance(lpath, tuple)  # common mistake to pass in a string
+    
+    hits = []
+    for blobname in self._blobnames_from_toplevelname(lpath[0]):
+        lpaths = self.catalogs_zone.lpaths_from_lang_and_blobname(
+                    self.lang, blobname)
+        if lpath not in lpaths: continue
+        blob = self.catalogs_zone.get_blob(self.lang, blobname)
+        #TODO: Convert lpath's in tree-evalrs to tuples instead of lists.
+        elem = _elem_from_scoperef( (blob, list(lpath)) )
+        hits.append( (elem, (blob, list(lpath[:-1]))) )
+
+    return hits
+
+</t>
+<t tx="ekr.20080121121842.30">def toplevel_cplns(self, prefix=None, ilk=None, ctlr=None):
+    """Return completion info for all top-level names matching the
+    given prefix and ilk in all selected blobs in this lib.
+    
+        "prefix" is a 3-character prefix with which to filter top-level
+            names. If None (or not specified), results are not filtered
+            based on the prefix.
+        "ilk" is a symbol type (e.g. "class", "variable", "function")
+            with which to filter results. If None (or not specified),
+            results of any ilk are returned.
+        "ctlr" (optional) is an EvalController instance. If
+            specified it should be used in the normal way (logging,
+            checking .is_aborted()).
+
+    Returns a list of 2-tuples: (&lt;ilk&gt;, &lt;name&gt;).
+
+    Note: the list is not sorted, because often some special sorting
+    is required for the different completion evaluators that might use
+    this API.
+    """
+    cplns = []
+    if prefix is None:
+        # Use 'toplevelname_index':
+        #   {lang -&gt; ilk -&gt; toplevelname -&gt; res_id -&gt; blobnames}
+        toplevelname_index = self.catalogs_zone.toplevelname_index
+        if self.lang in toplevelname_index:
+            if ilk is not None:
+                try:
+                    bfrft = toplevelname_index[self.lang][ilk]
+                except KeyError:
+                    pass
+                else:
+                    if self.selection_res_id_set is None:
+                        cplns += [(ilk, t) for t in bfrft]
+                    else:
+                        cplns += [(ilk, t) for t, bfr in bfrft.iteritems()
+                                  if self.selection_res_id_set.intersection(bfr)]
+            elif self.selection_res_id_set is None:
+                for i, bfrft in toplevelname_index[self.lang].iteritems():
+                    cplns += [(i, t) for t in bfrft]
+            else: # ilk=None, have a selection set
+                for i, bfrft in toplevelname_index[self.lang].iteritems():
+                    cplns += [(i, t) for t, bfr in bfrft.iteritems()
+                              if self.selection_res_id_set.intersection(bfr)]
+    else:
+        # Use 'toplevelprefix_index':
+        #   {lang -&gt; ilk -&gt; prefix -&gt; res_id -&gt; toplevelnames}
+        toplevelprefix_index = self.catalogs_zone.toplevelprefix_index
+        if self.lang in toplevelprefix_index:
+            if ilk is not None:
+                try:
+                    tfr = toplevelprefix_index[self.lang][ilk][prefix]
+                except KeyError:
+                    pass
+                else:
+                    if self.selection_res_id_set is None:
+                        cplns += [(ilk, t)
+                                  for toplevelnames in tfr.itervalues()
+                                  for t in toplevelnames]
+                    else:
+                        cplns += [(ilk, t)
+                                  for r in self.selection_res_id_set.intersection(tfr)
+                                  for t in tfr[r]]
+            elif self.selection_res_id_set is None:
+                for i, tfrfp in toplevelprefix_index[self.lang].iteritems():
+                    if prefix not in tfrfp:
+                        continue
+                    cplns += [(i, t)
+                              for toplevelnames in tfrfp[prefix].itervalues()
+                              for t in toplevelnames]
+            else: # ilk=None, have a selection set
+                for i, tfrfp in toplevelprefix_index[self.lang].iteritems():
+                    if prefix not in tfrfp:
+                        continue
+                    tfr = tfrfp[prefix]
+                    cplns += [(i, t)
+                              for r in self.selection_res_id_set.intersection(tfr)
+                              for t in tfr[r]]
+    return cplns
+
+
+
+</t>
+<t tx="ekr.20080121121842.31">#---- internal support routines
+
+def _elem_from_scoperef(scoperef):
+    """A scoperef is (&lt;blob&gt;, &lt;lpath&gt;). Return the actual elem in
+    the &lt;blob&gt; ciElementTree being referred to.
+    """
+    elem = scoperef[0]
+    for lname in scoperef[1]:
+        elem = elem.names[lname]
+    return elem
+
+
+</t>
+<t tx="ekr.20080121121842.32">#!python
+# ***** LICENSE BLOCK *****
+
+"""The langzone of the codeintel database.
+See the database/database.py module docstring for an overview.
+"""
+
+import sys
+import os
+from os.path import (join, dirname, exists, expanduser, splitext, basename,
+                     split, abspath, isabs, isdir, isfile)
+import threading
+import time
+from glob import glob
+from pprint import pprint, pformat
+import logging
+from cStringIO import StringIO
+import codecs
+import copy
+
+import ciElementTree as ET
+from codeintel2.common import *
+from codeintel2 import util
+
+
+
+#---- globals
+
+log = logging.getLogger("codeintel.db")
+</t>
+<t tx="ekr.20080121121842.33">#log.setLevel(logging.DEBUG)
+
+
+
+#---- Database zone and lib implementations
+
+class LangDirsLib(object):
+    """A zone providing a view into an ordered list of dirs in a
+    db/$lang/... area of the db.
+
+    These are dished out via Database.get_lang_lib(), which indirectly
+    then is dished out by the LangZone.get_lib(). Mostly this is just a
+    view on the LangZone singleton for this particular language.
+
+    Dev Notes:
+    - The goal is to provide quick has_blob() and get_blob() -- i.e.
+      some caching is involved (if 'foo' referred to
+      'some/path/to/foo.py' a minute ago then it still does). As well,
+      scanning/loading is done automatically as necessary. For example,
+      if a request for Perl blob 'Bar' is made but there is no 'Bar' in
+      the database yet, this code looks for a 'Bar.pm' on the file
+      system and will scan it, load it and return the blob for it.
+    """
+    @others
+</t>
+<t tx="ekr.20080121121842.34">def __init__(self, lang_zone, lock, lang, name, dirs):
+    self.lang_zone = lang_zone
+    self._lock = lock
+    self.mgr = lang_zone.mgr
+    self.lang = lang
+    self.name = name
+    self.dirs = dirs
+    self.import_handler \
+        = self.mgr.citadel.import_handler_from_lang(self.lang)
+
+    self._blob_imports_from_prefix_cache = {}
+    self._have_ensured_scanned_from_dir_cache = {}
+    self._importables_from_dir_cache = {}
+
+    # We keep a "weak" merged cache of blobname lookup for all dirs
+    # in this zone -- where "weak" means that we verify a hit by
+    # checking the current real blob_index for that dir (which may
+    # have changed). This caching slows down lookup for single-dir
+    # LangDirsZones, but should scale better for LangDirsZones with
+    # many dirs. (TODO-PERF: test this assertion.)
+    self._dir_and_blobbase_from_blobname = {}
+
+</t>
+<t tx="ekr.20080121121842.35">def __repr__(self):
+    return "&lt;%s %s&gt;" % (self.lang, self.name)
+
+</t>
+<t tx="ekr.20080121121842.36">def _acquire_lock(self):
+    self._lock.acquire()
+</t>
+<t tx="ekr.20080121121842.37">def _release_lock(self):
+    self._lock.release()
+
+</t>
+<t tx="ekr.20080121121842.38">def has_blob(self, blobname, ctlr=None):
+    dbsubpath = self._dbsubpath_from_blobname(blobname, ctlr=ctlr)
+    return dbsubpath is not None
+
+</t>
+<t tx="ekr.20080121121842.39">def has_blob_in_db(self, blobname, ctlr=None):
+    """Return true if the blobname is in the database.
+
+    Typically this method is only used for debugging and .has_blob()
+    is what you want.
+    """
+    dbsubpath = self._dbsubpath_from_blobname(
+        blobname, ctlr=ctlr, only_look_in_db=True)
+    return dbsubpath is not None
+
+</t>
+<t tx="ekr.20080121121842.40">def get_blob(self, blobname, ctlr=None):
+    self._acquire_lock()
+    try:
+        dbsubpath = self._dbsubpath_from_blobname(blobname, ctlr=ctlr)
+        if dbsubpath is not None:
+            return self.lang_zone.load_blob(dbsubpath)
+        else:
+            return None
+    finally:
+        self._release_lock()
+
+</t>
+<t tx="ekr.20080121121842.41">def get_blob_imports(self, prefix):
+    """Return the set of imports under the given prefix.
+
+        "prefix" is a tuple of import name parts. E.g. ("xml", "sax")
+            for "import xml.sax." in Python. Or ("XML", "Parser") for
+            "use XML::Parser::" in Perl.
+
+    See description in database.py docstring for details.
+    """
+    self._acquire_lock()
+    try:
+        if prefix not in self._blob_imports_from_prefix_cache:
+            if prefix:
+                for dir in self.dirs:
+                    importables = self._importables_from_dir(dir)
+                    if prefix[0] in importables:
+                        sub_importables = self._importables_from_dir(
+                            join(dir, *prefix))
+                        imports = set(
+                            (name, is_dir_import)
+                            for name, (_, _, is_dir_import)
+                            in sub_importables.items()
+                        )
+                        break
+                else:
+                    imports = set()
+            else:
+                imports = set()
+                for dir in self.dirs:
+                    importables = self._importables_from_dir(dir)
+                    imports.update(
+                        (name, is_dir_import)
+                        for name, (_, _, is_dir_import)
+                        in importables.items()
+                    )
+            self._blob_imports_from_prefix_cache[prefix] = imports
+        return self._blob_imports_from_prefix_cache[prefix]
+    finally:
+        self._release_lock()
+
+</t>
+<t tx="ekr.20080121121842.42">def hits_from_lpath(self, lpath, ctlr=None, curr_buf=None):
+    """Return all hits of the given lookup path.
+    
+    I.e. a symbol table lookup across all files in the dirs of this
+    lib.
+
+        "lpath" is a lookup name list, e.g. ['Casper', 'Logging']
+            or ['dojo', 'animation'].
+        "ctlr" (optional) is an EvalController instance. If
+            specified it should be used in the normal way (logging,
+            checking .is_aborted()).
+        "curr_buf" (optional), if specified, is the current buf for
+            which this query is being made. Hits from it should be
+            skipped (i.e. don't bother searching it).
+
+    A "hit" is (&lt;CIX node&gt;, &lt;scope-ref&gt;).  Each one represent a
+    scope-tag or variable-tag hit in all of the blobs for the
+    execution set buffers.
+
+    Returns the empty list if no hits.
+    """
+    assert isinstance(lpath, tuple)  # common mistake to pass in a string
+
+    if curr_buf:
+        curr_blobname = curr_buf.blob_from_lang.get(self.lang, {}).get("name")
+        curr_buf_dir = dirname(curr_buf.path)
+    
+    # Naive implementation (no caching)
+    hits = []
+    for dir in self.dirs:
+        if ctlr and ctlr.is_aborted():
+            log.debug("ctlr aborted")
+            break
+
+        # Need to have (at least once) scanned all importables.
+        # Responsibility for ensuring the scan data is *up-to-date*
+        # is elsewhere.
+        self.ensure_dir_scanned(dir, ctlr=ctlr)
+
+        toplevelname_index = self.lang_zone.load_index(
+                dir, "toplevelname_index", {})
+        for blobname in toplevelname_index.get_blobnames(lpath[0], ()):
+            if curr_buf and curr_buf_dir == dir and blobname == curr_blobname:
+                continue
+            blob = self.get_blob(blobname, ctlr=ctlr)
+            try:
+                elem = blob
+                for p in lpath:
+                    #LIMITATION: *Imported* names at each scope are
+                    # not being included here. This is fine while we
+                    # just care about JavaScript.
+                    elem = elem.names[p]
+            except KeyError:
+                continue
+            hits.append( (elem, (blob, list(lpath[:-1]))) )
+
+    return hits
+
+</t>
+<t tx="ekr.20080121121842.43">def toplevel_cplns(self, prefix=None, ilk=None, ctlr=None):
+    """Return completion info for all top-level names matching the
+    given prefix and ilk in all blobs in this lib.
+    
+        "prefix" is a 3-character prefix with which to filter top-level
+            names. If None (or not specified), results are not filtered
+            based on the prefix.
+        "ilk" is a symbol type (e.g. "class", "variable", "function")
+            with which to filter results. If None (or not specified),
+            results of any ilk are returned.
+        "ctlr" (optional) is an EvalController instance. If
+            specified it should be used in the normal way (logging,
+            checking .is_aborted()).
+
+    Returns a list of 2-tuples: (&lt;ilk&gt;, &lt;name&gt;).
+
+    Note: the list is not sorted, because often some special sorting
+    is required for the different completion evaluators that might use
+    this API.
+    """
+    cplns = []
+    # Naive implementation (no caching)
+    for dir in self.dirs:
+        if ctlr and ctlr.is_aborted():
+            log.debug("ctlr aborted")
+            break
+
+        self.ensure_dir_scanned(dir, ctlr=ctlr)
+
+        try:
+            toplevelname_index = self.lang_zone.load_index(
+                    dir, "toplevelname_index")
+        except EnvironmentError:
+            # No toplevelname_index for this dir likely indicates that
+            # there weren't any files of the current lang in this dir.
+            continue
+        cplns += toplevelname_index.toplevel_cplns(prefix=prefix, ilk=ilk)
+    return cplns
+
+</t>
+<t tx="ekr.20080121121842.44">def ensure_dir_scanned(self, dir, ctlr=None):
+    """Ensure that all importables in this dir have been scanned
+    into the db at least once.
+
+    Note: This is identical to MultiLangDirsLib.ensure_dir_scanned().
+    Would be good to share.
+    """
+    if dir not in self._have_ensured_scanned_from_dir_cache:
+        event_reported = False
+        res_index = self.lang_zone.load_index(dir, "res_index", {})
+        importables = self._importables_from_dir(dir)
+        for base in (i[0] for i in importables.values()
+                     if i[0] is not None):
+            if ctlr and ctlr.is_aborted():
+                log.debug("ctlr aborted")
+                return
+            if base not in res_index:
+                if not event_reported:
+                    self.lang_zone.db.report_event(
+                        "scanning %s files in '%s'" % (self.lang, dir))
+                    event_reported = True
+                buf = self.mgr.buf_from_path(join(dir, base),
+                                             lang=self.lang)
+                if ctlr is not None:
+                    ctlr.info("load %r", buf)
+                buf.load()
+        self._have_ensured_scanned_from_dir_cache[dir] = True
+
+</t>
+<t tx="ekr.20080121121842.45">def _importables_from_dir(self, dir):
+    if dir not in self._importables_from_dir_cache:
+        self._importables_from_dir_cache[dir] \
+            = self.import_handler.find_importables_in_dir(dir)
+    return self._importables_from_dir_cache[dir]
+
+</t>
+<t tx="ekr.20080121121842.46">def _dbsubpath_from_blobname(self, blobname, ctlr=None, 
+                             only_look_in_db=False):
+    """Return the subpath to the dbfile for the given blobname,
+    or None if not found.
+
+    Remember that this is complicated by possible multi-level
+    imports. E.g. "import foo.bar" or "import foo" where 'foo'
+    refers to 'foo/__init__.py'.
+    """
+    assert blobname is not None, "'blobname' cannot be None"
+    lang_zone = self.lang_zone
+
+    self._acquire_lock()
+    try:
+        # Use our weak cache to try to return quickly.
+        if blobname in self._dir_and_blobbase_from_blobname:
+            blobdir, blobbase \
+                = self._dir_and_blobbase_from_blobname[blobname]
+
+            # Check it. The actual info for that dir may have changed.
+            dbfile_from_blobname = lang_zone.dfb_from_dir(blobdir)
+            if blobbase in dbfile_from_blobname:
+                log.debug("have blob '%s' in '%s'? yes (in weak cache)",
+                          blobname, blobdir)
+                return join(lang_zone.dhash_from_dir(blobdir),
+                            dbfile_from_blobname[blobbase])
+            # Drop from weak cache.
+            del self._dir_and_blobbase_from_blobname[blobname]
+
+        # Brute force: look in each dir.
+        blobparts = blobname.split(self.import_handler.sep)
+        blobbase = blobparts[-1]
+        for dir in self.dirs:
+            if ctlr and ctlr.is_aborted():
+                log.debug("aborting search for blob '%s' on %s: "
+                          "ctlr aborted", blobname, self)
+                return None
+
+            # Is the blob in 'blobdir' (i.e. a non-multi-level import
+            # that has been scanned already).
+            blobdir = join(dir, *blobparts[:-1])
+            dbfile_from_blobname = lang_zone.dfb_from_dir(blobdir, {})
+            if blobbase in dbfile_from_blobname:
+                self._dir_and_blobbase_from_blobname[blobname] \
+                    = (blobdir, blobbase)
+                log.debug("have blob '%s' in '%s'? yes (in dir index)", 
+                          blobname, blobdir)
+                return join(lang_zone.dhash_from_dir(blobdir),
+                            dbfile_from_blobname[blobbase])
+
+            importables = self._importables_from_dir(blobdir)
+            # 'importables' look like, for Python:
+            #   {'foo':  ('foo.py',          None,       False),
+            #    'pkg':  ('pkg/__init__.py', '__init__', False)}
+            # for Perl:
+            #   {'LWP':  ('LWP.pm',          None,       True),
+            #    'File': (None,              None,       True)}
+            #    |        |                  |           `-- is-dir-import
+            #    |        |                  `-- subdir-blobbase
+            #    |        `-- blobfile
+            #    `-- blobbase
+
+            if blobbase not in importables:
+                continue
+
+            blobfile, subdir_blobbase, is_dir_import = importables[blobbase]
+            if blobfile is None:
+                # There isn't an actual importable file here -- just
+                # a dir prefix to a multidir import.
+                log.debug("have blob '%s' in %s? no", blobname, self)
+                return None
+            elif os.sep in blobfile:
+                # This is an import from a subdir. We need to get a new dbf.
+                blobdir = join(blobdir, dirname(blobfile))
+                blobfile = basename(blobfile)
+                blobbase = subdir_blobbase
+                dbfile_from_blobname = lang_zone.dfb_from_dir(blobdir, {})
+                if blobbase in dbfile_from_blobname:
+                    self._dir_and_blobbase_from_blobname[blobname] \
+                        = (blobdir, blobbase)
+                    log.debug("have blob '%s' in '%s'? yes (in dir index)", 
+                              blobname, blobdir)
+                    return join(lang_zone.dhash_from_dir(blobdir),
+                                dbfile_from_blobname[blobbase])
+
+            # The file isn't loaded.
+            if not only_look_in_db:
+                log.debug("%s importables in '%s':\n    %s", self.lang,
+                          blobdir, importables)
+                log.debug("'%s' likely provided by '%s' in '%s': "
+                          "attempting load", blobname, blobfile, blobdir)
+                buf = self.mgr.buf_from_path(
+                        join(blobdir, blobfile), self.lang)
+                buf.load()
+
+                dbfile_from_blobname = lang_zone.dfb_from_dir(blobdir, {})
+                if blobbase in dbfile_from_blobname:
+                    self._dir_and_blobbase_from_blobname[blobname] \
+                        = (blobdir, blobbase)
+                    log.debug("have blob '%s' in '%s'? yes (after load)",
+                              blobname, blobdir)
+                    return join(lang_zone.dhash_from_dir(blobdir),
+                                dbfile_from_blobname[blobbase])
+
+        log.debug("have blob '%s' in %s? no", blobname, self)
+        return None
+    finally:
+        self._release_lock()
+
+
+</t>
+<t tx="ekr.20080121121842.47">class LangTopLevelNameIndex(object):
+    """A wrapper around the plain-dictionary toplevelname_index for a
+    LangZone dir to provide better performance for continual updating
+    and some simpler access.
+
+        {ilk -&gt; toplevelname -&gt; blobnames}
+
+    # Problem
+
+    A 'toplevelname_index' is a merge of {blobname -&gt; ilk -&gt; toplevelnames}
+    data for all resources in its dir.  As those resources are
+    continually re-scanned (e.g. as a file is edited in Komodo), it
+    would be too expensive to update this index everytime.
+
+    # Solution
+    
+    Keep a list of "recent updates" and only merge them into the main
+    data when that buf hasn't been updated in "a while" and when needed
+    for saving the index. Note: Buffer *removals* are not put on-deck,
+    but removed immediately.
+
+    # .get_blobnames(..., ilk=None)
+    
+    Originally the toplevelname_index stored {toplevelname -&gt; blobnames}.
+    The per-"ilk" level was added afterwards to support occassional ilk
+    filtering for PHP (and possible eventually other langs).
+    
+    .get_blobnames() still behaves like a {toplevelname -&gt; blobnames}
+    mapping, but it provides an optional "ilk" keyword arg to limit the
+    results to that ilk.
+
+    # Notes on locking
+
+    This class does not guard its datastructures with locking. It is up
+    to the LangZone using this to guard against simultaneous access on
+    separate threads.
+    """
+    @others
+</t>
+<t tx="ekr.20080121121842.48">def __init__(self, data=None, timeout=90):
+    # toplevelname_index data: {ilk -&gt; toplevelname -&gt; blobnames}
+    if data is None:
+        self._data = {}
+    else:
+        self._data = data
+
+    # Time (in seconds) to hold a change "on deck".
+    # Timed-out changes are merged on .get() and .update().
+    self.timeout = timeout
+    self._on_deck = {
+        # basename                           # the basename of the buf path
+        #   -&gt; [timestamp,                   # time of the last update
+        #       # The dict in res_index, a.k.a. 'res_data'
+        #       {blobname -&gt; ilk -&gt; toplevelnames},
+        #       # Lazily generated pivot, a.k.a. 'res_data_pivot'
+        #       {ilk -&gt; toplevelname -&gt; blobnames}
+        #      ]
+    }
+
+</t>
+<t tx="ekr.20080121121842.49">def __repr__(self):
+    num_toplevelnames = sum(len(v) for v in self._data.itervalues())
+    return ("&lt;LangTopLevelNameIndex: %d top-level name(s), "
+            "%d update(s) on-deck&gt;"
+                % (num_toplevelnames, len(self._on_deck)))
+
+</t>
+<t tx="ekr.20080121121842.50">def merge(self):
+    """Merge all on-deck changes with `self.data'."""
+    for base, (timestamp, res_data,
+               res_data_pivot) in self._on_deck.items():
+        if res_data_pivot is None:
+            res_data_pivot = self._pivot_res_data(res_data)
+        # res_data_pivot: {ilk -&gt; toplevelname -&gt; blobnames}
+        # "bft" means blobnames_from_toplevelname
+        for ilk, bft in res_data_pivot.iteritems():
+            data_bft = self._data.setdefault(ilk, {})
+            for toplevelname, blobnames in bft.iteritems():
+                if toplevelname not in data_bft:
+                    data_bft[toplevelname] = blobnames
+                else:
+                    data_bft[toplevelname].update(blobnames)
+        del self._on_deck[base]
+
+</t>
+<t tx="ekr.20080121121842.51">def merge_expired(self, now):
+    """Merge expired on-deck changes with `self.data'."""
+    for base, (timestamp, res_data,
+               res_data_pivot) in self._on_deck.items():
+        if now - timestamp &lt; self.timeout:
+            continue
+
+        if res_data_pivot is None:
+            res_data_pivot = self._pivot_res_data(res_data)
+        # res_data_pivot: {ilk -&gt; toplevelname -&gt; blobnames}
+        # "bft" means blobnames_from_toplevelname
+        for ilk, bft in res_data_pivot.iteritems():
+            data_bft = self._data.setdefault(ilk, {})
+            for toplevelname, blobnames in bft.iteritems():
+                if toplevelname not in data_bft:
+                    data_bft[toplevelname] = blobnames
+                else:
+                    data_bft[toplevelname].update(blobnames)
+        del self._on_deck[base]
+
+</t>
+<t tx="ekr.20080121121842.52">@property
+def data(self):
+    self.merge()
+    return self._data
+
+</t>
+<t tx="ekr.20080121121842.53">def update(self, base, old_res_data, new_res_data):
+    now = time.time()
+    self.remove(base, old_res_data)
+    self._on_deck[base] = [now, new_res_data, None]
+    self.merge_expired(now)
+
+</t>
+<t tx="ekr.20080121121842.54">def remove(self, base, old_res_data):
+    if base in self._on_deck:
+        del self._on_deck[base]
+    else:
+        # Remove old refs from current data.
+        # old_res_data:   {blobname -&gt; ilk -&gt; toplevelnames}
+        # self._data: {ilk -&gt; toplevelname -&gt; blobnames}
+        for blobname, toplevelnames_from_ilk in old_res_data.iteritems():
+            for ilk, toplevelnames in toplevelnames_from_ilk.iteritems():
+                for toplevelname in toplevelnames:
+                    try:
+                        self._data[ilk][toplevelname].remove(blobname)
+                    except KeyError:
+                        pass # ignore this for now, might indicate corruption
+                    else:
+                        if not self._data[ilk][toplevelname]:
+                            del self._data[ilk][toplevelname]
+                if not self._data.get(ilk):
+                    del self._data[ilk]
+
+</t>
+<t tx="ekr.20080121121842.55">def _pivot_res_data(self, res_data):
+    # res_data:       {blobname -&gt; ilk -&gt; toplevelnames}
+    # res_data_pivot: {ilk -&gt; toplevelname -&gt; blobnames}
+    res_data_pivot = {}
+    for blobname, toplevelnames_from_ilk in res_data.iteritems():
+        for ilk, toplevelnames in toplevelnames_from_ilk.iteritems():
+            pivot_bft = res_data_pivot.setdefault(ilk, {})
+            for toplevelname in toplevelnames:
+                if toplevelname not in pivot_bft:
+                    pivot_bft[toplevelname] = set([blobname])
+                else:
+                    pivot_bft[toplevelname].add(blobname)
+    return res_data_pivot
+
+</t>
+<t tx="ekr.20080121121842.56">def toplevel_cplns(self, prefix=None, ilk=None):
+    """Return completion info for all top-level names matching the
+    given prefix and ilk.
+
+        "prefix" is a 3-character prefix with which to filter top-level
+            names. If None (or not specified), results are not filtered
+            based on the prefix.
+        "ilk" is a symbol type (e.g. "class", "variable", "function")
+            with which to filter results. If None (or not specified),
+            results of any ilk are returned.
+
+    Returns a list of 2-tuples: (&lt;ilk&gt;, &lt;name&gt;).
+    """
+    self.merge_expired(time.time())
+
+    # Need to check merged and on-deck items:
+    cplns = []
+
+    # ...on-deck items
+    for base, (timestamp, res_data,
+               res_data_pivot) in self._on_deck.items():
+        if res_data_pivot is None:
+            res_data_pivot = self._on_deck[base][2] \
+                = self._pivot_res_data(res_data)
+        # res_data_pivot: {ilk -&gt; toplevelname -&gt; blobnames}
+        if ilk is None:
+            for i, bft in res_data_pivot.iteritems():
+                cplns += [(i, toplevelname) for toplevelname in bft]
+        elif ilk in res_data_pivot:
+            cplns += [(ilk, toplevelname)
+                      for toplevelname in res_data_pivot[ilk]]
+
+    # ...merged data
+    # self._data: {ilk -&gt; toplevelname -&gt; blobnames}
+    if ilk is None:
+        for i, bft in self._data.iteritems():
+            cplns += [(i, toplevelname) for toplevelname in bft]
+    elif ilk in self._data:
+        cplns += [(ilk, toplevelname)
+                  for toplevelname in self._data[ilk]]
+
+    # Naive implementation: Instead of maintaining a separate
+    # 'toplevelprefix_index' (as we do for StdLibsZone and CatalogsZone)
+    # for now we'll just gather all results and filter on the prefix
+    # here. Only if this proves to be a perf issue will we add the
+    # complexity of another index:
+    #   {ilk -&gt; prefix -&gt; toplevelnames}
+    if prefix is not None:
+        cplns = [(i, t) for i, t in cplns if t.startswith(prefix)]
+
+    return cplns
+
+</t>
+<t tx="ekr.20080121121842.57">def get_blobnames(self, toplevelname, default=None, ilk=None):
+    """Return the blobnames defining the given toplevelname.
+
+    If "ilk" is given then only symbols of that ilk will be considered.
+    If not match is found the "default" is returned.
+    """
+    self.merge_expired(time.time())
+
+    blobnames = set()
+    # First check on-deck items.
+    for base, (timestamp, res_data,
+               res_data_pivot) in self._on_deck.items():
+        if res_data_pivot is None:
+            res_data_pivot = self._on_deck[base][2] \
+                = self._pivot_res_data(res_data)
+        # res_data_pivot: {ilk -&gt; toplevelname -&gt; blobnames}
+        if ilk is None:
+            for bft in res_data_pivot.itervalues():
+                if toplevelname in bft:
+                    blobnames.update(bft[toplevelname])
+        elif ilk in res_data_pivot:
+            if toplevelname in res_data_pivot[ilk]:
+                blobnames.update(res_data_pivot[ilk][toplevelname])
+
+    #TODO: Put lookup in merged data ahead of lookup in on-deck -- so
+    #      we don't do on-deck work if not necessary.
+    # Then, fallback to already merged data.
+    # self._data: {ilk -&gt; toplevelname -&gt; blobnames}
+    if ilk is None:
+        for bft in self._data.itervalues():
+            if toplevelname in bft:
+                blobnames.update(bft[toplevelname])
+    elif ilk in self._data:
+        if toplevelname in self._data[ilk]:
+            blobnames.update(self._data[ilk][toplevelname])
+
+    if blobnames:
+        return blobnames
+    return default
+
+
+</t>
+<t tx="ekr.20080121121842.58">class LangZone(object):
+    """Singleton zone managing a particular db/$lang/... area.
+
+    # caching and memory control
+
+    We cache all retrieved indices and blobs and maintain their latest
+    access time. To try to manage memory consumption, we rely on a
+    bookkeeper thread (the indexer) to periodically call .cull_mem() --
+    which unloads cache items that have not been accessed in a while.
+
+    (TODO:
+    - Get the indexer to actually call .cull_mem() and .save()
+      periodically.
+    - Test that .cull_mem() actually results in the process releasing
+      memory.)
+
+    # robustness (TODO)
+
+    Work should be done to improve robustness.
+    - Collect filesystem interactions in one place.
+    - Rationalize OSError handling.
+    - Consider a journal system, if necessary/feasible. My hope is to
+      get away without one and rely on graceful recovery. The db does
+      not store critical info so can allow some loss of data (it can all
+      be regenerated).
+    """
+    toplevelname_index_class = LangTopLevelNameIndex
+
+    @others
+</t>
+<t tx="ekr.20080121121842.59">def __init__(self, mgr, lang):
+    self.mgr = mgr
+    self.db = mgr.db
+    self.lang = lang
+    self.base_dir = join(self.db.base_dir, "db",
+                         util.safe_lang_from_lang(lang))
+    self._check_lang(lang)
+
+    self._lock = threading.RLock()
+
+    self._dhash_from_dir_cache = {}
+    self._dirslib_cache = {}
+    self._ordered_dirslib_cache_keys = [] # most recent first
+
+    # We cache the set of recent indeces and blobs in memory.
+    #   {db-subpath: [index-object, &lt;atime&gt;]),
+    #    ...}
+    # For example:
+    #   {'7bce640bc48751b128af5c8bf5df8412/res_index':
+    #       [&lt;res-index&gt;, 1158289000]),
+    #    ...}
+    self._index_and_atime_from_dbsubpath = {}
+    #TODO-PERF: Use set() object for this? Compare perf.
+    self._is_index_dirty_from_dbsubpath = {} # set of dirty indeces
+    ##TODO: blob caching and *use* this
+    #self._blob_and_atime_from_dbsubpath = {}
+
+    #XXX Need a 'dirty-set' for blobs? No, because currently
+    #    .update_buf_data() saves blob changes to disk immediately. Not
+    #    sure that is best for perf. Definitely not ideal for the
+    #    "editset".
+
+</t>
+<t tx="ekr.20080121121842.60">def __repr__(self):
+    return "&lt;%s lang db&gt;" % self.lang
+
+</t>
+<t tx="ekr.20080121121842.61">def __del__(self):
+    self._dirslib_cache = {} # drop refs
+    #XXX Drop index and blob caches as well.
+
+</t>
+<t tx="ekr.20080121121842.62">def _acquire_lock(self):
+    self._lock.acquire()
+</t>
+<t tx="ekr.20080121121842.63">def _release_lock(self):
+    self._lock.release()
+
+</t>
+<t tx="ekr.20080121121842.64">def _check_lang(self, lang):
+    """Ensure that the given lang matches case exactly with the lang
+    in the db. If this invariant is broken, then weird things with
+    caching can result.
+    """
+    if exists(self.base_dir):
+        lang_path = join(self.base_dir, "lang")
+        try:
+            fin = open(lang_path, 'r')
+        except EnvironmentError, ex:
+            self.db.corruption("LangZone._check_lang",
+                "could not open `%s': %s" % (lang_path, ex),
+                "recover")
+            fin = open(lang_path, 'w')
+            try:
+                fin.write(lang)
+            finally:
+                fin.close()
+        else:
+            try:
+                lang_on_disk = fin.read().strip()
+            finally:
+                fin.close()
+            assert lang_on_disk == lang
+
+</t>
+<t tx="ekr.20080121121842.65">#TODO: If Database.dhash_from_dir() grows caching, then this
+#      shouldn't bother.
+def dhash_from_dir(self, dir):
+    if dir not in self._dhash_from_dir_cache:
+        self._dhash_from_dir_cache[dir] = self.db.dhash_from_dir(dir)
+    return self._dhash_from_dir_cache[dir]
+
+</t>
+<t tx="ekr.20080121121842.66">def dfb_from_dir(self, dir, default=None):
+    """Get the {blobname -&gt; dbfile} mapping index for the given dir.
+    
+    'dfb' stands for 'dbfile_from_blobname'.
+    This must be called with the lock held.
+    """
+    return self.load_index(dir, "blob_index", default)
+
+</t>
+<t tx="ekr.20080121121842.67">def get_buf_scan_time(self, buf):
+    #TODO Canonicalize path (or assert that it is canonicalized)
+    self._acquire_lock()
+    try:
+        dir, base = split(buf.path)
+        res_index = self.load_index(dir, "res_index", {})
+        if base not in res_index:
+            return None
+        return res_index[base][0]
+    finally:
+        self._release_lock()
+
+</t>
+<t tx="ekr.20080121121842.68">def get_buf_data(self, buf):
+    #TODO Canonicalize path (or assert that it is canonicalized)
+    #     Should have a Resource object that we pass around that
+    #     handles all of this.
+    self._acquire_lock()
+    try:
+        dir, base = split(buf.path)
+        res_index = self.load_index(dir, "res_index", {})
+        if base not in res_index:
+            raise NotFoundInDatabase("%s buffer '%s' not found in database"
+                                     % (buf.lang, buf.path))
+        scan_time, scan_error, res_data = res_index[base]
+
+        blob_from_lang = {}
+        if res_data:
+            try:
+                dbfile_from_blobname = self.dfb_from_dir(dir)
+            except EnvironmentError, ex:
+                # DB corruption will be noted in remove_buf_data()
+                self.remove_buf_data(buf)
+                raise NotFoundInDatabase("%s buffer '%s' not found in database"
+                                         % (buf.lang, buf.path))
+            dhash = self.dhash_from_dir(dir)
+            for blobname in res_data:
+                dbsubpath = join(dhash, dbfile_from_blobname[blobname])
+                try:
+                    blob = self.load_blob(dbsubpath)
+                except ET.XMLParserError, ex:
+                    #XXX Or should we clean out index and raise NotFoundInDatabase?
+                    self.db.corruption("LangZone.get_buf_data",
+                        "could not parse dbfile for '%s' blob: %s"\
+                            % (blobname, ex),
+                        "ignore")
+                    continue
+                except EnvironmentError, ex:
+                    self.db.corruption("LangZone.get_buf_data",
+                        "could not read dbfile for '%s' blob: %s"\
+                            % (blobname, ex),
+                        "ignore")
+                    continue
+                lang = blob.get("lang")
+                assert lang is not None
+                blob_from_lang[lang] = blob
+
+        return scan_time, scan_error, blob_from_lang
+    finally:
+        self._release_lock()
+
+</t>
+<t tx="ekr.20080121121842.69">def remove_buf_data(self, buf):
+    """Remove the given resource from the database."""
+    #TODO Canonicalize path (or assert that it is canonicalized)
+    #     Should have a Resource object that we pass around that
+    #     handles all of this.
+    self._acquire_lock()
+    try:
+        dir, base = split(buf.path)
+
+        res_index = self.load_index(dir, "res_index", {})
+        try:
+            scan_time, scan_error, res_data = res_index[base]
+        except KeyError:
+            # This resource isn't loaded in the db. Nothing to remove.
+            return
+
+        try:
+            blob_index = self.load_index(dir, "blob_index")
+        except EnvironmentError, ex:
+            self.db.corruption("LangZone.remove_buf_data",
+                "could not read blob_index for '%s' dir: %s" % (dir, ex),
+                "recover")
+            blob_index = {}
+
+        is_hits_from_lpath_lang = self.lang in self.db.import_everything_langs
+        if is_hits_from_lpath_lang:
+            try:
+                toplevelname_index = self.load_index(dir, "toplevelname_index")
+            except EnvironmentError, ex:
+                self.db.corruption("LangZone.remove_buf_data",
+                    "could not read toplevelname_index for '%s' dir: %s"
+                        % (dir, ex),
+                    "recover")
+                toplevelname_index = self.toplevelname_index_class()
+
+        dhash = self.dhash_from_dir(dir)
+        del res_index[base]
+        for blobname in res_data:
+            try:
+                dbfile = blob_index[blobname]
+            except KeyError:
+                blob_index_path = join(dhash, "blob_index")
+                self.db.corruption("LangZone.remove_buf_data",
+                    "'%s' blob not in '%s'" \
+                        % (blobname, blob_index_path),
+                    "ignore")
+                continue
+            del blob_index[blobname]
+            for path in glob(join(self.base_dir, dhash, dbfile+".*")):
+                log.debug("fs-write: remove %s blob file '%s/%s'",
+                          self.lang, dhash, basename(path))
+                os.remove(path)
+        if is_hits_from_lpath_lang:
+            toplevelname_index.remove(base, res_data)
+
+        self.changed_index(dir, "res_index")
+        self.changed_index(dir, "blob_index")
+        if is_hits_from_lpath_lang:
+            self.changed_index(dir, "toplevelname_index")
+    finally:
+        self._release_lock()
+    #TODO Database.clean() should remove dirs that have no
+    #     blob_index entries.    
+
+</t>
+<t tx="ekr.20080121121842.70">def update_buf_data(self, buf, force=False):
+    """Update this LangZone with the buffer data.
+
+        "buf" is the CitadelBuffer instance with the relevant info
+            (path, tree, scan_time).
+        "force" (default False) is a boolean indicating if the
+            buffer data should be updated even if buf.scan_time is
+            &lt;= that in the database.
+    """
+    self._acquire_lock()
+    try:
+        #TODO: Canonicalize path (or assert that it is canonicalized)
+        dir, base = split(buf.path)
+
+        # Get the current data, if any.
+        res_index = self.load_index(dir, "res_index", {})
+        res_index_has_changed = False
+        blob_index = self.load_index(dir, "blob_index", {})
+        blob_index_has_changed = False
+        is_hits_from_lpath_lang = self.lang in self.db.import_everything_langs
+        if is_hits_from_lpath_lang:
+            #TODO: Not sure {} for a default is correct here.
+            toplevelname_index = self.load_index(dir, "toplevelname_index", {})
+            toplevelname_index_has_changed = False
+        try:
+            (old_scan_time, old_scan_error, old_res_data) = res_index[base]
+        except KeyError:    # adding a new entry
+            (old_scan_time, old_scan_error, old_res_data) = None, None, {}
+        else:               # updating an existing entry
+            if not force and buf.scan_time is not None \
+               and buf.scan_time &lt;= old_scan_time:
+                log.debug("skipping db update for '%s': %s &lt; %s and "
+                          "no force option",
+                          base, buf.scan_time, old_scan_time)
+                return
+
+        log.debug("update from %s buf '%s'", buf.lang, buf.path)
+
+        # Parse the tree and get the list of blobnames.
+        # res_data: {blobname -&gt; ilk -&gt; toplevelnames}
+        new_res_data = {}
+        new_blobnames_and_blobs = []
+        for lang, blob in buf.blob_from_lang.items():
+            assert lang == blob.get("lang") == self.lang
+            blobname = blob.get("name")
+            for toplevelname, elem in blob.names.iteritems():
+                toplevelnames_from_ilk \
+                    = new_res_data.setdefault(blobname, {})
+                ilk = elem.get("ilk") or elem.tag
+                if ilk not in toplevelnames_from_ilk:
+                    toplevelnames_from_ilk[ilk] = set([toplevelname])
+                else:
+                    toplevelnames_from_ilk[ilk].add(toplevelname)
+            new_blobnames_and_blobs.append((blobname, blob))
+
+        # Determine necessary changes to res_index.
+        new_scan_time = buf.scan_time
+        new_scan_error = buf.scan_error
+        if new_scan_error:
+            if (new_scan_time != old_scan_time
+                or new_scan_error != old_scan_error):
+                res_index[base] = (new_scan_time, new_scan_error,
+                                   old_res_data)
+                res_index_has_changed = True
+
+        else:
+            # Only consider new blobs if there wasn't a scan error.
+            # I.e., we want to preserve the last good scan info.
+
+            if (new_scan_time != old_scan_time
+                or new_scan_error != old_scan_error
+                or new_res_data != old_res_data):
+                res_index[base] = (new_scan_time, new_scan_error,
+                                   new_res_data)
+                res_index_has_changed = True
+
+            if is_hits_from_lpath_lang:
+                if new_res_data != old_res_data:
+                    toplevelname_index.update(base,
+                        old_res_data, new_res_data)
+                    toplevelname_index_has_changed = True
+
+            # Determine necessary changes to blob_index and the
+            # dbfiles and then make them.
+            dbfile_changes = []
+            for blobname, blob in new_blobnames_and_blobs:
+                if blobname in old_res_data:
+                    dbfile_changes.append(("update", blobname, blob))
+                else:
+                    dbfile_changes.append(("add", blobname, blob))
+            for blobname in old_res_data:
+                if blobname not in new_res_data:
+                    dbfile_changes.append(("remove", blobname, None))
+
+            dhash = self.dhash_from_dir(dir)
+            for action, blobname, blob in dbfile_changes:
+                if action == "add":
+                    dbfile = self.db.bhash_from_blob_info(
+                                buf.path, self.lang, blobname)
+                    blob_index[blobname] = dbfile
+                    blob_index_has_changed = True
+                    dbdir = join(self.base_dir, dhash)
+                    if not exists(dbdir):
+                        self._mk_dbdir(dbdir, dir)
+                    #XXX What to do on write failure?
+                    log.debug("fs-write: %s blob '%s/%s'",
+                              self.lang, dhash, dbfile)
+                    if blob.get("src") is None:
+                        blob.set("src", buf.path)   # for defns_from_pos() support
+                    ET.ElementTree(blob).write(join(dbdir, dbfile+".blob"))
+                elif action == "remove":
+                    dbfile = blob_index[blobname]
+                    del blob_index[blobname]
+                    blob_index_has_changed = True
+                    #XXX What to do on removal failure?
+                    log.debug("fs-write: remove %s blob '%s/%s'",
+                              self.lang, dhash, dbfile)
+                    os.remove(join(self.base_dir, dhash, dbfile+".blob"))
+                elif action == "update":
+                    # Try to only change the dbfile on disk if it is
+                    # different.
+                    s = StringIO()
+                    if blob.get("src") is None:
+                        blob.set("src", buf.path)   # for defns_from_pos() support
+                    ET.ElementTree(blob).write(s)
+                    new_dbfile_content = s.getvalue()
+                    dbfile = blob_index[blobname]
+                    dbpath = join(self.base_dir, dhash, dbfile+".blob")
+                    # PERF: Might be nice to cache the new dbfile
+                    #       content for the next time this resource is
+                    #       updated. For files under edit this will be
+                    #       common. I.e. just for the "editset".
+                    try:
+                        fin = open(dbpath, 'r')
+                    except OSError, ex:
+                        # Technically if the dbfile doesn't exist, this
+                        # is a sign of database corruption. No matter
+                        # though (for this blob anyway), we are about to
+                        # replace it.
+                        old_dbfile_content = None
+                    else:
+                        try:
+                            old_dbfile_content = fin.read()
+                        finally:
+                            fin.close()
+                    if new_dbfile_content != old_dbfile_content:
+                        if not exists(dirname(dbpath)):
+                            self._mk_dbdir(dirname(dbpath), dir)
+                        #XXX What to do if fail to write out file?
+                        log.debug("fs-write: %s blob '%s/%s'",
+                                  self.lang, dhash, dbfile)
+                        fout = open(dbpath, 'w')
+                        try:
+                            fout.write(new_dbfile_content)
+                        finally:
+                            fout.close()
+
+        if res_index_has_changed:
+            self.changed_index(dir, "res_index")
+        if blob_index_has_changed:
+            self.changed_index(dir, "blob_index")
+        if is_hits_from_lpath_lang and toplevelname_index_has_changed:
+            self.changed_index(dir, "toplevelname_index")
+    finally:
+        self._release_lock()
+    #TODO Database.clean() should remove dirs that have no
+    #     blob_index entries.    
+
+</t>
+<t tx="ekr.20080121121842.71">def _mk_zone_skel(self):
+    log.debug("fs-write: mkdir '%s'", self.base_dir)
+    os.makedirs(self.base_dir)
+    log.debug("fs-write: create 'lang'")
+    fout = codecs.open(join(self.base_dir, "lang"), 'wb', 'utf-8')
+    try:
+        fout.write(self.lang)
+    finally:
+        fout.close()
+
+</t>
+<t tx="ekr.20080121121842.72">def _mk_dbdir(self, dbdir, dir):
+    if not exists(self.base_dir):
+        self._mk_zone_skel()
+    log.debug("fs-write: mkdir '%s'", dbdir[len(self.base_dir)+1:])
+    os.mkdir(dbdir)
+    log.debug("fs-write: '%s/path'", dbdir[len(self.base_dir)+1:])
+    fout = codecs.open(join(dbdir, "path"), 'wb', 'utf-8')
+    try:
+        fout.write(dir)
+    finally:
+        fout.close()
+
+</t>
+<t tx="ekr.20080121121842.73">def load_blob(self, dbsubpath):
+    """This must be called with the lock held."""
+    log.debug("TODO: LangZone.load_blob: add blob caching!")
+    log.debug("fs-read: load %s blob '%s'", self.lang, dbsubpath)
+    dbpath = join(self.base_dir, dbsubpath+".blob")
+    return ET.parse(dbpath).getroot()
+
+</t>
+<t tx="ekr.20080121121842.74">def load_index(self, dir, index_name, default=None):
+    """Get the indicated index.
+
+        "dir" is the dir path this index represents.
+        "index_name" is the name of the index.
+        "default" (default None) indicate the value to return for
+            the index if the index doesn't exist. If not set (or
+            None) then an OSError is raised if the index doesn't exist.
+
+    The index is loaded from a pickle on disk, if necessary, put
+    into the cache system, and returned.
+    
+    This must be called with the lock held.
+    """
+    self._acquire_lock()
+    try:
+        dbsubpath = join(self.db.dhash_from_dir(dir), index_name)
+
+        # If index path is in the cache: return it, update its atime.
+        now = time.time()
+        if dbsubpath in self._index_and_atime_from_dbsubpath:
+            log.debug("cache-read: load %s index '%s'", self.lang, dbsubpath)
+            self._index_and_atime_from_dbsubpath[dbsubpath][1] = now
+            return self._index_and_atime_from_dbsubpath[dbsubpath][0]
+
+        # Otherwise, load it.
+        log.debug("fs-read: load %s index '%s'", self.lang, dbsubpath)
+        dbpath = join(self.base_dir, dbsubpath)
+        index = self.db.load_pickle(dbpath, default)
+        if index_name == "toplevelname_index":
+            index = self.toplevelname_index_class(index)
+        self._index_and_atime_from_dbsubpath[dbsubpath] = [index, now]
+        return index
+    finally:
+        self._release_lock()
+
+</t>
+<t tx="ekr.20080121121842.75">def changed_index(self, dir, index_name):
+    """Note that we've changed this index (so it can be saved as
+    appropriate).
+    """
+    self._acquire_lock()
+    try:
+        now = time.time()
+        dbsubpath = join(self.db.dhash_from_dir(dir), index_name)
+        self._index_and_atime_from_dbsubpath[dbsubpath][1] = now
+        self._is_index_dirty_from_dbsubpath[dbsubpath] = True
+    finally:
+        self._release_lock()
+
+</t>
+<t tx="ekr.20080121121842.76">def save_index(self, dbsubpath, index):
+    if isinstance(index, self.toplevelname_index_class):
+        index = index.data
+    self.db.save_pickle(join(self.base_dir, dbsubpath), index)
+
+</t>
+<t tx="ekr.20080121121842.77">def save(self):
+    self._acquire_lock()
+    try:
+        for dbsubpath in self._is_index_dirty_from_dbsubpath:
+            self.save_index(dbsubpath,
+                self._index_and_atime_from_dbsubpath[dbsubpath][0])
+        self._is_index_dirty_from_dbsubpath = {}
+    finally:
+        self._release_lock()
+
+</t>
+<t tx="ekr.20080121121842.78">def cull_mem(self):
+    """Drop indeces and tree from cache that have not been
+    accessed in over 5 minutes.
+
+    To attempt to keep memory consumption under control we want to
+    ensure we don't keep everything cached from the db in memory
+    until process completion. The plan is to have a thread
+    periodically cull memory.
+    """
+    #TODO: Database.cull_mem(). Add it. Get indexer to call it.
+    #TOTEST: Does Python/Komodo actually release this memory or
+    #        are we kidding ourselves?
+    self._acquire_lock()
+    try:
+        N = 30
+        if len(self._index_and_atime_from_dbsubpath) &lt; N:
+            # Too few indeces in memory to bother culling.
+            return
+
+        print "XXX culling memory..."
+        now = time.time()
+        for dbsubpath, (index, atime) \
+                in self._index_and_atime_from_dbsubpath.items():
+            if now - atime &gt; 300.0: # &gt;5 minutes since last access
+                if dbsubpath in self._is_index_dirty_from_dbsubpath:
+                    self.save_index(dbsubpath, index)
+                    del self._is_index_dirty_from_dbsubpath[dbsubpath]
+                del self._index_and_atime_from_dbsubpath[dbsubpath]
+    finally:
+        self._release_lock()
+
+    #XXX Database.clean(): Go through each $lang/dir/res_index and
+    #    clean out files in the index but that don't actually exist
+    #    anymore.
+    #XXX Database.clean(): drop memory for indeces that are quite
+    #    old (say haven't been accessed in 20 minutes).
+    #XXX Database.check(): Shouldn't have too many cached indeces in
+    #    memory. How old is the oldest one? Estimate memory size
+    #    used by all loaded indeces?
+
+</t>
+<t tx="ekr.20080121121842.79">def get_lib(self, name, dirs):
+    """
+    Dev Notes:
+    We make a lib for a particular sequence of dirs a singleton because:
+    1. The sequence of dirs for a language's import path tends to
+       not change, so the same object will tend to get used.
+    2. This allows caching of filesystem lookups to be done naturally
+       on the LangDirsLib instance.
+
+    To ensure that this cache doesn't grow unboundedly we only allow
+    there to be N cached LangDirsLib's. A good value for N is when
+    there are relatively few cache misses. Ideally we'd want to
+    count the number of cache misses (i.e. LangDirsLib instance
+    creations) for a number of "typical" uses of codeintel -- i.e. a
+    long running Komodo profile. Failing that we'll just use N=10.
+    """
+    assert isinstance(dirs, (tuple, list))
+    canon_dirs = tuple(abspath(normpath(expanduser(d))) for d in dirs)
+    if canon_dirs in self._dirslib_cache:
+        return self._dirslib_cache[canon_dirs]
+
+    langdirslib = LangDirsLib(self, self._lock, self.lang, name,
+                              canon_dirs)
+    
+    N = 10
+    while len(self._ordered_dirslib_cache_keys) &gt;= N:
+        cache_key = self._ordered_dirslib_cache_keys.pop()
+        del self._dirslib_cache[cache_key]
+    self._dirslib_cache[canon_dirs] = langdirslib
+    self._ordered_dirslib_cache_keys.insert(0, canon_dirs)
+
+    return langdirslib
+
+</t>
+<t tx="ekr.20080121121842.80">#!python
+# ***** LICENSE BLOCK *****
+
+"""The multilang-zone of the codeintel database.
+See the database/database.py module docstring for an overview.
+"""
+
+import sys
+import os
+from os.path import (join, dirname, exists, expanduser, splitext, basename,
+                     split, abspath, isabs, isdir, isfile)
+from glob import glob
+from pprint import pprint, pformat
+import logging
+from cStringIO import StringIO
+import copy
+
+import ciElementTree as ET
+from codeintel2.common import *
+from codeintel2.database.langlib import LangZone
+from codeintel2 import util
+
+
+
+#---- globals
+
+log = logging.getLogger("codeintel.db")
+</t>
+<t tx="ekr.20080121121842.81">#log.setLevel(logging.DEBUG)
+
+
+
+#---- Database zone and lib implementations
+
+class MultiLangTopLevelNameIndex(object):
+    """A wrapper around the plain-dictionary toplevelname_index for a
+    MultiLangZone dir to provide better performance for continual updating
+    and some simpler access.
+
+        {lang -&gt; ilk -&gt; toplevelname -&gt; blobnames}
+
+    # Problem
+
+    A 'toplevelname_index' is a merge of
+        {lang -&gt; blobname -&gt; ilk -&gt; toplevelnames}
+    data for all resources in its dir.  As those resources are
+    continually re-scanned (e.g. as a file is edited in Komodo), it
+    would be too expensive to update this index everytime.
+
+    # Solution
+
+    Keep a list of "recent updates" and only merge them into the main
+    data when that buf hasn't been updated in "a while" and when needed
+    for saving the index. Note: Buffer *removals* are not put on-deck,
+    but removed immediately.
+
+    # .get_blobnames(lang, ..., ilk=None)
+    
+    Originally the toplevelname_index stored
+        {lang -&gt; toplevelname -&gt; blobnames}
+    The per-"ilk" level was added afterwards to support occassional ilk
+    filtering for PHP (and possible eventually other langs).
+    
+    .get_blobnames() still behaves like a {lang -&gt; toplevelname -&gt; blobnames}
+    mapping, but it provides an optional "ilk" keyword arg to limit the
+    results to that ilk.
+
+    # Notes on locking
+
+    This class does not guard its datastructures with locking. It is up
+    to the MultiLangZone using this to guard against simultaneous access
+    on separate threads.
+    """
+    @others
+</t>
+<t tx="ekr.20080121121842.82">def __init__(self, data=None, timeout=90):
+    # toplevelname_index data: {lang -&gt; ilk -&gt; toplevelname -&gt; blobnames}
+    if data is None:
+        self._data = {}
+    else:
+        self._data = data
+
+    # Time (in seconds) to hold a change "on deck".
+    # Timed-out changes are merged on .get() and .update().
+    self.timeout = timeout
+    self._on_deck = {
+        # basename                           # the basename of the buf path
+        #   -&gt; [timestamp,                   # time of the last update
+        #       # The dict in res_index, a.k.a. 'res_data'
+        #       {lang -&gt; blobname -&gt; ilk -&gt; toplevelnames},
+        #       # Lazily generated pivot, a.k.a. 'res_data_pivot'
+        #       {lang -&gt; ilk -&gt; toplevelname -&gt; blobnames}
+        #      ]
+    }
+
+</t>
+<t tx="ekr.20080121121842.83">def __repr__(self):
+    return "&lt;MultiLangTopLevelNameIndex: %d update(s) on-deck&gt;"\
+           % len(self._on_deck)
+
+</t>
+<t tx="ekr.20080121121842.84">def merge(self):
+    """Merge all on-deck changes with `self.data'."""
+    for base, (timestamp, res_data,
+               res_data_pivot) in self._on_deck.items():
+        if res_data_pivot is None:
+            res_data_pivot = self._pivot_res_data(res_data)
+        # res_data_pivot: {lang -&gt; ilk -&gt; toplevelname -&gt; blobnames}
+        # "bftfi" means blobnames_from_toplevelname_from_ilk
+        for lang, bftfi in res_data_pivot.iteritems():
+            data_bftfi = self._data.setdefault(lang, {})
+            for ilk, bft in bftfi.iteritems():
+                data_bft = data_bftfi.setdefault(ilk, {})
+                for toplevelname, blobnames in bft.iteritems():
+                    if toplevelname not in data_bft:
+                        data_bft[toplevelname] = blobnames
+                    else:
+                        data_bft[toplevelname].update(blobnames)
+        del self._on_deck[base]
+
+</t>
+<t tx="ekr.20080121121842.85">def merge_expired(self, now):
+    """Merge expired on-deck changes with `self.data'."""
+    for base, (timestamp, res_data,
+               res_data_pivot) in self._on_deck.items():
+        if now - timestamp &lt; self.timeout:
+            continue
+
+        if res_data_pivot is None:
+            res_data_pivot = self._pivot_res_data(res_data)
+        # res_data_pivot: {lang -&gt; ilk -&gt; toplevelname -&gt; blobnames}
+        # "bftfi" means blobnames_from_toplevelname_from_ilk
+        for lang, bftfi in res_data_pivot.iteritems():
+            data_bftfi = self._data.setdefault(lang, {})
+            for ilk, bft in bftfi.iteritems():
+                data_bft = data_bftfi.setdefault(ilk, {})
+                for toplevelname, blobnames in bft.iteritems():
+                    if toplevelname not in data_bft:
+                        data_bft[toplevelname] = blobnames
+                    else:
+                        data_bft[toplevelname].update(blobnames)
+        del self._on_deck[base]
+
+</t>
+<t tx="ekr.20080121121842.86">@property
+def data(self):
+    self.merge()
+    return self._data
+
+</t>
+<t tx="ekr.20080121121842.87">def update(self, base, old_res_data, new_res_data):
+    now = time.time()
+    self.remove(base, old_res_data)
+    self._on_deck[base] = [now, new_res_data, None]
+    self.merge_expired(now)
+
+</t>
+<t tx="ekr.20080121121842.88">def remove(self, base, old_res_data):
+    if base in self._on_deck:
+        del self._on_deck[base]
+    else:
+        # Remove old refs from current data.
+        # old_res_data: {lang -&gt; blobname -&gt; ilk -&gt; toplevelnames}
+        # self._data:   {lang -&gt; ilk -&gt; toplevelname -&gt; blobnames}
+        for lang, tfifb in old_res_data.iteritems():
+            if lang not in self._data:
+                continue
+            data_bftfi = self._data[lang]
+            for blobname, tfi in tfifb.iteritems():
+                for ilk, toplevelnames in tfi.iteritems():
+                    for toplevelname in toplevelnames:
+                        try:
+                            data_bftfi[ilk][toplevelname].remove(blobname)
+                        except KeyError:
+                            pass # ignore this for now, might indicate corruption
+                        else:
+                            if not data_bftfi[ilk][toplevelname]:
+                                del data_bftfi[ilk][toplevelname]
+                    if not data_bftfi.get(ilk):
+                        del data_bftfi[ilk]
+            if not self._data[lang]:
+                del self._data[lang]
+
+</t>
+<t tx="ekr.20080121121842.89">def _pivot_res_data(self, res_data):
+    # res_data:       {lang -&gt; blobname -&gt; ilk -&gt; toplevelnames}
+    # res_data_pivot: {lang -&gt; ilk -&gt; toplevelname -&gt; blobnames}
+    res_data_pivot = dict(
+        (lang, {}) for lang in res_data
+    )
+    for lang, tfifb in res_data.iteritems():
+        for blobname, toplevelnames_from_ilk in tfifb.iteritems():
+            for ilk, toplevelnames in toplevelnames_from_ilk.iteritems():
+                pivot_bft = res_data_pivot[lang].setdefault(ilk, {})
+                for toplevelname in toplevelnames:
+                    if toplevelname not in pivot_bft:
+                        pivot_bft[toplevelname] = set([blobname])
+                    else:
+                        pivot_bft[toplevelname].add(blobname)
+    return res_data_pivot
+
+</t>
+<t tx="ekr.20080121121842.90">def toplevel_cplns(self, lang, prefix=None, ilk=None):
+    """Return completion info for all top-level names matching the
+    given prefix and ilk.
+
+        "prefix" is a 3-character prefix with which to filter top-level
+            names. If None (or not specified), results are not filtered
+            based on the prefix.
+        "ilk" is a symbol type (e.g. "class", "variable", "function")
+            with which to filter results. If None (or not specified),
+            results of any ilk are returned.
+
+    Returns a list of 2-tuples: (&lt;ilk&gt;, &lt;name&gt;).
+    """
+    self.merge_expired(time.time())
+
+    # Need to check merged and on-deck items:
+    cplns = []
+
+    # ...on-deck items
+    for base, (timestamp, res_data,
+               res_data_pivot) in self._on_deck.items():
+        if lang not in res_data:
+            continue
+        if res_data_pivot is None:
+            res_data_pivot = self._on_deck[base][2] \
+                = self._pivot_res_data(res_data)
+        # res_data_pivot: {lang -&gt; ilk -&gt; toplevelname -&gt; blobnames}
+        bftfi = res_data_pivot[lang]
+        if ilk is None:
+            for i, bft in bftfi.iteritems():
+                cplns += [(i, toplevelname) for toplevelname in bft]
+        elif ilk in bftfi:
+            cplns += [(ilk, toplevelname) for toplevelname in bftfi[ilk]]
+
+    # ...merged data
+    # self._data: {lang -&gt; ilk -&gt; toplevelname -&gt; blobnames}
+    if lang in self._data:
+        bftfi = self._data[lang]
+        if ilk is None:
+            for i, bft in bftfi.iteritems():
+                cplns += [(i, toplevelname) for toplevelname in bft]
+        elif ilk in bftfi:
+            cplns += [(ilk, toplevelname) for toplevelname in bftfi[ilk]]
+
+
+    # Naive implementation: Instead of maintaining a separate
+    # 'toplevelprefix_index' (as we do for StdLibsZone and CatalogsZone)
+    # for now we'll just gather all results and filter on the prefix
+    # here. Only if this proves to be a perf issue will we add the
+    # complexity of another index:
+    #   {lang -&gt; ilk -&gt; prefix -&gt; toplevelnames}
+    if prefix is not None:
+        cplns = [(i, t) for i, t in cplns if t.startswith(prefix)]
+
+    return cplns
+
+
+</t>
+<t tx="ekr.20080121121842.91">#TODO: Change this API to just have the empty list as a default.
+#      No point in the 'default' arg.
+def get_blobnames(self, lang, toplevelname, default=None, ilk=None):
+    """Return the blobnames of the given lang defining the given
+    toplevelname.
+
+    If "ilk" is given then only symbols of that ilk will be considered.
+    If not match is found the "default" is returned.
+    """
+    self.merge_expired(time.time())
+
+    blobnames = set()
+    # First check on-deck items.
+    for base, (timestamp, res_data,
+               res_data_pivot) in self._on_deck.items():
+        if lang not in res_data:
+            continue
+        if res_data_pivot is None:
+            res_data_pivot = self._on_deck[base][2] \
+                = self._pivot_res_data(res_data)
+        # res_data_pivot: {lang -&gt; ilk -&gt; toplevelname -&gt; blobnames}
+        bftfi = res_data_pivot[lang]
+        if ilk is None:
+            for bft in bftfi.itervalues():
+                if toplevelname in bft:
+                    blobnames.update(bft[toplevelname])
+        elif ilk in bftfi:
+            if toplevelname in bftfi[ilk]:
+                blobnames.update(bftfi[ilk][toplevelname])
+
+    #TODO: Put lookup in merged data ahead of lookup in on-deck -- so
+    #      we don't do on-deck work if not necessary.
+    # Then, fallback to already merged data.
+    # self._data: {lang -&gt; ilk -&gt; toplevelname -&gt; blobnames}
+    if lang in self._data:
+        bftfi = self._data[lang]
+        if ilk is None:
+            for bft in bftfi.itervalues():
+                if toplevelname in bft:
+                    blobnames.update(bft[toplevelname])
+        elif ilk in bftfi:
+            if toplevelname in bftfi[ilk]:
+                blobnames.update(bftfi[ilk][toplevelname])
+
+    if blobnames:
+        return blobnames
+    return default
+
+
+</t>
+<t tx="ekr.20080121121842.92">class MultiLangZone(LangZone):
+    toplevelname_index_class = MultiLangTopLevelNameIndex
+
+    @others
+</t>
+<t tx="ekr.20080121121842.93">def get_lib(self, name, dirs, sublang):
+    assert isinstance(dirs, (tuple, list))
+    assert sublang is not None, "must specify '%s' sublang" % self.lang
+
+    canon_dirs = tuple(abspath(normpath(expanduser(d))) for d in dirs)
+    key = (canon_dirs, sublang)
+    if key in self._dirslib_cache:
+        return self._dirslib_cache[key]
+
+    langdirslib = MultiLangDirsLib(self, self._lock, self.lang,
+                                    name, canon_dirs, sublang)
+    
+    N = 10
+    while len(self._ordered_dirslib_cache_keys) &gt;= N:
+        cache_key = self._ordered_dirslib_cache_keys.pop()
+        del self._dirslib_cache[cache_key]
+    self._dirslib_cache[key] = langdirslib
+    self._ordered_dirslib_cache_keys.insert(0, key)
+
+    return langdirslib
+
+</t>
+<t tx="ekr.20080121121842.94">def dfb_from_dir(self, dir, sublang, default=None):
+    """Get the {blobname -&gt; dbfile} mapping index for the given dir
+    and lang.
+    
+    'dfb' stands for 'dbfile_from_blobname'.
+    This must be called with the lock held.
+    """
+    blob_index = self.load_index(dir, "blob_index", default=default)
+    try:
+        return blob_index[sublang]
+    except KeyError, ex:
+        if default is not None:
+            return default
+        raise
+
+</t>
+<t tx="ekr.20080121121842.95">def get_buf_data(self, buf):
+    #TODO Canonicalize path (or assert that it is canonicalized)
+    #     Should have a Resource object that we pass around that
+    #     handles all of this.
+    self._acquire_lock()
+    try:
+        dir, base = split(buf.path)
+        res_index = self.load_index(dir, "res_index", {})
+        if base not in res_index:
+            raise NotFoundInDatabase("%s buffer '%s' not found in database"
+                                     % (buf.lang, buf.path))
+        scan_time, scan_error, res_data = res_index[base]
+
+        try:
+            blob_index = self.load_index(dir, "blob_index")
+        except EnvironmentError, ex:
+            self.db.corruption("MultiLangZone.get_buf_data",
+                "could not find 'blob_index' index: %s" % ex,
+                "recover")
+            raise NotFoundInDatabase("%s buffer '%s' not found in database"
+                                     % (buf.lang, buf.path))
+
+        dhash = self.dhash_from_dir(dir)
+        blob_from_lang = {}
+        # res_data: {lang -&gt; blobname -&gt; ilk -&gt; toplevelnames}
+        for lang, blobname in (
+             (lang, tfifb.keys()[0]) # only one blob per lang in a resource
+             for lang, tfifb in res_data.items()
+            ):
+            dbsubpath = join(dhash, blob_index[lang][blobname])
+            try:
+                blob = self.load_blob(dbsubpath)
+            except ET.XMLParserError, ex:
+                #XXX Or should we clean out index and raise NotFoundInDatabase?
+                self.db.corruption("MultiLangZone.get_buf_data",
+                    "could not parse dbfile for '%s' blob: %s"\
+                        % (blobname, ex),
+                    "ignore")
+                continue
+            except EnvironmentError, ex:
+                self.db.corruption("MultiLangZone.get_buf_data",
+                    "could not read dbfile for '%s' blob: %s"\
+                        % (blobname, ex),
+                    "ignore")
+                continue
+            assert blob.get("lang") == lang
+            blob_from_lang[lang] = blob
+
+        return scan_time, scan_error, blob_from_lang
+    finally:
+        self._release_lock()
+
+</t>
+<t tx="ekr.20080121121842.96">def remove_buf_data(self, buf):
+    """Remove the given resource from the database."""
+    #TODO Canonicalize path (or assert that it is canonicalized)
+    #     Should have a Resource object that we pass around that
+    #     handles all of this.
+    self._acquire_lock()
+    try:
+        dir, base = split(buf.path)
+
+        res_index = self.load_index(dir, "res_index", {})
+        try:
+            scan_time, scan_error, res_data = res_index[base]
+        except KeyError:
+            # This resource isn't loaded in the db. Nothing to remove.
+            return
+
+        try:
+            blob_index = self.load_index(dir, "blob_index")
+        except EnvironmentError, ex:
+            self.db.corruption("MultiLangZone.remove_buf_data",
+                "could not read blob_index for '%s' dir: %s" % (dir, ex),
+                "recover")
+            blob_index = {}
+
+        is_hits_from_lpath_lang = self.lang in self.db.import_everything_langs
+        if is_hits_from_lpath_lang:
+            try:
+                toplevelname_index = self.load_index(dir, "toplevelname_index")
+            except EnvironmentError, ex:
+                self.db.corruption("MultiLangZone.remove_buf_data",
+                    "could not read toplevelname_index for '%s' dir: %s"
+                        % (dir, ex),
+                    "recover")
+                toplevelname_index = self.toplevelname_index_class()
+
+        dhash = self.dhash_from_dir(dir)
+        del res_index[base]
+        # res_data: {lang -&gt; blobname -&gt; ilk -&gt; toplevelnames}
+        for lang, blobname in (
+             (lang, tfifb.keys()[0]) # only one blob per lang in a resource
+             for lang, tfifb in res_data.items()
+            ):
+            try:
+                dbfile = blob_index[lang][blobname]
+            except KeyError:
+                blob_index_path = join(dhash, "blob_index")
+                self.db.corruption("MultiLangZone.remove_buf_data",
+                    "%s '%s' blob not in '%s'" \
+                        % (lang, blobname, blob_index_path),
+                    "ignore")
+                continue
+            del blob_index[lang][blobname]
+            for path in glob(join(self.base_dir, dhash, dbfile+".*")):
+                log.debug("fs-write: remove %s|%s blob file '%s/%s'",
+                          self.lang, lang, dhash, basename(path))
+                os.remove(path)
+        if is_hits_from_lpath_lang:
+            toplevelname_index.remove(base, res_data)
+
+        self.changed_index(dir, "res_index")
+        self.changed_index(dir, "blob_index")
+        if is_hits_from_lpath_lang:
+            self.changed_index(dir, "toplevelname_index")
+    finally:
+        self._release_lock()
+    #XXX Database.clean() should remove dirs that have no
+    #    dbfile_from_blobname entries.
+
+</t>
+<t tx="ekr.20080121121842.97">def update_buf_data(self, buf, force=False):
+    """Update this MultiLangZone with the buffer data.
+
+        "buf" is the CitadelBuffer instance with the relevant info
+            (path, tree, scan_time).
+        "force" (default False) is a boolean indicating if the
+            buffer data should be updated even if buf.scan_time is
+            &lt;= that in the database.
+    """
+    self._acquire_lock()
+    try:
+        #TODO: Canonicalize path (or assert that it is canonicalized)
+        dir, base = split(buf.path)
+
+        # Get the current data, if any.
+        res_index = self.load_index(dir, "res_index", {})
+        res_index_has_changed = False
+        blob_index = self.load_index(dir, "blob_index", {})
+        blob_index_has_changed = False
+        is_hits_from_lpath_lang = self.lang in self.db.import_everything_langs
+        if is_hits_from_lpath_lang:
+            #TODO: Not sure {} for a default is correct here.
+            toplevelname_index = self.load_index(dir, "toplevelname_index", {})
+            toplevelname_index_has_changed = False
+        try:
+            (old_scan_time, old_scan_error, old_res_data) = res_index[base]
+        except KeyError:    # adding a new entry
+            (old_scan_time, old_scan_error, old_res_data) = None, None, {}
+        else:               # updating an existing entry
+            if not force and buf.scan_time is not None \
+               and buf.scan_time &lt;= old_scan_time:
+                log.debug("skipping db update for '%s': %s &lt; %s and "
+                          "no force option",
+                          base, buf.scan_time, old_scan_time)
+                return
+
+        log.debug("update from %s buf '%s'", buf.lang, buf.path)
+
+        # Parse the tree and get the list of blobnames.
+        # res_data: {lang -&gt; blobname -&gt; ilk -&gt; toplevelnames}
+        new_res_data = {}
+        new_blob_from_lang_and_blobname = {}
+        for lang, blob in buf.blob_from_lang.items():
+            blobname = blob.get("name")
+            new_blob_from_lang_and_blobname[(lang, blobname)] = blob
+            tfifb = new_res_data.setdefault(lang, {})
+            toplevelnames_from_ilk = tfifb.setdefault(blobname, {})
+            for toplevelname, elem in blob.names.iteritems():
+                ilk = elem.get("ilk") or elem.tag
+                if ilk not in toplevelnames_from_ilk:
+                    toplevelnames_from_ilk[ilk] = set([toplevelname])
+                else:
+                    toplevelnames_from_ilk[ilk].add(toplevelname)
+
+        # Determine necessary changes to res_index.
+        new_scan_time = buf.scan_time
+        new_scan_error = buf.scan_error
+        if new_scan_error:
+            if (new_scan_time != old_scan_time
+                or new_scan_error != old_scan_error):
+                res_index[base] = (new_scan_time, new_scan_error,
+                                   old_res_data)
+                res_index_has_changed = True
+
+        else:
+            # Only consider new blobs if there wasn't a scan error.
+            # I.e., we want to preserve the last good scan info.
+
+            if (new_scan_time != old_scan_time
+                or new_scan_error != old_scan_error
+                or new_res_data != old_res_data):
+                res_index[base] = (new_scan_time, new_scan_error,
+                                   new_res_data)
+                res_index_has_changed = True
+
+            if is_hits_from_lpath_lang:
+                if new_res_data != old_res_data:
+                    toplevelname_index.update(base,
+                        old_res_data, new_res_data)
+                    toplevelname_index_has_changed = True
+
+            # Determine necessary changes to dbfile_from_blobname index
+            # and the dbfiles and then make them.
+            dbfile_changes = []
+            for (lang, blobname), blob \
+                    in new_blob_from_lang_and_blobname.items():
+                try:
+                    old_res_data[lang][blobname]
+                except KeyError:
+                    dbfile_changes.append(("add", lang, blobname, blob))
+                else:
+                    dbfile_changes.append(("update", lang, blobname, blob))
+
+            for lang, old_tfifb in old_res_data.items():
+                for blobname in old_tfifb:
+                    try:
+                        new_res_data[lang][blobname]
+                    except KeyError:
+                        dbfile_changes.append(("remove", lang, blobname, None))
+
+            dhash = self.dhash_from_dir(dir)
+            for action, lang, blobname, blob in dbfile_changes:
+                if action == "add":
+                    dbfile = self.db.bhash_from_blob_info(
+                                buf.path, lang, blobname)
+                    blob_index.setdefault(lang, {})[blobname] = dbfile
+                    blob_index_has_changed = True
+                    dbdir = join(self.base_dir, dhash)
+                    if not exists(dbdir):
+                        self._mk_dbdir(dbdir, dir)
+                    #XXX What to do on write failure?
+                    log.debug("fs-write: %s|%s blob '%s/%s'",
+                              self.lang, lang, dhash, dbfile)
+                    if blob.get("src") is None:
+                        blob.set("src", buf.path)   # for defns_from_pos() support
+                    ET.ElementTree(blob).write(join(dbdir, dbfile+".blob"))
+                elif action == "remove":
+                    dbfile = blob_index[lang][blobname]
+                    del blob_index[lang][blobname]
+                    blob_index_has_changed = True
+                    #XXX What to do on removal failure?
+                    log.debug("fs-write: remove %s|%s blob '%s/%s'",
+                              self.lang, lang, dhash, dbfile)
+                    try:
+                        os.remove(join(self.base_dir, dhash, dbfile+".blob"))
+                    except EnvironmentError, ex:
+                        self.db.corruption("MultiLangZone.update_buf_data",
+                            "could not remove dbfile for '%s' blob: %s"\
+                                % (blobname, ex),
+                            "ignore")
+                elif action == "update":
+                    # Try to only change the dbfile on disk if it is
+                    # different.
+                    s = StringIO()
+                    if blob.get("src") is None:
+                        blob.set("src", buf.path)   # for defns_from_pos() support
+                    ET.ElementTree(blob).write(s)
+                    new_dbfile_content = s.getvalue()
+                    dbfile = blob_index[lang][blobname]
+                    dbpath = join(self.base_dir, dhash, dbfile+".blob")
+                    # PERF: Might be nice to cache the new dbfile
+                    #       content for the next time this resource is
+                    #       updated. For files under edit this will be
+                    #       common. I.e. just for the "editset".
+                    try:
+                        fin = open(dbpath, 'r')
+                    except OSError, ex:
+                        # Technically if the dbfile doesn't exist, this
+                        # is a sign of database corruption. No matter
+                        # though (for this blob anyway), we are about to
+                        # replace it.
+                        old_dbfile_content = None
+                    else:
+                        try:
+                            old_dbfile_content = fin.read()
+                        finally:
+                            fin.close()
+                    if new_dbfile_content != old_dbfile_content:
+                        if not exists(dirname(dbpath)):
+                            self._mk_dbdir(dirname(dbpath), dir)
+                        #XXX What to do if fail to write out file?
+                        log.debug("fs-write: %s|%s blob '%s/%s'",
+                                  self.lang, lang, dhash, dbfile)
+                        fout = open(dbpath, 'w')
+                        try:
+                            fout.write(new_dbfile_content)
+                        finally:
+                            fout.close()
+
+        if res_index_has_changed:
+            self.changed_index(dir, "res_index")
+        if blob_index_has_changed:
+            self.changed_index(dir, "blob_index")
+        if is_hits_from_lpath_lang and toplevelname_index_has_changed:
+            self.changed_index(dir, "toplevelname_index")
+    finally:
+        self._release_lock()
+    #TODO: Database.clean() should remove dirs that have no
+    #      blob_index entries.    
+
+
+
+</t>
+<t tx="ekr.20080121121842.98">class MultiLangDirsLib(object):
+    """A zone providing a view into an ordered list of dirs in a
+    db/$multilang/... area of the db.
+
+    These are dished out via Database.get_lang_lib(), which indirectly
+    then is dished out by the MultiLangZone.get_lib(). Mostly this is
+    just a view on the MultiLangZone singleton for this particular
+    language.
+    """
+    @others
+</t>
+<t tx="ekr.20080121121842.99">def __init__(self, lang_zone, lock, lang, name, dirs, sublang):
+    self.lang_zone = lang_zone
+    self._lock = lock
+    self.mgr = lang_zone.mgr
+    self.lang = lang
+    self.name = name
+    self.dirs = dirs
+    self.sublang = sublang
+    self.import_handler \
+        = self.mgr.citadel.import_handler_from_lang(sublang)
+    self._have_ensured_scanned_from_dir_cache = {}
+
+    # We keep a "weak" merged cache of blobname lookup for all dirs
+    # in this zone -- where "weak" means that we verify a hit by
+    # checking the current real dbfile_from_blobname index for that
+    # dir (which may have changed). This caching slows down lookup
+    # for single-dir LangDirsZones, but should scale better for
+    # LangDirsZones with many dirs. (TODO-PERF: test this assertion.)
+    self._dir_and_blobbase_from_blobname = {}
+    self._importables_from_dir_cache = {}
+
+</t>
+<t tx="ekr.20080121121842.100">def __repr__(self):
+    return "&lt;%s %s&gt;" % (self.lang, self.name)
+
+</t>
+<t tx="ekr.20080121121842.101">def _acquire_lock(self):
+    self._lock.acquire()
+</t>
+<t tx="ekr.20080121121842.102">def _release_lock(self):
+    self._lock.release()
+
+</t>
+<t tx="ekr.20080121121842.103">def has_blob(self, blobname, ctlr=None):
+    dbsubpath = self._dbsubpath_from_blobname(blobname, ctlr=ctlr)
+    return dbsubpath is not None
+
+</t>
+<t tx="ekr.20080121121842.104">def has_blob_in_db(self, blobname, ctlr=None):
+    """Return true if the blobname is in the database.
+
+    Typically this method is only used for debugging and .has_blob()
+    is what you want.
+    """
+    dbsubpath = self._dbsubpath_from_blobname(
+        blobname, ctlr=ctlr, only_look_in_db=True)
+    return dbsubpath is not None
+
+</t>
+<t tx="ekr.20080121121842.105">def get_blob(self, blobname, ctlr=None):
+    self._acquire_lock()
+    try:
+        dbsubpath = self._dbsubpath_from_blobname(
+            blobname, ctlr=ctlr)
+        if dbsubpath is not None:
+            return self.lang_zone.load_blob(dbsubpath)
+        else:
+            return None
+    finally:
+        self._release_lock()
+
+</t>
+<t tx="ekr.20080121121842.106">def hits_from_lpath(self, lpath, ctlr=None, curr_buf=None):
+    """Return all hits of the given lookup path.
+    
+    I.e. a symbol table lookup across all files in the dirs of this
+    lib.
+
+        "lpath" is a lookup name list, e.g. ['Casper', 'Logging']
+            or ['dojo', 'animation'].
+        "ctlr" (optional) is an EvalController instance. If
+            specified it should be used in the normal way (logging,
+            checking .is_aborted()).
+        "curr_buf" (optional), if specified, is the current buf for
+            which this query is being made. Hits from it should be
+            skipped (i.e. don't bother searching it).
+
+    A "hit" is (&lt;CIX node&gt;, &lt;scope-ref&gt;).  Each one represent a
+    scope-tag or variable-tag hit in all of the blobs for the
+    execution set buffers.
+
+    Returns the empty list if no hits.
+    """
+    assert isinstance(lpath, tuple)  # common mistake to pass in a string
+
+    if curr_buf:
+        curr_blobname = curr_buf.blob_from_lang.get(self.lang, {}).get("name")
+        curr_buf_dir = dirname(curr_buf.path)
+    
+    # Naive implementation (no caching)
+    hits = []
+    for dir in self.dirs:
+        if ctlr and ctlr.is_aborted():
+            log.debug("ctlr aborted")
+            break
+        
+        # Need to have (at least once) scanned all importables.
+        # Responsibility for ensuring the scan data is *up-to-date*
+        # is elsewhere.
+        self.ensure_dir_scanned(dir, ctlr=ctlr)
+
+        toplevelname_index = self.lang_zone.load_index(
+                dir, "toplevelname_index", {})
+        for blobname in toplevelname_index.get_blobnames(
+                            self.lang, lpath[0], ()):
+            if curr_buf and curr_buf_dir == dir and blobname == curr_blobname:
+                continue
+            blob = self.get_blob(blobname, ctlr=ctlr)
+            try:
+                elem = blob
+                for p in lpath:
+                    #LIMITATION: *Imported* names at each scope are
+                    # not being included here. This *should* be okay for
+                    # PHP because imports only add symbols to the
+                    # top-level. Worse case: the user has to add another
+                    # dir to his "extra-dirs" pref.
+                    elem = elem.names[p]
+            except KeyError:
+                continue
+            hits.append( (elem, (blob, list(lpath[:-1]))) )
+
+    return hits
+
+</t>
+<t tx="ekr.20080121121842.107">def toplevel_cplns(self, prefix=None, ilk=None, ctlr=None):
+    """Return completion info for all top-level names matching the
+    given prefix and ilk in all blobs in this lib.
+    
+        "prefix" is a 3-character prefix with which to filter top-level
+            names. If None (or not specified), results are not filtered
+            based on the prefix.
+        "ilk" is a symbol type (e.g. "class", "variable", "function")
+            with which to filter results. If None (or not specified),
+            results of any ilk are returned.
+        "ctlr" (optional) is an EvalController instance. If
+            specified it should be used in the normal way (logging,
+            checking .is_aborted()).
+
+    Returns a list of 2-tuples: (&lt;ilk&gt;, &lt;name&gt;).
+
+    Note: the list is not sorted, because often some special sorting
+    is required for the different completion evaluators that might use
+    this API.
+    """
+    cplns = []
+    # Naive implementation (no caching)
+    for dir in self.dirs:
+        if ctlr and ctlr.is_aborted():
+            log.debug("ctlr aborted")
+            break
+
+        self.ensure_dir_scanned(dir, ctlr=ctlr)
+
+        try:
+            toplevelname_index = self.lang_zone.load_index(
+                dir, "toplevelname_index")
+        except EnvironmentError:
+            # No toplevelname_index for this dir likely indicates that
+            # there weren't any files of the current lang in this dir.
+            continue
+        cplns += toplevelname_index.toplevel_cplns(
+            self.lang, prefix=prefix, ilk=ilk)
+    return cplns
+
+</t>
+<t tx="ekr.20080121121842.108">def ensure_dir_scanned(self, dir, ctlr=None):
+    """Ensure that all importables in this dir have been scanned
+    into the db at least once.
+
+    Note: This is identical to MultiLangDirsLib.ensure_dir_scanned().
+    Would be good to share.
+    """
+    #TODO: should "self.lang" in this function be "self.sublang"?
+    if dir not in self._have_ensured_scanned_from_dir_cache:
+        event_reported = False
+        res_index = self.lang_zone.load_index(dir, "res_index", {})
+        importables = self._importables_from_dir(dir)
+        for base in (i[0] for i in importables.values()
+                     if i[0] is not None):
+            if ctlr and ctlr.is_aborted():
+                log.debug("ctlr aborted")
+                return
+            if base not in res_index:
+                if not event_reported:
+                    self.lang_zone.db.report_event(
+                        "scanning %s files in '%s'" % (self.lang, dir))
+                    event_reported = True
+                buf = self.mgr.buf_from_path(join(dir, base),
+                                             lang=self.lang)
+                if ctlr is not None:
+                    ctlr.info("load %r", buf)
+                buf.load()
+        self._have_ensured_scanned_from_dir_cache[dir] = True
+
+</t>
+<t tx="ekr.20080121121842.109">def _importables_from_dir(self, dir):
+    if dir not in self._importables_from_dir_cache:
+        self._importables_from_dir_cache[dir] \
+            = self.import_handler.find_importables_in_dir(dir)
+    return self._importables_from_dir_cache[dir]
+
+</t>
+<t tx="ekr.20080121121842.110">def _dbsubpath_from_blobname(self, blobname, ctlr=None, 
+                             only_look_in_db=False):
+    """Return the subpath to the dbfile for the given blobname,
+    or None if not found.
+
+    Remember that this is complicated by possible multi-level
+    imports. E.g. "include('foo/bar.php')".
+    """
+    lang_zone = self.lang_zone
+
+    self._acquire_lock()
+    try:
+        # Use our weak cache to try to return quickly.
+        if blobname in self._dir_and_blobbase_from_blobname:
+            blobdir, blobbase = self._dir_and_blobbase_from_blobname[blobname]
+
+            # Check it. The actual info for that dir may have changed.
+            dbfile_from_blobname = lang_zone.dfb_from_dir(blobdir, self.sublang)
+            if blobbase in dbfile_from_blobname:
+                log.debug("have blob '%s' in '%s'? yes (in weak cache)",
+                          blobname, blobdir)
+                return join(lang_zone.dhash_from_dir(blobdir),
+                            dbfile_from_blobname[blobbase])
+            del self._dir_and_blobbase_from_blobname[blobname] # drop from weak cache
+
+        # Brute force: look in each dir.
+        assert self.import_handler.sep is not None, \
+            "%r.sep is None, this must be set" % self.import_handler
+        blobparts = blobname.split(self.import_handler.sep)
+        blobbase = blobparts[-1]
+        for dir in self.dirs:
+            if ctlr and ctlr.is_aborted():
+                log.debug("aborting search for blob '%s' on %s: ctlr aborted",
+                          blobname, self)
+                return None
+
+            # Is the blob in 'blobdir' (i.e. a non-multi-level import
+            # that has been scanned already).
+            blobdir = join(dir, *blobparts[:-1])
+            dbfile_from_blobname = lang_zone.dfb_from_dir(
+                                        blobdir, self.sublang, {})
+            if blobbase in dbfile_from_blobname:
+                self._dir_and_blobbase_from_blobname[blobname] \
+                    = (blobdir, blobbase)
+                log.debug("have blob '%s' in '%s'? yes (in dir index)", 
+                          blobname, blobdir)
+                return join(lang_zone.dhash_from_dir(blobdir),
+                            dbfile_from_blobname[blobbase])
+
+            importables = self._importables_from_dir(blobdir)
+            # 'importables' look like, for PHP:
+            #   {'foo.php': ('foo.php', None, False),
+            #    'foo.inc': ('foo.inc', None, False),
+            #    'somedir': (None,      None, True)}
+
+            if blobbase not in importables:
+                continue
+
+            blobfile, subdir_blobbase, is_dir_import = importables[blobbase]
+            if blobfile is None:
+                # There isn't an actual importable file here -- just
+                # a dir prefix to a multidir import.
+                log.debug("have blob '%s' in %s? no", blobname, self)
+                return None
+            elif os.sep in blobfile:
+                # This is an import from a subdir. We need to get a new dbf.
+                blobdir = join(blobdir, dirname(blobfile))
+                blobfile = basename(blobfile)
+                blobbase = subdir_blobbase
+                dbfile_from_blobname = lang_zone.dfb_from_dir(
+                                            blobdir, self.sublang, {})
+                if blobbase in dbfile_from_blobname:
+                    self._dir_and_blobbase_from_blobname[blobname] \
+                        = (blobdir, blobbase)
+                    log.debug("have blob '%s' in '%s'? yes (in dir index)", 
+                              blobname, blobdir)
+                    return join(lang_zone.dhash_from_dir(blobdir),
+                                dbfile_from_blobname[blobbase])
+
+            # The file isn't loaded.
+            if not only_look_in_db:
+                log.debug("%s importables in '%s':\n    %s", self.sublang,
+                          blobdir, importables)
+                log.debug("'%s' likely provided by '%s' in '%s': "
+                          "attempting load", blobname, blobfile, blobdir)
+                buf = self.mgr.buf_from_path(
+                        join(blobdir, blobfile), self.lang)
+                buf.load()
+
+                dbfile_from_blobname = lang_zone.dfb_from_dir(
+                                            blobdir, self.sublang, {})
+                if blobbase in dbfile_from_blobname:
+                    self._dir_and_blobbase_from_blobname[blobname] \
+                        = (blobdir, blobbase)
+                    log.debug("have blob '%s' in '%s'? yes (after load)",
+                              blobname, blobdir)
+                    return join(lang_zone.dhash_from_dir(blobdir),
+                                dbfile_from_blobname[blobbase])
+
+        log.debug("have blob '%s' in %s? no", blobname, self)
+        return None
+    finally:
+        self._release_lock()
+
+
+</t>
+<t tx="ekr.20080121121842.111">#!python
+# ***** LICENSE BLOCK *****
+
+import sys
+import os
+from os.path import (join, dirname, exists, expanduser, splitext, basename,
+                     split, abspath, isabs, isdir, isfile)
+import threading
+import md5
+from pprint import pprint, pformat
+import logging
+import codecs
+import weakref
+
+from codeintel2.common import *
+
+
+
+#---- globals
+
+log = logging.getLogger("codeintel.db")
+
+
+
+</t>
+<t tx="ekr.20080121121842.112">#---- Database zone and lib implementations
+
+class ProjectZone(object):
+    """Manage a 'db/projs/&lt;proj-hash&gt;/...' area of the database.
+
+    A project zone works with a project object(*) to provide quick
+    mapping of a (lang, blobname) to a file in the project, if any.
+
+    # Dealing with updating
+
+    Knowing when a file has been removed from a project is fairly easy:
+    we hit it in the cache, then do a quick stat (or query on the
+    project) to ensure it it still there.
+
+    Knowing when a file has been added to a project is harder. Fully
+    hooking into Komodo's file system-level dir watching and various
+    in-Komodo update notifications is hard (doesn't translate well to
+    simply requiring an API on the project object) and isn't perfect
+    anyway. Ideally .dirs_from_basename() is all handled by the project
+    object and we don't have to worry about it. However, Komodo Projects
+    aren't currently setup to do this well, so codeintel is taking the
+    burden of caching.
+
+    The planned solution is to attempt a reasonable job of creating the
+    dirs_from_basename cache and then providing a manual interface
+    (perhaps right-click on Project -&gt; "Refresh Status") to update.
+
+    (*) The project object is required to have the following API:
+        TODO: spec the API.
+    """
+    @others
+</t>
+<t tx="ekr.20080121121842.113">def __init__(self, mgr, db, proj):
+    self.mgr = mgr
+    self.db = db
+    self.proj = proj
+
+    self.name = basename(proj.path)
+    self.base_dir = join(self.db.base_dir, "db", "projs", 
+                         md5.new(proj.path).hexdigest())
+    self._proj_lib_from_lang = weakref.WeakValueDictionary()
+    self._idx_lock = threading.RLock()
+    self._dirs_from_basename = None
+    self._is_idx_dirty = False
+
+</t>
+<t tx="ekr.20080121121842.114">def __repr__(self):
+    return "&lt;proj '%s' zone&gt;" % self.name
+
+</t>
+<t tx="ekr.20080121121842.115">def __del__(self):
+    try:
+        self.save()
+    except:
+        log.exception("error saving %s" % self)
+
+</t>
+<t tx="ekr.20080121121842.116">def get_dirs_from_basename(self):
+    self._idx_lock.acquire()
+    try:
+        if self._dirs_from_basename is None:
+            log.debug("fs-read: load %s 'dirs_from_basename' index", self)
+            self._dirs_from_basename = self.db.load_pickle(
+                join(self.base_dir, "dirs_from_basename"), {})
+        return self._dirs_from_basename
+    finally:
+        self._idx_lock.release()
+</t>
+<t tx="ekr.20080121121842.117">def set_dirs_from_basename(self, value):
+    self._idx_lock.acquire()
+    try:
+        old_value = self.dirs_from_basename
+        self._dirs_from_basename = value
+        if old_value != value:
+            #PERF: can this be smarter? Would have to be on
+            #      .update() for that.
+            self._is_idx_dirty = True
+    finally:
+        self._idx_lock.release()
+</t>
+<t tx="ekr.20080121121842.118">dirs_from_basename = property(get_dirs_from_basename,
+    set_dirs_from_basename, None, "index of basenames in project")
+
+def _mk_dbdir(self):
+    log.debug("fs-write: mkdir '%s'", self.base_dir)
+    os.makedirs(self.base_dir)
+    log.debug("fs-write: '%s/path'", self.base_dir)
+    fout = codecs.open(join(self.base_dir, "path"), 'wb', 'utf-8')
+    try:
+        fout.write(self.proj.path)
+    finally:
+        fout.close()
+
+</t>
+<t tx="ekr.20080121121842.119">def save(self):
+    self._idx_lock.acquire()
+    try:
+        if self._is_idx_dirty:
+            if not exists(self.base_dir):
+                self._mk_dbdir()
+            self.db.save_pickle(join(self.base_dir, "dirs_from_basename"),
+                self._dirs_from_basename)
+            self._is_idx_dirty = False
+    finally:
+        self._idx_lock.release()
+
+</t>
+<t tx="ekr.20080121121842.120">def update(self, nice=False):
+    """Update the index for the list of files in the project.
+
+        "nice" (default False) is a boolean indicating if this
+            update process should attempt to keep the CPU load low.
+    """
+    if nice:
+        XXX
+    #XXX Update this to handle includes, excludes,
+    #    static-project-entries. I.e. move this logic to the
+    #    project where it can handle this stuff.
+    dirs_from_basename = {}
+    for dirpath, dirnames, filenames in os.walk(self.proj.base_dir):
+        for filename in filenames:
+            dirs_from_basename.setdefault(filename, []).append(dirpath)
+    self.dirs_from_basename = dirs_from_basename
+
+</t>
+<t tx="ekr.20080121121842.121">def _likely_filename_from_lang_and_blobname(self, lang, blobname):
+    #XXX Need to canonicalize filename.
+    #XXX Shouldn't be hardcoding this stuff here. Defer out to the
+    #    lang_*.py modules.
+    #XXX Do we have to worry about multi-level imports here? E.g.,
+    #       Python:  os.path
+    #       Perl:    LWP::UserAgent
+    #       Ruby:    yaml/context
+    #       PHP:     blah/blam.php
+    if lang == "Python":
+        return blobname+".py"
+    else:
+        XXX
+
+</t>
+<t tx="ekr.20080121121842.122">def has_blob(self, lang, blobname):
+    lang_lib = self._lang_lib_for_blob(lang, blobname)
+    if lang_lib is None:
+        return False
+    return lang_lib.has_blob(blobname)
+
+</t>
+<t tx="ekr.20080121121842.123">def get_blob(self, lang, blobname):
+    lang_lib = self._lang_lib_for_blob(lang, blobname)
+    if lang_lib is None:
+        return None
+    return lang_lib.get_blob(blobname)
+
+</t>
+<t tx="ekr.20080121121842.124">def _lang_lib_for_blob(self, lang, blobname):
+    filename = self._likely_filename_from_lang_and_blobname(lang, blobname)
+    try:
+        dirs = self.dirs_from_basename[filename]
+    except KeyError:
+        return None
+    else:
+        #XXX This may be a perf issue because of a possibly large
+        #    number of created LangDirsLib's -- which was unexpected
+        #    when the LangDirsLibs caching was designed on LangZone.
+        #    The cache size may need to be increased or some other
+        #    scheme considered.
+        return self.db.get_lang_lib(lang, "proj '%s' lib" % self.name,
+                                    dirs,
+                                    sublang=lang) # for PHP
+
+</t>
+<t tx="ekr.20080121121842.125">def get_lib(self, lang):
+    proj_lib = self._proj_lib_from_lang.get(lang)
+    if proj_lib is None:
+        proj_lib = ProjectLib(self, lang)
+        self._proj_lib_from_lang[lang] = proj_lib
+    return proj_lib
+
+</t>
+<t tx="ekr.20080121121842.126">class ProjectLib(object):
+    @others
+</t>
+<t tx="ekr.20080121121842.127"># Light lang-specific wrapper around a ProjectZone (akin to
+# CatalogLig).
+def __init__(self, proj_zone, lang):
+    self.proj_zone = proj_zone
+    self.lang = lang
+</t>
+<t tx="ekr.20080121121842.128">def __repr__(self):
+    return "&lt;proj '%s' %s lib&gt;" % (self.proj_zone.name, self.lang)
+</t>
+<t tx="ekr.20080121121842.129">def has_blob(self, blobname):
+    return self.proj_zone.has_blob(self.lang, blobname)
+</t>
+<t tx="ekr.20080121121842.130">def get_blob(self, blobname):
+    return self.proj_zone.get_blob(self.lang, blobname)
+</t>
+<t tx="ekr.20080121121842.131">#!python
+# ***** LICENSE BLOCK *****
+
+
+#TODO: docstring
+
+import sys
+import os
+from os.path import (join, dirname, exists, expanduser, splitext, basename,
+                     split, abspath, isabs, isdir, isfile)
+import cPickle as pickle
+import threading
+import time
+import md5
+import bisect
+import fnmatch
+from glob import glob
+from pprint import pprint, pformat
+import logging
+from cStringIO import StringIO
+import codecs
+import copy
+import weakref
+import Queue
+
+import ciElementTree as ET
+from codeintel2.common import *
+from codeintel2.buffer import Buffer
+from codeintel2.util import dedent, safe_lang_from_lang, banner
+from codeintel2.tree import tree_from_cix_path
+
+
+
+#---- globals
+
+log = logging.getLogger("codeintel.db")
+</t>
+<t tx="ekr.20080121121842.132">#log.setLevel(logging.DEBUG)
+
+
+#---- Resource classes
+# For abstraction and canonicalization of paths.
+
+class Resource(object):
+    """A reference to a resource for the database.
+
+    Typically this is just a path to a file on the local disk. However
+    the intention is to also support remote file urls (TODO) and unsaved
+    files (TODO).
+
+    This class also provides canonicalization on comparison of resource
+    paths.
+    """
+    @others
+</t>
+<t tx="ekr.20080121121842.133">
+def __init__(self, path):
+    self.path = path
+
+</t>
+<t tx="ekr.20080121121842.134">@property
+def canon_path(self):
+    # normalize os.altsep to os.sep? or even consider normalizing to
+    # all '/'. This gets more complicated if have URL resources for
+    # remote files: subclassing.
+    XXX
+
+
+</t>
+<t tx="ekr.20080121121842.135">class AreaResource(Resource):
+    """A resource that is at a relative path under some area.
+
+    For example, at 'template/Perl.pl' under 'the Komodo user data
+    dir' or at 'catalog/baz.cix' under 'the codeintel2 package dir'.
+
+    TODO: change ctor sig to AreaResource([area, ] path). More logical
+    to have input be in same order as .area_path.
+    """
+    # The known path areas. We only have use for the one right now.
+    _path_areas = {
+        "ci-pkg-dir": dirname(dirname(abspath(__file__))),
+    }
+    _ordered_area_items = [(d,a) for a,d in _path_areas.items()]
+    _ordered_area_items.sort(key=lambda i: len(i[0]), reverse=True)
+
+    @others
+</t>
+<t tx="ekr.20080121121842.136">@classmethod
+def area_and_subpath_from_path(cls, path):
+    #XXX Need to worry about canonicalization!
+    for area_dir, area in cls._ordered_area_items:
+        if (path.startswith(area_dir)
+            # Ensure we are matching at a dir boundary. This implies
+            # a limitation that there *is* a subpath. I'm fine with
+            # that.
+            and path[len(area_dir)] in (os.sep, os.altsep)):
+            return area, path[len(area_dir)+1:]
+    return None, path
+
+</t>
+<t tx="ekr.20080121121842.137">def __init__(self, path, area=None):
+    """Create an area-relative resource.
+
+        "path" is either the full path to the resource, or a
+            relative path under the given area name. "area" must be
+            specified for the latter.
+        "area" (optional) can be given to specify under which area
+            this resource resides. If not given, the best-fit of the
+            known path areas will be used.
+    """
+    if area is not None:
+        if area not in self._path_areas:
+            raise ValueError("unknown path area: `%s'" % area)
+        self.area = area
+        if isabs(path):
+            area_base = self._path_areas[area]
+            if not path.startswith(area_base):
+                raise ValueError("cannot create AreaResource: `%s' is "
+                                 "not under `%s' area (%s)" 
+                                 % (path, area, area_base))
+            self.subpath = path[len(area_base)+1:]
+        else:
+            self.subpath = path
+    elif isinstance(path, tuple): # as per AreaResource.area_path
+        self.area, self.subpath = path 
+    else:
+        self.area, self.subpath = self.area_and_subpath_from_path(path)
+
+</t>
+<t tx="ekr.20080121121842.138">def __str__(self):
+    if self.area:
+        return "[%s]%s%s" % (self.area, os.sep, self.subpath)
+    else:
+        return self.subpath
+
+</t>
+<t tx="ekr.20080121121842.139">def __repr__(self):
+    return "AreaResource(%r, %r)" % (self.path, self.area)
+
+</t>
+<t tx="ekr.20080121121842.140">@property
+def area_path(self):
+    return (self.area, self.subpath)
+
+</t>
+<t tx="ekr.20080121121842.141">@property
+def path(self):
+    if self.area is None:
+        return self.subpath
+    else:
+        return join(self._path_areas[self.area], self.subpath)
+
+
+</t>
+<t tx="ekr.20080121121842.142">#!python
+# ***** LICENSE BLOCK *****
+
+"""The stdlib zone of the codeintel database.
+See the database/database.py module docstring for an overview.
+"""
+
+
+import sys
+import os
+from os.path import (join, dirname, exists, expanduser, splitext, basename,
+                     split, abspath, isabs, isdir, isfile)
+import cPickle as pickle
+import threading
+import time
+import md5
+import bisect
+import fnmatch
+from glob import glob
+from pprint import pprint, pformat
+import logging
+from cStringIO import StringIO
+import codecs
+import copy
+import weakref
+import Queue
+
+import ciElementTree as ET
+from codeintel2.common import *
+from codeintel2.buffer import Buffer
+from codeintel2.util import dedent, safe_lang_from_lang, banner
+from codeintel2.tree import tree_from_cix_path
+from codeintel2.database.resource import AreaResource
+from codeintel2.database.util import (rmdir, filter_blobnames_for_prefix)
+
+
+
+#---- globals
+
+log = logging.getLogger("codeintel.db")
+</t>
+<t tx="ekr.20080121121842.143">#log.setLevel(logging.DEBUG)
+
+
+
+#---- Database zone and lib implementations
+
+class StdLib(object):
+    """Singleton lib managing a particular db/stdlibs/&lt;stdlib-name&gt;
+    area of the db.
+
+    These are dished out via Database.get_stdlib(), which indirectly
+    then is dished out by the StdLibsZone.get_lib().
+
+    Because (1) any updating of the stdlib db area for this language has
+    already been done (by StdLibsZone.get_lib()) and (2) this is a
+    singleton: we shouldn't have to worry about locking.
+    """
+    _blob_index = None
+    _toplevelname_index = None
+    _toplevelprefix_index = None
+
+    @others
+</t>
+<t tx="ekr.20080121121842.144">def __init__(self, db, base_dir, lang, name):
+    self.db = db
+    self.lang = lang
+    self.name = name
+    self.base_dir = base_dir
+    self._import_handler = None
+    self._blob_imports_from_prefix_cache = {}
+
+</t>
+<t tx="ekr.20080121121842.145">def __repr__(self):
+    return "&lt;%s stdlib&gt;" % self.name
+
+</t>
+<t tx="ekr.20080121121842.146">@property
+def import_handler(self):
+    if self._import_handler is None:
+        self._import_handler \
+            = self.db.mgr.citadel.import_handler_from_lang(self.lang)
+    return self._import_handler
+
+</t>
+<t tx="ekr.20080121121842.147">@property
+def blob_index(self):
+    if self._blob_index is None:
+        idxpath = join(self.base_dir, "blob_index")
+        self._blob_index = self.db.load_pickle(idxpath)
+    return self._blob_index
+
+</t>
+<t tx="ekr.20080121121842.148">@property
+def toplevelname_index(self):
+    if self._toplevelname_index is None:
+        idxpath = join(self.base_dir, "toplevelname_index")
+        self._toplevelname_index = self.db.load_pickle(idxpath)
+    return self._toplevelname_index
+
+</t>
+<t tx="ekr.20080121121842.149">@property
+def toplevelprefix_index(self):
+    if self._toplevelprefix_index is None:
+        idxpath = join(self.base_dir, "toplevelprefix_index")
+        self._toplevelprefix_index = self.db.load_pickle(idxpath)
+    return self._toplevelprefix_index
+
+</t>
+<t tx="ekr.20080121121842.150">def has_blob(self, blobname):
+    return blobname in self.blob_index
+
+</t>
+<t tx="ekr.20080121121842.151">def get_blob(self, blobname):
+    try:
+        dbfile = self.blob_index[blobname]
+    except KeyError:
+        return None
+    return self.db.load_blob(join(self.base_dir, dbfile))
+
+</t>
+<t tx="ekr.20080121121842.152">def get_blob_imports(self, prefix):
+    """Return the set of imports under the given prefix.
+
+        "prefix" is a tuple of import name parts. E.g. ("xml", "sax")
+            for "import xml.sax." in Python. Or ("XML", "Parser") for
+            "use XML::Parser::" in Perl.
+
+    See description in database.py docstring for details.
+    """
+    if prefix not in self._blob_imports_from_prefix_cache:
+        matches = filter_blobnames_for_prefix(self.blob_index,
+                    prefix, self.import_handler.sep)
+        self._blob_imports_from_prefix_cache[prefix] = matches
+    return self._blob_imports_from_prefix_cache[prefix]
+
+</t>
+<t tx="ekr.20080121121842.153">def hits_from_lpath(self, lpath, ctlr=None, curr_buf=None):
+    """Return all hits of the given lookup path.
+    
+    I.e. a symbol table lookup across all files in the dirs of this
+    lib.
+
+        "lpath" is a lookup name list, e.g. ['Casper', 'Logging']
+            or ['dojo', 'animation'].
+        "ctlr" (optional) is an EvalController instance. If
+            specified it should be used in the normal way (logging,
+            checking .is_aborted()).
+        "curr_buf" (optional) is not relevant for StdLib. Used for
+            other *Lib classes.
+
+    A "hit" is (&lt;CIX node&gt;, &lt;scope-ref&gt;).  Each one represent a
+    scope-tag or variable-tag hit in all of the blobs for the
+    execution set buffers.
+
+    Returns the empty list if no hits.
+    """
+    assert isinstance(lpath, tuple)  # common mistake to pass in a string
+    hits = []
+    # toplevelname_index: {ilk -&gt; toplevelname -&gt; blobnames}
+    for blobnames_from_toplevelname in self.toplevelname_index.itervalues():
+        for blobname in blobnames_from_toplevelname.get(lpath[0], ()):
+            blob = self.get_blob(blobname)
+            try:
+                elem = blob
+                for p in lpath:
+                    #LIMITATION: *Imported* names at each scope are
+                    # not being included here. This is fine while we
+                    # just care about JavaScript.
+                    elem = elem.names[p]
+            except KeyError:
+                continue
+            hits.append( (elem, (blob, list(lpath[:-1]))) )
+    return hits
+
+</t>
+<t tx="ekr.20080121121842.154">def toplevel_cplns(self, prefix=None, ilk=None):
+    """Return completion info for all top-level names matching the
+    given prefix and ilk in all blobs in this lib.
+    
+        "prefix" is a 3-character prefix with which to filter top-level
+            names. If None (or not specified), results are not filtered
+            based on the prefix.
+        "ilk" is a symbol type (e.g. "class", "variable", "function")
+            with which to filter results. If None (or not specified),
+            results of any ilk are returned.
+        "ctlr" (optional) is an EvalController instance. If
+            specified it should be used in the normal way (logging,
+            checking .is_aborted()).
+
+    Returns a list of 2-tuples: (&lt;ilk&gt;, &lt;name&gt;).
+
+    Note: the list is not sorted, because often some special sorting
+    is required for the different completion evaluators that might use
+    this API.
+    """
+    cplns = []
+    if prefix is None:
+        # Use 'toplevelname_index': {ilk -&gt; toplevelname -&gt; blobnames}
+        for i, bft in self.toplevelname_index.iteritems():
+            if ilk is not None and i != ilk:
+                continue
+            cplns += [(i, toplevelname) for toplevelname in bft]
+    else:
+        # Use 'toplevelprefix_index':
+        #   {ilk -&gt; prefix -&gt; toplevelnames}
+        if ilk is not None:
+            try:
+                toplevelnames = self.toplevelprefix_index[ilk][prefix]
+            except KeyError:
+                pass
+            else:
+                cplns += [(ilk, t) for t in toplevelnames]
+        else:
+            for i, tfp in self.toplevelprefix_index.iteritems():
+                if prefix not in tfp:
+                    continue
+                cplns += [(i, t) for t in tfp[prefix]]
+
+    return cplns
+    
+
+
+</t>
+<t tx="ekr.20080121121842.155">class StdLibsZone(object):
+    """Singleton zone managing the db/stdlibs/... area.
+
+    Because this is a singleton we shouldn't have to worry about locking
+    to prevent corruption.
+    """
+    _res_index = None                   # cix-path -&gt; last-updated
+    _vers_and_names_from_lang = None    # lang -&gt; ordered list of (ver, name)
+
+    @others
+</t>
+<t tx="ekr.20080121121842.156">def __init__(self, db):
+    self.db = db
+    self.stdlibs_dir = join(dirname(dirname(__file__)), "stdlibs")
+    self.base_dir = join(self.db.base_dir, "db", "stdlibs")
+    self._stdlib_from_stdlib_name = {} # cache of StdLib singletons
+    self._have_updated_stdlib_from_lang = {}
+
+</t>
+<t tx="ekr.20080121121842.157">def __del__(self):
+    for stdlib in self._stdlib_from_stdlib_name.keys():
+        del self._stdlib_from_stdlib_name[stdlib] # drop reference
+
+</t>
+<t tx="ekr.20080121121842.158">@property
+def vers_and_names_from_lang(self):
+    "lang -&gt; ordered list of (ver, name)"
+    if self._vers_and_names_from_lang is None:
+        idxpath = join(self.base_dir, "vers_and_names_from_lang")
+        self._vers_and_names_from_lang \
+            = self.db.load_pickle(idxpath, {})
+    return self._vers_and_names_from_lang
+
+</t>
+<t tx="ekr.20080121121842.159">@property
+def res_index(self):
+    "cix-path -&gt; last-updated"
+    if self._res_index is None:
+        idxpath = join(self.base_dir, "res_index")
+        self._res_index = self.db.load_pickle(idxpath, {})
+    return self._res_index
+
+</t>
+<t tx="ekr.20080121121842.160">def save(self):
+    if self._res_index is not None:
+        self.db.save_pickle(join(self.base_dir, "res_index"),
+                            self._res_index)
+    if self._vers_and_names_from_lang is not None:
+        self.db.save_pickle(
+            join(self.base_dir, "vers_and_names_from_lang"),
+            self._vers_and_names_from_lang)
+
+</t>
+<t tx="ekr.20080121121842.161">def get_lib(self, lang, ver_str=None):
+    """Return a view into the stdlibs zone for a particular language
+    and version's stdlib.
+
+        "lang" is the language, e.g. "Perl", for which to get a
+            stdlib.
+        "ver_str" (optional) is a specific version of the language,
+            e.g. "5.8".
+
+    On first get of a stdlib for a particular language, all
+    available stdlibs for that lang are updated, if necessary.
+
+    Returns None if there is not stdlib for this language.
+    """
+    if lang not in self._have_updated_stdlib_from_lang:
+        self.update_lang(lang)
+        self._have_updated_stdlib_from_lang[lang] = True
+
+    vers_and_names = self.vers_and_names_from_lang.get(lang)
+    if not vers_and_names:
+        return None
+    if ver_str is None:
+        # Default to the latest version.
+        ver = vers_and_names[-1][0]
+    else:
+        ver = _ver_from_ver_str(ver_str)
+
+    # Here is something like what we have for PHP:
+    #    vers_and_names = [
+    #        (None, "php"),
+    #        ((4,0), "php-4.0"),
+    #        ((4,1), "php-4.1"),
+    #        ((4,2), "php-4.2"),
+    #        ((4,3), "php-4.3"),
+    #        ((5,0), "php-5.0"),
+    #        ((5,1), "php-5.1"),
+    #    ]
+    # We want to (quickly) pick the best fit stdlib for the given
+    # PHP version:
+    #   PHP (ver=None): php
+    #   PHP 3.0:        php
+    #   PHP 4.0:        php-4.0 (exact match)
+    #   PHP 4.0.2:      php-4.0 (higher sub-version)
+    #   PHP 4.4:        php-4.3
+    #   PHP 6.0:        php-5.1
+    key = (ver, "zzz") # 'zzz' &gt; any stdlib name (e.g., 'zzz' &gt; 'php-4.2')
+    idx = max(0, bisect.bisect_right(vers_and_names, key)-1)
+    log.debug("best stdlib fit for %s ver=%s in %s is %s",
+              lang, ver, vers_and_names, vers_and_names[idx])
+    
+    stdlib_name = vers_and_names[idx][1]
+    if stdlib_name not in self._stdlib_from_stdlib_name:
+        self._stdlib_from_stdlib_name[stdlib_name] = StdLib(
+            self.db, join(self.base_dir, stdlib_name), lang, stdlib_name)
+    return self._stdlib_from_stdlib_name[stdlib_name]
+
+</t>
+<t tx="ekr.20080121121842.162">def _get_preload_zip(self):
+    return join(self.stdlibs_dir, "stdlibs.zip")
+
+</t>
+<t tx="ekr.20080121121842.163">def can_preload(self):
+    """Return True iff can preload."""
+    if exists(self.base_dir):
+        log.info("can't preload stdlibs: `%s' exists", self.base_dir)
+        return False
+    try:
+        import process
+        import which
+    except ImportError, ex:
+        log.info("can't preload stdlibs: %s", ex)
+        return False
+    try:
+        which.which("unzip")
+    except which.WhichError, ex:
+        log.info("can't preload stdlibs: %s", ex)
+        return False
+    preload_zip = self._get_preload_zip()
+    if not exists(preload_zip):
+        log.info("can't preload stdlibs: `%s' does not exist", preload_zip)
+        return False
+    return True
+
+</t>
+<t tx="ekr.20080121121842.164">def preload(self, progress_cb=None):
+    """Pre-load the stdlibs zone, if able.
+
+        "progress_cb" (optional) is a callable that is called as
+            follows to show the progress of the update:
+                progress_cb(&lt;desc&gt;, &lt;value&gt;)
+            where &lt;desc&gt; is a short string describing the current step
+            and &lt;value&gt; is an integer between 0 and 100 indicating the
+            level of completeness.
+
+    Use `.can_preload()' to determine if able to pre-load.
+    """
+    import which
+    import process
+
+    log.debug("preloading stdlibs zone")
+    if progress_cb:
+        try:    progress_cb("Preloading stdlibs...", None)
+        except: log.exception("error in progress_cb (ignoring)")
+    preload_zip = self._get_preload_zip()
+    unzip_exe = which.which("unzip")
+    cmd = '"%s" -q -d "%s" "%s"'\
+          % (unzip_exe, dirname(self.base_dir), preload_zip)
+    p = process.ProcessOpen(cmd)
+    retval = p.wait()
+    if retval:
+        raise OSError("error running '%s'" % cmd)
+
+</t>
+<t tx="ekr.20080121121842.165">#TODO: Add ver_str option (as per get_lib above) and only update
+#      the relevant stdlib.
+def remove_lang(self, lang):
+    """Remove the given language from the stdlib zone."""
+    log.debug("update '%s' stdlibs", lang)
+
+    # Figure out what updates need to be done...
+    cix_glob = join(self.stdlibs_dir, safe_lang_from_lang(lang)+"*.cix")
+    todo = []
+    for area, subpath in self.res_index:
+        res = AreaResource(subpath, area)
+        if fnmatch.fnmatch(res.path, cix_glob):
+            todo.append(("remove", AreaResource(subpath, area)))
+
+    # ... and then do them.
+    self._handle_res_todos(lang, todo)
+    self.save()
+    
+</t>
+<t tx="ekr.20080121121842.166">#TODO: Add ver_str option (as per get_lib above) and only update
+#      the relevant stdlib.
+def update_lang(self, lang, progress_cb=None):
+    """Import stdlib data for this lang, if necessary.
+    
+        "lang" is the language to update.
+        "progress_cb" (optional) is a callable that is called as
+            follows to show the progress of the update:
+                progress_cb(&lt;desc&gt;, &lt;value&gt;)
+            where &lt;desc&gt; is a short string describing the current step
+            and &lt;value&gt; is an integer between 0 and 100 indicating the
+            level of completeness.
+    """
+    log.debug("update '%s' stdlibs", lang)
+    # Figure out what updates need to be done...
+    if progress_cb:
+        try:    progress_cb("Determining necessary updates...", 5)
+        except: log.exception("error in progress_cb (ignoring)")
+    cix_glob = join(self.stdlibs_dir, safe_lang_from_lang(lang)+"*.cix")
+    todo = []
+    checklist = {}
+    for area, subpath in self.res_index:
+        res = AreaResource(subpath, area)
+        if fnmatch.fnmatch(res.path, cix_glob):
+            checklist[res.area_path] = True
+    for cix_path in glob(cix_glob):
+        res = AreaResource(cix_path, "ci-pkg-dir")
+        try:
+            last_updated = self.res_index[res.area_path]
+        except KeyError:
+            todo.append(("add", res))
+        else:
+            mtime = os.stat(cix_path).st_mtime
+            if last_updated != mtime: # epsilon? '&gt;=' instead of '!='?
+                todo.append(("update", res))
+            del checklist[res.area_path] # tick it off
+    for area, subpath in checklist:
+        todo.append(("remove", AreaResource(subpath, area)))
+
+    # ... and then do them.
+    self._handle_res_todos(lang, todo, progress_cb)
+    self.save()
+
+</t>
+<t tx="ekr.20080121121842.167">def _handle_res_todos(self, lang, todo, progress_cb=None):
+    if not todo:
+        return
+    for i, (action, res) in enumerate(todo):
+        cix_path = res.path
+        name = splitext(basename(cix_path))[0]
+        if '-' in name:
+            base, ver_str = name.split('-', 1)
+            ver = _ver_from_ver_str(ver_str)
+        else:
+            base = name
+            ver = None
+        assert base == safe_lang_from_lang(lang)
+
+        log.debug("%s %s stdlib: `%s'", action, name, cix_path)
+        verb = {"add": "Adding", "remove": "Removing",
+                "update": "Updating"}[action]
+        desc = "%s %s stdlib" % (verb, name)
+        self.db.report_event(desc)
+        if progress_cb:
+            try:    progress_cb(desc, (5 + 95/len(todo)*i))
+            except: log.exception("error in progress_cb (ignoring)")
+
+        if action == "add":
+            self._add_res(res, lang, name, ver)
+        elif action == "remove":
+            self._remove_res(res, lang, name, ver)
+        elif action == "update":
+            #XXX Bad for filesystem. Change this to do it
+            #    more intelligently if possible.
+            self._remove_res(res, lang, name, ver)
+            self._add_res(res, lang, name, ver)
+    for vers_and_names in self.vers_and_names_from_lang.values():
+        vers_and_names.sort()
+
+</t>
+<t tx="ekr.20080121121842.168">def _remove_res(self, res, lang, name, ver):
+    log.debug("%s stdlibs: remove %s", lang, res)
+    del self.res_index[res.area_path]
+    self.vers_and_names_from_lang[lang].remove((ver, name))
+    dbdir = join(self.base_dir, name)
+    try:
+        rmdir(dbdir)
+    except OSError, ex:
+        try:
+            os.rename(dbdir, dbdir+".zombie")
+        except OSError, ex2:
+            log.error("could not remove %s stdlib database dir `%s' (%s): "
+                      "couldn't even rename it to `%s.zombie' (%s): "
+                      "giving up", name, dbdir, ex, name, ex2)
+        else:
+            log.warn("could not remove %s stdlib database dir `%s' (%s): "
+                     "moved it to `%s.zombie'", name, dbdir, ex)
+
+</t>
+<t tx="ekr.20080121121842.169">def _add_res(self, res, lang, name, ver):
+    log.debug("%s stdlibs: add %s", lang, res)
+    cix_path = res.path
+    try:
+        tree = tree_from_cix_path(cix_path)
+    except ET.XMLParserError, ex:
+        log.warn("could not load %s stdlib from `%s' (%s): skipping",
+                 name, cix_path, ex)
+        return
+
+    dbdir = join(self.base_dir, name)
+    if exists(dbdir):
+        log.warn("`db/stdlibs/%s' already exists and should not: "
+                 "removing it", name)
+        try:
+            rmdir(dbdir)
+        except OSError, ex:
+            log.error("could not remove `%s' to create %s stdlib in "
+                      "database (%s): skipping", dbdir, name)
+    if not exists(dbdir):
+        os.makedirs(dbdir)
+
+    # Create 'blob_index' and 'toplevel*_index' and write out
+    # '.blob' file.
+    LEN_PREFIX = self.db.LEN_PREFIX
+    is_hits_from_lpath_lang = lang in self.db.import_everything_langs
+    blob_index = {} # {blobname -&gt; dbfile}
+    if is_hits_from_lpath_lang:
+        toplevelname_index = {} # {ilk -&gt; toplevelname -&gt; blobnames}
+        toplevelprefix_index = {} # {ilk -&gt; prefix -&gt; toplevelnames}
+    for blob in tree.findall("file/scope"):
+        assert lang == blob.get("lang")
+        blobname = blob.get("name")
+        dbfile = self.db.bhash_from_blob_info(cix_path, lang, blobname)
+        blob_index[blobname] = dbfile
+        ET.ElementTree(blob).write(join(dbdir, dbfile+".blob"))
+        if is_hits_from_lpath_lang:
+            for toplevelname, elem in blob.names.iteritems():
+                ilk = elem.get("ilk") or elem.tag
+                bft = toplevelname_index.setdefault(ilk, {})
+                if toplevelname not in bft:
+                    bft[toplevelname] = set([blobname])
+                else:
+                    bft[toplevelname].add(blobname)
+                prefix = toplevelname[:LEN_PREFIX]
+                tfp = toplevelprefix_index.setdefault(ilk, {})
+                if prefix not in tfp:
+                    tfp[prefix] = set([toplevelname])
+                else:
+                    tfp[prefix].add(toplevelname)
+
+    self.db.save_pickle(join(dbdir, "blob_index"), blob_index)
+    if is_hits_from_lpath_lang:
+        self.db.save_pickle(join(dbdir, "toplevelname_index"),
+                            toplevelname_index)
+        self.db.save_pickle(join(dbdir, "toplevelprefix_index"),
+                            toplevelprefix_index)
+
+    mtime = os.stat(cix_path).st_mtime
+    self.vers_and_names_from_lang.setdefault(lang, []) \
+        .append((ver, name))
+    self.res_index[res.area_path] = mtime
+
+
+
+</t>
+<t tx="ekr.20080121121842.170">#---- internal support stuff
+
+def _ver_from_ver_str(ver_str):
+    """Convert a version string to a version object as used internally
+    for the "stdlibs" area of the database.
+   
+        &gt;&gt;&gt; _ver_from_ver_str("5.8")
+        (5, 8)
+        &gt;&gt;&gt; _ver_from_ver_str("1.8.2")
+        (1, 8, 2)
+        &gt;&gt;&gt; _ver_from_ver_str("ecma")
+        'ecma'
+        &gt;&gt;&gt; _ver_from_ver_str("ie")
+        'ie'
+    """
+    ver = []
+    for s in ver_str.split('.'):
+        try:
+            ver.append(int(s))
+        except ValueError:
+            ver.append(s)
+    return tuple(ver)
+
+
+
+
+</t>
+<t tx="ekr.20080121121842.171">#!python
+# ***** LICENSE BLOCK *****
+
+import os
+import sys
+import md5
+import logging
+import shutil
+
+log = logging.getLogger("codeintel.db")
+
+
+
+</t>
+<t tx="ekr.20080121121842.172">def filter_blobnames_for_prefix(candidates, prefix, sep):
+    """Given a iterator of candidate blob names, return a set of
+    2-tuples indicating each match:
+    
+        (&lt;sub-name&gt;, &lt;is-partial-match&gt;)
+
+    where,
+        &lt;sub-name&gt; is the import component after the prefix
+        &lt;is-partial-match&gt; is a boolean indicating if suffix is
+            multipart.
+
+    For example, given:
+        candidates = ["LWP",
+                      "LWP::Authen::Basic", "LWP::Authen::Digest",
+                      "LWP::ConnCache",
+                      "LWP::Protocol",
+                      "LWP::Protocol::http", "LWP::Protocol::https",
+                      "LWP::UserAgent"]
+        prefix = ("LWP",)
+        sep = "::"
+    the returned items should be:
+        ("Authen",    True)
+        ("ConnCache", False)
+        ("Protocol",  False)
+        ("Protocol",  True)
+        ("UserAgent", False)
+    """
+    matches = set()
+    if not prefix:
+        for name in candidates:
+            if name == "*": continue  # skip "built-in" blob
+            if sep in name:
+                matches.add( (name[:name.index(sep)], True) )
+            else:
+                matches.add( (name, False) )
+    else:
+        sep_len = len(sep)
+        sepped_prefix = sep.join(prefix)
+        for name in candidates:
+            if name == "*": continue  # skip "built-in" blob
+            if name.startswith(sepped_prefix + sep):
+                # e.g. prefix is "xml", and we see "xml.sax" and "xml.bar.foo"
+                subname = name[len(sepped_prefix)+sep_len:]
+                # subname is "sax" and "bar.foo"
+                if sep in subname:
+                    # we want to return bar, not bar.foo
+                    subname = subname[:subname.index(sep)]
+                    is_partial_match = True
+                else:
+                    is_partial_match = False
+                matches.add( (subname, is_partial_match) )
+    return matches
+
+
+</t>
+<t tx="ekr.20080121121842.173">def rmdir(dir):
+    """Remove the given dir. Raises an OSError on failure."""
+    if sys.platform == "win32":
+        # Apparent just running 'rd' (or else because run via
+        # process.Process) on Windows == DOS box flash (bug 61348).
+        log.debug("fs-write: rmdir `%s'", dir)
+        shutil.rmtree(dir, 0, _rmtree_onerror)
+    else:
+        run('rm -rf "%s"' % dir)
+
+</t>
+<t tx="ekr.20080121121842.174">def _rmtree_onerror(rm_func, path, exc_info):
+    if exc_info[0] == OSError:
+        # presuming because file is read-only
+        os.chmod(path, 0777)
+        rm_func(path)
+
+
+
+</t>
+<t tx="ekr.20080121121842.175">#---- internal support routines
+
+# Recipe: run (0.5.3) in /home/trentm/tm/recipes/cookbook
+_RUN_DEFAULT_LOGSTREAM = ("RUN", "DEFAULT", "LOGSTREAM")
+def __run_log(logstream, msg, *args, **kwargs):
+    if not logstream:
+        pass
+    elif logstream is _RUN_DEFAULT_LOGSTREAM:
+        try:
+            log
+        except NameError:
+            pass
+        else:
+            if hasattr(log, "debug"):
+                log.debug(msg, *args, **kwargs)
+    else:
+        logstream(msg, *args, **kwargs)
+
+</t>
+<t tx="ekr.20080121121842.176">def run(cmd, logstream=_RUN_DEFAULT_LOGSTREAM):
+    """Run the given command.
+
+        "cmd" is the command to run
+        "logstream" is an optional logging stream on which to log the 
+            command. If None, no logging is done. If unspecifed, this 
+            looks for a Logger instance named 'log' and logs the command 
+            on log.debug().
+
+    Raises OSError is the command returns a non-zero exit status.
+    """
+    __run_log(logstream, "running '%s'", cmd)
+
+    # Using os.system on Windows == DOS box flash (bug 61348).
+    # TODO: Perhaps we should use Process for all plats? (bug 65961).
+    if sys.platform == "win32":
+        import process
+        p = process.Process(cmd)
+        retval = p.wait()
+    else:
+        retval = os.system(cmd)
+
+    if hasattr(os, "WEXITSTATUS"):
+        status = os.WEXITSTATUS(retval)
+    else:
+        status = retval
+    if status:
+        #TODO: add std OSError attributes or pick more approp. exception
+        raise OSError("error running '%s': %r" % (cmd, status))
+
+</t>
+<t tx="ekr.20080121121842.177">def run_in_dir(cmd, cwd, logstream=_RUN_DEFAULT_LOGSTREAM):
+    """Run the given command in the given working directory.
+
+        "cmd" is the command to run
+        "cwd" is the directory in which the commmand is run.
+        "logstream" is an optional logging stream on which to log the 
+            command. If None, no logging is done. If unspecifed, this 
+            looks for a Logger instance named 'log' and logs the command 
+            on log.debug().
+
+    Raises OSError is the command returns a non-zero exit status.
+    """
+    old_dir = os.getcwd()
+    try:
+        os.chdir(cwd)
+        __run_log(logstream, "running '%s' in '%s'", cmd, cwd)
+        run(cmd, logstream=None)
+    finally:
+        os.chdir(old_dir)
+
+</t>
+<t tx="ekr.20080121122039">pat = '''\
+# ***** BEGIN LICENSE BLOCK *****
+# Version: MPL 1.1/GPL 2.0/LGPL 2.1
+# 
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+# 
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+# 
+# The Original Code is Komodo code.
+# 
+# The Initial Developer of the Original Code is ActiveState Software Inc.
+# Portions created by ActiveState Software Inc are Copyright (C) 2000-2007
+# ActiveState Software Inc. All Rights Reserved.
+# 
+# Contributor(s):
+#   ActiveState Software Inc
+# 
+# Alternatively, the contents of this file may be used under the terms of
+# either the GNU General Public License Version 2 or later (the "GPL"), or
+# the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+# in which case the provisions of the GPL or the LGPL are applicable instead
+# of those above. If you wish to allow use of your version of this file only
+# under the terms of either the GPL or the LGPL, and not to allow others to
+# use your version of this file under the terms of the MPL, indicate your
+# decision by deleting the provisions above and replace them with the notice
+# and other provisions required by the GPL or the LGPL. If you do not delete
+# the provisions above, a recipient may use your version of this file under
+# the terms of any one of the MPL, the GPL or the LGPL.
+# 
+# ***** END LICENSE BLOCK *****'''
+
+s2 = '# ***** LICENSE BLOCK *****\n'
+
+n = len(pat)
+print '=' * 20
+for p in p.self_and_subtree_iter():
+    s = p.bodyString()
+    i = s.find(pat)
+    if i != -1:
+        g.es_print('found %s' % p.headString())
+        s = s[:i] + s2 + s[i+n:]</t>
+<t tx="ekr.20080121123437">@killcolor
+
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+
+&lt;!-- ***** BEGIN LICENSE BLOCK *****--&gt;
+
+&lt;codeintel description="Python Extensions for Windows" name="PyWin32" version="2.0"&gt;
+
+  &lt;file lang="Python" mtime="0" path="pywin32.cix"&gt;
+  
+    &lt;scope ilk="blob" lang="Python" name="_win32sysloader"&gt;
+      &lt;scope ilk="function" name="GetModuleFilename" /&gt;
+      &lt;scope ilk="function" name="LoadModule" /&gt;
+    &lt;/scope&gt;
+    
+    &lt;scope ilk="blob" lang="Python" name="netbios"&gt;
+    
+      &lt;scope ilk="function" line="257" lineend="258" name="ACTION_HEADER" returns="NCBStruct" signature="ACTION_HEADER()" /&gt;
+      &lt;variable citdl="list" line="174" name="ACTION_HEADER_ITEMS" /&gt;
+      
+      &lt;scope ilk="class" line="194" lineend="234" name="NCBStruct"&gt;
+        &lt;scope ilk="function" line="227" lineend="234" name="__setattr__" signature="__setattr__(attr, val)"&gt;
+          &lt;variable citdl="NCBStruct" ilk="argument" name="self" /&gt;
+        &lt;/scope&gt;
+        &lt;variable attributes="protected __instancevar__" citdl="string.join()" line="196" name="_format" /&gt;
+      &lt;/scope&gt;
+      
+    &lt;/scope&gt;
+   
+    &lt;scope doc="Helper classes for SSPI authentication via the win32security module.&amp;#xA;&amp;#xA;SSPI authentication involves a token-exchange &amp;quot;dance&amp;quot;, the exact details" ilk="blob" lang="Python" name="sspi"&gt;
+    
+      &lt;scope classrefs="_BaseAuth" doc="Manages the client side of an SSPI authentication handshake" ilk="class" line="96" lineend="154" name="ClientAuth"&gt;
+      
+        &lt;scope ilk="function" line="99" lineend="118" name="__init__"
+          signature="ClientAuth(pkg_name, client_name=None, auth_info=None, targetspn=None, scflags=None, datarep=sspicon.SECURITY_NETWORK_DREP)"&gt;
+          &lt;variable citdl="int" ilk="argument" name="scflags" /&gt;
+          &lt;variable ilk="argument" name="client_name" /&gt;
+        &lt;/scope&gt;
+        
+        &lt;variable attributes="__instancevar__" citdl="bool" line="153" name="authenticated" /&gt;
+        &lt;variable attributes="__instancevar__" citdl="win32security.QuerySecurityPackageInfo()" line="112" name="pkg_info" /&gt;
+      &lt;/scope&gt;
+      
+      &lt;scope classrefs="_BaseAuth" doc="Manages the server side of an SSPI authentication handshake" ilk="class" line="156" lineend="211" name="ServerAuth"&gt;
+      
+        &lt;scope doc="# Perform *one* step of the server authentication process." ilk="function" line="182" lineend="211" name="authorize" returns="tuple" signature="authorize(sec_buffer_in)"&gt;
+          &lt;variable citdl="self.ctxt" line="196" name="ctxtin" /&gt;
+        &lt;/scope&gt;
+        
+        &lt;variable attributes="__instancevar__" citdl="bool" line="210" name="authenticated" /&gt;
+      &lt;/scope&gt;
+      
+      &lt;scope classrefs="Exception" ilk="class" line="18" name="error" /&gt;
+      
+      &lt;import module="sspicon" /&gt;
+      &lt;import module="win32security" /&gt;
+      
+      &lt;variable attributes="__hidden__" citdl="ServerAuth" line="216" name="sspiserver" /&gt;
+
+      &lt;scope attributes="protected __hidden__" classrefs="object" ilk="class" line="26" lineend="94" name="_BaseAuth"&gt;
+        &lt;scope attributes="__ctor__" ilk="function" line="27" lineend="28" name="__init__" signature="_BaseAuth()"&gt;
+          &lt;variable citdl="_BaseAuth" ilk="argument" name="self" /&gt;
+        &lt;/scope&gt;
+      &lt;/scope&gt;
+      &lt;variable attributes="__hidden__" citdl="sspiclient.sign()" line="226" name="sig" /&gt;
+      &lt;variable attributes="__hidden__" citdl="bool" line="24" name="True" /&gt;
+    &lt;/scope&gt;
+    
+    &lt;scope doc="# Generated by h2py from c:\microsoft sdk\include\sspi.h" ilk="blob" lang="Python" name="sspicon"&gt;
+      &lt;variable citdl="int" line="113" name="ASC_REQ_ALLOCATE_MEMORY" /&gt;
+     [snip]
+      &lt;variable citdl="int" line="211" name="SEC_WINNT_AUTH_IDENTITY_VERSION" /&gt;
+      &lt;variable citdl="long" line="306" name="WARNING_IPSEC_MM_POLICY_PRUNED" /&gt;
+      &lt;variable citdl="long" line="307" name="WARNING_IPSEC_QM_POLICY_PRUNED" /&gt;
+    &lt;/scope&gt;
+    
+    &lt;scope ilk="blob" lang="Python" name="win2kras"&gt;
+      &lt;scope ilk="function" name="GetEapUserIdentity" /&gt;
+      &lt;variable citdl="int" name="RASEAPF_Logon" /&gt;
+      &lt;variable citdl="int" name="RASEAPF_NonInteractive" /&gt;
+      &lt;variable citdl="int" name="RASEAPF_Preview" /&gt;
+    &lt;/scope&gt;
+    
+    &lt;scope ilk="blob" lang="Python" name="win32clipboard"&gt;
+      &lt;variable citdl="int" name="CF_BITMAP" /&gt;
+      &lt;variable citdl="int" name="CF_DIB" /&gt;
+     [snip]
+      &lt;scope ilk="function" name="SetClipboardViewer" /&gt;
+      &lt;scope classrefs="Exception" ilk="class" name="error" /&gt;
+    &lt;/scope&gt;
+    
+    &lt;scope doc="# Initialization for the win32com package&amp;#xA;#" ilk="blob" lang="Python" name="win32com"&gt;
+      &lt;scope ilk="function" name="SetupEnvironment" signature="SetupEnvironment()" /&gt;
+      &lt;scope doc="# A Helper for developers." ilk="function" name="__PackageSupportBuildPath__" signature="__PackageSupportBuildPath__(package_path)" /&gt;
+      &lt;variable citdl="NoneType" name="__build_path__" /&gt;
+      &lt;variable citdl="str" name="__gen_path__" /&gt;
+      &lt;import module="gen_py" /&gt;
+      &lt;import module="win32com" /&gt;
+    &lt;/scope&gt;
+    
+    &lt;scope doc="# This module exists to create the &amp;quot;best&amp;quot; dispatch object for a given&amp;#xA;# object.  If &amp;quot;makepy&amp;quot; support for a given object is detected, it is&amp;#xA;# used, otherwise a dynamic dispatch object." ilk="blob" lang="Python" name="win32com.client"&gt;
+    
+      &lt;scope classrefs="CDispatch" doc="The dynamic class used as a last resort.&amp;#xA;The purpose of this overriding of dynamic.CDispatch is to perpetuate the policy&amp;#xA;of using the makepy generated wrapper Python class instead of dynamic.CDispatch" ilk="class" name="CDispatch"&gt;
+      
+        &lt;scope ilk="function" name="_wrap_dispatch_" /&gt;
+      &lt;/scope&gt;
+      
+      &lt;import module="CLSIDToClass" /&gt;
+      
+      &lt;scope doc="&amp;apos;Cast&amp;apos; a COM object to another interface" ilk="function" name="CastTo" signature="CastTo(ob, target)" /&gt;
+      
+      &lt;scope ilk="class" name="CoClassBaseClass"&gt;
+        &lt;scope ilk="function" name="__setattr__" /&gt;
+        &lt;scope ilk="function" name="__getattr__" /&gt;
+        &lt;scope ilk="function" name="__repr__" /&gt;
+        &lt;scope ilk="function" name="__init__" /&gt;
+      &lt;/scope&gt;
+      
+      &lt;scope doc="A container for generated COM constants." ilk="class" name="Constants"&gt;
+        &lt;scope ilk="function" name="__init__" /&gt;
+        &lt;scope ilk="function" name="__getattr__" /&gt;
+      &lt;/scope&gt;
+      &lt;scope doc="Creates a Dispatch based COM object." ilk="function" name="Dispatch" signature="Dispatch(dispatch, userName=None, resultCLSID=None, typeinfo=None, UnicodeToString=False, clsctx=21)" /&gt;
+      &lt;scope doc="############################################&amp;#xA;# The base of all makepy generated classes&amp;#xA;############################################" ilk="class" name="DispatchBaseClass"&gt;
+        &lt;scope ilk="function" name="_get_good_object_" /&gt;
+        &lt;scope ilk="function" name="__setattr__" /&gt;
+        &lt;scope ilk="function" name="__getattr__" /&gt;
+        &lt;scope doc="# Delegate comparison to the oleobjs, as they know how to do&amp;#xA;identity." ilk="function" name="__cmp__" /&gt;
+        &lt;scope doc="# Provide a prettier name than the CLSID" ilk="function" name="__repr__" /&gt;
+        &lt;scope ilk="function" name="_get_good_single_object_" /&gt;
+        &lt;scope ilk="function" name="_ApplyTypes_" /&gt;
+        &lt;scope ilk="function" name="__init__" /&gt;
+      &lt;/scope&gt;
+      &lt;scope doc="Creates a Dispatch based COM object on a specific machine." ilk="function" name="DispatchEx" signature="DispatchEx(clsid, machine=None, userName=None, resultCLSID=None, typeinfo=None, UnicodeToString=False, clsctx=None)" /&gt;
+      &lt;scope doc="Create a COM object that can fire events to a user defined&amp;#xA;class." ilk="function" name="DispatchWithEvents" signature="DispatchWithEvents(clsid, user_event_class)" /&gt;
+      &lt;scope doc="# An instance of this &amp;quot;proxy&amp;quot; is created to break the COM circular references&amp;#xA;# that exist (ie, when we connect to the COM events, COM keeps a reference&amp;#xA;# to the object.  Thus, the Event connection must be manually broken before" ilk="class" name="EventsProxy"&gt;
+        &lt;scope ilk="function" name="__del__" /&gt;
+        &lt;scope ilk="function" name="__setattr__" /&gt;
+        &lt;scope ilk="function" name="__getattr__" /&gt;
+        &lt;scope ilk="function" name="__init__" /&gt;
+      &lt;/scope&gt;
+      &lt;scope doc="Python friendly version of GetObject&amp;apos;s ProgID/CLSID&amp;#xA;functionality." ilk="function" name="GetActiveObject" signature="GetActiveObject(Class, clsctx=23)" /&gt;
+      &lt;scope doc="Mimic VB&amp;apos;s GetObject() function." ilk="function" name="GetObject" signature="GetObject(Pathname=None, Class=None, clsctx=None)" /&gt;
+      &lt;scope doc="Python friendly version of GetObject&amp;apos;s moniker&amp;#xA;functionality." ilk="function" name="Moniker" signature="Moniker(Pathname, clsctx=23)" /&gt;
+      &lt;variable citdl="bool" name="NeedUnicodeConversions" /&gt;
+      &lt;scope doc="Creates a new record object, given the name of the record,&amp;#xA;and an object from the same type library." ilk="function" name="Record" signature="Record(name, object)" /&gt;
+      &lt;scope classrefs="object" doc="tuple() -&amp;gt; an empty tuple&amp;#xA;tuple(sequence) -&amp;gt; tuple initialized from sequence&amp;apos;s items&amp;#xA;" ilk="class" name="TupleType"&gt;
+        &lt;scope doc="x.__ne__(y) &amp;lt;==&amp;gt; x!=y" ilk="function" name="__ne__" signature="x.__ne__(y) &amp;lt;==&amp;gt; x!=y" /&gt;
+        &lt;scope doc="Use of negative indices is not supported." ilk="function" name="__getslice__" signature="x.__getslice__(i, j) &amp;lt;==&amp;gt; x[i:j]" /&gt;
+        [snip]
+        &lt;scope doc="x.__mul__(n) &amp;lt;==&amp;gt; x*n" ilk="function" name="__mul__" signature="x.__mul__(n) &amp;lt;==&amp;gt; x*n" /&gt;
+      &lt;/scope&gt;
+      &lt;scope classrefs="basestring" doc="unicode(string [, encoding[, errors]]) -&amp;gt; object&amp;#xA;&amp;#xA;Create a new Unicode object from the given encoded string." ilk="class" name="UnicodeType"&gt;
+        &lt;scope doc="Return a copy of S converted to uppercase." ilk="function" name="upper" signature="S.upper() -&amp;gt; unicode" /&gt;
+        [snip]        &lt;scope doc="Like S.find() but raise ValueError when the substring is not&amp;#xA;found." ilk="function" name="index" signature="S.index(sub [,start [,end]]) -&amp;gt; int" /&gt;
+        &lt;scope ilk="function" name="__getnewargs__" /&gt;
+        &lt;scope doc="Return True if all characters in S are alphanumeric and&amp;#xA;there is at least one character in S, False otherwise." ilk="function" name="isalnum" signature="S.isalnum() -&amp;gt; bool" /&gt;
+        &lt;scope doc="x.__contains__(y) &amp;lt;==&amp;gt; y in x" ilk="function" name="__contains__" signature="x.__contains__(y) &amp;lt;==&amp;gt; y in x" /&gt;
+        &lt;scope doc="Like S.rfind() but raise ValueError when the substring is&amp;#xA;not found." ilk="function" name="rindex" signature="S.rindex(sub [,start [,end]]) -&amp;gt; int" /&gt;
+        &lt;scope doc="Return a list of the words in S, using sep as the delimiter&amp;#xA;string, starting at the end of the string and working to the&amp;#xA;front." ilk="function" name="rsplit" signature="S.rsplit([sep [,maxsplit]]) -&amp;gt; list of strings" /&gt;
+        &lt;scope doc="Return the lowest index in S where substring sub is found,&amp;#xA;such that sub is contained within s[start,end]." ilk="function" name="find" signature="S.find(sub [,start [,end]]) -&amp;gt; int" /&gt;
+        &lt;scope doc="Decodes S using the codec registered for encoding." ilk="function" name="decode" signature="S.decode([encoding[,errors]]) -&amp;gt; string or unicode" /&gt;
+       [snip]
+        &lt;scope doc="x.__ge__(y) &amp;lt;==&amp;gt; x&amp;gt;=y" ilk="function" name="__ge__" signature="x.__ge__(y) &amp;lt;==&amp;gt; x&amp;gt;=y" /&gt;
+      &lt;/scope&gt;
+      &lt;scope doc="Similar to DispatchWithEvents - except that the returned&amp;#xA;object is *not* also usable as the original Dispatch object&amp;#xA;- that is the returned object is not dispatchable." ilk="function" name="WithEvents" signature="WithEvents(disp, user_event_class)" /&gt;
+      &lt;import module="__builtin__" /&gt;
+      &lt;import module="build" /&gt;
+      &lt;variable citdl="Constants" name="constants" /&gt;
+      &lt;scope doc="A container for generated COM constants." ilk="class" name="Constants"&gt;
+        &lt;scope ilk="function" name="__init__" /&gt;
+        &lt;scope ilk="function" name="__getattr__" /&gt;
+      &lt;/scope&gt;
+      &lt;import module="dynamic" /&gt;
+      &lt;import module="gencache" /&gt;
+      &lt;scope doc="Determine the default outgoing interface for a class, given&amp;#xA;either a clsid or progid." ilk="function" name="getevents" signature="getevents(clsid)" /&gt;
+      &lt;import module="pythoncom" /&gt;
+      &lt;import module="pywintypes" /&gt;
+      &lt;import module="sys" /&gt;
+    &lt;/scope&gt;
+    &lt;scope doc="Contains knowledge to build a COM object definition.&amp;#xA;&amp;#xA;This module is used by both the @dynamic@ and @makepy@ modules to build" ilk="blob" lang="Python" name="win32com.client.build"&gt;
+      &lt;scope doc="Builds a Python declaration for a method." ilk="function" line="568" lineend="620" name="BuildCallList" returns="MakeDefaultArgRepr()" signature="BuildCallList(fdesc, names, defNamedOptArg, defNamedNotOptArg, defUnnamedArg, defOutArg, is_comment=False)"&gt;
+        &lt;variable citdl="False" ilk="argument" name="is_comment" /&gt;
+        &lt;variable line="572" name="numOptArgs" /&gt;
+        &lt;variable citdl="str" line="573" name="strval" /&gt;
+        &lt;variable citdl="int" line="582" name="namedArg" /&gt;
+        &lt;variable ilk="argument" name="defNamedOptArg" /&gt;
+        &lt;variable ilk="argument" name="defNamedNotOptArg" /&gt;
+        &lt;variable citdl="len()" line="575" name="firstOptArg" /&gt;
+        &lt;variable citdl="MakeDefaultArgRepr()" line="588" name="defArgVal" /&gt;
+        &lt;variable ilk="argument" name="defOutArg" /&gt;
+        &lt;variable citdl="len()" line="571" name="numArgs" /&gt;
+        &lt;variable ilk="argument" name="fdesc" /&gt;
+        &lt;variable ilk="argument" name="names" /&gt;
+        &lt;variable ilk="argument" name="defUnnamedArg" /&gt;
+        &lt;variable citdl="MakePublicAttributeName()" line="581" name="argName" /&gt;
+        &lt;variable line="586" name="thisdesc" /&gt;
+      &lt;/scope&gt;
+      &lt;scope classrefs="OleItem" ilk="class" line="100" lineend="389" name="DispatchItem"&gt;
+        &lt;scope doc="Return tuple counting in/outs/OPTS." ilk="function" line="277" lineend="292" name="CountInOutOptArgs" returns="tuple" signature="CountInOutOptArgs(argTuple)"&gt;
+          &lt;variable citdl="DispatchItem" ilk="argument" name="self" /&gt;
+          &lt;variable citdl="int" line="279" name="ins" /&gt;
+          &lt;variable line="281" name="inOut" /&gt;
+          &lt;variable ilk="argument" name="argTuple" /&gt;
+          &lt;variable citdl="int" line="289" name="opts" /&gt;
+          &lt;variable citdl="int" line="284" name="out" /&gt;
+        &lt;/scope&gt;
+        &lt;scope ilk="function" line="301" lineend="368" name="MakeDispatchFuncMethod" returns="list" signature="MakeDispatchFuncMethod(entry, name, bMakeClass=1)"&gt;
+          &lt;variable citdl="str" line="307" name="linePrefix" /&gt;
+          &lt;variable citdl="entry.GetResultCLSID()" line="325" name="resclsid" /&gt;
+          &lt;variable ilk="argument" name="name" /&gt;
+          &lt;variable citdl="int" ilk="argument" name="bMakeClass" /&gt;
+          &lt;variable citdl="str" line="308" name="defNamedOptArg" /&gt;
+          &lt;variable citdl="entry.doc" line="303" name="doc" /&gt;
+          &lt;variable citdl="DispatchItem" ilk="argument" name="self" /&gt;
+          &lt;variable citdl="str" line="309" name="defNamedNotOptArg" /&gt;
+          &lt;variable citdl="map()" line="337" name="param_flags" /&gt;
+          &lt;variable citdl="list" line="305" name="ret" /&gt;
+          &lt;variable citdl="filter()" line="338" name="bad_params" /&gt;
+          &lt;variable citdl="str" line="316" name="defOutArg" /&gt;
+          &lt;variable citdl="str" line="318" name="s" /&gt;
+          &lt;variable citdl="entry.desc" line="302" name="fdesc" /&gt;
+          &lt;variable citdl="entry.names" line="304" name="names" /&gt;
+          &lt;variable citdl="tuple()" line="332" name="argsDesc" /&gt;
+          &lt;variable citdl="str" line="310" name="defUnnamedArg" /&gt;
+          &lt;variable ilk="argument" name="entry" /&gt;
+          &lt;variable line="341" name="rd" /&gt;
+          &lt;variable line="317" name="id" /&gt;
+          &lt;variable citdl="list" line="331" name="retDesc" /&gt;
+        &lt;/scope&gt;
+        &lt;scope ilk="function" line="149" lineend="224" name="_AddFunc_" returns="tuple" signature="_AddFunc_(typeinfo, fdesc, bForUser)"&gt;
+          &lt;variable citdl="dict" line="190" name="map" /&gt;
+          &lt;variable ilk="argument" name="typeinfo" /&gt;
+          [snip]
+          &lt;variable citdl="fdesc.memid" line="150" name="id" /&gt;
+        &lt;/scope&gt;
+        &lt;scope ilk="function" line="132" lineend="147" name="_propMapGetCheck_" signature="_propMapGetCheck_(key, item)"&gt;
+          &lt;variable ilk="argument" name="item" /&gt;
+          &lt;variable citdl="DispatchItem" ilk="argument" name="self" /&gt;
+          &lt;variable citdl="int" line="137" name="deleteExisting" /&gt;
+          &lt;variable ilk="argument" name="key" /&gt;
+          &lt;variable citdl="str" line="136" name="newKey" /&gt;
+        &lt;/scope&gt;
+        &lt;scope ilk="function" line="254" lineend="275" name="Build" signature="Build(typeinfo, attr, bForUser=1)"&gt;
+          &lt;variable citdl="typeinfo.GetVarDesc()" line="260" name="fdesc" /&gt;
+          &lt;variable citdl="DispatchItem" ilk="argument" name="self" /&gt;
+          &lt;variable ilk="argument" name="typeinfo" /&gt;
+          &lt;variable ilk="argument" name="attr" /&gt;
+          &lt;variable citdl="int" ilk="argument" name="bForUser" /&gt;
+        &lt;/scope&gt;
+        &lt;scope ilk="function" line="294" lineend="299" name="MakeFuncMethod" returns="self.MakeVarArgsFuncMethod()" signature="MakeFuncMethod(entry, name, bMakeClass=1)"&gt;
+          &lt;variable ilk="argument" name="entry" /&gt;
+          &lt;variable citdl="DispatchItem" ilk="argument" name="self" /&gt;
+          &lt;variable ilk="argument" name="name" /&gt;
+          &lt;variable citdl="int" ilk="argument" name="bMakeClass" /&gt;
+        &lt;/scope&gt;
+        &lt;scope ilk="function" line="226" lineend="252" name="_AddVar_" returns="tuple" signature="_AddVar_(typeinfo, fdesc, bForUser)"&gt;
+          &lt;variable citdl="dict" line="244" name="map" /&gt;
+          &lt;variable ilk="argument" name="typeinfo" /&gt;
+          &lt;variable citdl="typeinfo.GetDocumentation()" line="237" name="doc" /&gt;
+          &lt;variable citdl="DispatchItem" ilk="argument" name="self" /&gt;
+          &lt;variable ilk="argument" name="fdesc" /&gt;
+          &lt;variable citdl="typeinfo.GetNames()" line="232" name="names" /&gt;
+          &lt;variable ilk="argument" name="bForUser" /&gt;
+          &lt;variable citdl="int" line="246" name="hidden" /&gt;
+          &lt;variable citdl="fdesc.memid" line="231" name="id" /&gt;
+        &lt;/scope&gt;
+        &lt;scope ilk="function" line="115" lineend="130" name="_propMapPutCheck_" signature="_propMapPutCheck_(key, item)"&gt;
+          &lt;variable ilk="argument" name="item" /&gt;
+          &lt;variable citdl="DispatchItem" ilk="argument" name="self" /&gt;
+          &lt;variable citdl="int" line="120" name="deleteExisting" /&gt;
+          &lt;variable ilk="argument" name="key" /&gt;
+          &lt;variable citdl="str" line="119" name="newKey" /&gt;
+        &lt;/scope&gt;
+        &lt;scope ilk="function" line="370" lineend="389" name="MakeVarArgsFuncMethod" returns="list" signature="MakeVarArgsFuncMethod(entry, name, bMakeClass=1)"&gt;
+          &lt;variable citdl="str" line="377" name="linePrefix" /&gt;
+          &lt;variable citdl="str" line="375" name="argPrefix" /&gt;
+          &lt;variable ilk="argument" name="name" /&gt;
+          &lt;variable citdl="int" ilk="argument" name="bMakeClass" /&gt;
+          &lt;variable citdl="entry.doc" line="373" name="doc" /&gt;
+          &lt;variable citdl="DispatchItem" ilk="argument" name="self" /&gt;
+          &lt;variable citdl="str" line="386" name="s" /&gt;
+          &lt;variable citdl="list" line="374" name="ret" /&gt;
+          &lt;variable citdl="pythoncom.DISPATCH_METHOD" line="383" name="invoketype" /&gt;
+          &lt;variable citdl="entry.desc" line="371" name="fdesc" /&gt;
+          &lt;variable citdl="entry.names" line="372" name="names" /&gt;
+          &lt;variable ilk="argument" name="entry" /&gt;
+        &lt;/scope&gt;
+        &lt;scope ilk="function" line="103" lineend="113" name="__init__" signature="DispatchItem(typeinfo=None, attr=None, doc=None, bForUser=1)"&gt;
+          &lt;variable ilk="argument" name="doc" /&gt;
+          &lt;variable citdl="DispatchItem" ilk="argument" name="self" /&gt;
+          &lt;variable ilk="argument" name="typeinfo" /&gt;
+          &lt;variable ilk="argument" name="attr" /&gt;
+          &lt;variable citdl="int" ilk="argument" name="bForUser" /&gt;
+        &lt;/scope&gt;
+        &lt;variable attributes="__instancevar__" citdl="str" line="109" name="defaultDispatchName" /&gt;
+        &lt;variable attributes="__instancevar__" citdl="dict" line="107" name="propMapPut" /&gt;
+        &lt;variable attributes="__instancevar__" citdl="dict" line="108" name="mapFuncs" /&gt;
+        &lt;variable citdl="str" line="101" name="typename" /&gt;
+        &lt;variable attributes="__instancevar__" line="255" name="clsid" /&gt;
+        &lt;variable attributes="__instancevar__" citdl="bool" line="256" name="bIsDispatch" /&gt;
+        &lt;variable attributes="__instancevar__" citdl="dict" line="105" name="propMap" /&gt;
+        &lt;variable attributes="__instancevar__" citdl="int" line="110" name="hidden" /&gt;
+        &lt;variable attributes="__instancevar__" citdl="dict" line="106" name="propMapGet" /&gt;
+      &lt;/scope&gt;
+      &lt;variable citdl="str" line="36" name="DropIndirection" /&gt;
+      &lt;scope classrefs="DispatchItem" doc="# A Lazy dispatch item - builds an item on request using info from&amp;#xA;# an ITypeComp.  The dynamic module makes the called to build each item,&amp;#xA;# and also holds the references to the typeinfo and typecomp." ilk="class" line="412" lineend="416" name="LazyDispatchItem"&gt;
+        &lt;scope ilk="function" line="414" lineend="416" name="__init__" signature="LazyDispatchItem(attr, doc)"&gt;
+          &lt;variable ilk="argument" name="doc" /&gt;
+          &lt;variable citdl="LazyDispatchItem" ilk="argument" name="self" /&gt;
+          &lt;variable ilk="argument" name="attr" /&gt;
+        &lt;/scope&gt;
+        &lt;variable citdl="str" line="413" name="typename" /&gt;
+        &lt;variable attributes="__instancevar__" line="415" name="clsid" /&gt;
+      &lt;/scope&gt;
+      &lt;scope doc="# Given a default value passed by a type library, return a&amp;#xA;string with # an appropriate repr() for the type." ilk="function" line="549" lineend="566" name="MakeDefaultArgRepr" returns="repr()" signature="MakeDefaultArgRepr(defArgVal)"&gt;
+        &lt;variable citdl="val.hour" line="562" name="hour" /&gt;
+        &lt;variable line="558" name="val" /&gt;
+        &lt;variable citdl="val.msec" line="562" name="msec" /&gt;
+        &lt;variable ilk="argument" name="defArgVal" /&gt;
+        &lt;variable citdl="val.month" line="562" name="month" /&gt;
+        &lt;variable citdl="val.second" line="562" name="second" /&gt;
+        &lt;variable citdl="val.minute" line="562" name="minute" /&gt;
+        &lt;variable citdl="val.year" line="562" name="year" /&gt;
+        &lt;variable citdl="val.day" line="562" name="day" /&gt;
+        &lt;variable citdl="pythoncom.PARAMFLAG_FIN" line="551" name="inOut" /&gt;
+      &lt;/scope&gt;
+      &lt;scope doc="# Given a &amp;quot;public name&amp;quot; (eg, the name of a class, function,&amp;#xA;etc) # make sure it is a legal (and reasonable!) Python&amp;#xA;name." ilk="function" line="518" lineend="542" name="MakePublicAttributeName" returns="filter()" signature="MakePublicAttributeName(className, is_global=False)"&gt;
+        &lt;variable citdl="str" ilk="argument" name="className" /&gt;
+        &lt;variable citdl="False" ilk="argument" name="is_global" /&gt;
+        &lt;variable citdl="className.capitalize()" line="537" name="ret" /&gt;
+      &lt;/scope&gt;
+      &lt;scope doc="Simple holder for named attibutes - items in a map." ilk="class" line="54" lineend="83" name="MapEntry"&gt;
+        &lt;scope ilk="function" line="70" lineend="73" name="GetResultCLSID" returns="pythoncom.IID_NULL" signature="GetResultCLSID()"&gt;
+          &lt;variable citdl="MapEntry" ilk="argument" name="self" /&gt;
+          &lt;variable citdl="pythoncom.IID_NULL" line="71" name="rc" /&gt;
+        &lt;/scope&gt;
+        &lt;scope doc="# Return a string, suitable for output - either &amp;quot;&amp;apos;{...}&amp;apos;&amp;quot; or&amp;#xA;&amp;quot;None&amp;quot;" ilk="function" line="75" lineend="78" name="GetResultCLSIDStr" returns="str" signature="GetResultCLSIDStr()"&gt;
+          &lt;variable citdl="MapEntry" ilk="argument" name="self" /&gt;
+          &lt;variable citdl="GetResultCLSID()" line="76" name="rc" /&gt;
+        &lt;/scope&gt;
+        &lt;scope ilk="function" line="56" lineend="69" name="__init__" signature="MapEntry(desc_or_id, names=None, doc=None, resultCLSID=pythoncom.IID_NULL, resultDoc=None, hidden=0)"&gt;
+          &lt;variable ilk="argument" name="resultDoc" /&gt;
+          &lt;variable ilk="argument" name="doc" /&gt;
+          &lt;variable citdl="MapEntry" ilk="argument" name="self" /&gt;
+          &lt;variable citdl="pythoncom.IID_NULL" ilk="argument" name="resultCLSID" /&gt;
+          &lt;variable ilk="argument" name="names" /&gt;
+          &lt;variable citdl="int" ilk="argument" name="hidden" /&gt;
+          &lt;variable ilk="argument" name="desc_or_id" /&gt;
+        &lt;/scope&gt;
+        &lt;scope ilk="function" line="80" lineend="83" name="GetResultName" signature="GetResultName()"&gt;
+          &lt;variable citdl="MapEntry" ilk="argument" name="self" /&gt;
+        &lt;/scope&gt;
+        &lt;variable attributes="__instancevar__" line="65" name="doc" /&gt;
+        &lt;variable attributes="__instancevar__" line="59" name="desc" /&gt;
+      &lt;/scope&gt;
+      &lt;variable citdl="bool" name="NeedUnicodeConversions" /&gt;
+      &lt;variable citdl="dict" line="50" name="NoTranslateMap" /&gt;
+      &lt;variable citdl="list" line="38" name="NoTranslateTypes" /&gt;
+      &lt;scope classrefs="Exception" ilk="class" line="35" lineend="35" name="NotSupportedException" /&gt;
+      
+      &lt;scope ilk="class" line="85" lineend="98" name="OleItem"&gt;
+        &lt;scope ilk="function" line="88" lineend="98" name="__init__" signature="OleItem(doc=None)"&gt;
+          &lt;variable ilk="argument" name="doc" /&gt;
+          &lt;variable citdl="OleItem" ilk="argument" name="self" /&gt;
+        &lt;/scope&gt;
+        &lt;variable attributes="__instancevar__" citdl="int" line="95" name="bIsDispatch" /&gt;
+        &lt;variable attributes="__instancevar__" citdl="MakePublicAttributeName()" line="91" name="python_name" /&gt;
+      &lt;/scope&gt;
+      
+      &lt;scope classrefs="object" ilk="class" name="TimeType"&gt;
+        &lt;scope doc="x.__int__() &amp;lt;==&amp;gt; int(x)" ilk="function" name="__int__" signature="x.__int__() &amp;lt;==&amp;gt; int(x)" /&gt;
+        &lt;scope doc="x.__ror__(y) &amp;lt;==&amp;gt; y|x" ilk="function" name="__ror__" signature="x.__ror__(y) &amp;lt;==&amp;gt; y|x" /&gt;
+        &lt;scope doc="x.__pow__(y[, z]) &amp;lt;==&amp;gt; pow(x, y[, z])" ilk="function" name="__pow__" signature="x.__pow__(y[, z]) &amp;lt;==&amp;gt; pow(x, y[, z])" /&gt;
+      &lt;/scope&gt;
+      
+      
+      &lt;scope classrefs="DispatchItem" doc="# Note - &amp;quot;DispatchItem&amp;quot; poorly named - need a new intermediate class." ilk="class" line="392" lineend="407" name="VTableItem"&gt;
+        &lt;variable attributes="__instancevar__" citdl="list" line="405" name="vtableFuncs" /&gt;
+      &lt;/scope&gt;
+      
+      &lt;scope ilk="function" line="509" lineend="514" name="demunge_leading_underscores" returns="list" signature="demunge_leading_underscores(className)"&gt;
+        &lt;variable ilk="argument" name="className" /&gt;
+        &lt;variable citdl="int" line="510" name="i" /&gt;
+      &lt;/scope&gt;
+      
+      &lt;variable citdl="str" line="34" name="error" /&gt;
+      &lt;scope doc="x.__contains__(y) &amp;lt;==&amp;gt; y in x." ilk="function" name="iskeyword" signature="x.__contains__(y) &amp;lt;==&amp;gt; y in x." /&gt;
+      
+      &lt;import module="pythoncom" /&gt;
+      &lt;import module="string" /&gt;
+      &lt;import module="sys" /&gt;
+      &lt;variable citdl="dict" line="418" name="typeSubstMap" /&gt;
+      &lt;import module="types" /&gt;
+      &lt;variable citdl="int" name="v" /&gt;
+      &lt;variable citdl="str" line="507" name="valid_identifier_chars" /&gt;
+      &lt;import module="winerror" /&gt;
+      
+      &lt;scope attributes="protected __hidden__" ilk="function" line="30" lineend="32" name="_safeQuotedString" returns="str" signature="_safeQuotedString(s)"&gt;
+        &lt;variable citdl="list" ilk="argument" name="s" /&gt;
+      &lt;/scope&gt;
+      
+      &lt;scope attributes="protected __hidden__" doc="Builds list of args to the underlying Invoke method." ilk="function" line="488" lineend="505" name="_BuildArgList" returns="string.join()" signature="_BuildArgList(fdesc, names)"&gt;
+        &lt;variable ilk="argument" name="fdesc" /&gt;
+        &lt;variable citdl="map()" ilk="argument" name="names" /&gt;
+        &lt;variable citdl="max()" line="491" name="numArgs" /&gt;
+        &lt;variable citdl="names.index()" line="494" name="i" /&gt;
+        &lt;variable citdl="int" line="497" name="name_num" /&gt;
+      &lt;/scope&gt;
+
+    &lt;/scope&gt;
+    
+    &lt;scope doc="Manages a dictionary of CLSID strings to Python classes.&amp;#xA;&amp;#xA;Primary use of this module is to allow modules generated by" ilk="blob" lang="Python" name="win32com.client.CLSIDToClass"&gt;
+      &lt;scope doc="Given a CLSID, return the globally associated class." ilk="function" line="45" lineend="50" name="GetClass" signature="GetClass(clsid)"&gt;
+        &lt;variable ilk="argument" name="clsid" /&gt;
+      &lt;/scope&gt;
+      &lt;scope doc="Determines if the CLSID has an associated class." ilk="function" line="52" lineend="57" name="HasClass" returns="mapCLSIDToClass.has_key()" signature="HasClass(clsid)"&gt;
+        &lt;variable ilk="argument" name="clsid" /&gt;
+      &lt;/scope&gt;
+      &lt;scope doc="Register a class that wraps a CLSID" ilk="function" line="21" lineend="29" name="RegisterCLSID" signature="RegisterCLSID(clsid, pythonClass)"&gt;
+        &lt;variable ilk="argument" name="pythonClass" /&gt;
+        &lt;variable ilk="argument" name="clsid" /&gt;
+      &lt;/scope&gt;
+      &lt;scope doc="Register a dictionary of CLSID&amp;apos;s and classes." ilk="function" line="31" lineend="43" name="RegisterCLSIDsFromDict" signature="RegisterCLSIDsFromDict(dict)"&gt;
+        &lt;variable ilk="argument" name="dict" /&gt;
+      &lt;/scope&gt;
+      &lt;variable citdl="dict" line="19" name="mapCLSIDToClass" /&gt;
+    &lt;/scope&gt;
+    &lt;scope doc="A utility for browsing COM objects.&amp;#xA;&amp;#xA;Usage:" ilk="blob" lang="Python" name="win32com.client.combrowse"&gt;
+      &lt;scope classrefs="HLICOM" ilk="class" line="46" lineend="60" name="HLICLSID"&gt;
+        &lt;scope ilk="function" line="57" lineend="58" name="CalculateIsExpandable" returns="int" signature="CalculateIsExpandable()"&gt;
+          &lt;variable citdl="HLICLSID" ilk="argument" name="self" /&gt;
+        &lt;/scope&gt;
+        &lt;scope ilk="function" line="59" lineend="60" name="GetSubList" returns="list" signature="GetSubList()"&gt;
+          &lt;variable citdl="HLICLSID" ilk="argument" name="self" /&gt;
+        &lt;/scope&gt;
+        &lt;scope ilk="function" line="47" lineend="56" name="__init__" signature="HLICLSID(myobject, name=None)"&gt;
+          &lt;variable citdl="HLICLSID" ilk="argument" name="self" /&gt;
+          &lt;variable citdl="pythoncom.MakeIID()" ilk="argument" name="myobject" /&gt;
+          &lt;variable citdl="pythoncom.ProgIDFromCLSID()" ilk="argument" name="name" /&gt;
+        &lt;/scope&gt;
+      &lt;/scope&gt;
+      
+      &lt;scope classrefs="HLIPythonObject" ilk="class" line="40" lineend="44" name="HLICOM"&gt;
+        &lt;scope ilk="function" line="43" lineend="44" name="CalculateIsExpandable" returns="int" signature="CalculateIsExpandable()"&gt;
+          &lt;variable citdl="HLICOM" ilk="argument" name="self" /&gt;
+        &lt;/scope&gt;
+        &lt;scope ilk="function" line="41" lineend="42" name="GetText" returns="self.name" signature="GetText()"&gt;
+          &lt;variable citdl="HLICOM" ilk="argument" name="self" /&gt;
+        &lt;/scope&gt;
+      &lt;/scope&gt;
+      
+      &lt;scope classrefs="HLICOM" doc="An actual Registered Category" ilk="class" line="109" lineend="124" name="HLICategory"&gt;
+      
+        &lt;scope ilk="function" line="115" lineend="124" name="GetSubList" returns="list" signature="GetSubList()"&gt;
+          &lt;variable citdl="HLICategory" ilk="argument" name="self" /&gt;
+          &lt;variable citdl="pythoncom.CoCreateInstance()" line="118" name="catinf" /&gt;
+          &lt;variable citdl="list" line="119" name="ret" /&gt;
+        &lt;/scope&gt;
+        
+        &lt;scope ilk="function" line="111" lineend="114" name="GetText" returns="str" signature="GetText()"&gt;
+          &lt;variable citdl="HLICategory" ilk="argument" name="self" /&gt;
+          &lt;variable citdl="str" line="112" name="desc" /&gt;
+        &lt;/scope&gt;
+      &lt;/scope&gt;
+      
+  &lt;/file&gt;
+&lt;/codeintel&gt;
+</t>
+<t tx="ekr.20080121131522"></t>
+<t tx="ekr.20080121131751"></t>
+<t tx="ekr.20080121133057"></t>
+<t tx="ekr.20080121133057.1">
+r"""Handling for citadel parts of CodeIntel.
+
+The origin of the name "citadel":
+
+In early dev of codeintel naming for various things generally began with "CI"
+for CodeIntel. The (simple) syntax for defining type guesses (the things that
+are evaluated against the CIDB) was (and is) called CITDL (CodeIntel Type
+Definition Language) -- pronounced "citadel", in an attempt to be mnemonic.
+
+In dev for Komodo 4, the codeintel system is being generalized to support
+languages that don't fit in the CIDB/CITDL-framework so "citadel" is the
+umbrella term for CIDB/CITDL-based stuff in the codeintel system. """</t>
+<t tx="ekr.20080121133057.2">"""Virtual base class for language Buffers whose completion evaluation
+is based on CIDB/CITDL/CIX.
+
+CitadelBuffers have the following additional API:
+    .defns_from_pos(..) Returns a list of citdl expressions for position.
+    .scan(...)          Force a scan of the buffer.
+    .scan_time          Time of the last scan (or None if not in the db)
+    .scan_error         A string describing why the last scan failed
+                        (or None if it didn't fail or there hasn't
+                        been a scan)
+    .blob_from_lang     Mapping of language to blob (a.k.a. the
+                        module Element). This will synchronously
+                        scan if there is not scan data already
+                        available.
+
+    .tree/.cix          CIX Element tree and serialized CIX of this
+                        buffer's scan data.
+
+    .scoperef_from_pos()
+    .scoperef_from_blob_and_line()
+                        Routines for getting the current scope in
+                        the blob scan data. Used for completion eval
+                        and code browsing.
+
+    # Two convenience routines for working with the db.
+    .load()             Load data about this buffer into the db.
+    .unload()           Remove data about this buffer from the db.
+
+"""</t>
+<t tx="ekr.20080121134628"></t>
+<t tx="ekr.20080121134650">@language python
+@tabwidth -4
+@others
+</t>
+<t tx="ekr.20080121134650.1">@language python
+@tabwidth -4
+@others
+</t>
+<t tx="ekr.20080121134847">#!/usr/bin/env python
+# Copyright (c) 2002-2007 ActiveState Software Inc.
+# License: MIT (see LICENSE.txt for license details)
+# Author:  Trent Mick
+# Home:    http://trentm.com/projects/cmdln/
+
+"""An improvement on Python's standard cmd.py module.
+
+As with cmd.py, this module provides "a simple framework for writing
+line-oriented command intepreters."  This module provides a 'RawCmdln'
+class that fixes some design flaws in cmd.Cmd, making it more scalable
+and nicer to use for good 'cvs'- or 'svn'-style command line interfaces
+or simple shells.  And it provides a 'Cmdln' class that add
+optparse-based option processing. Basically you use it like this:
+
+    import cmdln
+
+    class MySVN(cmdln.Cmdln):
+        name = "svn"
+
+        @cmdln.alias('stat', 'st')
+        @cmdln.option('-v', '--verbose', action='store_true'
+                      help='print verbose information')
+        def do_status(self, subcmd, opts, *paths):
+            print "handle 'svn status' command"
+
+        #...
+
+    if __name__ == "__main__":
+        shell = MySVN()
+        retval = shell.main()
+        sys.exit(retval)
+
+See the README.txt or &lt;http://trentm.com/projects/cmdln/&gt; for more
+details.
+"""
+
+__revision__ = "$Id$"
+__version_info__ = (1, 0, 1)
+__version__ = '.'.join(map(str, __version_info__))
+
+import os
+import re
+import cmd
+import optparse
+from pprint import pprint
+
+
+
+
+#---- globals
+
+LOOP_ALWAYS, LOOP_NEVER, LOOP_IF_EMPTY = range(3)
+
+# An unspecified optional argument when None is a meaningful value.
+_NOT_SPECIFIED = ("Not", "Specified")
+
+# Pattern to match a TypeError message from a call that
+# failed because of incorrect number of arguments (see
+# Python/getargs.c).
+_INCORRECT_NUM_ARGS_RE = re.compile(
+    r"(takes [\w ]+ )(\d+)( arguments? \()(\d+)( given\))")
+
+
+
+</t>
+<t tx="ekr.20080121134847.1">#---- exceptions
+
+class CmdlnError(Exception):
+    """A cmdln.py usage error."""
+    @others
+</t>
+<t tx="ekr.20080121134847.2">def __init__(self, msg):
+    self.msg = msg
+</t>
+<t tx="ekr.20080121134847.3">def __str__(self):
+    return self.msg
+
+</t>
+<t tx="ekr.20080121134847.4">class CmdlnUserError(Exception):
+    """An error by a user of a cmdln-based tool/shell."""
+    pass
+
+
+
+</t>
+<t tx="ekr.20080121134847.5">#---- public methods and classes
+
+def alias(*aliases):
+    """Decorator to add aliases for Cmdln.do_* command handlers.
+    
+    Example:
+        class MyShell(cmdln.Cmdln):
+            @cmdln.alias("!", "sh")
+            def do_shell(self, argv):
+                #...implement 'shell' command
+    """
+    def decorate(f):
+        if not hasattr(f, "aliases"):
+            f.aliases = []
+        f.aliases += aliases
+        return f
+    return decorate
+
+
+</t>
+<t tx="ekr.20080121134847.6">class RawCmdln(cmd.Cmd):
+    """An improved (on cmd.Cmd) framework for building multi-subcommand
+    scripts (think "svn" &amp; "cvs") and simple shells (think "pdb" and
+    "gdb").
+
+    A simple example:
+
+        import cmdln
+
+        class MySVN(cmdln.RawCmdln):
+            name = "svn"
+
+            @cmdln.aliases('stat', 'st')
+            def do_status(self, argv):
+                print "handle 'svn status' command"
+
+        if __name__ == "__main__":
+            shell = MySVN()
+            retval = shell.main()
+            sys.exit(retval)
+
+    See &lt;http://trentm.com/projects/cmdln&gt; for more information.
+    """
+    name = None      # if unset, defaults basename(sys.argv[0])
+    prompt = None    # if unset, defaults to self.name+"&gt; "
+    version = None   # if set, default top-level options include --version
+
+    # Default messages for some 'help' command error cases.
+    # They are interpolated with one arg: the command.
+    nohelp = "no help on '%s'"
+    unknowncmd = "unknown command: '%s'"
+
+    helpindent = '' # string with which to indent help output
+
+    @others
+</t>
+<t tx="ekr.20080121134847.7">def __init__(self, completekey='tab', 
+             stdin=None, stdout=None, stderr=None):
+    """Cmdln(completekey='tab', stdin=None, stdout=None, stderr=None)
+
+    The optional argument 'completekey' is the readline name of a
+    completion key; it defaults to the Tab key. If completekey is
+    not None and the readline module is available, command completion
+    is done automatically.
+    
+    The optional arguments 'stdin', 'stdout' and 'stderr' specify
+    alternate input, output and error output file objects; if not
+    specified, sys.* are used.
+    
+    If 'stdout' but not 'stderr' is specified, stdout is used for
+    error output. This is to provide least surprise for users used
+    to only the 'stdin' and 'stdout' options with cmd.Cmd.
+    """
+    import sys
+    if self.name is None:
+        self.name = os.path.basename(sys.argv[0])
+    if self.prompt is None:
+        self.prompt = self.name+"&gt; "
+    self._name_str = self._str(self.name)
+    self._prompt_str = self._str(self.prompt)
+    if stdin is not None:
+        self.stdin = stdin
+    else:
+        self.stdin = sys.stdin
+    if stdout is not None:
+        self.stdout = stdout
+    else:
+        self.stdout = sys.stdout
+    if stderr is not None:
+        self.stderr = stderr
+    elif stdout is not None:
+        self.stderr = stdout
+    else:
+        self.stderr = sys.stderr
+    self.cmdqueue = []
+    self.completekey = completekey
+    self.cmdlooping = False
+
+</t>
+<t tx="ekr.20080121134847.8">def get_optparser(self):
+    """Hook for subclasses to set the option parser for the
+    top-level command/shell.
+
+    This option parser is used retrieved and used by `.main()' to
+    handle top-level options.
+
+    The default implements a single '-h|--help' option. Sub-classes
+    can return None to have no options at the top-level. Typically
+    an instance of CmdlnOptionParser should be returned.
+    """
+    version = (self.version is not None 
+                and "%s %s" % (self._name_str, self.version)
+                or None)
+    return CmdlnOptionParser(self, version=version)
+
+</t>
+<t tx="ekr.20080121134847.9">def postoptparse(self):
+    """Hook method executed just after `.main()' parses top-level
+    options.
+
+    When called `self.options' holds the results of the option parse.
+    """
+    pass
+
+</t>
+<t tx="ekr.20080121134847.10">def main(self, argv=None, loop=LOOP_NEVER):
+    """A possible mainline handler for a script, like so:
+
+        import cmdln
+        class MyCmd(cmdln.Cmdln):
+            name = "mycmd"
+            ...
+        
+        if __name__ == "__main__":
+            MyCmd().main()
+
+    By default this will use sys.argv to issue a single command to
+    'MyCmd', then exit. The 'loop' argument can be use to control
+    interactive shell behaviour.
+    
+    Arguments:
+        "argv" (optional, default sys.argv) is the command to run.
+            It must be a sequence, where the first element is the
+            command name and subsequent elements the args for that
+            command.
+        "loop" (optional, default LOOP_NEVER) is a constant
+            indicating if a command loop should be started (i.e. an
+            interactive shell). Valid values (constants on this module):
+                LOOP_ALWAYS     start loop and run "argv", if any
+                LOOP_NEVER      run "argv" (or .emptyline()) and exit
+                LOOP_IF_EMPTY   run "argv", if given, and exit;
+                                otherwise, start loop
+    """
+    if argv is None:
+        import sys
+        argv = sys.argv
+    else:
+        argv = argv[:] # don't modify caller's list
+
+    self.optparser = self.get_optparser()
+    if self.optparser: # i.e. optparser=None means don't process for opts
+        try:
+            self.options, args = self.optparser.parse_args(argv[1:])
+        except CmdlnUserError, ex:
+            msg = "%s: %s\nTry '%s help' for info.\n"\
+                  % (self.name, ex, self.name)
+            self.stderr.write(self._str(msg))
+            self.stderr.flush()
+            return 1
+        except StopOptionProcessing, ex:
+            return 0
+    else:
+        self.options, args = None, argv[1:]
+    self.postoptparse()
+
+    if loop == LOOP_ALWAYS:
+        if args:
+            self.cmdqueue.append(args)
+        return self.cmdloop()
+    elif loop == LOOP_NEVER:
+        if args:
+            return self.cmd(args)
+        else:
+            return self.emptyline()
+    elif loop == LOOP_IF_EMPTY:
+        if args:
+            return self.cmd(args)
+        else:
+            return self.cmdloop()
+
+</t>
+<t tx="ekr.20080121134847.11">def cmd(self, argv):
+    """Run one command and exit.
+    
+        "argv" is the arglist for the command to run. argv[0] is the
+            command to run. If argv is an empty list then the
+            'emptyline' handler is run.
+
+    Returns the return value from the command handler.
+    """
+    assert (isinstance(argv, (list, tuple)), 
+            "'argv' is not a sequence: %r" % argv)
+    retval = None
+    try:
+        argv = self.precmd(argv)
+        retval = self.onecmd(argv)
+        self.postcmd(argv)
+    except:
+        if not self.cmdexc(argv):
+            raise
+        retval = 1
+    return retval
+
+</t>
+<t tx="ekr.20080121134847.12">def _str(self, s):
+    """Safely convert the given str/unicode to a string for printing."""
+    try:
+        return str(s)
+    except UnicodeError:
+        #XXX What is the proper encoding to use here? 'utf-8' seems
+        #    to work better than "getdefaultencoding" (usually
+        #    'ascii'), on OS X at least.
+        #import sys
+        #return s.encode(sys.getdefaultencoding(), "replace")
+        return s.encode("utf-8", "replace")
+
+</t>
+<t tx="ekr.20080121134847.13">def cmdloop(self, intro=None):
+    """Repeatedly issue a prompt, accept input, parse into an argv, and
+    dispatch (via .precmd(), .onecmd() and .postcmd()), passing them
+    the argv. In other words, start a shell.
+    
+        "intro" (optional) is a introductory message to print when
+            starting the command loop. This overrides the class
+            "intro" attribute, if any.
+    """
+    self.cmdlooping = True
+    self.preloop()
+    if intro is None:
+        intro = self.intro
+    if intro:
+        intro_str = self._str(intro)
+        self.stdout.write(intro_str+'\n')
+    self.stop = False
+    retval = None
+    while not self.stop:
+        if self.cmdqueue:
+            argv = self.cmdqueue.pop(0)
+            assert (isinstance(argv, (list, tuple)), 
+                    "item on 'cmdqueue' is not a sequence: %r" % argv)
+        else:
+            if self.use_rawinput:
+                try:
+                    line = raw_input(self._prompt_str)
+                except EOFError:
+                    line = 'EOF'
+            else:
+                self.stdout.write(self._prompt_str)
+                self.stdout.flush()
+                line = self.stdin.readline()
+                if not len(line):
+                    line = 'EOF'
+                else:
+                    line = line[:-1] # chop '\n'
+            argv = line2argv(line)
+        try:
+            argv = self.precmd(argv)
+            retval = self.onecmd(argv)
+            self.postcmd(argv)
+        except:
+            if not self.cmdexc(argv):
+                raise
+            retval = 1
+        self.lastretval = retval
+    self.postloop()
+    self.cmdlooping = False
+    return retval
+
+</t>
+<t tx="ekr.20080121134847.14">def precmd(self, argv):
+    """Hook method executed just before the command argv is
+    interpreted, but after the input prompt is generated and issued.
+
+        "argv" is the cmd to run.
+        
+    Returns an argv to run (i.e. this method can modify the command
+    to run).
+    """
+    return argv
+
+</t>
+<t tx="ekr.20080121134847.15">def postcmd(self, argv):
+    """Hook method executed just after a command dispatch is finished.
+    
+        "argv" is the command that was run.
+    """
+    pass
+
+</t>
+<t tx="ekr.20080121134847.16">def cmdexc(self, argv):
+    """Called if an exception is raised in any of precmd(), onecmd(),
+    or postcmd(). If True is returned, the exception is deemed to have
+    been dealt with. Otherwise, the exception is re-raised.
+
+    The default implementation handles CmdlnUserError's, which
+    typically correspond to user error in calling commands (as
+    opposed to programmer error in the design of the script using
+    cmdln.py).
+    """
+    import sys
+    type, exc, traceback = sys.exc_info()
+    if isinstance(exc, CmdlnUserError):
+        msg = "%s %s: %s\nTry '%s help %s' for info.\n"\
+              % (self.name, argv[0], exc, self.name, argv[0])
+        self.stderr.write(self._str(msg))
+        self.stderr.flush()
+        return True
+
+</t>
+<t tx="ekr.20080121134847.17">def onecmd(self, argv):
+    if not argv:
+        return self.emptyline()
+    self.lastcmd = argv
+    cmdname = self._get_canonical_cmd_name(argv[0])
+    if cmdname:
+        handler = self._get_cmd_handler(cmdname)
+        if handler:
+            return self._dispatch_cmd(handler, argv)
+    return self.default(argv)
+
+</t>
+<t tx="ekr.20080121134847.18">def _dispatch_cmd(self, handler, argv):
+    return handler(argv)
+
+</t>
+<t tx="ekr.20080121134847.19">def default(self, argv):
+    """Hook called to handle a command for which there is no handler.
+
+        "argv" is the command and arguments to run.
+    
+    The default implementation writes and error message to stderr
+    and returns an error exit status.
+
+    Returns a numeric command exit status.
+    """
+    errmsg = self._str(self.unknowncmd % (argv[0],))
+    if self.cmdlooping:
+        self.stderr.write(errmsg+"\n")
+    else:
+        self.stderr.write("%s: %s\nTry '%s help' for info.\n"
+                          % (self._name_str, errmsg, self._name_str))
+    self.stderr.flush()
+    return 1
+
+</t>
+<t tx="ekr.20080121134847.20">def parseline(self, line):
+    # This is used by Cmd.complete (readline completer function) to
+    # massage the current line buffer before completion processing.
+    # We override to drop special '!' handling.
+    line = line.strip()
+    if not line:
+        return None, None, line
+    elif line[0] == '?':
+        line = 'help ' + line[1:]
+    i, n = 0, len(line)
+    while i &lt; n and line[i] in self.identchars: i = i+1
+    cmd, arg = line[:i], line[i:].strip()
+    return cmd, arg, line
+
+</t>
+<t tx="ekr.20080121134847.21">def helpdefault(self, cmd, known):
+    """Hook called to handle help on a command for which there is no
+    help handler.
+
+        "cmd" is the command name on which help was requested.
+        "known" is a boolean indicating if this command is known
+            (i.e. if there is a handler for it).
+    
+    Returns a return code.
+    """
+    if known:
+        msg = self._str(self.nohelp % (cmd,))
+        if self.cmdlooping:
+            self.stderr.write(msg + '\n')
+        else:
+            self.stderr.write("%s: %s\n" % (self.name, msg))
+    else:
+        msg = self.unknowncmd % (cmd,)
+        if self.cmdlooping:
+            self.stderr.write(msg + '\n')
+        else:
+            self.stderr.write("%s: %s\n"
+                              "Try '%s help' for info.\n"
+                              % (self.name, msg, self.name))
+    self.stderr.flush()
+    return 1
+
+</t>
+<t tx="ekr.20080121134847.22">def do_help(self, argv):
+    """${cmd_name}: give detailed help on a specific sub-command
+
+    Usage:
+        ${name} help [COMMAND]
+    """
+    if len(argv) &gt; 1: # asking for help on a particular command
+        doc = None
+        cmdname = self._get_canonical_cmd_name(argv[1]) or argv[1]
+        if not cmdname:
+            return self.helpdefault(argv[1], False)
+        else:
+            helpfunc = getattr(self, "help_"+cmdname, None)
+            if helpfunc:
+                doc = helpfunc()
+            else:
+                handler = self._get_cmd_handler(cmdname)
+                if handler:
+                    doc = handler.__doc__
+                if doc is None:
+                    return self.helpdefault(argv[1], handler != None)
+    else: # bare "help" command
+        doc = self.__class__.__doc__  # try class docstring
+        if doc is None:
+            # Try to provide some reasonable useful default help.
+            if self.cmdlooping: prefix = ""
+            else:               prefix = self.name+' '
+            doc = """Usage:
+                %sCOMMAND [ARGS...]
+                %shelp [COMMAND]
+
+            ${option_list}
+            ${command_list}
+            ${help_list}
+            """ % (prefix, prefix)
+        cmdname = None
+
+    if doc: # *do* have help content, massage and print that
+        doc = self._help_reindent(doc)
+        doc = self._help_preprocess(doc, cmdname)
+        doc = doc.rstrip() + '\n' # trim down trailing space
+        self.stdout.write(self._str(doc))
+        self.stdout.flush()
+</t>
+<t tx="ekr.20080121134847.23">do_help.aliases = ["?"]
+
+def _help_reindent(self, help, indent=None):
+    """Hook to re-indent help strings before writing to stdout.
+
+        "help" is the help content to re-indent
+        "indent" is a string with which to indent each line of the
+            help content after normalizing. If unspecified or None
+            then the default is use: the 'self.helpindent' class
+            attribute. By default this is the empty string, i.e.
+            no indentation.
+
+    By default, all common leading whitespace is removed and then
+    the lot is indented by 'self.helpindent'. When calculating the
+    common leading whitespace the first line is ignored -- hence
+    help content for Conan can be written as follows and have the
+    expected indentation:
+
+        def do_crush(self, ...):
+            '''${cmd_name}: crush your enemies, see them driven before you...
+
+            c.f. Conan the Barbarian'''
+    """
+    if indent is None:
+        indent = self.helpindent
+    lines = help.splitlines(0)
+    _dedentlines(lines, skip_first_line=True)
+    lines = [(indent+line).rstrip() for line in lines]
+    return '\n'.join(lines)
+
+</t>
+<t tx="ekr.20080121134847.24">def _help_preprocess(self, help, cmdname):
+    """Hook to preprocess a help string before writing to stdout.
+
+        "help" is the help string to process.
+        "cmdname" is the canonical sub-command name for which help
+            is being given, or None if the help is not specific to a
+            command.
+
+    By default the following template variables are interpolated in
+    help content. (Note: these are similar to Python 2.4's
+    string.Template interpolation but not quite.)
+
+    ${name}
+        The tool's/shell's name, i.e. 'self.name'.
+    ${option_list}
+        A formatted table of options for this shell/tool.
+    ${command_list}
+        A formatted table of available sub-commands.
+    ${help_list}
+        A formatted table of additional help topics (i.e. 'help_*'
+        methods with no matching 'do_*' method).
+    ${cmd_name}
+        The name (and aliases) for this sub-command formatted as:
+        "NAME (ALIAS1, ALIAS2, ...)".
+    ${cmd_usage}
+        A formatted usage block inferred from the command function
+        signature.
+    ${cmd_option_list}
+        A formatted table of options for this sub-command. (This is
+        only available for commands using the optparse integration,
+        i.e.  using @cmdln.option decorators or manually setting the
+        'optparser' attribute on the 'do_*' method.)
+
+    Returns the processed help. 
+    """
+    preprocessors = {
+        "${name}":            self._help_preprocess_name,
+        "${option_list}":     self._help_preprocess_option_list,
+        "${command_list}":    self._help_preprocess_command_list,
+        "${help_list}":       self._help_preprocess_help_list,
+        "${cmd_name}":        self._help_preprocess_cmd_name,
+        "${cmd_usage}":       self._help_preprocess_cmd_usage,
+        "${cmd_option_list}": self._help_preprocess_cmd_option_list,
+    }
+
+    for marker, preprocessor in preprocessors.items():
+        if marker in help:
+            help = preprocessor(help, cmdname)
+    return help
+
+</t>
+<t tx="ekr.20080121134847.25">def _help_preprocess_name(self, help, cmdname=None):
+    return help.replace("${name}", self.name)
+
+</t>
+<t tx="ekr.20080121134847.26">def _help_preprocess_option_list(self, help, cmdname=None):
+    marker = "${option_list}"
+    indent, indent_width = _get_indent(marker, help)
+    suffix = _get_trailing_whitespace(marker, help)
+
+    if self.optparser:
+        # Setup formatting options and format.
+        # - Indentation of 4 is better than optparse default of 2.
+        #   C.f. Damian Conway's discussion of this in Perl Best
+        #   Practices.
+        self.optparser.formatter.indent_increment = 4
+        self.optparser.formatter.current_indent = indent_width
+        block = self.optparser.format_option_help() + '\n'
+    else:
+        block = ""
+        
+    help = help.replace(indent+marker+suffix, block, 1)
+    return help
+
+
+</t>
+<t tx="ekr.20080121134847.27">def _help_preprocess_command_list(self, help, cmdname=None):
+    marker = "${command_list}"
+    indent, indent_width = _get_indent(marker, help)
+    suffix = _get_trailing_whitespace(marker, help)
+
+    # Find any aliases for commands.
+    token2canonical = self._get_canonical_map()
+    aliases = {}
+    for token, cmdname in token2canonical.items():
+        if token == cmdname: continue
+        aliases.setdefault(cmdname, []).append(token)
+
+    # Get the list of (non-hidden) commands and their
+    # documentation, if any.
+    cmdnames = {} # use a dict to strip duplicates
+    for attr in self.get_names():
+        if attr.startswith("do_"):
+            cmdnames[attr[3:]] = True
+    cmdnames = cmdnames.keys()
+    cmdnames.sort()
+    linedata = []
+    for cmdname in cmdnames:
+        if aliases.get(cmdname):
+            a = aliases[cmdname]
+            a.sort()
+            cmdstr = "%s (%s)" % (cmdname, ", ".join(a))
+        else:
+            cmdstr = cmdname
+        doc = None
+        try:
+            helpfunc = getattr(self, 'help_'+cmdname)
+        except AttributeError:
+            handler = self._get_cmd_handler(cmdname)
+            if handler:
+                doc = handler.__doc__
+        else:
+            doc = helpfunc()
+            
+        # Strip "${cmd_name}: " from the start of a command's doc. Best
+        # practice dictates that command help strings begin with this, but
+        # it isn't at all wanted for the command list.
+        to_strip = "${cmd_name}:"
+        if doc and doc.startswith(to_strip):
+            #log.debug("stripping %r from start of %s's help string",
+            #          to_strip, cmdname)
+            doc = doc[len(to_strip):].lstrip()
+        linedata.append( (cmdstr, doc) )
+
+    if linedata:
+        subindent = indent + ' '*4
+        lines = _format_linedata(linedata, subindent, indent_width+4)
+        block = indent + "Commands:\n" \
+                + '\n'.join(lines) + "\n\n"
+        help = help.replace(indent+marker+suffix, block, 1)
+    return help
+
+</t>
+<t tx="ekr.20080121134847.28">def _gen_names_and_attrs(self):
+    # Inheritance says we have to look in class and
+    # base classes; order is not important.
+    names = []
+    classes = [self.__class__]
+    while classes:
+        aclass = classes.pop(0)
+        if aclass.__bases__:
+            classes = classes + list(aclass.__bases__)
+        for name in dir(aclass):
+            yield (name, getattr(aclass, name))
+
+</t>
+<t tx="ekr.20080121134847.29">def _help_preprocess_help_list(self, help, cmdname=None):
+    marker = "${help_list}"
+    indent, indent_width = _get_indent(marker, help)
+    suffix = _get_trailing_whitespace(marker, help)
+
+    # Determine the additional help topics, if any.
+    helpnames = {}
+    token2cmdname = self._get_canonical_map()
+    for attrname, attr in self._gen_names_and_attrs():
+        if not attrname.startswith("help_"): continue
+        helpname = attrname[5:]
+        if helpname not in token2cmdname:
+            helpnames[helpname] = attr
+
+    if helpnames:
+        linedata = [(n, a.__doc__ or "") for n, a in helpnames.items()]
+        linedata.sort()
+
+        subindent = indent + ' '*4
+        lines = _format_linedata(linedata, subindent, indent_width+4)
+        block = (indent
+                + "Additional help topics (run `%s help TOPIC'):\n" % self.name
+                + '\n'.join(lines)
+                + "\n\n")
+    else:
+        block = ''
+    help = help.replace(indent+marker+suffix, block, 1)
+    return help
+
+</t>
+<t tx="ekr.20080121134847.30">def _help_preprocess_cmd_name(self, help, cmdname=None):
+    marker = "${cmd_name}"
+    handler = self._get_cmd_handler(cmdname)
+    if not handler:
+        raise CmdlnError("cannot preprocess '%s' into help string: "
+                         "could not find command handler for %r" 
+                         % (marker, cmdname))
+    s = cmdname
+    if hasattr(handler, "aliases"):
+        s += " (%s)" % (", ".join(handler.aliases))
+    help = help.replace(marker, s)
+    return help
+
+</t>
+<t tx="ekr.20080121134847.31">#TODO: this only makes sense as part of the Cmdln class.
+#      Add hooks to add help preprocessing template vars and put
+#      this one on that class.
+def _help_preprocess_cmd_usage(self, help, cmdname=None):
+    marker = "${cmd_usage}"
+    handler = self._get_cmd_handler(cmdname)
+    if not handler:
+        raise CmdlnError("cannot preprocess '%s' into help string: "
+                         "could not find command handler for %r" 
+                         % (marker, cmdname))
+    indent, indent_width = _get_indent(marker, help)
+    suffix = _get_trailing_whitespace(marker, help)
+
+    # Extract the introspection bits we need.
+    func = handler.im_func
+    if func.func_defaults:
+        func_defaults = list(func.func_defaults)
+    else:
+        func_defaults = []
+    co_argcount = func.func_code.co_argcount
+    co_varnames = func.func_code.co_varnames
+    co_flags = func.func_code.co_flags
+    CO_FLAGS_ARGS = 4
+    CO_FLAGS_KWARGS = 8
+
+    # Adjust argcount for possible *args and **kwargs arguments.
+    argcount = co_argcount
+    if co_flags &amp; CO_FLAGS_ARGS:   argcount += 1
+    if co_flags &amp; CO_FLAGS_KWARGS: argcount += 1
+
+    # Determine the usage string.
+    usage = "%s %s" % (self.name, cmdname)
+    if argcount &lt;= 2:   # handler ::= do_FOO(self, argv)
+        usage += " [ARGS...]"
+    elif argcount &gt;= 3: # handler ::= do_FOO(self, subcmd, opts, ...)
+        argnames = list(co_varnames[3:argcount])
+        tail = ""
+        if co_flags &amp; CO_FLAGS_KWARGS:
+            name = argnames.pop(-1)
+            import warnings
+            # There is no generally accepted mechanism for passing
+            # keyword arguments from the command line. Could
+            # *perhaps* consider: arg=value arg2=value2 ...
+            warnings.warn("argument '**%s' on '%s.%s' command "
+                          "handler will never get values" 
+                          % (name, self.__class__.__name__,
+                             func.func_name))
+        if co_flags &amp; CO_FLAGS_ARGS:
+            name = argnames.pop(-1)
+            tail = "[%s...]" % name.upper()
+        while func_defaults:
+            func_defaults.pop(-1)
+            name = argnames.pop(-1)
+            tail = "[%s%s%s]" % (name.upper(), (tail and ' ' or ''), tail)
+        while argnames:
+            name = argnames.pop(-1)
+            tail = "%s %s" % (name.upper(), tail)
+        usage += ' ' + tail
+
+    block_lines = [
+        self.helpindent + "Usage:",
+        self.helpindent + ' '*4 + usage
+    ]
+    block = '\n'.join(block_lines) + '\n\n'
+
+    help = help.replace(indent+marker+suffix, block, 1)
+    return help
+
+</t>
+<t tx="ekr.20080121134847.32">#TODO: this only makes sense as part of the Cmdln class.
+#      Add hooks to add help preprocessing template vars and put
+#      this one on that class.
+def _help_preprocess_cmd_option_list(self, help, cmdname=None):
+    marker = "${cmd_option_list}"
+    handler = self._get_cmd_handler(cmdname)
+    if not handler:
+        raise CmdlnError("cannot preprocess '%s' into help string: "
+                         "could not find command handler for %r" 
+                         % (marker, cmdname))
+    indent, indent_width = _get_indent(marker, help)
+    suffix = _get_trailing_whitespace(marker, help)
+    if hasattr(handler, "optparser"):
+        # Setup formatting options and format.
+        # - Indentation of 4 is better than optparse default of 2.
+        #   C.f. Damian Conway's discussion of this in Perl Best
+        #   Practices.
+        handler.optparser.formatter.indent_increment = 4
+        handler.optparser.formatter.current_indent = indent_width
+        block = handler.optparser.format_option_help() + '\n'
+    else:
+        block = ""
+
+    help = help.replace(indent+marker+suffix, block, 1)
+    return help
+
+</t>
+<t tx="ekr.20080121134847.33">def _get_canonical_cmd_name(self, token):
+    map = self._get_canonical_map()
+    return map.get(token, None)
+
+</t>
+<t tx="ekr.20080121134847.34">def _get_canonical_map(self):
+    """Return a mapping of available command names and aliases to
+    their canonical command name.
+    """
+    cacheattr = "_token2canonical"
+    if not hasattr(self, cacheattr):
+        # Get the list of commands and their aliases, if any.
+        token2canonical = {}
+        cmd2funcname = {} # use a dict to strip duplicates
+        for attr in self.get_names():
+            if attr.startswith("do_"):    cmdname = attr[3:]
+            elif attr.startswith("_do_"): cmdname = attr[4:]
+            else:
+                continue
+            cmd2funcname[cmdname] = attr
+            token2canonical[cmdname] = cmdname
+        for cmdname, funcname in cmd2funcname.items(): # add aliases
+            func = getattr(self, funcname)
+            aliases = getattr(func, "aliases", [])
+            for alias in aliases:
+                if alias in cmd2funcname:
+                    import warnings
+                    warnings.warn("'%s' alias for '%s' command conflicts "
+                                  "with '%s' handler"
+                                  % (alias, cmdname, cmd2funcname[alias]))
+                    continue
+                token2canonical[alias] = cmdname
+        setattr(self, cacheattr, token2canonical)
+    return getattr(self, cacheattr)
+
+</t>
+<t tx="ekr.20080121134847.35">def _get_cmd_handler(self, cmdname):
+    handler = None
+    try:
+        handler = getattr(self, 'do_' + cmdname)
+    except AttributeError:
+        try:
+            # Private command handlers begin with "_do_".
+            handler = getattr(self, '_do_' + cmdname)
+        except AttributeError:
+            pass
+    return handler
+
+</t>
+<t tx="ekr.20080121134847.36">def _do_EOF(self, argv):
+    # Default EOF handler
+    # Note: an actual EOF is redirected to this command.
+    #TODO: separate name for this. Currently it is available from
+    #      command-line. Is that okay?
+    self.stdout.write('\n')
+    self.stdout.flush()
+    self.stop = True
+
+</t>
+<t tx="ekr.20080121134847.37">def emptyline(self):
+    # Different from cmd.Cmd: don't repeat the last command for an
+    # emptyline.
+    if self.cmdlooping:
+        pass
+    else:
+        return self.do_help(["help"])
+
+
+</t>
+<t tx="ekr.20080121134847.38">#---- optparse.py extension to fix (IMO) some deficiencies
+#
+# See the class _OptionParserEx docstring for details.
+#
+
+class StopOptionProcessing(Exception):
+    """Indicate that option *and argument* processing should stop
+    cleanly. This is not an error condition. It is similar in spirit to
+    StopIteration. This is raised by _OptionParserEx's default "help"
+    and "version" option actions and can be raised by custom option
+    callbacks too.
+    
+    Hence the typical CmdlnOptionParser (a subclass of _OptionParserEx)
+    usage is:
+
+        parser = CmdlnOptionParser(mycmd)
+        parser.add_option("-f", "--force", dest="force")
+        ...
+        try:
+            opts, args = parser.parse_args()
+        except StopOptionProcessing:
+            # normal termination, "--help" was probably given
+            sys.exit(0)
+    """
+
+</t>
+<t tx="ekr.20080121134847.39">class _OptionParserEx(optparse.OptionParser):
+    """An optparse.OptionParser that uses exceptions instead of sys.exit.
+
+    This class is an extension of optparse.OptionParser that differs
+    as follows:
+    - Correct (IMO) the default OptionParser error handling to never
+      sys.exit(). Instead OptParseError exceptions are passed through.
+    - Add the StopOptionProcessing exception (a la StopIteration) to
+      indicate normal termination of option processing.
+      See StopOptionProcessing's docstring for details.
+
+    I'd also like to see the following in the core optparse.py, perhaps
+    as a RawOptionParser which would serve as a base class for the more
+    generally used OptionParser (that works as current):
+    - Remove the implicit addition of the -h|--help and --version
+      options. They can get in the way (e.g. if want '-?' and '-V' for
+      these as well) and it is not hard to do:
+        optparser.add_option("-h", "--help", action="help")
+        optparser.add_option("--version", action="version")
+      These are good practices, just not valid defaults if they can
+      get in the way.
+    """
+    @others
+</t>
+<t tx="ekr.20080121134847.40">def error(self, msg):
+    raise optparse.OptParseError(msg)
+
+</t>
+<t tx="ekr.20080121134847.41">def exit(self, status=0, msg=None):
+    if status == 0:
+        raise StopOptionProcessing(msg)
+    else:
+        #TODO: don't lose status info here
+        raise optparse.OptParseError(msg)
+
+
+
+</t>
+<t tx="ekr.20080121134847.42">#---- optparse.py-based option processing support
+
+class CmdlnOptionParser(_OptionParserEx):
+    """An optparse.OptionParser class more appropriate for top-level
+    Cmdln options. For parsing of sub-command options, see
+    SubCmdOptionParser.
+
+    Changes:
+    - disable_interspersed_args() by default, because a Cmdln instance
+      has sub-commands which may themselves have options.
+    - Redirect print_help() to the Cmdln.do_help() which is better
+      equiped to handle the "help" action.
+    - error() will raise a CmdlnUserError: OptionParse.error() is meant
+      to be called for user errors. Raising a well-known error here can
+      make error handling clearer.
+    - Also see the changes in _OptionParserEx.
+    """
+    @others
+</t>
+<t tx="ekr.20080121134847.43">def __init__(self, cmdln, **kwargs):
+    self.cmdln = cmdln
+    kwargs["prog"] = self.cmdln.name
+    _OptionParserEx.__init__(self, **kwargs)
+    self.disable_interspersed_args()
+
+</t>
+<t tx="ekr.20080121134847.44">def print_help(self, file=None):
+    self.cmdln.onecmd(["help"])
+
+</t>
+<t tx="ekr.20080121134847.45">def error(self, msg):
+    raise CmdlnUserError(msg)
+
+
+</t>
+<t tx="ekr.20080121134847.46">class SubCmdOptionParser(_OptionParserEx):
+    @others
+</t>
+<t tx="ekr.20080121134847.47">def set_cmdln_info(self, cmdln, subcmd):
+    """Called by Cmdln to pass relevant info about itself needed
+    for print_help().
+    """
+    self.cmdln = cmdln
+    self.subcmd = subcmd
+
+</t>
+<t tx="ekr.20080121134847.48">def print_help(self, file=None):
+    self.cmdln.onecmd(["help", self.subcmd])
+
+</t>
+<t tx="ekr.20080121134847.49">def error(self, msg):
+    raise CmdlnUserError(msg)
+
+
+</t>
+<t tx="ekr.20080121134847.50">def option(*args, **kwargs):
+    """Decorator to add an option to the optparser argument of a Cmdln
+    subcommand.
+    
+    Example:
+        class MyShell(cmdln.Cmdln):
+            @cmdln.option("-f", "--force", help="force removal")
+            def do_remove(self, subcmd, opts, *args):
+                #...
+    """
+    #XXX Is there a possible optimization for many options to not have a
+    #    large stack depth here?
+    def decorate(f):
+        if not hasattr(f, "optparser"):
+            f.optparser = SubCmdOptionParser()
+        f.optparser.add_option(*args, **kwargs)
+        return f
+    return decorate
+
+
+</t>
+<t tx="ekr.20080121134847.51">class Cmdln(RawCmdln):
+    """An improved (on cmd.Cmd) framework for building multi-subcommand
+    scripts (think "svn" &amp; "cvs") and simple shells (think "pdb" and
+    "gdb").
+
+    A simple example:
+
+        import cmdln
+
+        class MySVN(cmdln.Cmdln):
+            name = "svn"
+
+            @cmdln.aliases('stat', 'st')
+            @cmdln.option('-v', '--verbose', action='store_true'
+                          help='print verbose information')
+            def do_status(self, subcmd, opts, *paths):
+                print "handle 'svn status' command"
+
+            #...
+
+        if __name__ == "__main__":
+            shell = MySVN()
+            retval = shell.main()
+            sys.exit(retval)
+
+    'Cmdln' extends 'RawCmdln' by providing optparse option processing
+    integration.  See this class' _dispatch_cmd() docstring and
+    &lt;http://trentm.com/projects/cmdln&gt; for more information.
+    """
+    @others
+</t>
+<t tx="ekr.20080121134847.52">def _dispatch_cmd(self, handler, argv):
+    """Introspect sub-command handler signature to determine how to
+    dispatch the command. The raw handler provided by the base
+    'RawCmdln' class is still supported:
+
+        def do_foo(self, argv):
+            # 'argv' is the vector of command line args, argv[0] is
+            # the command name itself (i.e. "foo" or an alias)
+            pass
+
+    In addition, if the handler has more than 2 arguments option
+    processing is automatically done (using optparse):
+
+        @cmdln.option('-v', '--verbose', action='store_true')
+        def do_bar(self, subcmd, opts, *args):
+            # subcmd = &lt;"bar" or an alias&gt;
+            # opts = &lt;an optparse.Values instance&gt;
+            if opts.verbose:
+                print "lots of debugging output..."
+            # args = &lt;tuple of arguments&gt;
+            for arg in args:
+                bar(arg)
+
+    TODO: explain that "*args" can be other signatures as well.
+
+    The `cmdln.option` decorator corresponds to an `add_option()`
+    method call on an `optparse.OptionParser` instance.
+
+    You can declare a specific number of arguments:
+
+        @cmdln.option('-v', '--verbose', action='store_true')
+        def do_bar2(self, subcmd, opts, bar_one, bar_two):
+            #...
+
+    and an appropriate error message will be raised/printed if the
+    command is called with a different number of args.
+    """
+    co_argcount = handler.im_func.func_code.co_argcount
+    if co_argcount == 2:   # handler ::= do_foo(self, argv)
+        return handler(argv)
+    elif co_argcount &gt;= 3: # handler ::= do_foo(self, subcmd, opts, ...)
+        try:
+            optparser = handler.optparser
+        except AttributeError:
+            optparser = handler.im_func.optparser = SubCmdOptionParser()
+        assert isinstance(optparser, SubCmdOptionParser)
+        optparser.set_cmdln_info(self, argv[0])
+        try:
+            opts, args = optparser.parse_args(argv[1:])
+        except StopOptionProcessing:
+            #TODO: this doesn't really fly for a replacement of
+            #      optparse.py behaviour, does it?
+            return 0 # Normal command termination
+
+        try:
+            return handler(argv[0], opts, *args)
+        except TypeError, ex:
+            # Some TypeError's are user errors:
+            #   do_foo() takes at least 4 arguments (3 given)
+            #   do_foo() takes at most 5 arguments (6 given)
+            #   do_foo() takes exactly 5 arguments (6 given)
+            # Raise CmdlnUserError for these with a suitably
+            # massaged error message.
+            import sys
+            tb = sys.exc_info()[2] # the traceback object
+            if tb.tb_next is not None:
+                # If the traceback is more than one level deep, then the
+                # TypeError do *not* happen on the "handler(...)" call
+                # above. In that we don't want to handle it specially
+                # here: it would falsely mask deeper code errors.
+                raise
+            msg = ex.args[0]
+            match = _INCORRECT_NUM_ARGS_RE.search(msg)
+            if match:
+                msg = list(match.groups())
+                msg[1] = int(msg[1]) - 3
+                if msg[1] == 1:
+                    msg[2] = msg[2].replace("arguments", "argument")
+                msg[3] = int(msg[3]) - 3
+                msg = ''.join(map(str, msg))
+                raise CmdlnUserError(msg)
+            else:
+                raise
+    else:
+        raise CmdlnError("incorrect argcount for %s(): takes %d, must "
+                         "take 2 for 'argv' signature or 3+ for 'opts' "
+                         "signature" % (handler.__name__, co_argcount))
+    
+
+
+</t>
+<t tx="ekr.20080121134847.53">#---- internal support functions
+
+def _format_linedata(linedata, indent, indent_width):
+    """Format specific linedata into a pleasant layout.
+    
+        "linedata" is a list of 2-tuples of the form:
+            (&lt;item-display-string&gt;, &lt;item-docstring&gt;)
+        "indent" is a string to use for one level of indentation
+        "indent_width" is a number of columns by which the
+            formatted data will be indented when printed.
+
+    The &lt;item-display-string&gt; column is held to 15 columns.
+    """
+    lines = []
+    WIDTH = 78 - indent_width
+    SPACING = 2
+    NAME_WIDTH_LOWER_BOUND = 13
+    NAME_WIDTH_UPPER_BOUND = 16
+    NAME_WIDTH = max([len(s) for s,d in linedata])
+    if NAME_WIDTH &lt; NAME_WIDTH_LOWER_BOUND:
+        NAME_WIDTH = NAME_WIDTH_LOWER_BOUND
+    else:
+        NAME_WIDTH = NAME_WIDTH_UPPER_BOUND
+
+    DOC_WIDTH = WIDTH - NAME_WIDTH - SPACING
+    for namestr, doc in linedata:
+        line = indent + namestr
+        if len(namestr) &lt;= NAME_WIDTH:
+            line += ' ' * (NAME_WIDTH + SPACING - len(namestr))
+        else:
+            lines.append(line)
+            line = indent + ' ' * (NAME_WIDTH + SPACING)
+        line += _summarize_doc(doc, DOC_WIDTH)
+        lines.append(line.rstrip())
+    return lines
+
+</t>
+<t tx="ekr.20080121134847.54">def _summarize_doc(doc, length=60):
+    r"""Parse out a short one line summary from the given doclines.
+    
+        "doc" is the doc string to summarize.
+        "length" is the max length for the summary
+
+    &gt;&gt;&gt; _summarize_doc("this function does this")
+    'this function does this'
+    &gt;&gt;&gt; _summarize_doc("this function does this", 10)
+    'this fu...'
+    &gt;&gt;&gt; _summarize_doc("this function does this\nand that")
+    'this function does this and that'
+    &gt;&gt;&gt; _summarize_doc("this function does this\n\nand that")
+    'this function does this'
+    """
+    import re
+    if doc is None:
+        return ""
+    assert length &gt; 3, "length &lt;= 3 is absurdly short for a doc summary"
+    doclines = doc.strip().splitlines(0)
+    if not doclines:
+        return ""
+
+    summlines = []
+    for i, line in enumerate(doclines):
+        stripped = line.strip()
+        if not stripped:
+            break
+        summlines.append(stripped)
+        if len(''.join(summlines)) &gt;= length:
+            break
+
+    summary = ' '.join(summlines)
+    if len(summary) &gt; length:
+        summary = summary[:length-3] + "..." 
+    return summary
+
+
+</t>
+<t tx="ekr.20080121134847.55">def line2argv(line):
+    r"""Parse the given line into an argument vector.
+    
+        "line" is the line of input to parse.
+
+    This may get niggly when dealing with quoting and escaping. The
+    current state of this parsing may not be completely thorough/correct
+    in this respect.
+    
+    &gt;&gt;&gt; from cmdln import line2argv
+    &gt;&gt;&gt; line2argv("foo")
+    ['foo']
+    &gt;&gt;&gt; line2argv("foo bar")
+    ['foo', 'bar']
+    &gt;&gt;&gt; line2argv("foo bar ")
+    ['foo', 'bar']
+    &gt;&gt;&gt; line2argv(" foo bar")
+    ['foo', 'bar']
+
+    Quote handling:
+    
+    &gt;&gt;&gt; line2argv("'foo bar'")
+    ['foo bar']
+    &gt;&gt;&gt; line2argv('"foo bar"')
+    ['foo bar']
+    &gt;&gt;&gt; line2argv(r'"foo\"bar"')
+    ['foo"bar']
+    &gt;&gt;&gt; line2argv("'foo bar' spam")
+    ['foo bar', 'spam']
+    &gt;&gt;&gt; line2argv("'foo 'bar spam")
+    ['foo bar', 'spam']
+    &gt;&gt;&gt; line2argv("'foo")
+    Traceback (most recent call last):
+        ...
+    ValueError: command line is not terminated: unfinished single-quoted segment
+    &gt;&gt;&gt; line2argv('"foo')
+    Traceback (most recent call last):
+        ...
+    ValueError: command line is not terminated: unfinished double-quoted segment
+    &gt;&gt;&gt; line2argv('some\tsimple\ttests')
+    ['some', 'simple', 'tests']
+    &gt;&gt;&gt; line2argv('a "more complex" test')
+    ['a', 'more complex', 'test']
+    &gt;&gt;&gt; line2argv('a more="complex test of " quotes')
+    ['a', 'more=complex test of ', 'quotes']
+    &gt;&gt;&gt; line2argv('a more" complex test of " quotes')
+    ['a', 'more complex test of ', 'quotes']
+    &gt;&gt;&gt; line2argv('an "embedded \\"quote\\""')
+    ['an', 'embedded "quote"']
+    """
+    import string
+    line = line.strip()
+    argv = []
+    state = "default"
+    arg = None  # the current argument being parsed
+    i = -1
+    while 1:
+        i += 1
+        if i &gt;= len(line): break
+        ch = line[i]
+
+        if ch == "\\": # escaped char always added to arg, regardless of state
+            if arg is None: arg = ""
+            i += 1
+            arg += line[i]
+            continue
+
+        if state == "single-quoted":
+            if ch == "'":
+                state = "default"
+            else:
+                arg += ch
+        elif state == "double-quoted":
+            if ch == '"':
+                state = "default"
+            else:
+                arg += ch
+        elif state == "default":
+            if ch == '"':
+                if arg is None: arg = ""
+                state = "double-quoted"
+            elif ch == "'":
+                if arg is None: arg = ""
+                state = "single-quoted"
+            elif ch in string.whitespace:
+                if arg is not None:
+                    argv.append(arg)
+                arg = None
+            else:
+                if arg is None: arg = ""
+                arg += ch
+    if arg is not None:
+        argv.append(arg)
+    if state != "default":
+        raise ValueError("command line is not terminated: unfinished %s "
+                         "segment" % state)
+    return argv
+
+
+</t>
+<t tx="ekr.20080121134847.56">def argv2line(argv):
+    r"""Put together the given argument vector into a command line.
+    
+        "argv" is the argument vector to process.
+    
+    &gt;&gt;&gt; from cmdln import argv2line
+    &gt;&gt;&gt; argv2line(['foo'])
+    'foo'
+    &gt;&gt;&gt; argv2line(['foo', 'bar'])
+    'foo bar'
+    &gt;&gt;&gt; argv2line(['foo', 'bar baz'])
+    'foo "bar baz"'
+    &gt;&gt;&gt; argv2line(['foo"bar'])
+    'foo"bar'
+    &gt;&gt;&gt; print argv2line(['foo" bar'])
+    'foo" bar'
+    &gt;&gt;&gt; print argv2line(["foo' bar"])
+    "foo' bar"
+    &gt;&gt;&gt; argv2line(["foo'bar"])
+    "foo'bar"
+    """
+    escapedArgs = []
+    for arg in argv:
+        if ' ' in arg and '"' not in arg:
+            arg = '"'+arg+'"'
+        elif ' ' in arg and "'" not in arg:
+            arg = "'"+arg+"'"
+        elif ' ' in arg:
+            arg = arg.replace('"', r'\"')
+            arg = '"'+arg+'"'
+        escapedArgs.append(arg)
+    return ' '.join(escapedArgs)
+
+
+</t>
+<t tx="ekr.20080121134847.57"># Recipe: dedent (0.1) in /Users/trentm/tm/recipes/cookbook
+def _dedentlines(lines, tabsize=8, skip_first_line=False):
+    """_dedentlines(lines, tabsize=8, skip_first_line=False) -&gt; dedented lines
+    
+        "lines" is a list of lines to dedent.
+        "tabsize" is the tab width to use for indent width calculations.
+        "skip_first_line" is a boolean indicating if the first line should
+            be skipped for calculating the indent width and for dedenting.
+            This is sometimes useful for docstrings and similar.
+    
+    Same as dedent() except operates on a sequence of lines. Note: the
+    lines list is modified **in-place**.
+    """
+    DEBUG = False
+    if DEBUG: 
+        print "dedent: dedent(..., tabsize=%d, skip_first_line=%r)"\
+              % (tabsize, skip_first_line)
+    indents = []
+    margin = None
+    for i, line in enumerate(lines):
+        if i == 0 and skip_first_line: continue
+        indent = 0
+        for ch in line:
+            if ch == ' ':
+                indent += 1
+            elif ch == '\t':
+                indent += tabsize - (indent % tabsize)
+            elif ch in '\r\n':
+                continue # skip all-whitespace lines
+            else:
+                break
+        else:
+            continue # skip all-whitespace lines
+        if DEBUG: print "dedent: indent=%d: %r" % (indent, line)
+        if margin is None:
+            margin = indent
+        else:
+            margin = min(margin, indent)
+    if DEBUG: print "dedent: margin=%r" % margin
+
+    if margin is not None and margin &gt; 0:
+        for i, line in enumerate(lines):
+            if i == 0 and skip_first_line: continue
+            removed = 0
+            for j, ch in enumerate(line):
+                if ch == ' ':
+                    removed += 1
+                elif ch == '\t':
+                    removed += tabsize - (removed % tabsize)
+                elif ch in '\r\n':
+                    if DEBUG: print "dedent: %r: EOL -&gt; strip up to EOL" % line
+                    lines[i] = lines[i][j:]
+                    break
+                else:
+                    raise ValueError("unexpected non-whitespace char %r in "
+                                     "line %r while removing %d-space margin"
+                                     % (ch, line, margin))
+                if DEBUG:
+                    print "dedent: %r: %r -&gt; removed %d/%d"\
+                          % (line, ch, removed, margin)
+                if removed == margin:
+                    lines[i] = lines[i][j+1:]
+                    break
+                elif removed &gt; margin:
+                    lines[i] = ' '*(removed-margin) + lines[i][j+1:]
+                    break
+    return lines
+
+</t>
+<t tx="ekr.20080121134847.58">def _dedent(text, tabsize=8, skip_first_line=False):
+    """_dedent(text, tabsize=8, skip_first_line=False) -&gt; dedented text
+
+        "text" is the text to dedent.
+        "tabsize" is the tab width to use for indent width calculations.
+        "skip_first_line" is a boolean indicating if the first line should
+            be skipped for calculating the indent width and for dedenting.
+            This is sometimes useful for docstrings and similar.
+    
+    textwrap.dedent(s), but don't expand tabs to spaces
+    """
+    lines = text.splitlines(1)
+    _dedentlines(lines, tabsize=tabsize, skip_first_line=skip_first_line)
+    return ''.join(lines)
+
+
+</t>
+<t tx="ekr.20080121134847.59">def _get_indent(marker, s, tab_width=8):
+    """_get_indent(marker, s, tab_width=8) -&gt;
+        (&lt;indentation-of-'marker'&gt;, &lt;indentation-width&gt;)"""
+    # Figure out how much the marker is indented.
+    INDENT_CHARS = tuple(' \t')
+    start = s.index(marker)
+    i = start
+    while i &gt; 0:
+        if s[i-1] not in INDENT_CHARS:
+            break
+        i -= 1
+    indent = s[i:start]
+    indent_width = 0
+    for ch in indent:
+        if ch == ' ':
+            indent_width += 1
+        elif ch == '\t':
+            indent_width += tab_width - (indent_width % tab_width)
+    return indent, indent_width
+
+</t>
+<t tx="ekr.20080121134847.60">def _get_trailing_whitespace(marker, s):
+    """Return the whitespace content trailing the given 'marker' in string 's',
+    up to and including a newline.
+    """
+    suffix = ''
+    start = s.index(marker) + len(marker)
+    i = start
+    while i &lt; len(s):
+        if s[i] in ' \t':
+            suffix += s[i]
+        elif s[i] in '\r\n':
+            suffix += s[i]
+            if s[i] == '\r' and i+1 &lt; len(s) and s[i+1] == '\n':
+                suffix += s[i+1]
+            break
+        else:
+            break
+        i += 1
+    return suffix
+
+</t>
+<t tx="ekr.20080121134847.61">#!/usr/bin/env python
+# ***** LICENSE BLOCK *****
+
+"""Tools for building Komodo extensions.
+
+Typical usage is for a Komodo extension source dir to put the Komodo SDK
+bin dir on ones path and call the "koext" tool for building an extension.
+"koext" is a light wrapper around this lib.
+
+Provided that the source dir has an appropriate "install.rdf" (the main
+file for describing a Komodo extension), then "build_ext" will do the rest.
+The "Komodo Extension" project template provides boilerplate for this.
+
+A Komodo extension source dir looks like this:
+
+    install.rdf         # main extension meta-data file
+                        #   (all other pieces are optional)
+
+    # Chrome
+    chrome.manifest     # necessary if have any XUL "content", "skin"
+                        #   or "locale"
+    content/            # XUL overlays, dialogs and JavaScript
+    skin/               # CSS
+    locale/             # localized chrome files (typically DTDs)
+
+    # Other extension hooks
+    components/         # XPCOM components
+    templates/          # Komodo "New File" templates
+    project-templates/  # Komodo "New Project" templates
+    lexers/             # UDL-based ".lexres" files for custom language
+                        #   syntax coloring. These are built with the
+                        #   "luddite" tool. Typically source ".udl" files
+                        #   are placed in a "udl" dir.
+    xmlcatalogs/        # XML catalog defining namespace to schema mapping
+      catalog.xml       #   for XML autocomplete, and the schemas
+      ...               #   themselves (DTDs, XML Schemas, Relax NG)
+    apicatalogs/        # API Catalog ".cix" files for custom autocomplete
+                        #   and calltips.
+    pylib/              # This dir will be added to Komodo's runtime sys.path.
+                        #   As well, "lang_LANG.py" files here define codeintel
+                        #   language support.
+
+TODO: create_ext_chrome_skel
+TODO: create_ext_component_skel
+"""
+
+import os
+from os.path import exists, join, dirname, isdir, basename, splitext, \
+                    normpath, abspath
+import sys
+import re
+import uuid
+import logging
+import tempfile
+from glob import glob
+from pprint import pprint
+
+
+</t>
+<t tx="ekr.20080121134847.62">class KoExtError(Exception):
+    pass
+
+
+
+</t>
+<t tx="ekr.20080121134847.63">#---- globals
+
+_log = logging.getLogger("koextlib")
+_log.setLevel(logging.INFO)
+
+_install_rdf_template = """&lt;?xml version="1.0"?&gt;
+&lt;RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#"&gt;
+  &lt;Description about="urn:mozilla:install-manifest"&gt;
+    &lt;em:id&gt;%(id)s&lt;/em:id&gt;
+    &lt;em:name&gt;%(name)s&lt;/em:name&gt;
+    &lt;em:version&gt;%(version)s&lt;/em:version&gt;
+    &lt;em:description&gt;%(desc)s&lt;/em:description&gt;
+    &lt;em:creator&gt;%(creator)s&lt;/em:creator&gt;
+    &lt;em:homepageURL&gt;%(homepage)s&lt;/em:homepageURL&gt;
+    &lt;em:type&gt;2&lt;/em:type&gt; &lt;!-- type=extension --&gt; 
+
+    &lt;em:targetApplication&gt;
+            &lt;Description&gt;
+                    &lt;!-- Komodo Snapdragon uuid --&gt;
+                    &lt;em:id&gt;{2cb9d397-8ec9-4211-bd89-7fea34120af6}&lt;/em:id&gt;
+                    &lt;em:minVersion&gt;0&lt;/em:minVersion&gt;
+                    &lt;em:maxVersion&gt;1.*&lt;/em:maxVersion&gt;
+            &lt;/Description&gt;
+    &lt;/em:targetApplication&gt;
+    &lt;em:targetApplication&gt; &lt;!-- Komodo IDE --&gt;
+      &lt;Description&gt;
+        &lt;em:id&gt;{36E66FA0-F259-11D9-850E-000D935D3368}&lt;/em:id&gt;
+        &lt;em:minVersion&gt;4.1&lt;/em:minVersion&gt;
+        &lt;em:maxVersion&gt;4.*&lt;/em:maxVersion&gt;
+      &lt;/Description&gt;
+    &lt;/em:targetApplication&gt;
+    &lt;em:targetApplication&gt; &lt;!-- Komodo Edit --&gt;
+      &lt;Description&gt;
+        &lt;em:id&gt;{b1042fb5-9e9c-11db-b107-000d935d3368}&lt;/em:id&gt;
+        &lt;em:minVersion&gt;4.1&lt;/em:minVersion&gt;
+        &lt;em:maxVersion&gt;4.*&lt;/em:maxVersion&gt;
+      &lt;/Description&gt;
+    &lt;/em:targetApplication&gt;
+  &lt;/Description&gt;
+&lt;/RDF&gt;
+"""
+
+
+
+#---- module api
+
+def is_ext_dir(dir=os.curdir):
+    import operator
+    return operator.truth(glob(join(dir, "install.*rdf*")))
+
+</t>
+<t tx="ekr.20080121134847.64"># Validation.
+def validate_ext_name(name):
+    if not name.strip():
+        return "The name must not be empty."
+
+</t>
+<t tx="ekr.20080121134847.65">def validate_ext_id(id):
+    if not id.strip():
+        return "You must specify an ID."
+    id_pat = re.compile("(.*?)@(.*?)")
+    if not id_pat.match(id):
+        return "The ID does not match to '%s' pattern." % id_pat
+    if ' ' in id:
+        return "The ID should not contain spaces."
+
+</t>
+<t tx="ekr.20080121134847.66">def validate_ext_version(version):
+    if not version.strip():
+        return "You must specify a version."
+    if not re.match("^\d+\.\d+(\.\d+([a-z]\d*)?)?$", version):
+        return "The version must be of the form X.Y.Z or X.Y where"
+
+</t>
+<t tx="ekr.20080121134847.67">def validate_ext_creator(creator):
+    if not creator.strip():
+        return "You must specify a creator."
+
+
+</t>
+<t tx="ekr.20080121134847.68">def create_ext_skel(base_dir, name=None, id=None, version=None, desc="",
+                    creator=None, homepage="", dry_run=False, log=None):
+    """Creates an empty starter Komodo extension skeleton in the given
+    base directory.
+    
+    If not specified, this will query for all the meta-data on stdin/stdout.
+    """
+    if log is None: log = _log
+    if exists(base_dir):
+        raise KoExtError("`%s' exists (aborting creation of skeleton)"
+                         % base_dir)
+
+    # Gather info for install.rdf.
+    need_to_query = (id is None or name is None or version is None
+                     or creator is None)
+    while need_to_query:
+        print _banner("Gathering extension information")
+        
+        if name is None:
+            name = ' '.join(s.capitalize()
+                            for s in basename(base_dir).split('\t _'))
+        name = _query(
+            "Name of your extension, for example 'Fuzzy Wuzzy'.",
+            default=name, validate=validate_ext_name,
+            prompt="      name: ")
+        id = _query(
+            "\nString ID for this extension. This shouldn't have spaces\n"
+                "and must be of the form 'PROJECTNAME@DOMAIN', for\n"
+                "example '%s@mydomain.com'." % name.lower().replace(' ', '_'),
+            default=id, validate=validate_ext_id,
+            prompt="        id: ")
+        version = _query(
+            "\nVersion for this extension. Examples: 1.0, 2.1.2, 0.9.0b2.",
+            default=version, validate=validate_ext_version,
+            prompt="   version: ")
+        desc = _query(
+            "\nA brief description of this extension, for example: 'Fuzzy\n"
+                "Wuzzy tools for Komodo'.",
+            default=desc or "",
+            prompt="      desc: ")
+        creator = _query(
+            "\nThe creator/author of this extension, typically your name.",
+            default=creator, validate=validate_ext_creator,
+            prompt="   creator: ")
+        homepage = _query(
+            "\nThe main URL at which to get information on this extension.",
+            default=homepage or "",
+            prompt="  homepage: ")
+
+        print
+        print _banner(None, '-')
+        sys.stdout.write(_dedent("""
+            Extension information:
+                  name: %(name)s
+                    id: %(id)s
+               version: %(version)s
+                  desc: %(desc)s
+               creator: %(creator)s
+              homepage: %(homepage)s
+            """ % locals()).lstrip())
+        answer = _query_yes_no_quit("Are these details correct?")
+        if answer == "yes":
+            print _banner(None)
+            break
+        elif answer == "no":
+            print _banner(None, '-')
+            continue
+        elif answer == "quit":
+            raise SystemExit("aborting")
+
+    # Validate ext data.
+    errors = [s for s in [validate_ext_name(name),
+                          validate_ext_id(id),
+                          validate_ext_version(version)] if s]
+    if errors:
+        raise KoExtError("invalid extension information: %s"
+                         % ' '.join(errors))
+
+    # Create install.rdf.
+    if not dry_run:
+        _mkdir(base_dir, log.info)
+    install_rdf_path = join(base_dir, "install.rdf")
+    log.info(_dedent("""
+        create `%(install_rdf_path)s':
+              name: %(name)s
+                id: %(id)s
+           version: %(version)s
+              desc: %(desc)s
+           creator: %(creator)s
+          homepage: %(homepage)s
+        """ % locals()).strip())
+    if not dry_run:
+        open(install_rdf_path, 'w').write(
+            _install_rdf_template % locals())
+
+
+</t>
+<t tx="ekr.20080121134847.69">def create_udl_lang_skel(base_dir, lang, ext=None, is_html_based=False,
+                         is_xml_based=False, dry_run=False, log=None):
+    """Create the skeleton files for a new UDL-based Komodo language."""
+    if log is None: log = _log
+    if not is_ext_dir(base_dir):
+        raise KoExtError("`%s' isn't an extension source dir: there is no "
+                         "'install.rdf' file (run `koext startext' first)"
+                         % base_dir)
+
+    if is_html_based and is_xml_based:
+        raise KoExtError("a language cannot be both HTML- and XML-based: "
+                         "lang=%r, is_html_based=%r, is_xml_based=%r"
+                         % (lang, is_html_based, is_xml_based))
+    safe_lang = _code_safe_lang_from_lang(lang)
+
+    # Create udl/${lang}-mainlex.udl
+    mainlex_path = normpath(join(base_dir, "udl",
+                                 safe_lang.lower()+"-mainlex.udl"))
+    if exists(mainlex_path):
+        log.warn("`%s' exists (skipping)", mainlex_path)
+    else:
+        if not dry_run and not exists(dirname(mainlex_path)):
+            _mkdir(dirname(mainlex_path), log.debug)
+        log.info("create %s (lexer definition)", mainlex_path)
+        if not dry_run:
+            open(mainlex_path, 'w').write(_dedent("""
+                # UDL for %(lang)s
+                
+                language %(lang)s
+                
+                #...
+                """ % locals()).lstrip())
+
+    # Create components/ko${lang}_UDL_Language.py
+    lang_svc_path = normpath(join(base_dir, "components",
+                                  "ko%s_UDL_Language.py" % safe_lang))
+    if exists(lang_svc_path):
+        log.warn("`%s' exists (skipping)", lang_svc_path)
+    else:
+        guid = uuid.uuid4()
+        if ext is None:
+            default_ext_assign = ""
+        else:
+            if not ext.startswith('.'):
+                log.warn("extension for %s, %r, does not being with a '.': "
+                         "that might cause problems" % (lang, ext))
+            default_ext_assign = "defaultExtension = %r" % ext
+        if is_xml_based:
+            base_module = "koXMLLanguageBase"
+            base_class = "koXMLLanguageBase"
+            lang_from_udl_family = {'M': 'XML'}
+        elif is_html_based:
+            base_module = "koXMLLanguageBase"
+            base_class = "koHTMLLanguageBase"
+            lang_from_udl_family = {'M': 'HTML'}
+        else:
+            base_module = "koUDLLanguageBase"
+            base_class = "KoUDLLanguage"
+            lang_from_udl_family = {}
+    
+        lang_svc = _dedent("""
+            # Komodo %(lang)s language service.
+            
+            import logging
+            from %(base_module)s import %(base_class)s
+    
+    
+            log = logging.getLogger("ko%(safe_lang)sLanguage")
+            #log.setLevel(logging.DEBUG)
+    
+    
+            def registerLanguage(registry):
+                log.debug("Registering language %(lang)s")
+                registry.registerLanguage(Ko%(safe_lang)sLanguage())
+    
+    
+            class Ko%(safe_lang)sLanguage(%(base_class)s):
+                name = "%(lang)s"
+                lexresLangName = "%(safe_lang)s"
+                _reg_desc_ = "%%s Language" %% name
+                _reg_contractid_ = "@activestate.com/koLanguage?language=%%s;1" %% name
+                _reg_clsid_ = "%(guid)s"
+                %(default_ext_assign)s
+            
+                #TODO: Update 'lang_from_udl_family' as appropriate for your
+                #      lexer definition. There are four UDL language families:
+                #           M (markup), i.e. HTML or XML
+                #           CSL (client-side language), e.g. JavaScript
+                #           SSL (server-side language), e.g. Perl, PHP, Python
+                #           TPL (template language), e.g. RHTML, Django, Smarty
+                #      'lang_from_udl_family' maps each UDL family code (M,
+                #      CSL, ...) to the sub-langauge name in your language.
+                #      Some examples:
+                #        lang_from_udl_family = {   # A PHP file can contain
+                #           'M': 'HTML',            #   HTML
+                #           'SSL': 'PHP',           #   PHP
+                #           'CSL': 'JavaScript',    #   JavaScript
+                #        }
+                #        lang_from_udl_family = {   # An RHTML file can contain
+                #           'M': 'HTML',            #   HTML
+                #           'SSL': 'Ruby',          #   Ruby
+                #           'CSL': 'JavaScript',    #   JavaScript
+                #           'TPL': 'RHTML',         #   RHTML template code
+                #        }
+                #        lang_from_udl_family = {   # A plain XML can just contain
+                #           'M': 'XML',             #   XML
+                #        }
+                lang_from_udl_family = %(lang_from_udl_family)r
+            """ % locals()).lstrip()
+    
+        if not dry_run and not exists(dirname(lang_svc_path)):
+            _mkdir(dirname(lang_svc_path), log.debug)
+        log.info("create %s (language service)", lang_svc_path)
+        if not dry_run:
+            open(lang_svc_path, 'w').write(lang_svc)
+
+    # Create templates.
+    if not ext:
+        log.warn("no file extension given for %s: skipping generation "
+                 "of 'New File' templates" % lang)
+    else:
+        tpl_paths = [
+            normpath(join(base_dir, "templates", "All Languages", safe_lang+ext)),
+            normpath(join(base_dir, "templates", "Common", safe_lang+ext)),
+        ]
+        for tpl_path in tpl_paths:
+            if exists(tpl_path):
+                log.warn("`%s' exists (skipping)", tpl_path)
+                continue
+            if not dry_run and not exists(dirname(tpl_path)):
+                _mkdir(dirname(tpl_path), log.debug)
+            log.info("create %s ('New File' template)", tpl_path)
+            if not dry_run:
+                open(tpl_path, 'w').write('')
+
+
+</t>
+<t tx="ekr.20080121134847.70">def create_codeintel_lang_skel(base_dir, lang, dry_run=False, force=False,
+                               log=None):
+    """Create the skeleton files for Code Intelligence support for a
+    new language.
+    
+    "New" here means a language for which Komodo has no current Code
+    Intelligence support.
+    """
+    if log is None: log = _log
+    if not is_ext_dir(base_dir):
+        raise KoExtError("`%s' isn't an extension source dir: there is no "
+                         "'install.rdf' file (run `koext startext' first)"
+                         % base_dir)
+
+    ko_info = KomodoInfo()
+    safe_lang = _code_safe_lang_from_lang(lang)
+    log.debug("safe lang: %r", safe_lang)
+
+    # Create codeintel/lang_${lang}.py
+    lang_path = normpath(join(base_dir, "pylib",
+                              "lang_%s.py" % safe_lang.lower()))
+    if exists(lang_path) and not force:
+        log.warn("`%s' exists (skipping, use --force to override)",
+                 lang_path)
+    else:
+        if not dry_run and not exists(dirname(lang_path)):
+            _mkdir(dirname(lang_path), log.debug)
+        log.info("create %s (codeintel language master)", lang_path)
+        if not dry_run:
+            template_path = join(ko_info.sdk_dir, "share",
+                                 "lang_LANG.py")
+            import string
+            template = string.Template(open(template_path).read())
+            content = template.safe_substitute(
+                {"lang": lang,
+                 "safe_lang": safe_lang,
+                 "safe_lang_lower": safe_lang.lower(),
+                 "safe_lang_upper": safe_lang.upper()})
+            open(lang_path, 'w').write(content)
+
+    # Create codeintel/cile_${lang}.py
+    cile_path = normpath(join(base_dir, "pylib",
+                              "cile_%s.py" % safe_lang.lower()))
+    if exists(cile_path) and not force:
+        log.warn("`%s' exists (skipping, use --force to override)",
+                 cile_path)
+    else:
+        if not dry_run and not exists(dirname(cile_path)):
+            _mkdir(dirname(cile_path), log.debug)
+        log.info("create %s (codeintel language scanner)", cile_path)
+        if not dry_run:
+            template_path = join(ko_info.sdk_dir, "share",
+                                 "cile_LANG.py")
+            import string
+            template = string.Template(open(template_path).read())
+            content = template.safe_substitute(
+                {"lang": lang,
+                 "safe_lang": safe_lang,
+                 "safe_lang_lower": safe_lang.lower(),
+                 "safe_lang_upper": safe_lang.upper()})
+            open(cile_path, 'w').write(content)
+
+
+
+</t>
+<t tx="ekr.20080121134847.71">def build_ext(base_dir, log=None):
+    """Build a Komodo extension from the sources in the given dir.
+    
+    This reads the "install.rdf" in this directory and the appropriate
+    source files to create a Komodo .xpi extension.
+    
+    - Files in "chrome/..." are put into a jar file.
+    - IDL and PyXPCOM components in "components/..." are handled
+      appropriately.
+    - etc. (see `koext help hooks' for more details)
+    """
+    if log is None: log = _log
+    if not is_ext_dir(base_dir):
+        raise KoExtError("`%s' isn't an extension source dir: there is no "
+                         "'install.rdf' file (run `koext startext' first)"
+                         % base_dir)
+
+    build_dir = normpath(join(base_dir, "build"))
+    if exists(build_dir):
+        _rm(build_dir, log.info)
+    
+    ext_info = ExtensionInfo(base_dir)
+    ko_info = KomodoInfo()
+    xpi_manifest = ["install.rdf"]
+    
+    # Make the chrome jar.
+    chrome_dirs = [d for d in ("content", "skin", "locale") if isdir(d)]
+    if chrome_dirs:
+        assert exists("chrome.manifest"), \
+            "you have chrome dirs ('%s') but no 'chrome.manifest' file" \
+            % "', '".join(chrome_dirs)
+        jar_build_dir = join(build_dir, "jar")
+        _mkdir(jar_build_dir, log.info)
+        for d in chrome_dirs:
+            _cp(d, join(jar_build_dir, d), log.info)
+        _trim_files_in_dir(jar_build_dir, [".svn", ".hg", "CVS"], log.info)
+        _run_in_dir("zip -r %s.jar *" % ext_info.codename, jar_build_dir,
+                    log.info)
+
+        xpi_manifest += [
+            join(jar_build_dir, ext_info.codename+".jar"),
+            "chrome.manifest",
+        ]
+
+    # Handle any PyXPCOM components and idl.
+    if isdir("components"):
+        components_build_dir = join(build_dir, "components")
+        _mkdir(components_build_dir, log.info)
+        for path in glob(join("components", "*.py")):
+            _cp(path, components_build_dir, log.info)
+        xpi_manifest.append(components_build_dir)
+        
+        idl_build_dir = join(build_dir, "idl")
+        idl_paths = glob(join("components", "*.idl"))
+        if idl_paths:
+            _mkdir(idl_build_dir, log.info)
+            for idl_path in glob(join("components", "*.idl")):
+                _cp(idl_path, idl_build_dir, log.info)
+                xpt_path = join(components_build_dir,
+                    splitext(basename(idl_path))[0] + ".xpt")
+                _xpidl(idl_path, xpt_path, ko_info, log.info)
+            xpi_manifest.append(idl_build_dir)
+
+    # Handle any UDL lexer compilation.
+    lexers_dir = join(build_dir, "lexers")
+    for mainlex_udl_path in glob(join("udl", "*-mainlex.udl")):
+        if not exists(lexers_dir):
+            _mkdir(lexers_dir, log.info)
+        _luddite_compile(mainlex_udl_path, lexers_dir, ko_info)
+    if exists(lexers_dir):
+        xpi_manifest.append(lexers_dir)
+
+    # Remaining hook dirs that are just included verbatim in the XPI.
+    for dname in ("templates", "apicatalogs", "xmlcatalogs", "pylib",
+                  "project-templates"):
+        if isdir(dname):
+            xpi_manifest.append(dname)
+
+    # Handle XML catalogs (**for compatibility with Komodo &lt;=4.2.1**)
+    # Komodo version &lt;=4.2.1 only looked for 'catalog.xml' files for
+    # XML autocomplete in the *top-level* of extension dirs. In Komodo
+    # versions &gt;=4.2.2 this has moved to 'xmlcatalogs/catalog.xml'
+    # (although for a transition period Komodo looks in both areas).
+    if isdir("xmlcatalogs"):
+        for path in glob(join("xmlcatalogs", "*")):
+            xpi_manifest.append(path)
+
+    # Make the xpi.
+    #pprint(xpi_manifest)
+    xpi_build_dir = join(build_dir, "xpi")
+    _mkdir(xpi_build_dir, log.info)
+    for src in xpi_manifest:
+        if isdir(src):
+            _cp(src, join(xpi_build_dir, basename(src)), log.info)
+        else:
+            _cp(src, xpi_build_dir, log.info)
+    _trim_files_in_dir(xpi_build_dir, [".svn", ".hg", "CVS"], log.info)
+    _run_in_dir("zip -r %s *" % ext_info.pkg_name, xpi_build_dir, log.info)
+    _cp(join(xpi_build_dir, ext_info.pkg_name), ext_info.pkg_name, log.info)
+    print "'%s' created." % ext_info.pkg_name
+
+
+
+
+</t>
+<t tx="ekr.20080121134847.72">#---- internal support routines
+
+class KomodoInfo(object):
+    """Information about this Komodo build/installation.
+    
+    This class is meant to hide the details of whether you are working
+    with a Komodo development build or just in the Komodo source tree
+    or with a Komodo installation.
+    """
+    #TODO: Move this a new komodolib.py (or something like that).
+    
+    _where_am_i_cache = None
+    @others
+</t>
+<t tx="ekr.20080121134847.73">@property
+def _where_am_i(self):
+    """This module is running from one of three locations:
+        source      the Komodo source tree
+        build       in the Komodo/Mozilla $MOZ_OBJDIR tree
+        install     in a Komodo installation (in the "SDK" area)
+    """
+    if self._where_am_i_cache is not None:
+        return self._where_am_i_cache
+    
+    # from: src/sdk/pylib/koextlib.py
+    #   to: Blackfile.py
+    up_3_dir = dirname(dirname(dirname(dirname(abspath(__file__)))))
+    if exists(join(up_3_dir, "Blackfile.py")):
+        self._where_am_i_cache = "source"
+        return "source"
+
+    # from: .../dist/komodo-bits/sdk/pylib/koextlib.py
+    #   to: .../dist/bin
+    if exists(join(up_3_dir, "bin", "is_dev_tree.txt")):
+        self._where_am_i_cache = "build"
+        return "build"
+
+    if sys.platform == "darwin":
+        # from: .../Contents/SharedSupport/sdk/pylib/koextlib.py
+        #   to: .../Contents/MacOS/komodo
+        komodo_path = join(up_3_dir, "MacOS", "komodo")
+    elif sys.platform == "win32":
+        # from: ...\lib\sdk\pylib\koextlib.py
+        #   to: ...\komodo.exe
+        komodo_path = join(up_3_dir, "komodo.exe")
+    else:
+        # from: .../lib/sdk/pylib/koextlib.py
+        #   to: .../bin/komodo
+        komodo_path = join(up_3_dir, "bin", "komodo")
+    assert exists(komodo_path)
+    self._where_am_i_cache = "install"
+    return "install"
+
+</t>
+<t tx="ekr.20080121134847.74">@property
+def in_src_tree(self):
+    # DEPRECATED
+    return self._where_am_i == "source"
+
+</t>
+<t tx="ekr.20080121134847.75">@property
+def xpidl_path(self):
+    exe_ext = (".exe" if sys.platform == "win32" else "")
+    return join(self.sdk_dir, "bin", "xpidl"+exe_ext)
+
+</t>
+<t tx="ekr.20080121134847.76">@property
+def sdk_dir(self):
+    return dirname(dirname(abspath(__file__)))
+
+</t>
+<t tx="ekr.20080121134847.77">@property
+def idl_dir(self):
+    return join(self.sdk_dir, "idl")
+
+</t>
+<t tx="ekr.20080121134847.78">@property
+def udl_dir(self):
+    if self._where_am_i == "source":
+        return join(dirname(self.sdk_dir), "udl", "udl")
+    else:
+        return join(self.sdk_dir, "udl")
+
+</t>
+<t tx="ekr.20080121134847.79">def _get_bkconfig_var(self, name):
+    assert self._where_am_i == "source"
+    ko_src_dir = dirname(dirname(dirname(dirname(__file__))))
+    module = _module_from_path(join(ko_src_dir, "bkconfig.py"))
+    return getattr(module, name)
+
+</t>
+<t tx="ekr.20080121134847.80">@property
+def py_lib_dirs(self):
+    return [join(self.moz_bin_dir, "python"),
+            join(self.moz_bin_dir, "python", "komodo")]
+
+</t>
+<t tx="ekr.20080121134847.81">@property
+def moz_bin_dir(self):
+    if self._where_am_i == "source":
+        return self._get_bkconfig_var("mozBin")
+    elif self._where_am_i == "build":
+        up_3_dir = dirname(dirname(dirname(dirname(abspath(__file__)))))
+        if sys.platform == "darwin":
+            # from: .../dist/komodo-bits/sdk/pylib/koextlib.py
+            #   to: .../dist/Komodo.app/Contents/MacOS
+            return join(up_3_dir, "Komodo.app", "Contents", "MacOS")
+        else:
+            # from: .../dist/komodo-bits/sdk/pylib/koextlib.py
+            #   to: .../dist/bin
+            return join(up_3_dir, "bin")
+    else: # self._where_am_i == "install"
+        up_2_dir = dirname(dirname(dirname(abspath(__file__))))
+        if sys.platform == "darwin":
+            # from: .../Contents/SharedSupport/sdk/pylib/koextlib.py
+            #   to: .../Contents/MacOS
+            return join(dirname(up_2_dir), "MacOS")
+        else:
+            # from: .../lib/sdk/pylib/koextlib.py
+            #   to: .../lib/mozilla
+            return join(up_2_dir, "mozilla")
+
+</t>
+<t tx="ekr.20080121134847.82">@property
+def ext_dirs(self):
+    """Generate all extension dirs in this Komodo installation
+    *and* (TODO) for the current user.
+    """
+    # Extensions in the Komodo install tree.
+    base_dir = join(self.moz_bin_dir, "extensions")
+    try:
+        for d in os.listdir(base_dir):
+            yield join(base_dir, d)
+    except EnvironmentError:
+        pass
+    
+    #TODO: Extensions in the user's app data dir.
+
+
+</t>
+<t tx="ekr.20080121134847.83">class ExtensionInfo(object):
+    """Information about this Komodo extension gathered from install.rdf."""
+    @others
+</t>
+<t tx="ekr.20080121134847.84">def __init__(self, base_dir=os.curdir):
+    self.base_dir = base_dir
+    candidates = ["install.p.rdf", "install.rdf"]
+    for name in candidates:
+        path = normpath(join(base_dir, name))
+        if exists(path):
+            self._install_rdf_path = path
+            break
+    else:
+        raise KoExtError("couldn't find any of '%s' for this project"
+                         % "' or '".join(candidates))
+
+</t>
+<t tx="ekr.20080121134847.85">_install_rdf_info_cache = None
+@property
+def _install_rdf_info(self):
+    if self._install_rdf_info_cache is None:
+        info = {}
+        install_rdf = open(self._install_rdf_path, 'r').read()
+        id_pat = re.compile(r'&lt;em:id&gt;(.*?)&lt;/em:id&gt;')
+        info["id"] = id = id_pat.search(install_rdf).group(1)
+        codename_pat = re.compile("(.*?)@(.*?)")
+        try:
+            info["codename"] = codename_pat.search(id).group(1)
+        except AttributeError:
+            raise KoExtError("couldn't extract extension code name from "
+                             "the id, '%s': you must use an id of the "
+                             "form 'name@example.com'" % id)
+        name_pat = re.compile(r'&lt;em:name&gt;(.*?)&lt;/em:name&gt;')
+        info["name"] = name_pat.search(install_rdf).group(1)
+        ver_pat = re.compile(r'&lt;em:version&gt;(.*?)&lt;/em:version&gt;')
+        info["version"] = ver_pat.search(install_rdf).group(1)
+        self._install_rdf_info_cache = info
+    return self._install_rdf_info_cache
+
+</t>
+<t tx="ekr.20080121134847.86">@property
+def name(self):
+    return self._install_rdf_info["name"]
+
+</t>
+<t tx="ekr.20080121134847.87">@property
+def version(self):
+    return self._install_rdf_info["version"]
+
+</t>
+<t tx="ekr.20080121134847.88">@property
+def id(self):
+    return self._install_rdf_info["id"]
+
+</t>
+<t tx="ekr.20080121134847.89">@property
+def codename(self):
+    return self._install_rdf_info["codename"]
+
+</t>
+<t tx="ekr.20080121134847.90">@property
+def pkg_name(self):
+    return "%s-%s-ko.xpi" % (self.codename, self.version)
+
+
+</t>
+<t tx="ekr.20080121134847.91">def _code_safe_lang_from_lang(lang):
+    """Return a language name safe to use in a code identifier for the
+    given language name.
+    
+    Note that a leading number is not escaped.
+    """
+    safe_lang = lang.replace('+', 'P')  # e.g., nicer for C++
+    return re.sub(r'[^-_.\w\d]+', '_', safe_lang)
+
+
+</t>
+<t tx="ekr.20080121134847.92"># Recipe: module_from_path (1.0.1)
+def _module_from_path(path):
+    import imp, os
+    dir = os.path.dirname(path) or os.curdir
+    name = os.path.splitext(os.path.basename(path))[0]
+    iinfo = imp.find_module(name, [dir])
+    return imp.load_module(name, *iinfo)
+
+
+</t>
+<t tx="ekr.20080121134847.93"># Recipe: query_yes_no_quit (1.0)
+def _query_yes_no_quit(question, default="yes"):
+    """Ask a yes/no/quit question via raw_input() and return their answer.
+    
+    "question" is a string that is presented to the user.
+    "default" is the presumed answer if the user just hits &lt;Enter&gt;.
+        It must be "yes" (the default), "no", "quit" or None (meaning
+        an answer is required of the user).
+
+    The "answer" return value is one of "yes", "no" or "quit".
+    """
+    valid = {"yes":"yes",   "y":"yes",    "ye":"yes",
+             "no":"no",     "n":"no",
+             "quit":"quit", "qui":"quit", "qu":"quit", "q":"quit"}
+    if default == None:
+        prompt = " [y/n/q] "
+    elif default == "yes":
+        prompt = " [Y/n/q] "
+    elif default == "no":
+        prompt = " [y/N/q] "
+    elif default == "quit":
+        prompt = " [y/n/Q] "
+    else:
+        raise ValueError("invalid default answer: '%s'" % default)
+
+    while 1:
+        sys.stdout.write(question + prompt)
+        choice = raw_input().lower()
+        if default is not None and choice == '':
+            return default
+        elif choice in valid.keys():
+            return valid[choice]
+        else:
+            sys.stdout.write("Please repond with 'yes', 'no' or 'quit'.\n")
+
+
+</t>
+<t tx="ekr.20080121134847.94"># Recipe: query (1.0)
+def _query(preamble, default=None, prompt="&gt; ", validate=None):
+    """Ask the user a question using raw_input() and looking something
+    like this:
+
+        PREAMBLE
+        Hit &lt;Enter&gt; to use the default, DEFAULT.
+        PROMPT
+        ...validate...
+
+    Arguments:
+        "preamble" is a string to display before the user is prompted
+            (i.e. this is the question).
+        "default" (optional) is a default value.
+        "prompt" (optional) is the prompt string.
+        "validate" (optional) is either a string naming a stock validator:\
+
+                notempty        Ensure the user's answer is not empty.
+                yes-or-no       Ensure the user's answer is 'yes' or 'no'.
+                                ('y', 'n' and any capitalization are
+                                also accepted)
+
+            or a callback function with this signature:
+                validate(answer) -&gt; errmsg
+            It should return None to indicate a valid answer.
+
+            By default no validation is done.
+    """
+    if isinstance(validate, (str, unicode)):
+        if validate == "notempty":
+            def validate_notempty(answer):
+                if not answer:
+                    return "You must enter some non-empty value."
+            validate = validate_notempty
+        elif validate == "yes-or-no":
+            def validate_yes_or_no(answer):
+                if answer.lower() not in ('yes', 'no', 'y', 'n', 'ye'):
+                    return "Please enter 'yes' or 'no'."
+            validate = validate_yes_or_no
+        else:
+            raise ValueError("unknown stock validator: '%s'" % validate)
+    
+    def indented(text, indent=' '*4):
+        lines = text.splitlines(1)
+        return indent + indent.join(lines)
+
+    sys.stdout.write(preamble+'\n')
+    if default:
+        sys.stdout.write("Hit &lt;Enter&gt; to use the default, %r.\n" % default)
+    elif default is not None:
+        default_str = default and repr(default) or '&lt;empty&gt;'
+        sys.stdout.write("Hit &lt;Enter&gt; to leave blank.\n")
+    while True:
+        if True:
+            answer = raw_input(prompt)
+        else:
+            sys.stdout.write(prompt)
+            sys.stdout.flush()
+            answer = sys.stdout.readline()
+        if not answer and default:
+            answer = default
+        if validate is not None:
+            errmsg = validate(answer)
+            if errmsg:
+                sys.stdout.write(errmsg+'\n')
+                continue
+        break
+    return answer
+
+
+</t>
+<t tx="ekr.20080121134847.95"># Recipe: banner (1.0.1)
+def _banner(text, ch='=', length=78):
+    """Return a banner line centering the given text.
+    
+        "text" is the text to show in the banner. None can be given to have
+            no text.
+        "ch" (optional, default '=') is the banner line character (can
+            also be a short string to repeat).
+        "length" (optional, default 78) is the length of banner to make.
+
+    Examples:
+        &gt;&gt;&gt; _banner("Peggy Sue")
+        '================================= Peggy Sue =================================='
+        &gt;&gt;&gt; _banner("Peggy Sue", ch='-', length=50)
+        '------------------- Peggy Sue --------------------'
+        &gt;&gt;&gt; _banner("Pretty pretty pretty pretty Peggy Sue", length=40)
+        'Pretty pretty pretty pretty Peggy Sue'
+    """
+    if text is None:
+        return ch * length
+    elif len(text) + 2 + len(ch)*2 &gt; length:
+        # Not enough space for even one line char (plus space) around text.
+        return text
+    else:
+        remain = length - (len(text) + 2)
+        prefix_len = remain / 2
+        suffix_len = remain - prefix_len
+        if len(ch) == 1:
+            prefix = ch * prefix_len
+            suffix = ch * suffix_len
+        else:
+            prefix = ch * (prefix_len/len(ch)) + ch[:prefix_len%len(ch)]
+            suffix = ch * (suffix_len/len(ch)) + ch[:suffix_len%len(ch)]
+        return prefix + ' ' + text + ' ' + suffix
+
+
+</t>
+<t tx="ekr.20080121134847.96"># Recipe: dedent (0.1.2)
+def _dedentlines(lines, tabsize=8, skip_first_line=False):
+    """_dedentlines(lines, tabsize=8, skip_first_line=False) -&gt; dedented lines
+    
+        "lines" is a list of lines to dedent.
+        "tabsize" is the tab width to use for indent width calculations.
+        "skip_first_line" is a boolean indicating if the first line should
+            be skipped for calculating the indent width and for dedenting.
+            This is sometimes useful for docstrings and similar.
+    
+    Same as dedent() except operates on a sequence of lines. Note: the
+    lines list is modified **in-place**.
+    """
+    DEBUG = False
+    if DEBUG: 
+        print "dedent: dedent(..., tabsize=%d, skip_first_line=%r)"\
+              % (tabsize, skip_first_line)
+    indents = []
+    margin = None
+    for i, line in enumerate(lines):
+        if i == 0 and skip_first_line: continue
+        indent = 0
+        for ch in line:
+            if ch == ' ':
+                indent += 1
+            elif ch == '\t':
+                indent += tabsize - (indent % tabsize)
+            elif ch in '\r\n':
+                continue # skip all-whitespace lines
+            else:
+                break
+        else:
+            continue # skip all-whitespace lines
+        if DEBUG: print "dedent: indent=%d: %r" % (indent, line)
+        if margin is None:
+            margin = indent
+        else:
+            margin = min(margin, indent)
+    if DEBUG: print "dedent: margin=%r" % margin
+
+    if margin is not None and margin &gt; 0:
+        for i, line in enumerate(lines):
+            if i == 0 and skip_first_line: continue
+            removed = 0
+            for j, ch in enumerate(line):
+                if ch == ' ':
+                    removed += 1
+                elif ch == '\t':
+                    removed += tabsize - (removed % tabsize)
+                elif ch in '\r\n':
+                    if DEBUG: print "dedent: %r: EOL -&gt; strip up to EOL" % line
+                    lines[i] = lines[i][j:]
+                    break
+                else:
+                    raise ValueError("unexpected non-whitespace char %r in "
+                                     "line %r while removing %d-space margin"
+                                     % (ch, line, margin))
+                if DEBUG:
+                    print "dedent: %r: %r -&gt; removed %d/%d"\
+                          % (line, ch, removed, margin)
+                if removed == margin:
+                    lines[i] = lines[i][j+1:]
+                    break
+                elif removed &gt; margin:
+                    lines[i] = ' '*(removed-margin) + lines[i][j+1:]
+                    break
+            else:
+                if removed:
+                    lines[i] = lines[i][removed:]
+    return lines
+
+</t>
+<t tx="ekr.20080121134847.97">def _dedent(text, tabsize=8, skip_first_line=False):
+    """_dedent(text, tabsize=8, skip_first_line=False) -&gt; dedented text
+
+        "text" is the text to dedent.
+        "tabsize" is the tab width to use for indent width calculations.
+        "skip_first_line" is a boolean indicating if the first line should
+            be skipped for calculating the indent width and for dedenting.
+            This is sometimes useful for docstrings and similar.
+    
+    textwrap.dedent(s), but don't expand tabs to spaces
+    """
+    lines = text.splitlines(1)
+    _dedentlines(lines, tabsize=tabsize, skip_first_line=skip_first_line)
+    return ''.join(lines)
+
+
+</t>
+<t tx="ekr.20080121134847.98">def _xpidl(idl_path, xpt_path, ko_info, logstream=None):
+    assert xpt_path.endswith(".xpt")
+    idl_name = splitext(basename(idl_path))[0]
+    xpt_path_sans_ext = splitext(xpt_path)[0]
+    cmd = '"%s" -I "%s" -I "%s" -o %s -m typelib %s' \
+          % (ko_info.xpidl_path, ko_info.idl_dir, dirname(idl_path),
+             xpt_path_sans_ext, idl_path)
+    _run(cmd, logstream)
+
+
+</t>
+<t tx="ekr.20080121134847.99">def _luddite_compile(udl_path, output_dir, ko_info):
+    if ko_info.in_src_tree:
+        sys.path.insert(0, dirname(ko_info.udl_dir))
+        try:
+            from ludditelib.commands import compile
+        finally:
+            del sys.path[0]
+    else:
+        from ludditelib.commands import compile
+    compile(udl_path, output_dir, [ko_info.udl_dir], log=_log)
+
+</t>
+<t tx="ekr.20080121134847.100">def _trim_files_in_dir(dir, patterns, log=None):
+    if log:
+        log("trim '%s' files under '%s'", "', '".join(patterns), dir)
+    from fnmatch import fnmatch
+    for dirpath, dirnames, filenames in os.walk(dir):
+        for d in dirnames[:]:
+            for pat in patterns:
+                if fnmatch(d, pat):
+                    _rmtree(join(dirpath, d))
+                    dirnames.remove(d)
+                    break
+        for f in dirnames[:]:
+            for pat in patterns:
+                if fnmatch(f, pat):
+                    os.remove(join(dirpath, f))
+                    break
+
+</t>
+<t tx="ekr.20080121134847.101"># Recipe: rmtree (0.5)
+def _rmtree_OnError(rmFunction, filePath, excInfo):
+    if excInfo[0] == OSError:
+        # presuming because file is read-only
+        os.chmod(filePath, 0777)
+        rmFunction(filePath)
+</t>
+<t tx="ekr.20080121134847.102">def _rmtree(dirname):
+    import shutil
+    shutil.rmtree(dirname, 0, _rmtree_OnError)
+
+</t>
+<t tx="ekr.20080121134847.103"># Recipe: run (0.5.3)
+_RUN_DEFAULT_LOGSTREAM = ("RUN", "DEFAULT", "LOGSTREAM")
+def __run_log(logstream, msg, *args, **kwargs):
+    if not logstream:
+        pass
+    elif logstream is _RUN_DEFAULT_LOGSTREAM:
+        try:
+            log
+        except NameError:
+            pass
+        else:
+            if hasattr(log, "debug"):
+                log.debug(msg, *args, **kwargs)
+    else:
+        logstream(msg, *args, **kwargs)
+
+</t>
+<t tx="ekr.20080121134847.104">def _run(cmd, logstream=_RUN_DEFAULT_LOGSTREAM):
+    """Run the given command.
+
+        "cmd" is the command to run
+        "logstream" is an optional logging stream on which to log the 
+            command. If None, no logging is done. If unspecifed, this 
+            looks for a Logger instance named 'log' and logs the command 
+            on log.debug().
+
+    Raises OSError is the command returns a non-zero exit status.
+    """
+    __run_log(logstream, "running '%s'", cmd)
+    fixed_cmd = cmd
+    if sys.platform == "win32" and cmd.count('"') &gt; 2:
+        fixed_cmd = '"' + cmd + '"'
+    retval = os.system(fixed_cmd)
+    if hasattr(os, "WEXITSTATUS"):
+        status = os.WEXITSTATUS(retval)
+    else:
+        status = retval
+    if status:
+        #TODO: add std OSError attributes or pick more approp. exception
+        raise OSError("error running '%s': %r" % (cmd, status))
+
+</t>
+<t tx="ekr.20080121134847.105">def _run_in_dir(cmd, cwd, logstream=_RUN_DEFAULT_LOGSTREAM):
+    """Run the given command in the given working directory.
+
+        "cmd" is the command to run
+        "cwd" is the directory in which the commmand is run.
+        "logstream" is an optional logging stream on which to log the 
+            command. If None, no logging is done. If unspecifed, this 
+            looks for a Logger instance named 'log' and logs the command 
+            on log.debug().
+
+    Raises OSError is the command returns a non-zero exit status.
+    """
+    old_dir = os.getcwd()
+    try:
+        os.chdir(cwd)
+        __run_log(logstream, "running '%s' in '%s'", cmd, cwd)
+        _run(cmd, logstream=None)
+    finally:
+        os.chdir(old_dir)
+
+</t>
+<t tx="ekr.20080121134847.106">def _rm(path, logstream=None):
+    """My little lame cross-platform 'rm -rf'"""
+    assert ' ' not in path,\
+        "_rm: can't handle paths in spaces: '%s'" % path
+    if sys.platform == "win32":
+        path = path.replace("/", "\\")
+        assert "*" not in path and "?" not in path,\
+            "_rm on win32: can't yet handle wildcards: '%s'" % path
+        if not exists(path):
+            pass
+        elif isdir(path):
+            _run("rd /s/q %s" % path, logstream=logstream)
+        else:
+            if not os.access(path, os.W_OK):
+                _run("attrib -R %s" % path, logstream=logstream)
+            _run("del /q %s" % path, logstream=logstream)
+    else:
+        _run("rm -rf %s" % path, logstream=logstream)
+
+</t>
+<t tx="ekr.20080121134847.107">def _mv(src, dest, logstream=None):
+    """My little lame cross-platform 'mv'"""
+    assert ' ' not in src and ' ' not in dest,\
+        "_mv: can't handle paths in spaces: src=%r, dest=%r" % (src, dest)
+    if sys.platform == "win32":
+        _run("move %s %s" % (src, dest), logstream=logstream)
+    else:
+        _run("mv %s %s" % (src, dest), logstream=logstream)
+
+</t>
+<t tx="ekr.20080121134847.108">def _cp(src, dest, logstream=None):
+    """My little lame cross-platform 'cp'"""
+    assert ' ' not in src and ' ' not in dest,\
+        "_cp: can't handle paths in spaces: src=%r, dest=%r" % (src, dest)
+    if sys.platform == "win32":
+        src = src.replace("/", "\\")
+        dest = dest.replace("/", "\\")
+        if isdir(src):
+            _run("xcopy /e/i/y/q %s %s" % (src, dest), logstream=logstream)
+        else:
+            _run("copy /y %s %s" % (src, dest), logstream=logstream)
+    else:
+        if isdir(src):
+            _run("cp -R %s %s" % (src, dest), logstream=logstream)
+        else:
+            _run("cp %s %s" % (src, dest), logstream=logstream)
+
+</t>
+<t tx="ekr.20080121134847.109">def _mkdir(dir, logstream=None):
+    """My little lame cross-platform 'mkdir -p'"""
+    if exists(dir): return
+    if logstream:
+        logstream("mkdir %s" % dir)
+    os.makedirs(dir)
+
+
+</t>
+<t tx="ekr.20080121134949"></t>
+<t tx="ekr.20080121134949.1">@language python
+@tabwidth -4
+@others
+</t>
+<t tx="ekr.20080121134949.2">@language python
+@tabwidth -4
+@others
+</t>
+<t tx="ekr.20080121134949.3">@language python
+@tabwidth -4
+@others
+</t>
+<t tx="ekr.20080121134949.4">@language python
+@tabwidth -4
+@others
+</t>
+<t tx="ekr.20080121134949.5">@language python
+@tabwidth -4
+@others
+</t>
+<t tx="ekr.20080121134949.6">@language python
+@tabwidth -4
+@others
+@ignore # &lt;&lt;keyword_style CSS_IDENTIFIER =&gt; CSS_WORD&gt;&gt; causes problems.</t>
+<t tx="ekr.20080121134949.7">@language python
+@tabwidth -4
+@others
+@ignore</t>
+<t tx="ekr.20080121134949.8">@language python
+@tabwidth -4
+@others
+if __name__ == "__main__":
+    import sys
+    sys.exit(main(sys.argv))
+</t>
+<t tx="ekr.20080121134949.9">@language python
+@tabwidth -4
+@others
+</t>
+<t tx="ekr.20080121134949.10">@language python
+@tabwidth -4
+@others
+NAMESPACE_DNS = UUID('{6ba7b810-9dad-11d1-80b4-00c04fd430c8}')
+NAMESPACE_URL = UUID('{6ba7b811-9dad-11d1-80b4-00c04fd430c8}')
+NAMESPACE_OID = UUID('{6ba7b812-9dad-11d1-80b4-00c04fd430c8}')
+NAMESPACE_X500 = UUID('{6ba7b814-9dad-11d1-80b4-00c04fd430c8}')
+</t>
+<t tx="ekr.20080121134949.11">@language python
+@tabwidth -4
+@others
+</t>
+<t tx="ekr.20080121134949.12">@language python
+@tabwidth -4
+
+# Intentionally empty. Here just to make this a Python package.
+</t>
+<t tx="ekr.20080121135406">#!/usr/bin/env python
+# Copyright (c) 2002-2007 ActiveState Software Inc.
+# License: MIT (see LICENSE.txt for license details)
+# Author:  Trent Mick
+# Home:    http://trentm.com/projects/cmdln/
+
+"""An improvement on Python's standard cmd.py module.
+
+As with cmd.py, this module provides "a simple framework for writing
+line-oriented command intepreters."  This module provides a 'RawCmdln'
+class that fixes some design flaws in cmd.Cmd, making it more scalable
+and nicer to use for good 'cvs'- or 'svn'-style command line interfaces
+or simple shells.  And it provides a 'Cmdln' class that add
+optparse-based option processing. Basically you use it like this:
+
+    import cmdln
+
+    class MySVN(cmdln.Cmdln):
+        name = "svn"
+
+        @cmdln.alias('stat', 'st')
+        @cmdln.option('-v', '--verbose', action='store_true'
+                      help='print verbose information')
+        def do_status(self, subcmd, opts, *paths):
+            print "handle 'svn status' command"
+
+        #...
+
+    if __name__ == "__main__":
+        shell = MySVN()
+        retval = shell.main()
+        sys.exit(retval)
+
+See the README.txt or &lt;http://trentm.com/projects/cmdln/&gt; for more
+details.
+"""
+
+__revision__ = "$Id$"
+__version_info__ = (1, 0, 1)
+__version__ = '.'.join(map(str, __version_info__))
+
+import os
+import re
+import cmd
+import optparse
+from pprint import pprint
+
+
+
+
+#---- globals
+
+LOOP_ALWAYS, LOOP_NEVER, LOOP_IF_EMPTY = range(3)
+
+# An unspecified optional argument when None is a meaningful value.
+_NOT_SPECIFIED = ("Not", "Specified")
+
+# Pattern to match a TypeError message from a call that
+# failed because of incorrect number of arguments (see
+# Python/getargs.c).
+_INCORRECT_NUM_ARGS_RE = re.compile(
+    r"(takes [\w ]+ )(\d+)( arguments? \()(\d+)( given\))")
+
+
+
+</t>
+<t tx="ekr.20080121135406.1">#---- exceptions
+
+class CmdlnError(Exception):
+    """A cmdln.py usage error."""
+    @others
+</t>
+<t tx="ekr.20080121135406.2">def __init__(self, msg):
+    self.msg = msg
+</t>
+<t tx="ekr.20080121135406.3">def __str__(self):
+    return self.msg
+
+</t>
+<t tx="ekr.20080121135406.4">class CmdlnUserError(Exception):
+    """An error by a user of a cmdln-based tool/shell."""
+    pass
+
+
+
+</t>
+<t tx="ekr.20080121135406.5">#---- public methods and classes
+
+def alias(*aliases):
+    """Decorator to add aliases for Cmdln.do_* command handlers.
+    
+    Example:
+        class MyShell(cmdln.Cmdln):
+            @cmdln.alias("!", "sh")
+            def do_shell(self, argv):
+                #...implement 'shell' command
+    """
+    def decorate(f):
+        if not hasattr(f, "aliases"):
+            f.aliases = []
+        f.aliases += aliases
+        return f
+    return decorate
+
+
+</t>
+<t tx="ekr.20080121135406.6">class RawCmdln(cmd.Cmd):
+    """An improved (on cmd.Cmd) framework for building multi-subcommand
+    scripts (think "svn" &amp; "cvs") and simple shells (think "pdb" and
+    "gdb").
+
+    A simple example:
+
+        import cmdln
+
+        class MySVN(cmdln.RawCmdln):
+            name = "svn"
+
+            @cmdln.aliases('stat', 'st')
+            def do_status(self, argv):
+                print "handle 'svn status' command"
+
+        if __name__ == "__main__":
+            shell = MySVN()
+            retval = shell.main()
+            sys.exit(retval)
+
+    See &lt;http://trentm.com/projects/cmdln&gt; for more information.
+    """
+    name = None      # if unset, defaults basename(sys.argv[0])
+    prompt = None    # if unset, defaults to self.name+"&gt; "
+    version = None   # if set, default top-level options include --version
+
+    # Default messages for some 'help' command error cases.
+    # They are interpolated with one arg: the command.
+    nohelp = "no help on '%s'"
+    unknowncmd = "unknown command: '%s'"
+
+    helpindent = '' # string with which to indent help output
+
+    @others
+</t>
+<t tx="ekr.20080121135406.7">def __init__(self, completekey='tab', 
+             stdin=None, stdout=None, stderr=None):
+    """Cmdln(completekey='tab', stdin=None, stdout=None, stderr=None)
+
+    The optional argument 'completekey' is the readline name of a
+    completion key; it defaults to the Tab key. If completekey is
+    not None and the readline module is available, command completion
+    is done automatically.
+    
+    The optional arguments 'stdin', 'stdout' and 'stderr' specify
+    alternate input, output and error output file objects; if not
+    specified, sys.* are used.
+    
+    If 'stdout' but not 'stderr' is specified, stdout is used for
+    error output. This is to provide least surprise for users used
+    to only the 'stdin' and 'stdout' options with cmd.Cmd.
+    """
+    import sys
+    if self.name is None:
+        self.name = os.path.basename(sys.argv[0])
+    if self.prompt is None:
+        self.prompt = self.name+"&gt; "
+    self._name_str = self._str(self.name)
+    self._prompt_str = self._str(self.prompt)
+    if stdin is not None:
+        self.stdin = stdin
+    else:
+        self.stdin = sys.stdin
+    if stdout is not None:
+        self.stdout = stdout
+    else:
+        self.stdout = sys.stdout
+    if stderr is not None:
+        self.stderr = stderr
+    elif stdout is not None:
+        self.stderr = stdout
+    else:
+        self.stderr = sys.stderr
+    self.cmdqueue = []
+    self.completekey = completekey
+    self.cmdlooping = False
+
+</t>
+<t tx="ekr.20080121135406.8">def get_optparser(self):
+    """Hook for subclasses to set the option parser for the
+    top-level command/shell.
+
+    This option parser is used retrieved and used by `.main()' to
+    handle top-level options.
+
+    The default implements a single '-h|--help' option. Sub-classes
+    can return None to have no options at the top-level. Typically
+    an instance of CmdlnOptionParser should be returned.
+    """
+    version = (self.version is not None 
+                and "%s %s" % (self._name_str, self.version)
+                or None)
+    return CmdlnOptionParser(self, version=version)
+
+</t>
+<t tx="ekr.20080121135406.9">def postoptparse(self):
+    """Hook method executed just after `.main()' parses top-level
+    options.
+
+    When called `self.options' holds the results of the option parse.
+    """
+    pass
+
+</t>
+<t tx="ekr.20080121135406.10">def main(self, argv=None, loop=LOOP_NEVER):
+    """A possible mainline handler for a script, like so:
+
+        import cmdln
+        class MyCmd(cmdln.Cmdln):
+            name = "mycmd"
+            ...
+        
+        if __name__ == "__main__":
+            MyCmd().main()
+
+    By default this will use sys.argv to issue a single command to
+    'MyCmd', then exit. The 'loop' argument can be use to control
+    interactive shell behaviour.
+    
+    Arguments:
+        "argv" (optional, default sys.argv) is the command to run.
+            It must be a sequence, where the first element is the
+            command name and subsequent elements the args for that
+            command.
+        "loop" (optional, default LOOP_NEVER) is a constant
+            indicating if a command loop should be started (i.e. an
+            interactive shell). Valid values (constants on this module):
+                LOOP_ALWAYS     start loop and run "argv", if any
+                LOOP_NEVER      run "argv" (or .emptyline()) and exit
+                LOOP_IF_EMPTY   run "argv", if given, and exit;
+                                otherwise, start loop
+    """
+    if argv is None:
+        import sys
+        argv = sys.argv
+    else:
+        argv = argv[:] # don't modify caller's list
+
+    self.optparser = self.get_optparser()
+    if self.optparser: # i.e. optparser=None means don't process for opts
+        try:
+            self.options, args = self.optparser.parse_args(argv[1:])
+        except CmdlnUserError, ex:
+            msg = "%s: %s\nTry '%s help' for info.\n"\
+                  % (self.name, ex, self.name)
+            self.stderr.write(self._str(msg))
+            self.stderr.flush()
+            return 1
+        except StopOptionProcessing, ex:
+            return 0
+    else:
+        self.options, args = None, argv[1:]
+    self.postoptparse()
+
+    if loop == LOOP_ALWAYS:
+        if args:
+            self.cmdqueue.append(args)
+        return self.cmdloop()
+    elif loop == LOOP_NEVER:
+        if args:
+            return self.cmd(args)
+        else:
+            return self.emptyline()
+    elif loop == LOOP_IF_EMPTY:
+        if args:
+            return self.cmd(args)
+        else:
+            return self.cmdloop()
+
+</t>
+<t tx="ekr.20080121135406.11">def cmd(self, argv):
+    """Run one command and exit.
+    
+        "argv" is the arglist for the command to run. argv[0] is the
+            command to run. If argv is an empty list then the
+            'emptyline' handler is run.
+
+    Returns the return value from the command handler.
+    """
+    assert (isinstance(argv, (list, tuple)), 
+            "'argv' is not a sequence: %r" % argv)
+    retval = None
+    try:
+        argv = self.precmd(argv)
+        retval = self.onecmd(argv)
+        self.postcmd(argv)
+    except:
+        if not self.cmdexc(argv):
+            raise
+        retval = 1
+    return retval
+
+</t>
+<t tx="ekr.20080121135406.12">def _str(self, s):
+    """Safely convert the given str/unicode to a string for printing."""
+    try:
+        return str(s)
+    except UnicodeError:
+        #XXX What is the proper encoding to use here? 'utf-8' seems
+        #    to work better than "getdefaultencoding" (usually
+        #    'ascii'), on OS X at least.
+        #import sys
+        #return s.encode(sys.getdefaultencoding(), "replace")
+        return s.encode("utf-8", "replace")
+
+</t>
+<t tx="ekr.20080121135406.13">def cmdloop(self, intro=None):
+    """Repeatedly issue a prompt, accept input, parse into an argv, and
+    dispatch (via .precmd(), .onecmd() and .postcmd()), passing them
+    the argv. In other words, start a shell.
+    
+        "intro" (optional) is a introductory message to print when
+            starting the command loop. This overrides the class
+            "intro" attribute, if any.
+    """
+    self.cmdlooping = True
+    self.preloop()
+    if intro is None:
+        intro = self.intro
+    if intro:
+        intro_str = self._str(intro)
+        self.stdout.write(intro_str+'\n')
+    self.stop = False
+    retval = None
+    while not self.stop:
+        if self.cmdqueue:
+            argv = self.cmdqueue.pop(0)
+            assert (isinstance(argv, (list, tuple)), 
+                    "item on 'cmdqueue' is not a sequence: %r" % argv)
+        else:
+            if self.use_rawinput:
+                try:
+                    line = raw_input(self._prompt_str)
+                except EOFError:
+                    line = 'EOF'
+            else:
+                self.stdout.write(self._prompt_str)
+                self.stdout.flush()
+                line = self.stdin.readline()
+                if not len(line):
+                    line = 'EOF'
+                else:
+                    line = line[:-1] # chop '\n'
+            argv = line2argv(line)
+        try:
+            argv = self.precmd(argv)
+            retval = self.onecmd(argv)
+            self.postcmd(argv)
+        except:
+            if not self.cmdexc(argv):
+                raise
+            retval = 1
+        self.lastretval = retval
+    self.postloop()
+    self.cmdlooping = False
+    return retval
+
+</t>
+<t tx="ekr.20080121135406.14">def precmd(self, argv):
+    """Hook method executed just before the command argv is
+    interpreted, but after the input prompt is generated and issued.
+
+        "argv" is the cmd to run.
+        
+    Returns an argv to run (i.e. this method can modify the command
+    to run).
+    """
+    return argv
+
+</t>
+<t tx="ekr.20080121135406.15">def postcmd(self, argv):
+    """Hook method executed just after a command dispatch is finished.
+    
+        "argv" is the command that was run.
+    """
+    pass
+
+</t>
+<t tx="ekr.20080121135406.16">def cmdexc(self, argv):
+    """Called if an exception is raised in any of precmd(), onecmd(),
+    or postcmd(). If True is returned, the exception is deemed to have
+    been dealt with. Otherwise, the exception is re-raised.
+
+    The default implementation handles CmdlnUserError's, which
+    typically correspond to user error in calling commands (as
+    opposed to programmer error in the design of the script using
+    cmdln.py).
+    """
+    import sys
+    type, exc, traceback = sys.exc_info()
+    if isinstance(exc, CmdlnUserError):
+        msg = "%s %s: %s\nTry '%s help %s' for info.\n"\
+              % (self.name, argv[0], exc, self.name, argv[0])
+        self.stderr.write(self._str(msg))
+        self.stderr.flush()
+        return True
+
+</t>
+<t tx="ekr.20080121135406.17">def onecmd(self, argv):
+    if not argv:
+        return self.emptyline()
+    self.lastcmd = argv
+    cmdname = self._get_canonical_cmd_name(argv[0])
+    if cmdname:
+        handler = self._get_cmd_handler(cmdname)
+        if handler:
+            return self._dispatch_cmd(handler, argv)
+    return self.default(argv)
+
+</t>
+<t tx="ekr.20080121135406.18">def _dispatch_cmd(self, handler, argv):
+    return handler(argv)
+
+</t>
+<t tx="ekr.20080121135406.19">def default(self, argv):
+    """Hook called to handle a command for which there is no handler.
+
+        "argv" is the command and arguments to run.
+    
+    The default implementation writes and error message to stderr
+    and returns an error exit status.
+
+    Returns a numeric command exit status.
+    """
+    errmsg = self._str(self.unknowncmd % (argv[0],))
+    if self.cmdlooping:
+        self.stderr.write(errmsg+"\n")
+    else:
+        self.stderr.write("%s: %s\nTry '%s help' for info.\n"
+                          % (self._name_str, errmsg, self._name_str))
+    self.stderr.flush()
+    return 1
+
+</t>
+<t tx="ekr.20080121135406.20">def parseline(self, line):
+    # This is used by Cmd.complete (readline completer function) to
+    # massage the current line buffer before completion processing.
+    # We override to drop special '!' handling.
+    line = line.strip()
+    if not line:
+        return None, None, line
+    elif line[0] == '?':
+        line = 'help ' + line[1:]
+    i, n = 0, len(line)
+    while i &lt; n and line[i] in self.identchars: i = i+1
+    cmd, arg = line[:i], line[i:].strip()
+    return cmd, arg, line
+
+</t>
+<t tx="ekr.20080121135406.21">def helpdefault(self, cmd, known):
+    """Hook called to handle help on a command for which there is no
+    help handler.
+
+        "cmd" is the command name on which help was requested.
+        "known" is a boolean indicating if this command is known
+            (i.e. if there is a handler for it).
+    
+    Returns a return code.
+    """
+    if known:
+        msg = self._str(self.nohelp % (cmd,))
+        if self.cmdlooping:
+            self.stderr.write(msg + '\n')
+        else:
+            self.stderr.write("%s: %s\n" % (self.name, msg))
+    else:
+        msg = self.unknowncmd % (cmd,)
+        if self.cmdlooping:
+            self.stderr.write(msg + '\n')
+        else:
+            self.stderr.write("%s: %s\n"
+                              "Try '%s help' for info.\n"
+                              % (self.name, msg, self.name))
+    self.stderr.flush()
+    return 1
+
+</t>
+<t tx="ekr.20080121135406.22">def do_help(self, argv):
+    """${cmd_name}: give detailed help on a specific sub-command
+
+    Usage:
+        ${name} help [COMMAND]
+    """
+    if len(argv) &gt; 1: # asking for help on a particular command
+        doc = None
+        cmdname = self._get_canonical_cmd_name(argv[1]) or argv[1]
+        if not cmdname:
+            return self.helpdefault(argv[1], False)
+        else:
+            helpfunc = getattr(self, "help_"+cmdname, None)
+            if helpfunc:
+                doc = helpfunc()
+            else:
+                handler = self._get_cmd_handler(cmdname)
+                if handler:
+                    doc = handler.__doc__
+                if doc is None:
+                    return self.helpdefault(argv[1], handler != None)
+    else: # bare "help" command
+        doc = self.__class__.__doc__  # try class docstring
+        if doc is None:
+            # Try to provide some reasonable useful default help.
+            if self.cmdlooping: prefix = ""
+            else:               prefix = self.name+' '
+            doc = """Usage:
+                %sCOMMAND [ARGS...]
+                %shelp [COMMAND]
+
+            ${option_list}
+            ${command_list}
+            ${help_list}
+            """ % (prefix, prefix)
+        cmdname = None
+
+    if doc: # *do* have help content, massage and print that
+        doc = self._help_reindent(doc)
+        doc = self._help_preprocess(doc, cmdname)
+        doc = doc.rstrip() + '\n' # trim down trailing space
+        self.stdout.write(self._str(doc))
+        self.stdout.flush()
+</t>
+<t tx="ekr.20080121135406.23">do_help.aliases = ["?"]
+
+def _help_reindent(self, help, indent=None):
+    """Hook to re-indent help strings before writing to stdout.
+
+        "help" is the help content to re-indent
+        "indent" is a string with which to indent each line of the
+            help content after normalizing. If unspecified or None
+            then the default is use: the 'self.helpindent' class
+            attribute. By default this is the empty string, i.e.
+            no indentation.
+
+    By default, all common leading whitespace is removed and then
+    the lot is indented by 'self.helpindent'. When calculating the
+    common leading whitespace the first line is ignored -- hence
+    help content for Conan can be written as follows and have the
+    expected indentation:
+
+        def do_crush(self, ...):
+            '''${cmd_name}: crush your enemies, see them driven before you...
+
+            c.f. Conan the Barbarian'''
+    """
+    if indent is None:
+        indent = self.helpindent
+    lines = help.splitlines(0)
+    _dedentlines(lines, skip_first_line=True)
+    lines = [(indent+line).rstrip() for line in lines]
+    return '\n'.join(lines)
+
+</t>
+<t tx="ekr.20080121135406.24">def _help_preprocess(self, help, cmdname):
+    """Hook to preprocess a help string before writing to stdout.
+
+        "help" is the help string to process.
+        "cmdname" is the canonical sub-command name for which help
+            is being given, or None if the help is not specific to a
+            command.
+
+    By default the following template variables are interpolated in
+    help content. (Note: these are similar to Python 2.4's
+    string.Template interpolation but not quite.)
+
+    ${name}
+        The tool's/shell's name, i.e. 'self.name'.
+    ${option_list}
+        A formatted table of options for this shell/tool.
+    ${command_list}
+        A formatted table of available sub-commands.
+    ${help_list}
+        A formatted table of additional help topics (i.e. 'help_*'
+        methods with no matching 'do_*' method).
+    ${cmd_name}
+        The name (and aliases) for this sub-command formatted as:
+        "NAME (ALIAS1, ALIAS2, ...)".
+    ${cmd_usage}
+        A formatted usage block inferred from the command function
+        signature.
+    ${cmd_option_list}
+        A formatted table of options for this sub-command. (This is
+        only available for commands using the optparse integration,
+        i.e.  using @cmdln.option decorators or manually setting the
+        'optparser' attribute on the 'do_*' method.)
+
+    Returns the processed help. 
+    """
+    preprocessors = {
+        "${name}":            self._help_preprocess_name,
+        "${option_list}":     self._help_preprocess_option_list,
+        "${command_list}":    self._help_preprocess_command_list,
+        "${help_list}":       self._help_preprocess_help_list,
+        "${cmd_name}":        self._help_preprocess_cmd_name,
+        "${cmd_usage}":       self._help_preprocess_cmd_usage,
+        "${cmd_option_list}": self._help_preprocess_cmd_option_list,
+    }
+
+    for marker, preprocessor in preprocessors.items():
+        if marker in help:
+            help = preprocessor(help, cmdname)
+    return help
+
+</t>
+<t tx="ekr.20080121135406.25">def _help_preprocess_name(self, help, cmdname=None):
+    return help.replace("${name}", self.name)
+
+</t>
+<t tx="ekr.20080121135406.26">def _help_preprocess_option_list(self, help, cmdname=None):
+    marker = "${option_list}"
+    indent, indent_width = _get_indent(marker, help)
+    suffix = _get_trailing_whitespace(marker, help)
+
+    if self.optparser:
+        # Setup formatting options and format.
+        # - Indentation of 4 is better than optparse default of 2.
+        #   C.f. Damian Conway's discussion of this in Perl Best
+        #   Practices.
+        self.optparser.formatter.indent_increment = 4
+        self.optparser.formatter.current_indent = indent_width
+        block = self.optparser.format_option_help() + '\n'
+    else:
+        block = ""
+        
+    help = help.replace(indent+marker+suffix, block, 1)
+    return help
+
+
+</t>
+<t tx="ekr.20080121135406.27">def _help_preprocess_command_list(self, help, cmdname=None):
+    marker = "${command_list}"
+    indent, indent_width = _get_indent(marker, help)
+    suffix = _get_trailing_whitespace(marker, help)
+
+    # Find any aliases for commands.
+    token2canonical = self._get_canonical_map()
+    aliases = {}
+    for token, cmdname in token2canonical.items():
+        if token == cmdname: continue
+        aliases.setdefault(cmdname, []).append(token)
+
+    # Get the list of (non-hidden) commands and their
+    # documentation, if any.
+    cmdnames = {} # use a dict to strip duplicates
+    for attr in self.get_names():
+        if attr.startswith("do_"):
+            cmdnames[attr[3:]] = True
+    cmdnames = cmdnames.keys()
+    cmdnames.sort()
+    linedata = []
+    for cmdname in cmdnames:
+        if aliases.get(cmdname):
+            a = aliases[cmdname]
+            a.sort()
+            cmdstr = "%s (%s)" % (cmdname, ", ".join(a))
+        else:
+            cmdstr = cmdname
+        doc = None
+        try:
+            helpfunc = getattr(self, 'help_'+cmdname)
+        except AttributeError:
+            handler = self._get_cmd_handler(cmdname)
+            if handler:
+                doc = handler.__doc__
+        else:
+            doc = helpfunc()
+            
+        # Strip "${cmd_name}: " from the start of a command's doc. Best
+        # practice dictates that command help strings begin with this, but
+        # it isn't at all wanted for the command list.
+        to_strip = "${cmd_name}:"
+        if doc and doc.startswith(to_strip):
+            #log.debug("stripping %r from start of %s's help string",
+            #          to_strip, cmdname)
+            doc = doc[len(to_strip):].lstrip()
+        linedata.append( (cmdstr, doc) )
+
+    if linedata:
+        subindent = indent + ' '*4
+        lines = _format_linedata(linedata, subindent, indent_width+4)
+        block = indent + "Commands:\n" \
+                + '\n'.join(lines) + "\n\n"
+        help = help.replace(indent+marker+suffix, block, 1)
+    return help
+
+</t>
+<t tx="ekr.20080121135406.28">def _gen_names_and_attrs(self):
+    # Inheritance says we have to look in class and
+    # base classes; order is not important.
+    names = []
+    classes = [self.__class__]
+    while classes:
+        aclass = classes.pop(0)
+        if aclass.__bases__:
+            classes = classes + list(aclass.__bases__)
+        for name in dir(aclass):
+            yield (name, getattr(aclass, name))
+
+</t>
+<t tx="ekr.20080121135406.29">def _help_preprocess_help_list(self, help, cmdname=None):
+    marker = "${help_list}"
+    indent, indent_width = _get_indent(marker, help)
+    suffix = _get_trailing_whitespace(marker, help)
+
+    # Determine the additional help topics, if any.
+    helpnames = {}
+    token2cmdname = self._get_canonical_map()
+    for attrname, attr in self._gen_names_and_attrs():
+        if not attrname.startswith("help_"): continue
+        helpname = attrname[5:]
+        if helpname not in token2cmdname:
+            helpnames[helpname] = attr
+
+    if helpnames:
+        linedata = [(n, a.__doc__ or "") for n, a in helpnames.items()]
+        linedata.sort()
+
+        subindent = indent + ' '*4
+        lines = _format_linedata(linedata, subindent, indent_width+4)
+        block = (indent
+                + "Additional help topics (run `%s help TOPIC'):\n" % self.name
+                + '\n'.join(lines)
+                + "\n\n")
+    else:
+        block = ''
+    help = help.replace(indent+marker+suffix, block, 1)
+    return help
+
+</t>
+<t tx="ekr.20080121135406.30">def _help_preprocess_cmd_name(self, help, cmdname=None):
+    marker = "${cmd_name}"
+    handler = self._get_cmd_handler(cmdname)
+    if not handler:
+        raise CmdlnError("cannot preprocess '%s' into help string: "
+                         "could not find command handler for %r" 
+                         % (marker, cmdname))
+    s = cmdname
+    if hasattr(handler, "aliases"):
+        s += " (%s)" % (", ".join(handler.aliases))
+    help = help.replace(marker, s)
+    return help
+
+</t>
+<t tx="ekr.20080121135406.31">#TODO: this only makes sense as part of the Cmdln class.
+#      Add hooks to add help preprocessing template vars and put
+#      this one on that class.
+def _help_preprocess_cmd_usage(self, help, cmdname=None):
+    marker = "${cmd_usage}"
+    handler = self._get_cmd_handler(cmdname)
+    if not handler:
+        raise CmdlnError("cannot preprocess '%s' into help string: "
+                         "could not find command handler for %r" 
+                         % (marker, cmdname))
+    indent, indent_width = _get_indent(marker, help)
+    suffix = _get_trailing_whitespace(marker, help)
+
+    # Extract the introspection bits we need.
+    func = handler.im_func
+    if func.func_defaults:
+        func_defaults = list(func.func_defaults)
+    else:
+        func_defaults = []
+    co_argcount = func.func_code.co_argcount
+    co_varnames = func.func_code.co_varnames
+    co_flags = func.func_code.co_flags
+    CO_FLAGS_ARGS = 4
+    CO_FLAGS_KWARGS = 8
+
+    # Adjust argcount for possible *args and **kwargs arguments.
+    argcount = co_argcount
+    if co_flags &amp; CO_FLAGS_ARGS:   argcount += 1
+    if co_flags &amp; CO_FLAGS_KWARGS: argcount += 1
+
+    # Determine the usage string.
+    usage = "%s %s" % (self.name, cmdname)
+    if argcount &lt;= 2:   # handler ::= do_FOO(self, argv)
+        usage += " [ARGS...]"
+    elif argcount &gt;= 3: # handler ::= do_FOO(self, subcmd, opts, ...)
+        argnames = list(co_varnames[3:argcount])
+        tail = ""
+        if co_flags &amp; CO_FLAGS_KWARGS:
+            name = argnames.pop(-1)
+            import warnings
+            # There is no generally accepted mechanism for passing
+            # keyword arguments from the command line. Could
+            # *perhaps* consider: arg=value arg2=value2 ...
+            warnings.warn("argument '**%s' on '%s.%s' command "
+                          "handler will never get values" 
+                          % (name, self.__class__.__name__,
+                             func.func_name))
+        if co_flags &amp; CO_FLAGS_ARGS:
+            name = argnames.pop(-1)
+            tail = "[%s...]" % name.upper()
+        while func_defaults:
+            func_defaults.pop(-1)
+            name = argnames.pop(-1)
+            tail = "[%s%s%s]" % (name.upper(), (tail and ' ' or ''), tail)
+        while argnames:
+            name = argnames.pop(-1)
+            tail = "%s %s" % (name.upper(), tail)
+        usage += ' ' + tail
+
+    block_lines = [
+        self.helpindent + "Usage:",
+        self.helpindent + ' '*4 + usage
+    ]
+    block = '\n'.join(block_lines) + '\n\n'
+
+    help = help.replace(indent+marker+suffix, block, 1)
+    return help
+
+</t>
+<t tx="ekr.20080121135406.32">#TODO: this only makes sense as part of the Cmdln class.
+#      Add hooks to add help preprocessing template vars and put
+#      this one on that class.
+def _help_preprocess_cmd_option_list(self, help, cmdname=None):
+    marker = "${cmd_option_list}"
+    handler = self._get_cmd_handler(cmdname)
+    if not handler:
+        raise CmdlnError("cannot preprocess '%s' into help string: "
+                         "could not find command handler for %r" 
+                         % (marker, cmdname))
+    indent, indent_width = _get_indent(marker, help)
+    suffix = _get_trailing_whitespace(marker, help)
+    if hasattr(handler, "optparser"):
+        # Setup formatting options and format.
+        # - Indentation of 4 is better than optparse default of 2.
+        #   C.f. Damian Conway's discussion of this in Perl Best
+        #   Practices.
+        handler.optparser.formatter.indent_increment = 4
+        handler.optparser.formatter.current_indent = indent_width
+        block = handler.optparser.format_option_help() + '\n'
+    else:
+        block = ""
+
+    help = help.replace(indent+marker+suffix, block, 1)
+    return help
+
+</t>
+<t tx="ekr.20080121135406.33">def _get_canonical_cmd_name(self, token):
+    map = self._get_canonical_map()
+    return map.get(token, None)
+
+</t>
+<t tx="ekr.20080121135406.34">def _get_canonical_map(self):
+    """Return a mapping of available command names and aliases to
+    their canonical command name.
+    """
+    cacheattr = "_token2canonical"
+    if not hasattr(self, cacheattr):
+        # Get the list of commands and their aliases, if any.
+        token2canonical = {}
+        cmd2funcname = {} # use a dict to strip duplicates
+        for attr in self.get_names():
+            if attr.startswith("do_"):    cmdname = attr[3:]
+            elif attr.startswith("_do_"): cmdname = attr[4:]
+            else:
+                continue
+            cmd2funcname[cmdname] = attr
+            token2canonical[cmdname] = cmdname
+        for cmdname, funcname in cmd2funcname.items(): # add aliases
+            func = getattr(self, funcname)
+            aliases = getattr(func, "aliases", [])
+            for alias in aliases:
+                if alias in cmd2funcname:
+                    import warnings
+                    warnings.warn("'%s' alias for '%s' command conflicts "
+                                  "with '%s' handler"
+                                  % (alias, cmdname, cmd2funcname[alias]))
+                    continue
+                token2canonical[alias] = cmdname
+        setattr(self, cacheattr, token2canonical)
+    return getattr(self, cacheattr)
+
+</t>
+<t tx="ekr.20080121135406.35">def _get_cmd_handler(self, cmdname):
+    handler = None
+    try:
+        handler = getattr(self, 'do_' + cmdname)
+    except AttributeError:
+        try:
+            # Private command handlers begin with "_do_".
+            handler = getattr(self, '_do_' + cmdname)
+        except AttributeError:
+            pass
+    return handler
+
+</t>
+<t tx="ekr.20080121135406.36">def _do_EOF(self, argv):
+    # Default EOF handler
+    # Note: an actual EOF is redirected to this command.
+    #TODO: separate name for this. Currently it is available from
+    #      command-line. Is that okay?
+    self.stdout.write('\n')
+    self.stdout.flush()
+    self.stop = True
+
+</t>
+<t tx="ekr.20080121135406.37">def emptyline(self):
+    # Different from cmd.Cmd: don't repeat the last command for an
+    # emptyline.
+    if self.cmdlooping:
+        pass
+    else:
+        return self.do_help(["help"])
+
+
+</t>
+<t tx="ekr.20080121135406.38">#---- optparse.py extension to fix (IMO) some deficiencies
+#
+# See the class _OptionParserEx docstring for details.
+#
+
+class StopOptionProcessing(Exception):
+    """Indicate that option *and argument* processing should stop
+    cleanly. This is not an error condition. It is similar in spirit to
+    StopIteration. This is raised by _OptionParserEx's default "help"
+    and "version" option actions and can be raised by custom option
+    callbacks too.
+    
+    Hence the typical CmdlnOptionParser (a subclass of _OptionParserEx)
+    usage is:
+
+        parser = CmdlnOptionParser(mycmd)
+        parser.add_option("-f", "--force", dest="force")
+        ...
+        try:
+            opts, args = parser.parse_args()
+        except StopOptionProcessing:
+            # normal termination, "--help" was probably given
+            sys.exit(0)
+    """
+
+</t>
+<t tx="ekr.20080121135406.39">class _OptionParserEx(optparse.OptionParser):
+    """An optparse.OptionParser that uses exceptions instead of sys.exit.
+
+    This class is an extension of optparse.OptionParser that differs
+    as follows:
+    - Correct (IMO) the default OptionParser error handling to never
+      sys.exit(). Instead OptParseError exceptions are passed through.
+    - Add the StopOptionProcessing exception (a la StopIteration) to
+      indicate normal termination of option processing.
+      See StopOptionProcessing's docstring for details.
+
+    I'd also like to see the following in the core optparse.py, perhaps
+    as a RawOptionParser which would serve as a base class for the more
+    generally used OptionParser (that works as current):
+    - Remove the implicit addition of the -h|--help and --version
+      options. They can get in the way (e.g. if want '-?' and '-V' for
+      these as well) and it is not hard to do:
+        optparser.add_option("-h", "--help", action="help")
+        optparser.add_option("--version", action="version")
+      These are good practices, just not valid defaults if they can
+      get in the way.
+    """
+    @others
+</t>
+<t tx="ekr.20080121135406.40">def error(self, msg):
+    raise optparse.OptParseError(msg)
+
+</t>
+<t tx="ekr.20080121135406.41">def exit(self, status=0, msg=None):
+    if status == 0:
+        raise StopOptionProcessing(msg)
+    else:
+        #TODO: don't lose status info here
+        raise optparse.OptParseError(msg)
+
+
+
+</t>
+<t tx="ekr.20080121135406.42">#---- optparse.py-based option processing support
+
+class CmdlnOptionParser(_OptionParserEx):
+    """An optparse.OptionParser class more appropriate for top-level
+    Cmdln options. For parsing of sub-command options, see
+    SubCmdOptionParser.
+
+    Changes:
+    - disable_interspersed_args() by default, because a Cmdln instance
+      has sub-commands which may themselves have options.
+    - Redirect print_help() to the Cmdln.do_help() which is better
+      equiped to handle the "help" action.
+    - error() will raise a CmdlnUserError: OptionParse.error() is meant
+      to be called for user errors. Raising a well-known error here can
+      make error handling clearer.
+    - Also see the changes in _OptionParserEx.
+    """
+    @others
+</t>
+<t tx="ekr.20080121135406.43">def __init__(self, cmdln, **kwargs):
+    self.cmdln = cmdln
+    kwargs["prog"] = self.cmdln.name
+    _OptionParserEx.__init__(self, **kwargs)
+    self.disable_interspersed_args()
+
+</t>
+<t tx="ekr.20080121135406.44">def print_help(self, file=None):
+    self.cmdln.onecmd(["help"])
+
+</t>
+<t tx="ekr.20080121135406.45">def error(self, msg):
+    raise CmdlnUserError(msg)
+
+
+</t>
+<t tx="ekr.20080121135406.46">class SubCmdOptionParser(_OptionParserEx):
+    @others
+</t>
+<t tx="ekr.20080121135406.47">def set_cmdln_info(self, cmdln, subcmd):
+    """Called by Cmdln to pass relevant info about itself needed
+    for print_help().
+    """
+    self.cmdln = cmdln
+    self.subcmd = subcmd
+
+</t>
+<t tx="ekr.20080121135406.48">def print_help(self, file=None):
+    self.cmdln.onecmd(["help", self.subcmd])
+
+</t>
+<t tx="ekr.20080121135406.49">def error(self, msg):
+    raise CmdlnUserError(msg)
+
+
+</t>
+<t tx="ekr.20080121135406.50">def option(*args, **kwargs):
+    """Decorator to add an option to the optparser argument of a Cmdln
+    subcommand.
+    
+    Example:
+        class MyShell(cmdln.Cmdln):
+            @cmdln.option("-f", "--force", help="force removal")
+            def do_remove(self, subcmd, opts, *args):
+                #...
+    """
+    #XXX Is there a possible optimization for many options to not have a
+    #    large stack depth here?
+    def decorate(f):
+        if not hasattr(f, "optparser"):
+            f.optparser = SubCmdOptionParser()
+        f.optparser.add_option(*args, **kwargs)
+        return f
+    return decorate
+
+
+</t>
+<t tx="ekr.20080121135406.51">class Cmdln(RawCmdln):
+    """An improved (on cmd.Cmd) framework for building multi-subcommand
+    scripts (think "svn" &amp; "cvs") and simple shells (think "pdb" and
+    "gdb").
+
+    A simple example:
+
+        import cmdln
+
+        class MySVN(cmdln.Cmdln):
+            name = "svn"
+
+            @cmdln.aliases('stat', 'st')
+            @cmdln.option('-v', '--verbose', action='store_true'
+                          help='print verbose information')
+            def do_status(self, subcmd, opts, *paths):
+                print "handle 'svn status' command"
+
+            #...
+
+        if __name__ == "__main__":
+            shell = MySVN()
+            retval = shell.main()
+            sys.exit(retval)
+
+    'Cmdln' extends 'RawCmdln' by providing optparse option processing
+    integration.  See this class' _dispatch_cmd() docstring and
+    &lt;http://trentm.com/projects/cmdln&gt; for more information.
+    """
+    @others
+</t>
+<t tx="ekr.20080121135406.52">def _dispatch_cmd(self, handler, argv):
+    """Introspect sub-command handler signature to determine how to
+    dispatch the command. The raw handler provided by the base
+    'RawCmdln' class is still supported:
+
+        def do_foo(self, argv):
+            # 'argv' is the vector of command line args, argv[0] is
+            # the command name itself (i.e. "foo" or an alias)
+            pass
+
+    In addition, if the handler has more than 2 arguments option
+    processing is automatically done (using optparse):
+
+        @cmdln.option('-v', '--verbose', action='store_true')
+        def do_bar(self, subcmd, opts, *args):
+            # subcmd = &lt;"bar" or an alias&gt;
+            # opts = &lt;an optparse.Values instance&gt;
+            if opts.verbose:
+                print "lots of debugging output..."
+            # args = &lt;tuple of arguments&gt;
+            for arg in args:
+                bar(arg)
+
+    TODO: explain that "*args" can be other signatures as well.
+
+    The `cmdln.option` decorator corresponds to an `add_option()`
+    method call on an `optparse.OptionParser` instance.
+
+    You can declare a specific number of arguments:
+
+        @cmdln.option('-v', '--verbose', action='store_true')
+        def do_bar2(self, subcmd, opts, bar_one, bar_two):
+            #...
+
+    and an appropriate error message will be raised/printed if the
+    command is called with a different number of args.
+    """
+    co_argcount = handler.im_func.func_code.co_argcount
+    if co_argcount == 2:   # handler ::= do_foo(self, argv)
+        return handler(argv)
+    elif co_argcount &gt;= 3: # handler ::= do_foo(self, subcmd, opts, ...)
+        try:
+            optparser = handler.optparser
+        except AttributeError:
+            optparser = handler.im_func.optparser = SubCmdOptionParser()
+        assert isinstance(optparser, SubCmdOptionParser)
+        optparser.set_cmdln_info(self, argv[0])
+        try:
+            opts, args = optparser.parse_args(argv[1:])
+        except StopOptionProcessing:
+            #TODO: this doesn't really fly for a replacement of
+            #      optparse.py behaviour, does it?
+            return 0 # Normal command termination
+
+        try:
+            return handler(argv[0], opts, *args)
+        except TypeError, ex:
+            # Some TypeError's are user errors:
+            #   do_foo() takes at least 4 arguments (3 given)
+            #   do_foo() takes at most 5 arguments (6 given)
+            #   do_foo() takes exactly 5 arguments (6 given)
+            # Raise CmdlnUserError for these with a suitably
+            # massaged error message.
+            import sys
+            tb = sys.exc_info()[2] # the traceback object
+            if tb.tb_next is not None:
+                # If the traceback is more than one level deep, then the
+                # TypeError do *not* happen on the "handler(...)" call
+                # above. In that we don't want to handle it specially
+                # here: it would falsely mask deeper code errors.
+                raise
+            msg = ex.args[0]
+            match = _INCORRECT_NUM_ARGS_RE.search(msg)
+            if match:
+                msg = list(match.groups())
+                msg[1] = int(msg[1]) - 3
+                if msg[1] == 1:
+                    msg[2] = msg[2].replace("arguments", "argument")
+                msg[3] = int(msg[3]) - 3
+                msg = ''.join(map(str, msg))
+                raise CmdlnUserError(msg)
+            else:
+                raise
+    else:
+        raise CmdlnError("incorrect argcount for %s(): takes %d, must "
+                         "take 2 for 'argv' signature or 3+ for 'opts' "
+                         "signature" % (handler.__name__, co_argcount))
+    
+
+
+</t>
+<t tx="ekr.20080121135406.53">#---- internal support functions
+
+def _format_linedata(linedata, indent, indent_width):
+    """Format specific linedata into a pleasant layout.
+    
+        "linedata" is a list of 2-tuples of the form:
+            (&lt;item-display-string&gt;, &lt;item-docstring&gt;)
+        "indent" is a string to use for one level of indentation
+        "indent_width" is a number of columns by which the
+            formatted data will be indented when printed.
+
+    The &lt;item-display-string&gt; column is held to 15 columns.
+    """
+    lines = []
+    WIDTH = 78 - indent_width
+    SPACING = 2
+    NAME_WIDTH_LOWER_BOUND = 13
+    NAME_WIDTH_UPPER_BOUND = 16
+    NAME_WIDTH = max([len(s) for s,d in linedata])
+    if NAME_WIDTH &lt; NAME_WIDTH_LOWER_BOUND:
+        NAME_WIDTH = NAME_WIDTH_LOWER_BOUND
+    else:
+        NAME_WIDTH = NAME_WIDTH_UPPER_BOUND
+
+    DOC_WIDTH = WIDTH - NAME_WIDTH - SPACING
+    for namestr, doc in linedata:
+        line = indent + namestr
+        if len(namestr) &lt;= NAME_WIDTH:
+            line += ' ' * (NAME_WIDTH + SPACING - len(namestr))
+        else:
+            lines.append(line)
+            line = indent + ' ' * (NAME_WIDTH + SPACING)
+        line += _summarize_doc(doc, DOC_WIDTH)
+        lines.append(line.rstrip())
+    return lines
+
+</t>
+<t tx="ekr.20080121135406.54">def _summarize_doc(doc, length=60):
+    r"""Parse out a short one line summary from the given doclines.
+    
+        "doc" is the doc string to summarize.
+        "length" is the max length for the summary
+
+    &gt;&gt;&gt; _summarize_doc("this function does this")
+    'this function does this'
+    &gt;&gt;&gt; _summarize_doc("this function does this", 10)
+    'this fu...'
+    &gt;&gt;&gt; _summarize_doc("this function does this\nand that")
+    'this function does this and that'
+    &gt;&gt;&gt; _summarize_doc("this function does this\n\nand that")
+    'this function does this'
+    """
+    import re
+    if doc is None:
+        return ""
+    assert length &gt; 3, "length &lt;= 3 is absurdly short for a doc summary"
+    doclines = doc.strip().splitlines(0)
+    if not doclines:
+        return ""
+
+    summlines = []
+    for i, line in enumerate(doclines):
+        stripped = line.strip()
+        if not stripped:
+            break
+        summlines.append(stripped)
+        if len(''.join(summlines)) &gt;= length:
+            break
+
+    summary = ' '.join(summlines)
+    if len(summary) &gt; length:
+        summary = summary[:length-3] + "..." 
+    return summary
+
+
+</t>
+<t tx="ekr.20080121135406.55">def line2argv(line):
+    r"""Parse the given line into an argument vector.
+    
+        "line" is the line of input to parse.
+
+    This may get niggly when dealing with quoting and escaping. The
+    current state of this parsing may not be completely thorough/correct
+    in this respect.
+    
+    &gt;&gt;&gt; from cmdln import line2argv
+    &gt;&gt;&gt; line2argv("foo")
+    ['foo']
+    &gt;&gt;&gt; line2argv("foo bar")
+    ['foo', 'bar']
+    &gt;&gt;&gt; line2argv("foo bar ")
+    ['foo', 'bar']
+    &gt;&gt;&gt; line2argv(" foo bar")
+    ['foo', 'bar']
+
+    Quote handling:
+    
+    &gt;&gt;&gt; line2argv("'foo bar'")
+    ['foo bar']
+    &gt;&gt;&gt; line2argv('"foo bar"')
+    ['foo bar']
+    &gt;&gt;&gt; line2argv(r'"foo\"bar"')
+    ['foo"bar']
+    &gt;&gt;&gt; line2argv("'foo bar' spam")
+    ['foo bar', 'spam']
+    &gt;&gt;&gt; line2argv("'foo 'bar spam")
+    ['foo bar', 'spam']
+    &gt;&gt;&gt; line2argv("'foo")
+    Traceback (most recent call last):
+        ...
+    ValueError: command line is not terminated: unfinished single-quoted segment
+    &gt;&gt;&gt; line2argv('"foo')
+    Traceback (most recent call last):
+        ...
+    ValueError: command line is not terminated: unfinished double-quoted segment
+    &gt;&gt;&gt; line2argv('some\tsimple\ttests')
+    ['some', 'simple', 'tests']
+    &gt;&gt;&gt; line2argv('a "more complex" test')
+    ['a', 'more complex', 'test']
+    &gt;&gt;&gt; line2argv('a more="complex test of " quotes')
+    ['a', 'more=complex test of ', 'quotes']
+    &gt;&gt;&gt; line2argv('a more" complex test of " quotes')
+    ['a', 'more complex test of ', 'quotes']
+    &gt;&gt;&gt; line2argv('an "embedded \\"quote\\""')
+    ['an', 'embedded "quote"']
+    """
+    import string
+    line = line.strip()
+    argv = []
+    state = "default"
+    arg = None  # the current argument being parsed
+    i = -1
+    while 1:
+        i += 1
+        if i &gt;= len(line): break
+        ch = line[i]
+
+        if ch == "\\": # escaped char always added to arg, regardless of state
+            if arg is None: arg = ""
+            i += 1
+            arg += line[i]
+            continue
+
+        if state == "single-quoted":
+            if ch == "'":
+                state = "default"
+            else:
+                arg += ch
+        elif state == "double-quoted":
+            if ch == '"':
+                state = "default"
+            else:
+                arg += ch
+        elif state == "default":
+            if ch == '"':
+                if arg is None: arg = ""
+                state = "double-quoted"
+            elif ch == "'":
+                if arg is None: arg = ""
+                state = "single-quoted"
+            elif ch in string.whitespace:
+                if arg is not None:
+                    argv.append(arg)
+                arg = None
+            else:
+                if arg is None: arg = ""
+                arg += ch
+    if arg is not None:
+        argv.append(arg)
+    if state != "default":
+        raise ValueError("command line is not terminated: unfinished %s "
+                         "segment" % state)
+    return argv
+
+
+</t>
+<t tx="ekr.20080121135406.56">def argv2line(argv):
+    r"""Put together the given argument vector into a command line.
+    
+        "argv" is the argument vector to process.
+    
+    &gt;&gt;&gt; from cmdln import argv2line
+    &gt;&gt;&gt; argv2line(['foo'])
+    'foo'
+    &gt;&gt;&gt; argv2line(['foo', 'bar'])
+    'foo bar'
+    &gt;&gt;&gt; argv2line(['foo', 'bar baz'])
+    'foo "bar baz"'
+    &gt;&gt;&gt; argv2line(['foo"bar'])
+    'foo"bar'
+    &gt;&gt;&gt; print argv2line(['foo" bar'])
+    'foo" bar'
+    &gt;&gt;&gt; print argv2line(["foo' bar"])
+    "foo' bar"
+    &gt;&gt;&gt; argv2line(["foo'bar"])
+    "foo'bar"
+    """
+    escapedArgs = []
+    for arg in argv:
+        if ' ' in arg and '"' not in arg:
+            arg = '"'+arg+'"'
+        elif ' ' in arg and "'" not in arg:
+            arg = "'"+arg+"'"
+        elif ' ' in arg:
+            arg = arg.replace('"', r'\"')
+            arg = '"'+arg+'"'
+        escapedArgs.append(arg)
+    return ' '.join(escapedArgs)
+
+
+</t>
+<t tx="ekr.20080121135406.57"># Recipe: dedent (0.1) in /Users/trentm/tm/recipes/cookbook
+def _dedentlines(lines, tabsize=8, skip_first_line=False):
+    """_dedentlines(lines, tabsize=8, skip_first_line=False) -&gt; dedented lines
+    
+        "lines" is a list of lines to dedent.
+        "tabsize" is the tab width to use for indent width calculations.
+        "skip_first_line" is a boolean indicating if the first line should
+            be skipped for calculating the indent width and for dedenting.
+            This is sometimes useful for docstrings and similar.
+    
+    Same as dedent() except operates on a sequence of lines. Note: the
+    lines list is modified **in-place**.
+    """
+    DEBUG = False
+    if DEBUG: 
+        print "dedent: dedent(..., tabsize=%d, skip_first_line=%r)"\
+              % (tabsize, skip_first_line)
+    indents = []
+    margin = None
+    for i, line in enumerate(lines):
+        if i == 0 and skip_first_line: continue
+        indent = 0
+        for ch in line:
+            if ch == ' ':
+                indent += 1
+            elif ch == '\t':
+                indent += tabsize - (indent % tabsize)
+            elif ch in '\r\n':
+                continue # skip all-whitespace lines
+            else:
+                break
+        else:
+            continue # skip all-whitespace lines
+        if DEBUG: print "dedent: indent=%d: %r" % (indent, line)
+        if margin is None:
+            margin = indent
+        else:
+            margin = min(margin, indent)
+    if DEBUG: print "dedent: margin=%r" % margin
+
+    if margin is not None and margin &gt; 0:
+        for i, line in enumerate(lines):
+            if i == 0 and skip_first_line: continue
+            removed = 0
+            for j, ch in enumerate(line):
+                if ch == ' ':
+                    removed += 1
+                elif ch == '\t':
+                    removed += tabsize - (removed % tabsize)
+                elif ch in '\r\n':
+                    if DEBUG: print "dedent: %r: EOL -&gt; strip up to EOL" % line
+                    lines[i] = lines[i][j:]
+                    break
+                else:
+                    raise ValueError("unexpected non-whitespace char %r in "
+                                     "line %r while removing %d-space margin"
+                                     % (ch, line, margin))
+                if DEBUG:
+                    print "dedent: %r: %r -&gt; removed %d/%d"\
+                          % (line, ch, removed, margin)
+                if removed == margin:
+                    lines[i] = lines[i][j+1:]
+                    break
+                elif removed &gt; margin:
+                    lines[i] = ' '*(removed-margin) + lines[i][j+1:]
+                    break
+    return lines
+
+</t>
+<t tx="ekr.20080121135406.58">def _dedent(text, tabsize=8, skip_first_line=False):
+    """_dedent(text, tabsize=8, skip_first_line=False) -&gt; dedented text
+
+        "text" is the text to dedent.
+        "tabsize" is the tab width to use for indent width calculations.
+        "skip_first_line" is a boolean indicating if the first line should
+            be skipped for calculating the indent width and for dedenting.
+            This is sometimes useful for docstrings and similar.
+    
+    textwrap.dedent(s), but don't expand tabs to spaces
+    """
+    lines = text.splitlines(1)
+    _dedentlines(lines, tabsize=tabsize, skip_first_line=skip_first_line)
+    return ''.join(lines)
+
+
+</t>
+<t tx="ekr.20080121135406.59">def _get_indent(marker, s, tab_width=8):
+    """_get_indent(marker, s, tab_width=8) -&gt;
+        (&lt;indentation-of-'marker'&gt;, &lt;indentation-width&gt;)"""
+    # Figure out how much the marker is indented.
+    INDENT_CHARS = tuple(' \t')
+    start = s.index(marker)
+    i = start
+    while i &gt; 0:
+        if s[i-1] not in INDENT_CHARS:
+            break
+        i -= 1
+    indent = s[i:start]
+    indent_width = 0
+    for ch in indent:
+        if ch == ' ':
+            indent_width += 1
+        elif ch == '\t':
+            indent_width += tab_width - (indent_width % tab_width)
+    return indent, indent_width
+
+</t>
+<t tx="ekr.20080121135406.60">def _get_trailing_whitespace(marker, s):
+    """Return the whitespace content trailing the given 'marker' in string 's',
+    up to and including a newline.
+    """
+    suffix = ''
+    start = s.index(marker) + len(marker)
+    i = start
+    while i &lt; len(s):
+        if s[i] in ' \t':
+            suffix += s[i]
+        elif s[i] in '\r\n':
+            suffix += s[i]
+            if s[i] == '\r' and i+1 &lt; len(s) and s[i+1] == '\n':
+                suffix += s[i+1]
+            break
+        else:
+            break
+        i += 1
+    return suffix
+
+</t>
+<t tx="ekr.20080121135406.61"># ***** LICENSE BLOCK *****
+
+"""Basic luddite commands."""
+
+import os
+from os.path import basename, dirname, join, exists, abspath, splitext
+import logging
+import string
+import re
+
+from ludditelib import parser, gen, constants
+from ludditelib.common import LudditeError, guid_pat, norm_guid, \
+                              generate_guid
+
+_log = logging.getLogger("luddite.commands")
+
+
+</t>
+<t tx="ekr.20080121135406.62">def compile(udl_path, output_dir=None, include_path=None, log=None):
+    """Compile the given .udl file to a Komodo lexer resource.
+    
+    If not given, the output dir will be the same as the input .udl file.
+    The output filename is "${safe_lang}.lexres", where "safe_lang" is a
+    slightly massaged version of the language name defined in the .udl
+    file with the "language" UDL statement.
+    
+    "include_path" is a list of directories from which support .udl files
+    can be included (by default the current dir, the dir of the input .udl
+    file is alway part of the include path).
+    """
+    log = log or _log
+    if output_dir is None:
+        output_dir = dirname(udl_path) or os.curdir
+
+    # Clean up after PLY. It leaves some turds that can break subsequent
+    # parsing if the parser source is changed.
+    turds = ["parser.out", "parsetab.py", "parsetab.pyc"]
+    for turd in turds:
+        if exists(turd):
+            log.debug("remove `%s'", turd)
+            os.remove(turd)
+
+    # Parse and load the UDL definition.
+    log.debug("parse `%s'", udl_path)
+    parse_tree = parse(udl_path, include_path=include_path)
+    if parse_tree is None:
+        raise LudditeError("parse failed");
+    mainObj = gen.MainObj()
+    analyzer = gen.Analyzer(mainObj)
+    analyzer.processTree(parse_tree)
+    mainObj.calcUniqueStates()
+
+    #XXX Grr. Crappy error handling again. This should be changed to
+    #    raise a LudditeError if the semanticCheck fails then just call:
+    #       analyzer.semanticCheck()
+    if analyzer.semanticCheck() is None:
+        return 1
+
+    # Make sure don't trounce files before generating outputs and setup
+    # output dir.
+    lang_name = mainObj.languageName
+    safe_lang_name = mainObj.safeLangName
+    lexres_path = join(output_dir, safe_lang_name+".lexres")
+    log.info("compile `%s' to `%s'", udl_path, lexres_path)
+    if exists(lexres_path):
+        log.debug("rm `%s'", lexres_path)
+        os.remove(lexres_path)
+
+    # Generate all outputs.
+    if not exists(dirname(lexres_path)):
+        os.makedirs(dirname(lexres_path))
+    log.debug("create `%s'", lexres_path)
+    mainObj.dumpAsTable(constants.vals, lexres_path)
+
+
+
+</t>
+<t tx="ekr.20080121135406.63">def deprecated_compile(udl_path, skel=False, guid=None, guid_from_lang=None,
+                       ext=None, force=False, log=None):
+    """Compile the given .udl file to Komodo language resources.
+    
+    DEPRECATED: The 'skel' generation in luddite has been deprecated in
+    favour of the more generic support of the 'koext' tool.
+    
+    One of "guid" or "guid_from_lang" can be given to specify the XPCOM
+    language service GUID. If neither is given then a new one will be
+    generated.
+    """
+    # Dev Notes:
+    # - Compiling builds into build/$languange/... and creates:
+    #       ${language}.lexres                  lexer resource
+    # - If skel is True then also build skeletons for:
+    #       ko${language}_UDL_Language.py       language component
+    #       ${language}.${ext}                  empty Komodo template
+    # - Add support for other options that Eric had in the preceding
+    #   luddite.py?
+    log = log or _log
+    log.debug("compile('%s', ...)", udl_path)
+
+    # Clean up after PLY. It leaves some turds that can break subsequent
+    # parsing if the parser source is changed.
+    turds = ["parser.out", "parsetab.py", "parsetab.pyc"]
+    for turd in turds:
+        if exists(turd):
+            log.debug("remove `%s'", turd)
+            os.remove(turd)
+
+    # Parse and load the UDL definition.
+    parse_tree = parse(udl_path)
+    if parse_tree is None:
+        raise LudditeError("parse failed");
+    mainObj = gen.MainObj()
+    analyzer = gen.Analyzer(mainObj)
+    analyzer.processTree(parse_tree)
+    mainObj.calcUniqueStates()
+
+    #XXX Grr. Crappy error handling again. This should be changed to
+    #    raise a LudditeError if the semanticCheck fails then just call:
+    #       analyzer.semanticCheck()
+    if analyzer.semanticCheck() is None:
+        return 1
+
+    def raise_force_error(path):
+        raise LudditeError("`%s' already exists: use "
+                           "-f|--force option to allow it to be "
+                           "overwritted" % path)
+
+    # Make sure don't trounce files before generating outputs and setup
+    # output dir.
+    lang_name = mainObj.languageName
+    safe_lang_name = mainObj.safeLangName
+    build_dir = _get_build_dir(lang_name)
+    if not exists(build_dir):
+        log.debug("mkdir `%s'", build_dir)
+        os.makedirs(build_dir)
+
+    # Generate all outputs.
+    lexres_path = join(build_dir, "lexers", safe_lang_name+".lexres")
+    if exists(lexres_path):
+        if not force: raise_force_error(lexres_path)
+        log.debug("rm `%s'", lexres_path)
+        os.remove(lexres_path)
+    if not exists(dirname(lexres_path)):
+        os.makedirs(dirname(lexres_path))
+    log.info("create lexres `%s'", lexres_path)
+    mainObj.dumpAsTable(constants.vals, lexres_path)
+
+    if skel:
+        lang_service_path \
+            = join(build_dir, "components", "ko%s_UDL_Language.py" % safe_lang_name)
+        if exists(lang_service_path):
+            if not force: raise_force_error(lang_service_path)
+            log.debug("rm `%s'", lang_service_path)
+            os.remove(lang_service_path)
+        if not exists(dirname(lang_service_path)):
+            os.makedirs(dirname(lang_service_path))
+        log.info("create lang service `%s'", lang_service_path)
+        if guid is not None:
+            assert guid_pat.match(guid)
+            guid = norm_guid(guid)
+        elif guid_from_lang:
+            try:
+                guid = guid_from_lang[mainObj.languageName]
+            except KeyError:
+                raise LudditeError("could not find `%s' in GUIDs text file"
+                                   % mainObj.languageName)
+        else:
+            log.warn("generating new GUID for `%s' language service: it is "
+                     "recommended that you use the -g|--guid option to ensure "
+                     "a constant GUID from build to build",
+                     mainObj.languageName)
+            guid = generate_guid()
+        mainObj.dumpLanguageService(lang_service_path, guid, ext=ext)
+
+        if not ext:
+            log.warn("no file extension was given: no skeleton "
+                     "Komodo templates will be created")
+        else:
+            template_paths = [
+                join(build_dir, "templates", "All Languages",
+                     safe_lang_name+ext),
+                join(build_dir, "templates", "Common", safe_lang_name+ext),
+            ]
+            for template_path in template_paths:
+                if exists(template_path):
+                    if not force: raise_force_error(template_path)
+                    log.debug("rm `%s'", template_path)
+                    os.remove(template_path)
+                if not exists(dirname(template_path)):
+                    os.makedirs(dirname(template_path))
+                log.info("create template `%s'", template_path)
+                mainObj.generateKomodoTemplateFile(template_path)
+
+    # Clean up after PLY. It leaves some turds that can break subsequent
+    # parsing if the parser source is changed.
+    for turd in turds:
+        if exists(turd):
+            log.debug("remove `%s'", turd)
+            os.remove(turd)
+
+
+</t>
+<t tx="ekr.20080121135406.64">def parse(udl_path, include_path=None, log=None):
+    """Parse the given .udl file.
+    
+    PLY (i.e. yacc.py and lex.py) are messy. They leave 'parser.out' and
+    'parsetab.py' turds in the current directory. Attempting to hack around
+    this by cd'ing into the build dir to run. However this breaks the parse
+    for a reason I don't understand. It would be good to fix that at some
+    point.
+    
+    Notes on the above analysis: The 'parser.out' debug file can be
+    suppressed with `yaccdebug = 0` in yacc.py. The 'parsetab.py' file
+    is generated by yacc.py::lr_write_tables() and can be suppressed
+    with the `yacc(..., write_tables=0)` argument. TODO: Try this and
+    see if can remove the above-mentioned hacking around.
+    """
+    log = log or _log
+    log.debug("parse('%s')", udl_path)
+    parse_tree = parser.parse_udl_path(udl_path, include_path=include_path)
+
+    # Ick. This modules uses a global for an error count.
+    if parser.num_errs:
+        raise LudditeError("could not parse '%s': %d error(s)"
+                           % (udl_path, parser.num_errs))
+    return parse_tree
+    
+
+</t>
+<t tx="ekr.20080121135406.65">def deprecated_package(language_name, version=None, creator=None,
+                       name=None, description=None,
+                       id=None, force=False, log=None):
+    """Package the (built) resources for the given languages into a Komodo
+    extension.
+    
+    Note: This is DEPRECATED in favour of the more general Komodo extension
+    packaging support in the "koext" tool (also in the Komodo SDK).
+    
+        "language_name" is the language name for which to build a package.
+            The resources for this language must already have been built via
+            "luddite.py compile ...".
+
+    These arguments are optional, but should be specified:
+        "version" (optional, default "1.0.0") is the version number for this
+            package.
+        "creator" (optional, default "Anonymous Coward") is the name of the
+            person creating/maintaining this package.
+
+    These arguments are optional and it is generally fine to not specify them
+    because they have reasonable defaults:
+        "name" (optional) is the name for the extension.
+        "description" (optional) is a short description of the extension.
+        "id" (optional) is the extension's id -- an internal short string used
+            as a key to identify the extension. It is used in the extension's
+            install path.
+    
+    Dev Notes:
+    - For now packaging requires a 'zip' executable somewhere on the
+      PATH. This *could* be removed (by using Python's zlib) if too
+      burdensome.
+    """
+    log = log or _log
+
+    build_dir = _get_build_dir(language_name)
+    if not exists(build_dir):
+        raise LudditeError("`%s': the build dir does not exist: you must first "
+                           "build the language resources with "
+                           "'luddite compile ...'" % build_dir)
+
+    # Determine package info and create the extension's install.rdf.
+    if name is None:
+        name = language_name + " Language"
+    codename = _codename_from_name(name)
+    if id is None:
+        id = "%s@ActiveState.com" % codename
+    if version is None:
+        version = "1.0.0"
+        log.warn("defaulting 'version' to '%s' (use version option)",
+                 version)
+    #else:
+    #    XXX validate version
+    if description is None:
+        description = "%s language support for Komodo (UDL-based)" % language_name
+    if creator is None:
+        creator = "Anonymous Coward"
+        log.warn("defaulting 'creator' to '%s' (use creator option)", creator)
+
+    install_rdf_in = join(dirname(constants.__file__), "install.rdf.in")
+    log.debug("reading 'install.rdf' template from '%s'", install_rdf_in)
+    install_rdf_template = string.Template(open(install_rdf_in, 'r').read())
+    install_rdf = install_rdf_template.substitute(
+        id=id, name=name, codename=codename, version=version,
+        description=description, creator=creator)
+    install_rdf_path = join(build_dir, "install.rdf")
+    log.info("create `%s'", install_rdf_path)
+    fout = open(install_rdf_path, 'w')
+    fout.write(install_rdf)
+    fout.close()
+
+    # Create the chrome.manifest file, if necessary. (Empty because we don't
+    # install skin, locales or chrome, but should still have it).
+    chrome_manifest_path = join(build_dir, "chrome.manifest")
+    if not exists(chrome_manifest_path):
+        log.info("create `%s'", chrome_manifest_path)
+        fout = open(chrome_manifest_path, 'w')
+        fout.close()
+
+    # Create the xpi.
+    xpi_name = "%s-%s-ko.xpi" % (codename, version)
+    xpi_path = xpi_name # put in top-level dir for now
+    if exists(xpi_path):
+        if not force:
+            raise LudditeError("`%s' exists: use force option to overwrite"
+                               % xpi_path)
+        log.debug("rm `%s'", xpi_path)
+        os.remove(xpi_path)
+    zip_opts = ""
+    if not log.isEnabledFor(logging.DEBUG):
+        zip_opts += "-q"
+    cmd = 'zip -r %s "%s" *' % (zip_opts, abspath(xpi_path))
+    _run_in_dir(cmd, build_dir, log.debug)
+    log.info("`%s' successfully created", xpi_path)
+
+
+
+</t>
+<t tx="ekr.20080121135406.66">#---- internal support
+
+def _get_build_dir(lang):
+    return join("build", lang)
+
+</t>
+<t tx="ekr.20080121135406.67">def _codename_from_name(name):
+    """Transform a Komodo extension name to a "code" name, i.e. one that is
+    safe for use in a filename and an extension id.
+    """
+    return re.sub(r'\W', '_', name.lower())
+
+
+</t>
+<t tx="ekr.20080121135406.68"># Recipe: run (0.5.3) in C:\trentm\tm\recipes\cookbook
+_RUN_DEFAULT_LOGSTREAM = ("RUN", "DEFAULT", "LOGSTREAM")
+def __run_log(logstream, msg, *args, **kwargs):
+    if not logstream:
+        pass
+    elif logstream is _RUN_DEFAULT_LOGSTREAM:
+        try:
+            log
+        except NameError:
+            pass
+        else:
+            if hasattr(log, "debug"):
+                log.debug(msg, *args, **kwargs)
+    else:
+        logstream(msg, *args, **kwargs)
+
+</t>
+<t tx="ekr.20080121135406.69">def _run(cmd, logstream=_RUN_DEFAULT_LOGSTREAM):
+    """Run the given command.
+
+        "cmd" is the command to run
+        "logstream" is an optional logging stream on which to log the 
+            command. If None, no logging is done. If unspecifed, this 
+            looks for a Logger instance named 'log' and logs the command 
+            on log.debug().
+
+    Raises OSError is the command returns a non-zero exit status.
+    """
+    __run_log(logstream, "running '%s'", cmd)
+    retval = os.system(cmd)
+    if hasattr(os, "WEXITSTATUS"):
+        status = os.WEXITSTATUS(retval)
+    else:
+        status = retval
+    if status:
+        #TODO: add std OSError attributes or pick more approp. exception
+        raise OSError("error running '%s': %r" % (cmd, status))
+
+</t>
+<t tx="ekr.20080121135406.70">def _run_in_dir(cmd, cwd, logstream=_RUN_DEFAULT_LOGSTREAM):
+    """Run the given command in the given working directory.
+
+        "cmd" is the command to run
+        "cwd" is the directory in which the commmand is run.
+        "logstream" is an optional logging stream on which to log the 
+            command. If None, no logging is done. If unspecifed, this 
+            looks for a Logger instance named 'log' and logs the command 
+            on log.debug().
+
+    Raises OSError is the command returns a non-zero exit status.
+    """
+    old_dir = os.getcwd()
+    try:
+        os.chdir(cwd)
+        __run_log(logstream, "running '%s' in '%s'", cmd, cwd)
+        _run(cmd, logstream=None)
+    finally:
+        os.chdir(old_dir)</t>
+<t tx="ekr.20080121135406.71"># ***** LICENSE BLOCK *****
+
+"""Shared stuff for ludditelib modules."""
+
+__revision__ = "$Id$"
+__version_info__ = (1, 1, 0)
+__version__ = '.'.join(map(str, __version_info__))
+
+import re
+import sys
+
+
+</t>
+<t tx="ekr.20080121135406.72">class LudditeError(Exception):
+    pass
+
+
+
+</t>
+<t tx="ekr.20080121135406.73">def is_source_tree_layout():
+    """Return True iff this luddite is being run in the Komodo source
+    tree layout.
+    """
+    from os.path import dirname, join, exists, abspath
+    up_one_dir = dirname(dirname(abspath(__file__)))
+    return exists(join(up_one_dir, "luddite.py"))
+    
+
+
+</t>
+<t tx="ekr.20080121135406.74">#---- some GUID support
+# This stuff should be unnecessary when the deprecated "compile" and
+# "package" commands are dropped.
+
+def norm_guid(g):
+    if not g.startswith("{"):
+        g = "{"+g
+    if not g.endswith("}"):
+        g += "}"
+    return g
+
+</t>
+<t tx="ekr.20080121135406.75">guid_pat = re.compile(r"^{?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}"
+                        "-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}}?$")
+
+def generate_guid():
+    """Return a GUID/UUID in the typical
+        {12345678-90ab-cdef-1234-567890abcdef}
+    format (*with* the braces).
+    """
+    try:
+        import uuid
+    except ImportError:
+        from ludditelib import uuid
+    guid = str(uuid.uuid4())
+    return guid
+</t>
+<t tx="ekr.20080121135406.76"># ***** LICENSE BLOCK *****
+
+# Generated on  Mon Sep 11 12:45:29 2006
+#
+# List of constants used by luddite
+
+vals = {   'ASTC_CREATE_NEW_TRAN': 36,
+    'ASTC_CURRENT_FAMILY': 18,
+    'ASTC_EXTENSION': 44,
+    'ASTC_FLIPPER_COUNT': 17,
+    'ASTC_F_COLOR': 14,
+    'ASTC_F_DEFAULT_STATE': 19,
+    'ASTC_F_FLIPPER': 20,
+    'ASTC_F_KEYWORD_STYLE': 22,
+    'ASTC_F_LOOKBACK_TESTS_COUNT': 25,
+    'ASTC_F_LOOKBACK_TESTS_CREATE': 23,
+    'ASTC_F_LOOKBACK_TESTS_INIT': 24,
+    'ASTC_F_OPERATOR': 16,
+    'ASTC_F_STYLE': 15,
+    'ASTC_F_WORDLIST': 21,
+    'ASTC_LANGUAGE_NAME': 13,
+    'ASTC_LBT_ACTION_STYLE': 27,
+    'ASTC_LBT_DEFAULT': 30,
+    'ASTC_LBT_GET': 26,
+    'ASTC_LBT_STRINGS': 28,
+    'ASTC_LBT_TEST': 31,
+    'ASTC_LBT_WORDLIST': 29,
+    'ASTC_META_COMMENTS': 1,
+    'ASTC_META_VERSION_MAJOR': 2,
+    'ASTC_META_VERSION_MINOR': 3,
+    'ASTC_META_VERSION_SUBMINOR': 4,
+    'ASTC_NOP': 0,
+    'ASTC_SCRATCH_BUFFER_APPEND': 12,
+    'ASTC_SCRATCH_BUFFER_START': 11,
+    'ASTC_SUBLANGUAGE_NAME': 43,
+    'ASTC_TBLOCK_APPEND_TRAN': 40,
+    'ASTC_TBLOCK_EMPTY_TRAN': 42,
+    'ASTC_TBLOCK_EOF_TRAN': 41,
+    'ASTC_TRAN_EOL_STATE': 45,
+    'ASTC_TRAN_KEEP_DELIMITER': 47,
+    'ASTC_TRAN_POP_STATE': 39,
+    'ASTC_TRAN_PUSH_STATE': 38,
+    'ASTC_TRAN_SET_DELIMITER': 46,
+    'ASTC_TRAN_SET_F': 37,
+    'ASTC_TRAN_WRITER_VERSION': 48,
+    'ASTC_TTABLE_CREATE_TRANS': 34,
+    'ASTC_TTABLE_GET_TBLOCK': 35,
+    'ASTC_TTABLE_NUM_UNIQUE_STATES': 32,
+    'ASTC_TTABLE_UNIQUE_STATE': 33,
+    'LBTEST_ACTION_ACCEPT': 1,
+    'LBTEST_ACTION_REJECT': 2,
+    'LBTEST_ACTION_SKIP': 0,
+    'LBTEST_LIST_ALL': 1,
+    'LBTEST_LIST_KEYWORDS': 2,
+    'LBTEST_LIST_STRINGS': 3,
+    'LBTEST_NUM_ACTIONS': 3,
+    'NUM_FAMILIES': 5,
+    'NUM_VECTORS': 30,
+    'READER_VERSION_MAJOR': 1,
+    'READER_VERSION_MINOR': 0,
+    'READER_VERSION_SUBMINOR': 0,
+    'SCE_UDL_CSL_COMMENT': 23,
+    'SCE_UDL_CSL_COMMENTBLOCK': 24,
+    'SCE_UDL_CSL_DEFAULT': 22,
+    'SCE_UDL_CSL_IDENTIFIER': 28,
+    'SCE_UDL_CSL_NUMBER': 25,
+    'SCE_UDL_CSL_OPERATOR': 29,
+    'SCE_UDL_CSL_REGEX': 30,
+    'SCE_UDL_CSL_STRING': 26,
+    'SCE_UDL_CSL_WORD': 27,
+    'SCE_UDL_CSS_COMMENT': 16,
+    'SCE_UDL_CSS_DEFAULT': 15,
+    'SCE_UDL_CSS_IDENTIFIER': 20,
+    'SCE_UDL_CSS_NUMBER': 17,
+    'SCE_UDL_CSS_OPERATOR': 21,
+    'SCE_UDL_CSS_STRING': 18,
+    'SCE_UDL_CSS_WORD': 19,
+    'SCE_UDL_M_ATTRNAME': 4,
+    'SCE_UDL_M_CDATA': 13,
+    'SCE_UDL_M_COMMENT': 14,
+    'SCE_UDL_M_DEFAULT': 0,
+    'SCE_UDL_M_EMP_TAGC': 7,
+    'SCE_UDL_M_ENTITY': 11,
+    'SCE_UDL_M_ETAGC': 10,
+    'SCE_UDL_M_ETAGO': 9,
+    'SCE_UDL_M_OPERATOR': 5,
+    'SCE_UDL_M_PI': 12,
+    'SCE_UDL_M_STAGC': 6,
+    'SCE_UDL_M_STAGO': 1,
+    'SCE_UDL_M_STRING': 8,
+    'SCE_UDL_M_TAGNAME': 2,
+    'SCE_UDL_M_TAGSPACE': 3,
+    'SCE_UDL_SSL_COMMENT': 40,
+    'SCE_UDL_SSL_COMMENTBLOCK': 41,
+    'SCE_UDL_SSL_DEFAULT': 31,
+    'SCE_UDL_SSL_IDENTIFIER': 45,
+    'SCE_UDL_SSL_NUMBER': 42,
+    'SCE_UDL_SSL_OPERATOR': 46,
+    'SCE_UDL_SSL_REGEX': 47,
+    'SCE_UDL_SSL_STRING': 43,
+    'SCE_UDL_SSL_VARIABLE': 48,
+    'SCE_UDL_SSL_WORD': 44,
+    'SCE_UDL_TPL_COMMENT': 50,
+    'SCE_UDL_TPL_COMMENTBLOCK': 51,
+    'SCE_UDL_TPL_DEFAULT': 49,
+    'SCE_UDL_TPL_IDENTIFIER': 55,
+    'SCE_UDL_TPL_NUMBER': 52,
+    'SCE_UDL_TPL_OPERATOR': 56,
+    'SCE_UDL_TPL_STRING': 53,
+    'SCE_UDL_TPL_VARIABLE': 57,
+    'SCE_UDL_TPL_WORD': 54,
+    'SCE_UDL_UPPER_BOUND': 57,
+    'TRAN_FAMILY_CSL': 2,
+    'TRAN_FAMILY_CSS': 1,
+    'TRAN_FAMILY_MARKUP': 0,
+    'TRAN_FAMILY_SSL': 3,
+    'TRAN_FAMILY_TEMPLATE': 4,
+    'TRAN_SEARCH_DELIMITER': 5,
+    'TRAN_SEARCH_EMPTY': 3,
+    'TRAN_SEARCH_EOF': 4,
+    'TRAN_SEARCH_REGEX': 2,
+    'TRAN_SEARCH_STRING': 1}
+</t>
+<t tx="ekr.20080121135406.77">#!/usr/bin/env python
+# ***** LICENSE BLOCK *****
+
+"""Support for generating representations of lexed text for debugging."""
+
+import os
+from os.path import basename, dirname, join, exists, abspath
+from glob import glob
+import sys
+import re
+from cStringIO import StringIO
+import logging
+from pprint import pprint
+
+from ludditelib.common import is_source_tree_layout
+
+</t>
+<t tx="ekr.20080121135406.78">def _add_libs():
+    """Get a SilverCity build on sys.path.
+    Get Komodo's 'styles.py' on sys.path.
+    """
+
+    # Must be using the same Python version as Komodo's internal Python
+    # because SilverCity is a binary ext.
+    assert sys.version_info[:2] == (2, 5), "you must use Python 2.5.x"
+
+    if is_source_tree_layout():
+        ko_dev_dir = dirname(dirname(abspath(__file__)))
+        while not exists(join(ko_dev_dir, "Construct")):
+            d = dirname(ko_dev_dir)
+            if d == "ko_dev_dir":
+                raise RuntimeError("couldn't find SilverCity lib")
+            ko_dev_dir = d
+        lib_dirs = [
+            glob(join(ko_dev_dir, "build", "release", "silvercity",
+                      "build", "lib.*"))[0],
+            join(ko_dev_dir, "src", "schemes"),
+        ]
+    else: # in SDK
+        dist_dir = dirname(dirname(dirname(
+            dirname(dirname(abspath(__file__))))))
+        if exists(join(dist_dir, "bin", "is_dev_tree.txt")): # in a dev build
+            # from: $mozObjDir/dist/komodo-bits/sdk/pylib/ludditelib/debug.py
+            # to:   $mozObjDir/dist/bin/python/komodo
+            lib_dirs = [join(dist_dir, "bin", "python", "komodo")]
+        elif sys.platform == "darwin": # in a Komodo install on Mac OS X
+            # from: Contents/SharedSupport/sdk/pylib/ludditelib/debug.py
+            # to:   Contents/MacOS/python/komodo
+            lib_dirs = [join(dist_dir, "MacOS", "python", "komodo")]
+        else: # in a Komodo install on Windows or Linux
+            # from: lib/sdk/pylib/ludditelib/debug.py
+            # to:   lib/mozilla/python/komodo
+            lib_dirs = [join(dist_dir, "lib", "mozilla", "python", "komodo")]
+    for lib_dir in lib_dirs:
+        sys.path.insert(0, lib_dir)
+
+</t>
+<t tx="ekr.20080121135406.79">_add_libs()
+
+import SilverCity
+from SilverCity import ScintillaConstants
+from SilverCity.Lexer import Lexer
+
+
+
+#---- globals
+
+log = logging.getLogger("luddite.debug")
+
+
+
+#---- public routines
+
+def lex(content, lang):
+    """Lex the given content and lang and print a summary to stdout."""
+    lexer = UDLLexer(lang)
+    accessor = SilverCityAccessor(lexer, content)
+    out = sys.stdout.write
+    for token in accessor.gen_tokens():
+        #pprint(token)
+        out("token %(start_line)d,%(start_column)d"
+            "-%(end_line)d,%(end_column)d"
+            " (chars %(start_index)d-%(end_index)d):" % token)
+        style_names = _style_names_from_style_num(token["style"])
+        out(" %s (%d)\n" % (', '.join(style_names), token["style"]))
+        out(_indent(_escaped_text_from_text(token["text"]), 2) + '\n')
+
+
+</t>
+<t tx="ekr.20080121135406.80">def lex_to_html(content, lang, include_styling=True, include_html=True,
+                title=None):
+    """Return a styled HTML snippet for the given content and language.
+    
+        "include_styling" (optional, default True) is a boolean
+            indicating if the CSS/JS/informational-HTML should be
+            included.
+        "include_html" (optional, default True) is a boolean indicating
+            if the HTML output should be wrapped into a complete HTML
+            document.
+        "title" is the HTML document title to use if 'include_html' is
+            True.
+    """
+    if title is None:
+        title = "%s content" % lang
+
+    html = StringIO()
+
+    if include_html:
+        html.write('''\
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"&gt;
+&lt;head&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
+&lt;title&gt;%s&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+''' % title)
+
+    if include_styling:
+        html.write('''
+&lt;script type="application/x-javascript"&gt;
+    function show_class(span) {
+        var infobox = document.getElementById("infobox");
+        infobox.innerHTML = span.getAttribute("class");
+    }
+&lt;/script&gt;
+
+&lt;style&gt;
+#infobox {
+    border: 4px solid #e0e0e0;
+    background-color: #f0f0f0;
+    padding: 10px;
+    position: fixed;
+    top: 5px;
+    right: 5px;
+}
+
+/* token highlighting and debugging info */
+div.code span:hover {
+    background-color: #e0e0e0;
+}
+
+div.code span.udl-region:hover {
+    background-color: #f0f0f0;
+}
+
+/* language-neutral syntax coloring */
+div.code {
+    font-family: "Courier New", Courier, monospace;
+    font-size: small;
+}
+
+div.code .comments    { color: grey; }
+div.code .keywords    { font-weight: bold; }
+div.code .identifiers { color: black; }
+div.code .strings     { color: blue; }
+div.code .classes,
+div.code .functions   { color: green; }
+div.code .stderr      { background-color: red; }
+div.code .stdout      { background-color: blue; }
+div.code .tags        { color: red; }
+
+&lt;/style&gt;
+
+&lt;div id="infobox"&gt;&lt;/div&gt;
+''')
+
+    #XXX escape lang name for CSS class
+    html.write('&lt;div class="code %s"&gt;\n' % lang.lower())
+
+
+    lexer = UDLLexer(lang)
+    accessor = SilverCityAccessor(lexer, content)
+    curr_udl_region = None
+    ch = last_ch = None
+    for token in accessor.gen_tokens():
+        css_classes = _style_names_from_style_num(token["style"])
+        if css_classes and css_classes[0].startswith("SCE_UDL_"):
+            udl_region = css_classes[0].split('_')[2]
+            if udl_region == curr_udl_region:
+                pass
+            else:
+                if curr_udl_region:
+                    html.write('\n&lt;/span&gt;\n')
+                html.write('\n&lt;span class="udl-region"&gt;\n')
+                curr_udl_region = udl_region
+        html.write('&lt;span class="%s" onmouseover="show_class(event.target);"&gt;'
+                   % ' '.join(css_classes))
+        for i, ch in enumerate(token["text"]):
+            if ch == "\n" and last_ch == "\r":
+                # Treat '\r\n' as one char.
+                continue
+            #TODO: tab expansion.
+            html.write(_htmlescape(ch, quote=True, whitespace=True))
+            last_ch = ch
+        html.write('&lt;/span&gt;')
+    if curr_udl_region:
+        html.write('\n&lt;/span&gt;\n')
+    html.write('&lt;/div&gt;\n')
+
+    if include_html:
+        html.write('''
+&lt;/body&gt;
+&lt;/html&gt;
+''')
+
+    return html.getvalue()
+
+
+
+</t>
+<t tx="ekr.20080121135406.81">#---- internal Lexer stuff (mostly from codeintel)
+
+# Lazily built cache of SCE_* style number (per language) to constant name.
+_style_name_from_style_num_from_lang = {}
+_sce_prefixes = ["SCE_UDL_"]
+
+def _style_names_from_style_num(style_num):
+    #XXX Would like to have python-foo instead of p_foo or SCE_P_FOO, but
+    #    that requires a more comprehensive solution for all langs and
+    #    multi-langs.
+    style_names = []
+
+    # Get the constant name from ScintillaConstants.
+    if "UDL" not in _style_name_from_style_num_from_lang:
+        name_from_num = _style_name_from_style_num_from_lang["UDL"] = {}
+        for attr in dir(ScintillaConstants):
+            for sce_prefix in _sce_prefixes:
+                if attr.startswith(sce_prefix):
+                    name_from_num[getattr(ScintillaConstants, attr)] = attr
+    else:
+        name_from_num = _style_name_from_style_num_from_lang["UDL"]
+    const_name = _style_name_from_style_num_from_lang["UDL"][style_num]
+    style_names.append(const_name)
+    
+    # Get a style group from styles.py.
+    import styles
+    if "UDL" in styles.StateMap:
+        for style_group, const_names in styles.StateMap["UDL"].items():
+            if const_name in const_names:
+                style_names.append(style_group)
+                break
+    else:
+        log.warn("lang 'UDL' not in styles.StateMap: won't have "
+                 "common style groups in HTML output")
+    
+    return style_names
+
+
+</t>
+<t tx="ekr.20080121135406.82">_re_bad_filename_char = re.compile(r'([% 	\x80-\xff])')
+def _lexudl_path_escape(m):
+    return '%%%02X' % ord(m.group(1))
+</t>
+<t tx="ekr.20080121135406.83">def _urlescape(s):
+    return _re_bad_filename_char.sub(_lexudl_path_escape, s)
+
+</t>
+<t tx="ekr.20080121135406.84">class UDLLexer(Lexer):
+    """LexUDL wants the path to the .lexres file as the first element of
+    the first keywords list.
+    """
+    @others
+</t>
+<t tx="ekr.20080121135406.85">def __init__(self, lang):
+    self.lang = lang
+    self._properties = SilverCity.PropertySet()
+    self._lexer = SilverCity.find_lexer_module_by_id(ScintillaConstants.SCLEX_UDL)
+    lexres_path = _urlescape(self._get_lexres_path(lang))
+    #log.debug("escaped lexres_path: %r", lexres_path)
+    self._keyword_lists = [
+        SilverCity.WordList(lexres_path),
+    ]
+
+</t>
+<t tx="ekr.20080121135406.86">def _gen_lexres_candidate_paths(self, lang):
+    if is_source_tree_layout():
+        # Look for a lexres path in a local luddite build.
+        udl_dir = dirname(dirname(__file__))
+        yield join(udl_dir, "build", lang, "lexers", lang+".lexres")
+        # Look in the Komodo-devel build tree.
+        ko_dir = dirname(dirname(udl_dir))
+        yield join(ko_dir, "build", "release", "udl",
+                   "build", lang, "lexers", lang+".lexres")
+
+    # We are an installed Komodo SDK layout or in the Komodo build
+    # $MOZ_OBJDIR.
+    else:
+        import koextlib
+        ko_info = koextlib.KomodoInfo()
+        for ext_dir in ko_info.ext_dirs:
+            yield join(ext_dir, "lexers", lang+".lexres")
+
+</t>
+<t tx="ekr.20080121135406.87">def _get_lexres_path(self, lang):
+    candidates = []
+    for path in self._gen_lexres_candidate_paths(lang):
+        candidates.append(path)
+        if exists(path):
+            log.debug("using `%s' lexres file", path)
+            return path
+    else:
+        raise RuntimeError("could not find a lexres file for %s: "
+                           "none of '%s' exist"
+                           % (lang, "', '".join(candidates)))
+
+
+
+</t>
+<t tx="ekr.20080121135406.88">#---- internal Accessor stuff (from codeintel)
+
+class Accessor(object):
+    """Virtual base class for a lexed text accessor. This defines an API
+    with which lexed text data (the text content, styling info, etc.) is
+    accessed by trigger/completion/etc. handling. Actual instances will
+    be one of the subclasses.
+    """
+    @others
+</t>
+<t tx="ekr.20080121135406.89">def char_at_pos(self, pos):
+    raise VirtualMethodError()
+</t>
+<t tx="ekr.20080121135406.90">def style_at_pos(self, pos):
+    raise VirtualMethodError()
+</t>
+<t tx="ekr.20080121135406.91">def line_and_col_at_pos(self, pos):
+    raise VirtualMethodError()
+</t>
+<t tx="ekr.20080121135406.92">def gen_char_and_style_back(self, start, stop):
+    """Generate (char, style) tuples backward from start to stop
+    a la range(start, stop, -1) -- i.e. exclusive at 'stop' index.
+
+    For SciMozAccessor this can be implemented more efficiently than
+    the naive usage of char_at_pos()/style_at_pos().
+    """
+    raise VirtualMethodError()
+</t>
+<t tx="ekr.20080121135406.93">def gen_char_and_style(self, start, stop):
+    """Generate (char, style) tuples forward from start to stop
+    a la range(start, stop) -- i.e. exclusive at 'stop' index.
+
+    For SciMozAccessor this can be implemented more efficiently than
+    the naive usage of char_at_pos()/style_at_pos().
+    """
+    raise VirtualMethodError()
+</t>
+<t tx="ekr.20080121135406.94">def match_at_pos(self, pos, s):
+    """Return True if the given string matches the text at the given
+    position.
+    """
+    raise VirtualMethodError()
+</t>
+<t tx="ekr.20080121135406.95">def line_from_pos(self, pos):
+    """Return the 0-based line number for the given position."""
+    raise VirtualMethodError()
+</t>
+<t tx="ekr.20080121135406.96">def line_start_pos_from_pos(self, pos):
+    """Return the position of the start of the line of the given pos."""
+    raise VirtualMethodError()
+</t>
+<t tx="ekr.20080121135406.97">def pos_from_line_and_col(self, line, col):
+    """Return the position of the given line and column."""
+    raise VirtualMethodError()
+</t>
+<t tx="ekr.20080121135406.98">@property
+def text(self):
+    """All buffer content (as a unicode string)."""
+    raise VirtualMethodError()
+</t>
+<t tx="ekr.20080121135406.99">def text_range(self, start, end):
+    raise VirtualMethodError()
+</t>
+<t tx="ekr.20080121135406.100">def length(self):
+    """Return the length of the buffer.
+
+    Note that whether this returns a *character* pos or a *byte* pos is
+    left fuzzy so that SilverCity and SciMoz implementations can be
+    efficient. All that is guaranteed is that the *_at_pos() methods
+    work as expected.
+    """
+    raise VirtualMethodError()
+</t>
+<t tx="ekr.20080121135406.101">#def gen_pos_and_char_fwd(self, start_pos):
+#    """Generate (&lt;pos&gt;, &lt;char&gt;) tuples forward from the starting
+#    position until the end of the document.
+#    
+#    Note that whether &lt;pos&gt; is a *character* pos or a *byte* pos is
+#    left fuzzy so that SilverCity and SciMoz implementations can be
+#    efficient.
+#    """
+#    raise VirtualMethodError()
+def gen_tokens(self):
+    """Generator for all styled tokens in the buffer.
+    
+    Currently this should yield token dict a la SilverCity's
+    tokenize_by_style().
+    """
+    raise VirtualMethodError()
+</t>
+<t tx="ekr.20080121135406.102">def contiguous_style_range_from_pos(self, pos):
+    """Returns a 2-tuple (start, end) giving the span of the sequence of
+    characters with the style at position pos."""
+    raise VirtualMethodError()
+
+
+</t>
+<t tx="ekr.20080121135406.103">class SilverCityAccessor(Accessor):
+    @others
+</t>
+<t tx="ekr.20080121135406.104">def __init__(self, lexer, content):
+    #XXX i18n: need encoding arg?
+    self.lexer = lexer
+    self.content = content #XXX i18n: this should be a unicode buffer
+
+</t>
+<t tx="ekr.20080121135406.105">def reset_content(self, content):
+    """A backdoor specific to this accessor to allow the equivalent of
+    updating the buffer/file/content.
+    """
+    self.content = content
+    self.__tokens_cache = None
+
+</t>
+<t tx="ekr.20080121135406.106">__tokens_cache = None
+@property
+def tokens(self):
+    if self.__tokens_cache is None:
+        self.__tokens_cache = self.lexer.tokenize_by_style(self.content)
+    return self.__tokens_cache
+    
+</t>
+<t tx="ekr.20080121135406.107">def char_at_pos(self, pos):
+    return self.content[pos]
+
+</t>
+<t tx="ekr.20080121135406.108">def _token_at_pos(self, pos):
+    #XXX Locality of reference should offer an optimization here.
+    # Binary search for appropriate token.
+    lower, upper = 0, len(self.tokens)  # [lower-limit, upper-limit)
+    sentinel = 15
+    while sentinel &gt; 0:
+        idx = ((upper - lower) / 2) + lower
+        token = self.tokens[idx]
+        #print "_token_at_pos %d: token idx=%d text[%d:%d]=%r"\
+        #      % (pos, idx, token["start_index"], token["end_index"],
+        #         token["text"])
+        start, end = token["start_index"], token["end_index"]
+        if pos &lt; token["start_index"]:
+            upper = idx
+        elif pos &gt; token["end_index"]:
+            lower = idx + 1
+        else:
+            return token
+        sentinel -= 1
+    else:
+        raise Error("style_at_pos binary search sentinel hit: there "
+                    "is likely a logic problem here!")
+
+</t>
+<t tx="ekr.20080121135406.109">def style_at_pos(self, pos):
+    return self._token_at_pos(pos)["style"]
+
+</t>
+<t tx="ekr.20080121135406.110">def line_and_col_at_pos(self, pos):
+    #TODO: Fix this. This is busted for line 0 (at least).
+    line = self.line_from_pos(pos) - 1
+    # I assume that since we got the line, __start_pos_from_line exists
+    col = pos - self.__start_pos_from_line[line]
+    return line, col
+
+</t>
+<t tx="ekr.20080121135406.111">#PERF: If perf is important for this accessor then could do much
+#      better with smarter use of _token_at_pos() for these two.
+def gen_char_and_style_back(self, start, stop):
+    assert -1 &lt;= stop &lt;= start, "stop: %r, start: %r" % (stop, start)
+    for pos in range(start, stop, -1):
+        yield (self.char_at_pos(pos), self.style_at_pos(pos))
+</t>
+<t tx="ekr.20080121135406.112">def gen_char_and_style(self, start, stop):
+    assert 0 &lt;= start &lt;= stop, "start: %r, stop: %r" % (start, stop)
+    for pos in range(start, stop):
+        yield (self.char_at_pos(pos), self.style_at_pos(pos))
+
+</t>
+<t tx="ekr.20080121135406.113">def match_at_pos(self, pos, s):
+    return self.content[pos:pos+len(s)] == s
+
+</t>
+<t tx="ekr.20080121135406.114">__start_pos_from_line = None
+def line_from_pos(self, pos):
+    r"""
+        &gt;&gt;&gt; sa = SilverCityAccessor(lexer,
+        ...         #0         1           2         3
+        ...         #01234567890 123456789 01234567890 12345
+        ...         'import sys\nif True:\nprint "hi"\n# bye')
+        &gt;&gt;&gt; sa.line_from_pos(0)
+        0
+        &gt;&gt;&gt; sa.line_from_pos(9)
+        0
+        &gt;&gt;&gt; sa.line_from_pos(10)
+        0
+        &gt;&gt;&gt; sa.line_from_pos(11)
+        1
+        &gt;&gt;&gt; sa.line_from_pos(22)
+        2
+        &gt;&gt;&gt; sa.line_from_pos(34)
+        3
+        &gt;&gt;&gt; sa.line_from_pos(35)
+        3
+    """
+    # Lazily build the line -&gt; start-pos info.
+    if self.__start_pos_from_line is None:
+        self.__start_pos_from_line = [0]
+        for line_str in self.content.splitlines(True):
+            self.__start_pos_from_line.append(
+                self.__start_pos_from_line[-1] + len(line_str))
+
+    # Binary search for line number.
+    lower, upper = 0, len(self.__start_pos_from_line)
+    sentinel = 15
+    while sentinel &gt; 0:
+        line = ((upper - lower) / 2) + lower
+        #print "LINE %d: limits=(%d, %d) start-pos=%d"\
+        #      % (line, lower, upper, self.__start_pos_from_line[line])
+        if pos &lt; self.__start_pos_from_line[line]:
+            upper = line
+        elif line+1 == upper or self.__start_pos_from_line[line+1] &gt; pos:
+            return line
+        else:
+            lower = line
+        sentinel -= 1
+    else:
+        raise Error("line_from_pos binary search sentinel hit: there "
+                    "is likely a logic problem here!")
+
+</t>
+<t tx="ekr.20080121135406.115">def line_start_pos_from_pos(self, pos):
+    token = self._token_at_pos(pos)
+    return token["start_index"] - token["start_column"]
+</t>
+<t tx="ekr.20080121135406.116">def pos_from_line_and_col(self, line, col):
+    if not self.__start_pos_from_line:
+        self.line_from_pos(len(self.text)) # force init
+    return self.__start_pos_from_line[line] + col
+
+</t>
+<t tx="ekr.20080121135406.117">@property
+def text(self):
+    return self.content
+</t>
+<t tx="ekr.20080121135406.118">def text_range(self, start, end):
+    return self.content[start:end]
+</t>
+<t tx="ekr.20080121135406.119">def length(self):
+    return len(self.content)
+</t>
+<t tx="ekr.20080121135406.120">def gen_tokens(self):
+    for token in self.tokens:
+        yield token
+</t>
+<t tx="ekr.20080121135406.121">def contiguous_style_range_from_pos(self, pos):
+    token = self._token_at_pos(pos)
+    return (token["start_index"], token["end_index"] + 1)
+
+
+</t>
+<t tx="ekr.20080121135406.122">#---- other internal stuff
+
+# Recipe: htmlescape (1.1)
+def _htmlescape(s, quote=False, whitespace=False):
+    """Replace special characters '&amp;', '&lt;' and '&gt;' by SGML entities.
+    
+    Also optionally replace quotes and whitespace with entities and &lt;br/&gt;
+    as appropriate.
+    """
+    s = s.replace("&amp;", "&amp;amp;") # Must be done first!
+    s = s.replace("&lt;", "&amp;lt;")
+    s = s.replace("&gt;", "&amp;gt;")
+    if quote:
+        s = s.replace('"', "&amp;quot;")
+    if whitespace:
+        s = s.replace(' ', "&amp;nbsp;")
+        #XXX Adding that '\n' might be controversial.
+        s = re.sub(r"(\r\n|\r|\n)", "&lt;br /&gt;\n", s)
+    return s
+
+
+</t>
+<t tx="ekr.20080121135406.123"># Recipe: indent (0.2.1)
+def _indent(s, width=4, skip_first_line=False):
+    """_indent(s, [width=4]) -&gt; 's' indented by 'width' spaces
+
+    The optional "skip_first_line" argument is a boolean (default False)
+    indicating if the first line should NOT be indented.
+    """
+    lines = s.splitlines(1)
+    indentstr = ' '*width
+    if skip_first_line:
+        return indentstr.join(lines)
+    else:
+        return indentstr + indentstr.join(lines)
+
+</t>
+<t tx="ekr.20080121135406.124"># Recipe: text_escape (0.1)
+def _escaped_text_from_text(text, escapes="eol"):
+    r"""Return escaped version of text.
+
+        "escapes" is either a mapping of chars in the source text to
+            replacement text for each such char or one of a set of
+            strings identifying a particular escape style:
+                eol
+                    replace EOL chars with '\r' and '\n', maintain the actual
+                    EOLs though too
+                whitespace
+                    replace EOL chars as above, tabs with '\t' and spaces
+                    with periods ('.')
+                eol-one-line
+                    replace EOL chars with '\r' and '\n'
+                whitespace-one-line
+                    replace EOL chars as above, tabs with '\t' and spaces
+                    with periods ('.')
+    """
+    #TODO:
+    # - Add 'c-string' style.
+    # - Add _escaped_html_from_text() with a similar call sig.
+    import re
+    
+    if isinstance(escapes, basestring):
+        if escapes == "eol":
+            escapes = {'\r\n': "\\r\\n\r\n", '\n': "\\n\n", '\r': "\\r\r"}
+        elif escapes == "whitespace":
+            escapes = {'\r\n': "\\r\\n\r\n", '\n': "\\n\n", '\r': "\\r\r",
+                       '\t': "\\t", ' ': "."}
+        elif escapes == "eol-one-line":
+            escapes = {'\n': "\\n", '\r': "\\r"}
+        elif escapes == "whitespace-one-line":
+            escapes = {'\n': "\\n", '\r': "\\r", '\t': "\\t", ' ': '.'}
+        else:
+            raise ValueError("unknown text escape style: %r" % escapes)
+
+    # Sort longer replacements first to allow, e.g. '\r\n' to beat '\r' and
+    # '\n'.
+    escapes_keys = escapes.keys()
+    escapes_keys.sort(key=lambda a: len(a), reverse=True)
+    def repl(match):
+        val = escapes[match.group(0)]
+        return val
+    escaped = re.sub("(%s)" % '|'.join([re.escape(k) for k in escapes_keys]),
+                     repl,
+                     text)
+
+    return escaped
+
+</t>
+<t tx="ekr.20080121135406.125">def _one_line_summary_from_text(text, length=78,
+        escapes={'\n':"\\n", '\r':"\\r", '\t':"\\t"}):
+    r"""Summarize the given text with one line of the given length.
+    
+        "text" is the text to summarize
+        "length" (default 78) is the max length for the summary
+        "escapes" is a mapping of chars in the source text to
+            replacement text for each such char. By default '\r', '\n'
+            and '\t' are escaped with their '\'-escaped repr.
+    """
+    if len(text) &gt; length:
+        head = text[:length-3]
+    else:
+        head = text
+    escaped = _escaped_text_from_text(head, escapes)
+    if len(text) &gt; length:
+        summary = escaped[:length-3] + "..."
+    else:
+        summary = escaped
+    return summary
+</t>
+<t tx="ekr.20080121135406.126"># ***** LICENSE BLOCK *****
+
+"""Luddite output file generation code."""
+
+import copy
+import os
+from os.path import basename, join, exists
+import re
+import sys
+import datetime
+import logging
+from pprint import pprint
+
+from ludditelib.common import LudditeError, __version_info__
+
+
+#---- globals
+
+log = logging.getLogger("luddite")
+
+
+
+</t>
+<t tx="ekr.20080121135406.127">#---- support stuff
+
+
+def isTemplateStateName(stateName):
+    return stateName.startswith("IN_TPL_")
+
+</t>
+<t tx="ekr.20080121135406.128">def die(msg, cond=None):
+    if not cond:
+        return
+    if msg[-1] != "\n":
+        msg += "\n"
+    sys.stderr.write(msg)
+    sys.exit(0)
+    # raise(msg)
+
+</t>
+<t tx="ekr.20080121135406.129">def warn(fmt, *vals):
+    if fmt[-1] == "\n":
+        fmt2 = fmt[:-1]
+    else:
+        fmt2 = fmt
+    sys.stderr.write(fmt2 % vals)
+    sys.stderr.write("\n")
+
+
+</t>
+<t tx="ekr.20080121135406.130">def qq(s):
+    return '"' + s + '"'
+
+
+</t>
+<t tx="ekr.20080121135406.131">def test_assign_entry(lst, idx, val, dft_val=None):
+    if idx &gt;= len(lst):
+        while idx &gt;= len(lst):
+            lst.append(dft_val)
+        lst[idx] = val
+    elif lst[idx] is None:
+        lst[idx] = val
+
+
+</t>
+<t tx="ekr.20080121135406.132">class MainObj:
+    @others
+</t>
+<t tx="ekr.20080121135406.133">def __init__(self):
+    self.stateTable = []
+    self.stateCount = 0
+    self.holdUniqueStates = {}
+    self.familyList = {} # Things like lookBackTests, kwds, etc
+    self.languageName = None
+    self.nameTable = {}  # Hash state names to unique numbers
+    self.nameInfo = []    # Keep info on state numbers
+    self.verbose = False  #XXX Should go away in favour of log.debug usage
+    self.families = {
+        'markup' : 0,
+        'css' : 1,
+        'csl' : 2,
+        'ssl' : 3,
+        'tpl' : 4,
+    }
+    self._re_dollar_var = re.compile(r'\$([A-Z]+)')
+    self._re_is_word = re.compile(r'^[\w_][\w\d_]+$')
+
+    self._re_dequote_start = None
+    self.languageService_xmlNames = {'namespace' : ['namespaces', {}, ],
+                                     'public_id' : ['publicIdList', {}, ],
+                                     'system_id' : ['systemIdList', {}, ],
+                                     }
+
+</t>
+<t tx="ekr.20080121135406.134">def _get_safe_lang_name(self):
+    """Map [^-_.\w\d]+ in language name to _."""
+    return re.sub(r'[^-_.\w\d]+', '_', self.languageName)
+</t>
+<t tx="ekr.20080121135406.135">safeLangName = property(_get_safe_lang_name, None, None,
+                        "an identifier-safe version of languageName")
+
+def calcUniqueStates(self):
+    # Here we show which colors can be relied on to map to an
+    # internal state.  The current position will be at the first
+    # character in the buffer styled that color, so this might not
+    # work in all cases.
+    self.uniqueStates = {}
+    for k in self.holdUniqueStates.keys():
+        v = self.holdUniqueStates[k]
+        if len(v.keys()) == 1:
+            self.uniqueStates[k] = v.keys()[0]
+            log.debug("Map style [%s] to state [%s]", k, v.keys()[0])
+        log.debug("Style [%s] maps to states [%s]", k,
+                  ", ".join(v.keys()))
+    self.holdUniqueStates = None
+
+</t>
+<t tx="ekr.20080121135406.136">def _split_quote_string(self, s, len):
+    return re.sub('(.{%d}[^ ]+) ' % (len,), '\\1"\n    " ', s)
+
+</t>
+<t tx="ekr.20080121135406.137">def _all_words(self, str_list):
+    for s in str_list:
+        if not self._re_is_word.match(s):
+            return False
+    return True
+
+</t>
+<t tx="ekr.20080121135406.138">def _has_ptn_var(self, s):
+    mobj = self._re_dollar_var.search(s)
+    if mobj is None: return None
+    return mobj.group(1)
+
+</t>
+<t tx="ekr.20080121135406.139">def _state_num_from_name(self, nameTable, target_state_name, cmd):
+    target_state_num = nameTable.get(target_state_name, None)
+    if target_state_num is None:
+        die("%s: State %s isn't defined" % (cmd, target_state_name,), True)
+    return target_state_num
+    
+</t>
+<t tx="ekr.20080121135406.140">def dumpAsTable(self, resConstants, out_file):
+    self.resConstants = resConstants
+    resDefinesPath = (resConstants and True)
+    fout = open(out_file, 'w')
+    WRITER_VERSION_MAJOR = 1
+    WRITER_VERSION_MINOR = 0
+    WRITER_VERSION_SUBMINOR = 0
+
+    if not resDefinesPath:
+        # Print some common declarations
+        fout.write("""
+                   
+#define WRITER_VERSION_MAJOR	%d
+#define WRITER_VERSION_MINOR	%d
+#define WRITER_VERSION_SUBMINOR	%d
+
+// We're executing inside MainInfo::Init()
+TransitionTable *p_TransitionTable;
+TransitionInfo *p_TranBlock;
+Transition *p_Tran;
+FamilyInfo *p_FamilyInfo;\n""" % (WRITER_VERSION_MAJOR, WRITER_VERSION_MINOR,
+                              WRITER_VERSION_SUBMINOR))
+        if filter(lambda(x): hasattr(x, 'tokenCheckBlock'), self.familyList.values()):
+            fout.write("LookBackTests *p_LBTests;\n")
+            fout.write("LookBackTestObj *p_LBTestObj;\n")
+
+        fout.write("p_TransitionTable = GetTable();\n") # p_MainInfo-&gt;
+        fout.write("if (!p_TransitionTable) return false;\n")
+        if self.languageName:
+            fout.write('p_language_name = "%s";\n'
+                       % self.escapeStr(self.languageName))
+        
+    else:
+        # Write out version info for the reader
+        fout.write("1:lexer resource\n")
+        for name, ver in zip(["MAJOR", "MINOR", "SUBMINOR"],
+                             __version_info__):
+            fout.write("%d:%d\n"
+                       % (resConstants["ASTC_META_VERSION_"+name], ver))
+        fout.write("%d:%d:%d:%d\n" %
+                   (resConstants["ASTC_TRAN_WRITER_VERSION"],
+                    WRITER_VERSION_MAJOR, WRITER_VERSION_MINOR,
+                              WRITER_VERSION_SUBMINOR))
+        if self.languageName:
+            self.emitScratchBuffer(fout, self.languageName)
+            fout.write("%s\n" % resConstants['ASTC_LANGUAGE_NAME'])
+    # otherwise this is done by the loader.
+
+    nameTable = self.nameTable
+    # Dump all the transitions
+
+    # Initialize some hard-wired data
+    if 1:
+        family_name_pairs = [
+            ('MARKUP', 'M'),
+            ('CSS', 'CSS'),
+            ('CSL', 'CSL'),
+            ('SSL', 'SSL'),
+            ('TEMPLATE', 'TPL')]
+        for pair in family_name_pairs:
+            (long_name, short_name) = pair
+            deft_name = "IN_" + short_name + "_DEFAULT";
+            if self.verbose and not (resDefinesPath or nameTable.has_key(deft_name)):
+                warn("Can't figure out a value for state %s, using 0\n",
+                     deft_name)
+            
+            f_idx = "TRAN_FAMILY_" + long_name
+            if not resDefinesPath:
+                fout.write("familyColors[%s] = %s;\n"
+                           % (f_idx, self.fullStyleName(short_name + "_DEFAULT")))
+                fout.write("familyOperators[%s] = %s;\n"
+                           % (f_idx, self.fullStyleName(short_name + "_OPERATOR")))
+                fout.write("familyStyles[%s] = %s; // %s\n"
+                           % (f_idx, nameTable.get(deft_name, 0), deft_name))
+            else:
+                fout.write("%d:%d:%d\n"
+                           % (resConstants['ASTC_F_COLOR'],
+                              resConstants[f_idx],
+                              resConstants[self.fullStyleName(short_name + "_DEFAULT")]))
+                fout.write("%d:%d:%d\n"
+                           % (resConstants['ASTC_F_OPERATOR'],
+                              resConstants[f_idx],
+                              resConstants[self.fullStyleName(short_name + "_OPERATOR")]))
+                fout.write("%d:%d:%d\n"
+                           % (resConstants['ASTC_F_STYLE'],
+                              resConstants[f_idx],
+                              nameTable.get(deft_name, 0)))
+
+    family_names = map(lambda x: x.lower(), self.familyList.keys())
+    family_names.sort(lambda a, b: self.families[a] - self.families[b])
+    globalFlipCount = 0
+    for family_name in family_names:
+        globalFlipCount += len(self.familyList[family_name].flippers)
+
+    if globalFlipCount &gt; 0:
+        if not resDefinesPath:
+            fout.write("SetFlipperCount(%d);" % globalFlipCount)
+        else:
+            fout.write("%d:%d\n"
+                       % (resConstants['ASTC_FLIPPER_COUNT'],
+                          globalFlipCount))
+    flipIdx = 0
+
+    for family_name in family_names:
+        family_num = self.families[family_name]
+        if not resDefinesPath:
+            fout.write("SetCurrFamily(%d);" % family_num) # p_MainInfo-&gt;
+            fout.write("p_FamilyInfo = GetCurrFamily();\n") # p_MainInfo-&gt;
+        else:
+            fout.write("%d:%d\n"
+                       % (resConstants['ASTC_CURRENT_FAMILY'],
+                          family_num))
+            
+        obj = self.familyList[family_name]
+        if 1:
+            st_name = obj.initialState
+            st_val = None
+            if st_name:
+                st_val = nameTable[st_name]
+            else:
+                st_val = 0
+                st_name = '??'
+            
+            if not resDefinesPath:
+                #XXX Eric, my change from printf() to fout.write()
+                #    has *added* a newline at the end of this line.
+                #    I.e. before my change the next line
+                #    (SetSublanguageName()) was in the "// ..." comment.
+                #    Which is correct?
+                fout.write("p_FamilyInfo-&gt;Init(%d); // %s\n"
+                           % (st_val, st_name))
+                if obj.subLanguageName:
+                    fout.write("p_FamilyInfo-&gt;SetSublanguageName(\"%s\");"
+                               % obj.subLanguageName)
+            else:
+                fout.write("%d:%d\n"
+                           % (resConstants['ASTC_F_DEFAULT_STATE'],
+                              st_val))
+                if obj.subLanguageName:
+                    self.emitScratchBuffer(fout, obj.subLanguageName)
+                    fout.write("%s\n" % resConstants['ASTC_SUBLANGUAGE_NAME'])
+        if not resDefinesPath:
+            fout.write('\n')
+
+        #XXX Don't worry about the constant name, as we'll be generating
+        # a compiled table soon.
+        keywordList = getattr(obj, 'keywordList', None)
+        if keywordList:
+            sorted_keywordList = copy.copy(keywordList)
+            sorted_keywordList.sort()
+            kstring = " ".join(sorted_keywordList)
+            if not resDefinesPath:
+                kstring2 = self._split_quote_string(kstring, 68)
+                fout.write("p_FamilyInfo-&gt;SetWordList(\"%s\");\n"
+                           % kstring2)
+                fout.write("p_FamilyInfo-&gt;SetKeywordStyle(%s, %s);\n\n"
+                           % (self.fullStyleName(obj.keywordStyle[0]),
+                              self.fullStyleName(obj.keywordStyle[1])))
+            else:
+                self.emitScratchBuffer(fout, kstring)
+                fout.write("%d\n" % resConstants['ASTC_F_WORDLIST'])
+                fout.write("%d:%d:%d\n"
+                           % (resConstants['ASTC_F_KEYWORD_STYLE'],
+                              resConstants[self.fullStyleName(obj.keywordStyle[0])],
+                              resConstants[self.fullStyleName(obj.keywordStyle[1])]))
+
+        # Now populate the LookBackTables
+        tcBlock = getattr(obj, 'tokenCheckBlock', None)
+        if tcBlock:
+            if not resDefinesPath:
+                fout.write("p_LBTests = p_FamilyInfo-&gt;CreateNewLookBackTests();\n")
+                fout.write("if (!p_LBTests) return false;\n")
+            else:
+                fout.write("%d\n" % resConstants['ASTC_F_LOOKBACK_TESTS_CREATE'])
+
+            startStyleName = self.fullStyleName(obj.start_style)
+            endStyleName = self.fullStyleName(obj.end_style)
+            if not resDefinesPath:
+                fout.write("p_LBTests-&gt;Init(%s, %s - %s + 1);"
+                           % (startStyleName, endStyleName,
+                              startStyleName))
+            else:
+                fout.write("%d:%d:%d\n"
+                           % (resConstants['ASTC_F_LOOKBACK_TESTS_INIT'],
+                              resConstants[startStyleName],
+                              resConstants[endStyleName] - resConstants[startStyleName]))
+
+            num_tests = len(tcBlock)
+            if num_tests &gt; 0:
+                if not resDefinesPath:
+                    fout.write("p_LBTests-&gt;SetTestCount(%d);" % num_tests)
+                else:
+                    fout.write("%d:%d\n"
+                               % (resConstants['ASTC_F_LOOKBACK_TESTS_COUNT'],
+                                  num_tests))
+                
+                for i in xrange(0, num_tests):
+                    tc = tcBlock[i]
+                    sel = tc['selectors']
+                    name = tc['name']
+                    action = tc['type']
+                    if not resDefinesPath:
+                        fout.write("p_LBTestObj = p_LBTests-&gt;GetTest(%d);" % i)
+                        fout.write("if (p_LBTestObj) {\n")
+                    else:
+                        fout.write("%d:%d\n"
+                                   % (resConstants['ASTC_LBT_GET'], i))
+
+
+                    if 1:
+                        #Fake Python "block" to reflect the generated code.
+                        if not resDefinesPath:
+                            fout.write("p_LBTestObj-&gt;SetActionStyle(LBTEST_ACTION_%s, %s);"
+                                       % (action.upper(), self.fullStyleName(name)))
+                        else:
+                            fout.write("%d:%d:%d\n"
+                                       % (resConstants['ASTC_LBT_ACTION_STYLE'],
+                                          resConstants["LBTEST_ACTION_" + action.upper()],
+                                          resConstants[self.fullStyleName(name)]))
+
+                        if sel == 'all':
+                            # We're done
+                            pass
+                        else:
+                            die("Expecting an array, got &lt;sel&gt;",
+                                isinstance(sel, dict))
+                            if sel:
+                                sel.sort()
+                                kstring = self.escapeStr(" ".join(sel))
+                                set_word_list = self._all_words(sel)
+                                if not resDefinesPath:
+                                    kstring2 = self._split_quote_string(kstring, 68)
+                                    cmd = (set_word_list and 'SetWordList') or 'SetStrings'
+                                    fout.write("p_LBTestObj-&gt;%s(\"%s\");"
+                                               % (cmd, kstring2))
+                                else:
+                                    self.emitScratchBuffer(fout, kstring)
+                                    cmd = (set_word_list and 'ASTC_LBT_WORDLIST') or 'ASTC_LBT_STRINGS'
+                                    fout.write("%s\n" % resConstants[cmd])
+                                    
+                        if not resDefinesPath:
+                            fout.write("p_LBTests-&gt;SetTest(%d, p_LBTestObj);" % i)
+                        else:
+                            fout.write("%d:%d\n"
+                                       % (resConstants['ASTC_LBT_TEST'], i))
+                    if not resDefinesPath:
+                        fout.write("}\n")
+
+            # Issue the defaults
+            tokenValues = {}
+            vals = {'reject': 1, 'accept': 2, 'skip': 4}
+            defaultActions = ["LBTEST_ACTION_REJECT", # None given, reject all
+                              "LBTEST_ACTION_ACCEPT", # Only rej, acc others
+                              "LBTEST_ACTION_REJECT", # Only acc, rej others
+                              "LBTEST_ACTION_SKIP",	# Acc|rej, skip others
+                              "LBTEST_ACTION_REJECT", # Only skip, rej others
+                              "LBTEST_ACTION_ACCEPT", # Rej|skip, acc others
+                              "LBTEST_ACTION_REJECT", # Acc|skip, rej others
+                              "LBTEST_ACTION_REJECT", # Spec all, rej others
+                             ]
+            for tc in tcBlock:
+                sel = tc['selectors']
+                if isinstance(sel, (list, tuple)):
+                    name = tc['name']
+                    tokenValues[name] = tokenValues.get('name',
+                                                        vals[tc['type']])
+            style_names = tokenValues.keys()
+            style_names.sort()
+            for style_name in style_names:
+                if not resDefinesPath:
+                    fout.write("p_LBTests-&gt;SetDefault(%s, %s);"
+                               % (self.fullStyleName(style_name),
+                                  defaultActions[tokenValues[style_name]]))
+                else:
+                    fout.write("%d:%d:%d\n"
+                               % (resConstants['ASTC_LBT_DEFAULT'],
+                                  resConstants[self.fullStyleName(style_name)],
+                                  resConstants[defaultActions[tokenValues[style_name]]]))
+
+        flipCount = len(obj.flippers)
+        if flipCount &gt; 0:
+            for i in xrange(flipCount):
+                node = obj.flippers[i]
+                if not resDefinesPath:
+                    fout.write("SetFlipper(%d, \"%s\", %s, %d);"
+                               % (flipIdx, self.escapeStr(node['name']),
+                                  self.fullStyleName(node['style']),
+                                  node['value']))
+                else:
+                    self.emitScratchBuffer(fout, self.escapeStr(node['name']))
+                    fout.write("%d:%d:%d:%d\n"
+                               % (resConstants['ASTC_F_FLIPPER'],
+                                  flipIdx,
+                                  resConstants[self.fullStyleName(node['style'])],
+                                  node['value']))
+                flipIdx += 1
+
+    # Transition table info and unique states are global
+
+    stateTable = self.stateTable
+    stateSize = (stateTable and len(stateTable)) or 0
+
+    us_hash = self.uniqueStates
+    if us_hash:
+        keys = us_hash.keys()
+        i = 0
+        if not resDefinesPath:
+            fout.write("p_TransitionTable-&gt;SetNumUniqueStates(%d);" % len(keys))
+        else:
+            fout.write("%d:%d\n"
+                       % (resConstants['ASTC_TTABLE_NUM_UNIQUE_STATES'],
+                          len(keys)))
+        if keys: keys.sort()
+        for k in keys:
+            k2 = self.fullStyleName(k)
+            int_state_name = us_hash[k]
+            if not resDefinesPath:
+                fout.write("p_TransitionTable-&gt;SetUniqueState(%d, %s, %d); // %s\n"
+                           % (i, k2, nameTable[int_state_name],
+                              int_state_name))
+            else:
+                fout.write("%d:%d:%d:%d\n"
+                           % (resConstants['ASTC_TTABLE_UNIQUE_STATE'],
+                              i, resConstants[k2],
+                              nameTable[int_state_name]))
+            i += 1
+            
+    if not resDefinesPath:
+        fout.write("\n\n")
+        
+    if not (stateTable is None):
+        size = len(stateTable)
+        if not resDefinesPath:
+            fout.write("p_TransitionTable-&gt;CreateNewTransitions(%d);"
+                       % size)
+        else:
+            fout.write("%d:%d\n"
+                       % (resConstants['ASTC_TTABLE_CREATE_TRANS'],
+                          size))
+            
+    for i in xrange(stateSize):
+        stateTrans = stateTable[i]
+        if not (stateTrans is None):
+            # i is the state number
+            old_family_name = self.getFamilyOwner(i)
+
+            if not resDefinesPath:
+                fout.write("p_TranBlock = p_TransitionTable-&gt;Get(%d);" % i)
+                fout.write("if (!p_TranBlock) return false;\n")
+            else:
+                fout.write("%d:%d\n"
+                           % (resConstants['ASTC_TTABLE_GET_TBLOCK'], i))
+
+            for stateTran in stateTrans:
+                trans_value = stateTran['value']
+                state_type = None
+                final_trans_value = None
+                ignore_case = 0; # Set to 1 for patterns
+                
+                if stateTran['type'] == 'string':
+                    if len(trans_value) == 0:
+                        state_type = 'TRAN_SEARCH_EMPTY'
+                    else:
+                        state_type = 'TRAN_SEARCH_STRING'
+                        final_trans_value = '"' + self.escapeStr(trans_value) + '"'
+                elif stateTran['type'] == 'pattern':
+                    if len(trans_value[0]) == 0:
+                        state_type = 'TRAN_SEARCH_EMPTY'
+                        final_trans_value = 'NULL'
+                    elif trans_value[0] == '\\z':
+                        state_type = 'TRAN_SEARCH_EOF'
+                        final_trans_value = 'NULL'
+                    else:
+                        state_type = 'TRAN_SEARCH_REGEX'
+                        final_trans_value = trans_value[0]
+                        ignore_case = trans_value[1]
+                        
+                        obj = self.familyList[old_family_name]
+                        die ("Can't get a family obj for state %d" % ((stateTran.get('trans_num', i)),),
+                             obj is None)
+                        # Do variable substitution
+                        lim = 1000
+                        i = 0
+                        processed_part = ''
+                        while len(final_trans_value) &gt; 0:
+                            d1 = final_trans_value.find('$')
+                            if d1 == -1:
+                                processed_part += final_trans_value
+                                break
+                            d2 = final_trans_value.find('\\')
+                            if 0 &lt;= d2 and d2 &lt; d1:
+                                # Pass everything up to and including \. on
+                                # Could be \$, so don't process $ this time
+                                d2 += 2
+                                processed_part += final_trans_value[:d2]
+                                final_trans_value = final_trans_value[d2:]
+                                continue
+                            ptn1 = self._has_ptn_var(final_trans_value)
+                            if not ptn1:
+                                # Keep $ not followed by a letter
+                                d1 += 1
+                                processed_part += final_trans_value[:d1]
+                                final_trans_value = final_trans_value[d1:]
+                                continue
+                            if not obj.patterns.has_key(ptn1):
+                                die("Undefined pattern " + ptn1 + " in str " + trans_value[0] + ", family " + family_name, True)
+                            final_trans_value = final_trans_value.replace("$" + ptn1, obj.patterns[ptn1])
+                            i += 1
+                            if i &gt; lim:
+                                warn("Warning: Possible infinite loop trying to resolve %s -- giving up after %d cycles at final_trans_value"
+                                     % (trans_value[0], lim))
+                                processed_part += final_trans_value
+                                break
+                            
+                        final_trans_value = processed_part.replace('\\', '\\\\')
+                        if self.verbose and trans_value[0] != final_trans_value:
+                            warn("Mapped %s to %s" % (trans_value[0], final_trans_value))
+                        final_trans_value = qq(final_trans_value)
+                elif stateTran['type'] == 'delimiter':
+                    state_type = 'TRAN_SEARCH_DELIMITER'
+                    final_trans_value = '*current delimiter*'
+                else:
+                    die("cmd [%d] -- weird cmd of %s" % (i, trans_value), False)
+                # final_trans_value =~ s/([\\\"])/\\$1/g;  # Escape problem chars
+                redo = 'false'
+                no_keyword = 'false'
+                colors = {'upto' : '-1', 'include' : '-1'}
+                cmds = stateTran.get('cmds', [])
+                pushPopStateDirective = None
+                eolDirective = setDelimiterDirective = None
+                setOppositeDelimiterDirective = None
+                keepDelimiterDirective = None
+                for cmd in cmds:
+                    if cmd[0] == 'paint':
+                        cmd_val = cmd[1]
+                        die("Unexpected type of " + cmd_val['type'],
+                            colors[cmd_val['type']] is None)
+                        colors[cmd_val['type']] = self.fullStyleName(cmd_val['value'])
+                    elif cmd[0] == 'redo':
+                        redo = 'true'
+                    elif cmd[0] == 'no_keyword':
+                        no_keyword = 'true'
+                    elif cmd[0] == 'spush_check':
+                        target_state_name = cmd[1]
+                        die("No state name to push", target_state_name is None)
+                        if pushPopStateDirective:
+                            die("Can't push and pop at state " +
+                                self.nameInfo[i]['name'] +
+                                " matching " + final_trans_value,
+                                True)
+                        target_state_num = self._state_num_from_name(nameTable, target_state_name, cmd[0])
+                        new_family_name = self.getFamilyOwner(target_state_num)
+                        if not resDefinesPath:
+                            pushPopStateDirective = ("p_Tran-&gt;SetPushState(%d, %s);" % (target_state_num, self.families[new_family_name]))
+                        else:
+                            pushPopStateDirective = \
+                                ("%d:%d:%d" % (
+                                        resConstants['ASTC_TRAN_PUSH_STATE'],
+                                        target_state_num,
+                                        self.families[new_family_name]))
+                    elif cmd[0] == 'spop_check':
+                        if pushPopStateDirective:
+                            die("Can't both push and pop at state " +
+                                self.nameInfo[i]['name'] +
+                                " matching " +
+                                final_trans_value, pushPopStateDirective)
+                        if not resDefinesPath:
+                            pushPopStateDirective = "p_Tran-&gt;SetPopState();"
+                        else:
+                            pushPopStateDirective = str(resConstants['ASTC_TRAN_POP_STATE'])
+                    elif cmd[0] == 'at_eol':
+                        target_state_name = cmd[1]
+                        die("No state name at eof", target_state_name is None)
+                        target_state_num = self._state_num_from_name(nameTable, target_state_name, cmd[0])
+                        new_family_name = self.getFamilyOwner(target_state_num)
+                        if not resDefinesPath:
+                            eolDirective = ("p_Tran-&gt;SetEolTransition(%d, %s);" % (target_state_num, self.families[new_family_name]))
+                        else:
+                            eolDirective = \
+                                ("%d:%d:%d" % (
+                                        resConstants['ASTC_TRAN_EOL_STATE'],
+                                        target_state_num,
+                                        self.families[new_family_name]))
+                    elif cmd[0] == 'keep_delimiter':
+                        if state_type != 'TRAN_SEARCH_DELIMITER':
+                            raise LudditeError("The %s action can only be specified when matching against a delimiter" %
+                                               (cmd[0],));                            
+                        if not resDefinesPath:
+                            keepDelimiterDirective = ("p_Tran-&gt;KeepDelimiter();")
+                        else:
+                            keepDelimiterDirective = str(resConstants['ASTC_TRAN_KEEP_DELIMITER'])
+                    elif cmd[0] == 'set_delimiter':
+                        if state_type != 'TRAN_SEARCH_REGEX':
+                            raise LudditeError("The %s action can only be specified when matching patterns" %
+                                               (cmd[0],));
+                        if not resDefinesPath:
+                            setOppositeDelimiterDirective = ("p_Tran-&gt;SetDelimiter(false, %s);" % (cmd[1]))
+                        else:
+                            setOppositeDelimiterDirective = \
+                                ("%d:0:%s" % (
+                                        resConstants['ASTC_TRAN_SET_DELIMITER'],
+                                        cmd[1]))
+                    elif cmd[0] == 'set_opposite_delimiter':
+                        if state_type != 'TRAN_SEARCH_REGEX':
+                            raise LudditeError("The %s action can only be specified when matching patterns, %s-%s given" %
+                                               (cmd[0], stateTran['type'], trans_value or ""));
+                        if not resDefinesPath:
+                            setDelimiterDirective = ("p_Tran-&gt;SetDelimiter(true, %s);" % (cmd[1]))
+                        else:
+                            setDelimiterDirective = \
+                                ("%d:1:%s" % (
+                                        resConstants['ASTC_TRAN_SET_DELIMITER'],
+                                        cmd[1]))
+                    elif cmd[0] == 'clear_delimiter':
+                        if not resDefinesPath:
+                            setDelimiterDirective = ("p_Tran-&gt;ClearDelimiter();")
+                        else:
+                            setDelimiterDirective = \
+                                ("%d" % (
+                                        resConstants['ASTC_TRAN_CLEAR_DELIMITER'],))
+                    else:
+                        die("Unexpected cmd type of " + cmd[0], True)
+                if redo == 'true' and colors['include'] != '-1':
+                    raise LudditeError("Error in state %s, transition %s: the include paint action and the redo action can't be given for the same transition" % (st_name, final_trans_value))
+                final_state = final_state_comment = None
+                new_family_name = None
+                final_state = stateTran.get('trans_num', None)
+                if not (final_state is None):
+                    new_family_name = self.getFamilyOwner(final_state)
+                    final_state_comment = (" // =&gt; %s " %
+                                           (stateTran.get('trans_str', '??'),))
+                else:
+                    final_state = -1
+                    final_state_comment = ''
+                    new_family_name = old_family_name
+                token_check = (stateTran.get('token_check', 0)) or 0
+                cmd = None
+                if not resDefinesPath:
+                    cmd = ((state_type == 'TRAN_SEARCH_EOF') and 'SetEOFInfo'
+                            or (((state_type == 'TRAN_SEARCH_EMPTY') and 'SetEmptyInfo')
+                                or 'Append'))
+                else:
+                    cmd = ((state_type == 'TRAN_SEARCH_EOF') and 'ASTC_TBLOCK_EOF_TRAN'
+                            or (((state_type == 'TRAN_SEARCH_EMPTY') and 'ASTC_TBLOCK_EMPTY_TRAN')
+                                or 'ASTC_TBLOCK_APPEND_TRAN'))
+                            
+                if not resDefinesPath:
+                    fout.write("p_Tran = new Transition(%s, %s, %s, %s, %s, %d, %d, %s, %d);%s\n"
+                               % (state_type, final_trans_value,
+                                  colors['upto'], colors['include'],
+                                  redo, final_state, token_check,
+                                  ignore_case, no_keyword, final_state_comment))
+                else:
+                    self.emitScratchBuffer(fout, final_trans_value)
+                    fout.write("%d:%d:%d:%d:%d:%d:%d:%d:%d\n"
+                               % (resConstants['ASTC_CREATE_NEW_TRAN'],
+                                  resConstants[state_type],
+                                  colors['upto'] == "-1" and -1 or resConstants[colors['upto']],
+                                  colors['include'] == "-1" and -1 or resConstants[colors['include']],
+                                  redo == 'true' and 1 or 0,
+                                  final_state,
+                                  token_check and 1 or 0,
+                                  ignore_case,
+                                  no_keyword == 'true' and 1 or 0
+                                  ))
+                for directive in [pushPopStateDirective, eolDirective,
+                                  setDelimiterDirective,
+                                  setOppositeDelimiterDirective,
+                                  keepDelimiterDirective]:
+                    if directive:
+                        fout.write(directive + "\n")
+                if not resDefinesPath:
+                    fout.write("p_TranBlock-&gt;" + cmd + "(p_Tran);" + "\n")
+                else:
+                    fout.write("%d\n" % resConstants[cmd])
+
+                if old_family_name != new_family_name:
+                    if not resDefinesPath:
+                        fout.write("p_Tran-&gt;SetNewFamily(%d); // %s\n"
+                                   % (self.families[new_family_name],
+                                      new_family_name))
+                    else:
+                        fout.write("%d:%d\n"
+                                   % (resConstants['ASTC_TRAN_SET_F'],
+                                      self.families[new_family_name]))
+    fout.close()
+
+</t>
+<t tx="ekr.20080121135406.141">def dumpLanguageService(self, path, guid, ext=None):
+    if not self.languageName:
+        raise LudditeError("'language' was not specified in .udl file")
+
+    lang_from_udl_family = {}
+    for udl_family, curr_info in self.familyList.items():
+        norm_udl_family = {"csl": "CSL", "css": "CSS",
+                           "markup": "M", "ssl": "SSL",
+                           "tpl": "TPL"}[udl_family]
+        lang_from_udl_family[norm_udl_family] = curr_info.subLanguageName
+    data = {
+        'langName': self.languageName,
+        'safeLangName': self.safeLangName,
+        'guid': guid,
+        'date': datetime.datetime.now().ctime(),
+        'defaultExtDecl': (ext and 'defaultExtension = %r' % ext or None),
+        'lang_from_udl_family': lang_from_udl_family,
+        'baseImport': "koUDLLanguageBase",
+        'baseClass': "KoUDLLanguage",
+    }
+    if 'M' in lang_from_udl_family:
+        if lang_from_udl_family["M"] == "XML":
+            data['baseImport'] = "koXMLLanguageBase"
+            data['baseClass'] = "koXMLLanguageBase"
+        elif lang_from_udl_family["M"] == "HTML":
+            data['baseImport'] = "koXMLLanguageBase"
+            data['baseClass'] = "koHTMLLanguageBase"
+        
+    fout = open(path, "w")
+    try:
+        template = """# Komodo %(langName)s language service.
+#
+# Generated by 'luddite.py' on %(date)s.
+#
+
+import logging
+from %(baseImport)s import %(baseClass)s
+
+
+log = logging.getLogger("ko%(safeLangName)sLanguage")
+#log.setLevel(logging.DEBUG)
+
+
+def registerLanguage(registry):
+log.debug("Registering language %(langName)s")
+registry.registerLanguage(Ko%(safeLangName)sLanguage())
+
+
+class Ko%(safeLangName)sLanguage(%(baseClass)s):
+name = "%(langName)s"
+lexresLangName = "%(safeLangName)s"
+_reg_desc_ = "%%s Language" %% name
+_reg_contractid_ = "@activestate.com/koLanguage?language=%%s;1" %% name
+_reg_clsid_ = "%(guid)s"
+%(defaultExtDecl)s
+
+lang_from_udl_family = %(lang_from_udl_family)r
+
+"""
+        fout.write(template % data)
+        for groupMap in self.languageService_xmlNames.values():
+            langSvcName = groupMap[0]
+            groupVals = groupMap[1]
+            names = groupVals.keys()
+            if len(names) &gt; 0:
+                #XXX escaping needed on the values?
+                fout.write('    %s = ["%s"]\n' % (langSvcName, '", "'.join(names)))
+        if hasattr(self, 'sample'):
+            fout.write('\n\n    sample = r"""%s"""\n' % self.sample)
+    finally:
+        fout.close()
+
+</t>
+<t tx="ekr.20080121135406.142">def emitScratchBuffer(self, fout, s):
+    if self._re_dequote_start is None:
+        self._re_dequote_start = re.compile('^[\'\"]')
+        self._re_dequote_end = re.compile('[\'\"]$')
+
+        self.re_bspair = re.compile(r'(\\)\\(.*)$')
+        self.re_escaped_quote = re.compile(r'\\([\'\"])(.*)$')
+        self.re_escaped_other = re.compile(r'(\\.)(.*)$')
+        self.re_non_escape = re.compile(r'([^\\]+)(.*)$')
+        self.re_esb_set = [self.re_bspair,
+                           self.re_escaped_quote,
+                           self.re_escaped_other,
+                           self.re_non_escape,]
+        self.re_75 = re.compile('(.{1,75})(.*)$', re.DOTALL)
+        
+    s1 = re.sub(self._re_dequote_end, '',
+                re.sub(self._re_dequote_start, '', s))
+
+    # todo: unescape \' and \"
+    # leave \r and \n alone
+    # map all pairs \\ to \
+    pieces = []
+    while len(s1) &gt; 0:
+        did_match = False
+        for this_re in self.re_esb_set:
+            mobj = this_re.match(s1)
+            if mobj:
+                pieces.append(mobj.group(1))
+                s1 = mobj.group(2)
+                did_match = True
+                break
+        if not did_match:
+            die("emitScratchBuffer: Can't match '" + s1 + "'", True)
+    s2 = "".join(pieces)
+    
+    # $kstring =~ s/(?&lt;=[^\\](?:\\\\)*)\\([\'\"])/$1/g;
+    # $kstring =~ s/\\\\/\\/g;  # We don't need to escape quotes and backslashes
+    fout.write("%d:%d\n"
+               % (self.resConstants['ASTC_SCRATCH_BUFFER_START'],
+                  len(s2)))
+    
+    while len(s2) &gt; 0:
+        mobj = self.re_75.match(s2)
+        die("Can't match anything on " + s2, mobj is None)
+        fout.write("%d:%s\n"
+                   % (self.resConstants['ASTC_SCRATCH_BUFFER_APPEND'],
+                      mobj.group(1)))
+        s2 = mobj.group(2)
+
+</t>
+<t tx="ekr.20080121135406.143">def escapeStr(self, s):
+    return s.replace('\'', '\\\'').replace('"', '\\"').replace('\t', '\\t')
+
+</t>
+<t tx="ekr.20080121135406.144">def fullStyleName(self, k):
+    if not k.startswith("SCE_UDL_"):
+        k2 = 'SCE_UDL_' + k
+    else:
+        k2 = k
+    if self.resConstants and not self.resConstants.has_key(k2):
+        die("Style " + k2 + " is unknown. ", True)
+    return k2
+
+</t>
+<t tx="ekr.20080121135406.145">def generateKomodoTemplateFile(self, template_path):
+    f = open(template_path, "w")
+    # Just an empty template for now.
+    f.close()
+
+</t>
+<t tx="ekr.20080121135406.146">def getFamilyOwner(self, stateNum):
+    die ("No owning family for state #" + str(stateNum),
+         not self.nameInfo[stateNum].has_key('owningFamily'))
+    familyName = self.nameInfo[stateNum]['owningFamily']
+    die ("No owning family for state #" + str(stateNum),
+         familyName is None)
+    return familyName
+    
+</t>
+<t tx="ekr.20080121135406.147">def internStateName(self, name):        
+    nameTable = self.nameTable
+    if not nameTable.has_key(name):
+        self.stateCount += 1
+        stateNum = nameTable[name] = self.stateCount
+        test_assign_entry(self.nameInfo, stateNum, {})
+        self.nameInfo[stateNum]['name'] = name
+    return nameTable[name]
+
+</t>
+<t tx="ekr.20080121135406.148">def setFamilyOwner(self, stateNum, permFamilyInfo):
+    nameInfo = self.nameInfo
+    test_assign_entry(nameInfo, stateNum, {})
+    nameInfo[stateNum]['owningFamily'] = nameInfo[stateNum].get('owningFamily', permFamilyInfo.currFamily)
+    
+</t>
+<t tx="ekr.20080121135406.149">class CurrentInfo:
+    @others
+</t>
+<t tx="ekr.20080121135406.150">def __init__(self, currFamily):
+    self.patterns = {}
+    self.flippers = []
+    self.initialState = None
+    self.currFamily = currFamily
+    self.subLanguageName = None
+    self.specified = False
+
+</t>
+<t tx="ekr.20080121135406.151">def __repr__(self):
+    return "&lt;CurrentInfo %r&gt;" % self.subLanguageName
+
+</t>
+<t tx="ekr.20080121135406.152">class Analyzer:
+    @others
+</t>
+<t tx="ekr.20080121135406.153">def __init__(self, mainObj):
+    self.mainObj = mainObj
+    
+</t>
+<t tx="ekr.20080121135406.154">def semanticCheck(self):
+    familyNames = [x.lower() for x in self.mainObj.familyList.keys()]
+    for k in familyNames:
+        if not self.mainObj.families.has_key(k):
+            warn("Family %s isn't recognized, expected one of [%s]\n",
+                 k, " ".join(self.mainObj.families.keys()))
+            return
+    for k in familyNames:
+        obj = self.mainObj.familyList[k]
+        if obj.specified:
+            if obj.subLanguageName is None:
+                warn("No sublanguage name specified for family %s",
+                     obj.currFamily)
+        if hasattr(obj, 'tokenCheckBlock'):
+            if not (hasattr(obj, 'start_style')
+                    and hasattr(obj, 'end_style')):
+                msg = """No %s specified.  To do look-back token checking,
+    you need to specify which styles are the start_style and the end_style.
+    See the sample JavaScript lexer.\n"""
+                if not hasattr(obj, 'start_style'):
+                    warn(msg, 'start_style')
+                else:
+                    warn(msg, 'end_style')
+                return
+        if hasattr(obj, 'keywordList'):
+            ok = True
+            try:
+                if not (obj.keywordStyle[0] and obj.keywordStyle[1]):
+                    ok = False
+            except:
+                ok = False
+            if not ok:
+                warn("keywords were specified, but no keyword_style statement was given,\nlike &lt;&lt;keyword_style CSS_IDENTIFIER =&gt; CSS_WORD&gt;&gt;\n")
+                return
+        # Make sure no states put us in dead ends
+        nameTable = self.mainObj.nameTable
+        nameInfo = self.mainObj.nameInfo
+        for state_name in nameTable.keys():
+            state_num = nameTable[state_name]
+            if not nameInfo[state_num].has_key('owningFamily'):
+                warn("At least one transition moves to undefined state " + state_name +
+                "\n This state needs to be defined somewhere.\n")
+                return
+    if self.mainObj.languageName is None:
+        warn("No main language declaration given -- this language needs a name")
+        return
+    return True
+
+</t>
+<t tx="ekr.20080121135406.155">def _assign_once_dups_ok(self, obj, attrname, new_val, extra_msg=''):
+    if not hasattr(obj, attrname):
+        setattr(obj, attrname, new_val)
+        return
+    old_val = getattr(obj, attrname)
+    if old_val is None:
+        setattr(obj, attrname, new_val)
+        return
+    if old_val == new_val:
+        return
+    raise LudditeError(
+        'Already specified %s "%s"%s, now specifying "%s"'
+        % (attrname, extra_msg, old_val, new_val))
+    
+</t>
+<t tx="ekr.20080121135406.156">def processTree(self, tree, currFamily='markup'):
+    if not self.mainObj.familyList.has_key(currFamily):
+        self.mainObj.familyList[currFamily] = CurrentInfo(currFamily)
+    permFamilyInfo = self.mainObj.familyList[currFamily]
+    for node in tree:
+        if node[0] == 'module':
+            self.processTree(node[1], currFamily)
+        elif node[0] == 'pattern':
+            node2 = node[1]
+            permFamilyInfo.patterns[node2['name']] = node2['value']
+        elif node[0] == 'family':
+            # Stay with names for now
+            currFamily = node[1].lower()
+            self.mainObj.familyList[currFamily] = self.mainObj.familyList.get(currFamily, CurrentInfo(currFamily))
+            permFamilyInfo = self.mainObj.familyList[currFamily]
+            permFamilyInfo.specified = True
+        elif node[0] == 'initial':
+            permFamilyInfo.initialState = permFamilyInfo.initialState or node[1]['name']
+        elif node[0] == 'language':
+            self._assign_once_dups_ok(self.mainObj, 'languageName', node[1])
+        elif node[0] == 'sublanguage':
+            self._assign_once_dups_ok(permFamilyInfo, 'subLanguageName', node[1],
+                                      "for family " + currFamily)
+        elif node[0] == 'stateBlock':
+            node2 = node[1]
+            stateName = node2['name']
+            stateNum = self.mainObj.internStateName(stateName)
+            self.mainObj.setFamilyOwner(stateNum, permFamilyInfo)
+            stateBlock = node2['value']
+            test_assign_entry(self.mainObj.stateTable, stateNum, [])
+            stateTable = self.mainObj.stateTable[stateNum]
+
+            # Variables to track for synthesizing an eof action
+            common_color = None
+            synthesize_eof = True
+            for transition in stateBlock:
+                if transition[0] != 'transition':
+                    raise LudditeError("Expecting 'transition', got %s"
+                                       % transition[0])
+                
+                inner_tran = transition[1]
+                inner_data = { 'type' : inner_tran['type'],
+                               'value' : inner_tran['value'],
+                               'token_check' : inner_tran['token_check'],
+                               }
+                if inner_tran['cmds']:
+                    inner_data['cmds'] = inner_tran['cmds']
+                
+                if inner_tran['trans']:
+                    inner_data['trans_str'] = inner_tran['trans']
+                    inner_data['trans_num'] = self.mainObj.internStateName(inner_tran['trans'])
+                
+                # Check for synthesizing eof transition
+                curr_color = self._favor_upto_color(inner_tran['cmds'])
+                if curr_color and not isTemplateStateName(stateName):
+                    # These are global across all families
+                    if not self.mainObj.holdUniqueStates.has_key(curr_color):
+                        self.mainObj.holdUniqueStates[curr_color] = {}
+                    self.mainObj.holdUniqueStates[curr_color][stateName] = None
+                
+                if synthesize_eof:
+                    if not inner_tran['cmds']:
+                        # A transition with no commands doesn't affect
+                        # EOF-synthesis
+                        pass
+                    elif inner_tran['type'] == 'pattern' and inner_tran['value'] == r'\z':
+                        # They specified an explicit EOF transition
+                        synthesize_eof = False
+                    elif not curr_color:
+                        synthesize_eof = False
+                    elif common_color is None:
+                        common_color = curr_color
+                    elif common_color != curr_color:
+                        synthesize_eof = False
+                    
+                stateTable.append(inner_data)
+                
+            if synthesize_eof:
+                if common_color is not None:
+                    inner_data = { 'type' : 'pattern',
+                                   'value' : [r'\z', 0],
+                                   'cmds' : [[ 'paint',
+                                               { 'type' : 'upto',
+                                                 'value' : common_color},
+                                                ]],
+                                   }
+                    stateTable.append(inner_data)
+                else:
+                    warn("State %s might need an explicit \\z pattern rule" % (stateName,))
+            
+        elif node[0] == 'keywordList':
+            permFamilyInfo.keywordList = node[1]
+        elif node[0] == 'keywordStyle':
+            permFamilyInfo.keywordStyle = [node[1], node[2]]
+        elif node[0] == 'tokenCheckBlock':
+            permFamilyInfo.tokenCheckBlock = node[1]
+        elif node[0] == 'start_style':
+            permFamilyInfo.start_style = node[1]
+        elif node[0] == 'end_style':
+            permFamilyInfo.end_style = node[1]
+        elif node[0] == 'fold':
+            permFamilyInfo.flippers.append(node[1])
+        elif node[0] in ('namespace', 'public_id', 'system_id'):
+            name = node[1]
+            self.mainObj.languageService_xmlNames[node[0]][1][name] = None
+
+</t>
+<t tx="ekr.20080121135406.157">def _favor_upto_color(self, cmds):
+    # Favor the upto-color, but use the include-color if that's all they gave
+    if cmds is None: return None
+    color = None
+    for cmd in cmds:
+        if not isinstance(cmd, (list, tuple)):
+            continue
+        if cmd[0] == 'paint':
+            if cmd[1]['type'] == 'upto':
+                return cmd[1]['value']
+            else:
+                color = cmd[1]['value']
+    return color
+
+
+</t>
+<t tx="ekr.20080121135406.158">#-----------------------------------------------------------------------------
+# ply: lex.py
+#
+# Author: David M. Beazley (dave@dabeaz.com)
+#
+# Copyright (C) 2001-2006, David M. Beazley
+#
+# $Header$
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+# 
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+# 
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# 
+# See the file COPYING for a complete copy of the LGPL.
+#
+# 
+# This module automatically constructs a lexical analysis module from regular
+# expression rules defined in a user-defined module.  The idea is essentially the same
+# as that used in John Aycock's Spark framework, but the implementation works
+# at the module level rather than requiring the use of classes.
+#
+# This module tries to provide an interface that is closely modeled after
+# the traditional lex interface in Unix.  It also differs from Spark
+# in that:
+#
+#   -  It provides more extensive error checking and reporting if
+#      the user supplies a set of regular expressions that can't
+#      be compiled or if there is any other kind of a problem in
+#      the specification.
+#
+#   -  The interface is geared towards LALR(1) and LR(1) parser
+#      generators.  That is tokens are generated one at a time
+#      rather than being generated in advanced all in one step.
+#
+# There are a few limitations of this module
+#
+#   -  The module interface makes it somewhat awkward to support more
+#      than one lexer at a time.  Although somewhat inelegant from a
+#      design perspective, this is rarely a practical concern for
+#      most compiler projects.
+#
+#   -  The lexer requires that the entire input text be read into
+#      a string before scanning.  I suppose that most machines have
+#      enough memory to make this a minor issues, but it makes
+#      the lexer somewhat difficult to use in interactive sessions
+#      or with streaming data.
+#
+#-----------------------------------------------------------------------------
+
+r"""
+lex.py
+
+This module builds lex-like scanners based on regular expression rules.
+To use the module, simply write a collection of regular expression rules
+and actions like this:
+
+# lexer.py
+import lex
+
+# Define a list of valid tokens
+tokens = (
+    'IDENTIFIER', 'NUMBER', 'PLUS', 'MINUS'
+    )
+
+# Define tokens as functions
+def t_IDENTIFIER(t):
+    r' ([a-zA-Z_](\w|_)* '
+    return t
+
+def t_NUMBER(t):
+    r' \d+ '
+    return t
+
+# Some simple tokens with no actions
+t_PLUS = r'\+'
+t_MINUS = r'-'
+
+# Initialize the lexer
+lex.lex()
+
+The tokens list is required and contains a complete list of all valid
+token types that the lexer is allowed to produce.  Token types are
+restricted to be valid identifiers.  This means that 'MINUS' is a valid
+token type whereas '-' is not.
+
+Rules are defined by writing a function with a name of the form
+t_rulename.  Each rule must accept a single argument which is
+a token object generated by the lexer. This token has the following
+attributes:
+
+    t.type   = type string of the token.  This is initially set to the
+               name of the rule without the leading t_
+    t.value  = The value of the lexeme.
+    t.lineno = The value of the line number where the token was encountered
+    
+For example, the t_NUMBER() rule above might be called with the following:
+    
+    t.type  = 'NUMBER'
+    t.value = '42'
+    t.lineno = 3
+
+Each rule returns the token object it would like to supply to the
+parser.  In most cases, the token t is returned with few, if any
+modifications.  To discard a token for things like whitespace or
+comments, simply return nothing.  For instance:
+
+def t_whitespace(t):
+    r' \s+ '
+    pass
+
+For faster lexing, you can also define this in terms of the ignore set like this:
+
+t_ignore = ' \t'
+
+The characters in this string are ignored by the lexer. Use of this feature can speed
+up parsing significantly since scanning will immediately proceed to the next token.
+
+lex requires that the token returned by each rule has an attribute
+t.type.  Other than this, rules are free to return any kind of token
+object that they wish and may construct a new type of token object
+from the attributes of t (provided the new object has the required
+type attribute).
+
+If illegal characters are encountered, the scanner executes the
+function t_error(t) where t is a token representing the rest of the
+string that hasn't been matched.  If this function isn't defined, a
+LexError exception is raised.  The .text attribute of this exception
+object contains the part of the string that wasn't matched.
+
+The t.skip(n) method can be used to skip ahead n characters in the
+input stream.  This is usually only used in the error handling rule.
+For instance, the following rule would print an error message and
+continue:
+
+def t_error(t):
+    print "Illegal character in input %s" % t.value[0]
+    t.skip(1)
+
+Of course, a nice scanner might wish to skip more than one character
+if the input looks very corrupted.
+
+The lex module defines a t.lineno attribute on each token that can be used
+to track the current line number in the input.  The value of this
+variable is not modified by lex so it is up to your lexer module
+to correctly update its value depending on the lexical properties
+of the input language.  To do this, you might write rules such as
+the following:
+
+def t_newline(t):
+    r' \n+ '
+    t.lineno += t.value.count("\n")
+
+To initialize your lexer so that it can be used, simply call the lex.lex()
+function in your rule file.  If there are any errors in your
+specification, warning messages or an exception will be generated to
+alert you to the problem.
+
+To use the newly constructed lexer from another module, simply do
+this:
+
+    import lex
+    import lexer
+    lex.input("position = initial + rate*60")
+
+    while 1:
+        token = lex.token()       # Get a token
+        if not token: break        # No more tokens
+        ... do whatever ...
+
+Assuming that the module 'lexer' has initialized lex as shown
+above, parsing modules can safely import 'lex' without having
+to import the rule file or any additional imformation about the
+scanner you have defined.
+"""    
+
+# -----------------------------------------------------------------------------
+
+
+__version__ = "1.7"
+
+import re, types, sys, copy
+
+# Available instance types.  This is used when lexers are defined by a class.
+# it's a little funky because I want to preserve backwards compatibility
+# with Python 2.0 where types.ObjectType is undefined.
+
+try:
+   _INSTANCETYPE = (types.InstanceType, types.ObjectType)
+except AttributeError:
+   _INSTANCETYPE = types.InstanceType
+
+</t>
+<t tx="ekr.20080121135406.159"># Exception thrown when invalid token encountered and no default
+class LexError(Exception):
+    @others
+</t>
+<t tx="ekr.20080121135406.160">def __init__(self,message,s):
+     self.args = (message,)
+     self.text = s
+
+</t>
+<t tx="ekr.20080121135406.161"># Token class
+class LexToken:
+    @others
+</t>
+<t tx="ekr.20080121135406.162">def __str__(self):
+    return "LexToken(%s,%r,%d)" % (self.type,self.value,self.lineno)
+</t>
+<t tx="ekr.20080121135406.163">def __repr__(self):
+    return str(self)
+</t>
+<t tx="ekr.20080121135406.164">def skip(self,n):
+    try:
+        self._skipn += n
+    except AttributeError:
+        self._skipn = n
+
+</t>
+<t tx="ekr.20080121135406.165"># -----------------------------------------------------------------------------
+# Lexer class
+#
+#    input()          -  Store a new string in the lexer
+#    token()          -  Get the next token
+# -----------------------------------------------------------------------------
+
+class Lexer:
+    @others
+</t>
+<t tx="ekr.20080121135406.166">def __init__(self):
+    self.lexre = None           # Master regular expression
+</t>
+<t tx="ekr.20080121135406.167">self.lexreflags = 0         # Option re compile flags
+    self.lexdata = None         # Actual input data (as a string)
+    self.lexpos = 0             # Current position in input text
+    self.lexlen = 0             # Length of the input text
+    self.lexindexfunc = [ ]     # Reverse mapping of groups to functions and types
+    self.lexerrorf = None       # Error rule (if any)
+    self.lextokens = None       # List of valid tokens
+    self.lexignore = None       # Ignored characters
+    self.lineno = 1             # Current line number
+    self.debug = 0              # Debugging mode
+    self.optimize = 0           # Optimized mode
+    self.token = self.errtoken
+
+def __copy__(self):
+    c = Lexer()
+    c.lexre = self.lexre
+</t>
+<t tx="ekr.20080121135406.168">c.lexreflags = self.lexreflags
+    c.lexdata = self.lexdata
+    c.lexpos = self.lexpos
+    c.lexlen = self.lexlen
+    c.lexindexfunc = self.lexindexfunc
+    c.lexerrorf = self.lexerrorf
+    c.lextokens = self.lextokens
+    c.lexignore = self.lexignore
+c.debug = self.debug
+    c.lineno = self.lineno
+    c.optimize = self.optimize
+    c.token = c.realtoken
+return c
+
+# ------------------------------------------------------------
+# input() - Push a new string into the lexer
+# ------------------------------------------------------------
+def input(self,s):
+    if not (isinstance(s,types.StringType) or isinstance(s,types.UnicodeType)):
+        raise ValueError, "Expected a string"
+    self.lexdata = s
+    self.lexpos = 0
+    self.lexlen = len(s)
+    self.token = self.realtoken
+    
+    # Change the token routine to point to realtoken()
+    global token
+    if token == self.errtoken:
+        token = self.token
+
+</t>
+<t tx="ekr.20080121135406.169"># ------------------------------------------------------------
+# errtoken() - Return error if token is called with no data
+# ------------------------------------------------------------
+def errtoken(self):
+    raise RuntimeError, "No input string given with input()"
+
+</t>
+<t tx="ekr.20080121135406.170"># ------------------------------------------------------------
+# token() - Return the next token from the Lexer
+#
+# Note: This function has been carefully implemented to be as fast
+# as possible.  Don't make changes unless you really know what
+# you are doing
+# ------------------------------------------------------------
+def realtoken(self):
+    # Make local copies of frequently referenced attributes
+    lexpos    = self.lexpos
+    lexlen    = self.lexlen
+    lexignore = self.lexignore
+    lexdata   = self.lexdata
+    
+    while lexpos &lt; lexlen:
+        # This code provides some short-circuit code for whitespace, tabs, and other ignored characters
+        if lexdata[lexpos] in lexignore:
+            lexpos += 1
+            continue
+
+        # Look for a regular expression match
+        m = self.lexre.match(lexdata,lexpos)
+        if m:
+            i = m.lastindex
+            lexpos = m.end()
+            tok = LexToken()
+            tok.value = m.group()
+            tok.lineno = self.lineno
+            tok.lexer = self
+            func,tok.type = self.lexindexfunc[i]
+            if not func:
+                self.lexpos = lexpos
+                return tok
+            
+            # If token is processed by a function, call it
+            self.lexpos = lexpos
+            newtok = func(tok)
+            self.lineno = tok.lineno     # Update line number
+            
+            # Every function must return a token, if nothing, we just move to next token
+            if not newtok: continue
+            
+            # Verify type of the token.  If not in the token map, raise an error
+            if not self.optimize:
+                if not self.lextokens.has_key(newtok.type):
+                    raise LexError, ("%s:%d: Rule '%s' returned an unknown token type '%s'" % (
+                        func.func_code.co_filename, func.func_code.co_firstlineno,
+                        func.__name__, newtok.type),lexdata[lexpos:])
+
+            return newtok
+
+        # No match. Call t_error() if defined.
+        if self.lexerrorf:
+            tok = LexToken()
+            tok.value = self.lexdata[lexpos:]
+            tok.lineno = self.lineno
+            tok.type = "error"
+            tok.lexer = self
+            oldpos = lexpos
+            newtok = self.lexerrorf(tok)
+            lexpos += getattr(tok,"_skipn",0)
+            if oldpos == lexpos:
+                # Error method didn't change text position at all. This is an error.
+                self.lexpos = lexpos
+                raise LexError, ("Scanning error. Illegal character '%s'" % (lexdata[lexpos]), lexdata[lexpos:])
+            if not newtok: continue
+            self.lexpos = lexpos
+            return newtok
+
+        self.lexpos = lexpos
+        raise LexError, ("No match found", lexdata[lexpos:])
+
+    # No more input data
+    self.lexpos = lexpos + 1
+    return None
+
+    
+</t>
+<t tx="ekr.20080121135406.171"># -----------------------------------------------------------------------------
+# validate_file()
+#
+# This checks to see if there are duplicated t_rulename() functions or strings
+# in the parser input file.  This is done using a simple regular expression
+# match on each line in the filename.
+# -----------------------------------------------------------------------------
+
+def validate_file(filename):
+    import os.path
+    base,ext = os.path.splitext(filename)
+    if ext != '.py': return 1        # No idea what the file is. Return OK
+
+    try:
+        f = open(filename)
+        lines = f.readlines()
+        f.close()
+    except IOError:
+        return 1                       # Oh well
+
+    fre = re.compile(r'\s*def\s+(t_[a-zA-Z_0-9]*)\(')
+    sre = re.compile(r'\s*(t_[a-zA-Z_0-9]*)\s*=')
+    counthash = { }
+    linen = 1
+    noerror = 1
+    for l in lines:
+        m = fre.match(l)
+        if not m:
+            m = sre.match(l)
+        if m:
+            name = m.group(1)
+            prev = counthash.get(name)
+            if not prev:
+                counthash[name] = linen
+            else:
+                print "%s:%d: Rule %s redefined. Previously defined on line %d" % (filename,linen,name,prev)
+                noerror = 0
+        linen += 1
+    return noerror
+
+</t>
+<t tx="ekr.20080121135406.172"># -----------------------------------------------------------------------------
+# _read_lextab(module)
+#
+# Reads lexer table from a lextab file instead of using introspection.
+# -----------------------------------------------------------------------------
+
+def _read_lextab(lexer, fdict, module):
+    exec "import %s as lextab" % module
+    lexer.lexre = re.compile(lextab._lexre, re.VERBOSE | lextab._lexreflags)
+    lexer.lexreflags = lextab._lexreflags
+    lexer.lexindexfunc = lextab._lextab
+    for i in range(len(lextab._lextab)):
+        t = lexer.lexindexfunc[i]
+        if t:
+            if t[0]:
+                lexer.lexindexfunc[i] = (fdict[t[0]],t[1])
+    lexer.lextokens = lextab._lextokens
+    lexer.lexignore = lextab._lexignore
+    if lextab._lexerrorf:
+        lexer.lexerrorf = fdict[lextab._lexerrorf]
+        
+</t>
+<t tx="ekr.20080121135406.173"># -----------------------------------------------------------------------------
+# lex(module)
+#
+# Build all of the regular expression rules from definitions in the supplied module
+# -----------------------------------------------------------------------------
+def lex(module=None,debug=0,optimize=0,lextab="lextab",reflags=0):
+    ldict = None
+    regex = ""
+    error = 0
+    files = { }
+    lexer = Lexer()
+    lexer.debug = debug
+    lexer.optimize = optimize
+    global token,input
+    
+    if module:
+        # User supplied a module object.
+        if isinstance(module, types.ModuleType):
+            ldict = module.__dict__
+        elif isinstance(module, _INSTANCETYPE):
+            _items = [(k,getattr(module,k)) for k in dir(module)]
+            ldict = { }
+            for (i,v) in _items:
+                ldict[i] = v
+        else:
+            raise ValueError,"Expected a module or instance"
+        
+    else:
+        # No module given.  We might be able to get information from the caller.
+        try:
+            raise RuntimeError
+        except RuntimeError:
+            e,b,t = sys.exc_info()
+            f = t.tb_frame
+            f = f.f_back           # Walk out to our calling function
+            ldict = f.f_globals    # Grab its globals dictionary
+
+    if optimize and lextab:
+        try:
+            _read_lextab(lexer,ldict, lextab)
+            if not lexer.lexignore: lexer.lexignore = ""            
+            token = lexer.token
+            input = lexer.input
+            return lexer
+        
+        except ImportError:
+            pass
+        
+    # Get the tokens map
+    if (module and isinstance(module,_INSTANCETYPE)):
+        tokens = getattr(module,"tokens",None)
+    else:
+        try:
+            tokens = ldict["tokens"]
+        except KeyError:
+            tokens = None
+        
+    if not tokens:
+        raise SyntaxError,"lex: module does not define 'tokens'"
+    if not (isinstance(tokens,types.ListType) or isinstance(tokens,types.TupleType)):
+        raise SyntaxError,"lex: tokens must be a list or tuple."
+
+    # Build a dictionary of valid token names
+    lexer.lextokens = { }
+    if not optimize:
+
+        # Utility function for verifying tokens
+        def is_identifier(s):
+            for c in s:
+                if not (c.isalnum() or c == '_'): return 0
+            return 1
+        
+        for n in tokens:
+            if not is_identifier(n):
+                print "lex: Bad token name '%s'" % n
+                error = 1
+            if lexer.lextokens.has_key(n):
+                print "lex: Warning. Token '%s' multiply defined." % n
+            lexer.lextokens[n] = None
+    else:
+        for n in tokens: lexer.lextokens[n] = None
+        
+
+    if debug:
+        print "lex: tokens = '%s'" % lexer.lextokens.keys()
+
+    # Get a list of symbols with the t_ prefix
+    tsymbols = [f for f in ldict.keys() if f[:2] == 't_']
+    
+    # Now build up a list of functions and a list of strings
+    fsymbols = [ ]
+    ssymbols = [ ]
+    for f in tsymbols:
+        if callable(ldict[f]):
+            fsymbols.append(ldict[f])
+        elif (isinstance(ldict[f], types.StringType) or isinstance(ldict[f],types.UnicodeType)):
+            ssymbols.append((f,ldict[f]))
+        else:
+            print "lex: %s not defined as a function or string" % f
+            error = 1
+            
+    # Sort the functions by line number
+    fsymbols.sort(lambda x,y: cmp(x.func_code.co_firstlineno,y.func_code.co_firstlineno))
+
+    # Sort the strings by regular expression length
+    ssymbols.sort(lambda x,y: (len(x[1]) &lt; len(y[1])) - (len(x[1]) &gt; len(y[1])))
+    
+    # Check for non-empty symbols
+    if len(fsymbols) == 0 and len(ssymbols) == 0:
+        raise SyntaxError,"lex: no rules of the form t_rulename are defined."
+
+    # Add all of the rules defined with actions first
+    for f in fsymbols:
+        
+        line = f.func_code.co_firstlineno
+        file = f.func_code.co_filename
+        files[file] = None
+
+        ismethod = isinstance(f, types.MethodType)
+
+        if not optimize:
+            nargs = f.func_code.co_argcount
+            if ismethod:
+                reqargs = 2
+            else:
+                reqargs = 1
+            if nargs &gt; reqargs:
+                print "%s:%d: Rule '%s' has too many arguments." % (file,line,f.__name__)
+                error = 1
+                continue
+
+            if nargs &lt; reqargs:
+                print "%s:%d: Rule '%s' requires an argument." % (file,line,f.__name__)
+                error = 1
+                continue
+
+            if f.__name__ == 't_ignore':
+                print "%s:%d: Rule '%s' must be defined as a string." % (file,line,f.__name__)
+                error = 1
+                continue
+        
+        if f.__name__ == 't_error':
+            lexer.lexerrorf = f
+            continue
+
+        if f.__doc__:
+            if not optimize:
+                try:
+                    c = re.compile(f.__doc__, re.VERBOSE | reflags)
+                except re.error,e:
+                    print "%s:%d: Invalid regular expression for rule '%s'. %s" % (file,line,f.__name__,e)
+                    error = 1
+                    continue
+
+                if debug:
+                    print "lex: Adding rule %s -&gt; '%s'" % (f.__name__,f.__doc__)
+
+            # Okay. The regular expression seemed okay.  Let's append it to the master regular
+            # expression we're building
+  
+            if (regex): regex += "|"
+            regex += "(?P&lt;%s&gt;%s)" % (f.__name__,f.__doc__)
+        else:
+            print "%s:%d: No regular expression defined for rule '%s'" % (file,line,f.__name__)
+
+    # Now add all of the simple rules
+    for name,r in ssymbols:
+
+        if name == 't_ignore':
+            lexer.lexignore = r
+            continue
+        
+        if not optimize:
+            if name == 't_error':
+                raise SyntaxError,"lex: Rule 't_error' must be defined as a function"
+                error = 1
+                continue
+        
+            if not lexer.lextokens.has_key(name[2:]):
+                print "lex: Rule '%s' defined for an unspecified token %s." % (name,name[2:])
+                error = 1
+                continue
+            try:
+                c = re.compile(r,re.VERBOSE)
+            except re.error,e:
+                print "lex: Invalid regular expression for rule '%s'. %s" % (name,e)
+                error = 1
+                continue
+            if debug:
+                print "lex: Adding rule %s -&gt; '%s'" % (name,r)
+                
+        if regex: regex += "|"
+        regex += "(?P&lt;%s&gt;%s)" % (name,r)
+
+    if not optimize:
+        for f in files.keys():
+            if not validate_file(f):
+                error = 1
+    try:
+        if debug:
+            print "lex: regex = '%s'" % regex
+        lexer.lexre = re.compile(regex, re.VERBOSE | reflags)
+
+        # Build the index to function map for the matching engine
+        lexer.lexindexfunc = [ None ] * (max(lexer.lexre.groupindex.values())+1)
+        for f,i in lexer.lexre.groupindex.items():
+            handle = ldict[f]
+            if type(handle) in (types.FunctionType, types.MethodType):
+                lexer.lexindexfunc[i] = (handle,handle.__name__[2:])
+            else:
+                # If rule was specified as a string, we build an anonymous
+                # callback function to carry out the action
+                lexer.lexindexfunc[i] = (None,f[2:])
+
+        # If a lextab was specified, we create a file containing the precomputed
+        # regular expression and index table
+        
+        if lextab and optimize:
+            lt = open(lextab+".py","w")
+            lt.write("# %s.py.  This file automatically created by PLY. Don't edit.\n" % lextab)
+            lt.write("_lexre = %s\n" % repr(regex))
+            lt.write("_lexreflags = %d\n" % reflags)
+            lt.write("_lextab = [\n");
+            for i in range(0,len(lexer.lexindexfunc)):
+                t = lexer.lexindexfunc[i]
+                if t:
+                    if t[0]:
+                        lt.write("  ('%s',%s),\n"% (t[0].__name__, repr(t[1])))
+                    else:
+                        lt.write("  (None,%s),\n" % repr(t[1]))
+                else:
+                    lt.write("  None,\n")
+                    
+            lt.write("]\n");
+            lt.write("_lextokens = %s\n" % repr(lexer.lextokens))
+            lt.write("_lexignore = %s\n" % repr(lexer.lexignore))
+            if (lexer.lexerrorf):
+                lt.write("_lexerrorf = %s\n" % repr(lexer.lexerrorf.__name__))
+            else:
+                lt.write("_lexerrorf = None\n")
+            lt.close()
+        
+    except re.error,e:
+        print "lex: Fatal error. Unable to compile regular expression rules. %s" % e
+        error = 1
+    if error:
+        raise SyntaxError,"lex: Unable to build lexer."
+    if not lexer.lexerrorf:
+        print "lex: Warning. no t_error rule is defined."
+
+    if not lexer.lexignore: lexer.lexignore = ""
+    
+    # Create global versions of the token() and input() functions
+    token = lexer.token
+    input = lexer.input
+    
+    return lexer
+
+</t>
+<t tx="ekr.20080121135406.174"># -----------------------------------------------------------------------------
+# run()
+#
+# This runs the lexer as a main program
+# -----------------------------------------------------------------------------
+
+def runmain(lexer=None,data=None):
+    if not data:
+        try:
+            filename = sys.argv[1]
+            f = open(filename)
+            data = f.read()
+            f.close()
+        except IndexError:
+            print "Reading from standard input (type EOF to end):"
+            data = sys.stdin.read()
+
+    if lexer:
+        _input = lexer.input
+    else:
+        _input = input
+    _input(data)
+    if lexer:
+        _token = lexer.token
+    else:
+        _token = token
+        
+    while 1:
+        tok = _token()
+        if not tok: break
+        print "(%s,%r,%d)" % (tok.type, tok.value, tok.lineno)
+        
+    
+
+
+</t>
+<t tx="ekr.20080121135406.175"># ***** LICENSE BLOCK *****
+
+# luddite_lexer.py -- lexer for Luddite, using PLY
+#
+# See http://systems.cs.uchicago.edu/ply for more information on
+# PLY, the lexer/parser framework this code uses.
+#
+# Author(s):
+#   Eric Promislow &lt;ericp@activestate.com&gt;
+#
+
+import sys
+from ludditelib import lex
+import copy
+
+tokens = (
+    'ARROW',
+    'MINUS',
+    'PLUS',
+    'COMMA',
+    'COLON',
+    'SCOLON',
+    'OPAREN',
+    'CPAREN',
+    'OBRACKET',
+    'CBRACKET',
+#    'OBRACE',
+#    'CBRACE',
+    'EQUALS',
+    'NUMBER',
+    'LB_NAME',
+    'LB_STRING',
+    'LB_REGEX',
+    'HT_ACCEPT',
+    'HT_ALL',
+    'HT_CLEAR_DELIMITER',
+    'HT_DELIMITER',
+    'HT_FAMILY',
+    'HT_FOLD',
+    'HT_KEEP_DELIMITER',
+    'HT_KEYWORDS',
+    'HT_KEYWORD_STYLE',
+    'HT_INCLUDE',
+    'HT_INITIAL',
+    'HT_LANGUAGE',
+    'HT_X_NAMESPACE',
+    'HT_NOKEYWORD',
+    'HT_PAINT',
+    'HT_PATTERN',
+    'HT_PUBLIC_ID',
+    'HT_REDO',
+    'HT_REJECT',
+    'HT_SET_DELIMITER',
+    'HT_SET_OPPOSITE_DELIMITER',
+    'HT_SKIP',
+    'HT_STATE',
+    'HT_SUBLANGUAGE',
+    'HT_SYSTEM_ID',
+    'HT_TOKEN_CHECK',
+    'HT_START_STYLE',
+    'HT_END_STYLE',
+    'HT_UPTO',
+    'HT_SPUSH_CHECK',
+    'HT_SPOP_CHECK',
+    'HT_AT_EOL',
+    'LB_NL',
+    )
+
+t_ARROW = r'=&gt;'
+t_MINUS = r'-'
+t_PLUS = r'\+'
+t_COMMA = r','
+t_COLON = r':'
+t_SCOLON = r';'
+t_OPAREN = r'\('
+t_CPAREN = r'\)'
+t_OBRACKET = r'\['
+t_CBRACKET = r'\]'
+#t_OBRACE = r'{'
+#t_CBRACE = r'}'
+t_EQUALS = r'='
+
+reserved = {
+    'accept' : 'HT_ACCEPT',
+    'all' : 'HT_ALL',
+    'at_eol' : 'HT_AT_EOL',
+    'clear_delimiter' : 'HT_CLEAR_DELIMITER',
+    'delimiter' : 'HT_DELIMITER',
+    'family' : 'HT_FAMILY',
+    'fold' : 'HT_FOLD',
+    'keep_delimiter' : 'HT_KEEP_DELIMITER',
+    'keywords' : 'HT_KEYWORDS',
+    'keyword_style' : 'HT_KEYWORD_STYLE',
+    'include' : 'HT_INCLUDE',
+    'initial' : 'HT_INITIAL',
+    'language' : 'HT_LANGUAGE',
+    # Calling this "HT_NO_KEYWORD" will confuse PLY
+    'namespace' : 'HT_X_NAMESPACE',
+    'no_keyword' : 'HT_NOKEYWORD',
+    'paint' : 'HT_PAINT',
+    'pattern' : 'HT_PATTERN',
+    'public_id' : 'HT_PUBLIC_ID',
+    'publicid' : 'HT_PUBLIC_ID',       # Same keyword
+    'redo' : 'HT_REDO',
+    'reject' : 'HT_REJECT',
+    'set_delimiter' : 'HT_SET_DELIMITER',
+    'set_opposite_delimiter' : 'HT_SET_OPPOSITE_DELIMITER',
+    'skip' : 'HT_SKIP',
+    'state' : 'HT_STATE',
+    'sublanguage' : 'HT_SUBLANGUAGE',
+    'sub_language' : 'HT_SUBLANGUAGE',  # Same keyword
+    'systemid' : 'HT_SYSTEM_ID',         # Same keyword
+    'system_id' : 'HT_SYSTEM_ID',
+    'token_check' : 'HT_TOKEN_CHECK',
+    'start_style' : 'HT_START_STYLE',
+    'end_style' : 'HT_END_STYLE',
+    'upto' : 'HT_UPTO',
+    'spush_check' : 'HT_SPUSH_CHECK',
+    'spop_check' : 'HT_SPOP_CHECK',
+    }
+
+</t>
+<t tx="ekr.20080121135406.176"># These are right from the docs, work for Luddite
+
+def t_LB_NAME(t):
+    r'[a-zA-Z][a-zA-Z_0-9]*'
+    t.type = reserved.get(t.value,'LB_NAME')    # Check for reserved words
+    return t
+
+</t>
+<t tx="ekr.20080121135406.177">def t_NUMBER(t):
+    r'\d+'
+    try:
+        t.value = int(t.value)
+    except ValueError:
+        print "Number %s is too large!" % t.value
+        t.value = 0
+    return t
+
+</t>
+<t tx="ekr.20080121135406.178"># Define a rule so we can track line numbers
+
+# Sometimes we return this, but in lists we don't.
+
+def t_LB_NL(t): # Newline
+    r'\r?\n'
+    t.lineno += 1
+    return t
+
+</t>
+<t tx="ekr.20080121135406.179"># A string containing ignored characters (spaces and tabs)
+t_ignore  = ' \t'
+
+# Error handling rule
+def t_error(t):
+    print "Illegal character '%s'" % t.value[0]
+    t.skip(1)
+
+</t>
+<t tx="ekr.20080121135406.180"># Comments
+
+def t_comment(t):
+    r'\#.*'
+    t.skip(len(t.value))
+
+</t>
+<t tx="ekr.20080121135406.181">def t_nl_escape(t):
+    r'\\\r?\n'
+    t.lineno += 1
+    t.skip(len(t.value))
+
+</t>
+<t tx="ekr.20080121135406.182">def t_LB_STRING(t):
+    r'''((?:'[^'\\]*(?:\\.|[^'\\]+)*')|(?:"[^"\\]*(?:\\.|[^"\\]+)*"))'''
+    return t
+
+</t>
+<t tx="ekr.20080121135406.183">def t_LB_REGEX(t):
+    r'/(\\.|[^\\/]+)*/i?'
+    return t
+
+</t>
+<t tx="ekr.20080121135406.184">class Lexer:
+    @others
+</t>
+<t tx="ekr.20080121135406.185">def __init__(self):
+    self.lexer = lex.lex(debug=0)
+
+</t>
+<t tx="ekr.20080121135406.186">def token(self):
+    tok = self.lexer.token()
+    return tok
+
+</t>
+<t tx="ekr.20080121135406.187">def input(self, s):
+    self.lexer.input(s)
+
+</t>
+<t tx="ekr.20080121135406.188">def _test(self):
+    tok = None
+    while 1:
+        prev_tok = tok
+        tok = self.token()
+        if not tok:
+            break
+        print tok
+
+</t>
+<t tx="ekr.20080121135406.189">def get_input(fname, searchPath=['.']):
+        # Read in the file contents.
+        fin = None
+        if fname == '-':
+            fin = sys.stdin
+        else:
+            for p in searchPath:
+                try:
+                    fpath = p + "/" + fname
+                    fin = open(fpath, 'r')
+                    # print "**************** Opening file " + fpath + "..."
+                    break
+                except:
+                    # print "Can't open file " + fpath
+                    pass
+            if fin is None:
+                print "Can't find file " + fname
+                return None
+        s = fin.read()
+        fin.close()
+        return s
+
+
+</t>
+<t tx="ekr.20080121135406.190">def do_main(fname):
+    s = get_input(fname)
+    lw = Lexer()
+    lw.input(s)
+    return lw._test()
+
+</t>
+<t tx="ekr.20080121135406.191">def main(argv):
+    global searchPath
+    from optparse import OptionParser
+    parser = OptionParser()
+    parser.add_option("-I", "--include", action="append", dest="path", 
+                      help="add to search path")
+    (options, args) = parser.parse_args()
+    if options.path:
+        searchPath += options.path
+    
+    if len(args) != 1:
+        import py_compile
+        raise py_compile.PyCompileError("Incorrect number of arguments: %r" % argv[1:])
+    return do_main(args[0])
+
+</t>
+<t tx="ekr.20080121135406.192"># ***** LICENSE BLOCK *****
+
+"""parser for Luddite, using PLY
+
+See http://systems.cs.uchicago.edu/ply for more information on PLY, the
+lexer/parser framework this code uses.
+"""
+
+import os
+from os.path import dirname, join, exists
+import re
+import sys
+from types import *
+import logging
+
+from ludditelib.common import LudditeError
+from ludditelib import yacc
+from ludditelib.lexer import Lexer, tokens  # tokens is used by Yacc stuff
+
+
+log = logging.getLogger("luddite")
+
+
+
+</t>
+<t tx="ekr.20080121135406.193">#XXX review and Pythonify
+def keep_non_empty_dicts(lst):
+    return filter(lambda(x): x and type(x) == DictType and len(x.keys()) &gt; 0, lst)
+
+</t>
+<t tx="ekr.20080121135406.194">#XXX review and Pythonify
+def keep_non_empty_lists(lst):
+    return filter(lambda(x): x and type(x) == ListType and len(x) &gt; 0, lst)
+
+</t>
+<t tx="ekr.20080121135406.195">#XXX review and Pythonify
+def combine_filter_list_dict(list1, item2):
+    list2 = keep_non_empty_dicts(list1 or [])
+    if type(item2) == DictType:
+        list2.append(item2)
+    return list2
+
+</t>
+<t tx="ekr.20080121135406.196">#XXX review and Pythonify
+def combine_filter_list_item(list1, item2):
+    k = keep_non_empty_lists(list1 + [item2])
+    return k
+
+</t>
+<t tx="ekr.20080121135406.197">#XXX review and Pythonify
+def combine_filter_list(list1, item2):
+    k = [x for x in (list1 + [item2]) if x]
+    return k
+
+</t>
+<t tx="ekr.20080121135406.198">def p_program(p):
+    'program : statements'
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.199">def p_statements(p):
+    '''statements : statements_1
+    | statements_2'''
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.200">def p_statements_1(p):
+    'statements_1 : statements statement'
+    p[0] = combine_filter_list_item(p[1], p[2])
+
+</t>
+<t tx="ekr.20080121135406.201">def p_statements_2(p):
+    'statements_2 : empty'
+    p[0] = []
+
+</t>
+<t tx="ekr.20080121135406.202">def p_statement(p):
+    '''statement : statement_1
+    | statement_2'''
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.203">def p_statement_1(p):
+    '''statement_1 :  pattern eol_seq
+|  namespace_decln eol_seq
+|  public_id_decln eol_seq
+|  system_id_decln eol_seq
+|  family_decln eol_seq
+|  fold_stmt eol_seq
+|  include eol_seq
+|  initial eol_seq
+|  keyword_list eol_seq
+|  keyword_style eol_seq
+|  xlanguage eol_seq
+|  stateBlock
+|  sublanguage eol_seq
+|  tokenCheckBlock
+|  start_style_stmt
+|  end_style_stmt'''  # newline handling has to be handled in the lexer/rule
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.204">def p_statement_2(p):
+    'statement_2 : eol'
+    p[0] = []
+
+</t>
+<t tx="ekr.20080121135406.205">def p_pattern(p):
+    'pattern : HT_PATTERN name EQUALS string_const'
+    p[0] = ['pattern', { 'name' : p[2], 'value' : p[4] }]
+
+</t>
+<t tx="ekr.20080121135406.206">def p_fold_stmt(p):
+    'fold_stmt : HT_FOLD name_or_string LB_NAME plus_or_minus'
+    p[0] = ['fold', { 'name' : p[2], 'style' : p[3], 'value' : p[4] }]
+
+</t>
+<t tx="ekr.20080121135406.207">def p_plus_or_minus(p):
+    '''plus_or_minus : PLUS
+| MINUS'''
+    if p[1] == '+': p[0] = 1
+    else: p[0] = -1
+
+</t>
+<t tx="ekr.20080121135406.208">def p_include(p):
+    'include : HT_INCLUDE name_or_string'
+    p[0] = ['include', p[2]]
+
+</t>
+<t tx="ekr.20080121135406.209">def p_namespace_decln(p):
+    'namespace_decln : HT_X_NAMESPACE name_or_string'
+    p[0] = ['namespace', p[2]]
+
+</t>
+<t tx="ekr.20080121135406.210">def p_public_id_decln(p):
+    'public_id_decln : HT_PUBLIC_ID name_or_string'
+    p[0] = ['public_id', p[2]]
+
+</t>
+<t tx="ekr.20080121135406.211">def p_system_id_decln(p):
+    'system_id_decln : HT_SYSTEM_ID name_or_string'
+    p[0] = ['system_id', p[2]]
+
+</t>
+<t tx="ekr.20080121135406.212">def p_family_decln(p):
+    'family_decln : HT_FAMILY name'
+    p[0] = ['family', p[2]]
+
+</t>
+<t tx="ekr.20080121135406.213">def p_initial(p):
+    'initial : HT_INITIAL name'
+    p[0] = ['initial', {'name' : p[2]}]
+
+</t>
+<t tx="ekr.20080121135406.214">def p_keyword_list(p):
+    'keyword_list : HT_KEYWORDS name_and_string_list'
+    p[0] = ['keywordList', p[2]]
+
+</t>
+<t tx="ekr.20080121135406.215">def p_keyword_style(p):
+    'keyword_style : HT_KEYWORD_STYLE name ARROW name'
+    p[0] = ['keywordStyle', p[2], p[4]]
+
+</t>
+<t tx="ekr.20080121135406.216"># Calling this 'language' will make the parser-generator unhappy.
+
+def p_xlanguage(p):
+    'xlanguage : HT_LANGUAGE name_or_string'
+    p[0] = ['language', p[2]]
+
+</t>
+<t tx="ekr.20080121135406.217"># Calling this 'sub_language' will make the parser unhappy.
+
+def p_sublanguage(p):
+    'sublanguage : HT_SUBLANGUAGE name'
+    p[0] = ['sublanguage', p[2]]
+
+</t>
+<t tx="ekr.20080121135406.218">#XXX : Turn newlines on and off
+def p_name_and_string_list(p):
+    'name_and_string_list : OBRACKET names_and_strings CBRACKET'
+    p[0] = p[2]
+
+</t>
+<t tx="ekr.20080121135406.219">def p_stateBlock(p):
+    'stateBlock :  HT_STATE state_name opt_colon_eol transitions'
+    p[0] = ['stateBlock', { 'name' : p[2], 'value' : p[4]}]
+
+</t>
+<t tx="ekr.20080121135406.220">def p_transitions(p):
+    '''transitions : transitions_1
+    | transitions_2'''
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.221">def p_transitions_1(p):
+    'transitions_1 : transitions transition'
+    p[0] = combine_filter_list_item(p[1], p[2])
+
+</t>
+<t tx="ekr.20080121135406.222">def p_transitions_2(p):    
+    'transitions_2 : empty'
+    p[0] = []
+
+</t>
+<t tx="ekr.20080121135406.223">def p_transition(p):
+    '''transition : transition_1
+    | transition_2
+    | transition_3
+    | transition_4'''
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.224">def p_transition_1(p):
+    'transition_1 : string_const opt_token_check opt_colon cmds_and_trans eol_seq'
+    p[0] = ['transition', { 'type' : 'string', 'value' : p[1], 'token_check' : p[2], 'cmds' : p[4][0], 'trans' : p[4][1]}]
+    
+</t>
+<t tx="ekr.20080121135406.225">def p_transition_2(p):
+    'transition_2 : pattern_const opt_token_check opt_colon cmds_and_trans eol_seq'
+    p[0] = ['transition', { 'type' : 'pattern', 'value' : p[1], 'token_check' : p[2], 'cmds' : p[4][0], 'trans' : p[4][1]}]
+
+</t>
+<t tx="ekr.20080121135406.226">def p_transition_3(p):
+    'transition_3 : HT_DELIMITER opt_token_check opt_colon cmds_and_trans eol_seq'
+    p[0] = ['transition', { 'type' : 'delimiter', 'value' : '', 'token_check' : p[2], 'cmds' : p[4][0], 'trans' : p[4][1]}]
+
+</t>
+<t tx="ekr.20080121135406.227">def p_transition_4(p):
+    'transition_4 : eol'
+    p[0] = None
+
+</t>
+<t tx="ekr.20080121135406.228">def p_cmds_and_trans(p):
+    '''cmds_and_trans : cmds_and_trans_1
+    | cmds_and_trans_2
+    | cmds_and_trans_3
+    | cmds_and_trans_4
+    | cmds_and_trans_5'''
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.229">def p_cmds_and_trans_1(p):
+    'cmds_and_trans_1 : state_tran'
+    p[0] = [None, p[1]]
+
+</t>
+<t tx="ekr.20080121135406.230">def p_cmds_and_trans_2(p):
+    'cmds_and_trans_2 : cmds COMMA state_tran'
+    p[0] = [ p[1],  p[3] ]
+
+</t>
+<t tx="ekr.20080121135406.231">def p_cmds_and_trans_3(p):
+    'cmds_and_trans_3 : cmds state_tran'
+    p[0] = [ p[1],  p[2] ]
+
+</t>
+<t tx="ekr.20080121135406.232">def p_cmds_and_trans_4(p):
+    'cmds_and_trans_4 : cmds'
+    p[0] = [ p[1],  None ]
+
+</t>
+<t tx="ekr.20080121135406.233">def p_cmds_and_trans_5(p):
+    'cmds_and_trans_5 : empty'
+    p[0] = [None, None]
+
+</t>
+<t tx="ekr.20080121135406.234">def p_state_tran(p):
+    'state_tran : ARROW state_name'
+    p[0] = p[2]
+
+</t>
+<t tx="ekr.20080121135406.235">def p_tokenCheckBlock(p):
+    'tokenCheckBlock : HT_TOKEN_CHECK COLON eol_seq tokenCheckDeclns'
+    p[0] = ['tokenCheckBlock', p[4]]
+
+</t>
+<t tx="ekr.20080121135406.236">def p_tokenCheckDeclns(p):
+    '''tokenCheckDeclns : tokenCheckDeclns_1
+    | tokenCheckDeclns_2'''
+    p[0] = p[1]
+        
+</t>
+<t tx="ekr.20080121135406.237">def p_tokenCheckDeclns_1(p):
+    'tokenCheckDeclns_1 : tokenCheckDeclns tokenCheckDecln'
+    p[0] = combine_filter_list_dict(p[1], p[2])
+    
+</t>
+<t tx="ekr.20080121135406.238">def p_tokenCheckDeclns_2(p):
+    'tokenCheckDeclns_2 : empty'
+    p[0] = None
+    
+</t>
+<t tx="ekr.20080121135406.239">def p_tokenCheckDecln(p):
+    '''tokenCheckDecln : tokenCheckDecln1
+| tokenCheckDecln2'''
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.240">def p_tokenCheckDecln1(p):
+    'tokenCheckDecln1 : name COLON action_type action_selectors opt_term'
+    p[0] = {'name' : p[1], 'type' : p[3], 'selectors' : p[4]}
+
+</t>
+<t tx="ekr.20080121135406.241">def p_tokenCheckDecln2(p):
+    'tokenCheckDecln2 : eol'
+    p[0] = None
+
+</t>
+<t tx="ekr.20080121135406.242">def p_action_type(p):
+    '''action_type : HT_REJECT
+    | HT_SKIP
+    | HT_ACCEPT'''
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.243">def p_action_selectors(p):
+    '''action_selectors : HT_ALL
+| name_and_string_list'''
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.244">def p_start_style_stmt(p):
+    'start_style_stmt : HT_START_STYLE name'
+    p[0] = ['start_style', p[2]]
+
+</t>
+<t tx="ekr.20080121135406.245">def p_end_style_stmt(p):
+    'end_style_stmt : HT_END_STYLE name'
+    p[0] = ['end_style', p[2]]
+    
+</t>
+<t tx="ekr.20080121135406.246">def p_string_const(p):
+    'string_const : LB_STRING'
+    # dequote the start of the raw string
+    value1 = re.sub(r'^[\'\"]', '', p[1])
+    value2 = re.sub(r'[\'\"]$', '', value1)
+    if '\\' not in value2:
+        p[0] = value2
+    else:
+        # Now handle only escaped quotes and tabs, all other backslashed
+        # items will be handled by the generator.
+        target = []
+        esc_chars = {'"':'"',
+                     "'":"'",
+                     "t":"\t",
+                     }
+        srclen = len(value2)
+        srclenSub1 = srclen - 1
+        i = 0
+        while i &lt; srclen:
+            if value2[i] == '\\':
+                if i &lt; srclenSub1:
+                    c = esc_chars.get(value2[i + 1], None)
+                    if c:
+                        target.append(c)
+                    else:
+                        # Pass the backslash along when it doesn't
+                        # precede a quote or t
+                        target.append('\\')
+                        target.append(value2[i+1])
+                    i += 2
+                    continue
+            target.append(value2[i])
+            i += 1
+        p[0] = "".join(target)
+
+</t>
+<t tx="ekr.20080121135406.247">def p_pattern_const(p):
+    'pattern_const : LB_REGEX'
+    ptn = p[1]
+    if ptn[-1] == 'i':
+        ignore_case = True
+        ptn = ptn[:-1]
+    else:
+        ignore_case = False
+    ptn1 = re.sub('^/', '', ptn)
+    ptn2 = re.sub('/$', '', ptn1)
+    p[0] = [ptn2, ignore_case]
+
+</t>
+<t tx="ekr.20080121135406.248">def p_state_name(p):
+    'state_name : LB_NAME'
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.249">def p_cmds(p):
+    '''cmds : cmds_1
+| cmds_2'''
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.250">def p_cmds_1(p):
+    'cmds_1 : cmds COMMA cmd'
+    p[0] = combine_filter_list_item(p[1], p[3])
+
+</t>
+<t tx="ekr.20080121135406.251">def p_cmds_2(p):
+    'cmds_2 : cmd'
+    p[0] = [p[1]]
+
+</t>
+<t tx="ekr.20080121135406.252">def p_cmd(p):
+    '''cmd : paint_cmd
+    | at_eoltran_cmd
+    | clear_delimiter_cmd
+    | keep_delimiter_cmd
+    | no_keyword_cmd
+    | redo_cmd
+    | set_delimiter_cmd
+    | set_opposite_delimiter_cmd
+    | spush_check_cmd
+    | spop_check_cmd'''
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.253">def p_paint_cmd(p):
+    'paint_cmd : HT_PAINT OPAREN paint_name COMMA color_sym CPAREN'
+    p[0] = ['paint', {'type' : p[3], 'value' : p[5]}]
+
+</t>
+<t tx="ekr.20080121135406.254">def p_paint_name(p):
+    '''paint_name : HT_INCLUDE
+| HT_UPTO'''
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.255">def p_no_keyword_cmd(p):
+    'no_keyword_cmd : HT_NOKEYWORD'
+    p[0] = ['no_keyword']
+
+</t>
+<t tx="ekr.20080121135406.256">def p_at_eoltran_cmd(p):
+    'at_eoltran_cmd : HT_AT_EOL opt_paren_state_name'
+    p[0] = [ 'at_eol', p[2] ]
+
+</t>
+<t tx="ekr.20080121135406.257">def p_redo_cmd(p):
+    'redo_cmd : HT_REDO'
+    p[0] = ['redo']
+
+</t>
+<t tx="ekr.20080121135406.258">def p_clear_delimiter_cmd(p):
+    'clear_delimiter_cmd : HT_CLEAR_DELIMITER'
+    p[0] = ['clear_delimiter']
+
+</t>
+<t tx="ekr.20080121135406.259">def p_keep_delimiter_cmd(p):
+    'keep_delimiter_cmd : HT_KEEP_DELIMITER'
+    p[0] = ['keep_delimiter']
+
+</t>
+<t tx="ekr.20080121135406.260">def p_set_delimiter_cmd(p):
+    'set_delimiter_cmd : HT_SET_DELIMITER opt_paren_number'
+    p[0] = [p[1], p[2]]
+
+</t>
+<t tx="ekr.20080121135406.261">def p_set_opposite_delimiter_cmd(p):
+    'set_opposite_delimiter_cmd : HT_SET_OPPOSITE_DELIMITER opt_paren_number'
+    p[0] = [p[1], p[2]]
+
+</t>
+<t tx="ekr.20080121135406.262">def p_spush_check_cmd(p):
+    'spush_check_cmd : HT_SPUSH_CHECK opt_paren_state_name'
+    p[0] = [ 'spush_check', p[2] ]
+
+</t>
+<t tx="ekr.20080121135406.263">def p_opt_paren_state_name(p):
+    '''opt_paren_state_name : opt_paren_state_name_1
+| opt_paren_state_name_2'''
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.264">def p_opt_paren_state_name_1(p):
+    'opt_paren_state_name_1 : OPAREN opt_paren_state_name CPAREN'
+    p[0] = p[2]
+
+</t>
+<t tx="ekr.20080121135406.265">def p_opt_paren_state_name_2(p):
+    'opt_paren_state_name_2 : state_name'
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.266">def p_spop_check_cmd(p):
+    'spop_check_cmd : HT_SPOP_CHECK'
+    p[0] = [p[1]]
+
+</t>
+<t tx="ekr.20080121135406.267">def p_color_sym(p):
+    'color_sym : LB_NAME'
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.268">def p_name(p):
+    'name : LB_NAME'
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.269">def p_names_and_strings(p):
+    '''names_and_strings : names_and_strings_1
+    | names_and_strings_2'''
+    p[0] = p[1]
+    
+</t>
+<t tx="ekr.20080121135406.270">def p_names_and_strings_1(p):
+    'names_and_strings_1 : names_and_strings name_or_string_opt_comma'
+    p[0] = combine_filter_list(p[1], p[2])
+    
+</t>
+<t tx="ekr.20080121135406.271">def p_names_and_strings_2(p):
+    'names_and_strings_2 : empty'
+    p[0] = []
+
+</t>
+<t tx="ekr.20080121135406.272">def p_name_or_string_opt_comma(p):
+    '''name_or_string_opt_comma : name_or_string_opt_comma_1
+| name_or_string_opt_comma_2'''
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.273">def p_name_or_string_opt_comma_1(p):
+    'name_or_string_opt_comma_1 : name_or_string opt_comma'
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.274">def p_name_or_string_opt_comma_2(p):
+    'name_or_string_opt_comma_2 : eol'
+    p[0] = None
+
+</t>
+<t tx="ekr.20080121135406.275">def p_name_or_string(p):
+    '''name_or_string : name
+| string_const'''
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.276">def p_opt_paren_number(p):
+    '''opt_paren_number : paren_number
+| NUMBER'''
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.277">def p_paren_number(p):
+    'paren_number : OPAREN NUMBER CPAREN'
+    p[0] = p[2]
+
+</t>
+<t tx="ekr.20080121135406.278">def p_eol_seq(p):
+    'eol_seq : opt_term eol'
+    p[0] = None
+
+</t>
+<t tx="ekr.20080121135406.279">def p_opt_colon_eol(p):
+    'opt_colon_eol : opt_colon eol'
+    p[0] = None
+
+</t>
+<t tx="ekr.20080121135406.280">def p_eol(p):
+    'eol : LB_NL'
+    p[0] = None
+
+</t>
+<t tx="ekr.20080121135406.281">def p_opt_colon(p):
+    '''opt_colon : COLON
+| empty'''
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.282">def p_opt_comma(p):
+    '''opt_comma : COMMA
+| empty'''
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.283">def p_opt_term(p):
+    '''opt_term : SCOLON
+| empty'''
+    p[0] = p[1]
+
+</t>
+<t tx="ekr.20080121135406.284">def p_opt_token_check(p):
+    '''opt_token_check : HT_TOKEN_CHECK
+| empty'''
+    p[0] = (p[1] == 'token_check' and 1) or 0
+
+</t>
+<t tx="ekr.20080121135406.285">def p_empty(p):
+    'empty : '
+    pass
+    # p[0] = None
+
+</t>
+<t tx="ekr.20080121135406.286">def p_error(p):
+    global num_errs
+    print "Syntax error at or near line %d, token '%s'" % (p.lexer.lineno,
+                                                           p.value)
+    num_errs += 1
+
+
+
+</t>
+<t tx="ekr.20080121135406.287">#---- the driver
+
+def _wrap_read_file(fname, include_path):
+    # Read in the file contents.
+    if fname == '-':
+        fin = sys.stdin
+        s = fin.read()
+    else:
+        for p in [os.curdir] + include_path:
+            fpath = join(p, fname)
+            if exists(fpath):
+                break
+        else:
+            raise LudditeError("`%s' does not exist on include path: '%s'"
+                               % (fname, "', '".join(include_path)))
+        fin = open(fpath, 'r')
+        try:
+            s = fin.read()
+        finally:
+            fin.close()
+    return s
+
+</t>
+<t tx="ekr.20080121135406.288">def _read_file(fname, include_path):
+    s = _wrap_read_file(fname, include_path)
+    if s[-1] != "\n":
+        s = s + "\n"
+    return s    
+
+</t>
+<t tx="ekr.20080121135406.289">def parse_udl_path(udl_path, include_path=None, debug_level=1):
+    log.debug("parse_udl_path('%s')", udl_path)
+    if include_path is None:
+        include_path = []
+
+    dname = dirname(udl_path) or os.curdir
+    if dname not in include_path and os.path.abspath(dname) != os.getcwd():
+        include_path.append(dname)
+
+    lexer = Lexer()
+    content = _read_file(udl_path, include_path)
+    lexer.input(content)
+
+    global num_errs
+    num_errs = 0
+    # `write_tables=0` because we don't want 'parsetab.py' file. It can
+    # cause subtle problems if the cwd changes.
+    yacc.yacc(write_tables=0)
+    p2 = yacc.parse(debug=debug_level, lexer=lexer)
+    
+    # Because 'include' is part of the language, and not a pre-processor
+    # language, we need to parse each included module separately.
+    if p2:
+        for nodes in p2:
+            if nodes[0] == 'include':
+                udl_path2 = nodes[1]
+                t2 = parse_udl_path(udl_path2, include_path=include_path,
+                                    debug_level=debug_level)
+                nodes[0] = 'module'
+                nodes[1] = t2
+    return p2
+
+</t>
+<t tx="ekr.20080121135406.290">"""UUID (universally unique identifiers) as specified in RFC 4122.
+
+This module provides the UUID class and the functions uuid1(), uuid3(),
+uuid4(), uuid5() for generating version 1, 3, 4, and 5 UUIDs respectively.
+
+This module works with Python 2.3 or higher."""
+
+__author__ = 'Ka-Ping Yee &lt;ping@zesty.ca&gt;'
+__date__ = '$Date$'.split()[1].replace('/', '-')
+__version__ = '$Revision$'
+
+RESERVED_NCS, RFC_4122, RESERVED_MICROSOFT, RESERVED_FUTURE = [
+    'reserved for NCS compatibility', 'specified in RFC 4122',
+    'reserved for Microsoft compatibility', 'reserved for future definition']
+
+</t>
+<t tx="ekr.20080121135406.291">class UUID(object):
+    """Instances of the UUID class represent UUIDs as specified in RFC 4122.
+    Converting a UUID to a string using str() produces a string in the form
+    "{12345678-1234-1234-1234-123456789abc}".  The UUID constructor accepts
+    a similar string (braces and hyphens optional), or six integer arguments
+    (with 32-bit, 16-bit, 16-bit, 8-bit, 8-bit, and 48-bit values
+    respectively).  UUID objects have the following attributes:
+
+        bytes       gets or sets the UUID as a 16-byte string
+
+        urn         gets the UUID as a URN as specified in RFC 4122
+
+        variant     gets or sets the UUID variant as one of the constants
+                    RESERVED_NCS, RFC_4122, RESERVED_MICROSOFT, RESERVED_FUTURE
+
+        version     gets or sets the UUID version number (1 through 5)
+    """
+    @others
+    version = property(get_version, set_version)
+
+</t>
+<t tx="ekr.20080121135406.292">
+def __init__(self, *args):
+    """Create a UUID either from a string representation in hexadecimal
+    or from six integers (32-bit time_low, 16-bit time_mid, 16-bit
+    time_hi_ver, 8-bit clock_hi_res, 8-bit clock_low, 48-bit node)."""
+    if len(args) == 1:
+        digits = args[0].replace('urn:', '').replace('uuid:', '')
+        digits = digits.replace('{', '').replace('}', '').replace('-', '')
+        assert len(digits) == 32, ValueError('badly formed UUID string')
+        time_low = int(digits[:8], 16)
+        time_mid = int(digits[8:12], 16)
+        time_hi_ver = int(digits[12:16], 16)
+        clock_hi_res = int(digits[16:18], 16)
+        clock_low = int(digits[18:20], 16)
+        node = int(digits[20:32], 16)
+    else:
+        (time_low, time_mid, time_hi_ver,
+         clock_hi_res, clock_low, node) = args
+    assert 0 &lt;= time_low &lt; 0x100000000, ValueError('time_low out of range')
+    assert 0 &lt;= time_mid &lt; 1&lt;&lt;16, ValueError('time_mid out of range')
+    assert 0 &lt;= time_hi_ver &lt; 1&lt;&lt;16, ValueError('time_hi_ver out of range')
+    assert 0 &lt;= clock_hi_res &lt; 1&lt;&lt;8, ValueError('clock_hi_res out of range')
+    assert 0 &lt;= clock_low &lt; 1&lt;&lt;8, ValueError('clock_low out of range')
+    assert 0 &lt;= node &lt; 0x1000000000000, ValueError('node out of range')
+    self.time_low = time_low
+    self.time_mid = time_mid
+    self.time_hi_ver = time_hi_ver
+    self.clock_hi_res = clock_hi_res
+    self.clock_low = clock_low
+    self.node = node
+
+</t>
+<t tx="ekr.20080121135406.293">def __cmp__(self, other):
+    return cmp(self.bytes, getattr(other, 'bytes', other))
+
+</t>
+<t tx="ekr.20080121135406.294">def __str__(self):
+    return '{%08x-%04x-%04x-%02x%02x-%012x}' % (
+        self.time_low, self.time_mid, self.time_hi_ver,
+        self.clock_hi_res, self.clock_low, self.node)
+
+</t>
+<t tx="ekr.20080121135406.295">def __repr__(self):
+    return 'UUID(%r)' % str(self)
+
+</t>
+<t tx="ekr.20080121135406.296">def get_bytes(self):
+    def byte(n):
+        return chr(n &amp; 0xff)
+
+    return (byte(self.time_low &gt;&gt; 24) + byte(self.time_low &gt;&gt; 16) +
+            byte(self.time_low &gt;&gt; 8) + byte(self.time_low) +
+            byte(self.time_mid &gt;&gt; 8) + byte(self.time_mid) +
+            byte(self.time_hi_ver &gt;&gt; 8) + byte(self.time_hi_ver) +
+            byte(self.clock_hi_res) + byte(self.clock_low) +
+            byte(self.node &gt;&gt; 40) + byte(self.node &gt;&gt; 32) +
+            byte(self.node &gt;&gt; 24) + byte(self.node &gt;&gt; 16) +
+            byte(self.node &gt;&gt; 8) + byte(self.node))
+
+</t>
+<t tx="ekr.20080121135406.297">def set_bytes(self, bytes):
+    values = map(ord, bytes)
+    self.time_low = ((values[0] &lt;&lt; 24) + (values[1] &lt;&lt; 16) +
+                     (values[2] &lt;&lt; 8) + values[3])
+    self.time_mid = (values[4] &lt;&lt; 8) + values[5]
+    self.time_hi_ver = (values[6] &lt;&lt; 8) + values[7]
+    self.clock_hi_res = values[8]
+    self.clock_low = values[9]
+    self.node = ((values[10] &lt;&lt; 40) + (values[11] &lt;&lt; 32) +
+                 (values[12] &lt;&lt; 24) + (values[13] &lt;&lt; 16) +
+                 (values[14] &lt;&lt; 8) + values[15])
+
+</t>
+<t tx="ekr.20080121135406.298">bytes = property(get_bytes, set_bytes)
+
+def get_urn(self):
+    return 'urn:uuid:%08x-%04x-%04x-%02x%02x-%012x' % (
+        self.time_low, self.time_mid, self.time_hi_ver,
+        self.clock_hi_res, self.clock_low, self.node)
+
+</t>
+<t tx="ekr.20080121135406.299">urn = property(get_urn)
+
+def get_variant(self):
+    if not self.clock_hi_res &amp; 0x80:
+        return RESERVED_NCS
+    elif not self.clock_hi_res &amp; 0x40:
+        return RFC_4122
+    elif not self.clock_hi_res &amp; 0x20:
+        return RESERVED_MICROSOFT
+    else:
+        return RESERVED_FUTURE
+
+</t>
+<t tx="ekr.20080121135406.300">def set_variant(self, variant):
+    if variant == RESERVED_NCS:
+        self.clock_hi_res &amp;= 0x7f
+    elif variant == RFC_4122:
+        self.clock_hi_res &amp;= 0x3f
+        self.clock_hi_res |= 0x80
+    elif variant == RESERVED_MICROSOFT:
+        self.clock_hi_res &amp;= 0x1f
+        self.clock_hi_res |= 0xc0
+    elif variant == RESERVED_FUTURE:
+        self.clock_hi_res &amp;= 0x1f
+        self.clock_hi_res |= 0xe0
+    else:
+        raise ValueError('illegal variant identifier')
+
+</t>
+<t tx="ekr.20080121135406.301">variant = property(get_variant, set_variant)
+
+def get_version(self):
+    return self.time_hi_ver &gt;&gt; 12
+
+</t>
+<t tx="ekr.20080121135406.302">def set_version(self, version):
+    assert 1 &lt;= version &lt;= 5, ValueError('illegal version number')
+    self.time_hi_ver &amp;= 0x0fff
+    self.time_hi_ver |= (version &lt;&lt; 12)
+
+</t>
+<t tx="ekr.20080121135406.303">def unixgetaddr(program):
+    """Get the hardware address on a Unix machine."""
+    from os import popen
+    for line in popen(program):
+        words = line.lower().split()
+        if 'hwaddr' in words:
+            addr = words[words.index('hwaddr') + 1]
+            return int(addr.replace(':', ''), 16)
+        if 'ether' in words:
+            addr = words[words.index('ether') + 1]
+            return int(addr.replace(':', ''), 16)
+
+</t>
+<t tx="ekr.20080121135406.304">def wingetaddr(program):
+    """Get the hardware address on a Windows machine."""
+    from os import popen
+    for line in popen(program + ' /all'):
+        if line.strip().lower().startswith('physical address'):
+            addr = line.split(':')[-1].strip()
+            return int(addr.replace('-', ''), 16)
+
+</t>
+<t tx="ekr.20080121135406.305">def getaddr():
+    """Get the hardware address as a 48-bit integer."""
+    from os.path import join, isfile
+    for dir in ['/sbin', '/usr/sbin', r'c:\windows',
+                r'c:\windows\system', r'c:\windows\system32']:
+        if isfile(join(dir, 'ifconfig')):
+            return unixgetaddr(join(dir, 'ifconfig'))
+        if isfile(join(dir, 'ipconfig.exe')):
+            return wingetaddr(join(dir, 'ipconfig.exe'))
+
+</t>
+<t tx="ekr.20080121135406.306">def uuid1():
+    """Generate a UUID based on the time and hardware address."""
+    from time import time
+    from random import randrange
+    nanoseconds = int(time() * 1e9)
+    # 0x01b21dd213814000 is the number of 100-ns intervals between the
+    # UUID epoch 1582-10-15 00:00:00 and the Unix epoch 1970-01-01 00:00:00.
+    timestamp = int(nanoseconds/100) + 0x01b21dd213814000
+    clock = randrange(1&lt;&lt;16) # don't use stable storage
+    time_low = timestamp &amp; (0x100000000 - 1)
+    time_mid = (timestamp &gt;&gt; 32) &amp; 0xffff
+    time_hi_ver = (timestamp &gt;&gt; 48) &amp; 0x0fff
+    clock_low = clock &amp; 0xff
+    clock_hi_res = (clock &gt;&gt; 8) &amp; 0x3f
+    node = getaddr()
+    uuid = UUID(time_low, time_mid, time_hi_ver, clock_low, clock_hi_res, node)
+    uuid.variant = RFC_4122
+    uuid.version = 1
+    return uuid
+
+</t>
+<t tx="ekr.20080121135406.307">def uuid3(namespace, name):
+    """Generate a UUID from the MD5 hash of a namespace UUID and a name."""
+    from md5 import md5
+    uuid = UUID(0, 0, 0, 0, 0, 0)
+    uuid.bytes = md5(namespace.bytes + name).digest()[:16]
+    uuid.variant = RFC_4122
+    uuid.version = 3
+    return uuid
+
+</t>
+<t tx="ekr.20080121135406.308">def uuid4():
+    """Generate a random UUID."""
+    try:
+        from os import urandom
+    except:
+        from random import randrange
+        uuid = UUID(randrange(1&lt;&lt;32), randrange(1&lt;&lt;16), randrange(1&lt;&lt;16),
+                    randrange(1&lt;&lt;8), randrange(1&lt;&lt;8), randrange(1&lt;&lt;48))
+    else:
+        uuid = UUID(0, 0, 0, 0, 0, 0)
+        uuid.bytes = urandom(16)
+    uuid.variant = RFC_4122
+    uuid.version = 4
+    return uuid
+
+</t>
+<t tx="ekr.20080121135406.309">def uuid5(namespace, name):
+    """Generate a UUID from the SHA-1 hash of a namespace UUID and a name."""
+    from sha import sha
+    uuid = UUID(0, 0, 0, 0, 0, 0)
+    uuid.bytes = sha(namespace.bytes + name).digest()[:16]
+    uuid.variant = RFC_4122
+    uuid.version = 5
+    return uuid
+
+</t>
+<t tx="ekr.20080121135406.310">#-----------------------------------------------------------------------------
+# ply: yacc.py
+#
+# Author(s): David M. Beazley (dave@dabeaz.com)
+#
+# Copyright (C) 2001-2006, David M. Beazley
+#
+# $Header$
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+# 
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+# 
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# 
+# See the file COPYING for a complete copy of the LGPL.
+#
+#
+# This implements an LR parser that is constructed from grammar rules defined
+# as Python functions.  Roughly speaking, this module is a cross between
+# John Aycock's Spark system and the GNU bison utility.
+#
+# The current implementation is only somewhat object-oriented. The
+# LR parser itself is defined in terms of an object (which allows multiple
+# parsers to co-exist).  However, most of the variables used during table
+# construction are defined in terms of global variables.  Users shouldn't
+# notice unless they are trying to define multiple parsers at the same
+# time using threads (in which case they should have their head examined).
+#
+# This implementation supports both SLR and LALR(1) parsing.  LALR(1)
+# support was implemented by Elias Ioup (ezioup@alumni.uchicago.edu)
+# and hacked abit by Dave to run faster.
+#
+# :::::::: WARNING :::::::
+#
+# Construction of LR parsing tables is fairly complicated and expensive.
+# To make this module run fast, a *LOT* of work has been put into
+# optimization---often at the expensive of readability and what might
+# consider to be good Python "coding style."   Modify the code at your
+# own risk!
+# ----------------------------------------------------------------------------
+
+__version__ = "1.7"
+
+#-----------------------------------------------------------------------------
+#                     === User configurable parameters ===
+#
+# Change these to modify the default behavior of yacc (if you wish)
+#-----------------------------------------------------------------------------
+
+yaccdebug   = 0                # Debugging mode.  If set, yacc generates a
+                               # a 'parser.out' file in the current directory
+
+debug_file  = 'parser.out'     # Default name of the debugging file
+tab_module  = 'parsetab'       # Default name of the table module
+default_lr  = 'SLR'            # Default LR table generation method
+
+error_count = 3                # Number of symbols that must be shifted to leave recovery mode
+
+import re, types, sys, cStringIO, md5, os.path
+
+</t>
+<t tx="ekr.20080121135406.311"># Exception raised for yacc-related errors
+class YaccError(Exception):   pass
+
+</t>
+<t tx="ekr.20080121135406.312">#-----------------------------------------------------------------------------
+#                        ===  LR Parsing Engine ===
+#
+# The following classes are used for the LR parser itself.  These are not
+# used during table construction and are independent of the actual LR
+# table generation algorithm
+#-----------------------------------------------------------------------------
+
+# This class is used to hold non-terminal grammar symbols during parsing.
+# It normally has the following attributes set:
+#        .type       = Grammar symbol type
+#        .value      = Symbol value
+#        .lineno     = Starting line number
+#        .endlineno  = Ending line number (optional, set automatically)
+
+class YaccSymbol:
+    @others
+</t>
+<t tx="ekr.20080121135406.313">def __str__(self):    return self.type
+</t>
+<t tx="ekr.20080121135406.314">def __repr__(self):   return str(self)
+
+</t>
+<t tx="ekr.20080121135406.315"># This class is a wrapper around the objects actually passed to each
+# grammar rule.   Index lookup and assignment actually assign the
+# .value attribute of the underlying YaccSymbol object.
+# The lineno() method returns the line number of a given
+# item (or 0 if not defined).   The linespan() method returns
+# a tuple of (startline,endline) representing the range of lines
+# for a symbol.
+
+class YaccProduction:
+    @others
+</t>
+<t tx="ekr.20080121135406.316">def __init__(self,s):
+    self.slice = s
+    self.pbstack = []
+
+</t>
+<t tx="ekr.20080121135406.317">def __getitem__(self,n):
+    return self.slice[n].value
+
+</t>
+<t tx="ekr.20080121135406.318">def __setitem__(self,n,v):
+    self.slice[n].value = v
+
+</t>
+<t tx="ekr.20080121135406.319">def __len__(self):
+    return len(self.slice)
+
+</t>
+<t tx="ekr.20080121135406.320">def lineno(self,n):
+    return getattr(self.slice[n],"lineno",0)
+
+</t>
+<t tx="ekr.20080121135406.321">def linespan(self,n):
+    startline = getattr(self.slice[n],"lineno",0)
+    endline = getattr(self.slice[n],"endlineno",startline)
+    return startline,endline
+
+</t>
+<t tx="ekr.20080121135406.322">def pushback(self,n):
+    if n &lt;= 0:
+        raise ValueError, "Expected a positive value"
+    if n &gt; (len(self.slice)-1):
+        raise ValueError, "Can't push %d tokens. Only %d are available." % (n,len(self.slice)-1)
+    for i in range(0,n):
+        self.pbstack.append(self.slice[-i-1])
+
+</t>
+<t tx="ekr.20080121135406.323"># The LR Parsing engine.   This is defined as a class so that multiple parsers
+# can exist in the same process.  A user never instantiates this directly.
+# Instead, the global yacc() function should be used to create a suitable Parser
+# object. 
+
+class Parser:
+    @others
+</t>
+<t tx="ekr.20080121135406.324">def __init__(self,magic=None):
+
+    # This is a hack to keep users from trying to instantiate a Parser
+    # object directly.
+
+    if magic != "xyzzy":
+        raise YaccError, "Can't instantiate Parser. Use yacc() instead."
+
+    # Reset internal state
+    self.productions = None          # List of productions
+    self.errorfunc   = None          # Error handling function
+    self.action      = { }           # LR Action table
+    self.goto        = { }           # LR goto table
+    self.require     = { }           # Attribute require table
+    self.method      = "Unknown LR"  # Table construction method used
+
+</t>
+<t tx="ekr.20080121135406.325">def errok(self):
+    self.errorcount = 0
+
+</t>
+<t tx="ekr.20080121135406.326">def restart(self):
+    del self.statestack[:]
+    del self.symstack[:]
+    sym = YaccSymbol()
+    sym.type = '$'
+    self.symstack.append(sym)
+    self.statestack.append(0)
+    
+</t>
+<t tx="ekr.20080121135406.327">def parse(self,input=None,lexer=None,debug=0):
+    lookahead = None                 # Current lookahead symbol
+    lookaheadstack = [ ]             # Stack of lookahead symbols
+    actions = self.action            # Local reference to action table
+    goto    = self.goto              # Local reference to goto table
+    prod    = self.productions       # Local reference to production list
+    pslice  = YaccProduction(None)   # Production object passed to grammar rules
+    pslice.parser = self             # Parser object
+    self.errorcount = 0              # Used during error recovery
+
+    # If no lexer was given, we will try to use the lex module
+    if not lexer:
+        import lex as lexer
+
+    pslice.lexer = lexer
+    
+    # If input was supplied, pass to lexer
+    if input:
+        lexer.input(input)
+
+    # Tokenize function
+    get_token = lexer.token
+
+    statestack = [ ]                # Stack of parsing states
+    self.statestack = statestack
+    symstack   = [ ]                # Stack of grammar symbols
+    self.symstack = symstack
+
+    errtoken   = None               # Err token
+
+    # The start state is assumed to be (0,$)
+    statestack.append(0)
+    sym = YaccSymbol()
+    sym.type = '$'
+    symstack.append(sym)
+    
+    while 1:
+        # Get the next symbol on the input.  If a lookahead symbol
+        # is already set, we just use that. Otherwise, we'll pull
+        # the next token off of the lookaheadstack or from the lexer
+        if not lookahead:
+            if not lookaheadstack:
+                lookahead = get_token()     # Get the next token
+            else:
+                lookahead = lookaheadstack.pop()
+            if not lookahead:
+                lookahead = YaccSymbol()
+                lookahead.type = '$'
+        if debug:
+            errorlead = ("%s . %s" % (" ".join([xx.type for xx in symstack][1:]), str(lookahead))).lstrip()
+
+        # Check the action table
+        s = statestack[-1]
+        ltype = lookahead.type
+        t = actions.get((s,ltype),None)
+
+        if t is not None:
+            if t &gt; 0:
+                # shift a symbol on the stack
+                if ltype == '$':
+                    # Error, end of input
+                    sys.stderr.write("yacc: Parse error. EOF\n")
+                    return
+                statestack.append(t)
+                if debug &gt; 1:
+                    sys.stderr.write("%-60s shift state %s\n" % (errorlead, t))
+                symstack.append(lookahead)
+                lookahead = None
+
+                # Decrease error count on successful shift
+                if self.errorcount &gt; 0:
+                    self.errorcount -= 1
+                    
+                continue
+            
+            if t &lt; 0:
+                # reduce a symbol on the stack, emit a production
+                p = prod[-t]
+                pname = p.name
+                plen  = p.len
+
+                # Get production function
+                sym = YaccSymbol()
+                sym.type = pname       # Production name
+                sym.value = None
+                if debug &gt; 1:
+                    sys.stderr.write("%-60s reduce %d\n" % (errorlead, -t))
+
+                if plen:
+                    targ = symstack[-plen-1:]
+                    targ[0] = sym
+                    try:
+                        sym.lineno = targ[1].lineno
+                        sym.endlineno = getattr(targ[-1],"endlineno",targ[-1].lineno)
+                    except AttributeError:
+                        sym.lineno = 0
+                    del symstack[-plen:]
+                    del statestack[-plen:]
+                else:
+                    sym.lineno = 0
+                    targ = [ sym ]
+                pslice.slice = targ
+                pslice.pbstack = []
+                # Call the grammar rule with our special slice object
+                p.func(pslice)
+
+                # If there was a pushback, put that on the stack
+                if pslice.pbstack:
+                    lookaheadstack.append(lookahead)
+                    for _t in pslice.pbstack:
+                        lookaheadstack.append(_t)
+                    lookahead = None
+
+                symstack.append(sym)
+                statestack.append(goto[statestack[-1],pname])
+                continue
+
+            if t == 0:
+                n = symstack[-1]
+                return getattr(n,"value",None)
+                sys.stderr.write(errorlead, "\n")
+
+        if t == None:
+            if debug:
+                sys.stderr.write(errorlead + "\n")
+            # We have some kind of parsing error here.  To handle
+            # this, we are going to push the current token onto
+            # the tokenstack and replace it with an 'error' token.
+            # If there are any synchronization rules, they may
+            # catch it.
+            #
+            # In addition to pushing the error token, we call call
+            # the user defined p_error() function if this is the
+            # first syntax error.  This function is only called if
+            # errorcount == 0.
+            if not self.errorcount:
+                self.errorcount = error_count
+                errtoken = lookahead
+                if errtoken.type == '$':
+                    errtoken = None               # End of file!
+                if self.errorfunc:
+                    global errok,token,restart
+                    errok = self.errok        # Set some special functions available in error recovery
+                    token = get_token
+                    restart = self.restart
+                    tok = self.errorfunc(errtoken)
+                    del errok, token, restart   # Delete special functions
+                    
+                    if not self.errorcount:
+                        # User must have done some kind of panic
+                        # mode recovery on their own.  The
+                        # returned token is the next lookahead
+                        lookahead = tok
+                        errtoken = None
+                        continue
+                else:
+                    if errtoken:
+                        if hasattr(errtoken,"lineno"): lineno = lookahead.lineno
+                        else: lineno = 0
+                        if lineno:
+                            sys.stderr.write("yacc: Syntax error at line %d, token=%s\n" % (lineno, errtoken.type))
+                        else:
+                            sys.stderr.write("yacc: Syntax error, token=%s" % errtoken.type)
+                    else:
+                        sys.stderr.write("yacc: Parse error in input. EOF\n")
+                        return
+
+            else:
+                self.errorcount = error_count
+            
+            # case 1:  the statestack only has 1 entry on it.  If we're in this state, the
+            # entire parse has been rolled back and we're completely hosed.   The token is
+            # discarded and we just keep going.
+
+            if len(statestack) &lt;= 1 and lookahead.type != '$':
+                lookahead = None
+                errtoken = None
+                # Nuke the pushback stack
+                del lookaheadstack[:]
+                continue
+
+            # case 2: the statestack has a couple of entries on it, but we're
+            # at the end of the file. nuke the top entry and generate an error token
+
+            # Start nuking entries on the stack
+            if lookahead.type == '$':
+                # Whoa. We're really hosed here. Bail out
+                return 
+
+            if lookahead.type != 'error':
+                sym = symstack[-1]
+                if sym.type == 'error':
+                    # Hmmm. Error is on top of stack, we'll just nuke input
+                    # symbol and continue
+                    lookahead = None
+                    continue
+                t = YaccSymbol()
+                t.type = 'error'
+                if hasattr(lookahead,"lineno"):
+                    t.lineno = lookahead.lineno
+                t.value = lookahead
+                lookaheadstack.append(lookahead)
+                lookahead = t
+            else:
+                symstack.pop()
+                statestack.pop()
+
+            continue
+
+        # Call an error function here
+        raise RuntimeError, "yacc: internal parser error!!!\n"
+
+</t>
+<t tx="ekr.20080121135406.328"># -----------------------------------------------------------------------------
+#                          === Parser Construction ===
+#
+# The following functions and variables are used to implement the yacc() function
+# itself.   This is pretty hairy stuff involving lots of error checking,
+# construction of LR items, kernels, and so forth.   Although a lot of
+# this work is done using global variables, the resulting Parser object
+# is completely self contained--meaning that it is safe to repeatedly
+# call yacc() with different grammars in the same application.
+# -----------------------------------------------------------------------------
+        
+# -----------------------------------------------------------------------------
+# validate_file()
+#
+# This function checks to see if there are duplicated p_rulename() functions
+# in the parser module file.  Without this function, it is really easy for
+# users to make mistakes by cutting and pasting code fragments (and it's a real
+# bugger to try and figure out why the resulting parser doesn't work).  Therefore,
+# we just do a little regular expression pattern matching of def statements
+# to try and detect duplicates.
+# -----------------------------------------------------------------------------
+
+def validate_file(filename):
+    base,ext = os.path.splitext(filename)
+    if ext != '.py': return 1          # No idea. Assume it's okay.
+
+    try:
+        f = open(filename)
+        lines = f.readlines()
+        f.close()
+    except IOError:
+        return 1                       # Oh well
+
+    # Match def p_funcname(
+    fre = re.compile(r'\s*def\s+(p_[a-zA-Z_0-9]*)\(')
+    counthash = { }
+    linen = 1
+    noerror = 1
+    for l in lines:
+        m = fre.match(l)
+        if m:
+            name = m.group(1)
+            prev = counthash.get(name)
+            if not prev:
+                counthash[name] = linen
+            else:
+                sys.stderr.write("%s:%d: Function %s redefined. Previously defined on line %d\n" % (filename,linen,name,prev))
+                noerror = 0
+        linen += 1
+    return noerror
+
+</t>
+<t tx="ekr.20080121135406.329"># This function looks for functions that might be grammar rules, but which don't have the proper p_suffix.
+def validate_dict(d):
+    for n,v in d.items(): 
+        if n[0:2] == 'p_' and type(v) in (types.FunctionType, types.MethodType): continue
+        if n[0:2] == 't_': continue
+
+        if n[0:2] == 'p_':
+            sys.stderr.write("yacc: Warning. '%s' not defined as a function\n" % n)
+        if 1 and isinstance(v,types.FunctionType) and v.func_code.co_argcount == 1:
+            try:
+                doc = v.__doc__.split(" ")
+                if doc[1] == ':':
+                    sys.stderr.write("%s:%d: Warning. Possible grammar rule '%s' defined without p_ prefix.\n" % (v.func_code.co_filename, v.func_code.co_firstlineno,n))
+            except StandardError:
+                pass
+
+</t>
+<t tx="ekr.20080121135406.330"># -----------------------------------------------------------------------------
+#                           === GRAMMAR FUNCTIONS ===
+#
+# The following global variables and functions are used to store, manipulate,
+# and verify the grammar rules specified by the user.
+# -----------------------------------------------------------------------------
+
+# Initialize all of the global variables used during grammar construction
+def initialize_vars():
+    global Productions, Prodnames, Prodmap, Terminals 
+    global Nonterminals, First, Follow, Precedence, LRitems
+    global Errorfunc, Signature, Requires
+
+    # LALR(1) globals
+    global Prodempty, TReductions, NTReductions, GotoSetNum, Canonical
+    
+    Productions  = [None]  # A list of all of the productions.  The first
+                           # entry is always reserved for the purpose of
+                           # building an augmented grammar
+                        
+    Prodnames    = { }     # A dictionary mapping the names of nonterminals to a list of all
+                           # productions of that nonterminal.
+                        
+    Prodmap      = { }     # A dictionary that is only used to detect duplicate
+                           # productions.
+
+    Terminals    = { }     # A dictionary mapping the names of terminal symbols to a
+                           # list of the rules where they are used.
+
+    Nonterminals = { }     # A dictionary mapping names of nonterminals to a list
+                           # of rule numbers where they are used.
+
+    First        = { }     # A dictionary of precomputed FIRST(x) symbols
+    
+    Follow       = { }     # A dictionary of precomputed FOLLOW(x) symbols
+
+    Precedence   = { }     # Precedence rules for each terminal. Contains tuples of the
+                           # form ('right',level) or ('nonassoc', level) or ('left',level)
+
+    LRitems      = [ ]     # A list of all LR items for the grammar.  These are the
+                           # productions with the "dot" like E -&gt; E . PLUS E
+
+    Errorfunc    = None    # User defined error handler
+
+    Signature    = md5.new()   # Digital signature of the grammar rules, precedence
+                               # and other information.  Used to determined when a
+                               # parsing table needs to be regenerated.
+
+    Requires     = { }     # Requires list
+
+    # LALR(1) Initialization
+    Prodempty    = { }     # A dictionary of all productions that have an empty rule
+                           # of the form P : &lt;empty&gt;
+
+    TReductions  = { }     # A dictionary of precomputer reductions from
+                           # nonterminals to terminals
+
+    NTReductions = { }     # A dictionary of precomputed reductions from
+                           # nonterminals to nonterminals
+
+    GotoSetNum   = { }     # A dictionary that remembers goto sets based on
+                           # the state number and symbol
+
+    Canonical    = { }     # A list of LR item sets. A LR item set is a list of LR
+                           # items that represent the state of the parser
+
+    # File objects used when creating the parser.out debugging file
+    global _vf, _vfc
+    _vf           = cStringIO.StringIO()
+    _vfc          = cStringIO.StringIO()
+
+</t>
+<t tx="ekr.20080121135406.331"># -----------------------------------------------------------------------------
+# class Production:
+#
+# This class stores the raw information about a single production or grammar rule.
+# It has a few required attributes:
+#
+#       name     - Name of the production (nonterminal)
+#       prod     - A list of symbols making up its production
+#       number   - Production number.
+#
+# In addition, a few additional attributes are used to help with debugging or
+# optimization of table generation.
+#
+#       file     - File where production action is defined.
+#       lineno   - Line number where action is defined
+#       func     - Action function
+#       prec     - Precedence level
+#       lr_next  - Next LR item. Example, if we are ' E -&gt; E . PLUS E'
+#                  then lr_next refers to 'E -&gt; E PLUS . E'   
+#       lr_index - LR item index (location of the ".") in the prod list.
+#       lookaheads - LALR lookahead symbols for this item
+#       len      - Length of the production (number of symbols on right hand side)
+# -----------------------------------------------------------------------------
+
+class Production:
+    @others
+</t>
+<t tx="ekr.20080121135406.332">def __init__(self,**kw):
+    for k,v in kw.items():
+        setattr(self,k,v)
+    self.lr_index = -1
+    self.lr0_added = 0    # Flag indicating whether or not added to LR0 closure
+    self.lr1_added = 0    # Flag indicating whether or not added to LR1
+    self.usyms = [ ]
+    self.lookaheads = { }
+    self.lk_added = { }
+    self.setnumbers = [ ]
+    
+</t>
+<t tx="ekr.20080121135406.333">def __str__(self):
+    if self.prod:
+        s = "%s -&gt; %s" % (self.name," ".join(self.prod))
+    else:
+        s = "%s -&gt; &lt;empty&gt;" % self.name
+    return s
+
+</t>
+<t tx="ekr.20080121135406.334">def __repr__(self):
+    return str(self)
+
+</t>
+<t tx="ekr.20080121135406.335"># Compute lr_items from the production
+def lr_item(self,n):
+    if n &gt; len(self.prod): return None
+    p = Production()
+    p.name = self.name
+    p.prod = list(self.prod)
+    p.number = self.number
+    p.lr_index = n
+    p.lookaheads = { }
+    p.setnumbers = self.setnumbers
+    p.prod.insert(n,".")
+    p.prod = tuple(p.prod)
+    p.len = len(p.prod)
+    p.usyms = self.usyms
+
+    # Precompute list of productions immediately following
+    try:
+        p.lrafter = Prodnames[p.prod[n+1]]
+    except (IndexError,KeyError),e:
+        p.lrafter = []
+    try:
+        p.lrbefore = p.prod[n-1]
+    except IndexError:
+        p.lrbefore = None
+
+    return p
+
+</t>
+<t tx="ekr.20080121135406.336">class MiniProduction:
+    pass
+
+</t>
+<t tx="ekr.20080121135406.337"># Utility function
+def is_identifier(s):
+    for c in s:
+        if not (c.isalnum() or c == '_'): return 0
+    return 1
+
+</t>
+<t tx="ekr.20080121135406.338"># -----------------------------------------------------------------------------
+# add_production()
+#
+# Given an action function, this function assembles a production rule.
+# The production rule is assumed to be found in the function's docstring.
+# This rule has the general syntax:
+#
+#              name1 ::= production1
+#                     |  production2
+#                     |  production3
+#                    ...
+#                     |  productionn
+#              name2 ::= production1
+#                     |  production2
+#                    ... 
+# -----------------------------------------------------------------------------
+
+def add_production(f,file,line,prodname,syms):
+    
+    if Terminals.has_key(prodname):
+        sys.stderr.write("%s:%d: Illegal rule name '%s'. Already defined as a token.\n" % (file,line,prodname))
+        return -1
+    if prodname == 'error':
+        sys.stderr.write("%s:%d: Illegal rule name '%s'. error is a reserved word.\n" % (file,line,prodname))
+        return -1
+                
+    if not is_identifier(prodname):
+        sys.stderr.write("%s:%d: Illegal rule name '%s'\n" % (file,line,prodname))
+        return -1
+
+    for s in syms:
+        if not is_identifier(s) and s != '%prec':
+            sys.stderr.write("%s:%d: Illegal name '%s' in rule '%s'\n" % (file,line,s, prodname))
+            return -1
+
+    # See if the rule is already in the rulemap
+    map = "%s -&gt; %s" % (prodname,syms)
+    if Prodmap.has_key(map):
+        m = Prodmap[map]
+        sys.stderr.write("%s:%d: Duplicate rule %s.\n" % (file,line, m))
+        sys.stderr.write("%s:%d: Previous definition at %s:%d\n" % (file,line, m.file, m.line))
+        return -1
+
+    p = Production()
+    p.name = prodname
+    p.prod = syms
+    p.file = file
+    p.line = line
+    p.func = f
+    p.number = len(Productions)
+
+            
+    Productions.append(p)
+    Prodmap[map] = p
+    if not Nonterminals.has_key(prodname):
+        Nonterminals[prodname] = [ ]
+    
+    # Add all terminals to Terminals
+    i = 0
+    while i &lt; len(p.prod):
+        t = p.prod[i]
+        if t == '%prec':
+            try:
+                precname = p.prod[i+1]
+            except IndexError:
+                sys.stderr.write("%s:%d: Syntax error. Nothing follows %%prec.\n" % (p.file,p.line))
+                return -1
+
+            prec = Precedence.get(precname,None)
+            if not prec:
+                sys.stderr.write("%s:%d: Nothing known about the precedence of '%s'\n" % (p.file,p.line,precname))
+                return -1
+            else:
+                p.prec = prec
+            del p.prod[i]
+            del p.prod[i]
+            continue
+
+        if Terminals.has_key(t):
+            Terminals[t].append(p.number)
+            # Is a terminal.  We'll assign a precedence to p based on this
+            if not hasattr(p,"prec"):
+                p.prec = Precedence.get(t,('right',0))
+        else:
+            if not Nonterminals.has_key(t):
+                Nonterminals[t] = [ ]
+            Nonterminals[t].append(p.number)
+        i += 1
+
+    if not hasattr(p,"prec"):
+        p.prec = ('right',0)
+        
+    # Set final length of productions
+    p.len  = len(p.prod)
+    p.prod = tuple(p.prod)
+
+    # Calculate unique syms in the production
+    p.usyms = [ ]
+    for s in p.prod:
+        if s not in p.usyms:
+            p.usyms.append(s)
+    
+    # Add to the global productions list
+    try:
+        Prodnames[p.name].append(p)
+    except KeyError:
+        Prodnames[p.name] = [ p ]
+    return 0
+
+</t>
+<t tx="ekr.20080121135406.339"># Given a raw rule function, this function rips out its doc string
+# and adds rules to the grammar
+
+def add_function(f):
+    line = f.func_code.co_firstlineno
+    file = f.func_code.co_filename
+    error = 0
+
+    if isinstance(f,types.MethodType):
+        reqdargs = 2
+    else:
+        reqdargs = 1
+        
+    if f.func_code.co_argcount &gt; reqdargs:
+        sys.stderr.write("%s:%d: Rule '%s' has too many arguments.\n" % (file,line,f.__name__))
+        return -1
+
+    if f.func_code.co_argcount &lt; reqdargs:
+        sys.stderr.write("%s:%d: Rule '%s' requires an argument.\n" % (file,line,f.__name__))
+        return -1
+          
+    if f.__doc__:
+        # Split the doc string into lines
+        pstrings = f.__doc__.splitlines()
+        lastp = None
+        dline = line
+        for ps in pstrings:
+            dline += 1
+            p = ps.split()
+            if not p: continue
+            try:
+                if p[0] == '|':
+                    # This is a continuation of a previous rule
+                    if not lastp:
+                        sys.stderr.write("%s:%d: Misplaced '|'.\n" % (file,dline))
+                        return -1
+                    prodname = lastp
+                    if len(p) &gt; 1:
+                        syms = p[1:]
+                    else:
+                        syms = [ ]
+                else:
+                    prodname = p[0]
+                    lastp = prodname
+                    assign = p[1]
+                    if len(p) &gt; 2:
+                        syms = p[2:]
+                    else:
+                        syms = [ ]
+                    if assign != ':' and assign != '::=':
+                        sys.stderr.write("%s:%d: Syntax error. Expected ':'\n" % (file,dline))
+                        return -1
+                e = add_production(f,file,dline,prodname,syms)
+                error += e
+            except StandardError:
+                sys.stderr.write("%s:%d: Syntax error in rule '%s'\n" % (file,dline,ps))
+                error -= 1
+    else:
+        sys.stderr.write("%s:%d: No documentation string specified in function '%s'\n" % (file,line,f.__name__))
+    return error
+
+
+</t>
+<t tx="ekr.20080121135406.340"># Cycle checking code (Michael Dyck)
+
+def compute_reachable():
+    '''
+    Find each symbol that can be reached from the start symbol.
+    Print a warning for any nonterminals that can't be reached.
+    (Unused terminals have already had their warning.)
+    '''
+    Reachable = { }
+    for s in Terminals.keys() + Nonterminals.keys():
+        Reachable[s] = 0
+
+    mark_reachable_from( Productions[0].prod[0], Reachable )
+
+    for s in Nonterminals.keys():
+        if not Reachable[s]:
+            sys.stderr.write("yacc: Symbol '%s' is unreachable.\n" % s)
+
+</t>
+<t tx="ekr.20080121135406.341">def mark_reachable_from(s, Reachable):
+    '''
+    Mark all symbols that are reachable from symbol s.
+    '''
+    if Reachable[s]:
+        # We've already reached symbol s.
+        return
+    Reachable[s] = 1
+    for p in Prodnames.get(s,[]):
+        for r in p.prod:
+            mark_reachable_from(r, Reachable)
+
+</t>
+<t tx="ekr.20080121135406.342"># -----------------------------------------------------------------------------
+# compute_terminates()
+#
+# This function looks at the various parsing rules and tries to detect
+# infinite recursion cycles (grammar rules where there is no possible way
+# to derive a string of only terminals).
+# -----------------------------------------------------------------------------
+def compute_terminates():
+    '''
+    Raise an error for any symbols that don't terminate.
+    '''
+    Terminates = {}
+
+    # Terminals:
+    for t in Terminals.keys():
+        Terminates[t] = 1
+
+    Terminates['$'] = 1
+
+    # Nonterminals:
+
+    # Initialize to false:
+    for n in Nonterminals.keys():
+        Terminates[n] = 0
+
+    # Then propagate termination until no change:
+    while 1:
+        some_change = 0
+        for (n,pl) in Prodnames.items():
+            # Nonterminal n terminates iff any of its productions terminates.
+            for p in pl:
+                # Production p terminates iff all of its rhs symbols terminate.
+                for s in p.prod:
+                    if not Terminates[s]:
+                        # The symbol s does not terminate,
+                        # so production p does not terminate.
+                        p_terminates = 0
+                        break
+                else:
+                    # didn't break from the loop,
+                    # so every symbol s terminates
+                    # so production p terminates.
+                    p_terminates = 1
+
+                if p_terminates:
+                    # symbol n terminates!
+                    if not Terminates[n]:
+                        Terminates[n] = 1
+                        some_change = 1
+                    # Don't need to consider any more productions for this n.
+                    break
+
+        if not some_change:
+            break
+
+    some_error = 0
+    for (s,terminates) in Terminates.items():
+        if not terminates:
+            if not Prodnames.has_key(s) and not Terminals.has_key(s) and s != 'error':
+                # s is used-but-not-defined, and we've already warned of that,
+                # so it would be overkill to say that it's also non-terminating.
+                pass
+            else:
+                sys.stderr.write("yacc: Infinite recursion detected for symbol '%s'.\n" % s)
+                some_error = 1
+
+    return some_error
+
+</t>
+<t tx="ekr.20080121135406.343"># -----------------------------------------------------------------------------
+# verify_productions()
+#
+# This function examines all of the supplied rules to see if they seem valid.
+# -----------------------------------------------------------------------------
+def verify_productions(cycle_check=1):
+    error = 0
+    for p in Productions:
+        if not p: continue
+
+        for s in p.prod:
+            if not Prodnames.has_key(s) and not Terminals.has_key(s) and s != 'error':
+                sys.stderr.write("%s:%d: Symbol '%s' used, but not defined as a token or a rule.\n" % (p.file,p.line,s))
+                error = 1
+                continue
+
+    unused_tok = 0 
+    # Now verify all of the tokens
+    if yaccdebug:
+        _vf.write("Unused terminals:\n\n")
+    for s,v in Terminals.items():
+        if s != 'error' and not v:
+            sys.stderr.write("yacc: Warning. Token '%s' defined, but not used.\n" % s)
+            if yaccdebug: _vf.write("   %s\n"% s)
+            unused_tok += 1
+
+    # Print out all of the productions
+    if yaccdebug:
+        _vf.write("\nGrammar\n\n")
+        for i in range(1,len(Productions)):
+            _vf.write("Rule %-5d %s\n" % (i, Productions[i]))
+        
+    unused_prod = 0
+    # Verify the use of all productions
+    for s,v in Nonterminals.items():
+        if not v:
+            p = Prodnames[s][0]
+            sys.stderr.write("%s:%d: Warning. Rule '%s' defined, but not used.\n" % (p.file,p.line, s))
+            unused_prod += 1
+
+    
+    if unused_tok == 1:
+        sys.stderr.write("yacc: Warning. There is 1 unused token.\n")
+    if unused_tok &gt; 1:
+        sys.stderr.write("yacc: Warning. There are %d unused tokens.\n" % unused_tok)
+
+    if unused_prod == 1:
+        sys.stderr.write("yacc: Warning. There is 1 unused rule.\n")
+    if unused_prod &gt; 1:
+        sys.stderr.write("yacc: Warning. There are %d unused rules.\n" % unused_prod)
+
+    if yaccdebug:
+        _vf.write("\nTerminals, with rules where they appear\n\n")
+        ks = Terminals.keys()
+        ks.sort()
+        for k in ks:
+            _vf.write("%-20s : %s\n" % (k, " ".join([str(s) for s in Terminals[k]])))
+        _vf.write("\nNonterminals, with rules where they appear\n\n")
+        ks = Nonterminals.keys()
+        ks.sort()
+        for k in ks:
+            _vf.write("%-20s : %s\n" % (k, " ".join([str(s) for s in Nonterminals[k]])))
+
+    if (cycle_check):
+        compute_reachable()
+        error += compute_terminates()
+        # error += check_cycles()
+    return error
+
+</t>
+<t tx="ekr.20080121135406.344"># -----------------------------------------------------------------------------
+# build_lritems()
+#
+# This function walks the list of productions and builds a complete set of the
+# LR items.  The LR items are stored in two ways:  First, they are uniquely
+# numbered and placed in the list _lritems.  Second, a linked list of LR items
+# is built for each production.  For example:
+#
+#   E -&gt; E PLUS E
+#
+# Creates the list
+#
+#  [E -&gt; . E PLUS E, E -&gt; E . PLUS E, E -&gt; E PLUS . E, E -&gt; E PLUS E . ] 
+# -----------------------------------------------------------------------------
+
+def build_lritems():
+    for p in Productions:
+        lastlri = p
+        lri = p.lr_item(0)
+        i = 0
+        while 1:
+            lri = p.lr_item(i)
+            lastlri.lr_next = lri
+            if not lri: break
+            lri.lr_num = len(LRitems)
+            LRitems.append(lri)
+            lastlri = lri
+            i += 1
+
+    # In order for the rest of the parser generator to work, we need to
+    # guarantee that no more lritems are generated.  Therefore, we nuke
+    # the p.lr_item method.  (Only used in debugging)
+    # Production.lr_item = None
+
+</t>
+<t tx="ekr.20080121135406.345"># -----------------------------------------------------------------------------
+# add_precedence()
+#
+# Given a list of precedence rules, add to the precedence table.
+# -----------------------------------------------------------------------------
+
+def add_precedence(plist):
+    plevel = 0
+    error = 0
+    for p in plist:
+        plevel += 1
+        try:
+            prec = p[0]
+            terms = p[1:]
+            if prec != 'left' and prec != 'right' and prec != 'nonassoc':
+                sys.stderr.write("yacc: Invalid precedence '%s'\n" % prec)
+                return -1
+            for t in terms:
+                if Precedence.has_key(t):
+                    sys.stderr.write("yacc: Precedence already specified for terminal '%s'\n" % t)
+                    error += 1
+                    continue
+                Precedence[t] = (prec,plevel)
+        except:
+            sys.stderr.write("yacc: Invalid precedence table.\n")
+            error += 1
+
+    return error
+
+</t>
+<t tx="ekr.20080121135406.346"># -----------------------------------------------------------------------------
+# augment_grammar()
+#
+# Compute the augmented grammar.  This is just a rule S' -&gt; start where start
+# is the starting symbol.
+# -----------------------------------------------------------------------------
+
+def augment_grammar(start=None):
+    if not start:
+        start = Productions[1].name
+    Productions[0] = Production(name="S'",prod=[start],number=0,len=1,prec=('right',0),func=None)
+    Productions[0].usyms = [ start ]
+    Nonterminals[start].append(0)
+
+
+</t>
+<t tx="ekr.20080121135406.347"># -------------------------------------------------------------------------
+# first()
+#
+# Compute the value of FIRST1(beta) where beta is a tuple of symbols.
+#
+# During execution of compute_first1, the result may be incomplete.
+# Afterward (e.g., when called from compute_follow()), it will be complete.
+# -------------------------------------------------------------------------
+def first(beta):
+
+    # We are computing First(x1,x2,x3,...,xn)
+    result = [ ]
+    for x in beta:
+        x_produces_empty = 0
+
+        # Add all the non-&lt;empty&gt; symbols of First[x] to the result.
+        for f in First[x]:
+            if f == '&lt;empty&gt;':
+                x_produces_empty = 1
+            else:
+                if f not in result: result.append(f)
+
+        if x_produces_empty:
+            # We have to consider the next x in beta,
+            # i.e. stay in the loop.
+            pass
+        else:
+            # We don't have to consider any further symbols in beta.
+            break
+    else:
+        # There was no 'break' from the loop,
+        # so x_produces_empty was true for all x in beta,
+        # so beta produces empty as well.
+        result.append('&lt;empty&gt;')
+
+    return result
+
+
+</t>
+<t tx="ekr.20080121135406.348"># FOLLOW(x)
+# Given a non-terminal.  This function computes the set of all symbols
+# that might follow it.  Dragon book, p. 189.
+
+def compute_follow(start=None):
+    # Add '$' to the follow list of the start symbol
+    for k in Nonterminals.keys():
+        Follow[k] = [ ]
+
+    if not start:
+        start = Productions[1].name
+        
+    Follow[start] = [ '$' ]
+        
+    while 1:
+        didadd = 0
+        for p in Productions[1:]:
+            # Here is the production set
+            for i in range(len(p.prod)):
+                B = p.prod[i]
+                if Nonterminals.has_key(B):
+                    # Okay. We got a non-terminal in a production
+                    fst = first(p.prod[i+1:])
+                    hasempty = 0
+                    for f in fst:
+                        if f != '&lt;empty&gt;' and f not in Follow[B]:
+                            Follow[B].append(f)
+                            didadd = 1
+                        if f == '&lt;empty&gt;':
+                            hasempty = 1
+                    if hasempty or i == (len(p.prod)-1):
+                        # Add elements of follow(a) to follow(b)
+                        for f in Follow[p.name]:
+                            if f not in Follow[B]:
+                                Follow[B].append(f)
+                                didadd = 1
+        if not didadd: break
+
+    if 0 and yaccdebug:
+        _vf.write('\nFollow:\n')
+        for k in Nonterminals.keys():
+            _vf.write("%-20s : %s\n" % (k, " ".join([str(s) for s in Follow[k]])))
+
+</t>
+<t tx="ekr.20080121135406.349"># -------------------------------------------------------------------------
+# compute_first1()
+#
+# Compute the value of FIRST1(X) for all symbols
+# -------------------------------------------------------------------------
+def compute_first1():
+
+    # Terminals:
+    for t in Terminals.keys():
+        First[t] = [t]
+
+    First['$'] = ['$']
+    First['#'] = ['#'] # what's this for?
+
+    # Nonterminals:
+
+    # Initialize to the empty set:
+    for n in Nonterminals.keys():
+        First[n] = []
+
+    # Then propagate symbols until no change:
+    while 1:
+        some_change = 0
+        for n in Nonterminals.keys():
+            for p in Prodnames[n]:
+                for f in first(p.prod):
+                    if f not in First[n]:
+                        First[n].append( f )
+                        some_change = 1
+        if not some_change:
+            break
+
+    if 0 and yaccdebug:
+        _vf.write('\nFirst:\n')
+        for k in Nonterminals.keys():
+            _vf.write("%-20s : %s\n" %
+                (k, " ".join([str(s) for s in First[k]])))
+
+</t>
+<t tx="ekr.20080121135406.350"># -----------------------------------------------------------------------------
+#                           === SLR Generation ===
+#
+# The following functions are used to construct SLR (Simple LR) parsing tables
+# as described on p.221-229 of the dragon book.
+# -----------------------------------------------------------------------------
+
+# Global variables for the LR parsing engine
+def lr_init_vars():
+    global _lr_action, _lr_goto, _lr_method
+    global _lr_goto_cache, _lr0_cidhash
+    
+    _lr_action       = { }        # Action table
+    _lr_goto         = { }        # Goto table
+    _lr_method       = "Unknown"  # LR method used
+    _lr_goto_cache   = { }
+    _lr0_cidhash     = { }
+
+
+</t>
+<t tx="ekr.20080121135406.351"># Compute the LR(0) closure operation on I, where I is a set of LR(0) items.
+# prodlist is a list of productions.
+
+_add_count = 0       # Counter used to detect cycles
+
+def lr0_closure(I):
+    global _add_count
+    
+    _add_count += 1
+    prodlist = Productions
+    
+    # Add everything in I to J        
+    J = I[:]
+    didadd = 1
+    while didadd:
+        didadd = 0
+        for j in J:
+            for x in j.lrafter:
+                if x.lr0_added == _add_count: continue
+                # Add B --&gt; .G to J
+                J.append(x.lr_next)
+                x.lr0_added = _add_count
+                didadd = 1
+               
+    return J
+
+</t>
+<t tx="ekr.20080121135406.352"># Compute the LR(0) goto function goto(I,X) where I is a set
+# of LR(0) items and X is a grammar symbol.   This function is written
+# in a way that guarantees uniqueness of the generated goto sets
+# (i.e. the same goto set will never be returned as two different Python
+# objects).  With uniqueness, we can later do fast set comparisons using
+# id(obj) instead of element-wise comparison.
+
+def lr0_goto(I,x):
+    # First we look for a previously cached entry
+    g = _lr_goto_cache.get((id(I),x),None)
+    if g: return g
+
+    # Now we generate the goto set in a way that guarantees uniqueness
+    # of the result
+    
+    s = _lr_goto_cache.get(x,None)
+    if not s:
+        s = { }
+        _lr_goto_cache[x] = s
+
+    gs = [ ]
+    for p in I:
+        n = p.lr_next
+        if n and n.lrbefore == x:
+            s1 = s.get(id(n),None)
+            if not s1:
+                s1 = { }
+                s[id(n)] = s1
+            gs.append(n)
+            s = s1
+    g = s.get('$',None)
+    if not g:
+        if gs:
+            g = lr0_closure(gs)
+            s['$'] = g
+        else:
+            s['$'] = gs
+    _lr_goto_cache[(id(I),x)] = g
+    return g
+
+</t>
+<t tx="ekr.20080121135406.353"># Added for LALR(1)
+
+# Given a setnumber of an lr0 state and a symbol return the setnumber of the goto state 
+def lr0_goto_setnumber(I_setnumber, x):
+    global Canonical
+    global GotoSetNum
+
+    if GotoSetNum.has_key((I_setnumber, x)):
+        setnumber = GotoSetNum[(I_setnumber, x)]
+    else:
+        gset = lr0_goto(Canonical[I_setnumber], x)
+        if not gset:
+            return -1
+        else:
+            gsetlen = len(gset)            
+            for i in xrange(len(gset[0].setnumbers)):
+                inall = 1
+                for item in gset:
+                    if not item.setnumbers[i]:
+                        inall = 0
+                        break
+                if inall and len(Canonical[i]) == gsetlen:
+                    setnumber = i
+                    break          # Note: DB. I added this to improve performance.
+                                   # Not sure if this breaks the algorithm (it doesn't appear to).
+
+            GotoSetNum[(I_setnumber, x)] = setnumber
+            
+    return setnumber
+
+</t>
+<t tx="ekr.20080121135406.354"># Compute the kernel of a set of LR(0) items
+def lr0_kernel(I):
+    KI = [ ]
+    for p in I:
+        if p.name == "S'" or p.lr_index &gt; 0 or p.len == 0:
+            KI.append(p)
+
+    return KI
+
+</t>
+<t tx="ekr.20080121135406.355">_lr0_cidhash = { }
+
+# Compute the LR(0) sets of item function
+def lr0_items():
+    
+    C = [ lr0_closure([Productions[0].lr_next]) ]
+    i = 0
+    for I in C:
+        _lr0_cidhash[id(I)] = i
+        i += 1
+
+    # Loop over the items in C and each grammar symbols
+    i = 0
+    while i &lt; len(C):
+        I = C[i]
+        i += 1
+
+        # Collect all of the symbols that could possibly be in the goto(I,X) sets
+        asyms = { }
+        for ii in I:
+            for s in ii.usyms:
+                asyms[s] = None
+
+        for x in asyms.keys():
+            g = lr0_goto(I,x)
+            if not g:  continue
+            if _lr0_cidhash.has_key(id(g)): continue
+            _lr0_cidhash[id(g)] = len(C)            
+            C.append(g)
+            
+    return C
+
+</t>
+<t tx="ekr.20080121135406.356"># -----------------------------------------------------------------------------
+# slr_parse_table()
+#
+# This function constructs an SLR table.
+# -----------------------------------------------------------------------------
+def slr_parse_table():
+    global _lr_method
+    goto = _lr_goto           # Goto array
+    action = _lr_action       # Action array
+    actionp = { }             # Action production array (temporary)
+
+    _lr_method = "SLR"
+    
+    n_srconflict = 0
+    n_rrconflict = 0
+
+    if yaccdebug:
+        sys.stderr.write("yacc: Generating SLR parsing table...\n")        
+        _vf.write("\n\nParsing method: SLR\n\n")
+        
+    # Step 1: Construct C = { I0, I1, ... IN}, collection of LR(0) items
+    # This determines the number of states
+    
+    C = lr0_items()
+
+    # Build the parser table, state by state
+    st = 0
+    for I in C:
+        # Loop over each production in I
+        actlist = [ ]              # List of actions
+        
+        if yaccdebug:
+            _vf.write("\nstate %d\n\n" % st)
+            for p in I:
+                _vf.write("    (%d) %s\n" % (p.number, str(p)))
+            _vf.write("\n")
+
+        for p in I:
+            try:
+                if p.prod[-1] == ".":
+                    if p.name == "S'":
+                        # Start symbol. Accept!
+                        action[st,"$"] = 0
+                        actionp[st,"$"] = p
+                    else:
+                        # We are at the end of a production.  Reduce!
+                        for a in Follow[p.name]:
+                            actlist.append((a,p,"reduce using rule %d (%s)" % (p.number,p)))
+                            r = action.get((st,a),None)
+                            if r is not None:
+                                # Whoa. Have a shift/reduce or reduce/reduce conflict
+                                if r &gt; 0:
+                                    # Need to decide on shift or reduce here
+                                    # By default we favor shifting. Need to add
+                                    # some precedence rules here.
+                                    sprec,slevel = Productions[actionp[st,a].number].prec                                    
+                                    rprec,rlevel = Precedence.get(a,('right',0))
+                                    if (slevel &lt; rlevel) or ((slevel == rlevel) and (rprec == 'left')):
+                                        # We really need to reduce here.  
+                                        action[st,a] = -p.number
+                                        actionp[st,a] = p
+                                        if not slevel and not rlevel:
+                                            _vfc.write("shift/reduce conflict in state %d resolved as reduce.\n" % st)
+                                            _vf.write("  ! shift/reduce conflict for %s resolved as reduce.\n" % a)
+                                            n_srconflict += 1
+                                    elif (slevel == rlevel) and (rprec == 'nonassoc'):
+                                        action[st,a] = None
+                                    else:
+                                        # Hmmm. Guess we'll keep the shift
+                                        if not slevel and not rlevel:
+                                            _vfc.write("shift/reduce conflict in state %d resolved as shift.\n" % st)
+                                            _vf.write("  ! shift/reduce conflict for %s resolved as shift.\n" % a)
+                                            n_srconflict +=1                                    
+                                elif r &lt; 0:
+                                    # Reduce/reduce conflict.   In this case, we favor the rule
+                                    # that was defined first in the grammar file
+                                    oldp = Productions[-r]
+                                    pp = Productions[p.number]
+                                    if oldp.line &gt; pp.line:
+                                        action[st,a] = -p.number
+                                        actionp[st,a] = p
+                                    # sys.stderr.write("Reduce/reduce conflict in state %d\n" % st)
+                                    n_rrconflict += 1
+                                    _vfc.write("reduce/reduce conflict in state %d resolved using rule %d (%s).\n" % (st, actionp[st,a].number, actionp[st,a]))
+                                    _vf.write("  ! reduce/reduce conflict for %s resolved using rule %d (%s).\n" % (a,actionp[st,a].number, actionp[st,a]))
+                                else:
+                                    sys.stderr.write("Unknown conflict in state %d\n" % st)
+                            else:
+                                action[st,a] = -p.number
+                                actionp[st,a] = p
+                else:
+                    i = p.lr_index
+                    a = p.prod[i+1]       # Get symbol right after the "."
+                    if Terminals.has_key(a):
+                        g = lr0_goto(I,a)
+                        j = _lr0_cidhash.get(id(g),-1)
+                        if j &gt;= 0:
+                            # We are in a shift state
+                            actlist.append((a,p,"shift and go to state %d" % j))
+                            r = action.get((st,a),None)
+                            if r is not None:
+                                # Whoa have a shift/reduce or shift/shift conflict
+                                if r &gt; 0:
+                                    if r != j:
+                                        sys.stderr.write("Shift/shift conflict in state %d\n" % st)
+                                elif r &lt; 0:
+                                    # Do a precedence check.
+                                    #   -  if precedence of reduce rule is higher, we reduce.
+                                    #   -  if precedence of reduce is same and left assoc, we reduce.
+                                    #   -  otherwise we shift
+                                    rprec,rlevel = Productions[actionp[st,a].number].prec
+                                    sprec,slevel = Precedence.get(a,('right',0))
+                                    if (slevel &gt; rlevel) or ((slevel == rlevel) and (rprec != 'left')):
+                                        # We decide to shift here... highest precedence to shift
+                                        action[st,a] = j
+                                        actionp[st,a] = p
+                                        if not slevel and not rlevel:
+                                            n_srconflict += 1
+                                            _vfc.write("shift/reduce conflict in state %d resolved as shift.\n" % st)
+                                            _vf.write("  ! shift/reduce conflict for %s resolved as shift.\n" % a)
+                                    elif (slevel == rlevel) and (rprec == 'nonassoc'):
+                                        action[st,a] = None
+                                    else:                                            
+                                        # Hmmm. Guess we'll keep the reduce
+                                        if not slevel and not rlevel:
+                                            n_srconflict +=1
+                                            _vfc.write("shift/reduce conflict in state %d resolved as reduce.\n" % st)
+                                            _vf.write("  ! shift/reduce conflict for %s resolved as reduce.\n" % a)
+                                            
+                                else:
+                                    sys.stderr.write("Unknown conflict in state %d\n" % st)
+                            else:
+                                action[st,a] = j
+                                actionp[st,a] = p
+                                
+            except StandardError,e:
+                raise YaccError, "Hosed in slr_parse_table", e
+
+        # Print the actions associated with each terminal
+        if yaccdebug:
+          _actprint = { }
+          for a,p,m in actlist:
+            if action.has_key((st,a)):
+                if p is actionp[st,a]:
+                    _vf.write("    %-15s %s\n" % (a,m))
+                    _actprint[(a,m)] = 1
+          _vf.write("\n")
+          for a,p,m in actlist:
+            if action.has_key((st,a)):
+                if p is not actionp[st,a]:
+                    if not _actprint.has_key((a,m)):
+                        _vf.write("  ! %-15s [ %s ]\n" % (a,m))
+                        _actprint[(a,m)] = 1
+            
+        # Construct the goto table for this state
+        if yaccdebug:
+            _vf.write("\n")
+        nkeys = { }
+        for ii in I:
+            for s in ii.usyms:
+                if Nonterminals.has_key(s):
+                    nkeys[s] = None
+        for n in nkeys.keys():
+            g = lr0_goto(I,n)
+            j = _lr0_cidhash.get(id(g),-1)            
+            if j &gt;= 0:
+                goto[st,n] = j
+                if yaccdebug:
+                    _vf.write("    %-30s shift and go to state %d\n" % (n,j))
+
+        st += 1
+
+    if yaccdebug:
+        if n_srconflict == 1:
+            sys.stderr.write("yacc: %d shift/reduce conflict\n" % n_srconflict)
+        if n_srconflict &gt; 1:
+            sys.stderr.write("yacc: %d shift/reduce conflicts\n" % n_srconflict)
+        if n_rrconflict == 1:
+            sys.stderr.write("yacc: %d reduce/reduce conflict\n" % n_rrconflict)
+        if n_rrconflict &gt; 1:
+            sys.stderr.write("yacc: %d reduce/reduce conflicts\n" % n_rrconflict)
+
+
+
+</t>
+<t tx="ekr.20080121135406.357"># -----------------------------------------------------------------------------
+#                       ==== LALR(1) Parsing ====
+# FINISHED!  5/20/2003 by Elias Ioup
+# -----------------------------------------------------------------------------
+
+
+# Compute the lr1_closure of a set I.  I is a list of productions and setnumber
+# is the state that you want the lr items that are made from the to come from.
+
+_lr1_add_count = 0
+
+def lr1_closure(I, setnumber = 0):
+    global _add_count
+    global Nonterminals
+
+    _add_count += 1
+    prodlist = Productions
+
+    # Add everything in I to J        
+    J = I[:]
+    Jhash = { }
+    for j in J:
+        Jhash[id(j)] = 1
+        
+    didadd = 1
+    while didadd:
+        didadd = 0
+        for j in J:
+            jprod = j.prod
+            jlr_index = j.lr_index
+            jprodslice = jprod[jlr_index+2:]
+            
+            if jlr_index &lt; len(jprod) - 1 and Nonterminals.has_key(jprod[jlr_index+1]):
+                first_syms = []
+
+                if j.lk_added.setdefault(setnumber, 0) &lt; len(j.lookaheads[setnumber]): 
+                    for a in j.lookaheads[setnumber][j.lk_added[setnumber]:]: 
+                        # find b in FIRST(Xa) if j = [A-&gt;a.BX,a]
+                        temp_first_syms = first(jprodslice + (a,))
+                        for x in temp_first_syms:
+                            if x not in first_syms:
+                                first_syms.append(x)
+
+                j.lk_added[setnumber] = len(j.lookaheads[setnumber]) 
+
+                for x in j.lrafter:
+                    
+                    # Add B --&gt; .G to J
+                    if x.lr_next.lookaheads.has_key(setnumber):
+                        _xlook = x.lr_next.lookaheads[setnumber]                        
+                        for s in first_syms:
+                            if s not in _xlook:
+                                _xlook.append(s)
+                                didadd = 1
+                    else:        
+                        x.lr_next.lookaheads[setnumber] = first_syms
+                        didadd = 1
+
+                    nid = id(x.lr_next)
+                    if not Jhash.has_key(nid):
+                        J.append(x.lr_next)
+                        Jhash[nid] = 1
+                        
+    return J
+
+</t>
+<t tx="ekr.20080121135406.358">def add_lookaheads(K):
+    spontaneous = []
+    propogate = []
+
+    for setnumber in range(len(K)):
+        for kitem in K[setnumber]:
+            kitem.lookaheads[setnumber] = ['#']
+            J = lr1_closure([kitem], setnumber)
+
+            # find the lookaheads that are spontaneously created from closures
+            # and the propogations of lookaheads between lr items
+            for item in J:
+                if item.lr_index &lt; len(item.prod)-1:
+                    for lookahead in item.lookaheads[setnumber]:
+                        goto_setnumber = lr0_goto_setnumber(setnumber, item.prod[item.lr_index+1]) 
+                        next = None 
+                        if lookahead != '#':
+                            if item.lr_next in K[goto_setnumber]:
+                                next = item.lr_next
+                            if next:
+                                spontaneous.append((next, (lookahead, goto_setnumber)))
+                        else:
+                            if goto_setnumber &gt; -1:
+                                if item.lr_next in K[goto_setnumber]:
+                                    next = item.lr_next
+                                    
+                            if next:
+                                propogate.append(((kitem, setnumber), (next, goto_setnumber)))
+
+        
+
+        for x in K[setnumber]:
+            x.lookaheads[setnumber] = []
+
+    for x in spontaneous:
+        if x[1][0] not in x[0].lookaheads[x[1][1]]:
+            x[0].lookaheads[x[1][1]].append(x[1][0])
+
+    K[0][0].lookaheads[0] = ['$']
+
+    pitems = {}
+    for x in propogate:
+        if pitems.has_key(x[0]):
+            pitems[x[0]].append(x[1])
+        else:
+            pitems[x[0]] = []
+            pitems[x[0]].append(x[1])
+            
+    # propogate the lookaheads that were spontaneously generated
+    # based on the propogations produced above
+    stop = 0
+
+    while not stop:
+        stop = 1
+        kindex = 0
+        for set in K:
+            for item in set:
+                pkey = (item, kindex)
+                if pitems.has_key(pkey):
+                    for propogation in pitems[pkey]:
+                        gitem = propogation[0]
+                        gsetnumber = propogation[1]
+                        glookaheads = gitem.lookaheads[gsetnumber]
+                        for lookahead in item.lookaheads[kindex]:
+                            if lookahead not in glookaheads:
+                                glookaheads.append(lookahead)
+                                stop = 0
+            kindex += 1
+
+</t>
+<t tx="ekr.20080121135406.359">def ReduceNonterminals():
+    global Nonterminals
+
+    global TReductions
+    global NTReductions
+
+    for nt in Nonterminals.keys():
+        TReductions[nt] = []
+        NTReductions[nt] = []
+        
+    for nt in Nonterminals.keys():
+        terms = ReduceToTerminals(nt)
+        TReductions[nt].extend(terms)
+        if not NTReductions.has_key(nt):
+            ReduceToNonterminals(nt)
+        
+
+
+</t>
+<t tx="ekr.20080121135406.360">def ReduceToTerminals(nt,cyclemap=None):
+    global Prodnames
+    global Terminals
+    reducedterminals = []
+    if not cyclemap: cyclemap = {}
+
+    if cyclemap.has_key(nt): return []
+    cyclemap[nt] = 1
+
+    for p in Prodnames[nt]:
+        if len(p.prod) &gt; 0:
+            if Terminals.has_key(p.prod[0]):
+                if p.prod[0] not in reducedterminals:
+                    reducedterminals.append(p.prod[0])
+            else:
+                if p.prod[0] != nt:
+                    terms = ReduceToTerminals(p.prod[0],cyclemap)
+                    for t in terms:
+                        if t not in reducedterminals:
+                            reducedterminals.append(t)
+    del cyclemap[nt]			  
+    return reducedterminals
+
+            
+</t>
+<t tx="ekr.20080121135406.361">def ReduceToNonterminals(nt):
+    global Prodnames
+    global Nonterminals
+    global NTReductions
+    reducednonterminals = []
+
+    for p in Prodnames[nt]:
+        if len(p.prod) &gt; 0:
+            if Nonterminals.has_key(p.prod[0]):
+                if p.prod[0] not in reducednonterminals:
+                    reducednonterminals.append(p.prod[0])
+                    if p.prod[0] != nt:
+                        if not NTReductions.has_key(p.prod[0]):
+                            ReduceToNonterminals(p.prod[0])
+                        
+                        nterms = NTReductions[p.prod[0]]
+                        for nt in nterms:
+                            if nt not in reducednonterminals:
+                                reducednonterminals.append(nt)
+                            
+
+    NTReductions[nt] = reducednonterminals
+
+</t>
+<t tx="ekr.20080121135406.362"># -----------------------------------------------------------------------------
+# lalr_parse_table()
+#
+# This function constructs an LALR table.
+# -----------------------------------------------------------------------------
+def lalr_parse_table():
+    global _lr_method
+    goto = _lr_goto           # Goto array
+    action = _lr_action       # Action array
+    actionp = { }             # Action production array (temporary)
+    goto_cache = _lr_goto_cache
+    cid_hash = _lr0_cidhash
+    
+    _lr_method = "LALR"
+    
+    n_srconflict = 0
+    n_rrconflict = 0
+
+    if yaccdebug:
+        sys.stderr.write("yacc: Generating LALR(1) parsing table...\n")
+        _vf.write("\n\nParsing method: LALR(1)\n\n")
+        
+    # Step 1: Construct C = { I0, I1, ... IN}, collection of LR(0) items
+    # This determines the number of states
+
+    C = lr0_items()
+
+    global Canonical
+    Canonical = C
+
+    ###
+    # Create the kernel states.
+    ###
+    K = []
+    setC = [0]*len(C)
+    for x in C:
+        K.append(lr0_kernel(x))
+        for y in x:
+            y.setnumbers = setC[:]
+
+    _cindex = 0
+    for x in C:
+        for y in x:
+            y.lookaheads[_cindex] = [] 
+            y.setnumbers[_cindex] = 1
+        _cindex = _cindex + 1
+
+    ###
+    # Add lookaheads to the lr items
+    ###
+
+    add_lookaheads(K)
+
+    ###
+    # Do the reductions for parsing first and keep them in globals
+    ###
+
+    ReduceNonterminals()
+
+    global TReductions
+    global NTReductions
+    global Prodempty
+
+    EmptyAncestors = {}
+    for y in Prodempty.keys():
+        EmptyAncestors[y] = []
+    for x in NTReductions.items():
+        for y in x[1]:
+            if Prodempty.has_key(y):
+                EmptyAncestors[y].append(x[0])
+
+
+    # Build the parser table, state by state
+    st = 0
+    for I in C:
+        # Loop over each production in I
+        actlist = [ ]              # List of actions
+        acthash = { }
+        
+        idI = id(I)
+        
+        if yaccdebug:
+            _vf.write("\nstate %d\n\n" % st)
+            for p in I:
+                _vf.write("    (%d) %s\n" % (p.number, str(p)))
+            _vf.write("\n")
+
+        global First
+        for p in I:
+            try:
+                if p.prod[-1] == ".":
+                    if p.name == "S'":
+                        # Start symbol. Accept!
+                        action[st,"$"] = 0
+                        actionp[st,"$"] = p
+                    elif len(p.prod) == 0:
+                        ancestors = EmptyAncestors[p.name]
+                        for i in ancestors:
+                            for s in K:
+                                if i in s:
+                                    input_list = []
+                                    plist = Productions[i.name]
+                                    for x in plist:
+                                        if len(x.prod) &gt; 0 and x.prod[0] == p.name:
+                                            n = p.prod[1:]
+                                            d = x.prod[lr_index+2:]
+                                            for l in x.lookaheads.items():
+                                                flist = First[tuple(n+d+[l])]
+                                                for f in flist:
+                                                    if f not in input_list and f in p.lookaheads[st]:
+                                                        input_list.append(f)
+                                        
+                                    # We are at the end of a production.  Reduce!
+                                    #print "input_list: %s" % input_list
+                                    #print "Follow[p.name]: %s" % Follow[p.name]
+                                    for a in input_list:
+                                        actlist.append((a,p,"reduce using rule %d (%s) " % (p.number,p)))
+                                        r = action.get((st,a),None)
+                                        if r is not None:
+                                            # Whoa. Have a shift/reduce or reduce/reduce conflict
+                                            if r &gt; 0:
+                                                # Need to decide on shift or reduce here
+                                                # By default we favor shifting. Need to add
+                                                # some precedence rules here.
+                                                sprec,slevel = Productions[actionp[st,a].number].prec                                    
+                                                rprec,rlevel = Precedence.get(a,('right',0))
+                                                if (slevel &lt; rlevel) or ((slevel == rlevel) and (rprec == 'left')):
+                                                    # We really need to reduce here.  
+                                                    action[st,a] = -p.number
+                                                    actionp[st,a] = p
+                                                    if not slevel and not rlevel:
+                                                        _vfc.write("shift/reduce conflict in state %d resolved as reduce.\n" % st)
+                                                        _vf.write("  ! shift/reduce conflict for %s resolved as reduce.\n" % a)
+                                                        n_srconflict += 1
+                                                elif (slevel == rlevel) and (rprec == 'nonassoc'):
+                                                    action[st,a] = None
+                                                else:
+                                                    # Hmmm. Guess we'll keep the shift
+                                                    if not slevel and not rlevel:
+                                                        _vfc.write("shift/reduce conflict in state %d resolved as shift.\n" % st)
+                                                        _vf.write("  ! shift/reduce conflict for %s resolved as shift.\n" % a)
+                                                        n_srconflict +=1                                    
+                                            elif r &lt; 0:
+                                                # Reduce/reduce conflict.   In this case, we favor the rule
+                                                # that was defined first in the grammar file
+                                                oldp = Productions[-r]
+                                                pp = Productions[p.number]
+                                                if oldp.line &gt; pp.line:
+                                                    action[st,a] = -p.number
+                                                    actionp[st,a] = p
+                                                    # print "Reduce/reduce conflict in state %d" % st
+                                                    n_rrconflict += 1
+                                                    _vfc.write("reduce/reduce conflict in state %d resolved using rule %d.\n" % (st, actionp[st,a].number))
+                                                    _vf.write("  ! reduce/reduce conflict for %s resolved using rule %d.\n" % (a,actionp[st,a].number))
+                                            else:
+                                                sys.stderr.write("Unknown conflict in state %d\n" % st)
+                                        else:
+                                            action[st,a] = -p.number
+                                            actionp[st,a] = p
+
+                                    break           # break out of the for s in K loop because we only want to make
+                                                    # sure that a production is in the Kernel
+                        
+                    else:
+                        # We are at the end of a production.  Reduce!
+
+                        for a in p.lookaheads[st]:
+                            actlist.append((a,p,"reduce using rule %d (%s)" % (p.number,p)))
+                            r = action.get((st,a),None)
+                            if r is not None:
+                                # Whoa. Have a shift/reduce or reduce/reduce conflict
+                                if r &gt; 0:
+                                    # Need to decide on shift or reduce here
+                                    # By default we favor shifting. Need to add
+                                    # some precedence rules here.
+                                    sprec,slevel = Productions[actionp[st,a].number].prec                                    
+                                    rprec,rlevel = Precedence.get(a,('right',0))                                    
+                                    if (slevel &lt; rlevel) or ((slevel == rlevel) and (rprec == 'left')):
+                                        # We really need to reduce here.  
+                                        action[st,a] = -p.number
+                                        actionp[st,a] = p
+                                        if not slevel and not rlevel:
+                                            _vfc.write("shift/reduce conflict in state %d resolved as reduce.\n" % st)
+                                            _vf.write("  ! shift/reduce conflict for %s resolved as reduce.\n" % a)
+                                            n_srconflict += 1
+                                    elif (slevel == rlevel) and (rprec == 'nonassoc'):
+                                        action[st,a] = None
+                                    else:
+                                        # Hmmm. Guess we'll keep the shift
+                                        if not slevel and not rlevel:
+                                            _vfc.write("shift/reduce conflict in state %d resolved as shift.\n" % st)
+                                            _vf.write("  ! shift/reduce conflict for %s resolved as shift.\n" % a)
+                                            n_srconflict +=1                                    
+                                elif r &lt; 0:
+                                    # Reduce/reduce conflict.   In this case, we favor the rule
+                                    # that was defined first in the grammar file
+                                    oldp = Productions[-r]
+                                    pp = Productions[p.number]
+                                    if oldp.line &gt; pp.line:
+                                        action[st,a] = -p.number
+                                        actionp[st,a] = p
+                                    # print "Reduce/reduce conflict in state %d" % st
+                                    n_rrconflict += 1
+                                    _vfc.write("reduce/reduce conflict in state %d resolved using rule %d.\n" % (st, actionp[st,a].number))
+                                    _vf.write("  ! reduce/reduce conflict for %s resolved using rule %d.\n" % (a,actionp[st,a].number))
+                                else:
+                                    print "Unknown conflict in state %d" % st
+                            else:
+                                action[st,a] = -p.number
+                                actionp[st,a] = p
+                else:
+                    i = p.lr_index
+                    a = p.prod[i+1]       # Get symbol right after the "."
+                    if Terminals.has_key(a):
+                        g = goto_cache[(idI,a)]
+                        j = cid_hash.get(id(g),-1)
+                        if j &gt;= 0:
+                            # We are in a shift state
+                            _k = (a,j)
+                            if not acthash.has_key(_k):
+                                actlist.append((a,p,"shift and go to state %d" % j))
+                                acthash[_k] = 1
+                            r = action.get((st,a),None)
+                            if r is not None:
+                                # Whoa have a shift/reduce or shift/shift conflict
+                                if r &gt; 0:
+                                    if r != j:
+                                        sys.stderr.write("Shift/shift conflict in state %d\n" % st)
+                                elif r &lt; 0:
+                                    # Do a precedence check.
+                                    #   -  if precedence of reduce rule is higher, we reduce.
+                                    #   -  if precedence of reduce is same and left assoc, we reduce.
+                                    #   -  otherwise we shift
+                                    rprec,rlevel = Productions[actionp[st,a].number].prec
+                                    sprec,slevel = Precedence.get(a,('right',0))
+                                    if (slevel &gt; rlevel) or ((slevel == rlevel) and (rprec != 'left')):
+                                        # We decide to shift here... highest precedence to shift
+                                        action[st,a] = j
+                                        actionp[st,a] = p
+                                        if not slevel and not rlevel:
+                                            n_srconflict += 1
+                                            _vfc.write("shift/reduce conflict in state %d resolved as shift.\n" % st)
+                                            _vf.write("  ! shift/reduce conflict for %s resolved as shift.\n" % a)
+                                    elif (slevel == rlevel) and (rprec == 'nonassoc'):
+                                        action[st,a] = None
+                                    else:                                            
+                                        # Hmmm. Guess we'll keep the reduce
+                                        if not slevel and not rlevel:
+                                            n_srconflict +=1
+                                            _vfc.write("shift/reduce conflict in state %d resolved as reduce.\n" % st)
+                                            _vf.write("  ! shift/reduce conflict for %s resolved as reduce.\n" % a)
+                                            
+                                else:
+                                    sys.stderr.write("Unknown conflict in state %d\n" % st)
+                            else:
+                                action[st,a] = j
+                                actionp[st,a] = p
+                    else:
+                        nonterminal = a
+                        term_list = TReductions[nonterminal]
+                        # DB: This loop gets executed a lot.  Try to optimize
+                        for a in term_list:
+                            g = goto_cache[(idI,a)]
+                            j = cid_hash[id(g)]
+                            if j &gt;= 0:
+                                # We are in a shift state
+                                # Don't put repeated shift actions on action list (performance hack)
+                                _k = (a,j)
+                                if not acthash.has_key(_k):
+                                    actlist.append((a,p,"shift and go to state "+str(j)))
+                                    acthash[_k] = 1
+                                    
+                                r = action.get((st,a),None)
+                                if r is not None:
+                                    # Whoa have a shift/reduce or shift/shift conflict
+                                    if r &gt; 0:
+                                        if r != j:
+                                            sys.stderr.write("Shift/shift conflict in state %d\n" % st)
+                                        continue
+                                    elif r &lt; 0:
+                                        # Do a precedence check.
+                                        #   -  if precedence of reduce rule is higher, we reduce.
+                                        #   -  if precedence of reduce is same and left assoc, we reduce.
+                                        #   -  otherwise we shift
+                                        rprec,rlevel = Productions[actionp[st,a].number].prec
+                                        sprec,slevel = Precedence.get(a,('right',0))
+                                        if (slevel &gt; rlevel) or ((slevel == rlevel) and (rprec != 'left')):
+                                            # We decide to shift here... highest precedence to shift
+                                            action[st,a] = j
+                                            actionp[st,a] = p
+                                            if not slevel and not rlevel:
+                                                n_srconflict += 1
+                                                _vfc.write("shift/reduce conflict in state %d resolved as shift.\n" % st)
+                                                _vf.write("  ! shift/reduce conflict for %s resolved as shift.\n" % a)
+                                        elif (slevel == rlevel) and (rprec == 'nonassoc'):
+                                            action[st,a] = None
+                                        else:                                            
+                                            # Hmmm. Guess we'll keep the reduce
+                                            if not slevel and not rlevel:
+                                                n_srconflict +=1
+                                                _vfc.write("shift/reduce conflict in state %d resolved as reduce.\n" % st)
+                                                _vf.write("  ! shift/reduce conflict for %s resolved as reduce.\n" % a)
+                                            
+                                    else:
+                                        sys.stderr.write("Unknown conflict in state %d\n" % st)
+                                else:
+                                    action[st,a] = j
+                                    actionp[st,a] = p
+                    
+            except StandardError,e:
+                raise YaccError, "Hosed in lalr_parse_table", e
+
+        # Print the actions associated with each terminal
+        if yaccdebug:
+          for a,p,m in actlist:
+            if action.has_key((st,a)):
+                if p is actionp[st,a]:
+                    _vf.write("    %-15s %s\n" % (a,m))
+          _vf.write("\n")
+
+          for a,p,m in actlist:
+            if action.has_key((st,a)):
+                if p is not actionp[st,a]:
+                    _vf.write("  ! %-15s [ %s ]\n" % (a,m))
+            
+        # Construct the goto table for this state
+        nkeys = { }
+        for ii in I:
+            for s in ii.usyms:
+                if Nonterminals.has_key(s):
+                    nkeys[s] = None
+
+        # Construct the goto table for this state
+        for n in nkeys.keys():
+            g = lr0_goto(I,n)
+            j = cid_hash.get(id(g),-1)            
+            if j &gt;= 0:
+                goto[st,n] = j
+                if yaccdebug:
+                    _vf.write("    %-30s shift and go to state %d\n" % (n,j))
+
+        st += 1
+    if yaccdebug:
+        if n_srconflict == 1:
+            sys.stderr.write("yacc: %d shift/reduce conflict\n" % n_srconflict)
+        if n_srconflict &gt; 1:
+            sys.stderr.write("yacc: %d shift/reduce conflicts\n" % n_srconflict)        
+        if n_rrconflict == 1:
+            sys.stderr.write("yacc: %d reduce/reduce conflict\n" % n_rrconflict)
+        if n_rrconflict &gt; 1:
+            sys.stderr.write("yacc: %d reduce/reduce conflicts\n" % n_rrconflict)
+
+    
+</t>
+<t tx="ekr.20080121135406.363"># -----------------------------------------------------------------------------
+#                          ==== LR Utility functions ====
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+# _lr_write_tables()
+#
+# This function writes the LR parsing tables to a file
+# -----------------------------------------------------------------------------
+
+def lr_write_tables(modulename=tab_module,outputdir=''):
+    filename = os.path.join(outputdir,modulename) + ".py"
+    try:
+        f = open(filename,"w")
+
+        f.write("""
+# %s
+# This file is automatically generated. Do not edit.
+
+_lr_method = %s
+
+_lr_signature = %s
+""" % (filename, repr(_lr_method), repr(Signature.digest())))
+
+        # Change smaller to 0 to go back to original tables
+        smaller = 1
+                
+        # Factor out names to try and make smaller
+        if smaller:
+            items = { }
+        
+            for k,v in _lr_action.items():
+                i = items.get(k[1])
+                if not i:
+                    i = ([],[])
+                    items[k[1]] = i
+                i[0].append(k[0])
+                i[1].append(v)
+
+            f.write("\n_lr_action_items = {")
+            for k,v in items.items():
+                f.write("%r:([" % k)
+                for i in v[0]:
+                    f.write("%r," % i)
+                f.write("],[")
+                for i in v[1]:
+                    f.write("%r," % i)
+                           
+                f.write("]),")
+            f.write("}\n")
+
+            f.write("""
+_lr_action = { }
+for _k, _v in _lr_action_items.items():
+   for _x,_y in zip(_v[0],_v[1]):
+       _lr_action[(_x,_k)] = _y
+del _lr_action_items
+""")
+            
+        else:
+            f.write("\n_lr_action = { ");
+            for k,v in _lr_action.items():
+                f.write("(%r,%r):%r," % (k[0],k[1],v))
+            f.write("}\n");
+
+        if smaller:
+            # Factor out names to try and make smaller
+            items = { }
+        
+            for k,v in _lr_goto.items():
+                i = items.get(k[1])
+                if not i:
+                    i = ([],[])
+                    items[k[1]] = i
+                i[0].append(k[0])
+                i[1].append(v)
+
+            f.write("\n_lr_goto_items = {")
+            for k,v in items.items():
+                f.write("%r:([" % k)
+                for i in v[0]:
+                    f.write("%r," % i)
+                f.write("],[")
+                for i in v[1]:
+                    f.write("%r," % i)
+                           
+                f.write("]),")
+            f.write("}\n")
+
+            f.write("""
+_lr_goto = { }
+for _k, _v in _lr_goto_items.items():
+   for _x,_y in zip(_v[0],_v[1]):
+       _lr_goto[(_x,_k)] = _y
+del _lr_goto_items
+""")
+        else:
+            f.write("\n_lr_goto = { ");
+            for k,v in _lr_goto.items():
+                f.write("(%r,%r):%r," % (k[0],k[1],v))                    
+            f.write("}\n");
+
+        # Write production table
+        f.write("_lr_productions = [\n")
+        for p in Productions:
+            if p:
+                if (p.func):
+                    f.write("  (%r,%d,%r,%r,%d),\n" % (p.name, p.len, p.func.__name__,p.file,p.line))
+                else:
+                    f.write("  (%r,%d,None,None,None),\n" % (p.name, p.len))
+            else:
+                f.write("  None,\n")
+        f.write("]\n")
+        f.close()
+
+    except IOError,e:
+        print "Unable to create '%s'" % filename
+        print e
+        return
+
+</t>
+<t tx="ekr.20080121135406.364">def lr_read_tables(module=tab_module,optimize=0):
+    global _lr_action, _lr_goto, _lr_productions, _lr_method
+    try:
+        exec "import %s as parsetab" % module
+        
+        if (optimize) or (Signature.digest() == parsetab._lr_signature):
+            _lr_action = parsetab._lr_action
+            _lr_goto   = parsetab._lr_goto
+            _lr_productions = parsetab._lr_productions
+            _lr_method = parsetab._lr_method
+            return 1
+        else:
+            return 0
+        
+    except (ImportError,AttributeError):
+        return 0
+
+
+</t>
+<t tx="ekr.20080121135406.365"># Available instance types.  This is used when parsers are defined by a class.
+# it's a little funky because I want to preserve backwards compatibility
+# with Python 2.0 where types.ObjectType is undefined.
+
+try:
+   _INSTANCETYPE = (types.InstanceType, types.ObjectType)
+except AttributeError:
+   _INSTANCETYPE = types.InstanceType
+
+# -----------------------------------------------------------------------------
+# yacc(module)
+#
+# Build the parser module
+# -----------------------------------------------------------------------------
+
+def yacc(method=default_lr, debug=yaccdebug, module=None, tabmodule=tab_module, start=None, check_recursion=1, optimize=0,write_tables=1,debugfile=debug_file,outputdir=''):
+    global yaccdebug
+    yaccdebug = debug
+    
+    initialize_vars()
+    files = { }
+    error = 0
+
+    # Add starting symbol to signature
+    if start:
+        Signature.update(start)
+
+    # Add parsing method to signature
+    Signature.update(method)
+    
+    # If a "module" parameter was supplied, extract its dictionary.
+    # Note: a module may in fact be an instance as well.
+    
+    if module:
+        # User supplied a module object.
+        if isinstance(module, types.ModuleType):
+            ldict = module.__dict__
+        elif isinstance(module, _INSTANCETYPE):
+            _items = [(k,getattr(module,k)) for k in dir(module)]
+            ldict = { }
+            for i in _items:
+                ldict[i[0]] = i[1]
+        else:
+            raise ValueError,"Expected a module"
+        
+    else:
+        # No module given.  We might be able to get information from the caller.
+        # Throw an exception and unwind the traceback to get the globals
+        
+        try:
+            raise RuntimeError
+        except RuntimeError:
+            e,b,t = sys.exc_info()
+            f = t.tb_frame
+            f = f.f_back           # Walk out to our calling function
+            ldict = f.f_globals    # Grab its globals dictionary
+
+    # If running in optimized mode.  We're going to
+
+    if (optimize and lr_read_tables(tabmodule,1)):
+        # Read parse table
+        del Productions[:]
+        for p in _lr_productions:
+            if not p:
+                Productions.append(None)
+            else:
+                m = MiniProduction()
+                m.name = p[0]
+                m.len  = p[1]
+                m.file = p[3]
+                m.line = p[4]
+                if p[2]:
+                    m.func = ldict[p[2]]
+                Productions.append(m)
+        
+    else:
+        # Get the tokens map
+        if (module and isinstance(module,_INSTANCETYPE)):
+            tokens = getattr(module,"tokens",None)
+        else:
+            tokens = ldict.get("tokens",None)
+    
+        if not tokens:
+            raise YaccError,"module does not define a list 'tokens'"
+        if not (isinstance(tokens,types.ListType) or isinstance(tokens,types.TupleType)):
+            raise YaccError,"tokens must be a list or tuple."
+
+        # Check to see if a requires dictionary is defined.
+        requires = ldict.get("require",None)
+        if requires:
+            if not (isinstance(requires,types.DictType)):
+                raise YaccError,"require must be a dictionary."
+
+            for r,v in requires.items():
+                try:
+                    if not (isinstance(v,types.ListType)):
+                        raise TypeError
+                    v1 = [x.split(".") for x in v]
+                    Requires[r] = v1
+                except StandardError:
+                    print "Invalid specification for rule '%s' in require. Expected a list of strings" % r            
+
+        
+        # Build the dictionary of terminals.  We a record a 0 in the
+        # dictionary to track whether or not a terminal is actually
+        # used in the grammar
+
+        if 'error' in tokens:
+            print "yacc: Illegal token 'error'.  Is a reserved word."
+            raise YaccError,"Illegal token name"
+
+        for n in tokens:
+            if Terminals.has_key(n):
+                print "yacc: Warning. Token '%s' multiply defined." % n
+            Terminals[n] = [ ]
+
+        Terminals['error'] = [ ]
+
+        # Get the precedence map (if any)
+        prec = ldict.get("precedence",None)
+        if prec:
+            if not (isinstance(prec,types.ListType) or isinstance(prec,types.TupleType)):
+                raise YaccError,"precedence must be a list or tuple."
+            add_precedence(prec)
+            Signature.update(repr(prec))
+
+        for n in tokens:
+            if not Precedence.has_key(n):
+                Precedence[n] = ('right',0)         # Default, right associative, 0 precedence
+
+        # Look for error handler
+        ef = ldict.get('p_error',None)
+        if ef:
+            if isinstance(ef,types.FunctionType):
+                ismethod = 0
+            elif isinstance(ef, types.MethodType):
+                ismethod = 1
+            else:
+                raise YaccError,"'p_error' defined, but is not a function or method."                
+            eline = ef.func_code.co_firstlineno
+            efile = ef.func_code.co_filename
+            files[efile] = None
+
+            if (ef.func_code.co_argcount != 1+ismethod):
+                raise YaccError,"%s:%d: p_error() requires 1 argument." % (efile,eline)
+            global Errorfunc
+            Errorfunc = ef
+        else:
+            print "yacc: Warning. no p_error() function is defined."
+            
+        # Get the list of built-in functions with p_ prefix
+        symbols = [ldict[f] for f in ldict.keys()
+               if (type(ldict[f]) in (types.FunctionType, types.MethodType) and ldict[f].__name__[:2] == 'p_'
+                   and ldict[f].__name__ != 'p_error')]
+
+        # Check for non-empty symbols
+        if len(symbols) == 0:
+            raise YaccError,"no rules of the form p_rulename are defined."
+    
+        # Sort the symbols by line number
+        symbols.sort(lambda x,y: cmp(x.func_code.co_firstlineno,y.func_code.co_firstlineno))
+
+        # Add all of the symbols to the grammar
+        for f in symbols:
+            if (add_function(f)) &lt; 0:
+                error += 1
+            else:
+                files[f.func_code.co_filename] = None
+
+        # Make a signature of the docstrings
+        for f in symbols:
+            if f.__doc__:
+                Signature.update(f.__doc__)
+    
+        lr_init_vars()
+
+        if error:
+            raise YaccError,"Unable to construct parser."
+
+        if not lr_read_tables(tabmodule):
+
+            # Validate files
+            for filename in files.keys():
+                if not validate_file(filename):
+                    error = 1
+
+            # Validate dictionary
+            validate_dict(ldict)
+
+            if start and not Prodnames.has_key(start):
+                raise YaccError,"Bad starting symbol '%s'" % start
+        
+            augment_grammar(start)    
+            error = verify_productions(cycle_check=check_recursion)
+            otherfunc = [ldict[f] for f in ldict.keys()
+               if (type(f) in (types.FunctionType,types.MethodType) and ldict[f].__name__[:2] != 'p_')]
+
+            if error:
+                raise YaccError,"Unable to construct parser."
+            
+            build_lritems()
+            compute_first1()
+            compute_follow(start)
+        
+            if method == 'SLR':
+                slr_parse_table()
+            elif method == 'LALR':
+                lalr_parse_table()
+            else:
+                raise YaccError, "Unknown parsing method '%s'" % method
+
+            if write_tables:
+                lr_write_tables(tabmodule,outputdir)        
+    
+            if yaccdebug:
+                try:
+                    f = open(os.path.join(outputdir,debugfile),"w")
+                    f.write(_vfc.getvalue())
+                    f.write("\n\n")
+                    f.write(_vf.getvalue())
+                    f.close()
+                except IOError,e:
+                    print "yacc: can't create '%s'" % debugfile,e
+        
+    # Made it here.   Create a parser object and set up its internal state.
+    # Set global parse() method to bound method of parser object.
+
+    p = Parser("xyzzy")
+    p.productions = Productions
+    p.errorfunc = Errorfunc
+    p.action = _lr_action
+    p.goto   = _lr_goto
+    p.method = _lr_method
+    p.require = Requires
+
+    global parse
+    parse = p.parse
+
+    # Clean up all of the globals we created
+    if (not optimize):
+        yacc_cleanup()
+    return p
+
+</t>
+<t tx="ekr.20080121135406.366"># yacc_cleanup function.  Delete all of the global variables
+# used during table construction
+
+def yacc_cleanup():
+    global _lr_action, _lr_goto, _lr_method, _lr_goto_cache
+    del _lr_action, _lr_goto, _lr_method, _lr_goto_cache
+
+    global Productions, Prodnames, Prodmap, Terminals 
+    global Nonterminals, First, Follow, Precedence, LRitems
+    global Errorfunc, Signature, Requires
+    global Prodempty, TReductions, NTReductions, GotoSetNum, Canonical
+    
+    del Productions, Prodnames, Prodmap, Terminals
+    del Nonterminals, First, Follow, Precedence, LRitems
+    del Errorfunc, Signature, Requires
+    del Prodempty, TReductions, NTReductions, GotoSetNum, Canonical
+    
+    global _vf, _vfc
+    del _vf, _vfc
+    
+    
+</t>
+<t tx="ekr.20080121135406.367"># Stub that raises an error if parsing is attempted without first calling yacc()
+def parse(*args,**kwargs):
+    raise YaccError, "yacc: No parser built with yacc()"
+
+</t>
+<t tx="ekr.20080121140752"># Version: MPL 1.1/GPL 2.0/LGPL 2.1
+# 
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+# 
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+# 
+# The Original Code is Komodo code.
+# 
+# The Initial Developer of the Original Code is ActiveState Software Inc.
+# Portions created by ActiveState Software Inc are Copyright (C) 2000-2007
+# ActiveState Software Inc. All Rights Reserved.
+# 
+# Contributor(s):
+#   ActiveState Software Inc
+# 
+# Alternatively, the contents of this file may be used under the terms of
+# either the GNU General Public License Version 2 or later (the "GPL"), or
+# the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+# in which case the provisions of the GPL or the LGPL are applicable instead
+# of those above. If you wish to allow use of your version of this file only
+# under the terms of either the GPL or the LGPL, and not to allow others to
+# use your version of this file under the terms of the MPL, indicate your
+# decision by deleting the provisions above and replace them with the notice
+# and other provisions required by the GPL or the LGPL. If you do not delete
+# the provisions above, a recipient may use your version of this file under
+# the terms of any one of the MPL, the GPL or the LGPL.
+# 
+# ***** END LICENSE BLOCK *****</t>
 </tnodes>
 </leo_file>
