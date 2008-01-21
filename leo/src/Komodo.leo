@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="17" left="66" height="729" width="1199"/>
+	<global_window_position top="17" left="400" height="729" width="865"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -15,6 +15,7 @@
 <v t="ekr.20080121105800"><vh>create-at-auto-nodes</vh></v>
 <v t="ekr.20080121122039"><vh>@button remove license</vh></v>
 <v t="ekr.20080121105837" a="E"><vh>Komodo autocompleter code</vh>
+<v t="ekr.20080121152156" a="TV"><vh>Diary</vh></v>
 <v t="ekr.20080121105837.1"><vh>Komodo notes</vh>
 <v t="ekr.20080121105837.2"><vh>.rng files</vh></v>
 </v>
@@ -23,11 +24,12 @@
 <v t="ekr.20080121133057.2"><vh>&lt;&lt; class CitadelBuffer docstring &gt;&gt;</vh></v>
 <v t="ekr.20080121105837.1770"><vh>&lt;&lt; database.py docstring &gt;&gt; (important)</vh></v>
 <v t="ekr.20080121105837.1853"><vh>sdk/share/lang_LANG.py (Important)</vh></v>
+<v t="ekr.20080121151821"><vh>&lt;&lt; LangIntel docstring &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20080121105837.3" a="E"><vh>Komodo code</vh>
+<v t="ekr.20080121105837.3"><vh>Komodo code</vh>
 <v t="ekr.20080121105837.4"><vh>license1</vh></v>
 <v t="ekr.20080121140752"><vh>license2</vh></v>
-<v t="ekr.20080121105837.1815" a="E"><vh>lib/sdk</vh>
+<v t="ekr.20080121105837.1815"><vh>lib/sdk</vh>
 <v t="ekr.20080121105837.1816"><vh>sdk/bin</vh>
 <v t="ekr.20080121105837.1817"><vh>codeintel.py</vh>
 <v t="ekr.20080121105837.1818"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
@@ -197,7 +199,7 @@
 <v t="ekr.20080121134847.109"><vh>_mkdir</vh></v>
 </v>
 </v>
-<v t="ekr.20080121134949" a="E"><vh>sdk/pylib/ludditelib</vh>
+<v t="ekr.20080121134949"><vh>sdk/pylib/ludditelib</vh>
 <v t="ekr.20080121134949.1"><vh>cmdln.py</vh>
 <v t="ekr.20080121135406"><vh>cmdln declarations</vh></v>
 <v t="ekr.20080121135406.1"><vh>class CmdlnError</vh>
@@ -609,7 +611,7 @@
 <v t="ekr.20080121135406.366"><vh>yacc_cleanup</vh></v>
 <v t="ekr.20080121135406.367"><vh>parse</vh></v>
 </v>
-<v t="ekr.20080121134949.12" a="TV"><vh>__init__.py</vh></v>
+<v t="ekr.20080121134949.12"><vh>__init__.py</vh></v>
 </v>
 <v t="ekr.20080121105837.1852"><vh>sdk/share</vh>
 <v t="ekr.20080121105837.1853"><vh>sdk/share/lang_LANG.py (Important)</vh></v>
@@ -699,7 +701,7 @@
 </v>
 <v t="ekr.20080121105837.80"><vh>_test</vh></v>
 </v>
-<v t="ekr.20080121105837.81"><vh>buffer.py</vh>
+<v t="ekr.20080121105837.81"><vh>buffer.py (error)</vh>
 <v t="ekr.20080121105837.82"><vh>buffer declarations</vh></v>
 <v t="ekr.20080121105837.83"><vh>class Buffer</vh>
 <v t="ekr.20080121105837.84"><vh>__init__</vh></v>
@@ -1069,7 +1071,9 @@
 <v t="ekr.20080121105837.404"><vh>main</vh></v>
 </v>
 <v t="ekr.20080121105837.405"><vh>langintel.py</vh>
-<v t="ekr.20080121105837.406"><vh>langintel declarations</vh></v>
+<v t="ekr.20080121105837.406"><vh>langintel declarations</vh>
+<v t="ekr.20080121151821"><vh>&lt;&lt; LangIntel docstring &gt;&gt;</vh></v>
+</v>
 <v t="ekr.20080121105837.407"><vh>class LangIntel</vh>
 <v t="ekr.20080121105837.408"><vh>__init__</vh></v>
 <v t="ekr.20080121105837.409"><vh>cb_blob_detail_from_elem_and_buf</vh></v>
@@ -2873,6 +2877,12 @@
 </v>
 </v>
 </v>
+<v t="ekr.20080121143612" a="E"><vh>Komodo test script</vh>
+<v t="ekr.20080121151821.1"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
+<v t="ekr.20080121142959.1"><vh>addKomodoPaths</vh></v>
+<v t="ekr.20080121150435"><vh>openManager</vh></v>
+<v t="ekr.20080121150435.1"><vh>openDatabase</vh></v>
+</v>
 </vnodes>
 <tnodes>
 <t tx="ekr.20080121105230.3"></t>
@@ -3744,6 +3754,7 @@ def _test():
 <t tx="ekr.20080121105837.81">@language python
 @tabwidth -4
 @others
+
 if __name__ == "__main__":
     _doctest()
 @ignore</t>
@@ -4399,7 +4410,7 @@ def _doctest():
 
 </t>
 <t tx="ekr.20080121105837.105">#!/usr/bin/env python
-# ***** BEGIN LICENSE BLOCK *****
+# ***** LICENSE BLOCK *****
 &lt;&lt; citadel.py docstring &gt;&gt;
 
 @language python
@@ -9442,25 +9453,8 @@ def main():
 @others
 </t>
 <t tx="ekr.20080121105837.406">#!/usr/bin/env python
-# ***** BEGIN LICENSE BLOCK *****
-
-"""Base LangIntel class definition
-
-Each lang_*.py registers a LangIntel instance -- a singleton (somewhat
-similar to Komodo's language services, I suppose). This langintel defines
-smarts for handling language content. This module contains some mixins
-so that particular languages can implement the requisite interface easily.
-
-Any single-language buffer has a '.langintel' attribute pointing to this
-singleton. Any multi-language buffer (i.e. a subclass of UDLBuffer) has
-a '.langintel_from_udl_family' dictionary.
-
-TODO:
-- document what interfaces a particular LangIntel is meant to provide
-
-Dev Notes:
-- Usage of LangIntel objects in code should always use 'langintel'.
-"""
+# ***** LICENSE BLOCK *****
+&lt;&lt; LangIntel docstring &gt;&gt;
 
 import operator
 from pprint import pformat
@@ -56426,5 +56420,149 @@ def parse(*args,**kwargs):
 # the terms of any one of the MPL, the GPL or the LGPL.
 # 
 # ***** END LICENSE BLOCK *****</t>
+<t tx="ekr.20080121142959.1">def addKomodoPaths ():
+
+    '''Add paths to sys.path so Komodo imports will work.'''
+
+    # Do not import sys: we must use the global
+    import os
+    baseDir = r'C:\Program Files\Komodo Edit 4.3'
+    paths = (
+        r'lib\mozilla\python\komodo', # For ciElementree.pyd
+        r'lib\mozilla\python\komodo\codeintel2',
+        r'lib\mozilla\python\komodo\codeintel2\catalogs',
+        r'lib\mozilla\python\komodo\codeintel2\database',
+        r'lib\mozilla\python\komodo\codeintel2\stdlibs',
+    )
+    for path in paths:
+        path = os.path.join(baseDir,path)
+        if path in sys.path:
+            pass
+        elif os.path.exists(path):
+            sys.path.append(path)
+        else:
+            g.es_print('Does not exist: %s' % path)
+</t>
+<t tx="ekr.20080121143612">import sys
+
+@others
+
+addKomodoPaths()
+
+&lt;&lt; imports &gt;&gt;
+
+m = openManager()
+print 'm',m
+db = openDatabase(m)
+print 'db',db
+</t>
+<t tx="ekr.20080121150435">def openManager():
+
+    return manager.Manager(
+        db_base_dir=None,
+        on_scan_complete=None,
+        langs=None,
+        extra_lang_module_dirs=None,
+        env=None,
+        db_event_reporter=None,
+        db_catalog_dirs=None,
+        db_import_everything_langs=None)
+
+@
+"db_base_dir" (optional) specifies the base directory for
+    the codeintel database. If not given it will default to
+    '~/.codeintel'.
+"on_scan_complete" (optional) is a callback for Citadel scan
+    completion. It will be passed the ScanRequest instance
+    as an argument.
+"langs" (optional, default all) is a list of language names
+    to register. By default all available supported languages are
+    setup.
+"extra_lang_module_dirs" (optional) is a list of extra dirs
+    in which to look for and use "lang_*.py" lang support
+    modules.
+"env" (optional) is an Environment instance (or subclass).
+    See environment.py for details.
+"db_event_reporter" (optional) is a callback that will be called
+        db_event_reporter(&lt;event-desc-string&gt;)
+    before "significant" long processing events in the DB. This
+    may be useful to forward to a status bar in a GUI.
+"db_catalog_dirs" (optional) is a list of catalog dirs in
+    addition to the std one to use for the CatalogsZone. All
+    *.cix files in a catalog dir are made available.
+"db_import_everything_langs" (optional) is a set of langs for which
+    the extra effort to support Database
+    `lib.hits_from_lpath()' should be made. See class
+    Database for more details.</t>
+<t tx="ekr.20080121150435.1">def openDatabase(mgr):
+
+    return database.Database(mgr,
+        base_dir=None,
+        catalog_dirs=None,
+        event_reporter=None,
+        import_everything_langs=None)
+
+@
+"base_dir" (optional) specifies the base directory for the codeintel database.
+If not given it will default to '~/.codeintel'.
+
+"catalog_dirs" (optional) is a list of catalog dirs in addition to the std one
+to use for the CatalogsZone. All *.cix files in a catalog dir are made
+available.
+
+"event_reporter" (optional) is a callback that will be called
+event_reporter(&lt;event-desc-string&gt;) before "significant" long processing events
+in the DB. This may be useful to forward to a status bar in a GUI.
+
+"import_everything_langs" (optional) is a set of lang names for which the
+`lib.hits_from_lpath()' API should be supported. This method is typically used
+to support "import-everything" cpln eval semantics. Supporting it requires the
+'toplevelname_index' indeces which adds significant space and perf burdens. If
+not specified, only JavaScript and PHP are included in the set.
+</t>
+<t tx="ekr.20080121151821">
+"""Base LangIntel class definition
+
+Each lang_*.py registers a LangIntel instance -- a singleton (somewhat
+similar to Komodo's language services, I suppose). This langintel defines
+smarts for handling language content. This module contains some mixins
+so that particular languages can implement the requisite interface easily.
+
+Any single-language buffer has a '.langintel' attribute pointing to this
+singleton. Any multi-language buffer (i.e. a subclass of UDLBuffer) has
+a '.langintel_from_udl_family' dictionary.
+
+TODO:
+- document what interfaces a particular LangIntel is meant to provide
+
+Dev Notes:
+- Usage of LangIntel objects in code should always use 'langintel'.
+"""</t>
+<t tx="ekr.20080121151821.1">
+# import database
+import codeintel2.database.database as database
+# print database
+import manager
+# print manager
+
+if 0: # These work
+
+    import ciElementTree as ET
+    import codeintel2
+    from codeintel2.buffer import Buffer
+    from codeintel2.common import *
+    from codeintel2.indexer import ScanRequest
+    # print ET
+    # print codeintel2</t>
+<t tx="ekr.20080121152156">@nocolor
+@
+
+Jan 20, 2008: I began to create @auto nodes.
+Jan 21:
+- Finished creating @auto nodes for all files that appeared to be significant.
+- Aha: We can run code unchanged if we add Komodo paths to sys.path.
+  This allows me to run Komodo code unchanged.
+- Wrote addKomoPaths, openManager and openDatabase.
+** First major milestone: the ability to execute Komodo code from Leo scripts.</t>
 </tnodes>
 </leo_file>
