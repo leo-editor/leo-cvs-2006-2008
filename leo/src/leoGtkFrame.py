@@ -21,14 +21,204 @@ import leoNodes
 import leoGtkMenu
 import leoGtkTree
 
+import gobject
 import gtk
+import cairo
+import pango
+
 import os
 import string
 import sys
+
 #@-node:ekr.20080112145409.54:<< imports >>
 #@nl
 
 #@+others
+#@+node:bob.20080114214548:class TestWindow
+class TestWindow(gtk.DrawingArea):
+
+    """A window with a cross, used for testing.
+
+    The background and cross color can be set when
+    it is created.
+
+    """
+
+    def __init__(self, bg=None, fg=None):
+
+        """Construct a TestWindow.
+
+        'bg': a named color indicating background color, defaults to 'white' if invalid.
+        'fg': a named color indicating foreground color, defaults to 'black' if invalid.
+
+        """
+
+        super(TestWindow, self).__gobject_init__()
+
+
+        self.set_size_request(10, 10)
+
+        self.bg = leoColor.getCairo(bg, 'white')
+        self.fg = leoColor.getCairo(fg, 'black')
+
+
+
+    def do_expose_event(self, event):
+        """Handle expose events for this window"""
+
+        cr = self.window.cairo_create()
+
+        w, h = self.window.get_size()
+
+
+        cr.set_source_rgb(*self.bg)
+        cr.rectangle(0, 0, w, h)
+        cr.fill()
+
+        cr.set_source_rgb(*self.fg)
+
+        cr.move_to(0, 0)
+        cr.line_to(w, h)
+        cr.move_to(w, 0)
+        cr.line_to(0, h)
+        cr.stroke()
+
+        return True
+
+gobject.type_register(TestWindow)
+#@-node:bob.20080114214548:class TestWindow
+#@+node:bob.20080115155515:== paned widget classes ==
+#@+node:bob.20080115155515.1:class panedMixin
+class panedMixin:
+
+    """Adds leo specific functionality to gtk.[VH]Paned widgets."""
+
+
+    def __repr__(self):
+
+        return '<%s: %s %s (%s)>' % (self.__class__.name, self.name, self.orientation, self.get_position)
+
+    #@    @+others
+    #@+node:bob.20080115205803:__init__
+    def __init__(self, c, name, orientation, ratio=0.5):
+
+        """Initialize the widget with leo specific parameters.
+
+        'name' Sets the "name" property of the widget to the string specified by name.
+               This will allow the widget to be referenced in a GTK resource file.
+
+        'orientation' A string describing this widgets orientation ('horizontal' or 'vertical')
+
+        """
+        self.c = c
+        self.set_name(name)
+        self.orientation = orientation
+        self.ratio = ratio
+
+        self.connect('notify::position', self.onPositionChanged)
+
+
+
+
+
+
+    #@-node:bob.20080115205803:__init__
+    #@+node:bob.20080115205803.1:setSplitRatio
+    def setSplitRatio(self, ratio):
+        """Set the split ratio to 'ratio'.
+
+        'ratio' should be a float in the range from 0.0 to 1.0 inclusive.
+
+        """
+
+        self.__ratio = ratio
+
+        #check to see if containing window has been mapped
+        #if not then leave it to onMap to set splitter position.
+        if not self.window:
+            return
+
+        w, h = self.window.get_size()
+
+        size = g.choose(self.orientation == 'horizontal', w, h)
+        self.set_position(int(size * ratio))
+
+        #g.trace(self, ratio, size)
+    #@nonl
+    #@-node:bob.20080115205803.1:setSplitRatio
+    #@+node:bob.20080115205803.2:getSplitRatio
+    def getSplitRatio(self):
+
+        """Get the current split ratio.
+
+        If the window is not mapped then this can not be calculated so the
+        value stored in self.__ratio is used as this is the ratio that will
+        be set when the widget is mapped.
+
+        """
+
+        if not self.window:
+            return self.__ratio
+
+        w, h = self.window.get_size()
+        size = g.choose(self.orientation == 'horizontal', w, h)
+
+        self.__ratio = self.get_position()*1.0/size
+
+        return self.__ratio 
+    #@-node:bob.20080115205803.2:getSplitRatio
+    #@+node:bob.20080116235335:resetSplitRatio
+    def resetSplitRatio(self):
+
+        self.setSplitRatio(self.__ratio)
+    #@-node:bob.20080116235335:resetSplitRatio
+    #@+node:bob.20080115205803.3:onPositionChanged
+    def onPositionChanged(self, *args):
+
+        """Respond to changes in the widgets 'position' property"""
+
+        self.__ratio = self.getSplitRatio()
+    #@-node:bob.20080115205803.3:onPositionChanged
+    #@+node:bob.20080115210426:Property: ratio
+    ratio = property(getSplitRatio, setSplitRatio)
+    #@nonl
+    #@-node:bob.20080115210426:Property: ratio
+    #@-others
+
+
+
+
+
+
+
+
+
+#@-node:bob.20080115155515.1:class panedMixin
+#@+node:bob.20080115155515.2:class VPaned (gtk.VPaned, panedMixin)
+class VPaned(gtk.VPaned, panedMixin):
+    """Subclass to add leo specific functionality to gtk.VPaned."""
+
+    def __init__(self, c, name):
+
+        gtk.VPaned.__gobject_init__(self)
+        panedMixin.__init__(self, c, name, 'vertical')
+
+gobject.type_register(VPaned)
+#@-node:bob.20080115155515.2:class VPaned (gtk.VPaned, panedMixin)
+#@+node:bob.20080115155515.3:class HPaned (gtk.HPaned, panedMixin)
+class HPaned(gtk.HPaned, panedMixin):
+    """Subclass to add leo specific functionality to gtk.HPaned."""
+
+    def __init__(self, c, name):
+
+        """Construct a new object"""
+
+        gtk.VPaned.__gobject_init__(self)
+        panedMixin.__init__(self, c, name, 'horizontal')
+
+gobject.type_register(HPaned)
+#@-node:bob.20080115155515.3:class HPaned (gtk.HPaned, panedMixin)
+#@-node:bob.20080115155515:== paned widget classes ==
 #@+node:ekr.20080112145409.55:class leoGtkFrame
 class leoGtkFrame (leoFrame.leoFrame):
 
@@ -37,7 +227,7 @@ class leoGtkFrame (leoFrame.leoFrame):
     #@+node:ekr.20080112145409.57:__init__ (gtkFrame)
     def __init__(self,title,gui):
 
-        g.trace('gtkFrame',g.callers(20))
+        #g.trace('gtkFrame',g.callers(20))
 
         # Init the base class.
         leoFrame.leoFrame.__init__(self,gui)
@@ -51,6 +241,8 @@ class leoGtkFrame (leoFrame.leoFrame):
         self.c = None # Set in finishCreate.
         self.iconBarClass = self.gtkIconBarClass
         self.statusLineClass = self.gtkStatusLineClass
+        #self.minibufferClass = self.gtkMinibufferClass
+
         self.iconBar = None
 
         self.trace_status_line = None # Set in finishCreate.
@@ -94,12 +286,13 @@ class leoGtkFrame (leoFrame.leoFrame):
     #@-node:ekr.20080112145409.59:__repr__ (gtkFrame)
     #@+node:ekr.20080112145409.60:gtkFrame.finishCreate & helpers
     def finishCreate (self,c):
+        """Finish creating leoGtkFrame."""
 
         f = self ; f.c = c
-        g.trace('gtkFrame')
+        #g.trace('gtkFrame')
 
         self.trace_status_line = c.config.getBool('trace_status_line')
-        self.use_chapters      = False and c.config.getBool('use_chapters') ###
+        self.use_chapters = False and c.config.getBool('use_chapters') ###
         self.use_chapter_tabs  = False and c.config.getBool('use_chapter_tabs') ###
 
         # This must be done after creating the commander.
@@ -112,79 +305,94 @@ class leoGtkFrame (leoFrame.leoFrame):
         f.createSplitterComponents()
 
         ### f.createStatusLine()
+
         f.createFirstTreeNode()
         f.menu = leoGtkMenu.leoGtkMenu(f)
-            # c.finishCreate calls f.createMenuBar later.
+
+            # c.finishCreate calls f.createMenuBar later. Why?
+
         c.setLog()
         g.app.windowList.append(f)
+
         c.initVersion()
         c.signOnWithVersion()
+
         f.miniBufferWidget = f.createMiniBufferWidget()
+
+        def cbResetSplitRatio(f=f):
+            if not f:
+                g.trace('no frame')
+            f and f.f1 and f.f1.resetSplitRatio()
+            f and f.f2 and f.f2.resetSplitRatio()
+            return True
+
+        gobject.timeout_add(300, cbResetSplitRatio)
+
         c.bodyWantsFocusNow()
+
     #@+node:ekr.20080112145409.61:createOuterFrames
     def createOuterFrames (self):
 
+        """Create the main window."""
 
         f = self ; c = f.c
-        ### f.top = top = gtk.Toplevel()
-        ### g.app.gui.attachLeoIcon(top)
-        ### top.title(f.title)
-        ### top.minsize(30,10) # In grid units.
 
-        # def onButtonPressed(event):
-            # field.text=quotes[event.source.text]
+        w = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        w.set_title("gtkLeo Demo")
 
-        # def createButton(name):
-            # return gtk.JButton(name,preferredSize=(100,20),
-                # actionPerformed=onButtonPressed)
+        w.set_size_request(10, 10)
+        #w.resize(400, 300)
+
+        # mainVbox is the vertical box where all the componets are pack
+        # starting with the menu and ending with the minibuffer.
+
+        f.mainVBox = gtk.VBox()
+        w.add(f.mainVBox)
+
+        f.top = w
 
         def destroy_callback(widget,data=None):
             gtk.main_quit()  ### should call g.app.closeLeoWindow.
 
-        f.top = w = gtk.Window()
-        w.connect("destroy", destroy_callback)
-        w.show()
+        w.connect(
+            "destroy",
+             destroy_callback
+        )
 
-        # f.top = w = gtk.JFrame('jyLeo!',size=(700,700),windowClosing=exit)
-        # w.contentPane.layout = awt.FlowLayout()
+        w.connect(
+            'key-press-event', lambda w, event, self=f: self.toggleSplitDirection()
+        )
 
-        # if g.os_path_exists(g.app.user_xresources_path):
-            # f.top.option_readfile(g.app.user_xresources_path)
+        w.show_all()
 
-        # f.top.protocol("WM_DELETE_WINDOW", f.OnCloseLeoEvent)
-        # f.top.bind("<Button-1>", f.OnActivateLeoEvent)
-
-        # f.top.bind("<Control-KeyPress>",f.OnControlKeyDown)
-        # f.top.bind("<Control-KeyRelease>",f.OnControlKeyUp)
-
-        # These don't work on Windows. Because of bugs in window managers,
-        # there is NO WAY to know which window is on top!
-        # f.top.bind("<Activate>",f.OnActivateLeoEvent)
-        # f.top.bind("<Deactivate>",f.OnDeactivateLeoEvent)
-
-        # Create the outer frame, the 'hull' component.
-        # f.outerFrame = gtk.Frame(top)
-        # f.outerFrame.pack(expand=1,fill="both")
     #@-node:ekr.20080112145409.61:createOuterFrames
     #@+node:ekr.20080112145409.62:createSplitterComponents (removed frame.bodyCtrl ivar)
     def createSplitterComponents (self):
+        """Create the splitters and populate them with tree, body and log panels.""" 
 
         f = self ; c = f.c
 
-        g.trace()
+        #g.trace()
 
-        f.createLeoSplitters(f.outerFrame)
+        f.mainSplitterPanel = gtk.HBox()
+        f.menuHolderPanel = gtk.VBox()
 
+        f.mainVBox.pack_start(f.menuHolderPanel, False, False, 0)
+        f.mainVBox.add(f.mainSplitterPanel)
 
         f.body = leoGtkBody(f,f.top)
-        f.tree = leoGtkTree.leoGtkTree(c,f,f.top)
+        f.tree = leoGtkTree.leoGtkTree(c)
         f.log  = leoGtkLog(f,f.top)
+
+        self.createLeoSplitters(f)
 
         # Configure.
         f.setTabWidth(c.tab_width)
         f.reconfigurePanes()
         f.body.setFontFromConfig()
         f.body.setColorFromConfig()
+
+        f.top.show_all()
     #@-node:ekr.20080112145409.62:createSplitterComponents (removed frame.bodyCtrl ivar)
     #@+node:ekr.20080112145409.63:createFirstTreeNode
     def createFirstTreeNode (self):
@@ -200,158 +408,43 @@ class leoGtkFrame (leoFrame.leoFrame):
         c.editPosition(p)
     #@-node:ekr.20080112145409.63:createFirstTreeNode
     #@-node:ekr.20080112145409.60:gtkFrame.finishCreate & helpers
-    #@+node:ekr.20080112145409.64:gtkFrame.createCanvas & helpers
-    def createCanvas (self,parentFrame,pack=True):
+    #@+node:bob.20080117142603:ignore
+    if 0:
+        #@    @+others
+        #@+node:ekr.20080112145409.64:gtkFrame.createCanvas & helpers
+        def createCanvas (self,parentFrame,pack=True):
 
-        c = self.c
+            #g.trace()
 
-        scrolls = c.config.getBool('outline_pane_scrolls_horizontally')
-        scrolls = g.choose(scrolls,1,0)
-        canvas = self.createTkTreeCanvas(parentFrame,scrolls,pack)
-        self.setCanvasColorFromConfig(canvas)
+            c = self.c
 
-        return canvas
+            scrolls = c.config.getBool('outline_pane_scrolls_horizontally')
+            scrolls = g.choose(scrolls,1,0)
+            canvas = self.createGtkTreeCanvas(parentFrame,scrolls,pack)
+            self.setCanvasColorFromConfig(canvas)
+
+            return canvas
+        #@+node:ekr.20080112145409.65:f.createGtkTreeCanvas & callbacks
+        def createGtkTreeCanvas (self,parentFrame,scrolls,pack):
+            #g.trace()
+
+            return self.tree.canvas
+
+        #@-node:ekr.20080112145409.65:f.createGtkTreeCanvas & callbacks
+        #@+node:ekr.20080112145409.69:f.setCanvasColorFromConfig
+        def setCanvasColorFromConfig (self,canvas):
+
+            c = self.c
+
+            bg = c.config.getColor("outline_pane_background_color") or 'white'
+
+            canvas.setBackgroundColor(bg)
+
+        #@-node:ekr.20080112145409.69:f.setCanvasColorFromConfig
+        #@-node:ekr.20080112145409.64:gtkFrame.createCanvas & helpers
+        #@-others
     #@nonl
-    #@+node:ekr.20080112145409.65:f.createTkTreeCanvas & callbacks
-    def createTkTreeCanvas (self,parentFrame,scrolls,pack):
-
-        frame = self
-
-        canvas = gtk.Canvas(parentFrame,name="canvas",
-            bd=0,bg="white",relief="flat")
-
-        treeBar = gtk.Scrollbar(parentFrame,name="treeBar")
-
-        # New in Leo 4.4.3 b1: inject the ivar into the canvas.
-        canvas.leo_treeBar = treeBar
-
-        # Bind mouse wheel event to canvas
-        if sys.platform != "win32": # Works on 98, crashes on XP.
-            canvas.bind("<MouseWheel>", frame.OnMouseWheel)
-            if 1: # New in 4.3.
-                #@            << workaround for mouse-wheel problems >>
-                #@+node:ekr.20080112145409.66:<< workaround for mouse-wheel problems >>
-                # Handle mapping of mouse-wheel to buttons 4 and 5.
-
-                def mapWheel(e):
-                    if e.num == 4: # Button 4
-                        e.delta = 120
-                        return frame.OnMouseWheel(e)
-                    elif e.num == 5: # Button 5
-                        e.delta = -120
-                        return frame.OnMouseWheel(e)
-
-                canvas.bind("<ButtonPress>",mapWheel,add=1)
-                #@-node:ekr.20080112145409.66:<< workaround for mouse-wheel problems >>
-                #@nl
-
-        canvas['yscrollcommand'] = self.setCallback
-        treeBar['command']     = self.yviewCallback
-        treeBar.pack(side="right", fill="y")
-        if scrolls: 
-            treeXBar = gtk.Scrollbar( 
-                parentFrame,name='treeXBar',orient="horizontal") 
-            canvas['xscrollcommand'] = treeXBar.set 
-            treeXBar['command'] = canvas.xview 
-            treeXBar.pack(side="bottom", fill="x")
-
-        if pack:
-            canvas.pack(expand=1,fill="both")
-
-        canvas.bind("<Button-1>", frame.OnActivateTree)
-
-        # Handle mouse wheel in the outline pane.
-        if sys.platform == "linux2": # This crashes tcl83.dll
-            canvas.bind("<MouseWheel>", frame.OnMouseWheel)
-        if 0:
-            #@        << do scrolling by hand in a separate thread >>
-            #@+node:ekr.20080112145409.67:<< do scrolling by hand in a separate thread >>
-            # New in 4.3: replaced global way with scrollWay ivar.
-            ev = threading.Event()
-
-            def run(self=self,canvas=canvas,ev=ev):
-
-                while 1:
-                    ev.wait()
-                    if self.scrollWay =='Down': canvas.yview("scroll", 1,"units")
-                    else:                       canvas.yview("scroll",-1,"units")
-                    time.sleep(.1)
-
-            t = threading.Thread(target = run)
-            t.setDaemon(True)
-            t.start()
-
-            def scrollUp(event): scrollUpOrDown(event,'Down')
-            def scrollDn(event): scrollUpOrDown(event,'Up')
-
-            def scrollUpOrDown(event,theWay):
-                if event.widget!=canvas: return
-                if 0: # This seems to interfere with scrolling.
-                    if canvas.find_overlapping(event.x,event.y,event.x,event.y): return
-                ev.set()
-                self.scrollWay = theWay
-
-            def off(event,ev=ev,canvas=canvas):
-                if event.widget!=canvas: return
-                ev.clear()
-
-            if 1: # Use shift-click
-                # Shift-button-1 scrolls up, Shift-button-2 scrolls down
-                canvas.bind_all('<Shift Button-3>',scrollDn)
-                canvas.bind_all('<Shift Button-1>',scrollUp)
-                canvas.bind_all('<Shift ButtonRelease-1>',off)
-                canvas.bind_all('<Shift ButtonRelease-3>',off)
-            else: # Use plain click.
-                canvas.bind_all( '<Button-3>',scrollDn)
-                canvas.bind_all( '<Button-1>',scrollUp)
-                canvas.bind_all( '<ButtonRelease-1>',off)
-                canvas.bind_all( '<ButtonRelease-3>',off)
-            #@-node:ekr.20080112145409.67:<< do scrolling by hand in a separate thread >>
-            #@nl
-
-        # g.print_bindings("canvas",canvas)
-        return canvas
-    #@+node:ekr.20080112145409.68:Scrolling callbacks (gtkFrame)
-    def setCallback (self,*args,**keys):
-
-        """Callback to adjust the scrollbar.
-
-        Args is a tuple of two floats describing the fraction of the visible area."""
-
-        #g.trace(self.tree.redrawCount,args,g.callers())
-
-        apply(self.canvas.leo_treeBar.set,args,keys)
-
-        if self.tree.allocateOnlyVisibleNodes:
-            self.tree.setVisibleArea(args)
-
-    def yviewCallback (self,*args,**keys):
-
-        """Tell the canvas to scroll"""
-
-        #g.trace(vyiewCallback,args,keys,g.callers())
-
-        if self.tree.allocateOnlyVisibleNodes:
-            self.tree.allocateNodesBeforeScrolling(args)
-
-        apply(self.canvas.yview,args,keys)
-    #@nonl
-    #@-node:ekr.20080112145409.68:Scrolling callbacks (gtkFrame)
-    #@-node:ekr.20080112145409.65:f.createTkTreeCanvas & callbacks
-    #@+node:ekr.20080112145409.69:f.setCanvasColorFromConfig
-    def setCanvasColorFromConfig (self,canvas):
-
-        c = self.c
-
-        bg = c.config.getColor("outline_pane_background_color") or 'white'
-
-        try:
-            canvas.configure(bg=bg)
-        except:
-            g.es("exception setting outline pane background color")
-            g.es_exception()
-    #@-node:ekr.20080112145409.69:f.setCanvasColorFromConfig
-    #@-node:ekr.20080112145409.64:gtkFrame.createCanvas & helpers
+    #@-node:bob.20080117142603:ignore
     #@+node:ekr.20080112145409.70:gtkFrame.createLeoSplitters & helpers
     #@+at 
     #@nonl
@@ -369,52 +462,52 @@ class leoGtkFrame (leoFrame.leoFrame):
     #@-at
     #@@c
 
-    def createLeoSplitters (self,parentFrame):
+    def createLeoSplitters (self,parentFrame=None):
 
-        # Splitter 1 is the main splitter containing splitter2 and the body pane.
-        f1,bar1,split1Pane1,split1Pane2 = self.createLeoGtkSplitter(
-            parentFrame,self.splitVerticalFlag,'splitter1')
+        """Create leo's main and secondary splitters and pack into mainSplitterPanel.
 
-        self.f1,self.bar1 = f1,bar1
-        self.split1Pane1,self.split1Pane2 = split1Pane1,split1Pane2
+        f1 (splitter1) is the main splitter containing splitter2 and the body pane.
+        f2 (splitter2) is the secondary splitter containing the tree and log panes.
 
-        # Splitter 2 is the secondary splitter containing the tree and log panes.
-        f2,bar2,split2Pane1,split2Pane2 = self.createLeoGtkSplitter(
-            split1Pane1,not self.splitVerticalFlag,'splitter2')
+        'parentFrame' is not used in gtk.
 
-        self.f2,self.bar2 = f2,bar2
-        self.split2Pane1,self.split2Pane2 = split2Pane1,split2Pane2
-    #@nonl
-    #@+node:ekr.20080112145409.71:createLeoGtkSplitter
+        """
+
+        f= parentFrame
+        c = f.c
+
+        vertical = self.splitVerticalFlag
+
+        f.f1 = self.createLeoGtkSplitter(f, vertical, 'splitter1')
+        f.f2 = self.createLeoGtkSplitter(f, not vertical, 'splitter2')
+
+        #f.f2.pack1(TestWindow('leo yellow', 'red'))
+        #g.trace(f.tree.canvas.top)
+        #f.f2.pack1(TestWindow('leo yellow', 'red'))
+
+        f.f2.pack1(self.tree.canvas.top)
+        #f.f2.pack2(TestWindow('leo pink', 'yellow'))
+
+        f.f2.pack2(self.log.nb)
+        f.f1.pack1(f.f2)
+
+        #f.f1.pack2(TestWindow('leo blue', 'light green'))
+        f.f1.pack2(self.body.bodyCtrl.widget)
+
+        f.mainSplitterPanel.add(f.f1)
+
+    #@+node:bob.20080115172351.2:createLeoGtkSplitter
     def createLeoGtkSplitter (self,parent,verticalFlag,componentName):
+        """Create gtk spitter component."""
 
-        c = self.c
+        paned = g.choose(verticalFlag, VPaned, HPaned)
+        return paned(parent.c, componentName)
 
-        return None,None,None,None ###
-
-        # # Create the frames.
-        # f = gtk.Frame(parent,bd=0,relief="flat")
-        # f.pack(expand=1,fill="both",pady=1)
-
-        # f1 = gtk.Frame(f)
-        # f2 = gtk.Frame(f)
-        # bar = gtk.Frame(f,bd=2,relief="raised",bg="LightSteelBlue2")
-
-        # # Configure and place the frames.
-        # self.configureBar(bar,verticalFlag)
-        # self.bindBar(bar,verticalFlag)
-        # self.placeSplitter(bar,f1,f2,verticalFlag)
-
-        # return f, bar, f1, f2
-    #@-node:ekr.20080112145409.71:createLeoGtkSplitter
+    #@-node:bob.20080115172351.2:createLeoGtkSplitter
     #@+node:ekr.20080112145409.72:bindBar
     def bindBar (self, bar, verticalFlag):
 
-        if verticalFlag == self.splitVerticalFlag:
-            bar.bind("<B1-Motion>", self.onDragMainSplitBar)
-
-        else:
-            bar.bind("<B1-Motion>", self.onDragSecondarySplitBar)
+        NOTUSED()
     #@-node:ekr.20080112145409.72:bindBar
     #@+node:ekr.20080112145409.73:divideAnySplitter
     # This is the general-purpose placer for splitters.
@@ -422,40 +515,34 @@ class leoGtkFrame (leoFrame.leoFrame):
 
     def divideAnySplitter (self, frac, verticalFlag, bar, pane1, pane2):
 
-        pass ###
-
-        # if verticalFlag:
-            # # Panes arranged vertically; horizontal splitter bar
-            # bar.place(rely=frac)
-            # pane1.place(relheight=frac)
-            # pane2.place(relheight=1-frac)
-        # else:
-            # # Panes arranged horizontally; vertical splitter bar
-            # bar.place(relx=frac)
-            # pane1.place(relwidth=frac)
-            # pane2.place(relwidth=1-frac)
+        NOTUSED()
     #@-node:ekr.20080112145409.73:divideAnySplitter
-    #@+node:ekr.20080112145409.74:divideLeoSplitter
+    #@+node:bob.20080115172351.5:divideLeoSplitter
     # Divides the main or secondary splitter, using the key invariant.
+
     def divideLeoSplitter (self, verticalFlag, frac):
+        """Divides the main or secondary splitter."""
 
         if self.splitVerticalFlag == verticalFlag:
-            self.divideLeoSplitter1(frac,verticalFlag)
+            self.divideLeoSplitter1(frac)
             self.ratio = frac # Ratio of body pane to tree pane.
         else:
-            self.divideLeoSplitter2(frac,verticalFlag)
+            self.divideLeoSplitter2(frac)
             self.secondary_ratio = frac # Ratio of tree pane to log pane.
 
     # Divides the main splitter.
-    def divideLeoSplitter1 (self, frac, verticalFlag): 
-        self.divideAnySplitter(frac, verticalFlag,
-            self.bar1, self.split1Pane1, self.split1Pane2)
+
+    def divideLeoSplitter1 (self, frac, verticalFlag=None):
+        """Divide the (tree/log)/body splitter."""
+        self.f1.setSplitRatio(frac)
 
     # Divides the secondary splitter.
-    def divideLeoSplitter2 (self, frac, verticalFlag): 
-        self.divideAnySplitter (frac, verticalFlag,
-            self.bar2, self.split2Pane1, self.split2Pane2)
-    #@-node:ekr.20080112145409.74:divideLeoSplitter
+
+    def divideLeoSplitter2 (self, frac, verticalFlag=None):
+        """Divide the tree/log splitter."""    
+        self.f2.setSplitRatio(frac)
+
+    #@-node:bob.20080115172351.5:divideLeoSplitter
     #@+node:ekr.20080112145409.75:onDrag...
     def onDragMainSplitBar (self, event):
         self.onDragSplitterBar(event,self.splitVerticalFlag)
@@ -465,49 +552,14 @@ class leoGtkFrame (leoFrame.leoFrame):
 
     def onDragSplitterBar (self, event, verticalFlag):
 
-        # x and y are the coordinates of the cursor relative to the bar, not the main window.
-        bar = event.widget
-        x = event.x
-        y = event.y
-        top = bar.winfo_toplevel()
-
-        if verticalFlag:
-            # Panes arranged vertically; horizontal splitter bar
-            wRoot = top.winfo_rooty()
-            barRoot = bar.winfo_rooty()
-            wMax = top.winfo_height()
-            offset = float(barRoot) + y - wRoot
-        else:
-            # Panes arranged horizontally; vertical splitter bar
-            wRoot = top.winfo_rootx()
-            barRoot = bar.winfo_rootx()
-            wMax = top.winfo_width()
-            offset = float(barRoot) + x - wRoot
-
-        # Adjust the pixels, not the frac.
-        if offset < 3: offset = 3
-        if offset > wMax - 2: offset = wMax - 2
-        # Redraw the splitter as the drag is occuring.
-        frac = float(offset) / wMax
-        # g.trace(frac)
-        self.divideLeoSplitter(verticalFlag, frac)
+        NOTUSED()
     #@-node:ekr.20080112145409.75:onDrag...
-    #@+node:ekr.20080112145409.76:placeSplitter
+    #@+node:bob.20080115172351.7:placeSplitter
     def placeSplitter (self,bar,pane1,pane2,verticalFlag):
 
-        if verticalFlag:
-            # Panes arranged vertically; horizontal splitter bar
-            pane1.place(relx=0.5, rely =   0, anchor="n", relwidth=1.0, relheight=0.5)
-            pane2.place(relx=0.5, rely = 1.0, anchor="s", relwidth=1.0, relheight=0.5)
-            bar.place  (relx=0.5, rely = 0.5, anchor="c", relwidth=1.0)
-        else:
-            # Panes arranged horizontally; vertical splitter bar
-            # adj gives tree pane more room when tiling vertically.
-            adj = g.choose(verticalFlag != self.splitVerticalFlag,0.65,0.5)
-            pane1.place(rely=0.5, relx =   0, anchor="w", relheight=1.0, relwidth=adj)
-            pane2.place(rely=0.5, relx = 1.0, anchor="e", relheight=1.0, relwidth=1.0-adj)
-            bar.place  (rely=0.5, relx = adj, anchor="c", relheight=1.0)
-    #@-node:ekr.20080112145409.76:placeSplitter
+        NOTUSED()
+
+    #@-node:bob.20080115172351.7:placeSplitter
     #@-node:ekr.20080112145409.70:gtkFrame.createLeoSplitters & helpers
     #@+node:ekr.20080112145409.77:Destroying the gtkFrame
     #@+node:ekr.20080112145409.78:destroyAllObjects
@@ -970,62 +1022,6 @@ class leoGtkFrame (leoFrame.leoFrame):
     #@-node:ekr.20080112145409.107:f.setMinibufferBindings
     #@-node:ekr.20080112145409.103:Minibuffer methods
     #@+node:ekr.20080112145409.108:Configuration (gtkFrame)
-    #@+node:ekr.20080112145409.109:configureBar (gtkFrame)
-    def configureBar (self,bar,verticalFlag):
-
-        c = self.c
-
-        # Get configuration settings.
-        w = c.config.getInt("split_bar_width")
-        if not w or w < 1: w = 7
-        relief = c.config.get("split_bar_relief","relief")
-        if not relief: relief = "flat"
-        color = c.config.getColor("split_bar_color")
-        if not color: color = "LightSteelBlue2"
-
-        try:
-            if verticalFlag:
-                # Panes arranged vertically; horizontal splitter bar
-                bar.configure(relief=relief,height=w,bg=color,cursor="sb_v_double_arrow")
-            else:
-                # Panes arranged horizontally; vertical splitter bar
-                bar.configure(relief=relief,width=w,bg=color,cursor="sb_h_double_arrow")
-        except: # Could be a user error. Use all defaults
-            g.es("exception in user configuration for splitbar")
-            g.es_exception()
-            if verticalFlag:
-                # Panes arranged vertically; horizontal splitter bar
-                bar.configure(height=7,cursor="sb_v_double_arrow")
-            else:
-                # Panes arranged horizontally; vertical splitter bar
-                bar.configure(width=7,cursor="sb_h_double_arrow")
-    #@-node:ekr.20080112145409.109:configureBar (gtkFrame)
-    #@+node:ekr.20080112145409.110:configureBarsFromConfig (gtkFrame)
-    def configureBarsFromConfig (self):
-
-        c = self.c
-
-        w = c.config.getInt("split_bar_width")
-        if not w or w < 1: w = 7
-
-        relief = c.config.get("split_bar_relief","relief")
-        if not relief or relief == "": relief = "flat"
-
-        color = c.config.getColor("split_bar_color")
-        if not color or color == "": color = "LightSteelBlue2"
-
-        if self.splitVerticalFlag:
-            bar1,bar2=self.bar1,self.bar2
-        else:
-            bar1,bar2=self.bar2,self.bar1
-
-        try:
-            bar1.configure(relief=relief,height=w,bg=color)
-            bar2.configure(relief=relief,width=w,bg=color)
-        except: # Could be a user error.
-            g.es("exception in user configuration for splitbar")
-            g.es_exception()
-    #@-node:ekr.20080112145409.110:configureBarsFromConfig (gtkFrame)
     #@+node:ekr.20080112145409.111:reconfigureFromConfig (gtkFrame)
     def reconfigureFromConfig (self):
 
@@ -1037,7 +1033,7 @@ class leoGtkFrame (leoFrame.leoFrame):
         frame.configureBarsFromConfig()
 
         frame.body.setFontFromConfig()
-        frame.body.setColorFromConfigt()
+        frame.body.setColorFromConfig()
 
         frame.setTabWidth(c.tab_width)
         frame.log.setFontFromConfig()
@@ -1058,26 +1054,8 @@ class leoGtkFrame (leoFrame.leoFrame):
         y = c.config.getInt("initial_window_top") or 10
 
         if h and w and x and y:
-            pass ### self.setTopGeometry(w,h,x,y)
+            self.setTopGeometry(w,h,x,y)
     #@-node:ekr.20080112145409.112:setInitialWindowGeometry (gtkFrame)
-    #@+node:ekr.20080112145409.113:setTabWidth (gtkFrame)
-    def setTabWidth (self, w):
-
-        pass
-
-        # try: # This can fail when called from scripts
-            # # Use the present font for computations.
-            # font = self.bodyCtrl.cget("font")
-            # root = g.app.root # 4/3/03: must specify root so idle window will work properly.
-            # font = gtkFont.Font(root=root,font=font)
-            # tabw = font.measure(" " * abs(w)) # 7/2/02
-            # self.bodyCtrl.configure(tabs=tabw)
-            # self.tab_width = w
-            # # g.trace(w,tabw)
-        # except:
-            # g.es_exception()
-            # pass
-    #@-node:ekr.20080112145409.113:setTabWidth (gtkFrame)
     #@+node:ekr.20080112145409.114:setWrap (gtkFrame)
     def setWrap (self,p):
 
@@ -1099,27 +1077,24 @@ class leoGtkFrame (leoFrame.leoFrame):
     #@+node:ekr.20080112145409.115:setTopGeometry (gtkFrame)
     def setTopGeometry(self,w,h,x,y,adjustSize=True):
 
-        pass ###
+        # Put the top-left corner on the screen.
+        x = max(10,x) ; y = max(10,y)
 
-        # # Put the top-left corner on the screen.
-        # x = max(10,x) ; y = max(10,y)
+        if adjustSize:
+            top = self.top
+            sw = gtk.gdk.screen_width()
+            sh = gtk.gdk.screen_height()
 
-        # if adjustSize:
-            # top = self.top
-            # sw = top.winfo_screenwidth()
-            # sh = top.winfo_screenheight()
+            # Adjust the size so the whole window fits on the screen.
+            w = min(sw-10,w)
+            h = min(sh-10,h)
 
-            # # Adjust the size so the whole window fits on the screen.
-            # w = min(sw-10,w)
-            # h = min(sh-10,h)
+            # Adjust position so the whole window fits on the screen.
+            if x + w > sw: x = 10
+            if y + h > sh: y = 10
 
-            # # Adjust position so the whole window fits on the screen.
-            # if x + w > sw: x = 10
-            # if y + h > sh: y = 10
-
-        # geom = "%dx%d%+d%+d" % (w,h,x,y)
-
-        # self.top.geometry(geom)
+        self.top.resize(w,h)
+        self.top.move(x,y)
     #@-node:ekr.20080112145409.115:setTopGeometry (gtkFrame)
     #@+node:ekr.20080112145409.116:reconfigurePanes (use config bar_width) (gtkFrame)
     def reconfigurePanes (self):
@@ -1342,7 +1317,7 @@ class leoGtkFrame (leoFrame.leoFrame):
         w = c.get_requested_focus()
         wname = c.widget_name(w)
 
-        g.trace(wname)
+        #g.trace(wname)
         if not w: return
 
         if wname.startswith('body'):
@@ -1464,7 +1439,7 @@ class leoGtkFrame (leoFrame.leoFrame):
         '''Make the outline and body panes have the same size.'''
 
         frame = self
-        frame.resizePanesToRatio(0.5,frame.secondary_ratio)
+        frame.f1.ratio = 0.5
     #@-node:ekr.20080112145409.138:equalSizedPanes
     #@+node:ekr.20080112145409.139:hideLogWindow
     def hideLogWindow (self,event=None):
@@ -1484,7 +1459,7 @@ class leoGtkFrame (leoFrame.leoFrame):
 
     def minimize(self,frame):
 
-        if frame and frame.top.state() == "normal":
+        if frame:
             frame.top.iconify()
     #@-node:ekr.20080112145409.140:minimizeAll
     #@+node:ekr.20080112145409.141:toggleSplitDirection (gtkFrame)
@@ -1492,59 +1467,64 @@ class leoGtkFrame (leoFrame.leoFrame):
 
     def toggleSplitDirection (self,event=None):
 
+        f = self
+
+        #g.trace(f, f.f1, f.f2)
+
         '''Toggle the split direction in the present Leo window.'''
 
         # Switch directions.
         c = self.c
         self.splitVerticalFlag = not self.splitVerticalFlag
+
         orientation = g.choose(self.splitVerticalFlag,"vertical","horizontal")
+
         c.config.set("initial_splitter_orientation","string",orientation)
 
-        self.toggleTkSplitDirection(self.splitVerticalFlag)
-    #@+node:ekr.20080112145409.142:toggleTkSplitDirection
-    def toggleTkSplitDirection (self,verticalFlag):
+        self.toggleGtkSplitDirection(self.splitVerticalFlag)
+    #@+node:ekr.20080112145409.142:toggleGtkSplitDirection
+    def toggleGtkSplitDirection (self,verticalFlag=None):
+        """Strip the splitters and create new ones in the desired orientation.
 
-        # Abbreviations.
-        frame = self
-        bar1 = self.bar1 ; bar2 = self.bar2
-        split1Pane1,split1Pane2 = self.split1Pane1,self.split1Pane2
-        split2Pane1,split2Pane2 = self.split2Pane1,self.split2Pane2
-        # Reconfigure the bars.
-        bar1.place_forget()
-        bar2.place_forget()
-        self.configureBar(bar1,verticalFlag)
-        self.configureBar(bar2,not verticalFlag)
-        # Make the initial placements again.
-        self.placeSplitter(bar1,split1Pane1,split1Pane2,verticalFlag)
-        self.placeSplitter(bar2,split2Pane1,split2Pane2,not verticalFlag)
-        # Adjust the log and body panes to give more room around the bars.
-        self.reconfigurePanes()
-        # Redraw with an appropriate ratio.
-        vflag,ratio,secondary_ratio = frame.initialRatios()
-        self.resizePanesToRatio(ratio,secondary_ratio)
-    #@-node:ekr.20080112145409.142:toggleTkSplitDirection
+        'verticalFlag' is not used in gtkGui.
+
+        """
+
+        f = self
+
+        f.mainSplitterPanel.remove(f.f1)
+
+        tree = f.f2.get_child1()
+        f.f2.remove(tree)
+
+        log = f.f2.get_child2()
+        f.f2.remove(log)
+
+        body = f.f1.get_child2()
+        f.f1.remove(body)
+
+        f.f1.remove(f.f2)
+
+        f.f1 = f.f2 = None
+
+        self.createLeoSplitters(f)
+
+        f.f2.pack1(tree)
+        f.f2.pack2(log)
+        f.f1.pack1(f.f2)
+
+        f.f1.pack2(body)
+
+        f.top.show_all()
+
+    #@-node:ekr.20080112145409.142:toggleGtkSplitDirection
     #@-node:ekr.20080112145409.141:toggleSplitDirection (gtkFrame)
     #@+node:ekr.20080112145409.143:resizeToScreen
     def resizeToScreen (self,event=None):
 
-        '''Resize the Leo window so it fill the entire screen.'''
+        '''Resize the Leo window so it fills the entire screen.'''
 
-        top = self.top
-
-        w = top.winfo_screenwidth()
-        h = top.winfo_screenheight()
-
-        if sys.platform.startswith('win'):
-            top.state('zoomed')
-        elif sys.platform == 'darwin':
-            # Must leave room to get at very small resizing area.
-            geom = "%dx%d%+d%+d" % (w-20,h-55,10,25)
-            top.geometry(geom)
-        else:
-            # Fill almost the entire screen.
-            # Works on Windows. YMMV for other platforms.
-            geom = "%dx%d%+d%+d" % (w-8,h-46,0,0)
-            top.geometry(geom)
+        self.top.maximize()
     #@-node:ekr.20080112145409.143:resizeToScreen
     #@-node:ekr.20080112145409.135:Window Menu...
     #@+node:ekr.20080112145409.144:Help Menu...
@@ -1602,22 +1582,10 @@ class leoGtkFrame (leoFrame.leoFrame):
     #@-node:ekr.20080112145409.145:leoHelp
     #@-node:ekr.20080112145409.144:Help Menu...
     #@-node:ekr.20080112145409.127:Gui-dependent commands
-    #@+node:ekr.20080112145409.148:Delayed Focus (gtkFrame)
-    #@+at 
-    #@nonl
-    # New in 4.3. The proper way to change focus is to call 
-    # c.frame.xWantsFocus.
-    # 
-    # Important: This code never calls select, so there can be no race 
-    # condition here
-    # that alters text improperly.
-    #@-at
-    #@-node:ekr.20080112145409.148:Delayed Focus (gtkFrame)
-    #@+node:ekr.20080112145409.149:Tk bindings... (gtkFrame)
+    #@+node:ekr.20080112145409.149:Gtk bindings... (gtkFrame)
     def bringToFront (self):
-        g.trace(g.callers())
-        # self.top.deiconify()
-        # self.top.lift()
+        self.top.present()
+
 
     def getFocus(self):
         """Returns the widget that has focus, or body if None."""
@@ -1635,28 +1603,69 @@ class leoGtkFrame (leoFrame.leoFrame):
             # return self.body.bodyCtrl
 
     def getTitle (self):
-        g.trace()
-        return self.top and self.top.title or '<no title>'
+        return self.top and self.top.get_title() or '<no title>'
 
     def setTitle (self,title):
-        return self.top.title(title)
+        return self.top.set_title(title)
 
     def get_window_info(self):
         g.trace()
         # return g.app.gui.get_window_info(self.top)
 
     def iconify(self):
-        g.trace() # self.top.iconify()
+        self.top.iconify()
 
     def deiconify (self):
-        g.trace() # self.top.deiconify()
+        self.top.deiconify()
 
     def lift (self):
-        g.trace() # self.top.lift()
+        self.top.present()
 
     def update (self):
         g.trace() # self.top.update()
-    #@-node:ekr.20080112145409.149:Tk bindings... (gtkFrame)
+    #@-node:ekr.20080112145409.149:Gtk bindings... (gtkFrame)
+    #@+node:bob.20080116222005:not used
+    #@+node:ekr.20080112145409.109:configureBar (gtkFrame)
+    def configureBar (self,bar,verticalFlag):
+
+        return
+    #@nonl
+    #@-node:ekr.20080112145409.109:configureBar (gtkFrame)
+    #@+node:ekr.20080112145409.110:configureBarsFromConfig (gtkFrame)
+    def configureBarsFromConfig (self):
+
+        return
+    #@-node:ekr.20080112145409.110:configureBarsFromConfig (gtkFrame)
+    #@+node:ekr.20080112145409.113:setTabWidth (gtkFrame)
+    def setTabWidth (self, w):
+
+        pass
+
+        # try: # This can fail when called from scripts
+            # # Use the present font for computations.
+            # font = self.bodyCtrl.cget("font")
+            # root = g.app.root # 4/3/03: must specify root so idle window will work properly.
+            # font = gtkFont.Font(root=root,font=font)
+            # tabw = font.measure(" " * abs(w)) # 7/2/02
+            # self.bodyCtrl.configure(tabs=tabw)
+            # self.tab_width = w
+            # # g.trace(w,tabw)
+        # except:
+            # g.es_exception()
+            # pass
+    #@-node:ekr.20080112145409.113:setTabWidth (gtkFrame)
+    #@+node:ekr.20080112145409.148:Delayed Focus (gtkFrame)
+    #@+at 
+    #@nonl
+    # New in 4.3. The proper way to change focus is to call 
+    # c.frame.xWantsFocus.
+    # 
+    # Important: This code never calls select, so there can be no race 
+    # condition here
+    # that alters text improperly.
+    #@-at
+    #@-node:ekr.20080112145409.148:Delayed Focus (gtkFrame)
+    #@-node:bob.20080116222005:not used
     #@-others
 #@-node:ekr.20080112145409.55:class leoGtkFrame
 #@+node:ekr.20080112145409.150:class leoGtkBody
@@ -1686,7 +1695,7 @@ class leoGtkBody (leoFrame.leoBody):
     #@+node:ekr.20080112145409.152:gtkBody. __init__
     def __init__ (self,frame,parentFrame):
 
-        g.trace('leoGtkBody')
+        #g.trace('leoGtkBody')
 
         # Call the base class constructor.
         leoFrame.leoBody.__init__(self,frame,parentFrame)
@@ -1757,7 +1766,7 @@ class leoGtkBody (leoFrame.leoBody):
         wrap = g.choose(wrap,"word","none")
 
         # # Setgrid=1 cause severe problems with the font panel.
-        body = w = leoGtkTextWidget (parentFrame,name='body-pane',
+        body = w = leoGtkTextWidget (c, name='body-pane',
             bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
 
         bodyBar = None ###
@@ -2017,6 +2026,154 @@ class leoGtkBody (leoFrame.leoBody):
     #@-node:ekr.20080112145409.168:Editors (gtkBody)
     #@-others
 #@-node:ekr.20080112145409.150:class leoGtkBody
+#@+node:bob.20080119081548:== Leo Log (gtk) ==
+#@+node:bob.20080119074840:class LogTab
+class LogTab(gtk.VBox):
+
+    """A window used as pages in the gtkLogNotebook
+
+
+    This window also manages a label wiget which can be used in
+    gtk.Notebook tabs.
+
+    """
+
+    #@    @+others
+    #@+node:bob.20080119081548.1:__init__ (LogTab)
+    def __init__(self, c,
+         tabName,
+         labelWidget=None,
+         frameWidget=None
+    ):
+
+        """Construct a LogWindow based on a gtk.VBox widget
+
+        tabName is the name to be used to identify this widget.
+
+        labelWidget is the widget used as a label in notebook tabs.
+            If this is None a gtk.Label widget will be used with
+            its text set to tabName.
+
+        frame widget is the initial widget to be packed into
+            this VBox and may be None.
+
+        """
+
+        super(LogTab, self).__gobject_init__()
+
+        self.c = c
+        self.nb = None 
+
+        self.set_size_request(10, 10)
+
+        if frameWidget:
+            self.add(frameWidget)
+
+        self.tabName = tabName
+
+        if not labelWidget:
+            labelWidget = gtk.Label(tabName)
+
+        self.labelWidget = labelWidget
+
+        self.show_all()
+    #@-node:bob.20080119081548.1:__init__ (LogTab)
+    #@-others
+
+
+gobject.type_register(LogTab)
+#@-node:bob.20080119074840:class LogTab
+#@+node:bob.20080119070534.1:class _gtkLogNotebook (gtk.Notebook)
+class _gtkLogNotebook (gtk.Notebook):
+
+    """This is a wrapper around gtk.Notebook.
+
+    The purpose of this wrapper is to provide leo specific
+    additions and modifications to the native Notebook object.
+
+    Although little is being done with this at the moment, future
+    enhancement may include the ability to hide tabs, to drag
+    them from one notebook to another, and to pop the tabs out
+    of the notebook into there own frame.
+
+    """
+
+    #@    @+others
+    #@+node:bob.20080119070534.2:__init__ (_gtkLogNotebook)
+    def __init__ (self, c):
+
+        """Create and wrap a gtk.Notebok. Do leo specific initailization."""
+
+        gtk.Notebook.__gobject_init__(self)
+
+        self.c = c
+        self.tabNames = {}
+    #@-node:bob.20080119070534.2:__init__ (_gtkLogNotebook)
+    #@+node:bob.20080119074425.2:selectPage
+    def selectpage(self, tabName):
+        """Select the page in the notebook with name 'tabName'.
+
+        A KeyError exception is raised if the tabName is not known.
+
+        """
+
+        tabCtrl = self.tabNames[tabName]
+
+        self.set_current_page(self.page_num(tabCtrl))
+
+
+
+
+
+
+    #@-node:bob.20080119074425.2:selectPage
+    #@+node:bob.20080119074425.3:add
+    def add(self, tab):
+        """Add a tab as the last page in the notebook.
+
+        'tab' may be an instance of LogTab or basestring.
+
+        if 'tab' is a string a default LogTab will be constructed and returned
+            with tab used as a tabName.
+
+        if 'tab is a LogTab it must have tab.tabName set. If labelWidget is not
+            set a gtk.Label will be used with its text set to tabName.
+
+        either tab or a new instance of LogTab will be returned.
+
+        """
+
+        if isinstance(tab, basestring):
+            tab = LogTab(self.c, tab)
+
+        assert isinstance(tab, LogTab)
+
+        tabName = tab.tabName
+
+        tab.nb = self
+
+        if not tab.labelWidget:
+            tab.labelWidget = gtk.Label(tab.tabName)
+
+        self.tabNames[tabName] = tab
+        self.append_page(tab, tab.labelWidget)
+
+        return tab
+
+
+
+
+    #@-node:bob.20080119074425.3:add
+    #@+node:bob.20080119085509:pageNames
+    def pagenames(self):
+        """Return a list of pagenames managed by this notebook."""
+
+        return self.tabNames.keys()
+    #@-node:bob.20080119085509:pageNames
+    #@-others
+
+gobject.type_register(_gtkLogNotebook)
+#@-node:bob.20080119070534.1:class _gtkLogNotebook (gtk.Notebook)
 #@+node:ekr.20080112145409.205:class leoGtkLog
 class leoGtkLog (leoFrame.leoLog):
 
@@ -2026,46 +2183,64 @@ class leoGtkLog (leoFrame.leoLog):
     #@+node:ekr.20080112145409.206:gtkLog Birth
     #@+node:ekr.20080112145409.207:gtkLog.__init__
     def __init__ (self,frame,parentFrame):
+        """Create an instance of the leoGtkLog Adaptor class.
 
-        # g.trace("leoGtkLog")
+        All access to the funtions of this class should be via c.frame.log
+        or the global methods provided.
+
+        At the moment legCtrl is the notebook control but it should not be assumed
+        that this is so 
+
+        """
+
+        g.trace("leoGtkLog")
 
         # Call the base class constructor and calls createControl.
         leoFrame.leoLog.__init__(self,frame,parentFrame)
 
         self.c = c = frame.c # Also set in the base constructor, but we need it here.
 
-        self.colorTags = []
-            # The list of color names used as tags in present tab.
-            # This gest switched by selectTab.
-
         self.wrap = g.choose(c.config.getBool('log_pane_wraps'),"word","none")
 
-        # New in 4.4a2: The log pane is a Pmw.Notebook...
 
-        self.nb = None      # The Pmw.Notebook that holds all the tabs.
+        self.nb = None      # _gtkLogNotebook that holds all the tabs.
         self.colorTagsDict = {} # Keys are page names.  Values are saved colorTags lists.
         self.menu = None # A menu that pops up on right clicks in the hull or in tabs.
 
-        self.logCtrl = self.createControl(parentFrame)
-        self.setFontFromConfig()
-        self.setColorFromConfig()
+        self.createControl(parentFrame)
+        #self.setFontFromConfig()
+        #self.setColorFromConfig()
 
-
-
+    #@+at
+    # #==
+    #     self.c = c
+    # 
+    #     self.nb = gtk.Notebook()
+    # 
+    #     self.isNull = False
+    #     self.logCtrl = None
+    #     self.newlines = 0
+    #     self.frameDict = {} # Keys are log names, values are None or 
+    # wx.Frames.
+    #     self.textDict = {}  # Keys are log names, values are None or Text 
+    # controls.
+    # 
+    #     self.createInitialTabs()
+    #     self.setFontFromConfig()
+    # 
+    # 
+    #@-at
     #@-node:ekr.20080112145409.207:gtkLog.__init__
     #@+node:ekr.20080112145409.208:gtkLog.createControl
     def createControl (self,parentFrame):
 
+        """Create the base gtkLog control.
+
+        """
+
         c = self.c
 
-        return self ### self.logCtrl
-
-        # self.nb = Pmw.NoteBook(parentFrame,
-            # borderwidth = 1, pagemargin = 0,
-            # raisecommand = self.raiseTab,
-            # lowercommand = self.lowerTab,
-            # arrownavigation = 0,
-        # )
+        self.nb = _gtkLogNotebook(c)
 
         # menu = self.makeTabMenu(tabName=None)
 
@@ -2075,9 +2250,9 @@ class leoGtkLog (leoFrame.leoLog):
         # self.nb.bind('<Button-3>',hullMenuCallback)
 
         # self.nb.pack(fill='both',expand=1)
-        # self.selectTab('Log') # Create and activate the default tabs.
 
-        # return self.logCtrl
+        # Create and activate the default tabs.
+        return self.selectTab('Log')
     #@-node:ekr.20080112145409.208:gtkLog.createControl
     #@+node:ekr.20080112145409.209:gtkLog.finishCreate
     def finishCreate (self):
@@ -2086,18 +2261,21 @@ class leoGtkLog (leoFrame.leoLog):
 
         c = self.c ; log = self
 
-        c.searchCommands.openFindTab(show=False)
-        c.spellCommands.openSpellTab()
+        #'c.searchCommands.openFindTab(show=False)
+        #'c.spellCommands.openSpellTab()
         log.selectTab('Log')
     #@-node:ekr.20080112145409.209:gtkLog.finishCreate
     #@+node:ekr.20080112145409.210:gtkLog.createTextWidget
     def createTextWidget (self,parentFrame):
 
+        c = self.c
+
         self.logNumber += 1
 
-        log = g.app.gui.plainTextWidget(
-            parentFrame,name="log-%d" % self.logNumber,
-            setgrid=0,wrap=self.wrap,bd=2,bg="white",relief="flat")
+        log = g.app.gui.plainTextWidget(c,
+            name="log-%d" % self.logNumber,
+            setgrid=0,wrap=self.wrap,bd=2,bg="white",relief="flat"
+        )
 
         # logBar = gtk.Scrollbar(parentFrame,name="logBar")
 
@@ -2296,7 +2474,7 @@ class leoGtkLog (leoFrame.leoLog):
 
         c = self.c
 
-        # print 'gtkLog.put',self.c.shortFileName(),tabName,g.callers()
+        #print 'gtkLog.put', s, color, tabName #self.c.shortFileName(),tabName,g.callers()
 
         if g.app.quitting or not c or not c.exists:
             return
@@ -2304,10 +2482,8 @@ class leoGtkLog (leoFrame.leoLog):
         if tabName:
             self.selectTab(tabName)
 
-        # if self.logCtrl:
-            # 
-            #@nonl
-            #@<< put s to log control >>
+        if self.logCtrl:
+            #@        << put s to log control >>
             #@+node:ekr.20080112145409.225:<< put s to log control >>
             # if color:
                 # if color not in self.colorTags:
@@ -2319,8 +2495,9 @@ class leoGtkLog (leoFrame.leoLog):
             # else:
                 # self.logCtrl.insert("end",s)
 
-            # self.logCtrl.see('end')
-            # self.forceLogUpdate(s)
+            self.logCtrl.insert("end",s)
+            self.logCtrl.see('end')
+            #self.forceLogUpdate(s)
             #@-node:ekr.20080112145409.225:<< put s to log control >>
             #@nl
             # self.logCtrl.update_idletasks()
@@ -2343,14 +2520,16 @@ class leoGtkLog (leoFrame.leoLog):
     #@+node:ekr.20080112145409.227:putnl
     def putnl (self,tabName='Log'):
 
+
         if g.app.quitting:
             return
+
         if tabName:
             self.selectTab(tabName)
 
-        # if self.logCtrl:
-            # self.logCtrl.insert("end",'\n')
-            # self.logCtrl.see('end')
+        if self.logCtrl:
+            self.logCtrl.insert("end",'\n')
+            self.logCtrl.see('end')
             # self.forceLogUpdate('\n')
         # else:
             # # Put a newline to logWaiting and print newline
@@ -2359,7 +2538,7 @@ class leoGtkLog (leoFrame.leoLog):
             # print
     #@-node:ekr.20080112145409.227:putnl
     #@-node:ekr.20080112145409.223:put & putnl (gtkLog)
-    #@+node:ekr.20080112145409.228:Tab (TkLog)
+    #@+node:ekr.20080112145409.228:Tab (GtkLog)
     #@+node:ekr.20080112145409.229:clearTab
     def clearTab (self,tabName,wrap='none'):
 
@@ -2370,18 +2549,23 @@ class leoGtkLog (leoFrame.leoLog):
     #@+node:ekr.20080112145409.230:createTab
     def createTab (self,tabName,createText=True,wrap='none'):
 
-        # g.trace(tabName,wrap)
+        g.trace(tabName,wrap)
 
         c = self.c ; k = c.k
 
-        # tabFrame = self.nb.add(tabName)
+        tabFrame = self.nb.add(tabName)
+
+        #widget = TestWindow('leo pink', 'yellow')
+        #tabFrame.add(widget)
+
+        #self.textDict [tabName] = None
+        #self.frameDict [tabName] = tabFrame
+
         # self.menu = self.makeTabMenu(tabName)
-        # if createText:
-            # 
-            #@nonl
-            #@<< Create the tab's text widget >>
+        if createText:
+            #@        << Create the tab's text widget >>
             #@+node:ekr.20080112145409.231:<< Create the tab's text widget >>
-            # w = self.createTextWidget(tabFrame)
+            w = self.createTextWidget(tabFrame)
 
             # # Set the background color.
             # configName = 'log_pane_%s_tab_background_color' % tabName
@@ -2393,24 +2577,28 @@ class leoGtkLog (leoFrame.leoLog):
 
             # self.SetWidgetFontFromConfig(logCtrl=w)
 
-            # self.frameDict [tabName] = tabFrame
-            # self.textDict [tabName] = w
+            self.frameDict [tabName] = tabFrame
+            self.textDict [tabName] = w
+            tabFrame.add(w.widget)
+            tabFrame.show_all()
 
             # # Switch to a new colorTags list.
             # if self.tabName:
                 # self.colorTagsDict [self.tabName] = self.colorTags [:]
 
-            # self.colorTags = ['black']
-            # self.colorTagsDict [tabName] = self.colorTags
+            #self.colorTags = ['black']
+            #self.colorTagsDict [tabName] = self.colorTags
             #@-node:ekr.20080112145409.231:<< Create the tab's text widget >>
             #@nl
             # if tabName != 'Log':
                 # # c.k doesn't exist when the log pane is created.
                 # # k.makeAllBindings will call setTabBindings('Log')
                 # self.setTabBindings(tabName)
-        # else:
-            # self.textDict [tabName] = None
-            # self.frameDict [tabName] = tabFrame
+        else:
+            self.textDict [tabName] = None
+            self.frameDict [tabName] = tabFrame
+
+
     #@-node:ekr.20080112145409.230:createTab
     #@+node:ekr.20080112145409.232:cycleTabFocus
     def cycleTabFocus (self,event=None,stop_w = None):
@@ -2438,14 +2626,14 @@ class leoGtkLog (leoFrame.leoLog):
         elif tabName in ('Find','Spell') and not force:
             self.selectTab('Log')
 
-        # elif tabName in self.nb.pagenames():
+        elif tabName in self.nb.pagenames():
             # # g.trace(tabName,force)
-            # self.nb.delete(tabName)
+            self.nb.delete(tabName)
             # self.colorTagsDict [tabName] = []
-            # self.textDict [tabName] = None
-            # self.frameDict [tabName] = None
-            # self.tabName = None
-            # self.selectTab('Log')
+            self.textDict [tabName] = None
+            self.frameDict [tabName] = None
+            self.tabName = None
+            self.selectTab('Log')
 
         # New in Leo 4.4b1.
         self.c.invalidateFocus()
@@ -2502,26 +2690,24 @@ class leoGtkLog (leoFrame.leoLog):
 
         c = self.c
 
-        # tabFrame = self.frameDict.get(tabName)
-        # logCtrl = self.textDict.get(tabName)
+        tabFrame = self.frameDict.get(tabName)
+        logCtrl = self.textDict.get(tabName)
 
-        # if tabFrame and logCtrl:
-            # # Switch to a new colorTags list.
-            # newColorTags = self.colorTagsDict.get(tabName)
-            # self.colorTagsDict [self.tabName] = self.colorTags [:]
-            # self.colorTags = newColorTags
-        # elif not tabFrame:
-            # self.createTab(tabName,createText=createText,wrap=wrap)
+        #g.trace(tabFrame, logCtrl)
 
-        # self.nb.selectpage(tabName)
+        if not tabFrame or not logCtrl:
+            self.createTab(tabName,createText=createText,wrap=wrap)
+
+        self.nb.selectpage(tabName)
+
         # # Update the status vars.
-        # self.tabName = tabName
-        # self.logCtrl = self.textDict.get(tabName)
-        # self.tabFrame = self.frameDict.get(tabName)
+        self.tabName = tabName
+        self.logCtrl = self.textDict.get(tabName)
+        self.tabFrame = self.frameDict.get(tabName)
 
         # if 0: # Absolutely do not do this here!  It is a cause of the 'sticky focus' problem.
             # c.widgetWantsFocusNow(self.logCtrl)
-        # return tabFrame
+        return tabFrame
     #@-node:ekr.20080112145409.239:selectTab
     #@+node:ekr.20080112145409.240:setTabBindings
     def setTabBindings (self,tabName):
@@ -2622,7 +2808,7 @@ class leoGtkLog (leoFrame.leoLog):
         e.bind('<Return>',getNameCallback)
     #@-node:ekr.20080112145409.245:getTabName
     #@-node:ekr.20080112145409.241:Tab menu callbacks & helpers
-    #@-node:ekr.20080112145409.228:Tab (TkLog)
+    #@-node:ekr.20080112145409.228:Tab (GtkLog)
     #@+node:ekr.20080112145409.246:gtkLog color tab stuff
     def createColorPicker (self,tabName):
 
@@ -2907,6 +3093,7 @@ class leoGtkLog (leoFrame.leoLog):
     #@-node:ekr.20080112145409.250:gtkLog font tab stuff
     #@-others
 #@-node:ekr.20080112145409.205:class leoGtkLog
+#@-node:bob.20080119081548:== Leo Log (gtk) ==
 #@+node:ekr.20080112145409.263:class leoGtkTreeTab
 class leoGtkTreeTab (leoFrame.leoTreeTab):
 
@@ -2998,8 +3185,33 @@ class leoGtkTreeTab (leoFrame.leoTreeTab):
     #@-others
 #@nonl
 #@-node:ekr.20080112145409.263:class leoGtkTreeTab
+#@+node:bob.20080119110204:== Leo Text Widget (gtk) ==
+#@+node:bob.20080119110204.1:class _gtkText
+class _gtkText (gtk.TextView):
+
+    """This is a wrapper around gtk.Notebook.
+
+    The purpose of this wrapper is to provide leo specific
+    additions and modifications to the native Notebook object.
+
+    """
+
+    #@    @+others
+    #@+node:bob.20080119110204.2:__init__ (_gtkText)
+    def __init__ (self, c, *args, **kw):
+
+        """Create and wrap a gtk.TextView. Do leo specific initailization."""
+
+        gtk.TextView.__gobject_init__(self)
+        self.c = c
+    #@nonl
+    #@-node:bob.20080119110204.2:__init__ (_gtkText)
+    #@-others
+
+gobject.type_register(_gtkText)
+#@-node:bob.20080119110204.1:class _gtkText
 #@+node:ekr.20080112145409.273:class leoGtkTextWidget
-class leoGtkTextWidget:
+class leoGtkTextWidget(leoFrame.baseTextWidget):
 
     '''A class to wrap the gtk.Text widget.'''
 
@@ -3010,26 +3222,33 @@ class leoGtkTextWidget:
     #@    @+others
     #@+node:ekr.20080112145409.274:gtkTextWidget.__init__
 
-    def __init__ (self,parentFrame,*args,**keys):
+    def __init__ (self, c, *args,**keys):
 
-        return None
+        self.c = c
 
         # Create the actual gui widget.
-        ### self.widget = gtk.Text(*args,**keys)
+        self.widget = w = gtk.ScrolledWindow()
+        w.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 
-        ### To do: probably need to subclass JTextField so we can inject ivars.
+        self.textView = _gtkText(c, *args, **keys)
+        self.textBuffer = buf = self.textView.get_buffer()
 
-        self.widget = w = gtk.JTextField() ###preferredSize=(200,20))
-        parentFrame.contentPane.add(w)
+        w.add(self.textView)
+        w.show_all()
 
-        ### Probably should be somewhere else.
-        parentFrame.pack()
-        parentFrame.show()
+        #create a mark with left gravity for our use
+        self.iMark = buf.create_mark('iMark', buf.get_start_iter(), False)
+
+        #create a mark with right gravity
+        self.jMark = buf.create_mark('jMark', buf.get_end_iter(), True)
+
+        ### To do: how an where to pack widget
 
         # Init the base class.
-        # name = keys.get('name') or '<unknown gtkTextWidget>'
-        # leoFrame.baseTextWidget.__init__(self,c=c,
-            # baseClassName='gtkTextWidget',name=name,widget=self.widget)
+        name = keys.get('name') or '<unknown gtkTextWidget>'
+        leoFrame.baseTextWidget.__init__(self,c=c,
+            baseClassName='gtkTextWidget',name=name,widget=self.widget
+        )
 
         # self.defaultFont = font = wx.Font(pointSize=10,
             # family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
@@ -3060,8 +3279,10 @@ class leoGtkTextWidget:
     #@-node:ekr.20080112145409.275:bindings (not used)
     #@+node:ekr.20080112145409.276:Index conversion (gtkTextWidget)
     #@+node:ekr.20080112145409.277:w.toGuiIndex
+
     def toGuiIndex (self,i,s=None):
-        '''Convert a Python index to a gtk index as needed.'''
+        '''Convert a Python index to a tk index as needed.'''
+
         w = self
         if i is None:
             g.trace('can not happen: i is None',g.callers())
@@ -3079,14 +3300,44 @@ class leoGtkTextWidget:
                 i = 0 ### i = gtk.Text.index(w,i)
             except Exception:
                 # g.es_exception()
-                g.trace('gtk.Text.index failed:',repr(i),g.callers())
+                g.trace('tk.Text.index failed:',repr(i),g.callers())
                 i = '1.0'
         return i
-    #@nonl
     #@-node:ekr.20080112145409.277:w.toGuiIndex
+    #@+node:bob.20080119200654:toGtkIter
+    def toGtkIter (self,i):
+        '''Convert a tk index to gtk.TextIter as needed.'''
+
+        try:
+            i = int(i)
+            return self.textBuffer.get_iter_at_offset(i)
+        except ValueError:
+            pass
+
+        if i == 'end':
+            return self.textBuffer.get_end_iter()
+
+
+        if i is None:
+            g.trace('can not happen: i is None')
+            pos = 0
+
+        elif isinstance(i, basestring):
+            g.trace(i)
+            s = self.getAllText()
+            #i = '1.0' ### i = gtk.Text.index(w,i) # Convert to row/column form.
+            row,col = i.split('.')
+            row,col = int(row),int(col)
+            row -= 1
+            pos = g.convertRowColToPythonIndex(s,row,col)
+            #g.es_print(i)
+
+        return self.textBuffer.get_iter_at_offset(i)
+    #@-node:bob.20080119200654:toGtkIter
     #@+node:ekr.20080112145409.278:w.toPythonIndex
     def toPythonIndex (self,i):
-        '''Convert a gtk index to a Python index as needed.'''
+        '''Convert a tk inde iter to a Python index as needed.'''
+
         w =self
         if i is None:
             g.trace('can not happen: i is None')
@@ -3111,13 +3362,13 @@ class leoGtkTextWidget:
     #@nonl
     #@-node:ekr.20080112145409.279:w.rowColToGuiIndex
     #@-node:ekr.20080112145409.276:Index conversion (gtkTextWidget)
-    #@+node:ekr.20080112145409.280:getName (Tk.Text)
+    #@+node:ekr.20080112145409.280:getName (gtkText)
     def getName (self):
 
         w = self
         return hasattr(w,'_name') and w._name or repr(w)
     #@nonl
-    #@-node:ekr.20080112145409.280:getName (Tk.Text)
+    #@-node:ekr.20080112145409.280:getName (gtkText)
     #@+node:ekr.20080112145409.281:_setSelectionRange
     if 0:
         def _setSelectionRange (self,i,j,insert=None):
@@ -3150,15 +3401,19 @@ class leoGtkTextWidget:
     #@-node:ekr.20080112145409.284:bind (new)
     #@+node:ekr.20080112145409.285:delete
     def delete(self,i,j=None):
+        """Delete chars between i and j or single char at i if j is None."""
 
-        w = self
-        i = w.toGuiIndex(i)
+        b = self.textBuffer
+
+        i = self.toGtkIter(i)
 
         if j is None:
-            pass ### gtk.Text.delete(w,i)
+            j = i + 1
         else:
-            j = w.toGuiIndex(j)
-            pass ### gtk.Text.delete(w,i,j)
+            j = self.toGtkIter(j)
+
+        self.textBuffer.delete(i, j)
+
     #@-node:ekr.20080112145409.285:delete
     #@+node:ekr.20080112145409.286:flashCharacter
     def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # gtkTextWidget.
@@ -3186,49 +3441,49 @@ class leoGtkTextWidget:
     #@-node:ekr.20080112145409.286:flashCharacter
     #@+node:ekr.20080112145409.287:get
     def get(self,i,j=None):
+        """Get a range of text from i to j or just the char at i if j is None."""
 
-        w = self
-        i = w.toGuiIndex(i)
+        buf = self.textBuffer
+
+        i = self.toGtkIter(i)
+
 
         if j is None:
-            return '' ### return gtk.Text.get(w,i)
+            j = i + 1
         else:
-            j = w.toGuiIndex(j)
-            return ### return gtk.Text.get(w,i,j)
+            j = self.toGtkIter(j)
+
+        return buf.get_text(i, j)
     #@-node:ekr.20080112145409.287:get
     #@+node:ekr.20080112145409.288:getAllText
-    def getAllText (self): # gtkTextWidget.
+    def getAllText (self):
+        """Return all the text from the currently selected text buffer."""
 
-        """Return all the text of gtk.Text widget w converted to unicode."""
+        buf = self.textBuffer
 
-        w = self
-        ### s = gtk.Text.get(w,"1.0","end-1c") # New in 4.4.1: use end-1c.
-        s = '' ###
+        return buf.get_text(buf.get_start_iter(), buf.get_end_iter())
 
-        if s is None:
-            return u""
-        else:
-            return g.toUnicode(s,g.app.tkEncoding)
+
     #@-node:ekr.20080112145409.288:getAllText
     #@+node:ekr.20080112145409.289:getInsertPoint
     def getInsertPoint(self): # gtkTextWidget.
 
-        w = self
-        i = 0 ### i = gtk.Text.index(w,'insert')
-        i = w.toPythonIndex(i)
-        return i
+        buf = self.textBuffer
+
+        return buf.get_iter_at_mark(buf.get_insert()).get_offset()
     #@-node:ekr.20080112145409.289:getInsertPoint
     #@+node:ekr.20080112145409.290:getSelectedText
     def getSelectedText (self): # gtkTextWidget.
 
-        w = self
-        i,j = w.getSelectionRange()
-        if i != j:
-            i,j = w.toGuiIndex(i),w.toGuiIndex(j)
-            s = '' ### s = gtk.Text.get(w,i,j)
-            return g.toUnicode(s,g.app.tkEncoding)
-        else:
-            return u""
+        buf = self.textBuffer
+
+        if not buf.get_has_selection():
+            return u''
+
+        i, j = buf.get_selection_bounds()
+
+        return buf.get_text(i, j)
+    #@nonl
     #@-node:ekr.20080112145409.290:getSelectedText
     #@+node:ekr.20080112145409.291:getSelectionRange
     def getSelectionRange (self,sort=True): # gtkTextWidget.
@@ -3237,17 +3492,21 @@ class leoGtkTextWidget:
 
         Return a tuple giving the insertion point if no range of text is selected."""
 
-        w = self
-        sel = 0,0 ### sel = gtk.Text.tag_ranges(w,"sel")
-        if len(sel) == 2:
-            i,j = sel
-        else:
-            i = j = 0 ### i = j = gtk.Text.index(w,"insert")
 
-        i,j = w.toPythonIndex(i),w.toPythonIndex(j)  
-        if sort and i > j: i,j = j,i
-        return i,j
-    #@nonl
+        buf = self.textBuffer
+
+        if buf.get_has_selection():
+
+            i, j = buf.get_selection_bounds()
+            i, j = i.get_offset(), j.get_offset()
+
+        else:
+            i = j = self.getInsertionPoint()
+
+        if sort and i > j:
+            i,j = j,i
+
+        return self.toGuiIndex(i), self.toGuiIndex(j)
     #@-node:ekr.20080112145409.291:getSelectionRange
     #@+node:ekr.20080112145409.292:getYScrollPosition
     def getYScrollPosition (self):
@@ -3268,18 +3527,16 @@ class leoGtkTextWidget:
     #@+node:ekr.20080112145409.294:hasSelection
     def hasSelection (self):
 
-        w = self
-        i,j = w.getSelectionRange()
-        return i != j
+        return self.textBuffer.get_has_selection()
     #@-node:ekr.20080112145409.294:hasSelection
     #@+node:ekr.20080112145409.295:insert
-    # The signature is more restrictive than the gtk.Text.insert method.
 
     def insert(self,i,s):
+        """Insert a string s at position i."""
 
-        w = self
-        i = w.toGuiIndex(i)
-        ### gtk.Text.insert(w,i,s)
+        i = self.toGtkIter(i)
+
+        self.textBuffer.insert(i, s)
 
     #@-node:ekr.20080112145409.295:insert
     #@+node:ekr.20080112145409.296:indexIsVisible
@@ -3300,38 +3557,70 @@ class leoGtkTextWidget:
     #@+node:ekr.20080112145409.298:replace
     def replace (self,i,j,s): # gtkTextWidget
 
-        w = self
-        i,j = w.toGuiIndex(i),w.toGuiIndex(j)
+        """ replace text between i an j with string s.
 
-        ### gtk.Text.delete(w,i,j)
-        ### gtk.Text.insert(w,i,s)
+        i and j could be in 'r.c' form
+
+        """
+        w = self
+        buf = w.textBuffer
+
+        i = w.toGtkIter(i)
+
+        if j is None:
+            j = i + 1
+        else:
+            j = w.toGtkIter(j)
+
+        buf.delete(i, j)
+        buf.insert(i, s)
+
+
     #@-node:ekr.20080112145409.298:replace
     #@+node:ekr.20080112145409.299:see
     def see (self,i): # gtkTextWidget.
+        """Scrolls the textview the minimum distance to place the position i onscreen."""
 
         w = self
-        i = w.toGuiIndex(i)
-        ### gtk.Text.see(w,i)
+
+        i = self.toGtkIter(i)
+
+        w.textBuffer.move_mark(w.iMark, i)
+        w.textView.scroll_mark_onscreen(w.iMark)
     #@-node:ekr.20080112145409.299:see
     #@+node:ekr.20080112145409.300:seeInsertPoint
     def seeInsertPoint (self): # gtkTextWidget.
 
-        w = self
-        ### gtk.Text.see(w,'insert')
+        buf = self.textBuffer
+
+        self.textView.scroll_mark_onscreen(buf.get_insert())
     #@-node:ekr.20080112145409.300:seeInsertPoint
     #@+node:ekr.20080112145409.301:selectAllText
     def selectAllText (self,insert=None): # gtkTextWidget
 
-        '''Select all text of the widget, *not* including the extra newline.'''
+        '''Select all text of the widget, *not* including the extra newline.
 
-        w = self ; s = w.getAllText()
-        if insert is None: insert = len(s)
-        w.setSelectionRange(0,len(s),insert=insert)
+        ??? what to do about insert, i don't know how to set the selection range
+            without setting the insertion point.
+        '''
+
+        w = self
+
+        buf = w.textBuffer
+
+        start = buf.get_start_iter()
+        end = buf.get_end_iter()
+
+        end.backward_char()
+
+        buf.select_range(start, end)
+
+
     #@-node:ekr.20080112145409.301:selectAllText
     #@+node:ekr.20080112145409.302:setAllText
     def setAllText (self,s): # gtkTextWidget
 
-        w = self
+        self.textBuffer.set_text(s)
 
         # state = gtk.Text.cget(w,"state")
         # gtk.Text.configure(w,state="normal")
@@ -3350,18 +3639,35 @@ class leoGtkTextWidget:
     #@-node:ekr.20080112145409.303:setBackgroundColor
     #@+node:ekr.20080112145409.304:setInsertPoint
     def setInsertPoint (self,i): # gtkTextWidget.
+        """Set the insertion point.
 
+        i is a python index.
+
+        """
         w = self
-        i = w.toGuiIndex(i)
+
+        i = w.toGtkIter(i)
+        w.textBuffer.place_cursor(i)
+
         # g.trace(i,g.callers())
         ### gtk.Text.mark_set(w,'insert',i)
     #@-node:ekr.20080112145409.304:setInsertPoint
     #@+node:ekr.20080112145409.305:setSelectionRange
     def setSelectionRange (self,i,j,insert=None): # gtkTextWidget
 
+        """Select a range in the text buffer.
+
+        i, j are pyton indexes
+
+        ??? This uses the insertion point which can not be set seperatly.
+
+        """
         w = self
 
-        i,j = w.toGuiIndex(i),w.toGuiIndex(j)
+        i = w.toGtkIter(i)
+        j = w.toGtkIter(j)
+
+        w.textBuffer.select_range(i, j)
 
         # g.trace('i,j,insert',repr(i),repr(j),repr(insert),g.callers())
 
@@ -3391,7 +3697,7 @@ class leoGtkTextWidget:
         and gui's may choose not to do anything here.'''
 
         w = self
-        w.configure(width=width)
+        #w.configure(width=width)
     #@-node:ekr.20080112145409.307:setWidth
     #@+node:ekr.20080112145409.308:tag_add
     # The signature is slightly different than the gtk.Text.insert method.
@@ -3440,7 +3746,10 @@ class leoGtkTextWidget:
     #@+node:ekr.20080112145409.312:w.deleteTextSelection
     def deleteTextSelection (self): # gtkTextWidget
 
-        w = self
+
+        self.textBuffer.delete_selection(False, False)
+
+
         # sel = gtk.Text.tag_ranges(w,"sel")
         # if len(sel) == 2:
             # start,end = sel
@@ -3464,6 +3773,7 @@ class leoGtkTextWidget:
     #@-others
 #@nonl
 #@-node:ekr.20080112145409.273:class leoGtkTextWidget
+#@-node:bob.20080119110204:== Leo Text Widget (gtk) ==
 #@-others
 #@-node:ekr.20080112145409.53:@thin leoGtkFrame.py
 #@-leo

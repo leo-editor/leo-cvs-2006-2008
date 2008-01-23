@@ -38,6 +38,11 @@ class gtkGui(leoGui.leoGui):
 
         self.bodyTextWidget  = leoGtkFrame.leoGtkTextWidget
         self.plainTextWidget = leoGtkFrame.leoGtkTextWidget
+        self.loadIcons()
+
+        win32clipboar = None
+
+        self.gtkClipboard = gtk.Clipboard()
     #@-node:ekr.20080112145409.438: gtkGui.__init__
     #@+node:ekr.20080112145409.439:createKeyHandlerClass (gtkGui)
     def createKeyHandlerClass (self,c,useGlobalKillbuffer=True,useGlobalRegisters=True):
@@ -186,48 +191,121 @@ class gtkGui(leoGui.leoGui):
     #@-node:ekr.20080112145409.445:gtkGui.createSpellTab
     #@+node:ekr.20080112145409.446:gtkGui file dialogs (to do)
     # We no longer specify default extensions so that we can open and save files without extensions.
+    #@+node:bob.20080116210510.1:runFileDialog
+    def runFileDialog(self,
+        title='Open File',
+        filetypes=None,
+        action='open',
+        multiple=False,
+        initialFile=None
+    ):
+
+        g.trace()
+
+        """Display an open or save file dialog.
+
+        'title': The title to be shown in the dialog window.
+
+        'filetypes': A list of (name, pattern) tuples.
+
+        'action': Should be either 'save' or 'open'.
+
+        'multiple': True if multiple files may be selected.
+
+        'initialDir': The directory in which the chooser starts.
+
+        'initialFile': The initial filename for a save dialog.
+
+        """
+
+        initialdir=g.app.globalOpenDir or g.os_path_abspath(os.getcwd())
+
+        if action == 'open':
+            btns = (
+                gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                gtk.STOCK_OPEN, gtk.RESPONSE_OK
+            )
+        else:
+            btns = (
+                gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                gtk.STOCK_SAVE, gtk.RESPONSE_OK
+            )
+
+        gtkaction = g.choose(
+            action == 'save',
+            gtk.FILE_CHOOSER_ACTION_SAVE, 
+            gtk.FILE_CHOOSER_ACTION_OPEN
+        )
+
+        dialog = gtk.FileChooserDialog(
+            title,
+            None,
+            gtkaction,
+            btns
+        )
+
+        try:
+
+            dialog.set_default_response(gtk.RESPONSE_OK)
+            dialog.set_do_overwrite_confirmation(True)
+            dialog.set_select_multiple(multiple)
+            if initialdir:
+                dialog.set_current_folder(initialdir)
+
+            if filetypes:
+
+                for name, patern in filetypes:
+                    filter = gtk.FileFilter()
+                    filter.set_name(name)
+                    filter.add_pattern(patern)
+                    dialog.add_filter(filter)
+
+            response = dialog.run()
+            print 'dialog response' , response
+
+            if response == gtk.RESPONSE_OK:
+
+                if multiple:
+                    result = dialog.get_filenames()
+                else:
+                    result = dialog.get_filename()
+
+            elif response == gtk.RESPONSE_CANCEL:
+                result = None
+
+        finally:
+
+            dialog.destroy()
+
+        print 'dialog result' , result
+
+        return result
+    #@-node:bob.20080116210510.1:runFileDialog
     #@+node:ekr.20080112145409.447:runOpenFileDialog
     def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
 
         """Create and run an gtk open file dialog ."""
 
-        initialdir = g.app.globalOpenDir or g.os_path_abspath(os.getcwd())
-
-        ### To do
-
-        # if multiple:
-            # # askopenfilenames requires Python 2.3 and gtk 8.4.
-            # version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
-            # if (
-                # g.CheckVersion(version,"2.3") and
-                # g.CheckVersion(self.root.getvar("tk_patchLevel"),"8.4")
-            # ):
-                # files = gtkFileDialog.askopenfilenames(
-                    # title=title,filetypes=filetypes,initialdir=initialdir)
-                # # g.trace(files)
-                # return list(files)
-            # else:
-                # # Get one file and return it as a list.
-                # theFile = gtkFileDialog.askopenfilename(
-                    # title=title,filetypes=filetypes,initialdir=initialdir)
-                # return [theFile]
-        # else:
-            # # Return a single file name as a string.
-            # return gtkFileDialog.askopenfilename(
-                # title=title,filetypes=filetypes,initialdir=initialdir)
+        return self.runFileDialog(
+            title=title,
+            filetypes=filetypes,
+            action='open',
+            multiple=multiple,
+        )
+    #@nonl
     #@-node:ekr.20080112145409.447:runOpenFileDialog
     #@+node:ekr.20080112145409.448:runSaveFileDialog
     def runSaveFileDialog(self,initialfile,title,filetypes,defaultextension):
 
         """Create and run an gtk save file dialog ."""
 
-        ### To do.
-
-        initialdir=g.app.globalOpenDir or g.os_path_abspath(os.getcwd()),
-
-        # return gtkFileDialog.asksaveasfilename(
-            # initialdir=initialdir,initialfile=initialfile,
-            # title=title,filetypes=filetypes)
+        return self.runFileDialog(
+            title=title,
+            filetypes=filetypes,
+            action='save',
+            initialfile=initialfile
+        )
+    #@nonl
     #@-node:ekr.20080112145409.448:runSaveFileDialog
     #@-node:ekr.20080112145409.446:gtkGui file dialogs (to do)
     #@+node:ekr.20080112145409.449:gtkGui panels (done)
@@ -275,6 +353,8 @@ class gtkGui(leoGui.leoGui):
     #@+node:ekr.20080112145409.453:getTextFromClipboard
     def getTextFromClipboard (self):
 
+        return None ###
+
         # g.app.gui.win32clipboard is always None.
         wcb = g.app.gui.win32clipboard
 
@@ -305,7 +385,7 @@ class gtkGui(leoGui.leoGui):
 
     def color (self,color):
         '''Return the gui-specific color corresponding to the gtk color name.'''
-        return color
+        return leoColor.getco
 
     #@-node:ekr.20080112145409.454:color (to do)
     #@+node:ekr.20080112145409.455:Dialog (these are optional)
@@ -695,6 +775,58 @@ class gtkGui(leoGui.leoGui):
             return 'gtkGui.leoKeyEvent: char: %s, keysym: %s' % (repr(self.char),repr(self.keysym))
     #@nonl
     #@-node:ekr.20080112145409.479:class leoKeyEvent (gtkGui) (to do)
+    #@+node:bob.20080117150005:loadIcon
+    def loadIcon(self, fname):
+
+        try:
+            icon = gtk.gdk.pixbuf_new_from_file(fname)
+        except:
+            icon = None
+
+        if icon and icon.get_width()>0:
+            return icon
+
+        g.trace( 'Can not load icon from', fname)
+    #@-node:bob.20080117150005:loadIcon
+    #@+node:bob.20080117145119.1:loadIcons
+    def loadIcons(self):
+        """Load icons and images and set up module level variables."""
+
+        self.treeIcons = icons = []
+        self.namedIcons = namedIcons = {}
+
+        path = g.os_path_abspath(g.os_path_join(g.app.loadDir, '..', 'Icons'))
+        if g.os_path_exists(g.os_path_join(path, 'box01.GIF')):
+            ext = '.GIF'
+        else:
+            ext = '.gif'
+
+        for i in range(16):
+            icon = self.loadIcon(g.os_path_join(path, 'box%02d'%i + ext))
+            icons.append(icon)
+
+        for name, ext in (
+            ('lt_arrow_enabled', '.gif'),
+            ('rt_arrow_enabled', '.gif'),
+            ('lt_arrow_disabled', '.gif'),
+            ('rt_arrow_disabled', '.gif'),
+            ('plusnode', '.gif'),
+            ('minusnode', '.gif'),
+            ('Leoapp', '.GIF')
+        ):
+            icon = self.loadIcon(g.os_path_join(path, name + ext))
+            if icon:
+                namedIcons[name] = icon
+            else:
+                g.es_print( '~~~~~~~~~~~ failed to load', name)
+
+        self.plusBoxIcon = namedIcons['plusnode']
+        self.minusBoxIcon = namedIcons['minusnode']
+        self.appIcon = namedIcons['Leoapp']
+
+        self.globalImages = {}
+
+    #@-node:bob.20080117145119.1:loadIcons
     #@-others
 #@-node:ekr.20080112145409.435:@thin leoGtkGui.py
 #@-leo

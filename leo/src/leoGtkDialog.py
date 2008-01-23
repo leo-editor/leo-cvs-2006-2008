@@ -7,7 +7,10 @@
 import leoGlobals as g
 import string
 
+
 import gtk
+import cairo
+import pango
 
 #@+others
 #@+node:ekr.20080112145409.2: class leoGtkDialog
@@ -867,6 +870,8 @@ class gtkListBoxDialog (leoGtkDialog):
     #@-node:ekr.20080112145409.52:go
     #@-others
 #@-node:ekr.20080112145409.45:class gtkListboxDialog
+#@+node:bob.20080116210510:class gtkFileDialog
+#@-node:bob.20080116210510:class gtkFileDialog
 #@-others
 #@-node:ekr.20080112145409.1:@thin leoGtkDialog.py
 #@-leo
