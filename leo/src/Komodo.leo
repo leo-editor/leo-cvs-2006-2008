@@ -14,8 +14,8 @@
 </v>
 <v t="ekr.20080121105800"><vh>create-at-auto-nodes</vh></v>
 <v t="ekr.20080121122039"><vh>@button remove license</vh></v>
-<v t="ekr.20080121105837" a="E"><vh>Komodo autocompleter code</vh>
-<v t="ekr.20080121152156" a="TV"><vh>Diary</vh></v>
+<v t="ekr.20080121105837"><vh>Komodo autocompleter code</vh>
+<v t="ekr.20080121152156"><vh>Diary</vh></v>
 <v t="ekr.20080121105837.1"><vh>Komodo notes</vh>
 <v t="ekr.20080121105837.2"><vh>.rng files</vh></v>
 </v>
@@ -2877,7 +2877,8 @@
 </v>
 </v>
 </v>
-<v t="ekr.20080121143612" a="E"><vh>Komodo test script</vh>
+<v t="ekr.20080123055601" a="TV"><vh>To do</vh></v>
+<v t="ekr.20080121143612"><vh>Komodo test script</vh>
 <v t="ekr.20080121151821.1"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
 <v t="ekr.20080121142959.1"><vh>addKomodoPaths</vh></v>
 <v t="ekr.20080121150435"><vh>openManager</vh></v>
@@ -56564,5 +56565,6 @@ Jan 21:
   This allows me to run Komodo code unchanged.
 - Wrote addKomoPaths, openManager and openDatabase.
 ** First major milestone: the ability to execute Komodo code from Leo scripts.</t>
+<t tx="ekr.20080123055601">Build OpenEdit so that I can install tracepoints.</t>
 </tnodes>
 </leo_file>

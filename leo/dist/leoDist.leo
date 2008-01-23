@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.347174163783">
-	<global_window_position top="53" left="187" height="827" width="848"/>
+	<global_window_position top="53" left="331" height="827" width="848"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -220,16 +220,16 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846" a="TV"><vh>Distribution files</vh>
+<v t="EKR.20040519090846" a="E"><vh>Distribution files</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
 </v>
-<v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
+<v t="EKR.20040519090846.2" a="E"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
 <v t="EKR.20040519090846.5"><vh>Windows installation</vh></v>
-<v t="EKR.20040519090846.6"><vh>MacOS installation</vh></v>
+<v t="EKR.20040519090846.6" a="TV"><vh>MacOS installation</vh></v>
 <v t="EKR.20040519090846.7"><vh>Shell &amp; batch scripts</vh></v>
 </v>
 <v t="EKR.20040519090846.1"><vh>@asis ../doc/LICENSE.TXT</vh></v>
@@ -385,9 +385,9 @@ Another way is to append &lt;path-to-leo&gt; to the Windows PYTHONPATH environme
 Installing leo.py on MacOs
 --------------------------
 
-Leo works reliably only on MacOS X 10.3 (Panther).
+Leo works reliably only on MacOS X 10.3 and above.
 
-To run Leo on Macintosh OS X 10.3:
+To run Leo on Macintosh OS X 10.3 (There will be slight changes for later versions of Mac Os X):
 
 1) Download and install "MacPython 2.3 for Panther addons".
 

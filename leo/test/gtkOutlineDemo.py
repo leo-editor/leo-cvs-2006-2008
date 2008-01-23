@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #@+leo-ver=4-thin
-#@+node:bob.20080111200056:@thin gtkOutlineTest.py
+#@+node:bob.20080111200056:@thin gtkOutlineDemo.py
 #@@first
 import sys, os
 
@@ -1262,5 +1262,5 @@ if __name__ == "__main__":
     gtk.main()
 
 
-#@-node:bob.20080111200056:@thin gtkOutlineTest.py
+#@-node:bob.20080111200056:@thin gtkOutlineDemo.py
 #@-leo

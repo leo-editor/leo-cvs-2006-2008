@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.431306306306">
-	<global_window_position top="14" left="355" height="788" width="877"/>
+	<global_window_position top="14" left="355" height="768" width="877"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -726,12 +726,12 @@
 <v t="ekr.20060913164729"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20061025065357"><vh>Chapter 18: Leo and Emacs</vh>
-<v t="ekr.20061025065357.1"><vh>@rst html\emacs.html</vh>
+<v t="ekr.20061025065357" a="E"><vh>Chapter 18: Leo and Emacs</vh>
+<v t="ekr.20061025065357.1" a="E"><vh>@rst html\emacs.html</vh>
 <v t="ekr.20061025065357.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20061025081359"><vh>Controlling Leo from Emacs using Pymacs</vh></v>
 <v t="ekr.20061025070825.1"><vh>Functions in leoPymacs.py</vh></v>
-<v t="ekr.20061025142434"><vh>The minibuffer</vh></v>
+<v t="ekr.20061025142434" a="TV"><vh>The minibuffer</vh></v>
 <v t="ekr.20061025065357.12"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -3515,7 +3515,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20080106114225" a="TV"><vh>leo 4.4.6 b2</vh>
+<v t="ekr.20080106114225"><vh>leo 4.4.6 b2</vh>
 <v t="ekr.20080106114648"><vh>Fixed bugs</vh>
 <v t="ekr.20080106114203.1"><vh>Fixed bug in nav_buttons plugin</vh></v>
 <v t="ekr.20080106114203.2"><vh>Fixed problems with modes/rest.py</vh></v>
@@ -29463,8 +29463,8 @@ Putting this all together, we get::
         (setq c (leo-open fileName))
         (setq script "print 'c',c.shortFileName() ,'current:',c.currentPosition().headString()")
         (leo-run-script c script)</t>
-<t tx="ekr.20061025142434">The mini-buffer is a text area at the bottom of the body pane.
-You use it like the Emacs mini-buffer to invoke commands by their so-called *long name*.
+<t tx="ekr.20061025142434">Leo's mini-buffer is a text area at the bottom of the body pane.
+You use Leo's minibuffer like the Emacs mini-buffer to invoke commands by their so-called *long name*.
 The following commands affect the minibuffer:
 
 - **full-command**: (default shortcut: Alt-x) Puts the focus in the minibuffer. Type a

@@ -10794,6 +10794,16 @@ I do not want to be treading on your toes, so please tell me if I am intruding.
 
 #@-node:ekr.20070824093611:Improve wxGui plugin
 #@-node:ekr.20071211093011.1:Other guis
+#@+node:ekr.20080118175128:Create emacs-gui for use by leoPymacs module?
+@nocolor
+
+This would draw into Emacs Windows(!)
+
+- Text buffers: easy?
+- Outline buffer: harder?
+- Minibuffer: can we use the Emacs minibuffer?
+#@nonl
+#@-node:ekr.20080118175128:Create emacs-gui for use by leoPymacs module?
 #@-all
 #@nonl
 #@-node:ekr.20040117181936:@thin ../doc/leoToDo.txt

@@ -2970,10 +2970,6 @@ Edward
 #@nonl
 #@-node:ekr.20041022070154.1:Request & response
 #@-node:ekr.20041022070154:(options for setting working directory during startup)
-#@+node:ekr.20051220062654:Open .leo file in new process
-An alternative to test.leo!
-#@nonl
-#@-node:ekr.20051220062654:Open .leo file in new process
 #@+node:ekr.20051104051733:Make Focus-in in minibuffer widget equivalent to Alt-x
 FocusIn does nothing for Label widgets.
 

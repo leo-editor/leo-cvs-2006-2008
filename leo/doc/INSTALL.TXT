@@ -61,9 +61,9 @@ Another way is to append <path-to-leo> to the Windows PYTHONPATH environment var
 Installing leo.py on MacOs
 --------------------------
 
-Leo works reliably only on MacOS X 10.3 (Panther).
+Leo works reliably only on MacOS X 10.3 and above.
 
-To run Leo on Macintosh OS X 10.3:
+To run Leo on Macintosh OS X 10.3 (There will be slight changes for later versions of Mac Os X):
 
 1) Download and install "MacPython 2.3 for Panther addons".
 
