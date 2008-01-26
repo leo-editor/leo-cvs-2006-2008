@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.336912751678">
-	<global_window_position top="19" left="273" height="725" width="841"/>
+	<global_window_position top="19" left="273" height="685" width="841"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -328,9 +328,8 @@
 <v t="edream.110203113231.233"><vh>wxGui plugin (Use at your own risk)</vh>
 <v t="edream.110203113231.302"><vh>@thin __wx_gui.py</vh></v>
 </v>
-<v t="bob.20070910154126.2"
-expanded="bob.20070813163332.63,"><vh>@thin __wx_alt_gui.py</vh></v>
-<v t="ekr.20080112150934" a="E"><vh>@thin gtkGui.py</vh></v>
+<v t="bob.20070910154126.2"><vh>@thin __wx_alt_gui.py</vh></v>
+<v t="ekr.20080112150934"><vh>@thin gtkGui.py</vh></v>
 </v>
 <v t="ekr.20040722135402"><vh>Icon and status areas</vh>
 <v t="ekr.20060328125925"><vh>@thin chapter_hoist.py</vh></v>
@@ -372,9 +371,10 @@ expanded="bob.20070813163332.63,"><vh>@thin __wx_alt_gui.py</vh></v>
 <v t="EKR.20040517080555.36"><vh>@thin scripts_menu.py</vh></v>
 <v t="ekr.20040828122150"><vh>@thin pie_menus.py</vh></v>
 </v>
-<v t="ekr.20060530091119"><vh>New colorizer</vh>
-<v t="ekr.20071010193720"
-marks="ekr.20071010193720.21,"><vh>@thin threading_colorizer.py	</vh></v>
+<v t="ekr.20060530091119" a="E"><vh>New colorizer</vh>
+<v t="ekr.20071010193720" a="E"
+marks="ekr.20071010193720.21,"
+expanded="ekr.20071010193720.6,ekr.20071010193720.9,ekr.20071010193720.19,ekr.20071010193720.39,ekr.20071010193720.50,"><vh>@thin threading_colorizer.py	</vh></v>
 </v>
 <v t="edream.110203113231.872"><vh>Nodes...</vh>
 <v t="edream.110203113231.873"><vh>@thin at_folder.py</vh></v>

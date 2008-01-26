@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.347174163783">
-	<global_window_position top="53" left="331" height="827" width="848"/>
+	<global_window_position top="53" left="331" height="807" width="848"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,9 +46,10 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
-<v t="ekr.20080115094400"><vh>ANN: Leo 4.4.6 b2</vh></v>
+<v t="ekr.20080126090309"><vh>ANN: Leo 4.4.6 final</vh></v>
 <v t="EKR.20040519091259.30"><vh>Previous announcements</vh>
 <v t="ekr.20080115094400.1"><vh>4.4.6</vh>
+<v t="ekr.20080115094400"><vh>ANN: Leo 4.4.6 b2</vh></v>
 <v t="ekr.20071217094704"><vh>ANN: Leo 4.4.6 b1</vh></v>
 </v>
 <v t="ekr.20071206094307.1"><vh>4.4.5</vh>
@@ -220,16 +221,16 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846" a="E"><vh>Distribution files</vh>
+<v t="EKR.20040519090846"><vh>Distribution files</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
 </v>
-<v t="EKR.20040519090846.2" a="E"><vh>@asis ../doc/INSTALL.TXT</vh>
+<v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
 <v t="EKR.20040519090846.5"><vh>Windows installation</vh></v>
-<v t="EKR.20040519090846.6" a="TV"><vh>MacOS installation</vh></v>
+<v t="EKR.20040519090846.6"><vh>MacOS installation</vh></v>
 <v t="EKR.20040519090846.7"><vh>Shell &amp; batch scripts</vh></v>
 </v>
 <v t="EKR.20040519090846.1"><vh>@asis ../doc/LICENSE.TXT</vh></v>
@@ -241,7 +242,7 @@
 <v t="EKR.20040519082027.34"><vh>@file-thin ../uninstall</vh></v>
 </v>
 </v>
-<v t="ekr.20051205102401"><vh>Update these for each release</vh>
+<v t="ekr.20051205102401" a="TV"><vh>Update these for each release</vh>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings for leo-4.3.nsi &gt;&gt;</vh></v>
 <v t="ekr.20050118124408"><vh>&lt;&lt; 4.3 nsi installer version &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
@@ -461,7 +462,7 @@ c:\python22\python &lt;leopath&gt;leo.py "%1"
 </t>
 <t tx="EKR.20040519090846.8">Metadata-Version: 1.0
 Name: leo
-Version: 4.4.6-b2
+Version: 4.4.6-final
 Summary: Leo: Literate Editor with Outlines
 Home-page: http://webpages.charter.net/edreamleo/front.html
 Author: Edward K. Ream
@@ -480,9 +481,9 @@ Description: Leo is an outline-oriented editor written in 100% pure Python.
 		Download tkIcon from http://www.effbot.org/downloads/#tkIcon
 Platform: Windows, Linux, Macintosh
 </t>
-<t tx="EKR.20040519090846.9">Leo 4.4.6 beta 2                           January 15, 2008
+<t tx="EKR.20040519090846.9">Leo 4.4.6 final                           January 26, 2008
 
-Leo 4.4.6 beta 2 is available at:
+Leo 4.4.6 final is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 Leo 4.4.6 fixes several recently reported bugs, all minor.
@@ -2286,7 +2287,7 @@ WindowIcon off
 
 ; settings from HM NIS Edit Wizard
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "LeoSetup-4-4-6-b2.exe"
+OutFile "LeoSetup-4-4-6-final.exe"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 InstallDir "$PROGRAMFILES\Leo"
 Icon "..\Icons\leo_inst.ico"
@@ -2559,7 +2560,7 @@ Delete "$INSTDIR\test\test.leo"
 Delete "$INSTDIR\test\unitTest.leo"
 Delete "$INSTDIR\test\leoBridgeTest.py"
 Delete "$INSTDIR\test\leoDynamicTest.py"</t>
-<t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4.6-b2"</t>
+<t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4.6-final"</t>
 <t tx="ekr.20050124083006">Leo 4.3 alpha 1 is now available at http://sourceforge.net/projects/leo/
 
 Leo 4.3 is the culmination of more than four months of work. In spite
@@ -4713,7 +4714,7 @@ print ; print '='*30,'setup.py complete','='*30 ; print
 </t>
 <t tx="ekr.20070622081640"># These can't be used at present.</t>
 <t tx="ekr.20070622084133"></t>
-<t tx="ekr.20070622084634">version='4.4.6-b2' # No spaces and no trailing comma.</t>
+<t tx="ekr.20070622084634">version='4.4.6-final' # No spaces and no trailing comma.</t>
 <t tx="ekr.20070622091049">Leo 4.4.3 beta 3                                June 23, 2006
 
 Leo 4.4.3 beta 3 is available at:
@@ -5118,5 +5119,28 @@ Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 <t tx="ekr.20080115094400.1"></t>
+<t tx="ekr.20080126090309">Leo 4.4.6 final                           January 26, 2008
+
+Leo 4.4.6 final is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo 4.4.6 fixes several recently reported bugs, all minor.
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.6:
+----------------------------
+- Fixes all known bugs.
+- Added @auto importers for javascript and xml files.
+- Added find-next-clone and toggle-sparse-move commands.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 </tnodes>
 </leo_file>

@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.431306306306">
-	<global_window_position top="14" left="355" height="768" width="877"/>
+	<global_window_position top="14" left="355" height="748" width="877"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -726,12 +726,12 @@
 <v t="ekr.20060913164729"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20061025065357" a="E"><vh>Chapter 18: Leo and Emacs</vh>
-<v t="ekr.20061025065357.1" a="E"><vh>@rst html\emacs.html</vh>
+<v t="ekr.20061025065357"><vh>Chapter 18: Leo and Emacs</vh>
+<v t="ekr.20061025065357.1"><vh>@rst html\emacs.html</vh>
 <v t="ekr.20061025065357.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20061025081359"><vh>Controlling Leo from Emacs using Pymacs</vh></v>
 <v t="ekr.20061025070825.1"><vh>Functions in leoPymacs.py</vh></v>
-<v t="ekr.20061025142434" a="TV"><vh>The minibuffer</vh></v>
+<v t="ekr.20061025142434"><vh>The minibuffer</vh></v>
 <v t="ekr.20061025065357.12"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -781,7 +781,7 @@
 </v>
 </v>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
-<v t="ekr.20071217093444"><vh>What's New in Leo 4.4.6</vh>
+<v t="ekr.20071217093444" a="E"><vh>What's New in Leo 4.4.6</vh>
 <v t="ekr.20071217093444.1"><vh>@rst html\new-4-4-6.html</vh>
 <v t="ekr.20071217093444.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20071217093444.5"><vh>New commands</vh></v>
@@ -1117,9 +1117,9 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="ET"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
-<v t="ekr.20071217093444"><vh>What's New in Leo 4.4.6</vh>
+<v t="ekr.20071217093444" a="E"><vh>What's New in Leo 4.4.6</vh>
 <v t="ekr.20071217093444.1"><vh>@rst html\new-4-4-6.html</vh>
 <v t="ekr.20071217093444.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20071217093444.5"><vh>New commands</vh></v>
@@ -3512,9 +3512,6 @@
 <v t="ekr.20071217092203.163"><vh>Added @import scanners for javascript and xml files</vh></v>
 </v>
 </v>
-</v>
-</v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
 <v t="ekr.20080106114225"><vh>leo 4.4.6 b2</vh>
 <v t="ekr.20080106114648"><vh>Fixed bugs</vh>
 <v t="ekr.20080106114203.1"><vh>Fixed bug in nav_buttons plugin</vh></v>
@@ -3526,6 +3523,10 @@
 <v t="ekr.20080115093848.23"><vh>Don't mark nodes dirty if insert-icon is cancelled</vh></v>
 </v>
 </v>
+</v>
+</v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20080126090039" a="V"><vh>leo 4.4.6 final</vh></v>
 </v>
 </v>
 </vnodes>
@@ -33718,5 +33719,28 @@ Scripts can delete icons from the presently selected node using the following me
   Use @data import_xml_tags setting to specify the xml tags that act as organizers.
   Javascript regexps that look like section references cause problems, but that can not be helped.
 </t>
+<t tx="ekr.20080126090039">Leo 4.4.6 final                           January 26, 2008
+
+Leo 4.4.6 final is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo 4.4.6 fixes several recently reported bugs, all minor.
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.6:
+----------------------------
+- Fixes all known bugs.
+- Added @auto importers for javascript and xml files.
+- Added find-next-clone and toggle-sparse-move commands.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 </tnodes>
 </leo_file>

@@ -2965,6 +2965,56 @@ def valIsPossible (self,val):
 #@-node:class cellClass
 #@-node:class sudokuClass
 #@-node:sudoku puzzle
+#@+node:sudoku changes
+# There are bugs in the guessing logic.
+# The following does not fix all of them.
+
+In findGuesses:
+
+    guesses = self.findAllGuesses(vals,cells)
+    g.trace('%d raw guess' % len(guesses))
+    guesses = [z for z in guesses if self.isValidGuess(z)]
+
+findAllGuesses:def findAllGuesses(self,vals,cells):
+
+    if not vals or not cells:
+        return []
+
+    guesses = []
+    cell = cells[0]
+    for val in vals:
+        guess = [g.bunch(cell=cell,val=val)]
+        vals2 = [z for z in vals if z != val]
+        self.completeGuess(guess,vals2,cells[1:])
+        guesses.append(guess)
+    return guesses
+
+def completeGuess(self,guess,vals,cells):
+
+    if not vals or not cells:
+        return []
+
+    cell = cells[0]
+    for val in vals:
+        guess.append(g.bunch(cell=cell,val=val))
+        vals2 = [z for z in vals if z != val]
+        self.completeGuess(guess,vals2,cells[1:])
+
+
+This works for the following 5* problem:
+
+data = (     # 5 stars
+    '1xx2x9xx3',
+    'xx6xx3xx7',
+    'x3xxxx8xx',
+    'xxxx9xxx5',
+    '78xxxxx94',
+    '9xxx2xxxx',
+    'xx1xxxx3x',
+    '2xx8xx4xx',
+    '8xx5x6xx2',
+)
+#@-node:sudoku changes
 #@+node:Print all Tango icons in wiki-markup format
 # Prints all icons in the Icons/Tango folder in wiki-markup format.
 # This allows the icons to be inserted into Leo's body pane,

@@ -1487,7 +1487,7 @@ class colorizer:
                 return
             for f in self.rulesDict.get(s[i],[]):
                 n = f(self,s,i)
-                if n is None or n < 0:
+                if n is None:
                     g.trace('Can not happen: matcher returns: %s f = %s' % (repr(n),repr(f)))
                 elif n > 0:
                     i += n ; break
