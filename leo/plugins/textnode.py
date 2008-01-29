@@ -13,8 +13,9 @@
 
 import leoGlobals as g
 import leoPlugins
-
-__version__ = "1.0"
+import os.path
+__version__ = "1.1"
+    # Terry Brown: support for @path ancestors and uses universal newline mode for opening.
 
 #@+others
 #@+node:ajones.20070122160142.2:init
@@ -34,7 +35,7 @@ def on_icondclick(tag, keywords):
     c = keywords['c']
     p = keywords['p']
     h = p.headString()
-    if g.match_word(h,0,"@text"):   
+    if g.match_word(h,0,"@text"): 
         if p.bodyString() != "":
             result = g.app.gui.runAskYesNoDialog(c, "Query", "Read from file "+h[6:]+"?")
             if result == "no":
@@ -66,12 +67,23 @@ def on_save(tag,keywords):
             c.setBodyString(p, "")
 #@nonl
 #@-node:ajones.20070122161942:on_save
+#@+node:tbrown.20080128221824:getPath
+def getPath(c,p):
+    path = [i.headString()[6:] for i in p.self_and_parents_iter()
+            if i.headString()[:6] in ('@path ', '@text ')]
+    path.append(g.getBaseDirectory(c))
+    path.reverse()
+    return os.path.join(*path)
+#@nonl
+#@-node:tbrown.20080128221824:getPath
 #@+node:ajones.20070122181914.1:readtextnode
 def readtextnode(c, p):
     changed = c.isChanged()
-    name = p.headString()[6:]
+
+    name = getPath(c,p)
+
     try:
-        file = open(name,"r") 
+        file = open(name,"rU")
         g.es("..." + name)
         c.setBodyString(p, file.read())
         p.clearDirty()
@@ -82,13 +94,12 @@ def readtextnode(c, p):
         g.es("...not found: " + name)
         c.setBodyString(p,"") # Clear the body text.
         p.setDirty()
-#@nonl
 #@-node:ajones.20070122181914.1:readtextnode
 #@+node:ajones.20070122185020:savetextnode
 def savetextnode(c, p):
-    name = p.headString()[6:]
+    name = getPath(c,p)
     try:
-        file = open(name,"w") 
+        file = open(name,"w")
         g.es("writing " + name)
         file.write(p.bodyString())
         file.close()
