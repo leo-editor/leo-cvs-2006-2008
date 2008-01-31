@@ -1,40 +1,8 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20080112145409.479:class leoKeyEvent (gtkGui) (to do)
-class leoKeyEvent:
-
-    '''A gui-independent wrapper for gui events.'''
-
-    def __init__ (self,event,c):
-
-        # g.trace('leoKeyEvent(gtkGui)')
-        self.actualEvent = event
-        self.c      = c # Required to access c.k tables.
-        self.char   = hasattr(event,'char') and event.char or ''
-        self.keysym = hasattr(event,'keysym') and event.keysym or ''
-        self.w      = hasattr(event,'widget') and event.widget or None
-        self.x      = hasattr(event,'x') and event.x or 0
-        self.y      = hasattr(event,'y') and event.y or 0
-        # Support for fastGotoNode plugin
-        self.x_root = hasattr(event,'x_root') and event.x_root or 0
-        self.y_root = hasattr(event,'y_root') and event.y_root or 0
-
-        if self.keysym and c.k:
-            # Translate keysyms for ascii characters to the character itself.
-            self.keysym = c.k.guiBindNamesInverseDict.get(self.keysym,self.keysym)
-
-        self.widget = self.w
-
-    def __repr__ (self):
-
-        return 'gtkGui.leoKeyEvent: char: %s, keysym: %s' % (repr(self.char),repr(self.keysym))
-#@nonl
-#@-node:ekr.20080112145409.479:class leoKeyEvent (gtkGui) (to do)
 #@+node:ekr.20071211093323:more screen shots on Leo's web site
 #@-node:ekr.20071211093323:more screen shots on Leo's web site
-#@+node:ekr.20071211143430:4.4.6 bugs & easy improvements
-#@-node:ekr.20071211143430:4.4.6 bugs & easy improvements
 #@+node:ekr.20071113093057:4.5 cleanups, vim bindings & readline
 #@+node:ekr.20080124083629:Fix nit re write-outline
 @nocolor
@@ -161,6 +129,23 @@ The code to handle such matters is, alas, not localized, but appears in minor va
 #@-node:ekr.20071211091037.1:Code cleanup 8
 #@+node:ekr.20071211142600.1:Important 4
 #@+node:ekr.20071211142600.2:Config stuff
+#@+node:ekr.20080129103436:Solve Kent's @menu problem
+@nocolor
+
+http://sourceforge.net/forum/forum.php?thread_id=1858451&forum_id=10228
+
+I'm interested in using @settings to create application 
+specific mini-editors. I think there's great promise in  
+@settings nodes which create an environment with buttons 
+and menu choices to work with specific file types, or other 
+niche applications. The menus and buttons will expose a 
+set of capabilities, and unneeded capabilities will be hidden. 
+
+However, if I create a @settings->@menus->@menu node in a file, open 
+the file, then open another Leo file, the next file opens with the 
+redefined menu. 
+#@nonl
+#@-node:ekr.20080129103436:Solve Kent's @menu problem
 #@+node:ekr.20071211142600.3:Clean up config mess
 #@-node:ekr.20071211142600.3:Clean up config mess
 #@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree
@@ -2591,6 +2576,36 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@+node:ekr.20071117150547:pyGtk
 Wing IDE uses this: it looks great.
 #@nonl
+#@+node:ekr.20080112145409.479:class leoKeyEvent (gtkGui) (to do)
+class leoKeyEvent:
+
+    '''A gui-independent wrapper for gui events.'''
+
+    def __init__ (self,event,c):
+
+        # g.trace('leoKeyEvent(gtkGui)')
+        self.actualEvent = event
+        self.c      = c # Required to access c.k tables.
+        self.char   = hasattr(event,'char') and event.char or ''
+        self.keysym = hasattr(event,'keysym') and event.keysym or ''
+        self.w      = hasattr(event,'widget') and event.widget or None
+        self.x      = hasattr(event,'x') and event.x or 0
+        self.y      = hasattr(event,'y') and event.y or 0
+        # Support for fastGotoNode plugin
+        self.x_root = hasattr(event,'x_root') and event.x_root or 0
+        self.y_root = hasattr(event,'y_root') and event.y_root or 0
+
+        if self.keysym and c.k:
+            # Translate keysyms for ascii characters to the character itself.
+            self.keysym = c.k.guiBindNamesInverseDict.get(self.keysym,self.keysym)
+
+        self.widget = self.w
+
+    def __repr__ (self):
+
+        return 'gtkGui.leoKeyEvent: char: %s, keysym: %s' % (repr(self.char),repr(self.keysym))
+#@nonl
+#@-node:ekr.20080112145409.479:class leoKeyEvent (gtkGui) (to do)
 #@-node:ekr.20071117150547:pyGtk
 #@+node:ekr.20070703111913:Swing gui
 #@+node:ekr.20070930105601:Gui Swing classes

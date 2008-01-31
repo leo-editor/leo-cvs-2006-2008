@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet ekr_stylesheet?>
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.329615861214">
-	<global_window_position top="36" left="383" height="646" width="848"/>
+<globals body_outline_ratio="0.560371517028">
+	<global_window_position top="36" left="383" height="767" width="848"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -34,7 +34,7 @@
 <v t="ekr.20070620084858.1"><vh>@@button upload</vh></v>
 </v>
 </v>
-<v t="EKR.20040519091259" a="E"><vh>Annoucnements</vh>
+<v t="EKR.20040519091259"><vh>Annoucnements</vh>
 <v t="EKR.20040519091259.1"><vh>Download statistics</vh></v>
 <v t="EKR.20040519091259.2"><vh>Quotes of the month</vh>
 <v t="ekr.20070425092712"><vh>April 2007</vh></v>
@@ -46,7 +46,7 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
-<v t="ekr.20080126090309" a="TV"><vh>ANN: Leo 4.4.6 final</vh></v>
+<v t="ekr.20080126090309"><vh>ANN: Leo 4.4.6 final</vh></v>
 <v t="EKR.20040519091259.30"><vh>Previous announcements</vh>
 <v t="ekr.20080115094400.1"><vh>4.4.6</vh>
 <v t="ekr.20080115094400"><vh>ANN: Leo 4.4.6 b2</vh></v>
@@ -221,9 +221,9 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846"><vh>Distribution files</vh>
-<v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
-<v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
+<v t="EKR.20040519090846" a="E"><vh>Distribution files</vh>
+<v t="ekr.20070614105133.3" a="E" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
+<v t="ekr.20070614110334" a="TV"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
 </v>
 <v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
@@ -4411,27 +4411,29 @@ Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 
 # Must be an @nosent file.
 
-print '='*30,'setup.py','='*30
+# print '='*30,'setup.py','='*30
 
 from distutils.core import setup
 
+import leoGlobals as g
 &lt;&lt; define long_description &gt;&gt;
 &lt;&lt; define version number in setup.py &gt;&gt;
 
-setup (
-    name='leo',
-    version=version,
-    author='Edward K. Ream',
-    author_email='edreamleo@charter.net',
-    url='http://webpages.charter.net/edreamleo/front.html',
-    download_url='http://sourceforge.net/project/showfiles.php?group_id=3458',
-    py_modules=[], # The manifest specifies everything.
-    description = 'Leo: Literate Editor with Outlines',
-    license='Python', # licence [sic] changed to license in Python 2.3
-    platforms=['all',],
-    long_description = long_description,
-    # keywords = 'outline, outliner, ide, editor, literate programming',
-)
+if 0:
+    setup (
+        name='leo',
+        version=version,
+        author='Edward K. Ream',
+        author_email='edreamleo@charter.net',
+        url='http://webpages.charter.net/edreamleo/front.html',
+        download_url='http://sourceforge.net/project/showfiles.php?group_id=3458',
+        py_modules=[], # The manifest specifies everything.
+        description = 'Leo: Literate Editor with Outlines',
+        license='Python', # licence [sic] changed to license in Python 2.3
+        platforms=['all',],
+        long_description = long_description,
+        # keywords = 'outline, outliner, ide, editor, literate programming',
+    )
 </t>
 <t tx="ekr.20070614110334">long_description = \
 """Leo is an IDE, an outliner, a scripting and unit testing framework based on Python,
@@ -4442,7 +4444,11 @@ Python 2.2.1 or above and the Tk Tk 8.4 or above.
 
 Download Python from http://python.org/
 Download tcl/Tk from http://tcl.activestate.com/software/tcltk/
- """</t>
+"""
+
+# long_description = g.adjustTripleString(long_description,c.tab_width)
+
+# print repr(long_description)</t>
 <t tx="ekr.20070614165755">@ Important: The bdist_egg command is for 'binary' distributions.
   Source distributions (.zip files) are fine for pure Python programs like Leo.
 @c

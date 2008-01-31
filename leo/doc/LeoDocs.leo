@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.431306306306">
-	<global_window_position top="14" left="355" height="748" width="877"/>
+	<global_window_position top="14" left="355" height="728" width="877"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -780,8 +780,8 @@
 <v t="ekr.20050901083017"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060620094033"><vh>What's New...</vh>
-<v t="ekr.20071217093444" a="E"><vh>What's New in Leo 4.4.6</vh>
+<v t="ekr.20060620094033" a="E"><vh>What's New...</vh>
+<v t="ekr.20071217093444"><vh>What's New in Leo 4.4.6</vh>
 <v t="ekr.20071217093444.1"><vh>@rst html\new-4-4-6.html</vh>
 <v t="ekr.20071217093444.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20071217093444.5"><vh>New commands</vh></v>
@@ -824,10 +824,10 @@
 <v t="ekr.20070809145744.8"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
-<v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
-<v t="ekr.20070513113931.1"><vh>@rst-no-head links</vh>
-<v t="ekr.20070513115832.2"><vh>Important new features</vh></v>
+<v t="ekr.20070513113903" a="E"><vh>What's New in Leo 4.4.3</vh>
+<v t="ekr.20070513113931" a="E"><vh>@rst html\new-4-4-3.html</vh>
+<v t="ekr.20070513113931.1" a="E"><vh>@rst-no-head links</vh>
+<v t="ekr.20070513115832.2" a="TV"><vh>Important new features</vh></v>
 <v t="ekr.20070513115832.1"><vh>New commands</vh></v>
 <v t="ekr.20070513115832.3"><vh>New settings</vh></v>
 <v t="ekr.20070513115832.4"><vh>Plugins</vh></v>
@@ -1117,9 +1117,9 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="ET"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
-<v t="ekr.20071217093444" a="E"><vh>What's New in Leo 4.4.6</vh>
+<v t="ekr.20071217093444"><vh>What's New in Leo 4.4.6</vh>
 <v t="ekr.20071217093444.1"><vh>@rst html\new-4-4-6.html</vh>
 <v t="ekr.20071217093444.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20071217093444.5"><vh>New commands</vh></v>
@@ -1162,9 +1162,9 @@
 <v t="ekr.20070809145744.8"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
-<v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
-<v t="ekr.20070513113931.1"><vh>@rst-no-head links</vh>
+<v t="ekr.20070513113903" a="E"><vh>What's New in Leo 4.4.3</vh>
+<v t="ekr.20070513113931" a="E"><vh>@rst html\new-4-4-3.html</vh>
+<v t="ekr.20070513113931.1" a="E"><vh>@rst-no-head links</vh>
 <v t="ekr.20070513115832.2"><vh>Important new features</vh></v>
 <v t="ekr.20070513115832.1"><vh>New commands</vh></v>
 <v t="ekr.20070513115832.3"><vh>New settings</vh></v>
@@ -3525,8 +3525,8 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20080126090039" a="V"><vh>leo 4.4.6 final</vh></v>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20080126090039"><vh>leo 4.4.6 final</vh></v>
 </v>
 </v>
 </vnodes>
@@ -30644,7 +30644,7 @@ The highlights of Leo 4.4.3:
   nodes may appear anywhere in an outline, but the create-chapter command (see
   below) creates @chapter nodes as children of a single @chapters node.
   
-  Selecting a chapter shows only then nodes in the selected chapter; in this
+  Selecting a chapter shows the nodes in the selected chapter; in this
   respect, chapters are like hoists. The main chapter represents the entire
   outline and can not be deleted by name. When chapters are in effect, Leo
   creates a hidden @chapters node containing one @chapter node for every chapter
