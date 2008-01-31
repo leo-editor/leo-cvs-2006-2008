@@ -8,7 +8,7 @@
 # Initial version by by Frank Merenda (fmerenda@yahoo.com)
 
 # Variables...
-LEO_PREFIX="/usr/local"
+LEO_PREFIX=${LEO_PREFIX:-/usr/local}
 LEO_RUN_SCRIPT_SOURCE='./scripts/install/leo-script.txt'
 LEO_RUN_SCRIPT_OUTPUT="${LEO_PREFIX}/bin/leo"
 LEO_LIB_DIR="${LEO_PREFIX}/lib/leo"
@@ -18,7 +18,7 @@ echo ""
 echo "Prefix directory set to \"$LEO_PREFIX\""
 echo ""
 echo "To uninstall leo check the following \"rm\" commands"
-echo "if they look ok execute them as root."
+echo "if they look ok execute them."
 echo "
 rm -fr $LEO_LIB_DIR
 rm -f  $LEO_RUN_SCRIPT_OUTPUT

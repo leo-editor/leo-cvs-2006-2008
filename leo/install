@@ -7,22 +7,13 @@
 # Initial version by by Frank Merenda (fmerenda@yahoo.com)
 
 # Variables...
-LEO_PREFIX="/usr/local"
+LEO_PREFIX=${LEO_PREFIX:-/usr/local}
 LEO_RUN_SCRIPT_SOURCE='./scripts/install/leo-script.txt'
 LEO_RUN_SCRIPT_OUTPUT="${LEO_PREFIX}/bin/leo"
 LEO_LIB_DIR="${LEO_PREFIX}/lib/leo"
 
 echo ""
 echo "Prefix directory set to \"$LEO_PREFIX\""
-
-# Verify the current user is root
-CURRENT_USER=$(whoami)
-
-if [ ! "$CURRENT_USER" = "root" ] ; then
-	echo ""
-    echo You must be root to run this program
-    exit 0;
-fi    
 
 # Make the directory structure
 if [ ! -d $LEO_LIB_DIR ] ; then
@@ -32,7 +23,7 @@ if [ ! -d $LEO_LIB_DIR ] ; then
     RESULTS=`mkdir -p -m755 $LEO_LIB_DIR 2>&1`
     if [ $? -ne 0 ]; then
         echo Failure making directory $LEO_LIB_DIR!
-        exit 0;
+        exit 1;
     fi
 fi
 
@@ -42,7 +33,7 @@ if [ ! -d $LEO_PREFIX/bin ] ; then
     RESULTS=`mkdir -p -m755 $LEO_PREFIX/bin 2>&1`
     if [ $? -ne 0 ]; then
         echo Failure making directory $LEO_PREFIX/bin!
-        exit 0;
+        exit 1;
     fi
 fi
 
@@ -53,7 +44,7 @@ fi
 RESULTS=`cp -rp * $LEO_LIB_DIR/ 2>&1`
 if [ $? -ne 0 ]; then
     echo Failure copying files to $LEO_LIB_DIR
-    exit 0;
+    exit 1;
 fi
 
 # Clean up the duplicate files.
