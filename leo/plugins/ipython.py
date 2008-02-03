@@ -27,7 +27,7 @@ these as follows::
 #@-node:ekr.20080201151802:<< docstring >>
 #@nl
 
-__version__ = '0.1'
+__version__ = '0.2'
 #@<< version history >>
 #@+node:ekr.20080201143145.2:<< version history >>
 #@@killcolor
@@ -38,6 +38,90 @@ __version__ = '0.1'
 #@-at
 #@nonl
 #@-node:ekr.20080201143145.2:<< version history >>
+#@nl
+#@<< what's next >>
+#@+node:ekr.20080203092534:<< what's next >>
+#@@nocolor
+#@+at
+# 
+# It is now absolutely clear that a two-way bridge can be established between 
+# Leo and IPython. Indeed, there are many easy and good ways to get the job 
+# done.
+# 
+# One task now is to settle on just one design. Some experimentation will 
+# happen before we settle on a way that suffices for the vast majority of Leo 
+# and IPython users. The goal: we want the ipython plugin to be extensible by 
+# users (from either IPython or Leo), so that users will never (or hardly 
+# ever) have to hack on the ipython plugin directly. Some possibilities:
+# 
+# - A command-oriented approach: define commands sufficient to do all typical 
+# tasks.
+# 
+# - An object-based approach: define extensions to the leox interface class 
+# sufficient for all typical tasks.
+# 
+# - A script-based approach: define ways of executing arbitrary scripts in 
+# IPython.
+# 
+# All these approaches are equivalent; perhaps the are actually identical.
+# 
+# For example, it is far from obvious that we actually need an 
+# execute-ipython-script command(!) Indeed, this script assumes that Leo is 
+# the place from which scripts will be run. But it might be simpler for most 
+# IPython users to save Leo scripts in IPython's namespace, and to run those 
+# scripts directly from IPython. We have already seen that this works.
+# 
+# However, the first task is code and design cleanup. Here is a partial to-do 
+# list:
+# 
+# 1. Should IPython be a singleton? That is, should the ipython plugin refrain 
+# from creating more than one copy of IPShellEmbedd.ipshell()? Probably yes, 
+# but I don't understand the fine points of IPython to answer this question 
+# for sure.
+# 
+# 2. I have questions about saving and restoring what in IPython terms is 
+# called the "namespace": the dict that defines the execution environment. 
+# I've got to read the docs: probably this is a non-issue.
+# 
+# 3. It is, indeed, possible to run the bridge from Leo when Leo has been 
+# started from IPython. But it is still necessary to create the bridge using 
+# the alt-5 script, and this script appears to start yet another instance of 
+# IPython. But killing this second instance of IPython does not restore the 
+# previous IPython instance. It's not clear what is going on, and I'd like to 
+# understand...
+# 
+# 4. The ipython plugin should be driven, at least in part, by user options 
+# specified in @settings trees. Some possibilities:
+# 
+# @string ipython-bridge-interface-object-name = leox
+# # The name of the interface object injected into IPython when the bridge is 
+# created.
+# 
+# @string ipython-bridge-immediate-startup = False
+#@-at
+#@+at 
+#@nonl
+# True: create the bridge when Leo creates the first Leo window.
+# 
+# @data ipython-bridge-startup-script
+# # The body text is a script to be run when the bridge is first created.
+# 
+# @data ipython-bridge-auto-open-leo-files
+# # The body text is a list of .leo files to be opened
+# # automatically when the ipython bridge opens.
+# # OTOH, this can be done by the ipython-bridge-startup-script
+# 
+# etc.!
+# 
+# 5. I shall revise the IPython docs on Leo's wiki and the corresponding docs 
+# on the IPython Cookbook page. I shall also start a new chapter in Leo's 
+# Users Guide discussing the IPython bridge.
+# 
+# In short, the prototyping phase is complete, and we are moving on to the 
+# polishing phase.
+# 
+#@-at
+#@-node:ekr.20080203092534:<< what's next >>
 #@nl
 #@<< imports >>
 #@+node:ekr.20080201143145.3:<< imports >>
