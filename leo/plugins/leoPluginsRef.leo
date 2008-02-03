@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.336912751678">
-	<global_window_position top="19" left="273" height="685" width="841"/>
+<globals body_outline_ratio="0.612030075188">
+	<global_window_position top="19" left="273" height="793" width="841"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -341,6 +341,10 @@
 <v t="ekr.20040107092135.2"><vh>@thin searchbox.py</vh></v>
 <v t="ekr.20060601151845"><vh>@thin shortcut_button.py</vh></v>
 </v>
+<v t="ekr.20080203083146"><vh>IPython bridge</vh>
+<v t="ekr.20080201143145"
+expanded="ekr.20080201143145.6,ekr.20080201150746,ekr.20080201151802.1,ekr.20080201143319.11,"><vh>@thin ipython.py</vh></v>
+</v>
 <v t="ekr.20050402080206"><vh>LeoN</vh>
 <v t="ekr.20050402080206.1"><vh>Readme file.</vh></v>
 <v t="ekr.20050402080206.2"><vh>Overview</vh>
@@ -371,10 +375,9 @@
 <v t="EKR.20040517080555.36"><vh>@thin scripts_menu.py</vh></v>
 <v t="ekr.20040828122150"><vh>@thin pie_menus.py</vh></v>
 </v>
-<v t="ekr.20060530091119" a="E"><vh>New colorizer</vh>
-<v t="ekr.20071010193720" a="E"
-marks="ekr.20071010193720.21,"
-expanded="ekr.20071010193720.6,ekr.20071010193720.9,ekr.20071010193720.19,ekr.20071010193720.39,ekr.20071010193720.50,"><vh>@thin threading_colorizer.py	</vh></v>
+<v t="ekr.20060530091119"><vh>New colorizer</vh>
+<v t="ekr.20071010193720"
+marks="ekr.20071010193720.21,"><vh>@thin threading_colorizer.py	</vh></v>
 </v>
 <v t="edream.110203113231.872"><vh>Nodes...</vh>
 <v t="edream.110203113231.873"><vh>@thin at_folder.py</vh></v>
@@ -10835,6 +10838,7 @@ if not ok:
 <t tx="ekr.20071029090815"># This plugins has been disabled until it can be rewritten to handle @enabled-plugins nodes.</t>
 <t tx="ekr.20071113084440"># These plugins are for testing Leo's own plugin loading logic.
 # There is no reason ever to enable these plugins.</t>
+<t tx="ekr.20080203083146"></t>
 <t tx="pap.20041006184225">"""
 A plugin to manage Leo's Plugins:
 
