@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.431306306306">
-	<global_window_position top="14" left="355" height="728" width="877"/>
+	<global_window_position top="14" left="355" height="708" width="877"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -50,8 +50,8 @@
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
 <v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
-<v t="ekr.20050831184021.2"><vh>Table of contents</vh>
-<v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
+<v t="ekr.20050831184021.2" a="E"><vh>Table of contents</vh>
+<v t="ekr.20040414162124" a="E"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
 <v t="ekr.20040414163815"><vh>Table of Contents</vh></v>
 <v t="ekr.20050812134441.3"><vh>@rst-no-head end</vh></v>
@@ -711,7 +711,7 @@
 </v>
 </v>
 <v t="ekr.20060913164304"><vh>Chapter 17: Using ZODB with Leo</vh>
-<v t="ekr.20060913164304.1"><vh>@rst html\zodb.html</vh>
+<v t="ekr.20060913164304.1" a="E"><vh>@rst html\zodb.html</vh>
 <v t="ekr.20060913164311"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060913170145"><vh>Configuring Leo to use zodb</vh></v>
 <v t="ekr.20060913170403"><vh>Initing zodb</vh></v>
@@ -736,7 +736,7 @@
 </v>
 </v>
 <v t="ekr.20070317033759"><vh>Chapter 19: Embedding Leo with the leoBridge module</vh>
-<v t="ekr.20070317033759.1"><vh>@rst html\leoBridge.html</vh>
+<v t="ekr.20070317033759.1" a="E"><vh>@rst html\leoBridge.html</vh>
 <v t="ekr.20070317033759.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070317033759.3"><vh>The basics</vh></v>
 <v t="ekr.20071210094621"><vh>Running leoBridge from within Leo</vh></v>
@@ -744,7 +744,7 @@
 </v>
 </v>
 <v t="ekr.20070628083442"><vh>Chapter 20: Unit testing with Leo</vh>
-<v t="ekr.20070628083442.1"><vh>@rst html\unitTesting.html</vh>
+<v t="ekr.20070628083442.1" a="E"><vh>@rst html\unitTesting.html</vh>
 <v t="ekr.20070628083442.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070704074747"><vh>Overview</vh></v>
 <v t="ekr.20070628084351"><vh>Using @test nodes</vh></v>
@@ -756,8 +756,15 @@
 <v t="ekr.20070628083442.4"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
+<v t="ekr.20080203101507" a="E"><vh>Chapter 21: IPython bridge</vh>
+<v t="ekr.20080203101507.1" a="ETV"><vh>@rst html\IPythonBridge.html</vh>
+<v t="ekr.20080203101507.2"><vh>@rst-no-head links</vh></v>
+<v t="ekr.20080203101507.3"><vh>Overview</vh></v>
+<v t="ekr.20080203101507.10"><vh>@rst-no-head end stuff</vh></v>
+</v>
+</v>
 <v t="EKR.20040524104904.274"><vh>Appendices</vh>
-<v t="ekr.20050831231852"><vh>@rst html\appendices.html</vh>
+<v t="ekr.20050831231852" a="E"><vh>@rst html\appendices.html</vh>
 <v t="ekr.20050831232205"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.351"><vh>Bugs</vh></v>
 <v t="ekr.20061009074501"><vh>Coming soon</vh>
@@ -780,7 +787,7 @@
 <v t="ekr.20050901083017"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060620094033" a="E"><vh>What's New...</vh>
+<v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20071217093444"><vh>What's New in Leo 4.4.6</vh>
 <v t="ekr.20071217093444.1"><vh>@rst html\new-4-4-6.html</vh>
 <v t="ekr.20071217093444.2"><vh>@rst-no-head links</vh></v>
@@ -824,10 +831,10 @@
 <v t="ekr.20070809145744.8"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20070513113903" a="E"><vh>What's New in Leo 4.4.3</vh>
+<v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931" a="E"><vh>@rst html\new-4-4-3.html</vh>
 <v t="ekr.20070513113931.1" a="E"><vh>@rst-no-head links</vh>
-<v t="ekr.20070513115832.2" a="TV"><vh>Important new features</vh></v>
+<v t="ekr.20070513115832.2"><vh>Important new features</vh></v>
 <v t="ekr.20070513115832.1"><vh>New commands</vh></v>
 <v t="ekr.20070513115832.3"><vh>New settings</vh></v>
 <v t="ekr.20070513115832.4"><vh>Plugins</vh></v>
@@ -1162,7 +1169,7 @@
 <v t="ekr.20070809145744.8"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20070513113903" a="E"><vh>What's New in Leo 4.4.3</vh>
+<v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931" a="E"><vh>@rst html\new-4-4-3.html</vh>
 <v t="ekr.20070513113931.1" a="E"><vh>@rst-no-head links</vh>
 <v t="ekr.20070513115832.2"><vh>Important new features</vh></v>
@@ -11140,6 +11147,8 @@ Leo's Users Guide
 
 `Chapter 20: Unit testing with Leo`_
 
+`Chapter 21\: Ipython and Leo`_
+
 Appendices_
 
 Glossary_
@@ -15648,6 +15657,7 @@ Just use ``@thin`` to create your `derived files`_.</t>
 .. _`Chapter 18\: Leo and Emacs`:                   emacs.html
 .. _`Chapter 19\: Embedding Leo with the leoBridge Module`: leoBridge.html
 .. _`Chapter 20\: Unit testing with Leo`:           unitTesting.html
+.. _`Chapter 21\: Ipython and Leo`:                 IPythonBridge.html
 .. _`Appendices`:                                   appendices.html
 .. _`Glossary`:                                     glossary.html
 .. _`What's new in Leo 4.4.6`:                      new-4-4-6.html
@@ -18008,7 +18018,7 @@ Appendices
 .. WARNING: image targets may not have upper case letters!
 
 .. |back| image:: arrow_lt.gif
-	:target: unitTesting.html
+	:target: IPythonBridge.html
 
 .. |next| image:: arrow_rt.gif
 	:target: glossary.html
@@ -31228,7 +31238,7 @@ This chapter describes how you can execute Python unit test from within Leo outl
     :target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: appendices.html
+    :target: IPythonBridge.html
 </t>
 <t tx="ekr.20070628083442.4">-----------------------
 
@@ -33742,5 +33752,77 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20080203101507"></t>
+<t tx="ekr.20080203101507.1">@ @rst-options
+code_mode=False
+generate_rst=True
+http_server_support = False
+show_organizer_nodes=True
+show_headlines=True
+show_leo_directives=True
+stylesheet_path=..\doc
+write_intermediate_file = False
+verbose=True
+@c
+
+.. June, 2007
+
+|back| |leo| |next|
+
+############################################################
+Chapter 21: IPython and Leo
+############################################################
+
+This chapter describes how Leo and IPython_
+can work together using Leo's ipython plugin.
+In truth, Leo's ipython plugin is merely a wrapper on truly amazing
+technology: IPython's IPShellEmbed_ class and IPython's extensionAPI_.
+
+To use this plugin, you must run Leo or IPython from a console window.
+Leo can start IPython in this console, or IPython can start Leo from the console.
+Either way, Leo can execute scripts in IPython, or vice versa:
+IPython can run Leo scripts!
+
+.. contents::
+    </t>
+<t tx="ekr.20080203101507.2">.. Links
+
+.. _ipython:        http://ipython.scipy.org/
+.. _IPShellEmbed:   http://ipython.scipy.org/doc/manual/node9.html
+.. _extensionAPI:   http://ipython.scipy.org/moin/IpythonExtensionApi
+
+.. WARNING: image targets may not have upper case letters!
+
+.. |back| image:: arrow_lt.gif
+    :target: unitTesting.html
+
+.. |leo|  image:: leo.gif
+    :target: front.html
+
+.. |next| image:: arrow_rt.gif
+    :target: appendices.html
+</t>
+<t tx="ekr.20080203101507.3">Leo and IPython can run simultaneously;
+each runs without blocking the other.
+That wouldn't be remarkable if IPython and Leo were essentially isolated from each other.
+But that's not the case.
+IPython's IPShellEmbed class somehow (somehow!) makes the following possible:
+
+1.Leo can execute scripts in IPython's execution environment.
+
+2. Conversely, Leo can embed an leoInterface object, say leox, defined in Leo's execution environment,
+   into IPython's execution environment.
+   Using the embedded leox object, IPython can execute Leo scripts!
+   For example, leox.c is the commander of the Leo window that created leox.
+   Using leox.c, IPython scripts can create new nodes in Leo's window!
+   
+The rest of this chapter discusses how to access IPython's remarkable 
+IPShellEmbed_ class and extensionAPI_ using Leo's ipython plugin.
+Leo's plugin is, in essence, merely a set of convenience methods for the IPShellEmbed_ class
+and IPython_'s extensionAPI_.
+</t>
+<t tx="ekr.20080203101507.10">-----------------------
+
+|back| |leo| |next|</t>
 </tnodes>
 </leo_file>
