@@ -1073,7 +1073,7 @@ def executeScript(self,event=None,p=None,script=None,
                 # (This can happen when there are multiple event loops.)
                 # This does not prevent zombie windows if the script puts up a dialog...
                 c.inCommand = False
-                # g.trace('**** before')
+                # g.trace('**** before',writeScriptFile)
                 if writeScriptFile:
                     scriptFile = self.writeScriptFile(script)
                     execfile(scriptFile,d)
