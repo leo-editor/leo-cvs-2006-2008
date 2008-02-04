@@ -17,7 +17,7 @@ see: LeoDocs.leo or http://webpages.charter.net/edreamleo/IPythonBridge.html
 #@-node:ekr.20080201151802:<< docstring >>
 #@nl
 
-__version__ = '0.4'
+__version__ = '0.5'
 #@<< version history >>
 #@+node:ekr.20080201143145.2:<< version history >>
 #@@killcolor
@@ -39,6 +39,8 @@ __version__ = '0.4'
 # - Disable the command lockout logic for the start-ipython command.
 # - (In leoSettings.leo): add shortcuts for ipython commands.
 # - The init top-level function now requires the tkinter gui.
+# 
+# v 0.5 VMV & EKR:  Added leoInterfaceResults.__getattr__.
 #@-at
 #@-node:ekr.20080201143145.2:<< version history >>
 #@nl
@@ -367,12 +369,39 @@ class ipythonController:
 #@+node:ekr.20080204103804.2:class leoInterfaceResults
 class leoInterfaceResults:
 
-    def __init__(self,c,g,root):
-        assert(root)
-        self._c,self._g,self._root = c,g,root
-        self._inited = True # Disable any further attributes.
+    '''A class representing the saved results of IPython computations.
 
+    results.a = x # creates a results node in the Leo outline.
+    x = results.a # returns the saved results in a.
+    '''
+
+
+    #@    @+others
+    #@+node:ekr.20080204162955:ctor
+    def __init__(self,c,g,root):
+
+        assert(root)
+
+        self._c = c
+        self._g = g
+        self._root = root
+
+        self._inited = True # Disable any further attributes.
+    #@-node:ekr.20080204162955:ctor
+    #@+node:ekr.20080204162955.1:__getattr__
+    def __getattr__(self, key):
+
+        for p in self._root.children_iter():
+            if p.headString() == key:
+                break
+        else:
+            raise AttributeError
+
+        return IPython.genutils.SList(p.bodyString().splitlines())
+    #@-node:ekr.20080204162955.1:__getattr__
+    #@+node:ekr.20080204162955.2:__setattr__
     def __setattr__(self, item, value):
+
         if self.__dict__.has_key('_inited'):
             # print '__setattr__.result','item',item,'value',value
             createNode(self._c,self._root,head=item,body=str(value))
@@ -380,6 +409,8 @@ class leoInterfaceResults:
             # Allow attributes to be set in the ctor.
             # print '__setattr__','item',item,'value',value
             self.__dict__ [item] = value
+    #@-node:ekr.20080204162955.2:__setattr__
+    #@-others
 #@-node:ekr.20080204103804.2:class leoInterfaceResults
 #@+node:ekr.20080204103804.3:class leoInterface
 class leoInterface:
