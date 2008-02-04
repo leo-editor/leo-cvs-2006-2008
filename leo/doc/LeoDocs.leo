@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.431306306306">
-	<global_window_position top="14" left="355" height="688" width="877"/>
+<globals body_outline_ratio="0.524731182796">
+	<global_window_position top="14" left="355" height="930" width="877"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -759,8 +759,8 @@
 <v t="ekr.20080203101507" a="E"><vh>Chapter 21: IPython bridge</vh>
 <v t="ekr.20080203101507.1" a="E"><vh>@rst html\IPythonBridge.html</vh>
 <v t="ekr.20080203101507.2"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20080204100523"><vh>Startup</vh></v>
-<v t="ekr.20080204100523.1" a="TV"><vh>Commands</vh></v>
+<v t="ekr.20080204100523" a="TV"><vh>Startup</vh></v>
+<v t="ekr.20080204100523.1"><vh>Commands</vh></v>
 <v t="ekr.20080204100523.2"><vh>Scripting</vh></v>
 <v t="ekr.20080204100523.3"><vh>User Settings</vh></v>
 <v t="ekr.20080204083735"><vh>Using the leox object</vh></v>
@@ -33809,9 +33809,11 @@ In particular, scripts running in IPython can alter Leo outlines!
 <t tx="ekr.20080203101507.10">-----------------------
 
 |back| |leo| |next|</t>
-<t tx="ekr.20080204083735">To do: convenience methods.
+<t tx="ekr.20080204083735">XXX To do: using the leox object.
 
-To do: Creating results nodes.
+XXX To do: convenience methods.
+
+XXX To do: Creating results nodes.
 </t>
 <t tx="ekr.20080204100523">This plugin creates an instance of the ipythonController class for each Leo
 window. The ipythonController objects manage a singleton instance of IPython's
@@ -33824,21 +33826,6 @@ automatically.
 The user can do so using the start-ipython command (see commands_)
 or by using a script (see scripting_). The term **ipython startup time** means
 the time at which the singleton IPShellEmbed object actually gets created.
-
-At startup time, this plugin does the following:
-
-- Creates the **ipython bridge**, that is, a singleton instance of
-  ip = IPython.IPShellEmbed.ipshell.IP.getapi().
-  See `The Ipython Extension API`_ for details.
-
-- Injects a **Leo Interface Object** into IPython's user namespace
-  (ip.IP.user_ns). By default, the name of this object on the IPython side is
-  leox: this name can be changed by a Leo setting See `User Settings`_.
-
-  Using this leox object, scripts running **in IPython** can gain access to
-  Leo's c, g and p predefined variables. In particular, it is possible from
-  IPython to execute Leo scripts that alter the Leo outline!
-  See `Using the leox object`_ for full details.
   
 XXX To do: Why Leo runs without blocking.
 
@@ -33849,13 +33836,18 @@ XXX To do: Auto-starting and auto-initializing IPython.</t>
   starts the singleton IPython instance running in the console.
   **This command must be run before running any of the other commands**.
   
-- The init-ipython command injects leox, the leoInterface object, into IPython's
-  user namespace.
+- The init-ipython command injects a **Leo Interface Object** into IPython's
+  user namespace (ip.IP.user_ns).
+  By default, the name of this object on the IPython side is leox: this name can
+  be changed by a Leo setting See `User Settings`_.
+  
+  Using this leox object, scripts running **in IPython** can gain access to
+  Leo's c, g and p predefined variables. In particular, it is possible from
+  IPython to execute Leo scripts that alter the Leo outline!
+  See `Using the leox object`_ for full details.
 
 - The get-ipython-results command creates results nodes for all results computed
   by IPython since the last time this command was run.
-  
-  See `Using the leox object`_ for more details about results nodes.
 
 - The execute-ipython-script command executes the body text of the presently
   selected node in IPython.
