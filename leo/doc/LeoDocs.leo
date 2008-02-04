@@ -50,7 +50,7 @@
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
 <v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
-<v t="ekr.20050831184021.2" a="E"><vh>Table of contents</vh>
+<v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124" a="E"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
 <v t="ekr.20040414163815"><vh>Table of Contents</vh></v>
@@ -760,9 +760,9 @@
 <v t="ekr.20080203101507.1" a="E"><vh>@rst html\IPythonBridge.html</vh>
 <v t="ekr.20080203101507.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20080204100523"><vh>Startup</vh></v>
-<v t="ekr.20080204100523.1"><vh>Commands</vh></v>
+<v t="ekr.20080204100523.1" a="TV"><vh>Commands</vh></v>
 <v t="ekr.20080204100523.2"><vh>Scripting</vh></v>
-<v t="ekr.20080204100523.3" a="TV"><vh>User Settings</vh></v>
+<v t="ekr.20080204100523.3"><vh>User Settings</vh></v>
 <v t="ekr.20080204083735"><vh>Using the leox object</vh></v>
 <v t="ekr.20080203101507.10"><vh>@rst-no-head end stuff</vh></v>
 </v>
@@ -33847,20 +33847,18 @@ XXX To do: Auto-starting and auto-initializing IPython.</t>
 
 - The start-ipython command
   starts the singleton IPython instance running in the console.
+  **This command must be run before running any of the other commands**.
   
 - The init-ipython command injects leox, the leoInterface object, into IPython's
-  user namespace. Before using this command, the start-ipython command should
-  have been executed.
+  user namespace.
 
 - The get-ipython-results command creates results nodes for all results computed
   by IPython since the last time this command was run.
   
-  Before using this command, the start-ipython command should have been executed.
   See `Using the leox object`_ for more details about results nodes.
 
 - The execute-ipython-script command executes the body text of the presently
-  selected node in IPython. Before using this command, the start-ipython command
-  should have been executed.
+  selected node in IPython.
 </t>
 <t tx="ekr.20080204100523.2">Leo scripts can simulate this plugins's minibuffer commands as follows.
 

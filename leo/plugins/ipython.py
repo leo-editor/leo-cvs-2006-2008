@@ -49,8 +49,6 @@ __version__ = '0.4'
 # 
 # - Read the docs re saving and restoring the IPython namespace.
 # 
-# - We have to be running a Tk event loop for the code not to block.
-# 
 # - Is it possible to start IPShellEmbed automatically?
 # 
 #     Calling IPShellEmbed.ipshell() blocks, so it can't be done
@@ -59,7 +57,13 @@ __version__ = '0.4'
 # 
 #     If it is possible several more settings would be possible.
 # 
+# - Improve the get-ipython-results command as Ville suggests by using 
+# StringLists.
+# 
+# - Allow get-ipython-results to store actual objects using Leo's uA 
+# mechanism.
 #@-at
+#@nonl
 #@-node:ekr.20080203092534:<< to do >>
 #@nl
 #@<< imports >>
