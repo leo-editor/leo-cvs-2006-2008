@@ -3,18 +3,18 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.477886977887">
-	<global_window_position top="103" left="397" height="634" width="864"/>
+	<global_window_position top="103" left="397" height="614" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20070622214401"><vh>Startup</vh>
+<v t="ekr.20070622214401" a="E"><vh>Startup</vh>
 <v t="ekr.20070326094544"><vh>@chapters</vh></v>
 <v t="ekr.20060112110750"><vh>Buttons</vh>
 <v t="ekr.20051010093913" annotate="7d71002e"><vh>@@button Save</vh></v>
 <v t="ekr.20051011123608" annotate="7d71002e"><vh>@@button align to col</vh></v>
-<v t="ekr.20060112103537.17"><vh>@button Check Bindings</vh>
+<v t="ekr.20060112103537.17" a="E"><vh>@button Check Bindings</vh>
 <v t="ekr.20060112104119"><vh>defineSetNames</vh></v>
 <v t="ekr.20060112104333"><vh>doSet</vh></v>
 <v t="ekr.20060112105523"><vh>doShortcuts</vh></v>
@@ -85,7 +85,7 @@
 </v>
 </v>
 <v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
-<v t="ekr.20070926132045" a="TV"><vh>Buttons</vh>
+<v t="ekr.20070926132045"><vh>Buttons</vh>
 <v t="ekr.20070926082407"><vh>@buttons</vh>
 <v t="ekr.20070926082256.1"><vh>@@button Beautify</vh></v>
 <v t="ekr.20071009135515"><vh>@@button rst3</vh></v>
@@ -350,7 +350,7 @@
 <v t="ekr.20060804095015"><vh>@string open_flash_brackets = ([{</vh></v>
 <v t="ekr.20060926161207.2" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 </v>
-<v t="ekr.20051007200824" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
+<v t="ekr.20051007200824" a="E" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
 <v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
 <v t="ekr.20051007200824.1" annotate="7d71002e"><vh>About shortcut specifiers</vh></v>
 <v t="ekr.20060116090646"><vh>Reference for function keys</vh></v>
@@ -535,11 +535,11 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-Shift-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -552,6 +552,7 @@
 <v t="ekr.20060925061845.1"><vh>@shortcuts Other commands</vh></v>
 <v t="ekr.20060925060533.3"><vh>@shortcuts Outline operations</vh></v>
 <v t="ekr.20060925060533.4"><vh>@shortcuts Text operations</vh></v>
+<v t="ekr.20080204124255" a="TV"><vh>@shortcuts IPython commands</vh></v>
 </v>
 </v>
 <v t="ekr.20060110141538.1" annotate="7d71002e"><vh>@keys No bindings</vh>
@@ -2451,6 +2452,7 @@ equal-sized-panes                   = None
 escape                              = None
 eval-expression                     = None
 exchange-point-mark                 = None
+execute-ipython-script              = None
 execute-script                      = None
 exit-leo                            = None
 exit-named-mode                     = None
@@ -4052,6 +4054,7 @@ fully-expand-body-pane              = None
 fully-expand-log-pane               = None
 fully-expand-outline-pane           = None
 fully-expand-pane                   = None
+get-ipyton-results                  = None
 go-back                             = None
 go-forward                          = None
 goto-char                           = None
@@ -4105,6 +4108,7 @@ indent-region                       = None
 indent-relative                     = None
 indent-rigidly                      = None
 indent-to-comment-column            = None
+init-ipython                        = None
 insert-body-time                    = None
 insert-child                        = None
 insert-file                         = None
@@ -4285,6 +4289,7 @@ spell-change-then-find              = None
 spell-find                          = None
 spell-ignore                        = None
 split-line                          = None
+start-ipython                       = None
 # start-kbd-macro                   = None
 string-rectangle                    = None
 suspend                             = None
@@ -4354,10 +4359,13 @@ parser = leoConfig.settingsTreeParser(c)
 # Add these as required to handle commands defined by plugins.
 optionalCommandPrefixes = ['group-operations']
 optionalCommandNames = [
-    # These are the command names as defined by the slideshow plugin.
+    # These are the command names as defined by plugins.
     # LeoSlideShows.leo defines buttons whose commands do not end in '-command'.
     'next-slide-command','next-slide-show-command',
-    'prev-slide-command','prev-slide-show-command']
+    'prev-slide-command','prev-slide-show-command',
+    # The ipython plugin.
+    'start-ipython','init-ipython','get-ipython-results','execute-ipython-script',
+]
 
 setNames = []
 setsDict = {} # keys are set names, values are dicts of command names.
@@ -8554,5 +8562,12 @@ head
 div</t>
 <t tx="ekr.20071217093419">The body text should contain the data, one string per line.
 Comments lines starting with '#' are ignored.</t>
+<t tx="ekr.20080204124255"># For testing only.
+
+start-ipython           = Alt-5
+init-ipython            = Alt-6
+get-ipython-results     = Alt-7
+execute-ipython-script  = Alt-8
+</t>
 </tnodes>
 </leo_file>
