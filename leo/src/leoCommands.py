@@ -120,6 +120,7 @@ class baseCommands:
 
         # Official ivars.
         self.gui = g.app.gui
+        self.ipythonController = None # Set only by the ipython plugin.
 
         # Interlock to prevent setting c.changed when switching chapters.
         c.suppressHeadChanged = False
@@ -1731,7 +1732,7 @@ class baseCommands:
                     # (This can happen when there are multiple event loops.)
                     # This does not prevent zombie windows if the script puts up a dialog...
                     c.inCommand = False
-                    # g.trace('**** before')
+                    # g.trace('**** before',writeScriptFile)
                     if writeScriptFile:
                         scriptFile = self.writeScriptFile(script)
                         execfile(scriptFile,d)
