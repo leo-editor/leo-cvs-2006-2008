@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.431306306306">
-	<global_window_position top="14" left="355" height="708" width="877"/>
+	<global_window_position top="14" left="355" height="688" width="877"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -757,9 +757,13 @@
 </v>
 </v>
 <v t="ekr.20080203101507" a="E"><vh>Chapter 21: IPython bridge</vh>
-<v t="ekr.20080203101507.1" a="ETV"><vh>@rst html\IPythonBridge.html</vh>
+<v t="ekr.20080203101507.1" a="E"><vh>@rst html\IPythonBridge.html</vh>
 <v t="ekr.20080203101507.2"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20080203101507.3"><vh>Overview</vh></v>
+<v t="ekr.20080204100523"><vh>Startup</vh></v>
+<v t="ekr.20080204100523.1"><vh>Commands</vh></v>
+<v t="ekr.20080204100523.2"><vh>Scripting</vh></v>
+<v t="ekr.20080204100523.3" a="TV"><vh>User Settings</vh></v>
+<v t="ekr.20080204083735"><vh>Using the leox object</vh></v>
 <v t="ekr.20080203101507.10"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -33773,15 +33777,12 @@ verbose=True
 Chapter 21: IPython and Leo
 ############################################################
 
-This chapter describes how Leo and IPython_
-can work together using Leo's ipython plugin.
-In truth, Leo's ipython plugin is merely a wrapper on truly amazing
-technology: IPython's IPShellEmbed_ class and IPython's extensionAPI_.
+To use this plugin, you must run Leo from a console window.
+The ipython plugin provides two-way communication (a bridge) between Leo
+scripts and IPython running in the console from which Leo was launched.
 
-To use this plugin, you must run Leo or IPython from a console window.
-Leo can start IPython in this console, or IPython can start Leo from the console.
-Either way, Leo can execute scripts in IPython, or vice versa:
-IPython can run Leo scripts!
+Using this bridge, scripts running in Leo can affect IPython, and vice versa.
+In particular, scripts running in IPython can alter Leo outlines!
 
 .. contents::
     </t>
@@ -33790,6 +33791,9 @@ IPython can run Leo scripts!
 .. _ipython:        http://ipython.scipy.org/
 .. _IPShellEmbed:   http://ipython.scipy.org/doc/manual/node9.html
 .. _extensionAPI:   http://ipython.scipy.org/moin/IpythonExtensionApi
+
+.. _`The Ipython Extension API`: extensionAPI_
+
 
 .. WARNING: image targets may not have upper case letters!
 
@@ -33802,27 +33806,112 @@ IPython can run Leo scripts!
 .. |next| image:: arrow_rt.gif
     :target: appendices.html
 </t>
-<t tx="ekr.20080203101507.3">Leo and IPython can run simultaneously;
-each runs without blocking the other.
-That wouldn't be remarkable if IPython and Leo were essentially isolated from each other.
-But that's not the case.
-IPython's IPShellEmbed class somehow (somehow!) makes the following possible:
-
-1.Leo can execute scripts in IPython's execution environment.
-
-2. Conversely, Leo can embed an leoInterface object, say leox, defined in Leo's execution environment,
-   into IPython's execution environment.
-   Using the embedded leox object, IPython can execute Leo scripts!
-   For example, leox.c is the commander of the Leo window that created leox.
-   Using leox.c, IPython scripts can create new nodes in Leo's window!
-   
-The rest of this chapter discusses how to access IPython's remarkable 
-IPShellEmbed_ class and extensionAPI_ using Leo's ipython plugin.
-Leo's plugin is, in essence, merely a set of convenience methods for the IPShellEmbed_ class
-and IPython_'s extensionAPI_.
-</t>
 <t tx="ekr.20080203101507.10">-----------------------
 
 |back| |leo| |next|</t>
+<t tx="ekr.20080204083735">To do: convenience methods.
+
+To do: Creating results nodes.
+</t>
+<t tx="ekr.20080204100523">This plugin creates an instance of the ipythonController class for each Leo
+window. The ipythonController objects manage a singleton instance of IPython's
+IPShellEmbed class. See http://ipython.scipy.org/doc/manual/node9.html
+Creating this singleton instance starts IPython running in the console from
+which Leo was run.
+
+This plugin does **not** create the singleton instance of IPShellEmbed
+automatically.
+The user can do so using the start-ipython command (see commands_)
+or by using a script (see scripting_). The term **ipython startup time** means
+the time at which the singleton IPShellEmbed object actually gets created.
+
+At startup time, this plugin does the following:
+
+- Creates the **ipython bridge**, that is, a singleton instance of
+  ip = IPython.IPShellEmbed.ipshell.IP.getapi().
+  See `The Ipython Extension API`_ for details.
+
+- Injects a **Leo Interface Object** into IPython's user namespace
+  (ip.IP.user_ns). By default, the name of this object on the IPython side is
+  leox: this name can be changed by a Leo setting See `User Settings`_.
+
+  Using this leox object, scripts running **in IPython** can gain access to
+  Leo's c, g and p predefined variables. In particular, it is possible from
+  IPython to execute Leo scripts that alter the Leo outline!
+  See `Using the leox object`_ for full details.
+  
+XXX To do: Why Leo runs without blocking.
+
+XXX To do: Auto-starting and auto-initializing IPython.</t>
+<t tx="ekr.20080204100523.1">This plugin creates the following minibuffer commands:
+
+- The start-ipython command
+  starts the singleton IPython instance running in the console.
+  
+- The init-ipython command injects leox, the leoInterface object, into IPython's
+  user namespace. Before using this command, the start-ipython command should
+  have been executed.
+
+- The get-ipython-results command creates results nodes for all results computed
+  by IPython since the last time this command was run.
+  
+  Before using this command, the start-ipython command should have been executed.
+  See `Using the leox object`_ for more details about results nodes.
+
+- The execute-ipython-script command executes the body text of the presently
+  selected node in IPython. Before using this command, the start-ipython command
+  should have been executed.
+</t>
+<t tx="ekr.20080204100523.2">Leo scripts can simulate this plugins's minibuffer commands as follows.
+
+To simulate the start-ipython command::
+
+    x = c.ipythonController
+    if x and not x.started(): x.startIPython()
+    
+To simulate the init-ipython command::
+
+    x = c.ipythonController
+    if x and x.started() and not x.inited(): x.initIPython()
+
+To simulate the get-ipython-results command::
+
+    x = c.ipythonController
+    if x and x.started(): x.getIpythonResults()
+
+To simulate the execute-ipython-script command::
+
+    x = c.ipythonController
+    if x and x.started(): x.executeIpythonScript()
+
+To run a given script in IPython::
+
+    x = c.ipythonController
+    if x and x.started(): x.executeIpythonScript(script=script)</t>
+<t tx="ekr.20080204100523.3">This plugin honors the following user option, defined in
+leoSettings.leo, etc.
+
+- \@string ipython-interface-object-name = leox 
+  The name of the interface object injected into IPython when the bridge is created.
+  
+- \@string 'ipython-results-node-headline' = @ipython-results
+  The headline of the root of all results nodes created by the get-ipython-results command.
+ 
+- \@string ipython-bridge-immediate-startup = False
+  True: create the bridge when Leo creates the first Leo window.
+  
+  **Not ready yet**.
+ 
+- \@data ipython-bridge-startup-script 
+  The body text is a script to be run when the bridge is first created.
+  
+  **Not ready yet**.
+ 
+- \@data ipython-bridge-auto-open-leo-files
+  The body text is a list of .leo files to be opened 
+  automatically when the ipython bridge opens.
+  
+  **Not ready yet**.
+</t>
 </tnodes>
 </leo_file>
