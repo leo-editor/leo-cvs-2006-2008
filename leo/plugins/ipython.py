@@ -5,103 +5,52 @@
 
 #@<< docstring >>
 #@+node:ekr.20080201151802:<< docstring >>
-'''
+''' The ipython plugin provides two-way communication (a bridge) between Leo
+scripts and IPython running in the console from which Leo was launched.
 
-The ipython plugin provides two-way communication between Leo scripts and
-IPython running in the console from which Leo was launched.
+Using this bridge, scripts running in Leo can affect IPython, and vice versa.
+In particular, scripts running in IPython can alter Leo outlines!
 
-The plugin creates an instance of the pluginController class for each Leo
-window. The getIPythonResulst and execIPythonScript methods are public. Use
-these as follows::
-
-    controller = c.ipythonController
-        # Get the instance of the 
-
-    controller.getIpythonResults
-        # Adds a result node as the last child of  the @ipython-results node.
-
-    controller.execIPythonScript(script)
-        # Executes the script in IPython.  The contents of the presently
-        # selected node are used as the script if script is None.
+There are too many details to cover in this docstring.  For full details,
+see: LeoDocs.leo or http://webpages.charter.net/edreamleo/IPythonBridge.html
 '''
 #@-node:ekr.20080201151802:<< docstring >>
 #@nl
 
-__version__ = '0.2'
+__version__ = '0.3'
 #@<< version history >>
 #@+node:ekr.20080201143145.2:<< version history >>
 #@@killcolor
 #@+at
 # 
-# - Version 0.1: Ville M. Vainio and EKR.
-#   This version uses g.getScript to synthesize scripts.
+# - v 0.1: Ideas by Ville M. Vainio, code by EKR.
+# 
+# - v 0.2 EKR: Use g.getScript to synthesize scripts.
+# 
+# - v 0.3 EKR:
+#     - Moved all code from scripts to this plugin.
+#     - Added leoInterface and leoInterfaceResults classes.
+#     - Added createNode function for use by the interface classes.
+#     - Created minibuffer commands.
+#     - c.ipythonController is now an official ivar.
+#     - Docstring now references Chapter 21 of Leo's Users Guide.
 #@-at
-#@nonl
 #@-node:ekr.20080201143145.2:<< version history >>
 #@nl
-#@<< what's next >>
-#@+node:ekr.20080203092534:<< what's next >>
+#@<< to do >>
+#@+node:ekr.20080203092534:<< to do >>
 #@@nocolor
 #@+at
 # 
-# It is now absolutely clear that a two-way bridge can be established between 
-# Leo and IPython. Indeed, there are many easy and good ways to get the job 
-# done.
+# - Allow shortcuts for this plugins minibuffer commands.
 # 
-# One task now is to settle on just one design. Some experimentation will 
-# happen before we settle on a way that suffices for the vast majority of Leo 
-# and IPython users. The goal: we want the ipython plugin to be extensible by 
-# users (from either IPython or Leo), so that users will never (or hardly 
-# ever) have to hack on the ipython plugin directly. Some possibilities:
+# - Read the docs re saving and restoring what in IPython terms is called the
+# "namespace": the dict that defines the execution environment.
 # 
-# - A command-oriented approach: define commands sufficient to do all typical 
-# tasks.
+# - Is it possible to start IPShellEmbed automatically?  I doubt it.
 # 
-# - An object-based approach: define extensions to the leox interface class 
-# sufficient for all typical tasks.
-# 
-# - A script-based approach: define ways of executing arbitrary scripts in 
-# IPython.
-# 
-# All these approaches are equivalent; perhaps the are actually identical.
-# 
-# For example, it is far from obvious that we actually need an 
-# execute-ipython-script command(!) Indeed, this script assumes that Leo is 
-# the place from which scripts will be run. But it might be simpler for most 
-# IPython users to save Leo scripts in IPython's namespace, and to run those 
-# scripts directly from IPython. We have already seen that this works.
-# 
-# However, the first task is code and design cleanup. Here is a partial to-do 
-# list:
-# 
-# 1. Should IPython be a singleton? That is, should the ipython plugin refrain 
-# from creating more than one copy of IPShellEmbedd.ipshell()? Probably yes, 
-# but I don't understand the fine points of IPython to answer this question 
-# for sure.
-# 
-# 2. I have questions about saving and restoring what in IPython terms is 
-# called the "namespace": the dict that defines the execution environment. 
-# I've got to read the docs: probably this is a non-issue.
-# 
-# 3. It is, indeed, possible to run the bridge from Leo when Leo has been 
-# started from IPython. But it is still necessary to create the bridge using 
-# the alt-5 script, and this script appears to start yet another instance of 
-# IPython. But killing this second instance of IPython does not restore the 
-# previous IPython instance. It's not clear what is going on, and I'd like to 
-# understand...
-# 
-# 4. The ipython plugin should be driven, at least in part, by user options 
-# specified in @settings trees. Some possibilities:
-# 
-# @string ipython-bridge-interface-object-name = leox
-# # The name of the interface object injected into IPython when the bridge is 
-# created.
-# 
-# @string ipython-bridge-immediate-startup = False
-#@-at
-#@+at 
-#@nonl
-# True: create the bridge when Leo creates the first Leo window.
+# - Is it possible to support the following?  I doubt it, for the same
+#   reason it's hard to start IPShellEmbed automatically.
 # 
 # @data ipython-bridge-startup-script
 # # The body text is a script to be run when the bridge is first created.
@@ -111,17 +60,8 @@ __version__ = '0.2'
 # # automatically when the ipython bridge opens.
 # # OTOH, this can be done by the ipython-bridge-startup-script
 # 
-# etc.!
-# 
-# 5. I shall revise the IPython docs on Leo's wiki and the corresponding docs 
-# on the IPython Cookbook page. I shall also start a new chapter in Leo's 
-# Users Guide discussing the IPython bridge.
-# 
-# In short, the prototyping phase is complete, and we are moving on to the 
-# polishing phase.
-# 
 #@-at
-#@-node:ekr.20080203092534:<< what's next >>
+#@-node:ekr.20080203092534:<< to do >>
 #@nl
 #@<< imports >>
 #@+node:ekr.20080201143145.3:<< imports >>
@@ -147,6 +87,10 @@ except ImportError:
 #@-node:ekr.20080201143145.3:<< imports >>
 #@nl
 
+# Globals
+gIPythonStarted = False # True: the start-ipythoncommand has been run.
+gIPythonInited = False # True: the init-ipython command has been run.
+
 #@+others
 #@+node:ekr.20080201144219:Module-level functions
 #@+node:ekr.20080201143145.4:init
@@ -154,6 +98,7 @@ def init ():
 
     if import_ok:
 
+        # Call onCreate after the commander and the key handler exist.
         leoPlugins.registerHandler('after-create-leo-frame',onCreate)
         g.plugin_signon(__name__)
 
@@ -168,25 +113,46 @@ def onCreate (tag, keys):
         # Inject the controller into the commander.
         c.ipythonController = ipythonController(c)
 #@-node:ekr.20080201143145.5:onCreate
+#@+node:ekr.20080204103804.1:createNode
+def createNode(c,parent,head,body):
+
+    '''A convenience method for use the leoInterface classes.'''
+
+    c.beginUpdate()
+    try:
+        p = c.insertHeadline()
+        p.moveToLastChildOf(parent)
+        c.setHeadString(p,head)
+        c.setBodyString(p,body)
+        c.frame.tree.expandAllAncestors(p)
+        c.selectPosition(p)
+    finally:
+        c.endUpdate()
+    return p
+
+#@-node:ekr.20080204103804.1:createNode
 #@-node:ekr.20080201144219:Module-level functions
 #@+node:ekr.20080201143145.6:class ipythonController
 class ipythonController:
 
+    '''A per-commander controller that manages the
+    singleton IPython ipshell instance.'''
+
     #@    @+others
-    #@+node:ekr.20080201150746: Birth...
-    #@+node:ekr.20080201143145.7:__init__
+    #@+node:ekr.20080204110426:Birth
+    #@+node:ekr.20080201143145.7:ctor
     def __init__ (self,c):
 
         self.c = c
-        self.inited = False
         self.last_index = 0 # The index of the last result shown.
         self.last_p = None # The last-created results node.
-        self.resultsName = '@ipython-results'
         self.root = None # The root of the results tree.
 
         # Options...
         self.createNodes = True # True: print results in log pane.
         self.printResults = False # True: create results nodes.
+        self.leoxName =    c.config.getString('ipython-interface-object-name') or 'leox'
+        self.resultsName = c.config.getString('ipython-results-node-headline') or '@ipython-results'
 
         # Set by .initIPython...
         self.d_out = {}
@@ -194,57 +160,91 @@ class ipythonController:
         self.ip = None # The _ip var returned by ipshell.IP.getapi()
         self.ipshell = None
 
-    #@-node:ekr.20080201143145.7:__init__
-    #@+node:ekr.20080201143319.10:initIPython
-    def initIPython(self):
+        self.createCommands()
+    #@-node:ekr.20080201143145.7:ctor
+    #@+node:ekr.20080204080848:createCommands
+    def createCommands(self):
 
-        if self.inited:
-            return True
+        '''Create all of the ipython plugin's minibuffer commands.'''
+
+        c = self.c ; k = c.k
+
+        table = (
+            ('start-ipython',           None,self.startIPython),
+            ('init-ipython',            None,self.initIPython),
+            ('get-ipython-results',     None,self.getIPythonResults),
+            ('execute-ipython-script',  None,self.executeIPythonScriptCommand),
+        )
+
+        for commandName,shortcut,func in table:
+            k.registerCommand (commandName,shortcut,func,pane='all',verbose=True)
+    #@-node:ekr.20080204080848:createCommands
+    #@-node:ekr.20080204110426:Birth
+    #@+node:ekr.20080201151802.1:Commands
+    #@+node:ekr.20080201143319.10:startIPython
+    def startIPython(self,event=None):
+
+        '''The start-ipython command'''
+
+        global gIPythonStarted
+
+        if gIPythonStarted:
+            return self.error('IPython is already running')
 
         try:
             self.ipshell = IPShellEmbed()
             self.ip = ip = self.ipshell.IP.getapi()
             self.in_list, self.d_out = ip.IP.input_hist, ip.IP.output_hist
-            g.es_print('created IPython shell...',color='blue')
-            self.inited = True # Set the lockout *before* calling ipshell.
-            self.ipshell()
-            return True
+            self.message('creating IPython shell...')
+            gIPythonStarted = True # Do this *before* calling ipshell.
+            self.ipshell() # This doesn't return until IPython closes!
         except Exception:
-            g.es_print('exception creating IPython shell',color='red')
+            self.error('exception creating IPython shell')
             g.es_exception()
-            return False
-    #@-node:ekr.20080201143319.10:initIPython
-    #@-node:ekr.20080201150746: Birth...
-    #@+node:ekr.20080201151802.1:Public methods
-    #@+node:ekr.20080201150746.1:getIPythonResults
-    def getIPythonResults (self):
+    #@nonl
+    #@-node:ekr.20080201143319.10:startIPython
+    #@+node:ekr.20080204104115:initIPython
+    def initIPython (self,event=None):
 
-        if self.initIPython():
+        '''The init-ipython command.
+
+        Inject an interface object into Ipython.
+
+        By default, this object is called, leox.
+        This name can be set with the @string ipython-bridge-interface-object-name setting.'''
+
+        if not gIPythonStarted:
+            return self.error('IPython is not running')
+        elif gIPythonInited:
+            return self.message('IPython has already been inited')
+        else:
+            c = self.c ; ip = self.ip
+            leox = leoInterface(c,g)
+            ip.IP.user_ns [self.leoxName] = leox
+            print 'leox injected into IPython'
+    #@-node:ekr.20080204104115:initIPython
+    #@+node:ekr.20080201150746.1:getIPythonResults
+    def getIPythonResults (self,event=None):
+
+        '''The get-ipython-results command.
+
+        IPython must be started, but need not be inited.'''
+
+        if not gIPythonStarted:
+            self.startIpython() # Does not return
+        else:
             self.showResults()
     #@-node:ekr.20080201150746.1:getIPythonResults
-    #@+node:ekr.20080201150746.2:execIPythonScript
-    def execIPythonScript (self,script=None):
+    #@+node:ekr.20080204111314:executeIPythonScriptCommand
+    def executeIPythonScriptCommand(self,event=None):
 
-        c = self.c ; p = c.currentPosition()
+        '''The execute-ipython-script command.
 
-        # Init if necessary.
-        if not self.initIPython(): return
+        IPython must be started, but need not be inited.'''
 
-        # Clear the argv vector.
-        sys.argv = [] 
-
-        # Get the script.
-        if script is None:
-            # script = g.splitLines(p.bodyString() + '\n')
-            script = g.getScript(c,p,useSelectedText=False,forcePythonSentinels=True,useSentinels=True)
-            script = g.splitLines(script + '\n')
-            script = ''.join([z for z in script  if z.strip()])
-            print 'script\n',script
-
-        # Run the script.
-        self.ip.runlines(script)
-    #@-node:ekr.20080201150746.2:execIPythonScript
-    #@-node:ekr.20080201151802.1:Public methods
+        self.executeIPythonScript(script=None)
+    #@-node:ekr.20080204111314:executeIPythonScriptCommand
+    #@-node:ekr.20080201151802.1:Commands
     #@+node:ekr.20080201151802.2:Utils...
     #@+node:ekr.20080201143319.12:createRoot
     def createRoot (self):
@@ -261,6 +261,36 @@ class ipythonController:
 
         return self.root
     #@-node:ekr.20080201143319.12:createRoot
+    #@+node:ekr.20080204075924:error & message
+    def error (self,s):
+
+        g.es_print(s,color='red')
+
+    def message (self,s):
+
+        g.es_print(s,color='blue')
+    #@-node:ekr.20080204075924:error & message
+    #@+node:ekr.20080201150746.2:executeIPythonScript
+    def executeIPythonScript (self,script=None):
+        '''Execute the script in Ipython.
+        Use the presently selected body text if no script is given.'''
+        if not gIPythonStarted:
+            self.startIpython() # Does not return
+        else:
+            c = self.c ; p = c.currentPosition()
+            sys.argv = [] # Clear the argv vector.
+
+            # Get the script.
+            if script is None:
+                # script = g.splitLines(p.bodyString() + '\n')
+                script = g.getScript(c,p,useSelectedText=False,forcePythonSentinels=True,useSentinels=True)
+                script = g.splitLines(script + '\n')
+                script = ''.join([z for z in script  if z.strip()])
+                print 'script\n',script
+
+            # Run the script.
+            self.ip.runlines(script)
+    #@-node:ekr.20080201150746.2:executeIPythonScript
     #@+node:ekr.20080201143319.11:showResults & helper
     def showResults (self):
 
@@ -300,9 +330,56 @@ class ipythonController:
                 'out[%s]: %s' % (n,out_val)))
     #@-node:ekr.20080201143319.13:showResult
     #@-node:ekr.20080201143319.11:showResults & helper
+    #@+node:ekr.20080204083034:inited & started
+    def inited (self):
+
+        global gIPythonInited
+        return gIPythonInited
+
+    def started (self):
+
+        global gIPythonStarted
+        return gIPythonStarted
+    #@-node:ekr.20080204083034:inited & started
     #@-node:ekr.20080201151802.2:Utils...
     #@-others
 #@-node:ekr.20080201143145.6:class ipythonController
+#@+node:ekr.20080204103804.2:class leoInterfaceResults
+class leoInterfaceResults:
+
+    def __init__(self,c,g,root):
+        assert(root)
+        self._c,self._g,self._root = c,g,root
+        self._inited = True # Disable any further attributes.
+
+    def __setattr__(self, item, value):
+        if self.__dict__.has_key('_inited'):
+            # print '__setattr__.result','item',item,'value',value
+            createNode(self._c,self._root,head=item,body=str(value))
+        else:
+            # Allow attributes to be set in the ctor.
+            # print '__setattr__','item',item,'value',value
+            self.__dict__ [item] = value
+#@-node:ekr.20080204103804.2:class leoInterfaceResults
+#@+node:ekr.20080204103804.3:class leoInterface
+class leoInterface:
+
+    '''A class to allow full access to Leo from Ipython.
+
+    An instance of this class called leox is typically injected
+    into IPython's user_ns namespace by the init-ipython-command.'''
+
+    def __init__(self,c,g,tag='@ipython-results'):
+        self.c, self.g = c,g
+        # Find or create the parent for all results nodes.
+        self.root = g.findNodeAnywhere(c,tag)
+        if not self.root:
+            parent = c.currentPosition()
+            self.root = createNode(c=c,parent=parent,head=tag,body='')
+        # Create the results interface object.
+        self.results = leoInterfaceResults(c,g,self.root)
+#@nonl
+#@-node:ekr.20080204103804.3:class leoInterface
 #@-others
 #@nonl
 #@-node:ekr.20080201143145:@thin ipython.py
