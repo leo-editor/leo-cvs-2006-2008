@@ -17,23 +17,28 @@ see: LeoDocs.leo or http://webpages.charter.net/edreamleo/IPythonBridge.html
 #@-node:ekr.20080201151802:<< docstring >>
 #@nl
 
-__version__ = '0.3'
+__version__ = '0.4'
 #@<< version history >>
 #@+node:ekr.20080201143145.2:<< version history >>
 #@@killcolor
 #@+at
 # 
-# - v 0.1: Ideas by Ville M. Vainio, code by EKR.
+# v 0.1: Ideas by Ville M. Vainio, code by EKR.
 # 
-# - v 0.2 EKR: Use g.getScript to synthesize scripts.
+# v 0.2 EKR: Use g.getScript to synthesize scripts.
 # 
-# - v 0.3 EKR:
-#     - Moved all code from scripts to this plugin.
-#     - Added leoInterface and leoInterfaceResults classes.
-#     - Added createNode function for use by the interface classes.
-#     - Created minibuffer commands.
-#     - c.ipythonController is now an official ivar.
-#     - Docstring now references Chapter 21 of Leo's Users Guide.
+# v 0.3 EKR:
+# - Moved all code from scripts to this plugin.
+# - Added leoInterface and leoInterfaceResults classes.
+# - Added createNode function for use by the interface classes.
+# - Created minibuffer commands.
+# - c.ipythonController is now an official ivar.
+# - Docstring now references Chapter 21 of Leo's Users Guide.
+# 
+# v 0.4 EKR:
+# - Disable the command lockout logic for the start-ipython command.
+# - (In leoSettings.leo): add shortcuts for ipython commands.
+# - The init top-level function now requires the tkinter gui.
 #@-at
 #@-node:ekr.20080201143145.2:<< version history >>
 #@nl
@@ -42,23 +47,17 @@ __version__ = '0.3'
 #@@nocolor
 #@+at
 # 
-# - Allow shortcuts for this plugins minibuffer commands.
+# - Read the docs re saving and restoring the IPython namespace.
 # 
-# - Read the docs re saving and restoring what in IPython terms is called the
-# "namespace": the dict that defines the execution environment.
+# - We have to be running a Tk event loop for the code not to block.
 # 
-# - Is it possible to start IPShellEmbed automatically?  I doubt it.
+# - Is it possible to start IPShellEmbed automatically?
 # 
-# - Is it possible to support the following?  I doubt it, for the same
-#   reason it's hard to start IPShellEmbed automatically.
+#     Calling IPShellEmbed.ipshell() blocks, so it can't be done
+#     outside the event loop.  It might be possible to do this in
+#     an idle-time handler.
 # 
-# @data ipython-bridge-startup-script
-# # The body text is a script to be run when the bridge is first created.
-# 
-# @data ipython-bridge-auto-open-leo-files
-# # The body text is a list of .leo files to be opened
-# # automatically when the ipython bridge opens.
-# # OTOH, this can be done by the ipython-bridge-startup-script
+#     If it is possible several more settings would be possible.
 # 
 #@-at
 #@-node:ekr.20080203092534:<< to do >>
@@ -71,6 +70,12 @@ import leoPlugins
 import sys
 
 import_ok = True
+
+try:
+    import Tkinter as Tk
+except ImportError:
+    g.es_print('ipython plugin: can not Tkinter',color='red')
+    import_ok = False
 
 try:
     import IPython.ipapi
@@ -96,13 +101,21 @@ gIPythonInited = False # True: the init-ipython command has been run.
 #@+node:ekr.20080201143145.4:init
 def init ():
 
-    if import_ok:
+    if not import_ok: return
+
+    # This plugin depends on the properties of the Tk event loop.
+    # It may work for other gui's, but this is not guaranteed.
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+
+    ok = g.app.gui.guiName() == "tkinter"
+    if ok:
 
         # Call onCreate after the commander and the key handler exist.
         leoPlugins.registerHandler('after-create-leo-frame',onCreate)
         g.plugin_signon(__name__)
 
-    return import_ok
+    return ok
 #@-node:ekr.20080201143145.4:init
 #@+node:ekr.20080201143145.5:onCreate
 def onCreate (tag, keys):
@@ -170,13 +183,14 @@ class ipythonController:
         c = self.c ; k = c.k
 
         table = (
-            ('start-ipython',           None,self.startIPython),
-            ('init-ipython',            None,self.initIPython),
-            ('get-ipython-results',     None,self.getIPythonResults),
-            ('execute-ipython-script',  None,self.executeIPythonScriptCommand),
+            ('start-ipython',           self.startIPython),
+            ('init-ipython',            self.initIPython),
+            ('get-ipython-results',     self.getIPythonResults),
+            ('execute-ipython-script',  self.executeIPythonScriptCommand),
         )
 
-        for commandName,shortcut,func in table:
+        shortcut = None
+        for commandName,func in table:
             k.registerCommand (commandName,shortcut,func,pane='all',verbose=True)
     #@-node:ekr.20080204080848:createCommands
     #@-node:ekr.20080204110426:Birth
@@ -192,11 +206,13 @@ class ipythonController:
             return self.error('IPython is already running')
 
         try:
+            c = self.c
             self.ipshell = IPShellEmbed()
             self.ip = ip = self.ipshell.IP.getapi()
             self.in_list, self.d_out = ip.IP.input_hist, ip.IP.output_hist
             self.message('creating IPython shell...')
             gIPythonStarted = True # Do this *before* calling ipshell.
+            c.inCommand = False # Disable the command lockout logic, just as for scripts.
             self.ipshell() # This doesn't return until IPython closes!
         except Exception:
             self.error('exception creating IPython shell')
