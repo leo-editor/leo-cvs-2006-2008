@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.524731182796">
-	<global_window_position top="14" left="355" height="930" width="877"/>
+	<global_window_position top="14" left="355" height="910" width="877"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -51,7 +51,7 @@
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
 <v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
-<v t="ekr.20040414162124" a="E"><vh>@rst html\leo_TOC.html</vh>
+<v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
 <v t="ekr.20040414163815"><vh>Table of Contents</vh></v>
 <v t="ekr.20050812134441.3"><vh>@rst-no-head end</vh></v>
@@ -354,7 +354,7 @@
 </v>
 </v>
 <v t="ekr.20050831195331.4"><vh>Chapter 7: Scripting Leo with Python</vh>
-<v t="ekr.20040403171740"><vh>@rst html\scripting.html</vh>
+<v t="ekr.20040403171740" a="E"><vh>@rst html\scripting.html</vh>
 <v t="ekr.20050812134441.1"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20050901184158"><vh>@rst-ignore Important: you can run these examples!</vh></v>
 <v t="ekr.20040403183229" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3122206e616d653d22687474702d6e6f64652d6d61726b65722d31223e710155043c2f613e71025d710328553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710455063c2f6469763e71055d71062855063c626f64793e710755073c2f626f64793e71085d71092855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710a55073c2f68746d6c3e710b4e65656555243c64697620636c6173733d2273656374696f6e222069643d226f76657276696577223e0a710c55493c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643122206e616d653d226f76657276696577223e4f766572766965773c2f613e3c2f68313e0a710d652e"><vh>Commonly used classes</vh></v>
@@ -711,7 +711,7 @@
 </v>
 </v>
 <v t="ekr.20060913164304"><vh>Chapter 17: Using ZODB with Leo</vh>
-<v t="ekr.20060913164304.1" a="E"><vh>@rst html\zodb.html</vh>
+<v t="ekr.20060913164304.1"><vh>@rst html\zodb.html</vh>
 <v t="ekr.20060913164311"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060913170145"><vh>Configuring Leo to use zodb</vh></v>
 <v t="ekr.20060913170403"><vh>Initing zodb</vh></v>
@@ -736,7 +736,7 @@
 </v>
 </v>
 <v t="ekr.20070317033759"><vh>Chapter 19: Embedding Leo with the leoBridge module</vh>
-<v t="ekr.20070317033759.1" a="E"><vh>@rst html\leoBridge.html</vh>
+<v t="ekr.20070317033759.1"><vh>@rst html\leoBridge.html</vh>
 <v t="ekr.20070317033759.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070317033759.3"><vh>The basics</vh></v>
 <v t="ekr.20071210094621"><vh>Running leoBridge from within Leo</vh></v>
@@ -744,7 +744,7 @@
 </v>
 </v>
 <v t="ekr.20070628083442"><vh>Chapter 20: Unit testing with Leo</vh>
-<v t="ekr.20070628083442.1" a="E"><vh>@rst html\unitTesting.html</vh>
+<v t="ekr.20070628083442.1"><vh>@rst html\unitTesting.html</vh>
 <v t="ekr.20070628083442.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070704074747"><vh>Overview</vh></v>
 <v t="ekr.20070628084351"><vh>Using @test nodes</vh></v>
@@ -759,16 +759,16 @@
 <v t="ekr.20080203101507" a="E"><vh>Chapter 21: IPython bridge</vh>
 <v t="ekr.20080203101507.1" a="E"><vh>@rst html\IPythonBridge.html</vh>
 <v t="ekr.20080203101507.2"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20080204100523" a="TV"><vh>Startup</vh></v>
+<v t="ekr.20080204100523"><vh>Startup</vh></v>
 <v t="ekr.20080204100523.1"><vh>Commands</vh></v>
-<v t="ekr.20080204100523.2"><vh>Scripting</vh></v>
+<v t="ekr.20080204100523.2"><vh>Scripting from Leo</vh></v>
+<v t="ekr.20080205080801" a="TV"><vh>Scripting from IPython</vh></v>
 <v t="ekr.20080204100523.3"><vh>User Settings</vh></v>
-<v t="ekr.20080204083735"><vh>Using the leox object</vh></v>
 <v t="ekr.20080203101507.10"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
 <v t="EKR.20040524104904.274"><vh>Appendices</vh>
-<v t="ekr.20050831231852" a="E"><vh>@rst html\appendices.html</vh>
+<v t="ekr.20050831231852"><vh>@rst html\appendices.html</vh>
 <v t="ekr.20050831232205"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.351"><vh>Bugs</vh></v>
 <v t="ekr.20061009074501"><vh>Coming soon</vh>
@@ -836,8 +836,8 @@
 </v>
 </v>
 <v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
-<v t="ekr.20070513113931" a="E"><vh>@rst html\new-4-4-3.html</vh>
-<v t="ekr.20070513113931.1" a="E"><vh>@rst-no-head links</vh>
+<v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
+<v t="ekr.20070513113931.1"><vh>@rst-no-head links</vh>
 <v t="ekr.20070513115832.2"><vh>Important new features</vh></v>
 <v t="ekr.20070513115832.1"><vh>New commands</vh></v>
 <v t="ekr.20070513115832.3"><vh>New settings</vh></v>
@@ -1174,8 +1174,8 @@
 </v>
 </v>
 <v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
-<v t="ekr.20070513113931" a="E"><vh>@rst html\new-4-4-3.html</vh>
-<v t="ekr.20070513113931.1" a="E"><vh>@rst-no-head links</vh>
+<v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
+<v t="ekr.20070513113931.1"><vh>@rst-no-head links</vh>
 <v t="ekr.20070513115832.2"><vh>Important new features</vh></v>
 <v t="ekr.20070513115832.1"><vh>New commands</vh></v>
 <v t="ekr.20070513115832.3"><vh>New settings</vh></v>
@@ -33794,6 +33794,8 @@ In particular, scripts running in IPython can alter Leo outlines!
 
 .. _`The Ipython Extension API`: extensionAPI_
 
+.. _`Chapter 7\: Scripting Leo with Python`:    scripting.html
+
 
 .. WARNING: image targets may not have upper case letters!
 
@@ -33809,12 +33811,6 @@ In particular, scripts running in IPython can alter Leo outlines!
 <t tx="ekr.20080203101507.10">-----------------------
 
 |back| |leo| |next|</t>
-<t tx="ekr.20080204083735">XXX To do: using the leox object.
-
-XXX To do: convenience methods.
-
-XXX To do: Creating results nodes.
-</t>
 <t tx="ekr.20080204100523">This plugin creates an instance of the ipythonController class for each Leo
 window. The ipythonController objects manage a singleton instance of IPython's
 IPShellEmbed class. See http://ipython.scipy.org/doc/manual/node9.html
@@ -33826,6 +33822,16 @@ automatically.
 The user can do so using the start-ipython command (see commands_)
 or by using a script (see scripting_). The term **ipython startup time** means
 the time at which the singleton IPShellEmbed object actually gets created.
+
+The start-ipython command injects a **Leo Interface Object** into IPython's
+user namespace (ip.IP.user_ns).
+By default, the name of this object on the IPython side is leox: this name can
+be changed by a Leo setting See `User Settings`_.
+
+Using this leox object, scripts running **in IPython** can gain access to
+Leo's c, g and p predefined variables. In particular, it is possible from
+IPython to execute Leo scripts that alter the Leo outline!
+See `Using the leox object`_ for full details.
   
 XXX To do: Why Leo runs without blocking.
 
@@ -33833,18 +33839,11 @@ XXX To do: Auto-starting and auto-initializing IPython.</t>
 <t tx="ekr.20080204100523.1">This plugin creates the following minibuffer commands:
 
 - The start-ipython command
-  starts the singleton IPython instance running in the console.
+  starts the singleton IPython instance running in the console
+  and injects a Leo Interface Object into IPython's user namespace.
+  
   **This command must be run before running any of the other commands**.
   
-- The init-ipython command injects a **Leo Interface Object** into IPython's
-  user namespace (ip.IP.user_ns).
-  By default, the name of this object on the IPython side is leox: this name can
-  be changed by a Leo setting See `User Settings`_.
-  
-  Using this leox object, scripts running **in IPython** can gain access to
-  Leo's c, g and p predefined variables. In particular, it is possible from
-  IPython to execute Leo scripts that alter the Leo outline!
-  See `Using the leox object`_ for full details.
 
 - The get-ipython-results command creates results nodes for all results computed
   by IPython since the last time this command was run.
@@ -33858,11 +33857,6 @@ To simulate the start-ipython command::
 
     x = c.ipythonController
     if x and not x.started(): x.startIPython()
-    
-To simulate the init-ipython command::
-
-    x = c.ipythonController
-    if x and x.started() and not x.inited(): x.initIPython()
 
 To simulate the get-ipython-results command::
 
@@ -33902,6 +33896,60 @@ leoSettings.leo, etc.
   automatically when the ipython bridge opens.
   
   **Not ready yet**.
+</t>
+<t tx="ekr.20080205080801">The start-ipython command injects a **Leo Interface Object** into IPython's
+user namespace (ip.IP.user_ns).
+By default, the name of this object on the IPython side is leox: this name can
+be changed by a Leo setting See `User Settings`_.
+
+It will usually be more convenient to execute initialization scripts
+from the IPython side rather than the Leo side because the start-ipython
+command blocks after starting IPython.  Therefore, nothing can be done
+by the start-ipython command after creating the IPython instance.
+
+Happily, everything that can be done in Leo can be done in IPython using the
+leox object:
+leox.g is Leo's leoGlobals module; 
+leox.c is the commander of the Leo outline that created the IPython shell.
+
+See `Chapter 7\: Scripting Leo with Python`_ for full details about how to script
+Leo.  As you will see from Chapter 7, g and c suffice to gain access to *all*
+of Leo's data.  For example: g.app.windowList is a list of all open Leo frames,
+so an IPython script can get a list of all commanders as follows::
+
+    c,g = leox.c, leox.g
+    commanders = [f.c for f in g.app.windowList]
+    
+As another example, IPython scripts can use the c.config object to get user
+settings from leoSettings.leo, myLeoSettings.leo.  Examples:
+
+1. Suppose the body text of an @data ipython-bridge-startup-script setting contains
+a script to be executed when ipython starts up.  An Ipython script can get
+that startup script as follows::
+
+    c = leox.c
+    startupScript = c.config.getData('ipython-bridge-startup-script')
+    
+2. Suppose the body text of an @data ipython-bridge-auto-open contains
+a list of .leo files to be automatically opened on startup.  The following
+IPython script opens those files::
+
+    c,g = leox.c, leox.g
+    commanders = [f.c for f in g.app.windowList]
+    files = c.config.getData('ipython-bridge-auto-open')
+    appDir = g.app.loadDir
+    for z in files:
+        if not z.strip().startswith('#'): # Ignore comment lines.
+            fileName = g.os_path_abspath(g.os_path_join(appDir,z))
+            g.openWithFileName(fileName, old_c=c)
+            
+The leox.results object makes it easy to create and access **results nodes**
+in Leo that represent IPython results.
+
+
+
+
+XXX To do: Creating results nodes (convenience methods)
 </t>
 </tnodes>
 </leo_file>
