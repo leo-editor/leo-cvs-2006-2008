@@ -3,18 +3,18 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.477886977887">
-	<global_window_position top="103" left="397" height="614" width="864"/>
+	<global_window_position top="103" left="397" height="594" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20070622214401" a="E"><vh>Startup</vh>
+<v t="ekr.20070622214401"><vh>Startup</vh>
 <v t="ekr.20070326094544"><vh>@chapters</vh></v>
 <v t="ekr.20060112110750"><vh>Buttons</vh>
 <v t="ekr.20051010093913" annotate="7d71002e"><vh>@@button Save</vh></v>
 <v t="ekr.20051011123608" annotate="7d71002e"><vh>@@button align to col</vh></v>
-<v t="ekr.20060112103537.17" a="E"><vh>@button Check Bindings</vh>
+<v t="ekr.20060112103537.17"><vh>@button Check Bindings</vh>
 <v t="ekr.20060112104119"><vh>defineSetNames</vh></v>
 <v t="ekr.20060112104333"><vh>doSet</vh></v>
 <v t="ekr.20060112105523"><vh>doShortcuts</vh></v>
@@ -535,11 +535,11 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-Shift-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -552,12 +552,12 @@
 <v t="ekr.20060925061845.1"><vh>@shortcuts Other commands</vh></v>
 <v t="ekr.20060925060533.3"><vh>@shortcuts Outline operations</vh></v>
 <v t="ekr.20060925060533.4"><vh>@shortcuts Text operations</vh></v>
-<v t="ekr.20080204124255" a="TV"><vh>@shortcuts IPython commands</vh></v>
+<v t="ekr.20080204124255"><vh>@shortcuts IPython commands</vh></v>
 </v>
 </v>
-<v t="ekr.20060110141538.1" annotate="7d71002e"><vh>@keys No bindings</vh>
+<v t="ekr.20060110141538.1" a="E" annotate="7d71002e"><vh>@keys No bindings</vh>
 <v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
-<v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: F-M</vh></v>
+<v t="ekr.20060112093227.1" a="TV"><vh>@shortcuts No bindings: F-M</vh></v>
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
 </v>
@@ -4108,7 +4108,6 @@ indent-region                       = None
 indent-relative                     = None
 indent-rigidly                      = None
 indent-to-comment-column            = None
-init-ipython                        = None
 insert-body-time                    = None
 insert-child                        = None
 insert-file                         = None
@@ -4364,7 +4363,7 @@ optionalCommandNames = [
     'next-slide-command','next-slide-show-command',
     'prev-slide-command','prev-slide-show-command',
     # The ipython plugin.
-    'start-ipython','init-ipython','get-ipython-results','execute-ipython-script',
+    'start-ipython','get-ipython-results','execute-ipython-script',
 ]
 
 setNames = []
@@ -8565,9 +8564,8 @@ Comments lines starting with '#' are ignored.</t>
 <t tx="ekr.20080204124255"># For testing only.
 
 start-ipython           = Alt-5
-init-ipython            = Alt-6
-get-ipython-results     = Alt-7
-execute-ipython-script  = Alt-8
+get-ipython-results     = Alt-6
+execute-ipython-script  = Alt-7
 </t>
 </tnodes>
 </leo_file>

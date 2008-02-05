@@ -100,7 +100,6 @@ except ImportError:
 
 # Globals
 gIPythonStarted = False # True: the start-ipythoncommand has been run.
-gIPythonInited = False # True: the init-ipython command has been run.
 
 #@+others
 #@+node:ekr.20080201144219:Module-level functions
@@ -173,7 +172,8 @@ class ipythonController:
         self.leoxName =    c.config.getString('ipython-interface-object-name') or 'leox'
         self.resultsName = c.config.getString('ipython-results-node-headline') or '@ipython-results'
 
-        # Set by .initIPython...
+        # Set by .startIPython...
+        self.api = None
         self.d_out = {}
         self.in_list = []
         self.ip = None # The _ip var returned by ipshell.IP.getapi()
@@ -190,7 +190,6 @@ class ipythonController:
 
         table = (
             ('start-ipython',           self.startIPython),
-            ('init-ipython',            self.initIPython),
             ('get-ipython-results',     self.getIPythonResults),
             ('execute-ipython-script',  self.executeIPythonScriptCommand),
         )
@@ -213,38 +212,24 @@ class ipythonController:
 
         try:
             c = self.c
-            self.ipshell = IPShellEmbed()
-            self.ip = ip = self.ipshell.IP.getapi()
+            self.ipshell = IPShellEmbed() # Create object to be bound to .api.
+            self.api = api = IPython.ipapi
+            self.ip = ip = api.get()
             self.in_list, self.d_out = ip.IP.input_hist, ip.IP.output_hist
             self.message('creating IPython shell...')
             gIPythonStarted = True # Do this *before* calling ipshell.
             c.inCommand = False # Disable the command lockout logic, just as for scripts.
-            self.ipshell() # This doesn't return until IPython closes!
+            sys.argv = []
+            leox = leoInterface(c,g) # inject leox into the namespace.
+            my_ns = { self.leoxName:leox }
+            api.launch_new_instance(my_ns)
+                # Does not return until IPython closes!
+            # self.ipshell() # This doesn't return until IPython closes!
         except Exception:
             self.error('exception creating IPython shell')
             g.es_exception()
     #@nonl
     #@-node:ekr.20080201143319.10:startIPython
-    #@+node:ekr.20080204104115:initIPython
-    def initIPython (self,event=None):
-
-        '''The init-ipython command.
-
-        Inject an interface object into Ipython.
-
-        By default, this object is called, leox.
-        This name can be set with the @string ipython-bridge-interface-object-name setting.'''
-
-        if not gIPythonStarted:
-            return self.error('IPython is not running')
-        elif gIPythonInited:
-            return self.message('IPython has already been inited')
-        else:
-            c = self.c ; ip = self.ip
-            leox = leoInterface(c,g)
-            ip.IP.user_ns [self.leoxName] = leox
-            print 'leox injected into IPython'
-    #@-node:ekr.20080204104115:initIPython
     #@+node:ekr.20080201150746.1:getIPythonResults
     def getIPythonResults (self,event=None):
 
@@ -352,17 +337,12 @@ class ipythonController:
                 'out[%s]: %s' % (n,out_val)))
     #@-node:ekr.20080201143319.13:showResult
     #@-node:ekr.20080201143319.11:showResults & helper
-    #@+node:ekr.20080204083034:inited & started
-    def inited (self):
-
-        global gIPythonInited
-        return gIPythonInited
-
+    #@+node:ekr.20080204083034:started
     def started (self):
 
         global gIPythonStarted
         return gIPythonStarted
-    #@-node:ekr.20080204083034:inited & started
+    #@-node:ekr.20080204083034:started
     #@-node:ekr.20080201151802.2:Utils...
     #@-others
 #@-node:ekr.20080201143145.6:class ipythonController
