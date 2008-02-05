@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.524731182796">
-	<global_window_position top="14" left="355" height="910" width="877"/>
+	<global_window_position top="12" left="412" height="910" width="877"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -354,7 +354,7 @@
 </v>
 </v>
 <v t="ekr.20050831195331.4"><vh>Chapter 7: Scripting Leo with Python</vh>
-<v t="ekr.20040403171740" a="E"><vh>@rst html\scripting.html</vh>
+<v t="ekr.20040403171740"><vh>@rst html\scripting.html</vh>
 <v t="ekr.20050812134441.1"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20050901184158"><vh>@rst-ignore Important: you can run these examples!</vh></v>
 <v t="ekr.20040403183229" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3122206e616d653d22687474702d6e6f64652d6d61726b65722d31223e710155043c2f613e71025d710328553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710455063c2f6469763e71055d71062855063c626f64793e710755073c2f626f64793e71085d71092855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710a55073c2f68746d6c3e710b4e65656555243c64697620636c6173733d2273656374696f6e222069643d226f76657276696577223e0a710c55493c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643122206e616d653d226f76657276696577223e4f766572766965773c2f613e3c2f68313e0a710d652e"><vh>Commonly used classes</vh></v>
@@ -33817,10 +33817,9 @@ IPShellEmbed class. See http://ipython.scipy.org/doc/manual/node9.html
 Creating this singleton instance starts IPython running in the console from
 which Leo was run.
 
-This plugin does **not** create the singleton instance of IPShellEmbed
-automatically.
-The user can do so using the start-ipython command (see commands_)
-or by using a script (see scripting_). The term **ipython startup time** means
+The start-ipytnon command starts IPython running in the console.
+Scripts can also start Ipython: see `Scripting from Leo`_.
+The term **ipython startup time** means
 the time at which the singleton IPShellEmbed object actually gets created.
 
 The start-ipython command injects a **Leo Interface Object** into IPython's
@@ -33829,22 +33828,17 @@ By default, the name of this object on the IPython side is leox: this name can
 be changed by a Leo setting See `User Settings`_.
 
 Using this leox object, scripts running **in IPython** can gain access to
-Leo's c, g and p predefined variables. In particular, it is possible from
-IPython to execute Leo scripts that alter the Leo outline!
-See `Using the leox object`_ for full details.
-  
-XXX To do: Why Leo runs without blocking.
+Leo's c and g variables. In particular, it is possible from
+IPython to do *anything* to Leo outlines.
+See `Scripting from IPython`_ for full details.
+</t>
+<t tx="ekr.20080204100523.1">This plugin creates the following Leo commands commands:
 
-XXX To do: Auto-starting and auto-initializing IPython.</t>
-<t tx="ekr.20080204100523.1">This plugin creates the following minibuffer commands:
-
-- The start-ipython command
-  starts the singleton IPython instance running in the console
-  and injects a Leo Interface Object into IPython's user namespace.
+- The start-ipython command starts the singleton IPython instance running in the
+  console and injects a Leo Interface Object into IPython's user namespace.
   
-  **This command must be run before running any of the other commands**.
+  **The start-ipython command must be run before running the other commands**.
   
-
 - The get-ipython-results command creates results nodes for all results computed
   by IPython since the last time this command was run.
 
@@ -33872,8 +33866,7 @@ To run a given script in IPython::
 
     x = c.ipythonController
     if x and x.started(): x.executeIpythonScript(script=script)</t>
-<t tx="ekr.20080204100523.3">This plugin honors the following user option, defined in
-leoSettings.leo, etc.
+<t tx="ekr.20080204100523.3">This plugin honors the following user options, defined in leoSettings.leo, etc.
 
 - \@string ipython-interface-object-name = leox 
   The name of the interface object injected into IPython when the bridge is created.
@@ -33881,58 +33874,49 @@ leoSettings.leo, etc.
 - \@string 'ipython-results-node-headline' = @ipython-results
   The headline of the root of all results nodes created by the get-ipython-results command.
  
-- \@string ipython-bridge-immediate-startup = False
-  True: create the bridge when Leo creates the first Leo window.
+**Important**:
+As discussed in `Scripting from IPython`_ scripts running in IPython can easily
+support many other Leo settings. The following settings are **not** supported
+directly by the ipython plugin, but they indicate the kinds of settings that
+IPython scripts might find useful:
+
+- \@data ipython-bridge-startup-script
+
+  The body text contains a script to be executed at startup time.
   
-  **Not ready yet**.
- 
-- \@data ipython-bridge-startup-script 
-  The body text is a script to be run when the bridge is first created.
-  
-  **Not ready yet**.
- 
 - \@data ipython-bridge-auto-open-leo-files
-  The body text is a list of .leo files to be opened 
-  automatically when the ipython bridge opens.
-  
-  **Not ready yet**.
+
+  The body text contains a list of .leo files to be opened automatically
+  at startup time.
 </t>
-<t tx="ekr.20080205080801">The start-ipython command injects a **Leo Interface Object** into IPython's
+<t tx="ekr.20080205080801">The start-ipython command injects the leox object into IPython's
 user namespace (ip.IP.user_ns).
-By default, the name of this object on the IPython side is leox: this name can
-be changed by a Leo setting See `User Settings`_.
-
-It will usually be more convenient to execute initialization scripts
-from the IPython side rather than the Leo side because the start-ipython
-command blocks after starting IPython.  Therefore, nothing can be done
-by the start-ipython command after creating the IPython instance.
-
-Happily, everything that can be done in Leo can be done in IPython using the
-leox object:
 leox.g is Leo's leoGlobals module; 
 leox.c is the commander of the Leo outline that created the IPython shell.
+Using c,g = leox.c, leox.g,
+
+**scripts running in IPython can do anything a Leo script can do**.
 
 See `Chapter 7\: Scripting Leo with Python`_ for full details about how to script
-Leo.  As you will see from Chapter 7, g and c suffice to gain access to *all*
-of Leo's data.  For example: g.app.windowList is a list of all open Leo frames,
-so an IPython script can get a list of all commanders as follows::
+Leo.  The following are merely examples about what can be done from IPython.
+
+1. g.app.windowList is a list of all open Leo frames, so an IPython script can
+   get a list of all commanders as follows::
 
     c,g = leox.c, leox.g
     commanders = [f.c for f in g.app.windowList]
     
-As another example, IPython scripts can use the c.config object to get user
-settings from leoSettings.leo, myLeoSettings.leo.  Examples:
-
-1. Suppose the body text of an @data ipython-bridge-startup-script setting contains
-a script to be executed when ipython starts up.  An Ipython script can get
-that startup script as follows::
+2. IPython scripts can use the c.config object to get user settings from
+   leoSettings.leo, myLeoSettings.leo. Suppose the body text of an @data
+   ipython-bridge-startup-script setting contains a script to be executed when
+   ipython starts up. An Ipython script can get that startup script as follows::
 
     c = leox.c
     startupScript = c.config.getData('ipython-bridge-startup-script')
     
-2. Suppose the body text of an @data ipython-bridge-auto-open contains
-a list of .leo files to be automatically opened on startup.  The following
-IPython script opens those files::
+3. Suppose the body text of an @data ipython-bridge-auto-open setting contains a
+   list of .leo files to be automatically opened on startup. The following
+   IPython script opens those files::
 
     c,g = leox.c, leox.g
     commanders = [f.c for f in g.app.windowList]
@@ -33943,13 +33927,24 @@ IPython script opens those files::
             fileName = g.os_path_abspath(g.os_path_join(appDir,z))
             g.openWithFileName(fileName, old_c=c)
             
-The leox.results object makes it easy to create and access **results nodes**
-in Leo that represent IPython results.
+4. The leox.results object is a convenience. It makes it easy to create and
+   access **results nodes** in Leo that represent IPython results.  Results nodes
+   are children of a node whose headline is \@ipython-results and whose body
+   text contain string(theResult).
+   
+   Assigning to the leox.results object creates a result node. The following
+   creates a result node whose headline is "a" and whose body text is "spam"::
+  
+       r = leox.results
+       r.a = 'spam'
+       
+   Conversely, the following assigns the body text of results node "b" to b:
+   
+       r = leox.results
+       b = r.b
 
-
-
-
-XXX To do: Creating results nodes (convenience methods)
-</t>
+    Please note that there is *nothing* special about the leox.results object.
+    Scripts running in IPython are free to ignore the leox.results object.
+    IPython scripts are also free to redefine leox.results so it works as desired.</t>
 </tnodes>
 </leo_file>
