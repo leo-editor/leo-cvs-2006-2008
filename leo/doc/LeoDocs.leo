@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.524731182796">
-	<global_window_position top="12" left="412" height="910" width="877"/>
+	<global_window_position top="18" left="506" height="910" width="877"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -760,9 +760,9 @@
 <v t="ekr.20080203101507.1" a="E"><vh>@rst html\IPythonBridge.html</vh>
 <v t="ekr.20080203101507.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20080204100523"><vh>Startup</vh></v>
-<v t="ekr.20080204100523.1"><vh>Commands</vh></v>
+<v t="ekr.20080204100523.1" a="TV"><vh>Commands</vh></v>
 <v t="ekr.20080204100523.2"><vh>Scripting from Leo</vh></v>
-<v t="ekr.20080205080801" a="TV"><vh>Scripting from IPython</vh></v>
+<v t="ekr.20080205080801"><vh>Scripting from IPython</vh></v>
 <v t="ekr.20080204100523.3"><vh>User Settings</vh></v>
 <v t="ekr.20080203101507.10"><vh>@rst-no-head end stuff</vh></v>
 </v>
@@ -33836,7 +33836,6 @@ See `Scripting from IPython`_ for full details.
 
 - The start-ipython command starts the singleton IPython instance running in the
   console and injects a Leo Interface Object into IPython's user namespace.
-  
   **The start-ipython command must be run before running the other commands**.
   
 - The get-ipython-results command creates results nodes for all results computed
@@ -33894,11 +33893,11 @@ user namespace (ip.IP.user_ns).
 leox.g is Leo's leoGlobals module; 
 leox.c is the commander of the Leo outline that created the IPython shell.
 Using c,g = leox.c, leox.g,
-
 **scripts running in IPython can do anything a Leo script can do**.
 
 See `Chapter 7\: Scripting Leo with Python`_ for full details about how to script
 Leo.  The following are merely examples about what can be done from IPython.
+All these examples have been tested.
 
 1. g.app.windowList is a list of all open Leo frames, so an IPython script can
    get a list of all commanders as follows::
@@ -33919,32 +33918,29 @@ Leo.  The following are merely examples about what can be done from IPython.
    IPython script opens those files::
 
     c,g = leox.c, leox.g
-    commanders = [f.c for f in g.app.windowList]
-    files = c.config.getData('ipython-bridge-auto-open')
-    appDir = g.app.loadDir
+    files = c.config.getData('ipython-bridge-auto-open-leo-files')
+        # getData strips lines starting with '#'.
     for z in files:
-        if not z.strip().startswith('#'): # Ignore comment lines.
-            fileName = g.os_path_abspath(g.os_path_join(appDir,z))
-            g.openWithFileName(fileName, old_c=c)
+        fileName = g.os_path_abspath(g.os_path_join(g.app.loadDir,z))
+        g.openWithFileName(fileName, old_c=c)
             
 4. The leox.results object is a convenience. It makes it easy to create and
    access **results nodes** in Leo that represent IPython results.  Results nodes
    are children of a node whose headline is \@ipython-results and whose body
    text contain string(theResult).
-   
    Assigning to the leox.results object creates a result node. The following
    creates a result node whose headline is "a" and whose body text is "spam"::
   
        r = leox.results
        r.a = 'spam'
        
-   Conversely, the following assigns the body text of results node "b" to b:
+   Conversely, the following assigns the body text of results node "b" to b::
    
        r = leox.results
        b = r.b
 
-    Please note that there is *nothing* special about the leox.results object.
-    Scripts running in IPython are free to ignore the leox.results object.
-    IPython scripts are also free to redefine leox.results so it works as desired.</t>
+   Please note that there is *nothing* special about the leox.results object.
+   Scripts running in IPython are free to ignore the leox.results object.
+   IPython scripts are also free to redefine leox.results so it works as desired.</t>
 </tnodes>
 </leo_file>
