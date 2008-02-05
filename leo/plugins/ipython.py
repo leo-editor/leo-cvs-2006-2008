@@ -17,7 +17,7 @@ see: LeoDocs.leo or http://webpages.charter.net/edreamleo/IPythonBridge.html
 #@-node:ekr.20080201151802:<< docstring >>
 #@nl
 
-__version__ = '0.5'
+__version__ = '0.6'
 #@<< version history >>
 #@+node:ekr.20080201143145.2:<< version history >>
 #@@killcolor
@@ -41,6 +41,10 @@ __version__ = '0.5'
 # - The init top-level function now requires the tkinter gui.
 # 
 # v 0.5 VMV & EKR:  Added leoInterfaceResults.__getattr__.
+# 
+# v 0.6 EKR:
+# - Inject leox into the user_ns in start-ipython.
+#   As a result, there is no need for init_ipython and it has been removed.
 #@-at
 #@-node:ekr.20080201143145.2:<< version history >>
 #@nl
