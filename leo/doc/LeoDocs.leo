@@ -762,8 +762,9 @@
 <v t="ekr.20080204100523"><vh>Startup</vh></v>
 <v t="ekr.20080204100523.1"><vh>Commands</vh></v>
 <v t="ekr.20080204100523.2"><vh>Scripting IPython from Leo</vh></v>
-<v t="ekr.20080205080801" a="TV"><vh>Scripting Leo from IPython</vh></v>
+<v t="ekr.20080205080801"><vh>Scripting Leo from IPython</vh></v>
 <v t="ekr.20080204100523.3"><vh>User Settings</vh></v>
+<v t="ekr.20080210101336" a="TV"><vh>Acknowledgement</vh></v>
 <v t="ekr.20080203101507.10"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -784,7 +785,7 @@
 <v t="ekr.20050901071613"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="EKR.20040524104904.380"><vh>Glossary</vh>
+<v t="EKR.20040524104904.380" a="E"><vh>Glossary</vh>
 <v t="ekr.20050901071041" a="E"><vh>@rst html\glossary.html</vh>
 <v t="ekr.20050901071300"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050901073048"><vh>@rst-no-head glossary</vh></v>
@@ -33777,29 +33778,39 @@ verbose=True
 Chapter 21: IPython and Leo
 ############################################################
 
-To use this plugin, you must run Leo from a console window.
-When this plugin is enabled,
-Leo's start-ipython command starts IPython_ in this console.
-Leo's ipython plugin provides two-way communication (a bridge) between Leo
-and IPython.
-
-Using this bridge, IPython scripts can do *anything* that a Leo script can do;
-in effect, **you can run Leo scripts from IPython**.
-Conversely, Leo scripts can do *anything* an IPython script can do;
-in effect, **you can run IPython scripts from Leo**.
+To use this plugin, you must run Leo from a console window. When this plugin is
+enabled, Leo's start-ipython command starts IPython_ in this console. Leo's
+ipython plugin provides two-way communication (a bridge) between Leo and
+IPython: you can run Leo scripts from IPython, and IPython scripts from Leo.
 
 Remarkably, Leo and IPython run simultaneously in the same process,
-yet their separate event loops do not interfere with each other!
-Even more remarkably, running a Leo script from IPython has *exactly*
-the same effect as running the same script in Leo.
-For example, a Leo script, **running in IPython**, that inserts a node in a Leo outline
-(and redraws the screen) immediately redraws the changed Leo outline,
-exactly as if the script had been run in Leo.
-Conversely, IPython scripts, **running in Leo**, immediately affect the IPython interpreter.
-Care may be needed when running such scripts while long-running IPython scripts are running.
-
+yet their separate event loops do not interfere with each other.
+Even more remarkably, scripts run from IPython *immediately* change Leo,
+*exactly* as if the script were run from Leo.
+Conversely, scripts run from Leo *immediately* affect the IPython interpreter.
+Care may be needed when running such scripts while lengthy IPython scripts are running.
 As the result of this truly remarkable connection between Leo and IPython,
 Leo might plausibly be said to be an `IPython Notebook`_.
+
+The bridge between Leo and IPython is extremely powerful because it is extremely simple. Indeed,
+
+1. **You can run any IPython script from Leo**.
+On the Leo side, as single variable::
+
+    ip = c.ipythonController.ip
+    
+assigns ip to IPython's _ip variable. The ip variable allows scripts running in
+Leo to do *anything* that an IPython script can do.
+
+2. **You can run any Leo script from IPython**. 
+The ipython plugin injects a single object, typically called leox,
+into the IPython namespace. IPython scripts access Leo's c and g objects as
+follows::
+
+    c,g = leox.c, leox.g
+    
+The c and g variables allow scripts running in IPython to do *anything* that a
+Leo script can do.
 
 .. contents::
     </t>
@@ -33832,24 +33843,29 @@ Leo might plausibly be said to be an `IPython Notebook`_.
 |back| |leo| |next|</t>
 <t tx="ekr.20080204100523">This plugin creates an instance of the **ipythonController** class for each Leo
 window. The ipythonController objects manage a singleton instance of IPython's
-IPShellEmbed class. See http://ipython.scipy.org/doc/manual/node9.html.
-Creating this singleton instance starts IPython running in the console from
-which Leo was run.
-As mentioned in the introduction, Leo and IPython appear to run simultaneously.  Their event
-loops do not interfere with each other.
+IPShellEmbed class. See http://ipython.scipy.org/doc/manual/node9.html. Creating
+this singleton instance starts IPython running in the console from which Leo was
+run. As mentioned in the introduction, Leo and IPython appear to run
+simultaneously. Their event loops do not interfere with each other.
 
 The term **startup time** refers to the time that the singleton IPython instance is created.
 
+Initializing Leo from IPython is easier than initializing IPython from Leo.
+Indeed, the start-ipython command typically blocks and never returns, so it is not possible
+to schedule a Leo script to be run after the start-ipython command returns.
+Instead, it will typically be more convenient to use IPython's normal facilities to
+schedule a script that initializes Leo when IPython starts.
+
 The start-ipython command starts IPython running in the console and injects a
 **Leo Interface Object** into IPython's user namespace. By default, the name of
-this object is leox: this name can be changed by a Leo setting See `User
-Settings`_. Using the leox object, IPython scripts can gain access to Leo's c
-and g variables::
+this object is leox: this name can be changed by a Leo setting See `User Settings`_.
+Using the leox object, IPython scripts can gain access to Leo's c and g variables::
 
     c,g = leox.c,leox.g
     
 Thus, IPython scripts can do *anything* that can be done in Leo.
 See `Scripting Leo from IPython`_ for full details.
+
 Conversely, Leo scripts can gain access to IPython's _ip variable::
 
     ip = c.ipythonController.ip
@@ -33861,6 +33877,18 @@ See `Scripting IPython from Leo`_ for full details.</t>
 - The start-ipython command starts the singleton IPython instance running in the
   console and injects a Leo Interface Object into IPython's user namespace.
   **Run the start-ipython command before running the other commands**.
+  
+  
+  **Important**: The start-ipython command blocks. That is, the command does not
+  finish execution until IPython exits. In a typical workflow, IPython exits
+  after Leo does, so the the start-ipython command *never* completes.
+  
+  Remarkably, this does not affect Leo's main loop: Leo itself does not block.
+  However, because the start-ipython command blocks, it is not possible for the
+  command to do any follow up initialization of IPython. In practice, this does
+  not matter, because IPython provides several ways of executing scripts on
+  startup. In short, it is often more convenient to initialize Leo from IPython
+  than to initialize IPython from Leo.
   
 - The get-ipython-results command creates results nodes for all results computed
   by IPython since the last time this command was run.
@@ -33983,5 +34011,10 @@ All these examples have been tested.
    **Note**: there is *nothing* special about the leox.results object.
    Scripts running in IPython are free to ignore the leox.results object.
    IPython scripts are also free to redefine leox.results so it works as desired.</t>
+<t tx="ekr.20080210101336">This plugin would not have been possible without the help of Ville M. Vainio.
+The discussions at
+http://sourceforge.net/forum/forum.php?thread_id=1911662&amp;forum_id=10226
+document how the goal of close cooperation between Leo and IPython went from
+vague dream to completed reality over the span of about 10 days.</t>
 </tnodes>
 </leo_file>
