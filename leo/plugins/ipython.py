@@ -17,7 +17,7 @@ see: LeoDocs.leo or http://webpages.charter.net/edreamleo/IPythonBridge.html
 #@-node:ekr.20080201151802:<< docstring >>
 #@nl
 
-__version__ = '0.6'
+__version__ = '0.7'
 #@<< version history >>
 #@+node:ekr.20080201143145.2:<< version history >>
 #@@killcolor
@@ -45,6 +45,10 @@ __version__ = '0.6'
 # v 0.6 EKR:
 # - Inject leox into the user_ns in start-ipython.
 #   As a result, there is no need for init_ipython and it has been removed.
+# 
+# v 0.7 EKR:
+# - changed execute-ipython-script to push-to-ipython.
+# - Disabled trace of script in push-to-ipython.
 #@-at
 #@-node:ekr.20080201143145.2:<< version history >>
 #@nl
@@ -192,7 +196,7 @@ class ipythonController:
         table = (
             ('start-ipython',           self.startIPython),
             ('get-ipython-results',     self.getIPythonResults),
-            ('execute-ipython-script',  self.executeIPythonScriptCommand),
+            ('push-to-ipython',         self.pushToIPythonCommand),
         )
 
         shortcut = None
@@ -245,15 +249,15 @@ class ipythonController:
         else:
             self.showResults()
     #@-node:ekr.20080201150746.1:getIPythonResults
-    #@+node:ekr.20080204111314:executeIPythonScriptCommand
-    def executeIPythonScriptCommand(self,event=None):
+    #@+node:ekr.20080204111314:pushToIPythonCommand
+    def pushToIPythonCommand(self,event=None):
 
-        '''The execute-ipython-script command.
+        '''The push-to-ipython command.
 
         IPython must be started, but need not be inited.'''
 
-        self.executeIPythonScript(script=None)
-    #@-node:ekr.20080204111314:executeIPythonScriptCommand
+        self.pushToIPython(script=None)
+    #@-node:ekr.20080204111314:pushToIPythonCommand
     #@-node:ekr.20080201151802.1:Commands
     #@+node:ekr.20080201151802.2:Utils...
     #@+node:ekr.20080201143319.12:createRoot
@@ -280,9 +284,9 @@ class ipythonController:
 
         g.es_print(s,color='blue')
     #@-node:ekr.20080204075924:error & message
-    #@+node:ekr.20080201150746.2:executeIPythonScript
-    def executeIPythonScript (self,script=None):
-        '''Execute the script in Ipython.
+    #@+node:ekr.20080201150746.2:pushToIPython
+    def pushToIPython (self,script=None):
+        '''Execute the data to Ipython.
         Use the presently selected body text if no script is given.'''
         if not gIPythonStarted:
             self.startIpython() # Does not return
@@ -296,11 +300,11 @@ class ipythonController:
                 script = g.getScript(c,p,useSelectedText=False,forcePythonSentinels=True,useSentinels=True)
                 script = g.splitLines(script + '\n')
                 script = ''.join([z for z in script  if z.strip()])
-                print 'script\n',script
+                # print 'script\n',script
 
             # Run the script.
             self.ip.runlines(script)
-    #@-node:ekr.20080201150746.2:executeIPythonScript
+    #@-node:ekr.20080201150746.2:pushToIPython
     #@+node:ekr.20080201143319.11:showResults & helper
     def showResults (self):
 
