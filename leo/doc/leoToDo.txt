@@ -3,15 +3,13 @@
 #@+all
 #@+node:ekr.20071211093323:more screen shots on Leo's web site
 #@-node:ekr.20071211093323:more screen shots on Leo's web site
+#@+node:ekr.20080211100700.2:To do: 4.4.7
+#@+node:ekr.20080210201527:Fix import problems with django
+#@-node:ekr.20080210201527:Fix import problems with django
+#@+node:ekr.20080211123036:Investigate Kent's problems with winpdb
+#@-node:ekr.20080211123036:Investigate Kent's problems with winpdb
+#@-node:ekr.20080211100700.2:To do: 4.4.7
 #@+node:ekr.20071113093057:4.5 cleanups, vim bindings & readline
-#@+node:ekr.20080124083629:Fix nit re write-outline
-@nocolor
-
-> Write outline only does't say anything in the log window to indicate that it worked.
-
-I'm not going to change this for the 4.4.6 cycle.  I'll put it on the list for the 4.5 cycle. 
-#@nonl
-#@-node:ekr.20080124083629:Fix nit re write-outline
 #@+node:ekr.20071211091037.1:Code cleanup 8
 #@+node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
 #@-node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
@@ -905,14 +903,6 @@ P.S.  I've glossed over the details of which single characters (like d for delet
 
 EKR
 #@-node:ekr.20071026140857:Posting re vim bindings
-#@+node:ekr.20061028065955.2:Fix binding nits
-#@+node:ekr.20061014050154.2:Binding to None clears all bindings
-#@-node:ekr.20061014050154.2:Binding to None clears all bindings
-#@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
-#@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
-#@+node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
-#@-node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
-#@-node:ekr.20061028065955.2:Fix binding nits
 #@+node:ekr.20070613181147:(maybe) Improve key handling
 # The idea is to use a single <Key binding> and
 # use w.event_generate(key) to create a table
@@ -935,8 +925,15 @@ EKR
                 print z,repr(a)
 #@-node:ekr.20070613181147:(maybe) Improve key handling
 #@-node:ekr.20070623144302:vim-like bindings
+#@+node:ekr.20061028065955.2:Fix binding nits
+#@+node:ekr.20061014050154.2:Binding to None clears all bindings
+#@-node:ekr.20061014050154.2:Binding to None clears all bindings
+#@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
+#@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
+#@+node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
+#@-node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
+#@-node:ekr.20061028065955.2:Fix binding nits
 #@+node:ekr.20071029082025:Improve distribution
-* Convert to svn  (use py_svn)
 * Enable sax option.
 * Proper xml namespace in .leo files.  Is this Leo 5.0??
 #@nonl
