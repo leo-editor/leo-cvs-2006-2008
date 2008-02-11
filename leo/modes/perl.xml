@@ -163,6 +163,8 @@
                         HASH_CHAR="m"
                         AT_WORD_START="TRUE"
                 >m([[:punct:]])(?:.*?[^\\])*?\1[sgiexom]*</SEQ_REGEXP>
+		
+		<!-- EKR: **way** too complex --
 
 		<SEQ_REGEXP TYPE="MARKUP"
                         HASH_CHAR="s"
@@ -174,11 +176,7 @@
                         AT_WORD_START="TRUE"
 		>s([[:punct:]])(?:.*?[^\\])*?\1(?:.*?[^\\])*?\1[sgiexom]*</SEQ_REGEXP>
 		
-		<!-- end comment out -->
-		
-		<!-- // -->
-		
-		<!-- EKR comment out -->
+		-- EKR end **way** too complex -->
 		
 		<SEQ_REGEXP TYPE="MARKUP"
 			HASH_CHAR="/"
