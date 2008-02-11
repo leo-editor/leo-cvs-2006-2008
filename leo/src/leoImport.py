@@ -24,7 +24,8 @@ class leoImportCommands:
 
         self.c = c
         self._forcedGnxPositionList = []
-        self.encoding = g.app.tkEncoding # 2/25/03: was "utf-8"
+        self.default_directory = None # For @path logic.
+        self.encoding = g.app.tkEncoding
         self.errors = 0
         self.fileName = None # The original file name, say x.cpp
         self.fileType = None # ".py", ".c", etc.
@@ -673,6 +674,92 @@ class leoImportCommands:
         s = string.rstrip(s)
         return s
     #@-node:ekr.20031218072017.3312:massageWebBody
+    #@+node:ekr.20080211085914:scanDefaultDirectory (leoImport)
+    def scanDefaultDirectory(self,p):
+
+        """Set .default_directory by looking for @path directives."""
+
+        c = self.c
+        self.default_directory = None
+        #@    << Set path from @file node >>
+        #@+node:ekr.20080211085914.1:<< Set path from @file node >>
+        # An absolute path in an @file node over-rides everything else.
+        # A relative path gets appended to the relative path by the open logic.
+
+        name = p.anyAtFileNodeName()
+
+        theDir = g.choose(name,g.os_path_dirname(name),None)
+
+        if theDir and g.os_path_isabs(theDir):
+            if g.os_path_exists(theDir):
+                self.default_directory = theDir
+            else:
+                self.default_directory = g.makeAllNonExistentDirectories(theDir,c=c)
+                if not self.default_directory:
+                    self.error("Directory \"%s\" does not exist" % theDir)
+        #@-node:ekr.20080211085914.1:<< Set path from @file node >>
+        #@nl
+        if self.default_directory:
+            return
+
+        for p in p.self_and_parents_iter():
+            theDict = g.get_directives_dict(p)
+            if theDict.has_key("path"):
+                #@            << handle @path >>
+                #@+node:ekr.20080211085914.2:<< handle @path >>
+                # We set the current director to a path so future writes will go to that directory.
+
+                path = theDict["path"]
+                path = g.computeRelativePath (path)
+
+                if path:
+                    base = g.getBaseDirectory(c) # returns "" on error.
+                    path = g.os_path_join(base,path)
+
+                    if g.os_path_isabs(path):
+                        #@        << handle absolute path >>
+                        #@+node:ekr.20080211085914.3:<< handle absolute path >>
+                        # path is an absolute path.
+
+                        if g.os_path_exists(path):
+                            self.default_directory = path
+                        else:
+                            self.default_directory = g.makeAllNonExistentDirectories(path,c=c)
+                            if not self.default_directory:
+                                self.error("invalid @path: %s" % path)
+                        #@-node:ekr.20080211085914.3:<< handle absolute path >>
+                        #@nl
+                    else:
+                        self.error("ignoring bad @path: %s" % path)
+                else:
+                    self.error("ignoring empty @path")
+                #@-node:ekr.20080211085914.2:<< handle @path >>
+                #@nl
+                return
+
+        #@    << Set current directory >>
+        #@+node:ekr.20080211085914.4:<< Set current directory >>
+        # This code is executed if no valid absolute path was specified in the @file node or in an @path directive.
+
+        assert(not self.default_directory)
+
+        if c.frame :
+            base = g.getBaseDirectory(c) # returns "" on error.
+            for theDir in (c.tangle_directory,c.frame.openDirectory,c.openDirectory):
+                if theDir and len(theDir) > 0:
+                    theDir = g.os_path_join(base,theDir)
+                    if g.os_path_isabs(theDir): # Errors may result in relative or invalid path.
+                        if g.os_path_exists(theDir):
+                            self.default_directory = theDir ; break
+                        else:
+                            self.default_directory = g.makeAllNonExistentDirectories(theDir,c=c)
+        #@-node:ekr.20080211085914.4:<< Set current directory >>
+        #@nl
+        if not self.default_directory:
+            # This should never happen: c.openDirectory should be a good last resort.
+            self.error("No absolute directory specified anywhere.")
+            self.default_directory = ""
+    #@-node:ekr.20080211085914:scanDefaultDirectory (leoImport)
     #@+node:ekr.20031218072017.1463:setEncoding
     def setEncoding (self,p=None):
 
@@ -690,10 +777,15 @@ class leoImportCommands:
     #@-node:ekr.20031218072017.1463:setEncoding
     #@-node:ekr.20031218072017.3305:Utilities
     #@+node:ekr.20031218072017.3209:Import
-    #@+node:ekr.20031218072017.3210:createOutline
+    #@+node:ekr.20031218072017.3210:createOutline (leoImport)
     def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
 
         c = self.c ; u = c.undoer ; s1 = s
+
+        # New in Leo 4.4.7: honor @path directives.
+
+        self.scanDefaultDirectory(parent) # sets .defaultDirectory.
+        filename = g.os_path_join(self.default_directory,fileName)
         junk,self.fileName = g.os_path_split(fileName)
         self.methodName,self.fileType = g.os_path_splitext(self.fileName)
         self.setEncoding(p=parent)
@@ -760,7 +852,7 @@ class leoImportCommands:
 
         p.contract()
         return p
-    #@-node:ekr.20031218072017.3210:createOutline
+    #@-node:ekr.20031218072017.3210:createOutline (leoImport)
     #@+node:ekr.20070806111212:readAtAutoNodes (importCommands) & helper
     def readAtAutoNodes (self):
 
@@ -1653,10 +1745,14 @@ class baseScannerClass:
         self.comment_delim = delim1
 
         # May be overridden in subclasses.
+        self.anonymousClasses = [] # For Delphi Pascal interfaces.
         self.blockCommentDelim1 = None
         self.blockCommentDelim2 = None
+        self.blockCommentDelim1_2 = None
+        self.blockCommentDelim2_2 = None
         self.blockDelim1 = '{'
         self.blockDelim2 = '}'
+        self.blockDelim2Cruft = [] # Stuff that can follow .blockDelim2.
         self.classTags = ['class',] # tags that start a tag.
         self.functionTags = []
         self.hasClasses = True
@@ -2155,7 +2251,6 @@ class baseScannerClass:
         body = body1 + body2
         if trace: g.trace('body\n%s' % body)
 
-        ###if not body.endswith('\n'):
         tail = body[len(body.rstrip()):]
         if not '\n' in tail:
             self.warning(
@@ -2407,6 +2502,12 @@ class baseScannerClass:
                 level += 1 ; i += len(delim1)
             elif match2(s,i,delim2):
                 level -= 1 ; i += len(delim2)
+                # Skip junk following Pascal 'end'
+                for z in self.blockDelim2Cruft:
+                    i2 = g.skip_ws(s,i)
+                    if g.match(s,i2,z):
+                        i = i2 + len(z)
+                        break
                 if level <= 0:
                     if trace: g.trace('returns\n',repr(s[start:i]))
                     return i
@@ -2462,17 +2563,25 @@ class baseScannerClass:
 
         '''Skip past a block comment.'''
 
+        start = i
+
         # Skip the opening delim.
-        assert(g.match(s,i,self.blockCommentDelim1))
-        start = i ; i += len(self.blockCommentDelim1)
+        if g.match(s,i,self.blockCommentDelim1):
+            delim2 = self.blockCommentDelim2
+            i += len(self.blockCommentDelim1)
+        elif g.match(s,i,self.blockCommentDelim1_2):
+            i += len(self.blockCommentDelim1_2)
+            delim2 = self.blockCommentDelim2_2
+        else:
+            assert False
 
         # Find the closing delim.
-        k = string.find(s,self.blockCommentDelim2,i)
+        k = string.find(s,delim2,i)
         if k == -1:
             self.error('Run on block comment: ' + s[start:i])
             return len(s)
         else:
-            return k + len(self.blockCommentDelim2)
+            return k + len(delim2)
     #@-node:ekr.20070707074541:skipBlockComment
     #@-node:ekr.20070711104014:skipComment & helper
     #@+node:ekr.20070707080042:skipDecls
@@ -2614,8 +2723,6 @@ class baseScannerClass:
 
         Return (i,ids) where ids is list of all ids found, in order.'''
 
-        # __pychecker__ = '--no-argsused' # tags not used in the base class.
-
         trace = False and self.trace # or kind =='function'
         ids = [] ; classId = None
         if trace: g.trace('*entry',kind,i,s[i:i+20])
@@ -2640,7 +2747,7 @@ class baseScannerClass:
         return i, ids, classId
     #@-node:ekr.20070711140703:skipSigStart
     #@+node:ekr.20070712082913:skipSigTail
-    def skipSigTail(self,s,i):
+    def skipSigTail(self,s,i,kind):
 
         '''Skip from the end of the arg list to the start of the block.'''
 
@@ -2669,7 +2776,7 @@ class baseScannerClass:
 
         # if not tags: return False
 
-        trace = self.trace
+        trace = False or self.trace
         verbose = False # kind=='function'
         self.codeEnd = self.sigEnd = self.sigId = None
         self.sigStart = i
@@ -2692,11 +2799,17 @@ class baseScannerClass:
         if trace and verbose: g.trace('kind',kind,'id',theId)
 
         # Get the class/function id.
-        i, ids, classId = self.skipSigStart(s,j,kind,tags) # Rescan the first id.
-        sigId = self.getSigId(ids)
-        if not sigId:
-            if trace and verbose: g.trace('**no sigId',g.get_line(s,i))
-            return False
+        if kind == 'class' and self.sigId in self.anonymousClasses:
+            # A hack for Delphi Pascal: interfaces have no id's.
+            # g.trace('anonymous',self.sigId)
+            classId = theId
+            sigId = ''
+        else:
+            i, ids, classId = self.skipSigStart(s,j,kind,tags) # Rescan the first id.
+            sigId = self.getSigId(ids)
+            if not sigId:
+                if trace and verbose: g.trace('**no sigId',g.get_line(s,i))
+                return False
 
         if self.output_indent < self.startSigIndent:
             if trace: g.trace('**over-indent',sigId)
@@ -2711,7 +2824,7 @@ class baseScannerClass:
         i = g.skip_ws_and_nl(s,i)
 
         # Skip the tail of the signature
-        i, ok = self.skipSigTail(s,i)
+        i, ok = self.skipSigTail(s,i,kind)
         if not ok:
             if trace and verbose: g.trace('no tail',g.get_line(s,i))
             return False
@@ -2725,7 +2838,9 @@ class baseScannerClass:
 
         if self.blockDelim1:
             i = g.skip_ws_and_nl(s,i)
-            if not g.match(s,i,self.blockDelim1):
+            if kind == 'class' and self.sigId in self.anonymousClasses:
+                pass # Allow weird Pascal unit's.
+            elif not g.match(s,i,self.blockDelim1):
                 if trace and verbose: g.trace('no block',g.get_line(s,i))
                 return False
 
@@ -2763,7 +2878,9 @@ class baseScannerClass:
         return (
             g.match(s,i,self.lineCommentDelim) or
             g.match(s,i,self.lineCommentDelim2) or
-            g.match(s,i,self.blockCommentDelim1))
+            g.match(s,i,self.blockCommentDelim1) or
+            g.match(s,i,self.blockCommentDelim1_2)
+        )
     #@-node:ekr.20070711104014.1:startsComment
     #@+node:ekr.20070707094858.2:startsId
     def startsId(self,s,i):
@@ -3103,19 +3220,196 @@ class javaScriptScanner (baseScannerClass):
 #@+node:ekr.20070711104241.3:class pascalScanner
 class pascalScanner (baseScannerClass):
 
+    #@    @+others
+    #@+node:ekr.20080211065754:skipArgs
+    def skipArgs (self,s,i,kind):
+
+        '''Skip the argument or class list.  Return i, ok
+
+        kind is in ('class','function')'''
+
+        # Pascal interfaces have no argument list.
+        if kind == 'class':
+            return i, True
+
+        start = i
+        i = g.skip_ws_and_nl(s,i)
+        if not g.match(s,i,'('):
+            return start,kind == 'class'
+
+        i = self.skipParens(s,i)
+        # skipParens skips the ')'
+        if i >= len(s):
+            return start,False
+        else:
+            return i,True 
+    #@-node:ekr.20080211065754:skipArgs
+    #@+node:ekr.20080211065906:ctor
     def __init__ (self,importCommands,atAuto):
 
         # Init the base class.
         baseScannerClass.__init__(self,importCommands,atAuto=atAuto,language='pascal')
 
-        # Set the parser delims.
+        # Set the parser overrides.
+        self.anonymousClasses = ['interface']
         self.blockCommentDelim1 = '(*'
+        self.blockCommentDelim1_2 = '{'
         self.blockCommentDelim2 = '*)'
-        self.lineCommentDelim = '//'
+        self.blockCommentDelim2_2 = '}'
         self.blockDelim1 = 'begin'
         self.blockDelim2 = 'end'
-        self.classTags = []
+        self.blockDelim2Cruft = [';','.'] # For Delphi.
+        self.classTags = ['interface']
         self.functionTags = ['function','procedure','constructor','destructor',]
+        self.hasClasses = True
+        self.lineCommentDelim = '//'
+        self.strict = False
+    #@-node:ekr.20080211065906:ctor
+    #@+node:ekr.20080211070816:skipCodeBlock
+    def skipCodeBlock (self,s,i,kind):
+
+        '''Skip the code block in a function or class definition.'''
+
+        trace = False
+        start = i
+
+        if kind == 'class':
+            i = self.skipInterface(s,i)
+        else:
+            i = self.skipBlock(s,i,delim1=None,delim2=None)
+
+            if self.sigFailTokens:
+                i = g.skip_ws(s,i)
+                for z in self.sigFailTokens:
+                    if g.match(s,i,z):
+                        if trace: g.trace('failtoken',z)
+                        return start,False
+
+        if i > start:
+            i = self.skipNewline(s,i,kind)
+
+        if trace:
+            g.trace(g.callers())
+            g.trace('returns...\n',g.listToString(g.splitLines(s[start:i])))
+
+        return i,True
+    #@-node:ekr.20080211070816:skipCodeBlock
+    #@+node:ekr.20080211070945:skipInterface
+    def skipInterface(self,s,i):
+
+        '''Skip from the opening delim to *past* the matching closing delim.
+
+        If no matching is found i is set to len(s)'''
+
+        trace = False
+        start = i
+        delim2 = 'end.'
+        level = 0 ; start = i
+        startIndent = self.startSigIndent
+        if trace: g.trace('***','startIndent',startIndent,g.callers())
+        while i < len(s):
+            progress = i
+            if g.is_nl(s,i):
+                backslashNewline = i > 0 and g.match(s,i-1,'\\\n')
+                i = g.skip_nl(s,i)
+                if not backslashNewline and not g.is_nl(s,i):
+                    j, indent = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+                    line = g.get_line(s,j)
+                    if trace: g.trace('indent',indent,line)
+                    if indent < startIndent and line.strip():
+                        # An non-empty underindented line.
+                        # Issue an error unless it contains just the closing bracket.
+                        if level == 1 and g.match(s,j,delim2):
+                            pass
+                        else:
+                            if j not in self.errorLines: # No error yet given.
+                                self.errorLines.append(j)
+                                self.underindentedLine(line)
+            elif s[i] in (' ','\t',):
+                i += 1 # speed up the scan.
+            elif self.startsComment(s,i):
+                i = self.skipComment(s,i)
+            elif self.startsString(s,i):
+                i = self.skipString(s,i)
+            elif g.match(s,i,delim2):
+                i += len(delim2)
+                if trace: g.trace('returns\n',repr(s[start:i]))
+                return i
+
+            else: i += 1
+            assert progress < i
+
+        self.error('no interface')
+        if 1:
+            print '** no interface **'
+            i,j = g.getLine(s,start)
+            g.trace(i,s[i:j])
+        else:
+            if trace: g.trace('** no interface')
+        return start
+    #@-node:ekr.20080211070945:skipInterface
+    #@+node:ekr.20080211070056:skipSigTail
+    def skipSigTail(self,s,i,kind):
+
+        '''Skip from the end of the arg list to the start of the block.'''
+
+        trace = False and self.trace
+
+        # Pascal interface has no tail.
+        if kind == 'class':
+            return i,True
+
+        start = i
+        i = g.skip_ws(s,i)
+        for z in self.sigFailTokens:
+            if g.match(s,i,z):
+                if trace: g.trace('failToken',z,'line',g.skip_line(s,i))
+                return i,False
+        while i < len(s):
+            if self.startsComment(s,i):
+                i = self.skipComment(s,i)
+            elif g.match(s,i,self.blockDelim1):
+                if trace: g.trace(repr(s[start:i]))
+                return i,True
+            else:
+                i += 1
+        if trace: g.trace('no block delim')
+        return i,False
+    #@-node:ekr.20080211070056:skipSigTail
+    #@+node:ekr.20080211071959:putClass & helpers
+    def putClass (self,s,i,sigEnd,codeEnd,start,parent):
+
+        '''Create a node containing the entire interface.'''
+
+        # Enter a new class 1: save the old class info.
+        oldMethodName = self.methodName
+        oldStartSigIndent = self.startSigIndent
+
+        # Enter a new class 2: init the new class info.
+        self.indentRefFlag = None
+
+        class_kind = self.classId
+        class_name = self.sigId
+        headline = '%s %s' % (class_kind,class_name)
+        headline = headline.strip()
+        self.methodName = headline
+
+        # Compute the starting lines of the class.
+        prefix = self.createClassNodePrefix()
+
+        # Create the class node.
+        class_node = self.createHeadline(parent,'',headline)
+
+        # Put the entire interface in the body.
+        result = s[start:codeEnd]
+        self.appendTextToClassNode(class_node,result)
+
+        # Exit the new class: restore the previous class info.
+        self.methodName = oldMethodName
+        self.startSigIndent = oldStartSigIndent
+    #@-node:ekr.20080211071959:putClass & helpers
+    #@-others
+#@nonl
 #@-node:ekr.20070711104241.3:class pascalScanner
 #@+node:ekr.20070711090052.1:class phpScanner
 class phpScanner (baseScannerClass):
@@ -3342,7 +3636,7 @@ class pythonScanner (baseScannerClass):
     #@+node:ekr.20070803101619:skipSigTail
     # This must be overridden in order to handle newlines properly.
 
-    def skipSigTail(self,s,i):
+    def skipSigTail(self,s,i,kind):
 
         '''Skip from the end of the arg list to the start of the block.'''
 
