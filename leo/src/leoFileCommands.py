@@ -3240,7 +3240,8 @@ class baseFileCommands:
 
         c = self.c
         c.endEditing()
-        self.write_Leo_file(self.mFileName,True) # outlineOnlyFlag
+        self.write_Leo_file(self.mFileName,outlineOnlyFlag=True)
+        g.es('done',color='blue')
     #@-node:ekr.20031218072017.3050:writeOutlineOnly
     #@-node:ekr.20031218072017.3032:Writing
     #@-others
