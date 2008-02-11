@@ -388,7 +388,7 @@ class atFile:
         if at.errors == 0:
             g.es_print('check-derived-file passed',color='blue')
     #@-node:ekr.20070919133659:checkDerivedFile (atFile)
-    #@+node:ekr.20041005105605.19:openFileForReading
+    #@+node:ekr.20041005105605.19:openFileForReading (atFile)
     def openFileForReading(self,fileName,fromString=False):
 
         at = self
@@ -416,7 +416,7 @@ class atFile:
             except IOError:
                 at.error("can not open: '@file %s'" % (fn))
                 at.inputFile = None
-    #@-node:ekr.20041005105605.19:openFileForReading
+    #@-node:ekr.20041005105605.19:openFileForReading (atFile)
     #@+node:bwmulder.20041231170726:openForRead
     def openForRead(self, *args, **kw):
         """
