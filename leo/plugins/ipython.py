@@ -63,9 +63,6 @@ __version__ = '0.6'
 # 
 #     If it is possible several more settings would be possible.
 # 
-# - Improve the get-ipython-results command as Ville suggests by using 
-# StringLists.
-# 
 # - Allow get-ipython-results to store actual objects using Leo's uA 
 # mechanism.
 #@-at
@@ -216,23 +213,25 @@ class ipythonController:
 
         try:
             c = self.c
-            self.ipshell = IPShellEmbed() # Create object to be bound to .api.
+            #self.ipshell = IPShellEmbed() # Create object to be bound to .api.
+
             self.api = api = IPython.ipapi
-            self.ip = ip = api.get()
-            self.in_list, self.d_out = ip.IP.input_hist, ip.IP.output_hist
             self.message('creating IPython shell...')
             gIPythonStarted = True # Do this *before* calling ipshell.
-            c.inCommand = False # Disable the command lockout logic, just as for scripts.
-            sys.argv = []
             leox = leoInterface(c,g) # inject leox into the namespace.
             my_ns = { self.leoxName:leox }
-            api.launch_new_instance(my_ns)
+            ses = self.api.make_session(my_ns)
+            self.ip = ip = ses.IP.getapi()
+            self.in_list, self.d_out = ip.IP.input_hist, ip.IP.output_hist
+
+            c.inCommand = False # Disable the command lockout logic, just as for scripts.
+            sys.argv = []
+            ses.mainloop()
                 # Does not return until IPython closes!
             # self.ipshell() # This doesn't return until IPython closes!
         except Exception:
             self.error('exception creating IPython shell')
             g.es_exception()
-    #@nonl
     #@-node:ekr.20080201143319.10:startIPython
     #@+node:ekr.20080201150746.1:getIPythonResults
     def getIPythonResults (self,event=None):
