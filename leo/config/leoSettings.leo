@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.477886977887">
-	<global_window_position top="114" left="301" height="676" width="864"/>
+	<global_window_position top="114" left="301" height="656" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -84,7 +84,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="ETV" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20070926132045"><vh>Buttons</vh>
 <v t="ekr.20070926082407"><vh>@buttons</vh>
 <v t="ekr.20070926082256.1"><vh>@@button Beautify</vh></v>
@@ -1070,7 +1070,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20051123100536" a="E" annotate="7d71002e"><vh>Plugins</vh>
+<v t="ekr.20051123100536" annotate="7d71002e"><vh>Plugins</vh>
 <v t="ekr.20070417071249"><vh>@bool trace_plugins = False</vh></v>
 <v t="ekr.20041119034357.13"><vh>@bool use_plugins = True</vh></v>
 <v t="ekr.20071113084330"><vh>@bool warn_when_plugins_fail_to_load = True</vh></v>
@@ -1092,7 +1092,7 @@
 <v t="ekr.20060111091324.1"><vh>@bool fastgotonode_useKeyBinding = True</vh></v>
 <v t="ekr.20060111091324.2"><vh>@string fastgotonode_binding =  Shift-space</vh></v>
 </v>
-<v t="ekr.20080205103849" a="TV"><vh>ipython</vh>
+<v t="ekr.20080205103849"><vh>ipython</vh>
 <v t="ekr.20080205103849.1"><vh>@string ipython-interface-object-name = leox</vh></v>
 <v t="ekr.20080205104016"><vh>@string ipython-results-node-headline = @ipython-results</vh></v>
 <v t="ekr.20080205104127"><vh>@data ipython-bridge-startup-script</vh></v>
@@ -2458,7 +2458,7 @@ equal-sized-panes                   = None
 escape                              = None
 eval-expression                     = None
 exchange-point-mark                 = None
-execute-ipython-script              = None
+push-to-ipython                     = None
 execute-script                      = None
 exit-leo                            = None
 exit-named-mode                     = None
@@ -4369,7 +4369,7 @@ optionalCommandNames = [
     'next-slide-command','next-slide-show-command',
     'prev-slide-command','prev-slide-show-command',
     # The ipython plugin.
-    'start-ipython','get-ipython-results','execute-ipython-script',
+    'start-ipython','get-ipython-results','push-to-ipython',
 ]
 
 setNames = []
@@ -8571,7 +8571,7 @@ Comments lines starting with '#' are ignored.</t>
 
 start-ipython           = Alt-5
 get-ipython-results     = Alt-6
-execute-ipython-script  = Alt-7
+push-to-ipython         = Alt-7
 </t>
 <t tx="ekr.20080205103849"></t>
 <t tx="ekr.20080205103849.1"># An official setting supported by the ipython plugin.
