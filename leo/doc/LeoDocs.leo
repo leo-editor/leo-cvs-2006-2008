@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.524731182796">
-	<global_window_position top="49" left="212" height="910" width="877"/>
+	<global_window_position top="49" left="212" height="890" width="877"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -697,11 +697,11 @@
 <v t="ekr.20060430223116"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060527105211"><vh>Chapter 16: Debugging with Leo</vh>
-<v t="ekr.20060527105617"><vh>@rst html\debuggers.html</vh>
+<v t="ekr.20060527105211" a="E"><vh>Chapter 16: Debugging with Leo</vh>
+<v t="ekr.20060527105617" a="E"><vh>@rst html\debuggers.html</vh>
 <v t="ekr.20060527105804"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070116062405"><vh>Using g.trace and g.pdb</vh></v>
-<v t="ekr.20060527112801"><vh>Settings for winpdb</vh></v>
+<v t="ekr.20060527112801" a="TV"><vh>Settings for winpdb</vh></v>
 <v t="ekr.20070115172724"><vh>Debugging scripts with winpdb</vh>
 <v t="ekr.20070115172724.1"><vh>The debug command</vh></v>
 <v t="ekr.20070115172724.2"><vh>@button winpdb</vh></v>
@@ -757,19 +757,19 @@
 </v>
 </v>
 <v t="ekr.20080203101507" a="E"><vh>Chapter 21: IPython bridge</vh>
-<v t="ekr.20080203101507.1" a="E"><vh>@rst html\IPythonBridge.html</vh>
+<v t="ekr.20080203101507.1"><vh>@rst html\IPythonBridge.html</vh>
 <v t="ekr.20080203101507.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20080204100523"><vh>Startup</vh></v>
 <v t="ekr.20080204100523.1"><vh>Commands</vh></v>
 <v t="ekr.20080204100523.2"><vh>Scripting IPython from Leo</vh></v>
 <v t="ekr.20080205080801"><vh>Scripting Leo from IPython</vh></v>
 <v t="ekr.20080204100523.3"><vh>User Settings</vh></v>
-<v t="ekr.20080210101336" a="TV"><vh>Acknowledgement</vh></v>
+<v t="ekr.20080210101336"><vh>Acknowledgement</vh></v>
 <v t="ekr.20080203101507.10"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
 <v t="EKR.20040524104904.274"><vh>Appendices</vh>
-<v t="ekr.20050831231852" a="E"><vh>@rst html\appendices.html</vh>
+<v t="ekr.20050831231852"><vh>@rst html\appendices.html</vh>
 <v t="ekr.20050831232205"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.351"><vh>Bugs</vh></v>
 <v t="ekr.20061009074501"><vh>Coming soon</vh>
@@ -785,8 +785,8 @@
 <v t="ekr.20050901071613"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="EKR.20040524104904.380" a="E"><vh>Glossary</vh>
-<v t="ekr.20050901071041" a="E"><vh>@rst html\glossary.html</vh>
+<v t="EKR.20040524104904.380"><vh>Glossary</vh>
+<v t="ekr.20050901071041"><vh>@rst html\glossary.html</vh>
 <v t="ekr.20050901071300"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050901073048"><vh>@rst-no-head glossary</vh></v>
 <v t="ekr.20050901083017"><vh>@rst-no-head end stuff</vh></v>
@@ -24990,7 +24990,11 @@ The path to the file to be written by the execute-script command. Notes:
 - Use ``/`` as the path delimiter, regardless of platform.
 - The default path is ``../test/scriptFile.py`` if no path is given.
 - The path starts at g.app.loadDir, so for example ``../test/scriptFile.py`` is equivalent to ``leo/test/scriptFile.py``.
-- The filename should end in ``.py``.</t>
+- The filename should end in ``.py``.
+
+``@string debugger_path`` = None
+
+</t>
 <t tx="ekr.20060529053407">@ignore can only be used in the root node of @file trees.  It tells Leo to ignore the tree.
 
 The @ignore directive can not be used elsewhere in @thin trees and @file trees
@@ -33893,7 +33897,8 @@ See `Scripting IPython from Leo`_ for full details.</t>
 - The get-ipython-results command creates results nodes for all results computed
   by IPython since the last time this command was run.
 
-- The execute-ipython-script command executes the body text of the presently
+- The push-to-ipython command pushes data to IPython.
+  By default, itexecutes the body text of the presently
   selected node in IPython.
 </t>
 <t tx="ekr.20080204100523.2">Just as c and g provide full access to all aspects of Leo,
@@ -33918,15 +33923,15 @@ To simulate the get-ipython-results command::
     x = c.ipythonController
     if x and x.started(): x.getIpythonResults()
 
-To simulate the execute-ipython-script command::
+To simulate the push-to-ipython command::
 
     x = c.ipythonController
-    if x and x.started(): x.executeIpythonScript()
+    if x and x.started(): x.pushToIPython()
 
 To run a given script in IPython::
 
     x = c.ipythonController
-    if x and x.started(): x.executeIpythonScript(script=script)
+    if x and x.started(): x.pushToIPython(script=script)
     </t>
 <t tx="ekr.20080204100523.3">This plugin honors the following user options, defined in leoSettings.leo, etc.
 
