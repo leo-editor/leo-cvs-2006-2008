@@ -9,7 +9,7 @@ See: http://webpages.charter.net/edreamleo/coloring.html for documentation.
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '1.3'
+__version__ = '1.4'
 
 trace_all_matches = False
 trace_leo_matches = False
@@ -48,6 +48,14 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # multiple body editors.
 # 1.2: EKR: Fixed off-by-one bug in 'end' hack in putNewTags.
 # 1.3: EKR: Fixed off-by-one bug in match_doc_part.
+# 1.4: EKR:
+# - Better recovery of matcher errors.
+# - Fixed bug in match_doc_part.
+# - Don't try to import non-existent language files.
+#   This suppresses errors for 'p', 'pe', and 'per' when typing @langauge 
+# perl.
+# ** Important: regexp matching can hang for complex regexp's.
+#    The fix for perl was to disable two perl rules.
 #@-at
 #@nonl
 #@-node:ekr.20071010193720.2:<< version history >>
@@ -309,7 +317,7 @@ def match_doc_part (self,s,i):
         else:
             j = k + 2
     j = n - 1
-    return j - i
+    return max(0,j - i) # Bug fix: 2008/2/10
 #@nonl
 #@-node:ekr.20071010193720.12:match_doc_part
 #@+node:ekr.20071010193720.13:match_leo_keywords
@@ -747,7 +755,11 @@ class colorizer:
         else:
             # g.trace('****',language,rulesetName)
             path = g.os_path_join(g.app.loadDir,'..','modes')
-            mode = g.importFromPath (language,path)
+            # Bug fix: 2008/2/10: Don't try to import a non-existent language.
+            fileName = g.os_path_join(path,'%s.py' % (language))
+            if g.os_path_exists(fileName):
+                mode = g.importFromPath (language,path)
+            else: mode = None
             if not mode:
                 # Create a dummy bunch to limit recursion.
                 self.modes [rulesetName] = self.modeBunch = g.Bunch(
@@ -786,7 +798,6 @@ class colorizer:
             self.addImportedRules(mode,self.rulesDict,rulesetName)
             self.updateDelimsTables()
             return True
-    #@nonl
     #@+node:ekr.20071010193720.27:nameToRulesetName
     def nameToRulesetName (self,name):
 
@@ -1474,7 +1485,7 @@ class colorizer:
 
         '''Fully recolor s.'''
 
-        trace = self.trace and self.verbose
+        trace = False or self.trace and self.verbose
         if trace: g.trace(self.language,'thread',self.threadCount,'len(s)',len(s))
         i = 0
         while i < len(s):
@@ -1485,10 +1496,13 @@ class colorizer:
             if self.killFlag:
                 if trace: g.trace('*** killed %d' % self.threadCount)
                 return
-            for f in self.rulesDict.get(s[i],[]):
+            functions = self.rulesDict.get(s[i],[])
+            for f in functions:
+                if trace: g.trace('i',i,'f',f)
                 n = f(self,s,i)
-                if n is None:
+                if n is None or n < 0:
                     g.trace('Can not happen: matcher returns: %s f = %s' % (repr(n),repr(f)))
+                    break
                 elif n > 0:
                     i += n ; break
             else:
@@ -1696,6 +1710,7 @@ class colorizer:
         '''Return the length of the matching text if seq (a regular expression) matches the present position.'''
 
         if self.verbose: g.trace(g.callers(1),i,repr(s[i:i+20]),'pattern',pattern)
+        trace = False
 
         try:
             flags = re.MULTILINE
@@ -1707,7 +1722,9 @@ class colorizer:
             return 0
 
         # Match succeeds or fails more quickly than search.
-        self.match_obj = mo = re_obj.match(s,i) # re_obj.search(s,i)
+        # g.trace('before')
+        self.match_obj = mo = re_obj.match(s,i) # re_obj.search(s,i) 
+        # g.trace('after')
 
         if mo is None:
             return 0
@@ -1715,9 +1732,10 @@ class colorizer:
             start, end = mo.start(), mo.end()
             if start != i: # Bug fix 2007-12-18: no match at i
                 return 0
-            # g.trace('pattern',pattern)
-            # g.trace('match: %d, %d, %s' % (start,end,repr(s[start: end])))
-            # g.trace('groups',mo.groups())
+            if trace:
+                g.trace('pattern',pattern)
+                g.trace('match: %d, %d, %s' % (start,end,repr(s[start: end])))
+                g.trace('groups',mo.groups())
             return end - start
     #@-node:ekr.20071010193720.65:match_regexp_helper
     #@+node:ekr.20071010193720.66:match_seq
@@ -1758,7 +1776,9 @@ class colorizer:
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
         if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
 
+        # g.trace('before')
         n = self.match_regexp_helper(s,i,regexp)
+        # g.trace('after')
         j = i + n # Bug fix: 2007-12-18
         assert (j-i == n)
         self.colorRangeWithTag(s,i,j,kind,delegate=delegate)
