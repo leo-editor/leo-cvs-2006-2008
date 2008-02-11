@@ -120,6 +120,10 @@ IGNORE_CASE
 IMG
 INI
 IOError
+IPShellEmbed
+IPython
+IPythonBridge
+IPython_
 ImportError
 Init
 InstanceType
@@ -377,8 +381,10 @@ Zhang
 Zope
 Zvi
 __class__
+__doc__
 __init__
 __jEdit_colorizer__
+_ip
 a1
 a2
 a3
@@ -858,6 +864,7 @@ exportHeadlines
 exportTests
 expr_names
 expression_number
+extensionAPI_
 extensionsDir
 f1
 f2
@@ -976,6 +983,7 @@ getBaseDirectory
 getBool
 getCaseDataNodes
 getColorizer
+getData
 getDirectory
 getFloat
 getFont
@@ -1140,6 +1148,7 @@ interlinkable
 intermediateFile
 internet
 ints
+ip
 isAncestorOf
 isAtAllNode
 isAtFileNode
@@ -1305,6 +1314,7 @@ leofile
 leopath
 leosentinel
 leosetup
+leox
 level1
 levelSpaces
 lf
@@ -1486,6 +1496,7 @@ no_word_break
 no_word_sep
 nocolor
 node3
+node9
 nodeAfterTree
 nodeIndices
 node_begin_marker
@@ -1865,6 +1876,7 @@ scanHeader
 scanHeaderForThin
 scanText
 scanText4
+scipy
 script1
 script2
 scriptButton
@@ -2004,8 +2016,10 @@ stackalloc
 stanford
 start1
 start2
+startIPython
 startfile
 startswith
+startupScript
 state_dict
 status_field
 status_fields
@@ -2108,6 +2122,7 @@ theIter
 theKeyword
 theList
 theObject
+theResult
 theType
 the_news_at_10
 thinFile
