@@ -899,6 +899,7 @@ class configClass:
     encodingIvarsDict = {'_hash':'encodingIvarsDict'}
 
     encodingIvarsData = (
+        ("default_at_auto_file_encoding","string","utf-8"),
         ("default_derived_file_encoding","string","utf-8"),
         ("new_leo_file_encoding","string","UTF-8"),
             # Upper case for compatibility with previous versions.
