@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.477886977887">
-	<global_window_position top="114" left="301" height="656" width="864"/>
+	<global_window_position top="114" left="301" height="636" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -84,7 +84,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="ETV" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20070926132045"><vh>Buttons</vh>
 <v t="ekr.20070926082407"><vh>@buttons</vh>
 <v t="ekr.20070926082256.1"><vh>@@button Beautify</vh></v>
@@ -279,24 +279,27 @@
 </v>
 </v>
 </v>
-<v t="ekr.20061003173413"><vh>File options</vh>
+<v t="ekr.20061003173413" a="E"><vh>File options</vh>
+<v t="ekr.20041119034357.7"><vh>.leo file options</vh>
+<v t="ekr.20041119034357.8"><vh>@string output_initial_comment = None</vh></v>
+<v t="ekr.20041119034357.9"><vh>@string stylesheet = ekr_test</vh></v>
+<v t="ekr.20061004150211"><vh>@bool use_sax_based_read = False</vh></v>
+</v>
 <v t="ekr.20041119034357.5"><vh>@bool read_only = False</vh></v>
 <v t="ekr.20061009190510"><vh>@bool write_recent_files_as_needed = True</vh></v>
-<v t="ekr.20041119034357.11"><vh>directory options</vh>
-<v t="ekr.20041119041304"><vh>@bool create_nonexistent_directories = False</vh></v>
-<v t="ekr.20041119041304.1"><vh>@string relative_path_base_directory = .</vh></v>
-<v t="ekr.20061210091932"><vh>@bool chdir_to_relative_path = False</vh></v>
-</v>
+<v t="ekr.20080212084020" a="TV"><vh>@string default_at_auto_file_encoding = utf-8</vh></v>
+<v t="ekr.20041119042929.9"><vh>@string default_derived_file_encoding = utf-8</vh></v>
+<v t="ekr.20041119042929.10"><vh>@string new_leo_file_encoding = utf-8</vh></v>
 <v t="ekr.20041119034357.12"><vh>derived files options</vh>
 <v t="ekr.20041119041747"><vh>@string output_newline = nl</vh></v>
 <v t="ekr.20041119041747.1"><vh>@string trailing_body_newlines = one</vh></v>
 <v t="ekr.20041119041747.4"><vh>@bool write_strips_blank_lines = True</vh></v>
 <v t="ekr.20070419103554"><vh>@bool force_newlines_in_at_nosent_bodies = True</vh></v>
 </v>
-<v t="ekr.20041119034357.7"><vh>.leo file options</vh>
-<v t="ekr.20041119034357.8"><vh>@string output_initial_comment = None</vh></v>
-<v t="ekr.20041119034357.9"><vh>@string stylesheet = ekr_test</vh></v>
-<v t="ekr.20061004150211"><vh>@bool use_sax_based_read = False</vh></v>
+<v t="ekr.20041119034357.11"><vh>directory options</vh>
+<v t="ekr.20041119041304"><vh>@bool create_nonexistent_directories = False</vh></v>
+<v t="ekr.20041119041304.1"><vh>@string relative_path_base_directory = .</vh></v>
+<v t="ekr.20061210091932"><vh>@bool chdir_to_relative_path = False</vh></v>
 </v>
 </v>
 <v t="ekr.20041119034357.20" annotate="7d71002e"><vh>Find/Change panel</vh>
@@ -1218,6 +1221,7 @@
 <v t="ekr.20051025085144.1"><vh>@string aspell_bin_dir = c:\aspell\bin</vh></v>
 </v>
 <v t="ekr.20041119034357.15"><vh>Unicode options</vh>
+<v t="ekr.20080212084020"><vh>@string default_at_auto_file_encoding = utf-8</vh></v>
 <v t="ekr.20041119042929.9"><vh>@string default_derived_file_encoding = utf-8</vh></v>
 <v t="ekr.20041119042929.10"><vh>@string new_leo_file_encoding = utf-8</vh></v>
 <v t="ekr.20041119042929.11"><vh>@string tk_encoding = None</vh></v>
@@ -8593,5 +8597,7 @@ print 'this is the ipython-bridge-startup-script'</t>
 
 ../plugins/leoPlugins.leo
 ../doc/LeoDocs.leo</t>
+<t tx="ekr.20080212084020">The encoding used for files imported by @auto if no @encoding directive is in effect.
+Default is UTF-8 (case not important).</t>
 </tnodes>
 </leo_file>
