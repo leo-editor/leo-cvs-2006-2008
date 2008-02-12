@@ -209,6 +209,7 @@ class atFile:
         self.output_newline = g.getOutputNewline(c=c)
 
         # Set by scanHeader when reading and scanAllDirectives when writing.
+        self.at_auto_encoding = c.config.default_at_auto_file_encoding
         self.encoding = c.config.default_derived_file_encoding
         self.endSentinelComment = ""
         self.startSentinelComment = ""
