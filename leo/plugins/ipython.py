@@ -226,13 +226,16 @@ class ipythonController:
             my_ns = { self.leoxName:leox }
             ses = self.api.make_session(my_ns)
             self.ip = ip = ses.IP.getapi()
+            try:
+                self.ip.ex('import ipy_leo')
+            except ImportError:
+                g.es("ipy_leo.py extension not available - consider upgrading your IPython!")
             self.in_list, self.d_out = ip.IP.input_hist, ip.IP.output_hist
 
             c.inCommand = False # Disable the command lockout logic, just as for scripts.
             sys.argv = []
             ses.mainloop()
                 # Does not return until IPython closes!
-            # self.ipshell() # This doesn't return until IPython closes!
         except Exception:
             self.error('exception creating IPython shell')
             g.es_exception()
@@ -293,6 +296,14 @@ class ipythonController:
         else:
             c = self.c ; p = c.currentPosition()
             sys.argv = [] # Clear the argv vector.
+            try:
+                # if ipython has defined leox.push, call push(p)
+                push = self.ip.user_ns['leox'].push
+                push(p)
+                return
+            except AttributeError:
+                # ipython has not defined 'push' (old version?). Just execute the node
+                pass
 
             # Get the script.
             if script is None:
