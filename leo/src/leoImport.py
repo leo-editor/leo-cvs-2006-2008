@@ -760,8 +760,8 @@ class leoImportCommands:
             self.error("No absolute directory specified anywhere.")
             self.default_directory = ""
     #@-node:ekr.20080211085914:scanDefaultDirectory (leoImport)
-    #@+node:ekr.20031218072017.1463:setEncoding
-    def setEncoding (self,p=None):
+    #@+node:ekr.20031218072017.1463:setEncoding (leoImport)
+    def setEncoding (self,p=None,atAuto=False):
 
         # scanDirectives checks the encoding: may return None.
         c = self.c
@@ -770,11 +770,14 @@ class leoImportCommands:
         encoding = theDict.get("encoding")
         if encoding and g.isValidEncoding(encoding):
             self.encoding = encoding
+        elif atAuto:
+            self.encoding = c.config.default_at_auto_file_encoding
         else:
-            self.encoding = g.app.tkEncoding # 2/25/03
+            # This is not great.
+            self.encoding = g.app.tkEncoding
 
-        # print self.encoding
-    #@-node:ekr.20031218072017.1463:setEncoding
+        # g.trace(self.encoding)
+    #@-node:ekr.20031218072017.1463:setEncoding (leoImport)
     #@-node:ekr.20031218072017.3305:Utilities
     #@+node:ekr.20031218072017.3209:Import
     #@+node:ekr.20031218072017.3210:createOutline (leoImport)
@@ -788,7 +791,7 @@ class leoImportCommands:
         filename = g.os_path_join(self.default_directory,fileName)
         junk,self.fileName = g.os_path_split(fileName)
         self.methodName,self.fileType = g.os_path_splitext(self.fileName)
-        self.setEncoding(p=parent)
+        self.setEncoding(p=parent,atAuto=atAuto)
         # g.trace(self.fileName,self.fileType)
         # All file types except the following just get copied to the parent node.
         if not ext: ext = self.fileType
@@ -800,7 +803,6 @@ class leoImportCommands:
                 fileName = g.os_path_normpath(fileName)
                 theFile = open(fileName)
                 s = theFile.read()
-                s = g.toUnicode(s,self.encoding)
                 theFile.close()
             except IOError:
                 g.es("can not open %s%s" % (g.choose(atAuto,'@auto ',''),fileName),color='red')
@@ -808,6 +810,24 @@ class leoImportCommands:
                 return None
             #@-node:ekr.20031218072017.3211:<< Read file into s >>
             #@nl
+
+        #@    << convert s to the proper encoding >>
+        #@+node:ekr.20080212092908:<< convert s to the proper encoding >>
+        if s and fileName.endswith('.py'):
+            # Python's encoding comments override everything else.
+            lines = g.splitLines(s)
+            tag = '# -*- coding:' ; tag2 = '-*-'
+            n1,n2 = len(tag),len(tag2)
+            line1 = lines[0].strip()
+            if line1.startswith(tag) and line1.endswith(tag2):
+                e = line1[n1:-n2].strip()
+                if e and g.isValidEncoding(e):
+                    # print 'found',e,'in',line1
+                    self.encoding = e
+
+        s = g.toUnicode(s,self.encoding)
+        #@-node:ekr.20080212092908:<< convert s to the proper encoding >>
+        #@nl
 
         # Create the top-level headline.
         if atAuto:
