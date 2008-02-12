@@ -1409,13 +1409,15 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
     filename = g.os_path_join(self.default_directory,fileName)
     junk,self.fileName = g.os_path_split(fileName)
     self.methodName,self.fileType = g.os_path_splitext(self.fileName)
-    self.setEncoding(p=parent)
+    self.setEncoding(p=parent,atAuto=atAuto)
     # g.trace(self.fileName,self.fileType)
     # All file types except the following just get copied to the parent node.
     if not ext: ext = self.fileType
     ext = ext.lower()
     if not s:
         << Read file into s >>
+
+    << convert s to the proper encoding >>
 
     # Create the top-level headline.
     if atAuto:
@@ -1465,13 +1467,27 @@ try:
     fileName = g.os_path_normpath(fileName)
     theFile = open(fileName)
     s = theFile.read()
-    s = g.toUnicode(s,self.encoding)
     theFile.close()
 except IOError:
     g.es("can not open %s%s" % (g.choose(atAuto,'@auto ',''),fileName),color='red')
     leoTest.fail()
     return None
 #@-node:ekr.20031218072017.3211:<< Read file into s >>
+#@+node:ekr.20080212092908:<< convert s to the proper encoding >>
+if s and fileName.endswith('.py'):
+    # Python's encoding comments override everything else.
+    lines = g.splitLines(s)
+    tag = '# -*- coding:' ; tag2 = '-*-'
+    n1,n2 = len(tag),len(tag2)
+    line1 = lines[0].strip()
+    if line1.startswith(tag) and line1.endswith(tag2):
+        e = line1[n1:-n2].strip()
+        if e and g.isValidEncoding(e):
+            # print 'found',e,'in',line1
+            self.encoding = e
+
+s = g.toUnicode(s,self.encoding)
+#@-node:ekr.20080212092908:<< convert s to the proper encoding >>
 #@-node:ekr.20031218072017.3210:createOutline (leoImport)
 #@-node:ekr.20071212075450:Make Import to @file create @file nodes
 #@+node:ekr.20071210092032:Fixed bug: rst3 plugin now finds default.css file correctly
@@ -5158,13 +5174,15 @@ def createOutline (self,fileName,parent,atAuto=False,s=None,ext=None):
     filename = g.os_path_join(self.default_directory,fileName)
     junk,self.fileName = g.os_path_split(fileName)
     self.methodName,self.fileType = g.os_path_splitext(self.fileName)
-    self.setEncoding(p=parent)
+    self.setEncoding(p=parent,atAuto=atAuto)
     # g.trace(self.fileName,self.fileType)
     # All file types except the following just get copied to the parent node.
     if not ext: ext = self.fileType
     ext = ext.lower()
     if not s:
         << Read file into s >>
+
+    << convert s to the proper encoding >>
 
     # Create the top-level headline.
     if atAuto:
@@ -5214,13 +5232,27 @@ try:
     fileName = g.os_path_normpath(fileName)
     theFile = open(fileName)
     s = theFile.read()
-    s = g.toUnicode(s,self.encoding)
     theFile.close()
 except IOError:
     g.es("can not open %s%s" % (g.choose(atAuto,'@auto ',''),fileName),color='red')
     leoTest.fail()
     return None
 #@-node:ekr.20031218072017.3211:<< Read file into s >>
+#@+node:ekr.20080212092908:<< convert s to the proper encoding >>
+if s and fileName.endswith('.py'):
+    # Python's encoding comments override everything else.
+    lines = g.splitLines(s)
+    tag = '# -*- coding:' ; tag2 = '-*-'
+    n1,n2 = len(tag),len(tag2)
+    line1 = lines[0].strip()
+    if line1.startswith(tag) and line1.endswith(tag2):
+        e = line1[n1:-n2].strip()
+        if e and g.isValidEncoding(e):
+            # print 'found',e,'in',line1
+            self.encoding = e
+
+s = g.toUnicode(s,self.encoding)
+#@-node:ekr.20080212092908:<< convert s to the proper encoding >>
 #@-node:ekr.20031218072017.3210:createOutline (leoImport)
 #@+node:ekr.20080211085914:scanDefaultDirectory (leoImport)
 def scanDefaultDirectory(self,p):

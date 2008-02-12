@@ -2873,6 +2873,24 @@ def tkColorToWxColor (self, color):
     return d.get(color)
 #@nonl
 #@-node:ekr.20070228074312.43:tkColorToWxColor
+#@+node:ekr.20080212084648:atFile.scanDefaultAtAutoEncoding (not used)(
+def scanDefaultAtAutoEncoding(self,p):
+
+    '''Set .at_auto_encoding by scanning for @encoding directives.'''
+
+    c = self.c
+
+    for p in p.self_and_parents_iter():
+        d = g.get_directives_dict(p)
+        e = g.scanAtEncodingDirective(d)
+        if e: break
+    else:
+        # Default to the user setting.
+        e = c.config.default_at_auto_file_encoding
+
+    # g.trace('returns',e)
+    return e
+#@-node:ekr.20080212084648:atFile.scanDefaultAtAutoEncoding (not used)(
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl
