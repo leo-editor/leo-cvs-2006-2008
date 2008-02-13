@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.524731182796">
-	<global_window_position top="49" left="212" height="870" width="877"/>
+	<global_window_position top="49" left="212" height="830" width="877"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -3544,9 +3544,11 @@
 <v t="ekr.20080212221711.2" a="E"><vh>Fixed perl syntax coloring bug</vh></v>
 <v t="ekr.20080212221711.4"><vh>Removed warnings while typing @language directives</vh></v>
 <v t="ekr.20080212221711.15" a="E"><vh>Fixed pascal import bug</vh></v>
-<v t="ekr.20080212221711.35" a="E"><vh>write-outline-only command now prints a 'done' message</vh></v>
+<v t="ekr.20080212221711.35"><vh>write-outline-only command now prints a 'done' message</vh></v>
+<v t="ekr.20080213094948.1" a="E"><vh>Worked around problems with winpdb</vh></v>
+<v t="ekr.20080213094948.4"><vh>Fixed new problem with image.py</vh></v>
 </v>
-<v t="ekr.20080212221711.32" a="E"><vh>New features</vh>
+<v t="ekr.20080212221711.32"><vh>New features</vh>
 <v t="ekr.20080212221711.33"><vh>All import commands now honor @path</vh></v>
 <v t="ekr.20080212221711.34"><vh>Added ipython plugin</vh></v>
 <v t="ekr.20080212221711.47"><vh>Added support for @bool open_with_save_on_update setting</vh></v>
@@ -34071,7 +34073,7 @@ The highlights of Leo 4.4.7:
   See http://webpages.charter.net/edreamleo/IPythonBridge.html
 - Improved handling of unicode encodings in @auto files.
 - All import commands now support @path directives in ancestor nodes.
-- Fixes several minor bugs.
+- Fixed several minor bugs.
 
 Links:
 ------
@@ -34080,5 +34082,9 @@ Forum:    http://groups.google.com/group/leo-editor
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20080213094948.1">There appear to be problems with Python's subprocess module on Ubuntu.</t>
+<t tx="ekr.20080213094948.4">The version of PIL that ships with Ubuntu (and presumably Debian and maybe some
+other distributions) no longer includes the ImageTk module. ImageTk is now
+located in the python- imaging-tk package.</t>
 </tnodes>
 </leo_file>
