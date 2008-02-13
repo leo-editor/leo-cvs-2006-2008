@@ -1225,13 +1225,12 @@ class debugCommandsClass (baseEditCommandsClass):
         if not filename: return
 
         # Invoke the debugger, retaining the present environment.
-        args = [sys.executable, winpdb, '-t', filename]
         os.chdir(g.app.loadDir)
-        if subprocess:
+        if False and subprocess:
             cmdline = '%s %s -t %s' % (python,winpdb,filename)
             subprocess.Popen(cmdline)
         else:
-            os.chdir(g.app.loadDir)
+            args = [sys.executable, winpdb, '-t', filename]
             os.spawnv(os.P_NOWAIT, python, args)
     #@+node:ekr.20060521140213:findDebugger
     def findDebugger (self):
