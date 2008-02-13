@@ -153,7 +153,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20050116151024" a="TV"><vh>To do (someday)</vh>
+<v t="ekr.20050116151024"><vh>To do (someday)</vh>
 <v t="ekr.20050116150710.90"><vh>Handle installation with Python 2.4 installed for Current User only</vh></v>
 </v>
 <v t="ekr.20040629175400"><vh>Pychecker stuff</vh>
@@ -221,8 +221,8 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846"><vh>Distribution files</vh>
-<v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
+<v t="EKR.20040519090846" a="E"><vh>Distribution files</vh>
+<v t="ekr.20070614105133.3" a="TV" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
 </v>
@@ -4377,7 +4377,7 @@ import leoGlobals as g
 &lt;&lt; define long_description &gt;&gt;
 &lt;&lt; define version number in setup.py &gt;&gt;
 
-if 0:
+if 1:
     setup (
         name='leo',
         version=version,
@@ -4392,7 +4392,8 @@ if 0:
         long_description = long_description,
         # keywords = 'outline, outliner, ide, editor, literate programming',
     )
-</t>
+
+print ; print 'setup.py done'</t>
 <t tx="ekr.20070614110334">long_description = \
 """Leo is an IDE, an outliner, a scripting and unit testing framework based on Python,
 a literate programming tool, a data organizer and a project manager.

@@ -22,7 +22,7 @@ Download tcl/Tk from http://tcl.activestate.com/software/tcltk/
 # print repr(long_description)
 version='4.4.7-beta-1' # No spaces and no trailing comma.
 
-if 0:
+if 1:
     setup (
         name='leo',
         version=version,
@@ -37,3 +37,5 @@ if 0:
         long_description = long_description,
         # keywords = 'outline, outliner, ide, editor, literate programming',
     )
+
+print ; print 'setup.py done'
