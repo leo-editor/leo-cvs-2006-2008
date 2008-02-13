@@ -22,24 +22,31 @@ Tk = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
 try:
     import ImageTk
 except ImportError:
-    ImageTk = None
-#@nonl
+    # ImageTk has moved to PIL on some systems.
+    try:
+        from PIL import ImageTk
+    except ImportError:
+        print 'image.py: can not import ImageTk'
+        ImageTk = None
+
+
 #@-node:ekr.20050101090207.1:<< imports >>
 #@nl
 #@<< version history >>
 #@+node:ekr.20060619092335:<< version history >>
 #@@nocolor
-
 #@+at
 # 
 # 1.3 EKR: Attempt to use ImageTk if it exists.
 # Does not work on my machine, but that may be an installation problem.
+# 
+# 1.4 EKR: Import ImageTk from PIL if the first import fails.
 #@-at
 #@nonl
 #@-node:ekr.20060619092335:<< version history >>
 #@nl
 
-__version__ = "1.3" # Set version for the plugin handler.
+__version__ = "1.4" # Set version for the plugin handler.
 
 import os
 
