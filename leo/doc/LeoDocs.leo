@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.524731182796">
-	<global_window_position top="49" left="212" height="890" width="877"/>
+	<global_window_position top="49" left="212" height="870" width="877"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -697,11 +697,11 @@
 <v t="ekr.20060430223116"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060527105211" a="E"><vh>Chapter 16: Debugging with Leo</vh>
-<v t="ekr.20060527105617" a="E"><vh>@rst html\debuggers.html</vh>
+<v t="ekr.20060527105211"><vh>Chapter 16: Debugging with Leo</vh>
+<v t="ekr.20060527105617"><vh>@rst html\debuggers.html</vh>
 <v t="ekr.20060527105804"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070116062405"><vh>Using g.trace and g.pdb</vh></v>
-<v t="ekr.20060527112801" a="TV"><vh>Settings for winpdb</vh></v>
+<v t="ekr.20060527112801"><vh>Settings for winpdb</vh></v>
 <v t="ekr.20070115172724"><vh>Debugging scripts with winpdb</vh>
 <v t="ekr.20070115172724.1"><vh>The debug command</vh></v>
 <v t="ekr.20070115172724.2"><vh>@button winpdb</vh></v>
@@ -1129,7 +1129,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20071217093444"><vh>What's New in Leo 4.4.6</vh>
 <v t="ekr.20071217093444.1"><vh>@rst html\new-4-4-6.html</vh>
@@ -3535,10 +3535,24 @@
 <v t="ekr.20080115093848.23"><vh>Don't mark nodes dirty if insert-icon is cancelled</vh></v>
 </v>
 </v>
-</v>
-</v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
 <v t="ekr.20080126090039"><vh>leo 4.4.6 final</vh></v>
+</v>
+</v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20080212221734" a="ETV"><vh>leo 4.4.7 b1 </vh>
+<v t="ekr.20080212221711.1"><vh>Fixed bugs</vh>
+<v t="ekr.20080212221711.2" a="E"><vh>Fixed perl syntax coloring bug</vh></v>
+<v t="ekr.20080212221711.4"><vh>Removed warnings while typing @language directives</vh></v>
+<v t="ekr.20080212221711.15" a="E"><vh>Fixed pascal import bug</vh></v>
+<v t="ekr.20080212221711.35" a="E"><vh>write-outline-only command now prints a 'done' message</vh></v>
+</v>
+<v t="ekr.20080212221711.32" a="E"><vh>New features</vh>
+<v t="ekr.20080212221711.33"><vh>All import commands now honor @path</vh></v>
+<v t="ekr.20080212221711.34"><vh>Added ipython plugin</vh></v>
+<v t="ekr.20080212221711.47"><vh>Added support for @bool open_with_save_on_update setting</vh></v>
+<v t="ekr.20080212221711.26" a="E"><vh>Improved handling of unicode for @auto files</vh></v>
+</v>
+</v>
 </v>
 </v>
 </vnodes>
@@ -34021,5 +34035,50 @@ The discussions at
 http://sourceforge.net/forum/forum.php?thread_id=1911662&amp;forum_id=10226
 document how the goal of close cooperation between Leo and IPython went from
 vague dream to completed reality over the span of about 10 days.</t>
+<t tx="ekr.20080212221711.1"></t>
+<t tx="ekr.20080212221711.2"></t>
+<t tx="ekr.20080212221711.4"></t>
+<t tx="ekr.20080212221711.15">http://groups.google.com/group/leo-editor/browse_thread/thread/4fa4709969fc04d</t>
+<t tx="ekr.20080212221711.26">When reading an @auto tree, createOutline now does the following:
+    
+1. When importing Python files, createOutline uses the encoding implied by
+Python's # -*- coding line. This line must be the first line of the imported file.
+
+2. Otherwise, createOutline scans the @auto node and its ancestors for Leo's @encoding directive.
+
+3. If no such @encoding directive is found, createOutline uses the encoding specified by the setting: @string default_at_auto_file_encoding = utf-8
+
+4. If this setting does not exist, the utf-8 encoding is used.
+</t>
+<t tx="ekr.20080212221711.32"></t>
+<t tx="ekr.20080212221711.33"></t>
+<t tx="ekr.20080212221711.34"></t>
+<t tx="ekr.20080212221711.35"></t>
+<t tx="ekr.20080212221711.47">If the @bool open_with_save_on_update setting is True,
+Leo will automatically save the outline whenever an external editor
+changes the outline.</t>
+<t tx="ekr.20080212221734">Leo 4.4.7 beta 1                           February 12, 2008
+
+Leo 4.4.7 beta 1 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.7:
+----------------------------
+- The ipython plugin creates a simple, powerful, effective bridge between IPython and Leo.
+  See http://webpages.charter.net/edreamleo/IPythonBridge.html
+- Improved handling of unicode encodings in @auto files.
+- All import commands now support @path directives in ancestor nodes.
+- Fixes several minor bugs.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Forum:    http://groups.google.com/group/leo-editor
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 </tnodes>
 </leo_file>
