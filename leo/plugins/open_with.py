@@ -25,7 +25,7 @@ subprocess =    g.importExtension('subprocess',pluginName=__name__,verbose=False
 #@-node:ekr.20050101090207.8:<< imports >>
 #@nl
 
-__version__ = '1.11'
+__version__ = '1.12'
 #@<< version history >>
 #@+node:ekr.20050311110052:<< version history >>
 #@@killcolor
@@ -43,6 +43,8 @@ __version__ = '1.11'
 # 1.9 EKR: Removed key bindings from default table.
 # 1.10 EKR: The init code now explicitly calls g.enableIdleTimeHook.
 # 1.11 EKR: Get the table from @openwith settings if possible.
+# 1.12 EKR: Installed patch from Terry Brown: support for @bool 
+# open_with_save_on_update setting.
 #@-at
 #@-node:ekr.20050311110052:<< version history >>
 #@nl
@@ -131,6 +133,9 @@ def on_idle (tag,keywords):
                         c.setBodyString(p,s,encoding)
                         c.selectPosition(p)
                         dict["body"] = s
+                        # A patch by Terry Brown.
+                        if c.config.getBool('open_with_save_on_update'):
+                            c.save()
                     elif conflict:
                         g.es("not updated from: " + g.shortFileName(path),color="blue")
                     #@nonl
