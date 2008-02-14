@@ -132,6 +132,8 @@ class tkinterGui(leoGui.leoGui):
 
         """Get the default font from a new text widget."""
 
+        # g.trace(g.callers())
+
         if not self.defaultFontFamily:
             # WARNING: retain NO references to widgets or fonts here!
             w = g.app.gui.plainTextWidget()
@@ -505,13 +507,11 @@ class tkinterGui(leoGui.leoGui):
     #@+node:ekr.20031218072017.2187:tkGui.getFontFromParams
     def getFontFromParams(self,family,size,slant,weight,defaultSize=12):
 
-        # __pychecker__ = '--no-argsused' # defaultSize not used.
-
         family_name = family
 
         try:
-            font = tkFont.Font(family=family,size=size,slant=slant,weight=weight)
-            # if g.app.trace: g.trace(font)
+            # g.trace('tkGui','family',family,'size',size,'defaultSize',defaultSize)
+            font = tkFont.Font(family=family,size=size or defaultSize,slant=slant,weight=weight)
             return font
         except:
             g.es("exception setting font from ",family_name)
