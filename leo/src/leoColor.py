@@ -1946,62 +1946,6 @@ class baseColorizer:
             "doc"          : self.continueDocPart,
             "unknown"      : self.doNormalState, # 8/25/05
         }
-
-        # Eventually all entries in these dicts will be entered dynamically
-        # under the control of the XML description of the present language.
-
-        if 0: # not ready yet.
-
-            self.dict1 = { # 1-character patterns.
-                '"' : self.doString,
-                "'" : self.doString,
-                '@' : self.doPossibleLeoKeyword,
-                ' ' : self.doBlank,
-                '\t': self.doTab }
-
-            self.dict2 = {} # 2-character patterns
-
-            # Searching this list might be very slow!
-            mutli_list = [] # Multiple character patterns.
-
-            # Enter single-character patterns...
-            if self.has_pp_directives:
-                dict1 ["#"] = self.doPPDirective
-
-            for ch in string.ascii_letters:
-                dict1 [ch] = self.doPossibleKeyword
-            dict1 ['_'] = self.doPossibleKeyword
-
-            if self.language == "latex":
-                dict1 ['\\'] = self.doPossibleKeyword
-
-            if self.language == "php":
-                dict1 ['<'] = self.doSpecialPHPKeyword
-                dict1 ['?'] = self.doSpecialPHPKeyword
-
-            # Enter potentially multi-character patterns.  (or should this be just 2-character patterns)
-            if self.language == "cweb":
-                dict2 ["@("] = self.doPossibleSectionRefOrDef
-            else:
-                dict2 ["<<"] = self.doPossibleSectionRefOrDef
-
-            if self.single_comment_start:
-                n = len(self.single_comment_start)
-                if n == 1:
-                    dict1 [self.single_comment_start] = self.doSingleCommentLine
-                elif n == 2:
-                    dict2 [self.single_comment_start] = self.doSingleCommentLine
-                else:
-                    mutli_list.append((self.single_comment_start,self.doSingleCommentLine),)
-
-            if self.block_comment_start:
-                n = len(self.block_comment_start)
-                if n == 1:
-                    dict1 [self.block_comment_start] = self.doBlockComment
-                elif n == 2:
-                    ddict2 [self.block_comment_start] = self.doBlockComment
-                else:
-                    mutli_list.append((self.block_comment_start,self.doBlockComment),)
         #@-node:ekr.20031218072017.1607:<< define dispatch dicts >>
         #@nl
         self.setFontFromConfig()
@@ -2126,10 +2070,10 @@ class baseColorizer:
                         weight = c.config.get(name + '_weight','weight')
                         if family or slant or weight or size:
                             family = family or g.app.config.defaultFontFamily
-                            size   = size or c.config.defaultBodyFontSize
+                            size   = size or str(c.config.defaultBodyFontSize)
                             slant  = slant or 'roman'
                             weight = weight or 'normal'
-                            font = g.app.gui.getFontFromParams(family,size,slant,weight)
+                            font = c.config.getFontFromParams(family,size,slant,weight)
                             # Save a reference to the font so it 'sticks'.
                             self.fonts[name] = font 
                             # g.trace(key,name,family,size,slant,weight,id(font))
@@ -2150,6 +2094,7 @@ class baseColorizer:
                 option_name,default_color = default_colors_dict[name]
                 option_color = c.config.getColor(option_name)
                 color = g.choose(option_color,option_color,default_color)
+                # g.trace(name,color)
                 # Must use foreground, not fg.
                 try:
                     c.frame.body.tag_configure(name, foreground=color)
@@ -2704,6 +2649,7 @@ class baseColorizer:
         j = self.skip_id(s,i+1,chars="-") # to handle @root-code, @root-doc
         word = s[i:j]
         word = word.lower()
+        # g.trace(word,word[1:] in g.globalDirectiveList)
         if i != 0 and word not in ("@others","@all"):
             word = "" # can't be a Leo keyword, even if it looks like it.
 
@@ -2720,7 +2666,7 @@ class baseColorizer:
             # Nothing on the line is colored.
             self.tag("leoKeyword",i,j)
             return j,"nocolor"
-        elif word in g.globalDirectiveList:
+        elif word[1:] in g.globalDirectiveList:
             self.tag("leoKeyword",i,j)
             return j,"normal"
         else:
@@ -3435,7 +3381,16 @@ class nullColorizer (colorizer):
     def disable(self):                          pass
     def enable(self):                           pass
     def scanColorDirectives(self,p):            pass
+
+    def setFontFromConfig (self):
+        self.bold_font = None
+        self.italic_font = None
+        self.bolditalic_font = None
+        self.color_tags_list = []
+        self.image_references = []
+
     def updateSyntaxColorer (self,p):           pass
+
     #@-node:ekr.20031218072017.2220:entry points
     #@-others
 #@-node:ekr.20031218072017.2218:class nullColorizer
