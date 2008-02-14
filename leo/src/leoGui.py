@@ -371,8 +371,8 @@ class leoGui:
     #@+node:ekr.20031218072017.3736:Font (leoGui)
     def getFontFromParams(self,family,size,slant,weight,defaultSize=12):
 
-        pass
-        # self.oops()
+        # g.trace('g.app.gui',g.callers()) # 'family',family,'size',size,'defaultSize',defaultSize,
+        self.oops()
     #@-node:ekr.20031218072017.3736:Font (leoGui)
     #@+node:ekr.20031218072017.3739:Idle time
     def setIdleTimeHook (self,idleTimeHookHandler):
@@ -546,6 +546,9 @@ class nullGui(leoGui):
     def get_focus(self,frame):
         return self.focusWidget or frame.body.bodyCtrl
 
+    def getFontFromParams(self,family,size,slant,weight,defaultSize=12):
+        return g.app.config.defaultFont
+
     def get_window_info (self,window):
         return 0,0,0,0
 
@@ -554,7 +557,6 @@ class nullGui(leoGui):
 
     def set_focus(self,commander,widget):
         self.focusWidget = widget
-    #@nonl
     #@-node:ekr.20070301171901:do nothings
     #@+node:ekr.20070301172456:app.gui panels
     def createComparePanel(self,c):

@@ -533,13 +533,10 @@ class gtkGui(leoGui.leoGui):
     #@+node:ekr.20080112145409.464:gtkGui.getFontFromParams
     def getFontFromParams(self,family,size,slant,weight,defaultSize=12):
 
-        # __pychecker__ = '--no-argsused' # defaultSize not used.
-
         family_name = family
 
         try:
-            font = gtkFont.Font(family=family,size=size,slant=slant,weight=weight)
-            # if g.app.trace: g.trace(font)
+            font = gtkFont.Font(family=family,size=size or defaultSize,slant=slant,weight=weight)
             return font
         except:
             g.es("exception setting font from ",family_name)
