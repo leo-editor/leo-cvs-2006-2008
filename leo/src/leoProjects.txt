@@ -5052,6 +5052,7 @@ def checkFileSyntax (fileName,s):
 #@-node:ekr.20071217092725.1:Beta 2
 #@-node:ekr.20071211113202:4.4.6
 #@+node:ekr.20080211100700:4.4.7
+#@+node:ekr.20080214083121:beta 1
 #@+node:ekr.20080210205942:Fixed bugs
 #@+node:ekr.20080210201503:Fixed perl syntax coloring bug
 @nocolor
@@ -6607,6 +6608,89 @@ diff -r1.8 open_with.py
 #@nonl
 #@-node:ekr.20080211180518:Installed open_with patch
 #@-node:ekr.20080211100823:New features
+#@-node:ekr.20080214083121:beta 1
+#@+node:ekr.20080214083121.1:beta 2
+#@+node:ekr.20080214083121.2:Bug fixes
+#@+node:ekr.20080214081701:old colorizer now colorizes leo directives
+# The problem was due to removing '@' character from entries in g.globalDirectiveList.
+#@+node:ekr.20060829084924:<< configure fonts >> (revise,maybe)
+# Get the default body font.
+defaultBodyfont = self.fonts.get('default_body_font')
+if not defaultBodyfont:
+    defaultBodyfont = c.config.getFontFromParams(
+        "body_text_font_family", "body_text_font_size",
+        "body_text_font_slant",  "body_text_font_weight",
+        c.config.defaultBodyFontSize)
+    self.fonts['default_body_font'] = defaultBodyfont
+
+# Configure fonts.
+w = c.frame.body.bodyCtrl
+keys = default_font_dict.keys() ; keys.sort()
+for key in keys:
+    option_name = default_font_dict[key]
+    # First, look for the language-specific setting, then the general setting.
+    for name in ('%s_%s' % (self.language,option_name),(option_name)):
+        font = self.fonts.get(name)
+        if font:
+            # g.trace('found',name,id(font))
+            w.tag_config(key,font=font)
+            break
+        else:
+            family = c.config.get(name + '_family','family')
+            size   = c.config.get(name + '_size',  'size')   
+            slant  = c.config.get(name + '_slant', 'slant')
+            weight = c.config.get(name + '_weight','weight')
+            if family or slant or weight or size:
+                family = family or g.app.config.defaultFontFamily
+                size   = size or str(c.config.defaultBodyFontSize)
+                slant  = slant or 'roman'
+                weight = weight or 'normal'
+                font = c.config.getFontFromParams(family,size,slant,weight)
+                # Save a reference to the font so it 'sticks'.
+                self.fonts[name] = font 
+                # g.trace(key,name,family,size,slant,weight,id(font))
+                w.tag_config(key,font=font)
+                break
+    else: # Neither the general setting nor the language-specific setting exists.
+        if len(self.fonts.keys()) > 1: # Restore the default font.
+            # g.trace('default',key)
+            w.tag_config(key,font=defaultBodyfont)
+#@nonl
+#@-node:ekr.20060829084924:<< configure fonts >> (revise,maybe)
+#@+node:ekr.20031218072017.1620:doAtKeyword: NOT for cweb keywords
+# Handles non-cweb keyword.
+
+def doAtKeyword (self,s,i):
+
+    j = self.skip_id(s,i+1,chars="-") # to handle @root-code, @root-doc
+    word = s[i:j]
+    word = word.lower()
+    # g.trace(word,word[1:] in g.globalDirectiveList)
+    if i != 0 and word not in ("@others","@all"):
+        word = "" # can't be a Leo keyword, even if it looks like it.
+
+    # 7/8/02: don't color doc parts in plain text.
+    if self.language != "plain" and (word == "@" or word == "@doc"):
+        # at-space is a Leo keyword.
+        self.tag("leoKeyword",i,j)
+        k = len(s) # Everything on the line is in the doc part.
+        if not g.doHook("color-optional-markup",
+            colorer=self,p=self.p,v=self.p,s=s,i=j,j=k,colortag="docPart"):
+            self.tag("docPart",j,k)
+        return k,"doc"
+    elif word == "@nocolor":
+        # Nothing on the line is colored.
+        self.tag("leoKeyword",i,j)
+        return j,"nocolor"
+    elif word[1:] in g.globalDirectiveList:
+        self.tag("leoKeyword",i,j)
+        return j,"normal"
+    else:
+        return j,"normal"
+#@-node:ekr.20031218072017.1620:doAtKeyword: NOT for cweb keywords
+#@-node:ekr.20080214081701:old colorizer now colorizes leo directives
+#@-node:ekr.20080214083121.2:Bug fixes
+#@-node:ekr.20080214083121.1:beta 2
 #@-node:ekr.20080211100700:4.4.7
 #@-all
 #@nonl

@@ -5,10 +5,15 @@ manifest.in
 setup.py
 uninstall
 Icons\LeoApp.ico
+Icons\LeoApp14x14.bmp
 Icons\LeoApp16.ico
+Icons\LeoApp64x64.bmp
 Icons\LeoDoc.ico
 Icons\LeoWin.gif
 Icons\Leoapp.GIF
+Icons\Leoapp42x42-3.GIF
+Icons\Leoapp42x42-4.GIF
+Icons\Leoapp42x42.gif
 Icons\Leosplash.GIF
 Icons\Thumbs.db
 Icons\box00.GIF
@@ -988,6 +993,7 @@ doc\LeoN\sun98operational.pdf
 doc\LeoN\sun98reversible.pdf
 doc\html\Blank.gif
 doc\html\FAQ.html
+doc\html\IPythonBridge.html
 doc\html\LeoCodeGray.gif
 doc\html\LeoProse.gif
 doc\html\PCWindow.gif
@@ -1624,6 +1630,7 @@ plugins\gtkGui.py
 plugins\hoist.py
 plugins\image.py
 plugins\import_cisco_config.py
+plugins\ipython.py
 plugins\ironPythonGui.py
 plugins\keybindings.py
 plugins\leo-forthstringwords.txt

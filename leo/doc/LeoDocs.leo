@@ -34064,6 +34064,11 @@ changes the outline.</t>
 Leo 4.4.7 beta 1 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
+This version features the ipython plugin that provides a two-way bridge
+between Leo and IPython.  See http://webpages.charter.net/edreamleo/IPythonBridge.html
+
+Leo's main discussion is now at: http://groups.google.com/group/leo-editor
+
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
 
