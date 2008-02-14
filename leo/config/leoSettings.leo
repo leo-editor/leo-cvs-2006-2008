@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.477886977887">
-	<global_window_position top="161" left="396" height="616" width="864"/>
+	<global_window_position top="141" left="490" height="616" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -327,7 +327,7 @@
 </v>
 <v t="ekr.20041213105007" a="E" annotate="7d71002e"><vh>Fonts</vh>
 <v t="ekr.20041119034357.45"><vh>@font body text font</vh></v>
-<v t="ekr.20070919125633" a="TV"><vh>@font button font</vh></v>
+<v t="ekr.20070919125633"><vh>@font button font</vh></v>
 <v t="ekr.20041213105508"><vh>@font log font</vh></v>
 <v t="ekr.20060702100257"><vh>@font menu text font</vh></v>
 <v t="ekr.20041119051246.4"><vh>@font outline font</vh></v>
@@ -1073,7 +1073,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20051123100536" annotate="7d71002e"><vh>Plugins</vh>
+<v t="ekr.20051123100536" a="E" annotate="7d71002e"><vh>Plugins</vh>
 <v t="ekr.20070417071249"><vh>@bool trace_plugins = False</vh></v>
 <v t="ekr.20041119034357.13"><vh>@bool use_plugins = True</vh></v>
 <v t="ekr.20071113084330"><vh>@bool warn_when_plugins_fail_to_load = True</vh></v>
@@ -1091,15 +1091,9 @@
 <v t="ekr.20060807103220.10"><vh>@bool datenodes_year_node_omit_saturdays = True</vh></v>
 <v t="ekr.20060807103220.11"><vh>@bool datenodes_year_node_omit_sundays = True</vh></v>
 </v>
-<v t="ekr.20060111091324"><vh>fastgotonode plugin</vh>
+<v t="ekr.20060111091324" a="TV"><vh>fastgotonode plugin</vh>
 <v t="ekr.20060111091324.1"><vh>@bool fastgotonode_useKeyBinding = True</vh></v>
 <v t="ekr.20060111091324.2"><vh>@string fastgotonode_binding =  Shift-space</vh></v>
-</v>
-<v t="ekr.20080205103849"><vh>ipython</vh>
-<v t="ekr.20080205103849.1"><vh>@string ipython-interface-object-name = leox</vh></v>
-<v t="ekr.20080205104016"><vh>@string ipython-results-node-headline = @ipython-results</vh></v>
-<v t="ekr.20080205104127"><vh>@data ipython-bridge-startup-script</vh></v>
-<v t="ekr.20080205104127.1"><vh>@data ipython-bridge-auto-open-leo-files</vh></v>
 </v>
 <v t="ekr.20060109115046"><vh>library plugin</vh>
 <v t="ekr.20060109115046.1"><vh>@bool library_verbose = True</vh></v>
@@ -8577,26 +8571,6 @@ start-ipython           = Alt-5
 get-ipython-results     = Alt-6
 push-to-ipython         = Alt-i
 </t>
-<t tx="ekr.20080205103849"></t>
-<t tx="ekr.20080205103849.1"># An official setting supported by the ipython plugin.
-# This is the name of the interfaceObject injected into the IPython namespace
-# by the start-ipython command.</t>
-<t tx="ekr.20080205104016"># An official setting supported by the ipython plugin.
-# This is the headline of the "results node" the node whose
-# children are accessed by the leo.results object.
-</t>
-<t tx="ekr.20080205104127"># This is an **unofficial** setting, not directly supported by the ipython plugin.
-
-# The body text contains a script to be executed at startup time.
-
-print 'this is the ipython-bridge-startup-script'</t>
-<t tx="ekr.20080205104127.1"># This is an **unofficial** setting, not directly supported by the ipython plugin.
-
-# The body text contains a list of .leo files to be opened automatically at startup time.
-# File names are given relative to g.app.loadDir, that is, relative to the leo/src directory
-
-../plugins/leoPlugins.leo
-../doc/LeoDocs.leo</t>
 <t tx="ekr.20080212084020">The encoding used for files imported by @auto if no @encoding directive is in effect.
 Default is UTF-8 (case not important).</t>
 </tnodes>
