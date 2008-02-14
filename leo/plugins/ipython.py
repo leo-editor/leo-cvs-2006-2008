@@ -66,9 +66,6 @@ __version__ = '0.7'
 #     an idle-time handler.
 # 
 #     If it is possible several more settings would be possible.
-# 
-# - Allow get-ipython-results to store actual objects using Leo's uA 
-# mechanism.
 #@-at
 #@nonl
 #@-node:ekr.20080203092534:<< to do >>
@@ -150,10 +147,7 @@ class ipythonController:
 
         self.c = c
 
-        self.leoxName =    c.config.getString('ipython-interface-object-name') or 'leox'
-
         # Set by .startIPython...
-        self.api = None
         self.ip = None # The _ip var returned by ipshell.IP.getapi()
 
         self.createCommands()
@@ -190,13 +184,13 @@ class ipythonController:
             c = self.c
             #self.ipshell = IPShellEmbed() # Create object to be bound to .api.
 
-            self.api = api = IPython.ipapi
+            api = IPython.ipapi
             self.message('creating IPython shell...')
             gIPythonStarted = True # Do this *before* calling ipshell.
             leox = leoInterface(c,g) # inject leox into the namespace.
-            my_ns = { self.leoxName:leox }
-            ses = self.api.make_session(my_ns)
-            self.ip = ip = ses.IP.getapi()
+            my_ns = { 'leox': leox }
+            ses = api.make_session(my_ns)
+            self.ip = ses.IP.getapi()
             try:
                 self.ip.ex('import ipy_leo')
             except ImportError:
@@ -247,7 +241,6 @@ class ipythonController:
             except AttributeError:
                 # ipython has not defined 'push' (old version?). Just execute the node
                 self.error("Your IPython version is obsolete, please upgrade!")
-                pass
 
             # The rest of this is probably never executed with up-to-date IPython
             # Get the script. 
