@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.622222222222">
-	<global_window_position top="115" left="320" height="795" width="841"/>
+<globals body_outline_ratio="0.381935483871">
+	<global_window_position top="115" left="320" height="735" width="841"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -109,6 +109,7 @@
 </v>
 <v t="edream.110203113231.729"><vh>Debugging &amp;  testing</vh>
 <v t="edream.110203113231.730"><vh>@thin dump_globals.py</vh></v>
+<v t="ekr.20080214092357"><vh>@thin ekr_test.py</vh></v>
 <v t="edream.110203113231.732"><vh>@thin enable_gc.py</vh></v>
 <v t="ekr.20050130120433"><vh>@thin failed_import.py</vh></v>
 <v t="edream.110203113231.734"><vh>@thin quit_leo.py</vh></v>

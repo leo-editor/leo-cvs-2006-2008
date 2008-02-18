@@ -3537,9 +3537,8 @@
 </v>
 <v t="ekr.20080126090039"><vh>leo 4.4.6 final</vh></v>
 </v>
-</v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20080212221734" a="TV"><vh>leo 4.4.7 b1 </vh>
+<v t="ekr.20080218154129"><vh>4.4.7</vh>
+<v t="ekr.20080212221734"><vh>leo 4.4.7 b1 </vh>
 <v t="ekr.20080212221711.1"><vh>Fixed bugs</vh>
 <v t="ekr.20080212221711.2"><vh>Fixed perl syntax coloring bug</vh></v>
 <v t="ekr.20080212221711.4"><vh>Removed warnings while typing @language directives</vh></v>
@@ -3553,6 +3552,26 @@
 <v t="ekr.20080212221711.34"><vh>Added ipython plugin</vh></v>
 <v t="ekr.20080212221711.47"><vh>Added support for @bool open_with_save_on_update setting</vh></v>
 <v t="ekr.20080212221711.26"><vh>Improved handling of unicode for @auto files</vh></v>
+</v>
+</v>
+</v>
+</v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20080218153931" a="ETV"><vh>leo 4.4.7 final</vh>
+<v t="ekr.20080218153931.1"><vh>Fixed bugs</vh>
+<v t="ekr.20080218153931.2"><vh>Fixed perl syntax coloring bug</vh></v>
+<v t="ekr.20080218153931.3"><vh>Removed warnings while typing @language directives</vh></v>
+<v t="ekr.20080218153931.4"><vh>Fixed pascal import bug</vh></v>
+<v t="ekr.20080218153931.5"><vh>write-outline-only command now prints a 'done' message</vh></v>
+<v t="ekr.20080218153931.6"><vh>Worked around problems with winpdb</vh></v>
+<v t="ekr.20080218153931.7"><vh>Fixed new problem with image.py</vh></v>
+<v t="ekr.20080218154129.1"><vh>Leo's old colorizer now colorizes Leo directives properly</vh></v>
+</v>
+<v t="ekr.20080218153931.8"><vh>New features</vh>
+<v t="ekr.20080218153931.9"><vh>All import commands now honor @path</vh></v>
+<v t="ekr.20080218153931.10"><vh>Added ipython plugin</vh></v>
+<v t="ekr.20080218153931.11"><vh>Added support for @bool open_with_save_on_update setting</vh></v>
+<v t="ekr.20080218153931.12"><vh>Improved handling of unicode for @auto files</vh></v>
 </v>
 </v>
 </v>
@@ -34062,5 +34081,59 @@ Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 <t tx="ekr.20080213094948.4">The version of PIL that ships with Ubuntu (and presumably Debian and maybe some
 other distributions) no longer includes the ImageTk module. ImageTk is now
 located in the python- imaging-tk package.</t>
+<t tx="ekr.20080218153931">Leo 4.4.7 final                           February 18, 2008
+
+Leo 4.4.7 final is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+This version features a new ipython plugin that provides a two-way bridge
+between Leo and IPython.  See http://webpages.charter.net/edreamleo/IPythonBridge.html
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.7:
+----------------------------
+- The ipython plugin creates a simple, powerful, effective bridge between IPython and Leo.
+  See http://webpages.charter.net/edreamleo/IPythonBridge.html
+- Improved handling of unicode encodings in @auto files.
+- All import commands now support @path directives in ancestor nodes.
+- Fixed several minor bugs.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Forum:    http://groups.google.com/group/leo-editor
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20080218153931.1"></t>
+<t tx="ekr.20080218153931.2"></t>
+<t tx="ekr.20080218153931.3"></t>
+<t tx="ekr.20080218153931.4">http://groups.google.com/group/leo-editor/browse_thread/thread/4fa4709969fc04d</t>
+<t tx="ekr.20080218153931.5"></t>
+<t tx="ekr.20080218153931.6">There appear to be problems with Python's subprocess module on Ubuntu.</t>
+<t tx="ekr.20080218153931.7">The version of PIL that ships with Ubuntu (and presumably Debian and maybe some
+other distributions) no longer includes the ImageTk module. ImageTk is now
+located in the python- imaging-tk package.</t>
+<t tx="ekr.20080218153931.8"></t>
+<t tx="ekr.20080218153931.9"></t>
+<t tx="ekr.20080218153931.10"></t>
+<t tx="ekr.20080218153931.11">If the @bool open_with_save_on_update setting is True,
+Leo will automatically save the outline whenever an external editor
+changes the outline.</t>
+<t tx="ekr.20080218153931.12">When reading an @auto tree, createOutline now does the following:
+    
+1. When importing Python files, createOutline uses the encoding implied by
+Python's # -*- coding line. This line must be the first line of the imported file.
+
+2. Otherwise, createOutline scans the @auto node and its ancestors for Leo's @encoding directive.
+
+3. If no such @encoding directive is found, createOutline uses the encoding specified by the setting: @string default_at_auto_file_encoding = utf-8
+
+4. If this setting does not exist, the utf-8 encoding is used.
+</t>
+<t tx="ekr.20080218154129"></t>
+<t tx="ekr.20080218154129.1"></t>
 </tnodes>
 </leo_file>

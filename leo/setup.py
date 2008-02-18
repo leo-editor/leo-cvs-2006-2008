@@ -20,7 +20,7 @@ Download tcl/Tk from http://tcl.activestate.com/software/tcltk/
 # long_description = g.adjustTripleString(long_description,c.tab_width)
 
 # print repr(long_description)
-version='4.4.7-beta-1' # No spaces and no trailing comma.
+version='4.4.7-final' # No spaces and no trailing comma.
 
 if 1:
     setup (

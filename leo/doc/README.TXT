@@ -1,7 +1,10 @@
-Leo 4.4.7 beta 1                           February 12, 2008
+Leo 4.4.7 final                           February 18, 2008
 
-Leo 4.4.7 beta 1 is available at:
+Leo 4.4.7 final is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
+
+This version features a new ipython plugin that provides a two-way bridge
+between Leo and IPython.  See http://webpages.charter.net/edreamleo/IPythonBridge.html
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html

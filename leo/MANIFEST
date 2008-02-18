@@ -1613,6 +1613,7 @@ plugins\dyna.txt
 plugins\dyna_menu.ini
 plugins\dyna_menu.py
 plugins\dynacommon.py
+plugins\ekr_test.py
 plugins\empty_leo_file.py
 plugins\enable_gc.py
 plugins\exampleTemacsExtension.py

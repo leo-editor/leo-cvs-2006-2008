@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet ekr_test?>
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet ekr_stylesheet?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.560371517028">
@@ -34,7 +34,7 @@
 <v t="ekr.20070620084858.1"><vh>@@button upload</vh></v>
 </v>
 </v>
-<v t="EKR.20040519091259" a="E"><vh>Annoucnements</vh>
+<v t="EKR.20040519091259"><vh>Annoucnements</vh>
 <v t="EKR.20040519091259.1"><vh>Download statistics</vh></v>
 <v t="EKR.20040519091259.2"><vh>Quotes of the month</vh>
 <v t="ekr.20070425092712"><vh>April 2007</vh></v>
@@ -46,7 +46,7 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
-<v t="ekr.20080218154442" a="TV"><vh>ANN: Leo 4.4.7 final</vh></v>
+<v t="ekr.20080218154442"><vh>ANN: Leo 4.4.7 final</vh></v>
 <v t="EKR.20040519091259.30"><vh>Previous announcements</vh>
 <v t="EKR.20040519091259.37"><vh>3.x</vh>
 <v t="EKR.20040519091259.38"><vh>ANN: Leo 3.3 outlining editor</vh></v>
@@ -224,6 +224,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
+<v t="ekr.20080218154442.2" a="TV"><vh>Distribution checklist</vh></v>
 <v t="EKR.20040519090846"><vh>Distribution files</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
@@ -5175,5 +5176,47 @@ Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 <t tx="ekr.20080218154442.1"></t>
+<t tx="ekr.20080218154442.2">@color
+# Run pylint
+# Run all unit tests.
+@nocolor
+Clean up .leo files
+    - leoPlugins.leo: Removed top-level clones.
+    - leoPy.leo: Remove top-level clones.
+    - LeoDocs.leo: select the read-me node.
+Documentation
+	- Update readme.txt
+	- Update LeoDocs.leo
+    - Update Announcement.
+Version numbers
+	- Update version number in Help menu.
+Create the distribution using the distribution scripts.
+    - Do a cvs update, with a tag.
+Create and test leosetup.exe.
+	- Create leosetup.exe by right-clicking leo.nsi and choosing "compile with NSI (bz2)"
+	- Test created leosetup.exe file.
+	- test the files created in c:\program files\leo
+    ** Open unitTest.leo: does it open without errors?
+    ** Open leoPlugins.leo: does it open without errors?
+
+@color
+# **** Scan all folders &amp; files before uploading.
+@nocolor
+
+Create Release on SourceForge
+
+Uploads
+    - Upload leodocs.zip
+	- Upload leosetup.exe
+	- Upload leo-x-y.zip
+	- Upload sbook.chm if it has been changed.
+Announcements
+    - Update version number on Leo's wikipedia site: http://en.wikipedia.org/wiki/Leo_(editor)
+        - Edit with the 'Edit this page' *tab* (not a link)
+    - Update version number on web site.
+	- Announce to Leo's Open Forum.
+    - Announce to SourceForge itself.
+	- Announce to comp.lang.python
+	- Register Leo at http://www.python.org/pypi?:action=submit_form</t>
 </tnodes>
 </leo_file>
