@@ -756,15 +756,15 @@
 <v t="ekr.20070628083442.4"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20080203101507" a="E"><vh>Chapter 21: IPython bridge</vh>
+<v t="ekr.20080203101507"><vh>Chapter 21: IPython bridge</vh>
 <v t="ekr.20080203101507.1"><vh>@rst html\IPythonBridge.html</vh>
 <v t="ekr.20080203101507.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20080204100523"><vh>Startup</vh></v>
 <v t="ekr.20080204100523.1"><vh>Commands</vh></v>
 <v t="ekr.20080204100523.2"><vh>Scripting IPython from Leo</vh></v>
 <v t="ekr.20080205080801"><vh>Scripting Leo from IPython</vh></v>
-<v t="ekr.20080204100523.3"><vh>User Settings</vh></v>
-<v t="ekr.20080210101336"><vh>Acknowledgement</vh></v>
+<v t="ekr.20080204100523.3"><vh>@rst-ignore User Settings</vh></v>
+<v t="ekr.20080210101336"><vh>Acknowledgements</vh></v>
 <v t="ekr.20080203101507.10"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -3539,20 +3539,20 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20080212221734" a="ETV"><vh>leo 4.4.7 b1 </vh>
+<v t="ekr.20080212221734" a="TV"><vh>leo 4.4.7 b1 </vh>
 <v t="ekr.20080212221711.1"><vh>Fixed bugs</vh>
-<v t="ekr.20080212221711.2" a="E"><vh>Fixed perl syntax coloring bug</vh></v>
+<v t="ekr.20080212221711.2"><vh>Fixed perl syntax coloring bug</vh></v>
 <v t="ekr.20080212221711.4"><vh>Removed warnings while typing @language directives</vh></v>
-<v t="ekr.20080212221711.15" a="E"><vh>Fixed pascal import bug</vh></v>
+<v t="ekr.20080212221711.15"><vh>Fixed pascal import bug</vh></v>
 <v t="ekr.20080212221711.35"><vh>write-outline-only command now prints a 'done' message</vh></v>
-<v t="ekr.20080213094948.1" a="E"><vh>Worked around problems with winpdb</vh></v>
+<v t="ekr.20080213094948.1"><vh>Worked around problems with winpdb</vh></v>
 <v t="ekr.20080213094948.4"><vh>Fixed new problem with image.py</vh></v>
 </v>
 <v t="ekr.20080212221711.32"><vh>New features</vh>
 <v t="ekr.20080212221711.33"><vh>All import commands now honor @path</vh></v>
 <v t="ekr.20080212221711.34"><vh>Added ipython plugin</vh></v>
 <v t="ekr.20080212221711.47"><vh>Added support for @bool open_with_save_on_update setting</vh></v>
-<v t="ekr.20080212221711.26" a="E"><vh>Improved handling of unicode for @auto files</vh></v>
+<v t="ekr.20080212221711.26"><vh>Improved handling of unicode for @auto files</vh></v>
 </v>
 </v>
 </v>
@@ -33812,7 +33812,7 @@ Care may be needed when running such scripts while lengthy IPython scripts are r
 As the result of this truly remarkable connection between Leo and IPython,
 Leo might plausibly be said to be an `IPython Notebook`_.
 
-The bridge between Leo and IPython is extremely powerful because it is extremely simple. Indeed,
+The bridge between Leo and IPython is powerful because it is simple. Indeed,
 
 1. **You can run any IPython script from Leo**.
 On the Leo side, as single variable::
@@ -33836,6 +33836,7 @@ Leo script can do.
     </t>
 <t tx="ekr.20080203101507.2">.. Links
 
+.. _discussions:            http://sourceforge.net/forum/forum.php?thread_id=1911662&amp;forum_id=10226
 .. _ipython:                http://ipython.scipy.org/
 .. _IPython:                http://ipython.scipy.org/
 .. _`IPython Notebook`:     http://projects.scipy.org/ipython/ipython/wiki/NoteBook
@@ -33876,9 +33877,8 @@ to schedule a Leo script to be run after the start-ipython command returns.
 Instead, it will typically be more convenient to use IPython's normal facilities to
 schedule a script that initializes Leo when IPython starts.
 
-The start-ipython command starts IPython running in the console and injects a
-**Leo Interface Object** into IPython's user namespace. By default, the name of
-this object is leox: this name can be changed by a Leo setting See `User Settings`_.
+The start-ipython command starts IPython running in the console and injects leox, a
+**Leo Interface Object** into IPython's user namespace.
 Using the leox object, IPython scripts can gain access to Leo's c and g variables::
 
     c,g = leox.c,leox.g
@@ -33910,11 +33910,8 @@ See `Scripting IPython from Leo`_ for full details.</t>
   startup. In short, it is often more convenient to initialize Leo from IPython
   than to initialize IPython from Leo.
   
-- The get-ipython-results command creates results nodes for all results computed
-  by IPython since the last time this command was run.
-
 - The push-to-ipython command pushes data to IPython.
-  By default, itexecutes the body text of the presently
+  By default, it executes the body text of the presently
   selected node in IPython.
 </t>
 <t tx="ekr.20080204100523.2">Just as c and g provide full access to all aspects of Leo,
@@ -33933,11 +33930,6 @@ To simulate the start-ipython command::
 
     x = c.ipythonController
     if x and not x.started(): x.startIPython()
-
-To simulate the get-ipython-results command::
-
-    x = c.ipythonController
-    if x and x.started(): x.getIpythonResults()
 
 To simulate the push-to-ipython command::
 
@@ -34012,30 +34004,9 @@ All these examples have been tested.
     for z in files:
         fileName = g.os_path_abspath(g.os_path_join(g.app.loadDir,z))
         g.openWithFileName(fileName, old_c=c)
-            
-4. The leox.results object is a convenience. It makes it easy to create and
-   access **results nodes** in Leo that represent IPython results.  Results nodes
-   are children of a node whose headline is \@ipython-results and whose body
-   text contain string(theResult).
-
-   Assigning to the leox.results object creates a result node. The following
-   creates a result node whose headline is "x" and whose body text is the docstring for
-   Python's sys module::
-   
-        import sys
-        leox.results.x = sys.__doc__
-    
-   Conversely, the following sets b to the body text of results node "b"::
-   
-        b = leox.results.b
-
-   **Note**: there is *nothing* special about the leox.results object.
-   Scripts running in IPython are free to ignore the leox.results object.
-   IPython scripts are also free to redefine leox.results so it works as desired.</t>
+</t>
 <t tx="ekr.20080210101336">This plugin would not have been possible without the help of Ville M. Vainio.
-The discussions at
-http://sourceforge.net/forum/forum.php?thread_id=1911662&amp;forum_id=10226
-document how the goal of close cooperation between Leo and IPython went from
+Discussions_ on SourceForge show how the goal of close cooperation between Leo and IPython went from
 vague dream to completed reality over the span of about 10 days.</t>
 <t tx="ekr.20080212221711.1"></t>
 <t tx="ekr.20080212221711.2"></t>
