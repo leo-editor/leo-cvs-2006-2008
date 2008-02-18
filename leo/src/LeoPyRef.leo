@@ -2,14 +2,15 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.564732142857">
-	<global_window_position top="19" left="356" height="896" width="917"/>
+<globals body_outline_ratio="0.511160714286">
+	<global_window_position top="62" left="340" height="896" width="918"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
 <v t="ekr.20051031040240" str_leo_pos="9"><vh>Startup</vh>
+<v t="ekr.20080121091513"><vh>@button parse2tree</vh></v>
 <v t="ekr.20070629073827"><vh>Disabled buttons</vh>
 <v t="ekr.20071001054335"><vh>@@button split-defs</vh></v>
 <v t="ekr.20071004062031"><vh>@@button print -----</vh></v>
@@ -36,6 +37,9 @@
 <v t="ekr.20070605104326"><vh>@bool use_chapter_tabs = True</vh></v>
 </v>
 <v t="ekr.20070605104410"><vh>@chapters</vh></v>
+<v t="ekr.20080121092503"><vh>Scripts</vh>
+<v t="ekr.20080121090750"><vh>create-at-auto-nodes</vh></v>
+</v>
 </v>
 <v t="EKR.20040430162943"><vh>Notes</vh>
 <v t="ekr.20060217111834"><vh>@url http://docs.python.org/lib/re-syntax.html</vh></v>
@@ -46,11 +50,11 @@
 <v t="EKR.20040429143933"
 marks="ekr.20071217231348.4,ekr.20071217231348.5,ekr.20071217231501,ekr.20071217231501.1,ekr.20071217231501.2,ekr.20071217231828.4,ekr.20031218072017.1473,ekr.20071024101611,"><vh>@thin leoProjects.txt</vh></v>
 </v>
-<v t="EKR.20040519090151.2"><vh>To do</vh>
+<v t="EKR.20040519090151.2" a="TV"><vh>To do</vh>
 <v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
-<v t="ekr.20031218072017.2406" a="TV"><vh>Code</vh>
+<v t="ekr.20031218072017.2406"><vh>Code</vh>
 <v t="ekr.20040629121554.1"><vh>getSignOnLine (Contains hard-coded version info)</vh></v>
 <v t="ekr.20031218072017.2604"><vh>Core classes...</vh>
 <v t="ekr.20031218072017.2605"><vh>@thin leo.py </vh></v>
@@ -135,7 +139,7 @@ z:  a local temp.</t>
 <t tx="ekr.20031218072017.3821"></t>
 <t tx="ekr.20040629121554.1">def getSignOnLine (self):
     c = self
-    return "Leo 4.4.6 beta 1, build %s, December 17, 2007" % c.getBuildNumber()
+    return "Leo 4.4.7 beta 1, build %s, February 12, 2008" % c.getBuildNumber()
 </t>
 <t tx="ekr.20050721093241">@nocolor
 
@@ -376,5 +380,41 @@ leoTest.runTestsExternally(c,all=False)
 
 </t>
 <t tx="ekr.20080112145409"></t>
+<t tx="ekr.20080121090750"># A script to create @auto nodes from all .py files in a directory.
+
+import glob,os
+
+reallyCreate = True
+
+baseDir = r'c:\Python25\Lib\site-packages\pubsub'
+baseDir = r'C:\Program Files\Komodo Edit 4.3\lib\mozilla\python\komodo\codeintel2'
+dirs = ('',) #'Extensions','UserConfig',)
+print '-----'
+
+c.beginUpdate()
+try:
+    for theDir in dirs:
+        pattern = g.os_path_join(baseDir,theDir,'*.py')
+        files = glob.glob(pattern)
+        print pattern
+        # print g.listToString(files)
+        for name in files:
+            h = '@auto %s' % (name[len(baseDir) + 1:].strip())
+            print 'creating',h
+            if reallyCreate:
+                child = p.insertAsLastChild()
+                child.initHeadString(h)
+finally:
+    c.endUpdate()
+</t>
+<t tx="ekr.20080121091513">c.importCommands.createOutline(
+    fileName=None,
+    parent=p,
+    atAuto=True,
+    s=p.bodyString(),ext='.py')
+
+
+</t>
+<t tx="ekr.20080121092503"></t>
 </tnodes>
 </leo_file>

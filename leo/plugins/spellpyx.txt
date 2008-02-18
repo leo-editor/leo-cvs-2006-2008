@@ -347,6 +347,7 @@ UpArrow
 Url's
 Userland's
 Vadim
+Vainio
 Valiente
 ValueError
 Vickroy
@@ -1709,6 +1710,7 @@ ps
 pstats
 ptr
 pulldown
+pushToIPython
 putArray
 putDirective
 putDocPart

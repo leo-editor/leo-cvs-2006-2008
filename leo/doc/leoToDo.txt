@@ -1,33 +1,34 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
+#@+node:ekr.20071113093057:4.5 cleanups & vim bindings
+#@+node:ekr.20080218110223:Easy
+#@+node:ekr.20080218152956:Better home page
 #@+node:ekr.20071211093323:more screen shots on Leo's web site
 #@-node:ekr.20071211093323:more screen shots on Leo's web site
-#@+node:ekr.20080211100700.2:To do: 4.4.7
-#@-node:ekr.20080211100700.2:To do: 4.4.7
-#@+node:ekr.20071113093057:4.5 cleanups, vim bindings & readline
-#@+node:ekr.20071211091037.1:Code cleanup 8
-#@+node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
-#@-node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
-#@+node:ekr.20071031113657:Always use sax parser to read .leo files
-# Are there proper unit tests?
-# Do global settings and find-panel settings get set properly.
+#@+node:ekr.20080218152956.1:move obsolete links to "links" page
+#@-node:ekr.20080218152956.1:move obsolete links to "links" page
+#@-node:ekr.20080218152956:Better home page
+#@+node:ekr.20080213112752:Prototype of gtk/ipython bridge
+#@-node:ekr.20080213112752:Prototype of gtk/ipython bridge
+#@+node:ekr.20080218152956.2:Is it possible to create menus very late in the creation process
+# This would allow @menu items to refer to commands created by @button.
 #@nonl
-#@-node:ekr.20071031113657:Always use sax parser to read .leo files
-#@+node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
-xmlns:leo="http://edreamleo.org/namespaces/leo-python-editor/1.1"
-#@nonl
-#@-node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
+#@-node:ekr.20080218152956.2:Is it possible to create menus very late in the creation process
+#@+node:ekr.20071217032247:Compile regexp's once in findNextMatch
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4677335
+
+The regexHelper method does compile regexp's before searching for them.  Alas, this method is called once per searched node, which greatly increases the compilation overhead.  Presumably it would be much better to compile the regexp once, say in findNextMatch.
+#@-node:ekr.20071217032247:Compile regexp's once in findNextMatch
 #@+node:ekr.20071115111719.2:Remove hard-coded menu tables
 See createMenusFromTables.
 #@nonl
 #@-node:ekr.20071115111719.2:Remove hard-coded menu tables
-#@+node:ekr.20070613103409:Improve marks/recent buttons
-- Arrow keys must move up/down.
-- Should be commands to show the marks/recent dialogs.
-#@nonl
-#@-node:ekr.20070613103409:Improve marks/recent buttons
-#@+node:ekr.20071215101531:Reorg drawing code
+#@-node:ekr.20080218110223:Easy
+#@+node:ekr.20071211091037.1:Code cleanup
+#@+node:ekr.20071215101531:Reorg drawing/focus code
 @nocolor
 
 I am considering a reorg for Leo 4.5 to eliminate all begin/endUpdate pairs. Commands would typically *request* a redraw, and the request would be honored after the command finishes. 
@@ -95,34 +96,20 @@ def actual_set_focus (self,w):
 set_focus_now = actual_set_focus
 #@nonl
 #@-node:ekr.20071215114036:Notes
-#@-node:ekr.20071215101531:Reorg drawing code
-#@+node:ekr.20071217032247:Compile regexp's once in findNextMatch
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4677335
-
-The regexHelper method does compile regexp's before searching for them.  Alas, this method is called once per searched node, which greatly increases the compilation overhead.  Presumably it would be much better to compile the regexp once, say in findNextMatch.
-#@-node:ekr.20071217032247:Compile regexp's once in findNextMatch
-#@+node:ekr.20080124083629.1:Improve @path handling
-@nocolor
-[quote]
-nested @paths don't do what I expected: 
-
-For a leo file in directory foo: 
-
-@path src 
-....@path tmpl 
-
-refer to foo/src and foo/tmpl, not foo/src and foo/src/tmpl 
-
-using @path src/tmpl works fine though.
-[end quote]
-
-The code to handle such matters is, alas, not localized, but appears in minor variants in several places.  I've never discovered a great way to refactor the code.  This is one of the 'bodies' that I know are buried in Leo's code.  I can put it on the list, but given the cost, and the relatively low payoff, it's not likely to happen any time soon.
-#@-node:ekr.20080124083629.1:Improve @path handling
-#@-node:ekr.20071211091037.1:Code cleanup 8
-#@+node:ekr.20071211142600.1:Important 4
+#@+node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
+#@-node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
+#@-node:ekr.20071215101531:Reorg drawing/focus code
 #@+node:ekr.20071211142600.2:Config stuff
+#@+node:ekr.20071211142600.3:Clean up config mess
+#@-node:ekr.20071211142600.3:Clean up config mess
+#@+node:ekr.20061028065955.2:Fix binding nits
+#@+node:ekr.20061014050154.2:Binding to None clears all bindings
+#@-node:ekr.20061014050154.2:Binding to None clears all bindings
+#@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
+#@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
+#@+node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
+#@-node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
+#@-node:ekr.20061028065955.2:Fix binding nits
 #@+node:ekr.20080129103436:Solve Kent's @menu problem
 @nocolor
 
@@ -140,8 +127,6 @@ the file, then open another Leo file, the next file opens with the
 redefined menu. 
 #@nonl
 #@-node:ekr.20080129103436:Solve Kent's @menu problem
-#@+node:ekr.20071211142600.3:Clean up config mess
-#@-node:ekr.20071211142600.3:Clean up config mess
 #@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree
 #@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree
 #@+node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
@@ -158,6 +143,34 @@ Regards, Roger
 #@nonl
 #@-node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
 #@-node:ekr.20071211142600.2:Config stuff
+#@+node:ekr.20080218110223.1:Files
+#@+node:ekr.20071031113657:Always use sax parser to read .leo files
+# Are there proper unit tests?
+# Do global settings and find-panel settings get set properly.
+#@nonl
+#@-node:ekr.20071031113657:Always use sax parser to read .leo files
+#@+node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
+xmlns:leo="http://edreamleo.org/namespaces/leo-python-editor/1.1"
+#@nonl
+#@-node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
+#@-node:ekr.20080218110223.1:Files
+#@+node:ekr.20080124083629.1:Improve @path handling
+@nocolor
+[quote]
+nested @paths don't do what I expected: 
+
+For a leo file in directory foo: 
+
+@path src 
+....@path tmpl 
+
+refer to foo/src and foo/tmpl, not foo/src and foo/src/tmpl 
+
+using @path src/tmpl works fine though.
+[end quote]
+
+The code to handle such matters is, alas, not localized, but appears in minor variants in several places.  I've never discovered a great way to refactor the code.  This is one of the 'bodies' that I know are buried in Leo's code.  I can put it on the list, but given the cost, and the relatively low payoff, it's not likely to happen any time soon.
+#@-node:ekr.20080124083629.1:Improve @path handling
 #@+node:ekr.20070625091423:Add translation services
 @nocolor
 
@@ -792,6 +805,7 @@ g.es("dragged node will be cloned")
 g.es("dragged node will be moved")
 #@-node:ekr.20071115113231:Results
 #@-node:ekr.20070625091423:Add translation services
+#@-node:ekr.20071211091037.1:Code cleanup
 #@+node:ekr.20070623144302:vim-like bindings
 #@+node:ekr.20071105160956:*** auto-change panes
 @nocolor
@@ -921,78 +935,17 @@ EKR
                 print z,repr(a)
 #@-node:ekr.20070613181147:(maybe) Improve key handling
 #@-node:ekr.20070623144302:vim-like bindings
-#@+node:ekr.20061028065955.2:Fix binding nits
-#@+node:ekr.20061014050154.2:Binding to None clears all bindings
-#@-node:ekr.20061014050154.2:Binding to None clears all bindings
-#@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
-#@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
-#@+node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
-#@-node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
-#@-node:ekr.20061028065955.2:Fix binding nits
+#@+node:ekr.20080218110223.2:Plugins
+#@+node:ekr.20070613103409:Improve marks/recent buttons
+- Arrow keys must move up/down.
+- Should be commands to show the marks/recent dialogs.
+#@nonl
+#@-node:ekr.20070613103409:Improve marks/recent buttons
+#@-node:ekr.20080218110223.2:Plugins
 #@+node:ekr.20071029082025:Improve distribution
 * Enable sax option.
 * Proper xml namespace in .leo files.  Is this Leo 5.0??
 #@nonl
-#@+node:ekr.20071111053028:Move to svn
-@nocolor
-
-http://subversion.tigris.org/faq.html#cvs2svn
-#@nonl
-#@+node:ekr.20070905072809.1:Mulder post re svn
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=4484641
-By: bwmulder
-
-Actually we are talking about two plugins here: a bazaar plugin, and a
-Leo plugin.
-
-The bazaar plugin would do special things for Leo files during checkout, status
-and checkin. After checkout, for example, it would delete the sentinels in the
-user visible files.
-
-The Leo plugin would know to go to the repository for reading (and writing?).
-
-One open question is to where to store new sentinels: can they be hidden away
-in the Source Control System (SCS) directories?
-
-Another open question: Could Leo sentinels be used as an identity marker, which
-unambiguously identifies a piece of text? With that, the SCS system might have
-enough information to make statements like:
-
-Lines 10-100 where in file x where moved from file y, in other words: the SCS
-could track code at the function level.
-
-The whole process could then work like this:
-
-1. You check out your sources.
-2. After checkout, the bazaar plugin would delete all sentinels from the checked-out
-files.
-3. If you start Leo, Leo would read the (full) file from the SCS.
-4. If you make modifications, the full file would be hidden in SCS directories,
-and the disk file would (again) show no sentinels.
-5. I don't know how the bazaar status command works. We must make sure that
-status works correctly for Leo files as it does for any other files.
-6. For checkin, the SCS system would have to use the information hidden in step
-4.
-
-Open questions:
-
-1. Can the Leo sentinels be used as a permanent identity markers for text? If
-they can't be right now, would Edward be willing to modify them so that they
-can?
-2. Can / should we make the full files available somehow (probably)
-2. How would conflict resolution work? Can / should we hide the sentinels even
-then? (probably not)
-
-So the answer to your question is: yes, I am thinking about such plugins, though
-I am not (yet) thinking of writing such plugins myself.
-
-______________________________________________________________________
-You are receiving this email because you elected to monitor this forum.
-To stop monitoring this forum, login to SourceForge.net and visit:
-https://sourceforge.net/forum/unmonitor.php?forum_id=10226
-#@-node:ekr.20070905072809.1:Mulder post re svn
-#@-node:ekr.20071111053028:Move to svn
 #@+node:ekr.20070929125944:Emulate Orange's download philosophy
 @nocolor
 
@@ -1013,12 +966,7 @@ Leo should copy this download philosophy.
 #@+node:ekr.20070615063616.1:Create Debian package
 #@-node:ekr.20070615063616.1:Create Debian package
 #@-node:ekr.20071029082025:Improve distribution
-#@-node:ekr.20071211142600.1:Important 4
-#@+node:ekr.20071219152901:create modes/test-language.py
-# Might be useful for unit tests.
-#@nonl
-#@-node:ekr.20071219152901:create modes/test-language.py
-#@-node:ekr.20071113093057:4.5 cleanups, vim bindings & readline
+#@-node:ekr.20071113093057:4.5 cleanups & vim bindings
 #@+node:ekr.20071211093011:4.6  autocompletion
 #@+node:ekr.20080113165010:About auto completion
 @nocolor
@@ -10826,7 +10774,6 @@ I do not want to be treading on your toes, so please tell me if I am intruding.
 
 
 #@-node:ekr.20070824093611:Improve wxGui plugin
-#@-node:ekr.20071211093011.1:Other guis
 #@+node:ekr.20080118175128:Create emacs-gui for use by leoPymacs module?
 @nocolor
 
@@ -10837,6 +10784,7 @@ This would draw into Emacs Windows(!)
 - Minibuffer: can we use the Emacs minibuffer?
 #@nonl
 #@-node:ekr.20080118175128:Create emacs-gui for use by leoPymacs module?
+#@-node:ekr.20071211093011.1:Other guis
 #@-all
 #@nonl
 #@-node:ekr.20040117181936:@thin ../doc/leoToDo.txt
