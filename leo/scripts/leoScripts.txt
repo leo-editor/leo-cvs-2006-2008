@@ -6160,73 +6160,81 @@ finally:
 @first # -*- coding: utf-8 -*-
 
 << docstring >>
+<< version history >>
 
 class controllerClass:
     @others
 
 x = controllerClass(c,p)
-x.scan(thePass=1)
-x.outDict()
-x.scan(thePass=2)
-x.setResults()
-g.es('done')
-#@nonl
+x.main()
 #@+node:<< docstring >>
-'''Here is a cute Leo script. It makes two passes over a Leo outline and puts its
-results in the body text of node whose headline is @scan_g.es_results. Call this
-the root node.
+'''Here is a cute Leo script. It discovers all g.es statements and the unbound
+variables in those statements in a single pass over the selected outline. It
+then puts the decls followed by the statements in the body text of the @scan_g.es_results node.
 
-The first pass discovers all variables used in g.es statements. At the end of
-pass 1, the script creates dummy bindings for all these variables at the start
-of the root node. The second pass adds the g.es statements themselves at the end
-of the root node.
-
-Thus, after this script, you can execute the body text of the root node. In
-particular, assuming that g.translateString converts all translated text to
-upper case, it is easy to tell which strings have been properly (or improperly)
-translated, and which have been properly (or improperly) not translated.
+Thus, after this script, you can **execute** the body text of the @scan_g.es_results node.
+In particular, assuming that g.translateString converts all translated text to upper case,
+it is easy to tell which strings have been translated.
 '''
 #@nonl
 #@-node:<< docstring >>
+#@+node:<< version history >>
+@nocolor
+@
+
+2008/2/19 EKR: Initial 2-pass version.
+2008/2/20 EKR: Convert to single-pass using decls and statements arrays.
+#@nonl
+#@-node:<< version history >>
 #@+node: ctor
 def __init__ (self,c,p):
 
     self.c = c
     self.p = p
 
-    self.d = {}
-    self.results = [] # The future contents of the results node.
-    self.root = g.findNodeAnywhere(c,'@scan_g.es_results')
+    self.decls = []
+    self.nodeName = '@scan_g.es_results'
+    self.statements = []
     self.traceFlag = False
+
+    self.root = g.findNodeAnywhere(c,self.nodeName)
 #@-node: ctor
-#@+node:error, out, trace
+#@+node:error & trace
 def error (self,s):
 
-    if self.thePass == 2:
-        self.out('***error: %s' % s)
-
-def out (self,s):
-
-    self.results.append(s)
+    self.statements.append('***error: %s' % s)
 
 def trace(self,s):
 
-    if self.traceFlag and self.thePass == 2:
-        self.out(s)
-#@-node:error, out, trace
-#@+node:outDict
-def outDict(self):
+    if self.traceFlag:
+        self.statements.append(s)
+#@-node:error & trace
+#@+node:main
+def main (self):
 
-    self.out('# Bindings...')
+    '''The main line.'''
 
-    for z in self.d.keys():
-        self.out('%s = "%s"' % (z,z))
+    self.scan()
+    self.decls.sort()
 
-#@-node:outDict
+    # The results are the decls followed by the statements.
+    results = ['# Decls...']
+    results.extend(["%s = '%s'" % (z,z) for z in self.decls])
+    results.extend(self.statements)
+    results = '\n'.join(results)
+
+    # Put the results in the root node, or print them.
+    if self.root:
+        c.setBodyString(self.root,results)
+    else:
+        print 'node not found',self.rootName
+        print results
+
+    g.es('done')
+#@-node:main
 #@+node:scan & helpers
-def scan(self,thePass):
+def scan(self):
 
-    self.thePass = thePass
 
     for p in self.p.self_and_subtree_iter():
 
@@ -6242,9 +6250,7 @@ def scanIds(self,s):
             i = g.skip_python_string(s,i)
         elif g.is_c_id(ch):
             j = i ; k = g.skip_id(s,i)
-            theId = s[j:k]
-            self.trace('id: %s' % (theId))
-            self.d[theId] = theId
+            self.setDecl(s[j:k])
             i = j
 
         i = max(i,progress+1)
@@ -6252,8 +6258,7 @@ def scanIds(self,s):
 #@+node:scanMatch
 def scanMatch(self,s):
 
-    if self.thePass == 2:
-        self.out(g.toEncodedString(s,'ascii'))
+    self.statements.append(g.toEncodedString(s,'ascii'))
 
     i = s.find('(')
     assert(i > -1)
@@ -6285,23 +6290,21 @@ def scanMatch(self,s):
                             i = j
                     elif i < len(s) and g.is_c_id(s[i]):
                         j = i ; k = g.skip_id(s,i)
-                        theId = s[j:k]
-                        self.trace('id: %s' % (theId))
-                        self.d[theId] = theId
+                        self.setDecl(s[j:k])
                         arg = s[start:k]
                         i = k
                 else:
                     arg = s[start:i]
         elif g.is_c_id(ch):
             start = i ; i = g.skip_id(s,i)
-            theId = s[start:i]
-            if theId in keywords:
+            word = s[start:i]
+            if word in keywords:
                 i = len(s)
             else:
-                self.trace('id: %s' % (theId))
-                arg = s[start:i]
-                self.d[arg] = theId
+                arg = word
+                self.setDecl(word)
 
+        # Useful for debugging.
         if arg and arg.strip():
             # self.trace('arg %s %s' % (n,arg.strip()))
             n += 1
@@ -6312,8 +6315,8 @@ def scanMatch(self,s):
 def scanNode(self,p):
 
     s,h = p.bodyString(), p.headString()
-    if h.startswith('@thin') and self.thePass == 2:
-        self.out('# -- %s' % (h))
+    if h.startswith('@thin'):
+        self.statements.append('# -- %s' % (h))
 
     tags = ('g.es','g.es_print',)
     i = 0 ; print_h = True
@@ -6328,26 +6331,23 @@ def scanNode(self,p):
                     if j == -1:
                         self.error('incomplete %s' % s[start:i])
                     else:
-                        if print_h and self.thePass == 2:
-                            if not h.startswith('@thin'): self.out('# %s' % (h))
+                        if print_h:
+                            if not h.startswith('@thin'): self.statements.append('# %s' % (h))
                             print_h = False
                         self.scanMatch(s[start:j+1])
                         i = j
                 break
         i = max(i,progress+1)
 #@-node:scanNode
+#@+node:setDecl
+def setDecl (self,s):
+
+    self.trace('id: %s' % (s))
+
+    if s not in self.decls:
+        self.decls.append(s)
+#@-node:setDecl
 #@-node:scan & helpers
-#@+node:setResults
-def setResults (self):
-
-    results = '\n'.join(self.results)
-
-    if self.root:
-        c.setBodyString(self.root,results)
-    else:
-        print '@results node not found'
-        print results
-#@-node:setResults
 #@-node:@button print g.es stats
 #@-node:Important
 #@+node:jEdit2Py
