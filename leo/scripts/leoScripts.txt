@@ -6183,7 +6183,13 @@ it is easy to tell which strings have been translated.
 @
 
 2008/2/19 EKR: Initial 2-pass version.
-2008/2/20 EKR: Convert to single-pass using decls and statements arrays.
+2008/2/20 EKR: Various minor improvements:
+- Convert to single-pass using decls and statements arrays.
+- Fixed bug that caused scanId's to define too many decls.
+- Predefine keyword args to g.es.
+- Don't define special vars.  See setDecl.
+- Added mungeHeadline so we don't create undefined section refs.
+- Select the root node when done.
 #@nonl
 #@-node:<< version history >>
 #@+node: ctor
@@ -6214,24 +6220,44 @@ def main (self):
 
     '''The main line.'''
 
+    c = self.c
     self.scan()
     self.decls.sort()
 
     # The results are the decls followed by the statements.
+
+    # Init the defaults.
     results = ['# Decls...']
+    results.extend(["color='red'","newline=True","tabName='Log'"])
+
     results.extend(["%s = '%s'" % (z,z) for z in self.decls])
+    results.extend(["g.es('='*20,color='red')",])
     results.extend(self.statements)
+    results.extend(["g.es('-'*20,color='red')",])
     results = '\n'.join(results)
 
     # Put the results in the root node, or print them.
     if self.root:
         c.setBodyString(self.root,results)
+        c.beginUpdate()
+        try:
+            c.selectPosition(self.root)
+        finally:
+            c.endUpdate()
     else:
         print 'node not found',self.rootName
         print results
 
     g.es('done')
 #@-node:main
+#@+node:mungeHeadline
+def mungeHeadline (self,s):
+
+    s = s.strip()
+    s = s.replace('<<','< <')
+    s = s.replace('>>','> >')
+    return s
+#@-node:mungeHeadline
 #@+node:scan & helpers
 def scan(self):
 
@@ -6251,7 +6277,7 @@ def scanIds(self,s):
         elif g.is_c_id(ch):
             j = i ; k = g.skip_id(s,i)
             self.setDecl(s[j:k])
-            i = j
+            i = k
 
         i = max(i,progress+1)
 #@-node:scanIds
@@ -6268,7 +6294,7 @@ def scanMatch(self,s):
     s = s[i+1:-1]
     # self.trace('args: %s' % (s))
     i = 0 ; n = 1
-    keywords = ('color','newline') # Keyword args to g.es
+    # keywords = ('color','newline','tabName',) # Keyword args to g.es
     while i < len(s):
         progress = i ; ch = s[i] ; arg = None
         if ch in ("'",'"',):
@@ -6297,12 +6323,14 @@ def scanMatch(self,s):
                     arg = s[start:i]
         elif g.is_c_id(ch):
             start = i ; i = g.skip_id(s,i)
-            word = s[start:i]
-            if word in keywords:
-                i = len(s)
-            else:
-                arg = word
-                self.setDecl(word)
+            # Add the keyword so we can scan for x in color=x.
+            word = s[start:i] 
+            self.setDecl(word)
+            # if word in keywords:
+                # i = len(s)
+            # else:
+                # arg = word
+                # self.setDecl(word)
 
         # Useful for debugging.
         if arg and arg.strip():
@@ -6332,22 +6360,34 @@ def scanNode(self,p):
                         self.error('incomplete %s' % s[start:i])
                     else:
                         if print_h:
-                            if not h.startswith('@thin'): self.statements.append('# %s' % (h))
+                            if not h.startswith('@thin'):
+                                self.statements.append('# %s' % (self.mungeHeadline(h)))
                             print_h = False
                         self.scanMatch(s[start:j+1])
                         i = j
                 break
         i = max(i,progress+1)
 #@-node:scanNode
+#@-node:scan & helpers
 #@+node:setDecl
 def setDecl (self,s):
 
-    self.trace('id: %s' % (s))
+    # g.trace(s)
+
+    s = s.strip()
+
+    if s in ('c','g','p','str','repr',):
+        return # Don't need a binding for these.
+
+    if s in ('color','newline','tabName',):
+        return # Special binding will be used for these.
+
+    if s.isdigit():
+        return # Don't bind integers.
 
     if s not in self.decls:
         self.decls.append(s)
 #@-node:setDecl
-#@-node:scan & helpers
 #@-node:@button print g.es stats
 #@-node:Important
 #@+node:jEdit2Py
