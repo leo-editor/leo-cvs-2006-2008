@@ -6183,13 +6183,18 @@ it is easy to tell which strings have been translated.
 @
 
 2008/2/19 EKR: Initial 2-pass version.
-2008/2/20 EKR: Various minor improvements:
+2008/2/20 EKR:
 - Convert to single-pass using decls and statements arrays.
-- Fixed bug that caused scanId's to define too many decls.
-- Predefine keyword args to g.es.
-- Don't define special vars.  See setDecl.
-- Added mungeHeadline so we don't create undefined section refs.
-- Select the root node when done.
+- Add 'tabName' to list of keyword arguments.
+- Fixed various bugs.
+2008/2/20 EKR 2:
+- Generate g.es statements to inicate beginnings of files.
+  This allows us to execute all generated statements at once.
+- Convert between '.' and '__' as needed to avoid using real ivars.
+2008/2/21 EKR:
+- Added mungeString.
+- Rewrote mungeStatements, scanParens and scanIdChain.
+These changes now properly handle all arguments.
 #@nonl
 #@-node:<< version history >>
 #@+node: ctor
@@ -6198,9 +6203,10 @@ def __init__ (self,c,p):
     self.c = c
     self.p = p
 
-    self.decls = []
+    self.decls = {}
     self.nodeName = '@scan_g.es_results'
     self.statements = []
+    self.printStatements = ('g.es','g.es_print',)
     self.traceFlag = False
 
     self.root = g.findNodeAnywhere(c,self.nodeName)
@@ -6222,18 +6228,19 @@ def main (self):
 
     c = self.c
     self.scan()
-    self.decls.sort()
+    self.mungeStatements()
+    keys = self.decls.keys()
+    keys.sort()
+    # This is such a great hack :-)
+    decls = ["%s = '%s'" % (self.mungeString(z),z) for z in keys]
 
     # The results are the decls followed by the statements.
-
-    # Init the defaults.
     results = ['# Decls...']
     results.extend(["color='red'","newline=True","tabName='Log'"])
-
-    results.extend(["%s = '%s'" % (z,z) for z in self.decls])
-    results.extend(["g.es('='*20,color='red')",])
+    results.extend(decls)
+    results.extend(["g.app.translateToUpperCase=True",])
     results.extend(self.statements)
-    results.extend(["g.es('-'*20,color='red')",])
+    results.extend(["g.app.translateToUpperCase=False",])
     results = '\n'.join(results)
 
     # Put the results in the root node, or print them.
@@ -6250,6 +6257,20 @@ def main (self):
 
     g.es('done')
 #@-node:main
+#@+node:mungeString
+def mungeString (self,s):
+
+    '''Convert string s so that it is a valid Python name.'''
+
+    s = s.strip()
+    s = s.replace('.','_DOT_')
+    s = s.replace('()','_PARENS_')
+    s = s.replace('(','_LP_')
+    s = s.replace(')','_RP_')
+    s = s.replace('"','_DQ_')
+    s = s.replace("'",'_SQ_')
+    return s
+#@-node:mungeString
 #@+node:mungeHeadline
 def mungeHeadline (self,s):
 
@@ -6258,6 +6279,38 @@ def mungeHeadline (self,s):
     s = s.replace('>>','> >')
     return s
 #@-node:mungeHeadline
+#@+node:mungeStatements
+def mungeStatements (self):
+
+    '''Convert a references to an known id chain by the corresponding decl.'''
+
+    keys = self.decls.keys()
+    for tag in self.printStatements:
+        if tag in keys: keys.remove(tag)
+
+    results = []
+    for s in self.statements:
+        i = 0 ; inner_result = []
+        while i < len(s):
+            progress = i
+            for key in keys:
+                if g.match_word(s,i,key):
+                    inner_result.append(self.mungeString(key))
+                    i += len(key)
+                    break
+            else:
+                inner_result.append(s[i])
+            i = max(i,progress+1)
+        new_statement = ''.join(inner_result)
+        if new_statement != s:
+            # Add the original lines as comments.
+            for z in g.splitLines(s):
+                results.append ('# %s' % (z.rstrip()))
+        results.append(new_statement) # Add the munged line.
+
+    self.statements = results
+
+#@-node:mungeStatements
 #@+node:scan & helpers
 def scan(self):
 
@@ -6266,88 +6319,42 @@ def scan(self):
 
         self.scanNode(p)
 #@nonl
-#@+node:scanIds
-def scanIds(self,s):
+#@+node:scanIdChain
+def scanIdChain (self,s,i):
 
-    i = 0
+    assert g.is_c_id(s[i])
+    start = i 
+
     while i < len(s):
-        progress = i ; ch = s[i]
-        if ch in ("'",'"',):
-            i = g.skip_python_string(s,i)
-        elif g.is_c_id(ch):
-            j = i ; k = g.skip_id(s,i)
-            self.setDecl(s[j:k])
-            i = k
+        progress = i
+        # Skip a.b.c...
+        if not g.is_c_id(s[i]): break
+        i = g.skip_id(s,i,chars='.')
+        i = g.skip_ws(s,i)
+        # Only a paren is valid now.
+        if not g.match(s,i,'('): break
+        # We shall munge the entire paren expression.
+        i = g.skip_matching_python_parens(s,i)
+        if g.match(s,i,')'): i += 1
+        # Only a dot is valid now.
+        if not g.match(s,i,'.'): break
+        i += 1
+        assert i > progress
 
-        i = max(i,progress+1)
-#@-node:scanIds
-#@+node:scanMatch
-def scanMatch(self,s):
-
-    self.statements.append(g.toEncodedString(s,'ascii'))
-
-    i = s.find('(')
-    assert(i > -1)
-    assert s[-1] == ')'
-
-    # Find all args.
-    s = s[i+1:-1]
-    # self.trace('args: %s' % (s))
-    i = 0 ; n = 1
-    # keywords = ('color','newline','tabName',) # Keyword args to g.es
-    while i < len(s):
-        progress = i ; ch = s[i] ; arg = None
-        if ch in ("'",'"',):
-            # Skip a string, and possible %
-            start = i
-            i = g.skip_python_string(s,i)
-            if i > start:
-                j = g.skip_ws(s,i)
-                if g.match(s,j,'%'):
-                    i = j + 1
-                    i = g.skip_ws(s,i)
-                    if g.match(s,i,'('):
-                        j = g.skip_matching_python_parens(s,i)
-                        if j == -1:
-                            self.error('**incomplete: %s' % (s[start:i+1]))
-                        else:
-                            arg = s[start:j+1]
-                            self.scanIds(s[i+1:j])
-                            i = j
-                    elif i < len(s) and g.is_c_id(s[i]):
-                        j = i ; k = g.skip_id(s,i)
-                        self.setDecl(s[j:k])
-                        arg = s[start:k]
-                        i = k
-                else:
-                    arg = s[start:i]
-        elif g.is_c_id(ch):
-            start = i ; i = g.skip_id(s,i)
-            # Add the keyword so we can scan for x in color=x.
-            word = s[start:i] 
-            self.setDecl(word)
-            # if word in keywords:
-                # i = len(s)
-            # else:
-                # arg = word
-                # self.setDecl(word)
-
-        # Useful for debugging.
-        if arg and arg.strip():
-            # self.trace('arg %s %s' % (n,arg.strip()))
-            n += 1
-
-        i = max(i,progress+1)
-#@-node:scanMatch
+    self.setDecl(s[start:i])
+    return i
+#@-node:scanIdChain
 #@+node:scanNode
 def scanNode(self,p):
 
-    s,h = p.bodyString(), p.headString()
-    if h.startswith('@thin'):
-        self.statements.append('# -- %s' % (h))
-
     tags = ('g.es','g.es_print',)
-    i = 0 ; print_h = True
+    s,h = p.bodyString(), p.headString()
+    print_h = True
+
+    if h.startswith('@thin'):
+        << insert statements highlighting the @thin node >>
+
+    i = 0
     while i < len(s):
         progress = i
         for tag in tags:
@@ -6355,28 +6362,79 @@ def scanNode(self,p):
                 start = i ; i += len(tag)
                 i = g.skip_ws(s,i)
                 if g.match(s,i,'('):
-                    j = g.skip_matching_python_parens(s,i)
-                    if j == -1:
-                        self.error('incomplete %s' % s[start:i])
-                    else:
-                        if print_h:
-                            if not h.startswith('@thin'):
-                                self.statements.append('# %s' % (self.mungeHeadline(h)))
-                            print_h = False
-                        self.scanMatch(s[start:j+1])
-                        i = j
+                    << Insert a comment containing the headline >>
+                    i = self.scanParens(s,i)
+                    statement = s[start:i]
+                    self.statements.append(statement)
                 break
         i = max(i,progress+1)
+#@+node:<< insert statements highlighting the @thin node >>
+self.statements.append('# ---- %s' % (h))
+self.statements.append("g.es_print('','%s %s',color='red')" % ('-'*20,h))
+#@nonl
+#@-node:<< insert statements highlighting the @thin node >>
+#@+node:<< Insert a comment containing the headline >>
+if print_h:
+    print_h = False
+    if not h.startswith('@thin'):
+        self.statements.append('# node %s' % (self.mungeHeadline(h)))
+#@nonl
+#@-node:<< Insert a comment containing the headline >>
 #@-node:scanNode
+#@+node:scanParens
+def scanParens(self,s,i):
+
+    '''Scan a parenthesized list of args.'''
+
+    assert g.match(s,i,'(')
+    j = g.skip_matching_python_parens(s,i)
+    if j == -1:
+        self.error('**incomplete paren at: %s' % s[i:])
+        return i+1 # Just skip the paren
+
+    assert g.match(s,j,')')
+    while i < j:
+        progress = i ; ch = s[i]
+
+        if ch in ("'",'"',):
+            i = self.scanStringArg(s,i)
+
+        elif g.is_c_id(ch):
+            i = self.scanIdChain(s,i)
+
+        i = max(i,progress+1)
+
+    return j + 1 # return the character after the paren.
+#@-node:scanParens
+#@+node:scanStringArg
+def scanStringArg(self,s,i):
+
+    '''Skip a string, and possible %'''
+
+    j = g.skip_python_string(s,i)
+    if j <= i: return i
+
+    i = g.skip_ws(s,j)
+    if not g.match(s,i,'%'):
+        return i
+
+    # Handle what follows the '%'
+    i = g.skip_ws(s,i+1)
+
+    if g.match(s,i,'('):
+        i = self.scanParens(s,i)
+    elif i < len(s) and g.is_c_id(s[i]):
+        i = self.scanIdChain(s,i)
+
+    return i
+#@-node:scanStringArg
 #@-node:scan & helpers
 #@+node:setDecl
 def setDecl (self,s):
 
-    # g.trace(s)
-
     s = s.strip()
 
-    if s in ('c','g','p','str','repr',):
+    if s in ('c','g','p','len','str','repr','and','or','not','is',):
         return # Don't need a binding for these.
 
     if s in ('color','newline','tabName',):
@@ -6385,8 +6443,7 @@ def setDecl (self,s):
     if s.isdigit():
         return # Don't bind integers.
 
-    if s not in self.decls:
-        self.decls.append(s)
+    self.decls[s] = True
 #@-node:setDecl
 #@-node:@button print g.es stats
 #@-node:Important
