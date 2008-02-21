@@ -6159,6 +6159,8 @@ finally:
 #@+node:@button print g.es stats
 @first # -*- coding: utf-8 -*-
 
+# To do: put list of to-be-translated strings in a doc part.
+
 << docstring >>
 << version history >>
 
@@ -6195,6 +6197,9 @@ it is easy to tell which strings have been translated.
 - Added mungeString.
 - Rewrote mungeStatements, scanParens and scanIdChain.
 These changes now properly handle all arguments.
+2008/2/21 EKR 2:
+- Added stringize and related logic.
+- Added setToBeTranslated to put list of to-be-translated strings into leading docstring.
 #@nonl
 #@-node:<< version history >>
 #@+node: ctor
@@ -6204,9 +6209,12 @@ def __init__ (self,c,p):
     self.p = p
 
     self.decls = {}
+    self.keywordArgs = ('color','newline','tabName',)
     self.nodeName = '@scan_g.es_results'
     self.statements = []
     self.printStatements = ('g.es','g.es_print',)
+    self.suppressTranslation = False # True: keyword arg to g.es seen.
+    self.toBeTranslated = []
     self.traceFlag = False
 
     self.root = g.findNodeAnywhere(c,self.nodeName)
@@ -6232,15 +6240,21 @@ def main (self):
     keys = self.decls.keys()
     keys.sort()
     # This is such a great hack :-)
-    decls = ["%s = '%s'" % (self.mungeString(z),z) for z in keys]
+    decls = ["%s = '%s'" % (self.mungeString(z),self.stringize(z,delim="'")) for z in keys]
 
-    # The results are the decls followed by the statements.
-    results = ['# Decls...']
+    # Put to-be-translated.
+    results = ['@ To be translated...',]
+    results.extend(self.toBeTranslated)
+    results.extend(['@c',])
+    # Put decls.
+    results.extend(['# Decls...',])
     results.extend(["color='red'","newline=True","tabName='Log'"])
     results.extend(decls)
+    # Put statements
     results.extend(["g.app.translateToUpperCase=True",])
     results.extend(self.statements)
     results.extend(["g.app.translateToUpperCase=False",])
+
     results = '\n'.join(results)
 
     # Put the results in the root node, or print them.
@@ -6257,18 +6271,24 @@ def main (self):
 
     g.es('done')
 #@-node:main
+#@+node:munging...
 #@+node:mungeString
 def mungeString (self,s):
 
     '''Convert string s so that it is a valid Python name.'''
 
     s = s.strip()
+    # s = s.replace('@','_AT_')
+    # s = s.replace('<','_LT_')
+    # s = s.replace('>','_GT_')
+    s = s.replace(',','_COMMA_')
     s = s.replace('.','_DOT_')
     s = s.replace('()','_PARENS_')
     s = s.replace('(','_LP_')
     s = s.replace(')','_RP_')
     s = s.replace('"','_DQ_')
     s = s.replace("'",'_SQ_')
+    s = ''.join([g.choose(z == '_' or z.isalnum(),z,'_') for z in s])
     return s
 #@-node:mungeString
 #@+node:mungeHeadline
@@ -6311,6 +6331,14 @@ def mungeStatements (self):
     self.statements = results
 
 #@-node:mungeStatements
+#@+node:stringize
+def stringize (self,s,delim):
+
+    s = s.strip()
+    s = s.replace(delim,'\\%s' % (delim))
+    return s
+#@-node:stringize
+#@-node:munging...
 #@+node:scan & helpers
 def scan(self):
 
@@ -6320,7 +6348,7 @@ def scan(self):
         self.scanNode(p)
 #@nonl
 #@+node:scanIdChain
-def scanIdChain (self,s,i):
+def scanIdChain (self,s,i,outer):
 
     assert g.is_c_id(s[i])
     start = i 
@@ -6331,6 +6359,10 @@ def scanIdChain (self,s,i):
         if not g.is_c_id(s[i]): break
         i = g.skip_id(s,i,chars='.')
         i = g.skip_ws(s,i)
+        word = s[start:i].strip()
+        if outer and g.match(s,i,'=') and word in (self.keywordArgs):
+            # g.trace('***','=',word)
+            self.suppressTranslation = True
         # Only a paren is valid now.
         if not g.match(s,i,'('): break
         # We shall munge the entire paren expression.
@@ -6360,10 +6392,11 @@ def scanNode(self,p):
         for tag in tags:
             if g.match_word(s,i,tag):
                 start = i ; i += len(tag)
+                self.suppressTranslation = False
                 i = g.skip_ws(s,i)
                 if g.match(s,i,'('):
                     << Insert a comment containing the headline >>
-                    i = self.scanParens(s,i)
+                    i = self.scanParens(s,i,outer=True)
                     statement = s[start:i]
                     self.statements.append(statement)
                 break
@@ -6377,12 +6410,12 @@ self.statements.append("g.es_print('','%s %s',color='red')" % ('-'*20,h))
 if print_h:
     print_h = False
     if not h.startswith('@thin'):
-        self.statements.append('# node %s' % (self.mungeHeadline(h)))
+        self.statements.append('# -- node %s' % (self.mungeHeadline(h)))
 #@nonl
 #@-node:<< Insert a comment containing the headline >>
 #@-node:scanNode
 #@+node:scanParens
-def scanParens(self,s,i):
+def scanParens(self,s,i,outer):
 
     '''Scan a parenthesized list of args.'''
 
@@ -6393,26 +6426,34 @@ def scanParens(self,s,i):
         return i+1 # Just skip the paren
 
     assert g.match(s,j,')')
+    n = 1
     while i < j:
         progress = i ; ch = s[i]
 
         if ch in ("'",'"',):
-            i = self.scanStringArg(s,i)
+            i = self.scanStringArg(s,i,n,outer)
+            n += 1
 
         elif g.is_c_id(ch):
-            i = self.scanIdChain(s,i)
+            i = self.scanIdChain(s,i,outer)
+            n += 1
 
         i = max(i,progress+1)
 
     return j + 1 # return the character after the paren.
 #@-node:scanParens
 #@+node:scanStringArg
-def scanStringArg(self,s,i):
+def scanStringArg(self,s,i,n,outer):
 
     '''Skip a string, and possible %'''
 
     j = g.skip_python_string(s,i)
     if j <= i: return i
+
+    # g.trace(n,s[i:j])
+
+    if outer:
+        self.setToBeTranslated(s[i:j],n)
 
     i = g.skip_ws(s,j)
     if not g.match(s,i,'%'):
@@ -6422,9 +6463,9 @@ def scanStringArg(self,s,i):
     i = g.skip_ws(s,i+1)
 
     if g.match(s,i,'('):
-        i = self.scanParens(s,i)
+        i = self.scanParens(s,i,outer=False)
     elif i < len(s) and g.is_c_id(s[i]):
-        i = self.scanIdChain(s,i)
+        i = self.scanIdChain(s,i,outer)
 
     return i
 #@-node:scanStringArg
@@ -6445,6 +6486,29 @@ def setDecl (self,s):
 
     self.decls[s] = True
 #@-node:setDecl
+#@+node:setToBeTranslated
+def setToBeTranslated (self,s,n):
+
+    s = s.strip()
+
+    if s.startswith('"') or s.startswith("'"):
+        s = s[1:]
+    if s.endswith('"') or s.endswith("'"):
+        s = s[:-1]
+
+    s = s.strip()
+
+    # Suppress translation when a keyword is seen, regardless of position.
+    if s in self.keywordArgs:
+        self.suppressTranslation = True
+
+    if self.suppressTranslation:
+        # g.trace('not added',s)
+        return
+
+    if (n % 2) == 1 and s not in self.toBeTranslated:
+        self.toBeTranslated.append(s)
+#@-node:setToBeTranslated
 #@-node:@button print g.es stats
 #@-node:Important
 #@+node:jEdit2Py
