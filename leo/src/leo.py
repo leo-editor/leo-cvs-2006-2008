@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 #@+leo-ver=4-thin
-#@+node:ekr.20031218072017.2605:@thin leo.py 
+#@+node:ekr.20031218072017.2605:@thin leo.py
 #@@first
 
 """Entry point for Leo in Python."""
@@ -230,7 +230,7 @@ def createFrame (fileName,relativeFileName):
 
     # Report the failure to open the file.
     if fileName:
-        g.es("File not found: " + fileName)
+        g.es("File not found:",fileName)
 
     return c,frame
 #@-node:ekr.20031218072017.1624:createFrame (leo.py)
@@ -269,7 +269,7 @@ def getBatchScript ():
             script = f.read()
             # g.trace("script",script)
         except IOError:
-            g.es_print("can not open script file: " + name, color="red")
+            g.es_print("can not open script file:",name, color="red")
             script = None
     finally:
         if f: f.close()
@@ -371,7 +371,7 @@ def reportDirectories(verbose):
             ("global config",g.app.globalConfigDir),
             ("home",g.app.homeDir),
         ):
-            g.es("%s dir: %s" % (kind,theDir),color="blue")
+            g.es("%s dir:" % (kind),theDir,color="blue")
 #@-node:ekr.20041130093254:reportDirectories
 #@+node:ekr.20070930194949:startJyleo (leo.py)
 def startJyleo (g):
@@ -401,7 +401,7 @@ def startPsyco ():
         import psyco
         if 0:
             theFile = r"c:\prog\test\psycoLog.txt"
-            g.es("psyco now logging to",theFile,color="blue")
+            g.es("psyco now logging to:",theFile,color="blue")
             psyco.log(theFile)
             psyco.profile()
         psyco.full()
@@ -423,5 +423,5 @@ if __name__ == "__main__":
         run(getFileName())
     else:
         run()
-#@-node:ekr.20031218072017.2605:@thin leo.py 
+#@-node:ekr.20031218072017.2605:@thin leo.py
 #@-leo
