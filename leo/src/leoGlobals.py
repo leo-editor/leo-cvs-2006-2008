@@ -2572,14 +2572,21 @@ def es(s,*args,**keys):
     newline = keys.get("newline",True)
     color = keys.get('color')
     tabName = keys.get('tabName','Log')
-        # Default goes to log pane *Not* the presently active pane.
+        # Default goes to log pane *not* the presently active pane.
     if color == 'suppress': return # New in 4.3.
-    if type(s) != type("") and type(s) != type(u""): # 1/20/03
+    if type(s) != type("") and type(s) != type(u""):
         s = repr(s)
-    for arg in args:
-        if type(arg) != type("") and type(arg) != type(u""): # 1/20/03
-            arg = repr(arg)
-        s = s + ", " + arg
+    s = g.translateArgs(s,args)
+    # else:
+        # s = g.translateString(s)
+    # n = 1
+    # for arg in args:
+        # n += 1
+        # if type(arg) != type("") and type(arg) != type(u""):
+            # arg = repr(arg)
+        # elif (n % 2) == 1:
+            # arg = g.translateString(arg)
+        # s = '%s %s' % (s,arg)
     if app.batchMode:
         if app.log:
             app.log.put(s)
@@ -2636,16 +2643,18 @@ def es_print(s,*args,**keys):
     except Exception:
         s = g.toEncodedString(s,'ascii')
 
+    s2 = g.translateArgs(s,args)
+
     if keys.get('newline') in (True,None):
         try:
-            print s
+            print s2
         except Exception:
-            print g.toEncodedString(s,'ascii')
+            print g.toEncodedString(s2,'ascii')
     else:
         try:
-            print s,
+            print s2,
         except Exception:
-            print g.toEncodedString(s,'ascii'),
+            print g.toEncodedString(s2,'ascii'),
 
     if g.app.gui and not g.app.gui.isNullGui and not g.unitTesting:
         g.es(s,*args,**keys)
@@ -2663,27 +2672,42 @@ def es_trace(s,*args,**keys):
     g.es(s,*args,**keys)
 #@nonl
 #@-node:ekr.20050707065530:es_trace
-#@+node:ekr.20060810095921:et, et_* and _ (underscore)
-#@+at
-# 
-# These are no longer needed.
-# 
-# The convention will be that only the first argument to g.es will be 
-# translated.
-# 
-# def et (s):
-#     es(g.translate(s))
-# 
-# def et_trace(s):
-#     es_trace(g.translate(s))
-# 
-#@-at
-#@@c
+#@+node:ekr.20080220111323:translateArgs
+def translateArgs (s,args,commas=False):
 
-def translate (s):
+    '''Return the concatenation of s and all args,
+
+    with odd args translated.'''
+
+    # Print the translated strings, but retain s for the later call to g.es.
+    result = []
+    if s:
+        result.append(g.translateString(s))
+    n = 1
+    for arg in args:
+        n += 1
+        if type(arg) != type("") and type(arg) != type(u""):
+            arg = repr(arg)
+        elif (n % 2) == 1:
+            arg = g.translateString(arg)
+        if result:
+            if commas: result.append(',')
+            result.append(' ' + arg)
+        else:
+            result.append(arg)
+
+    return ''.join(result)
+#@-node:ekr.20080220111323:translateArgs
+#@+node:ekr.20060810095921:translateString
+def translateString (s):
+
     '''Return the translated text of s.'''
-    return gettext.gettext(s)
-#@-node:ekr.20060810095921:et, et_* and _ (underscore)
+
+    if g.app.translateToUpperCase:
+        return s.upper()
+    else:
+        return gettext.gettext(s)
+#@-node:ekr.20060810095921:translateString
 #@+node:ekr.20031218072017.3148:top
 if 0: # An extremely dangerous function.
 
