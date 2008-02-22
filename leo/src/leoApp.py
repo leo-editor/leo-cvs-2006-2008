@@ -76,6 +76,7 @@ class LeoApp:
         self.trace_gc_inited = False
         self.tracePositions = False
         self.trace_list = [] # "Sherlock" argument list for tracing().
+        self.translateToUpperCase = False
         self.tkEncoding = "utf-8"
         self.unicodeErrorGiven = True # True: suppres unicode tracebacks.
         self.unitTestDict = {} # For communication between unit tests and code.
