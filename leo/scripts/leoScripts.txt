@@ -3037,6 +3037,57 @@ for z in folders:
     print s
 #@nonl
 #@-node:Print all Tango icons in wiki-markup format
+#@+node:square problem
+limit = 1000*1000
+
+def computeSquares(limit):
+    squares = {}
+    i = 2
+    while i < limit:
+        n = i*i
+        squares[n] = i # big keys
+        i += 1
+    return squares
+
+def inc(n):
+    assert n < limit
+    n1 = n
+    digit1 = n%10
+    n = n//10
+    digit2 = n%10
+    n = n//10
+    digit3 = n%10
+    n = n//10
+    digit4 = n%10
+    n = n//10
+    digit5 = n%10
+    n = n//10
+    digit6 = n%10
+    for digit in (digit1,digit2,digit3,digit4,digit5,digit6):
+        if digit == 9: return None
+    result = 0
+    if digit6 > 0 or result > 0: result += (digit6+1)*100000
+    if digit5 > 0 or result > 0: result += (digit5+1)*10000
+    if digit4 > 0 or result > 0: result += (digit4+1)*1000
+    if digit3 > 0 or result > 0: result += (digit3+1)*100
+    if digit2 > 0 or result > 0: result += (digit2+1)*10
+    if 1:                        result += (digit1+1)*1
+    return result
+
+squares = computeSquares(limit)
+
+i = 5
+while i < 1000:
+    j = i * i
+    k = inc(j)
+    k2 = squares.get(k)
+    if k2:
+        assert(k2*k2==k)
+        print '**found**',i,j,k,'= %d*%d' % (k2,k2)
+    else: print i,j,k
+    i += 1
+print 'tested all numbers <',i
+#@-node:square problem
 #@-node:Fun...
 #@+node:Important
 #@+node:c2py  Convert C code to Python syntax
