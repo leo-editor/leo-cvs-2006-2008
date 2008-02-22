@@ -2,220 +2,24 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20071113093057:4.5 cleanups & vim bindings
-#@+node:ekr.20080218110223:Easy
-#@+node:ekr.20080218152956:Better home page
-#@+node:ekr.20071211093323:more screen shots on Leo's web site
-#@-node:ekr.20071211093323:more screen shots on Leo's web site
-#@+node:ekr.20080218152956.1:move obsolete links to "links" page
-#@-node:ekr.20080218152956.1:move obsolete links to "links" page
-#@-node:ekr.20080218152956:Better home page
-#@+node:ekr.20080213112752:Prototype of gtk/ipython bridge
-#@-node:ekr.20080213112752:Prototype of gtk/ipython bridge
-#@+node:ekr.20080218152956.2:Is it possible to create menus very late in the creation process
-# This would allow @menu items to refer to commands created by @button.
-#@nonl
-#@-node:ekr.20080218152956.2:Is it possible to create menus very late in the creation process
-#@+node:ekr.20071217032247:Compile regexp's once in findNextMatch
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4677335
-
-The regexHelper method does compile regexp's before searching for them.  Alas, this method is called once per searched node, which greatly increases the compilation overhead.  Presumably it would be much better to compile the regexp once, say in findNextMatch.
-#@-node:ekr.20071217032247:Compile regexp's once in findNextMatch
-#@+node:ekr.20071115111719.2:Remove hard-coded menu tables
-See createMenusFromTables.
-#@nonl
-#@-node:ekr.20071115111719.2:Remove hard-coded menu tables
-#@-node:ekr.20080218110223:Easy
-#@+node:ekr.20071211091037.1:Code cleanup
-#@+node:ekr.20071215101531:Reorg drawing/focus code
-@nocolor
-
-I am considering a reorg for Leo 4.5 to eliminate all begin/endUpdate pairs. Commands would typically *request* a redraw, and the request would be honored after the command finishes. 
-
-I tried something like this before, and it did not turn out well. However, yesterday I realized that I could experiment by having endUpdate do the request. This avoid massive code changes until I am convinced everything will work. 
-
-This is a tricky area. In some cases, notably the find commands, there must be a way to force an immediate redraw, i.e., before the command completes. 
-
-Similarly, I plan to revisit the tricky areas of node selection and focus selection. Again, one might naively believe that these can be handled after commands finish, but there are enough exceptions to make this 'interesting'.
-
-@color
-#@nonl
-#@+node:ekr.20071215114036:Notes
-@color
-
-@ notes:
-
-- Calls to request_x emphasize that the action is not to be taken immediately.
-- Calls to redraw, set_focus and setCurrentPosition emphasize that the action will happen eventually.
-- Calls to actual_x are for special situations.
-@c
-
-Add c ivars: requested_draw, requested_position, requested_focus.
-
-c methods:
-
-def update (self):
-    '''Honor all requests for drawing, focus and position.'''
-    c = self
-    if c.requested_position(): # First.
-        c.actual_selectPosition(c.requested_positiion)
-        c.requested_position = None
-    if c.requested_draw: # Second.
-        c.actual_draw()
-        c.requested_draw = False
-    if c.requested_focus: # Third.
-        c.actual_set_focus()
-        c.requested_focus = None
-
-def request_draw (self,flag = True):
-    self.requested_draw = flag
-draw = redraw = request_redraw
-
-def begin_update(self):
-    pass
-end_update = request_redraw
-
-def actual_draw (self):
-    << do the actual redraw >>
-redraw_now = actual_draw
-
-def request_currentPosition (self,p):
-    self.requested_draw = p.copy()
-setCurrentPosition = request_currentPosition
-
-def actual_setCurrentPosition (self,p):
-    << select position p >>
-
-def request_focus (self,w):
-    self.requested_focus = w
-set_focus = request_focus
-
-def actual_set_focus (self,w):
-    << set the focus to w >>
-set_focus_now = actual_set_focus
-#@nonl
-#@-node:ekr.20071215114036:Notes
-#@+node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
-#@-node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
-#@-node:ekr.20071215101531:Reorg drawing/focus code
-#@+node:ekr.20071211142600.2:Config stuff
-#@+node:ekr.20071211142600.3:Clean up config mess
-#@-node:ekr.20071211142600.3:Clean up config mess
-#@+node:ekr.20061028065955.2:Fix binding nits
-#@+node:ekr.20061014050154.2:Binding to None clears all bindings
-#@-node:ekr.20061014050154.2:Binding to None clears all bindings
-#@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
-#@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
-#@+node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
-#@-node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
-#@-node:ekr.20061028065955.2:Fix binding nits
-#@+node:ekr.20080129103436:Solve Kent's @menu problem
-@nocolor
-
-http://sourceforge.net/forum/forum.php?thread_id=1858451&forum_id=10228
-
-I'm interested in using @settings to create application 
-specific mini-editors. I think there's great promise in  
-@settings nodes which create an environment with buttons 
-and menu choices to work with specific file types, or other 
-niche applications. The menus and buttons will expose a 
-set of capabilities, and unneeded capabilities will be hidden. 
-
-However, if I create a @settings->@menus->@menu node in a file, open 
-the file, then open another Leo file, the next file opens with the 
-redefined menu. 
-#@nonl
-#@-node:ekr.20080129103436:Solve Kent's @menu problem
-#@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree
-#@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree
-#@+node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4562648
-By: rogererens
-
-Maybe I may use this thread to make another suggestion for Leo 4.4.5, related
-to @menus: have the menu-options for right-clicking in the various panes also
-in the @settings-tree.
-
-Regards, Roger
-#@nonl
-#@-node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
-#@-node:ekr.20071211142600.2:Config stuff
-#@+node:ekr.20080218110223.1:Files
-#@+node:ekr.20071031113657:Always use sax parser to read .leo files
-# Are there proper unit tests?
-# Do global settings and find-panel settings get set properly.
-#@nonl
-#@-node:ekr.20071031113657:Always use sax parser to read .leo files
-#@+node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
-xmlns:leo="http://edreamleo.org/namespaces/leo-python-editor/1.1"
-#@nonl
-#@-node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
-#@-node:ekr.20080218110223.1:Files
-#@+node:ekr.20080124083629.1:Improve @path handling
-@nocolor
-[quote]
-nested @paths don't do what I expected: 
-
-For a leo file in directory foo: 
-
-@path src 
-....@path tmpl 
-
-refer to foo/src and foo/tmpl, not foo/src and foo/src/tmpl 
-
-using @path src/tmpl works fine though.
-[end quote]
-
-The code to handle such matters is, alas, not localized, but appears in minor variants in several places.  I've never discovered a great way to refactor the code.  This is one of the 'bodies' that I know are buried in Leo's code.  I can put it on the list, but given the cost, and the relatively low payoff, it's not likely to happen any time soon.
-#@-node:ekr.20080124083629.1:Improve @path handling
 #@+node:ekr.20070625091423:Add translation services
 @nocolor
 
 *Many* calls to g.es and g.es_print have a mix of translated and untranslated items.
 Untranslated items should include file names, directories, gnx's, leo_id's etc.
 
-**Don't bother to do clone-find-all: there are 666 many matches!**
+**Don't bother to do clone-find-all: there are 666 matches!**
 
 Regardless of the chosen scheme:
 
 - g.translate will do the actual translation.
 
-- Some simple string, like tr, will be an abbreviation for g.translate.
-  The typical import will be::
+- g.es and g.es_print will translate only the first, third, etc arguments
+  (Keyword arguments, color & newline, etc. are never translated)
 
-    import leoGlobals as g ; tr = g.translate
-
-The easiest scheme seems to be:
-
-- g.es and g.es_print translate all arguments.
-- g.esx and g.es_printx do no translation.
-
-g.esx and g.es_printx allow a mix on translated and untranslated arguments::
-
-    g.esx(tr('abc'),fileName)
 
 @color
 #@nonl
-#@+node:ekr.20071115111719.1:Script to print all g.es statements
-@first # -*- coding: utf-8 -*-
-
-# To do: match parens to get entire multi-line statements.
-
-for p in p.self_and_subtree_iter():
-    s = p.bodyString()
-    h = p.headString()
-    if h.startswith('@thin'):
-        print ; print h
-    lines = g.splitlines(s)
-    for line in lines:
-        line = line.strip()
-        if g.match_word(line,0,'g.es') or g.match_word(line,0,'g.es_print'):
-            print g.toEncodedString(line.strip(),'ascii')
-
-#@-node:ekr.20071115111719.1:Script to print all g.es statements
 #@+node:ekr.20071115113231:Results
 @color
 
@@ -805,6 +609,184 @@ g.es("dragged node will be cloned")
 g.es("dragged node will be moved")
 #@-node:ekr.20071115113231:Results
 #@-node:ekr.20070625091423:Add translation services
+#@+node:ekr.20080218110223:Easy
+#@+node:ekr.20080218152956:Better home page
+#@+node:ekr.20071211093323:more screen shots on Leo's web site
+#@-node:ekr.20071211093323:more screen shots on Leo's web site
+#@+node:ekr.20080218152956.1:move obsolete links to "links" page
+#@-node:ekr.20080218152956.1:move obsolete links to "links" page
+#@-node:ekr.20080218152956:Better home page
+#@+node:ekr.20080213112752:Prototype of gtk/ipython bridge
+#@-node:ekr.20080213112752:Prototype of gtk/ipython bridge
+#@+node:ekr.20080218152956.2:Is it possible to create menus very late in the creation process
+# This would allow @menu items to refer to commands created by @button.
+#@nonl
+#@-node:ekr.20080218152956.2:Is it possible to create menus very late in the creation process
+#@+node:ekr.20071217032247:Compile regexp's once in findNextMatch
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4677335
+
+The regexHelper method does compile regexp's before searching for them.  Alas, this method is called once per searched node, which greatly increases the compilation overhead.  Presumably it would be much better to compile the regexp once, say in findNextMatch.
+#@-node:ekr.20071217032247:Compile regexp's once in findNextMatch
+#@+node:ekr.20071115111719.2:Remove hard-coded menu tables
+See createMenusFromTables.
+#@nonl
+#@-node:ekr.20071115111719.2:Remove hard-coded menu tables
+#@-node:ekr.20080218110223:Easy
+#@+node:ekr.20071211091037.1:Code cleanup
+#@+node:ekr.20071215101531:Reorg drawing/focus code
+@nocolor
+
+I am considering a reorg for Leo 4.5 to eliminate all begin/endUpdate pairs. Commands would typically *request* a redraw, and the request would be honored after the command finishes. 
+
+I tried something like this before, and it did not turn out well. However, yesterday I realized that I could experiment by having endUpdate do the request. This avoid massive code changes until I am convinced everything will work. 
+
+This is a tricky area. In some cases, notably the find commands, there must be a way to force an immediate redraw, i.e., before the command completes. 
+
+Similarly, I plan to revisit the tricky areas of node selection and focus selection. Again, one might naively believe that these can be handled after commands finish, but there are enough exceptions to make this 'interesting'.
+
+@color
+#@nonl
+#@+node:ekr.20071215114036:Notes
+@color
+
+@ notes:
+
+- Calls to request_x emphasize that the action is not to be taken immediately.
+- Calls to redraw, set_focus and setCurrentPosition emphasize that the action will happen eventually.
+- Calls to actual_x are for special situations.
+@c
+
+Add c ivars: requested_draw, requested_position, requested_focus.
+
+c methods:
+
+def update (self):
+    '''Honor all requests for drawing, focus and position.'''
+    c = self
+    if c.requested_position(): # First.
+        c.actual_selectPosition(c.requested_positiion)
+        c.requested_position = None
+    if c.requested_draw: # Second.
+        c.actual_draw()
+        c.requested_draw = False
+    if c.requested_focus: # Third.
+        c.actual_set_focus()
+        c.requested_focus = None
+
+def request_draw (self,flag = True):
+    self.requested_draw = flag
+draw = redraw = request_redraw
+
+def begin_update(self):
+    pass
+end_update = request_redraw
+
+def actual_draw (self):
+    << do the actual redraw >>
+redraw_now = actual_draw
+
+def request_currentPosition (self,p):
+    self.requested_draw = p.copy()
+setCurrentPosition = request_currentPosition
+
+def actual_setCurrentPosition (self,p):
+    << select position p >>
+
+def request_focus (self,w):
+    self.requested_focus = w
+set_focus = request_focus
+
+def actual_set_focus (self,w):
+    << set the focus to w >>
+set_focus_now = actual_set_focus
+#@nonl
+#@-node:ekr.20071215114036:Notes
+#@+node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
+#@-node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
+#@-node:ekr.20071215101531:Reorg drawing/focus code
+#@+node:ekr.20071211142600.2:Config stuff
+#@+node:ekr.20080219080209:Create myLeoSettings.leo if it does not exist
+@nocolor
+
+http://mail.google.com/mail/#label/Leo/1182d78133aa0ecf
+
+Create a simple template myLeoSettings.leo in $HOME when you try to
+open it and it doesn't exist
+#@nonl
+#@-node:ekr.20080219080209:Create myLeoSettings.leo if it does not exist
+#@+node:ekr.20071211142600.3:Clean up config mess
+#@-node:ekr.20071211142600.3:Clean up config mess
+#@+node:ekr.20061028065955.2:Fix binding nits
+#@+node:ekr.20061014050154.2:Binding to None clears all bindings
+#@-node:ekr.20061014050154.2:Binding to None clears all bindings
+#@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
+#@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
+#@+node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
+#@-node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
+#@-node:ekr.20061028065955.2:Fix binding nits
+#@+node:ekr.20080129103436:Solve Kent's @menu problem
+@nocolor
+
+http://sourceforge.net/forum/forum.php?thread_id=1858451&forum_id=10228
+
+I'm interested in using @settings to create application 
+specific mini-editors. I think there's great promise in  
+@settings nodes which create an environment with buttons 
+and menu choices to work with specific file types, or other 
+niche applications. The menus and buttons will expose a 
+set of capabilities, and unneeded capabilities will be hidden. 
+
+However, if I create a @settings->@menus->@menu node in a file, open 
+the file, then open another Leo file, the next file opens with the 
+redefined menu. 
+#@nonl
+#@-node:ekr.20080129103436:Solve Kent's @menu problem
+#@+node:ekr.20071025160653.1:Support @command nodes in @buttons tree
+#@-node:ekr.20071025160653.1:Support @command nodes in @buttons tree
+#@+node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4562648
+By: rogererens
+
+Maybe I may use this thread to make another suggestion for Leo 4.4.5, related
+to @menus: have the menu-options for right-clicking in the various panes also
+in the @settings-tree.
+
+Regards, Roger
+#@nonl
+#@-node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
+#@-node:ekr.20071211142600.2:Config stuff
+#@+node:ekr.20080218110223.1:Files
+#@+node:ekr.20071031113657:Always use sax parser to read .leo files
+# Are there proper unit tests?
+# Do global settings and find-panel settings get set properly.
+#@nonl
+#@-node:ekr.20071031113657:Always use sax parser to read .leo files
+#@+node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
+xmlns:leo="http://edreamleo.org/namespaces/leo-python-editor/1.1"
+#@nonl
+#@-node:ekr.20071003104917:Make http://edreamleo.org/namespaces/leo-python-editor/1.1 Leo's official namespace
+#@-node:ekr.20080218110223.1:Files
+#@+node:ekr.20080124083629.1:Improve @path handling
+@nocolor
+[quote]
+nested @paths don't do what I expected: 
+
+For a leo file in directory foo: 
+
+@path src 
+....@path tmpl 
+
+refer to foo/src and foo/tmpl, not foo/src and foo/src/tmpl 
+
+using @path src/tmpl works fine though.
+[end quote]
+
+The code to handle such matters is, alas, not localized, but appears in minor variants in several places.  I've never discovered a great way to refactor the code.  This is one of the 'bodies' that I know are buried in Leo's code.  I can put it on the list, but given the cost, and the relatively low payoff, it's not likely to happen any time soon.
+#@-node:ekr.20080124083629.1:Improve @path handling
 #@-node:ekr.20071211091037.1:Code cleanup
 #@+node:ekr.20070623144302:vim-like bindings
 #@+node:ekr.20071105160956:*** auto-change panes

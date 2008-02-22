@@ -1255,14 +1255,21 @@ def es(s,*args,**keys):
     newline = keys.get("newline",True)
     color = keys.get('color')
     tabName = keys.get('tabName','Log')
-        # Default goes to log pane *Not* the presently active pane.
+        # Default goes to log pane *not* the presently active pane.
     if color == 'suppress': return # New in 4.3.
-    if type(s) != type("") and type(s) != type(u""): # 1/20/03
+    if type(s) != type("") and type(s) != type(u""):
         s = repr(s)
-    for arg in args:
-        if type(arg) != type("") and type(arg) != type(u""): # 1/20/03
-            arg = repr(arg)
-        s = s + ", " + arg
+    s = g.translateArgs(s,args)
+    # else:
+        # s = g.translateString(s)
+    # n = 1
+    # for arg in args:
+        # n += 1
+        # if type(arg) != type("") and type(arg) != type(u""):
+            # arg = repr(arg)
+        # elif (n % 2) == 1:
+            # arg = g.translateString(arg)
+        # s = '%s %s' % (s,arg)
     if app.batchMode:
         if app.log:
             app.log.put(s)
