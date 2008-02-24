@@ -235,7 +235,7 @@ class ipythonController:
     def pushToIPython (self,script=None):
         ''' Push the node to IPython'''
         if not gIPythonStarted:
-            self.startIpython() # Does not return
+            self.startIPython() # Does not return
         else:
             if script:
                 self.ip.runlines(script)
