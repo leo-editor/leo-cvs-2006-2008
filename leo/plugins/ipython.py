@@ -175,26 +175,33 @@ class ipythonController:
 
         '''The start-ipython command'''
 
+        c = self.c
         global gIPythonStarted
-
+        try:
+            import ipy_leo
+        except ImportError:
+            self.error("ipy_leo.py extension not available - upgrade your IPython!")
+            return
+        
         if gIPythonStarted:
-            return self.error('IPython is already running')
+            # if we are already running, just inject a new commander for current document
+            
+            leox = leoInterface(c,g) # inject leox into the namespace.
+            ipy_leo.update_commander(leox)
+            return
 
         try:
-            c = self.c
-            #self.ipshell = IPShellEmbed() # Create object to be bound to .api.
+
 
             api = IPython.ipapi
             self.message('creating IPython shell...')
-            gIPythonStarted = True # Do this *before* calling ipshell.
+            gIPythonStarted = True
             leox = leoInterface(c,g) # inject leox into the namespace.
-            my_ns = { 'leox': leox }
+            my_ns = { '_leo': leox }
             ses = api.make_session(my_ns)
             self.ip = ses.IP.getapi()
-            try:
-                self.ip.ex('import ipy_leo')
-            except ImportError:
-                self.error("ipy_leo.py extension not available - consider upgrading your IPython!")
+            ipy_leo_m = self.ip.load('ipy_leo')
+            ipy_leo_m.update_commander(leox)
 
             c.inCommand = False # Disable the command lockout logic, just as for scripts.
             sys.argv = []
@@ -226,33 +233,18 @@ class ipythonController:
     #@-node:ekr.20080204075924:error & message
     #@+node:ekr.20080201150746.2:pushToIPython
     def pushToIPython (self,script=None):
-        '''Execute the data to Ipython.
-        Use the presently selected body text if no script is given.'''
+        ''' Push the node to IPython'''
         if not gIPythonStarted:
             self.startIpython() # Does not return
         else:
+            if script:
+                self.ip.runlines(script)
+                return
             c = self.c ; p = c.currentPosition()
             sys.argv = [] # Clear the argv vector.
-            try:
-                # if ipython has defined leox.push, call push(p)
-                push = self.ip.user_ns['leox'].push
-                push(p)
-                return
-            except AttributeError:
-                # ipython has not defined 'push' (old version?). Just execute the node
-                self.error("Your IPython version is obsolete, please upgrade!")
-
-            # The rest of this is probably never executed with up-to-date IPython
-            # Get the script. 
-            if script is None:
-                # script = g.splitLines(p.bodyString() + '\n')
-                script = g.getScript(c,p,useSelectedText=False,forcePythonSentinels=True,useSentinels=True)
-                script = g.splitLines(script + '\n')
-                script = ''.join([z for z in script  if z.strip()])
-                # print 'script\n',script
-
-            # Run the script.
-            self.ip.runlines(script)
+            push = self.ip.user_ns['_leo'].push
+            push(p)
+            return
     #@-node:ekr.20080201150746.2:pushToIPython
     #@+node:ekr.20080204083034:started
     def started (self):
