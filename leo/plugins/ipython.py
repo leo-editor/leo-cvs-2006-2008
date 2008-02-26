@@ -101,7 +101,9 @@ except ImportError:
 #@nl
 
 # Globals
-gIPythonStarted = False # True: the start-ipythoncommand has been run.
+
+# IPython IPApi instance. Global, because only one can exist through the whole leo session
+gIP = None
 
 #@+others
 #@+node:ekr.20080201144219:Module-level functions
@@ -146,10 +148,6 @@ class ipythonController:
     def __init__ (self,c):
 
         self.c = c
-
-        # Set by .startIPython...
-        self.ip = None # The _ip var returned by ipshell.IP.getapi()
-
         self.createCommands()
     #@-node:ekr.20080201143145.7:ctor
     #@+node:ekr.20080204080848:createCommands
@@ -176,14 +174,14 @@ class ipythonController:
         '''The start-ipython command'''
 
         c = self.c
-        global gIPythonStarted
+        global gIP
         try:
             import ipy_leo
         except ImportError:
             self.error("ipy_leo.py extension not available - upgrade your IPython!")
             return
         
-        if gIPythonStarted:
+        if gIP:
             # if we are already running, just inject a new commander for current document
             
             leox = leoInterface(c,g) # inject leox into the namespace.
@@ -191,16 +189,13 @@ class ipythonController:
             return
 
         try:
-
-
             api = IPython.ipapi
             self.message('creating IPython shell...')
-            gIPythonStarted = True
             leox = leoInterface(c,g) # inject leox into the namespace.
             my_ns = { '_leo': leox }
             ses = api.make_session(my_ns)
-            self.ip = ses.IP.getapi()
-            ipy_leo_m = self.ip.load('ipy_leo')
+            gIP = ses.IP.getapi()
+            ipy_leo_m = gIP.load('ipy_leo')
             ipy_leo_m.update_commander(leox)
 
             c.inCommand = False # Disable the command lockout logic, just as for scripts.
@@ -234,23 +229,22 @@ class ipythonController:
     #@+node:ekr.20080201150746.2:pushToIPython
     def pushToIPython (self,script=None):
         ''' Push the node to IPython'''
-        if not gIPythonStarted:
+        if not gIP:
             self.startIPython() # Does not return
         else:
             if script:
-                self.ip.runlines(script)
+                gIP.runlines(script)
                 return
             c = self.c ; p = c.currentPosition()
             sys.argv = [] # Clear the argv vector.
-            push = self.ip.user_ns['_leo'].push
+            push = gIP.user_ns['_leo'].push
+            c.inCommand = False # Disable the command lockout logic
             push(p)
             return
     #@-node:ekr.20080201150746.2:pushToIPython
     #@+node:ekr.20080204083034:started
     def started (self):
-
-        global gIPythonStarted
-        return gIPythonStarted
+        return gIP
     #@-node:ekr.20080204083034:started
     #@-node:ekr.20080201151802.2:Utils...
     #@-others
