@@ -1,6 +1,22 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
+#@+node:ekr.20080224180411:** fix problems with install script
+@nocolor
+
+http://groups.google.com/group/leo-editor/browse_thread/thread/9ac0ca91f1cb09a6?hl=en
+
+On Feb 18, 2:17 pm, "Edward K. Ream" <edream...@gmail.com> wrote:
+
+> Leo 4.4.7 final is available at:http://sourceforge.net/project/showfiles.php?group_id=3458&package_id...
+
+i'm trying to install from the zip archive in linux. all of the text
+files appear to be in DOS format and this is confusing bash when i
+invoke the install script. i also used unzip -a to convert the files
+but it had no effect; i think everything in the archive is marked as
+binary. 
+#@nonl
+#@-node:ekr.20080224180411:** fix problems with install script
 #@+node:ekr.20071113093057:4.5 cleanups & vim bindings
 #@+node:ekr.20070625091423:Add translation services
 @nocolor
@@ -707,6 +723,14 @@ set_focus_now = actual_set_focus
 #@-node:ekr.20071206091910:clean up focus code: use treeFocusHelper everywhere
 #@-node:ekr.20071215101531:Reorg drawing/focus code
 #@+node:ekr.20071211142600.2:Config stuff
+#@+node:ekr.20080225103954:Add 'else' clause to if-platform
+@nocolor
+
+**OR** put 'else' (default) first, and have @ifplatform only override parts.
+
+@ifplatform isn't very useful without it.
+#@nonl
+#@-node:ekr.20080225103954:Add 'else' clause to if-platform
 #@+node:ekr.20080219080209:Create myLeoSettings.leo if it does not exist
 @nocolor
 
@@ -760,6 +784,28 @@ Regards, Roger
 #@-node:ekr.20071010162003:Add @rclick-menus trees to specify rclick popup menus
 #@-node:ekr.20071211142600.2:Config stuff
 #@+node:ekr.20080218110223.1:Files
+#@+node:ekr.20080225104355:Add 'fixed' attribute to .leo files
+@nocolor
+
+http://mail.google.com/mail/#inbox/118504bef91bb8ce
+
+I think it might be handy to have a 'fixed' flag in .leo file, to
+minimize cvs conflicts. When a leo document has that flag, nothing
+about frame positions etc. will ever be written to the .leo file on
+save.
+
+Most leo documents where people are supposed to collaborate should
+have this flag (e.g. the .leo documents in Leo cvs).
+
+The user interface for this feature would be simple:
+
+alt-x toggle-fixed
+
+es "myfile.leo will be written in 'fixed' mode"
+
+ctrl+s <== saves it in fixed mode
+#@nonl
+#@-node:ekr.20080225104355:Add 'fixed' attribute to .leo files
 #@+node:ekr.20071031113657:Always use sax parser to read .leo files
 # Are there proper unit tests?
 # Do global settings and find-panel settings get set properly.
@@ -928,6 +974,8 @@ EKR
 * Enable sax option.
 * Proper xml namespace in .leo files.  Is this Leo 5.0??
 #@nonl
+#@+node:ekr.20080226042409:Add html files to cvs and to the distro
+#@-node:ekr.20080226042409:Add html files to cvs and to the distro
 #@+node:ekr.20070929125944:Emulate Orange's download philosophy
 @nocolor
 
@@ -2032,7 +2080,7 @@ else:
 if rewrite:
     path = c.createOpenWithTempFile(p,ext)
 else:
-    g.es("reopening: " + g.shortFileName(path),color="blue")
+    g.es("reopening:",g.shortFileName(path),color="blue")
 #@+node:ekr.20031218072017.2828:<< Raise dialog about conflict and set result >>
 message = (
     "Conflicting changes in outline and temp file\n\n" +
@@ -2094,7 +2142,7 @@ try:
         command="bad command:"+str(openType)
         g.trace(command)
 except Exception:
-    g.es("exception executing: "+command)
+    g.es("exception executing:",command)
     g.es_exception()
 #@-node:ekr.20031218072017.2829:<< execute a command to open path in external editor >>
 #@+node:ekr.20031218072017.2830:createOpenWithTempFile
@@ -2104,9 +2152,9 @@ def createOpenWithTempFile (self,p,ext):
     path = c.openWithTempFilePath(p,ext)
     try:
         if g.os_path_exists(path):
-            g.es("recreating:  " + g.shortFileName(path),color="red")
+            g.es("recreating:  ",g.shortFileName(path),color="red")
         else:
-            g.es("creating:  " + g.shortFileName(path),color="blue")
+            g.es("creating:  ",g.shortFileName(path),color="blue")
         theFile = open(path,"w")
         # Convert s to whatever encoding is in effect.
         s = p.bodyString()
@@ -2149,55 +2197,18 @@ def openWithTempFilePath (self,p,ext):
 
     """Return the path to the temp file corresponding to p and ext."""
 
-    if 0: # new code: similar to code in mod_tempfname.py plugin.
-        pass
-        # try:
-            # # At least in Windows, user name may contain special characters
-            # # which would require escaping quotes.
-            # leoTempDir = g.sanitize_filename(getpass.getuser()) + "_" + "Leo"
-        # except:
-            # leoTempDir = "LeoTemp"
-            # g.es("Could not retrieve your user name.")
-            # g.es("Temporary files will be stored in: %s" % leoTempDir)
+    name = "LeoTemp_%s_%s%s" % (
+        str(id(p.v.t)),
+        g.sanitize_filename(p.headString()),
+        ext)
 
-        # td = os.path.join(g.os_path_abspath(tempfile.gettempdir()),leoTempDir)
-        # if not os.path.exists(td):
-            # os.mkdir(td)
+    name = g.toUnicode(name,g.app.tkEncoding)
 
-        # name = g.sanitize_filename(v.headString()) + '_' + str(id(p.v.t))  + ext
-        # path = os.path.join(td,name)
-        # return path
-    else: # Original code.
-        name = "LeoTemp_%s_%s%s" % (
-            str(id(p.v.t)),
-            g.sanitize_filename(p.headString()),
-            ext)
+    td = g.os_path_abspath(tempfile.gettempdir())
 
-        name = g.toUnicode(name,g.app.tkEncoding)
-        # try:
-            # # At least in Windows, user name may contain special characters
-            # # which would require escaping quotes.
-            # leoTempDir = g.sanitize_filename(getpass.getuser()) + "_" + "Leo"
-        # except:
-            # leoTempDir = "LeoTemp"
-            # g.es("Could not retrieve your user name.")
-            # g.es("Temporary files will be stored in: %s" % leoTempDir)
+    path = g.os_path_join(td,name)
 
-        # td = os.path.join(g.os_path_abspath(tempfile.gettempdir()),leoTempDir)
-        # if not os.path.exists(td):
-            # os.mkdir(td)
-
-        # name = g.sanitize_filename(v.headString()) + '_' + str(id(v.t))  + ext
-        # path = os.path.join(td,name)
-        # return path
-        if 1:
-            td = g.os_path_abspath(tempfile.gettempdir())
-        else:
-            td = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','temp'))
-
-        path = g.os_path_join(td,name)
-
-        return path
+    return path
 #@-node:ekr.20031218072017.2832:c.openWithTempFilePath
 #@-node:ekr.20031218072017.2823:openWith and allies
 #@+node:ekr.20031218072017.2833:close
@@ -2215,7 +2226,7 @@ def save (self,event=None):
     c = self ; w = g.app.gui.get_focus(c)
 
     if g.app.disableSave:
-        g.es("Save commands disabled",color="purple")
+        g.es("save commands disabled",color="purple")
         return
 
     # Make sure we never pass None to the ctor.
@@ -2257,7 +2268,7 @@ def saveAs (self,event=None):
     c = self ;  w = g.app.gui.get_focus(c)
 
     if g.app.disableSave:
-        g.es("Save commands disabled",color="purple")
+        g.es("save commands disabled",color="purple")
         return
 
     c.beginUpdate()
@@ -2317,7 +2328,7 @@ def saveTo (self,event=None):
     c = self ; w = g.app.gui.get_focus(c)
 
     if g.app.disableSave:
-        g.es("Save commands disabled",color="purple")
+        g.es("save commands disabled",color="purple")
         return
 
     c.beginUpdate()

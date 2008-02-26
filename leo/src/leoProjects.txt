@@ -1252,24 +1252,22 @@ def es(s,*args,**keys):
     log = app.log
     if app.killed:
         return
-    newline = keys.get("newline",True)
+
+    # Important: defining keyword arguments in addition to *args **does not work**.
+    # See Section 5.3.4 (Calls) of the Python reference manual.
+    # In other words, the following is about the best that can be done.
     color = keys.get('color')
+    commas = keys.get('commas') ; commas = g.choose(commas=='True',True,False) # default is False
+    newline = keys.get('newline') ; newline = g.choose(newline=='False',False,True) # default is True
+    spaces= keys.get('spaces') ; spaces = g.choose(spaces=='False',False,True) # default is True
     tabName = keys.get('tabName','Log')
+
         # Default goes to log pane *not* the presently active pane.
     if color == 'suppress': return # New in 4.3.
     if type(s) != type("") and type(s) != type(u""):
         s = repr(s)
-    s = g.translateArgs(s,args)
-    # else:
-        # s = g.translateString(s)
-    # n = 1
-    # for arg in args:
-        # n += 1
-        # if type(arg) != type("") and type(arg) != type(u""):
-            # arg = repr(arg)
-        # elif (n % 2) == 1:
-            # arg = g.translateString(arg)
-        # s = '%s %s' % (s,arg)
+    s = g.translateArgs(s,args,commas,spaces)
+
     if app.batchMode:
         if app.log:
             app.log.put(s)
@@ -1282,7 +1280,6 @@ def es(s,*args,**keys):
         if log and log.isNull:
             pass
         elif log:
-            # print 'g.es',s
             log.put(s,color=color,tabName=tabName)
             for ch in s:
                 if ch == '\n': log.newlines += 1
@@ -1291,10 +1288,8 @@ def es(s,*args,**keys):
                 g.ecnl(tabName=tabName) # only valid here
         elif newline:
             app.logWaiting.append((s+'\n',color),)
-            # print s
         else:
             app.logWaiting.append((s,color),)
-            # print s,
 #@+node:ekr.20071024101611:mini test of es
 @nocolor
 @first
@@ -1561,7 +1556,7 @@ def openRecentFile(self,name=None):
         if ok and closeFlag:
             g.app.destroyWindow(c.frame) # 12/12/03
             c = frame.c # Switch to the new commander so the "recentfiles2" hook doesn't crash.
-            c.setLog() # Sets the log stream for g.es()
+            c.setLog() # Sets the log stream for g.es
 
     g.doHook("recentfiles2",c=c,p=v,v=v,fileName=fileName,closeFlag=closeFlag)
 #@+node:ekr.20031218072017.2082:<< Set closeFlag if the only open window is empty >>
@@ -1638,10 +1633,10 @@ def createRecentFiles (self):
                 fileName = g.os_path_join(theDir,'.leoRecentFiles.txt')
                 f = file(fileName,'w')
                 f.close()
-                g.es_print('created %s' % (fileName),color='red')
+                g.es_print('created',fileName,color='red')
                 return
             except Exception:
-                g.es_print('can not create %s' % (fileName),color='red')
+                g.es_print('can not create',fileName,color='red')
                 g.es_exception()
 #@nonl
 #@-node:ekr.20061010121944:createRecentFiles
@@ -1729,7 +1724,7 @@ def writeRecentFilesFileHelper (self,fileName):
         pass
 
     except Exception:
-        g.es('unexpected exception writing %s' % fileName,color='red')
+        g.es('unexpected exception writing',fileName,color='red')
         g.es_exception()
 
     if theFile:
@@ -3374,7 +3369,7 @@ def goToNextClone (self,event=None):
     c = self ; cc = c.chapterController ; p = c.currentPosition()
     if not p: return
     if not p.isCloned():
-        g.es('not a clone: %s' % (p.headString()),color='blue')
+        g.es('not a clone:',p.headString(),color='blue')
         return
 
     t = p.v.t
@@ -3630,7 +3625,7 @@ def readSettingsFiles (self,fileName,verbose=True):
             seen.append(path.lower())
             if verbose and not g.app.unitTesting and not self.silent and not g.app.batchMode:
                 s = 'reading settings in %s' % path
-                # This occurs early in startup, so use the following instead of g.es_print()
+                # This occurs early in startup, so use the following instead of g.es_print.
                 s = g.toEncodedString(s,'ascii')
                 print s
                 g.app.logWaiting.append((s+'\n','blue'),)
@@ -3827,7 +3822,7 @@ def toggleSparseMove (self,event=None):
 
     sparseMove = not c.config.getBool(tag)
     c.config.set(p, tag, sparseMove)
-    g.es('%s = %s' % (tag,sparseMove),color='blue')
+    g.es(tag,'=',sparseMove,color='blue')
 #@-node:ekr.20071213185710:c.toggleSparseMove
 #@+node:ekr.20031218072017.1770:moveOutlineLeft
 def moveOutlineLeft (self,event=None):
@@ -4329,7 +4324,7 @@ def getImage (self,path):
         from PIL import Image
     except ImportError:
         Image = None
-        g.es('can not import Image',color='blue')
+        g.es('can not import Image module from PIL',color='blue')
 
     try:
         from PIL import ImageTk
@@ -4338,7 +4333,7 @@ def getImage (self,path):
             import ImageTk
         except ImportError:
             ImageTk = None
-            g.es('can not import ImageTk',color='blue')
+            g.es('can not import ImageTk module',color='blue')
 
     try:
         if Image and ImageTk:
@@ -4388,7 +4383,7 @@ def appendImageDictToList(self,aList,iconDir,path,xoffset):
 
     image,image_height = self.getImage(path)
     if not image:
-        g.es('can not load image: %s' % (path))
+        g.es('can not load image:',path)
         return xoffset
 
     if image_height is None:
@@ -4416,7 +4411,7 @@ def getImage (self,path):
         from PIL import Image
     except ImportError:
         Image = None
-        g.es('can not import Image',color='blue')
+        g.es('can not import Image module from PIL',color='blue')
 
     try:
         from PIL import ImageTk
@@ -4425,7 +4420,7 @@ def getImage (self,path):
             import ImageTk
         except ImportError:
             ImageTk = None
-            g.es('can not import ImageTk',color='blue')
+            g.es('can not import ImageTk module',color='blue')
 
     try:
         if Image and ImageTk:
@@ -4663,7 +4658,7 @@ def appendImageDictToList(self,aList,iconDir,path,xoffset):
 
     image,image_height = self.getImage(path)
     if not image:
-        g.es('can not load image: %s' % (path))
+        g.es('can not load image:',path)
         return xoffset
 
     if image_height is None:
@@ -4691,7 +4686,7 @@ def getImage (self,path):
         from PIL import Image
     except ImportError:
         Image = None
-        g.es('can not import Image',color='blue')
+        g.es('can not import Image module from PIL',color='blue')
 
     try:
         from PIL import ImageTk
@@ -4700,7 +4695,7 @@ def getImage (self,path):
             import ImageTk
         except ImportError:
             ImageTk = None
-            g.es('can not import ImageTk',color='blue')
+            g.es('can not import ImageTk module',color='blue')
 
     try:
         if Image and ImageTk:
@@ -6409,9 +6404,9 @@ def findDebugger (self):
             if g.os_path_exists(debugger):
                 return debugger
             else:
-                g.es('Debugger does not exist: %s' % (debugger),color='blue')
+                g.es('debugger does not exist:',debugger,color='blue')
     else:
-        g.es('No debugger found.')
+        g.es('no debugger found.')
         return None
 #@-node:ekr.20060521140213:findDebugger
 #@-node:ekr.20060519003651:debug & helper
@@ -6478,12 +6473,12 @@ def write_Leo_file(self,fileName,outlineOnlyFlag,toString=False,toOPML=False):
             theActualFile.close()
             << delete backup file >>
             # t3 = time.clock()
-            # g.es_print('len %d, putCount %d' % (len(s),self.putCount)) # 'put',t2-t1,'write&close',t3-t2)
+            # g.es_print('len',len(s),'putCount',self.putCount) # 'put',t2-t1,'write&close',t3-t2)
         self.outputFile = None
         self.toString = False
         return True
     except Exception:
-        g.es("exception writing: " + fileName)
+        g.es("exception writing:",fileName)
         g.es_exception(full=True)
         if theActualFile: theActualFile.close()
         self.outputFile = None
@@ -6510,7 +6505,7 @@ except Exception:
 if g.os_path_exists(fileName):
     try:
         if not os.access(fileName,os.W_OK):
-            g.es("can not create: read only: " + fileName,color="red")
+            g.es("can not create: read only:",fileName,color="red")
             return False
     except Exception:
         pass # os.access() may not exist on all platforms.
@@ -6559,7 +6554,7 @@ if fileName and g.os_path_exists(fileName):
 #@-node:ekr.20050405103712:<< delete fileName >>
 #@+node:ekr.20050405103712.1:<< rename backupName to fileName >>
 if backupName:
-    g.es("restoring " + fileName + " from " + backupName)
+    g.es("restoring",fileName,"from",backupName)
     g.utils_rename(c,backupName,fileName)
 #@-node:ekr.20050405103712.1:<< rename backupName to fileName >>
 #@+node:ekr.20070412095520:writeZipFile
