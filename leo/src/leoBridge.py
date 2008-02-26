@@ -251,7 +251,7 @@ class bridgeController:
 
         if hasattr(sys,nonConstantAttr):
             g.app.leoID = getattr(sys,nonConstantAttr)
-            if verbose: g.es("leoID = " + g.app.leoID, color='red')
+            if verbose: g.es("leoID=",g.app.leoID,spaces=False,color='red')
         #@nonl
         #@-node:ekr.20070227094232.1:<< try to get leoID from sys.leoID>>
         #@nl
@@ -269,13 +269,12 @@ class bridgeController:
                         if s and len(s) > 0:
                             g.app.leoID = s.strip()
                             if verbose:
-                                g.es("leoID = %s (in %s)" % (g.app.leoID,theDir), color="red")
+                                g.es('leoID=',g.app.leoID,' (in ',theDir,')',spaces=False,color="red")
                             break
                         elif verbose:
-                            g.es("empty %s (in %s)" % (tag,theDir), color = "red")
+                            g.es('empty ',tag,' (in ',theDir,')',spaces=False,color = "red")
                     except IOError:
                         g.app.leoID = None
-                        # g.es("%s not found in %s" % (tag,theDir),color="red")
                     except Exception:
                         g.app.leoID = None
                         g.es('Unexpected exception in app.setLeoID',color='red')
@@ -288,7 +287,7 @@ class bridgeController:
             try:
                 theId = os.getenv('USER')
                 if theId:
-                    if verbose: g.es_print("using os.getenv('USER'): %s " % (repr(theId)),color='red')
+                    if verbose: g.es_print("using os.getenv('USER'):",repr(theId),color='red')
                     g.app.leoID = theId
 
             except Exception:
@@ -306,7 +305,7 @@ class bridgeController:
             ("global config",g.app.globalConfigDir),
             ("home",g.app.homeDir),
         ):
-            g.es('%s dir: %s' % (kind,theDir),color="blue")
+            g.es('',kind,'directory','',':',theDir,color='blue')
     #@-node:ekr.20070227093629.9:reportDirectories
     #@-node:ekr.20070227093530:initLeo & helpers
     #@+node:ekr.20070227093918:isOpen
@@ -367,8 +366,8 @@ class bridgeController:
             if g.os_path_exists(fileName):
                 ok, frame = g.openWithFileName(fileName,None)
                 if ok: return frame.c
-            else: g.es("File not found %s, creating new window: " % fileName)
-
+            else:
+                g.es('File not found', fileName,'creating new window')
         # Create a new frame. Unlike leo.run, this is not a startup window.
         c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName)
         frame.setInitialWindowGeometry()

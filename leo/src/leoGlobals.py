@@ -225,7 +225,7 @@ def computeLoadDir():
             loadDir = os.getcwd()
             print "Using emergency loadDir:",repr(loadDir)
         loadDir = g.os_path_abspath(loadDir,encoding)
-        # g.es("load dir: %s" % (loadDir),color="blue")
+        # g.es("load dir:",loadDir,color="blue")
         return loadDir
     except:
         print "Exception getting load directory"
@@ -276,7 +276,7 @@ def startupEncoding ():
 #@-node:ekr.20041117151301.1:startupEncoding
 #@-node:ekr.20050304072744:Compute directories... (leoGlobals)
 #@+node:ekr.20031218072017.1380:Directive utils...
-#@+node:ekr.20031218072017.1381:@language and @comment directives (leoUtils)
+#@+node:ekr.20031218072017.1381:the @language and @comment directives (leoUtils)
 #@+node:ekr.20031218072017.1382:set_delims_from_language
 # Returns a tuple (single,start,end) of comment delims
 
@@ -358,11 +358,11 @@ def set_language(s,i,issue_errors_flag=False):
         return language, delim1, delim2, delim3
 
     if issue_errors_flag:
-        g.es("ignoring: " + g.get_line(s,i))
+        g.es("ignoring:",g.get_line(s,i))
 
     return None, None, None, None,
 #@-node:ekr.20031218072017.1384:set_language
-#@-node:ekr.20031218072017.1381:@language and @comment directives (leoUtils)
+#@-node:ekr.20031218072017.1381:the @language and @comment directives (leoUtils)
 #@+node:EKR.20040504150046.4:g.comment_delims_from_extension
 def comment_delims_from_extension(filename):
 
@@ -458,7 +458,7 @@ def get_directives_dict(p,root=None):
                     if theDict.has_key(word):
                         # Ignore second value.
                         pass
-                        # g.es("Warning: conflicting values for %s" % (word), color="blue")
+                        # g.es("Warning: conflicting values for",word,color="blue")
                     else:
                         # theDict [word] = i
                         k = g.skip_line(s,j)
@@ -487,7 +487,7 @@ def get_directives_dict(p,root=None):
                         if root_node:
                             theDict["root"]=0 # value not immportant
                         else:
-                            g.es(g.angleBrackets("*") + "= requires @root in the headline")
+                            g.es('',g.angleBrackets("*") + "= requires @root in the headline")
                 #@-node:ekr.20031218072017.1262:<< set theDict["root"] for noweb * chunks >>
                 #@nl
             i = g.skip_line(s,i)
@@ -509,7 +509,7 @@ def scanAtEncodingDirective(theDict):
         # g.trace(encoding)
         return encoding
     else:
-        g.es("invalid @encoding: "+encoding,color="red")
+        g.es("invalid @encoding:",encoding,color="red")
         return None
 #@-node:ekr.20031218072017.1387:g.scanAtEncodingDirective
 #@+node:ekr.20031218072017.1388:g.scanAtLineendingDirective
@@ -527,7 +527,7 @@ def scanAtLineendingDirective(theDict):
         # g.trace(e,lineending)
         return lineending
     else:
-        # g.es("invalid @lineending directive:"+e,color="red")
+        # g.es("invalid @lineending directive:",e,color="red")
         return None
 #@-node:ekr.20031218072017.1388:g.scanAtLineendingDirective
 #@+node:ekr.20031218072017.1389:g.scanAtPagewidthDirective
@@ -546,7 +546,7 @@ def scanAtPagewidthDirective(theDict,issue_error_flag=False):
         return val
     else:
         if issue_error_flag:
-            g.es("ignoring " + s,color="red")
+            g.es("ignoring",s,color="red")
         return None
 #@-node:ekr.20031218072017.1389:g.scanAtPagewidthDirective
 #@+node:ekr.20031218072017.3154:g.scanAtRootOptions
@@ -565,10 +565,10 @@ def scanAtRootOptions (s,i,err_flag=False):
 
         if g.match_word(s,i,"code"): # Just match the prefix.
             if not mode: mode = "code"
-            elif err_flag: g.es("modes conflict in:" + g.get_line(s,i))
+            elif err_flag: g.es("modes conflict in:",g.get_line(s,i))
         elif g.match(s,i,"doc"): # Just match the prefix.
             if not mode: mode = "doc"
-            elif err_flag: g.es("modes conflict in:" + g.get_line(s,i))
+            elif err_flag: g.es("modes conflict in:",g.get_line(s,i))
         else:
             err = i-1
 
@@ -577,7 +577,7 @@ def scanAtRootOptions (s,i,err_flag=False):
             i += 1
 
         if err > -1 and err_flag:
-            g.es("unknown option:" + s[err:i] + " in " + g.get_line(s,i))
+            g.es("unknown option:",s[err:i],"in",g.get_line(s,i))
         #@-node:ekr.20031218072017.3155:<< scan another @root option >>
         #@nl
 
@@ -603,7 +603,7 @@ def scanAtTabwidthDirective(theDict,issue_error_flag=False):
         return val
     else:
         if issue_error_flag:
-            g.es("Ignoring " + s,color="red")
+            g.es("Ignoring",s,color="red")
         return None
 #@-node:ekr.20031218072017.1390:g.scanAtTabwidthDirective
 #@+node:ekr.20070302160802:g.scanColorDirectives
@@ -910,7 +910,7 @@ def wrap_lines (lines,pageWidth,firstLineWidth=None):
 #@+node:ekr.20031218072017.3105:alert
 def alert(message):
 
-    g.es(message)
+    g.es('',message)
 
     import tkMessageBox
     tkMessageBox.showwarning("Alert", message)
@@ -992,11 +992,11 @@ def oldDump(s):
 def es_dump (s,n = 30,title=None):
 
     if title:
-        g.es_print(title)
+        g.es_print('',title)
 
     i = 0
     while i < len(s):
-        g.es_print(''.join(['%2x ' % (ord(ch)) for ch in s[i:i+n]]))
+        g.es_print('',''.join(['%2x ' % (ord(ch)) for ch in s[i:i+n]]))
         i += n
 #@nonl
 #@-node:ekr.20060917120951:es_dump
@@ -1011,7 +1011,7 @@ def es_error (s,color=None):
 #@+node:ekr.20031218072017.3111:es_event_exception
 def es_event_exception (eventName,full=False):
 
-    g.es("exception handling ", eventName, " event")
+    g.es("exception handling ",eventName,"event")
     typ,val,tb = sys.exc_info()
 
     if full:
@@ -1020,7 +1020,7 @@ def es_event_exception (eventName,full=False):
         errList = traceback.format_exception_only(typ,val)
 
     for i in errList:
-        g.es(i)
+        g.es('',i)
 
     if not g.stdErrIsRedirected(): # 2/16/04
         traceback.print_exc()
@@ -1063,7 +1063,7 @@ def es_exception_type (c=None,color="red"):
     # exctype is a Exception class object; value is the error message.
     exctype, value = sys.exc_info()[:2]
 
-    g.es_print('%s, %s' % (exctype.__name__, value),color=color)
+    g.es_print('','%s, %s' % (exctype.__name__, value),color=color)
 #@-node:ekr.20061015090538:es_exception_type
 #@+node:ekr.20040731204831:getLastTracebackFileAndLineNumber
 def getLastTracebackFileAndLineNumber():
@@ -1075,7 +1075,7 @@ def getLastTracebackFileAndLineNumber():
         # extract_tb does _not_ return the proper line number!
         # This code is similar to the code in format_exception_only(!!)
         try:
-            # g.es_print(repr(val))
+            # g.es_print('',repr(val))
             msg,(filename, lineno, offset, line) = val
             return filename,lineno
         except Exception:
@@ -1086,7 +1086,7 @@ def getLastTracebackFileAndLineNumber():
         # The proper line number is the second element in the last tuple.
         data = traceback.extract_tb(tb)
         if data:
-            # g.es_print(repr(data))
+            # g.es_print('',repr(data))
             item = data[-1]
             filename = item[0]
             n = item[1]
@@ -1682,7 +1682,7 @@ def getTime():
     return time.clock()
 
 def esDiffTime(message, start):
-    g.es("%s %6.3f" % (message,(time.clock()-start)))
+    g.es('',"%s %6.3f" % (message,(time.clock()-start)))
     return time.clock()
 
 def printDiffTime(message, start):
@@ -1848,9 +1848,9 @@ def makeAllNonExistentDirectories (theDir,c=None):
         if not g.os_path_exists(path):
             try:
                 os.mkdir(path)
-                g.es("created directory: "+path)
+                g.es("created directory:",path)
             except Exception:
-                g.es("exception creating directory: "+path)
+                g.es("exception creating directory:",path)
                 g.es_exception()
                 return None
     return dir1 # All have been created.
@@ -1941,7 +1941,7 @@ def openLeoOrZipFile (fileName):
     except IOError:
         # Do not use string + here: it will fail for non-ascii strings!
         if not g.unitTesting:
-            g.es("can not open: %s" % (fileName),color="blue")
+            g.es("can not open:",fileName,color="blue")
         return None,False
 #@nonl
 #@-node:ekr.20070412082527:g.openLeoOrZipFile
@@ -1994,7 +1994,7 @@ def setGlobalOpenDir (fileName):
 
     if fileName:
         g.app.globalOpenDir = g.os_path_dirname(fileName)
-        # g.es('current directory: %s' %  g.app.globalOpenDir)
+        # g.es('current directory:',g.app.globalOpenDir)
 #@-node:ekr.20060328150113:g.setGlobalOpenDir
 #@+node:ekr.20031218072017.3125:g.shortFileName & shortFilename
 def shortFileName (fileName):
@@ -2027,10 +2027,10 @@ def update_file_if_changed(c,file_name,temp_name):
         ok = g.utils_rename(c,temp_name,file_name)
 
     if ok:
-        g.es('%12s: %s' % (kind,file_name))
+        g.es('','%12s: %s' % (kind,file_name))
     else:
         g.es("rename failed: no file created!",color="red")
-        g.es(file_name," may be read-only or in use")
+        g.es('',file_name," may be read-only or in use")
 #@-node:ekr.20031218072017.1241:g.update_file_if_changed
 #@+node:ekr.20050104123726.3:g.utils_remove
 def utils_remove (fileName,verbose=True):
@@ -2040,7 +2040,7 @@ def utils_remove (fileName,verbose=True):
         return True
     except Exception:
         if verbose:
-            g.es("exception removing:" + fileName)
+            g.es("exception removing:",fileName)
             g.es_exception()
         return False
 #@-node:ekr.20050104123726.3:g.utils_remove
@@ -2101,7 +2101,7 @@ def utils_rename (c,src,dst,mode=None,verbose=True):
         return True
     except Exception:
         if verbose:
-            g.es('Exception renaming %s to %s' % (src,dst),color='red')
+            g.es('Exception renaming',src,'to',dst,color='red')
             g.es_exception(full=False)
         return False
 #@-node:ekr.20031218072017.1263:g.utils_rename
@@ -2115,7 +2115,7 @@ def utils_chmod (fileName,mode,verbose=True):
         os.chmod(fileName,mode)
     except Exception:
         if verbose:
-            g.es("exception in os.chmod(%s)" % (fileName))
+            g.es("exception in os.chmod",fileName)
             g.es_exception()
 #@-node:ekr.20050104124903:g.utils_chmod
 #@+node:ekr.20050104123726.4:g.utils_stat
@@ -2530,7 +2530,7 @@ def plugin_signon(module_name,verbose=False):
     # print 'plugin_signon',module_name # ,'gui',g.app.gui
 
     if verbose:
-        g.es("...%s.py v%s: %s" % (
+        g.es('',"...%s.py v%s: %s" % (
             m.__name__, m.__version__, g.plugin_date(m)))
 
         print m.__name__, m.__version__
@@ -2569,24 +2569,22 @@ def es(s,*args,**keys):
     log = app.log
     if app.killed:
         return
-    newline = keys.get("newline",True)
+
+    # Important: defining keyword arguments in addition to *args **does not work**.
+    # See Section 5.3.4 (Calls) of the Python reference manual.
+    # In other words, the following is about the best that can be done.
     color = keys.get('color')
+    commas = keys.get('commas') ; commas = g.choose(commas=='True',True,False) # default is False
+    newline = keys.get('newline') ; newline = g.choose(newline=='False',False,True) # default is True
+    spaces= keys.get('spaces') ; spaces = g.choose(spaces=='False',False,True) # default is True
     tabName = keys.get('tabName','Log')
+
         # Default goes to log pane *not* the presently active pane.
     if color == 'suppress': return # New in 4.3.
     if type(s) != type("") and type(s) != type(u""):
         s = repr(s)
-    s = g.translateArgs(s,args)
-    # else:
-        # s = g.translateString(s)
-    # n = 1
-    # for arg in args:
-        # n += 1
-        # if type(arg) != type("") and type(arg) != type(u""):
-            # arg = repr(arg)
-        # elif (n % 2) == 1:
-            # arg = g.translateString(arg)
-        # s = '%s %s' % (s,arg)
+    s = g.translateArgs(s,args,commas,spaces)
+
     if app.batchMode:
         if app.log:
             app.log.put(s)
@@ -2599,7 +2597,6 @@ def es(s,*args,**keys):
         if log and log.isNull:
             pass
         elif log:
-            # print 'g.es',s
             log.put(s,color=color,tabName=tabName)
             for ch in s:
                 if ch == '\n': log.newlines += 1
@@ -2608,10 +2605,8 @@ def es(s,*args,**keys):
                 g.ecnl(tabName=tabName) # only valid here
         elif newline:
             app.logWaiting.append((s+'\n',color),)
-            # print s
         else:
             app.logWaiting.append((s,color),)
-            # print s,
 #@+node:ekr.20071024101611:mini test of es
 #@@nocolor
 #@@first
@@ -2637,15 +2632,22 @@ def es_print(s,*args,**keys):
 
     encoding = sys.getdefaultencoding()
 
+    # Important: defining keyword arguments in addition to *args **does not work**.
+    # See Section 5.3.4 (Calls) of the Python reference manual.
+    # In other words, the following is about the best that can be done.
+    commas = keys.get('commas') ; commas  = g.choose(commas=='True',True,False) # default is False
+    newline = keys.get('newline') ; newline = g.choose(newline=='False',False,True) # default is True
+    spaces= keys.get('spaces') ; spaces  = g.choose(spaces=='False',False,True) # default is True
+
     try:
         if type(s) != type(u''):
             s = unicode(s,encoding)
     except Exception:
         s = g.toEncodedString(s,'ascii')
 
-    s2 = g.translateArgs(s,args)
+    s2 = g.translateArgs(s,args,commas,spaces)
 
-    if keys.get('newline') in (True,None):
+    if newline:
         try:
             print s2
         except Exception:
@@ -2670,10 +2672,9 @@ def es_trace(s,*args,**keys):
 
     g.trace(g.toEncodedString(s,'ascii'))
     g.es(s,*args,**keys)
-#@nonl
 #@-node:ekr.20050707065530:es_trace
 #@+node:ekr.20080220111323:translateArgs
-def translateArgs (s,args,commas=False):
+def translateArgs (s,args,commas,spaces):
 
     '''Return the concatenation of s and all args,
 
@@ -2690,10 +2691,10 @@ def translateArgs (s,args,commas=False):
             arg = repr(arg)
         elif (n % 2) == 1:
             arg = g.translateString(arg)
-        if result:
-            if commas: result.append(',')
-            result.append(' ' + arg)
-        else:
+        if arg:
+            if result:
+                # if commas: result.append(',')
+                if spaces: result.append(' ')
             result.append(arg)
 
     return ''.join(result)
@@ -2953,26 +2954,26 @@ def scanAtFileOptions (h,err_flag=False):
             if atFileType == "@file":
                 atFileType = "@silentfile"
             elif err_flag:
-                g.es("using -asis option in:" + h)
+                g.es("using -asis option in:",h)
         elif g.match(h,i,"noref"): # Just match the prefix.
             if atFileType == "@file":
                 atFileType = "@rawfile"
             elif atFileType == "@nosentinelsfile":
                 atFileType = "@silentfile"
             elif err_flag:
-                g.es("ignoring redundant -noref in:" + h)
+                g.es("ignoring redundant -noref in:",h)
         elif g.match(h,i,"nosent"): # Just match the prefix.
             if atFileType == "@file":
                 atFileType = "@nosentinelsfile"
             elif atFileType == "@rawfile":
                 atFileType = "@silentfile"
             elif err_flag:
-                g.es("ignoring redundant -nosent in:" + h)
+                g.es("ignoring redundant -nosent in:",h)
         elif g.match_word(h,i,"thin"):
             if atFileType == "@file":
                 atFileType = "@thinfile"
             elif err_flag:
-                g.es("using -thin option in:" + h)
+                g.es("using -thin option in:",h)
         else:
             if 0: # doesn't work
                 for option in ("fat","new","now","old","thin","wait"):
@@ -2984,7 +2985,7 @@ def scanAtFileOptions (h,err_flag=False):
         while i < len(h) and h[i] not in (' ','\t','-'):
             i += 1
         if err > -1:
-            g.es("unknown option:" + h[err:i] + " in " + h)
+            g.es("unknown option:",h[err:i],"in",h)
         #@-node:ekr.20031218072017.3153:<< scan another @file option >>
         #@nl
 
@@ -3011,7 +3012,7 @@ def scanError(s):
 
     # New in Leo 4.4b1: just set this global.
     g.app.scanErrors +=1
-    g.es(s)
+    g.es('',s)
 #@-node:ekr.20031218072017.3156:scanError
 #@+node:ekr.20031218072017.3157:scanf
 # A quick and dirty sscanf.  Understands only %s and %d.
@@ -3035,7 +3036,7 @@ if 0: # testing
 #@+at 
 #@nonl
 # These scanners all call g.scanError() directly or indirectly, so they will 
-# call g.es() if they find an error.  g.scanError() also bumps 
+# call g.es if they find an error.  g.scanError() also bumps 
 # c.tangleCommands.errors, which is harmless if we aren't tangling, and useful 
 # if we are.
 # 
@@ -3281,12 +3282,12 @@ def skip_pp_if(s,i):
         i = g.skip_ws(s,i)
         i,delta2 = g.skip_pp_part(s,i)
         if delta1 != delta2:
-            g.es("#if and #else parts have different braces: " + start_line)
+            g.es("#if and #else parts have different braces:",start_line)
     i = g.skip_ws(s,i)
     if g.match_word(s,i,"#endif"):
         i = g.skip_line(s,i)
     else:
-        g.es("no matching #endif: " + start_line)
+        g.es("no matching #endif:",start_line)
 
     # g.trace(delta1,start_line)
     return i,delta1
@@ -3795,7 +3796,7 @@ def handleScriptException (c,p,script,script1):
         lines = g.splitLines(script)
 
     s = '-' * 20
-    g.es_print(s)
+    g.es_print('',s)
 
     # Print surrounding lines.
     i = max(0,n-2)
@@ -3803,7 +3804,7 @@ def handleScriptException (c,p,script,script1):
     while i < j:
         ch = g.choose(i==n-1,'*',' ')
         s = "%s line %d: %s" % (ch,i+1,lines[i])
-        g.es(s,newline=False)
+        g.es('',s,newline=False)
         i += 1
     #@-node:EKR.20040612215018:<< dump the lines near the error >>
     #@nl
@@ -4882,7 +4883,7 @@ def executeScript (name):
         theFile,filename,description = imp.find_module(mod_name)
         imp.load_module(mod_name,theFile,filename,description)
     except Exception:
-        g.es("Exception executing " + name,color="red")
+        g.es("Exception executing",name,color="red")
         g.es_exception()
 
     if theFile:
@@ -5009,8 +5010,7 @@ def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=T
             g.app.scriptDict["script2"]=script
         else: script = ''
     except Exception:
-        s = "unexpected exception in g.getScript"
-        g.es_print(s)
+        g.es_print("unexpected exception in g.getScript")
         g.es_exception()
         script = ''
 
@@ -5151,7 +5151,7 @@ def cantImport (moduleName,pluginName=None,verbose=True):
     elif g.app.gui.guiName() == 'tkinter' and moduleName in ('Tkinter','Pmw'):
         return
     else:
-        g.es_print(s,color="blue")
+        g.es_print('',s,color="blue")
 
 #@-node:ekr.20040917061619:g.cantImport
 #@+node:ekr.20041219095213.1:g.importModule

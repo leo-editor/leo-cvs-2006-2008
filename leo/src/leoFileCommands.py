@@ -299,7 +299,7 @@ if sys.platform != 'cli':
             if target == 'xml-stylesheet':
                 self.c.frame.stylesheet = data
                 if not self.silent:
-                    g.es('%s: %s' % (target,data),color='blue')
+                    g.es('','%s: %s' % (target,data),color='blue')
             else:
                 g.trace(target,data)
         #@nonl
@@ -395,7 +395,7 @@ if sys.platform != 'cli':
             # g.trace('ratio',c.frame.ratio,c.frame.secondary_ratio)
             c.frame.resizePanesToRatio(c.frame.ratio,c.frame.secondary_ratio)
             if not self.silent and not g.unitTesting:
-                g.es("reading: " + self.fileName)
+                g.es("reading:",self.fileName)
         #@nonl
         #@-node:ekr.20060919112118:startVnodes
         #@+node:ekr.20060919110638.41:startTnode
@@ -604,7 +604,7 @@ class baseFileCommands:
                 g.es_print('check-leo-file passed',color='blue')
             except BadLeoFile, message:
                 # g.es_exception()
-                g.es_print('check-leo-file failed: %s' % str(message),color='red')
+                g.es_print('check-leo-file failed:',str(message),color='red')
         finally:
             self.checking = False
             c.loading = False # reenable c.changed
@@ -753,7 +753,7 @@ class baseFileCommands:
             self.read_only = False
 
         if self.read_only:
-            g.es("read only: " + fileName,color="red")
+            g.es("read only:",fileName,color="red")
         #@-node:ekr.20031218072017.1554:<< warn on read-only files >>
         #@nl
         self.checking = False
@@ -813,7 +813,7 @@ class baseFileCommands:
     def newTnode(self,index):
 
         if self.tnodesDict.has_key(index):
-            g.es("bad tnode index: %s. Using empty text." % str(index))
+            g.es("bad tnode index:",str(index),"using empty text.")
             return leoNodes.tnode()
         else:
             # Create the tnode.  Use the _original_ index as the key in tnodesDict.
@@ -1308,7 +1308,7 @@ class baseFileCommands:
         # Causes window to appear.
         c.frame.resizePanesToRatio(c.frame.ratio,c.frame.secondary_ratio)
         if not silent and not g.unitTesting:
-            g.es("reading: " + fileName)
+            g.es("reading:",fileName)
 
         self.getVnodes()
         self.getTnodes()
@@ -1498,7 +1498,7 @@ class baseFileCommands:
                     c.tangle_directory = self.getEscapedString()
                     self.getTag("</defaultDirectory>")
                     if not g.os_path_exists(c.tangle_directory):
-                        g.es("default tangle directory not found:" + c.tangle_directory)
+                        g.es("default tangle directory not found:",c.tangle_directory)
                 elif self.matchTag("<TSyntaxMemo_options>"):
                     self.getEscapedString() # ignored
                     self.getTag("</TSyntaxMemo_options>")
@@ -1569,17 +1569,15 @@ class baseFileCommands:
                 t.unknownAttributes = attrDict
                 t._p_changed = 1
                 if 0: # For debugging.
-                    s = "unknown attributes for tnode"
-                    g.es_print(s, color = "blue")
+                    g.es_print("unknown attributes for tnode",color = "blue")
                     for key in keys:
-                        s = "%s = %s" % (key,attrDict.get(key))
-                        g.es_print(s)
+                        g.es_print('',"%s = %s" % (key,attrDict.get(key)))
             #@-node:ekr.20031218072017.1564:<< handle unknown attributes >>
             #@nl
             s = self.getEscapedString()
             t.setTnodeText(s,encoding=self.leo_file_encoding)
         else:
-            g.es("no tnode with index: %s.  The text will be discarded" % str(index))
+            g.es("no tnode with index:",str(index),"the text will be discarded")
         self.getTag("</t>")
     #@-node:ekr.20031218072017.1561:getTnode
     #@+node:ekr.20031218072017.2008:getTnodeList (4.0,4.2)
@@ -1833,11 +1831,9 @@ class baseFileCommands:
             v._p_changed = 1
 
             if 0: # For debugging.
-                s = "unknown attributes for " + v.headString()
-                g.es_print(s,color="blue")
+                g.es_print("unknown attributes for",v.headString(),color="blue")
                 for key in keys:
-                    s = "%s = %s" % (key,attrDict.get(key))
-                    g.es_print(s)
+                    g.es_print('',"%s = %s" % (key,attrDict.get(key)))
         #@-node:ekr.20031218072017.1861:<< handle unknown vnode attributes >>
         #@nl
         # g.trace(skip,tref,v,v.t,len(v.t.vnodeList))
@@ -1933,7 +1929,7 @@ class baseFileCommands:
             self.leo_file_encoding = encoding
             # g.trace('self.leo_file_encoding:',encoding, color="blue")
         else:
-            g.es("invalid encoding in .leo file: " + encoding, color="red")
+            g.es("invalid encoding in .leo file:",encoding,color="red")
     #@-node:ekr.20031218072017.1468:getXmlVersionTag
     #@+node:ekr.20040326054052:setPositionsFromStacks (silly)
     def setPositionsFromStacks (self):
@@ -2210,10 +2206,10 @@ class baseFileCommands:
             parser.parse(theFile) # expat does not support parseString
             node = handler.getRootNode()
         except xml.sax.SAXParseException:
-            g.es_print('Error parsing %s' % (inputFileName),color='red')
+            g.es_print('Error parsing',inputFileName,color='red')
             g.es_exception()
         except Exception:
-            g.es_print('Unexpected exception parsing %s' % (inputFileName),color='red')
+            g.es_print('Unexpected exception parsing',inputFileName,color='red')
             g.es_exception()
 
         return node
@@ -2365,7 +2361,7 @@ class baseFileCommands:
 
         zipMark = g.choose(c.isZipped,'[zipped] ','')
 
-        g.es("saved: %s%s" % (zipMark,g.shortFileName(fileName)))
+        g.es("saved:","%s%s" % (zipMark,g.shortFileName(fileName)))
     #@nonl
     #@-node:ekr.20070413061552:putSavedMessage
     #@-node:ekr.20070413045221.2:Top-level  (leoFileCommands)
@@ -2404,7 +2400,7 @@ class baseFileCommands:
             if self.read_only:
                 g.es("read only",color="red")
             if not g.unitTesting:
-                g.es("exception deleting backup file:" + fileName)
+                g.es("exception deleting backup file:",fileName)
                 g.es_exception(full=False)
             return False
     #@-node:ekr.20050404190914.2:deleteFileWithMessage
@@ -2645,8 +2641,7 @@ class baseFileCommands:
                 attr = ' %s="%s"' % (key,xml.sax.saxutils.escape(val))
                 return attr
             else:
-                g.es("ignoring non-string attribute %s in %s" % (
-                    key,torv),color="blue")
+                g.es("ignoring non-string attribute",key,"in",torv,color="blue")
                 return ''
         try:
             version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
@@ -2666,8 +2661,7 @@ class baseFileCommands:
                 return ''
         except pickle.PicklingError:
             # New in 4.2 beta 1: keep going after error.
-            g.es("ignoring non-pickleable attribute %s in %s" % (
-                key,torv),color="blue")
+            g.es("ignoring non-pickleable attribute",key,"in",torv,color="blue")
             return ''
     #@-node:ekr.20050418161620.2:putUaHelper
     #@-node:EKR.20040526202501:putUnknownAttributes & helper
@@ -2773,7 +2767,7 @@ class baseFileCommands:
             if isThin:
                 if g.app.unitTesting:
                     g.app.unitTestDict["warning"] = True
-                g.es("deleting tnode list for %s" % p.headString(),color="blue")
+                g.es("deleting tnode list for",p.headString(),color="blue")
                 # This is safe: cloning can't change the type of this node!
                 delattr(v.t,"tnodeList")
             else:
@@ -2796,14 +2790,8 @@ class baseFileCommands:
             #@        << issue informational messages >>
             #@+node:ekr.20040702085529:<< issue informational messages >>
             if isOrphan and isThin:
-                g.es("Writing erroneous: %s" % p.headString(),color="blue")
+                g.es("Writing erroneous:",p.headString(),color="blue")
                 p.clearOrphan()
-
-            # For testing.
-            # if p.isAtIgnoreNode():
-                 # for p2 in p.self_and_subtree_iter():
-                        # if p2.isAtThinFileNode():
-                            # g.es("Writing @ignore'd: %s" % p2.headString(),color="blue")
             #@-node:ekr.20040702085529:<< issue informational messages >>
             #@nl
         # New in 4.2: don't write child nodes of @file-thin trees (except when writing to clipboard)
@@ -2931,8 +2919,7 @@ class baseFileCommands:
                             pickle.dumps(d[key],bin=True) # Requires earlier versions of Python.
                     except pickle.PicklingError:
                         del d[key]
-                        g.es("ignoring bad unknownAttributes key %s in %s" % (
-                            key,p),color="blue")
+                        g.es("ignoring bad unknownAttributes key",key,"in",p,color="blue")
                     except Exception:
                         del d[key]
                         g.es('putDescendentUnknownAttributes: unexpected pickling exception',color='red')
@@ -3070,7 +3057,7 @@ class baseFileCommands:
         if g.os_path_exists(fileName):
             try:
                 if not os.access(fileName,os.W_OK):
-                    g.es("can not create: read only: " + fileName,color="red")
+                    g.es("can not create: read only:",fileName,color="red")
                     return False
             except Exception:
                 pass # os.access() may not exist on all platforms.
@@ -3142,12 +3129,12 @@ class baseFileCommands:
                 #@-node:ekr.20031218072017.3048:<< delete backup file >>
                 #@nl
                 # t3 = time.clock()
-                # g.es_print('len %d, putCount %d' % (len(s),self.putCount)) # 'put',t2-t1,'write&close',t3-t2)
+                # g.es_print('len',len(s),'putCount',self.putCount) # 'put',t2-t1,'write&close',t3-t2)
             self.outputFile = None
             self.toString = False
             return True
         except Exception:
-            g.es("exception writing: " + fileName)
+            g.es("exception writing:",fileName)
             g.es_exception(full=True)
             if theActualFile: theActualFile.close()
             self.outputFile = None
@@ -3162,7 +3149,7 @@ class baseFileCommands:
                 #@            << rename backupName to fileName >>
                 #@+node:ekr.20050405103712.1:<< rename backupName to fileName >>
                 if backupName:
-                    g.es("restoring " + fileName + " from " + backupName)
+                    g.es("restoring",fileName,"from",backupName)
                     g.utils_rename(c,backupName,fileName)
                 #@-node:ekr.20050405103712.1:<< rename backupName to fileName >>
                 #@nl

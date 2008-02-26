@@ -542,7 +542,7 @@ class abbrevCommandsClass (baseEditCommandsClass):
 
         if self.abbrevs:
             for z in self.abbrevs:
-                g.es('%s=%s' % (z,self.abbrevs[z]))
+                g.es('','%s=%s' % (z,self.abbrevs[z]))
     #@-node:ekr.20050920084036.19:listAbbrevs
     #@+node:ekr.20050920084036.20:readAbbreviations
     def readAbbreviations (self,event):
@@ -564,7 +564,7 @@ class abbrevCommandsClass (baseEditCommandsClass):
                 self.abbrevs [a] = b
             f.close()
         except IOError:
-            g.es('Can not open',fileName)
+            g.es('can not open',fileName)
     #@-node:ekr.20050920084036.20:readAbbreviations
     #@+node:ekr.20050920084036.21:regionalExpandAbbrev (TK code)
     # def regionalExpandAbbrev (self,event):
@@ -648,7 +648,7 @@ class abbrevCommandsClass (baseEditCommandsClass):
                 f.write('%s=%s\n' % (x,self.abbrevs[x]))
             f.close()
         except IOError:
-            g.es('Can not create',fileName)
+            g.es('can not create',fileName)
     #@-node:ekr.20050920084036.24:writeAbbreviations
     #@-node:ekr.20070531103114:static abbrevs
     #@-others
@@ -818,9 +818,9 @@ class bufferCommandsClass (baseEditCommandsClass):
         '''
 
         self.computeData()
-        g.es('Buffers...')
+        g.es('buffers...')
         for name in self.nameList:
-            g.es(name)
+            g.es('',name)
 
     def listBuffersAlphabetically (self,event):
 
@@ -830,9 +830,9 @@ class bufferCommandsClass (baseEditCommandsClass):
         self.computeData()
         names = self.nameList[:] ; names.sort()
 
-        g.es('Buffers...')
+        g.es('buffers...')
         for name in names:
-            g.es(name)
+            g.es('',name)
     #@-node:ekr.20050920084036.42:listBuffers & listBuffersAlphabetically
     #@+node:ekr.20050920084036.39:prependToBuffer
     def prependToBuffer (self,event):
@@ -1252,9 +1252,9 @@ class debugCommandsClass (baseEditCommandsClass):
                 if g.os_path_exists(debugger):
                     return debugger
                 else:
-                    g.es('Debugger does not exist: %s' % (debugger),color='blue')
+                    g.es('debugger does not exist:',debugger,color='blue')
         else:
-            g.es('No debugger found.')
+            g.es('no debugger found.')
             return None
     #@-node:ekr.20060521140213:findDebugger
     #@-node:ekr.20060519003651:debug & helper
@@ -1326,9 +1326,9 @@ class debugCommandsClass (baseEditCommandsClass):
 
         c = self.c
 
-        g.es_print('      hasFocusWidget: %s' % c.widget_name(c.hasFocusWidget))
-        g.es_print('requestedFocusWidget: %s' % c.widget_name(c.requestedFocusWidget))
-        g.es_print('           get_focus: %s' % c.widget_name(c.get_focus()))
+        g.es_print('      hasFocusWidget:',c.widget_name(c.hasFocusWidget))
+        g.es_print('requestedFocusWidget:',c.widget_name(c.requestedFocusWidget))
+        g.es_print('           get_focus:',c.widget_name(c.get_focus()))
     #@-node:ekr.20060210100432:printFocus
     #@+node:ekr.20060205043324.3:printGcSummary
     def printGcSummary (self,event=None):
@@ -2292,7 +2292,7 @@ class editCommandsClass (baseEditCommandsClass):
 
         image,image_height = self.getImage(path)
         if not image:
-            g.es('can not load image: %s' % (path))
+            g.es('can not load image:',path)
             return xoffset
 
         if image_height is None:
@@ -2320,7 +2320,7 @@ class editCommandsClass (baseEditCommandsClass):
             from PIL import Image
         except ImportError:
             Image = None
-            g.es('can not import Image',color='blue')
+            g.es('can not import Image module from PIL',color='blue')
 
         try:
             from PIL import ImageTk
@@ -2329,7 +2329,7 @@ class editCommandsClass (baseEditCommandsClass):
                 import ImageTk
             except ImportError:
                 ImageTk = None
-                g.es('can not import ImageTk',color='blue')
+                g.es('can not import ImageTk module',color='blue')
 
         try:
             if Image and ImageTk:
@@ -3201,13 +3201,13 @@ class editCommandsClass (baseEditCommandsClass):
 
         k = self.k
 
-        g.es('Lossage...')
+        g.es('lossage...')
         aList = leoKeys.keyHandlerClass.lossage
         aList.reverse()
         for data in aList:
             ch,stroke = data
             d = {' ':'Space','\t':'Tab','\b':'Backspace','\n':'Newline','\r':'Return'}
-            g.es(stroke or d.get(ch) or ch or 'None')
+            g.es('',stroke or d.get(ch) or ch or 'None')
     #@-node:ekr.20050920084036.83:viewLossage
     #@+node:ekr.20050920084036.84:whatLine
     def whatLine (self,event):
@@ -3676,7 +3676,7 @@ class editCommandsClass (baseEditCommandsClass):
         if not w: return
 
         self.extendMode = val
-        g.es('Extend mode %s' % (g.choose(val,'on','off')), color='red')
+        g.es('extend mode',g.choose(val,'on','off'),color='red')
         c.widgetWantsFocusNow(w)
     #@-node:ekr.20051218174113:clear/set/ToggleExtendMode
     #@+node:ekr.20050920084036.136:exchangePointMark
@@ -4899,7 +4899,7 @@ class editFileCommandsClass (baseEditCommandsClass):
             f = open(fileName,'rt')
             return f, fileName
         except IOError:
-            g.es('Can not open',fileName)
+            g.es('can not open',fileName)
             return None,None
     #@-node:ekr.20050920084036.166:getReadableTextFile
     #@+node:ekr.20050920084036.167:insertFile
@@ -4996,7 +4996,7 @@ class editFileCommandsClass (baseEditCommandsClass):
             f.write(s)
             f.close()
         except IOError:
-            g.es('Can not create',fileName)
+            g.es('can not create',fileName)
     #@-node:ekr.20050920084036.170:saveFile
     #@-others
 #@-node:ekr.20050920084036.161:editFileCommandsClass
@@ -5052,7 +5052,7 @@ class helpCommandsClass (baseEditCommandsClass):
         # s = s % (shortcuts[0],shortcuts[1],shortcuts[2],shortcuts[3])
 
         if not g.app.unitTesting:
-            g.es_print(s)
+            g.es_print('',s)
     #@-node:ekr.20051014170754:helpForMinibuffer
     #@+node:ekr.20060417203717:helpForCommand
     def helpForCommand (self,event):
@@ -5073,7 +5073,7 @@ class helpCommandsClass (baseEditCommandsClass):
                     for line in g.splitLines(func.__doc__)])
         else:
             s = 'no docstring'
-        g.es('%s:%s\n%s\n' % (commandName,bindings,s),color='blue')
+        g.es('','%s:%s\n%s\n' % (commandName,bindings,s),color='blue')
 
     def getBindingsForCommand(self,commandName):
 
@@ -5096,7 +5096,6 @@ class helpCommandsClass (baseEditCommandsClass):
         data.sort(lambda x,y: cmp(x[1],y[1]))
 
         return ','.join(['%s %s' % (s1,s2) for s1,s2,s3 in data])
-            # g.es('%*s %*s %s' % (-n1,s1,-(min(12,n2)),s2,s3))
     #@nonl
     #@-node:ekr.20060417203717:helpForCommand
     #@+node:ekr.20060226131603.1:aproposAutocompletion
@@ -5164,7 +5163,7 @@ class helpCommandsClass (baseEditCommandsClass):
         if not g.app.unitTesting:
             # Remove indentation from indentation of this function.
             s = g.adjustTripleString(s,c.tab_width)
-            g.es_print(s)
+            g.es_print('',s)
     #@+node:ekr.20060226132000:test_aproposAutocompletion
     if g.unitTesting:
 
@@ -5234,7 +5233,7 @@ class helpCommandsClass (baseEditCommandsClass):
             # Remove indentation from indentation of this function.
 
         if not g.app.unitTesting:
-            g.es_print(s)
+            g.es_print('',s)
     #@-node:ekr.20060205170335:aproposBindings
     #@+node:ekr.20070501092655:aproposDebuggingCommands
     def aproposDebuggingCommands (self,event=None):
@@ -5271,7 +5270,7 @@ class helpCommandsClass (baseEditCommandsClass):
         s = g.adjustTripleString(s,c.tab_width)
 
         if not g.app.unitTesting:
-            g.es_print(s)
+            g.es_print('',s)
     #@-node:ekr.20070501092655:aproposDebuggingCommands
     #@+node:ekr.20060205170335.1:aproposFindCommands
     def aproposFindCommands (self, event=None):
@@ -5381,7 +5380,7 @@ class helpCommandsClass (baseEditCommandsClass):
         s = g.adjustTripleString(s,c.tab_width)
 
         if not g.app.unitTesting:
-            g.es_print(s)
+            g.es_print('',s)
     #@-node:ekr.20060205170335.1:aproposFindCommands
     #@+node:ekr.20060602154458:pythonHelp
     def pythonHelp (self,event=None):
@@ -6129,7 +6128,7 @@ class macroCommandsClass (baseEditCommandsClass):
             f = open(fileName)
             self._loadMacros(f)
         except IOError:
-            g.es('Can not open',fileName)
+            g.es('can not open',fileName)
     #@+node:ekr.20050920084036.197:_loadMacros
     def _loadMacros (self,f):
 
@@ -6176,7 +6175,7 @@ class macroCommandsClass (baseEditCommandsClass):
             if f:
                 self._saveMacros(f,macname)
         except IOError:
-            g.es('Can not create',fileName)
+            g.es('can not create',fileName)
 
     #@+node:ekr.20050920084036.200:_saveMacros
     def _saveMacros( self, f , name ):
@@ -8185,8 +8184,7 @@ class spellTabHandler (leoFind.leoFind):
             os.path.join(g.app.loadDir,"..","plugins",'spellpyx.txt'))
 
         if not dictionaryFileName or not g.os_path_exists(dictionaryFileName):
-            g.es_print('Can not open dictionary file: %s' % (
-                dictionaryFileName), color='red')
+            g.es_print('can not open dictionary file:',dictionaryFileName, color='red')
             return False
 
         self.aspell = AspellClass(c,dictionaryFileName,self.local_language_code)
@@ -8195,7 +8193,7 @@ class spellTabHandler (leoFind.leoFind):
             self.dictionary = self.readDictionary(dictionaryFileName)
         else:
             self.dictionary = False
-            # g.es_print('Can not open Aspell',color='red')
+            # g.es_print('can not open Aspell',color='red')
 
         return self.aspell.aspell
     #@-node:ekr.20051025094004:init_aspell
@@ -8213,7 +8211,7 @@ class spellTabHandler (leoFind.leoFind):
         try:
             f = open(fileName,"r")
         except IOError:
-            g.es("Unable to open local dictionary '%s' - using a blank one instead" % fileName)
+            g.es("can not open local dictionary",fileName,"using a blank one instead")
             return d
 
         try:
@@ -8255,10 +8253,10 @@ class spellTabHandler (leoFind.leoFind):
                     s = 'Spell: added %s' % self.currentWord
                     self.messages.append(s)
                 else: # Too distracting.
-                    g.es("Adding ", color= "blue", newline= False) 
-                    g.es('%s' % self.currentWord)
+                    g.es("adding ", color= "blue", newline= False) 
+                    g.es('','%s' % self.currentWord)
             except IOError:
-                g.es("Can not add %s to dictionary" % self.currentWord, color="red")
+                g.es("can not add",self.currentWord,"to dictionary",color="red")
         finally:
             if f: f.close()
 
@@ -8438,8 +8436,8 @@ class spellTabHandler (leoFind.leoFind):
             self.messages.append(s)
 
         if 0: # Too distracting
-            g.es("Ignoring ", color= "blue", newline= False)
-            g.es('%s' % self.currentWord)
+            g.es("ignoring ",color= "blue", newline= False)
+            g.es('','%s' % self.currentWord)
 
         self.dictionary[self.currentWord.lower()] = 0
         self.tab.onFindButton()
@@ -8669,8 +8667,8 @@ class AspellClass:
             return True
 
         except Exception, err:
-            # g.es_print("Unable to update local aspell dictionary: %s" % err)
-            print "Unable to update local aspell dictionary: %s" % (err)
+            # g.es_print("Unable to update local aspell dictionary:",err)
+            print "Unable to update local aspell dictionary:",err
             return False
     #@-node:ekr.20051025071455.11:updateDictionary
     #@-others

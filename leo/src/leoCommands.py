@@ -342,7 +342,7 @@ class baseCommands:
         if not g.unitTesting:
             g.es("Leo Log Window...",color=color)
             g.es(signon)
-            g.es("Python %d.%d.%d, %s\n%s" % (n1,n2,n3,g.app.gui.getFullVersion(c),version))
+            g.es('',"python %s.%s.%s, %s\n%s" % (n1,n2,n3,g.app.gui.getFullVersion(c),version))
             g.enl()
     #@-node:ekr.20040629121554.3:c.signOnWithVersion
     #@-node:ekr.20031218072017.2582: version & signon stuff
@@ -801,7 +801,7 @@ class baseCommands:
                     if rewrite:
                         path = c.createOpenWithTempFile(p,ext)
                     else:
-                        g.es("reopening: " + g.shortFileName(path),color="blue")
+                        g.es("reopening:",g.shortFileName(path),color="blue")
                     #@-node:ekr.20031218072017.2827:<< create or recreate temp file as needed >>
                     #@nl
                 else:
@@ -860,7 +860,7 @@ class baseCommands:
                         command="bad command:"+str(openType)
                         g.trace(command)
                 except Exception:
-                    g.es("exception executing: "+command)
+                    g.es("exception executing:",command)
                     g.es_exception()
                 #@-node:ekr.20031218072017.2829:<< execute a command to open path in external editor >>
                 #@nl
@@ -877,9 +877,9 @@ class baseCommands:
         path = c.openWithTempFilePath(p,ext)
         try:
             if g.os_path_exists(path):
-                g.es("recreating:  " + g.shortFileName(path),color="red")
+                g.es("recreating:  ",g.shortFileName(path),color="red")
             else:
-                g.es("creating:  " + g.shortFileName(path),color="blue")
+                g.es("creating:  ",g.shortFileName(path),color="blue")
             theFile = open(path,"w")
             # Convert s to whatever encoding is in effect.
             s = p.bodyString()
@@ -923,55 +923,18 @@ class baseCommands:
 
         """Return the path to the temp file corresponding to p and ext."""
 
-        if 0: # new code: similar to code in mod_tempfname.py plugin.
-            pass
-            # try:
-                # # At least in Windows, user name may contain special characters
-                # # which would require escaping quotes.
-                # leoTempDir = g.sanitize_filename(getpass.getuser()) + "_" + "Leo"
-            # except:
-                # leoTempDir = "LeoTemp"
-                # g.es("Could not retrieve your user name.")
-                # g.es("Temporary files will be stored in: %s" % leoTempDir)
+        name = "LeoTemp_%s_%s%s" % (
+            str(id(p.v.t)),
+            g.sanitize_filename(p.headString()),
+            ext)
 
-            # td = os.path.join(g.os_path_abspath(tempfile.gettempdir()),leoTempDir)
-            # if not os.path.exists(td):
-                # os.mkdir(td)
+        name = g.toUnicode(name,g.app.tkEncoding)
 
-            # name = g.sanitize_filename(v.headString()) + '_' + str(id(p.v.t))  + ext
-            # path = os.path.join(td,name)
-            # return path
-        else: # Original code.
-            name = "LeoTemp_%s_%s%s" % (
-                str(id(p.v.t)),
-                g.sanitize_filename(p.headString()),
-                ext)
+        td = g.os_path_abspath(tempfile.gettempdir())
 
-            name = g.toUnicode(name,g.app.tkEncoding)
-            # try:
-                # # At least in Windows, user name may contain special characters
-                # # which would require escaping quotes.
-                # leoTempDir = g.sanitize_filename(getpass.getuser()) + "_" + "Leo"
-            # except:
-                # leoTempDir = "LeoTemp"
-                # g.es("Could not retrieve your user name.")
-                # g.es("Temporary files will be stored in: %s" % leoTempDir)
+        path = g.os_path_join(td,name)
 
-            # td = os.path.join(g.os_path_abspath(tempfile.gettempdir()),leoTempDir)
-            # if not os.path.exists(td):
-                # os.mkdir(td)
-
-            # name = g.sanitize_filename(v.headString()) + '_' + str(id(v.t))  + ext
-            # path = os.path.join(td,name)
-            # return path
-            if 1:
-                td = g.os_path_abspath(tempfile.gettempdir())
-            else:
-                td = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','temp'))
-
-            path = g.os_path_join(td,name)
-
-            return path
+        return path
     #@-node:ekr.20031218072017.2832:c.openWithTempFilePath
     #@-node:ekr.20031218072017.2823:openWith and allies
     #@+node:ekr.20031218072017.2833:close
@@ -989,7 +952,7 @@ class baseCommands:
         c = self ; w = g.app.gui.get_focus(c)
 
         if g.app.disableSave:
-            g.es("Save commands disabled",color="purple")
+            g.es("save commands disabled",color="purple")
             return
 
         # Make sure we never pass None to the ctor.
@@ -1031,7 +994,7 @@ class baseCommands:
         c = self ;  w = g.app.gui.get_focus(c)
 
         if g.app.disableSave:
-            g.es("Save commands disabled",color="purple")
+            g.es("save commands disabled",color="purple")
             return
 
         c.beginUpdate()
@@ -1091,7 +1054,7 @@ class baseCommands:
         c = self ; w = g.app.gui.get_focus(c)
 
         if g.app.disableSave:
-            g.es("Save commands disabled",color="purple")
+            g.es("save commands disabled",color="purple")
             return
 
         c.beginUpdate()
@@ -1205,7 +1168,7 @@ class baseCommands:
             if ok and closeFlag:
                 g.app.destroyWindow(c.frame) # 12/12/03
                 c = frame.c # Switch to the new commander so the "recentfiles2" hook doesn't crash.
-                c.setLog() # Sets the log stream for g.es()
+                c.setLog() # Sets the log stream for g.es
 
         g.doHook("recentfiles2",c=c,p=v,v=v,fileName=fileName,closeFlag=closeFlag)
     #@-node:ekr.20031218072017.2081:openRecentFile
@@ -1262,7 +1225,7 @@ class baseCommands:
             g.app.root.update() # Force a screen redraw immediately.
             c.fileCommands.readOutlineOnly(theFile,fileName) # closes file.
         except:
-            g.es("can not open:" + fileName)
+            g.es("can not open:",fileName)
     #@-node:ekr.20031218072017.2839:readOutlineOnly
     #@+node:ekr.20070915134101:readFileIntoFile
     def readFileIntoNode (self,event=None):
@@ -1289,7 +1252,7 @@ class baseCommands:
                 finally:
                     c.endUpdate()
             except:
-                g.es("can not open:" + fileName)
+                g.es("can not open:",fileName)
     #@-node:ekr.20070915134101:readFileIntoFile
     #@+node:ekr.20070806105721.1:readAtAutoNodes (commands)
     def readAtAutoNodes (self,event=None):
@@ -1381,10 +1344,10 @@ class baseCommands:
                     s = s[len('@nocolor\n'):]
                 theFile.write(s)
                 theFile.flush()
-                g.es_print('wrote: %s' % (fileName),color='blue')
+                g.es_print('wrote:',fileName,color='blue')
                 theFile.close()
             else:
-                g.es('can not write %s' % (fileName),color='red')
+                g.es('can not write %s',fileName,color='red')
     #@nonl
     #@-node:ekr.20070915142635:writeFileFromNode
     #@-node:ekr.20031218072017.2838:Read/Write submenu
@@ -1853,7 +1816,7 @@ class baseCommands:
             try:
                 lines=self.gotoLineNumberOpen(fileName) # bwm
             except:
-                g.es("not found: " + fileName)
+                g.es("not found:",fileName)
                 return
             #@-node:ekr.20031218072017.2866:<< read the file into lines >>
             #@nl
@@ -1896,7 +1859,7 @@ class baseCommands:
             vnodeName,childIndex,gnx,n2,delim = self.convertLineToVnodeNameIndexLine(lines,n,root,scriptFind)
             found = True
             if not vnodeName:
-                g.es("error handling: " + root.headString())
+                g.es("error handling:",root.headString())
                 return
             #@        << set p to the node given by vnodeName, etc. >>
             #@+node:ekr.20031218072017.2869:<< set p to the node given by vnodeName, etc. >>
@@ -1926,7 +1889,7 @@ class baseCommands:
                             found = True ; break
 
                 if not found:
-                    g.es("not found: " + vnodeName, color="red")
+                    g.es("not found:",vnodeName,color="red")
                     return
                 #@-node:EKR.20040609110138:<< 4.2: get node from gnx >>
                 #@nl
@@ -1938,8 +1901,7 @@ class baseCommands:
                 ok = True
 
                 if not hasattr(root.v.t,"tnodeList"):
-                    s = "no child index for " + root.headString()
-                    g.es_print(s, color="red")
+                    g.es_print("no child index for",root.headString(),color="red")
                     ok = False
 
                 if ok:
@@ -2036,7 +1998,7 @@ class baseCommands:
                             found = True ; break
 
                 if not found:
-                    g.es("not found: " + vnodeName, color="red")
+                    g.es("not found:",vnodeName, color="red")
                     return
                 #@-node:ekr.20031218072017.2874:<< 3.x: scan for the node with the given childIndex >>
                 #@nl
@@ -2061,7 +2023,7 @@ class baseCommands:
         else:
             #c.frame.body.setInsertionPointToEnd()
             ins = len(s)
-            g.es("%d lines" % len(lines), color="blue")
+            g.es('only',len(lines),'lines',color="blue")
 
         w.setInsertPoint(ins)
         c.bodyWantsFocusNow()
@@ -2125,7 +2087,7 @@ class baseCommands:
                 #@        << handle delim while scanning backward >>
                 #@+node:ekr.20031218072017.2880:<< handle delim while scanning backward >>
                 if line == n:
-                    g.es("line "+str(n)+" is a sentinel line")
+                    g.es("line",str(n),"is a sentinel line")
                 i += len(delim)
 
                 if g.match(s,i,"-node"):
@@ -2358,7 +2320,7 @@ class baseCommands:
                         u.afterChangeNodeContents(p,undoType,innerUndoData)
             u.afterChangeGroup(current,undoType,dirtyVnodeList=dirtyVnodeList)
             if not g.unitTesting:
-                g.es("blanks converted to tabs in %d nodes" % count) # Must come before c.endUpdate().
+                g.es("blanks converted to tabs in",count,"nodes") # Must come before c.endUpdate().
         finally:
             c.endUpdate(count > 0)
     #@-node:ekr.20031218072017.1704:convertAllBlanks
@@ -2405,7 +2367,7 @@ class baseCommands:
                         u.afterChangeNodeContents(p,undoType,undoData)
             u.afterChangeGroup(current,undoType,dirtyVnodeList=dirtyVnodeList)
             if not g.unitTesting:
-                g.es("tabs converted to blanks in %d nodes" % count)
+                g.es("tabs converted to blanks in",count,"nodes")
         finally:
             c.endUpdate(count > 0)
     #@-node:ekr.20031218072017.1705:convertAllTabs
@@ -2738,7 +2700,7 @@ class baseCommands:
                 # g.trace('case2',s[index:index2+1])
             w.see(index2)
         else:
-            g.es("unmatched %s" % repr(ch))
+            g.es("unmatched",repr(ch))
     #@nonl
     #@+node:ekr.20061113221414:findMatchingBracketHelper
     # To do: replace comments with blanks before scanning.
@@ -2899,7 +2861,7 @@ class baseCommands:
         d1,d2,d3 = d.get('delims') # d1 is the line delim.
         head,lines,tail,oldSel,oldYview = self.getBodyLines()
         if not lines:
-            g.es('No text selected',color='blue')
+            g.es('no text selected',color='blue')
             return
 
         d2 = d2 or '' ; d3 = d3 or ''
@@ -2931,7 +2893,7 @@ class baseCommands:
         head,lines,tail,oldSel,oldYview = self.getBodyLines()
         result = []
         if not lines:
-            g.es('No text selected',color='blue')
+            g.es('no text selected',color='blue')
             return
 
         if d1:
@@ -2955,7 +2917,7 @@ class baseCommands:
                         k = g.skip_ws(line,j + len(d2))
                         result.append(line[0:j] + line[k:])
                     else:
-                        g.es("'%s' not found" % (d2),color='blue')
+                        g.es('',"'%s'" % (d2),"not found",color='blue')
                         return
                 if i == n-1:
                     if i == 0:
@@ -2964,7 +2926,7 @@ class baseCommands:
                     if s.endswith(d3):
                         result.append(s[:-len(d3)].rstrip())
                     else:
-                        g.es("'%s' not found" % (d3),color='blue')
+                        g.es('',"'%s'" % (d3),"not found",color='blue')
                         return
 
         result = ''.join(result)
@@ -2992,8 +2954,6 @@ class baseCommands:
             return
 
         if body.hasTextSelection():
-            # g.es("Text selection inhibits Reformat Paragraph",color="blue")
-            # return
             i,j = w.getSelectionRange()
             w.setInsertPoint(i)
 
@@ -3186,8 +3146,8 @@ class baseCommands:
         if c.frame.findPanel:
             c.frame.findPanel.bringToFront()
         else:
-            g.es('The %s gui does not support a stand-alone find dialog' % (
-                g.app.gui.guiName()),color='blue')
+            g.es('the',g.app.gui.guiName(),
+                'gui does not support a stand-alone find dialog',color='blue')
     #@-node:ekr.20031218072017.2888:showFindPanel
     #@+node:ekr.20031218072017.2889:findNext
     def findNext (self,event=None):
@@ -3243,7 +3203,7 @@ class baseCommands:
     #@+node:ekr.20031218072017.2893:notValidInBatchMode
     def notValidInBatchMode(self, commandName):
 
-        g.es("%s command is not valid in batch mode" % commandName)
+        g.es('the',commandName,"command is not valid in batch mode")
     #@-node:ekr.20031218072017.2893:notValidInBatchMode
     #@-node:ekr.20031218072017.2861:Edit Menu...
     #@+node:ekr.20031218072017.2894:Outline menu...
@@ -3734,7 +3694,7 @@ class baseCommands:
                     #@+node:ekr.20040323155951:<< do full tests >>
                     if not unittest:
                         if count % 100 == 0:
-                            g.es('.',newline=False)
+                            g.es('','.',newline=False)
                         if count % 2000 == 0:
                             g.enl()
 
@@ -3857,11 +3817,9 @@ class baseCommands:
                 print
                 g.enl()
 
-            s = "%d nodes checked, %d errors" % (count,errors)
             if errors or verbose:
-                g.es_print(s,color="red")
-            elif verbose:
-                g.es(s,color="green")
+                color = g.choose(errors,'red','green')
+                g.es_print('',count,'nodes checked',errors,'errors',color=color)
             #@-node:ekr.20040314043900:<<print summary message >>
             #@nl
         return errors
@@ -3881,7 +3839,7 @@ class baseCommands:
                 #@            << print dots >>
                 #@+node:ekr.20040723094220.2:<< print dots >>
                 if count % 100 == 0:
-                    g.es('.',newline=False)
+                    g.es('','.',newline=False)
 
                 if count % 2000 == 0:
                     g.enl()
@@ -3902,7 +3860,7 @@ class baseCommands:
                         return result # End the unit test: it has failed.
 
         if not unittest:
-            g.es("Check complete",color="blue")
+            g.es("check complete",color="blue")
 
         return result
     #@-node:ekr.20040723094220.1:checkAllPythonCode
@@ -3923,7 +3881,7 @@ class baseCommands:
                 #@            << print dots >>
                 #@+node:ekr.20040723094220.4:<< print dots >>
                 if count % 100 == 0:
-                    g.es('.',newline=False)
+                    g.es('','.',newline=False)
 
                 if count % 2000 == 0:
                     g.enl()
@@ -3942,7 +3900,7 @@ class baseCommands:
                         return "surprise" # abort
 
         if not unittest:
-            g.es("Check complete",color="blue")
+            g.es("check complete",color="blue")
 
         # We _can_ return a result for unit tests because we aren't using doCommand.
         return result
@@ -3987,22 +3945,22 @@ class baseCommands:
 
         except parser.ParserError, msg:
             if not suppressErrors:
-                g.es("ParserError in %s" % headline,color="blue")
-                g.es(str(msg))
+                g.es("ParserError in",headline,color="blue")
+                g.es('',str(msg))
 
         except tokenize.TokenError, msg:
             if not suppressErrors:
-                g.es("TokenError in %s" % headline,color="blue")
-                g.es(str(msg))
+                g.es("TokenError in",headline,color="blue")
+                g.es('',str(msg))
 
         except tabnanny.NannyNag, nag:
             if not suppressErrors:
                 badline = nag.get_lineno()
                 line    = nag.get_line()
                 message = nag.get_msg()
-                g.es("Indentation error in %s, line %d" % (headline, badline),color="blue")
+                g.es("Indentation error in",headline,"line",badline,color="blue")
                 g.es(message)
-                g.es("offending line:\n%s" % repr(str(line))[1:-1])
+                g.es("offending line:\n",repr(str(line))[1:-1])
 
         except:
             g.trace("unexpected exception")
@@ -4227,7 +4185,7 @@ class baseCommands:
                 lines = self.get()
 
             except tokenize.TokenError:
-                g.es("Error pretty-printing %s.  Not changed." % h, color="blue")
+                g.es("error pretty-printing",h,"not changed.",color="blue")
                 return
 
             if dump:
@@ -4982,7 +4940,7 @@ class baseCommands:
 
         c = self ; h = c.rootPosition().headString()
         kind = g.choose(h.startswith('@chapter'),'chapter','hoist')
-        g.es("Can't move node out of %s" % (kind),color="blue")
+        g.es("Can't move node out of",kind,color="blue")
     #@-node:ekr.20070420092425:cantMoveMessage
     #@+node:ekr.20031218072017.1767:demote
     def demote (self,event=None):
@@ -5315,7 +5273,7 @@ class baseCommands:
 
         sparseMove = not c.config.getBool(tag)
         c.config.set(p, tag, sparseMove)
-        g.es('%s = %s' % (tag,sparseMove),color='blue')
+        g.es(tag,'=',sparseMove,color='blue')
     #@-node:ekr.20071213185710:c.toggleSparseMove
     #@-node:ekr.20031218072017.1766:Move... (Commands)
     #@+node:ekr.20031218072017.2913:Goto
@@ -5429,7 +5387,7 @@ class baseCommands:
         c = self ; cc = c.chapterController ; p = c.currentPosition()
         if not p: return
         if not p.isCloned():
-            g.es('not a clone: %s' % (p.headString()),color='blue')
+            g.es('not a clone:',p.headString(),color='blue')
             return
 
         t = p.v.t
@@ -5673,8 +5631,8 @@ class baseCommands:
         if frame.comparePanel:
             frame.comparePanel.bringToFront()
         else:
-            g.es('The %s gui does not support the compare window' % (
-                g.app.gui.guiName()),color='blue')
+            g.es('the',g.app.gui.guiName(),
+                'gui does not support the compare window',color='blue')
     #@-node:ekr.20031218072017.2092:openCompareWindow
     #@+node:ekr.20031218072017.2932:openPythonWindow
     def openPythonWindow (self,event=None):
@@ -5735,14 +5693,14 @@ class baseCommands:
 
         # Look in homeDir second.
         if configDir == loadDir:
-            g.es("%s not found in %s" % (name,configDir))
+            g.es('',name,"not found in",configDir)
         else:
             fileName = g.os_path_join(homeDir,name)
             ok = g.os_path_exists(fileName)
             if ok:
                 ok, frame = g.openWithFileName(fileName,c)
             if not ok:
-                g.es("%s not found in %s or %s" % (name,configDir,homeDir))
+                g.es('',name,"not found in",configDir,"or",homeDir)
     #@-node:ekr.20031218072017.2943:openLeoSettings and openMyLeoSettings
     #@+node:ekr.20061018094539:openLeoScripts
     def openLeoScripts (self,event=None):
@@ -5752,7 +5710,7 @@ class baseCommands:
 
         ok, frame = g.openWithFileName(fileName,c)
         if not ok:
-            g.es('not found: %s' % fileName)
+            g.es('not found:',fileName)
     #@-node:ekr.20061018094539:openLeoScripts
     #@+node:ekr.20031218072017.2940:leoDocumentation
     def leoDocumentation (self,event=None):
@@ -5764,7 +5722,7 @@ class baseCommands:
         fileName = g.os_path_join(g.app.loadDir,"..","doc",name)
         ok,frame = g.openWithFileName(fileName,c)
         if not ok:
-            g.es("not found: %s" % name)
+            g.es("not found:",name)
     #@-node:ekr.20031218072017.2940:leoDocumentation
     #@+node:ekr.20031218072017.2941:leoHome
     def leoHome (self,event=None):
@@ -5777,7 +5735,7 @@ class baseCommands:
         try:
             webbrowser.open_new(url)
         except:
-            g.es("not found: " + url)
+            g.es("not found:",url)
     #@-node:ekr.20031218072017.2941:leoHome
     #@+node:ekr.20050130152008:leoPlugins
     def openLeoPlugins (self,event=None):
@@ -5788,7 +5746,7 @@ class baseCommands:
         fileName = g.os_path_join(g.app.loadDir,"..","plugins",name)
         ok,frame = g.openWithFileName(fileName,c)
         if not ok:
-            g.es("not found: %s" % name)
+            g.es("not found:",name)
     #@-node:ekr.20050130152008:leoPlugins
     #@+node:ekr.20031218072017.2942:leoTutorial (version number)
     def leoTutorial (self,event=None):
@@ -5804,7 +5762,7 @@ class baseCommands:
         try:
             webbrowser.open_new(url)
         except:
-            g.es("not found: " + url)
+            g.es("not found:",url)
     #@-node:ekr.20031218072017.2942:leoTutorial (version number)
     #@+node:ekr.20060613082924:leoUsersGuide
     def leoUsersGuide (self,event=None):
@@ -5822,7 +5780,7 @@ class baseCommands:
         try:
             webbrowser.open_new(url)
         except:
-            g.es("not found: " + url)
+            g.es("not found:",url)
     #@-node:ekr.20060613082924:leoUsersGuide
     #@-node:ekr.20031218072017.2938:Help Menu
     #@-node:ekr.20031218072017.2818:Command handlers...
@@ -7272,7 +7230,7 @@ class configSettings:
             setattr(self,encodingName,encoding)
 
         if encoding and not g.isValidEncoding(encoding):
-            g.es("bad %s: %s" % (encodingName,encoding))
+            g.es("bad", "%s: %s" % (encodingName,encoding))
     #@-node:ekr.20041118104414:initEncoding
     #@-node:ekr.20041118104831.2:configSettings.__init__
     #@+node:ekr.20041118053731:Getters (c.configSettings)

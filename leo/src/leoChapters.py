@@ -268,7 +268,7 @@ class chapterController:
         cc.selectChapterByName(name)
         cc.afterCreateChapter(bunch,c.currentPosition())
 
-        # g.es('created chapter %s' % (name),color='blue')
+        # g.es('created chapter',name,color='blue')
         return True
     #@-node:ekr.20070603190617:cc.createChapterByName
     #@+node:ekr.20070607092909:cc.createChapterFromNode

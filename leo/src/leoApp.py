@@ -433,7 +433,7 @@ class LeoApp:
         if hasattr(sys,nonConstantAttr):
             g.app.leoID = getattr(sys,nonConstantAttr)
             if verbose and not g.app.unitTesting:
-                g.es_print("leoID = " + g.app.leoID, color='red')
+                g.es_print("leoID=",g.app.leoID,spaces=False,color='red')
             return
         else:
             g.app.leoID = None
@@ -452,13 +452,12 @@ class LeoApp:
                     if s and len(s) > 0:
                         g.app.leoID = s.strip()
                         if verbose and not g.app.unitTesting:
-                            g.es("leoID = %s (in %s)" % (g.app.leoID,theDir), color="red")
+                            g.es('leoID=',g.app.leoID,' (in ',theDir,')',spaces=False,color="red")
                         return
                     elif verbose and not g.app.unitTesting:
-                        g.es("empty %s (in %s)" % (tag,theDir), color = "red")
+                        g.es('empty ',tag,' (in ',theDir,')',spaces=False,color = "red")
                 except IOError:
                     g.app.leoID = None
-                    # g.es("%s not found in %s" % (tag,theDir),color="red")
                 except Exception:
                     g.app.leoID = None
                     g.es_print('Unexpected exception in app.setLeoID',color='red')
@@ -471,7 +470,7 @@ class LeoApp:
             theId = os.getenv('USER')
             if theId:
                 if verbose and not g.app.unitTesting:
-                    g.es("using os.getenv('USER'): %s " % (repr(theId)),color='red')
+                    g.es("using os.getenv('USER'):",repr(theId),color='red')
                 g.app.leoID = theId
                 return
 
@@ -490,7 +489,7 @@ class LeoApp:
         g.app.leoID = g.app.gui.runAskLeoIDDialog()
 
         # g.trace(g.app.leoID)
-        g.es("leoID = %s" % (repr(g.app.leoID)),color="blue")
+        g.es('leoID=',repr(g.app.leoID),spaces=False,color="blue")
         #@-node:ekr.20031218072017.1981:<< put up a dialog requiring a valid id >>
         #@nl
         #@    << attempt to create leoID.txt >>
@@ -498,20 +497,18 @@ class LeoApp:
         for theDir in (homeDir,globalConfigDir,loadDir):
             # N.B. We would use the _working_ directory if theDir is None!
             if theDir:
-                cant = "can not create %s in %s" % (tag,theDir)
                 try:
                     fn = g.os_path_join(theDir,tag)
                     f = open(fn,'w')
                     f.write(g.app.leoID)
                     f.close()
                     if g.os_path_exists(fn):
-                        s = "%s created in %s" % (tag,theDir)
-                        g.es_print(s, color="red")
+                        g.es_print('',tag,'created in',theDir,color='red')
                         return
-                    else:
-                        g.es(cant,color='red')
                 except IOError:
-                    g.es(cant,color='red')
+                   pass
+
+                g.es('can not create',tag,'in',theDir,color='red')
         #@-node:ekr.20031218072017.1982:<< attempt to create leoID.txt >>
         #@nl
     #@-node:ekr.20031218072017.1978:app.setLeoID
@@ -540,7 +537,7 @@ class LeoApp:
         if self.log:
             if 1: # not self.log.isNull: # The test for isNull would probably interfere with batch mode.
                 for s,color in self.logWaiting:
-                    g.es(s,color=color,newline=0) # The caller must write the newlines.
+                    g.es('',s,color=color,newline=0) # The caller must write the newlines.
                 self.logWaiting = []
         else:
             print 'writeWaitingLog: still no log!'

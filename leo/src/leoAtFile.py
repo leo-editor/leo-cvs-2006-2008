@@ -411,7 +411,7 @@ class atFile:
                     read_only = False 
 
                 if read_only:
-                    g.es("read only: " + fn,color="red")
+                    g.es("read only:",fn,color="red")
                 #@-node:ekr.20041005105605.20:<< warn on read-only file >>
                 #@nl
             except IOError:
@@ -465,7 +465,7 @@ class atFile:
         at.openFileForReading(fileName,fromString=fromString)
         if not at.inputFile: return False
         if not g.unitTesting:
-            g.es("reading: " + root.headString())
+            g.es("reading:",root.headString())
         root.clearVisitedInTree()
         at.scanAllDirectives(root,importing=at.importing,reading=True)
         at.readOpenFile(root,at.inputFile,fileName)
@@ -481,8 +481,8 @@ class atFile:
             for p in root.self_and_subtree_iter():
 
                 if not p.v.t.isVisited():
-                    g.es('resurrected node: %s' % (p.headString()),color='blue')
-                    g.es('in file: %s' % (fileName),color='blue')
+                    g.es('resurrected node:',p.headString(),color='blue')
+                    g.es('in file:',fileName,color='blue')
                     resurrected += 1
 
             if resurrected:
@@ -560,7 +560,7 @@ class atFile:
         # g.trace(fileName)
 
         if not g.unitTesting:
-            g.es("reading: " + p.headString())
+            g.es("reading:",p.headString())
 
         # Delete all children.
         c.beginUpdate()
@@ -573,7 +573,7 @@ class atFile:
         ic.createOutline(fileName,parent=p.copy(),atAuto=True)
 
         if ic.errors:
-            g.es_print('Errors inhibited read @auto %s' % (fileName),color='red')
+            g.es_print('Errors inhibited read @auto',fileName,color='red')
 
         if ic.errors or not g.os_path_exists(fileName):
             #c.setBodyString(p,'')
@@ -726,10 +726,10 @@ class atFile:
         elif len(lines) == 5:
             at.readError("potential cvs conflict" + m)
             s = lines[1]
-            g.es("using " + s)
+            g.es("using",s)
         else:
-            at.readError("unexpected lines" + m)
-            g.es(len(lines), " lines" + m)
+            at.readError("unexpected lines",m)
+            g.es('',len(lines), "lines",m)
             s = "bad " + sentinel
             if comments: s = start + ' ' + s
 
@@ -1864,9 +1864,6 @@ class atFile:
                             found = True ; break
 
                     if found:
-                        # Not needed: we mark all corrected nodes.
-                        # g.es("Correcting %s" % p and p.headString() or '<no p>',color="blue")
-
                         if 0: # For debugging.
                             print ; print '-' * 40
                             print "old",len(old)
@@ -1881,7 +1878,7 @@ class atFile:
                             print ; print '-' * 40
                     else:
                         # This should never happen.
-                        g.es("Correcting hidden node: t=%s" % repr(at.t),color="red")
+                        g.es("Correcting hidden node: t=",repr(at.t),color="red")
                     #@-node:ekr.20041005105605.97:<< bump at.correctedLines and tell about the correction >>
                     #@nl
                     # p.setMarked()
@@ -1893,10 +1890,7 @@ class atFile:
                         if not at.updateWarningGiven:
                             at.updateWarningGiven = True
                             # print "***",at.t,at.root.t
-                            g.es("Warning: updating changed text in %s" %
-                                (at.root.headString()),color="blue")
-                    # g.es("old...\n%s\n" % old)
-                    # g.es("new...\n%s\n" % s)
+                            g.es("Warning: updating changed text in",at.root.headString(),color="blue")
                     # Just set the dirty bit. Ancestors will be marked dirty later.
                     at.t.setDirty()
                     if 1: # We must avoid the full setChanged logic here!
@@ -1986,7 +1980,7 @@ class atFile:
 
         # __pychecker__ = '--no-argsused' # i unused, but must be present.
 
-        g.es("Ignoring 3.x sentinel: " + s.strip(), color="blue")
+        g.es("ignoring 3.x sentinel:",s.strip(),color="blue")
     #@-node:ekr.20041005105605.101:ignoreOldSentinel
     #@+node:ekr.20041005105605.102:readAfterRef
     def  readAfterRef (self,s,i):
@@ -2120,7 +2114,7 @@ class atFile:
                     at.endSentinelComment = delim3
                 else:
                     line = g.get_line(s,i)
-                    g.es("Ignoring bad @@language sentinel: %s" % line,color="red")
+                    g.es("ignoring bad @language sentinel:",line,color="red")
                 #@-node:ekr.20041005105605.107:<< handle @language >>
                 #@nl
             elif g.match_word(s,i,"@comment"):
@@ -2142,7 +2136,7 @@ class atFile:
                     self.endSentinelComment = delim3
                 else:
                     line = g.get_line(s,i)
-                    g.es("Ignoring bad @comment sentinel: %s" % line,color="red")
+                    g.es("ignoring bad @comment sentinel:",line,color="red")
                 #@-node:ekr.20041005105605.108:<< handle @comment >>
                 #@nl
 
@@ -2406,7 +2400,7 @@ class atFile:
                         c.mod_label_controller.add_label(p,"before change:",old_body)
                     except Exception:
                         pass
-                    g.es("changed: " + p.headString(),color="blue")
+                    g.es("changed:",p.headString(),color="blue")
                     p.setMarked()
     #@-node:ekr.20050301105854:copyAllTempBodyStringsToTnodes
     #@+node:ekr.20041005105605.119:createImportedNode
@@ -2524,8 +2518,7 @@ class atFile:
                 if g.isValidEncoding(encoding):
                     at.encoding = encoding
                 else:
-                    print "bad encoding in derived file:",encoding
-                    g.es("bad encoding in derived file:",encoding)
+                    g.es_print("bad encoding in derived file:",encoding)
             else:
                 valid = False
         #@-node:ekr.20041005105605.125:<< read optional encoding param >>
@@ -2872,7 +2865,7 @@ class atFile:
                     root.setOrphan()
                     root.setDirty() # Make _sure_ we try to rewrite this file.
                     os.remove(at.outputFileName) # Delete the temp file.
-                    g.es("Not written: " + at.outputFileName)
+                    g.es("not written:",at.outputFileName)
                 else:
                     root.clearOrphan()
                     root.clearDirty()
@@ -3045,10 +3038,10 @@ class atFile:
             if at.errors == 0:
                 at.replaceTargetFileIfDifferent()
             else:
-                g.es("Not written: " + at.outputFileName)
+                g.es("not written:",at.outputFileName)
         elif not toString:
             root.setDirty() # Make _sure_ we try to rewrite this file.
-            g.es("Not written: " + at.outputFileName)
+            g.es("not written:",at.outputFileName)
 
         return ok
     #@+node:ekr.20071019141745:shouldWriteAtAutoNode
@@ -3083,8 +3076,8 @@ class atFile:
         elif not p.isDirty(): # There is nothing new to write.
             return False
         elif not self.isSignificantAtAutoTree(p): # There is noting of value to write.
-            g.es_print('%s not written:\n\
-    no children and less than 10 characters (excluding directives)' % (p.headString()),color='red')
+            g.es_print(p.headString(),'not written:',color='red')
+            g.es_print('no children and less than 10 characters (excluding directives)',color='red')
             return False
         else: # The @auto tree is dirty and contains significant info.
             return True
@@ -4127,7 +4120,7 @@ class atFile:
             for ch,j in (('<',n1+2),('>',n2+2)):
                 if g.match(s,j,ch):
                     line = g.get_line(s,i)
-                    g.es('dubious brackets in %s' % line)
+                    g.es('dubious brackets in',line)
                     break
 
         return ok, n1, n2
@@ -4339,7 +4332,7 @@ class atFile:
                     self.endSentinelComment = delim3
                 else:
                     line = g.get_line(s,i)
-                    g.es("Ignoring bad @language directive: %s" % line,color="blue")
+                    g.es("ignoring bad @language directive:",line,color="blue")
             #@-node:ekr.20041005105605.208:<< handle @language >>
             #@nl
         elif g.match_word(s,k,"@comment"):
@@ -4365,7 +4358,7 @@ class atFile:
                     self.startSentinelComment = delim2
                     self.endSentinelComment = delim3
                 else:
-                    g.es("Ignoring bad @comment directive: %s" % line,color="blue")
+                    g.es("ignoring bad @comment directive:",line,color="blue")
             #@-node:ekr.20041005105605.209:<< handle @comment >>
             #@nl
         elif g.match_word(s,k,"@last"):
@@ -4403,7 +4396,6 @@ class atFile:
                 line = line.replace("@date",time.asctime())
                 if len(line)> 0:
                     self.putSentinel("@comment " + line)
-    #@-node:ekr.20041005105605.211:putInitialComment
     #@+node:ekr.20041005105605.212:replaceTargetFileIfDifferent
     def replaceTargetFileIfDifferent (self):
 
@@ -4431,7 +4423,7 @@ class atFile:
                 #@nl
             ):
                 self.remove(self.outputFileName)
-                g.es('%-10s %s' % ('unchanged:',self.shortFileName))
+                g.es('unchanged:',self.shortFileName)
                 return False
             else:
                 #@            << report if the files differ only in line endings >>
@@ -4443,23 +4435,24 @@ class atFile:
                         self.targetFileName,
                         ignoreLineEndings=True)):
 
-                    g.es("correcting line endings in: " + self.targetFileName,color="blue")
+                    g.es("correcting line endings in:",self.targetFileName,color="blue")
                 #@-node:ekr.20041019090322:<< report if the files differ only in line endings >>
                 #@nl
                 mode = self.stat(self.targetFileName)
                 ok = self.rename(self.outputFileName,self.targetFileName,mode)
                 if ok:
-                    g.es('%-10s %s' % ('wrote:',self.shortFileName))
+                    g.es('wrote:    ',self.shortFileName)
                     self.fileChangedFlag = True
                 return True # bwm
         else:
             # Rename the output file.
             ok = self.rename(self.outputFileName,self.targetFileName)
             if ok:
-                g.es('%-10s %s' % ('created:',self.targetFileName))
+                g.es('created:  ',self.targetFileName)
                 self.fileChangedFlag = True
             return False
     #@-node:ekr.20041005105605.212:replaceTargetFileIfDifferent
+    #@-node:ekr.20041005105605.211:putInitialComment
     #@+node:ekr.20041005105605.216:warnAboutOrpanAndIgnoredNodes
     # Called from writeOpenFile.
 
@@ -4472,7 +4465,7 @@ class atFile:
             if not p.v.t.isVisited(): # Check tnode bit, not vnode bit.
                 at.writeError("Orphan node:  " + p.headString())
                 if p.hasParent():
-                    g.es("parent node: " + p.parent().headString(),color="blue")
+                    g.es("parent node:",p.parent().headString(),color="blue")
                 if not at.thinFile and p.isAtIgnoreNode():
                     at.writeError("@ignore node: " + p.headString())
 
@@ -4499,7 +4492,7 @@ class atFile:
     #@+node:ekr.20041005105605.218:writeException
     def writeException (self,root=None):
 
-        g.es("exception writing:" + self.targetFileName,color="red")
+        g.es("exception writing:",self.targetFileName,color="red")
         g.es_exception()
 
         if self.outputFile:
@@ -4511,7 +4504,7 @@ class atFile:
             try: # Just delete the temp file.
                 os.remove(self.outputFileName)
             except Exception:
-                g.es("exception deleting:" + self.outputFileName,color="red")
+                g.es("exception deleting:",self.outputFileName,color="red")
                 g.es_exception()
 
         if root:
@@ -4761,7 +4754,7 @@ class atFile:
                 # assert(0)
                 g.es("Unknown language: using Python comment delimiters")
                 g.es("c.target_language:",c.target_language)
-                g.es("delim1,delim2,delim3:",delim1,delim2,delim3)
+                g.es('','delim1,delim2,delim3:','',delim1,'',delim2,'',delim3)
                 self.startSentinelComment = "#" # This should never happen!
                 self.endSentinelComment = ""
 

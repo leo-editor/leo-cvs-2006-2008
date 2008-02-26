@@ -345,7 +345,7 @@ class parserBaseClass:
         # because the last setting must be retrieved before any commander exists.
         # self.dumpMenuList(aList)
         # g.trace(g.listToString(aList))
-        # g.es_print('creating menu from %s' % (c.shortFileName()),color='blue')
+        # g.es_print('creating menu from',c.shortFileName(),color='blue')
         g.app.config.menusList = aList
         g.app.config.menusFileName = c and c.shortFileName() or '<no settings file>'
     #@+node:ekr.20070926141716:doItems
@@ -758,7 +758,7 @@ class parserBaseClass:
             # g.trace(key,bunch.val,bunch.path)
             path = bunch.path
             if g.os_path_abspath(c.mFileName) != g.os_path_abspath(path):
-                g.es("over-riding setting: %s from %s" % (name,path))
+                g.es("over-riding setting:",name,"from",path)
 
         # N.B.  We can't use c here: it may be destroyed!
         d [key] = g.Bunch(path=c.mFileName,kind=kind,val=val,tag='setting')
@@ -793,9 +793,7 @@ class parserBaseClass:
             result = self.visitNode(p)
             # g.trace(result,p.headString())
             if result == "skip":
-                if 0:
-                    s = 'skipping settings in %s' % p.headString()
-                    g.es_print(s,color='blue')
+                # g.es_print('skipping settings in',p.headString(),color='blue')
                 p.moveToNodeAfterTree()
             else:
                 p.moveToThreadNext()
@@ -1029,7 +1027,7 @@ class configClass:
         setattr(self,ivar,encoding)
 
         if encoding and not g.isValidEncoding(encoding):
-            g.es("g.app.config: bad encoding: %s: %s" % (ivar,encoding))
+            g.es("g.app.config: bad encoding:","%s: %s" % (ivar,encoding))
     #@-node:ekr.20041117065611.1:initEncoding
     #@+node:ekr.20041117065611:initIvar
     def initIvar(self,key):
@@ -1187,11 +1185,8 @@ class configClass:
             # Important: this is not a complete test of conflicting settings:
             # The warning is given only if the code tries to access the setting.
             if warn:
-                s = (
-                    'Warning: ignoring %s:%s not %s\n' +
-                    'There may be conflicting settings!')
-                g.es_print(s % (bunch.kind,setting,requestedType),color='red')
-                # g.trace(g.callers())
+                g.es_print('warning: ignoring',bunch.kind,'',setting,'is not',requestedType,color='red')
+                g.es_print('there may be conflicting settings!',color='red')
             return None, False
         elif val in (u'None',u'none','None','none','',None):
             return None, True # Exists, but is None
@@ -1576,7 +1571,7 @@ class configClass:
                 seen.append(path.lower())
                 if verbose and not g.app.unitTesting and not self.silent and not g.app.batchMode:
                     s = 'reading settings in %s' % path
-                    # This occurs early in startup, so use the following instead of g.es_print()
+                    # This occurs early in startup, so use the following instead of g.es_print.
                     s = g.toEncodedString(s,'ascii')
                     print s
                     g.app.logWaiting.append((s+'\n','blue'),)
@@ -1684,10 +1679,10 @@ class configClass:
                     fileName = g.os_path_join(theDir,'.leoRecentFiles.txt')
                     f = file(fileName,'w')
                     f.close()
-                    g.es_print('created %s' % (fileName),color='red')
+                    g.es_print('created',fileName,color='red')
                     return
                 except Exception:
-                    g.es_print('can not create %s' % (fileName),color='red')
+                    g.es_print('can not create',fileName,color='red')
                     g.es_exception()
     #@nonl
     #@-node:ekr.20061010121944:createRecentFiles
@@ -1775,7 +1770,7 @@ class configClass:
             pass
 
         except Exception:
-            g.es('unexpected exception writing %s' % fileName,color='red')
+            g.es('unexpected exception writing',fileName,color='red')
             g.es_exception()
 
         if theFile:
@@ -1812,7 +1807,7 @@ class configClass:
             data = settings.get(key)
             letter,val = data
             print '%45s = %s %s' % (key,letter,val)
-            g.es('%s %s = %s' % (letter,key,val))
+            g.es('','%s %s = %s' % (letter,key,val))
     #@nonl
     #@+node:ekr.20070418075804:printSettingsHelper
     def printSettingsHelper(self,settings,d,letter=None):
