@@ -17,6 +17,21 @@ but it had no effect; i think everything in the archive is marked as
 binary. 
 #@nonl
 #@-node:ekr.20080224180411:** fix problems with install script
+#@+node:ekr.20080223084211:To do: ILeo
+@nocolor
+
+ILeo:
+- Important to emphasize simplicity of foundation: leox.c and leox.g.
+- Important ot emphasize that ILeo is similar to scripting plugin.
+
+* Scripts can create other scripts (like g.es, like unit tests).
+* Data can be **anything**: uA's.
+
+- Implementation of ILeo similar to implementation of scripting plugin
+#@nonl
+#@-node:ekr.20080223084211:To do: ILeo
+#@+node:ekr.20080226133349:at.readError may have wrong args
+#@-node:ekr.20080226133349:at.readError may have wrong args
 #@+node:ekr.20071113093057:4.5 cleanups & vim bindings
 #@+node:ekr.20070625091423:Add translation services
 @nocolor
