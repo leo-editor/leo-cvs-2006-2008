@@ -625,6 +625,52 @@ g.es("dragged node will be cloned")
 g.es("dragged node will be moved")
 #@-node:ekr.20071115113231:Results
 #@-node:ekr.20070625091423:Add translation services
+#@+node:ekr.20080227084250:Investigate more general arguments to minibuffer commands
+@nocolor
+
+http://groups.google.com/group/leo-editor/browse_thread/thread/46a7ec1079de4fb0
+
+> You could provide the information that will be used by the minibuffer
+> command as an argument to the command. E.g.
+
+> alt-x save-file-as foo.leo
+
+Some of Leo's minibuffer commands work this way. Compare open-outline with
+open-outline-by-name.
+
+I never paid much attention to generalizing arguments to minibuffer
+commands.  Maybe it is because different commands require different types of
+arguments.  For example, open-outline-by-name supports filename completion,
+while other kinds of commands support other kinds of completion.
+
+In my mind, the issue of arguments to minibuffer commands may be a separate
+issue from whether k.simulateCommand should allow arguments, because the
+implementation issues are complex.  k.getArgs is already hairy, and each
+minibuffer command that requires arguments requires special code to call
+k.getArgs.
+
+So you've given me something new and challenging to think about.
+
+I'll rethink all the implementation issues sometime in this release cycle.
+Now is the appropriate time to do this because I'm going to be messing with
+key bindings anyway. (k.getArgs is all about key bindings).
+
+That would allow us to use minibuffer in a more powerful way,
+
+> especially from IPython. E.g. "mb open-file mydoc.leo" could be used
+> directly when you see the file in file system (and thus benefit from
+> filename tab completion). "open file" dialog can be a drag sometimes,
+> and many commands could benefit from an argument.
+
+If I understand you correctly, you are saying that IPython more command
+oriented than script oriented, so it is more natural to do an "mb
+command-name" IPython command than it is to execute the IPython script
+"_leo.c.command(args)."  Is this correct?
+
+In conclusion, my guess is that generalizing how Leo handles minibuffer
+arguments could be useful, but it won't happen easily.
+#@nonl
+#@-node:ekr.20080227084250:Investigate more general arguments to minibuffer commands
 #@+node:ekr.20080218110223:Easy
 #@+node:ekr.20080218152956:Better home page
 #@+node:ekr.20071211093323:more screen shots on Leo's web site
